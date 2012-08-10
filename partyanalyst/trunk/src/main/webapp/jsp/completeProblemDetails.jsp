@@ -13,6 +13,7 @@
 <script src="styles/assets/js/bootstrap-tab.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/rating/jquery.rateit.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link href="styles/rating/rateit.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
@@ -106,6 +107,63 @@ table {
 .fontalign{
   font-family: verdana;font-size: 13px;
 }
+.imageButton {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-text-blink: none;
+    -moz-text-decoration-color: -moz-use-text-color;
+    -moz-text-decoration-line: none;
+    -moz-text-decoration-style: solid;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #0063DC;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-color: -moz-use-text-color;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-style: none;
+    border-bottom-width: medium;
+    border-left-color-ltr-source: physical;
+    border-left-color-rtl-source: physical;
+    border-left-color-value: -moz-use-text-color;
+    border-left-style-ltr-source: physical;
+    border-left-style-rtl-source: physical;
+    border-left-style-value: none;
+    border-left-width-ltr-source: physical;
+    border-left-width-rtl-source: physical;
+    border-left-width-value: medium;
+    border-right-color-ltr-source: physical;
+    border-right-color-rtl-source: physical;
+    border-right-color-value: -moz-use-text-color;
+    border-right-style-ltr-source: physical;
+    border-right-style-rtl-source: physical;
+    border-right-style-value: none;
+    border-right-width-ltr-source: physical;
+    border-right-width-rtl-source: physical;
+    border-right-width-value: medium;
+    border-top-color: -moz-use-text-color;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-top-style: none;
+    border-top-width: medium;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
+    white-space: nowrap;
+}
 
 </style>
 
@@ -113,6 +171,7 @@ table {
 var problemFilesArray = new Array();
 var ratingtrue = true;
 var cadreProblemDetails;
+var problemDetailsInEdit = null;
 <c:if test="${completeProblemDetailsVO.problemFiles != null}">
 	<c:forEach var="file" items="${completeProblemDetailsVO.problemFiles}">	
 	var fileObj={
@@ -862,6 +921,25 @@ function callAjax(jsObj,url)
 							{
 							  showDeleteStatus(myResults);
 							}
+							else if(jsObj.task == "getProblemDetailsForUpdate")
+							{
+								
+								problemDetailsInEdit = myResults;
+								showProblemDetailsForUpdate(myResults);
+							}
+							else if(jsObj.task == "updateProblemDetails")
+							{
+								showProblemUpdateStatus(myResults);
+							}
+
+							else if(jsObj.task == "getProblemtypes")
+							{
+								
+								createOptionsForSelectElmtIdWithSelectOption("editProblemTypeId",myResults);
+								if(problemDetailsInEdit[0].problemTypeId != null)
+								document.getElementById("editProblemTypeId").value = problemDetailsInEdit[0].problemTypeId;
+							}
+			
 						}
 						catch(e)
 						{   
@@ -877,6 +955,113 @@ function callAjax(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function showProblemDetailsForUpdate(myresults)
+{
+
+	
+  $("#editProblemsOuter").dialog({ stack: false,
+							    height: 340,
+								width: 700,
+								position:[150,120],								
+								modal: true,
+								title:'Edit Problem Details',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#editProblemsOuter").dialog();
+	var str ='';
+
+	
+	var problemEditDiv = document.getElementById('editProblemsInner');
+	str+='<div>';
+	str += '<fieldset>';
+	
+	str += '<table id="editDiv"><tr><td><div style="padding-left:40px;" /></td></tr></table>';
+	str += '<table>';
+	for(i=0 ; i<myresults.length ; i++)
+	{
+    str += '   <tr>';
+	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
+	str += '       <td><input type="text" id="problemTitleId" size="25" maxlength="100" value="'+myresults[i].problemTitle+'"></text></td>'; 
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth">Problem Description<font class="requiredFont">*</font></td>';
+	str += '       <td><textarea style="background:#ffffff;margin-top:5px;" id="problemDescription" cols="25" rows="4">'+myResults[i].problemDesc+'</textarea></td></tr>';
+
+	str += '	<tr><td colspan="2">';
+	str+='<table><tr> <td class="tdWidth2" style="width:156px;">Existing From<font class="requiredFont"> * </font></td>';
+	str += '	<td class="selectWidthPadd">';
+	str += ' <TD class="selectWidthPadd"><input type="text" READONLY="READONLY" name ="reportedDate" id="existingFromText" size="25" style="margin-top:5px;" value="'+myResults[i].existingFrom+'"/>';
+	str += '		<div class="yui-skin-sam"><div id="existingFromText_Div" class="tinyDateCal" style="font-size:12px;"></div></div>';
+	str += '	</td>';				
+	str += '	<td>';
+	str += '<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'existingFromText_Div\',\'existingFromText\',new Date())"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
+	str += '	</td></table></td>';
+	
+	str += '   </tr>'
+	 str += '   <tr>';
+	   str += '       <td class="tdWidth">Problem Type<font class="requiredFont">*</font></td>';
+	str += '  <td><select id="editProblemTypeId" style="width:222px;margin-top:5px;"  ></select></td>';
+	   str += '   </tr>';
+	str +='</table>';
+	}
+	str += '<div style="padding-left:223px;padding-top:10px;"> <input type="button" value="Update" onclick="updateProblem(${completeProblemDetailsVO.problemId})" class="imageButton"/></div>';
+	str +='</fieldset>';
+	problemEditDiv.innerHTML = str;
+	
+	getProblemtypes();
+}
+
+function bildDate(optionsList){
+
+	
+  
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	
+	}
+
+
+
+function getProblemtypes()
+{
+	var jsObj = {
+		time : new Date().getTime(),
+		task : "getProblemtypes"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getScopesForAProblemSearch.action?"+rparam;						
+	callAjax(jsObj,url); 
+}
+
+function showProblemUpdateStatus(result)
+{
+	var errorDivEle = document.getElementById('editDiv');
+	var str = '';
+	if(result.resultCode == 0)
+	{
+		str +='<font color="green">Problem Updated Successfully</font>';
+		window.location.reload();
+	}
+	else
+	{
+		str +='<font color="green">error Occured try  again</font>';
+	}
+	errorDivEle.innerHTML = str;
+}
+
 function buildcomments(myResults){
   if(myResults != null && myResults.length >0){
     var str='';
@@ -1335,6 +1520,57 @@ function showDeleteStatus(myResult)
 		errorDivEle.innerHTML = str;
 }
 </script>
+<script type="text/javascript">
+
+var day = new Date().getDate();
+var month = new Date().getMonth()+1;
+var year = new Date().getFullYear();
+
+var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
+var textBoxDivId;
+function showDateCal(divId, textBoxId,pageDate) {
+	
+	textBoxDivId = textBoxId;
+	var id = document.getElementById(divId);
+	if (dateCalendar)
+		dateCalendar.destroy();
+
+	var navConfig = {
+		strings : {
+			month : "Choose Month",
+			year : "Enter Year",
+			submit : "OK",
+			cancel : "Cancel",
+			invalidYear : "Please enter a valid year"
+		},
+		monthFormat : YAHOO.widget.Calendar.SHORT,
+		initialFocus : "year"
+	};
+
+	var dateCalendar = new YAHOO.widget.Calendar(id, {
+		navigator : navConfig,
+		pagedate: pageDate,
+		maxdate: maxDate,
+		title : "Choose a date:",
+		close : true
+	});
+	dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true);
+	dateCalendar.render();
+	dateCalendar.show();
+}
+function displayDateText(type, args, obj) {
+	var dates = args[0];
+	var date = dates[0];
+	var year = date[0], month = date[1], day = date[2];
+	var divId = obj.containerId;
+	var divElmt = document.getElementById(divId);
+
+	var txtDate1 = document.getElementById(textBoxDivId);
+	txtDate1.value = year + "/" + month + "/" + day;
+	minDate = month + "/" + day + "/" + year;
+	divElmt.style.display = 'none';
+}
+</script>
 </table>
 
 <article class="background">
@@ -1351,7 +1587,26 @@ function showDeleteStatus(myResult)
 <div class="span12" style="margin-top:25px;">
 
 <div class="row">
-<div class="span8 right-panel m5-left" style="background:#fff;">
+<div class="span8 right-panel m5-left" style="background:#ffffff;position:relative;">
+<c:if test="${completeProblemDetailsVO.isOwner && completeProblemDetailsVO.userStatus != 'NOT_LOGGED_IN'}">
+	<c:if test="${completeProblemDetailsVO.userStatus == 'PARTY_ANALYST_USER' || completeProblemDetailsVO.userStatus != 'BOTH'}">
+
+<div class="the-icons" style="position:absolute;top:-22px;right:5px;">
+<a onclick="getProblemDetails()" class="btn btn-mini"><i class="icon-tag"></i> Edit</a>
+<a onclick="deleteProblemDetails()" class="btn btn-mini"><i class="icon-remove"></i>Remove</a>
+</div>
+
+	<div style="width: 100px; margin-left: 499px; margin-top: 12px; padding-top: 0px; margin-bottom: 0px;">
+	
+		
+</div>
+
+<div id="problemEditDiv">
+		<div id="editProblemsOuter">
+		<div id="editProblemsInner"></div>
+		</div></div>
+ </c:if>
+</c:if>
 <div class="span1 pull-left m0-left" id="userdiv">
 			<div class="userdesc">
 			
@@ -1376,7 +1631,7 @@ function showDeleteStatus(myResult)
 <div class="span7 subheader-problem">
       <h2 class="span5 pull-left">${completeProblemDetailsVO.problemTitle} </h2>
 <div id="errorMsgDivEle"></div>
-
+<!--
 <c:if test="${completeProblemDetailsVO.isOwner && completeProblemDetailsVO.userStatus != 'NOT_LOGGED_IN'}">
 	<c:if test="${completeProblemDetailsVO.userStatus == 'PARTY_ANALYST_USER' || completeProblemDetailsVO.userStatus != 'BOTH'}">
 
@@ -1386,9 +1641,14 @@ function showDeleteStatus(myResult)
 		<img width="20px" height="20px;" style="text-decoration: none; border: 0px none; padding-top: 0px;margin-bottom: -2px" src="images/icons/delete.png">
 	</a>
 </div>
- </c:if>
-</c:if>
 
+<div id="problemEditDiv" class="pull-right" style="margin-left: 0px; margin-right: 170px; margin-top: -22px;">
+		<div id="editProblemsOuter">
+		<div id="editProblemsInner"></div>
+		</div><a onclick="getProblemDetails();"><img src="images/icons/edit.png" style="text-decoration: none; border: 0px none;"></a></div>
+ </c:if>
+</c:if>-->
+		
        <s:if test="completeProblemDetailsVO.isPublic == 'true' ">
 	   <div class="pull-right" style="margin-left: 0px; margin-right: 47px; margin-top: -22px;">
         <div class="btn-group dropup inline" style="display:inline-block;width:100px;">
@@ -1804,6 +2064,68 @@ var problemId = '${completeProblemDetailsVO.problemId}';
 	 callAjax(jsObj,url);
 	}
   }
+
+  function getProblemDetails()
+  {
+	var problemId = '${completeProblemDetailsVO.problemId}';
+	var jsObj = {
+					problemId :problemId,
+					task      :"getProblemDetailsForUpdate"
+				};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "getProblemDetailsForUpdateAction.action?"+rparam;
+	 callAjax(jsObj,url);
+	
+  }
+
+  function updateProblem(problemId)
+{
+	
+	var str = '';
+	var errorDivEle = document.getElementById('editDiv');
+	var problemId ='${completeProblemDetailsVO.problemId}' ;
+	var problemTitle = document.getElementById('problemTitleId').value;
+	var problemDesc = document.getElementById('problemDescription').value;
+	var existingFrom = document.getElementById('existingFromText').value;
+		
+	var problemTypeEle =document.getElementById('editProblemTypeId');
+
+	var problemType = problemTypeEle.options[problemTypeEle.selectedIndex].value;
+	var eflag = true;
+	if(problemTitle == '')
+	{
+		str +='<font color="red">Title is Required</font><br>';
+		
+		eflag = false;
+		
+	}
+	 if(problemDesc == '')
+	{
+		str +='<font color="red">Description is Required</font>';
+		
+		eflag = false;
+		
+	}
+	errorDivEle.innerHTML = str;
+		
+	if(!eflag)
+		return;
+	var jsObj ={
+					problemId :problemId,
+					problemtitle:problemTitle,
+					problemDesc : problemDesc,
+					existingFrom : existingFrom,
+					problemType : problemType,
+						
+					task      :"updateProblemDetails"
+				};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "updateProblemDetailsAction.action?"+rparam;
+	 callAjax(jsObj,url);
+	
+  }
+
+
 function rateWiseCountOfAProblem()
   {
    var problemId = '${completeProblemDetailsVO.problemId}';
