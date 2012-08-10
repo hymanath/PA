@@ -39,7 +39,21 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String totalpeople;
     private Integer ratingGiven;
     private String isProblemDel;
+    private Long problemTypeId;
+    private String problemType;
     
+	public Long getProblemTypeId() {
+		return problemTypeId;
+	}
+	public void setProblemTypeId(Long problemTypeId) {
+		this.problemTypeId = problemTypeId;
+	}
+	public String getProblemType() {
+		return problemType;
+	}
+	public void setProblemType(String problemType) {
+		this.problemType = problemType;
+	}
 	public String getUserStatus() {
 		return userStatus;
 	}
