@@ -7735,6 +7735,10 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			problem.setTitle(params.getProblemTitle());
 			problem.setDescription(params.getProblemDesc());
 			problem.setExistingFrom(date);
+			if(params.getProblemTypeId() == 0)
+			{
+				problem.setProblemType(null);
+			}
 			if(params.getProblemTypeId() > 0)
 			problem.setProblemType(problemTypeDAO.get(new Long(params.getProblemTypeId())));
 			problemDAO.save(problem);
