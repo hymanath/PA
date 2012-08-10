@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -11,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -35,6 +37,15 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> selectOptionList;
 	private List<ProblemBeanVO> problemBeanVOList;
 	private ProblemSearchVO problemSearchVO;
+	private List<CompleteProblemDetailsVO> problemDetails;
+	CompleteProblemDetailsVO completeProblemDetailsVO = null;
+	public List<CompleteProblemDetailsVO> getProblemDetails() {
+		return problemDetails;
+	}
+	public void setProblemDetails(List<CompleteProblemDetailsVO> problemDetails) {
+		this.problemDetails = problemDetails;
+	}
+
 	private ResultStatus resultStatus;
 	
 	public ResultStatus getResultStatus() {
@@ -138,6 +149,22 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 			else if(jObj.getString("task").equalsIgnoreCase("deleteProblemDetails"))
 			{
 				resultStatus = problemManagementService.deleteProblemDetails(jObj.getLong("problemId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getProblemDetailsForUpdate"))
+			{
+				problemDetails = problemManagementService.getProblemDetailsForUpdate(jObj.getLong("problemId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("updateProblemDetails"))
+			{
+				problemDetails = new ArrayList<CompleteProblemDetailsVO>();
+				completeProblemDetailsVO = new CompleteProblemDetailsVO();
+				completeProblemDetailsVO.setProblemTitle(jObj.getString("problemtitle"));
+				completeProblemDetailsVO.setProblemDesc(jObj.getString("problemDesc"));
+				completeProblemDetailsVO.setExistingFrom(jObj.getString("existingFrom"));
+				completeProblemDetailsVO.setProblemTypeId(jObj.getLong("problemType"));
+				
+				problemDetails.add(completeProblemDetailsVO);
+				resultStatus = problemManagementService.updateProblemDetails(jObj.getLong("problemId"),problemDetails);
 			}
 		    
 		}catch (Exception e) {
