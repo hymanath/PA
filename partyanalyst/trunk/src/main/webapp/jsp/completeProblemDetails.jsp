@@ -939,7 +939,10 @@ function callAjax(jsObj,url)
 								if(problemDetailsInEdit[0].problemTypeId != null)
 								document.getElementById("editProblemTypeId").value = problemDetailsInEdit[0].problemTypeId;
 							}
-			
+							else if(jsObj.task == "saveAbusedComments")
+							{
+								showAbusedCommentsResults(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -1072,6 +1075,7 @@ function buildcomments(myResults){
 	   str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/'+myResults[i].profileImg+'" /> </div>';
 	 else
 	  str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/human.jpg" /> </div>';
+	 str +='<span><img width="20" height="20" src="images/icons/abused.jpg" style="margin-left: 350px;" onclick="saveAbusedCommentsToProblem('+myResults[i].commentId+')" alt="abused"/></span>';
 	 str+='<div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">'+myResults[i].date+'</span></div>';
 	 str+='<p>'+myResults[i].comment+'</p>';
      str+='</li>';
@@ -1519,6 +1523,35 @@ function showDeleteStatus(myResult)
 		
 		errorDivEle.innerHTML = str;
 }
+
+function saveAbusedCommentsToProblem(commentId)
+{
+	var jsObj = {
+		time       : new Date().getTime(),
+		commentId  : commentId,
+		task       : "saveAbusedComments"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "saveProblemAbusedCommentsAction.action?"+rparam;
+	 callAjax(jsObj,url);
+	
+}
+
+function showAbusedCommentsResults(result)
+{
+	var errorDivEle = document.getElementById('abusedErrorDiv');
+		var str = '';
+	if(result.resultCode == 0)
+	{
+		//str += '<font color="Green"><b>Saved Successfully.</b>';
+	}
+	else if(result.resultCode == 1)
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	errorDivEle.innerHTML = str;
+}
 </script>
 <script type="text/javascript">
 
@@ -1919,6 +1952,7 @@ function displayDateText(type, args, obj) {
 		<h3>Comments:</h3>
 		 <div><div>
 		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-top:10px;" class="pull-right btn btn-info">Post</a></div></div>
+		 <div id="abusedErrorDiv" style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;"></div>
          <div id="postedcomments"></div>		
 		</div>
 		</s:if>
