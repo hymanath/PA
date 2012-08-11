@@ -945,5 +945,9 @@
 	<bean id="abuseCommentaction" class="com.itgrids.partyanalyst.web.action.AbuseCommentAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
+	
+	<bean id="genericUploadDataAction" class="com.itgrids.partyanalyst.web.action.GenericUploadDataAction" singleton="false">
+		<property name="entitlementsHelper" ref="entitlementsHelper"/>
+	</bean>
 			
 </beans>	
