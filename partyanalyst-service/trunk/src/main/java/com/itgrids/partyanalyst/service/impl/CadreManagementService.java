@@ -4300,6 +4300,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			Long bloodGroupId 	  = cadreInputVO.getBloodGroupId();
 			String taskName 	  = cadreInputVO.getTaskName();
 			String radioButtonValue = cadreInputVO.getRadioButtonValue();
+			
 			String SearchCriteria = new String();
 			
 			String cadreType      = new String();
@@ -4315,6 +4316,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String cadreNameStr = null;
 			String roleStr = null;
 			String bloodGroupStr = "";
+			String registerCadreSearchTypeStr = new String();
 		
 			if(searchType.equalsIgnoreCase(IConstants.LOCATION_BASED))
 			{
@@ -4502,12 +4504,21 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			else
 				cadreNameStr = " ";
 			
+			if(cadreInputVO.getRegisterCadreSearchType().equalsIgnoreCase(IConstants.ALL_CADRES))
+				registerCadreSearchTypeStr = " ";
+			
+			else if(cadreInputVO.getRegisterCadreSearchType().equalsIgnoreCase(IConstants.CADRE_REGISTERED_BY_USER))
+				registerCadreSearchTypeStr = " and model.cadreOnlineRegistration is null";
+			
+			else if(cadreInputVO.getRegisterCadreSearchType().equalsIgnoreCase(IConstants.CADRE_REGISTER_FROM_ONLINE))
+				registerCadreSearchTypeStr = " and model.cadreOnlineRegistration is not null";
+			
 			if(taskName.equalsIgnoreCase(IConstants.CADRE_SEARCH))
 				roleStr = " ";
 			else if(taskName.equalsIgnoreCase(IConstants.PROBLEM_ADDING))
 				roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
 			 
-			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr).get(0);
+			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr).get(0);
 			
 			if(maxResult < 0)
 			{
@@ -4518,7 +4529,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				return cadreInfoListTotal;
 			}
 			
-			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr,sortOption,order,startIndex,maxResult);
+			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order,startIndex,maxResult);
 			
 			for(Long id:cadreIds)
 			{
