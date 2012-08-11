@@ -246,32 +246,48 @@ function getAllProblemsBetweenDates(task)
 	var selectstatusEle=document.getElementById("select_staus");
 	var selectstatus=selectstatusEle.options[selectstatusEle.selectedIndex].value;
 	
+	
 	if(task == "getAllNewPostedReasons")
 	{
 		queryType =  task;
 		startDate = year+'/'+month+'/'+day;
 		endDate = year+'/'+month+'/'+day;
-	}
-	else
-	{   validationForTime();
-        queryType = task;
-		startDate = document.getElementById("identifiedFromText").value;
-		endDate = document.getElementById("reportedFromText").value;
-	}
-	
-	
-	var jsObj=
-	{		
+		var jsObj=
+	      {		
 			
 			fromDate:startDate,
 			toDate:endDate,	
 			selectstaus:selectstatus,
 			task:task						
-	};
+	      };
+	
 		
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllAbuseCommentAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	      var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	      var url = "getAllAbuseCommentAction.action?"+rparam;					
+	      callAjax(jsObj,url);
+	}
+	else
+	{   if(validationForTime()){
+        queryType = task;
+		startDate = document.getElementById("identifiedFromText").value;
+		endDate = document.getElementById("reportedFromText").value;
+		var jsObj=
+	      {		
+			
+			fromDate:startDate,
+			toDate:endDate,	
+			selectstaus:selectstatus,
+			task:task						
+	      };
+	
+		
+	      var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	      var url = "getAllAbuseCommentAction.action?"+rparam;					
+	      callAjax(jsObj,url);
+		}
+	}
+	
+	 
 }
 function validationForTime()
 {
