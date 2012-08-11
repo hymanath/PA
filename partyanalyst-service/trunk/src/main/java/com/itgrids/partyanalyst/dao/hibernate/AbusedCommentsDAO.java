@@ -16,11 +16,11 @@ public class AbusedCommentsDAO extends GenericDaoHibernate<AbusedComments,Long> 
 		super(AbusedComments.class);
 	}
 	@SuppressWarnings("unchecked")
-	 public List getAllAbuseComment(Date firstDate, Date secondDate,String selectstatus){
+	 public List<AbusedComments> getAllAbuseComment(Date firstDate, Date secondDate,String selectstatus){
 	    	Object[] params = {firstDate, secondDate };
 	    	
 	    	StringBuilder query = new StringBuilder();
-	    	query.append("select model.abusedCommentsId,model.user.firstName,model.user.lastName,model.comment.comment,model.status,model.isDelete,model.time from AbusedComments model where  date(model.time) >= ? and date(model.time) <= ?");
+	    	query.append("select model from AbusedComments model where  date(model.time) >= ? and date(model.time) <= ?");
 	    	
 	    	  
 	    		    if(selectstatus.equals("New"))
