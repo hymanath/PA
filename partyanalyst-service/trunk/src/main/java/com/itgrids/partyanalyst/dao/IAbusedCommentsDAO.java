@@ -8,7 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.AbusedComments;
 
 public interface IAbusedCommentsDAO extends GenericDao<AbusedComments,Long>{
-	 public List getAllAbuseComment(Date firstDate, Date secondDate,String selectstatus);
+	 public List<AbusedComments> getAllAbuseComment(Date firstDate, Date secondDate,String selectstatus);
 	 
 	 public Integer controlAbuseComments(Long id, String status,String isDelete);
 
