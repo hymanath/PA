@@ -3928,11 +3928,11 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 					username = "UnKnown";
 				comment.setPostedBY(username);
 				comment.setMessage(abusedComments.getComment().getComment());
-				if(abusedComments.getStatus().equalsIgnoreCase(IConstants.TRUE))
+				if(abusedComments.getStatus().equalsIgnoreCase(IConstants.TRUE) && abusedComments.getIsDelete().equalsIgnoreCase(IConstants.FALSE))
 				     comment.setStatus(IConstants.APPROVED);
 				else if(abusedComments.getStatus().equalsIgnoreCase(IConstants.FALSE) && abusedComments.getIsDelete().equalsIgnoreCase(IConstants.FALSE))
 				     comment.setStatus(IConstants.NEW);
-				else if(abusedComments.getIsDelete().equalsIgnoreCase(IConstants.TRUE) && abusedComments.getStatus().equalsIgnoreCase(IConstants.FALSE))
+				else if(abusedComments.getIsDelete().equalsIgnoreCase(IConstants.TRUE))
 				     comment.setStatus(IConstants.REJECTED);
 				comment.setTime(abusedComments.getTime().toString());
 				
