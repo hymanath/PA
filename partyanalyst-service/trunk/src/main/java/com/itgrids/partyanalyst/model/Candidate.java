@@ -70,7 +70,6 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<ConstituencyLeadCandidate> constituencyLeadCandidate = new HashSet<ConstituencyLeadCandidate>(0);
 	private Set<CandidatePageCustomPages> CandidatePageCustomPages = new HashSet<CandidatePageCustomPages>(0);
 	private KeyCandidate keyCandidate;
-	private Set<CandidateCadreOnlineRegistration> candidateCadreOnlineRegistrations = new HashSet<CandidateCadreOnlineRegistration>(0);
 	// Constructors
 
 	/** default constructor */
@@ -319,16 +318,5 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setParty(Party party) {
 		this.party = party;
 	}
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Set<CandidateCadreOnlineRegistration> getCandidateCadreOnlineRegistrations() {
-		return candidateCadreOnlineRegistrations;
-	}
-
-	public void setCandidateCadreOnlineRegistrations(
-			Set<CandidateCadreOnlineRegistration> candidateCadreOnlineRegistrations) {
-		this.candidateCadreOnlineRegistrations = candidateCadreOnlineRegistrations;
-	}
-
 	
 }
