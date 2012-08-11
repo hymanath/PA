@@ -70,6 +70,7 @@ public class Cadre extends BaseModel{
 	 private String image;
 	 private BloodGroup bloodGroup;
 	 private Long bloodGroupId;
+	 private CadreOnlineRegistration cadreOnlineRegistration;
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
 	 private Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo = new HashSet<CadreFamilyMemberInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
@@ -489,6 +490,19 @@ public class Cadre extends BaseModel{
 	public void setProblemAssignedCadres(
 			Set<ProblemAssignedCadre> problemAssignedCadres) {
 		this.problemAssignedCadres = problemAssignedCadres;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_online_registration_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreOnlineRegistration getCadreOnlineRegistration() {
+		return cadreOnlineRegistration;
+	}
+
+	public void setCadreOnlineRegistration(
+			CadreOnlineRegistration cadreOnlineRegistration) {
+		this.cadreOnlineRegistration = cadreOnlineRegistration;
 	}
 
  }
