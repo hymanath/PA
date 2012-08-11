@@ -435,7 +435,12 @@ function setCadreIdToProblem()
 					<th align="left">&nbsp;&nbsp;&nbsp;<s:label for="bloodGroupId" id="bloodGroupLabel" theme="simple" value="Blood Group"/></th>
 					<td>&nbsp;&nbsp;<s:select id="bloodGroupId" cssClass="regionSelect" theme="simple" style="width:75px;" list="bloodGroupList" listKey="id" listValue="name"></s:select></td>
 				</tr>
-
+				<tr>
+				<th>&nbsp;&nbsp;&nbsp;<span>Select Cadre : </span></th>
+				<td><input type="radio" name="cadreRegisterTypeRadio" value="allCadres" checked="true"/>all
+				<input type="radio" name="cadreRegisterTypeRadio" value="registeredByUser"/>Registered by User
+				<input type="radio" name="cadreRegisterTypeRadio" value="registeredFromOnline" />Registered From OnLine</td>
+				</tr>
 				</table>
 			</div>
 
@@ -544,7 +549,7 @@ function setCadreIdToProblem()
 			</table>
 		</div>		
 		</c:if>
-		<div id="searchButtonDiv">
+		<div id="searchButtonDiv" style="margin-top: 10px;">
 			<table >
 				
 				<tr>					
