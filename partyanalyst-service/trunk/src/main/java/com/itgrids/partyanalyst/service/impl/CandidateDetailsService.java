@@ -3902,7 +3902,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
 				
 				
-				List comments = abusedCommentsDAO.getAllAbuseComment(firstDate, secondDate,selectstatus);
+				List<AbusedComments>  comments = abusedCommentsDAO.getAllAbuseComment(firstDate, secondDate,selectstatus);
 				candidateComments = commentsDetailsFromAbuseCommeentList(comments);
 							
 			}catch(Exception e){
@@ -3910,39 +3910,36 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			}
 			return candidateComments;
 	 }
-	public List<CandidateCommentsVO> commentsDetailsFromAbuseCommeentList(List comments)
+	public List<CandidateCommentsVO> commentsDetailsFromAbuseCommeentList(List<AbusedComments> comments)
 	{
 		List<CandidateCommentsVO> commentsList = new ArrayList<CandidateCommentsVO>();
 		 if(log.isDebugEnabled())
 			 log.debug("commentsDetailsFromList()method ......");
-		
-		if(comments != null || comments.size() > 0)
+		if(comments != null && comments.size()>0)
 		{
-			
-			for (int i = 0; i < comments.size(); i++)
-			{  
+			for(AbusedComments abusedComments :comments)
+			{
 				String username = null;
 				CandidateCommentsVO comment = new CandidateCommentsVO();
-				Object[] params = (Object[])comments.get(i);
-				comment.setCandidate(params[0].toString()!= null ? params[0].toString():"");
-				if(params[1].toString()!=null && params[2].toString()!=null)
-					 username = params[1].toString()+" "+params[2].toString();
-				
+				comment.setCandidate(abusedComments.getAbusedCommentsId().toString());
+				if(abusedComments.getUser()!=null)
+					username = abusedComments.getUser().getFirstName().toString()+" "+abusedComments.getUser().getLastName().toString();
+				else
+					username = "UnKnown";
 				comment.setPostedBY(username);
-				comment.setMessage(params[3].toString()!= null ? params[3].toString():"");
-				
-				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.TRUE))
-					comment.setStatus(IConstants.APPROVED);
-				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.FALSE))
-					comment.setStatus(IConstants.NEW);
-				if(params[5] != null && params[5].toString().equalsIgnoreCase(IConstants.TRUE))
-					comment.setStatus(IConstants.REJECTED);
-				comment.setTime(params[6].toString() != null ? params[6].toString():"");
+				comment.setMessage(abusedComments.getComment().getComment());
+				if(abusedComments.getStatus().equalsIgnoreCase(IConstants.TRUE))
+				     comment.setStatus(IConstants.APPROVED);
+				else if(abusedComments.getStatus().equalsIgnoreCase(IConstants.FALSE))
+				     comment.setStatus(IConstants.NEW);
+				else if(abusedComments.getIsDelete().equalsIgnoreCase(IConstants.TRUE))
+				     comment.setStatus(IConstants.REJECTED);
+				comment.setTime(abusedComments.getTime().toString());
 				
 				commentsList.add(comment);
-				
+					
 			}
-		}			
+		}
 		
 		return commentsList;
 	}
