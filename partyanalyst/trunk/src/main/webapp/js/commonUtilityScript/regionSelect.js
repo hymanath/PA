@@ -601,7 +601,9 @@ function getCadresResults(btnType)
 	var bloodGroupEle = document.getElementById("bloodGroupId");
 	var bloodGroupId = bloodGroupEle.options[bloodGroupEle.selectedIndex].value;
 	var nameSelectedRadioEle = document.getElementsByName("nameBasedRadio");
+	var cadreRegisterTypeRadioEle = document.getElementsByName("cadreRegisterTypeRadio");
 	var nameSelectedRadioValue;
+	var cadreRegisterTypeRadioValue;
 	for(var i=0; i<nameSelectedRadioEle.length;i++){
 	   if(nameSelectedRadioEle[i].checked == true)
 	        nameSelectedRadioValue = nameSelectedRadioEle[i].value;
@@ -784,7 +786,11 @@ function getCadresResults(btnType)
 		if(genderRadioEls[i].checked == true)
 			genderOption = genderRadioEls[i].value;
 	}
-
+	for(var i=0; i<cadreRegisterTypeRadioEle.length;i++)
+	{
+		if(cadreRegisterTypeRadioEle[i].checked == true)
+		cadreRegisterTypeRadioValue = cadreRegisterTypeRadioEle[i].value;
+	}
 	var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
 	var senderNameTextElmt = document.getElementById("senderNameText");
 	var CADRENAME = document.getElementById("cadreNameText").value;
@@ -795,7 +801,7 @@ function getCadresResults(btnType)
 		SENDERNAME = senderNameTextElmt.value;
 
 	var taskName = '';
-
+	
 	/*if(isProblemAdding != null && isProblemAdding == true)
 		taskName = "problemAdding";
 	else*/
@@ -803,25 +809,26 @@ function getCadresResults(btnType)
 	
 	var jsObj=
 		{		
-			reportLevel         : REPORTLEVEL,
-			reportLocationValue : REPORTLOCATIONVALUE,
-			socialStatus        : SOCIALSTATUS,
-			socialStatusArray   : SOCIALSTATUSARRAY,
-			cadreType			: CADRETYPE,
-			cadreName			: CADRENAME,
-			searchType			: SEARCHTYPE,
-			gender				: genderOption,
-			searchCriteria		: SEARCHCRITERIA,
-			searchCriteriaArray	: SEARCHCRITERIAARRAY,
-			searchCriteriaValue	: SEARCHCRITERIAVALUE,
-			performSearch		: PERFORMSEARCH,
-			txtAreaValue		: SMSTEXTAREAVALUE,
-			includeCadreName	: SMSINCLUDECADRENAME,
-			bloodGroupId		: bloodGroupId,
-			taskType			: btnType,
-			senderName			: SENDERNAME,
-			nameSearchTYpe      : nameSelectedRadioValue,   
-			task				: taskName	
+			reportLevel				: REPORTLEVEL,
+			reportLocationValue		: REPORTLOCATIONVALUE,
+			socialStatus			: SOCIALSTATUS,
+			socialStatusArray		: SOCIALSTATUSARRAY,
+			cadreType				: CADRETYPE,
+			cadreName				: CADRENAME,
+			searchType				: SEARCHTYPE,
+			gender					: genderOption,
+			searchCriteria			: SEARCHCRITERIA,
+			searchCriteriaArray		: SEARCHCRITERIAARRAY,
+			searchCriteriaValue		: SEARCHCRITERIAVALUE,
+			performSearch			: PERFORMSEARCH,
+			txtAreaValue			: SMSTEXTAREAVALUE,
+			includeCadreName		: SMSINCLUDECADRENAME,
+			bloodGroupId			: bloodGroupId,
+			taskType				: btnType,
+			senderName				: SENDERNAME,
+			nameSearchTYpe			: nameSelectedRadioValue, 
+			cadreRegTypeRadioValue	: cadreRegisterTypeRadioValue,	
+			task					: taskName	
 		}
 	
 	
