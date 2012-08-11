@@ -246,9 +246,6 @@ function getAllProblemsBetweenDates(task)
 	var selectstatusEle=document.getElementById("select_staus");
 	var selectstatus=selectstatusEle.options[selectstatusEle.selectedIndex].value;
 	
-	
-			 
-	
 	if(task == "getAllNewPostedReasons")
 	{
 		queryType =  task;
@@ -256,7 +253,7 @@ function getAllProblemsBetweenDates(task)
 		endDate = year+'/'+month+'/'+day;
 	}
 	else
-	{
+	{   validationForTime();
         queryType = task;
 		startDate = document.getElementById("identifiedFromText").value;
 		endDate = document.getElementById("reportedFromText").value;
@@ -275,6 +272,28 @@ function getAllProblemsBetweenDates(task)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllAbuseCommentAction.action?"+rparam;					
 	callAjax(jsObj,url);
+}
+function validationForTime()
+{
+    
+    var  errorDivEle = document.getElementById("timeErrorMessage")
+	var eFlag = false;	  
+	var str = '<font color="red">';
+	var leftEleTime = document.getElementById("identifiedFromText").value;
+	var rigthEleTime = document.getElementById("reportedFromText").value;
+	 if(leftEleTime.length == 0 || rigthEleTime.length == 0) 
+     {
+		   str += ' date is required<br>';
+		   eFlag = true;
+	 }
+	 
+	 str += '</font>';
+	 errorDivEle.innerHTML = str;
+	
+	                if(eFlag)
+		                return false;
+						
+					return true;
 }
 function showNewPostedReasons(jsObj,results)
 {
@@ -441,6 +460,7 @@ function checkingData(results)
 					</tr>
 				</table>
 			</div>
+			<div id ="timeErrorMessage" style="margin-left: 21px;"></div>
 			<div id="openedReasons_dates" class="reasonsAdminPanels_content">
 				
 			</div>
