@@ -31,6 +31,7 @@ public class CadreBasicInformationVO implements Serializable {
 	private Boolean isOrSearch;
 	private String genderSearchType;
 	private Long bloodGroupId;
+	private String registerCadreSearchType;
 	
 	//Getters and Setters
 	
@@ -124,6 +125,12 @@ public class CadreBasicInformationVO implements Serializable {
 	}
 	public void setGenderSearchType(String genderSearchType) {
 		this.genderSearchType = genderSearchType;
+	}
+	public String getRegisterCadreSearchType() {
+		return registerCadreSearchType;
+	}
+	public void setRegisterCadreSearchType(String registerCadreSearchType) {
+		this.registerCadreSearchType = registerCadreSearchType;
 	}
 	
 
