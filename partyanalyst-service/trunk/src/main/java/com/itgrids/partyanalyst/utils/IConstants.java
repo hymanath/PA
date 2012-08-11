@@ -532,4 +532,10 @@ public interface IConstants {
 	public static final String EXACT_MATCH_NAME ="ExactMatch";
 	
 	public static final String ANY_WHERE_IN_NAME ="AnyWhereInName";
+	
+	public static final String ALL_CADRES = "AllCadres";
+	
+	public static final String CADRE_REGISTER_FROM_ONLINE = "RegisteredFromOnline";
+	
+	public static final String CADRE_REGISTERED_BY_USER = "RegisteredByUser";
 }
