@@ -904,17 +904,9 @@
 	<bean id="bloodGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="cadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreOnlineRegistrationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCadreOnlineRegistrationDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="partyCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyCadreOnlineRegistrationDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="candidateCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateCadreOnlineRegistrationDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
+		
 </beans>		

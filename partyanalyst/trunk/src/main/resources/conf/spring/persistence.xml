@@ -269,9 +269,6 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencySubscriptions</value>
 				<value>com.itgrids.partyanalyst.model.BloodGroup</value>
 				<value>com.itgrids.partyanalyst.model.CadreOnlineRegistration</value>
-				<value>com.itgrids.partyanalyst.model.UserCadreOnlineRegistration</value>
-				<value>com.itgrids.partyanalyst.model.CandidateCadreOnlineRegistration</value>
-				<value>com.itgrids.partyanalyst.model.PartyCadreOnlineRegistration</value>
 			</list>
 		</property>
 	</bean>
