@@ -320,6 +320,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div>--></td></tr>
 <tr><td>
+
+<s:if test="candidateElectionDetails != null && candidateElectionDetails.size() > 0">
 <div class="ppc-title" style="margin-top:-4px;">
 <s:if test="candidateElectionDetails[0].stateId !=null">State: 
 <a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
@@ -336,6 +338,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 District: 
 <strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></strong> &gt; </s:if> </a> <span style="color: #171717;font-weight:normal;"><s:property value="candidateElectionDetails[0].electionType"/></span>:
 <a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}" ><strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></a></div>
+</s:if>
+
 <div class="clear"></div>
 <div class="main-title-sec">
  <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
@@ -363,10 +367,7 @@ Tweet</a>
  <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 </span>
 </div>
-<div id="logInDiv"></div>
-
 <div class="main-bbg"></div></div><br></td></tr></table>
-
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
 <s:if test="#custom.type == 'banner'">
@@ -633,7 +634,8 @@ Tweet</a>
 	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
     <div id="constituencySelectDiv"/>
-    </div>
+	</div>
+	<div id="logInDiv"></div>
 
 	<s:if test="customPages != null && customPages.size() > 0">
 		<s:iterator value="customPages" var="custom"> 
@@ -1103,7 +1105,11 @@ function buildAnalyzeConstituencyWindow()
 	var constituencyName = '${candidateElectionDetails[0].constituencyName}';
 	var candidateId = '${candidateElectionDetails[0].candidateId}';
 	var bodyElmt = document.getElementById('analyzeCandidateDiv_Body');
-		
+	
+	if(candidateId == null || candidateId == '')
+		return;
+
+
 	var str='';
 	str+='<fieldset id="analyzeConstituencyFieldSet">';
 	str+='<legend style="font-weight:bold;background:#06ABEA"> Assess Your Politician</legend>';
