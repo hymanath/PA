@@ -56,7 +56,7 @@ function showMeyyappanForte()
 								width:600,
 								position:[130,130],	
 								modal: true,
-								title:'<font color="Navy"><b>C D MEYYAPPAN FORTH</b></font>',
+								title:'<font color="Navy"><b>C D MEYYAPPAN FORTE</b></font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#meyyanForthOuterDiv").dialog();
