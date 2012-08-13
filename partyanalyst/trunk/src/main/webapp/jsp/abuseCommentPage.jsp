@@ -204,7 +204,7 @@ function showAllNewPostedAbuseComment()
 	str += '<div id="openedReasonsDateDiv" style="font-size:13px;font-weight:bold;">';
 	str += 'Showing all abused comments today - '+day+'/'+month+'/'+year ;
 	
-	str += '<input type="button" class="buttonClass" value="Change" onclick="animateShowdiv(\'openedReasonsDateSelectDiv\')">&nbsp;&nbsp;&nbsp;Select Status<select id="select_staus" name="selectstatus" style="width:125px;"><option value="New">New</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select>';
+	str += '<input type="button" class="buttonClass" value="Change" onclick="animateShowdiv(\'openedReasonsDateSelectDiv\')">&nbsp;&nbsp;&nbsp;Select Status <select id="select_staus" name="selectstatus" style="width:125px;" onchange="showCurrentDateStatus()"> <option value="New">New</option> <option value="Approved">Approved</option><option value="Rejected">Rejected</option></select>';
 
 	str +'</div>';
 	str += '<div id="openedReasonsDateSelectDiv" style="font-size:13px;font-weight:bold;display:none;">';
@@ -239,14 +239,18 @@ function showAllNewPostedAbuseComment()
 
 	getAllProblemsBetweenDates("getAllNewPostedReasons");
 }
+function showCurrentDateStatus()
+{
+   if(document.getElementById("openedReasonsDateSelectDiv").style.display == 'none')
+            getAllProblemsBetweenDates("getAllNewPostedReasons");
+}
 function getAllProblemsBetweenDates(task)
 {
 	var startDate = '';
 	var endDate = '';
 	var selectstatusEle=document.getElementById("select_staus");
 	var selectstatus=selectstatusEle.options[selectstatusEle.selectedIndex].value;
-	
-	
+	 document.getElementById("commentsDisplay").style.display ='none';
 	if(task == "getAllNewPostedReasons")
 	{
 		queryType =  task;
@@ -312,7 +316,8 @@ function validationForTime()
 					return true;
 }
 function showNewPostedReasons(jsObj,results)
-{
+{ 
+  
 	var elmt = document.getElementById("commentsData");
 	if(!elmt)
 		return;
@@ -329,7 +334,7 @@ function showNewPostedReasons(jsObj,results)
 		str +='                <input  class="buttonClass" type="button" value="Select All" onclick="selectAll(\'selectValue\');"/ >';
 	    str +='                <input class="buttonClass" type="button" value="UnSelect All" onclick="selectAll(\'unselectValue\');"/ >';
 		str +='				</td>';
-		str +='		       <td width="80%"  style="border:0px;background-color: #EEF2F3; " ><div id="commentsDisplay" ></div></td>';	
+		str +='		       <td width="80%"  style="border:0px;background-color: #EEF2F3; " ></td>';	
 		str +='			</tr>';
 		str +='		</table>';
 		str +='</div>';
@@ -438,7 +443,8 @@ function controlSelectedReasons(task)
 	callAjax(jsObj,url);
 }
 function checkingData(results)
- {
+ {  
+    document.getElementById("commentsDisplay").style.display ='block';
     var errorDivEle = document.getElementById('commentsDisplay');
 	var str = '';
 
@@ -480,7 +486,7 @@ function checkingData(results)
 			<div id="openedReasons_dates" class="reasonsAdminPanels_content">
 				
 			</div>
-			
+			<div id="commentsDisplay" style="display:none; margin-left: 30px;"></div>
 			<div id="commentsData_outer" class="reasonsAdminPanels_content yui-skin-sam">
 			  <div id="commentsData"></div>
 			</div>
