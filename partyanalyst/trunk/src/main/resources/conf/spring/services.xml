@@ -87,6 +87,9 @@
 		<property name="feedbackDAO" ref="feedbackDAO" /> 
 		<property name="problemManagementService" ref="problemManagementService" /> 
 		<property name="userDAO" ref="userDAO"></property>
+		<property name="commentDAO" ref="commentDAO"></property>
+		<property name="opinionPollCommentsDAO" ref="opinionPollCommentsDAO"></property>
+		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"></property>
 	</bean>
 	
 	<bean name="electionService" class="com.itgrids.partyanalyst.service.impl.ElectionService" >
