@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,33 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>All Polls</title>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-
-
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
@@ -49,6 +24,17 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+
+	<!--BOOT STRAP START-->	
+	<link href="css/Assets/css/bootstrap.css" rel="stylesheet">
+	<!--<link href="css/Assets/css/bootstrap-responsive.css" rel="stylesheet">-->
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="Assets/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="Assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="Assets/ico/apple-touch-icon-57-precomposed.png">
+
+
+   <!--BOOT STRAP END-->
 
 	<!-- YUI Dependency files (End) -->
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -92,8 +78,11 @@
 	    margin-bottom: 24px;
         margin-top: -29px;
 	}
-	#contenttable{background:#ffffff;margin-left:auto;margin-right:auto;width:980px;margin-bottom:10px;}
-</style>
+	
+	.span8-cuswidth{width:940px;}
+	.span4-cuswidth{width:270px;height:auto;margin-top:3px;display:table-cell;}
+	/*.pollquestion{width:100%;padding:5px;margin:0px 5px 0px 0px;background:#fff;}*/
+	</style>
 <script type="text/javascript">
 	function getCompletePollResult(questionId){  
 		var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=350,width=450,left=200,top=200");
@@ -137,9 +126,141 @@ function initializeResultsTable() {
 }
 
 </script>
+
+<style>
+.pollDiv{
+background:#FFFFFF;
+margin-right:12px;
+position:relative;
+margin-bottom:2px;
+}
+.qstnDiv{
+margin-bottom:2px;
+
+}
+.totlaVotes{
+	margin-bottom:5px;
+	
+}
+.buttonsDiv{
+	bottom:0;
+	position:relative;
+	width:281px;
+	margin-bottom:3px;
+	display:block;
+	margin:20px 0px;
+}
+
+.opinionpoll .question{padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;}
+/*.opinionpoll .answer{border-bottom:1px dashed #ccc;padding:0px ;margin-bottom:5px;}*/
+.opinionpoll .votebtn{margin:0px auto;display:block;width:75px;}
+.resultdisplay a{display:inline-block;text-decoration:none;}
+.resultdisplay .previouslink{ float:left;}
+.resultdisplay .nextlink{ float:right;}
+.opinionpoll>li:nth-child(4n+4){clear:left;}
+.opinionpoll>li:nth-child(even){background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+
+
+.main-title-sec {
+  background-color:#06ABEA;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  display:table;
+  height:36px;
+  margin-left:auto;
+  margin-right:auto;
+  width:923px;
+  margin-left:52px;
+  margin-bottom:10px;
+}
+
+.main-mbg {
+  color:#FFFFFF;
+  display:table-cell;
+  font-family:'Trebuchet MS', Arial, Helvetica, sans-serif;
+  font-size:14px;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:bold;
+  height:25px;
+  line-height:normal;
+  padding-left:10px;
+  text-transform:uppercase;
+ text-align:center;
+  padding-top:9px;
+}
+
+
+
+</style>
 </head>
-<body>
-		<div id="headingDiv">
+<body class="background">
+
+<div class="main-title-sec">
+        <div class="main-mbg">Recent polls details</div></div>
+        <div class="main-bbg"></div>
+      </div>
+      
+
+
+<div class="container">
+<div class="span8-cuswidth">
+
+
+  <ul class="unstyled row opinionpoll">
+
+		 <c:forEach var="polls" varStatus="stat" items="${qstnLst}">
+
+		   <li class="span4-cuswidth breadcrumb pollDiv" >
+
+		     <p class="qstnDiv question"><b>${polls.question}</b></p>
+
+		     <p class="totlaVotes pull-right">Total Votes  Polled:<b> ${polls.totalVotesObtainedForPoll}</b></p>
+
+		      <ul class="answer">
+			 <c:forEach var="polls1" varStatus="stat" items="${polls.options}">			
+               <li >
+				  <h5 class="span3" > ${polls1.option} </h5>
+
+				  <div class="span2 pull-left" style="margin-left:0px;">
+						<div class="progress" style="margin:0px;">
+						  <div id="option1" class="bar" style="width:${polls1.percentage}%"></div>
+						</div>							
+				  </div>	
+					
+				  <span class="label pull-right label-info">${polls1.percentage}% </span>	
+				  </li>
+
+			 </c:forEach>
+			 </ul>
+
+			<div class="buttonsDiv pager" style="margin-left:-9px;">
+				  <a href="completeResultForAPollAction.action?questionId=${polls.questionId}&comments=getComments"  id="${polls.questionId}" class="btn" title="Post Your Comment On This Poll" >Post Your Comment </a>
+				  <a href="completeResultForAPollAction.action?questionId=${polls.questionId}&comments=getComments" id="${polls.questionId}" class="btn" title="View All Comments On Thios Poll">View Comments</a>
+			 </div>
+					
+		   </li>
+			  
+		 </c:forEach>
+  </ul>	
+</div>
+</div>
+
+	
+	<!--	<div id="headingDiv">
 			All Polls
 		</div>
 		<center style="margin-top:30px;">
@@ -166,6 +287,6 @@ function initializeResultsTable() {
 <script language="javascript">
 initializeResultsTable();
 </script>
-
+-->
 </body>
 </html>

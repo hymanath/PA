@@ -150,6 +150,17 @@ var emailId = '${sessionScope.USER.email}';
 }
 
 
+.opinionpoll .question{padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;}
+.opinionpoll .answer{border-bottom:1px dashed #ccc;padding:0px ;margin-bottom:5px;margin-left:19px;}
+.opinionpoll .votebtn{margin:0px auto;display:block;width:75px;}
+.resultdisplay a{display:inline-block;text-decoration:none;}
+.resultdisplay .previouslink{ float:left;}
+.resultdisplay .nextlink{ float:right;}
+
+.opinionpoll .answer .span2{margin-left:0px;}
+.opinionpoll .answer span{margin-left:10px;}
+
+
 
 
 </STYLE>
@@ -376,7 +387,7 @@ var emailId = '${sessionScope.USER.email}';
 							<!-- Opinion Poll Start-->
 								<div id="pollsWidgetMain" style="margin:10px 0px 10px 0px;">
 									<div id="pollsWidgetHeader">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										<!--<table width="100%" border="0" cellspacing="0" cellpadding="0">
 										  <tr>
 											<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 											<td width="98%">
@@ -388,13 +399,19 @@ var emailId = '${sessionScope.USER.email}';
 											</td>
 											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
 										  </tr>
-										</table>	
+										</table>	-->
 									 </div>
-									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:auto;overflow:hidden;background:#ffffff;width:265px;">
-									</div>
+									<!--<div id="pollsWidgetBody" class="yui-skin-sam" style="height:auto;overflow:hidden;background:#ffffff;width:265px;">
+									</div>-->
+									<!--<div id="pollsWidgetBody" class="span4 well" style="background:#d4d4d4;">-->
+									<!--<div id="pollsWidgetBody" class="span4 well" style="background:#FFFFFF;width:290px;margin-left:1px;">-->
+                                      <div style="height:15px;padding-bottom:5px;">
+                                     <div id="alreadyVotedDivId"></div>
+									 </div>
+									<div id="pollsWidgetBody"></div>
 									<div id="pollsWidgetFooter">
 										
-									</div>
+									
 								</div>
 							<!-- Opinion Poll End-->
 							<!--<div id="connectPeople_editProfile_center" class="yui-skin-sam">

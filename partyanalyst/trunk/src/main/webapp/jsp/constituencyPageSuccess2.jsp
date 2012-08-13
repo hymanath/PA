@@ -243,6 +243,17 @@ margin-top: 4px;
 #parliamentElectionResultsDivNew{
   border: 1px solid #E7E7E7;
 }
+
+
+.opinionpoll .question{padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;}
+.opinionpoll .answer{border-bottom:1px dashed #ccc;padding:0px ;margin-bottom:5px;margin-left:19px;}
+.opinionpoll .votebtn{margin:0px auto;display:block;width:75px;}
+.resultdisplay a{display:inline-block;text-decoration:none;}
+.resultdisplay .previouslink{ float:left;}
+.resultdisplay .nextlink{ float:right;}
+
+.opinionpoll .answer .span2{margin-left:0px;}
+.opinionpoll .answer span{margin-left:10px;}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -784,7 +795,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			
 						<div id="pollsWidgetMain" style="margin:10px 0px 10px 0px;clear:both;">
 									<div id="pollsWidgetHeader">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										<!--<table width="100%" border="0" cellspacing="0" cellpadding="0">
 										  <tr>
 											<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 											<td width="98%">
@@ -796,9 +807,15 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 											</td>
 											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
 										  </tr>
-										</table>	
+										</table>	-->
 									 </div>
-									<div id="pollsWidgetBody" style="height:auto;width:302px;background:#ffffff;overflow:hidden;">
+									<!--<div id="pollsWidgetBody" style="height:auto;width:302px;background:#ffffff;overflow:hidden;">-->
+
+									<!--<div id="pollsWidgetBody" class="span4 well" style="background:#FFFFFF;width:290px;margin-left:1px;">-->
+                                     <div style="height:15px;padding-bottom:5px;">
+                                     <div id="alreadyVotedDivId"></div>
+									 </div>
+									<div id="pollsWidgetBody">
 								
 									</div>
 									<div id="pollsWidgetFooter">
