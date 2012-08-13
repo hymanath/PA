@@ -4289,6 +4289,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	public List<CadreInfo> getCadreDetailsForSMS(Long userId, PartyCadreDetailsVO cadreInputVO,String windowTask,String sort, String order,Integer startIndex,Integer maxResult)
 	{
 		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
+		try{
 		
 		if (userId != null && cadreInputVO != null) {
 			
@@ -4400,7 +4401,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				else 
 					andOrStr = " and ";
 				
-				Long castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
+				
+				Long castCategory = 0L;
+				
+				if(cadreInputVO.getCadreCasteCategory() != null && cadreInputVO.getCadreCasteCategory().size() > 0)
+					castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
 				
 				if(castCategory == null || castCategory == 0)
 					castStr = " ";
@@ -4572,6 +4577,10 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 		
 		return cadreInfoList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCadreDetailsForSMS() - "+e);
+			return cadreInfoList;
+		}
 	}
 	
 	String getCadreLevelValueStr(String level,Long Value)
