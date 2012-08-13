@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IOpinionPollCommentsDAO;
@@ -9,5 +11,11 @@ public class OpinionPollCommentsDAO extends GenericDaoHibernate<OpinionPollComme
 	
 	public OpinionPollCommentsDAO() {
 		super(OpinionPollComments.class);
+	}
+	
+	public List<Object[]> getCommentDetailsByQuestionId(Long pollId){
+		
+		return getHibernateTemplate().find("select model.comment.commentId,model.comment.comment,model.firstName,model.lastName,model.insertedTime from OpinionPollComments model where model.opinionPoll.opinionPollId=?",pollId);
+		
 	}
 }

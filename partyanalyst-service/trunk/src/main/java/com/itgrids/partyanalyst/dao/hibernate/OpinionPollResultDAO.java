@@ -32,4 +32,18 @@ public class OpinionPollResultDAO extends GenericDaoHibernate<OpinionPollResult,
 				" model.opinionPollQuestions.opinionPollQuestionsId  = ? ",parms);
 	}
 	
+	public List getOpinionPollAnswersForAQuestions(){
+		
+		return getHibernateTemplate().find("select model.count,model.opinionPollQuestionOptions.questionOption," +
+				"model.opinionPollQuestionOptions.questionsRepository.question,DATEDIFF(CURDATE(),model.opinionPollQuestions.opinionPoll.opinionPollEndDate) from OpinionPollResult model");
+		
+	}
+	
+	public List getOpinionPollIds(){
+		
+		return getHibernateTemplate().find("select model.opinionPollId from OpinionPoll model order by model.opinionPollEndDate desc");
+		
+		
+	}
+	
 }
