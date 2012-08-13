@@ -15,6 +15,20 @@ public class QuestionsOptionsVO {
 	private String startDate;
 	private Long differenceBetweenCurrentDateAndPolledDate;	
 	private String title;
+	private boolean pollExpire;
+	private boolean availability;
+	
+
+	public boolean isAvailability() {
+		return availability;
+	}
+
+
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
+	}
+
+
 	public String getTitle() {
 		return title;
 	}
@@ -131,5 +145,15 @@ public class QuestionsOptionsVO {
 	public void setAnswerValue(String answerValue) {
 		this.answerValue = answerValue;
 	}
+	
+	public boolean isPollExpire() {
+		return pollExpire;
+	}
+
+
+	public void setPollExpire(boolean pollExpire) {
+		this.pollExpire = pollExpire;
+	}
+
 
 }
