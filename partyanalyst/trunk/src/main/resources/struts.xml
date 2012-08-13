@@ -3411,7 +3411,29 @@
 	   	<action name="checkUserEmailAction" class="connectPeopleAction" method="checkUserEmail">
 		    <result type="json" name="success">
 			<param name="root">email</param>				
-		</result>		
+			</result>		
+	    </action>
+	    
+	    <action name="saveOpenionPoleCommentAction" class="opinionPollPostAction" method="saveopinionPollComment">
+	    	<result type="json" name="success">
+	    	<param name="root">status</param>
+	    	</result>	    
+	    </action>
+	    
+	    <action name="getQuestionAndPercentageOfVotesForChoices" class="homePageAction" method="getQuestionAndPercentageOfVotesForChoices">
+	    	<result type="json" name="success">
+	    	<param name="root">questionsOptionsVO</param>
+	    	</result>	    
+	    </action>
+	    
+	    <action name="showCommentsAction" class="opinionPollPostAction" method="getOpinionPollCommentsByQuestion">
+	    	<result>/jsp/opinionPolComments.jsp</result>    
+	    </action>
+	    
+	    <action name="saveAbuseCommentDetailsAction" class="opinionPollPostAction" method="saveAbuseCommentDetails">
+	    	<result type="json" name="success">
+	    	<param name="root">savedStatus</param>
+	    	</result>		    
 	    </action>
 	    
 	   	<action name="newUserChangePasswordAction" class="changePasswordAction" method="newUserChangePassword">
@@ -3422,8 +3444,9 @@
 	   	<action name="checkCurrentPasswordAction" class="changePasswordAction" method="AjaxHandler">
 		    <result type="json" name="success">
 			<param name="root">pwdVal</param>				
-		</result>	
+			</result>	
 		</action>
+		
 		<action name="getStatesForHomepage" class="homePageAction" method="ajaxCallHandler">
 		    <result type="json" name="success">
 			<param name="root">states</param>				
