@@ -19,6 +19,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IFeedbackCommentDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackTaskDAO;
+import com.itgrids.partyanalyst.dao.IOpinionPollCommentsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -36,13 +38,20 @@ import com.itgrids.partyanalyst.model.FeedBack;
 import com.itgrids.partyanalyst.model.FeedBackComment;
 import com.itgrids.partyanalyst.model.FeedBackTask;
 import com.itgrids.partyanalyst.model.OpinionPoll;
+import com.itgrids.partyanalyst.model.OpinionPollComments;
 import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
 import com.itgrids.partyanalyst.model.OpinionPollResult;
 import com.itgrids.partyanalyst.model.QuestionsRepository;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.AbusedComments;
+import com.itgrids.partyanalyst.model.Comment;
+import com.itgrids.partyanalyst.dto.CommentVO;
+import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
+import com.itgrids.partyanalyst.dao.ICommentDAO;
 
 public class OpinionPollService implements IOpinionPollService {
 
@@ -59,6 +68,13 @@ public class OpinionPollService implements IOpinionPollService {
 	private IFeedbackDAO feedbackDAO;
 	private IProblemManagementService problemManagementService;
 	private IUserDAO userDAO;
+	private ICommentDAO commentDAO;
+	private IOpinionPollCommentsDAO opinionPollCommentsDAO;
+    private IAbusedCommentsDAO abusedCommentsDAO;
+	 
+	
+	private DateUtilService dateUtilService = new DateUtilService();
+	
 	GregorianCalendar calendar = new GregorianCalendar();
 	SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -145,6 +161,32 @@ public class OpinionPollService implements IOpinionPollService {
 	public void setFeedbackDAO(IFeedbackDAO feedbackDAO) {
 		this.feedbackDAO = feedbackDAO;
 	}
+	
+	public ICommentDAO getCommentDAO() {
+		return commentDAO;
+	}
+
+	public void setCommentDAO(ICommentDAO commentDAO) {
+		this.commentDAO = commentDAO;
+	}
+	
+	public IOpinionPollCommentsDAO getOpinionPollCommentsDAO() {
+		return opinionPollCommentsDAO;
+	}
+
+	public void setOpinionPollCommentsDAO(
+			IOpinionPollCommentsDAO opinionPollCommentsDAO) {
+		this.opinionPollCommentsDAO = opinionPollCommentsDAO;
+	}
+	
+	public IAbusedCommentsDAO getAbusedCommentsDAO() {
+		return abusedCommentsDAO;
+	}
+
+	public void setAbusedCommentsDAO(IAbusedCommentsDAO abusedCommentsDAO) {
+		this.abusedCommentsDAO = abusedCommentsDAO;
+	}
+
 
 	
 		
@@ -156,6 +198,8 @@ public class OpinionPollService implements IOpinionPollService {
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
+	
+	
 
 	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId){
 		
@@ -247,6 +291,9 @@ public class OpinionPollService implements IOpinionPollService {
 				optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				opinionPollQuestionAndPercentages.add(optionVO);			
 				question.setDifferenceBetweenCurrentDateAndPolledDate(new Long(parms[3].toString()));
+				
+				if(new Long(parms[3].toString()) >0)
+					question.setPollExpire(true);
 			}		
 			
 			question.setQuestionId(opinionPollQuestionId);
@@ -539,9 +586,217 @@ public class OpinionPollService implements IOpinionPollService {
 	    		return 0;
 	    	}
 	    }
+	    
+	    
+	    /**
+	     * This method will save the comments posted at opinion pole
+	     * @param pollId
+	     * @param userId
+	     * @param commentDscr
+	     * @param firstName
+	     * @param lastName
+	     */
+	    
+	     
+	    public void saveOpinionPollComment(final Long pollId,final RegistrationVO  regVO,final String commentDscr,final String firstName,final String lastName){    	
+	    	
+	    	log.debug("Entered into the saveOpinionPollComment service method");
+	    	
+	    	try{
+	    		
+	    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+	    			public void doInTransactionWithoutResult(TransactionStatus status) {	
+	    		
+		    	Comment comment = new Comment();
+		    	
+		    	comment.setComment(commentDscr);
+		    	comment.setIsAbused("false");
+		    	comment.setInsertedTime(dateUtilService.getCurrentDateAndTime());		        
+		    	
+		    	comment = commentDAO.save(comment);
+		    	
+		    	
+		    	OpinionPollComments opinionPollComments = new OpinionPollComments();
+		    	
+		    	
+		    	opinionPollComments.setFirstName(firstName);
+		    	opinionPollComments.setLastName(lastName);		    	
+		    	opinionPollComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		    	opinionPollComments.setIsApproved(IConstants.TRUE);
+		    	opinionPollComments.setIsDelete(IConstants.FALSE);
+		    	opinionPollComments.setOpinionPollId(pollId);
+		    	opinionPollComments.setCommentId(comment.getCommentId());
+		    	
+		    	if(regVO != null)
+		    	opinionPollComments.setUserId(regVO.getRegistrationID());
+		    	else
+		    		opinionPollComments.setUserId(null);
+		    	
+		    	
+		    	opinionPollCommentsDAO.save(opinionPollComments);
+		    	
+	    			}
+	    		});
+			    	
+	    	}catch(Exception e){
+	    		
+	    		log.error("Exception raised in  saveOpinionPollComment service method");	    		
+	    		e.printStackTrace();
+	    		
+	    	}
+	   }
+	    
+	    
+public List<QuestionsOptionsVO> getAllQuestionAndPercentageOfVotesForChoices(){
 	
+	log.debug("Entered into the getAllQuestionAndPercentageOfVotesForChoices service method");
+	Long totalPolledVotes=0l;		
 	
+	List<QuestionsOptionsVO> qstnOptnLst = new ArrayList<QuestionsOptionsVO>();
 	
-	
-	
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		
+		List polIdLst = opinionPollResultDAO.getOpinionPollIds();
+		
+		Iterator itr = polIdLst.iterator();
+		
+		while(itr.hasNext()){
+			
+			totalPolledVotes = 0L;
+			QuestionsOptionsVO question = new QuestionsOptionsVO();
+		
+		Long opinionPollQuestionId=(Long)itr.next();
+		List result = opinionPollResultDAO.getOpinionPollAnswersForAQuestionByQuestionId(opinionPollQuestionId);		
+		List<OptionVO> opinionPollQuestionAndPercentages = new ArrayList<OptionVO>(0);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			totalPolledVotes+=new Long(parms[0].toString());
+			question.setQuestion(parms[2].toString());			
+		}		
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			OptionVO optionVO = new OptionVO();
+			optionVO.setOption(parms[1].toString());	
+			optionVO.setVotesObtained(new Long(parms[0].toString()));
+			optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			opinionPollQuestionAndPercentages.add(optionVO);			
+			question.setDifferenceBetweenCurrentDateAndPolledDate(new Long(parms[3].toString()));
+		}		
+		
+		question.setQuestionId(opinionPollQuestionId);
+		question.setOptions(opinionPollQuestionAndPercentages);		
+		question.setTotalVotesObtainedForPoll(totalPolledVotes);
+		 List<Object> list = opinionPollQuestionsDAO.getTitleForQuestion(opinionPollQuestionId);
+		if(list != null)
+		{
+		 for(Object params : list)
+		 {
+			 question.setTitle(params.toString());
+		 }
+		}
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+		 
+		 qstnOptnLst.add(question);
+		 question.setResultStatus(resultStatus);
+		 
+		
+		 
+		}
+		return qstnOptnLst; 
+	}catch(Exception e){
+		resultStatus.setExceptionEncountered(e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		log.error("Exception raised  in the getAllQuestionAndPercentageOfVotesForChoices service method");
+		//question.setResultStatus(resultStatus);
+		return qstnOptnLst;
 	}
+ }
+
+
+/**
+ * This method is used to get all the comments for selected poll
+ * @param pollId
+ * @return cmntDtlsLst
+ */
+public List<CommentVO> getCommentsnOpinionPollByQuestionId(Long pollId){
+	
+	log.debug("Entered into getCommentsnOpinionPollByQuestionId service method");
+	
+	List<Object[]> commentsList = new ArrayList<Object[]>(0);
+	List<CommentVO> cmntDtlsLst = new ArrayList<CommentVO>(0);
+		
+	try{
+	
+	//commentsist = opinionPollCommentsDAO.getCommentDetailsByQuestionId(pollId);
+		
+		commentsList = opinionPollCommentsDAO.getCommentDetailsByQuestionId(pollId);
+		
+		Iterator itr = commentsList.iterator();
+		
+			while(itr.hasNext()){
+				
+				Object[] obj = (Object[])itr.next();
+				
+			     CommentVO  commentVO= new CommentVO();
+			     
+			     commentVO.setCommentId((Long)obj[0]);
+			     commentVO.setComment(obj[1].toString());
+			     
+			     if(obj[2] != null)
+			    	 commentVO.setFirstName(obj[2].toString());
+			     
+			     if(obj[3] != null)
+			        commentVO.setLastName(obj[3].toString());
+			     
+			     if(obj[4] != null)
+			       commentVO.setDate(obj[4].toString());			     
+			     
+			     cmntDtlsLst.add(commentVO);
+				
+	     }
+	  }catch(Exception e){
+		  log.error("Exception raised in  getCommentsnOpinionPollByQuestionId service method");
+		e.printStackTrace();		
+	  }
+	
+	return cmntDtlsLst;	
+}
+
+/**
+ * This method is used to save abused comment details
+ * @param cmntId 
+ * @param regVO
+ */
+public String saveAbuseCommentDetails(Long cmntId,RegistrationVO regVO){
+	
+	log.debug("Entered into saveAbuseCommentDetails service method");
+	
+	try{
+	    Long cnt = abusedCommentsDAO.checkForAlreadyAbused(cmntId);
+	
+	    if(cnt == 0){
+		
+			AbusedComments abusedComments = new AbusedComments();
+			
+			abusedComments.setCommentId(cmntId);
+			abusedComments.setStatus(IConstants.FALSE);
+			abusedComments.setTime(dateUtilService.getCurrentDateAndTime());
+			abusedComments.setIsDelete(IConstants.FALSE);
+			
+			if(regVO != null)
+			abusedComments.setUserId(regVO.getRegistrationID());
+			
+			abusedCommentsDAO.save(abusedComments);
+	   }
+	    
+	  }catch(Exception e){
+		  
+		log.error("Exception raised in saveAbuseCommentDetails service method");		
+		e.printStackTrace();
+		
+	  }
+	return IConstants.SUCCESS;
+	
+}
+}
