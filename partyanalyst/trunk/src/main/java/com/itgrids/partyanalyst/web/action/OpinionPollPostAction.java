@@ -54,7 +54,10 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 	private String options;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private int resultStatus;
+	private String savedStatus;
 	
+	
+
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -222,6 +225,16 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 	public void setResultStatus(int resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+	
+	public String getSavedStatus() {
+		return savedStatus;
+	}
+
+
+	public void setSavedStatus(String savedStatus) {
+		this.savedStatus = savedStatus;
+	}
+
 
 
 	public String execute()throws Exception 
@@ -287,6 +300,54 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 		e.printStackTrace();
 		return ERROR;
 	}
+	}
+	
+	public String saveopinionPollComment(){
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		String comment = jObj.getString("comment");
+		String firstNm = jObj.getString("firstName");
+		String lastNm = jObj.getString("lastName");
+		Long pollId = jObj.getLong("pollId");
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		
+		opinionPollService.saveOpinionPollComment(pollId,regVO,comment,firstNm,lastNm);
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String saveAbuseCommentDetails(){
+		
+		String param = null;
+		param = getTask();
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long cmntId = jObj.getLong("commentId");
+		
+		savedStatus = opinionPollService.saveAbuseCommentDetails(cmntId,regVO);
+		
+		return Action.SUCCESS;
+		
 	}
 	
 }
