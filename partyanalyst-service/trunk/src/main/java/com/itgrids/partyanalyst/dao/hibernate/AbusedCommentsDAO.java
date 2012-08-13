@@ -74,5 +74,15 @@ public class AbusedCommentsDAO extends GenericDaoHibernate<AbusedComments,Long> 
 				
 		}
 	
+public Long checkForAlreadyAbused(Long cmntId){		
+		
+		Query query = getSession().createQuery("select count(model.abusedCommentsId) from AbusedComments model where model.comment.commentId = ?");
+		
+		query.setParameter(0, cmntId);
+		
+		return (Long)query.uniqueResult();	
+				
+	}
 	
+
 }
