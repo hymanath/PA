@@ -38,6 +38,17 @@
 <link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <!-- Combo-handled YUI JS files: --> 
 
+ <!--BOOT STRAP START-->	
+	<link href="css/Assets/css/bootstrap.css" rel="stylesheet">
+	<link href="css/Assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="Assets/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="Assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="Assets/ico/apple-touch-icon-57-precomposed.png">
+
+
+<!--BOOT STRAP END-->
+
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>
 <script src="js/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript">	</script>
@@ -232,6 +243,23 @@ margin-bottom: 4px;
 margin-left: 18px;
 margin-top: 4px;
 }
+.form-horizontal label{  display:block; font:12px Arial;
+    margin-bottom:5px;padding-top:5px;cursor:hand;cursor:pointer;}
+.form-horizontal .radio{
+	font-size: 13px;
+    font-weight: normal;
+    margin-top:-1px;}
+	
+.opinionpoll .question{padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;}
+.opinionpoll .answer{border-bottom:1px dashed #ccc;padding:0px ;margin-bottom:5px;margin-left:19px;}
+.opinionpoll .votebtn{margin:0px auto;display:block;width:75px;}
+.resultdisplay a{display:inline-block;text-decoration:none;}
+.resultdisplay .previouslink{ float:left;}
+.resultdisplay .nextlink{ float:right;}
+
+.opinionpoll .answer .span2{margin-left:0px;}
+.opinionpoll .answer span{margin-left:10px;}
+
 </style>
 </head>
 
@@ -744,9 +772,11 @@ var pollStatus = [];
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
 		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Election Analysis And <br/>Management Tool</a>
 		                </div>
-						<div id="opinionPollDiv" style="width:350px;float:right;margin-top: 10px;margin-right: 40px;">
+
+
+						<div style="width:350px;float:right;margin-top: 10px;margin-right: 40px;">
 						<div id="pollsWidgetHeader" >
-										<table width="97%" border="0" cellspacing="0" cellpadding="0">
+										<!--<table width="97%" border="0" cellspacing="0" cellpadding="0">
 										
 										
 										  <tr>
@@ -760,10 +790,13 @@ var pollStatus = [];
 											</td>
 											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
 										  </tr>
-										</table>	
+										</table>-->	
 									 </div>
-									 	
-									<div id="pollsWidgetBody" style="height:auto;width:348px;background:#ffffff;">
+
+                                     <div style="height:15px;padding-bottom:5px;">
+									 <div id="alreadyVotedMsg"></div>
+                                     </div>
+									<div id="pollsWidgetBody" class="well" style="background:#FFFFFF;width:348px;">
 								
 									</div>
 				
@@ -1598,59 +1631,72 @@ function closewindow()
 
 function showVotesObtainedForOpinionPoll()
 {
-	var elmt = document.getElementById("pollsWidgetBody");
-	var str = '';
-	str+='<div id="chart"></div>';
-	str += '<table><tr><td>';
+    //If opinion poll end date expired
+	//if('${opinionPollVO.quesitons[0].question}' == null || '${opinionPollVO.quesitons[0].question}' == "" )
+		//$('#pollsWidgetBody').hide();
+
+    var elmt = document.getElementById("pollsWidgetBody");
+	var str='';	
+
+	
 	if(${opinionPollVO.avaliability != true})
 	{
-	str +='<div id="pollQuestionsDiv" style="color: #0C67AC;font-weight: bold;margin-top: 15px;font-family: Trebuchet MS,Arial,Helvetica,sans-serif;font-size: 12px;">  Q  ) ${opinionPollVO.quesitons[0].question}';
-	str +='</div>';
-	str +='</tr>';
+
+		str+='<div class="opinionpoll">';
+
+		str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:3px 0px 2px #888;margin-bottom:5px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion Poll</span></h3>';
+
+		str+='<div class="breadcrumb"><p class="question"><b>${opinionPollVO.quesitons[0].question}</b></p>';	
 	
-	<s:iterator status="stat" value="opinionPollVO.quesitons[0].options">
-	str +='<tr>';
-	
-	<s:if test="%{#stat.index == 0}">
-	
-	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true"/>&nbsp;&nbsp';
-	str +="<s:property value='option'/>"; 
-		str +='</td>';
-	</s:if>
+		str+='<div id="qstnDiv1" style="margin-top:3px;">';	
+
+		str+='<div class="control-group form-horizontal "><p class="answer">';
+		<s:iterator status="stat" value="opinionPollVO.quesitons[0].options">
+
+		<s:if test="%{#stat.index == 0}">         
+
+			str +='<label><input type="radio" class="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true">';
+	        str +="<s:property value='option'/></label>"; 
+		</s:if>
 		<s:else>
-	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>"/>&nbsp;&nbsp';
-	str+="<s:property value='option'/>";
-		str +='</td></tr>';
+			str +='<label><input type="radio" class="radio"  name="pollradio" value="<s:property value="optionId"/>">';
+	        str+="<s:property value='option'/></label>";
 		</s:else></s:iterator>
-	str += '</table>';
-
-	str += '<div onclick="savePollResult(${opinionPollVO.quesitons[0].questionId})" class="viewReportButtonSpan" style="top:15px;">';
-		str += '<span class="viewReportButtonLabel"  style="left:27px;top:8px;">Vote</span></div>';
-
-	
-	str += '</tr></table>';
-	str +='<br>';
-
-	//str += '<div id="viewPollResDiv">';
-	str += '<table style="margin-left: 89px; margin-top: -28px;"><tr>';
-	
-	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a></div>';
-	str += '</td>';
-	str += '<td><div style="width:94px;"><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a></div>';
-	str += '</td>';	
-	str += '</tr></table>';
-	//str += '</div>';
-	
-	elmt.innerHTML = str;
-
-	
 		
+		str+='</p><a href="javaScript:saveCurrentPollResult(${opinionPollVO.quesitons[0].questionId});" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
+		
+		str+='<p class="resultdisplay"><a  class="previouslink" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',${opinionPollVO.quesitons[0].questionId});}" title="Click Here To See This Poll Result">View Results</a>';
+
+		    
+		str+=' <a class="nextlink" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments" title="Click Here To See Comments On This Poll" >View Comments</a></p>';
+		str+=' </div></div>';
+
+		/*str+='<div>';
+		str+='<a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments" class="btn btn-primary" title="Post Your Comment On This Poll">Post Your Comment</a>';
+		str+='<a href="getAllPollsAction.action" class="btn btn-primary" style="float:right;" title="Click Here To View Rececnt Poll Details">View Recent Polls</a>';
+		str+='</div>';*/
+
+		
+		str+='</div>';
+str+='<div class="pager">';
+   
+        str+='<a style="float:left;" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments"  class="btn" title="Post Your Comment On This Poll">Post Your Comment</a>';
+ 
+  
+    str+='<a style="float:right;" class="btn" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details">View Recent Polls </a>';
+   
+    str+='</div>';
+	elmt.innerHTML = str;		
 	
 	}
-		else
+	else
 	{
+
+		
+			
+		 displayPollResult('${opinionPollVO.questionsOptionsVO.questionId}');
 	
-afterRefreshOpinionPOll();
+  //  afterRefreshOpinionPOll1('${opinionPollVO.questionsOptionsVO.questionId}');
 	
 	}
 	/*str += '<div id="viewPollResDiv">';
@@ -1662,16 +1708,21 @@ afterRefreshOpinionPOll();
 	str += '</tr></table>';
 	str += '</div>';
 	
-	elmt.innerHTML = str;*/
-	
-	
-	
+	elmt.innerHTML = str;*/	
 	
 }
 
+function displayPollResult(questionId){
+
+
+
+	callAjaxToGetQuestionsDetails("",questionId);
+	
+}
 function afterRefreshOpinionPOll()
 {
 
+	
 
 var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
@@ -1882,6 +1933,186 @@ function getStates()
 
 }
 
+
+
+
+
+
+//SAMBA
+
+function callAjaxToGetQuestionsDetails(voteStatus,questionId){
+	
+
+
+	var jsObj =
+			{				
+			   questionId:questionId,
+				task:"getPollDetails"
+
+			};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getQuestionAndPercentageOfVotesForChoices.action?"+rparam;						
+		callAjax(voteStatus,jsObj,url); 
+
+}
+
+function callAjax(voteStatus,jsObj,url)
+{
+	
+		var callback = {			
+	 	success : function( o ) {
+		try
+		{ 
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
+
+		    
+			if(jsObj.task == "getPollDetails"){				
+				buildResult(voteStatus,myResults);		   
+			}
+		    
+		}catch(e){}
+	  },
+			scope : this,
+			failure : function( o )
+			{}
+		  };
+
+		 YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildResult(voteStatus,result){
+
+
+	var elmt = document.getElementById("pollsWidgetBody");
+
+	var str='';
+  
+	str+='<div class="opinionpoll">';
+
+	str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:3px 0px 2px #888;margin-bottom:5px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion Poll</span></h3>';
+
+	str+='<div class="breadcrumb"><p class="question"><b>'+result.question+'</b></p>';	
+
+
+	//str+='<p class="breadcrumb well" style="margin-bottom:3px;"><b>'+result.question+'</b></p>'; 
+
+	str+='<div id="qstnDiv1" style="margin-top:3px;">';	
+
+
+	str+='<p style="margin-bottom:3px;" class="pull-right">Total Votes  Polled:<b>'+result.totalVotesObtainedForPoll+'</b></p>';
+
+	
+	str+='<ul style="margin-left:25px;">';
+	for(var i=0;i<result.options.length;i++){   
+		
+          str+='<li>';
+		str+='<h5>'+result.options[i].option+'</h5>';
+
+		str+='<div>';
+		str+='<div class="span2 pull-left">';
+
+			str+='<div class="progress" style="margin:0px;">';
+			  str+='<div id="option1" class="bar" style="width:'+result.options[i].percentage+'%"></div>';
+			str+='</div>';							
+			str+='</div>	';
+
+			str+='<span class="label label-info">'+result.options[i].percentage+'% </span>';
+	  str+= '</div>';
+	   str+='</li>';
+		
+	}
+	str+='</ul></div>';
+	
+	 if(voteStatus == "vote")
+
+        str+='<a class="btn btn-primary" href="javaScript:{showVotesObtainedForOpinionPoll()}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 104px;">Vote Now</a>';
+
+		str+='</div>';
+  
+		//str+='</div>';
+
+  
+		
+	    str+='<div class="pager" style="margin-top:25px;">';
+		str+='<a href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn" style="float:left;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
+
+		
+
+
+		str+='<a href="getAllPollsAction.action" class="btn" style="float:right;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
+		str+='</div>';
+	
+	
+
+	elmt.innerHTML=str;
+
+}
+
+function saveCurrentPollResult(questionId){
+
+	var elmts = document.getElementsByName("pollradio");
+	var checkedElmtId = '';
+	
+	for(var i=0; i<elmts.length;i++)
+	{
+		if(elmts[i].checked == true)
+			checkedElmtId = elmts[i].value;
+	}
+	var jsObj=
+	{
+			questionId:questionId,
+			selectedPollId:checkedElmtId,
+			task:"saveSelectedPoll"					
+	};
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveSelectedPoll.action?"+rparam;						
+	callAjaxToSaveSelectedPollDetails(rparam,jsObj,url,questionId);	
+}
+
+function callAjaxToSaveSelectedPollDetails(param,jsObj,url,questionId){
+
+	var myResults;
+		
+		var callback = {			
+		               success : function( o ) 
+					  {
+						try {			
+								if(o.responseText)
+								myResults = YAHOO.lang.JSON.parse(o.responseText);
+
+
+									if(myResults.availability == true){
+
+										var cssObj = {    
+										'font-weight' : 'bold',
+										'color' : 'green'
+								      }
+									   $('#alreadyVotedMsg').text("You are already voted.").css(cssObj).show().delay(2000).fadeOut(400);
+
+										
+
+									}							
+															
+								 
+							displayPollResult(questionId);
+													
+								
+						}
+						catch (e)
+							{   
+							  	alert("Invalid JSON result" + e);   
+							}	  
+			              },
+			               scope : this,
+			               failure : function( o ) {
+
+			            }
+			               };
+
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
 //buildPolls();
 
 </script>
