@@ -7798,7 +7798,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				abusedComments = new AbusedComments();
 				abusedComments.setCommentId(commentId);
 				abusedComments.setUserId(userId);
-				abusedComments.setStatus(IConstants.NEW);
+				abusedComments.setStatus(IConstants.FALSE);
 				abusedComments.setIsDelete(IConstants.FALSE);
 				abusedComments.setTime(dateUtilService.getCurrentDateAndTime());
 				abusedCommentsDAO.save(abusedComments);
