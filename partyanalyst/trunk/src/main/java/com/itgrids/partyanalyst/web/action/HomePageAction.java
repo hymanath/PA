@@ -75,7 +75,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private Long problemCount;
 	private IOpinionPollService opinionPollService;
 	private IAnanymousUserService ananymousUserService;
+	private QuestionsOptionsVO questionsOptionsVO;
 	
+	
+
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
@@ -313,6 +316,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
 		this.ananymousUserService = ananymousUserService;
 	}
+	
+	public QuestionsOptionsVO getQuestionsOptionsVO() {
+		return questionsOptionsVO;
+	}
+	public void setQuestionsOptionsVO(QuestionsOptionsVO questionsOptionsVO) {
+		this.questionsOptionsVO = questionsOptionsVO;
+	}
 
 	public String execute()
 	{	
@@ -370,6 +380,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 				Cookie[] cookieArray = request.getCookies();
 				
 				boolean availabiity = false;
+				
+				
 				if(cookieArray == null)
 				{
 					opinionPollVO = opinionPollService.getAllPollsForTheDay();
@@ -532,7 +544,22 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         }
         return dataset;
     }
-
-
+	
+	public String getQuestionAndPercentageOfVotesForChoices(){
+		
+		try{
+		
+		jObj = new JSONObject(getTask());
+		}catch(Exception e){
+			e.printStackTrace();			
+		}
+		
+		Long questionId = jObj.getLong("questionId");
+		
+		questionsOptionsVO = opinionPollService.getQuestionAndPercentageOfVotesForChoices(questionId);
+		
+		return Action.SUCCESS;
+		
+	}	
 	
 }

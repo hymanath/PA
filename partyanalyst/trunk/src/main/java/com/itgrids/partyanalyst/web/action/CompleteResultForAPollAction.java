@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.CommentVO;
+import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
@@ -37,7 +41,13 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 	
 	private QuestionsOptionsVO questionsOptionsVO;
 	private Long questionId;
+	
+	private OpinionPollVO opinionPollVO;
+	
+	private String comments;
+	private List<CommentVO> commentList;
 		
+	
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -94,6 +104,31 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 	public void setOpinionPollService(IOpinionPollService opinionPollService) {
 		this.opinionPollService = opinionPollService;
 	}
+	
+	public OpinionPollVO getOpinionPollVO() {
+		return opinionPollVO;
+	}
+	public void setOpinionPollVO(OpinionPollVO opinionPollVO) {
+		this.opinionPollVO = opinionPollVO;
+	}
+	
+
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	
+
+
+	public List<CommentVO> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<CommentVO> commentList) {
+		this.commentList = commentList;
+	}
+
 	public String execute () throws Exception 
 	{
 		String cPath = request.getContextPath();
@@ -109,6 +144,36 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 		
 		questionsOptionsVO.setImagePath(chartName);
 		ChartProducer.createBarChartForVotesPoll(questionsOptionsVO.getQuestion(), "", "", createDataset(questionsOptionsVO), chartPath,"completeResults");
+		
+		if(comments.equalsIgnoreCase("getComments"))
+			commentList = opinionPollService.getCommentsnOpinionPollByQuestionId(questionId);
+			
+		
+		Cookie[] cookieArray = request.getCookies();
+		
+		boolean availabiity = false;
+		
+		if(cookieArray == null){
+			opinionPollVO = opinionPollService.getAllPollsForTheDay();
+			opinionPollVO.setAvaliability(availabiity);		
+		}
+		else{			
+		     for(int i=0;i<cookieArray.length;i++){
+			   Cookie cookie = cookieArray[i];
+			    if(cookie.getName().equalsIgnoreCase("hasPolled"))
+				 availabiity = true;
+			
+		     }
+		
+			if(availabiity){			
+				opinionPollVO = opinionPollService.getDetailsOfTheLatestOpinionPoll();
+				opinionPollVO.setAvaliability(availabiity);
+			}		
+			else{
+				opinionPollVO = opinionPollService.getAllPollsForTheDay();
+				opinionPollVO.setAvaliability(availabiity);	
+			}
+		}
 		return SUCCESS;
 	}	
 	private CategoryDataset createDataset(QuestionsOptionsVO questionsAndChoicesPercentage) {       
@@ -118,4 +183,12 @@ public class CompleteResultForAPollAction extends ActionSupport implements
         }
         return dataset;
     }
+	
+	public String getAllQuestionAndPercentageOfVotesForChoices(){
+		
+		 List<QuestionsOptionsVO> list=opinionPollService.getAllQuestionAndPercentageOfVotesForChoices();
+		 
+		 return SUCCESS;
+		
+	}
 }

@@ -179,6 +179,19 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	public String saveSelectedPoll()
 	{
 		String cPath = request.getContextPath();
+		
+		Cookie[] cookieArray = request.getCookies();
+          boolean availabiity = false;
+		
+		if(cookieArray != null){
+					
+		     for(int i=0;i<cookieArray.length;i++){
+			   Cookie cookie = cookieArray[i];
+			    if(cookie.getName().equalsIgnoreCase("hasPolled"))
+				 availabiity = true;			
+		     }
+		
+		}
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
@@ -186,7 +199,19 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			if(jObj.getString("task").equals("saveSelectedPoll")){				
+			
+			
+			if(jObj.getString("task").equals("saveSelectedPoll")){
+				
+				
+				if(availabiity == true){
+					questionsAndChoicesPercentage = new QuestionsOptionsVO();
+					
+					questionsAndChoicesPercentage.setAvailability(true);
+					return SUCCESS;						
+					
+				}
+				
 				questionsAndChoicesPercentage = opinionPollService.saveSelectionResultOfThePoll(jObj.getLong("questionId"),jObj.getLong("selectedPollId"));
 				Cookie cookie = new Cookie("hasPolled","true");				
 				response.addCookie(cookie);

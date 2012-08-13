@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -25,8 +26,9 @@ public class GetAllPollsAction extends ActionSupport implements
 	private String task = null;
 	JSONObject jObj = null;
 	private ServletContext context;
+	List<QuestionsOptionsVO> qstnLst = new ArrayList<QuestionsOptionsVO>();
 	
-	
+
 	private IOpinionPollService opinionPollService;
 	
 	private List<QuestionsOptionsVO> allPolls;
@@ -78,9 +80,19 @@ public class GetAllPollsAction extends ActionSupport implements
 	public void setOpinionPollService(IOpinionPollService opinionPollService) {
 		this.opinionPollService = opinionPollService;
 	}
+	
+	
+	public List<QuestionsOptionsVO> getQstnLst() {
+		return qstnLst;
+	}
+	public void setQstnLst(List<QuestionsOptionsVO> qstnLst) {
+		this.qstnLst = qstnLst;
+	}
 	public String execute () throws Exception 
 	{
-		allPolls = opinionPollService.getAllPolls();
+		
+		qstnLst = opinionPollService.getAllQuestionAndPercentageOfVotesForChoices();
+		//allPolls = opinionPollService.getAllPolls();
 
 		return SUCCESS;
 	}	
