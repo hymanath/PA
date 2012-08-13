@@ -2,12 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserFeedbackVO;
-import com.itgrids.partyanalyst.model.FeedBack;
 
 
 public interface IOpinionPollService {
@@ -32,6 +33,15 @@ public interface IOpinionPollService {
 	
 	public List<UserFeedbackVO> getAllDetailsForToday();
 	
-	 public Integer getAllApprovedDetails(List<Long> commentId,String actionType);
-}
+	public Integer getAllApprovedDetails(List<Long> commentId,String actionType);
+	 
+	public void saveOpinionPollComment(Long pollId,RegistrationVO regVO,String commentDscr,String firstName,String lastName);
+	
+	public List<QuestionsOptionsVO> getAllQuestionAndPercentageOfVotesForChoices();
+	
+	public List<CommentVO> getCommentsnOpinionPollByQuestionId(Long pollId);
+	
+	public String saveAbuseCommentDetails(Long cmntId,RegistrationVO regVO);
+	
+	}
 
