@@ -1173,6 +1173,7 @@ function buildLocalBodiesSelectElmt(jsObj,results)
 
 function buildPolls()
 {
+	
 	var jsObj=
 	{
 			task:"getAllPolls"					
@@ -1391,23 +1392,30 @@ function homePageAjaxCall(param,jsObj,url){
 					  {
 						try {			
 								if(o.responseText)
-								myResults = YAHOO.lang.JSON.parse(o.responseText);
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+
 								if(jsObj.task == "getRecentElectionsInState")
 								{									
 									showResults(myResults);
 								} 
 								else if(jsObj.task == "getAllPolls")
-								{  
+								{			
+									
 								    
 									if(myResults.description==null){
-										showVotesObtainedForOptions(myResults.questionsOptionsVO);
+										
+										//showVotesObtainedForOptions(myResults.questionsOptionsVO);
+										if(myResults.questionsOptionsVO != null)
+										displayCurrentPollResult(myResults.questionsOptionsVO.questionId);
 
-									}else{
-										buildNewPoll(myResults);
+									}else{										
+										//buildNewPoll(myResults);
+										buildNewPoll1(myResults);
 									}
 								}
 								else if(jsObj.task == "saveSelectedPoll")
-								{									
+								{	
+									
 									showVotesObtainedForOptions(myResults);
 								} 
 								else if(jsObj.task == "getLocalBodiesForState")
@@ -1434,7 +1442,6 @@ function homePageAjaxCall(param,jsObj,url){
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-
 
 
 function buildElectionTrendzTabView()
@@ -2470,3 +2477,306 @@ function hideBusyImgWithId(elmtId)
 	if(spanElmt)
 		spanElmt.style.display = "none";
 }
+
+
+
+
+
+//Openion poll changes by samba start
+
+
+
+function buildNewPoll1(result){
+
+	result1=result;  
+
+	if(result.quesitons!=null){
+
+		var elmt = document.getElementById("pollsWidgetBody");
+		if(!elmt)
+			return;
+
+	}
+
+
+    var str='';
+
+
+     str+='<div class="opinionpoll">';
+
+		str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:3px 0px 2px #888;margin-bottom:5px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion Poll</span></h3>';
+
+		for(var i=0; i<1;i++){
+
+		questionId = result.quesitons[i].questionId;
+
+		str+='<div class="breadcrumb"><p class="question"><b>'+result.quesitons[i].question+'</b></p>';	
+	
+		str+='<div id="qstnDiv1" style="margin-top:3px;">';	
+
+		str+='<div class="control-group"><p>';
+		for(var j=0 ; j<result.quesitons[i].options.length; j++){ 
+
+			if(j==0){      
+
+				str +='<label><input type="radio"  name="pollradio" value="'+result.quesitons[i].options[j].optionId+'" checked="true">';
+				str +=result.quesitons[i].options[j].option+"</label>"; 
+
+				
+			}else{
+				str +='<label><input type="radio"   name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">';
+				str+=result.quesitons[i].options[j].option+"</label>";
+			}
+			str+='<br>';
+		}
+		}
+		str+='</p><a href="javaScript:saveCurrentPollResult(\''+questionId+'\');" style="margin:0px auto;display:block;width:75px;" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
+		
+		str+='<p class="resultdisplay"><a  style="float:left;" class="previouslink" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',\''+questionId+'\')}" title="Click Here To See This Poll Result">View Results</a>';
+
+		    
+		str+=' <a class="nextlink" style="float:right;" href="completeResultForAPollAction.action?questionId='+questionId+'&comments=getComments" title="Click Here To See Comments On This Poll" >View Comments</a></p>';
+		str+=' </div></div>';
+
+		
+		str+='</div>';
+   str+='<div class="pager">';
+   
+        str+='<a  style="float:left;margin-left:-11px;" href="completeResultForAPollAction.action?questionId='+questionId+'&comments=getComments"  class="btn" title="Post Your Comment On This Poll">Post Your Comment</a>';
+ 
+  
+    str+='<a   style="float:right;" class="btn" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details">View Recent Polls </a>';
+   
+    str+='</div>';
+	elmt.innerHTML = str;	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+    var str='';
+	str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:1px 0px 2px #888;margin-bottom:5px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion polls</span></h3>';
+
+	for(var i=0; i<1;i++){
+
+		questionId = result.quesitons[i].questionId;
+    str+='<div>';
+	str+='<p class="breadcrumb well" style="margin-bottom:0px;"><b>'+result.quesitons[i].question+'</b></p>';
+
+    str+='<div class="breadcrumb">';
+
+		for(var j=0 ; j<result.quesitons[i].options.length; j++){ 
+			
+			if(j==0){
+
+				str +='<label style="margin-left:4px;margin-top:3px;"><input type="radio" name="pollradio" style="height:auto;" value="'+result.quesitons[i].options[j].optionId+'" checked="true"></input>';
+	           		
+			}else{
+
+				str +='<label style="margin-left:4px;margin-top:3px;"><input type="radio" name="pollradio" style="height:auto;" value="'+result.quesitons[i].options[j].optionId+'"></input>';
+
+
+			}
+			 str +=result.quesitons[i].options[j].option+'</label><br><br> '; 
+		}	
+  	
+		}
+
+		str+='  <i><a class="btn btn-mini" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',\''+questionId+'\')}" title="Click Here To See This Poll Result">View Results</a></i>';
+
+		str+='  <a style="margin-left:27px;padding:5px;" href="javaScript:saveCurrentPollResult(\''+questionId+'\');" class="btn btn-primary" title="Click Here To Vote">Vote</a>';
+
+		str+=' <i> <a  class="btn btn-mini" style="margin-left:9px;" href="completeResultForAPollAction.action?questionId='+questionId+'&comments=getComments" title="Click Here To See Comments On This Poll">View Comments</a></i>';
+		str+='</div>';
+
+		str+='<div>';
+   
+        str+='<a style="float:left;" href="completeResultForAPollAction.action?questionId='+questionId+'&comments=getComments"  title="Post Your Comment On This Poll">Post Your Comment</a>'; 
+  
+        str+='<a style="float:right;" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details">View Recent Polls </a>';
+   
+        str+='</div>';
+		str+='</div>';
+
+	elmt.innerHTML=str;
+*/
+
+}
+
+
+function saveCurrentPollResult(questionId){
+
+	var elmts = document.getElementsByName("pollradio");
+	var checkedElmtId = '';
+	
+	for(var i=0; i<elmts.length;i++)
+	{
+		if(elmts[i].checked == true)
+			checkedElmtId = elmts[i].value;
+	}
+	var jsObj=
+	{
+			questionId:questionId,
+			selectedPollId:checkedElmtId,
+			task:"saveSelectedPoll"					
+	};
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveSelectedPoll.action?"+rparam;						
+	callAjaxToSaveSelectedPollDetails(rparam,jsObj,url,questionId);	
+}
+
+
+function callAjaxToSaveSelectedPollDetails(param,jsObj,url,questionId){
+
+	var myResults;
+		
+		var callback = {			
+		               success : function( o ) 
+					  {
+						try {			
+								if(o.responseText)
+								myResults = YAHOO.lang.JSON.parse(o.responseText);
+								 
+								 if(myResults.availability == true){
+
+									 var cssObj = {    
+										'font-weight' : 'bold',
+										'color' : 'green'
+								      }
+									   $('#alreadyVotedDivId').text("You are already voted.").css(cssObj).show().delay(2000).fadeOut(400);
+										
+								 }
+							     displayCurrentPollResult(questionId);						
+													
+								
+						}
+						catch (e)
+							{   
+							  	alert("Invalid JSON result" + e);   
+							}	  
+			              },
+			               scope : this,
+			               failure : function( o ) {
+
+			            }
+			               };
+
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function displayCurrentPollResult(questionId){
+
+	
+
+	callAjaxToGetQuestionsDetails("",questionId);
+}
+
+function callAjaxToGetQuestionsDetails(voteStatus,questionId){
+
+		
+
+	var jsObj =
+			{				
+			   questionId:questionId,
+				task:"getPollDetails"
+
+			};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getQuestionAndPercentageOfVotesForChoices.action?"+rparam;						
+		callAjaxToGetPollDetails(voteStatus,jsObj,url); 
+
+}
+
+function callAjaxToGetPollDetails(voteStatus,jsObj,url){
+
+
+	var callback = {			
+	 	success : function( o ) {
+		try
+		{ 
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
+
+			
+			if(jsObj.task == "getPollDetails"){					
+				
+				buildResultForPoll(voteStatus,myResults);		   
+			}
+		    
+		}catch(e){}
+	  },
+			scope : this,
+			failure : function( o )
+			{}
+		  };
+
+		 YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildResultForPoll(voteStatus,result){
+
+
+	var elmt = document.getElementById("pollsWidgetBody");
+
+	var str='';
+  
+	str+='<div class="opinionpoll">';
+	str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:1px 0px 2px #888;margin-bottom:5px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion polls</span></h3>';
+
+	str+='<div class="breadcrumb"><p style="padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;"><b>'+result.question+'</b></p>';
+
+	str+='<p class="pull-right">Total Votes  Polled:<b>'+result.totalVotesObtainedForPoll+'</b></p>';
+
+	str+='<ul style="padding:0px ;margin-bottom:5px;">';
+	for(var i=0;i<result.options.length;i++){ 
+		
+	 str+='<li>';
+	   str+='<h5>'+result.options[i].option+'</h5>';
+
+		str+='<div>';
+		str+='<div class="span2 pull-left" style="margin-left:0px;">';
+
+			str+='<div class="progress" style="margin:0px;">';
+			  str+='<div id="option1" class="bar" style="width:'+result.options[i].percentage+'%"></div>';
+			str+='</div>';							
+			str+='</div>	';
+
+			str+='<span class="label  label-info" style="margin-left:6px;">'+result.options[i].percentage+'% </span>';
+	  str+= '</div>';
+	   str+='</li>';
+	}  
+  str+='</ul>';	
+	 if(voteStatus == "vote")
+
+        str+='<a href="javaScript:{buildNewPoll1(result1)}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 88px;">Vote Now</a>';
+  	    str+='</div>';
+		
+	    str+='<div class="pager">';
+		str+='<a class="btn" style="margin-left:-11px;" href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn" style="float:left;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
+
+		str+='<a class="btn" href="getAllPollsAction.action" class="btn" style="float:right;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
+		
+
+		str+='</div>';
+
+	  elmt.innerHTML=str;
+
+
+}
+//Openion poll changes by samba end
+
