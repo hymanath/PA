@@ -15,4 +15,10 @@ public interface IOpinionPollResultDAO extends GenericDao<OpinionPollResult, Lon
 	
 	public List getOpinionPollAnswersForAQuestionByQuestionId(Long opinionPollQuestionId);
 	
+	public List getOpinionPollAnswersForAQuestions();
+	
+	public List getOpinionPollIds();
+
+
+	
 }
