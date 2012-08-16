@@ -86,8 +86,10 @@ var userType = '${sessionScope.UserType}';
 var accessType = '${sessionScope.USER.accessType}';
 var accessValue = '${problemLocation}';
 var scope = '${scope}';
+var windowTask = '${sessionScope.windowTask}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
+
  function clearAllSubsInDistrict(){
       clearOptionsListForSelectElmtId("mandalField_s");
 	  clearOptionsListForSelectElmtId("hamletField_s");
@@ -169,12 +171,24 @@ function incrementHidden()
 }
 function executeOnload()
 {
+
 	var effectedRangeEl = document.getElementById("scopeLevel");
 	var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
 	
 	if(selectedeffectedRange != '0')
-		populateLocations(selectedeffectedRange, 'onLoad');	
-	
+		populateLocations(selectedeffectedRange, 'onLoad');
+
+	if('${problemBeanVO.visibilityType}' == 'Public')
+	{ 
+		document.getElementById("privateProblem").checked = true;	
+		document.getElementById("publicProblem").checked = false;
+	}
+	 
+	else
+	{  
+	     document.getElementById("privateProblem").checked = false;	
+		document.getElementById("publicProblem").checked = true;
+	}
 }
 
 function limitText(limitField, limitCount, limitNum)
@@ -225,6 +239,15 @@ else
     problemDetailDivEle.style.display = 'none';
 
 }
+
+
+
+
+
+
+
+
+
 function getComplainedPersonDetails(name)
 {	
 	var personDetailsDivEle = document.getElementById("personDetailsDiv");
@@ -269,6 +292,52 @@ function getComplainedPersonDetails(name)
 		cadreDivEl.style.display = 'none';
 	}
 }
+
+
+
+function executeOnUpdate()
+{
+	
+	var problemSourceScopeId = '${problemBeanVO.problemSourceScopeId}';
+	var	problemsource = '${problemBeanVO.probSource}';
+	var selectIndex = document.getElementById('userTypeSelectBox').value ;
+	var personDetailsDivEle = document.getElementById('personDetailsDiv');
+	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
+	
+	cadreDetailsDivEle.style.display='none';
+	if(selectIndex == 'User')
+	{
+		personDetailsDivEle.style.display = 'none';
+	}
+
+	if(selectIndex =='External Person' || selectIndex=='Call Center')
+	{			
+		personDetailsDivEle.style.display = 'block';
+	}
+
+	if(selectIndex == 'Cadre')
+	{
+		var cadreEle = document.getElementById("cadreInputId");
+		var cadreDivEle = document.getElementById("cadreDiv");
+
+		var cadreDivVar = '';
+		
+		cadreDivVar += '<table align="center">';
+		cadreDivVar += '<tr><td></td><td>';
+		cadreDivVar += '<input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>';
+		cadreDivVar += '</tr></table>';
+		cadreDivEle.innerHTML = cadreDivVar;
+		cadreDivEle.style.display = 'block';
+	}
+	else
+	{
+		var cadreDivEl = document.getElementById("cadreDiv");
+		cadreDivEl.style.display = 'none';
+	}
+
+}
+
+
 
 function getCadreDetails(type)
 {	
@@ -472,13 +541,12 @@ function clearSuccessMsg(){
 								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
 								<TD>
 									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">
-									<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
-								</TD>
+									<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>	</TD>
 							</TR>
 						</TABLE>		
 					</td>
 				</tr>
-				
+				<c:if test="${windowTask != 'update_existing'}">
 				<tr>
 					<td ><%=uploadMater%></td>		 
                     <td style="padding-left:15px;"><a href="javascript:{}"  onclick="showOrHideProblemFilesDiv()"><font color="green"><b>Click Here</b></font></a></td>
@@ -528,7 +596,7 @@ function clearSuccessMsg(){
 			       
 					</table>
 					</s:else>
-					</table>
+					</table></c:if>
 					<table>
 					<tr><td>
 			<div id="dynamicDiv" ></div></td></tr>
@@ -542,6 +610,7 @@ function clearSuccessMsg(){
 					<td colspan="2"><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
 					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+					
 
 					</td>
 				</tr>													
@@ -600,12 +669,21 @@ function clearSuccessMsg(){
 		</div>
 		
 	</div>
-</div>		
+	
+</div>
+<input type="hidden" id="windowTaskId" name="windowTask" value="update_existing"/>
+<input type="hidden" id="problemId" name="problemId" value="${problemId}"/>
 </s:form>
 
 <script type="text/javascript">
 getCurrentDate();
 hideProblemSourceRow();
+	
+<c:if test="${windowTask == 'update_existing'}">
+	executeOnUpdate();
+
+	</c:if>
+
 </script>
 </body>
 </html>
