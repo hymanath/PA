@@ -790,6 +790,13 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	@SuppressWarnings("unchecked")
 	public List<UserProblem> getProblemDeatilsByProblemId(Long problemId)
     {
-    	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? ",problemId);
+    	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.problem.isApproved ='true' and model.problem.isDelete ='false'",problemId);
     }
+	
+	public List<UserProblem> getUserProblemId(Long userId,Long problemId)
+	{
+		 Object [] params = {problemId,userId};
+		 
+		return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.user.userId =? and model.problem.isDelete ='false'",params);
+	}
 }
