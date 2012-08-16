@@ -1625,7 +1625,7 @@ function displayDateText(type, args, obj) {
 	<c:if test="${completeProblemDetailsVO.userStatus == 'PARTY_ANALYST_USER' || completeProblemDetailsVO.userStatus != 'BOTH'}">
 
 <div class="the-icons" style="position:absolute;top:-22px;right:5px;">
-<a onclick="getProblemDetails()" class="btn btn-mini"><i class="icon-tag"></i> Edit</a>
+<a onclick=" openProblemEditForm('${completeProblemDetailsVO.problemId}')" class="btn btn-mini"><i class="icon-tag"></i> Edit</a>
 <a onclick="deleteProblemDetails()" class="btn btn-mini"><i class="icon-remove"></i>Remove</a>
 </div>
 
@@ -2158,6 +2158,14 @@ var problemId = '${completeProblemDetailsVO.problemId}';
 	 callAjax(jsObj,url);
 	
   }
+
+  function openProblemEditForm(id)
+{
+	
+	var urlStr = "addNewProblemAction.action?problemId="+id+"&windowTask=update_existing";
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=550,width=500,left=200,top=200");	
+	updateBrowser.focus();	
+}
 
 
 function rateWiseCountOfAProblem()
