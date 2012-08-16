@@ -68,7 +68,16 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private Long scope;
 	private Long pConstituencyId;
 	private RegistrationVO user = null;
+	private String windowTask = null;
 	
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
 	public void setUser(RegistrationVO user) {
 		this.user = user;
 	}
@@ -553,6 +562,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS_AP, wardsOrHamletsList);
 		session.setAttribute(ISessionConstants.BOOTHS_AP,new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
+		session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
         }catch(Exception ex){
 			ex.printStackTrace();
 			log.error("Exception Raised :" + ex);
@@ -590,10 +600,13 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	
 	public void prepare() throws Exception {
 			 
-		String problemHistoryId =request.getParameter("problemHistoryId");
-		if(problemHistoryId !=null){
+		String problemId = request.getParameter("problemId");
+		windowTask = request.getParameter("windowTask");
+		if(problemId !=null)
+		{
 		 problemBeanVO = new ProblemBeanVO();
-			problemBeanVO = problemManagementService.getProblemCompleteInfoForAUserBasedOnHistoryId(new Long(problemHistoryId));
+			//problemBeanVO = problemManagementService.getProblemCompleteInfoForAUserBasedOnHistoryId(new Long(problemHistoryId));
+		 problemBeanVO = problemManagementService.getProblemCompleteInfoForAUserBasedOnProblemId(new Long(problemId));
 		}
 		else {
 			problemBeanVO = new ProblemBeanVO();
@@ -618,5 +631,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		// TODO Auto-generated method stub
 			return problemBeanVO;
 	}
+	
+	
 
 }
