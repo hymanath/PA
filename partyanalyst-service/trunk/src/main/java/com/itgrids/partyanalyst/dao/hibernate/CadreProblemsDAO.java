@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreProblemsDAO;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -90,6 +91,20 @@ public class CadreProblemsDAO extends GenericDaoHibernate<CadreProblems,Long> im
 		
 	public List<Object[]> getProblemPostedCadreName(Long problemId){
 		return getHibernateTemplate().find("select model.cadre.firstName,model.cadre.lastName from CadreProblems model where model.problem.problemId = ?",problemId);		 
+	}
+	@SuppressWarnings("unchecked")
+	public List<CadreProblems> getCadreProblemDetailsByProblemId(Long problemId)
+	{
+		return getHibernateTemplate().find("from CadreProblems model where model.problem.problemId = ?",problemId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Integer  deleteCadreProblem(Long problemId)
+	{
+		Query queryObj = getSession().createQuery("delete from CadreProblems model where model.problem.problemId = :problemId");
+		queryObj.setParameter("problemId", problemId);
+		
+		return queryObj.executeUpdate();
 	}
 
 }
