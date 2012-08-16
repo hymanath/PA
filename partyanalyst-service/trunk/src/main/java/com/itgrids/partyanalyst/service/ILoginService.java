@@ -23,4 +23,6 @@ public interface ILoginService {
 	//public String changePasswordOfANewUser(String crntpassword,String newpassword,String userName);
 	
 	public String checkUserCurrentPassword(String crntpassword,String userName);
+	
+	public RegistrationVO getUserBasicDetails(Long userId);
 }
