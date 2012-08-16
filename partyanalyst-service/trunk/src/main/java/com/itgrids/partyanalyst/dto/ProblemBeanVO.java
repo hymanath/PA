@@ -108,9 +108,34 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long visibility;
 	private Long candidateMsgCount =0l;
 	private Long partyMsgCount =0l;
+	private Long problemScopeId = 0l;
+	private  String visibilityType;
+	private String windowTask;
 	
-	
-	
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
+	public String getVisibilityType() {
+		return visibilityType;
+	}
+
+	public void setVisibilityType(String visibilityType) {
+		this.visibilityType = visibilityType;
+	}
+
+	public Long getProblemScopeId() {
+		return problemScopeId;
+	}
+
+	public void setProblemScopeId(Long problemScopeId) {
+		this.problemScopeId = problemScopeId;
+	}
+
 	public Long getCandidateMsgCount() {
 		return candidateMsgCount;
 	}
