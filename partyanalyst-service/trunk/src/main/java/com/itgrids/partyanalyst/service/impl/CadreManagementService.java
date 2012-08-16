@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
 import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
+import com.itgrids.partyanalyst.dao.ICadreOnlineRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreRoleDAO;
@@ -54,9 +55,11 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
+import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -73,6 +76,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
 import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
 import com.itgrids.partyanalyst.model.CadreLevel;
+import com.itgrids.partyanalyst.model.CadreOnlineRegistration;
 import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
 import com.itgrids.partyanalyst.model.CadreRole;
 import com.itgrids.partyanalyst.model.CadreRoleRelation;
@@ -148,6 +152,17 @@ public class CadreManagementService {
 	private IProblemActivityDAO problemActivityDAO;
 	private IUserDAO userDAO;
 	private IBloodGroupDAO bloodGroupDAO;
+	
+	public ICadreOnlineRegistrationDAO getCadreOnlineRegistrationDAO() {
+		return cadreOnlineRegistrationDAO;
+	}
+
+	public void setCadreOnlineRegistrationDAO(
+			ICadreOnlineRegistrationDAO cadreOnlineRegistrationDAO) {
+		this.cadreOnlineRegistrationDAO = cadreOnlineRegistrationDAO;
+	}
+
+	private ICadreOnlineRegistrationDAO cadreOnlineRegistrationDAO;
 	
 	public IBloodGroupDAO getBloodGroupDAO() {
 		return bloodGroupDAO;
@@ -485,6 +500,7 @@ public class CadreManagementService {
 					cadre = cadreDAO.get(new Long(cadreInfo.getCadreId()));
 				} else{
 					cadre = new Cadre();
+					cadre.setCadreOnlineRegistrationId(cadreInfo.getOnlineRegistrationId());
 				}							
 				cadre.setFirstName(cadreInfo.getFirstName());
 				cadre.setMiddleName(cadreInfo.getMiddleName());
@@ -495,6 +511,7 @@ public class CadreManagementService {
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
 				cadre.setBloodGroupId(cadreInfo.getBloodGroup() != 0 ? cadreInfo.getBloodGroup() : null);
 				
+							
 				// setting address
 				currentAddress.setHouseNo(cadreInfo.getHouseNo());
 				currentAddress.setStreet(cadreInfo.getStreet());
@@ -4682,5 +4699,28 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			return null;
 		}
 	}
+	
+	public AnnouncementVO getCadreOnlineRegistrationDetails(Long cadreOnlineRegistrationId)
+	{
+		log.debug("Entered into getCadreOnlineRegistrationDetails() Method");
+		try
+		{
+			AnnouncementVO announcementVO = null;
+			CadreOnlineRegistration cadreOnlineRegistration = cadreOnlineRegistrationDAO.get(cadreOnlineRegistrationId);
+			if(cadreOnlineRegistration != null)
+			{
+				announcementVO = new AnnouncementVO();
+				announcementVO.setUserId(cadreOnlineRegistration.getUser().getUserId());
+				announcementVO.setTitle(cadreOnlineRegistration.getName());
+				announcementVO.setMessage(cadreOnlineRegistration.getDescription());
+			}
+		
+			return announcementVO;
+		}catch (Exception e) {
+			log.error("Exception occured in getCadreOnlineRegistrationDetails() - "+e);
+			return null;
+		}
+		
+	}	
 
 }
