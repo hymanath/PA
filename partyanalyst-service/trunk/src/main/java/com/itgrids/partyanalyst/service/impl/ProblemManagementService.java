@@ -7912,24 +7912,33 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 								&& params.getProblem()
 										.getProblemCompleteLocation()
 										.getState() != null)
-
+						{
 							problemBeanVO.setState(params.getProblem()
 									.getProblemCompleteLocation().getState()
 									.getStateName());
+							problemBeanVO.setStateId(params.getProblem().getProblemCompleteLocation().getState().getStateId());
+						
+						}	
 						if (params.getProblem().getProblemCompleteLocation() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
 										.getDistrict() != null)
+						{
 							problemBeanVO.setDistrict(params.getProblem()
 									.getProblemCompleteLocation().getDistrict()
 									.getDistrictName());
+							problemBeanVO.setDistrictId(params.getProblem().getProblemCompleteLocation().getDistrict().getDistrictId());
+						}
 						if (params.getProblem().getProblemCompleteLocation() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
 										.getConstituency() != null)
+						{
 							problemBeanVO.setConstituency(params.getProblem()
 									.getProblemCompleteLocation()
 									.getConstituency().getName());
+							problemBeanVO.setpConstituencyId(params.getProblem().getProblemCompleteLocation().getConstituency().getConstituencyId());
+						}
 						if (params.getProblem() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
@@ -8017,7 +8026,19 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 									.getVisibilityId());
 						problemBeanVO.setVisibilityType(params.getVisibility()
 								.getType());
-						
+						if(params.getProblem().getExternalSource() != null)
+						{
+							if(params.getProblem().getExternalSource().getName() != null && !params.getProblem().getExternalSource().getName().equalsIgnoreCase(""))
+							problemBeanVO.setName(params.getProblem().getExternalSource().getName());
+							if(params.getProblem().getExternalSource().getMobile() != null && !params.getProblem().getExternalSource().getMobile().equalsIgnoreCase(""))
+								problemBeanVO.setMobile(params.getProblem().getExternalSource().getMobile());
+							if(params.getProblem().getExternalSource().getAddress() != null && !params.getProblem().getExternalSource().getAddress().equalsIgnoreCase(""))
+								problemBeanVO.setAddress(params.getProblem().getExternalSource().getAddress());
+							if(params.getProblem().getExternalSource().getEmail() != null && !params.getProblem().getExternalSource().getEmail().equalsIgnoreCase(""))
+								problemBeanVO.setEmail(params.getProblem().getExternalSource().getEmail());
+							if(params.getProblem().getExternalSource().getTelePhone() != null && !params.getProblem().getExternalSource().getTelePhone().equalsIgnoreCase(""))
+								problemBeanVO.setPhone(params.getProblem().getExternalSource().getTelePhone());
+						}
 
 					}
 
