@@ -117,6 +117,7 @@ public class CadreInfo implements Serializable{
 	private String cadreLevelBooth;
 	private Long bloodGroup;
 	private String bloodGroupStr;
+	private Long onlineRegistrationId;
 	
 	public String getBloodGroupStr() {
 		return bloodGroupStr;
@@ -765,6 +766,12 @@ public class CadreInfo implements Serializable{
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public Long getOnlineRegistrationId() {
+		return onlineRegistrationId;
+	}
+	public void setOnlineRegistrationId(Long onlineRegistrationId) {
+		this.onlineRegistrationId = onlineRegistrationId;
 	}
 	
 }
