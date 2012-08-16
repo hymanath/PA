@@ -19,8 +19,10 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
@@ -86,7 +88,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
     private String problemVisibility;
 	private Boolean hasFreeUserRole;
 	private Boolean hasPartyAnalystUserRole;
-    
+	
 	public Boolean getHasFreeUserRole() {
 		return hasFreeUserRole;
 	}
@@ -117,6 +119,22 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	public ServletContext getContext() {
 		return context;
+	}
+	
+	public String getWindowTask() {
+		return problemBeanVO.getWindowTask();
+	}
+
+	public void setWindowTask(String windowTask) {
+		problemBeanVO.setWindowTask(windowTask);
+	}
+
+	public Long getProblemId() {
+		return problemBeanVO.getProblemId();
+	}
+
+	public void setProblemId(Long announcementId) {
+		problemBeanVO.setProblemId(announcementId);
 	}
 
 	public List<File> getUserImage() {
@@ -609,6 +627,13 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		problemBeanVO.setDescription(problemBeanVO.getDescription().replace("\r\n"," "));	
 		problemBeanVO.setProblemVisibility(getProblemVisibility());
 		
+		
+		if(problemBeanVO.getWindowTask().equalsIgnoreCase(IConstants.UPDATE_EXISTING) 
+				&& (problemBeanVO.getProblemId() == null || problemBeanVO.getProblemId().equals(1L)))
+		{
+			problemBeanVO.setWindowTask(IConstants.NEW);
+			session.setAttribute(ISessionConstants.WINDOW_TASK,IConstants.NEW);
+		}
 		problemBeanFromDB =  problemManagementService.saveNewProblemData(problemBeanVO);
 		
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
