@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +38,7 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
+import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -528,5 +530,57 @@ public class LoginService implements ILoginService{
 		else 
 			return IConstants.YesPassword;
 		
+	}
+	
+	/**
+	 * This method will return User's Basic Details
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long userId
+	 * @return List
+	 * 
+	 */
+	public RegistrationVO getUserBasicDetails(Long userId)
+	{
+		log.debug("Entered into getUserBasicDetails() Method");
+		RegistrationVO registrationVO = null;
+		
+		try{
+			User user = userDAO.get(userId);
+			if(user != null)
+			{
+				SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+				registrationVO = new RegistrationVO();
+				registrationVO.setRegistrationID(user.getUserId());
+				registrationVO.setFirstName(user.getFirstName());
+				registrationVO.setLastName(user.getLastName());
+				registrationVO.setGender(user.getGender());
+				registrationVO.setDateOfBirth(user.getDateOfBirth() != null ? sdf.format(user.getDateOfBirth()) : "");
+				registrationVO.setEmail(user.getEmail());
+				registrationVO.setMobile(user.getMobile());
+				registrationVO.setAddress(user.getAddress());
+				registrationVO.setPincode(user.getPincode());
+				registrationVO.setAccessType(user.getAccessType());
+				registrationVO.setAccessValue(user.getAccessValue());
+				registrationVO.setParty(user.getParty() != null ?user.getParty().getPartyId() : null);
+				registrationVO.setPartyShortName(user.getParty() != null ?user.getParty().getShortName() : "");
+				registrationVO.setUserType(user.getUserType());
+				registrationVO.setUserProfilePic(user.getProfileImg());
+				
+				Set<UserRoles> userRoles = user.getUserRoles();
+				List<String> roles = new ArrayList<String>(0);
+				
+				if(userRoles != null)
+					for(UserRoles userRole : userRoles)
+						roles.add(userRole.getRole().getRoleType());
+				
+				registrationVO.setUserRoles(roles);
+				
+			}
+			return registrationVO;
+		}catch (Exception e) {
+			log.error("Exception Occured in getUserBasicDetails() - "+e);
+			return registrationVO;
+		}
 	}
 }
