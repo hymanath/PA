@@ -112,6 +112,34 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private  String visibilityType;
 	private String windowTask;
 	
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 	public String getWindowTask() {
 		return windowTask;
 	}
