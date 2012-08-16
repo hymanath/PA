@@ -90,6 +90,51 @@ var windowTask = '${sessionScope.windowTask}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
 
+
+function executeOnUpdate()
+{
+	
+	var problemSourceScopeId = '${problemBeanVO.problemSourceScopeId}';
+	var	problemsource = '${problemBeanVO.probSource}';
+	//var selectIndex = document.getElementById('problemSourceScopeId').value ;
+	var personDetailsDivEle = document.getElementById('personDetailsDiv');
+	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
+	
+	cadreDetailsDivEle.style.display='none';
+	if(problemsource == 'User')
+	{
+		personDetailsDivEle.style.display = 'none';
+	}
+
+	if(problemsource =='External Person' || problemsource=='Call Center')
+	{			
+		personDetailsDivEle.style.display = 'block';
+	}
+
+	if(problemsource == 'Cadre')
+	{
+		var cadreEle = document.getElementById("cadreInputId");
+		var cadreDivEle = document.getElementById("cadreDiv");
+
+		var cadreDivVar = '';
+		
+		cadreDivVar += '<table align="center">';
+		cadreDivVar += '<tr><td></td><td>';
+		cadreDivVar += '<input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>';
+		cadreDivVar += '</tr></table>';
+		cadreDivEle.innerHTML = cadreDivVar;
+		cadreDivEle.style.display = 'block';
+	}
+	else
+	{
+		var cadreDivEl = document.getElementById("cadreDiv");
+		cadreDivEl.style.display = 'none';
+	}
+
+}
+
+
+
  function clearAllSubsInDistrict(){
       clearOptionsListForSelectElmtId("mandalField_s");
 	  clearOptionsListForSelectElmtId("hamletField_s");
@@ -293,49 +338,6 @@ function getComplainedPersonDetails(name)
 	}
 }
 
-
-
-function executeOnUpdate()
-{
-	
-	var problemSourceScopeId = '${problemBeanVO.problemSourceScopeId}';
-	var	problemsource = '${problemBeanVO.probSource}';
-	var selectIndex = document.getElementById('userTypeSelectBox').value ;
-	var personDetailsDivEle = document.getElementById('personDetailsDiv');
-	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
-	
-	cadreDetailsDivEle.style.display='none';
-	if(selectIndex == 'User')
-	{
-		personDetailsDivEle.style.display = 'none';
-	}
-
-	if(selectIndex =='External Person' || selectIndex=='Call Center')
-	{			
-		personDetailsDivEle.style.display = 'block';
-	}
-
-	if(selectIndex == 'Cadre')
-	{
-		var cadreEle = document.getElementById("cadreInputId");
-		var cadreDivEle = document.getElementById("cadreDiv");
-
-		var cadreDivVar = '';
-		
-		cadreDivVar += '<table align="center">';
-		cadreDivVar += '<tr><td></td><td>';
-		cadreDivVar += '<input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>';
-		cadreDivVar += '</tr></table>';
-		cadreDivEle.innerHTML = cadreDivVar;
-		cadreDivEle.style.display = 'block';
-	}
-	else
-	{
-		var cadreDivEl = document.getElementById("cadreDiv");
-		cadreDivEl.style.display = 'none';
-	}
-
-}
 
 
 
@@ -609,7 +611,7 @@ function clearSuccessMsg(){
 				<tr id="problemSourceRowId">
 					<td colspan="2"><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
-					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+					<s:select id="ProblemSourceScopeId"  name="ProblemSourceScopeId" value="ProblemSourceScopeId" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 					
 
 					</td>
@@ -629,7 +631,8 @@ function clearSuccessMsg(){
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="mobileField" id="mobileFieldLabel"  value="%{getText('mobile')}" /><font class="requiredFont"> * </font></td>
-						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" maxlength="12" size="35"/></td>
+						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" 
+						 maxlength="12" size="35"/></td>
 					</tr>
 					<tr>
 						<td width="100px;" style="padding-left:0px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
@@ -677,12 +680,14 @@ function clearSuccessMsg(){
 
 <script type="text/javascript">
 getCurrentDate();
+<c:if test="${windowTask != 'update_existing'}">
 hideProblemSourceRow();
-	
+</c:if>	
 <c:if test="${windowTask == 'update_existing'}">
 	executeOnUpdate();
 
-	</c:if>
+</c:if>	
+
 
 </script>
 </body>
