@@ -936,7 +936,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			
 			if(problemBeanVO == null)
 			{
-				log.info("problemBeanVO null in saveCadreProblemDetails() Method");
+				log.info("problemBeanVO null in deleteCadreProblemDetails() Method");
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
 			}
@@ -975,6 +975,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				if(problemBeanVO.getWindowTask().equalsIgnoreCase(IConstants.UPDATE_EXISTING))
 				{
 					List<CadreProblems> cadreProblemDetails = cadreProblemsDAO.getCadreProblemDetailsByProblemId(problemBeanVO.getProblemId());
+					if(cadreProblemDetails != null && cadreProblemDetails.size() != 0)
 					if(cadreProblemDetails.get(0).getCadreProblemsId() != null && cadreProblemDetails.get(0).getCadreProblemsId() > 0)
 					cadreProblems =cadreProblemsDAO.get(cadreProblemDetails.get(0).getCadreProblemsId());
 				}
