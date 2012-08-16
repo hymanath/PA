@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICadreProblemsDAO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.CadreProblems;
 import com.itgrids.partyanalyst.model.Problem;
 
 public class CadreProblemsDAOHibernateTest extends BaseDaoTestCase{
@@ -73,10 +74,24 @@ public class CadreProblemsDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetProblemStatusOfACadre()
+	/*public void testgetProblemStatusOfACadre()
 	{
 		List<Object> status = cadreProblemsDAO.getProblemStatusOfACadre(145l);
 		System.out.println(status);
+	}*/
+	
+	/*public void testgetCadreProblemDetailsByProblemId()
+	{
+	List<CadreProblems> params = cadreProblemsDAO.getCadreProblemDetailsByProblemId(65l);
+	System.out.println(params.get(0).getCadre().getFirstName());
+	}*/
+	
+	public void testdeleteCadreProblem()
+	{
+	Integer params = cadreProblemsDAO.deleteCadreProblem(65l);
+	System.out.println(params);
 	}
+	
+	
 		
 	}
