@@ -88,6 +88,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
     private String problemVisibility;
 	private Boolean hasFreeUserRole;
 	private Boolean hasPartyAnalystUserRole;
+	private Long problemSourceScopeId;
+	private Long problemScopeId;
 	
 	public Boolean getHasFreeUserRole() {
 		return hasFreeUserRole;
@@ -350,14 +352,23 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.problemBeanVO.setExistingFrom(existingFromDate);
 	}
 
-	public String getProbSource() {
+	/*public String getProbSource() {
 		return probSource;
 	}
 	
 	public void setProbSource(String probSource) {
 		this.probSource = probSource;
 		this.problemBeanVO.setProbSourceId(Long.parseLong(probSource));
+	}*/
+	public String getProblemSourceScopeId() {
+		return probSource;
 	}
+	
+	public void setProblemSourceScopeId(Long problemSourceScopeId) {
+		this.problemSourceScopeId = problemSourceScopeId;
+		this.problemBeanVO.setProbSourceId(problemSourceScopeId);
+	}
+	
 
 	public String getName() {
 		return name;
@@ -414,7 +425,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	public void setProblemScope(Long problemScope) {
 		this.problemBeanVO.setProblemImpactLevelId(problemScope);
-	}	
+	}
+	/*public Long getProblemScope() {
+		return problemBeanVO.getProblemImpactLevelId();
+	}
+
+	public void setProblemScope(Long problemScopeId) {
+		this.problemBeanVO.setProblemImpactLevelId(problemScopeId);
+	}*/
 	
 	public void setProblemTypeId(Long problemTypeId) {
 		this.problemBeanVO.setProblemTypeId(problemTypeId);
