@@ -222,7 +222,9 @@ function executeOnload()
 	
 	if(selectedeffectedRange != '0')
 		populateLocations(selectedeffectedRange, 'onLoad');
-
+	
+	if(${sessionScope.hasFreeUserRole && sessionScope.hasPartyAnalystUserRole})
+	{
 	if('${problemBeanVO.visibilityType}' == 'Public')
 	{ 
 		document.getElementById("privateProblem").checked = true;	
@@ -234,7 +236,9 @@ function executeOnload()
 	     document.getElementById("privateProblem").checked = false;	
 		document.getElementById("publicProblem").checked = true;
 	}
+	}
 }
+
 
 function limitText(limitField, limitCount, limitNum)
 {		
