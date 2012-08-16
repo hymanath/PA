@@ -202,4 +202,6 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public ResultStatus updateProblemDetails(Long problemId,List<CompleteProblemDetailsVO> completeProblemDetailsVO);
 	
+	public ProblemBeanVO getProblemCompleteInfoForAUserBasedOnProblemId(Long problemId);
+	
 }
