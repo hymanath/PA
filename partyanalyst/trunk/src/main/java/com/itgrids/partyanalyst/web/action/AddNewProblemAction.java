@@ -59,7 +59,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private String requestSrc;
 	private Long stateId = 0l;
 	private Long districtId = 0l;
-	private Long constituencyId = 0l;
+	//private Long constituencyId = 0l;
 	private Long localElectionBodyId = 0l;
 	private Boolean isParliament = false;
 	private List<SelectOptionVO> problemScopes;
@@ -69,6 +69,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private Long pConstituencyId;
 	private RegistrationVO user = null;
 	private String windowTask = null;
+	private Long constituencyId;
 	
 	public String getWindowTask() {
 		return windowTask;
@@ -505,7 +506,9 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			} else if("4".equalsIgnoreCase(requestSrc))
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
-				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
+				problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
+				constituencyId = request.getParameter("constituencyId")!= null ?Long.valueOf(request.getParameter("constituencyId")):null;
+				
 				setProblemLocation(constituencyId);
 				List<SelectOptionVO> locationHirarchies = staticDataService.getLocationsHirarchyByType(IConstants.CONSTITUENCY, constituencyId);
 				if(locationHirarchies != null){
@@ -518,7 +521,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				
 				if(isParliament)
 				{
-					setPConstituencyId(constituencyId); 
+					setPConstituencyId(new Long(constituencyId)); 
 					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
 					constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(constituencyId);
@@ -601,6 +604,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public void prepare() throws Exception {
 			 
 		String problemId = request.getParameter("problemId");
+		
 		windowTask = request.getParameter("windowTask");
 		if(problemId !=null)
 		{
