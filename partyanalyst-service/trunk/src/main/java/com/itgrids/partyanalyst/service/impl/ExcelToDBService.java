@@ -299,7 +299,8 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 			if(!constituencyElectionsMap.isEmpty() && constituencyElectionsMap.containsKey(constId)){
 				constituencyElectionObj = constituencyElectionsMap.get(constId);
 				
-				if(constituencyElectionObj.getHasResults().equalsIgnoreCase("0") && isResults)
+
+				if(constituencyElectionObj.getHasResults() != null && constituencyElectionObj.getHasResults().equalsIgnoreCase("0") && isResults)
 					constituencyElectionObj.setHasResults(null);
 					//constituencyElectionObj.setHasResults(getStringFromAsciiChar(1));
 				
