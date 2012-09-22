@@ -732,7 +732,7 @@ function showOverallResults()
 
 function showRegionWiseResults()
 {
-	<c:if test="${loginStatus !=null && sessionScope.USER == null}">
+	<c:if test="${loginStatus !=null && sessionScope.USER != null}">
 		showImg();
 		var jsObj = {
 					electionId:electionId,
