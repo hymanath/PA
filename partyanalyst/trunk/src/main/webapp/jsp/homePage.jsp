@@ -1041,7 +1041,7 @@ function showProblemDetails(result)
 	for(var i in result)
 	{
 	   str += '<div class ="problemheadClass">';
-	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
+	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
 	   str += '   <div style="padding-top:5px;font-family:arial;">'+result[i].description+' </div>';
 	   if(result[i].url != null){
 	     str += '   <div style="padding-top:5px;"><table><tr><td> <span style="color:#028D35;">Location:&nbsp;&nbsp;</span></td><td><a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'"> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+'</a> &nbsp;&nbsp;&nbsp;&nbsp;</td><td><span style="color:#028D35;">Posted By:&nbsp;&nbsp;</span></td><td>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</td><tr></table></div>';
