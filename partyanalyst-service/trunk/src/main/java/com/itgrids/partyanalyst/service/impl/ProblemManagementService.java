@@ -7943,16 +7943,22 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 								&& params.getProblem()
 										.getProblemCompleteLocation()
 										.getTehsil() != null)
+						{
 							problemBeanVO.setMandal(params.getProblem()
 									.getProblemCompleteLocation().getTehsil()
 									.getTehsilName());
+						problemBeanVO.setTehsilId(params.getProblem().getProblemCompleteLocation().getTehsil().getTehsilId());
+						}
 						if (params.getProblem().getProblemCompleteLocation() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
 										.getHamlet() != null)
+						{
 							problemBeanVO.setVillage(params.getProblem()
 									.getProblemCompleteLocation().getHamlet()
 									.getHamletName());
+							problemBeanVO.setHamletId(params.getProblem().getProblemCompleteLocation().getHamlet().getHamletId());
+						}
 						if (params.getProblem().getProblemCompleteLocation() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
