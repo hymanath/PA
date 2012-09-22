@@ -422,11 +422,21 @@ function clearSuccessMsg(){
 	<div id="problemDetailsDiv" class="accessDivMain" >		
 		<div id="problemDetailsDivBody">
 			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'PartyAnalyst'}">
+			<c:if test="${windowTask != 'update_existing'}">
 			<div id="probSuccessMsgDiv">
 				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Problem Added Successfully...</DIV>
 				<span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
 				<font color="maroon"><c:out value="${problemBeanFromDB.problemRefNum}">
 				</c:out></font> used for further details</span></div>
+					</c:if>
+					<c:if test="${windowTask == 'update_existing'}">
+					<div id="probSuccessMsgDiv">
+				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Problem Updated Successfully...</DIV>
+				<span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
+				<font color="maroon"><c:out value="${problemBeanFromDB.problemRefNum}">
+				</c:out></font> used for further details</span></div>
+				</c:if>
+
 			</c:if>
 			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'FreeUser'}">
 				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Thanks for posting your problem.Your problem will be reviewed by our team and will be published once it gets acceptance from them</DIV><span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
@@ -463,8 +473,15 @@ function clearSuccessMsg(){
 					<tr>
 						<td>Problem Scope<font class="requiredFont">*</font></td>
 						<td style="padding-left: 15px;">
+						<c:if test="${windowTask != 'update_existing'}">
 							<s:select id="scopeLevel" cssClass="selectWidth" name="problemScope" value="defaultScope" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange');getProblemTypes(this.options[this.selectedIndex].value)">
 							</s:select>
+							</c:if>
+							<c:if test="${windowTask == 'update_existing'}">
+						<s:select id="scopeLevel" cssClass="selectWidth" name="problemScope" value="problemScopeId" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange');getProblemTypes(this.options[this.selectedIndex].value)">
+							</s:select>
+
+							</c:if>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</tr>
 						
@@ -472,14 +489,30 @@ function clearSuccessMsg(){
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
+							<c:if test="${windowTask != 'update_existing'}">
 								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								</c:if>
+								<c:if test="${windowTask == 'update_existing'}">
+
+								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" value="stateId" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								</c:if>
 							</td>
 							<td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</tr>
 						<tr id="row2" style="display:none;">
 							<td><%=DISTRICT%><font class="requiredFont"> * </font></td>
 							<td style="padding-left: 15px;">
+								<c:if test="${windowTask != 'update_existing'}">
+
 								<s:select id="districtField_s" cssClass="selectWidth" name="district" list="#session.districtsList_ap" listKey="id" listValue="name" value="defaultDistrict" onchange="clearAllSubsInDistrict();getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								</c:if>
+
+								<c:if test="${windowTask == 'update_existing'}">
+
+								<s:select id="districtField_s" cssClass="selectWidth" name="district" list="#session.districtsList_ap" listKey="id" listValue="name" value="districtId" onchange="clearAllSubsInDistrict();getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								</c:if>
+
+
 							</td>
 							<td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</tr>
@@ -488,32 +521,62 @@ function clearSuccessMsg(){
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
+							<c:if test="${windowTask != 'update_existing'}">
+
 								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								</c:if>
+								<c:if test="${windowTask == 'update_existing'}">
+
+								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" value="stateId" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								</c:if>
+
 							</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</tr>
 						<TR id="row2" style="display:none;">	
 							<TD><%=PCONSTITUENCY%></TD>
+							<c:if test="${windowTask != 'update_existing'}">
 							<TD style="padding-left: 15px;">
 							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
+							<c:if test="${windowTask == 'update_existing'}">
+							<TD style="padding-left: 15px;">
+							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="pConstituencyId" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
 							</TD><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</TR>
 					</c:if>
 					<tr id="row3" style="display:none;">
 						<td><%=ACONSTITUENCY%><font class="requiredFont">* </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" onchange="clearAllSubsInAConstituency();getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+						<c:if test="${windowTask != 'update_existing'}">
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
+							<c:if test="${windowTask == 'update_existing'}">
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="pConstituencyId" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 					</tr>								
 					<tr id="row4" style="display:none;">
 						<td><%=MANDAL%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
+						<c:if test="${windowTask != 'update_existing'}">
 							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
+							<c:if test="${windowTask == 'update_existing'}">
+							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" value="mandal" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 					</tr>					
 					<tr id="row5" style="display:none;">
 						<td><%=HAMLET%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
+						<c:if test="${windowTask != 'update_existing'}">
 							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
+							<c:if test="${windowTask == 'update_existing'}">
+							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" value="village" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							</c:if>
+
 						</td>
 					</tr>	
 					<tr id="row6" style="display:none;">
