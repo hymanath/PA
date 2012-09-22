@@ -7937,7 +7937,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 							problemBeanVO.setConstituency(params.getProblem()
 									.getProblemCompleteLocation()
 									.getConstituency().getName());
-							problemBeanVO.setpConstituencyId(params.getProblem().getProblemCompleteLocation().getConstituency().getConstituencyId());
+							problemBeanVO.setPConstituencyId(params.getProblem().getProblemCompleteLocation().getConstituency().getConstituencyId());
 						}
 						if (params.getProblem() != null
 								&& params.getProblem()
@@ -8195,7 +8195,9 @@ public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
 							problem.setExternalSource(problemExternalSource);
 						}
 				}
-
+					
+					if (problemBeanVO.getWindowTask().equalsIgnoreCase(
+							IConstants.NEW)) {
 					refNo = getProblemReferenceNo();
 					if (refNo != null) {
 						if (new Long(0).equals(problemBeanVO.getProbSourceId()))
@@ -8212,6 +8214,7 @@ public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
 						else if (new Long(4).equals(problemBeanVO
 								.getProbSourceId()))
 							problem.setReferenceNo(getRefNo(refNo, "CD"));
+					}
 					}
 
 					RegionScopes problemImpactLevel = regionScopesDAO
