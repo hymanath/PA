@@ -95,6 +95,7 @@
 	#allElectionResultsInDT_body
 	{
 	width:975px;
+	margin-top:-7px;
 	}
 
 	#zptc_body,#mptc_body
@@ -1882,8 +1883,8 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width:980px;float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
-			<h3 style="margin-top:15px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
-				<div id="allElectionResultsInDT"  class="allianceListDiv" style="margin-top:-34px;">
+			<h3 style="margin-top:4px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
+				<div id="allElectionResultsInDT"  class="allianceListDiv" style="margin-top:-36px;padding-top:18px;">
 					<div id="allElectionResultsInDT_head" style="clear:both;"></div>
 					<div id="allElectionResultsInDT_body"></div>
 				
