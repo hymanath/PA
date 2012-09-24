@@ -2163,7 +2163,7 @@ var problemId = '${completeProblemDetailsVO.problemId}';
 {
 	
 	var urlStr = "addNewProblemAction.action?problemId="+id+"&windowTask=update_existing";
-	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=550,width=500,left=200,top=200");	
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
 }
 
