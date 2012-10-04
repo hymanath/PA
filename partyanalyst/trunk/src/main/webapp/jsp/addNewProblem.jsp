@@ -563,7 +563,7 @@ function clearSuccessMsg(){
 							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 							<c:if test="${windowTask == 'update_existing'}">
-							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" value="mandal" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" value="tehsilId" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 					</tr>					
@@ -573,8 +573,9 @@ function clearSuccessMsg(){
 						<c:if test="${windowTask != 'update_existing'}">
 							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
-							<c:if test="${windowTask == 'update_existing'}">
-							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" value="village" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<c:if test="${windowTask == 'update_existing'}"> 
+							
+							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" value="hamletId" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 
 						</td>
