@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -10,7 +11,9 @@ public interface IFeedbackDAO extends GenericDao<FeedBack, Long>{
 
 	public Integer updateStatusToApproveOrReject(List<Long> commentIdList,String status);
 	
-	public Long getCountOfNewlyPostedFeedbackByFreeUser();
+	//public Long getCountOfNewlyPostedFeedbackByFreeUser();
+	
+	public Long getCountOfNewlyPostedFeedbackByFreeUser(Date currentDate);
 
 }
 
