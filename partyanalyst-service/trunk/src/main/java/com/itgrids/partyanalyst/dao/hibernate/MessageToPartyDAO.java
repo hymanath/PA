@@ -68,10 +68,17 @@ public class MessageToPartyDAO extends GenericDaoHibernate<MessageToParty,Long> 
 		 
 	 }
 	 
-	 public Long getPartyMessagesCount()
+	/* public Long getPartyMessagesCount()
 	 {
 		 Query query = getSession().createQuery("select count(*) from MessageToParty model where model.isApproved = 'false' and model.isDelete = 'false'");
 		 return (Long)query.uniqueResult();
+	 }*/
+	 
+	 public Long getPartyMessagesCount(Date currentDate)
+	 {
+		 Query query = getSession().createQuery("select count(*) from MessageToParty model where Date(model.sentTime)=? and model.isDelete = 'false' ");
+		 query.setParameter(0, currentDate);
+		 return (Long) query.uniqueResult();
 	 }
 	 
 }

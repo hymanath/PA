@@ -45,9 +45,15 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 		return getHibernateTemplate().find("select count(model.problemFilesId) from ProblemFiles model where model.problem.problemId =?",problemId);
 	}
 	
-	public Long getCountOfNewlyPostedImagesByFreeUser()
+	/*public Long getCountOfNewlyPostedImagesByFreeUser()
 	{
 		Query query = getSession().createQuery("select count(model.problemFilesId) from ProblemFiles model where (model.isApproved = 'false' or model.isApproved is null) and (model.isDelete is null or model.isDelete = 'false')");
+		return (Long) query.uniqueResult();
+	}*/
+	public Long getCountOfNewlyPostedImagesByFreeUser(Date currentDate)
+	{
+		Query query = getSession().createQuery("select count(model.problemFilesId) from ProblemFiles model where Date(model.updatedTime) = ? and (model.isDelete is null or model.isDelete = 'false')");
+		query.setParameter(0, currentDate);
 		return (Long) query.uniqueResult();
 	}
 	
