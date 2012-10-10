@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -30,9 +31,15 @@ public class CommentDataDAO extends GenericDaoHibernate<CommentData, Long> imple
 		return queryObject.executeUpdate();
 			
 	}
-	public Long getcountOfNewlyPostedReasonByFreeUser()
+	/*public Long getcountOfNewlyPostedReasonByFreeUser()
 	{
 		Query query = getSession().createQuery("select count(*) from CommentData model");
 		return (Long)query.uniqueResult();
+	}*/
+	public Long getcountOfNewlyPostedReasonByFreeUser(Date currentDate)
+	{
+		Query query = getSession().createQuery("select count(*) from CommentData model where Date(model.commentDate) = ?");
+		query.setParameter(0, currentDate);
+		return (Long) query.uniqueResult();
 	}
 }

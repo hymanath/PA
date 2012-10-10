@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -33,10 +34,17 @@ public class FeedbackDAO extends GenericDaoHibernate<FeedBack, Long> implements 
     	
     	return getHibernateTemplate().find("select  model.feedBackComment.commentType and model.feedBackTask.feedBackTaskName where feedbackId = ?" , feedBackId);
     }*/
-	public Long getCountOfNewlyPostedFeedbackByFreeUser()
+	/*public Long getCountOfNewlyPostedFeedbackByFreeUser()
 	{
 		Query query = getSession().createQuery("select count(*) from FeedBack model where model.status = 'NEW'");
 		return (Long)query.uniqueResult();
+	}*/
+	
+	public Long getCountOfNewlyPostedFeedbackByFreeUser(Date currentDate)
+	{
+		Query query = getSession().createQuery("select count(*) from FeedBack model where Date(model.postedDate)=?");
+		query.setParameter(0, currentDate);
+		return (Long) query.uniqueResult();
 	}
 }
 

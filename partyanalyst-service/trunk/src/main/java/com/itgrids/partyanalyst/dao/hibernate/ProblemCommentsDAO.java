@@ -46,10 +46,17 @@ public class ProblemCommentsDAO extends GenericDaoHibernate<ProblemComments,Long
 	{
 		return getHibernateTemplate().find("select model.comment.comment,model.comment.commentId from ProblemComments model where model.problem.problemId = ? and model.isApproved='"+IConstants.TRUE+"' and (model.isDelete = '"+IConstants.FALSE+"' or model.isDelete is null))",problemId);
 	}	
-	public Long getCountOfNewlyPostedProblemCommentsByUser()
+	/*public Long getCountOfNewlyPostedProblemCommentsByUser()
 	{
 		Query query = getSession().createQuery("select count(*) from ProblemComments model where (model.isApproved = 'false' or model.isApproved is null) and (model.isDelete is null or model.isDelete = 'false') ");
 		return (Long) query.uniqueResult();
+	}*/
+	
+	public Long getCountOfNewlyPostedProblemCommentsByUser(Date currentDate)
+	{
+	Query query = getSession().createQuery("select count(*) from ProblemComments model where Date(model.insertedTime) = ? and (model.isDelete is null or model.isDelete = 'false') ");
+	query.setParameter(0, currentDate);
+	return (Long) query.uniqueResult();
 	}
 	public List<Object[]> getAllProblemComments(Long problemId,Long userId,List<Long> userIds){
 		StringBuilder query = new StringBuilder();
