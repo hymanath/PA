@@ -3506,6 +3506,25 @@ public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> ma
 	    	return problemBeanVO;
 		}
 */	
+
+
+
+
+public Date getCurrentDateAndTime(){
+	try {
+			java.util.Date now = new java.util.Date();
+	        String DATE_FORMAT = "dd/MM/yyyy";
+	        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+	        String strDateNew = sdf.format(now);        
+			now = sdf.parse(strDateNew);
+		return now;
+    } catch (ParseException e) {
+    		e.printStackTrace();
+		return null;
+	}
+}
+
+
 		
 		public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser() 
 		{
@@ -3514,16 +3533,16 @@ public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> ma
 	    		if(log.isDebugEnabled())
 	    			log.debug("Entered into getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService");
 	    		//Count of newly Posted problems by free user.
-	    		Long countofNewlyProblems = problemDAO.getCountOfNewlyPostedProblemsByFreeUser();
+	    		Long countofNewlyProblems = problemDAO.getCountOfNewlyPostedProblemsByFreeUser(getCurrentDateAndTime());
 	    		//Count of newly Posted images by free user.
-	    		Long countofNewlyImages = problemFilesDAO.getCountOfNewlyPostedImagesByFreeUser();
+	    		Long countofNewlyImages = problemFilesDAO.getCountOfNewlyPostedImagesByFreeUser(getCurrentDateAndTime());
 	    		//count of newly posted comments by free user.
 	    		//Long countofNewlyComments = approvalDetailsDAO.getCountOfNewlyPostedCommentsByUser();
-	    		Long countofNewlyComments = problemCommentsDAO.getCountOfNewlyPostedProblemCommentsByUser();
+	    		Long countofNewlyComments = problemCommentsDAO.getCountOfNewlyPostedProblemCommentsByUser(getCurrentDateAndTime());
 	    		//count of newly posted political reason
-	    		Long countofNewlyReasons = commentDataDAO.getcountOfNewlyPostedReasonByFreeUser();
+	    		Long countofNewlyReasons = commentDataDAO.getcountOfNewlyPostedReasonByFreeUser(getCurrentDateAndTime());
 	    		//count of newly posted Feedbacks
-	    		Long countOfNewlyFeedBack =  feedbackDAO.getCountOfNewlyPostedFeedbackByFreeUser();
+	    		Long countOfNewlyFeedBack =  feedbackDAO.getCountOfNewlyPostedFeedbackByFreeUser(getCurrentDateAndTime());
 	    		if(countofNewlyProblems != null || countofNewlyImages !=null || countofNewlyComments != null || countofNewlyReasons != null || countOfNewlyFeedBack != null)
 	    		{ 
 	    			problemBeanVO = new ProblemBeanVO();
@@ -3536,12 +3555,12 @@ public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> ma
 	    		}
 	    		//count of messages of candidate
 	    		
-	    		Long candidateMsgCount = messageToCandidateDAO.getCandidateMessagesCount();
+	    		Long candidateMsgCount = messageToCandidateDAO.getCandidateMessagesCount(getCurrentDateAndTime());
 	    		if(candidateMsgCount != null)
 	    		{
 	    			problemBeanVO.setCandidateMsgCount(candidateMsgCount);
 	    		}
-	    		Long partyMsgCount = messageToPartyDAO.getPartyMessagesCount();
+	    		Long partyMsgCount = messageToPartyDAO.getPartyMessagesCount(getCurrentDateAndTime());
 	    		if(partyMsgCount != null)
 	    		{
 	    			problemBeanVO.setPartyMsgCount(partyMsgCount);
