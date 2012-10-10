@@ -12,7 +12,9 @@ public interface IProblemDAO extends GenericDao<Problem,Long>{
 	
 	public Integer deleteProblemDetails(Long problemId,Date currentDate);
 	
-	public Long getCountOfNewlyPostedProblemsByFreeUser();
+	//public Long getCountOfNewlyPostedProblemsByFreeUser();
 	
 	public List<Long> isProblemDeleted(Long problemId);
+	
+	public Long getCountOfNewlyPostedProblemsByFreeUser(Date currentDate);
 }
