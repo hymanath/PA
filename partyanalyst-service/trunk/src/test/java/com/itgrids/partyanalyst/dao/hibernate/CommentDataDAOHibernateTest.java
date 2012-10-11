@@ -41,8 +41,8 @@ public class CommentDataDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(status);
 		
 	}*/
-	public void testScrutinePostedComments(){
+	/*public void testScrutinePostedComments(){
 		System.out.println(commentDataDAO.getcountOfNewlyPostedReasonByFreeUser());
-	}
+	}*/
 	
 }
