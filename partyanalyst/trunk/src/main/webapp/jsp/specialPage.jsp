@@ -854,20 +854,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li style="width:128px;"><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
 	   str+=''+results[0].gallaryName+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li style="width:128px;"><img alt="" src="'+results[1].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
 	  str+=''+results[1].gallaryName+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img alt="" src="'+results[2].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li style="width:128px;"><img alt="" src="'+results[2].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].gallaryName+'</li>';
 	  
 	  }
@@ -1306,7 +1306,7 @@ Tweet</a>
             </div>
           
             <!--PHOTO GALLERY SECTION END-->
-          <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On 2012 Assembly Elections</span>
+          <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On ${specialPageVO.heading}</span>
 		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430" style="margin-top: 9px;"></div>
 		  </div>
           <div class="clear"></div>
