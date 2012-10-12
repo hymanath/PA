@@ -3,6 +3,7 @@
 
 <style>
 #votesShareSpan{background:#ED5B21;border-radius: 5px; color: #FFF; font-family: verdana; font-size: 13px; font-weight: bold; padding: 5px;}
+
 </style>
 
 
@@ -165,7 +166,23 @@
 <span title="Click here to view Schedule Padha yatra by chandrababu" onclick="getSchedule();" style="background:#21B2ED;cursor:pointer;margin-top:20px;"
 id="votesShareSpan">Click here to view Vastunna Meekosam Schedule</span>
 </div>
-		
+<br>
+<div>
+
+<fieldset >
+ <legend style="font-weight:bold;font-family:Verdana;">View Profiles</legend>
+<table>
+<tr><td><a href="candidateElectionResultsAction.action?candidateId=3424" title="Click here to view Nara Chandra Babu Naidu Profile,News,Photos,Vedio Gallaries"><img width="125" height="120" src="images/candidates/NARA CHANDRABABU NAIDU.jpg"></img></a></td>
+<td><a href="candidateElectionResultsAction.action?candidateId=7203"> <img width="125" height="120" src="images/candidates/NANDAMURI TARAKA RAMA RAO.jpg" style="margin-left:5px;" title="Click here to view  Nandamuri Taraka Rama Rao Profile,News,Photos,Vedio Gallaries"></img></a></td>
+  
+<td><a href="partyPageAction.action?partyId=872" style="font-family:helvetica;" title="Click here to view  Telugu Desham Party Details"><img width="125" height="120" src="images/party_flags/TDP.PNG" style="margin-left:5px;"></a></td></tr>
+<tr><td><span><a href="candidateElectionResultsAction.action?candidateId=3424" style="font-family:helvetica;" title="Click here to view Nara Chandra Babu Naidu Profile,News,Photos,Vedio Gallaries">Nara Chandra Babu Naidu</a></span></td>
+<td><span><a href="candidateElectionResultsAction.action?candidateId=7203" style="font-family:helvetica;" title="Click here to view  Nandamuri Taraka Rama Rao Profile,News,Photos,Vedio Gallaries"> Nandamuri Taraka Rama Rao</a></span></td>
+<td><span><a href="partyPageAction.action?partyId=872" title="Click here to view  Telugu Desham Party Details">Telugu Desham Party</a></span></td>
+</tr>
+ </table> 
+</fieldset>
+</div>		
 <script>
 function getSchedule()
 	 {
