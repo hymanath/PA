@@ -11,14 +11,11 @@
     width:962px;
 }
 
-.electionresulttable{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
-.electionresulttable td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;}
-.electionresulttable th{background:#21B2ED;color:#fff;}
 .nominationresulttable{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
 .nominationresulttable td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;}
 .nominationresulttable tr:nth-child(odd){background:#e5e5e5;}
 .nominationresulttable tr:nth-child(even){background:#f3f3f3;}
-.nominationresulttable th{padding:5px;background:#D8D8D8;}
+.nominationresulttable th{padding:5px;background:#489CDF;color:#fff;}
 .buttonClass {
 	background-color: background;
     border-radius: 6px 6px 6px 6px;
@@ -129,7 +126,7 @@ shall be completed</td>
 		
 	
 		
-<h4 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left: 7px;">Schedule for the Himachal Pradesh Legislative Assembly, 2012	</h4>
+<h4 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left:9px;">Schedule for the Himachal Pradesh Legislative Assembly, 2012	</h4>
 		
 		
 			<td>
@@ -144,7 +141,7 @@ shall be completed</td>
 (Wednesday)</td>
 </tr>
 <tr>
-<td>Last date for making Nominations</td>
+<td>Last date for making <br>Nominations</td>
 <td>17.10.2012 
 (Wednesday)</td>
 </tr>
@@ -315,22 +312,22 @@ CPM</a>
 <tr>
 <td >
 <div class="selectHeading">
-	<span class="selectDivStyle">HP Districts</span>
+	<span class="selectDivStyle">Himachal Districts</span>
 	<span style="margin-left: 5px;">Know About Your District  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 	<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district" style="margin-top:45px;">
 	<option value="0">Select District</option>
-     <option value='271'>Chamba</option>
-	<option value='272'>Kangra</option>
-	<option value='273'>Lahul & Spiti</option>
-	<option value='274'>Kullu</option>
-	<option value='275'>Mandi</option>
+    <option value='278'>Bilaspur</option>
+	<option value='271'>Chamba</option>
 	<option value='276'>Hamirpur</option>
-	<option value='277'>Una</option>
-	<option value='278'>Bilaspur</option>
-	<option value='279'>Solan</option>
-	<option value='280'>Sirmaur</option>
-	<option value='281'>Shimla</option>
+	<option value='272'>Kangra</option>
 	<option value='282'>Kinnaur</option>
+	<option value='274'>Kullu</option>
+	<option value='273'>Lahul&spiti</option>
+	<option value='275'>Mandi</option>
+	<option value='281'>Shimla</option>
+	<option value='280'>Sirmaur</option>
+	<option value='279'>Solan</option>
+	<option value='277'>Una</option>
 
    </select>
    <div id="alertMessage_district"></div>
@@ -342,11 +339,78 @@ CPM</a>
 </td>
 <td>
 <div class="selectHeading">
-	<span class="selectDivStyle">HP Constituencies </span>
+	<span class="selectDivStyle">Himachal Constituencies </span>
 	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
 <select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
 <option value="0">Select Constituency</option>
- <option value="650">HAMIRPUR</option><option value="652">Kangra</option><option value="653">Mandi</option><option value="654">Shimla </option><option value="655">Simla</option><option value="38860">KINNAUR</option><option value="38861">RAMPUR</option><option value="38862">ROHRU</option><option value="38863">JUBBAL KOTKHAI</option><option value="38864">CHOPAL</option><option value="38865">KUMARSAIN</option><option value="38866">THEOG</option><option value="38867">SIMLA</option><option value="38868">KASUMPTI</option><option value="38869">ARKI</option><option value="38870">DOON</option><option value="38871">NALAGARH</option><option value="38872">KASAULI</option><option value="38873">SOLAN</option><option value="38874">PACHHAD</option><option value="38875">RAINKA</option><option value="38876">SHILLAI</option><option value="38877">PAONTA DOON</option><option value="38878">NAHAN</option><option value="38879">KOTKEHLOOR</option><option value="38880">BILASPUR</option><option value="38881">GHUMARWIN</option><option value="38882">GEHARWIN</option><option value="38883">NADAUN</option><option value="38884">HAMIRPUR</option><option value="38885">BAMSAN</option><option value="38886">MEWA</option><option value="38887">NADAUNTA</option><option value="38888">GAGRET</option><option value="38889">CHINTPURNI</option><option value="38890">SANTOKGARH</option><option value="38891">UNA</option><option value="38892">KUTLEHAR</option><option value="38893">NURPUR</option><option value="38894">GANGATH</option><option value="38895">JAWALI</option><option value="38896">GULER</option><option value="38897">JASWAN</option><option value="38898">PRAGPUR</option><option value="38899">JAWALAMUKHI</option><option value="38900">THURAL</option><option value="38901">RAJGIR</option><option value="38902">BAIJNATH</option><option value="38903">PALAMPUR</option><option value="38904">SULAH</option><option value="38905">NAGROTA</option><option value="38906">SHAHPUR</option><option value="38907">DHARAMSALA</option><option value="38908">KANGRA</option><option value="38909">BHATTIYAT</option><option value="38910">BANIKHET</option><option value="38911">RAJNAGAR</option><option value="38912">CHAMBA</option><option value="38913">BHARMOUR</option><option value="38914">LAHAUL AND SPITI</option><option value="38915">KULU</option><option value="38916">BANJAR</option><option value="38917">ANI</option><option value="38918">KARSOG</option><option value="38919">CHACHIOT</option><option value="38920">NACHAN</option><option value="38921">SUNDERNAGAR</option><option value="38922">BALH</option><option value="38923">GOPALPUR</option><option value="38924">DHARAMPUR</option><option value="38925">JOGINDER NAGAR</option><option value="38926">DARANG</option><option value="38927">MANDI</option>
+<option value='38917'>Ani</option>
+<option value='38869'>Arki</option>
+<option value='38902'>Baijnath</option>
+<option value='38922'>Balh</option>
+<option value='38885'>Bamsan</option>
+<option value='38910'>Banikhet</option>
+<option value='38916'>Banjar</option>
+<option value='38913'>Bharmour</option>
+<option value='38909'>Bhattiyat</option>
+<option value='38880'>Bilaspur</option>
+<option value='38919'>Chachiot</option>
+<option value='38912'>Chamba</option>
+<option value='38889'>Chintpurni</option>
+<option value='38864'>Chopal</option>
+<option value='38926'>Darang</option>
+<option value='38924'>Dharampur</option>
+<option value='38907'>Dharamsala</option>
+<option value='38870'>Doon</option>
+<option value='38888'>Gagret</option>
+<option value='38894'>Gangath</option>
+<option value='38882'>Geharwin</option>
+<option value='38881'>Ghumarwin</option>
+<option value='38923'>Gopalpur</option>
+<option value='38896'>Guler</option>
+<option value='38884'>Hamirpur</option>
+<option value='38897'>Jaswan</option>
+<option value='38899'>Jawalamukhi</option>
+<option value='38895'>Jawali</option>
+<option value='38925'>Joginder nagar</option>
+<option value='38863'>Jubbal kotkhai</option>
+<option value='38908'>Kangra</option>
+<option value='38918'>Karsog</option>
+<option value='38872'>Kasauli</option>
+<option value='38868'>Kasumpti</option>
+<option value='38860'>Kinnaur</option>
+<option value='38879'>Kotkehloor</option>
+<option value='38915'>Kulu</option>
+<option value='38865'>Kumarsain</option>
+<option value='38892'>Kutlehar</option>
+<option value='38914'>Lahaul and spiti</option>
+<option value='38927'>Mandi</option>
+<option value='38886'>Mewa</option>
+<option value='38920'>Nachan</option>
+<option value='38883'>Nadaun</option>
+<option value='38887'>Nadaunta</option>
+<option value='38905'>Nagrota</option>
+<option value='38878'>Nahan</option>
+<option value='38871'>Nalagarh</option>
+<option value='38893'>Nurpur</option>
+<option value='38874'>Pachhad</option>
+<option value='38903'>Palampur</option>
+<option value='38877'>Paonta doon</option>
+<option value='38898'>Pragpur</option>
+<option value='38875'>Rainka</option>
+<option value='38901'>Rajgir</option>
+<option value='38911'>Rajnagar</option>
+<option value='38861'>Rampur</option>
+<option value='38862'>Rohru</option>
+<option value='38890'>Santokgarh</option>
+<option value='38906'>Shahpur</option>
+<option value='38876'>Shillai</option>
+<option value='38867'>Simla</option>
+<option value='38873'>Solan</option>
+<option value='38904'>Sulah</option>
+<option value='38921'>Sundernagar</option>
+<option value='38866'>Theog</option>
+<option value='38900'>Thural</option>
+<option value='38891'>Una</option>
  </select>
 <div id="alertMessage_const_Himachal Pradesh"></div>
 
@@ -355,18 +419,7 @@ CPM</a>
 </td>
 </tr>
 
-<tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br><br>
-		   
-<img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=794">SAD&nbsp;&nbsp;
-<img src="images/icons/diamond.png"></a> 
-<a href="partyPageAction.action?partyId=163" align="top">BJP&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
-<img src="images/icons/diamond.png"></a>
-<a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
-<img src="images/icons/diamond.png"></a>
-<a href="partyPageAction.action?partyId=239" align="top">BSP&nbsp;<img src="images/party_flags/BSP.png" height="40px" width="60px"></a>&nbsp;&nbsp;
-</td></tr>
+
 <!--<tr><td colspan="7">
 <br>
 <center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3"></object></center></td>
@@ -376,9 +429,7 @@ CPM</a>
 </table>
  
   
-<span style="font-family:verdana;font-size:13px;">
-After 2008 Delimitation this is first Vidhan Sadha Election in Himachal Pradesh . In Himachal Pradesh 19 Constituencies are desloved out of 68 Constituencies and 19 Constituencies are Newly formed in 2008 Delimiatation. <br><br>
-</span><br>
+<br>
 
 </span><br>
 
