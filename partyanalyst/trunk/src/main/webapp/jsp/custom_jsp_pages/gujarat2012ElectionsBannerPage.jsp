@@ -574,18 +574,7 @@ CPM</a>
 </td>
 </tr>
 
-<tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br><br>
-		   
-<img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=794">SAD&nbsp;&nbsp;
-<img src="images/icons/diamond.png"></a> 
-<a href="partyPageAction.action?partyId=163" align="top">BJP&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
-<img src="images/icons/diamond.png"></a>
-<a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
-<img src="images/icons/diamond.png"></a>
-<a href="partyPageAction.action?partyId=239" align="top">BSP&nbsp;<img src="images/party_flags/BSP.png" height="40px" width="60px"></a>&nbsp;&nbsp;
-</td></tr>
+
 <!--<tr><td colspan="7">
 <br>
 <center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3"></object></center></td>
@@ -644,11 +633,11 @@ CPM</a>
 		</tr>
 		</table>
 </div>-->
-<div id="presidentelectionDiv" style="margin-bottom: 0px;  margin-top: -82px;width: 450px; clear: both;">
+<div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
 	<table>
 		<tr>
 			<td>
-				<div style="padding: 8px; font-weight: bold; margin-top: 10px; font-size: 15px; border-radius: 3px 3px 3px 3px; border: 1px solid #d3d3d3;">
+				<div style="padding: 8px; font-weight: bold; margin-top: 47px; font-size: 15px; border-radius: 3px 3px 3px 3px; border: 1px solid #d3d3d3;">
 				<ul>
 				<li style="background:#D2E888; padding: 5px 0px; border-radius: 2px 2px 2px 2px; width: 402px; margin-left: 5px;">
 				<a title="Gujarat 2012 Vidhan Sabha Election" href="specialPageAction.action?specialPageId=14"><span style="font-weight: bold; color: black; margin-left: 16px;">Click Here To View Himachal Pradesh Election 2012</span></a></li>
