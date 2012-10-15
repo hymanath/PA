@@ -157,6 +157,83 @@
 
 
 <tr><td>46</td><td>-</td><td>-</td>	<td>KALYAANADURGAM</td>	<td>KALYAANADURGAM</td>	<td>NAARAAYANAPURAM </td></tr>
+<tr><td>47</td><td>-</td><td>-</td><td>KALYAANADURGAM</td>	<td>KAMDOORU</td>	<td>ERRAMPALLI</td></tr>
+<tr><td>48</td><td>-</td><td>-</td><td>KALYAANADURGAM</td><td>	KAMDOORU	</td><td>KALYAANADURGAM		</td></tr>
+<tr><td>49</td><td>-</td><td>-</td><td>KALYAANADURGAM</td><td>	KAMDOORU</td>	<td>DODAGATTA		</td></tr>
+<tr><td>50</td><td>-</td><td>-</td><td>KALYAANADURGAM</td><td>	KAMDOORU</td>	<td>CHAARPARI		</td></tr>
+<tr><td>51</td><td>-</td><td>-</td><td>KALYAANADURGAM</td><td>		KAMDOORU	</td><td>	CHAAPARI TANDA</td></tr>
+<tr><td>52</td><td>-</td><td>-</td><td>KALYAANADURGAM</td><td>	KAMDOORU	</td><td>MAADIREDDIPALLI</td></tr>		
+<tr><td>53</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>URAVAKONDA</td><td>	VIRAPAAPALLI</td></tr>	
+<tr><td>54</td><td>Day9</td><td>10.10.12</td><td>URAVAKONDA</td><td>	URAVAKONDA	</td><td>VIRAPAAPALLI</td></tr>	
+<tr><td>55</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	SEERPI	</td></tr>	
+<tr><td>56</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA	</td><td>VENKATAADRIPALLI</td></tr>		
+<tr><td>57</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA	</td><td>SEERPI	</td></tr>	
+<tr><td>58</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	SEERPI KOTTALA	</td></tr>	
+<tr><td>59</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	AAVULENNA CROSS	</td></tr>
+<tr><td>60</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	ERRAGUDI CROSS	</td></tr>	
+<tr><td>61</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA	</td><td>BELUGUPPA</td></tr>		
+<tr><td>62</td><td>-</td><td>-</td><td>RAAYADURGAM</td><td>	RAAYADURGAM	</td><td>PENUKALAPAADU</td></tr>	
+<tr><td>63</td><td>Day10</td><td>11.10.12</td><td>RAAYADURGAM	</td><td>RAAYADURGAM	</td><td>HANAKANAHAL</td></tr>
+<tr><td>64</td><td>-</td><td>-</td><td>RAAYADURGAM</td><td>	RAAYADURGAM</td><td>	SAALAPURAM	</td></tr>	
+<tr><td>65</td><td>-</td><td>-</td><td>RAAYADURGAM</td><td>	RAAYADURGAM</td><td>N HANUMAAPURAM	</td></tr>	
+<tr><td>66</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>URAVAKONDA</td><td>		NIMBAGALLU</td></tr>
+<tr><td>67</td><td>Day11</td><td>12.10.12</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	RENUMAAKULAPALLI	</td></tr>	
+<tr><td>68</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	CHAABAALA CROSS	</td></tr>	
+<tr><td>69</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA	</td><td>CHINNA HOTOORU	</td></tr>
+<tr><td>70</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	GADE HOTOORU</td></tr>	
+<tr><td>71</td><td>Day12</td><td>13.10.12</td><td>URAVAKONDA</td><td>	URAVAKONDA	</td><td>GADE HOTOORU</td></tr>	
+<tr><td>72</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	POTTIPAADU	</td></tr>	
+<tr><td>73</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	CHAAYAPURAM	</td></tr>	
+<tr><td>74</td><td>-</td><td>-</td><td>URAVAKONDA</td><td>	URAVAKONDA</td><td>	KONAKANDLA</td></tr>
+<tr><td>75</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU</td><td>	GUNTHAKALLU</td></tr>	
+<tr><td>76</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>		GUNTHAKALLU</td><td>		HANUMAAN JN</td></tr>
+<tr><td>77</td><td>Day13</td><td>14.10.12</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU	</td><td>GUNTHAKALLU</td></tr>
+<tr><td>78</td><td>-</td><td>-</td><td>GUNTHAKALLU	</td><td>GUNTHAKALLU</td><td>	BEERAPPAGUDI CRCLE	</td></tr>
+<tr><td>79</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU	</td><td>MASTAANVALI DARGA	</td></tr>
+<tr><td>80</td><td>-</td><td>-</td><td>GUNTHAKALLU	</td><td>GUNTHAKALLU</td><td>	RTC BUS STAND</td></tr>	
+<tr><td>81</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU	</td><td>KL RAO CIRCLE	</td></tr>
+<tr><td>82</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU	</td><td>DHARMAVARAM GATE	</td></tr>	
+<tr><td>83</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU	</td><td>TB CIRCLE	</td></tr>
+<tr><td>84</td><td>-</td><td>-</td><td>GUNTHAKALLU</td><td>	GUNTHAKALLU</td><td>	BENCH KOTTAALA</td></tr>
+<tr><td>85</td><td>-</td><td>-</td><td>GUNTHAKALLU	</td><td>GUNTHAKALLU</td><td>	PORTAR DARGA</td></tr>		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </table>
 </div>
