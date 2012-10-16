@@ -1605,7 +1605,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	{
 		GallaryVO gallary = new GallaryVO();
 		gallary.setCandidateId((Long)params[0]);
-		gallary.setDescription(params[1].toString());
+		gallary.setDescription(params[1].toString().replaceAll("\\s+", " "));
 		gallary.setUserId((Long)params[2]);
 		gallaryVO.add(gallary);
 	}
@@ -1637,7 +1637,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				{
 			    CandidateProfileDescription candidateProfileDescription = candidateProfileDescriptionDAO.get(params.getUserId());
 			    candidateProfileDescription.setCandidate(candidate);
-			    candidateProfileDescription.setDescription(params.getDescription());
+			    candidateProfileDescription.setDescription(params.getDescription().replace("\n", " "));
 			    candidateProfileDescription.setOrderNo(params.getCandidateId());
 		        candidateProfileDescriptionDAO.save(candidateProfileDescription);
 				}
