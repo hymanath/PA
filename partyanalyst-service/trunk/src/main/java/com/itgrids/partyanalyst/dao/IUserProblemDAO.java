@@ -125,6 +125,44 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Problem> getProblemsByUserId(List<Long> problemIds,Long userId);
 	
 	public List<UserProblem> getUserProblemByUserAndProblemId(Long problemId,Long userId);
+		
+	public List<Object[]> getAllProblemPostedUserDetails(Long userId);
+	
+	public List<Object[]> getAllProblemContainStates(List<Long> problemIds);
+	
+	public List<Long> getCadrePostedProblems(Long userId,boolean isOnlyUserProb);
+	
+	public List<Problem> getAllProblemsByFilterOptions(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO);
+	
+	public List<Long> getAllProblemsByFilterOptionsCount(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO);
+	
+	public List<Object[]> getAllProblemsByFilterOptionsStatusCount(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO);
+ 
+	public List<Long> getAllProblemCount(Long userId,Long stateId,String location);
+	
+	public List<Long> getMyProblemsCount(String query);
+	
+	public Long getCommentedByMeProbCount(Long userId,List<Long> problemIds);
+	
+	public List<Long> getMyProblems(String query);
+	
+	public List<Long> getCommentedByMeProblemIds(Long userId,List<Long> problemIds);
+	
+	public Long getRegionWideProbCount(Long stateId,String locationString,List<Long> problemIds);
+	
+	public List<Object[]> getAllProblemContainDistricts(Long stateId,List<Long> problemIds,String locationscop);
+	
+	public List<Object[]> getAllProblemContainConstituencies(Long districtId,List<Long> problemIds,String locationscop);
+	
+	public List<Object[]> getAllProblemContainMandals(Long constituencyId,List<Long> problemIds,String locationscop);
+	
+	public List<Object[]> getAllProblemContainVillages(Long mandalId,List<Long> problemIds,String locationscop);
+	
+	public List<Object[]> getAllProblemContainBooths(Long mandalId,List<Long> problemIds,String locationscop);
+	
+	public List<Object[]> getAllProblemContainMuncpCorpGmc(Long constituencyId,List<Long> problemIds,String locationscop);
+	
+	public List<Object[]> getAllProblemContainWards(Long localElection,List<Long> problemIds,String locationscop);
 	
 	 public List<UserProblem> getProblemDeatilsByProblemId(Long problemId);
 	 
