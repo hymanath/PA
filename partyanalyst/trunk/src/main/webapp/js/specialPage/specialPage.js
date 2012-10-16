@@ -745,6 +745,11 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	
 	errorDivEle.innerHTML = str;
 }
+function removeAllUnwantedCharactersInArray(str)
+{
+   var strng = str.replace(/[\\\\%\&\#\"+"]/g," ");
+   return replaceEnterKey(strng,"  ");
+}
 function updateProfileDiscription(){
 	var specialPageId = document.getElementById('specialPageId').value;
 	var orderNoArr = [];
@@ -755,7 +760,7 @@ function updateProfileDiscription(){
 		
 			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
 			profDescIdArr.push(document.getElementById('specialPageDescriptionId_'+i).value);
-			descriptionArr.push(removeAllUnwantedCharacters(document.getElementById('descId_'+i).value));		
+			descriptionArr.push(removeAllUnwantedCharactersInArray(document.getElementById('descId_'+i).value));		
    		}
   
  var jsObj =
