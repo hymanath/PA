@@ -2659,7 +2659,11 @@ function addProfileDiscription()
 	
 	errorDivEle.innerHTML = str;
 }
-
+function removeAllUnwantedCharactersInArray(str)
+{
+   var strng = str.replace(/[\\\\%\&\#\"+"]/g," ");
+   return replaceEnterKey(strng,"  ");
+} 
 function updateProfileDiscription()
 {
 	var candidateId=document.getElementById("candidateId").value;
@@ -2670,7 +2674,7 @@ function updateProfileDiscription()
    		{
 			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
 			profDescIdArr.push(document.getElementById('candProfId_'+i).value);
-			descriptionArr.push(removeAllUnwantedCharacters(document.getElementById('descId_'+i).value));		
+			descriptionArr.push(removeAllUnwantedCharactersInArray(document.getElementById('descId_'+i).value));		
    		}
   
   var jsObj =
