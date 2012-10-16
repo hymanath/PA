@@ -3,11 +3,11 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
-import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -77,11 +77,40 @@ public class ProblemAssignedCadreDAO extends GenericDaoHibernate<ProblemAssigned
 		return getHibernateTemplate().find("select distinct model.cadre from ProblemAssignedCadre model where " +
 				" model.userProblem.user.userId = ? and (model.userProblem.problem.isDelete is null or model.userProblem.problem.isDelete = '"+IConstants.FALSE+"') and model.userProblem.problem.isApproved = '"+IConstants.TRUE+"'",params);
 	}
-	
-	
-	
-		
+			
 	public List<ProblemAssignedCadre> getProblemAssignedCadreByUserProblemId(Long userProblemId){
 		return getHibernateTemplate().find("from ProblemAssignedCadre model where model.userProblem.userProblemId =?  order by model.updatedTime desc",userProblemId);
+	}
+	
+	public List<Object[]> getProblemIds(Long userId,boolean userProbOnly){
+		StringBuilder queryObj = new StringBuilder();
+		queryObj.append("select model1.userProblem.problem.problemId,model1.cadre.firstName,model1.cadre.lastName,model1.cadre.cadreId from ProblemAssignedCadre model1 where (model1.userProblem.userProblemId, model1.updatedTime) in (select model.userProblem.userProblemId,max(model.updatedTime) from ProblemAssignedCadre model group by model.userProblem.userProblemId) ");
+		queryObj.append("  and model1.status in ('ASSIGNED','MODIFIED' ) ");
+		
+		if(userProbOnly && userId != null){
+			queryObj.append("  and (model1.userProblem.user.userId = :userId ");
+		}
+		else{
+		queryObj.append("  and (model1.userProblem.visibility.visibilityId = :visibilityId ");
+		if(userId != null)
+			queryObj.append("  or model1.userProblem.user.userId = :userId ");
+		
+		}
+		
+		queryObj.append(" ) and model1.userProblem.problem.isApproved = :isApproved and  model1.userProblem.problem.isDelete = :isDelete ");
+		 
+		Query query = getSession().createQuery(queryObj.toString());
+		
+		if(!(userProbOnly && userId != null)){
+			query.setParameter("visibilityId",1l);
+			}
+		
+		if(userId != null)
+			query.setParameter("userId",userId);
+		
+		query.setParameter("isApproved",IConstants.TRUE);
+		query.setParameter("isDelete",IConstants.FALSE);
+		
+		  return query.list();
 	}
 }
