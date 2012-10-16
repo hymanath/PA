@@ -759,11 +759,11 @@ function getTotalProfile()
             {
 			   showStatusForEmailSubscription(myResults);
 			}
-		    else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
+		    
+			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
 			{
                showPhotosInInitialGallary(myResults);
 			}
-			
 			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="old")
 			{
                showPhotosInAGallary(myResults);
@@ -826,7 +826,7 @@ if(distSelectElVal == 0)
 
 } 
 function getFirstThreePhotoRecords(){
-	alert("fun calling");
+
 	   var jsObj =
 			{   
 			    time : timeST,
