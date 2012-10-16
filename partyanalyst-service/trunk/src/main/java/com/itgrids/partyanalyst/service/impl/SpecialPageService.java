@@ -638,7 +638,7 @@ public class SpecialPageService implements ISpecialPageService{
 			for (Object[] params : list) {
 				specialPageVO = new SpecialPageVO();
 				specialPageVO.setOrderNo((Long) params[0]);
-				specialPageVO.setDescription(params[1].toString());
+				specialPageVO.setDescription(params[1].toString().replaceAll("\\s", " "));
 				specialPageVO.setSpecialPageDescriptionId((Long) params[2]);
 				specialPageList.add(specialPageVO);
 

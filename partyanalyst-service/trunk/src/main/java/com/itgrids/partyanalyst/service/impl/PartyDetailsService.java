@@ -1144,7 +1144,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 		 for(Object[] params : result){
 			gallaryVO.setGallaryId(new Long(params[0].toString()));
 			gallaryVO.setGallaryName(params[1].toString());
-			gallaryVO.setDescription(params[2].toString());
+			gallaryVO.setDescription(params[2].toString().replaceAll("\\s+", " "));
 		 }
 		return gallaryVO;
 		}catch (Exception e) {
