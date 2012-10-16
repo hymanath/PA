@@ -1184,5 +1184,20 @@
 	    <property name="problemManagementReportService" ref="problemManagementReportService" />
 	</bean>
 	
+	<bean name="completeProblemDetailsSearchService" class="com.itgrids.partyanalyst.service.impl.CompleteProblemDetailsSearchService">
+		<property name="userProblemDAO" ref="userProblemDAO" />
+		<property name="problemSourceScopeDAO" ref="problemSourceScopeDAO"/>
+		<property name="moduleDetailsDAO" ref="moduleDetailsDAO" />
+		<property name="moduleRegionScopesDAO" ref="moduleRegionScopesDAO" />
+		<property name="problemManagementService" ref="problemManagementService" />
+		<property name="problemManagementReportService" ref="problemManagementReportService" />
+		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"/>
+		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
+		<property name="problemStatusDAO" ref="problemStatusDAO" />
+		<property name="problemCommentsDAO" ref="problemCommentsDAO" />
+		<property name="cadreProblemsDAO" ref="cadreProblemsDAO"/>
+		
+	</bean>
+	
 </beans>		
 	
