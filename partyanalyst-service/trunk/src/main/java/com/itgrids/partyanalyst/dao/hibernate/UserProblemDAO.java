@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.ProblemSearchFilterOptionsVO;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.Problem;
@@ -777,26 +778,313 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
       		
       		return query.list();  		
       	}
-    public List<UserProblem> getUserProblemByUserAndProblemId(Long problemId,Long userId){
-    	 Object [] params = {problemId,userId,IConstants.TRUE,IConstants.FALSE};
-    	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.user.userId = ? and model.problem.isApproved =? and model.problem.isDelete =? ",params);
-    }
-    
-    /*@SuppressWarnings("unchecked")
-	public List<Object[]> getProblemDeatilsByProblemId(Long problemId)
-    {
-    	return getHibernateTemplate().find("select model.problem.title,model.problem.description,model.problem.existingFrom,model.problem.problemType.problemTypeId,model.problem.problemType.problemType from UserProblem model where model.problem.problemId = ? ",problemId);
-    }*/
-	@SuppressWarnings("unchecked")
-	public List<UserProblem> getProblemDeatilsByProblemId(Long problemId)
-    {
-    	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.problem.isApproved ='true' and model.problem.isDelete ='false'",problemId);
-    }
-	
-	public List<UserProblem> getUserProblemId(Long userId,Long problemId)
-	{
-		 Object [] params = {problemId,userId};
-		 
-		return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.user.userId =? and model.problem.isDelete ='false'",params);
-	}
+       public List<UserProblem> getUserProblemByUserAndProblemId(Long problemId,Long userId){
+      	 Object [] params = {problemId,userId,IConstants.TRUE,IConstants.FALSE};
+      	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.user.userId = ? and model.problem.isApproved =? and model.problem.isDelete =? ",params);
+      }
+       
+       /*@SuppressWarnings("unchecked")
+   	public List<Object[]> getProblemDeatilsByProblemId(Long problemId)
+       {
+       	return getHibernateTemplate().find("select model.problem.title,model.problem.description,model.problem.existingFrom,model.problem.problemType.problemTypeId,model.problem.problemType.problemType from UserProblem model where model.problem.problemId = ? ",problemId);
+       }*/
+   	@SuppressWarnings("unchecked")
+   	public List<UserProblem> getProblemDeatilsByProblemId(Long problemId)
+       {
+       	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.problem.isApproved ='true' and model.problem.isDelete ='false'",problemId);
+       }
+   	
+   	public List<UserProblem> getUserProblemId(Long userId,Long problemId)
+   	{
+   		 Object [] params = {problemId,userId};
+   		 
+   		return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.user.userId =? and model.problem.isDelete ='false'",params);
+   	}
+   	
+       public List<Object[]> getAllProblemPostedUserDetails(Long userId)
+		{
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select distinct model.user.userId,model.user.firstName,model.user.lastName from UserProblem model where model.user.userId is not null and (model.visibility.type = '"+IConstants.PUBLIC+"' ");
+    	   if(userId != null)
+    	   queryString.append(" or model.user.userId =:userId ");	
+    	   queryString.append(") and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
+					" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.user.firstName");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   
+    	   if(userId != null)
+       		  query.setParameter("userId",userId);
+    	   
+    	   return query.list(); 
+		}
+       
+       public List<Object[]> getAllProblemContainStates(List<Long> problemIds){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.state.stateId,model.problem.problemCompleteLocation.state.stateName,count(model.problem.problemCompleteLocation.state.stateId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' group by model.problem.problemCompleteLocation.state.stateId order by model.problem.problemCompleteLocation.state.stateName ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Object[]> getAllProblemContainDistricts(Long stateId,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.district.districtId,model.problem.problemCompleteLocation.district.districtName,count(model.problem.problemCompleteLocation.district.districtId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.state.stateId = "+stateId+" and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.district.districtId order by model.problem.problemCompleteLocation.district.districtName ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Object[]> getAllProblemContainConstituencies(Long districtId,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.constituency.constituencyId,model.problem.problemCompleteLocation.constituency.name,count(model.problem.problemCompleteLocation.constituency.constituencyId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.district.districtId = "+districtId+"  and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.constituency.constituencyId order by model.problem.problemCompleteLocation.constituency.name ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Object[]> getAllProblemContainMandals(Long constituencyId,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.tehsil.tehsilId,model.problem.problemCompleteLocation.tehsil.tehsilName,count(model.problem.problemCompleteLocation.tehsil.tehsilId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.constituency.constituencyId = "+constituencyId+"  and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.tehsil.tehsilId order by model.problem.problemCompleteLocation.tehsil.tehsilName ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Object[]> getAllProblemContainVillages(Long mandalId,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.hamlet.hamletId,model.problem.problemCompleteLocation.hamlet.hamletName,count(model.problem.problemCompleteLocation.hamlet.hamletId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.tehsil.tehsilId = "+mandalId+"  and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.hamlet.hamletId order by model.problem.problemCompleteLocation.hamlet.hamletName ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Object[]> getAllProblemContainBooths(Long mandalId,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.booth.boothId,model.problem.problemCompleteLocation.booth.partNo,count(model.problem.problemCompleteLocation.booth.boothId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.tehsil.tehsilId = "+mandalId+"  and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.booth.boothId order by model.problem.problemCompleteLocation.booth.partNo ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       public List<Object[]> getAllProblemContainMuncpCorpGmc(Long constituencyId,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId,model.problem.problemCompleteLocation.localElectionBody.name,count(model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId),model.problem.problemCompleteLocation.localElectionBody.electionType.electionType from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.constituency.constituencyId = "+constituencyId+"  and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId order by model.problem.problemCompleteLocation.localElectionBody.name ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Object[]> getAllProblemContainWards(Long localElection,List<Long> problemIds,String locationscop){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  model.problem.problemCompleteLocation.ward.constituencyId,model.problem.problemCompleteLocation.ward.name,count(model.problem.problemCompleteLocation.ward.constituencyId) from UserProblem model where  ");
+    	   
+    	   queryString.append(" model.problem.problemId in (:problemIds) and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId = "+localElection+"  and  model.problem.isDelete = 'false' " +
+					" and model.problem.isApproved = 'true' "+locationscop+" group by model.problem.problemCompleteLocation.ward.constituencyId order by model.problem.problemCompleteLocation.ward.name ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   query.setParameterList("problemIds", problemIds);
+    	   
+    	   return query.list(); 
+       }
+       public Long getRegionWideProbCount(Long stateId,String locationString,List<Long> problemIds){
+    	   Query query = getSession().createQuery("select count(distinct model.problem.problemId) from  UserProblem model where model.problem.problemId in (:problemIds) "+locationString+" and model.problem.problemCompleteLocation.state.stateId = "+stateId+"  ");
+    	   query.setParameterList("problemIds", problemIds);
+    	   return (Long)query.uniqueResult();
+       }
+       public List<Long> getAllProblemCount(Long userId,Long stateId,String location){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select  count(*) from UserProblem model where model.user.userId is not null and (model.visibility.type = '"+IConstants.PUBLIC+"' ");
+    	   if(userId != null)
+    	   queryString.append(" or model.user.userId =:userId ");	
+    	   queryString.append(") and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
+					" and model.problem.isApproved = 'true' and model.isOwner = 'true' "+location+" and model.problem.problemCompleteLocation.state.stateId = "+stateId+"");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   
+    	   if(userId != null)
+       		  query.setParameter("userId",userId);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Long> getCadrePostedProblems(Long userId,boolean isOnlyUserProb){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select distinct model.problem.problemId from UserProblem model where model.problem.isDelete = :isDelete and model.problem.isApproved =:isApproved and model.problem.informationSource.informationSourceId = 4 ");
+    	   
+    	   if(isOnlyUserProb && userId != null){
+    		   queryString.append(" and (model.user.userId =:userId ");
+    		   
+    	   }else{
+    		   queryString.append("and (model.visibility.type = '"+IConstants.PUBLIC+"' ");
+    	   if(userId != null)
+        	   queryString.append(" or model.user.userId =:userId ");
+    	   }
+    	   queryString.append(" )");
+            Query query = getSession().createQuery(queryString.toString());
+    	   
+            query.setParameter("isDelete",IConstants.FALSE);
+            query.setParameter("isApproved",IConstants.TRUE);
+    	   if(userId != null)
+       		  query.setParameter("userId",userId);
+    	   
+    	   return query.list(); 
+       }
+       
+       public List<Problem> getAllProblemsByFilterOptions(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO){
+    	   return getQueryForProblemsByFilterOptions(problemSearchFilterOptionsVO,"records").list();
+       }
+       
+       public List<Long> getAllProblemsByFilterOptionsCount(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO){
+    	   return getQueryForProblemsByFilterOptions(problemSearchFilterOptionsVO,"count").list();
+       }
+       
+       public List<Object[]> getAllProblemsByFilterOptionsStatusCount(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO){
+    	   return getQueryForProblemsByFilterOptions(problemSearchFilterOptionsVO,"statuscount").list();
+       }
+       
+       public Query getQueryForProblemsByFilterOptions(ProblemSearchFilterOptionsVO problemSearchFilterOptionsVO,String queryType){
+    	   boolean isMyPrivateProb   = problemSearchFilterOptionsVO.isMyPrivateProb();
+    	   boolean isMyPublicProb    = problemSearchFilterOptionsVO.isMyPublicProb();
+    	   boolean isTakenUpProb     = problemSearchFilterOptionsVO.isTakenUpProb();
+    	   boolean isCommentByMeProb = problemSearchFilterOptionsVO.isCommentByMeProb();
+    	   boolean isAllPublicProb   = problemSearchFilterOptionsVO.isAllPublicProb();
+    	   boolean isPostedByMeProb  = problemSearchFilterOptionsVO.isPostedByMeProb();
+    	   StringBuilder queryString = new StringBuilder();
+    	   if(queryType.equalsIgnoreCase("statuscount"))
+    		   queryString.append("select model.problem.problemStatus.status,count(distinct model.problem.problemId) from UserProblem model where model.problem.isDelete = :isDelete and model.problem.isApproved =:isApproved  ");
+    	   else if(queryType.equalsIgnoreCase("count"))
+    	     queryString.append("select count(distinct model.problem.problemId) from UserProblem model where model.problem.isDelete = :isDelete and model.problem.isApproved =:isApproved  ");
+    	   else
+    		   queryString.append("select distinct model.problem from UserProblem model where model.problem.isDelete = :isDelete and model.problem.isApproved =:isApproved  ");  
+    	   if(problemSearchFilterOptionsVO.getLocationId() != null && problemSearchFilterOptionsVO.getLocationValue() != null && problemSearchFilterOptionsVO.getLocationString() != null)
+    		   queryString.append(problemSearchFilterOptionsVO.getLocationString());
+    	   if(problemSearchFilterOptionsVO.getStatusId() != null)
+    		   queryString.append(" and model.problem.problemStatus.problemStatusId =:statusId ");
+    	   if(problemSearchFilterOptionsVO.getProblemTypeId() != null)
+    		   queryString.append(" and model.problem.problemType.problemTypeId =:problemTypeId ");    	   
+    	   if(problemSearchFilterOptionsVO.isCadreReq())
+    		   queryString.append(" and model.problem.problemId in( :cadreProblemIds) ");
+    	   if(problemSearchFilterOptionsVO.getDepartmentId() != null)
+    		   queryString.append(" and model.problem.problemId in( :departmntProblemIds ) ");
+    	   if(isMyPrivateProb  || isMyPublicProb || isTakenUpProb || isCommentByMeProb || isAllPublicProb || isPostedByMeProb)
+    		   queryString.append(" and model.problem.problemId in( :initialConditionsIds ) "); 
+    	   if(problemSearchFilterOptionsVO.getSelectedUserid() != null && problemSearchFilterOptionsVO.isOnlyUserProb() != true)
+    		   queryString.append(" and model.user.userId = :selectedUserid and model.isOwner = :isOwner ");
+    	   if(problemSearchFilterOptionsVO.getFromDate() != null)
+    		   queryString.append(" and date(model.problem.identifiedOn) >= :fromDate ");
+    	   if(problemSearchFilterOptionsVO.getToDate() != null)
+    		   queryString.append(" and date(model.problem.identifiedOn) <= :toDate ");
+    	   if(problemSearchFilterOptionsVO.isOnlyUserProb() && problemSearchFilterOptionsVO.getUserId() != null){
+    		   queryString.append(" and (model.user.userId =:userId ");
+    		   
+    	   }else{
+    		   queryString.append(" and (model.visibility.type = '"+IConstants.PUBLIC+"' ");
+    	   if(problemSearchFilterOptionsVO.getUserId() != null)
+        	   queryString.append(" or model.user.userId =:userId ");
+    	   }
+    	   queryString.append(" ) ");
+    	   if(queryType.equalsIgnoreCase("statuscount")){
+    		   
+    		   queryString.append(" group by model.problem.problemStatus.problemStatusId");
+    	   }
+    	   if(queryType.equalsIgnoreCase("records"))
+    	   queryString.append("  order by model.problem.updatedTime desc ");
+    	   
+    	   Query query = getSession().createQuery(queryString.toString());
+    	   
+    	   query.setParameter("isDelete",IConstants.FALSE);
+           query.setParameter("isApproved",IConstants.TRUE);
+           if(problemSearchFilterOptionsVO.getStatusId() != null)
+    		   query.setLong("statusId",problemSearchFilterOptionsVO.getStatusId());
+    	   if(problemSearchFilterOptionsVO.getProblemTypeId() != null)
+    		   query.setLong("problemTypeId",problemSearchFilterOptionsVO.getProblemTypeId());    	   
+    	   if(problemSearchFilterOptionsVO.isCadreReq())
+    		   query.setParameterList("cadreProblemIds",problemSearchFilterOptionsVO.getCadreProblemIds());
+    	   if(problemSearchFilterOptionsVO.getDepartmentId() != null)
+    		   query.setParameterList("departmntProblemIds",problemSearchFilterOptionsVO.getDepartmntProblemIds());
+    	   if(isMyPrivateProb  || isMyPublicProb || isTakenUpProb || isCommentByMeProb || isAllPublicProb || isPostedByMeProb)
+    		   query.setParameterList("initialConditionsIds",problemSearchFilterOptionsVO.getInitialConditionsIds());
+    	   if(problemSearchFilterOptionsVO.getSelectedUserid() != null  && problemSearchFilterOptionsVO.isOnlyUserProb() != true){
+    		   query.setLong("selectedUserid",problemSearchFilterOptionsVO.getSelectedUserid());
+    		   query.setString("isOwner", IConstants.TRUE);
+    	   }
+    	   if(problemSearchFilterOptionsVO.getFromDate() != null)
+    		   query.setDate("fromDate",problemSearchFilterOptionsVO.getFromDate());
+    	   if(problemSearchFilterOptionsVO.getToDate() != null)
+    		   query.setDate("toDate",problemSearchFilterOptionsVO.getToDate());
+    	   if(problemSearchFilterOptionsVO.getUserId() != null)
+        		  query.setParameter("userId",problemSearchFilterOptionsVO.getUserId());
+    	   if(queryType.equalsIgnoreCase("records")){
+    	    query.setFirstResult(problemSearchFilterOptionsVO.getFirstResult());
+    	    query.setMaxResults(problemSearchFilterOptionsVO.getMaxResult());
+    	   }
+    	   
+    	   return query; 
+       }
+       
+       public List<Long> getMyProblemsCount(String query){
+  
+    	   return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model "+query+" and model.problem.isDelete = '"+IConstants.FALSE+"' and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+    	    
+       }
+       
+       public List<Long> getMyProblems(String query){
+    	   
+    	   return getHibernateTemplate().find("select distinct model.problem.problemId from UserProblem model "+query+" and model.problem.isDelete = '"+IConstants.FALSE+"' and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+    	    
+       }
+       
+       public Long getCommentedByMeProbCount(Long userId,List<Long> problemIds){
+    	   Query query = getSession().createQuery("select count(distinct model.problem.problemId) from UserProblem model where  model.problem.problemId in (:problemIds ) and ( (model.user.userId = :userId  and model.isOwner = :isOwner) or (model.isOwner = :isOwner and  model.visibility.visibilityId = :visibilityId )) " +
+    	   		" and model.problem.isDelete = '"+IConstants.FALSE+"' and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+    	   query.setParameterList("problemIds", problemIds);
+    	   query.setParameter("userId", userId);
+    	   query.setParameter("isOwner", IConstants.TRUE);
+    	   query.setParameter("visibilityId", 1l);
+    	   return (Long)query.uniqueResult();
+       }
+       
+       public List<Long> getCommentedByMeProblemIds(Long userId,List<Long> problemIds){
+    	   Query query = getSession().createQuery("select distinct model.problem.problemId from UserProblem model where  model.problem.problemId in (:problemIds ) and ( (model.user.userId = :userId  and model.isOwner = :isOwner) or (model.isOwner = :isOwner and  model.visibility.visibilityId = :visibilityId )) " +
+    	   		" and model.problem.isDelete = '"+IConstants.FALSE+"' and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+    	   query.setParameterList("problemIds", problemIds);
+    	   query.setParameter("userId", userId);
+    	   query.setParameter("isOwner", IConstants.TRUE);
+    	   query.setParameter("visibilityId", 1l);
+    	   return query.list();
+       }
 }
