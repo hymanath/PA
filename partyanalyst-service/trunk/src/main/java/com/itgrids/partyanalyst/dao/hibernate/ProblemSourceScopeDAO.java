@@ -27,4 +27,8 @@ public class ProblemSourceScopeDAO extends GenericDaoHibernate<ProblemSourceScop
 	public List<ProblemSourceScope> findByStateId(Long stateId){
 		return getHibernateTemplate().find("from ProblemSourceScope model where model.state.stateId = ?",stateId);
 	}
+	
+	public List<Object[]> getStatesForDepartment(){
+		return getHibernateTemplate().find("select distinct model.state.stateId,model.state.stateName from ProblemSourceScope model order by model.state.stateName");
+	}
 }
