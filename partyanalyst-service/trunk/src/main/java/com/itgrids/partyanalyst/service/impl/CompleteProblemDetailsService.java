@@ -489,6 +489,14 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			problemIds.add(problem.getProblemId());
 			List<Problem> problemsList = getRelatedProblemsByUser(problemIds,userId);
 			populateDataToMap(problemsList,problemMap);
+			if(userId != null){
+				keys = problemMap.keySet();
+				problemIds = getProblemIdsList(keys);
+				if(!(problemMap.size() >= IConstants.MAX_PROBLES)){
+					problemsList = getRelatedProblemsByUser(problemIds,null);
+					populateDataToMap(problemsList,problemMap);
+				}
+			}
 			
 		}catch(Exception e){
 			LOG.error("Exception rised in getAllRelatedProblems method",e);
