@@ -115,4 +115,33 @@ public class ProblemAssignedDepartmentDAO extends GenericDaoHibernate<ProblemAss
 		return getHibernateTemplate().find("from ProblemAssignedDepartment model where model.userProblem.userProblemId = ?  order by model.updatedTime desc",userProblemId);
 				
 	}
+	
+	public List<Object[]> getProblemIds(Long userId ,List<Long> deptorgids,boolean userProbOnly){
+		StringBuilder queryObj = new StringBuilder();
+		queryObj.append("select model1.userProblem.problem.problemId ,model1.departmentOrganisation.organisationName from ProblemAssignedDepartment model1 where (model1.userProblem.userProblemId, model1.updatedTime) in (select model.userProblem.userProblemId,max(model.updatedTime) from ProblemAssignedDepartment model group by model.userProblem.userProblemId) ");
+		queryObj.append("  and model1.status in ('ASSIGNED','MODIFIED' ) ");
+		if(userProbOnly && userId != null){
+			queryObj.append("  and (model1.userProblem.user.userId = :userId ");
+		}
+		else{
+		queryObj.append("  and (model1.userProblem.visibility.visibilityId = :visibilityId ");
+		if(userId != null)
+			queryObj.append("  or model1.userProblem.user.userId = :userId ");
+		
+		}
+		queryObj.append(" ) and model1.userProblem.problem.isApproved = :isApproved and  model1.userProblem.problem.isDelete = :isDelete and model1.departmentOrganisation.departmentOrganisationId in(:deptorgids) ");
+		 
+		Query query = getSession().createQuery(queryObj.toString());
+		if(!(userProbOnly && userId != null)){
+		query.setParameter("visibilityId",1l);
+		}
+		if(userId != null)
+			query.setParameter("userId",userId);
+		
+		query.setParameter("isApproved",IConstants.TRUE);
+		query.setParameter("isDelete",IConstants.FALSE);
+		query.setParameterList("deptorgids", deptorgids);
+		
+		  return query.list();
+	}
 }
