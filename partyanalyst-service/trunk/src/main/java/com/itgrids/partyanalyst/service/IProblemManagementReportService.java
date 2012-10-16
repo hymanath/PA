@@ -104,4 +104,6 @@ public interface IProblemManagementReportService {
 	public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser();
 	
 	public List<ProblemBeanVO> getProblemsInfoByStatusInALocationForUser(Long accessValue,String accessType,Long userId,Long status);
+	
+	public String getLocationStringFromProblemHistory(Long impactedRegionId,Long locationId);
 }
