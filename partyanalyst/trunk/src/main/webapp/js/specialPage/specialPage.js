@@ -2004,6 +2004,13 @@ function callAjaxForSpecialPage(jsObj,url)
 			{
                showFirstFourNewsRecords(myResults);
 			}
+			
+			else if(jsObj.task == "getFirstThreePhotoRecords")
+		    {
+				
+              buildFirstThreePhotoRecords(myResults);
+		    }
+
 		 else if(jsObj.task == "setEmailAlertsForEvent")
          {
 			   showStatusForEmailSubscription(myResults);
@@ -2572,6 +2579,57 @@ function showFirstFourNewsRecords(results)
     document.getElementById("buildSources").innerHTML = str;
  
  }
+
+ function buildFirstThreePhotoRecords(results)
+{
+	if(results.length>0)
+	 {
+	  var count=0;
+	  document.getElementById("photoGallaryDiv").innerHTML= '';
+	  str ='';
+	  str+='<h3 class="main-title"><span class="da-gray">PHOTO GALLERY</span></h3>';
+	  str+='<ul class="photo-gallery-fields">';
+	  if(results[0].path!=null)
+	  {
+	   count++;
+	   str+='<li style="width:128px;"><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+=''+results[0].gallaryName+'</li>';
+	 
+	  }
+	  if(results[1]!=null && results[1].path!=null)
+	  {
+	  count++;
+	  str+='<li style="width:128px;"><img alt="" src="'+results[1].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+=''+results[1].gallaryName+'</li>';
+	  }
+	  if(results[2]!=null  && results[2].path!=null)
+	  {
+	  count++;
+	  str+=' <li style="width:128px;"><img alt="" src="'+results[2].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=''+results[2].gallaryName+'</li>';
+	  
+	  }
+	  for(var i=3;i<results.length;i++)
+	  {
+	   if(results[i]!=null  && results[i].path!=null && count<3)
+	   {
+		count++;
+		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+=''+results[i].gallaryName+'</li>';
+	   }
+	  }
+	  str+='</ul>';
+	  str+='<div class="more">';
+	  str+='<a href="javascript:{}" onclick="photoGallaryPopUp()">More</a></div>';
+	  str+='<div id="buildPhotoGallaryDiv"></div>';
+	  document.getElementById("photoGallaryDiv").innerHTML= str;
+	 }
+	 else
+	 {
+		 document.getElementById("photoGallaryDiv").style.display = 'none';
+	 }
+}
+
  function getTotalNews(viewType)
  {  
 	var queryType='Public';
