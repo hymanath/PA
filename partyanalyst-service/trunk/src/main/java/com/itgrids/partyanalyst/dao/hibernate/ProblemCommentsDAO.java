@@ -79,5 +79,9 @@ public class ProblemCommentsDAO extends GenericDaoHibernate<ProblemComments,Long
 		queryObject.setParameter("isDelete", IConstants.FALSE);
 		return queryObject.list();
 	}
-	
+	public List<Long> getAllProblemsCommentedByMe(Long userId){
+		
+		Query query = getSession().createQuery("select distinct(model.problem.problemId) from ProblemComments model where model.user.userId = "+userId+" and model.isApproved = '"+IConstants.TRUE+"' and model.isDelete =  '"+IConstants.FALSE+"' and model.comment.isAbused = '"+IConstants.FALSE+"' ");
+		return query.list();
+	}
 }
