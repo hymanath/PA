@@ -2606,9 +2606,14 @@ function addProfileDiscription()
 	
 	errorDivEle.innerHTML = str;
 }
-
+function removeAllUnwantedCharactersInArray(str)
+{
+   var strng = str.replace(/[\\\\%\&\#\"+"]/g," ");
+   return replaceEnterKey(strng,"  ");
+} 
 function updateProfileDiscription()
 {
+
 	var partyId=document.getElementById("partyId").value;
 	var orderNoArr = [];
 	var descriptionArr = [];
@@ -2617,8 +2622,8 @@ function updateProfileDiscription()
    		{
 		
 			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
-			profDescIdArr.push(document.getElementById('partyProfileDescriptionId_'+i).value);
-			descriptionArr.push(removeAllUnwantedCharacters(document.getElementById('descId_'+i).value));		
+			profDescIdArr.push(removeAllUnwantedCharactersInArray(document.getElementById('partyProfileDescriptionId_'+i).value));
+			descriptionArr.push(document.getElementById('descId_'+i).value);		
    		}
   
   var jsObj =
