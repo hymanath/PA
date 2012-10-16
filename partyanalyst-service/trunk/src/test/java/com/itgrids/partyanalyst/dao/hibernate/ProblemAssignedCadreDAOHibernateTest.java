@@ -16,10 +16,10 @@ public class ProblemAssignedCadreDAOHibernateTest extends BaseDaoTestCase{
 		this.problemAssignedCadreDAO = problemAssignedCadreDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		problemAssignedCadreDAO.getAll();
-	}
+	}*/
 	
 	/*public void testgetAssignedCadreProblemsInARegion()
 	{
@@ -59,13 +59,13 @@ public class ProblemAssignedCadreDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetCadreForCadreProblemsForAnUser()
+	/*public void testgetCadreForCadreProblemsForAnUser()
 	{
 		List<Cadre> list = problemAssignedCadreDAO.getCadreForCadreProblemsForAnUser(1l);
 		for(Cadre params : list)
 		{
 			System.out.println(params.getFirstName());
 		}
-	}
-
+	}*/
+	
 }
