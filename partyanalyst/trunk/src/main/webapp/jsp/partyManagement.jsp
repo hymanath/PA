@@ -2434,7 +2434,7 @@ function profileDiscriptionDiv()
 	str += '<center><b style="font-size:15px"><font color="#669900">Add The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
-	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<div id="fileUploadErrorMsgDiv"></div>';
 	str += '<tr>';
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Profile  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
@@ -2462,7 +2462,7 @@ function profileDiscriptionDiv()
 	str += '<center><b style="font-size:15px"><font color="#669900">Add The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
-	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<div id="fileUploadErrorMsgDiv"></div>';
 	str += '<tr>';
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Profile  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
@@ -2510,7 +2510,7 @@ function  showPartyDescription(myResults)
 	str += '<center><b style="font-size:15px"><font color="#669900">Update The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
-	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<div id="fileupdateUploadErrorMsgDiv"></div>';
 	str += '<tr>';
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
@@ -2591,7 +2591,7 @@ function addProfileDiscription()
  }
  function showDiscriptionStatus(myResult)  
  {
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDiv');
 	var str = '';
 	if(myResult.resultCode == 0)
 	{
@@ -2613,7 +2613,7 @@ function removeAllUnwantedCharactersInArray(str)
 } 
 function updateProfileDiscription()
 {
-
+	
 	var partyId=document.getElementById("partyId").value;
 	var orderNoArr = [];
 	var descriptionArr = [];
@@ -2644,7 +2644,7 @@ function updateProfileDiscription()
 function showDiscriptionUpdateStatus(myResult)  
 {
 
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var errorDivEle = document.getElementById('fileupdateUploadErrorMsgDiv');
 	var str = '';
 
 	if(myResult.resultCode == 0)
