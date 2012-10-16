@@ -1637,7 +1637,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				{
 			    CandidateProfileDescription candidateProfileDescription = candidateProfileDescriptionDAO.get(params.getUserId());
 			    candidateProfileDescription.setCandidate(candidate);
-			    candidateProfileDescription.setDescription(params.getDescription().replace("\n", " "));
+			    candidateProfileDescription.setDescription(params.getDescription());
 			    candidateProfileDescription.setOrderNo(params.getCandidateId());
 		        candidateProfileDescriptionDAO.save(candidateProfileDescription);
 				}
