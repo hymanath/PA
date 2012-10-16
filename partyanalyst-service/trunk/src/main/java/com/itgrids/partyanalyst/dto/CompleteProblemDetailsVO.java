@@ -41,6 +41,18 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String isProblemDel;
     private Long problemTypeId;
     private String problemType;
+    private Long problemsCount;
+    private String cadrecount;
+    private String deptcount;
+    private List<ProblemBeanVO> deptwiseCount;
+    private List<SelectOptionVO> cadreWiseCount;
+    private Long cadrepostedId;
+    private String cadrepostedName;
+    private Long cadretakenId;
+    private String cadretakenName;
+    private String deptName;
+    private String cadreseting;
+    private String deptsetng;
     
 	public Long getProblemTypeId() {
 		return problemTypeId;
@@ -234,6 +246,78 @@ public class CompleteProblemDetailsVO implements Serializable {
 	}
 	public void setIsProblemDel(String isProblemDel) {
 		this.isProblemDel = isProblemDel;
+	}
+	public Long getProblemsCount() {
+		return problemsCount;
+	}
+	public void setProblemsCount(Long problemsCount) {
+		this.problemsCount = problemsCount;
+	}
+	public String getCadrecount() {
+		return cadrecount;
+	}
+	public void setCadrecount(String cadrecount) {
+		this.cadrecount = cadrecount;
+	}
+	public String getDeptcount() {
+		return deptcount;
+	}
+	public void setDeptcount(String deptcount) {
+		this.deptcount = deptcount;
+	}
+	public List<ProblemBeanVO> getDeptwiseCount() {
+		return deptwiseCount;
+	}
+	public void setDeptwiseCount(List<ProblemBeanVO> deptwiseCount) {
+		this.deptwiseCount = deptwiseCount;
+	}
+	public List<SelectOptionVO> getCadreWiseCount() {
+		return cadreWiseCount;
+	}
+	public void setCadreWiseCount(List<SelectOptionVO> cadreWiseCount) {
+		this.cadreWiseCount = cadreWiseCount;
+	}
+	public Long getCadrepostedId() {
+		return cadrepostedId;
+	}
+	public void setCadrepostedId(Long cadrepostedId) {
+		this.cadrepostedId = cadrepostedId;
+	}
+	public String getCadrepostedName() {
+		return cadrepostedName;
+	}
+	public void setCadrepostedName(String cadrepostedName) {
+		this.cadrepostedName = cadrepostedName;
+	}
+	public Long getCadretakenId() {
+		return cadretakenId;
+	}
+	public void setCadretakenId(Long cadretakenId) {
+		this.cadretakenId = cadretakenId;
+	}
+	public String getCadretakenName() {
+		return cadretakenName;
+	}
+	public void setCadretakenName(String cadretakenName) {
+		this.cadretakenName = cadretakenName;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getCadreseting() {
+		return cadreseting;
+	}
+	public void setCadreseting(String cadreseting) {
+		this.cadreseting = cadreseting;
+	}
+	public String getDeptsetng() {
+		return deptsetng;
+	}
+	public void setDeptsetng(String deptsetng) {
+		this.deptsetng = deptsetng;
 	}
     
 }
