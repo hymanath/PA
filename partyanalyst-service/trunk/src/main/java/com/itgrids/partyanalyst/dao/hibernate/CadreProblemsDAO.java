@@ -106,5 +106,9 @@ public class CadreProblemsDAO extends GenericDaoHibernate<CadreProblems,Long> im
 		
 		return queryObj.executeUpdate();
 	}
+	
+	public List<Object[]> getProblemPostedCadreNameAndId(Long problemId){
+		return getHibernateTemplate().find("select model.cadre.cadreId,model.cadre.firstName,model.cadre.lastName from CadreProblems model where model.problem.problemId = ?",problemId);		 
+	}
 
 }
