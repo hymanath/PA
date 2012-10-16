@@ -3567,6 +3567,43 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>							
 			</result>		
-		</action>   
+		</action>			   
+        <action name="completeProblemDetailsSearchAction" class="completeProblemDetailsSearchAction">
+        	<result name="success">/jsp/completeProblemDetailsSearch.jsp</result>
+        </action>
+        <action name="getDetailsForProblemsAction" class="completeProblemDetailsSearchAction" method="getDetailsForProblems">
+        	<result type="json" name="success">
+				<param name="root">selectOptions</param>		
+			</result>
+        </action>
+        <action name="getProblemScopesDetailsAction" class="completeProblemDetailsSearchAction" method="getLocationDetails">
+        	<result type="json" name="success">
+				<param name="root">selectOptions</param>		
+			</result>
+        </action>
+        <action name="getCompleteProblemsAction" class="completeProblemDetailsSearchAction" method="getProblemsByFilterInputs">
+        	<result type="json" name="success">
+				<param name="root">problemDetails</param>		
+			</result>
+        </action>
+        <action name="getGraphDataForProblemsAction" class="completeProblemDetailsSearchAction" method="getGraphDetails">
+        	<result type="json" name="success">
+				<param name="root">statusList</param>		
+			</result>
+			<result type="json" name="cadreanddept">
+				<param name="root">completeProblemDetailsVO</param>		
+			</result>
+			<result type="json" name="cadre">
+				<param name="root">statusList</param>		
+			</result>
+			<result type="json" name="department">
+				<param name="root">deptwiseprobcount</param>		
+			</result>
+        </action>
+        <action name="problemsOverViewGraphAction" class="completeProblemDetailsSearchAction" method="getRequiredDetails">
+			<result type="json" name="success">
+			   <param name="root">problemManagementChartVO</param>
+			</result>		
+		</action>
 	</package>
 </struts>      
