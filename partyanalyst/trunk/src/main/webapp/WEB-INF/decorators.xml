@@ -138,7 +138,7 @@
 		<pattern>/partyManagementAction*</pattern>
 		<pattern>/cadreManagementAction*</pattern>
 		<pattern>/cadreReportAction*</pattern>
-		
+		<pattern>/completeProblemDetailsSearchAction*</pattern>
     </decorator>
 
 </decorators>
