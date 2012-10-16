@@ -23,5 +23,5 @@ public interface IProblemAssignedCadreDAO extends GenericDao<ProblemAssignedCadr
 	
 	public List<Cadre> getCadreForCadreProblemsForAnUser(Long userId);
 	
-	
+	public List<Object[]> getProblemIds(Long userId,boolean userProbOnly);
 }
