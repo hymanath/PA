@@ -33,8 +33,16 @@ public class ProblemSourceScopeDAOHibernaTest extends BaseDaoTestCase {
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testFindBySourceScope(){
+	/*public void testFindBySourceScope(){
 		List<ProblemSourceScope> list = problemSourceScopeDAO.findBySourceScope("Constituency");
 		assertEquals(1, list.size());
+	}*/
+	public void testGetStatesForDepartment(){
+		List<Object[]> list = problemSourceScopeDAO.getStatesForDepartment();
+		System.out.println(list.size());
+		for(Object[] state:list){
+			System.out.println(state[0].toString()+","+state[1].toString());
+		}
 	}
+	
 }
