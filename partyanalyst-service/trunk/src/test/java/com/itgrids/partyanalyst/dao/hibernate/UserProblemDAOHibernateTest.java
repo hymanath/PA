@@ -345,10 +345,32 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> probCountList = userProblemDAO.checkIsTakenUpProblem(1L,1L);
 		System.out.println(probCountList.get(0));
 	}*/
-	public void testGetUserProblemByUserAndProblemId(){
+	
+	/*public void testGetAllProblemPostedUserDetails(){
+		List<Object[]> usersList = userProblemDAO.getAllProblemPostedUserDetails(null);
+		System.out.println(usersList.size());
+	}*/
+	/*public void testGetUserProblemByUserAndProblemId(){
 		List<UserProblem> userProblemList = userProblemDAO.getUserProblemByUserAndProblemId(1L,2L);
 		System.out.println(userProblemList.size());
 		if(userProblemList.size() > 0)
 		System.out.println(userProblemList.get(0).getVisibility().getType());
+	}*/	
+	/*public void testGetAllProblemContainStates(){
+		List<Object[]> statesList = userProblemDAO.getAllProblemContainStates(1l);
+		System.out.println(statesList.size());
+		for(Object[] state :statesList)
+		System.out.println(state[0].toString()+","+state[1].toString()+","+state[2].toString());
+	}*/
+	/*public void testGetCadrePostedProblems(){
+		List<Long> problenIdsList = userProblemDAO.getCadrePostedProblems(null,true);
+		System.out.println(problenIdsList.size());
+		
+	}*/
+	public void testGetAllProblemCount(){
+		List<Long> countList = userProblemDAO.getAllProblemCount(1l,1l," and model.problem.problemCompleteLocation.district.districtId != null ");
+		
+		for(Long count :countList)
+		System.out.println(count);
 	}
 }
