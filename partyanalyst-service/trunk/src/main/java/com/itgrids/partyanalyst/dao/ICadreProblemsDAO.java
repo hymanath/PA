@@ -30,4 +30,6 @@ public interface ICadreProblemsDAO extends GenericDao<CadreProblems,Long>{
 	public List<CadreProblems> getCadreProblemDetailsByProblemId(Long problemId);
 	
 	public Integer  deleteCadreProblem(Long problemId);
+	
+	public List<Object[]> getProblemPostedCadreNameAndId(Long problemId);
 }
