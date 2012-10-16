@@ -17,10 +17,10 @@ public class ProblemAssignedDepartmentDAOHibernateTest extends BaseDaoTestCase{
 		this.problemAssignedDepartmentDAO = problemAssignedDepartmentDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		problemAssignedDepartmentDAO.getAll();
-	}
+	}*/
 
 	
 	/*public void testgetAssignedProblemsProgressByLocation()
@@ -65,7 +65,7 @@ public class ProblemAssignedDepartmentDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetProblemsBasedOnAssignedProblemProgressIdAndStatus()
+	/*public void testgetProblemsBasedOnAssignedProblemProgressIdAndStatus()
 	{
 		
 		
@@ -79,5 +79,6 @@ public class ProblemAssignedDepartmentDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(user.getProblem().getTitle());
 		}
-	}
+	}*/
+	
 }
