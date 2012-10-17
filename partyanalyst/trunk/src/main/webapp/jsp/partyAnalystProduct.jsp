@@ -48,7 +48,7 @@
 <span class="titlespan">KNOW - ANALYZE - ACT</span>
 <p>The first-of-its-kind Election Analysis Platform, for Politicians, Political Parties and Media.
 </p>
-<p>Party Analyst provides you with different management tools, to manage your Cadre, Constituency and the Problems<br /> faced by the public. It provides you with exclusive election analysis tools equipped with different data sets, which help<br /> you to understand the party’s performance pattern.
+<p>Party Analyst provides you with different management tools, to manage your Cadre, Constituency and the Problems<br /> faced by the public. It provides you with exclusive election analysis tools equipped with different data sets, which help<br /> you to understand the parties performance pattern.
 </p>
 
 <ul class="contentmenutab">
@@ -504,12 +504,11 @@ function showDiv(id)
  document.getElementById('mediaDIV').style.display = 'block';
    $('#politicanDiv').hide();
    $('#politicalPartyDiv').hide();
-   
    $('#mediaDIV').show();
    $('#politicalpartyshow').removeClass('selectedmenu');
-	$('#politicanshow').removeClass('selectedmenu');
-	$('#mediashow').addClass('selectedmenu');
-	$('.contentProd').show();
+   $('#politicanshow').removeClass('selectedmenu');
+   $('#mediashow').addClass('selectedmenu');
+   $('.contentProd').show();
 	//$('#LinkCanElecAna2').trigger('click');
  }
 }
