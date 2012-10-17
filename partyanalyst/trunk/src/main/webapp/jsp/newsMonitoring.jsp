@@ -151,7 +151,7 @@ Get News Reports
 <!--<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>-->
 
 
-<div id="promodiv" style="display:block;">
+<div id="promodiv" style="display:none;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:scroll;">
 	<div style="text-align: center; margin-top: 18px; font-weight: bold; font-size: 20px; color:#4BACC6;">Search News By Different Options</div>
 	<img src="images/NewsSample/category_news.png" style="margin-bottom: -45px;"/>
@@ -174,15 +174,15 @@ Get News Reports
 </div>
 <script>
 $(document).ready(function(){
-	
-	var $j = jQuery.noConflict(true);
+
+var $j = jQuery.noConflict(true);
+
+$("a.inline").fancybox();
+	$.fancybox.init();
 		
-		$(".inline").fancybox();
-		$.fancybox.init();
-		$(".inline").trigger("click");
 		
 	$(".service-box").click(function(){
-		$(location).attr('href',$(this).find("a").attr("href"));
+      $(location).attr('href',$(this).find("a").attr("href"));
     });
 });
 
