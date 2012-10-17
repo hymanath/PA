@@ -67,7 +67,7 @@
 	<div class="contentProd" id="CanElecAna">
 			<div class="Block-Content-full">
 				<h3>You Can Analyze</h3>
-				<ul class="survey-feature-box-product"><li>Voting Patterns based on Geographic’s, Demographics and Parties.</li>
+				<ul class="survey-feature-box-product"><li>Voting Patterns based on Geographics, Demographics and Parties.</li>
 				<li>Polling Percentage Vs Party Performances.</li>
 				<li>Cross Voting Patterns.</li>
 				<li>All local body elections information .</li>
@@ -265,7 +265,7 @@
 	<div class="contentProd" id="CanElecAna2">
 			<div class="Block-Content-full">
 				<h3>You Can Analyze</h3>
-				<ul class="survey-feature-box-product"><li>Voting Patterns based on Geographic’s, Demographics and Parties.</li>
+				<ul class="survey-feature-box-product"><li>Voting Patterns based on Geographics, Demographics and Parties.</li>
 				</ul>
 			</div>	
 			<div class="Block-Content-full">
