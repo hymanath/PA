@@ -169,7 +169,10 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 </div>
 <script>
 $(document).ready(function(){
-		$(".inline").fancybox();
+	var $j = jQuery.noConflict(true);
+
+		$("a.inline").fancybox();
+		$.fancybox.init();
 		//$(".inline").trigger("click");
 			
 	$(".service-box").click(function(){
