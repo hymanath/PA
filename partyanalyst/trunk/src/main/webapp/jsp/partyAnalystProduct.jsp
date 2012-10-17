@@ -398,6 +398,50 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 </div>
 <script>
 $(document).ready(function(){
+
+$("#LinkCanCadMgt").click(function(){
+
+	$(".contentsubmenutab a").removeClass("selectedsubmenu");
+    $(this).addClass("selectedsubmenu");
+	var str=$(this).attr("id");
+	str=str.split("Link");
+	var strid= "#"+str[1];
+	$(".contentProd").hide();
+	$(strid).show("slow");
+	});
+	$("#LinkCanConMgt").click(function(){
+
+	$(".contentsubmenutab a").removeClass("selectedsubmenu");
+    $(this).addClass("selectedsubmenu");
+	var str=$(this).attr("id");
+	str=str.split("Link");
+	var strid= "#"+str[1];
+	$(".contentProd").hide();
+	$(strid).show("slow");
+	});
+	$("#LinkCanProMgt").click(function(){
+	
+	$(this).addClass("selectedsubmenu");
+	var str=$(this).attr("id");
+	str=str.split("Link");
+	var strid= "#"+str[1];
+	$(".contentProd").hide();
+	$(strid).show("slow");
+	});
+	$("#LinkCanElecAna").click(function(){
+	
+	$(this).addClass("selectedsubmenu");
+	var str=$(this).attr("id");
+	str=str.split("Link");
+	var strid= "#"+str[1];
+	$(".contentProd").hide();
+	$(strid).show("slow");
+	});
+	$(".contentmenutab a").click(function(){
+	
+	$(".contentmenutab a").removeClass("selectedmenu");
+    $(this).addClass("selectedmenu");
+	});
 		$(".inline").fancybox();
 		//$(".inline").trigger("click");
 		
@@ -408,17 +452,21 @@ $(document).ready(function(){
 	$(".contentProd").hide();
 	$(".contentProd:first").show();
 	
-	$(".contentsubmenutab a").click(function(){
+	$(".contentsubmenutab  a").click(function(){
+	
+	
 	$(".contentsubmenutab a").removeClass("selectedsubmenu");
     $(this).addClass("selectedsubmenu");
 	var str=$(this).attr("id");
 	str=str.split("Link");
 	var strid= "#"+str[1];
+	
 	$(".contentProd").hide();
 	$(strid).show("slow");
 	});
 	
 	$(".contentmenutab a").click(function(){
+	
 	$(".contentmenutab a").removeClass("selectedmenu");
     $(this).addClass("selectedmenu");
 	});
@@ -426,16 +474,18 @@ $(document).ready(function(){
 
 function showDiv(id)
 {
+
  if(id == "politican" )
  {
-document.getElementById('politicanDiv').style.display = 'block';
+
    $('#politicanDiv').show();
    $('#politicalPartyDiv').hide();
    $('#mediaDIV').hide();
    $('#politicalpartyshow').removeClass('selectedmenu');
 	$('#politicanshow').addClass('selectedmenu');
 	$('#mediashow').removeClass('selectedmenu');
-	$('#LinkCanElecAna').trigger('click');
+	$('.contentProd').show();
+	//$('#LinkCanElecAna').trigger('click');
  }
  else if(id == "politicalparty")
  {
@@ -446,7 +496,8 @@ document.getElementById('politicanDiv').style.display = 'block';
     $('#politicalpartyshow').addClass('selectedmenu');
 	$('#politicanshow').removeClass('selectedmenu');
 	$('#mediashow').removeClass('selectedmenu');
-	$('#LinkCanElecAna1').trigger('click');
+	$('.contentProd').show();
+	//$('#LinkCanElecAna1').trigger('click');
  }
  else if(id == "media" )
  {
@@ -458,7 +509,8 @@ document.getElementById('politicanDiv').style.display = 'block';
    $('#politicalpartyshow').removeClass('selectedmenu');
 	$('#politicanshow').removeClass('selectedmenu');
 	$('#mediashow').addClass('selectedmenu');
-	$('#LinkCanElecAna2').trigger('click');
+	$('.contentProd').show();
+	//$('#LinkCanElecAna2').trigger('click');
  }
 }
 </script>
