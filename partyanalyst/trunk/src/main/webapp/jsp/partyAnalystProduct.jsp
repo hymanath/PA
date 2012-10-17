@@ -154,7 +154,7 @@
 </div>
 
 </div>
-<div id="politicalPartyDiv"  style="display:none;">
+<div id="politicalPartyDiv"  style="display:block;">
 <div class="ManageBG">
 <ul class="contentsubmenutab">
 <li><a href="#" id="LinkCanElecAna1" class="selectedsubmenu"> Election Analysis </a></li>
@@ -256,7 +256,7 @@
 	
 </div>
 </div>
-<div id="mediaDIV" style="display:none;">
+<div id="mediaDIV" style="display:block;">
 <div class="ManageBG">
 <ul class="contentsubmenutab">
 <li><a href="#" id="LinkCanElecAna2" class="selectedsubmenu"> Election Analysis </a></li>
@@ -451,7 +451,7 @@ function showDiv(id)
    $('#politicanDiv').hide();
    $('#politicalPartyDiv').hide();
    $('#mediaDIV').show();
-    $('#politicalpartyshow').removeClass('selectedmenu');
+   $('#politicalpartyshow').removeClass('selectedmenu');
 	$('#politicanshow').removeClass('selectedmenu');
 	$('#mediashow').addClass('selectedmenu');
 	$('#LinkCanElecAna2').trigger('click');
