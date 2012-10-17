@@ -151,10 +151,10 @@ Get News Reports
 <!--<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>-->
 
 
-<div id="promodiv" style="display:none;">
+<div id="promodiv" style="display:block;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:scroll;">
 	<div style="text-align: center; margin-top: 18px; font-weight: bold; font-size: 20px; color:#4BACC6;">Search News By Different Options</div>
-	<img src="images/NewsSample/News_Service1.PNG" style="margin-bottom: -45px;"/>
+	<img src="images/NewsSample/category_news.png" style="margin-bottom: -45px;"/>
 	<div style="text-align: center; margin-top: 18px; font-weight: bold; font-size: 20px; color:#4BACC6;">Different Levels Wise News</div>
 	
 	<table style="width: 70%; margin-top: 17px; border: 1px solid #d3d3d3; margin-left: 137px;">
@@ -174,11 +174,15 @@ Get News Reports
 </div>
 <script>
 $(document).ready(function(){
+	
+	var $j = jQuery.noConflict(true);
+		
 		$(".inline").fancybox();
-		//$(".inline").trigger("click");
+		$.fancybox.init();
+		$(".inline").trigger("click");
 		
 	$(".service-box").click(function(){
-      $(location).attr('href',$(this).find("a").attr("href"));
+		$(location).attr('href',$(this).find("a").attr("href"));
     });
 });
 
