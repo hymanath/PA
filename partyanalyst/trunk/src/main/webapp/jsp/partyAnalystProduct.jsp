@@ -154,7 +154,7 @@
 </div>
 
 </div>
-<div id="politicalPartyDiv"  style="display:block;">
+<div id="politicalPartyDiv"  style="display:none;">
 <div class="ManageBG">
 <ul class="contentsubmenutab">
 <li><a href="#" id="LinkCanElecAna1" class="selectedsubmenu"> Election Analysis </a></li>
@@ -256,7 +256,7 @@
 	
 </div>
 </div>
-<div id="mediaDIV" style="display:block;">
+<div id="mediaDIV" style="display:none;">
 <div class="ManageBG">
 <ul class="contentsubmenutab">
 <li><a href="#" id="LinkCanElecAna2" class="selectedsubmenu"> Election Analysis </a></li>
@@ -428,6 +428,7 @@ function showDiv(id)
 {
  if(id == "politican" )
  {
+document.getElementById('politicanDiv').style.display = 'block';
    $('#politicanDiv').show();
    $('#politicalPartyDiv').hide();
    $('#mediaDIV').hide();
@@ -438,6 +439,7 @@ function showDiv(id)
  }
  else if(id == "politicalparty")
  {
+  document.getElementById('politicalPartyDiv').style.display = 'block';
    $('#politicanDiv').hide();
    $('#politicalPartyDiv').show();
    $('#mediaDIV').hide();
@@ -448,8 +450,10 @@ function showDiv(id)
  }
  else if(id == "media" )
  {
+ document.getElementById('mediaDIV').style.display = 'block';
    $('#politicanDiv').hide();
    $('#politicalPartyDiv').hide();
+   
    $('#mediaDIV').show();
    $('#politicalpartyshow').removeClass('selectedmenu');
 	$('#politicanshow').removeClass('selectedmenu');
