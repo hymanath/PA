@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.FileSourceLanguage;
 public interface IFileSourceLanguageDAO extends GenericDao<FileSourceLanguage, Long>  {
 
 	public List<FileSourceLanguage> getFileSourceLanguageObject(Long fileId,Long sourceId ,Long languageId);
+	
+	public  List<Object> getFileLanguage(Long fileId);
 }
