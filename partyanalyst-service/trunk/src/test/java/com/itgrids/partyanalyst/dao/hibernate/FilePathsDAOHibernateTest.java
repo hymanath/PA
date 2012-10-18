@@ -25,9 +25,14 @@ public class FilePathsDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetProblemFiles()
+	/*public void testGetProblemFiles()
 	{
 		List<Object[]> list = filePathsDAO.getProblemFiles(1l,null,IConstants.PUBLIC);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetFilePaths()
+	{
+		System.out.println(filePathsDAO.getFilePaths(15343l));
 	}
 }
