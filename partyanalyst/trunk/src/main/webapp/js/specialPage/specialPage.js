@@ -3420,7 +3420,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForSpecialPage();
   }
   else if(id==3)
   {
@@ -3436,7 +3436,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForSpecialPage();
   }
   else if(id==4)
   {
@@ -3456,7 +3456,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForSpecialPage();
   }
   else if(id==5 || id==7)
   {
@@ -3491,7 +3491,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForSpecialPage();
   }
   else if(id==6 || id==8)
   {
@@ -3529,7 +3529,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForSpecialPage();
   }
   else if(id==9)
   {
@@ -3557,11 +3557,11 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForSpecialPage();
   }
 }
 
-function getStates()
+function getStatesForSpecialPage()
 {
   var jsObj =
 		{ 
