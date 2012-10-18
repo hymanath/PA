@@ -591,7 +591,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			 <div class="clear"></div>
 			
 			<div>
-			<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageActionAction.action?partyId=${partyId}" data-num-posts="500" data-width="420"></div>
+			<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageAction.action?partyId=${partyId}" data-num-posts="500" data-width="420"></div>
 			</div>
 
 			
