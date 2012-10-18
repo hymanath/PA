@@ -21,10 +21,15 @@ public class FileSourceLanguageDAOHibernateTest extends BaseDaoTestCase {
 		 fileSourceLanguageDAO.getAll();
 	 }*/
 	
-	public void testGetFileSourceLanguageObject()
+	/*public void testGetFileSourceLanguageObject()
 	{
 		List<FileSourceLanguage> list = fileSourceLanguageDAO.getFileSourceLanguageObject(8547L,1L, 1l);
 		for(FileSourceLanguage filesource: list)
 		System.out.println(filesource.getFile().getFileId());
+	}*/
+	
+	public void testGetFileLanguage()
+	{
+		System.out.println(fileSourceLanguageDAO.getFileLanguage(14l));
 	}
 }
