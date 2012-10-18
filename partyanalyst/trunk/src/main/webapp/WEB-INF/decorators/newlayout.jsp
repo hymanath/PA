@@ -173,9 +173,9 @@ function buildAccordion()
 	getAllStatesHavingLocalBody("stateList_l");
 	getLocalBodiesForState(1);
 
-	$( "#accordion" ).accordion();
+	$("#accordion").accordion();
 		$(function() {
-		$( "#accordion" ).dialog({
+		$( "#accordion").dialog({
 			autoOpen: true,
 			show: "blind",
 			width: 350,
@@ -864,7 +864,7 @@ var electionType = document.getElementById('electionTypeId').value;
 
 if(electionType == 1)
 	{
-getStates();
+getStatesForNewLayOut();
 document.getElementById('states').style.display="none";
 getElectionYearsInHomePage('Parliament');
 	}
@@ -873,11 +873,11 @@ if(electionType == 2)
 	{
 	document.getElementById('states').style.display="block";
 
-getStates();
+getStatesForNewLayOut();
 
 	}
 }
-function getStates()
+function getStatesForNewLayOut()
 {
 
 	var electionType = document.getElementById('electionTypeId').value;
@@ -941,7 +941,7 @@ var electionType = document.getElementById('electionTypeId').value;
 
 if(electionType == 1)
 	{
-getStates();
+getStatesForNewLayOut();
 document.getElementById('states').style.display="none";
 getElectionYearsInHomePage('Parliament');
 	}
@@ -950,11 +950,11 @@ if(electionType == 2)
 	{
 	document.getElementById('states').style.display="block";
 
-getStates();
+getStatesForNewLayOut();
 
 	}
 }
-function getStates()
+function getStatesForNewLayOut()
 {
 
 	var electionType = document.getElementById('electionTypeId').value;
