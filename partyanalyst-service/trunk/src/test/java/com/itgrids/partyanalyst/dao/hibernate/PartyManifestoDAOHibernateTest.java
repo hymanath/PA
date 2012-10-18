@@ -20,7 +20,8 @@ public class PartyManifestoDAOHibernateTest extends BaseDaoTestCase {
 	//public List<Object[]> getPartyManifestoInfo(Long partyId) {
 	public void testGetPartyManifestoInfo()
 	{
-		 List<Object[]> result = partyManifestoDAO.getPartyManifestoInfo(163l);
+		 //List<Object[]> result = partyManifestoDAO.getPartyManifestoInfo(362l);
+		List<Object[]> result = partyManifestoDAO.getPartyManifestoInfo(362l,"and model.state.stateId=1");
 		 System.out.println(result.size());
 		 for (Object[] objects : result) {
 			System.out.println(objects[0].toString());
@@ -63,12 +64,12 @@ public class PartyManifestoDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}*/
-	public void testGetElectionTypeBasedOnPartyId(){
+	/*public void testGetElectionTypeBasedOnPartyId(){
 		List list = partyManifestoDAO.getElectionTypeBasedOnPartyId(362l);
 		System.out.println(list.size());
 		for(int i=0;i<list.size();i++)
 		{
 			System.out.println(list.get(i));
 		}
-	}
+	}*/
 }
