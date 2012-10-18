@@ -942,10 +942,18 @@ public class PartyDetailsService implements IPartyDetailsService {
 	 	   	 fileVO.setFileDate(objects[3].toString());
 	 	   	 fileVO.setIds((Long)objects[4]);
 	 	   	 fileVO.setFileName1(objects[5].toString());
-	 	   	 fileVO.setPath(objects[6].toString());
-	 	   	 fileVO.setProblem(objects[7].toString());
-	 	   	 fileVO.setLanguage(objects[8].toString());
-	 	   	 fileVO.setPathOfFile(objects[6].toString());
+	 	     fileVO.setProblem(objects[6].toString());
+	 	     
+	 	    List<Object> filePath = filePathsDAO.getFilePaths(fileVO.getIds());
+	 	     if(filePath != null && filePath.size() > 0)
+	 	     {
+	 	    	fileVO.setPath(filePath.get(0).toString());
+	 	    	fileVO.setPathOfFile(filePath.get(0).toString());
+	 	     }
+	 	    List<Object> fileLanguage = fileSourceLanguageDAO.getFileLanguage(fileVO.getIds());
+	 	    if(fileLanguage != null && fileLanguage.size() > 0)
+	 	    	fileVO.setLanguage(fileLanguage.get(0).toString());
+	 	   	 
  	   	fileVOList.add(fileVO);
  	  }
      return fileVOList;
@@ -981,10 +989,17 @@ public class PartyDetailsService implements IPartyDetailsService {
 	   	 fileVO.setFileDate(objects[4].toString());
 	   	 fileVO.setIds((Long)objects[5]);
 	   	 fileVO.setFileName1(objects[6].toString());
-	   	 fileVO.setPath(objects[7].toString());
-	   	 fileVO.setProblem(objects[8].toString());
-	   	 fileVO.setLanguage(objects[9].toString());
-	   	 fileVO.setPathOfFile(objects[7].toString());
+	   	 fileVO.setProblem(objects[7].toString());
+	   	 List<Object> filePath = filePathsDAO.getFilePaths(fileVO.getIds());
+	   	 if(filePath != null && filePath.size() > 0)
+	   	 {
+	   		 fileVO.setPath(filePath.get(0).toString());
+	   		 fileVO.setPathOfFile(filePath.get(0).toString());
+	   	 }
+	   	 List<Object> fileLanguage = fileSourceLanguageDAO.getFileLanguage(fileVO.getIds());
+	   	 if(fileLanguage != null && fileLanguage.size() > 0)
+	   		 fileVO.setLanguage(fileLanguage.get(0).toString());
+	   	 
 	   	 retValue.add(fileVO);
 	  }
     return retValue;
