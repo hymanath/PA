@@ -500,18 +500,20 @@ function allCandidates()
 		partyId = 0;
 		}
 
- 	if(allCandidatesRadioEl){ 
+ 	//if(allCandidatesRadioEl){ 
 
 	if(allCandidatesRadioEl.checked == true)
 	{
 		
 		resultsCategory = allCandidatesRadioEl.value;
 	} 
-	else{
-	resultsCategory = allCandidatesRadioEl.value;	
+	//else{
+	//resultsCategory = allCandidatesRadioEl.value;	
 
-	}
-	}else if (lostCandidatesRadioEl !=null && lostCandidatesRadioEl.checked == true){
+	//}
+	//}
+	
+	else if (lostCandidatesRadioEl !=null && lostCandidatesRadioEl.checked == true){
 		resultsCategory = lostCandidatesRadioEl.value;
 	} else if (wonCandidatesRadioEl.checked == true)
 	{
