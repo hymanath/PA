@@ -463,7 +463,7 @@ var pollStatus = [];
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" style="margin-top:12px;" alt=""/></span>
          <marquee style="margin:6px 5px;" onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
-		 <font class="scrollDataStyle" color="blue">Hamid Ansari declared as winner in 2012 vice presidential elections. He secured 490 votes out of 728 valid votes. Jaswant Singh got 238 votes.
+		 <font class="scrollDataStyle" color="blue">The Election Commission of India released Notification for General Election of <a href=" specialPageAction.action?specialPageId=13" > Gujarat</a> and <a href=" specialPageAction.action?specialPageId=14" > Himachal Pradesh </a>. <a href="specialPageAction.action?specialPageId=14" > Himachal Pradesh </a> (All 68ACs) Date of Poll is 04.11.2012. <a href="specialPageAction.action?specialPageId=13" > Gujarat</a> Election will be held in two phases, Date of Poll for Phase-I (87ACs) is 13.12.2012 and Phase-II (95ACs) is 17.12.2012 and Counting of Votes in 20.12.2012.
        	</font>
          </marquee>
             <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" style="margin-top:12px;" alt=""/></span> </div>
