@@ -659,15 +659,21 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			   
 			   <div id="manifestoesDiv" style="border-top: 1px solid rgb(205, 205, 205); margin-top: 25px; padding-top: 13px;">
 			   <s:if test="partyVO.electionTypes.size>0">
-			   <h1 class="inc-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h1>
+			   <!-- <h1 class="inc-title" ><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h1>-->
+			   <h1 class="pr-title" style="font-family: sans-serif;">${partyVO.partyShortName} Party Manifestoes
+			   <span class="or-down-arrow">
+				<img alt="" src="images/icons/or-down-arrow.png">
+				</span>
+			   </h1><br><br>
 			   <s:iterator value="partyVO.electionTypes" status="stat">
 			   <s:if test="partyVO.electionTypes[#stat.index] =='Parliament'">
-			   <div><input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
+			   <div style="margin-top: 1px;font-size: 13px;"><input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
 			   </s:if>
 			   <s:if test="partyVO.electionTypes[#stat.index] == 'Assembly'">
-			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="selectedState('stateDiv');"><s:property value="partyVO.electionTypes[#stat.index]" />
+			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="selectedStateForAssembly('stateDiv');"><s:property value="partyVO.electionTypes[#stat.index]" />
 			   </s:if>
 			   </s:iterator>
+			   
 			   <div id="selectStatediv" style="display:none;margin-top: 0px; margin-left: 100px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth" style="width:160px;"></select></div>
 				<div id="manifestoFilesDiv" style="margin-top: 7px;"></div>
 			   </div>
@@ -1480,7 +1486,7 @@ function showPhotoGallary(){
 function buildCandidatePhotoGallary(results)
 {
 	var str ='';
-	str+='<div id="content" style="width:650px;">';		
+	str+='<div id="content">';		
 	str += '<fieldset class="imgFieldset">';
 	str +='<table  width="100%" style="margin-top:10px;">';
 		
@@ -1538,7 +1544,7 @@ function getCompleteGallaries(gallaryId){
 function showPhotosInAGallary(results){
 
    var str ='';
-   str+='<div id="content" style="width:650px;">';
+   str+='<div id="content">';
    str += '<fieldset class="imgFieldset">';
    str+='<table width="100%" style="margin-top:10px;">'
    str+='<tr><td>';
@@ -2812,6 +2818,7 @@ function buildElectionResultsOfParty(results,includeAlliances)
  }
 function getPartyManifesto(partyId)
  {
+	 $("#stateDiv").css("display","none");
 	var jsObj ={
 		partyId:partyId,
 		task:"getPartyManifesto"
@@ -2856,14 +2863,20 @@ function buildPartyManifestos(results)
 			if(results[i].title=='Assembly')
 			{
 				document.getElementById("AssemblyId").checked ='true';
-			 str+='<tr><td>'+results[i].description+'   '+results[i].title+'    '+results[i].fileDate +'  Manifesto Of    '+results[i].gallaryName;
+			 /*str+='<tr><td>'+results[i].description+'   '+results[i].title+'    '+results[i].fileDate +'  Manifesto Of    '+results[i].gallaryName;*/
+			 str +='<tr><td>'+results[i].fileDate +' Manifesto</td></tr>';
 			 }
 			else
 			 {
-			 str+='<tr><td>'+results[i].title+'    '+results[i].fileDate +'  Manifesto Of    '+results[i].gallaryName;
+			/* str+='<tr><td>'+results[i].title+'    '+results[i].fileDate +'  Manifesto Of    '+results[i].gallaryName;*/
+			str +='<tr><td>'+results[i].fileDate +'  Manifesto</td></tr>';
 			 }			
 			str +='</td></tr><tr><td>';
-			str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
+
+			if(results[i].title=='Assembly')
+			str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}" title="Click here to view '+results[i].description+' '+results[i].title+' '+results[i].fileDate +'  Manifesto Of '+results[i].gallaryName+'"/>';
+			else
+				str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}" title="Click here to view '+results[i].title+' '+results[i].fileDate +' Manifesto Of '+results[i].gallaryName+'"/>';
 			str +='</td></tr></table>';
 		   }
 		   
@@ -2874,7 +2887,7 @@ function buildPartyManifestos(results)
 		 
 
 		str+='<div class="more" style="margin-bottom: 35px;">';
-		str+='<a href="javascript:{}" onclick="PartyManifestoPopup()">More</a></div>';
+		str+='<a href="javascript:{}" onclick="PartyManifestoPopup()" title="Click here to view more Manifestos">More</a></div>';
 		str+='</fieldset>';
 		str+='<div id="buildManifestoGallaryDiv"><div id="selectionDiv"></div>';
 		str+='<div id="manifestoGallaryPopupDiv"></div></div>';
@@ -2990,7 +3003,7 @@ function buildSelectionDiv(){
 	
 		str +='<table style="width:100%;">';
 		str +='<tr><td style="width: 18%; font-size: 14px; font-family: Trebuchet MS,Arial,Helvetica,sans-serif; margin-right: 0px; margin-left: 0px; padding-left: 34px;">';
-		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="showManifestoGallary();getCountry();" checked="true"> Country</td><td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="showManifestoGallary();getCountry();" checked="true"> Country</td><td style="width:11%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
 		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'statePopUpDiv\')" style="padding-right: 28px; width: 22px;"> State</td>';
 		str +='<td style="font-size: 14px; font-family: Trebuchet MS,Arial,Helvetica,sans-serif; width: 65px; height: 35px; margin-right: 13px; padding-top: 1px;"><div id="selectStatePopupdiv" style="display:none"><select id="statePopUpDiv" onchange="getPartyManifestoFile();getElectionTypesBasedOnStateId();" class="selectWidth"/></div></td>';
 		str+='<td style="font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><select id="electionTypeDiv" style="display:none" onchange="getPartyManifestoFile();getElectionYearsBasedOnElecTypePartyIdAndStateId()" class="selectWidth"></select>';
@@ -3337,7 +3350,7 @@ function buildPartyManifesoGallary(results)
 {
 	var str='';
 	document.getElementById("manifestoGallaryPopupDiv").innerHTML = str;
-	str+='<div id="content" style="width:650px;">';		
+	str+='<div id="content">';		
 	str += '<fieldset class="imgFieldset">';
 	str +='<table  width="100%" style="margin-top:10px;">';
 	
@@ -3353,19 +3366,25 @@ if(results.length <=0)
 		if(j++ % no_of_imagesPerRow == 0)
 			str += '<tr style="height:220px;">';
 		
-		str += '<td width="33%" class="imageStyle">';
-		str += '<table class="tableStyle">';
+		str += '<td width="33%" class="imageStyle" style="display:table-cell;">';
+		str += '<table class="tableStyle" style="width:100%;display:table;">';
 	
 		str +='<tr><td>';
 		if(results[i].title=='Assembly'){
-		str += results[i].description+'   '+results[i].title+' '+results[i].fileDate+'  Manifesto';
+		/*str += results[i].description+'   '+results[i].title+' '+results[i].fileDate+'  Manifesto';*/
+		str +=''+results[i].fileDate+'  Manifesto';
 		 }
 		else
 		 {
 		 str += results[i].title+'     '+results[i].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
+
+		if(results[i].title=='Assembly')
+		 str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}" title="Click here to view '+results[i].description+' '+results[i].title+' '+results[i].fileDate +'  Manifesto Of '+results[i].gallaryName+'"/>';
+		else
+		 str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}" title="Click here to view '+results[i].title+' '+results[i].fileDate +' Manifesto Of '+results[i].gallaryName+'"/>';
+
 		str +='</td></tr><tr><td>';
 		str +=''+results[i].problem+'';
 		str +='</td></tr>';
@@ -3388,7 +3407,7 @@ function relatedState()
   var elmt = document.getElementById('selectStatediv');
   str +='<select id="stateDiv" name="stateDiv" class="selectWidth"/>';
   elmt.innerHTML = str;*/
-  selectedState();
+  //selectedState();
 }
 function buildResults1(results,divId)
  {
@@ -3458,6 +3477,7 @@ function buildResults(results,divId){
 }
 function selectedState(selectStateDiv)
 {
+	$("#stateDiv").css("display","block");
        var jsObj =
 		   {   
 		    time : timeST,
@@ -3470,6 +3490,23 @@ function selectedState(selectStateDiv)
 	var url = "partyPhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
 
+}
+
+function selectedStateForAssembly(selectStateDiv)
+{
+	
+$("#stateDiv").css("display","block");
+       var jsObj =
+		   {   
+		    time : timeST,
+			partyId:partyId,
+			task:"getSelectedStateDetails",
+			divElmt : selectStateDiv
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyPhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
 }
 function getCountry()
 {
