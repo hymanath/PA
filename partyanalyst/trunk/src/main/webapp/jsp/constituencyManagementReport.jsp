@@ -233,6 +233,8 @@
 			String comments = rb.getString("comments");			
 		  %> 
 		
+		var $j = jQuery.noConflict(true);
+
 		var localizationObj = {
 								problemLabel : '<%=problemLabel%>',
 								constituencyMgmt : '<%=constituencyMgmt%>',								
