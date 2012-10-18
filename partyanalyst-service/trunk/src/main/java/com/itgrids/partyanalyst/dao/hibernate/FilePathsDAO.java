@@ -47,5 +47,13 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		return queryObj.list();
 		
 	}
+	
+	
+	public List<Object> getFilePaths(long fileId)
+	{
+		return getHibernateTemplate().find("select model.filePath from FilePaths model where model.fileSourceLanguage.file.fileId=?",fileId);
+		
+	}
+	
 
 }
