@@ -180,11 +180,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
   border-top-right-radius:5px;
   display:table;
   height:36px;
-  margin-left:auto;
+  margin-left:168px;
   margin-right:auto;
   width:923px;
-  margin-left:52px;
+ 
   margin-bottom:10px;
+
 }
 
 .main-mbg {
