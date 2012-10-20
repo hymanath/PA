@@ -732,13 +732,14 @@ var pollStatus = [];
 										
 									</div>
 								</div>-->
-						<div class="partiesList" style="background:#fff;">
+						<div class="partiesList" style="background:#fff;position:absolute;margin-left:605px;margin-top:217px;">
 						     <!--<h3 class="headingClass">View Your Parties</h3><hr style=" border: 0;width: 80%;">-->
-							 <h3 style=" border-bottom-color: #CCCCCC;
+							<!-- <h3 style=" border-bottom-color: #CCCCCC;
     border-bottom-style: solid;
     border-bottom-width: 1px; padding-left: 9px;
     color: #C66E17;font-size: 13px;
-    font-weight: bold; padding: 7px;margin-bottom: 3px;">View Your Parties</h3>
+    font-weight: bold; padding: 7px;margin-bottom: 3px;">View Your Parties</h3>-->
+	<h3 style="margin-top:11px;width:344px;background:#0088CC;color:#fff;padding:5px;margin-left:1px;box-shadow:4px 0px 3px #888;margin-bottom:7px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> View Your Parties</h3>
 							 <table>
 							  <tr  style="height:130px;padding-top:30px;">
                                 <td><div class="prevImg"><img src="images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div></td>
@@ -761,13 +762,15 @@ var pollStatus = [];
                               </tr>
 							 </table>
 						</div>
-						<div class="our-services" style="background:#fff;width:367px;">
+						<div class="our-services" style="background:#fff;width:367px;position:relative;margin-top:7px;,margin-left:604px;">
 		                  <!--  <h3 class="headingClass">Our Services</h3>-->
-<h3 style=" border-bottom-color: #CCCCCC;
+<!--<h3 style=" border-bottom-color: #CCCCCC;
     border-bottom-style: solid;
     border-bottom-width: 1px; padding-left: 9px;
-    color: #C66E17;font-size: 13px;
-    font-weight: bold; padding: 7px;margin-bottom: 3px;">Our Services</h3>
+    color: red;font-size: 13px;
+    font-weight: bold; padding: 7px;margin-bottom: 3px;background:#0088CC;">Our Services</h3>-->
+
+	<h3 style="margin-top:11px;width:344px;background:#0088CC;color:#fff;padding:5px;margin-left:1px;box-shadow:4px 0px 3px #888;margin-bottom:7px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Our Services</h3>
 		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
 		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
@@ -797,7 +800,7 @@ var pollStatus = [];
                                      <div style="height:15px;padding-bottom:5px;">
 									 <div id="alreadyVotedMsg"></div>
                                      </div>
-									<div id="pollsWidgetBody" class="well" style="background:#FFFFFF;width:348px;">
+									<div id="pollsWidgetBody" class="well" style="background:#FFFFFF;width:348px;margin-top:203px;margin-left:-4px;">
 								
 									</div>
 				
