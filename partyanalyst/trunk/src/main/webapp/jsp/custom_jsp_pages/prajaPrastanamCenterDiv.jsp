@@ -18,12 +18,12 @@
 		<th style="background:#21B2ED;color:#ffffff;">NAME OF THE MANDAL</th>
 		<th style="background:#21B2ED;color:#ffffff;">NAME OF THE VILLAGE</th>
 	</tr>
-<tr><td>1</td><td>Day1</td><td>18.10.12/1</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>IDUPULAPAYA	</td></tr>
+<tr><td>1</td><td>Day1</td><td>18.10.12</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>IDUPULAPAYA	</td></tr>
 <tr><td>2</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>VEERANNAGATTU PALLE	</td></tr>
 <tr><td>3</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>VEMPALLE	</td></tr>
 <tr><td>4</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>KUMMARAM PALLE	</td></tr>
 <tr><td>5</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>VEMPALLE	</td></tr>
-<tr><td>6</td><td>Day2</td><td>19.10.12/2</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>VEMPALLE	</td></tr>
+<tr><td>6</td><td>Day2</td><td>19.10.12</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>VEMPALLE	</td></tr>
 <tr><td>7</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>NANDIPALLE	</td></tr>
 <tr><td>8</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>TALLAPALLE	</td></tr>
 <tr><td>9</td><td>	-</td><td>-</td><td>	KADAPA</td><td>PULIVENDULA</td>	<td>VEMPALLE</td><td>MUALREDDY PALLE	</td></tr>
