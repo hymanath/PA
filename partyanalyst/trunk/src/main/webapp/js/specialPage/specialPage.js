@@ -2639,7 +2639,7 @@ function showFirstFourNewsRecords(results)
 			viewtype:viewType,
 			specialPageId:specialPageId,
 			startRecord:0,
-			maxRecord:20,
+			maxRecord:100,
 			queryType:queryType,
 			task:"getNewsToDisplay"
 		};
@@ -2833,7 +2833,7 @@ function showFirstFourNewsRecords(results)
 			specialPageId:specialPageId,
 			scopeType:scopeId,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryType,
 			task:"getNewsByScope"
 		};
@@ -2850,7 +2850,7 @@ function showFirstFourNewsRecords(results)
 		    time : timeST,
 			specialPageId:specialPageId,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryTypeChecked,
 			task:"getOtherNews"
 		};
@@ -2937,20 +2937,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
+	   str+='<li style="width:128px;"><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
+	  str+='<li style="width:128px;"><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li style="width:128px;"><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -2959,7 +2959,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li style="width:128px;"><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].title+'</li>';
 	   }
 	  }
@@ -2998,7 +2998,7 @@ function getVideosOfCandidate()
 		{   
 			specialPageId : specialPageId,
 			startIndex  : 0,
-			maxRecords	: 20,
+			maxRecords	: 100,
 			time		: timeST,
 			task:"getLatestVideos"
 		};
@@ -3059,7 +3059,7 @@ function showAllVideoGalleries(){
 	       	   time : timeST,
 			   specialPageId : specialPageId,
 			   startRecord:0,
-			   maxRecord:20,
+			   maxRecord:100,
 			   task:"getSpecialPageGallaryDetail"
             };
 
@@ -4389,7 +4389,7 @@ function showPhotoGallery()
 		    time : timeST,
 			specialPageId:specialPageId,
 			startRecord:0,
-			maxRecord:20,
+			maxRecord:100,
 			task:"getspaecialPagePhotoGallaryDetails"
 		};
 
