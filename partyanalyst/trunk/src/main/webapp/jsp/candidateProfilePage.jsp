@@ -1725,7 +1725,7 @@ function showPhotoGallary(){
 		    time : timeST,
 			candidateId:candidateId,
 			startRecord:0,
-			maxRecord:20,
+			maxRecord:100,
 			task:"getCandidatesPhotoGallaryDetailWithOutGallerySizeZero"
 		};
 
@@ -2288,7 +2288,7 @@ function showFirstFourNewsRecords(results)
 			    viewtype:viewType,
 			    candidateId:candidateId,
 			    startRecord:0,
-			    maxRecord:20,
+			    maxRecord:100,
 			    queryType:queryType,
 			    task:"getNewsToDisplay"
 		     };
@@ -2486,7 +2486,7 @@ function showFirstFourNewsRecords(results)
 		    time : timeST,
 			candidateId:candidateId,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryTypeChecked,
 			task:"getOtherNews"
 		};
@@ -2769,7 +2769,7 @@ function candidateInfo()
 		{   
 		   	candidateId : candidateId,
 			startIndex  : 0,
-			maxRecords	: 20,
+			maxRecords	: 100,
 			time		: timeST,
 			task:"getCandidateLatestVideos"
 		};
@@ -2836,7 +2836,7 @@ function showAllVideoGalleries(){
 	       	   time : timeST,
 			   candidateId:candidateId,
 			   startRecord:0,
-			   maxRecord:20,
+			   maxRecord:100,
 			   task:"videoGalleriesForACandidate"
             };
 
