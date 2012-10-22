@@ -53,6 +53,27 @@
 id="votesShareSpan">Click here to view Maro Praja Prasthanam Schedule</span>
 </div>
 <br>
+<div>
+
+<fieldset >
+ <legend style="font-weight:bold;font-family:Verdana;">View Profiles</legend>
+<table>
+<tr><td><a href="candidateElectionResultsAction.action?candidateId=30580" title="Click here to view Y S Jagan Mohan Reddy Profile,News,Photos,Vedio Gallaries"><img width="125" height="120" src="images/candidates/Y S JAGAN MOHAN REDDY.jpg"></img></a></td>
+<td><a href="candidateElectionResultsAction.action?candidateId=156693"> <img width="125" height="120" src="images/candidates/Y S VIJAYAMMA.jpg" style="margin-left:5px;" title="Click here to view YS Vijayamma Profile,News,Photos,Vedio Gallaries"></img></a></td>
+  
+<td><a href="partyPageAction.action?partyId=1117
+" style="font-family:helvetica;" title="Click here to view 
+YSR Congress Party Details"><img width="125" height="120" src="images/party_flags/YSRC.PNG" style="margin-left:5px;"></a></td></tr>
+<tr><td><span><a href="candidateElectionResultsAction.action?candidateId=30580
+" style="font-family:helvetica;" title="Click here to view  Y S Jagan Mohan Reddy Profile,News,Photos,Vedio Gallaries">Y S Jagan Mohan Reddy</a></span></td>
+<td><span><a href="candidateElectionResultsAction.action?candidateId=156693
+" style="font-family:helvetica;" title="Click here to view YS Vijayamma Profile,News,Photos,Vedio Gallaries"> YS Vijayamma </a></span></td>
+<td><span><a href="partyPageAction.action?partyId=1117" title="Click here to view YSR Congress Party Details">
+YSR Congress Party </a></span></td>
+</tr>
+ </table> 
+</fieldset>
+</div>
 <script>
 function getSchedule()
 	 {
