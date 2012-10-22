@@ -1475,7 +1475,7 @@ function showPhotoGallary(){
 		    time : timeST,
 			partyId:partyId,
 			startRecord:0,
-			maxRecord:20,
+			maxRecord:100,
 			task:"getPartyPhotoGallaryDetailWithOutGallerySizeZero"
 		};
 
@@ -1998,7 +1998,7 @@ function showFirstFourNewsRecords(results)
 			viewtype:viewType,
 			partyId:partyId,
 			startRecord:0,
-			maxRecord:20,
+			maxRecord:100,
 			queryType:queryType,
 			task:"getNewsToDisplay"
 		};
@@ -2187,7 +2187,7 @@ function showFirstFourNewsRecords(results)
 			candidateId:candidateId,
 			scopeType:scopeId,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryType,
 			task:"getNewsByScope"
 		};
@@ -2204,7 +2204,7 @@ function showFirstFourNewsRecords(results)
 		    time : timeST,
 			candidateId:candidateId,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryTypeChecked,
 			task:"getOtherNews"
 		};
@@ -2424,7 +2424,7 @@ function partyInfo()
 		{   
 		   	candidateId : candidateId,
 			startIndex  : 0,
-			maxRecords	: 20,
+			maxRecords	: 100,
 			time		: timeST,
 			task:"getCandidateLatestVideos"
 		};
@@ -2493,7 +2493,7 @@ function showAllVideoGalleries(){
 	       	   time : timeST,
 			   partyId:partyId,
 			   startRecord:0,
-			   maxRecord:20,
+			   maxRecord:100,
 			   task:"videoGalleriesForAParty"
             };
 
@@ -2614,7 +2614,7 @@ function getNewsBySource(source)
 			partyId:partyId,
 			scopeType:scopeId,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryType,
 			source : source,
 			task:"getNewsBySourceScope"
@@ -2638,7 +2638,7 @@ function getNewsByLanguage(language)
 			scopeType:scopeId,
 			language : language,
 			startIndex:0,
-			maxResults:20,
+			maxResults:100,
 			queryType:queryType,
 			task:"getNewsByLanguageScope"
 		};
@@ -3021,7 +3021,7 @@ function showManifestoGallary()
 	time : timeST,
 	partyId:partyId,
 	startRecord:0,
-	maxRecord:20,
+	maxRecord:100,
 	task:"getPartyManifestoDetails"
   };
 
