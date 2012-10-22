@@ -147,6 +147,51 @@
 		<to type="redirect">%{context-path}/partyPageAction.action?partyId=872</to>
 	</rule>
 
+	<rule>
+		<from>/telugu-desam-party-30-years-anniversary.action</from>
+		<to type="redirect">%{context-path}/partyPageAction.action?partyId=872</to>
+	</rule>
+
+	<rule>
+		<from>/CBI-cases-against-politians.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=9</to>
+	</rule>
+
+	<rule>
+		<from>/indian-presidential-elections-2012.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=10</to>
+	</rule>
+
+	<rule>
+		<from>/tamilnadu-congress-committee.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=11</to>
+	</rule>
+
+	<rule>
+		<from>/vastunna-meekosam-padayathra-by-nara-chandrababu-naidu.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=12</to>
+	</rule>
+
+	<rule>
+		<from>/gujarat-2012-vidhan-sabha-elections.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=13</to>
+	</rule>
+
+	<rule>
+		<from>/himachal-pradesh-2012-vidhan-sabha-elections.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=14</to>
+	</rule>
+
+	<rule>
+		<from>/indiramma-baata.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=15</to>
+	</rule>
+
+	<rule>
+		<from>/maro-praja-prasthanam-padayathra-by-ys-sharmila.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=16</to>
+	</rule>
+
 	<!-- Party Pages End-->
 
 </urlrewrite>
