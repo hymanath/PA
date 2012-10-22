@@ -148,11 +148,6 @@
 	</rule>
 
 	<rule>
-		<from>/telugu-desam-party-30-years-anniversary.action</from>
-		<to type="redirect">%{context-path}/partyPageAction.action?partyId=872</to>
-	</rule>
-
-	<rule>
 		<from>/CBI-cases-against-politians.action</from>
 		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=9</to>
 	</rule>
