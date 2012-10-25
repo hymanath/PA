@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.Comparator;
 
 import org.apache.log4j.Logger;
 
@@ -160,7 +161,7 @@ public class ContentManagementService implements IContentManagementService{
 								 fileVO.setFileVOList(fileVOSourceLanguageList);
 								 fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
 										sdf.format(fileGallary.getFile().getFileDate()));
-									
+								 fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
 									filesList.add(fileVO);
 							 }
 						}
@@ -206,10 +207,11 @@ public class ContentManagementService implements IContentManagementService{
 					
 					fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
 						sdf.format(fileGallary.getFile().getFileDate()));
-					
+					 fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
 					filesList.add(fileVO);
 				  }
 				}
+				Collections.sort(filesList,date_comparator);				
 				relatedGallary.setFilesList(filesList);
 				relatedGalleries.add(relatedGallary);
 				contentDetailsVO.setRelatedGalleries(relatedGalleries);
@@ -278,5 +280,20 @@ public class ContentManagementService implements IContentManagementService{
 			return false;
 		}
 	}
-
+	public static Comparator<FileVO> date_comparator = new Comparator<FileVO>()
+		    {
+		   
+		        public int compare(FileVO fileVO1, FileVO fileVO2)
+		        {
+		        	long n1 = 0l;
+		        	 long n2 = 0l;
+		        	 if(fileVO1.getReqFileDate() != null)
+		        	 n1 = fileVO1.getReqFileDate().getTime();
+		        	 if(fileVO2.getReqFileDate() != null)
+			         n2 = fileVO2.getReqFileDate().getTime();
+		        	 if (n1 < n2) return -1;
+		 	        else if (n1 > n2) return 1;
+		 	        else return 0;
+		        }
+		    };
 }
