@@ -73,6 +73,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private int multipleNews = 0;
 	private String existingDateFrom;
 	private String identifiedDateOn;
+	private Date reqFileDate;
 	
 	public String getExistingDateFrom() {
 		return existingDateFrom;
@@ -664,6 +665,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setOrderName(String orderName) {
 		this.orderName = orderName;
+	}
+
+	public Date getReqFileDate() {
+		return reqFileDate;
+	}
+
+	public void setReqFileDate(Date reqFileDate) {
+		this.reqFileDate = reqFileDate;
 	}
 	
     
