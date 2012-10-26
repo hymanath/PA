@@ -143,7 +143,7 @@
 												buildCadreLevelTable(jsObj,myResults.cadreInfo);
 											}																							
 									}catch (e) {   
-										alert("Invalid JSON result" + e);   
+										//alert("Invalid JSON result" + e);   
 									}  
 							   },
 							   scope : this,
@@ -206,7 +206,7 @@
 										}
 										catch (e)
 										{   
-											alert("Invalid JSON result" + e);   
+											//alert("Invalid JSON result" + e);   
 										}  
 											
  									},
@@ -257,7 +257,7 @@
 						}
 						catch(e)
 						{   
-							alert("Invalid JSON result" + e);   
+							//alert("Invalid JSON result" + e);   
 						}  
 				   },
 				   scope : this,
@@ -568,7 +568,7 @@
 									}
 									catch (e)
 										{   
-										   	alert("Invalid JSON result" + e);   
+										   	//alert("Invalid JSON result" + e);   
 										}	  
 						              },
 						               scope : this,

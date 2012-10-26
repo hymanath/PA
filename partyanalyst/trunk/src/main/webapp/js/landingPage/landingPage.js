@@ -59,7 +59,7 @@ function landingPageAjaxCall(jsObj,url)
 								submitResult(myResults);								
 									
 						}catch (e) {   
-							alert("Invalid JSON result" + e);   
+							//alert("Invalid JSON result" + e);   
 						}  
 				   },
 				   scope : this,

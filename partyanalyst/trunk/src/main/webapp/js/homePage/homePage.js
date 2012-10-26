@@ -774,7 +774,7 @@ function callHomePageAjax(jsObj,url)
 						}
 						catch(e)
 						{   
-							alert("Invalid JSON result" + e);   
+							//alert("Invalid JSON result" + e);   
 						}  
 				   },
 				   scope : this,
@@ -1430,7 +1430,7 @@ function homePageAjaxCall(param,jsObj,url){
 						}
 						catch (e)
 							{   
-							  	alert("Invalid JSON result" + e);   
+							  	//alert("Invalid JSON result" + e);   
 							}	  
 			              },
 			               scope : this,
@@ -2667,7 +2667,7 @@ function callAjaxToSaveSelectedPollDetails(param,jsObj,url,questionId){
 						}
 						catch (e)
 							{   
-							  	alert("Invalid JSON result" + e);   
+							  	//alert("Invalid JSON result" + e);   
 							}	  
 			              },
 			               scope : this,

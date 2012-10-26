@@ -445,7 +445,7 @@
 							}catch (e) {   
 								var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 								ajaxImgSpanElmt.style.display = 'none';
-							   	alert("Invalid JSON result" + e);   
+							   	//alert("Invalid JSON result" + e);   
 							}  
  		               },
  		               scope : this,

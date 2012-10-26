@@ -1,5 +1,5 @@
 var ddaccordion={
-	ajaxloadingmsg: '<img src="loading2.gif" /><br />Loading Content...',
+	ajaxloadingmsg: '<img src="" /><br />Loading Content...',
 
 	headergroup: {},
 	contentgroup: {},

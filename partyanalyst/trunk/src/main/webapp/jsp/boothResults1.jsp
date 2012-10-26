@@ -45,7 +45,7 @@
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 
 								alert("Process completed successfully");								
 							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
+							   	//alert("Invalid JSON result" + e);   
 							}  
  		               },
  		               scope : this,

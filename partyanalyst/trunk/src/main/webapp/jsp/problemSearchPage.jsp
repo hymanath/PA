@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst</title>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/combo.css" /> 
+
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"></link> 
 <script type="text/javascript">
 
@@ -834,7 +834,7 @@ var custom_paginator = {
 			}
 			catch (e)
 			{   		
-				alert("Invalid JSON result" + e);   
+				//alert("Invalid JSON result" + e);   
 			}  
 		},
 		scope : this,
