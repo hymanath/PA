@@ -3353,8 +3353,9 @@ function showNotLogIn()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to 
-		subscribe. <a href="/PartyAnalyst/loginInputAction.action" style="color:#80D1F1;">Click here to Login</a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to ';
+		str+='subscribe.<a href="/PartyAnalyst/loginInputAction.action" style="color:#80D1F1;">Click here to Login';
+		str+='</a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 
 function subscribeAlert()
