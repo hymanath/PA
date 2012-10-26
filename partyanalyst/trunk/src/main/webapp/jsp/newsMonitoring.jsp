@@ -129,7 +129,7 @@ span {
 <div class="row-fluid whitegloss" style="padding:15px 0px;" >
 	<div class="span7" style="height:auto;padding:5px;" >
 		
-			<img src="images/new_homepage/newspaper.png" style="width:550px; height: 250px; "/>
+			<img src="images/services/newspaper.jpg" style="width:550px; height: 250px; "/>
 		
 	</div>
 	<div class="span5" style="height:auto;">
@@ -164,7 +164,7 @@ span {
 		
 		<div class="span4 btn">
 			
-				<img src="images/new_homepage/tool.png" style="width: 125px; height: 125px;"/>
+				<img src="images/services/tool.png" style="width: 125px; height: 125px;"/>
 			
 		</div>
 		
@@ -184,7 +184,7 @@ span {
 		</div>
 		<div class="span4 btn" >
 			
-					<img src="images/new_homepage/category.jpg" style="width: 125px; height: 125px; "/>
+					<img src="images/services/category.jpg" style="width: 125px; height: 125px; "/>
 		
 		</div>
 	</div>
@@ -204,7 +204,7 @@ span {
 		
 		<div class="span4 btn">
 			
-				<img src="images/new_homepage/profile.jpg" style="width: 150px; height: 150px; "/>
+				<img src="images/services/profile.jpg" style="width: 150px; height: 150px; "/>
 			
 		</div>
 	</div>
@@ -222,7 +222,7 @@ span {
 		
 		<div class="span4 btn">
 		
-				<img src="images/new_homepage/mailalerts.png" style="width: 150px; height: 150px; "/>
+				<img src="images/services/mailalerts.png" style="width: 150px; height: 150px; "/>
 			
 		</div>
 	</div>
@@ -243,8 +243,8 @@ span {
 				</div>
 				
 				<div style="padding:5px;background:#ECECEC;text-align:center;">
-					<img src="images/new_homepage/two.png" style="width: 20px; height: 20px; "/><span>Years Subscription</span>
-					<div style="width:40px;margin-left:7px;"><img src="images/new_homepage/pin.png" style="width: 20px; height: 20px; "/></div>
+					<img src="images/services/two.png" style="width: 20px; height: 20px; "/><span>Years Subscription</span>
+					<div style="width:40px;margin-left:7px;"><img src="images/services/pin.png" style="width: 20px; height: 20px; "/></div>
 					<div style="border:1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;"
 					
 					<ul class="InAddPages" >
@@ -257,8 +257,8 @@ span {
 				</div>
 				<div style="padding:5px;background:#ECECEC;text-align:center;">
 				
-					<img src="images/new_homepage/one.png" style="width: 20px; height: 20px;"/><span>Year Subscription</span>
-					<div style="width:40px;margin-left:7px;"><img src="images/new_homepage/pin.png" style="width: 20px; height: 20px; "/></div>
+					<img src="images/services/one.png" style="width: 20px; height: 20px;"/><span>Year Subscription</span>
+					<div style="width:40px;margin-left:7px;"><img src="images/services/pin.png" style="width: 20px; height: 20px; "/></div>
 					<div style="border:1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;"
 					
 					<ul class="InAddPages">
@@ -272,8 +272,8 @@ span {
 				
 				<div style="padding:5px;background:#ECECEC;text-align:center;">
 				
-					<img src="images/new_homepage/six.png" style="width: 20px; height: 20px; "/><span>Months Subscription</span>
-					<div  style="width:40px;margin-left:7px;"><img src="images/new_homepage/pin.png" style="width: 20px; height: 20px; "/></div>
+					<img src="images/services/six.png" style="width: 20px; height: 20px; "/><span>Months Subscription</span>
+					<div  style="width:40px;margin-left:7px;"><img src="images/services/pin.png" style="width: 20px; height: 20px; "/></div>
 					<div style="border: 1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;">
 					<ul class="InAddPages">
 						<li>10% discount</li>

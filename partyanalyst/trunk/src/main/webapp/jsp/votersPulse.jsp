@@ -59,7 +59,7 @@
 <div class="row-fluid  whitegloss" style="width:99%;padding-right:0px;">
  	<div class="span7" style="height:auto;" >
 	
-		<img src="images/new_homepage/voters.jpg" style="width: 550px; height: 220px;"/>
+		<img src="images/services/voters.jpg" style="width: 550px; height: 220px;"/>
 
 	</div>
 
@@ -113,7 +113,7 @@
 		</div>
 		<div class="span4 btn btn-success">
 			<div style="padding:5px;">
-			<img src="images/new_homepage/survey.jpg" style="width: 100px; height: 150px;"/>
+			<img src="images/services/survey.jpg" style="width: 100px; height: 150px;"/>
 			</div>
 		</div>
 	</div>
@@ -162,7 +162,7 @@
 		</div>
 		<div class="span4 btn ">
 		<div style="padding:15px;">
-			<img src="images/new_homepage/comparative.jpg" style="width: 150px; height: 150px;"/>
+			<img src="images/services/comparative.jpg" style="width: 150px; height: 150px;"/>
 			</div>
 		</div>
 	</div>
@@ -176,7 +176,7 @@
 		</div>
 		<div class="span4  btn">
 		<div style="padding:15px;">
-			<img src="images/new_homepage/votespreferences.jpg" style="width: 150px; height: 150px;"/>
+			<img src="images/services/votespreferences.jpg" style="width: 150px; height: 150px;"/>
 			</div>
 		</div>
 	</div>
@@ -189,7 +189,7 @@
 		</div>
 		<div class="span4 btn">
 		<div style="padding:15px;">
-			<img src="images/new_homepage/geo.jpg" style="width: 150px; height: 150px;"/>
+			<img src="images/services/geo.jpg" style="width: 150px; height: 150px;"/>
 			</div>
 		</div>
 	</div>
@@ -203,7 +203,7 @@
 		</div>
 		<div class="span4 btn">
 		<div style="padding:15px;">
-			<img src="images/new_homepage/demo.jpg" style="width: 150px; height: 150px;"/>
+			<img src="images/services/demo.jpg" style="width: 150px; height: 150px;"/>
 			</div>
 		</div>
 	</div>
@@ -215,7 +215,7 @@
 		</div>
 		<div class="span4 btn">
 		<div style="padding:15px;">
-			<img src="images/new_homepage/leader.jpg" style="width: 150px; height: 150px;"/>
+			<img src="images/services/leader.jpg" style="width: 150px; height: 150px;"/>
 			</div>
 		</div>
 	</div>

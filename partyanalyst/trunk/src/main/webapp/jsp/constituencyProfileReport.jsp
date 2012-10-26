@@ -60,7 +60,7 @@
 
 <div class="row-fluid breadcrumb">
 	<div class="span7" style="height:auto;">
-		<div><img src="images/new_homepage/ac.jpg" style="width: 550px; height: 220px;"/></div>
+		<div><img src="images/services/ac.jpg" style="width: 550px; height: 220px;"/></div>
 	</div>
 	<div class="span5" style="height:auto;width:354px;">
 		<h3>Get the complete picture of your constituency to
@@ -121,7 +121,7 @@
 	</div>
 	<div class="span4 btn" >
 		<div style="padding:15px;">
-			<img src="images/new_homepage/all_party_perf.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			<img src="images/services/all_party_perf.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 		</div>
 	</div>
 </div>
@@ -138,7 +138,7 @@
 	</div>
 	<div class="span4 btn" >
 			<div style="padding:15px;">
-				<img src="images/new_homepage/census.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/census.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -152,7 +152,7 @@
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/pollingvsparty.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/pollingvsparty.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -167,7 +167,7 @@
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/Booth Results.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/Booth Results.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -182,7 +182,7 @@
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/Cross Voting Report.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/Cross Voting Report.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -196,12 +196,12 @@
 			Using this you can get an idea in which Mandal you have to pay more attention.
 		</p>
 	<!--<div style="padding:5px;">
-				<img src="images/new_homepage/mandal_party_positions.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/mandal_party_positions.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 	</div>-->
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/mandal_voters_share.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/mandal_voters_share.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -216,7 +216,7 @@
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/panchayatnameshare.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/panchayatnameshare.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -230,7 +230,7 @@
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/survey.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/survey.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 			</div>
 	</div>
 </div>
@@ -244,7 +244,7 @@
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
-				<img src="images/new_homepage/01.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				<img src="images/services/01.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
 				
 			</div>
 	</div>
