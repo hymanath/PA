@@ -541,7 +541,7 @@
 				imageDiv.style.display ='none';
 			}
 		}else{
-			str+='<b style="color:green;font-weight:bold;padding:5px">'+results.partyName+'</b> <b style="color:red;font-weight:bold;> has No Alliances </b>';
+			str+='<span style="color:green;font-weight:bold;padding:5px">'+results.partyName +'<span style="color:red;">&nbsp;&nbsp; has no alliances</span></span>';
 			var partyNameDiv = results.partyName;
 			var partyDiv = document.getElementById(partyNameDiv+"_DIV");
 			partyDiv.style.display = 'block';
