@@ -21,7 +21,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		Object[] params = {parliamentConstituencyId, electionYear};
 		return getHibernateTemplate().find("select model.constituency from DelimitationConstituencyAssemblyDetails model where " +
 				"model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = " +
-				"(select max(model1.year) from DelimitationConstituency model1 where model1.year <=?)",params);
+				"(select max(model1.year) from DelimitationConstituency model1 where model1.year <=?) order by model.constituency.name",params);
 	}
 	
 	@SuppressWarnings("unchecked")

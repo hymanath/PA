@@ -82,7 +82,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		Object[] params = {constituencyId, electionYear};
 		return getHibernateTemplate().find("select distinct model.nomination.party from CandidateBoothResult model where " +
 				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ?" +
-				" and model.boothConstituencyElection.constituencyElection.election.electionYear = ?",params);
+				" and model.boothConstituencyElection.constituencyElection.election.electionYear = ? order by model.nomination.party.shortName ",params);
 	}
 	
 	public List findPartyElectionResultForMandal(Long tehsilID,String electionTypeIDs, String electionYears){
