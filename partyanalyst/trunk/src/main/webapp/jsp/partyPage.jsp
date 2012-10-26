@@ -955,7 +955,7 @@ function buildElectionProfile()
 	str+='<div style="margin-top:10px;margin-left:20px;"><input type="checkbox" onclick="getElecDetails();" id="allianceChkBox">&nbsp;&nbsp;<font color="navy"><b>Include Alliance</b></font>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" onclick="getElecDetails();" id="bielectionChkBox">&nbsp;&nbsp;<font color="navy"><b>Include Bi Elections</b></font></div>';
 	str+='<div id="electionLoading_ImgSpan" style="font-size: 13px;margin: 16px 5px 5px 32px;"> Loading .......<img style="float:right;margin-right:161px;display:block;" src="images/icons/goldAjaxLoad.gif" ></div>';
     str+='<div id="parliamentElecProfileDiv" class="yui-skin-sam" style="display:none"></div>';
-    str+='<div style="font-size: 13px; margin: 19px 10px 10px;">PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
+    str+='<div style="font-size: 13px; margin: 19px 10px 10px;">Bi = Bi-Election <br/>PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
  $("#electionProfileDiv").html(str);
 
 }
