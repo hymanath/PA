@@ -246,9 +246,9 @@ function buildAccordion()
         
 <div id="menu">
     <ul class="menu">
-        <li><a href="homePage.action" ><span>HOME</span></a>
+        <li><a href="homePage.action"><span><i class="icon-home icon-white"></i></span></a>
 <c:if test="${sessionScope.loginStatus == null || !sessionScope.hasPartyAnalystUserRole}">
-          <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
+          <li><a href="#" ><span>ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
                 <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a>
                  
@@ -412,6 +412,10 @@ function buildAccordion()
 </li>
 
 </c:if>
+
+		
+		
+		
        <li>
 		<a class="searchClass" id="searchId" href="searchInPartyAnalyst.action">
 		<span id="searchSpanId">SEARCH</span></a>
@@ -434,8 +438,20 @@ function buildAccordion()
 						 </c:choose>
 							</li> 
 						</c:if>	
+		<li><a href="#" ><span>SERVICES</span></a>
+            <div style="z-index:1;text-align:left;"><ul>
+                <li><a href="newsMonitoringService.action"><span>News Monitoring Services</span></a></li>
+                <li><a href="VotersPulse.action"><span>Voters Pulse</span></a></li>
+				<li><a href="constituencyProfileReport.action"><span>Constituency Profile Reports</span></a></li>
+				<li><a href="electionAnalysisAndManagementTool.action"><span>Election Analysis And Management Tool</span></a></li>				
+				</ul>
+			</div>
+        </li>				
+		
     </ul>
+	
 </div>
+
         
         <!--MENU SECTION END--> 
         
@@ -444,7 +460,6 @@ function buildAccordion()
   </div>
   
 </div>
-
 
 <!--HEADER SECTION END--> 
 </td></tr>
@@ -864,7 +879,7 @@ var electionType = document.getElementById('electionTypeId').value;
 
 if(electionType == 1)
 	{
-getStatesForNewLayOut();
+getStates();
 document.getElementById('states').style.display="none";
 getElectionYearsInHomePage('Parliament');
 	}
