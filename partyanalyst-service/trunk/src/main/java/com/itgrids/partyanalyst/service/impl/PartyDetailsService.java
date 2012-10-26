@@ -1394,7 +1394,10 @@ public class PartyDetailsService implements IPartyDetailsService {
 				partyInfoVO.setStateName(partyElectionResult.getElection().getElectionScope().getState().getStateName());
 			    }
 				partyInfoVO.setElectionId(partyElectionResult.getElection().getElectionId());
-				partyInfoVO.setElectionYear(partyElectionResult.getElection().getElectionYear());
+				if(partyElectionResult.getElection().getElecSubtype().equalsIgnoreCase("MAIN"))
+				   partyInfoVO.setElectionYear(partyElectionResult.getElection().getElectionYear());
+				else
+					partyInfoVO.setElectionYear(partyElectionResult.getElection().getElectionYear()+"(Bi)");
 				partyInfoVO.setElectionType(partyElectionResult.getElection().getElectionScope().getElectionType().getElectionType());
 				partyInfoVO.setElectionScopeId(partyElectionResult.getElection().getElectionScope().getElectionScopeId());
 				partyInfoVO.setPartyTotalVotes(partyElectionResult.getTotalValidVotes().longValue());
