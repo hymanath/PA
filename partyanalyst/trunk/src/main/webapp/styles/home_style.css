@@ -72,6 +72,8 @@ margin-left:7px; margin-top:-2px; }
 .register-free{font-size:20px; font-weight:bold; color:#0a0b39; padding-left:92px; line-height:47px;}
 .rf-button{background:url(../images/new_homepage/sprites.png) -91px top no-repeat; float:left; width:178px; height:50px; border:none; cursor:pointer; 
 margin-left:6px;}
+.register-free a:hover{text-decoration:none;margin:3px;float:left;width:160px;height:30px;padding:7px;
+}
 
 /*LATEST NEWS AND UPDATES SECTION START*/
 
