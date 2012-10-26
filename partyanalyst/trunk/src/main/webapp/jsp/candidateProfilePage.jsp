@@ -589,7 +589,7 @@ Tweet</a>
 		
 		<s:if test="#stat.index == 0">
 		<DIV>
-		<a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<a rel="#voverlay" title='<s:property value="title"/>' href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
 		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
 		</DIV>
 		</s:if>
@@ -599,7 +599,7 @@ Tweet</a>
 		<ul class="video-thumb-sec">
 			<s:iterator status="stat" value="fileVO">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
-				<li><a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
+				<li><a rel="#voverlay" title='<s:property value="title"/>' href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
 				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
 				</s:if>
 			</s:iterator>
