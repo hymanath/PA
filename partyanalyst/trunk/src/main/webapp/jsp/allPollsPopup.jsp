@@ -26,7 +26,7 @@
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 	<!--BOOT STRAP START-->	
-	<link href="css/Assets/css/bootstrap.css" rel="stylesheet">
+	
 	<!--<link href="css/Assets/css/bootstrap-responsive.css" rel="stylesheet">-->
 
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="Assets/ico/apple-touch-icon-114-precomposed.png">

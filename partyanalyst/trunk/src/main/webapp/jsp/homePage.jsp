@@ -33,15 +33,12 @@
 <meta name="expires" content="Never" />
 
 <!-- Combo-handled YUI CSS files: --> 
-<link rel="stylesheet" type="text/css" href="styles/combo.css" /> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"></link> 
 <link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <!-- Combo-handled YUI JS files: --> 
 
  <!--BOOT STRAP START-->	
-	<link href="css/Assets/css/bootstrap.css" rel="stylesheet">
-	<link href="css/Assets/css/bootstrap-responsive.css" rel="stylesheet">
-
+	
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="Assets/ico/apple-touch-icon-114-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="Assets/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="Assets/ico/apple-touch-icon-57-precomposed.png">
@@ -612,7 +609,7 @@ var pollStatus = [];
           <div class="ce-sec" style="padding-top:0px;">
 	<h1 class="title"><span class="orange">Current </span>Elections</h1> <div id="wrap">
               <div id="list">
-                <div class="prev"><img src="./images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div>
+                <div class="prev"><img src="" alt="prev" /></div>
                 <div class="slider">
                   <ul>
 					<!--<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Elections In Telangana"><img src="./images/new_homepage/Chadra Babu _ KCR.png" alt="Bye Elections In Telangana" /> <span>AP Bye Elections - 2012</span> </a></li>-->
@@ -627,7 +624,7 @@ var pollStatus = [];
                  	<li> <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"><img src="./images/new_homepage/manipur.png" alt="Manipur 2012 Election" /> <span>Manipur</span> </a></li>
 				</ul>
                 </div>
-                <div class="next" style="right:-30px;"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
+                <div class="next" style="right:-30px;"><img src="" alt="next" /></div>
               </div>
             </div>
             
@@ -645,7 +642,7 @@ var pollStatus = [];
 					
                   </ul>
                 </div>
-                <div class="next1" style="right:-30px;"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
+                <div class="next1" style="right:-30px;"><img src="" alt="next" /></div>
               </div>
             </div>
             
@@ -742,7 +739,7 @@ var pollStatus = [];
 	<h3 style="margin-top:11px;width:344px;background:#0088CC;color:#fff;padding:5px;margin-left:1px;box-shadow:4px 0px 3px #888;margin-bottom:7px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> View Your Parties</h3>
 							 <table>
 							  <tr  style="height:130px;padding-top:30px;">
-                                <td><div class="prevImg"><img src="images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div></td>
+                                <td><div class="prevImg"><img src="" alt="prev" /></div></td>
                                 <td>
 							       <div class="sliderImg">
                                      <ul>
@@ -758,7 +755,7 @@ var pollStatus = [];
 									 </ul>
                                    </div>
 								</td>
-                                <td><div class="nextImg" ><img src="images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div></td>
+                                <td><div class="nextImg" ><img src="" alt="next" /></div></td>
                               </tr>
 							 </table>
 						</div>
@@ -951,7 +948,7 @@ var custom_paginator = {
 			}
 			catch (e)
 			{   		
-				alert("Invalid JSON result" + e);   
+				//alert("Invalid JSON result" + e);   
 			}  
 		},
 		scope : this,
@@ -2106,7 +2103,7 @@ function callAjaxToSaveSelectedPollDetails(param,jsObj,url,questionId){
 						}
 						catch (e)
 							{   
-							  	alert("Invalid JSON result" + e);   
+							  	//alert("Invalid JSON result" + e);   
 							}	  
 			              },
 			               scope : this,

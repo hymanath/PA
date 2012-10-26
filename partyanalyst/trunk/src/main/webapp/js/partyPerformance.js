@@ -7,7 +7,7 @@ function callAjax(param){
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 
 								processResponse(param, myResults);
 							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
+							   	//alert("Invalid JSON result" + e);   
 							}  
  		               },
  		               scope : this,

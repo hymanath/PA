@@ -168,7 +168,7 @@ function callAjax(param,jsObj,url){
 						showCandidateDetails(myResults);
 					}		
 			}catch (e) {   		
-			   	alert("Invalid JSON result" + e);   
+			   	//alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,

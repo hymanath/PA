@@ -872,7 +872,7 @@ else if(jsObj.task == "checkAnanymousUserNameAvailability" || jsObj.task == "sav
 						showDetails(myResults);	
 		}
 		catch (e) {   
-					alert("Invalid JSON result" + e);   
+					//alert("Invalid JSON result" + e);   
 				   }  
 		          },
 	   scope : this,

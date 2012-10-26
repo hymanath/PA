@@ -72,7 +72,7 @@ function callAjax(jsObj,url,name){
 				buildSelectOption(myResults,name);
 			}							
 		}catch (e) {   
-			alert("Invalid JSON result" + e);   
+			//alert("Invalid JSON result" + e);   
 		}  
 	   },
 	   scope : this,

@@ -1407,7 +1407,7 @@ function callAjaxForRegionSelect(jsObj,url)
 						}
 						catch(e)
 						{   
-							alert("Invalid JSON result" + e);  
+							//alert("Invalid JSON result" + e);  
 						}  
 				   },
 				   scope : this,
@@ -1689,7 +1689,7 @@ function deleteCadreAjax(param,jsObj,url){
 								}
 							catch (e)
 								{   
-								   	alert("Invalid JSON result" + e);   
+								   	//alert("Invalid JSON result" + e);   
 								}	  
 				              },
 				               scope : this,

@@ -1230,7 +1230,7 @@ function callPartyPositionAjax(param,jsObj){
 							
 							displayPartyPositionResults(jsObj,myResults);							
 						}catch (e) {   
-							alert("Invalid JSON result" + e);   
+							//alert("Invalid JSON result" + e);   
 						}  
 				   },
 				   scope : this,
@@ -1454,7 +1454,7 @@ function callAjax(param,jsObj){
 							
 							displayComparedResults(jsObj,myResults);							
 						}catch (e) {   
-							alert("Invalid JSON result" + e);   
+							//alert("Invalid JSON result" + e);   
 						}  
 				   },
 				   scope : this,
