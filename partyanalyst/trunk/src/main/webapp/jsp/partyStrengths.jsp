@@ -1042,7 +1042,7 @@
 	}
 
 	
-	function getStates(selectedElmt)
+	function getStatesInPS(selectedElmt)
 	{
 		buildSearchCriteria(selectedElmt);
 		
@@ -1544,7 +1544,7 @@
 						<tr>
 							<td align="left" class="tdStyle">Election Type</td>
 							<td align="left">
-								<select id="electionTypeSelect" name="electionType"  style="width:130px;"  onchange="getStates(this.options[this.selectedIndex].value)">
+								<select id="electionTypeSelect" name="electionType"  style="width:130px;"  onchange="getStatesInPS(this.options[this.selectedIndex].value)">
 									<option value="Assembly">Assembly</option>		
 									<option value="Parliament">Parliament</option>									
 								</select>
