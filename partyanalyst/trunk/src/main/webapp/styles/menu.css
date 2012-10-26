@@ -48,7 +48,12 @@ position:relative;}
   display: inline-block;
   margin: 0px 2px;
 }
-
+#menu ul.menu li:first-child{
+ top: -4px;
+}
+#menu ul.menu li:first-child i{
+margin-top:5px;
+}
 #menu ul.menu li a span {
   padding-right: 14px;
   padding-left: 0px;
