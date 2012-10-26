@@ -1824,7 +1824,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				fileVO.setFileId(file.getFileId());
 				fileVO.setName(file.getFileName());
-				
+				fileVO.setTitle(file.getFileTitle());
 				fileVO.setFileType(file.getFileType() != null ? file.getFileType().getType() : "");
 				
 				fileVO.setDescription(file.getFileDescription());
