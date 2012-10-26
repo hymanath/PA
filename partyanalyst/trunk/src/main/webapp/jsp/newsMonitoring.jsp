@@ -33,16 +33,309 @@
 
 <body>
 <style>
-  
+
   .image_styles{
     border: 1px solid #CCCCCC;
 	width: 186px;
 	margin-left:6px
   }
+  .service-box{height:180px;}
+
+  .rightcontentDiv
+  {
+  width:50%;
+  float:right;
+  }
+ .leftcontentDiv
+  {
+   float:left;
+   width:50%;
+  }
+   /* p{
+	font-size: 1.167em;
+    line-height: 1.4285em;
+    word-spacing: -1px;
+	font-size: 13px;
+	//line-height: 23px;
+	font-family: arial,sans-serif;
+  }
+span {
+  font-size: 13px;
+	line-height: 23px;
+	font-family: arial,sans-serif;
+  }*/
+  .heading
+  {
+	color: #999999;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    color: #FFFFFF;
+    font-size: 9.75px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 1px;
+    text-transform: upper;
+	background-color: #339BB9;
+  }
+  
+ /* ul, ol, li {
+    list-style-type: disc;
+}*/
+.dotstyle{
+	border: 2px dashed red;
+    width: 225px;
+	margin-left:44px;
+    padding: 4px;
+	margin-bottom:10px;margin-top:10px;
+}
+ 
+ 
+ .InAddPages li{list-style-type:disc;margin-left:25px;}
+ .inner{ padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 26px;
+    padding-top: 23px;
+	width:320px;
+	border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+   // box-shadow: 0 0 4px rgba(0, 0, 0, 0.25), 0 3px 4px rgba(0, 0, 0, 0.3);
+	
+	margin-top:20px;
+	}
+ /*.inner:hover{background:#F1E9E7;}
+ .inner:hover h3{color:#497FD2;}*/
+ 
+ .leftdiv{width:65%;float:left;}
+ .rightdiv{width:30%;float:left;margin-left:40px;padding-top:32px;}
+ 
+ .row-fluid  .row-fluid {width:97%;}
+  .breadcrumb{border:0px;}
  
 </style>
  
  <div class="mainnewsdiv">
+ <div class="Promo-box-left whitegloss" style="width:100%;">
+ <div>
+ <h1 class="gradlightblack">News Monitoring Service <!--<div class="Sample-Report-top">
+<a class="inline" href="#fancydivbox">View Sample</a>
+</div>--></h1></div>
+
+<div class="row-fluid whitegloss" style="padding:15px 0px;" >
+	<div class="span7" style="height:auto;padding:5px;" >
+		
+			<img src="images/new_homepage/newspaper.png" style="width:550px; height: 250px; "/>
+		
+	</div>
+	<div class="span5" style="height:auto;">
+		
+					<h2 style="text-align:center;">Every News Paper, Covered</h2>	
+			<p>
+				For a Politician or a Political Party, Monitoring and Analyzing day-to-day news, is very important to keep
+				an upper hand in the Political Arena.
+			</p>
+			<p>
+				All the news about the problems and activities of yours as well as opposition parties in your
+				constituency, delivered in print and electronic media, will disappear from the people, after a while. This
+				news monitoring service allows you to access all these news by single click at any time.
+			</p>
+				
+		
+	</div>
+</div>
+	
+<div class="leftdiv" >	
+<div class="row-fluid breadcrumb whitegloss" style="margin:0px;">
+		<h2>Discover the Advantages</h2>
+	</div>
+	<div class="row-fluid breadcrumb" >
+		<div class="span8">
+			
+				<h3>Categorization of News</h3>
+				<p>
+					Using this service you can monitor the news category wise, impact level wise, importance wise etc
+				</p>
+			</div>
+		
+		<div class="span4 btn">
+			
+				<img src="images/new_homepage/tool.png" style="width: 125px; height: 125px;"/>
+			
+		</div>
+		
+			
+	</div>
+	
+	<div class="row-fluid breadcrumb" >
+		<div class="span8">
+			
+					<h3>Online Tool To Analyze</h3>
+				
+				<p>
+					You can analyze the news keenly, by visualizing the news in different categories and corresponding
+					graphical representations.
+				</p>
+	
+		</div>
+		<div class="span4 btn" >
+			
+					<img src="images/new_homepage/category.jpg" style="width: 125px; height: 125px; "/>
+		
+		</div>
+	</div>
+	
+	<div class="row-fluid breadcrumb" >
+		<div class="span8" >
+		
+				<h3>Publish to Your Profile</h3>
+			
+				<p>
+					All the news about you and your activities will be published to your profile. The positive news has
+					public access (visible to all). Opposition party news and negative news about you have private access
+					(can be seen only by you).
+				</p>
+			
+		</div>
+		
+		<div class="span4 btn">
+			
+				<img src="images/new_homepage/profile.jpg" style="width: 150px; height: 150px; "/>
+			
+		</div>
+	</div>
+	
+	<div class="row-fluid breadcrumb">
+		<div class="span8">
+					<h3>Email Alerts</h3>
+				
+					<p>
+						If you are at work all day without access to news, want to catch the news as it happens, then news
+						alerts are for you. You will get news updates and their impact levels to your mail frequently.
+					</p>
+				
+		</div>
+		
+		<div class="span4 btn">
+		
+				<img src="images/new_homepage/mailalerts.png" style="width: 150px; height: 150px; "/>
+			
+		</div>
+	</div>
+ 
+ </div>
+ <div class="rightdiv">
+ <div class="span4 btn btn-primary">
+	<a class="btn btn-primary">
+	   <h5>Get Started Now!! </h5>
+  Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
+  <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9676696760 </h4>
+    </a>
+	</div>
+ <div class="span4" style="margin-top:35px;width:252px;">
+			<div style="height:400px;background:#F5A829;padding:5px;">
+				<div style="border:solid 1px;padding:5px;background:#ECECEC;text-align:center;">
+					<h3>Special Offers from <br/>Party Analyst</h3>
+				</div>
+				
+				<div style="padding:5px;background:#ECECEC;text-align:center;">
+					<img src="images/new_homepage/two.png" style="width: 20px; height: 20px; "/><span>Years Subscription</span>
+					<div style="width:40px;margin-left:7px;"><img src="images/new_homepage/pin.png" style="width: 20px; height: 20px; "/></div>
+					<div style="border:1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;"
+					
+					<ul class="InAddPages" >
+					<li>Free Ad in the Constituency Page</li>
+					
+					<li>Free Ad Profile Page</li>
+					
+					</ul>
+					</div>
+				</div>
+				<div style="padding:5px;background:#ECECEC;text-align:center;">
+				
+					<img src="images/new_homepage/one.png" style="width: 20px; height: 20px;"/><span>Year Subscription</span>
+					<div style="width:40px;margin-left:7px;"><img src="images/new_homepage/pin.png" style="width: 20px; height: 20px; "/></div>
+					<div style="border:1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;"
+					
+					<ul class="InAddPages">
+					<li>25% discount</li>
+					
+					<li>Profile Page</li>
+					
+					</ul>
+					</div>
+				</div>
+				
+				<div style="padding:5px;background:#ECECEC;text-align:center;">
+				
+					<img src="images/new_homepage/six.png" style="width: 20px; height: 20px; "/><span>Months Subscription</span>
+					<div  style="width:40px;margin-left:7px;"><img src="images/new_homepage/pin.png" style="width: 20px; height: 20px; "/></div>
+					<div style="border: 1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;">
+					<ul class="InAddPages">
+						<li>10% discount</li>
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+ </div>
+ </div>
+ 
+ 
+ <div class="sevices-rights">
+<!--<div class="image_styles">
+   <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>
+  <div id="videogallery">
+    <div>
+	    <a rel="#voverlay" href='http://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 155px; height: 130px;margin-left:14px;margin-top: 7px;"/></a>
+    </div>
+	
+    <div>
+       <a rel="#voverlay"  href="http://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+        <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px; " src="http://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
+       </a>
+    </div>
+   <div>
+      <a rel="#voverlay"  href="http://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+       <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px;margin-bottom: 7px;" src="http://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
+      </a>
+   </div>
+   
+  </div>
+</div>-->
+<h3 >Our Services</h3>
+<div class="service-box" style="width: 176px; margin-left:6px;float:left;">
+<a href="constituencyProfileReport.action"><span>Constituency Profile Report</span></a>
+<img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+Get Constituency Reports
+</div>
+<div class="service-box" style="width: 176px; margin-left:6px;float:left;">
+<a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
+<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+Analyze your constituency,  track your progress and pending facilities.
+</div>
+<div class="service-box" style="width: 176px; margin-left:6px;float:left;">
+<a href="VotersPulse.action"><span>Voters Pulse</span></a>
+<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+Now, you can drive your survey's through Party Analyst...
+Ask, Analyze, Improve
+</div>
+<!--<div class="service-box">
+<a href="#"><span>News Reporting Service</span></a>
+<img src="images/new_homepage/NewsTracker.png"/>
+Get News Reports
+</div>-->
+
+</div>
+ 
+ 
+
+ <!--
 <div class="Promo-box-left">
 <h1 class="gradlightblack">News Monitoring Service <div class="Sample-Report-top">
 <a class="inline" href="#fancydivbox">View Sample</a>
@@ -99,54 +392,9 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 </div>
 </div>
 <div class="adboard" style="width: 678px; margin-left: 15px;"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>
-</div>
-
-<div class="sevices-right">
-<div class="image_styles">
-   <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
-  <div id="videogallery">
-    <div>
-	    <a rel="#voverlay" href='http://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 155px; height: 130px;margin-left:14px;margin-top: 7px;"/></a>
-    </div>
-	
-    <div>
-       <a rel="#voverlay"  href="http://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
-        <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px; " src="http://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
-       </a>
-    </div>
-   <div>
-      <a rel="#voverlay"  href="http://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
-       <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px;margin-bottom: 7px;" src="http://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
-      </a>
-   </div>
-   
-  </div>
-</div>
-<h3 >Our Services</h3>
-<div class="service-box" style="width: 176px; margin-left:6px">
-<a href="constituencyProfileReport.action"><span>Constituency Profile Report</span></a>
-<img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
-Get Constituency Reports
-</div>
-<div class="service-box" style="width: 176px; margin-left:6px">
-<a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
-<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
-Analyze your constituency,  track your progress and pending facilities.
-</div>
-<div class="service-box" style="width: 176px; margin-left:6px">
-<a href="VotersPulse.action"><span>Voters Pulse</span></a>
-<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
-Now, you can drive your survey's through Party Analyst...
-Ask, Analyze, Improve
-</div>
-<!--<div class="service-box">
-<a href="#"><span>News Reporting Service</span></a>
-<img src="images/new_homepage/NewsTracker.png"/>
-Get News Reports
 </div>-->
 
-</div>
+
 </div>
 <!--<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>-->
 

@@ -38,83 +38,222 @@
 	width: 186px;
 	margin-left:6px
   }
+  
+  .Promo-box-left{width:100%;}
+  .service-box{height:180px;width: 176px; margin-left:6px;float:left;}
+  .ulInAddPages {padding:20px;}
+  .ulInAddPages li{list-style-type:disc;}
+  .row-fluid{padding:10px;margin:0px;}
+
+  .row-fluid  .row-fluid {width:97%;}
+  .breadcrumb{width:98%;border:0px;}
+
+	
+
  
 </style>
 <div class="mainnewsdiv">
-<div class="Promo-box-left gradfill">
+<div class="Promo-box-left gradfill whitegloss">
 <h1 class="gradlightblack">Constituency Profile Report  <div class="Sample-Report-top">
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div></h1>
-<span class="titlespan">Know + Analyze + Act</span>
-<p class="">Get the complete picture of your constituency to strategize the political picture up to village wise.
-</p>
-<div class="">
-<h2 class="oval-thought1" style="width:280px;border-radius:50%;margin-bottom:10px;">Why you need this Report?
-</h2>
-<p class="gradcream" style="width:70%;padding:15px;margin-left:55px;text-shadow:0px 0px 5px #fff;">
-<b>
-In this competitive Politics, how you will know the past election results in a broad segments where you can visualize and educate yourself with ease.</b>
-</p>
 
+<div class="row-fluid breadcrumb">
+	<div class="span7" style="height:auto;">
+		<div><img src="images/new_homepage/ac.jpg" style="width: 550px; height: 220px;"/></div>
+	</div>
+	<div class="span5" style="height:auto;width:354px;">
+		<h3>Get the complete picture of your constituency to
+			strategize the political picture up to village wise</h3>
+		<p>In this competitive Politics, how you will know the
+			past election results in a broad segment where you
+			can visualize and strategize yourself.</p>
+	</div>
 </div>
+
 <!--
 <div class="why-box-survey">
 <h2 class="oval-thought-survey" style="height:191px;font:24px 'Oswald',Arial;" >Are you Aspirant candidate for 2014 elections in Andhra Pradesh?
 <span class="survey-span" style="margin-top:37px;">.....................</span>
 </h2>
 </div>-->
+<div class="row-fluid breadcrumb whitegloss" style="margin:0px;">
+		<h2>Synopis of the Report</h2>
+	</div>
+<div class="Survey-struct-box s breadcrumb" style="margin:0px;width:100%;">
 
-<div class="Survey-struct-box">
-<h1>Synopsis:</h1>
 <ul class="Report-feature-box">
 		<li class="gradBlueclass leftclass">
+			<span>Election Trends in the Constituency</span>
 			<span>Demographic Wise - Party's Performances </span>
             <span>Polling Percentages Vs Party's Performances</span>
             <span>Booth Wise - Party Strength  and Weak Areas</span>
             <span>Cross Voting Report</span>
-			
 		</li>
-
-		<li>
+		<li style="width:20%;">
 			<h3>Constituency</h3>
-			
 		</li>
-		
 		<li class="gradBlueclass rightclass">
-			<span>Mandal Wise Election Results</span>
-            <span>Comparison of Different Mandal's between 2004 &amp; 2009</span>
+			<span>Mandal wise Election Trends.</span>
             <span>Panchayat Wise Voting Percentage  </span>
-            <span>Panchayat Wise Different Parties Performance</span>
+            <span>Panchayat wise different parties performance report</span>
+			<span>Party’s performance in local body elections</span>
 			
 		</li>
-				
 </ul>
-
-</div>
-<div class="helpbox-red" style="top:0px;margin-left: 22px;">
-<div class="Sample-Report">
-<a class="inline" href="#fancydivbox">View Sample</a>
-</div>
- 
-<div class="Query-box">
-<h3>Any questions?</h3>
-<span>
-Our qualified team will be happy to answer all your questions about Constituency Profile Report and Other Products.
-<br/><br/>
-<span style="width:680px;display:table;text-align:center;color:blue;">
-Please call us : +919676696760
-<br/>(or)<br/>
-Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </span>
- </span>
-</div>
-</div>
-<div class="adboard" style="width: 678px; margin-left: 15px;"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>
 </div>
 
-<div class="sevices-right">
-<div class="image_styles">
-   <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
-  <div id="videogallery">
+<div class="row-fluid breadcrumb" >
+	<h3>Election Trends in the Constituency.</h3>
+	<div class="span7" style="height:auto;margin-left:0px;">
+	<h4>Constituency Info</h4>
+			<p>You can get clear picture on the constituency on number of voters,
+			polled votes and polling percentages.</p>
+	<h4>Winning Candidate info</h4>
+			<p>You can get Votes Earned, Earned votes percentage, Margin Gained,
+			Margin Percentage.</p>
+	<h4>Opposition's Results</h4>
+			<p>You can get Votes Earned by each opponent, Votes Percentage and
+			the position of the opponent Candidate.</p>
+	<h4>All Parties Performance in past Elections</h4>
+			<p>You can get a clear graph on the participated parties and who won in
+			the particular elections.</p>
+	</div>
+	<div class="span4 btn" >
+		<div style="padding:15px;">
+			<img src="images/new_homepage/all_party_perf.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+		</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+	<h3>Demographic Wise - Party's Performances.</h3>
+	 <div class="span7" style="margin-left:0px;">
+		<p>We provide you analyzed election results reports based on Demographics,
+		which includes SC, ST, Literates, Illiterates etc.<br/>
+		Based on this you will get clear picture on parties performance according to
+		each individual group.<br/>
+		Using this analyzed reports you will get an idea on which group you have to
+		concentrate more .</p>
+	</div>
+	<div class="span4 btn" >
+			<div style="padding:15px;">
+				<img src="images/new_homepage/census.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+	<h3>Polling Percentages Vs Party's Performances.</h3>
+	<div class="span7" style="margin-left:0px;">
+		<p>
+		You can compare party’s performance with polling percentages upto booth level,
+		And take necessary steps to improve the party’s performance.</p>
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/pollingvsparty.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+	<h3>Booth Wise - Party Strength and Weak Areas.</h3>
+	<div class="span7" style="margin-left:0px;">
+	<p>	We provide you election results up to booth level, and you can know, number of
+	booths which are in risk (less percentage), decent (average) and solid.<br/>
+	This analysis will give you an idea on which village/booth you have to pay more
+	attention .</p>
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/Booth Results.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+<h3>Cross Voting Report.</h3>
+	<div class="span7" style="margin-left:0px;">
+	<p>	You will get cross voting report upto booth level, based on this report you can
+	easily identify cross voting between parties up to booth level.<br/>
+	This will tend you to analyze the reasons for cross voting in that regions and can
+	take necessary action .</p>
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/Cross Voting Report.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+<h3>Mandal wise Election Trends.</h3>
+	<div class="span7" style="margin-left:0px;">
+		<p>	You will get voters share of each mandal in the constituency. You will also get
+			Parties position in each mandal and can compare Party performance in previous
+			elections.<br/>
+			Using this you can get an idea in which Mandal you have to pay more attention.
+		</p>
+	<!--<div style="padding:5px;">
+				<img src="images/new_homepage/mandal_party_positions.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+	</div>-->
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/mandal_voters_share.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+<h3>Panchyat wise voting percentage.</h3>
+	<div class="span7" style="margin-left:0px;">
+	<p>We provide you a report of panchayat wise polling share, this helps you to
+	know which panchyat has high polling percentage and which has low polling
+	percentage.<br/>
+	Using this you can prioritize the panchayat for your plan of action.</p>
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/panchayatnameshare.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+	<h3>Panchayat wise different parties performance report.</h3>
+	<div class="span7" style="margin-left:0px;">
+	<p>You can get a report on how many votes gained by each party Based on
+	position in panchayat.<br/>
+	And votes share of that panchayat in mandal and constituency.</p>
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/survey.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+			</div>
+	</div>
+</div>
+
+<div class="row-fluid breadcrumb">
+<h3>Party’s performance in local body elections.</h3>
+	<div class="span7" style="margin-left:0px;">
+	<p>	We provide you the report on ZPTC, MPTC election results, based on this
+		you can identify how your local body strength,And you can identify local
+		leaders.</p>
+	</div>
+	<div class="span4 btn">
+			<div style="padding:15px;">
+				<img src="images/new_homepage/01.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
+				
+			</div>
+	</div>
+</div>
+
+<div class="sevices-rights">
+<!--<div class="image_styles">
+   <h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
+  <!--<div id="videogallery">
     <div>
 	    <a rel="#voverlay" href='http://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
 		<img src='http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 155px; height: 130px;margin-left:14px;margin-top: 7px;"/></a>
@@ -132,7 +271,7 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
    </div>
    
   </div>
-</div>
+</div>-->
 <!--<div class="service-box">
 <a href="#"><span>Constituency Profile Report</span></a>
 <img src="images/site/imgpartyperf.jpg"/>
