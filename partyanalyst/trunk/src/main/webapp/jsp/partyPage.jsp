@@ -498,6 +498,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<s:else>
 					Subscribe and get <br/>
 					updates of<br />
+					
 					<span class="li-red">${partyVO.partyLongName}</span><br/>
 					<input  class="subscribebtn" type="button" onclick=
 					"subscriptionDetails()" value="SUBSCRIBE"/>
@@ -3939,7 +3940,8 @@ function showNotLogIn()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to 
+		subscribe.<a href="/PartyAnalyst/loginInputAction.action" style="color:#80D1F1;">Click here to Login</a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 
 function subscribeAlert()
