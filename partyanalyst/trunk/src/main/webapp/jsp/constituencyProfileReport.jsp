@@ -207,10 +207,10 @@
 </div>
 
 <div class="row-fluid breadcrumb">
-<h3>Panchyat wise voting percentage.</h3>
+<h3>Panchayat wise voting percentage.</h3>
 	<div class="span7" style="margin-left:0px;">
 	<p>We provide you a report of panchayat wise polling share, this helps you to
-	know which panchyat has high polling percentage and which has low polling
+	know which panchayat has high polling percentage and which has low polling
 	percentage.<br/>
 	Using this you can prioritize the panchayat for your plan of action.</p>
 	</div>
