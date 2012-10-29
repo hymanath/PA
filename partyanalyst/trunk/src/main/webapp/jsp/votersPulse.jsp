@@ -169,9 +169,9 @@
 	<div class="row-fluid breadcrumb">
 		<div class="span7" >
 		<h3>Voters Preferences.</h3>
-		<p>You can understand the voter’s opinions on present and past governments, present
+		<p>You can understand the voter's opinions on present and past governments, present
 		representatives (M.P / M.L.A), which helps you to strategize for an election.
-		You can understand the voter’s concerns, so that you can plan how to solve their		
+		You can understand the voter's concerns, so that you can plan how to solve their		
 		problems or give promises to solve, which gains you voter’s trust.</p>
 		</div>
 		<div class="span4  btn">
