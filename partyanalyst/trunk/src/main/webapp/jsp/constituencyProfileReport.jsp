@@ -97,7 +97,7 @@
 			<span>Mandal wise Election Trends.</span>
             <span>Panchayat Wise Voting Percentage  </span>
             <span>Panchayat wise different parties performance report</span>
-			<span>Party’s performance in local body elections</span>
+			<span>Party's performance in local body elections</span>
 			
 		</li>
 </ul>
@@ -147,8 +147,8 @@
 	<h3>Polling Percentages Vs Party's Performances.</h3>
 	<div class="span7" style="margin-left:0px;">
 		<p>
-		You can compare party’s performance with polling percentages upto booth level,
-		And take necessary steps to improve the party’s performance.</p>
+		You can compare party's performance with polling percentages upto booth level,
+		And take necessary steps to improve the party's performance.</p>
 	</div>
 	<div class="span4 btn">
 			<div style="padding:15px;">
@@ -236,7 +236,7 @@
 </div>
 
 <div class="row-fluid breadcrumb">
-<h3>Party’s performance in local body elections.</h3>
+<h3>Party's performance in local body elections.</h3>
 	<div class="span7" style="margin-left:0px;">
 	<p>	We provide you the report on ZPTC, MPTC election results, based on this
 		you can identify how your local body strength,And you can identify local
