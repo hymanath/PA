@@ -661,7 +661,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			   <div id="manifestoesDiv" style="border-top: 1px solid rgb(205, 205, 205); margin-top: 25px; padding-top: 13px;">
 			   <s:if test="partyVO.electionTypes.size>0">
 			   <!-- <h1 class="inc-title" ><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h1>-->
-			   <h1 class="pr-title" style="font-family: sans-serif;">${partyVO.partyShortName} Party Manifestoes
+			   <h1 class="pr-title" style="font-family: sans-serif;">${partyVO.partyShortName} Party Manifestos
 			   <span class="or-down-arrow">
 				<img alt="" src="images/icons/or-down-arrow.png">
 				</span>
@@ -2834,7 +2834,7 @@ function builPartyDiv()
 {     
  var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
 	var str ='';
-	str+='<h1 class="pr-title" style="margin-top:15px;"> ${partyVO.partyLongName} Party Manifestoes <span class="or-down-arrow">';
+	str+='<h1 class="pr-title" style="margin-top:15px;"> ${partyVO.partyLongName} Party Manifestos <span class="or-down-arrow">';
    str += '  <img src="images/icons/or-down-arrow.png" alt=""/></span> </h1>';
 	str+= '<fieldset class="imgFieldset">';
 	str+='<s:iterator value="partyVO.electionTypes" status="stat">';
