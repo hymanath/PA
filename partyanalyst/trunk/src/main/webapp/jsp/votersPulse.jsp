@@ -59,7 +59,7 @@
 <div class="row-fluid  whitegloss" style="width:99%;padding-right:0px;">
  	<div class="span7" style="height:auto;" >
 	
-		<img src="images/services/voters.jpg" style="width: 550px; height: 220px;"/>
+		<img src="images/services/voters_pulse.png" style="width: 500px; height: 244px;" alt="voters pulse"/>
 
 	</div>
 
@@ -92,7 +92,7 @@
 	<a class="btn btn-primary">
 	   <h5>Get Started Now!! </h5>
   Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
-  <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9676696760 </h4>
+  <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9246827788<br/>+91 9246837788  </h4>
     </a>
 	</div>
 	</div>
@@ -111,9 +111,9 @@
 			To strategize your activities, make progressive decisions in reaching peoples heart and
 			gain a winning-edge.</p>
 		</div>
-		<div class="span4 btn btn-success">
+		<div class="span4 ">
 			<div style="padding:5px;">
-			<img src="images/services/survey.jpg" style="width: 100px; height: 150px;"/>
+			<img src="images/services/our_survey.png" style="width: 300px; height: 231px;" alt="our survey"/>
 			</div>
 		</div>
 	</div>
@@ -160,11 +160,11 @@
 			and demographics, which enables you to understand, whether you have moved to a
 			positive or a negative phase.</p>
 		</div>
-		<div class="span4 btn ">
-		<div style="padding:15px;">
-			<img src="images/services/comparative.jpg" style="width: 150px; height: 150px;"/>
+		<div class="span4 ">
+		
+			<img src="images/services/comparative_study.png" style="width: 300px; height: 180px;" alt="comparative study"/>
 			</div>
-		</div>
+		
 	</div>
 	<div class="row-fluid breadcrumb">
 		<div class="span7" >
@@ -174,11 +174,11 @@
 		You can understand the voter's concerns, so that you can plan how to solve their		
 		problems or give promises to solve, which gains you voter's trust.</p>
 		</div>
-		<div class="span4  btn">
-		<div style="padding:15px;">
-			<img src="images/services/votespreferences.jpg" style="width: 150px; height: 150px;"/>
+		<div class="span4 ">
+		
+			<img src="images/services/voters_preferences.jpg" style="width: 300px; height: 220px;" alt="voters preferences"/>
 			</div>
-		</div>
+		
 	</div>
 	<div class="row-fluid breadcrumb">
 		<div class="span7" >
@@ -187,11 +187,11 @@
 		Analyze the places where you need to improve more and what chances you have for
 		that.</p>
 		</div>
-		<div class="span4 btn">
-		<div style="padding:15px;">
-			<img src="images/services/geo.jpg" style="width: 150px; height: 150px;"/>
+		<div class="span4">
+		
+			<img src="images/services/geographical_study.png" style="width: 300px; height: 180px;" alt="geographical study"/>
 			</div>
-		</div>
+		
 	</div>
 		
 
@@ -201,11 +201,11 @@
 		<p>You get the voter preferences based on age groups, caste, gender, and location, you
 		can plan in a better way to reach the groups.</p>
 		</div>
-		<div class="span4 btn">
-		<div style="padding:15px;">
-			<img src="images/services/demo.jpg" style="width: 150px; height: 150px;"/>
+		<div class="span4">
+		
+			<img src="images/services/demographical_study.png"  alt="demographical study"/>
 			</div>
-		</div>
+		
 	</div>
 
 	<div class="row-fluid breadcrumb">
@@ -213,11 +213,11 @@
 		<h3>Influenced Leaders:</h3>
 		<p>It enables to identify influence local leaders, groups in each area wise.</p>
 		</div>
-		<div class="span4 btn">
-		<div style="padding:15px;">
-			<img src="images/services/leader.jpg" style="width: 150px; height: 150px;"/>
+		<div class="span4">
+		
+			<img src="images/services/influenced_leaders.png"  alt="influenced_leaders"/>
 			</div>
-		</div>
+		
 	</div>
 </div>
 
@@ -250,12 +250,12 @@
 <div class="ourservices">
 <div class="service-box" style="width: 176px; margin-left:6px;float:left;">
 <a href="constituencyProfileReport.action"><span>Constituency Profile Report</span></a>
-<img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="constituency profile report"/>
 Get Constituency Reports
 </div>
 <div class="service-box" style="width: 176px;margin-left:6px;float:left;">
 <a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
-<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="political management tool"/>
 Analyze your constituency,  track your progress and pending facilities.
 </div>
 <!--<div class="service-box">
@@ -266,7 +266,7 @@ Ask, Analyze, Improve
 </div>-->
 <div class="service-box" style="width: 176px;margin-left:6px;float:left;">
 <a href="newsMonitoringService.action"><span>News Monitoring Service</span></a>
-<img src="images/new_homepage/NewsTracker.png" style="width: 114px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/NewsTracker.png" style="width: 114px; height: 100px; margin-left: 43px;" alt="news tracker"/>
 As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
 </div>
 </div>
