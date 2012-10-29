@@ -58,7 +58,7 @@
 
 <div>
 <div id="upComing" style="background:#FFF;padding-top: 12px;">
-<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Himachal Pradesh 2012 Vidhan Sadha Election</span>
+<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Himachal Pradesh 2012 Vidhan Sabha Election</span>
 
 <br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">68</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">17</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">3</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">48</font></span>
 
