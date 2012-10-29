@@ -129,7 +129,7 @@ span {
 <div class="row-fluid whitegloss" style="padding:15px 0px;" >
 	<div class="span7" style="height:auto;padding:5px;" >
 		
-			<img src="images/services/newspaper.jpg" style="width:550px; height: 250px; "/>
+			<img src="images/services/news_monitoring_service.png" style="width:540px; height: 252px; " alt="news monitoring service"/>
 		
 	</div>
 	<div class="span5" style="height:auto;">
@@ -162,9 +162,9 @@ span {
 				</p>
 			</div>
 		
-		<div class="span4 btn">
+		<div class="span4 ">
 			
-				<img src="images/services/tool.png" style="width: 125px; height: 125px;"/>
+				<img src="images/services/news_categorization.png" style="width: 213px; height: 165px;" alt="news categorization"/>
 			
 		</div>
 		
@@ -183,9 +183,9 @@ span {
 				</p>
 	
 		</div>
-		<div class="span4 btn" >
+		<div class="span4 " >
 			
-					<img src="images/services/category.jpg" style="width: 125px; height: 125px; "/>
+					<img src="images/services/online_tool_to_analyze_news.png" style="width: 213px; height: 165px; " alt="online tool to analyze news"/>
 		
 		</div>
 	</div>
@@ -203,9 +203,9 @@ span {
 			
 		</div>
 		
-		<div class="span4 btn">
+		<div class="span4 ">
 			
-				<img src="images/services/profile.jpg" style="width: 150px; height: 150px; "/>
+				<img src="images/services/profile_publish.png" style="width: 213px; height: 165px; " alt="profile publish"/>
 			
 		</div>
 	</div>
@@ -221,9 +221,9 @@ span {
 				
 		</div>
 		
-		<div class="span4 btn">
+		<div class="span4 ">
 		
-				<img src="images/services/mailalerts.png" style="width: 150px; height: 150px; "/>
+				<img src="images/services/email_alerts.png" style="width: 213px; height: 165px; " alt="email alerts"/>
 			
 		</div>
 	</div>
@@ -234,52 +234,27 @@ span {
 	<a class="btn btn-primary">
 	   <h5>Get Started Now!! </h5>
   Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
-  <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9676696760 </h4>
+  <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9246827788<br/>+91 9246837788  </h4>
     </a>
 	</div>
  <div class="span4" style="margin-top:35px;width:252px;">
-			<div style="height:400px;background:#F5A829;padding:5px;">
-				<div style="border:solid 1px;padding:5px;background:#ECECEC;text-align:center;">
+			<div class="label label-success"style="height:auto;padding:5px;border:solid 1px;border-radius:5px;">
+				<div style="padding:5px;text-align:center;">
 					<h3>Special Offers from <br/>Party Analyst</h3>
 				</div>
 				
-				<div style="padding:5px;background:#ECECEC;text-align:center;">
-					<img src="images/services/two.png" style="width: 20px; height: 20px; "/><span>Years Subscription</span>
-					<div style="width:40px;margin-left:7px;"><img src="images/services/pin.png" style="width: 20px; height: 20px; "/></div>
-					<div style="border:1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;"
-					
-					<ul class="InAddPages" >
-					<li>Free Ad in the Constituency Page</li>
-					
-					<li>Free Ad Profile Page</li>
-					
-					</ul>
-					</div>
+				<div style="padding:5px;text-align:center;">
+					<img src="images/services/2 years.png" style="width: 232px; height: 167px; " alt="2 years subscription offer"/>
 				</div>
-				<div style="padding:5px;background:#ECECEC;text-align:center;">
+				<div style="padding:5px;text-align:center;">
 				
-					<img src="images/services/one.png" style="width: 20px; height: 20px;"/><span>Year Subscription</span>
-					<div style="width:40px;margin-left:7px;"><img src="images/services/pin.png" style="width: 20px; height: 20px; "/></div>
-					<div style="border:1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;"
+					<img src="images/services/1 year.png" style="width: 232px; height:160px;" alt="1 year subscription offer"/>
 					
-					<ul class="InAddPages">
-					<li>25% discount</li>
-					
-					<li>Profile Page</li>
-					
-					</ul>
-					</div>
 				</div>
 				
-				<div style="padding:5px;background:#ECECEC;text-align:center;">
+				<div style="padding:5px;text-align:center;">
 				
-					<img src="images/services/six.png" style="width: 20px; height: 20px; "/><span>Months Subscription</span>
-					<div  style="width:40px;margin-left:7px;"><img src="images/services/pin.png" style="width: 20px; height: 20px; "/></div>
-					<div style="border: 1px outset;margin-top:0px;margin-bottom:10px;text-align:left;width:210px;margin-left:12px;">
-					<ul class="InAddPages">
-						<li>10% discount</li>
-					</ul>
-					</div>
+					<img src="images/services/6 months.png" style="width: 232px; height: 149px; " alt="6 months subscription offer"/>
 				</div>
 			</div>
 		</div>
@@ -312,17 +287,17 @@ span {
 <h3 >Our Services</h3>
 <div class="service-box" style="width: 176px; margin-left:6px;float:left;">
 <a href="constituencyProfileReport.action"><span>Constituency Profile Report</span></a>
-<img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="constituency profile report"/>
 Get Constituency Reports
 </div>
 <div class="service-box" style="width: 176px; margin-left:6px;float:left;">
 <a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
-<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="political management tool"/>
 Analyze your constituency,  track your progress and pending facilities.
 </div>
 <div class="service-box" style="width: 176px; margin-left:6px;float:left;">
 <a href="VotersPulse.action"><span>Voters Pulse</span></a>
-<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="check list"/>
 Now, you can drive your survey's through Party Analyst...
 Ask, Analyze, Improve
 </div>

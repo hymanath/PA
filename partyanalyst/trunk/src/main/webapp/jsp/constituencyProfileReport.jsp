@@ -47,7 +47,9 @@
 
   .row-fluid  .row-fluid {width:97%;}
   .breadcrumb{width:98%;border:0px;}
-
+.img-tooltip{position:relative;}
+.img-tooltip .img-tooltip-ctr{display:none;position:absolute;left:-150%;top:0px;background:#fff;border:4px solid #ccc;border-radius:5px;z-index:100}
+.img-tooltip:hover .img-tooltip-ctr{display:block;}
 	
 
  
@@ -55,14 +57,14 @@
 <div class="mainnewsdiv">
 <div class="Promo-box-left gradfill whitegloss">
 <h1 class="gradlightblack">Constituency Profile Report  <div class="Sample-Report-top">
-<a class="inline" href="#fancydivbox">View Sample</a>
+<a class="inline" href="images/Constituency_Profile_Report.pdf" target="_blank">View Sample</a>
 </div></h1>
 
 <div class="row-fluid breadcrumb">
-	<div class="span7" style="height:auto;">
-		<div><img src="images/services/ac.jpg" style="width: 550px; height: 220px;"/></div>
+	<div class="span7" style="height:auto;display:none;">
+		<div><img src="images/services/constituency.png" style="width: 550px; height: 220px;" alt="constituency"/></div>
 	</div>
-	<div class="span5" style="height:auto;width:354px;">
+	<div class="span11" style="height:auto;">
 		<h3>Get the complete picture of your constituency to
 			strategize the political picture up to village wise</h3>
 		<p>In this competitive Politics, how you will know the
@@ -119,10 +121,14 @@
 			<p>You can get a clear graph on the participated parties and who won in
 			the particular elections.</p>
 	</div>
-	<div class="span4 btn" >
-		<div style="padding:15px;">
-			<img src="images/services/all_party_perf.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-		</div>
+	<div class="span4 img-tooltip" >
+		
+			<img src="images/services/elections_in_constituency.png" style="width:250px;height:200px;" alt="election trends in constituency"/>
+			
+			<div class="img-tooltip-ctr">
+					<img src="images/services/elections in constituency.png" style="height:500px;width:700px;" alt="cross voting reports "/>
+				</div>
+		
 	</div>
 </div>
 
@@ -136,10 +142,16 @@
 		Using this analyzed reports you will get an idea on which group you have to
 		concentrate more .</p>
 	</div>
-	<div class="span4 btn" >
-			<div style="padding:15px;">
-				<img src="images/services/census.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip" >
+			
+			
+				<img src="images/services/demographics_vs_party.png" style="height:200px;width:250px;" alt="demographics wise party performances"/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/demographics vs party.png" style="height:380px;width:700px;" alt="cross voting reports "/>
+				</div>
+			
+			
 	</div>
 </div>
 
@@ -150,10 +162,14 @@
 		You can compare party's performance with polling percentages upto booth level,
 		And take necessary steps to improve the party's performance.</p>
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/pollingvsparty.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/polling_vs_party.png" style="height:200px;width:250px;" alt="polling percentages versus party performances"/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/polling vs party.png" style="height:347px;width:700px;" alt="cross voting reports "/>
+				</div>
+		
 	</div>
 </div>
 
@@ -165,10 +181,14 @@
 	This analysis will give you an idea on which village/booth you have to pay more
 	attention .</p>
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/Booth Results.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/booth_wise_strong_week_areas.png" style="height:200px;width:250px;" alt="booth wise - party strengths and week areas"/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/booth wise strong week areas.png" style="height:338px;width:700px;" alt="cross voting reports "/>
+				</div>
+		
 	</div>
 </div>
 
@@ -180,10 +200,14 @@
 	This will tend you to analyze the reasons for cross voting in that regions and can
 	take necessary action .</p>
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/Cross Voting Report.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/cross_voting_report.png" style="height:200px;width:250px;" alt="cross voting reports"/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/cross voting report.png" style="height:380px;width:700px;" alt="cross voting reports "/>
+				</div>
+		
 	</div>
 </div>
 
@@ -196,13 +220,17 @@
 			Using this you can get an idea in which Mandal you have to pay more attention.
 		</p>
 	<!--<div style="padding:5px;">
-				<img src="images/services/mandal_party_positions.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-	</div>-->
+				<img src="images/services/mandal_party_positions.png" style="height:200px;width:250px;"/>
+	</div>-->mandal wise election trends
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/mandal_voters_share.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/mandal_wise_election_trends.png" style="height:200px;width:250px;" alt="mandal wise election trends"/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/mandal wise election trends.png" style="height:450px;width:700px;" alt="mandal wise election trends "/>
+				</div>
+		
 	</div>
 </div>
 
@@ -214,24 +242,34 @@
 	percentage.<br/>
 	Using this you can prioritize the panchayat for your plan of action.</p>
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/panchayatnameshare.png" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/panchayat_wise_voting_share.png" style="height:200px;width:250px;" alt="panchayat wise voting share"/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/panchayat wise voting share.png" style="height:296px;width:700px;" alt="panchayat wise voting share "/>
+				</div>
+		
 	</div>
 </div>
 
 <div class="row-fluid breadcrumb">
 	<h3>Panchayat wise different parties performance report.</h3>
 	<div class="span7" style="margin-left:0px;">
-	<p>You can get a report on how many votes gained by each party Based on
-	position in panchayat.<br/>
-	And votes share of that panchayat in mandal and constituency.</p>
+	<p>You can get voting trends of different parties in each panchyat.</p>
+	<p>
+		you can get a detailed report on the votes gained by a party, in all panchayats of a mandal, based on the position it has, in those panchayats,And votes share of those panchayats in mandal and constituency.
+	</p>
+	
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/survey.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/parties_performances_in_panchayat.png" style="height:200px;width:250px;" alt="panchayat wise different parties performances "/>
+				
+				<div class="img-tooltip-ctr">
+					<img src="images/services/parties performances in panchayat.png" style="height:516px;width:700px;" alt="panchayat wise different parties performances "/>
+				</div>
+			
 	</div>
 </div>
 
@@ -242,11 +280,13 @@
 		you can identify how your local body strength,And you can identify local
 		leaders.</p>
 	</div>
-	<div class="span4 btn">
-			<div style="padding:15px;">
-				<img src="images/services/01.jpg" style="width: 100px; height: 100px;border: 1px solid black;box-shadow: 0px 0px 0px black;border-radius: 5px;"/>
-				
-			</div>
+	<div class="span4 img-tooltip">
+			
+				<img src="images/services/local_body_elections.png" style="height:200px;width:250px;" alt="zptc and mptc election results"/>
+				<div class="img-tooltip-ctr">
+					<img src="images/services/local body elections.jpg" style="height:200px;width:600px;" alt="zptc and mptc election results "/>
+				</div>
+			
 	</div>
 </div>
 
@@ -280,18 +320,18 @@ Get Constituency Reports
 <h3 >Our Services</h3>
 <div class="service-box" style="width: 176px; margin-left:6px">
 <a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
-<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="political management tool"/>
 Analyze your constituency, track your progress and pending facilities.
 </div>
 <div class="service-box" style="width: 176px; margin-left:6px">
 <a href="VotersPulse.action"><span>Voters Pulse</span></a>
-<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="checklist"/>
 Now, you can drive your survey's through Party Analyst...
 Ask, Analyze, Improve
 </div>
 <div class="service-box" style="width: 176px; margin-left:6px">
 <a href="newsMonitoringService.action"><span>News Monitoring Service</span></a>
-<img src="images/new_homepage/NewsTracker.png" style="width: 114px; height: 100px; margin-left: 43px;"/>
+<img src="images/new_homepage/NewsTracker.png" style="width: 114px; height: 100px; margin-left: 43px;" alt="news tracker"/>
 As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
 </div>
 
@@ -310,8 +350,8 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 $(document).ready(function(){
 	var $j = jQuery.noConflict(true);
 
-		$("a.inline").fancybox();
-		$.fancybox.init();
+		//$("a.inline").fancybox();
+		//$.fancybox.init();
 		//$(".inline").trigger("click");
 			
 	$(".service-box").click(function(){
