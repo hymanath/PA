@@ -1413,7 +1413,7 @@
 				info+='		<tr>';
 				info+='			<td style="font-weight:bold;color:red;"> *</td>';
 				info+='			<td> Others Include</td>';
-				info+='			<td>'+results.statement+'</td>';
+				info+='			<td>'+results.otherDetails+'</td>';
 				info+='	</tr>';
 				info+='</table>';		
 				othersInfo.innerHTML = info;
