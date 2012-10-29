@@ -3,7 +3,7 @@
 
 
 <div class="selectHeading">
-	<span class="selectDivStyle">Uttarkhand Districts</span>
+	<span class="selectDivStyle">Uttarakhand Districts</span>
 	<span style="margin-left: 12px;">Know About Your District</span>
 	
 <select class="selectBoxWidth" id="districtList_uttarakhand" name="district">
@@ -15,7 +15,7 @@
 </div>
 
 <div class="selectHeading">
-	<span class="selectDivStyle">Uttarkhand Constituencies</span>
+	<span class="selectDivStyle">Uttarakhand Constituencies</span>
 	<span style="margin-left: 12px;">Know About Your Constituency</span>
 	
 
