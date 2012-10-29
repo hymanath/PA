@@ -33,7 +33,7 @@ img{border:none;}
 
 #header-mainsec{width:100%; float:left; background-color:#0a0b39;}
 .header{width:992px; float:left;  height:88px; padding:13px 7px 0px 0px;}
-.logo{position:relative; left:54px; bottom:-14px; float:left; z-index:101;}
+.logo{position:relative; left:20px; bottom:-14px; float:left; z-index:101;}
 .header-right-section{width:670px; float:right;}
 
 /*MENU SECTION START*/
