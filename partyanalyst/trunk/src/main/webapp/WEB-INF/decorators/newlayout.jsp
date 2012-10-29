@@ -416,29 +416,9 @@ function buildAccordion()
 		
 		
 		
-       <li>
-		<a class="searchClass" id="searchId" href="searchInPartyAnalyst.action">
-		<span id="searchSpanId">SEARCH</span></a>
-		
-	   </li>
-
-		<c:if test="${sessionScope.loginStatus == 'out'}">  
-							<li> 
-						<c:choose>
-							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
-								<a href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
-										<span>DASH BOARD</span>
-									</a> 
-							</c:when>
-							<c:otherwise> 
-									<a href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
-										<span>DASH BOARD</span>
-									</a>  
-							</c:otherwise>	
-						 </c:choose>
-							</li> 
-						</c:if>	
-		<li><a href="#" ><span>SERVICES</span></a>
+     
+	   
+	   <li><a href="#" ><span>SERVICES</span></a>
             <div style="z-index:1;text-align:left;"><ul>
                 <li><a href="newsMonitoringService.action"><span>News Monitoring Services</span></a></li>
                 <li><a href="VotersPulse.action"><span>Voters Pulse</span></a></li>
@@ -446,8 +426,30 @@ function buildAccordion()
 				<li><a href="electionAnalysisAndManagementTool.action"><span>Election Analysis And Management Tool</span></a></li>				
 				</ul>
 			</div>
-        </li>				
+        </li>	
+
+		<c:if test="${sessionScope.loginStatus == 'out'}">  
+							<li> 
+						<c:choose>
+							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
+								<a href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+										<span>DASHBOARD</span>
+									</a> 
+							</c:when>
+							<c:otherwise> 
+									<a href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+										<span>DASHBOARD</span>
+									</a>  
+							</c:otherwise>	
+						 </c:choose>
+							</li> 
+						</c:if>	
+					
+		  <li>
+		<a class="searchClass" id="searchId" href="searchInPartyAnalyst.action">
+		<span id="searchSpanId">SEARCH</span></a>
 		
+	   </li>
     </ul>
 	
 </div>
