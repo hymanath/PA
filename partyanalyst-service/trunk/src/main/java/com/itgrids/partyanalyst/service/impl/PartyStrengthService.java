@@ -211,6 +211,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  	 */
  	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,Long partyId,String alliance,Long electionId,String partyName){
  		List<Long> requiredConstituencies = new ArrayList<Long>(0);
+ 		List others = new ArrayList();
 		List<Long> latestConstituencies = new ArrayList<Long>(0);
 		List<Long> remianingConstituencies = new ArrayList<Long>(0);
 		List<Long> selectedParties = new ArrayList<Long>(0);
@@ -222,6 +223,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 		boolean hasOthers = false;
 		ContenetTransferVO contenetTransferVO = new ContenetTransferVO();
 		List<SelectOptionVO> partyOverview = new ArrayList<SelectOptionVO>(0);
+		List otherDeials = new ArrayList();
 		//test(electionType,stateId,885l,electionYearsCount,4L,partyName);
 		try{
 			resultVo.setSelectedYearsCount(electionYearsCount);
@@ -276,12 +278,14 @@ public class PartyStrengthService implements IPartyStrengthService {
 					Object[] parms = (Object[])electionOverView.get(i);
 					partyOverview.add(new SelectOptionVO((Long)parms[0],parms[1].toString()));
 					if(!selectedParties.contains((Long)parms[2])){
-						statement+=parms[1].toString();
-						statement+=",";
+						//statement+=parms[1].toString();
+						//statement+=",";
+						otherDeials.add(parms[1].toString());
 						hasOthers = true;
 					}
 				}
-				resultVo.setStatement(statement);
+				//resultVo.setStatement(othersArray);
+				resultVo.setOtherDetails(otherDeials);
 				resultVo.setHasOthers(hasOthers);
 				resultVo.setPartyOverView(partyOverview);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
