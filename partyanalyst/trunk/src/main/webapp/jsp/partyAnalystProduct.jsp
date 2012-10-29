@@ -272,13 +272,13 @@
 				<h3>What you can get?</h3>
 				Clear Picture About<br />
 				
-				<ul class="survey-feature-box-product"><li>Comparision of election information against the demographic data to get a clear picture of the voting patterns of people based on literacy,caste ,work,status etc.</li>
+				<ul class="survey-feature-box-product"><li>Comparison of election information against the demographic data to get a clear picture of the voting patterns of people based on literacy,caste ,work,status etc.</li>
 				</ul>
 
 				<ul class="survey-feature-box-product"><li>Easy understanding of party performance in a particular state,district,constituency or further at mandal/tehsil and village level.</li>
 				</ul>
 				
-				<ul class="survey-feature-box-product"><li>Comparision of a political party's performance geographically in any two elections.</li>
+				<ul class="survey-feature-box-product"><li>Comparison of a political party's performance geographically in any two elections.</li>
 				</ul>
 				
 			</div>	
