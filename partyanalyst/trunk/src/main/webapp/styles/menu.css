@@ -41,7 +41,7 @@ position:relative;}
 
 /* Horizontal sliding doors */
 #menu ul.menu li a {
-  padding-left: 14px;
+  padding-left: 12px;
   background-image: url("../images/icons/homePage_new/item1.png");
   background-repeat: no-repeat;
   background-position: left -1000px;
@@ -55,7 +55,7 @@ position:relative;}
 margin-top:5px;
 }
 #menu ul.menu li a span {
-  padding-right: 14px;
+  padding-right: 12px;
   padding-left: 0px;
   background-image: url("../images/icons/homePage_new/item1.png");
   background-repeat: no-repeat;
