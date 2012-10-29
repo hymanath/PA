@@ -156,7 +156,7 @@
 		<div class="span7">
 			<h3>Comparative Study.</h3>
 			<p>We do comparative study between the present strengths and weakness of the
-			politician or political party and previous election results, according to geographies
+			politician or political party and previous election results, according to geographics
 			and demographics, which enables you to understand, whether you have moved to a
 			positive or a negative phase.</p>
 		</div>
@@ -172,7 +172,7 @@
 		<p>You can understand the voter's opinions on present and past governments, present
 		representatives (M.P / M.L.A), which helps you to strategize for an election.
 		You can understand the voter's concerns, so that you can plan how to solve their		
-		problems or give promises to solve, which gains you voter’s trust.</p>
+		problems or give promises to solve, which gains you voter's trust.</p>
 		</div>
 		<div class="span4  btn">
 		<div style="padding:15px;">
