@@ -1454,7 +1454,7 @@ function validateEmailField()
 }
 function photoGallaryPopUp(){
 	var str='';
-	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Gallaries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
 	$("#buildPhotoGallaryDiv").html(str);
 
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
