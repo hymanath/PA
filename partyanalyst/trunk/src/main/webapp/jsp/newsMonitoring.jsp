@@ -177,8 +177,9 @@ span {
 					<h3>Online Tool To Analyze</h3>
 				
 				<p>
-					You can analyze the news keenly, by visualizing the news in different categories and corresponding
-					graphical representations.
+					You can analyze the news keenly, by visualizing the news in different categories and 
+					corresponding graphical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					representations.
 				</p>
 	
 		</div>
