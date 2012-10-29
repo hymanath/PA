@@ -913,7 +913,7 @@ function changePassword()
 	}
 	if(cpwd == npwd)
 		{
-		resultDIVEle.innerHTML = "<font color='green'>Your new passward is same as existing one.</font>";
+		resultDIVEle.innerHTML = "<font color='green'>Your new password is same as existing one.</font>";
 		setTimeout("closewdw()",3000);
 		return;
 		}
