@@ -26,16 +26,23 @@ public class ElectionInfoVO {
     private Long latestConstituenciesCount;
     private Long requiredConstituenciesCount;
     private Long totalNumberOfConstituencies;
-    private List<SelectOptionVO> partyOverView,allianceDetails;
+    private List<SelectOptionVO> partyOverView,allianceDetails,otherDetails;
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
-    
     private ConstituencyElectionResults allPartiesDetails;
+    public List<SelectOptionVO> getOtherDetails() {
+		return otherDetails;
+	}
+	public void setOtherDetails(List<SelectOptionVO> otherDetails) {
+		this.otherDetails = otherDetails;
+	}
+
+	
     
     
-    
-    //Getters and Setters
+	
+	 //Getters and Setters
     
 	public List<SelectOptionVO> getAllianceDetails() {
 		return allianceDetails;
