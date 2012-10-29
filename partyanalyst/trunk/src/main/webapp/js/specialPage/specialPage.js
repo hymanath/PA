@@ -3926,7 +3926,7 @@ function buildUploadPhotosDiv()
 	
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadFilesForm">';
 
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px;height:425px;">';
 	str += '<h2 align="center">Upload A Photo</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
