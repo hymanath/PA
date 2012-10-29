@@ -24,7 +24,7 @@ text-decoration:none;}
 
 <table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
 
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">2012 UttarKhand Exit Polls And Surveys</h3>
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">2012 UttaraKhand Exit Polls And Surveys</h3>
 <!--<tr style="border: medium none rgb(255, 255, 255);">
 	<td><div>
 	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
@@ -98,7 +98,7 @@ text-decoration:none;}
 
 <tr><td>
 <div id="uttarkhandExitPolltable" style="margin-top:3px;">
-<span style="font-weight:bold;background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">UttarKhand State Exit polls</span>
+<span style="font-weight:bold;background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">UttaraKhand State Exit polls</span>
 <table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
 <tr>
 
@@ -271,10 +271,10 @@ CPM</a>
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=135&stateID=26&stateName=Uttaranchal&electionType=Assembly&electionTypeId=2&year=2002">2002</a>
 </td></tr>
 <tr><td>
-<div style="margin:18px;margin-left:0px;"><span style="background:#D2E888;color:#000;font-weight:bold;width:374px;margin:0px;padding:5px;-moz-border-radius:3px;">View Uttarkhand Districts And Constituencies Results</span>
+<div style="margin:18px;margin-left:0px;"><span style="background:#D2E888;color:#000;font-weight:bold;width:374px;margin:0px;padding:5px;-moz-border-radius:3px;">View Uttarakhand Districts And Constituencies Results</span>
 </div>
 <div class="selectHeading" style="width: 187px; height: 175px;">
-	<span class="selectDivStyle">Uttarkhand Districts</span>
+	<span class="selectDivStyle">Uttarakhand Districts</span>
 	<span style="margin-left: 12px;height:120px;">Know About Your District&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 	
 <select class="selectBoxWidth" id="district_UK" name="district">
@@ -285,7 +285,7 @@ CPM</a>
 
 </div>
  <div class="selectHeading" style="float: right; margin-top: -191px; margin-right: 22px;">
-	<span class="selectDivStyle">Uttarkhand Constituencies</span>
+	<span class="selectDivStyle">Uttarakhand Constituencies</span>
 	<span style="margin-left: 8px;">Know About Your Assembly Constituency</span>
 	
 
