@@ -78,7 +78,7 @@
 </h2>
 </div>-->
 <div class="row-fluid breadcrumb whitegloss" style="margin:0px;">
-		<h2>Synopis of the Report</h2>
+		<h2>Synopsis of the Report</h2>
 	</div>
 <div class="Survey-struct-box s breadcrumb" style="margin:0px;width:100%;">
 
