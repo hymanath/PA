@@ -246,7 +246,7 @@ function buildAccordion()
         
 <div id="menu">
     <ul class="menu">
-        <li><a href="/"><span><i class="icon-home icon-white"></i></span></a>
+        <li><a href="homePage.action"><span><i class="icon-home icon-white"></i></span></a>
 <c:if test="${sessionScope.loginStatus == null || !sessionScope.hasPartyAnalystUserRole}">
           <li><a href="#" ><span>ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
