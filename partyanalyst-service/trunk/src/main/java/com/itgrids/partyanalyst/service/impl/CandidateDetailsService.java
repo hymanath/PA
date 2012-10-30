@@ -3103,6 +3103,32 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		    	}
 	    	}
 	    	
+	    	//CHANGE BY SAMBA START
+	    	
+	    	 for(CandidateMinistriesVO candidateMinistriesVO:resultList){
+	    		 
+	    		 //boolean allExpired = true;
+	    		 int size = candidateMinistriesVO.getMinistries().size();
+	    		 int i=0;
+	    		 
+	    		 for(ElectionGoverningBodyVO governingBodyVO:candidateMinistriesVO.getMinistries()){ 
+	    		
+	    			 if(governingBodyVO.getToDate() != null){	    				 
+	    				 candidateMinistriesVO.setExpireOneMinistry(true);
+	    				 i++;
+	    			}	    			   			
+	    		 }
+	    		 
+	    		 if(size == i)
+	    			 candidateMinistriesVO.setExpisreAllMinistry(true);
+	    		 
+	    		 candidateMinistriesVO.setNoOfMinistriesExpired(i);
+	    		 candidateMinistriesVO.setNoOfMinistriesNotExpired(size-i);
+    			
+	       //CHANGE BY SAMBA END
+	    	 }
+	    	
+	    	
     	return resultList;
     	}
     	
