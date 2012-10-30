@@ -33,6 +33,8 @@
 		<!--result type="tiles" name="input">admin.login</result-->
 	    <default-action-ref name="homePage" />
 	    
+	    <default-action-ref name="homePage"></default-action-ref>
+	    
 	<global-results>
         <result name="exception">jsp/globalError.jsp</result>
     </global-results>
