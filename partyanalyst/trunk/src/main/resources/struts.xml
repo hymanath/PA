@@ -31,10 +31,8 @@
  	<!--For each result that should go to a Tiles page, add a type attribute
 		-->
 		<!--result type="tiles" name="input">admin.login</result-->
-	    <default-action-ref name="homePage" />
-	    
-	    <default-action-ref name="homePage"></default-action-ref>
-	    
+	<!--  <default-action-ref name="homePage"></default-action-ref> -->
+	 <default-action-ref name="homePage"/>   
 	<global-results>
         <result name="exception">jsp/globalError.jsp</result>
     </global-results>
