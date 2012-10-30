@@ -24,7 +24,7 @@
 <!-- start of vedio files -->
 
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
+<!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> -->
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 
@@ -50,15 +50,18 @@
 .img-tooltip{position:relative;}
 .img-tooltip .img-tooltip-ctr{display:none;position:absolute;left:-150%;top:0px;background:#fff;border:4px solid #ccc;border-radius:5px;z-index:100}
 .img-tooltip:hover .img-tooltip-ctr{display:block;}
-	
+	   .sevices-rights {display:table;width:100%;padding:10px;border-radius:5px;}
+ .sevices-rights h3,.sevices-rights h4{text-align:center;}
 
  
 </style>
 <div class="mainnewsdiv">
 <div class="Promo-box-left gradfill whitegloss">
-<h1 class="gradlightblack">Constituency Profile Report  <div class="Sample-Report-top">
-<a class="inline" href="images/Constituency_Profile_Report.pdf" target="_blank">View Sample</a>
-</div></h1>
+<h1 class="gradlightblack">Constituency Profile Report  
+	<div class="Sample-Report-top">
+		<a class="inline" href="images/Constituency_Profile_Report.pdf" target="_blank">View Sample</a>
+	</div>
+</h1>
 
 <div class="row-fluid breadcrumb">
 	<div class="span7" style="height:auto;display:none;">
@@ -290,7 +293,15 @@
 	</div>
 </div>
 
-<div class="sevices-rights">
+<div class="sevices-rights breadcrumb">
+
+ <div class="span3" >
+	<a class="btn btn-primary" style="margin-top:28px;">
+	   <h5>Get Started Now!! </h5>
+  Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
+  <h4>Email us : info@partyanalyst.com  <br><br>Please call us : <br>+91 9246827788<br>+91 9246837788  </h4>
+    </a>
+	</div>
 <!--<div class="image_styles">
    <h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
   <!--<div id="videogallery">
@@ -317,7 +328,10 @@
 <img src="images/site/imgpartyperf.jpg"/>
 Get Constituency Reports
 </div>-->
-<h3 >Our Services</h3>
+<div class="span8">
+<h3>Other PartyAnalyst Services</h3>
+<h4>We always strive to make things easy for you
+ </h4>
 <div class="service-box" style="width: 176px; margin-left:6px">
 <a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
 <img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="political management tool"/>
