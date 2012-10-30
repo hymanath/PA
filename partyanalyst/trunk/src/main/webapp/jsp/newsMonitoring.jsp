@@ -24,7 +24,7 @@
 <!-- start of vedio files -->
 
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
+<!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> -->
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 
@@ -116,20 +116,22 @@ span {
  
  .row-fluid  .row-fluid {width:97%;}
   .breadcrumb{border:0px;}
- 
+ .sevices-rights {display:table;width:100%;padding:10px;border-radius:5px;}
+ .sevices-rights h3,.sevices-rights h4{text-align:center;}
+  
 </style>
  
  <div class="mainnewsdiv">
  <div class="Promo-box-left whitegloss" style="width:100%;">
  <div>
- <h1 class="gradlightblack">News Monitoring Service <!--<div class="Sample-Report-top">
-<a class="inline" href="#fancydivbox">View Sample</a>
-</div>--></h1></div>
+ <h1 class="gradlightblack">News Monitoring Service <div class="Sample-Report-top">
+<a class="inline" href="images/news_monitoring.pdf">View Sample</a>
+</div></h1></div>
 
 <div class="row-fluid whitegloss" style="padding:15px 0px;" >
 	<div class="span7" style="height:auto;padding:5px;" >
 		
-			<img src="images/services/news_monitoring_service.png" style="width:540px; height: 252px; " alt="news monitoring service"/>
+			<img src="images/services/news_monitoring_service.png" style="cursor:auto;width:540px; height: 252px; " alt="news monitoring service"/>
 		
 	</div>
 	<div class="span5" style="height:auto;">
@@ -164,7 +166,7 @@ span {
 		
 		<div class="span4 ">
 			
-				<img src="images/services/news_categorization.png" style="width: 213px; height: 165px;" alt="news categorization"/>
+				<img src="images/services/news_categorization.png" style="cursor:auto;width: 213px; height: 165px;" alt="news categorization"/>
 			
 		</div>
 		
@@ -185,7 +187,7 @@ span {
 		</div>
 		<div class="span4 " >
 			
-					<img src="images/services/online_tool_to_analyze_news.png" style="width: 213px; height: 165px; " alt="online tool to analyze news"/>
+					<img src="images/services/online_tool_to_analyze_news.png" style="cursor:auto;width: 213px; height: 165px; " alt="online tool to analyze news"/>
 		
 		</div>
 	</div>
@@ -205,7 +207,7 @@ span {
 		
 		<div class="span4 ">
 			
-				<img src="images/services/profile_publish.png" style="width: 213px; height: 165px; " alt="profile publish"/>
+				<img src="images/services/profile_publish.png" style="cursor:auto;width: 213px; height: 165px; " alt="profile publish"/>
 			
 		</div>
 	</div>
@@ -223,7 +225,7 @@ span {
 		
 		<div class="span4 ">
 		
-				<img src="images/services/email_alerts.png" style="width: 213px; height: 165px; " alt="email alerts"/>
+				<img src="images/services/email_alerts.png" style="cursor:auto;width: 213px; height: 165px; " alt="email alerts"/>
 			
 		</div>
 	</div>
@@ -244,25 +246,32 @@ span {
 				</div>
 				
 				<div style="padding:5px;text-align:center;">
-					<img src="images/services/2 years.png" style="width: 232px; height: 167px; " alt="2 years subscription offer"/>
+					<img src="images/services/2 years.png" style="cursor:auto;width: 232px; height: 167px; " alt="2 years subscription offer"/>
 				</div>
 				<div style="padding:5px;text-align:center;">
 				
-					<img src="images/services/1 year.png" style="width: 232px; height:160px;" alt="1 year subscription offer"/>
+					<img src="images/services/1 year.png" style="cursor:auto;width: 232px; height:160px;" alt="1 year subscription offer"/>
 					
 				</div>
 				
 				<div style="padding:5px;text-align:center;">
 				
-					<img src="images/services/6 months.png" style="width: 232px; height: 149px; " alt="6 months subscription offer"/>
+					<img src="images/services/6 months.png" style="cursor:auto;width: 232px; height: 149px; " alt="6 months subscription offer"/>
 				</div>
 			</div>
 		</div>
  </div>
+ 
  </div>
  
- 
- <div class="sevices-rights">
+ <div class="sevices-rights breadcrumb">
+ <div class="span3" >
+	<a class="btn btn-primary" style="margin-top:28px;">
+	   <h5>Get Started Now!! </h5>
+  Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
+  <h4>Email us : info@partyanalyst.com  <br><br>Please call us : <br>+91 9246827788<br>+91 9246837788  </h4>
+    </a>
+	</div>
 <!--<div class="image_styles">
    <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>
   <div id="videogallery">
@@ -284,7 +293,10 @@ span {
    
   </div>
 </div>-->
-<h3 >Our Services</h3>
+<div class="span8">
+<h3>Other PartyAnalyst Services</h3>
+<h4>We always strive to make things easy for you
+ </h4>
 <div class="service-box" style="width: 176px; margin-left:6px;float:left;">
 <a href="constituencyProfileReport.action"><span>Constituency Profile Report</span></a>
 <img src="images/site/imgpartyperf.jpg" style="width: 110px; height: 100px; margin-left: 43px;" alt="constituency profile report"/>
@@ -301,16 +313,17 @@ Analyze your constituency,  track your progress and pending facilities.
 Now, you can drive your survey's through Party Analyst...
 Ask, Analyze, Improve
 </div>
+</div>
 <!--<div class="service-box">
 <a href="#"><span>News Reporting Service</span></a>
 <img src="images/new_homepage/NewsTracker.png"/>
 Get News Reports
 </div>-->
 
-</div>
- 
- 
 
+ 
+ 
+</div>
  <!--
 <div class="Promo-box-left">
 <h1 class="gradlightblack">News Monitoring Service <div class="Sample-Report-top">
@@ -375,7 +388,7 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 <!--<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>-->
 
 
-<div id="promodiv" style="display:none;">
+<!--<div id="promodiv" style="display:none;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:scroll;">
 	<div style="text-align: center; margin-top: 18px; font-weight: bold; font-size: 20px; color:#4BACC6;">Search News By Different Options</div>
 	<img src="images/NewsSample/category_news.png" style="margin-bottom: -45px;"/>
@@ -395,16 +408,22 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 	
 	</tr>
 	</table></div>
+</div>-->
+
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:hidden;">
+	<embed src="images/news_monitoring.pdf" width="850px" height="450px"
+	><br/>
+	</div>
 </div>
 <script>
 $(document).ready(function(){
 
 var $j = jQuery.noConflict(true);
 
-$("a.inline").fancybox();
-	$.fancybox.init();
-		
-		
+	//$("a.inline").fancybox();
+	//$.fancybox.init();
+				
 	$(".service-box").click(function(){
       $(location).attr('href',$(this).find("a").attr("href"));
     });
