@@ -4233,8 +4233,10 @@ function showUploadStatus(myResult)
 
 function clearUploadFileFields()
 {
-	$("#addMoreFilesDiv").html('');
+	
+	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
+	
 	document.getElementById('fileTitleId').value='';
 	document.getElementById('fileDescId').value='';
 	document.getElementById('fileId').value='';
