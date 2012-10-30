@@ -27,10 +27,12 @@ text-decoration:none;
 		Party Analyst provides you time-to-time, daily
 		updates, on these hot political news.
 		</p>
-	 <div style="margin-bottom: 10px; border: 1px solid #dddddd; text-align: center; border-radius: 3px 3px 3px 3px; background:#8F49FF; padding: 4px;">
-		<a title="Click here to know more about Vastunna Meekosam Padayathra by Telugu Desam Party Leader Nara Chandrababu Naidu" href="specialPageAction.action?specialPageId=12"><span style="font-weight: bold;color:#FFF;">Vastunna Meekosam Padayathra</span></a>
+		<img src="images/tdp.png" style="height:50px;width:50px;" alt="vasthunna meekosam" title="vasthunna meekosam">
+	 <div style="margin-bottom: 10px; border: 1px solid #dddddd; text-align: center; border-radius: 3px 3px 3px 3px; background:#8F49FF; padding: 4px;margin-top:-28px;">
+		<a title="Click here to know more about Vastunna Meekosam Padayathra by Telugu Desam Party Leader Nara Chandrababu Naidu" href="specialPageAction.action?specialPageId=12"><span style="font-weight: bold;color:#FFF;">Vastunna <br/>Meekosam Padayathra</span></a>
 	 </div>
-	 <div style="margin-bottom: 20px; border: 1px solid #dddddd;text-align: center; border-radius: 3px 3px 3px 3px; background:#8F49FF; padding: 4px;">
+	 <img src="images/congress.png" style="height:50px;width:50px;margin-left:115px;" alt="indiramma bata" title="indiramma bata">
+	 <div style="margin-bottom: 20px; border: 1px solid #dddddd;text-align: center; border-radius: 3px 3px 3px 3px; background:#8F49FF;  padding: 20px 4px 14px 4px;margin-top:-28px;">
 		<a title="Click here to know more about Indiramma Baata by AP Congress Party" href="specialPageAction.action?specialPageId=15"><span style="font-weight: bold;color:#FFF;">Indiramma Baata</span></a>
 	 </div>
 </div>
