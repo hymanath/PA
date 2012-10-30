@@ -24,6 +24,11 @@ public class CandidateMinistriesVO implements Serializable {
 	private Boolean hasMSIC;
 	private Boolean hasMS;
 	
+	private Boolean expireOneMinistry;
+	private Boolean expisreAllMinistry;
+	private int noOfMinistriesExpired;
+	private int noOfMinistriesNotExpired;
+	
 	public Boolean getIsDeputyChiefMinister() {
 		return isDeputyChiefMinister;
 	}
@@ -115,6 +120,30 @@ public class CandidateMinistriesVO implements Serializable {
 	}
 	public void setMinistries(List<ElectionGoverningBodyVO> ministries) {
 		this.ministries = ministries;
+	}
+	public Boolean getExpisreAllMinistry() {
+		return expisreAllMinistry;
+	}
+	public void setExpisreAllMinistry(Boolean expisreAllMinistry) {
+		this.expisreAllMinistry = expisreAllMinistry;
+	}
+	public Boolean getExpireOneMinistry() {
+		return expireOneMinistry;
+	}
+	public void setExpireOneMinistry(Boolean expireOneMinistry) {
+		this.expireOneMinistry = expireOneMinistry;
+	}
+	public int getNoOfMinistriesExpired() {
+		return noOfMinistriesExpired;
+	}
+	public void setNoOfMinistriesExpired(int noOfMinistriesExpired) {
+		this.noOfMinistriesExpired = noOfMinistriesExpired;
+	}
+	public int getNoOfMinistriesNotExpired() {
+		return noOfMinistriesNotExpired;
+	}
+	public void setNoOfMinistriesNotExpired(int noOfMinistriesNotExpired) {
+		this.noOfMinistriesNotExpired = noOfMinistriesNotExpired;
 	}
 	
 		
