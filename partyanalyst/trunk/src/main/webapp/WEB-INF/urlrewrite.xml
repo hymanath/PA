@@ -2,9 +2,9 @@
 <!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
         "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
 
-<urlrewrite use-query-string="true">
+<urlrewrite use-context = "false" use-query-string="true">
 
-    <rule>
+  <!--    <rule>
         <note>
             The rule means that requests to /test/status/ will be redirected to /rewrite-status
             the url will be rewritten.
@@ -25,8 +25,13 @@
         </note>
         <from>/rewrite-status</from>
         <to>/test/status/</to>
-    </outbound-rule>
+    </outbound-rule>-->
 	
+       <rule>
+	   <condition type="request-uri" operator="notequal">\.(images|gif|jpeg|png|css|js|pdf|doc|ico|jsp|jpg)$</condition>
+         <from>^/$</from>
+          <to>/homePage.action</to> 
+	</rule> 
 	<!-- States -->
 
 	<rule>
@@ -146,7 +151,6 @@
 		<from>/telugu-desam-party-30-years-anniversary.action</from>
 		<to type="redirect">%{context-path}/partyPageAction.action?partyId=872</to>
 	</rule>
-
 	<rule>
 		<from>/CBI-cases-against-politians.action</from>
 		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=9</to>
@@ -186,6 +190,12 @@
 		<from>/maro-praja-prasthanam-padayathra-by-ys-sharmila.action</from>
 		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=16</to>
 	</rule>
+	
+	 <outbound-rule>
+       
+        <from>/homePage.action</from>
+        <to>^/$</to>
+    </outbound-rule>
 
 	<!-- Party Pages End-->
 
