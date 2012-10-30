@@ -238,10 +238,6 @@ function callAjax(jsObj,url){
 			{
                buildCandidatePhotoGallary(myResults);
 			}
-			else if(jsObj.task == "getPhotosInAGallary")
-			{
-               showPhotosInAGallary(myResults);
-			}
 			else if(jsObj.task == "specialPageUpdateGallary")  
 			{
                updateGallaryDiv(myResults);  
@@ -2023,10 +2019,10 @@ function callAjaxForSpecialPage(jsObj,url)
 			{
                buildFirstThreePhotoRecords(myResults);
 			}
-		/* else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
+		 else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
 			{
-               buildSpecialPagePhotoGallary(myResults);
-			}*/
+               buildCandidatePhotoGallary(myResults);
+			}
 		else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="old")
 			{
                showPhotosInAGallary(myResults);
@@ -4475,7 +4471,7 @@ function getCompleteGallaries(gallaryId){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForSpecialPage(jsObj,url);
 }
 function showPhotosInAGallary(results){
    var str ='';
