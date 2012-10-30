@@ -773,14 +773,16 @@ function getTotalProfile()
 			   showStatusForEmailSubscription(myResults);
 			}
 		    
-			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
+			
+			/*else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="old")
 			{
-               showPhotosInInitialGallary(myResults);
-			}
-			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="old")
-			{
+				
                showPhotosInAGallary(myResults);
 			}
+			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
+			{
+			 showPhotosInInitialGallary(myResults);
+			}*/
 			else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
 			{
                buildCandidatePhotoGallary(myResults);
@@ -852,8 +854,9 @@ function getFirstThreePhotoRecords(){
 		callAjaxForSpecialPage(jsObj,url);  
 }
 
-function getCandidatesPhotosInAGallary(gallaryId)
+/*function getCandidatesPhotosInAGallary(gallaryId)
 {
+	alert('new');
     var jsObj =
 		{   time : timeST,
 			value:"new",
@@ -864,8 +867,10 @@ function getCandidatesPhotosInAGallary(gallaryId)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);  
-}
+}*/
 function showPhotosInInitialGallary(results){
+
+	
    var str ='';
    str+='<div id="content" style="display:none;">';
 	count = 0;
@@ -980,7 +985,8 @@ function buildCandidatePhotoGallary(results)
 		str+='</div>';
 		document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
 }
-function getCompleteGallaries(gallaryId){
+/*function getCompleteGallaries(gallaryId){
+	alert('old');
     var jsObj =
 		{ 
             time : timeST,
@@ -992,7 +998,7 @@ function getCompleteGallaries(gallaryId){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
-}
+}*/
 function showPhotosInAGallary(results){
    var str ='';
    str+='<div id="content" style="width:650px;">';
