@@ -24,7 +24,7 @@
 <!-- start of vedio files -->
 
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
+<!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> -->
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 
@@ -47,19 +47,22 @@
   h5{font-size:13px;}
   .row-fluid  .row-fluid {width:97%;}
   .breadcrumb{width:98%;border:0px;}
-  
+   .sevices-rights {display:table;width:100%;padding:10px;border-radius:5px;}
+ .sevices-rights h3,.sevices-rights h4{text-align:center;}
 </style>
 <div class="mainnewsdiv">
 
 <div class="Promo-box-left gradfill whitegloss">
-<h1 class="gradlightblack">Voters Pulse  - An Election / Political Survey<!--<div class="Sample-Report-top">
-<a class="inline" href="#fancydivbox">View Sample</a>
-</div>--></h1>
+<h1 class="gradlightblack">Voters Pulse  - An Election / Political Survey
+	<div class="Sample-Report-top">
+		<a class="inline" href="images/Voters-Pulse.pdf" target="_blank">View Sample</a>
+	</div>
+</h1>
 
 <div class="row-fluid  whitegloss" style="width:99%;padding-right:0px;">
  	<div class="span7" style="height:auto;" >
 	
-		<img src="images/services/voters_pulse.png" style="width: 500px; height: 244px;" alt="voters pulse"/>
+		<img src="images/services/voters_pulse.png" style="cursor:auto;width: 500px; height: 244px;" alt="voters pulse"/>
 
 	</div>
 
@@ -113,7 +116,7 @@
 		</div>
 		<div class="span4 ">
 			<div style="padding:5px;">
-			<img src="images/services/our_survey.png" style="width: 300px; height: 231px;" alt="our survey"/>
+			<img src="images/services/our_survey.png" style="cursor:auto;width: 213px; height: 165px;" alt="our survey"/>
 			</div>
 		</div>
 	</div>
@@ -162,7 +165,7 @@
 		</div>
 		<div class="span4 ">
 		
-			<img src="images/services/comparative_study.png" style="width: 300px; height: 180px;" alt="comparative study"/>
+			<img src="images/services/comparative_study.png"  style="cursor:auto;width: 213px; height: 165px;" alt="comparative study" />
 			</div>
 		
 	</div>
@@ -176,7 +179,7 @@
 		</div>
 		<div class="span4 ">
 		
-			<img src="images/services/voters_preferences.jpg" style="width: 300px; height: 220px;" alt="voters preferences"/>
+			<img src="images/services/voters_preferences.png" style="cursor:auto;width: 213px; height: 165px;" alt="voters preferences"/>
 			</div>
 		
 	</div>
@@ -189,7 +192,7 @@
 		</div>
 		<div class="span4">
 		
-			<img src="images/services/geographical_study.png" style="width: 300px; height: 180px;" alt="geographical study"/>
+			<img src="images/services/geographical_study.png" style="cursor:auto;width: 213px; height: 165px;" alt="geographical study"/>
 			</div>
 		
 	</div>
@@ -203,7 +206,7 @@
 		</div>
 		<div class="span4">
 		
-			<img src="images/services/demographical_study.png"  alt="demographical study"/>
+			<img src="images/services/demographical_study.png" style="cursor:auto;width: 213px; height: 165px;" alt="demographical study"/>
 			</div>
 		
 	</div>
@@ -215,14 +218,22 @@
 		</div>
 		<div class="span4">
 		
-			<img src="images/services/influenced_leaders.png"  alt="influenced_leaders"/>
+			<img src="images/services/influenced_leaders.png" style="cursor:auto;width: 213px; height: 165px;" alt="influenced_leaders"/>
 			</div>
 		
 	</div>
 </div>
 
 
-<div class="sevices-rights">
+<div class="sevices-rights breadcrumb">
+
+ <div class="span3" >
+	<a class="btn btn-primary" style="margin-top:28px;">
+	   <h5>Get Started Now!! </h5>
+  Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
+  <h4>Email us : info@partyanalyst.com  <br><br>Please call us : <br>+91 9246827788<br>+91 9246837788  </h4>
+    </a>
+	</div>
 <!--<div class="image_styles">
    <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>
   <div id="videogallery">
@@ -245,8 +256,10 @@
   </div>
 </div>-->
 
-
-<h3 >Our Other Services</h3>
+<div class="span8">
+<h3>Other PartyAnalyst Services</h3>
+<h4>We always strive to make things easy for you
+ </h4>
 <div class="ourservices">
 <div class="service-box" style="width: 176px; margin-left:6px;float:left;">
 <a href="constituencyProfileReport.action"><span>Constituency Profile Report</span></a>
@@ -270,14 +283,15 @@ Ask, Analyze, Improve
 As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
 </div>
 </div>
+
+</div>
 </div>
 <!--<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>-->
 
 
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:hidden;">
-	<embed src="images/Voters-Pulse.pdf" width="850px" height="450px"
-	><br/>
+	<embed src="images/Voters-Pulse.pdf" width="850px" height="450px"><br/>
 	</div>
 </div>
 <script>
@@ -285,8 +299,8 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 $(document).ready(function(){
 	var $j = jQuery.noConflict(true);
 
-		$("a.inline").fancybox();
-		$.fancybox.init();
+		//$("a.inline").fancybox();
+		//$.fancybox.init();
 		//$(".inline").trigger("click");
 			
 	$(".service-box").click(function(){
