@@ -572,7 +572,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 	{
 		List<FileVO> retValue = new ArrayList<FileVO>();
 		try {
-			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(partyId, 0, 20, IConstants.PHOTO_GALLARY);
+			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(partyId, 0, 100, IConstants.PHOTO_GALLARY);
 
 			if(results != null && results.size() > 0)
 			{
@@ -586,7 +586,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 					{
 						fileVO.setFileId(file.getFileId());
 						
-						
 						String title = "";
 						
 						if(file.getFileTitle() != null && file.getFileTitle().length() >= 18)
@@ -596,21 +595,27 @@ public class PartyDetailsService implements IPartyDetailsService {
 						} 
 						else
 						{
-						if(file.getFileTitle() != null) {
-							title = file.getFileTitle();
+							if(file.getFileTitle() != null)
+								title = file.getFileTitle();
 						}
+						
 						fileVO.setTitle(title);
+						
 						Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 						List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
-						 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
-				    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+						Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+						
+				    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList)
+				    	{
 				    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
 				    		List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
-							  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
-				    		for(FilePaths filePath : filePathsList){
+							Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+				    		
+							for(FilePaths filePath : filePathsList)
+							{
 				    			if(path != null && path.trim().length() >0)
 				    				break;
-				    				path = filePath.getFilePath();
+				    			path = filePath.getFilePath();
 				    		}
 				    		if(path != null && path.trim().length() >0)
 			    				break;
@@ -618,10 +623,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 				    	if(path != null && path.trim().length() >0)
 		    				break;
 					}
-					
-				}
-					fileVO.setPath(path);
-					
+				fileVO.setPath(path);
 				fileVO.setGallaryId((Long) gallary[0]);
 				fileVO.setSizeOfGallary((long) (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size()));
 				fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() : "");
