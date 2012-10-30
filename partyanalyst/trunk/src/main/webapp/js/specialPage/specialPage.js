@@ -2033,7 +2033,7 @@ function callAjaxForSpecialPage(jsObj,url)
 			}
 		else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
 			{
-               showPhotosInInitialGallary(myResults);
+			  showPhotosInInitialGallary(myResults);
 			}
 		else if(jsObj.task == "getLatestVideos")
 			{
@@ -2842,6 +2842,20 @@ function showFirstFourNewsRecords(results)
 	var url = "candidateNewsGallaryAction.action?"+rparam;						
 	callAjaxForSpecialPage(jsObj,url); 
  }
+function getCandidatesPhotosInAGallary(gallaryId)
+{
+
+    var jsObj =
+		{   time : timeST,
+			value:"new",
+		    gallaryId:gallaryId,
+			task:"getPhotosInAGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjaxForSpecialPage(jsObj,url);  
+}
  function getOtherNews()
  {
     timeST = new Date().getTime();
@@ -2973,19 +2987,6 @@ function buildFirstThreePhotoRecords(results)
 	 {
 		 document.getElementById("photoGallaryDiv").style.display = 'none';
 	 }
-}
-function getCandidatesPhotosInAGallary(gallaryId)
-{
-    var jsObj =
-		{   time : timeST,
-			value:"new",
-		    gallaryId:gallaryId,
-			task:"getPhotosInAGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjaxForSpecialPage(jsObj,url);  
 }
 function openFile(filePath,fileType){
 
@@ -4465,6 +4466,7 @@ function getCompleteGallaries(gallaryId){
     var jsObj =
 		{ 
             time : timeST,
+			value:"old",
 		    gallaryId:gallaryId,
 			task:"getPhotosInAGallary"
 		};
