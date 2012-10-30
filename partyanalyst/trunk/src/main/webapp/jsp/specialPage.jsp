@@ -782,11 +782,11 @@ function getTotalProfile()
 			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
 			{
 			 showPhotosInInitialGallary(myResults);
-			}*/
+			}
 			else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
 			{
                buildCandidatePhotoGallary(myResults);
-			}
+			}*/
 			else if(jsObj.task == "subscriptionDetails")
 			{
 				unSubscribeBtnBuild();
@@ -937,7 +937,7 @@ function showPhotoGallary(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "showPhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForSpecialPage(jsObj,url);
 }
 function buildCandidatePhotoGallary(results)
 {
