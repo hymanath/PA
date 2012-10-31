@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface IMailsSendingService {
@@ -26,5 +25,10 @@ public interface IMailsSendingService {
 	public ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemDetailsVO problemDetailsVO);
 	
 	public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemDetailsVO problemDetailsVO);
+	
+	public ResultStatus sendEmailToFreeUserAfterProblemRejected(ProblemDetailsVO problemDetailsVO);
+	
+	public ResultStatus sendEmailToFreeUserAfterCommentRejected(EmailDetailsVO emailDetailsVO);
+	
 	
 }
