@@ -95,7 +95,7 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		System.out.println(result.size());
 	}*/
 	
-	public void testGetNewsForParty()
+	/*public void testGetNewsForParty()
 	{
 		List<Object[]> result = partyGalleryDAO.getNewsForParty(362l,0,20,"Public");
 		
@@ -106,5 +106,18 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 			System.out.println(file.getFileName());
 		}
 	}
+	*/
 	
+	/*public void testgetAllNewsDetails()
+	{
+		List<Object[]> list = partyGalleryDAO.getAllNewsDetails(872l, 0,100, IConstants.NEWS_GALLARY);
+		System.out.println(list.size());
+	}*/
+	
+	public void testgetNewsCountByScope()
+	{
+		List<Long> count = partyGalleryDAO.getNewsCountByScope(872l,2l,"Public");
+		System.out.println(count);
+		
+	}
 }
