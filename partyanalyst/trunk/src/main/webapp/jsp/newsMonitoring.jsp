@@ -125,7 +125,7 @@ span {
  <div class="Promo-box-left whitegloss" style="width:100%;">
  <div>
  <h1 class="gradlightblack">News Monitoring Service <div class="Sample-Report-top">
-<a class="inline" href="images/news_monitoring.pdf">View Sample</a>
+<a class="inline" href="images/news_monitoring.pdf" target="_blank">View Sample</a>
 </div></h1></div>
 
 <div class="row-fluid whitegloss" style="padding:15px 0px;" >
