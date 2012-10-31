@@ -54,7 +54,7 @@ public class MailsSendingService implements IMailsSendingService{
 			}
 				
 			String subject = ""+emailDetailsVO.getSenderName()+" sent a Friend Request in Party Analyst";
-			String content = " <div style='background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+emailDetailsVO.getFromAddress()+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 20px;line-height:1.5em;'><b>"+emailDetailsVO.getSenderName()+"</b> has sent a friend request in Party Analyst. <br/>  To respond " +
+			String content = " <div style='background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 10px;'>Hi <b>"+emailDetailsVO.getFromAddress()+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 0px;line-height:1.8em;'><b>"+emailDetailsVO.getSenderName()+"</b> has sent a friend request in Party Analyst. <br/>  To respond " +
 					"to the friend request, <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&target=fr&'><b>Login here.</b></a></div>" +
 									"<div>"+mailsTemplateService.getFooter()+"</div></div>" ;
 			emailDetailsVO.setSubject(subject);
@@ -84,7 +84,7 @@ public class MailsSendingService implements IMailsSendingService{
 			
 			String subject = ""+emailDetailsVO.getSenderName()+" accepted Friend Request in Party Analyst"; 
 			String content = "<div style = 'background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi "+emailDetailsVO.getFromAddress()+",</b></div>" +
-					"<div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><b>"+emailDetailsVO.getSenderName()+"</b> has accepted your friend request in Party Analyst.<br/>Do you want to send a message? " +
+					"<div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em;'><b>"+emailDetailsVO.getSenderName()+"</b> has accepted your friend request in Party Analyst.<br/>Do you want to send a message? " +
 							"<a href='http://www.partyanalyst.com/loginInputAction.action?source=email&target=fa&'><b> Login Here</b> </a></div>" +
 							"<div>"+mailsTemplateService.getFooter()+"</div></div>";
 			
@@ -113,9 +113,9 @@ public class MailsSendingService implements IMailsSendingService{
 			
 			String subject = ""+emailDetailsVO.getSenderName()+" send a message in Party Analyst";
 			String content = "<div style='background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
-					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+emailDetailsVO.getFromAddress()+",</b><br/>" +
-							"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><b>"+emailDetailsVO.getSenderName()+"</b> has sent a message in Party Analyst.<br/> To see the message and send a reply? <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&target=ms&'>Login Here</a></div>" +
-									"<div>"+mailsTemplateService.getFooter()+"</div></div>";
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 10px;'>Hi <b>"+emailDetailsVO.getFromAddress()+",</b><br/>" +
+							"</div><div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em;'><b>"+emailDetailsVO.getSenderName()+"</b> has sent a message in Party Analyst.<br/> To see the message and send a reply, <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&target=ms&'>Login Here</a></div>" +
+									"<div style='margin-top: -5px;'>"+mailsTemplateService.getFooter()+"</div></div>";
 			emailDetailsVO.setContent(content);
 			emailDetailsVO.setSubject(subject);
 			resultStatus = mailService.sendEmail(emailDetailsVO);
@@ -181,8 +181,10 @@ public class MailsSendingService implements IMailsSendingService{
 		
 	}
 	
+	
 	public ResultStatus acceptEmailForAnalyzeConstituency(EmailDetailsVO emailDetailsVO)
 	{
+		String temp = "";
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
@@ -192,10 +194,16 @@ public class MailsSendingService implements IMailsSendingService{
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
 			}
+			if(emailDetailsVO.getPartyStrength() !=null && emailDetailsVO.getPartyStrength().equalsIgnoreCase("winning"))
+				temp = "won";
+				else if(emailDetailsVO.getPartyStrength() !=null && emailDetailsVO.getPartyStrength().equalsIgnoreCase("loosing"))
+					temp = "lost";
+			
 			String subject = "Updates from Party Analyst";
 			String content = "<div style='background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
-					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+emailDetailsVO.getFromAddress()+",</b><br/>" +
-							"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font> Your Political Reason for " +emailDetailsVO.getPartyStrength()+ " the candidate <b>" +emailDetailsVO.getCandidateName()+ "</b> from <b>" +emailDetailsVO.getConstituencyName()+ " " +emailDetailsVO.getElectionType()+  "</b> Constituency Added Successfully . We will send your comment to Admin for approval.<br/></div>" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 10px;'>Hi <b>"+emailDetailsVO.getFromAddress()+",</b><br/>" +
+							"</div><div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em;'><font> The political reason posted by you regarding \"why the candidate <b>" +emailDetailsVO.getCandidateName()+ "</b> " +
+									""+temp+" in <b>" +emailDetailsVO.getElectionType()+ "</b> constituency\" added successfully.<br/></div>" +
 									"<div>"+mailsTemplateService.getFooter()+"</div></div>";
 			emailDetailsVO.setContent(content);
 			emailDetailsVO.setSubject(subject);
@@ -235,19 +243,27 @@ public class MailsSendingService implements IMailsSendingService{
 		
 	}
 	
+		
+	
 	public ResultStatus sendEmailForConnectedUsers(EmailDetailsVO emailDetailsVO)
 	{
+		String temp = "";
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
 			if(emailDetailsVO != null)
 			{
+				if(emailDetailsVO.getPartyStrength() !=null && emailDetailsVO.getPartyStrength().equalsIgnoreCase("winning"))
+					temp = "won";
+					else if(emailDetailsVO.getPartyStrength() !=null && emailDetailsVO.getPartyStrength().equalsIgnoreCase("loosing"))
+						temp = "lost";
+				
 			String subject = "  "+emailDetailsVO.getFromAddress()+ " posted political reason  in Party Analyst";
 			
 			String content ="<div style='background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
-					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'>Hi <b>"+emailDetailsVO.getSenderName()+ ", </b><br/>" +
-					"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font> Your friend <b>" +emailDetailsVO.getFromAddress()+ "</b> posted a political reason for <b>" +emailDetailsVO.getCandidateName()+  " "  +emailDetailsVO.getPartyStrength()+  "</b> from <b>"+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ "</b> constituency. </b><br/><br/>" +
-					"If you want to know more about " +emailDetailsVO.getCandidateName()+  " , <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&target=pa&'><b> Login Here</b> </a></div>" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 10px;'>Hi <b>"+emailDetailsVO.getSenderName()+ ", </b><br/>" +
+					"</div><div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em;margin-right: 5px;'><font> Your friend <b>" +emailDetailsVO.getFromAddress()+ "</b> posted a political reason regarding \"why <b>" +emailDetailsVO.getCandidateName()+  " </b> "+temp+" in <b>"+emailDetailsVO.getConstituencyName()+"</b> constituency\". <br/>" +
+					"If you want to know more about " +emailDetailsVO.getCandidateName()+  ", <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&target=pa&'><b> Login Here</b> </a></div>" +
 							"<div>"+mailsTemplateService.getFooter()+"</div></div>";
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
@@ -280,19 +296,19 @@ public class MailsSendingService implements IMailsSendingService{
 			String subject = "Problem Posted Successfully in Party Analyst";
 			
 			String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
-					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b></div>" +
-							"<div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'>Thanks for posting your problem.Your area Problem Posted Successfully.<br><br>" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 10px;'><b>Hi "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b></div>" +
+							"<div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em;'>Thanks for posting your problem.Your area problem posted successfully.<br>" +
 							" Your Problem Reference Number is : <b>"+problemDetailsVO.getEmailDetailsVO().getElectionType()+"</b>" +
-									"<br>This Will be usefull for Further Reference.<br>" +
-							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
-									"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br><br>" +
+									"<br>This will be useful for further reference.<br>" +
+							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br>" +
+									"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br>" +
 											"<b>Location <span style='margin-left:80px;'>:</span>  </b>"+problemDetailsVO.getLocation()+"" +
 													"<br/><b>Existing From <span style='margin-left:48px;'>:</span>  </b>"+problemDetailsVO.getIdentifiedDate()+"" +
 															"<br/><b>Reported Date <span style='margin-left:45px;'>:</span>  </b>"+problemDetailsVO.getExistingFrom()+"" +
 																	"<br/><b>NO.Of Files Attached <span style='margin-left:5px;'>:</span>  </b>"+problemDetailsVO.getProblemID()+"" +
-																			"<br/>Your Request send to Admin for Approvel." +
+																			"" +
 							"</div>" +
-									"<div>"+mailsTemplateService.getFooter()+"</div></div>";
+									"<div style='margin-top: -5px;'>"+mailsTemplateService.getFooter()+"</div></div>";
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
 			emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
@@ -326,8 +342,8 @@ public class MailsSendingService implements IMailsSendingService{
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br><br>" +
 									"Reference Number : <b> "+problemDetailsVO.getSource()+"</b><br>" +
 											"To share,comment,like and More Details about the Problem - " +
-											"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&'> </a> (or) Use the below Link</div>" +
-													"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&target=probApp&</div>" +
+											"<a href='http://www.partyanalyst.com/completeProblemDetailsAction.action?problemId="+problemDetailsVO.getProblemHistoryId()+"&source=email&'> </a> (or) Use the below Link</div>" +
+													"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/completeProblemDetailsAction.action?problemId="+problemDetailsVO.getProblemHistoryId()+"&source=email&target=probApp&</div>" +
 															"<div>"+mailsTemplateService.getFooter()+"</div></div>";
 			
 			emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
@@ -360,12 +376,12 @@ public class MailsSendingService implements IMailsSendingService{
 			String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
 					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 8px;'><b>Hi "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b>" +
 							"</div>" +
-					"<div style='margin-left: 45px; margin-bottom: 8px;line-height: 1.5em;'>Your Friend <b>"+problemDetailsVO.getEmailDetailsVO().getSenderName()+"</b> Posted a problem in Party Analyst.<br><br>" +
-							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
+					"<div style='margin-left: 45px; margin-bottom: 8px;line-height: 2em;'>Your Friend <b>"+problemDetailsVO.getEmailDetailsVO().getSenderName()+"</b> posted a problem in Party Analyst.<br>" +
+							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br>" +
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br>" +
-									"To View Problem details and comments on this Problem - " +
-									"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&taget=probApprovel&'>ClickHere </a> (or) Use the below Link</div>" +
-											"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&</div>" +
+									"To View problem details and comments on this problem - " +
+									"<a href='http://www.partyanalyst.com/completeProblemDetailsAction.action?problemId="+problemDetailsVO.getProblemHistoryId()+"&source=email&taget=probApprovel&'>Click Here </a> (or) click on the link given below</div>" +
+											"<div style='margin-left: 45px;margin-bottom:0px;'>http://www.partyanalyst.com/completeProblemDetailsAction.action?problemId="+problemDetailsVO.getProblemHistoryId()+"&source=email&</div>" +
 													"<div>"+mailsTemplateService.getFooter()+"</div></div>";
 			
 			emailDetailsVO.setSubject(subject);
@@ -383,5 +399,78 @@ public class MailsSendingService implements IMailsSendingService{
 		}
 	}
 	
+	public ResultStatus sendEmailToFreeUserAfterCommentRejected(EmailDetailsVO emailDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		if(emailDetailsVO == null)
+		{
+			log.info("Error Occured in sendEmailToFreeUserAfterCommentRejected() Method.");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		try
+		{
+			if(emailDetailsVO != null)
+			{
+				String subject = "Updates from Party Analyst";
+				String content ="<div style='background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
+						"<div style='margin-left:26px;margin-top:20px;margin-bottom: 10px;'>Dear <b>"+emailDetailsVO.getFromAddress()+",</b><br/>" +
+						"</div><div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em; margin-right: 13px;'><font> your comment for the <b>" +emailDetailsVO.getCandidateName()+ " " +emailDetailsVO.getPartyStrength()+  "</b> from <b>"  +emailDetailsVO.getConstituencyName()+  " "  +emailDetailsVO.getElectionType()+ "</b> constituency has Rejected.<br/> </div>" +
+								"<div style='margin-top:-5px;'>"+mailsTemplateService.getFooter()+"</div></div>";
+		emailDetailsVO.setContent(content);
+		emailDetailsVO.setSubject(subject);
+		 mailService.sendEmail(emailDetailsVO);
+		 
+			}
+			return resultStatus;
+		}
+		catch(Exception e)
+		{
+		e.printStackTrace();
+		log.error("Exception Occured in sendEmailToFreeUserAfterCommentRejected() Method, Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+		}
+		
+	}
 	
+	public ResultStatus sendEmailToFreeUserAfterProblemRejected(ProblemDetailsVO problemDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		if(problemDetailsVO == null)
+		{
+			log.info("Error Occured in sendEmailToFreeUserAfterProblemRejected() Method.");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		try
+		{
+			if(problemDetailsVO != null)
+			{
+				String subject = "Updates From Party Analyst";
+				String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
+						"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Dear "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b></div>" +
+								"<div style='margin-left: 45px; margin-bottom: 0px;line-height: 1.8em;'>The Problem (Ref No: <b>"+problemDetailsVO.getSource()+"</b>) Posted by you, is rejected by Admin.<br>" +
+								"  The Problem may contain unused words or not upto the Public Posting Standards.<br>" +
+								"        For Details Please contact Us : <a href='mailto:info@partyanalyst.com'>info@partyanalyst.com</a></div>" 
+								+"<div style='margin-top:-5px;'>"+mailsTemplateService.getFooter()+"</div></div>";
+				
+				emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
+				emailDetailsVO.setSubject(subject);
+				emailDetailsVO.setContent(content);
+				mailService.sendEmail(emailDetailsVO);
+		 
+			}
+			return resultStatus;
+		}
+		catch(Exception e)
+		{
+		e.printStackTrace();
+		log.error("Exception Occured in sendEmailToFreeUserAfterProblemRejected() Method, Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+		}
+		
+	}
 }
