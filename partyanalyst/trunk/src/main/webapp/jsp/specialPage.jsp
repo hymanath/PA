@@ -582,7 +582,7 @@ function buildContentDetails()
 		
 		for(var i=0;i<result.otherGalleries.length;i++)
 		{
-			if(i%4 == 0)
+			if(i%5 == 0)
 				str += '<tr>';
 			
 			str += '<td width="20%" valign="top">';
@@ -604,7 +604,7 @@ function buildContentDetails()
 
 			str += '</td>';
 
-			if(i%4 == 3)
+			if(i%5 == 4)
 				str += '</tr>';
 		}
 		str += '</Table>';
