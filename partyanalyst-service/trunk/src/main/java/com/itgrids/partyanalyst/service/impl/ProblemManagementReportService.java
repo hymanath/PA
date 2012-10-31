@@ -2024,7 +2024,8 @@ public class ProblemManagementReportService implements
 						Problem problem = problemDAO.get(problemIds[i].longValue());
 						
 						 problem.setIsApproved(IConstants.REJECTED);
-						 problemDAO.save(problem);
+						 Problem problemDetails =  problemDAO.save(problem);
+						 sendEmailToFreeUserAfterProblemRejected(problemDetails);
 					}	
 				
 		}
@@ -2049,7 +2050,7 @@ public class ProblemManagementReportService implements
 						problemLocation.setUpdatedDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
 						problemLocationDAO.save(problemLocation);
 						sendEmailToFreeUserAfterProblemApproval(problemHistory);*/
-						 sendEmailToFreeUserAfterProblemApproval(problem);
+						 //sendEmailToFreeUserAfterProblemApproval(problem);
 					}
 				
 		}
@@ -2099,23 +2100,69 @@ public class ProblemManagementReportService implements
 		}
 
 		
-		/*public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemHistory problemHistory)
+		public ResultStatus sendEmailToFreeUserAfterProblemRejected(Problem problem)
 		{
 			ResultStatus resultStatus = new ResultStatus();
-			Long userId = null;
-			if(problemHistory == null)
-				{
+			if(problem == null)
+			{
+				log.error("Error Occured in sendEmailToFreeUserAfterProblemRejected() Method.");
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
+			}
+			try{
+				log.info("Entered into sendEmailToFreeUserAfterProblemRejected() Method");
+				String email = null;
+				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+				Long problemId = problem.getProblemId();
+				List<UserProblem> userProblem = userProblemDAO.getProblemDetailsOfUserToSendEmailAfterProblemApproval(problemId);
+				if(userProblem != null)
+				{
+					for(UserProblem problemDetails:userProblem)
+					{
+						email = problemDetails.getUser().getEmail();
+						if(email != null && email.trim().length() > 0)
+						emailDetailsVO.setFromAddress(problemDetails.getUser().getFirstName()+""+problemDetails.getUser().getLastName());
+						emailDetailsVO.setToAddress(email);
+						problemDetailsVO.setDefinition(problemDetails.getProblem().getTitle());
+						problemDetailsVO.setDescription(problemDetails.getProblem().getDescription());
+						problemDetailsVO.setSource(problemDetails.getProblem().getReferenceNo());
+						problemDetailsVO.setProblemHistoryId(problemDetails.getUserProblemId());
+						problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+						mailsSendingService.sendEmailToFreeUserAfterProblemRejected(problemDetailsVO);
+					
+					}
 				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in sendEmailToFreeUserAfterProblemRejected() Method, Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			return resultStatus;
+		}
+		
+		public ResultStatus sendEmailToConnectedUsersAfterProblemAdded(ProblemBeanVO problemBeanVO)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			
+			Long userId = null;
+			String senderName = null;
+			if(problemBeanVO == null)
+			{
+				log.error("Error Occured in sendEmailToConnectedUsersAfterProblemAdded()");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
 			try
 			{
 				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
 				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 				
-				userId = problemHistory.getProblemLocation().getProblemAndProblemSource()
-						.getFreeUser().getUserId();
-				
+				UserProblem userProblem = userProblemDAO.get(problemBeanVO.getUserProblemId());
+				userId = userProblem.getUser().getUserId();
+				String userName = "";
 				if(userId != null && userId != 0)
 				{
 					String email = null;
@@ -2128,15 +2175,20 @@ public class ProblemManagementReportService implements
 							email = params[3].toString();
 							if(email != null && email.trim().length() > 0)
 							{
-								problemDetailsVO.setProblemHistoryId(userProblem.getProblem().getProblemId());
-								problemDetailsVO.setDefinition(userProblem.getProblem().getTitle());
-								problemDetailsVO.setDescription(userProblem.getProblem().getDescription());
+								problemDetailsVO.setProblemHistoryId(problemBeanVO.getProblemId());
+								problemDetailsVO.setDefinition(problemBeanVO.getProblem());
+								problemDetailsVO.setDescription(problemBeanVO.getDescription());
 								emailDetailsVO.setToAddress(email);
-								emailDetailsVO.setFromAddress(params[1].toString()+" "+params[2].toString());
-								if(userProblem.getUser().getFirstName() != null)
-									senderName = userProblem.getUser().getFirstName();
-								if(userProblem.getUser().getLastName() != null)
-									senderName +=" "+userProblem.getUser().getLastName();
+								if(params[1] != null)
+									userName = params[1].toString();
+								if(params[2] != null)
+									userName +=" " +params[2].toString();
+
+								emailDetailsVO.setFromAddress(userName);
+								if(problemBeanVO.getName() != null)
+									senderName = problemBeanVO.getName();
+								
+								
 								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
@@ -2153,15 +2205,14 @@ public class ProblemManagementReportService implements
 							email = param[3].toString();
 							if(email != null && email.trim().length() > 0)
 							{
-								problemDetailsVO.setProblemHistoryId(userProblem.getProblem().getProblemId());
-								problemDetailsVO.setDefinition(userProblem.getProblem().getTitle());
-								problemDetailsVO.setDescription(userProblem.getProblem().getDescription());
+								problemDetailsVO.setProblemHistoryId(problemBeanVO.getProblemId());
+								problemDetailsVO.setDefinition(problemBeanVO.getProblem());
+								problemDetailsVO.setDescription(problemBeanVO.getDescription());
 								emailDetailsVO.setToAddress(email);
 								emailDetailsVO.setFromAddress(param[1].toString()+" "+param[2].toString());
-								if(userProblem.getUser().getFirstName() != null)
-									senderName = userProblem.getUser().getFirstName();
-								if(userProblem.getUser().getLastName() != null)
-									senderName +=" "+userProblem.getUser().getLastName();
+								if(problemBeanVO.getName() != null)
+									senderName = problemBeanVO.getName();
+								
 								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
@@ -2171,17 +2222,14 @@ public class ProblemManagementReportService implements
 					}
 				}
 				
-			return resultStatus;	
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;	
 			}catch (Exception e) {
-				
+				log.error("Exception Occured in sendEmailToConnectedUsersAfterProblemAdded() Method , Exception -"+e);
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				resultStatus.setExceptionEncountered(e);
-				log.error("Exception occured in sendEmailToConnectedUsersAfterProblemApproval() , Exception is - "+e);
 				return resultStatus;
 			}
-		}*/
-		
-		
+}
 		public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(UserProblem userProblem)
 		{
 			ResultStatus resultStatus = new ResultStatus();
