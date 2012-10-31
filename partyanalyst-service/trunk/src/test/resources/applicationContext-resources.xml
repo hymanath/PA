@@ -286,6 +286,9 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencySubscriptions</value>
 				<value>com.itgrids.partyanalyst.model.BloodGroup</value>
 				<value>com.itgrids.partyanalyst.model.CadreOnlineRegistration</value>
+				<value>com.itgrids.partyanalyst.social.model.SocialNetworkSite</value>
+				<value>com.itgrids.partyanalyst.social.model.CandidateSocial</value>
+				<value>com.itgrids.partyanalyst.social.model.PartySocial</value>
 			</list>
 		</property>
 	</bean>
@@ -1532,4 +1535,17 @@
 	<bean id="candidateCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateCadreOnlineRegistrationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="socialNetworkSiteDAO" class="com.itgrids.partyanalyst.social.dao.impl.SocialNetworkSiteDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partySocialDAO" class="com.itgrids.partyanalyst.social.dao.impl.PartySocialDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateSocialDAO" class="com.itgrids.partyanalyst.social.dao.impl.CandidateSocialDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>
