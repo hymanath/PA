@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -879,7 +881,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 				System.out.println(election.getConstituency().getConstituencyId());
 	}*/
 	
-	public void testGetCandidatesToMapWithUser()
+/*	public void testGetCandidatesToMapWithUser()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(53l);ids.add(265l);
@@ -887,7 +889,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 			for(Object[] result : list)
 				System.out.println("id :"+result[0]+"Name :"+result[1]);
-	}
+	}*/
 	
 	/*public void testSelectData()
 	{
@@ -1206,5 +1208,11 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		for(Object[] params : list)
 			System.out.println(params[0] +"---"+params[1]);
 	}*/
+	
+	public void test()
+	{
+		Date date = new Date();
+		System.out.println(date.getTime());
+	}
 }
 	
