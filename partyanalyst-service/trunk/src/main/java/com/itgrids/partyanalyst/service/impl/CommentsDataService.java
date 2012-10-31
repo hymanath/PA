@@ -653,7 +653,45 @@ public class CommentsDataService implements ICommentsDataService {
 						
 						mailsSendingService.acceptEmailForAnalyzeConstituency(emailDetailsVO);
 						
-
+						List<Object[]> connectedPeople = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(userId);
+						
+						if(connectedPeople != null && connectedPeople.size() > 0)
+						{
+						for(Object[] connectPeopleDetails : connectedPeople)
+						{
+							String name = "";
+						//String name = connectPeopleDetails[1]+ " " +connectPeopleDetails[2];
+							if(connectPeopleDetails[1] != null)
+								name = connectPeopleDetails[1].toString();
+							if(connectPeopleDetails[2] != null)
+							name +=" "+connectPeopleDetails[2].toString();
+						
+						emailDetailsVO.setToAddress(connectPeopleDetails[3].toString());
+						emailDetailsVO.setSenderName(name);
+						
+						
+						mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+						}
+						}
+						List<Object[]> connectedRecepientPeople = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(userId);
+						if(connectedRecepientPeople !=null && connectedRecepientPeople.size() > 0)
+						{
+						
+							for(Object[] recepientPeople : connectedRecepientPeople)
+							{
+							//String recepentUserName = recepientPeople[1]+ " " +recepientPeople[2];
+							String recepentUserName = "";
+								if(recepientPeople[1] != null)
+								  recepentUserName = recepientPeople[1].toString();
+								if(recepientPeople[2] != null)	
+								 recepentUserName += " "+recepientPeople[1].toString();
+								
+							emailDetailsVO.setToAddress(recepientPeople[3].toString());
+							emailDetailsVO.setSenderName(recepentUserName);
+							mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+							
+						}
+						}
 						
 					
 				}
@@ -1217,39 +1255,9 @@ public class CommentsDataService implements ICommentsDataService {
 						emailDetailsVO.setPartyStrength("loosing");
 					emailDetailsVO.setConstituencyName(params[5].toString());
 					emailDetailsVO.setElectionType(params[6].toString());
-					mailsSendingService.acceptEmailForUserComments(emailDetailsVO);
+					mailsSendingService.sendEmailToFreeUserAfterCommentRejected(emailDetailsVO);
 			}}
-					List<Object[]> connectedPeople = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(userId);
-			
-					if(connectedPeople != null && connectedPeople.size() > 0)
-					{
-					for(Object[] connectPeopleDetails : connectedPeople)
-					{
-					String userName = connectPeopleDetails[1]+ " " +connectPeopleDetails[2];
-					
-					emailDetailsVO.setToAddress(connectPeopleDetails[3].toString());
-					emailDetailsVO.setSenderName(userName);
-					
-					
-					mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
-					}
-					}
-					List<Object[]> connectedRecepientPeople = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(userId);
-					if(connectedRecepientPeople !=null && connectedRecepientPeople.size() > 0)
-					{
-					
-						for(Object[] recepientPeople : connectedRecepientPeople)
-						{
-						String recepentUserName = recepientPeople[1]+ " " +recepientPeople[2];
-						emailDetailsVO.setToAddress(recepientPeople[3].toString());
-						emailDetailsVO.setSenderName(recepentUserName);
-						mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
-						
-					}
-					}
-					 
-			
-			}		
+		}		
 		catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1297,7 +1305,7 @@ public class CommentsDataService implements ICommentsDataService {
 			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
 			List comments = commentCategoryCandidateDAO.getAllOpenedComments(firstDate, secondDate);
 			
-			if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+			if(actionType.equalsIgnoreCase(IConstants.REJECTED))
 			{
 			List<Object[]> listOfComments = commentCategoryCandidateDAO.getUsersBasedOnReasonIds(reasonIds);
 				 sendEmailForCommentsDetailsFromList(listOfComments);	
