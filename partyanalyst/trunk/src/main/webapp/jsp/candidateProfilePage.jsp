@@ -2887,7 +2887,7 @@ function buildAllVideosInGallary(results){
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
 		
-		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To Gallary</a>';
+		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
 		
 		str+='<table style="width:100%;margin-top:15px;">';
 		for(var i in results)
