@@ -2569,7 +2569,7 @@ function buildAllVideosInGallary(results){
 		
 		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
 		
-		str+='<table style="width:100%;">';
+		str+='<table style="width:100%; margin-top: 8px;">';
 		for(var i in results)
 		{
 			no_of_imagesPerRow = 3; 
@@ -2585,10 +2585,11 @@ function buildAllVideosInGallary(results){
 			str += '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
 		
 			//str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
-			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;"/></td></a>';
+			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" title="'+results[i].description+'"/></td></a>';
 			str+='</tr>';
 			str+='<tr>';
-			str+='<td>'+results[i].description+'';
+			/* str+='<td>'+results[i].description+'';*/
+			str+='<td>'+results[i].title+'';
 			str+='</td>';
 			str+='</table>';
 			
