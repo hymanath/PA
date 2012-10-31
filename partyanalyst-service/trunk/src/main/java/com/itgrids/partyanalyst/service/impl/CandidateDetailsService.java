@@ -3051,6 +3051,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	    			governingBodyVO.setMinistry(params.getPositionScope().getElectionGoverningBodyPosition().getGoverningBodyPosition());
 	    			
 	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.CHIEF_MINISTER))
+	    				if(params.getToDate() == null)
 	    				candidateMinistriesVO.setIsChiefMinister(true);
 	    			
 	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.DEPUTY_CHIEF_MINISTER))
