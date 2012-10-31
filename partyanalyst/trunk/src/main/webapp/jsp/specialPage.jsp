@@ -265,7 +265,7 @@ function subscriptionDetails()
    
    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
    var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-   callAjax(jsObj,url);
+   callAjaxForSpecialPage(jsObj,url);
    }
  }
  
@@ -283,7 +283,7 @@ function subscriptionDetails()
    
    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
    var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-   callAjax(jsObj,url);
+   callAjaxForSpecialPage(jsObj,url);
  }
  function displayProfile()
  {
@@ -786,7 +786,7 @@ function getTotalProfile()
 			else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
 			{
                buildCandidatePhotoGallary(myResults);
-			}*/
+			}
 			else if(jsObj.task == "subscriptionDetails")
 			{
 				unSubscribeBtnBuild();
@@ -794,7 +794,7 @@ function getTotalProfile()
 			else if(jsObj.task == "unsubscriptionDetails")
 			{
 				subscribeBtnBuild();
-			}
+			}*/
 
 		}catch(e){   
 			// alert("Invalid JSON result" + e);   
@@ -1067,9 +1067,8 @@ $(document).ready(function() {
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to ';
-		str+='subscribe.<a href="/PartyAnalyst/loginInputAction.action" style="color:#80D1F1;">Click here to Login';
-		str+='</a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to subscribe. <a href="loginInputAction.action" style="color:#80D1F1;"> Click here to Login</a></div></div>';
+		document.getElementById("logInDiv").innerHTML = str;
 }
 
 function subscribeAlert()
