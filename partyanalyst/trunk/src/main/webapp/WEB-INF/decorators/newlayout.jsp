@@ -471,7 +471,7 @@ function buildAccordion()
 <div style="width:100%;float:left;">
 <center>
 <div class="header2">
-<div style="float:left;margin-left:110px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false"></div>
+<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
               <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
@@ -920,10 +920,23 @@ function openAddNewProblemWindow()
 	browser_addNewProblem.focus();
 }
 
-function shareInFacebook(url)
+function shareInFacebook(urlStr)
 {	
-	var shareInFacebook_window = window.open("http://www.facebook.com/sharer.php?u="+url+"&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
+	var url = encodeURL(urlStr);
+	var shareInFacebook_window = window.open("http://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
 	shareInFacebook_window.focus();
+}
+
+function encodeURL(urlStr)
+{
+	var url = $.trim(urlStr);
+	if(url.length > 0)
+	{
+		url = url.replace('&','%26');
+		return url;
+	}
+	else
+		return;
 }
 
 function getElectionYearsInHomePage(electionType)
