@@ -98,4 +98,6 @@ public interface IPartyDetailsService {
 	public List<SelectOptionVO> getAllPartysNamesByUser(Long userId);
 	
 	public ResultStatus saveDataToUserPartyRelation(Long userId,Long partyId);
+	
+	public List<FileVO> getAllNewsdetails(Long partyId,int firstResult,int maxResult,String queryType);
 }
