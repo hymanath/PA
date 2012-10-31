@@ -61,6 +61,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		
 	}
 	
+	
 	public List<Object[]> getNewsByScope(Long partyId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr)
 	{
 		StringBuilder query = new StringBuilder();
@@ -140,6 +141,59 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		return query.list(); 
 	 }
 	
+	public List<Long> getNewsCountByScope(Long partyId,Long scopeType,String queryType)
+	{
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select count(*) from FileGallary model where model.gallary.gallaryId in "+
+				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) ");
+		
+		if(scopeType!=null)
+			query.append("   and model.file.regionScopes.regionScopesId =:scopeType ");
+			
+		if(queryType.equals("Public"))
+			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+			
+		if(queryType.equals("Private"))
+			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setString("isDelete", "false");
+		queryObject.setString("isPrivate", "false");
+		queryObject.setLong("partyId", partyId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		
+		if(scopeType!=null)
+		queryObject.setLong("scopeType", scopeType);
+		
+		return queryObject.list(); 
+	}
+	public List<Object[]> getAllNewsDetails(Long partyId,int firstResult,int maxResult,String queryType){
+		   
+	     StringBuilder query = new StringBuilder();
+			query.append("select model.file,model.fileGallaryId,model.file.fileDate from FileGallary model where model.gallary.gallaryId in "+
+				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) order by model.file.fileDate desc");
+				if(queryType.equals("Public"))
+			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+			if(queryType.equals("Private"))
+			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			
+			query.append(" order by model.file.fileDate desc ");
+			Query queryObject = getSession().createQuery(query.toString());
+			
+			queryObject.setLong("partyId", partyId);
+			queryObject.setString("type", IConstants.NEWS_GALLARY);
+			queryObject.setString("isDelete", "false");
+			queryObject.setString("isPrivate", "false");
+			queryObject.setFirstResult(firstResult);
+			queryObject.setMaxResults(maxResult);
+				
+							
+			return queryObject.list(); 
+  }
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		
