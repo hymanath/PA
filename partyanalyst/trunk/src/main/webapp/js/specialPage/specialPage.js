@@ -2059,7 +2059,7 @@ function callAjaxForSpecialPage(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}	
-			else if(jsObj.task == "setEmailAlertsForUser")
+		else if(jsObj.task == "setEmailAlertsForUser")
             {
 			   showStatusForEmailSubscription(myResults);
 			}
@@ -2071,10 +2071,18 @@ function callAjaxForSpecialPage(jsObj,url)
 			{
 				showContent(myResults);
 			}
-			else if(jsObj.task == "getSelectedContent")
+		else if(jsObj.task == "getSelectedContent")
 			{
 				showContentResultList = myResults;
 				buildContentDetails();
+			}
+		else if(jsObj.task == "subscriptionDetails")
+			{
+				unSubscribeBtnBuild();
+			}
+		else if(jsObj.task == "unsubscriptionDetails")
+			{
+				subscribeBtnBuild();
 			}
 
 		}
