@@ -18,6 +18,7 @@ import org.apache.struts2.util.ServletContextAware;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -90,7 +91,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private Boolean hasPartyAnalystUserRole;
 	private Long problemSourceScopeId;
 	private Long problemScopeId;
-	
+	private IProblemManagementReportService problemManagementReportService;
+    
 	public Boolean getHasFreeUserRole() {
 		return hasFreeUserRole;
 	}
@@ -248,7 +250,15 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.isSuccessfullyInserted = isSuccessfullyInserted;
 	}
 
-	
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+
 
 	//form input setters and getters
 	
@@ -663,7 +673,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			 {
 				 //problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB.getUserProblemId());
 				 problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB);
-				 
+				 problemManagementReportService.sendEmailToConnectedUsersAfterProblemAdded(problemBeanFromDB);
 			 }
 			 problemBeanVO = new ProblemBeanVO();
 			 
