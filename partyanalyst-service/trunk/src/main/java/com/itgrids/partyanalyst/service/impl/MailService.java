@@ -213,49 +213,47 @@ public class MailService implements IMailService{
     	
     	text = "";
     	text +="<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"<br/>";
-    	
-
-    	
+      	
     	text +="<div style='margin-left:20px; margin-top:15px;'>Hi  <b>"+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</div>";
     	
-    	text +="<div style='margin-left:30px;margin-right:15px;margin-bottom:30px;'></b></font><br>Just a quick note to confirm that you are now a registered member of our family.";
+    	text +="<div style='margin: 12px 15px 30px 30px; line-height: 1.8em;'></b></font>Just a quick note to confirm that you are now a registered member of Party Analyst family.";
     	
-    	text +="<br><br>Thank you for joining - we're so glad to have you as the newest member of our growing Community.";
+    	text +="<br>Thank you for joining - we're so glad to have you as the newest member of our growing community.";
 
     	
-    	text +="<br><br>Here are your login details. Please keep them safe for future reference.";
+    	text +="<br>Here are your login details. Please keep them safe for future reference.";
     	
-    	text +="<br><br><b>Username : </b>"+ " <span style='text-decoration: none;'>"+registrationVO.getEmail()+"</span>";
-    	text +="<br><br><b>Password : </b>"+" "+registrationVO.getPassword();
+    	text +="<br><b>Username : </b>"+ " <span style='text-decoration: none;'>"+registrationVO.getEmail()+"</span>";
+    	text +="<br><b>Password : </b>"+" "+registrationVO.getPassword();
     	
-    	text +="<br><br><b>Getting Started : </b>";
-    	text +="<br><ul><li>Connect with your local & likeminded people</li>";
-    	text +="<li>Post Problems to be noticed by everyone and understand the impact of them</li>";
-    	text +="<li>Post Comments on problems and leaders</li>";
-    	text +="<li>Subscribe and receive regular updates</li></ul>";
+    	text +="<br><b>Getting Started : </b>";
+    	text +="<br><ul style='margin-top: 0px; margin-bottom: 0px;'><li style='margin-left:0px'>Connect with your local & like-minded people</li>";
+    	text +="<li style='margin-left:0px'>Post problems to be noticed by everyone and understand the impact of them</li>";
+    	text +="<li style='margin-left:0px'>Post comments on problems and leaders</li>";
+    	text +="<li style='margin-left:0px'>Subscribe for party and politician or special events and receive regular activities</li></ul>";
     	
-    	text +="<br><b>Get Informative data in a click : </b>";
-    	text +="<ul><li>State, District and Constituency level info on both Assembly and Parliament elections</li>";
-    	text +="<li>Geographical information about constituency</li>";
-    	text +="<li>Information about Parties and Leaders and a lot more….</li></ul>";
+    	text +="<b>Get Informative data in a click : </b>";
+    	text +="<ul style='margin-top: 0px; margin-bottom: 0px;'><li style='margin-left:0px'>State, District and Constituency level info on both Assembly and Parliament elections</li>";
+    	text +="<li style='margin-left:0px'>Geographical information about constituency</li>";
+    	text +="<li style='margin-left:0px'>Information about Parties and Leaders and lot more..</li></ul>";
     	
     	text +="<br>Explore more about your constituency : <b><a href="+constituency+">"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a></b>";
-    	text +="<br><br><a href="+constituency+" target='_blank'>"+constituency+"</a><br>";
+    	text +="<br><a href="+constituency+" target='_blank'>"+constituency+"</a><br>";
     	
-    	text +="<br>Explore more about your district : <b><a href="+district+">"+districtName+"</a></b><br>";
-    	text +="<br><a href="+district+" target='_blank'>"+district+"</a>";
+    	text +="Explore more about your district : <b><a href="+district+">"+districtName+"</a></b><br>";
+    	text +="<a href="+district+" target='_blank'>"+district+"</a>";
     	
-    	text +="<br><br>We hope to see you around and take part in our community!!!";
-    	text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
-    	text +="<br><br>Have a good day!";
+    	text +="<br>We hope to see you around and take part in our community!!!";
+    	//text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
+    	text +="<br>Have a good day!";
     	//text +="<div style='margin-left: -28px;'>"+mailsTemplateService.getFooter()+"</div>";
     	//text +="<br><br>-&nbsp;&nbsp;&nbsp;PartyAnalyst Team.";
     	//text +="<br><br><b>PS:</b> Please add this email to your address book so that the emails from us dont end up in your junk folder.";
-    	text +="<div style='line-height: 1.8em'>" +
-				"<br>Thanks," +
+    	text +="<div style='margin-top: 10px;'>" +
+				"Thanks," +
 				"<br>Party Analyst Team<br>" +
-				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst</a><br>" +
-				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us dont end up in your junk folder.</p></div></div>";
+				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst.com</a><br>" +
+				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us don't end up in your junk folder.For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></p></div></div>";
     	text +="</div></div>";
     	
     	/*text +="<br><br>PS: Now that you are part of our community, why not invite your friends to join our community? You can not only connect and share your thoughts with them but also make them part of the change.";
