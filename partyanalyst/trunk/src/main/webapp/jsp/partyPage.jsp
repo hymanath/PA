@@ -25,6 +25,8 @@
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <script type="text/javascript" src="js/customPaginator/messagePaginator.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
+<!--  for pagination purpose -->
+<script type="text/javascript" src="js/customPaginator/totalNewsPaginator.js"></script>
 
 
 
@@ -736,6 +738,398 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
   <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
+	</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+ });
+		 
+    var descriptions = '${descriptions}'; 
+   var timeST = new Date().getTime();
+   var partyId = '${partyId}';
+   var fileIdArray = new Array();
+   var initialFileIdArray = new Array();
+   var initialArraySize =0;
+   var initialCurrentSize=0;
+   var arraySize =0;
+   var currentSize=0;
+   var queryTypeChecked='Public';
+   var showContentResultList = null;
+   var incAlliances = false;
+   var clickedButtonType = '';
+   var newsData;
+   var newsPopUpData;
+   var selectedContentFile;
+   var videosNewData;
+   var stateId='${stateId}';
+   var cnstuencyId='${constituencyId}';
+   var userName = '${sessionScope.UserName}';
+   var isSubscribed = '${sessionScope.isSubscribed}';
+
+
+var news_Obj = {
+	
+	problemStatus:[],
+	startIndex:0,
+	problemsCount:20,
+	
+	initialize:function(){
+		
+		this.getAllNewsForUser("totalNews");
+
+	},
+	getAllNewsForUser:function(viewType)
+    {  
+	  
+        var queryType='Public';
+        if(document.getElementById("candidateVisibility")!=null)
+        { 
+	        var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	        if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		    {
+		       queryType='Public';
+		       queryTypeChecked='Public';
+		    }
+		    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		    {
+		       queryType='Private';
+		       queryTypeChecked='Private';
+		    }
+		   if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		   {
+		      queryType='All';
+		      queryTypeChecked='All';
+		   }
+	    }
+	
+        var jsObj =
+		    {   
+        		task:"getAllNewsToDisplay",
+		        time : new Date().getTime(),
+			    viewtype:viewType,
+			    partyId:partyId,
+			    queryType:queryType
+			    
+		     };
+        
+	    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	    var url = "partyPhotoGallaryAction.action?"+rparam;
+
+	    custom_paginator.paginator({
+			startIndex:this.startIndex,
+			resultsCount:this.problemsCount,
+			jsObj:jsObj,
+			ajaxCallURL:url,
+			paginatorElmt:"custom_paginator_class",
+			callBackFunction:function(){
+	    	showTotalNews(results);
+			}
+		});
+		
+		custom_paginator.initialize();
+    },
+    
+    getScopeWiseNews:function(scopeId)
+    {
+       
+        deleteAllElements();
+        
+        var queryType='Public';
+        if(document.getElementById("candidateVisibility")!=null)
+        { 
+   	        var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	        if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+   		    {
+   		        queryType='Public';
+   		        queryTypeChecked='Public';
+   		    }
+   	   }
+       if(document.getElementById("candidateVisibility")!=null)
+       {
+   	         var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	        if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+   		    {
+   		        queryType='Private';
+   		        queryTypeChecked='Private';
+   		    }
+      }
+      if(document.getElementById("candidateVisibility")!=null)
+      {
+   	       var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	       if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+   		   {
+   		       queryType='All';
+   		       queryTypeChecked='All';
+   		  }
+   	  }
+      var jsObj =
+   		{   
+   		    time : new Date().getTime(),
+   			candidateId:candidateId,
+   			scopeType:scopeId,
+   			queryType:queryType,
+   			task:"getNewsByScope"
+   		};
+
+    	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+    	var url = "candidateNewsGallaryAction.action?"+rparam;
+    	
+    	custom_paginator.paginator({
+		  startIndex:this.startIndex,
+		  resultsCount:this.problemsCount,
+		  jsObj:jsObj,
+		  ajaxCallURL:url,
+		  paginatorElmt:"custom_paginator_class",
+		  callBackFunction:function(){
+    	  showTotalNews(results);
+		 }
+	   });	
+   	custom_paginator.initialize();					
+   	 
+   },
+   
+   
+   
+   getNewsBySource:function(source)
+   {
+        scopeId='';
+        deleteAllElements();
+       
+        var queryType='Public';
+        if(document.getElementById("candidateVisibility")!=null)
+        { 
+ 	         var candidateVisibilityEle = document.getElementById("candidateVisibility");
+ 	         if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+ 		     {
+ 		       queryType='Public';
+ 		       queryTypeChecked='Public';
+ 		     }
+ 	    }
+       if(document.getElementById("candidateVisibility")!=null)
+       {
+ 	       var candidateVisibilityEle = document.getElementById("candidateVisibility");
+ 	      if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+ 		  {
+ 		    queryType='Private';
+ 		    queryTypeChecked='Private';
+ 		  }
+ 	   }
+      if(document.getElementById("candidateVisibility")!=null)
+      {
+ 	      var candidateVisibilityEle = document.getElementById("candidateVisibility");
+ 	      if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+ 		  {
+ 		   queryType='All';
+ 		   queryTypeChecked='All';
+ 		  }
+ 	 }
+  	 
+      var jsObj =
+ 		{   
+ 		    time : new Date().getTime(),
+ 			candidateId:candidateId,
+ 			scopeType:scopeId,
+ 			queryType:queryType,
+ 			source : source,
+ 			task:"getNewsBySourceScope"
+ 		};
+
+ 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+ 	  var url = "candidateNewsGallaryAction.action?"+rparam;
+ 	  
+ 	  custom_paginator.paginator({
+		  startIndex:this.startIndex,
+		  resultsCount:this.problemsCount,
+		  jsObj:jsObj,
+		  ajaxCallURL:url,
+		  paginatorElmt:"custom_paginator_class",
+		  callBackFunction:function(){
+   	          showTotalNews(results);
+		 }
+	   });	
+	   
+  	 custom_paginator.initialize();									
+ 	 
+   },
+   getNewsByLanguage: function (language)
+   {
+        scopeId='';
+        deleteAllElements();
+        
+        var queryType='Public';
+        if(document.getElementById("candidateVisibility")!=null)
+        { 
+ 	          var candidateVisibilityEle = document.getElementById("candidateVisibility");
+ 	          if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+ 		      {
+ 		             queryType='Public';
+ 		             queryTypeChecked='Public';
+ 		      }
+ 	     }
+        if(document.getElementById("candidateVisibility")!=null)
+        {
+ 	         var candidateVisibilityEle = document.getElementById("candidateVisibility");
+ 	         if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+ 		     {
+ 		         queryType='Private';
+ 		         queryTypeChecked='Private';
+ 		     }
+ 	    }
+       if(document.getElementById("candidateVisibility")!=null)
+       {
+ 	        var candidateVisibilityEle = document.getElementById("candidateVisibility");
+ 	        if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+ 		    {
+ 		        queryType='All';
+ 		        queryTypeChecked='All';
+ 		    }
+ 	   }
+       var jsObj =
+ 		   {   
+ 		    time : new Date().getTime(),
+ 			candidateId:candidateId,
+ 			scopeType:scopeId,
+ 			language : language,
+ 			queryType:queryType,
+ 			task:"getNewsByLanguageScope"
+ 		  };
+
+ 	     var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+ 	     var url = "candidateNewsGallaryAction.action?"+rparam;	
+ 	
+ 	    custom_paginator.paginator({
+		   startIndex:this.startIndex,
+		   resultsCount:this.problemsCount,
+		   jsObj:jsObj,
+		   ajaxCallURL:url,
+		   paginatorElmt:"custom_paginator_class",
+		   callBackFunction:function(){
+  	          showTotalNews(results);
+		   }
+	     });	
+	   
+ 	 custom_paginator.initialize();						
+ 	
+   },
+  getNewsByCategory:function (category)
+  {
+         scopeId='';
+         deleteAllElements();
+       
+         var queryType='Public';
+        if(document.getElementById("candidateVisibility")!=null)
+        { 
+   	        var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	        if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+   		    {
+   		        queryType='Public';
+   		        queryTypeChecked='Public';
+   		    }
+        }
+       if(document.getElementById("candidateVisibility")!=null)
+       {
+   	      var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	      if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+   		  {
+   		  queryType='Private';
+   		  queryTypeChecked='Private';
+   		  }
+       }
+      if(document.getElementById("candidateVisibility")!=null)
+      {
+   	     var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	     if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+   		  {
+   		   queryType='All';
+   		   queryTypeChecked='All';
+   		  }
+   	  }
+       var jsObj =
+   		{   
+   		    time : new Date().getTime(),
+   			candidateId:candidateId,
+   			scopeType:scopeId,
+   			category : category,
+   			queryType:queryType,
+   			task:"getNewsByCategoryScope"
+   		};
+
+   	    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+    	var url = "candidateNewsGallaryAction.action?"+rparam;	
+        custom_paginator.paginator({
+		   startIndex:this.startIndex,
+		   resultsCount:this.problemsCount,
+		   jsObj:jsObj,
+		   ajaxCallURL:url,
+		   paginatorElmt:"custom_paginator_class",
+		   callBackFunction:function(){
+	          showTotalNews(results);
+		   }
+	     });	
+	   
+	   custom_paginator.initialize();						
+   	
+   },  
+getNewsByNewsImportance:function(newsImportance)
+ {
+         scopeId='';
+         deleteAllElements();
+         var queryType='Public';
+       if(document.getElementById("candidateVisibility")!=null)
+       { 
+   	        var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	       if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+   		   {
+   		      queryType='Public';
+   		      queryTypeChecked='Public';
+   		   }
+       }
+      if(document.getElementById("candidateVisibility")!=null)
+      {
+   	      var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	      if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+   		  {
+   		    queryType='Private';
+   		   queryTypeChecked='Private';
+   		  }
+      }
+     if(document.getElementById("candidateVisibility")!=null)
+     {
+   	      var candidateVisibilityEle = document.getElementById("candidateVisibility");
+   	      if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+   		  {
+   		   queryType='All';
+   		   queryTypeChecked='All';
+   		  }
+   	}
+     var jsObj =
+   		{   
+   		    time : new Date().getTime(),
+   			candidateId:candidateId,
+   			scopeType:scopeId,
+   			newsImportance : newsImportance,
+   			queryType:queryType,
+   			task:"getNewsByNewsImportance"
+   		};
+
+   	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   	var url = "candidateNewsGallaryAction.action?"+rparam;	
+     custom_paginator.paginator({
+		   startIndex:this.startIndex,
+		   resultsCount:this.problemsCount,
+		   jsObj:jsObj,
+		   ajaxCallURL:url,
+		   paginatorElmt:"custom_paginator_class",
+		   callBackFunction:function(){
+	          showTotalNews(results);
+		   }
+	     });	
+	   
+	   custom_paginator.initialize();						
+   	 
+   }, 
+
+   
+};
 	</script>
  <script type="text/javascript">
    var descriptions = '${descriptions}'; 
@@ -1677,8 +2071,8 @@ function showFirstFourNewsRecords(results)
      }
    str+='  </ul>';
    
-   str+='<div class="more"><a href="javascript:{}" onclick="getTotalNews(\'totalNews\');">More</a></div>';
-   
+  // str+='<div class="more"><a href="javascript:{}" onclick="getTotalNews(\'totalNews\');">More</a></div>';
+    str+='<div class="more"><a href="javascript:{}" onclick=" news_Obj.initialize();">More</a></div>';
    str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
    str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
    
@@ -1990,7 +2384,7 @@ function showFirstFourNewsRecords(results)
     document.getElementById("buildSources").innerHTML = str;
  
  }
- function getTotalNews(viewType)
+ /*function getTotalNews(viewType)
  {  
     var queryType='Public';
    var jsObj =
@@ -2007,7 +2401,47 @@ function showFirstFourNewsRecords(results)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "partyPhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);  
+ }*/
+  function getTotalNews(viewType)
+ {  
+	  
+    var queryType='Public';
+   if(document.getElementById("candidateVisibility")!=null)
+    { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+		 if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+		  if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
+	
+        var jsObj =
+		    {   
+		        time : timeST,
+			    viewtype:viewType,
+			    partyId:partyId,
+			    startRecord:0,
+			    maxRecord:100,
+			    queryType:queryType,
+			    task:"getNewsToDisplay"
+		     };
+	 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyPhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);  
  }
+
  function showTotalNews(results)
  { 
      deleteAllElements();
@@ -2027,7 +2461,7 @@ function showFirstFourNewsRecords(results)
      str+='<fieldset class="imgFieldset">';
 	 str+='   <table>';
 	 str+='     <tr>';
-     str+='       <td colspan="2"><div id="showScopeWiseNewsCount" /></td>';
+     str+='       <td colspan="2"><div id="showScopeWiseNewsCount" style="display:none;"/></td>';
      str+='     </tr>';
 	 str+='   </table>';
      str+='  <table style="width:98%">'; 
@@ -2066,12 +2500,13 @@ function showFirstFourNewsRecords(results)
 	 str+='    <tr><td><hr style="width:98%;"></td></hr></tr>';
    }
    str+='  </table>';
+  str+='<div id="custom_paginator_class" class="paginatorElmtClass"></div>';
    str+='</fieldset>';
    document.getElementById("showAllNewsDiv").innerHTML=str;
-  // getScopeWiseNewsCount();
+   getScopeWiseNewsCount();
    }
  }
- function  buildNewsCount(result)
+/* function  buildNewsCount(result)
  {
     if(result[result.length-1].visibility=="False")
 	   queryTypeChecked='Public';
@@ -2141,7 +2576,95 @@ function showFirstFourNewsRecords(results)
         }
 	 }
 	
- }
+ }*/
+
+ function  buildNewsCount(result)
+ {
+    pagi= result[result.length-2].fileTypeId;
+
+    if(result[result.length-1].visibility=="False")
+	   queryTypeChecked='Public';
+    str='';
+	str+='   <table style="padding-left:118px;padding-top:10px;padding-bottom:20px;">';
+	str+='     <tr>';
+	if(result[result.length-1].visibility=="True")
+	{	 
+	 str+='       <td style="font-weight:bold;font-size:12px;color:navy;">SORT BY : </td>';
+	 str+='       <td>';
+	 str+='          <select id="candidateVisibility" onchange="news_Obj.getAllNewsForUser(\'totalNews\');"  >';
+	 str+='             <option value="Public">Public</option>';
+	 str+='             <option value="Private">Private</option>';
+	 str+='             <option value="All">All</option>';
+	 str+='          </select>';
+	 str+='       </td>';	 
+   	}
+	 str+='       <td style="font-weight:bold;font-size:12px;color:navy;">&nbsp;&nbsp;&nbsp;TOTAL NEWS ARTICELS : </td>';
+	 str+='       <td style="font-weight:bold;font-size:12px;"><a title="Click To Get Total News" href="javascript:{}" onclick="news_Obj.getScopeWiseNews(\'\')" ><font color="brown">'+result[result.length-2].fileTypeId+'</font></a></td>';
+	 str+='    </tr>';
+	 str+='   </table>';
+	 str+='	<hr style="width:98%;">';
+     str+='   <table style="padding-bottom:10px;">';
+	// str+='     <tr>';
+	// str+='     <td style="font-weight:bold;font-size:12px;color:#06ABEA;">NEWS IMPACT LEVELS :</td></tr>';
+	 str+='     <tr>';
+	 str+='     <td>';
+	 str+='      <table>';
+	 var i=-1;
+	 no_of_imagesPerRow = 5; 
+	 var remainingCount = getRemainingCount(parseInt(result[result.length-2].fileTypeId),result);
+     for(var k = 0;k<9 ;k++)
+	 {
+	    
+	    if(result[k].fileTypeId>0)
+		{
+		 i++
+        j =i;
+		if(j++ % no_of_imagesPerRow == 0)
+       str+= '<tr>';
+     str+='       <td style="padding-left:20px;font-weight:bold;font-size:11px;color:navy;">'+getFirstCapsLetter(result[k].name)+'</td>';
+	 str+='<td><a style="font-size:11px;" title="Click To Get '+getFirstCapsLetter(result[k].name)+' Level News " href="javascript:{}" onclick="news_Obj.getScopeWiseNews('+(k+1)+')" ><font color="brown"><b>-'+result[k].fileTypeId+'</b></font></a></</td>';
+	 if(j % no_of_imagesPerRow == 0)
+       str+= '</tr>';
+	 }
+	 }
+	 if(++i % no_of_imagesPerRow != 0)
+	 {
+	   if(remainingCount>0)
+	   {
+	    str+='<td style="padding-left:20px;font-weight:bold;font-size:11px;color:navy;"> Others</td>';
+	    str+='<td><a style="font-size:11px;" title="Click To Get Remaining News" href="javascript:{}" onclick="getOtherNews()" ><font color="brown"><b>-'+remainingCount+'</b></font></a></td>';
+	   }
+		str+= '</tr>';
+	 }
+	    str+= ' </table>';	 
+	  var remainingCount = getRemainingCount(parseInt(result[result.length-2].fileTypeId),result);
+
+      str+='     </tr>';
+	 str+='   </table>';
+    document.getElementById("showScopeWiseNewsCount").innerHTML=str; 
+	if(queryTypeChecked=="Public")
+     {
+	    if(document.getElementById("candidateVisibility")!=null)  
+        {		
+	     var candidateVisibilityEle = document.getElementById("candidateVisibility").value='Public';
+        }		 
+	 }
+   if(queryTypeChecked=="Private")
+     {
+	   if(document.getElementById("candidateVisibility")!=null)    
+	    {		
+	     var candidateVisibilityEle = document.getElementById("candidateVisibility").value='Private';
+        }
+	 }
+   if(queryTypeChecked=="All")
+     {
+	   if(document.getElementById("candidateVisibility")!=null)    
+	    {		
+	     var candidateVisibilityEle = document.getElementById("candidateVisibility").value='All';
+        }
+	 }
+   
+}
  function deleteAllElements()
  {
    
@@ -2226,7 +2749,7 @@ function showFirstFourNewsRecords(results)
    var jsObj =
 		{   
 		    time : timeST,
-			candidateId:candidateId,
+			candidateId:partyId,
 			queryType:queryTypeChecked,
 			task:"getNewsCountByScope"
 		};
