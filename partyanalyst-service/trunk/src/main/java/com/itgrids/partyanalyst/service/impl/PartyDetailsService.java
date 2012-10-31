@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -425,7 +427,128 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 
 	}
+	//for getNewsToDisplay
+	   public List<FileVO> getAllNewsdetails(Long partyId,int firstResult,int maxResult,String queryType){
+		   if(log.isDebugEnabled())
+				log.debug("Entered into getAllNewsdetails() of candidateDetailsService");
+		   List<FileVO> retValue = new ArrayList<FileVO>();
+			 try{
+				  List<Long> list = partyGalleryDAO.getNewsCountByScope(partyId,null,queryType); 
+				  List<Object[]> dataList =  partyGalleryDAO.getAllNewsDetails(partyId,firstResult,maxResult,queryType);
+				 
+				  retValue = convertDataToFileVO(dataList,list,partyId,null,null);
+				  
+				return retValue;
+				}
+				catch(Exception e){
+					log.error("Exception rised in getAllNewsdetails method ",e);
+					return retValue;
+				}
+	     }
+	   public static Comparator<FileVO> sortData = new Comparator<FileVO>()
+			    {
+			   
+			        public int compare(FileVO fileVO1, FileVO fileVO2)
+			        {
+			            return (fileVO1.getOrderNo().intValue()) - (fileVO2.getOrderNo().intValue());
+			        }
+			    };
+		 public static Comparator<FileVO> sourceSort = new Comparator<FileVO>()
+				{
+					  
+				  public int compare(FileVO fileVO1, FileVO fileVO2)
+					{
+					   return (fileVO1.getFileSourceLanguageId().intValue()) - (fileVO2.getFileSourceLanguageId().intValue());
+					}
+			  };
+	   private List<FileVO> convertDataToFileVO(List<Object[]> dataList,List<Long> list,Long partyId,String language,String source){
+			
+			if(log.isDebugEnabled())
+				log.debug("Entered into convertDataToFileVO() of candidateDetailsService");
 
+		     List<FileVO> retValue = new ArrayList<FileVO>();
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 try{
+				  FileVO fileVO;
+				  
+				  for(Object[] data : dataList){
+					  
+					 try{
+					 File file = (File)data[0];
+					 fileVO = new FileVO();
+	                 
+					 fileVO.setFileId(file.getFileId());
+					 fileVO.setTotalResultsCount(list.get(0));
+					 fileVO.setFileTitle1(file.getFileTitle());
+					 fileVO.setFileDescription1(file.getFileDescription());
+					 fileVO.setFileDate(data[2] != null ? (sdf.format((Date)data[2])) :"");
+					 fileVO.setContentId((Long)data[1]);
+					 fileVO.setCandidateId(partyId);
+					 if(file.getCategory()!= null && file.getCategory().getCategoryId() > 0)
+					 fileVO.setCategoryId(file.getCategory().getCategoryId());
+					 if(file.getCategory()!= null && file.getCategory().getCategoryType() != null)
+					 fileVO.setCategoryType(file.getCategory().getCategoryType());
+					 if(file.getNewsImportance()!=null && file.getNewsImportance().getNewsImportanceId() > 0)
+					 fileVO.setNewsImportanceId(file.getNewsImportance().getNewsImportanceId());
+					 if(file.getNewsImportance()!=null && file.getNewsImportance().getImportance() != null)
+					 fileVO.setImportance(file.getNewsImportance().getImportance());
+					 
+					 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+					 Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+					 
+						 
+					 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+						 if(language == null && source == null)
+						    setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+						 else if(language != null){
+							 if(language.equalsIgnoreCase(fileSourceLanguage.getLanguage().getLanguage()))
+								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+						 }
+						 else if(source != null){
+							 if(source.equalsIgnoreCase(fileSourceLanguage.getSource().getSource()))
+								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+						 }
+					 }
+					 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+					 Collections.sort(fileVOSourceLanguageList,sourceSort);
+					 fileVO.setFileVOList(fileVOSourceLanguageList);
+					 retValue.add(fileVO);
+					 }catch (Exception e) {
+						 log.error("Exception Occured in convertDataToFileVO method ",e);
+					 }
+				 }
+				 
+				return retValue;
+				}
+				catch(Exception e){
+					log.error("Exception rised in convertDataToFileVO method ",e);
+					return retValue;
+				}
+		}
+	   private void setSourceLanguageAndPaths(FileSourceLanguage fileSourceLanguage,List<FileVO> fileVOSourceLanguageList){
+			FileVO fileVOSourceLanguage = new FileVO();
+			 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():"");
+			 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+			 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():"");
+			 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+			 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+			 
+			 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+			 
+			 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+			 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+			 
+			 for(FilePaths filePath : filePathsSet){
+				 FileVO fileVOPath = new FileVO();
+				 fileVOPath.setPath(filePath.getFilePath());
+				 fileVOPath.setOrderNo(filePath.getOrderNo());
+				 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+				 fileVOPathsList.add(fileVOPath);
+			 }
+			 Collections.sort(fileVOPathsList,sortData);
+			 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+			 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+		}
 	public List<FileVO> getNewsToDisplay(Long partyId, int firstResult,int maxResult, String queryType) 
 	{
 		List<FileVO> retValue = new ArrayList<FileVO>();
