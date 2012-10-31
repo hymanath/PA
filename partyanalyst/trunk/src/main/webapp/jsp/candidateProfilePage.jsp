@@ -3354,8 +3354,7 @@ function showNotLogIn()
 									
 							});
 		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to ';
-		str+='subscribe.<a href="/PartyAnalyst/loginInputAction.action" style="color:#80D1F1;">Click here to Login';
-		str+='</a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='subscribe. <a href="loginInputAction.action" style="color:#80D1F1;">Click here to Login </a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 
 function subscribeAlert()
