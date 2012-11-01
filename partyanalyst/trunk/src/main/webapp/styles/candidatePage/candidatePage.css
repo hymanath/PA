@@ -639,3 +639,24 @@ margin-left:75px;}
 padding: 1px 6px; white-space: nowrap;margin-top:2px;}
 .unsubscribebtn{background:#FE0000;border: medium none;border-radius: 4px 4px 4px 4px;    color: #FFFFFF;cursor: pointer;font-family: inherit;font-size: 12px; font-weight: bold;    padding: 1px 6px; white-space: nowrap;margin-top:4px;}
 #logInDiv{overflow-x:hidden;}
+
+.pm-inner-cont-sec{font-family: verdana;text-align: justify;}
+.fontStyle{font-size:13px;}
+.videoGalTitleStyle{font-size:14px;font-weight:bold;}
+.videoGallDescStyle{font-size:13px;}
+.imageClass{height:120px;width:120px;border: 1px solid #CCCCCC;border-radius:3px;padding:3px;}
+.photo-gallery-fields li{margin-right: 3px;width: 120px;}
+
+.tableStyle 
+ {
+   align:top;
+   font: 14px "Trebuchet MS",Arial,Helvetica,sans-serif;
+ }
+ .imageStyle {vertical-align: top;}
+ .ui-widget-content a {
+    color: Navy;
+	font-weight:bold;
+}
+.ui-widget-content {
+    font-size: 13px;
+}
