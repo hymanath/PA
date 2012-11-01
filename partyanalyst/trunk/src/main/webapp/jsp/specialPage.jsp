@@ -1175,7 +1175,7 @@ Tweet</a>
             <ul>
              
               <li><a href="javascript:{getTotalNews('totalNews')}">News and Events</a><span></span></li>
-              <li><a href="javascript:{videoGallaryPopUp();}">Videos</a><span></span></li>
+              <li><a href="javascript:{videoGallaryPopUp();}">Video Gallery</a><span></span></li>
               <li><a href="javascript:{photoGallaryPopUp();}">Photo Gallery</a><span></span></li>
                
             </ul>
