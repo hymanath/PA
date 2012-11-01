@@ -1865,6 +1865,10 @@ function photoGallaryPopUp(){
 	showPhotoGallary();
   }
 function showPhotoGallary(){
+	var str ="";
+str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#buildPhotoGallaryDiv").html(str);
+
     var jsObj =
 		{   
 		    time : timeST,
@@ -3012,7 +3016,12 @@ function videoGallaryPopUp()
 }
 
 function showAllVideoGalleries(){
-		showBusyImgWithId("videosLoadingImg");
+
+var str='';
+str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Video Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#videoGallaryPopUpDiv").html(str);
+
+		//showBusyImgWithId("videosLoadingImg");
    var jsObj = {
 	       	   time : timeST,
 			   partyId:partyId,
