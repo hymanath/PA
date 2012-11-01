@@ -1117,12 +1117,16 @@ function postCommentForProblem()
 {
 	var elmt = document.getElementById("commenttext");
 	var textAreaValue = elmt.value;
+	var errotext=document.getElementById("errormsgdiv");
 	
-
+	var str='';
 	if(textAreaValue =='' || textAreaValue == null || alltrim(textAreaValue) ==''){
+		str +='<font color="red">Enter comments</font>';
+		errotext.style.display='block';
+		errotext.innerHTML=str
 		return;
 	}
-	
+	errotext.style.display='none';
 	var jsObj = {
 					pHistoryId:'${completeProblemDetailsVO.problemId}',
 					comments:removeAllUnwantedCharacters(textAreaValue),
@@ -1948,7 +1952,7 @@ function displayDateText(type, args, obj) {
 </div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
-
+			<div id="errormsgdiv" style="padding: 5px; background: none repeat scroll 0% 0% wheat; margin-top: 3px; width: 200px;display:none;"></div>
 		<h3>Comments:</h3>
 		 <div><div>
 		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-top:10px;" class="pull-right btn btn-info">Post</a></div></div>
