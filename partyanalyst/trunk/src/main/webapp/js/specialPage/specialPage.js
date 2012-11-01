@@ -2112,7 +2112,10 @@ function cleardescriptionFields()
 }
 
 function photoGallaryPopUp(){
-	
+	var str ='';
+	 str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Photo Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#buildPhotoGallaryDiv").html(str);
+
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
 		return;
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
@@ -3066,7 +3069,10 @@ function videoGallaryPopUp()
 }
 
 function showAllVideoGalleries(){
-		
+	var str ='';
+	str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Video Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#videoGallaryPopUpDiv").html(str);
+
    var jsObj = {
 	       	   time : timeST,
 			   specialPageId : specialPageId,
