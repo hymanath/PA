@@ -212,6 +212,8 @@ width: 500px;
     width: auto;
 }
 .titleStyle{color:black;}
+.close{opacity:1.5;}
+  .close:hover{opacity:1.5;}
 
 </style>
 <script type="text/javascript">
