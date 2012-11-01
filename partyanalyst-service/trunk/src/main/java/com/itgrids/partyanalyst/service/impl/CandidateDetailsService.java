@@ -3599,11 +3599,16 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				 fileVO.setFileDate(data[2] != null ? (sdf.format((Date)data[2])) :"");
 				 fileVO.setContentId((Long)data[1]);
 				 fileVO.setCandidateId(candidateId);
-				 fileVO.setCategoryId(file.getCategory().getCategoryId());
-				 fileVO.setCategoryType(file.getCategory().getCategoryType());
-				 fileVO.setNewsImportanceId(file.getNewsImportance().getNewsImportanceId());
-				 fileVO.setImportance(file.getNewsImportance().getImportance());
-				 
+				 if(file.getCategory() != null)
+				 { 
+					 fileVO.setCategoryId(file.getCategory().getCategoryId());
+					 fileVO.setCategoryType(file.getCategory().getCategoryType());
+				 }
+				 if(file.getNewsImportance() !=null)
+				 {
+				  fileVO.setNewsImportanceId(file.getNewsImportance().getNewsImportanceId());
+				  fileVO.setImportance(file.getNewsImportance().getImportance());
+				 }
 				 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 				 Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 				 
