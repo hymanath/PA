@@ -28,8 +28,7 @@
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="styles/candidatePage/candidatePage.css">
+
 <style>
 
 .pr-cont-sec
@@ -158,10 +157,7 @@ font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); borde
 
 
 }
-.tableStyle 
- {
-   align:top;
- }
+
   .gallaryImg
 {
 	width  : 150px;
@@ -214,7 +210,10 @@ width: 500px;
     height: 526px;
     min-height: 0;
     width: auto;
-}</style>
+}
+.titleStyle{color:black;}
+
+</style>
 <script type="text/javascript">
 var isSubscribed = '${sessionScope.isSubscribed}';
 var userName = '${sessionScope.UserName}';
@@ -302,7 +301,7 @@ function subscriptionDetails()
    
    if(descFlag <= 2)
    {
-	  str += '  <p style="font-size:13px;text-align:justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
+	  str += '  <p style="font-size:13px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
 	  descFlag++;
    }
    str += '  </s:iterator>';
@@ -588,7 +587,7 @@ function buildContentDetails()
 			str += '<td width="20%" valign="top">';
 
 			str += '<table>';
-			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
+			str += '<tr><td class="videoGalTitleStyle"><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
 			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
 			
 			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
@@ -598,8 +597,8 @@ function buildContentDetails()
 				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
 			
 			str += '</a></td></tr>';
-			str += '<tr><td>Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
-			str += '<tr><td>'+result.otherGalleries[i].description+'</td></tr>';
+			str += '<tr><td class="videoGallDescStyle">Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
+			str += '<tr><td class="videoGallDescStyle">'+result.otherGalleries[i].description+'</td></tr>';
 			str += '</table>';
 
 			str += '</td>';
@@ -912,6 +911,10 @@ function showPhotosInInitialGallary(results){
 }
 function photoGallaryPopUp(){
 	
+	var str='';
+	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#buildPhotoGallaryDiv").html(str);
+
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
 		return;
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
@@ -964,14 +967,14 @@ function buildCandidatePhotoGallary(results)
 			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			if(results[i].path!=null)
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td class="imgStyle"><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'"/></a></td></tr>';
             }
 			else
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td class="imgStyle"><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'"/></a></td></tr>';
 			}
-			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+			str+= '<tr><td class="fontStyle"><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
+			str += '<tr><td class="fontStyle"><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
 			
 			str += '</table>';
 			str += '</td>';
