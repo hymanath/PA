@@ -82,13 +82,8 @@
 	width  : 150px;
 	height : 130px;
 }
- .tableStyle 
- {
-   align:top;
- }
- .imageStyle {
-  vertical-align:top;
-}
+ 
+
  .newsImage {
    height:53px;
    width:29px;
@@ -209,9 +204,7 @@
 a:hover {
     text-decoration: underline;
 }
-.ui-widget-content a {
-    color:Navy;
-}
+
 .paginatorElmtClass{
 	text-align: right;
 	 margin-right: 10px;
@@ -1705,7 +1698,9 @@ function validateEmailField()
 	callAjax(jsObj,url);
 }
 function photoGallaryPopUp(){
-	
+	var str='';
+	str +='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#buildPhotoGallaryDiv").html(str);
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
 		return;
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
@@ -1758,11 +1753,11 @@ function buildCandidatePhotoGallary(results)
 			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			if(results[i].path!=null)
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'"/></a></td></tr>';
             }
 			else
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'"/></a></td></tr>';
 			}
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
@@ -1926,7 +1921,7 @@ function showFirstFourNewsRecords(results)
 	   source  = source.slice(0, -2); 
 	   
      initialFileIdArray[i]=results[i].fileId;
-     str+='<a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">';
+     str+='<a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle">';
 	 
 	 if(results[i].fileTitle1.length > 30)
 		str +='<li><strong>'+results[i].fileTitle1.substring(0,40)+'..</strong>';
@@ -2320,12 +2315,12 @@ function showFirstFourNewsRecords(results)
      str+='       <td colspan="2"><div id="showScopeWiseNewsCount" /></td>';
      str+='     </tr>';
 	 str+='   </table>';
-     str+='  <table style="width:98%">'; 
+     str+='  <table style="width:100%;font-family: trebuchet MS; font-size: 13px;">'; 
   for(var i in results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
      str+='     <tr>';
 	 var sourcedata ='';
@@ -2334,7 +2329,7 @@ function showFirstFourNewsRecords(results)
 	 for(var j in results[i].fileVOList)
 	 {
 	    count = 0;
-	   sourcedata+='<a title="Click To Get All '+results[i].fileVOList[j].source+' News " href="javascript:{}" onclick="news_Obj.getNewsBySource(\''+results[i].fileVOList[j].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].fileVOList[j].source+'</font></a> - ';
+	   sourcedata+='<a title="Click To Get All '+results[i].fileVOList[j].source+' News " href="javascript:{}" onclick="news_Obj.getNewsBySource(\''+results[i].fileVOList[j].source+'\')" class="titleStyle"><font color="#FF4500">'+results[i].fileVOList[j].source+'</font></a> - ';
        for(var k in languag)
 	   {
 	     if(languag[k] == results[i].fileVOList[j].language)
@@ -2346,16 +2341,16 @@ function showFirstFourNewsRecords(results)
 	 var lang = '';
 	 for(var l in languag)
 	   {
-	     lang+='<a title="Click To Get All '+languag[l]+' News" href="javascript:{}" onclick="news_Obj.getNewsByLanguage(\''+languag[l]+'\')" class="titleStyle"\"><font color="#FF4500">'+languag[l]+'</font></a> - ';
+	     lang+='<a title="Click To Get All '+languag[l]+' News" href="javascript:{}" onclick="news_Obj.getNewsByLanguage(\''+languag[l]+'\')" class="titleStyle"><font color="#FF4500">'+languag[l]+'</font></a> - ';
 	   }
 	 str+='       <td>'+sourcedata.slice(0, -2)+' | '+lang.slice(0, -2)+' |'; 
 	 if(results[i].categoryType != null)
 	   {
-	    str+='  <a title="Click To Get All '+results[i].categoryType+' News" href="javascript:{}" onclick="news_Obj.getNewsByCategory(\''+results[i].categoryType+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].categoryType+'</font></a> |'; 
+	    str+='  <a title="Click To Get All '+results[i].categoryType+' News" href="javascript:{}" onclick="news_Obj.getNewsByCategory(\''+results[i].categoryType+'\')" class="titleStyle"><font color="#FF4500">'+results[i].categoryType+'</font></a> |'; 
 	   }
 	 if(results[i].importance != null)
 	   {
-	    str+='  <a title="Click To Get All '+results[i].importance+' News" href="javascript:{}" onclick="news_Obj.getNewsByNewsImportance(\''+results[i].importance+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].importance+'</font></a> |'; 
+	    str+='  <a title="Click To Get All '+results[i].importance+' News" href="javascript:{}" onclick="news_Obj.getNewsByNewsImportance(\''+results[i].importance+'\')" class="titleStyle"><font color="#FF4500">'+results[i].importance+'</font></a> |'; 
 	   }
 	str+=''+results[i].fileDate+'</td>';
     
@@ -2573,20 +2568,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li style="margin-right: 3px;width:120px;"><img alt="" src="'+results[0].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC;border-radius:3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li><img alt="'+results[0].title+'" title="'+results[0].gallaryDescription+'" src="'+results[0].path+'" class="imageClass"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
 	  str+=''+results[0].gallaryName+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li style="margin-right: 3px;width:120px;"><img alt="" src="'+results[1].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC; border-radius: 3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li style="margin-right: 3px;width:120px;"><img alt="'+results[1].title+'" title="'+results[1].gallaryDescription+'" src="'+results[1].path+'" class="imageClass"  onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
 	  str+=''+results[1].gallaryName+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li style="width:120px;"><img alt="" src="'+results[2].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC;border-radius: 3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li style="width:120px;"><img alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="'+results[2].path+'" class="imageClass"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].gallaryName+'</li>';
 	  
 	  }
@@ -2595,7 +2590,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li style="margin-right: 3px;width:120px;"><img alt="" src="'+results[i].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC;border-radius: 3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li style="margin-right: 3px;width:120px;"><img alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="'+results[i].path+'" class="imageClass"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].gallaryName+'</li>';
 	   }
 	  }
@@ -2751,7 +2746,7 @@ function candidateInfo()
    
    if(descFlag <= 2)
    {
-	  str += '  <p style="font-size:13px;text-align:justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
+	  str += '  <p style="font-size:13px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
 	  descFlag++;
    }
    str += '  </s:iterator>';
@@ -2814,18 +2809,23 @@ function showCandidateElectionDetails(str)
 
 function videoGallaryPopUp()
 {
+	var str='';
    <s:if test="fileVO == null || fileVO.size() < 4"> 
    return;
    </s:if>
   
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
-							    height: 500,
-								width: 600,
-								position:[150,25],								
+							    height: 590,
+								width: 630,
+								position:[150,120],								
 								modal: true,
 								title:'<font color="Navy">Video Galleries</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
+
+								 str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Video Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#videoGallaryPopUpDiv").html(str);
+
 
 	showAllVideoGalleries();
 }
@@ -2855,7 +2855,7 @@ function buildVideoGallaries(results)
 		if(i%4 == 0)
 			str += '<tr height="185px;">';
 
-		str += '<td valign="top" width="25%"><table width="100%">';
+		str += '<td valign="top" width="25%"><table width="100%" style="margin-bottom: 15px;">';
 		str += '<tr><td>';
 		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="120px;" height="120px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')" alt="'+results[i].gallaryName+'" title="'+results[i].gallaryDescription+'"/></td></tr>';
 		str+='</div>';
@@ -2887,7 +2887,7 @@ function buildAllVideosInGallary(results){
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
 		
-		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
+		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To Galleries</a>';
 		
 		str+='<table style="width:100%;margin-top:15px;">';
 		for(var i in results)
@@ -3194,7 +3194,7 @@ function buildContentDetails()
 			str += '<td width="20%" valign="top">';
 
 			str += '<table>';
-			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+'Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
+			str += '<tr><td class="videoGalTitleStyle"><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+'Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
 			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+'Gallery">';
 			
 			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
@@ -3204,8 +3204,8 @@ function buildContentDetails()
 				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
 			
 			str += '</a></td></tr>';
-			str += '<tr><td>Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
-			str += '<tr><td>'+result.otherGalleries[i].description+'</td></tr>';
+			str += '<tr><td class="fontStyle videoGallDescStyle">Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
+			str += '<tr><td class="videoGallDescStyle">'+result.otherGalleries[i].description+'</td></tr>';
 			str += '</table>';
 
 			str += '</td>';
