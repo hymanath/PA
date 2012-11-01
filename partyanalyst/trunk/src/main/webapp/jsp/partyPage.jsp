@@ -1902,11 +1902,11 @@ function buildCandidatePhotoGallary(results)
 			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			if(results[i].path!=null)
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'"/></a></td></tr>';
             }
 			else
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'"/></a></td></tr>';
 			}
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
@@ -2814,20 +2814,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
+	   str+='<li><img class="imageClass" alt="'+results[0].title+'" title="'+results[0].gallaryDescription+'" src="'+results[0].path+'"  onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
+	  str+='<li><img class="imageClass" alt="'+results[1].title+'" title="'+results[1].gallaryDescription+'" src="'+results[1].path+'"  onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li><img class="imageClass" alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="'+results[2].path+'"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -2836,7 +2836,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li><img class="imageClass" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="'+results[i].path+'"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].title+'</li>';
 	   }
 	  }
@@ -3057,7 +3057,7 @@ function buildVideoGallaries(results)
 	{
 		if(i%4 == 0)
 			str += '<tr height="185px;">';
-		str += '<td valign="top" width="25%"><table width="100%">';
+		str += '<td valign="top" width="25%"><table width="100%" style="margin-bottom: 15px;">';
 		str += '<tr><td style="padding-left:4px;">';
 
 		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="110px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;"  onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
