@@ -1001,7 +1001,7 @@ function getMinistryYears(taskType)
 		
 		<tr>
 
-			<td rowspan="${ministerData.noOfMinistriesExpired}" width="20%"><b><div id="cabinetMinisterDiv${stat.index}" class="ministerDiv"><a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerData.candidateName}'s Profile - News, Election Results, photos, Videos"><img src="images/candidates/${ministerData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerData.candidateName},${ministerData.noOfMinistriesExpired}</a></div></b>
+			<td rowspan="${ministerData.noOfMinistriesExpired}" width="20%"><b><div id="cabinetMinisterDiv${stat.index}" class="ministerDiv"><a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerData.candidateName}'s Profile - News, Election Results, photos, Videos"><img src="images/candidates/${ministerData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerData.candidateName}</a></div></b>
 
 			</td>
 
