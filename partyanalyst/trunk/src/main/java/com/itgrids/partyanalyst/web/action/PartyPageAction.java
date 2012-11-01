@@ -301,6 +301,14 @@ public class PartyPageAction extends ActionSupport implements
 		{
 			fileVO = partyDetailsService.getNewsToDisplay(jObj.getLong("partyId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),jObj.getString("queryType"));
 		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getAllNewsToDisplay") )
+		{
+			String startIndex    = request.getParameter("startIndex");
+			String resultsCount  = request.getParameter("resultsCount");	
+				
+			fileVO = partyDetailsService.getAllNewsdetails(jObj.getLong("partyId"),Integer.parseInt(startIndex),Integer.parseInt(resultsCount),jObj.getString("queryType"));
+		}
 		else if(jObj.getString("task").equalsIgnoreCase("getFirstThreePhotoGallaryDetail"))
 		{
 			fileVO = partyDetailsService.getFirstThreePhotoGallaryDetail(jObj.getLong("partyId"));
