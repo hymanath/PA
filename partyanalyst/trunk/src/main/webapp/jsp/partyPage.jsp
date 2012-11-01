@@ -407,7 +407,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<div class="pl-sub-fields"> <span style="margin-left:14px;"></span>
             <ul>
               <li><a onclick="getTotalNews('totalNews');" href="javascript:{}">News and events</a><span></span></li>
-              <li><a onclick="videoGallaryPopUp();" href="javascript:{}">Videos</a><span></span></li>
+              <li><a onclick="videoGallaryPopUp();" href="javascript:{}">Video Gallery</a><span></span></li>
               <li><a onclick="photoGallaryPopUp();" href="javascript:{}">Photo Gallery</a><span></span></li>
               <li><a onclick="" href="javascript:{}">Developments</a><span></span></li>
             </ul>
