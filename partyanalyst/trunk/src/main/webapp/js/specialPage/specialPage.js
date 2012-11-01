@@ -2253,7 +2253,7 @@ function showFirstFourNewsRecords(results)
 	   source  = source.slice(0, -2); 
 	   
      initialFileIdArray[i]=results[i].fileId;
-     str+='<a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">';
+     str+='<a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle">';
 	 
 	 if(results[i].fileTitle1.length > 40)
 		str +='<li><strong>'+results[i].fileTitle1.substring(0,40)+'..</strong>';
@@ -2596,20 +2596,20 @@ function showFirstFourNewsRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li style="width:128px;"><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
 	   str+=''+results[0].gallaryName+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li style="width:128px;"><img alt="" src="'+results[1].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li><img alt="" src="'+results[1].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
 	  str+=''+results[1].gallaryName+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li style="width:128px;"><img alt="" src="'+results[2].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li><img alt="" src="'+results[2].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].gallaryName+'</li>';
 	  
 	  }
@@ -2654,6 +2654,7 @@ function showFirstFourNewsRecords(results)
  }
  function showTotalNews(results)
  { 
+	 var str='';
      deleteAllElements();
      newsPopUpData = results;
     $("#showAllNewsDiv").dialog({ stack: false,
@@ -2664,6 +2665,9 @@ function showFirstFourNewsRecords(results)
 								title:'<font color="Navy"><b>News</b></font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
+
+	str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading News Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#showAllNewsDiv").html(str);
 	$("#showAllNewsDiv").dialog();
 	
     if(results.length>0)
@@ -2680,7 +2684,7 @@ function showFirstFourNewsRecords(results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
      str+='     <tr>';
 	 var sourcedata ='';
@@ -2955,20 +2959,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li style="width:128px;"><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
+	   str+='<li><img class="imageClass" alt="'+results[0].title+'" src="'+results[0].path+'" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')" title="'+results[0].gallaryDescription+'"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li style="width:128px;"><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
+	  str+='<li><img class="imageClass" alt="'+results[1].title+'" src="'+results[1].path+'" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')" title="'+results[1].gallaryDescription+'"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li style="width:128px;"><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li><img class="imageClass" alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="'+results[2].path+'"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -2977,7 +2981,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li style="width:128px;"><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li><img class="imageClass" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="'+results[i].path+'"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].title+'</li>';
 	   }
 	  }
@@ -3043,6 +3047,7 @@ function buildVideoGallaryDiv(result)
 
 function videoGallaryPopUp()
 {
+	var str='';
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
 							    height: 590,
 								width: 630,
@@ -3054,6 +3059,8 @@ function videoGallaryPopUp()
 		    document.getElementById("showContentHeaderDiv").innerHTML ='';
 		  }
 								});
+	 str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Video Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#videoGallaryPopUpDiv").html(str);
 
 	showAllVideoGalleries();
 }
@@ -3103,11 +3110,11 @@ function buildVideoGallaries(results)
 		if(i%4 == 0)
 			str +='<tr height="185px;">';
 			str +='<td valign="top" width="25%">';
-			str +='<table width="100%">';
+			str +='<table width="100%" style="margin-bottom: 15px;">';
 			str +='<tr><td style="padding-left:4px;"><img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="110px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/>';
 			str +='</td></tr>';
 			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></font></td></tr>';
-			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div> </td></tr>';
+			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div> </td></tr>';
 			str +='</table>';
 			str +='</td>';
 			
@@ -3164,7 +3171,7 @@ function buildAllVideosInGallary(results){
  var str ='';
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
-	str+='<a href=javascript:{} style="text-decoration:none;color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
+	str+='<a href=javascript:{} style="text-decoration:none;color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To Galleries</a>';
 		
 		str+='<table style="width:100%;margin-top: 8px;">';
 		for(var i in results)
