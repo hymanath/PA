@@ -1077,16 +1077,16 @@ function editNewsDetails(fileId){
 			<tr>									
 					
                     <td style="padding-left:10px;color:#4B74C6;"><b>Source</b></td>
-                    <td><select style="width:90px;" id="source"><option value="0">All</option></select></td>	
+                    <td><select style="width:120px;" id="source"><option value="0">All</option></select></td>	
 
 					<td style="padding-left:10px;color:#4B74C6;"><b>Category</b></td>
-                    <td><select style="width:90px;" id="category"><option value="0">All</option></select></td>	
+                    <td><select style="width:120px;" id="category"><option value="0">All</option></select></td>	
 					
 					<td style="padding-left:10px;color:#4B74C6;"><b>Language</b></td>
-                    <td><select style="width:90px;" id="language"><option value="0">All</option></select></td>	
+                    <td><select style="width:120px;" id="language"><option value="0">All</option></select></td>	
 					
 					<td style="padding-left:10px;color:#4B74C6;"><b>Importance</b></td>
-                    <td><select style="width:90px;" id="importance"><option value="0">All</option></select></td>	
+                    <td><select style="width:120px;" id="importance"><option value="0">All</option></select></td>	
 				</tr>										
 														
 		</table>		
