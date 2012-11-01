@@ -272,6 +272,9 @@ width: 500px;
     padding-top: 110px;
 	display:none;
   }
+  .close{opacity:1.5;}
+  .close:hover{opacity:1.5;}
+
 </style>
 
 </head>
