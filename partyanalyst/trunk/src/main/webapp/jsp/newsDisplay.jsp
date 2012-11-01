@@ -223,7 +223,7 @@ function drawChart(result,obj){
    
  document.getElementById("showTypes").innerHTML="";
  var str = '<b>Select Other Options   </b>';
-str+='<select style="width:90px;" id="graphType" onchange="getOtherGraphs(\''+obj.task+'\',\''+obj.fromDate+'\',\''+obj.toDate+'\');showAjaxImg(\'ajaxImgSpan\');"><option value="1">Category</option>';
+str+='<select style="width:150px;" id="graphType" onchange="getOtherGraphs(\''+obj.task+'\',\''+obj.fromDate+'\',\''+obj.toDate+'\');showAjaxImg(\'ajaxImgSpan\');"><option value="1">Category</option>';
 str+='<option value="2">Source</option>';
 str+='<option value="3">Language</option>';
 str+='<option value="4">News Importance</option>';
