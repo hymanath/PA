@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2362,6 +2363,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
  {
 	List<FileVO> fileVOs = new ArrayList<FileVO>();
 	FileVO fileVO = new FileVO();
+	 try{
+	String str_date=null;
+	String photogal=null;
 	
 	if(result != null)
 	{
@@ -2433,12 +2437,17 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
 				 fileVO.setPathOfFile(filePath);
 			 
-			 if(result.get(i).getFile().getFileDate()!= null)
-				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
+			 /*if(result.get(i).getFile().getFileDate()!= null)
+				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());*/
 			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.PHOTO_GALLARY))
 			 	fileVO.setPathOfFile(filePath);
 			 if(result.get(i).getFile().getFileDate() != null)
-				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
+			 {
+			str_date = result.get(i).getFile().getFileDate().toString();
+			photogal = str_date.substring(8,10)+'-'+str_date.substring(5,7)+'-'+str_date.substring(0,4);
+			fileVO.setFileDate(photogal);
+			 }
+				
 			 
 			 if(source != null)
 				 fileVO.setSource(source);
@@ -2450,8 +2459,16 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				 fileVOs.add(fileVO);
 		   }
 		  }
+		  
 	}
-	 return fileVOs;
+	 
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+	 }
+	return fileVOs;
+	
  }
  
  public boolean checkForFileExistance(List<FileVO> filesList,Long fileId)
