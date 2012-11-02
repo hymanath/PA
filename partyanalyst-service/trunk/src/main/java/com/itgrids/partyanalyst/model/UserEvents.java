@@ -12,16 +12,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 /**
  * 
  * @author Narender Akula
@@ -102,7 +104,7 @@ public class UserEvents extends BaseModel {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	@ManyToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_events_organizer", 
 	joinColumns = { @JoinColumn(name = "user_event_id") }, 
 	inverseJoinColumns = { @JoinColumn(name = "cadre_id") })
