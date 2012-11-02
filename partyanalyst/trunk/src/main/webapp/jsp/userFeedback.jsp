@@ -66,7 +66,7 @@ color:red;
 		   <td>difficulties, (or if you are not using a forms-capable browser) you may mail your response to</td>
 	      </tr>
 	     <tr>
-		  <td>this form to: <a href="mailto:info@itgrids.com">info@itgrids.com</a></td>
+		  <td>this form to: <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></td>
 	  </tr>
    </table>
   </div>
