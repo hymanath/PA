@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -14,6 +15,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -45,7 +47,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private IRegionServiceData regionServiceDataImp;
 	private List<SelectOptionVO> parliamentConstituencies;
 	private List<SelectOptionVO> bloodGroupList;
-	
+	JSONObject jObj = null;
 	
 	public List<SelectOptionVO> getBloodGroupList() {
 		return bloodGroupList;
@@ -311,6 +313,17 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;
 	}
-	
+	public String getParliamentConstis(){
+		
+		try{
+			jObj = new JSONObject(request.getParameter("task"));
+			if(jObj.getString("task").equalsIgnoreCase("getPariamentConstituencies")){
+				parliamentConstituencies = regionServiceDataImp.getAllParliamentConstituenciesForAState(1l,jObj.getLong("stateId"));	
+			}
+		}catch(Exception e){
+			
+		}
+		return Action.SUCCESS;
+	}
 
 }
