@@ -140,6 +140,10 @@
 		<pattern>/cadreManagementAction*</pattern>
 		<pattern>/cadreReportAction*</pattern>
 		<pattern>/completeProblemDetailsSearchAction*</pattern>
+		<pattern>/partyStrengthAction*</pattern>
+		<pattern>/crossVotingReportInputAction*</pattern>
+		<pattern>/biElectionAction*</pattern>
+		
     </decorator>
 
 </decorators>
