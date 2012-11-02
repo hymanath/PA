@@ -40,4 +40,9 @@ public class UserEventsDAO extends GenericDaoHibernate<UserEvents, Long> impleme
 		return getHibernateTemplate().find("from UserEvents model where model.isDeleted=? and model.user.userId = ? and DATEDIFF(model.startDate, ?) = 0", params) ;
 											
 	}
+	public List<Long> checkEventBelongsToUser(Long userId,Long eventId){
+		Object[] params = {userId,eventId};
+		return getHibernateTemplate().find("select count(*) from UserEvents model where model.user.userId = ? and model.userEventsId = ?", params) ;	
+		
+	}
 }
