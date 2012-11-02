@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
 import com.itgrids.partyanalyst.model.UserImpDate;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -64,7 +65,7 @@ public class UserCalendarService implements IUserCalendarService {
 	private IUserImpDatesDAO userImpDatesDAO;
 	private TransactionTemplate transactionTemplate;
 	private IUserDAO userDAO;
-
+    private ICandidateDetailsService candidateDetailsService;
 	private final static Logger log = Logger.getLogger(UserCalendarService.class);
 	
 	
@@ -130,6 +131,15 @@ public class UserCalendarService implements IUserCalendarService {
 
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
 	}
 
 
@@ -561,14 +571,28 @@ private UserEventVO saveUserPlannedEvents;
 					List<EventActionPlanVO> userEventActionPlanVOs = UserCalendarService.this.saveUserPlannedEvents.getActionPlans();
 					if(userEventActionPlanVOs != null){
 						if(userEventActionPlanVOs.size() > 0){
+							List<Long> eventActionPlanIds = new ArrayList<Long>();
 							for(EventActionPlanVO userEventActionPlanVO : userEventActionPlanVOs){
 								UserEventActionPlan userEventActionPlan = converDTO2UserEventActionPlan(userEventActionPlanVO);
 								userEventActionPlan.setUserEvents(userEvent);
 								userEventActionPlan=userEventActionPlanDAO.save(userEventActionPlan);
+								eventActionPlanIds.add(userEventActionPlan.getEventActionPlanId());
 								userEventActionPlanVO.setEventActionPlanId(userEventActionPlan.getEventActionPlanId());
 							}
+							List<Long> eventActPlanIds = userEventActionPlanDAO.getEventActionPlanIds(userEvent.getUserEventsId(),eventActionPlanIds);
+							removeOrganisers(eventActPlanIds);
+							
 					
+						}else{
+							List<Long> eventActPlanIds = userEventActionPlanDAO.getEventActionPlanIds(userEvent.getUserEventsId());
+							removeOrganisers(eventActPlanIds);
+							
 						}
+					}else{
+						List<Long> eventActPlanIds = userEventActionPlanDAO.getEventActionPlanIds(userEvent.getUserEventsId());
+						removeOrganisers(eventActPlanIds);
+					
+						
 					}
 				}catch (Exception e) {
 					UserCalendarService.this.saveUserPlannedEvents.setExceptionEncountered(e);
@@ -582,9 +606,44 @@ private UserEventVO saveUserPlannedEvents;
 		});
 		userPlannedEvents = saveUserPlannedEvents;
 		saveUserPlannedEvents = null;
+
+		try{
+			if(userPlannedEvents.getUserEventsId()!= null && userPlannedEvents.getUserEventsId().longValue() > 0l){
+				List<EventActionPlanVO> userEventActionPlanVOs = userPlannedEvents.getActionPlans();
+				if(!userEventActionPlanVOs.isEmpty()){
+					List<Long> eventActionPlanIds = new ArrayList<Long>();
+					eventActionPlanIds.add(0l);
+					for(EventActionPlanVO userEventActionPlanVO : userEventActionPlanVOs){
+						eventActionPlanIds.add(userEventActionPlanVO.getEventActionPlanId());
+					}
+					userEventActionPlanDAO.removeDeletedEventActionPlans(userPlannedEvents.getUserEventsId(),eventActionPlanIds);
+				}else{
+					userEventActionPlanDAO.removeEventActionPlans(userPlannedEvents.getUserEventsId());
+				}
+			}
+		
+		}catch (Exception e) {
+			log.error(e);
+		}
+		
+		
+		
+		
 		return userPlannedEvents;
 	}
-
+    private void removeOrganisers(List<Long> eventActPlanIds){
+    	try{
+    		if(!eventActPlanIds.isEmpty()){	
+				for(Long id:eventActPlanIds){
+					UserEventActionPlan userEventActionPlan = userEventActionPlanDAO.get(id);
+					userEventActionPlan.setOrganizers(null);
+					userEventActionPlanDAO.save(userEventActionPlan);
+				}
+			}
+    	}catch(Exception e){
+    		log.error(e);
+    	}
+    }
 	private UserEvents convertDTO2UserEvents(UserEventVO userPlannedEvents){
 		UserEvents userEvents = new UserEvents();
 		userEvents.setUserEventsId(userPlannedEvents.getUserEventsId());
@@ -637,6 +696,12 @@ private UserEventVO saveUserPlannedEvents;
 		UserEventVO userEventVO = new UserEventVO();
 		userEventVO.setUserEventsId(userEvent.getUserEventsId());
 		userEventVO.setUserID(userEvent.getUser().getUserId());
+		try{
+			Long id = candidateDetailsService.getLocationScopeValue(getLocationId(userEvent.getLocationType()),userEvent.getLocationId().toString());
+		  userEventVO.setLocation(candidateDetailsService.getLocationDetails(getLocationId(userEvent.getLocationType()),id));
+		}catch(Exception e){
+			
+		}
 		userEventVO.setDescription(userEvent.getDescription());
 		userEventVO.setLocationId(userEvent.getLocationId());
 		userEventVO.setLocationType(userEvent.getLocationType());
@@ -773,11 +838,16 @@ private UserEventVO saveUserPlannedEvents;
 	}
 	
 
-	public UserEventVO getUserPlannedEvent(Long eventID){
+	public UserEventVO getUserPlannedEvent(Long eventID,Long userId){
 		if(log.isDebugEnabled())
 			log.debug("UserCalendar.getUserPlannedEvents() start");
-		UserEvents userEvent = userEventsDAO.get(eventID);
-		UserEventVO userEventVO = convertUserEvents2DTO(userEvent);
+		UserEventVO userEventVO = new UserEventVO();
+		List<Long> count = userEventsDAO.checkEventBelongsToUser(userId,eventID);
+		if(!count.isEmpty() && count.get(0).longValue() > 0){
+		   UserEvents userEvent = userEventsDAO.get(eventID);
+		    userEventVO = convertUserEvents2DTO(userEvent);
+		    userEventVO.setValid(true);
+		}
 		return userEventVO;
 	}
 	
@@ -826,5 +896,25 @@ private UserEventVO saveUserPlannedEvents;
 		}
 		return cadreManagementVO;
 	}
-
+    private Long getLocationId(String locationType){
+    	   if(locationType != null && locationType.trim().toUpperCase().equals("STATE"))
+		    return 2l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("DISTRICT"))
+		    return 3l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("ASSEMBLY CONSTITUENCY"))
+		    return 4l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("PARLIAMENT CONSTITUENCY"))
+			return 4l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("MANDAL/TEHSIL"))
+		    return 5l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("VILLAGE"))
+		    return 6l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("MUNICIPAL-CORP-GMC"))
+		    return 7l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("WARD"))
+		    return 8l;
+		   else if(locationType != null && locationType.trim().toUpperCase().equals("BOOTH"))
+		    return 9l;
+    	return 0l;
+    }
 }
