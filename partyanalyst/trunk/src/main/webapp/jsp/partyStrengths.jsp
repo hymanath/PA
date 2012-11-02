@@ -55,9 +55,15 @@
 		border-collapse: collapse;
 	}
 	
-	#partyStrenghtsTable td
+	#partyStrenghtsTable 
 	{
-	 	 padding-bottom: 13px;
+	 	background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #D3D3D3;
+    margin-left: 4px;
+    margin-top: -13px;
+    padding: 25px;
+    width: 998px;
+		
 	}
 	
 	#remaining_const_body, #new_const_body, #required_const_body  {
@@ -1524,7 +1530,15 @@
 				<table>
 					<tr>
 						<td colspan="2" id="headingDiv">
-							<span style="margin: 0px; text-align: center;">Party Strengths and Weakness</span>
+							<span style="background: none repeat scroll 0 0 #05A8E9;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    margin-left: 200px;
+    margin-top: -43px;
+    padding: 6px;
+    position: absolute;
+    text-align: center;
+    width: 605px;">Party Strengths and Weakness</span>
 						</td>
 					</tr>
 				</table>
@@ -1534,13 +1548,14 @@
 							<div style="color: red;font-weight:bold;" id="errorMessageDiv">
 								<s:actionerror />
 								<s:fielderror />
-								<s:actionmessage/>						
-							</div>
+								<s:actionmessage/>		
+     						</div>
 						</td>
 					</tr>
 				</table>
-				<s:form name="partyStrengthResultsAction" action="partyStrengthResultsAction" method="POST">
-					<table id="partyStrenghtsTable" width="97%;">						
+				<form name="partyStrengthResultsAction" action="partyStrengthResultsAction" method="POST">
+				<table id="partyStrenghtsTable" width="97%;" >		
+					
 						<tr>
 							<td align="left" class="tdStyle">Election Type</td>
 							<td align="left">
@@ -1573,13 +1588,18 @@
 						</tr>
 						
 						<tr>
-							<td colspan="8">
-								<hr/>
+							<td colspan="5">
+								<div id="busyImage" style="margin-top:20px;margin-left:300px;">				
+					<div> Loading Data Please Wait..</div><br/>
+					<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>							
+			</div>	
 							</td>
 						</tr>
 						
 					</table>
-				</s:form>				
+							
+				</form>	
+                         	
 			</div>	
 			<table>
 				<tr>
@@ -1588,12 +1608,14 @@
 		 			</td>
 		 		</tr> 
 			</table>
-			<div id="busyImage">				
-					<div> Loading Data Please Wait..</div><br/>
-					<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>							
-			</div>
 			
-			<table>
+			<div style="border: 2px solid #d3d3d3;
+    margin:auto;
+   padding: 21px;
+    width: 960px;
+		
+		background: none repeat scroll 0 0 #ffffff;">
+			<table >
 				<tr>
 					<td>
 						<div id="headerDiv" align="left" class="completePartyDetails" style="margin-bottom:20px;"></div>
@@ -1718,6 +1740,7 @@
 					</td>
 				</tr>
 			</table>
+			</div>
 		</div>		
 	</div>
 		
