@@ -165,6 +165,7 @@ table {
     white-space: nowrap;
 }
 .errorMsgDivId{color:red;font-size:13px;}
+.mainDiv{height: 300px;margin-left: auto;margin-right: auto;float: none;text-align: center;padding-top: 50px;font-weight: bold;background: #fff;font-size: 14px;font-family: arial;margin-bottom: 10px;width: 100%;}
 </style>
 
 <script type="text/javascript">
@@ -1549,7 +1550,9 @@ function showDeleteStatus(myResult)
 
 		if(myResult.resultCode == 0)
 		{
-			window.location.reload();
+			//window.location.reload();
+			$("#mainDiv").addClass("mainDiv").html("Problem Successfully Removed.");
+			return;
 			//str += '<font color="green"><b>Problem Deleted Successfully.</b>';
 		}
 		else if(myResult.resultCode == 1) 
@@ -1653,6 +1656,7 @@ function displayDateText(type, args, obj) {
   <div class="errStyle">We Are Sorry To Inform,This Problem Is Moved To Private State By The Posted User</div>
 </s:if>
 <s:else>
+<div id="mainDiv">
 <div class="span12" style="margin-top:25px;">
 
 <div class="row">
@@ -2059,7 +2063,7 @@ function displayDateText(type, args, obj) {
 <input type="hidden" id="cadreInputId" name="cadreId"/>
 </div><!-- container Closing-->
 </article>
-
+</div><!-- main Div Close-->
 <script>
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.isProblemDel != 'true' ">
 getcomments();
