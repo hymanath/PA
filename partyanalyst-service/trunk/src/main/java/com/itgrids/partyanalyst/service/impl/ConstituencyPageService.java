@@ -569,6 +569,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateWon.setVotesEarned(votesEarn[0]);
 				candidateWon.setVotesPercentage(candidateResult.getVotesPercengate());
+				if(candidateResult.getMarginVotes()>0)
+				{
+				String marginVotes=candidateResult.getMarginVotes().toString();
+				String votesMargin[]=StringUtils.split(marginVotes,".");
+				candidateWon.setVotesMargin(votesMargin[0]);
+				if(candidateResult.getMarginVotesPercentage()!=null)
+				candidateWon.setVotesPercentMargin(candidateResult.getMarginVotesPercentage());
+				}
 				break;
 			}
 				
@@ -610,6 +618,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateOpposition.setVotesEarned(votesEarn[0]);
 				candidateOpposition.setVotesPercentage(candidateResult.getVotesPercengate());
+				
 				break;
 			}
 	    }
