@@ -21,4 +21,5 @@ public interface IUserEventsDAO extends GenericDao<UserEvents,Long> {
 
 	public List<UserEvents> findEventsByUserId(Long userId);
 	public List<UserEvents> findEventsByUserIdAndStartDate(Long userId, Date startDate);
+	public List<Long> checkEventBelongsToUser(Long userId,Long eventId);
 }
