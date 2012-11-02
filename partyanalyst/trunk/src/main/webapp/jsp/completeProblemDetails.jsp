@@ -164,7 +164,7 @@ table {
     padding-top: 4px;
     white-space: nowrap;
 }
-
+.errorMsgDivId{color:red;font-size:13px;}
 </style>
 
 <script type="text/javascript">
@@ -362,6 +362,38 @@ var problemDetailsInEdit = null;
   
   function postFilesAndImages()
 {
+	$("#errorMsgDivId").html('');
+	$(".errorMsgDivId").html('');
+	var str = '';
+	var eFlag = false;
+	var userImgVal = $("#userImage").val();
+	var title = $("#titleField").val();
+	var fileDesc = $("#fileDescription").val();
+	if(userImgVal !='' && userImgVal != null && alltrim(userImgVal) !='')
+	{
+		if(alltrim(title) == '' && alltrim(fileDesc) == '')
+		{
+			str +='Please Enter Title And Description.';
+			eFlag = true;
+		}
+		else if(alltrim(title) == '')
+		{
+		  str +='Please Enter Title.';
+		  eFlag = true;
+		}
+		else if(alltrim(fileDesc) == '')
+		{
+		  str +='Please Enter Description.';
+		  eFlag = true;
+		}
+
+	}
+	if(eFlag)
+	{
+	$("#errorMsgDivId").addClass("errorMsgDivId").html(str);
+	return false;
+	}
+		
    $( "#uploadfileOutrDiv" ).dialog("close");
    if(!uploadFormValidation()){
 	var uploadHandler = {
