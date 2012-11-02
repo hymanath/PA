@@ -131,6 +131,7 @@ margin-right:auto;
 		text-align: center;
 		width: 500px;
 		border-radius:7px;
+		margin:0px auto;
 
 }
 #regionAccessDiv{
@@ -338,13 +339,16 @@ function callAjax(param,jsObj,url){
 										showStatewiseResultsBarChart(myResults);									
 										showPartywiseDetailsDataTable(myResults);								
 										
-										<c:if test="${hasDeatiledAnalysis}">
+										<c:if test="${sessionScope.USER != null}">
 										if(myResults.electionResultsInDistricts.allPartiesResults != null &&
 											myResults.electionResultsInDistricts.allPartiesResults.length > 0)
 										{
 											showDistrictWiseResultsLineGraph(myResults);
+										    <c:if test="${hasDeatiledAnalysis}">
 											buildAllDistrictResultsDataTable(myResults);
+										 
 											buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts,"all", "null");
+										    </c:if>
 										}else
 										{
 											var toolsDiv = document.getElementById("analysisToolsDataDiv");
@@ -354,12 +358,14 @@ function callAjax(param,jsObj,url){
 										}
 										</c:if>
 
-										<c:if test="${!hasDeatiledAnalysis}">
+										/*<c:if test="${!hasDeatiledAnalysis}">
 											var subRegionsDiv = document.getElementById("subRegionWiseDetailsDiv");
 											subRegionsDiv.innerHTML='';
-										</c:if>
+										</c:if>*/
+										
 									<c:if test="${hasDeatiledAnalysis == false}">
 										showAlertMsg("accessDiv");
+										
 										</c:if>
 
                                         if(electionType != 'Parliament'){
@@ -610,10 +616,10 @@ function showAlertMsg(divElmt){
 		var str='';
 
 	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>&nbsp;&nbsp;';
-	str+='<h3 style="color: rgb(255, 0, 0); display: inline; position: relative; top: -10px; font: bold 12px/25px verdana;">Sorry,You Don \'t have Access Privileges To View Detailed <span style="margin-left:35px;">Report.Please Contact Us For Access Privileges.</span></h3>';
+	str+='<h3 style="color: rgb(255, 0, 0); display: inline; position: relative; top: -10px; font: bold 12px/25px verdana;">Sorry,you don\'t have access privileges to view detailed report. <span style="margin-left:35px;">Please contact us for access privileges.</span></h3>';
 	str+='<span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
-	str+='Phone No:+91 40 40124153 / +91 096766 96760<br />';
-	str+='Email: <a href="mailTo:info@partyanalyst.com">info@itgrids.com</a></span>';
+	str+='Phone No:+91 40 40124153 / +91 96766 96760<br />';
+	str+='Email: <a href="mailTo:info@partyanalyst.com">info@partyanalyst.com</a></span>';
 	
 	accessDivElmt.innerHTML=str;
 }
@@ -1180,13 +1186,13 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	  if(staticColors != null && staticColors.length > 0)
 	  {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 	  else
 	  {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 		
@@ -1274,13 +1280,13 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	   if(staticColors != null && staticColors.length > 0)
 	   {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	   }
 	   else
 	  {
          new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 		
@@ -1342,7 +1348,7 @@ function getInteractiveChartBySeatsWonForADistrict(results,districtN)
 	  else
          ctitle = 'All Parties District Wise Election Results By Seats Won';
 	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 880, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+	  draw(data, {width: 880, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
@@ -1402,7 +1408,7 @@ function getInteractiveChartBySeatsWonForADistrict(results,districtN)
 	  else
          ctitle = 'All Parties District Wise Election Results By Votes Percent';
 	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 880, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+	  draw(data, {width: 880, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
@@ -1816,7 +1822,7 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 }
 
 function buildGenderCountResultsDataTable(divId,dtSourceArray)
-{	
+{	 
   if(dtSourceArray != null && dtSourceArray.length >0)
    {
     maleFemale =true;
@@ -2594,7 +2600,9 @@ function buildAllDistrictResultsDataTable(results)
 			}			
 	}	
 	buildAllDistrictDatatable(innerObj,"districtResults","all","null","null");
-
+<c:if test="${hasDeatiledAnalysis == false}">
+return;
+</c:if>
 	var elmt = document.getElementById("districtResults_withoutAllianceDiv");
 	var str = '';
 	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
@@ -2639,6 +2647,9 @@ function showDistrictWisePartyResultsWithoutAlliance(chartId,detailedResultsChar
 function buildAllianceDistrictResultsDataTable(results,type, districtName)
 {	
 	allianceResultsGlobal = results;
+	<c:if test="${hasDeatiledAnalysis == false}">
+	  return;
+	</c:if>
 	var parentElmt = document.getElementById("allianceDistResults");
 	var distName = districtName;
 	var innerObj = results.alliancePartiesList;
@@ -2840,11 +2851,16 @@ function allDistResultsRadioClickHandler(results,results1)
 		{
 			selectBoxEl[i].style.display = 'none';}
 	}
+	<c:if test="${hasDeatiledAnalysis}">
 	buildAllDistrictDatatable(innerObj,"districtResults","all","null","null");
 	buildAllianceDistrictResultsDataTable(results1,"all", "null");
+	</c:if>
+	
 	getDistrictResultsInteractiveChartVotesPercent(results,null);
 	getDistrictResultsInteractiveChartSeatsWon(results,null);
-
+     <c:if test="${!hasDeatiledAnalysis}">
+	   return;
+	 </c:if>
 	for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
 		allianceDistResultsEl.childNodes[j].style.display='block';								
 	}
@@ -2942,13 +2958,17 @@ function updateDistResultsPartywise(partyName,results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	var allianceDistResultsEl = document.getElementById("allianceDistResults");
-
-		buildAllDistrictDatatable(innerObj,"districtResults","partyArray",partyName,"null");
+        <c:if test="${!hasDeatiledAnalysis}">
+		  buildAllDistrictDatatable(innerObj,"districtResults","partyArray",partyName,"null");
+		</c:if>
 		//buildAllianceDistrictResultsDataTable(results1,"district", distName);
 		//getDistrictResultsInteractiveChartVotesPercent(results,partyName);
 	    //getDistrictResultsInteractiveChartSeatsWon(results,partyName);
         getDistrictResultsInteractiveChartVotesPercentForMultParties(results,partyName);
 		getDistrictResultsInteractiveChartSeatsWonForMultParties(results,partyName);
+		<c:if test="${!hasDeatiledAnalysis}">
+		   return;
+		</c:if>
 		if(electionResultsObj.allianceGroupNamesArray != null && electionResultsObj.allianceGroupNamesArray.length != 0)
 			{
 			  for (j=0; j<allianceDistResultsEl.childNodes.length; j++)
@@ -3023,13 +3043,13 @@ function getDistrictResultsInteractiveChartSeatsWonForMultParties(results,partyN
 	   if(staticColors != null && staticColors.length > 0)
 	   {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	   }
 	   else
 	  {
          new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 		
@@ -3088,13 +3108,13 @@ function getDistrictResultsInteractiveChartVotesPercentForMultParties(results,pa
 	   if(staticColors != null && staticColors.length > 0)
 	   {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	   }
 	   else
 	  {
          new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 		
@@ -3102,18 +3122,21 @@ function getDistrictResultsInteractiveChartVotesPercentForMultParties(results,pa
 
 function updateDistResultsDistwise(distName,results,results1)
 {
-	
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	var allianceDistResultsEl = document.getElementById("allianceDistResults");
 	if(distName != 'Select District')
 	{
+	  <c:if test="${!hasDeatiledAnalysis}">
 		buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);
 		buildAllianceDistrictResultsDataTable(results1,"district", distName);
+	  </c:if>
 		getInteractiveChartBySeatsWonForADistrict(results,distName);
 		getInteractiveChartByVotesPercentForADistrict(results,distName);
 	}
 	else return;
-	
+	<c:if test="${!hasDeatiledAnalysis}">
+	 return;
+	</c:if>
 	for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
 		allianceDistResultsEl.childNodes[j].style.display='block';								
 	}
@@ -3420,7 +3443,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</TABLE>
 	<DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;TP and PC% columns are empty for alliance parties in Partywise Results table, to find TP and PC% for alliance parties kindly refer TP and PC% columns of Alliance Details Table.TP and PC% are Not Applicable for Independent Candidates(IND).</P></DIV>
 </DIV>
-
+<c:if test="${hasDeatiledAnalysis}">
 <DIV style="padding:10px;">
 	<TABLE width="50%" border="0" cellpadding="0" cellspacing="0">
 		<TR>
@@ -3431,14 +3454,15 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 		
 	</TABLE>
 </DIV>
-
+</c:if>
 
 <!--<DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
 --></DIV>
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
-<div id="accessDiv" style="display:none"></div>
+
 <DIV id="subRegionWiseDetailsDiv">
+<c:if test="${sessionScope.USER != null}">
 <c:if test="${electionType != 'Parliament'}">
 <DIV class="graphTop">District Level Overview</DIV></c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
@@ -3446,6 +3470,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV id="districtWiseGraph"></DIV>
 <DIV id="districtWiseSeatsGraph"></DIV>
 <DIV id="detailedGraph" style="text-align:right;padding:15px;"></DIV>
+<c:if test="${hasDeatiledAnalysis}">
 <DIV id="distResultsViewOptionsDiv">
 	<TABLE width="100%">	
 		<tr><td colspan="6"><div id="showHidText" style="padding-left:80px;display:none;" ><b>Press Ctrl Key To Select Multiple Parties</b></div></td></tr>		
@@ -3471,7 +3496,9 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 		</TR>
 	</TABLE>	
 </DIV>
-
+</c:if>
+</c:if>
+<c:if test="${hasDeatiledAnalysis}">
 <DIV class="yui-skin-sam" >
 	<TABLE border="0" width="95%" >
 		<TR>
@@ -3499,12 +3526,14 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</TABLE>
 	
 </DIV>
+</c:if>	
 </DIV>
+
 <DIV class="graphBottom"></DIV>
 </DIV>
 <DIV class="yui-skin-sam" >
 <div id="partyperformance" >
-<c:if test="${hasDeatiledAnalysis}">
+<c:if test="${loginStatus !=null && sessionScope.USER != null}">
 <DIV class="graphTop"> Party Performance In Different Aspects</DIV>
 <div class="partyperformance">
 </c:if>
@@ -3553,7 +3582,8 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</div>
 
 	<div id="UbanPercentageWiseGraph"></div>
-
+    </c:if>
+	<c:if test="${loginStatus !=null && sessionScope.USER != null}">
 	<table>
 	  <tr>
 	    <td><b>TP* = Total Participation , CVP* % = Complete Votes Percentage , CPVP* % = Complete Participated Votes Percentage</b></td>
@@ -3574,11 +3604,14 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	    <td><b>RUCV* % = Rural Urban Constituency Votes Percentage </b></td>
 	  </tr>
 	</table>
+	</c:if>
+<c:if test="${hasDeatiledAnalysis}">
 </div>
 <DIV class="graphBottom"></DIV>	
 </c:if>
 </div>
 </DIV>
+<div id="accessDiv" style="display:none"></div>
 <div class="clear"></div>
 <DIV id="analysisToolsDataDiv">
 <DIV class="graphTop">Analysis Tools</DIV>
@@ -3726,13 +3759,17 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </DIV>
 <DIV id="task10"></DIV>
 <div id="regionAccessDiv" style="display:none;"></div>
+
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 //alert(<%=session.getAttribute("USER")%>);
 //alert('${loginStatus}');
 getResultsForAnElection(stateID,electionType,year);
+<c:if test="${loginStatus !=null && sessionScope.USER != null}">
+  getPartyGenderInfo();
+</c:if>
 <c:if test="${hasDeatiledAnalysis}">
-getPartyGenderInfo();
+
 <c:if test="${year >= '2009'}">
 	getConstituencyAreaTypeWiseOverview();
 	getConstituencyAreaTypeWiseResult();
