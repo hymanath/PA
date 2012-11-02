@@ -69,6 +69,7 @@
 		<pattern>/editAnnouncementPageAction*</pattern>
 		<pattern>/getImageInfoAction*</pattern>
 		<pattern>/panchayatWiseElectionResultsAction*</pattern>
+		<pattern>/createNewEvent.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
