@@ -17,4 +17,12 @@ public interface IUserEventActionPlanDAO extends GenericDao<UserEventActionPlan,
 
 	public List<UserEventActionPlan> findByUserEventsId(Long userEventsId);
 	
+	public void removeEventActionPlans(Long eventId);
+	
+	public void removeDeletedEventActionPlans(Long eventId,List<Long> eventActionPlanIds);
+	
+	public List<Long> getEventActionPlanIds(Long eventId);
+	
+	public List<Long> getEventActionPlanIds(Long eventId,List<Long> eventActionPlanIds);
+	
 }
