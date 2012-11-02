@@ -31,7 +31,7 @@ function getContent(type)
 		str += '<table>';
 		str += '<tr><th colspan=2>For Pricing Information Contact Us @</th></tr>';
 		str += '<tr><th>Phone :</th><td>+91-40-40124153</td></tr>';
-		str += '<tr><th>Mail :</th><td>info@itgrids.com</td></tr>';
+		str += '<tr><th>Mail :</th><td>info@partyanalyst.com</td></tr>';
 		str += '</table>';
 
 		str += '<table align="center">';
