@@ -129,7 +129,7 @@
 						{
 							ancName:"",
 							head:"Policy Updates",
-							data:"From time to time we keep updating this privacy policy to serve you better. Though you will be kept informed about changes to the policies, please keep visiting this page regularly for updates.You may always contact us at <a href=mailto:info@itgrids.com>&#45; info&#64;itgrids&#46;com</a>. for any information or clarification that you may need. We would be more than happy to answer them."
+							data:"From time to time we keep updating this privacy policy to serve you better. Though you will be kept informed about changes to the policies, please keep visiting this page regularly for updates.You may always contact us at <a href=mailto:info@partyanalyst.com>&#45; info&#64;partyanalyst&#46;com</a>. for any information or clarification that you may need. We would be more than happy to answer them."
 						}
 
 					]
