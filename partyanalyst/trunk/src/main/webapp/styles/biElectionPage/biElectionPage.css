@@ -1,15 +1,17 @@
 #pageHeading
 {
-background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
-background-repeat:repeat-x;
-color:#1C4B7A;
-font-size:15px;
-font-weight:bold;
-height:30px;
+   background: none repeat scroll 0 0 #05A8E9;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    height: 34px;
+    margin-left: 250px;
 }
 
 #telanganaMap_body 
 {
+background: none repeat scroll 0 0 #F5F5F5;
 border-bottom:1px solid #E0E0D6;
 border-left:1px solid #E0E0D6;
 border-right:1px solid #E0E0D6;	
@@ -20,6 +22,7 @@ height:407px;
 
 #partiesPerformanceGraphDistrict 
 {	
+    background: none repeat scroll 0 0 #F5F5F5;
 	margin:35px 15px 15px 15px;
 	border:1px solid #E0E0D6;
 }
@@ -35,12 +38,12 @@ color:GoldenRod;
 }
 #biElectionPageLayout_center
 {
-	margin:5px;
+	margin:auto;
 	width:700px;
 }
 #biElectionPageLayout_right
 {
-	margin:5px;
+	margin:auto;
 }
 .regionsList li a
 {
@@ -51,6 +54,7 @@ color:GoldenRod;
 
 .frameBody
 {
+   background: none repeat scroll 0 0 #F5F5F5;
 	border-bottom:1px solid #E0E0D6;
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
@@ -115,6 +119,7 @@ color:GoldenRod;
 
 #mp_body table 
 {
+	background: none repeat scroll 0 0 #F5F5F5;
 	border:1px solid #adadad;
 }
 
@@ -306,5 +311,6 @@ font-weight:bold;
 	color:#091835;
 	font-size:13px;
 	font-weight:bold;
+   
 	padding:10px;
 }
