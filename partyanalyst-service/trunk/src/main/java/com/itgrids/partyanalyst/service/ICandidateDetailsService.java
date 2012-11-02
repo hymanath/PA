@@ -193,4 +193,6 @@ public interface ICandidateDetailsService {
 	 public ResultStatus controlAbuseComments(List<CandidateCommentsVO> VO,String actionType);
 	 
 	 public ResultStatus deletePartyGallary(Long gallaryId);
+	 
+	 public Long getLocationScopeValue(Long scope,String locationValue);
 }
