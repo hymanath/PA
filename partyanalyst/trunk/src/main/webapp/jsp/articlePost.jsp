@@ -110,7 +110,7 @@
 
 <meta name="author" content="Ashok Dakavaram">
 
-<meta name="email" content="info@itgrids.com">
+<meta name="email" content="info@partyanalyst.com">
 
 <meta name="Charset" content="ISO-8859-1">
 
