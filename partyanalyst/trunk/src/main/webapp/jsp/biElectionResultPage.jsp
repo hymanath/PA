@@ -63,7 +63,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/indexPage/indexPage.css">
 	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
-	
+	<style>
+	  .mainwrapper{width:999px; margin:0px auto;background:#5d5d5d;}
+	</style>
 
 	<script type="text/javascript">
 	 <%			
@@ -216,13 +218,22 @@
 	    <div id="biElectionPage_header">
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
-				<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
+				<!--<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>-->
 				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bye-Elections - 2010 Analysis</span></div></td>
-				<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
+				<!--<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>-->
 			</tr>
 		</table>
 	    </div>
-		<div style="margin-top:20px;margin-bottom:10px;width:914px;padding:5px;font-size:14px;font-weight:bold;color:#764B00;border:1px solid #DBDCDB;background-color:#EAEAE9">
+		<div style="background-color: #EAEAE9;
+    border: 1px solid #DBDCDB;
+    color: #764B00;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+    padding: 5px;
+    width: 914px;">
             <MARQUEE width=100% behaviour=SCROLL scrollAmount=3 >Issue of Notification  : 02-07-2010 (Friday)  <B>||</B>  Last date of making Nominations  : 09-07-2010 (Friday)  <B> ||  </B> Scrutiny of Nominations : 10-07-2010 (Saturday) <B>  || </B> Last date for withdrawal of Candidatures : 12-07-2010 (Monday)  <B> || </B> Date of Poll : 27-07-2010 (Tuesday) <B> || </B> Hours of Poll : 07.00 AM to 05.00 PM  <B> || </B> Counting of Votes  : 30-07-2010 (Friday) 08.00 AM </MARQUEE>
         </div>
 		<div>
@@ -274,7 +285,13 @@
 				</div>
 			</div>			
 		</div>
-		<div id="boothResultsSelection" style="border:1px solid #E0E0D6;text-align:left;margin-left:18px;margin-right:13px;padding:10px;margin-top:23px;"></div>
+		<div id="boothResultsSelection" style="background: none repeat scroll 0 0 #F5F5F5;
+    border: 1px solid #E0E0D6;
+    margin-left: 18px;
+    margin-right: 13px;
+    margin-top: -38px;
+    padding: 10px;
+    text-align: left;"></div>
 		<div id="enlargedDIVForMandals" class="yui-skin-sam">
 			<div id="enlargedDIV"></div>
 		</div>
