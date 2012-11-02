@@ -94,7 +94,7 @@
 	<div class="span5">
 	<a class="btn btn-primary">
 	   <h5>Get Started Now!! </h5>
-  Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
+  Our qualified team will be happy to answer all your questions about Voters Pulse Service and Other Services. 
   <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9246827788<br/>+91 9246837788  </h4>
     </a>
 	</div>
@@ -230,7 +230,7 @@
  <div class="span3" >
 	<a class="btn btn-primary" style="margin-top:28px;">
 	   <h5>Get Started Now!! </h5>
-  Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products. 
+  Our qualified team will be happy to answer all your questions about Voters Pulse Service and Other Services. 
   <h4>Email us : info@partyanalyst.com  <br><br>Please call us : <br>+91 9246827788<br>+91 9246837788  </h4>
     </a>
 	</div>
