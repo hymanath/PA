@@ -433,7 +433,7 @@ function openAddNewProblemWindow()
 					<td valign="top" style="width:50px"><img width="60" height="40" src="images/icons/indexPage/importantNote.png"></img> </td>
 					<td valign="top">
 						<div id="copyRightTextDiv"> The Election Information displayed in this website are based on the data provided by the Election Commmission Of India.
-						Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>
+						Further suggestions and corrections please contact us at <font color="#b76823"><b>info@partyanalyst.com</b></font></div> </td>
 				</tr>
 			</table>
 			
