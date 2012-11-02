@@ -20,6 +20,7 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	private String isDeleted;
 	private String location;
 	private String eventDisplayTitle;
+	private boolean isValid;
 	
 	public String getTitle() {
 		return title;
@@ -102,6 +103,12 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	}
 	public void setEventDisplayTitle(String eventDisplayTitle) {
 		this.eventDisplayTitle = eventDisplayTitle;
+	}
+	public boolean isValid() {
+		return isValid;
+	}
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 	
 	
