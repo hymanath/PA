@@ -39,6 +39,7 @@
 }
 #departmentassignid{
   width:88px;
+  padding:2px;
 }
 table {
     font-size: inherit;
@@ -166,6 +167,9 @@ table {
 }
 .errorMsgDivId{color:red;font-size:13px;}
 .mainDiv{height: 300px;margin-left: auto;margin-right: auto;float: none;text-align: center;padding-top: 50px;font-weight: bold;background: #fff;font-size: 14px;font-family: arial;margin-bottom: 10px;width: 100%;}
+.fontStyle{font-Size:13px;}
+.heading{margin-bottom: 8px;margin-top: 10px;padding: 0;}
+.selectWidth{width:170px;}
 </style>
 
 <script type="text/javascript">
@@ -588,7 +592,7 @@ str += '<DIV id="problemAssigningDiv">';
 str += '<TABLE>';
 str += '	<tr>';
 str += '		<th width="225px">';
-str += '		<b>Problem Resolving Dept Scope </b>';
+str += '		<span class="fontStyle"><b>Problem Resolving Dept Scope </b></span>';
 str += '		</th>';
 str += '		<td>';
 str += '		<select id="resolvingDeptScopeId" class="selectWidth" name="resolvingDeptScope" onchange="javascript:{getProblemDepartments(this.options[this.selectedIndex].value,\'getDepartmentCategories\');populateDeptLocations(this.options[this.selectedIndex].value);}">';
@@ -596,7 +600,7 @@ str += '<option value="0">Select Problem Scope</option>';
 str += '</select></td>';
 str += '	</tr>';
 str += '	<tr>';
-str += '		<th><b>Select Department</b></th>';
+str += '		<th><span class="fontStyle"><b>Select Department</b></span></th>';
 str += '		<td>';
 str += '			<select id="deptId" class="selectWidth" name="dept">';
 str += '				<option value="0">Select Dept</option>';
@@ -604,10 +608,10 @@ str += '			</select>';
 str += '		</td>';
 str += '	</tr>';
 str += '	<tr id="deptAreaHeadId" style="display:none;">';
-str += '		<th id="thId" colspan="4"><u>Problem Resolving Dept Area</u></th>';
+str += '		<th id="thId" colspan="4"><p class="heading"><u>Problem Resolving Dept Area</u></p></th>';
 str += '	</tr>';
 str += '	<tr id="row1" style="display:none;">';
-str += '	<th>Select State <font class="requiredFont"> * </font></th>';
+str += '	<th><span class="fontStyle">Select State <font class="requiredFont"> * </font></span></th>';
 str += '		<td>';
 str += '<select id="StateId" class="selectWidth" name="state" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'districtsInState\',\'influencingPeopleReg\',\'DistrictId\', \'currentAdd\');showBusyImgWithId(\'stateajaxImgId\');">';
 <c:forEach var="options" items="${statesListForProb}">
@@ -620,9 +624,9 @@ str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row2" style="display:none;">';
-str += '		<th>Select District <font class="requiredFont"> * </font></th>';
+str += '		<th><span class="fontStyle">Select District <font class="requiredFont"> * </font></span></th>';
 str += '		<td>';
-str += '<select id="DistrictId" cssClass="selectWidth" name="district" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'influencingPeopleReg\',\'ConstituencyId\',\'currentAdd\');showBusyImgWithId(\'districtajaxImgId\');">';
+str += '<select id="DistrictId" Class="selectWidth" name="district" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'influencingPeopleReg\',\'ConstituencyId\',\'currentAdd\');showBusyImgWithId(\'districtajaxImgId\');">';
 <c:forEach var="options" items="${districtsListForProb}">
 	str += '		<option value="${options.id}">${options.name}</option>';
 </c:forEach>
@@ -633,7 +637,7 @@ str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row3" style="display:none;">';
-str += '		<th>Select Constituency <font class="requiredFont"> * </font></th>';
+str += '		<th><span class="fontStyle">Select Constituency <font class="requiredFont"> * </font></span></th>';
 str += '		<td>';
 str += '<select id="ConstituencyId" class="selectWidth" name="constituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'influencingPeopleReg\',\'MandalId\',\'currentAdd\', \'null\');showBusyImgWithId(\'constituencyajaxImgId\');">';
 <c:forEach var="options" items="${costituenciesListForProb}">
@@ -645,7 +649,7 @@ str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row4" style="display:none;">';
-str += '		<th>Select Mandal/CORP/GMC <font class="requiredFont"> * </font></th>';
+str += '		<th><span class="fontStyle">Select Mandal/CORP/GMC <font class="requiredFont"> * </font></span></th>';
 str += '		<td>';
 str += '<select id="MandalId" class="selectWidth" name="mandal" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'influencingPeopleReg\',\'VillageId\',\'currentAdd\');">';
 <c:forEach var="options" items="${mandalsListForProb}">
@@ -659,7 +663,7 @@ str += '	</tr>';
 
 str += '	<tr id="row5" style="display:none;">';
 
-str += '		<th>Select village <font class="requiredFont"> * </font></th>';
+str += '		<th><span class="fontStyle">Select village <font class="requiredFont"> * </font><span class="fontStyle"></th>';
 str += '		<td>';
 
 str += '<select id="VillageId" class="selectWidth" name="village">';
