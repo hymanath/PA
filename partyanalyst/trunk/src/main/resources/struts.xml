@@ -3605,5 +3605,14 @@
 			   <param name="root">problemManagementChartVO</param>
 			</result>		
 		</action>
+		<action name="createNewEvent" class="createEventAction" method="createUpdateEvent">
+			<result  name="success">/jsp/createNewEvent.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
+		<action name="getParliamentConstituencies" class="cadreSearchAction" method="getParliamentConstis">
+			<result type="json" name="success">
+              <param name="root">parliamentConstituencies</param>
+			</result>			
+		</action>
 	</package>
 </struts>      
