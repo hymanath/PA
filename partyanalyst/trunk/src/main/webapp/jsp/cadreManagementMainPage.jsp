@@ -1594,7 +1594,7 @@ function fillDataForCadreLevel(results,jsObj)
 			{
 				eventStr+='<td colspan="3">';
 				for(var cadre in results.organizers)
-					eventStr+='<div class="fieldSpan" id="'+results.organizers[cadre].id+'_div">'+results.organizers[cadre].name+'</div>';
+					eventStr+='<div class="fieldSpan" id="'+results.organizers[cadre].id+'_div"><b>'+results.organizers[cadre].name+'</b></div>';
 				eventStr+='</td>';
 			}
 			else
@@ -1608,9 +1608,17 @@ function fillDataForCadreLevel(results,jsObj)
 			eventStr+='<td colspan="3">';
 			for(var i in results.actionPlans)
 			{	
-				var actionDayobj = getDateTime(results.actionPlans[i].targetDate);	
-				eventStr+='<div class="eventActionPlanDiv">'+results.actionPlans[i].action+'-'+actionDayobj.day+'/'+actionDayobj.month+'/'+actionDayobj.year+'</div>';	
+				var actionDayobj = getDateTime(results.actionPlans[i].targetDate);
 				
+				eventStr += '<a href="javascript:{}" title="Click here to view Action Plan Organisers" onclick="showplanorgs(\'orginrsinplan'+i+'\')"><div style="clear:both;font-weight:bold;padding-left:5px;padding-top:5px;background-color:#EBF5FF;width:100%;height:22px;margin-top:10px;">';
+		        eventStr += '  <span style="float:left;margin-left:10px;">'+results.actionPlans[i].action+' - '+actionDayobj.day+'/'+actionDayobj.month+'/'+actionDayobj.year+'</span>';
+		        eventStr += '</div></a>';
+                if(results.actionPlans[i].actionPlanOrganizers != null && results.actionPlans[i].actionPlanOrganizers.length > 0){
+				  eventStr+='<div id="orginrsinplan'+i+'" style="display:none;">'
+				  for(var k in results.actionPlans[i].actionPlanOrganizers)
+				    eventStr+='<div style="margin-left:30px;font-weight:bold;">'+results.actionPlans[i].actionPlanOrganizers[k].name+'</div>';				
+				  eventStr+='</div>'
+				}
 			}
 			eventStr+='</td>';
 			eventStr+='</tr>';
@@ -1660,7 +1668,9 @@ function fillDataForCadreLevel(results,jsObj)
 	             } ); 
 		eventDateDialog.render(); 
 	}
-
+    function showplanorgs(id){
+	  $("#"+id).toggle("slow");
+	}
 	function buildSelectedDateEventPopup(results,jsObj)
 	{
 		var elmt = document.getElementById('cadreManagementMainDiv');		
@@ -2161,10 +2171,13 @@ function fillDataForCadreLevel(results,jsObj)
 
 	function showSelectedDateEvent(elmtId,eType,taskType)
 	{	
+	
 		//var mainEventCalendarNavigator = new YAHOO.widget.CalendarNavigator(mainEventCalendar);
 		
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
-           
+           var browser2 = window.open("createNewEvent.action?eventId="+eid,"cadreCreateNewEvent","scrollbars=yes,height=600,width=700,left=150,top=100");	
+		   browser2.focus();
+		   return;
 		var jsObj={
 					eventId:eid,
 					currentDay:dateObj.dateVal,
@@ -2452,6 +2465,11 @@ function fillDataForCadreLevel(results,jsObj)
 		
 	}
 	function buildNewEventPopup()
+	{
+		var browser2 = window.open("createNewEvent.action","cadreCreateNewEvent","scrollbars=yes,height=600,width=700,left=150,top=100");	
+		browser2.focus();
+	}
+	function buildNewEventPopup1()
 	{		
 		
 		removeElementsArray(eventCadresArray);
