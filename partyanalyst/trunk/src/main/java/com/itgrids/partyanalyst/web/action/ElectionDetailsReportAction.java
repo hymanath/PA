@@ -345,8 +345,16 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			String year = jObj.getString("year");
 			Long electionId = jObj.getLong("electionId");
 
+			
+			RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
+			
+			if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+				hasDeatiledAnalysis = true;
+			String alliancesRequired = null;
+			if(!hasDeatiledAnalysis)
+				alliancesRequired ="notRequired";
 			electionCompleteDetailsVO = electionReportService
-					.getBasicResultsForAnElection(electionType, year, stateId,"0.4");
+					.getBasicResultsForAnElection(electionType, year, stateId,"1.8",alliancesRequired);
 			
 			electionCompleteDetailsVO.setElectionBasicVotersData(electionReportService.getVotersDataOfTwoElections(electionId));
 			if (electionCompleteDetailsVO != null) {
