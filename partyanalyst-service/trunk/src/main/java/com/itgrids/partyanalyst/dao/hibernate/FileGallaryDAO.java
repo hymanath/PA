@@ -22,7 +22,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<File> getStartingRecordInGallary(Long gallaryId){
 		
 		Query query = getSession().createQuery("select model.file  from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? " +
-				" order by model.file.fileId asc ");
+				" order by model.file.fileDate desc");
 		
 		query.setParameter(0,gallaryId);
 		query.setParameter(1,"false");
@@ -148,7 +148,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<File> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxResults)
 	{
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
-				" and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.createdDate desc");
+				" and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.file.fileDate desc");
 		
 		query.setLong("candidateId", candidateId);
 		query.setString("type", IConstants.VIDEO_GALLARY);
@@ -328,7 +328,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.gallaryId in "+
 				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
-				" and model2.gallery.contentType.contentType= :type) and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.updateddate desc");
+				" and model2.gallery.contentType.contentType= :type) and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.file.fileDate desc");
 		
 		query.setLong("partyId", partyId);
 		query.setString("type", IConstants.VIDEO_GALLARY);
