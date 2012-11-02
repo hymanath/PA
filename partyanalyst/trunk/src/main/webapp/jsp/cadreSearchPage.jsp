@@ -800,8 +800,48 @@ function showCadreSearchResults(searchCount)
 		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreIdToProblem()" value="Add Selected cadre"/><BR><BR></span>';
 		cadreProbDivEle.innerHTML = cadreProbStr;
 	}
+	if(isProblemAdding != null && isProblemAdding == false)
+	{
+		footerElmt.style.display = 'none';
+		
+		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
+		var cadreProbStr = '';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setOrganizers()" value="Add Organizers"/><BR><BR></span>';
+		cadreProbDivEle.innerHTML = cadreProbStr;
+	}
 }
+function setOrganizers(){
+   var elements = document.getElementsByName("cadreResult_check");
+	var errorSpanElmt = document.getElementById("addSelectedCadreErrorMsg");
+	var candidates = new Array();
+    var cid = null;
+	var cName = null;
 
+	for(var i=0; i<elements.length; i++)
+	{
+		if(elements[i].checked == false)
+			continue;
+		
+		cid  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
+		cName = elements[i].value.substring(elements[i].value.lastIndexOf('_')+1,elements[i].value.length);
+	   var obj1 = {};
+	   obj1["id"] = cid;
+	   obj1["name"] = cName;
+	   candidates.push(obj1);
+	}
+	if(cid == null)
+	{
+		errorSpanElmt.innerHTML = '<font style="color:red;">Please Select Cadre to Add the Problem</font>';
+		return;
+	}
+	else if(cid != null)
+	{
+		errorSpanElmt.innerHTML = '';
+		window.opener.setSelectedOrganizers(candidates);
+		window.close();
+	}
+
+}
 
 <!--  cadre search  --- end> 
 </script>
