@@ -872,7 +872,7 @@ function checkForEntitlement(id,candidateName,category, rank,constituencyId,cons
 		str += '<table class="contactUsTable">';
 		str += '<tr>';
 		str += '<th valign="top">Email<th>';
-		str += '<td valign="top">info@itgrids.com<br/>a.dakavaram@itgrids.com</td>';
+		str += '<td valign="top">info@partyanalyst.com<br/>a.dakavaram@itgrids.com</td>';
 		str += '</tr>';		
 		str += '<tr>';
 		str += '<th valign="top">Mobile<th>';
