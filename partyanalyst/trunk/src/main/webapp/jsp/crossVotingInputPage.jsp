@@ -54,8 +54,11 @@
 #crossVotingInputDiv
 {
 	float: left;
-    margin-left: 36px;
-    padding: 16px;
+    margin-left: auto;
+	margin-right:auto;
+	background: none repeat scroll 0 0 #FFFFFF;
+	width: 900px;
+    margin:20px;
 }
 #labelspan
 {
@@ -66,10 +69,12 @@
 {
 	color:#724400;
 	padding:3px;
+	
 }
 #crossVotingResultDiv
 {
-	text-align: left; margin-top: 30px; margin-left: 50px;
+	text-align: left; padding:20px;
+
 }
 #candidateDetailsDiv
 {
@@ -77,20 +82,27 @@
 }
 #assemblyCandidateDiv
 {
-	float:left;	
-	background-color:#EFEFEF;
-	border:2px outset #CCCCCC;
+	background-color: #FFFFFF;
+    border: 2px solid #D3D3D3;
+    float: left;
+    height: 198px;
+   
+    width: 435px;
 }
 #parliamentCandidateDiv
-{
-	background-color:#EFEFEF;
-	margin-left:480px;
-	margin-right:20px;
-	border:2px outset #CCCCCC;
+{background-color: #FFFFFF;
+    border: 2px solid #D3D3D3;
+    height: 197px;
+    left: 107px;
+    margin-top: 276px;
 }
 #treeDiv
 {
-	margin-top: 30px;
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #D3D3D3;
+    margin-top: 30px;
+	width: 950px;
+	margin-left:-11px;
 }
 .detailsTable td
 {
@@ -130,10 +142,11 @@
 
 #constDetails
 {
-	padding:5px;
-	background-color:#efefef;
-	margin-top:10px;
-	margin-right:10px;
+	background-color: #FFFFFF;
+    border: 2px solid #D3D3D3;
+    margin-top: 36px;
+    padding: 5px;
+	margin-left:-5px;
 }
 #constDetailsHead
 {
@@ -177,13 +190,18 @@
     font-size: 20px;
     font-weight: normal;
     padding:20px;
+	 
+	 
+	 
 }
 #headingImgStyle{
-	 background-color: #0B3861;
-	background-repeat:no-repeat;
-	background-size:190px auto;
-	height: 25px;
-    width: 190px;
+	 background: none repeat scroll 0 0 #05A8E9;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFDFF;
+    padding: 6px;
+    position: absolute;
+    text-align: center;
+    width: 900px;
 }
 h4.headStyle
 {
@@ -201,6 +219,22 @@ td.tdStyle{
 	 font-family: times New Roman;
     font-size: 14px;
     font-weight: bold;
+ }
+ .span{
+ font-size: 18px;
+    margin-left:auto;
+    line-height: 27px;
+   
+    margin:20px;
+ }
+ 
+ #MainBodyWrapper{
+    
+	margin-left:auto;
+	margin-right:auto;
+	width:97%;
+    
+		
  }
 </style>
 <script type="text/javascript">
@@ -353,7 +387,7 @@ function getAssembly()
 		else
 		{
 			var str='';
-			str+='<div id="headingDiv"><h3><u>Cross Voting Details for <a href="partyPageAction.action?partyId ='+obj.partyValue+'">'+ partyValue +' </a> Party in '+ electionValue +' <a href="constituencyPageAction.action?constituencyId ='+obj.assemblyValue+'">'+ assemblyValue +'</a> Assembly Constituency</u></h3></div>';
+			str+='<div id="headingDiv"><h3 class="span"> <u>Cross Voting Details for <a href="partyPageAction.action?partyId ='+obj.partyValue+'">'+ partyValue +' </a> Party in '+ electionValue +' <a href="constituencyPageAction.action?constituencyId ='+obj.assemblyValue+'">'+ assemblyValue +'</a> Assembly Constituency</u></h3></div>';
 			str+='<div id="candidateDetailsDiv">';
 				str+='<div id="assemblyCandidateDiv">';
 					str+='<table id="assemblyTable" class="detailsTable" style="width:auto;" >';
@@ -468,7 +502,7 @@ function getAssembly()
 		var childNewDivElmt = document.createElement('div');
 		childNewDivElmt.setAttribute('id','mandalNewDiv_'+mandal.mandalName);
 		childNewDivElmt.style.display="none";
-		childNewDivElmt.style.width = "880px"
+		childNewDivElmt.style.width = "945px"
 		childNewDivElmt.style.overflow = "scroll";	
 		divElmt.appendChild(childNewDivElmt);
 		
@@ -694,16 +728,21 @@ function getAssembly()
 </script>
 </head>
 <body>
+
+<div id="MainBodyWrapper">
+    <div style="background:#fff; display:table;">
  	<div id= "headDivStyle">
 	<table border="0" cellpadding="0" cellspacing="0">          
-		<tr><td><img src="images/icons/cadreReport/bg_left.png"/></td>
+		<tr><!--<td><img src="images/icons/cadreReport/bg_left.png"/></td>-->
 			<td><div id="headingImgStyle"><span>&nbsp;Cross Voting Report</span></div></td>
-	       <td><img src="images/icons/cadreReport/bg_right.png"/></td>
+	       <!--<td><img src="images/icons/cadreReport/bg_right.png"/></td>-->
 	   </tr>
 		</table>
-	</div>
-		<div id="crossVotingInputDiv"  style="border: 3px solid #194155;">
-			<table class="crossVotingInputTable" border='0'>
+	</div>	
+	
+	     
+		<div id="crossVotingInputDiv"  style="border: 3px solid #d3d3d3;">
+			<table class="crossVotingInputTable" border='0' >
 				<tr>
 					<td colspan="2"><h4 class="headStyle"><b><span id="labelspan">Select All Mandatory Fields :</span></b></h4></td>
 				</tr>
@@ -761,8 +800,8 @@ function getAssembly()
 		
 		
 		<div id="crossVotingResultDiv" style="display:none;"></div>
-        
-			
+      </div> 
+		</div>
 	
 </body>
 </html>
