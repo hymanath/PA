@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.dto.UserSubscribeImpDatesVO;
 
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -57,7 +58,11 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private List<CadreInfo> cadresLocation;
 	private String deleteStatus;
 	private final static Logger log = Logger.getLogger(CreateEventAction.class);	
-
+    private Long updateEventId;
+    private boolean updateEvent;
+    private boolean notLogged;
+    private EntitlementsHelper entitlementsHelper;
+    
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		this.session = request.getSession();
@@ -159,6 +164,39 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		this.deleteStatus = deleteStatus;
 	}
 
+
+	public Long getUpdateEventId() {
+		return updateEventId;
+	}
+
+	public void setUpdateEventId(Long updateEventId) {
+		this.updateEventId = updateEventId;
+	}
+
+	public boolean isUpdateEvent() {
+		return updateEvent;
+	}
+
+	public void setUpdateEvent(boolean updateEvent) {
+		this.updateEvent = updateEvent;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+	
+	public boolean isNotLogged() {
+		return notLogged;
+	}
+
+	public void setNotLogged(boolean notLogged) {
+		this.notLogged = notLogged;
+	}
+
 	public String execute() throws Exception
 	{
 		log.debug("CreateEventAction.execute()... started");
@@ -167,6 +205,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 		if(user==null)
 			return ERROR;
@@ -238,8 +277,12 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 				
 				for(int j=0;j<size;j++)
 				{
+					actionOrgList = new ArrayList<SelectOptionVO>();
 					JSONObject jsonobj = actionPlans.getJSONObject(j);	
 					
+					Long userEventsPlanId = null;
+					if(!jsonobj.getString("userEventsPlanId").equalsIgnoreCase(""))			
+						userEventsPlanId = new Long(jsonobj.getString("userEventsPlanId"));
 					String actionPlan = jsonobj.getString("action");
 					String actionPlanDate = jsonobj.getString("targetDate");					
 					JSONArray actionOrganisers = jsonobj.getJSONArray("actionPlanOrganizers");
@@ -263,7 +306,9 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 					
 					EventActionPlanVO eventActionPlanVO = new EventActionPlanVO();
 					eventActionPlanVO.setAction(actionPlan);
-					eventActionPlanVO.setTargetDate(new Date(actionPlanDate));
+					eventActionPlanVO.setTargetDate(df.parse(actionPlanDate));
+							
+					 eventActionPlanVO.setEventActionPlanId(userEventsPlanId);
 					eventActionPlanVO.setActionPlanOrganizers(actionOrgList);
 					actionPlanList.add(eventActionPlanVO);	
 				}					
@@ -364,7 +409,8 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		String eventType = jObj.getString("eventType");
 		if(jObj.getString("taskType").equalsIgnoreCase("impEvent"))
 		{
-			event = userCalendarService.getUserPlannedEvent(new Long(eventId));
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			event = userCalendarService.getUserPlannedEvent(new Long(eventId),user.getRegistrationID());
 			result = "userEvent";
 		}
 		else if(jObj.getString("taskType").equalsIgnoreCase("impDate"))
@@ -475,4 +521,26 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		return SUCCESS;
 	}
 	
+	public String createUpdateEvent(){
+	 try{
+		 HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(session.getAttribute(IConstants.USER) == null && 
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
+				notLogged = true;
+				return SUCCESS;
+			}
+			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
+				return ERROR;
+		String eventId = request.getParameter("eventId");
+		if(eventId != null && eventId.trim().length() >0){
+			updateEventId = Long.parseLong(eventId.trim());
+		    updateEvent = true;
+		}
+	 }catch(Exception e){
+		 log.error(e);
+	 }
+	 return SUCCESS;
+	}
 }
