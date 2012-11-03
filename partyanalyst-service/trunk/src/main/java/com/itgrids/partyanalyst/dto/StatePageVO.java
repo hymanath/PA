@@ -9,7 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
 
-public class StatePageVO {
+public class StatePageVO implements Comparable<StatePageVO> {
 
 	private Long   stateId;
 	private String country;
@@ -32,6 +32,8 @@ public class StatePageVO {
 	private Date   startDate;
 	private Date   deformDate;
 	private String admin_control;
+	
+	private Long stateCount;
 	
 	//getters and setters
 	public Long getStateId() {
@@ -160,6 +162,20 @@ public class StatePageVO {
 	public void setAdmin_control(String admin_control) {
 		this.admin_control = admin_control;
 	}
-	 
+	public Long getStateCount() {
+		return stateCount;
+	}
+	public void setStateCount(Long stateCount) {
+		this.stateCount = stateCount;
+	}
+	@Override
+	public int compareTo(StatePageVO o) {
+		
+		String stateName = o.getStateName();		 
+		//ascending order
+		return this.stateName.compareTo(stateName);		
+		
+	}
+	
 	
 }

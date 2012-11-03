@@ -196,4 +196,13 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 	 return resultsCount;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResultsByCandidateIds(List<Long> candidateIds , Long electionId){
+		
+		Query queryObject = getSession().createQuery("from CandidateResult as model where model.nomination.constituencyElection.election.electionId = :electionId and model.nomination.candidate.candidateId in(:candidateIds) order by model.nomination.constituencyElection.election.electionYear desc");
+		  queryObject.setParameter("electionId",electionId);
+		  queryObject.setParameterList("candidateIds", candidateIds);
+		return queryObject.list();
+	}
+	
 }
