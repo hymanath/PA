@@ -34,6 +34,77 @@ var rowCountForIndependentResigned = $('#independentResigned tr').length;
 var rowCountForministersOfStateResigned = $('#ministersOfStateResigned tr').length;
 var rowCountForCabinetResigned = $('#cabinetResigned tr').length;
 
+
+
+	$(".cabinetMinistersDiv tr").each(function(){
+
+		if($(this).find("td:eq(2) > table").hasClass('cabinetMinistersTable'))
+		if($(this).find("td:eq(2) > table tr").length == 0)
+			$(this).remove();
+	});
+
+	$(".independentMinistersDiv tr").each(function(){
+
+		if($(this).find("td:eq(2) > table").hasClass('independentMinistersTable'))
+		if($(this).find("td:eq(2) > table tr").length == 0)
+			$(this).remove();
+	});
+
+
+
+	$(".ministerOfStateDiv tr").each(function(){
+
+		if($(this).find("td:eq(2) > table").hasClass('ministerOfStateTable'))
+		if($(this).find("td:eq(2) > table tr").length == 0)
+			$(this).remove();
+	});
+
+	$(".cabinetResignedMinistersDiv tr").each(function(){
+
+		if($(this).find("td:eq(2) > table").hasClass('cabinetResignedMinistersTable'))
+		if($(this).find("td:eq(2) > table tr").length == 0)
+			$(this).remove();
+	});
+
+
+	$(".resignedIndependentMinistersDiv tr").each(function(){
+
+
+		if($(this).find("td:eq(2) > table").hasClass('resignedIndependentMinistersTable')){
+			
+		if($(this).find("td:eq(2) > table tr").length == 0)
+			$(this).remove();
+		}
+	});
+
+	$(".resignedMinistersOfState tr").each(function(){
+
+		if($(this).find("td:eq(2) > table").hasClass('resignedMinistersOfTable'))
+		if($(this).find("td:eq(2) > table tr").length == 0)
+			$(this).remove();
+	});
+
+
+/*
+$(".ministerOfStateDiv tr").each(function(){
+
+	if($(this).find("td:eq(2) > table").hasClass('ministerOfStateTable'))
+	if($(this).find("td:eq(2) > table tr").length == 0)
+		$(this).remove();
+});
+*/
+
+
+
+
+
+
+
+
+
+
+
+
 if(rowCountForIndependentResigned == 1){
 	 $('#independentResigned').hide();
 	 $('#independentResignedDiv').hide();
@@ -159,6 +230,18 @@ callAjax(jsObj,url);
 
 function navigateToMinisterPage()
 {
+     if($('#yearSelId').val()== "" || $('#yearSelId').val()== 0 ){
+		 alert("Please select Year");
+		 return false;
+	 }
+
+
+	 if($('#stateListId').val() == "" ||  $('#stateListId').val() == 0){
+
+		 alert("Please select State");
+		 return false;
+	 }
+
 	var electionSelectEl = document.getElementById("yearSelId");
 	var electionIdVal = electionSelectEl.options[electionSelectEl.selectedIndex].value
 	window.location="ministersPageAction.action?electionId="+electionIdVal; 
@@ -436,9 +519,9 @@ function getMinistryYears(taskType)
 			<s:property value="%{electionGoverningBodyVO.stateName}"/> State Ministers From
 		</c:if>
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
-			Manmohan Singh Cabinet Ministers  From
+			Manmohan Singh Cabinet Ministers  
 		</c:if> 
-		 <s:property value="%{electionGoverningBodyVO.electionYear}"/> To tillDate.
+		<!-- <s:property value="%{electionGoverningBodyVO.electionYear}"/> To tillDate.-->
 		<span style="margin-top:10px;margin-right:30px;float:right">
 		<g:plusone size="medium"></g:plusone>
 
@@ -469,7 +552,7 @@ function getMinistryYears(taskType)
 
 	</div>
 
-	<div style="text-align: center;width:700px;border-radius:3px;background:#E0F3A3;;margin-top: 13px;margin-left:97px;padding:7px 11px 7px 31px;width:725px;border-radius:3px 3px 3px 3px;">
+	<div style="text-align:center;width:700px;border-radius:3px;background:#E0F3A3;;margin-top: 13px;margin-left:97px;padding:7px 11px 7px 31px;width:725px;border-radius:3px 3px 3px 3px;margin-bottom:10px;">
 	<table>
 		<tr>
 		<td>
@@ -484,6 +567,42 @@ function getMinistryYears(taskType)
 		</tr>
 	</table>
 	</div>
+
+<!-- NO OF MINISTERS IN EACH STATE START FOR PARLIMENT-->
+<!--<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
+	<div class="alert alert-info" style="margin-top:15px;height:89px;padding:21px;border:1px solid #3A87AD;">
+		<c:forEach var="entry" items="${candidateMinistriesVO[0].statesMap}">
+		<div style="width:150px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b> <c:out value="${entry.key}"/>  </b>
+		<b style="float:right;"> - &nbsp<c:out value="${entry.value}"/></b></div>
+		</c:forEach>
+	 </div>
+ </c:if>-->
+ <!-- NO OF MINISTERS IN EACH STATE END FOR PARLIMENT-->
+
+ <!-- NO OF MINISTERS IN EACH STATE START FOR PARLIMENT-->
+<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
+<b class="alert alert-info" style="padding:4px;border:1px solid #005580;">Ministers Count in States:</b>
+	<div class="alert alert-info" style="margin-top:15px;height:89px;padding:21px;border:1px solid #3A87AD;">
+		<c:forEach var="state" items="${candidateMinistriesVO[0].statesList}">
+		<div style="width:154px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b><a href="statePageAction.action?stateId=${state.stateId}" title="Click Here to View ${state.stateName}  Details ">${state.stateName} </a></b>
+		<b style="float:right;"> - &nbsp${state.stateCount} </b></div>		
+		</c:forEach>
+	 </div>
+ </c:if>
+ <!-- NO OF MINISTERS IN EACH STATE END FOR PARLIMENT-->
+
+  <!-- NO OF MINISTERS IN EACH STATE START FOR ASSEMBLY -->
+<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+<b class="alert alert-info" style="padding:4px;border:1px solid #005580;">Ministers Count in Districts:</b>
+	<div class="alert alert-info" style="margin-top:15px;height:89px;padding:21px;border:1px solid #3A87AD;">
+		<c:forEach var="district" items="${candidateMinistriesVO[0].districtList}">
+		<div style="width:150px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b><a href="districtPageAction.action?districtId=${district.districtId}&districtName=${district.districtName}" title="Click Here to View ${district.districtName}  District Details">${district.districtName}</a> </b>
+		<b style="float:right;"> - &nbsp${district.districtCount} </b></div>		
+		</c:forEach>
+	 </div>
+ </c:if>
+ <!-- NO OF MINISTERS IN EACH STATE END FOR ASSEMBLY -->
+
 	
 	<div id="DataTable" style="background:#ffffff;padding-left:70px;margin-top: 20px;">
 
@@ -580,7 +699,7 @@ function getMinistryYears(taskType)
 	<c:forEach var="primeMinisterData" items="${candidateMinistriesVO}">
 	<c:if test="${primeMinisterData.isPrimeMinister == true}">
 	<!--<div class="headingDiv"><span class="headingStyle">Prime Minister Of India</span></div>-->
-     <h3 class="alert alert-info" style="padding:2px;text-align:center;">Prime Minister Of India</h3>
+     <h3 class="alert alert-info" style="padding:2px;text-align:center;">Prime Minister of India</h3>
 		<div id="primeMinisterDiv"  style="padding-left:0px;margin-bottom:10px;" >
 		<table cellpadding="0" border="1" style="border-color:#d3d3d3;border-collapse:collapse;" width="95%">
 			<tr>
@@ -602,7 +721,18 @@ function getMinistryYears(taskType)
 							<td><span style="font-weight:bold;">Party &nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;: &nbsp&nbsp</span> 
 								<span><a href="partyPageAction.action?partyId=${ministerData.partyId}"  style="color:#8B4724;" title="Click here to view ${primeMinisterData.partyName} Party Profile - News, Election Results, Photos, Videos, Manifestoes">${primeMinisterData.partyName}&nbsp;&nbsp </a></span>
 								<a href="partyPageAction.action?partyId=${ministerData.partyId}">
-								<span><img src="images/party_flags/${primeMinisterData.partyName}.png" width="50px" height="30px" alt="${primeMinisterData.partyName} Party Flag" title="Click here to view ${primeMinisterData.partyName} Party Profile - News, Election Results, Photos, Videos, Manifestoes"/></span></a>
+								<span><img src="images/party_flags/${primeMinisterData.partyName}.png" width="50px" height="30px" alt="${primeMinisterData.partyName} Party Flag" title="Click here to view ${primeMinisterData.partyName} Party Profile - News, Election Results, Photos, Videos, Manifestoes"/></span></a><br>
+								
+
+								<c:if test="${primeMinisterData.candidateStateName != null}">
+								<a href="statePageAction.action?stateId=${primeMinisterData.candidateConstiuencyId}" title="Click Here to View ${primeMinisterData.candidateConstiuencyName} Details">${primeMinisterData.candidateConstiuencyName}</a>,
+								</c:if>
+
+								<c:if test="${primeMinisterData.candidateStateName != null}">
+								<a href="statePageAction.action?stateId=${primeMinisterData.candidateStateId}" title="Click Here to View ${primeMinisterData.candidateStateName} Details">${primeMinisterData.candidateStateName}</a>
+								</c:if>
+
+
 							</td>
 						</tr>
 						<tr>
@@ -749,17 +879,27 @@ function getMinistryYears(taskType)
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
 		<!--<div class="headingDiv"><span class="headingStyle">Cabinet Ministers of India </span></div>-->
-		<h3 class="alert alert-info" style="padding:1px;text-align:center;">Cabinet Ministers of India </h3>
+		<h3 class="alert alert-info" style="padding:1px;text-align:center;">Cabinet Ministers of Manmohan Singh  </h3>
 		</c:if>
 
-		<div id="DataTable" style="background:#ffffff;margin-bottom:10px;">
-			<table border="1" style="border-collapse:collapse; margin-top: 9px; width: 95%; text-align:center;">
+		<div id="DataTable"  class="cabinetMinistersDiv" style="background:#ffffff;margin-bottom:10px;">
+			<table border="1"  style="border-collapse:collapse; margin-top: 9px; width: 95%; text-align:center;border-right:none;">
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="15%">Party</th>
-				<th width="30%">Portfolios</th>
-				<th width="20%">From Date</th>
-				<th width="20%">To Date</th>
+				<th>
+
+					<table width="100%">
+					<tr>
+
+					<th width="30%">Portfolios</th>
+					<th width="20%">From Date</th>
+					<th width="20%">To Date</th>
+					</tr>
+
+					</table>
+
+				<th>
 			</tr>
 	</c:if>
 
@@ -769,37 +909,55 @@ function getMinistryYears(taskType)
 		
 		<c:forEach var="cabinetMinister" items="${ministerData.ministryTypes}">
 		<c:if test="${cabinetMinister == 'Cabinet Minister'}">
-
 		
 		<tr>
 
-			<td rowspan="${ministerData.noOfMinistriesNotExpired}" width="20%"><b><div id="cabinetMinisterDiv${stat.index}" class="ministerDiv"><a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerData.candidateName}'s Profile - News, Election Results, photos, Videos"><img src="images/candidates/${ministerData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerData.candidateName}</a></div></b>
+			<td  width="20%"><b><div id="cabinetMinisterDiv${stat.index}" class="ministerDiv"><a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerData.candidateName}'s Profile - News, Election Results, photos, Videos"><img src="images/candidates/${ministerData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerData.candidateName}</a></div></b>
 
 			</td>
 
-			<td rowspan="${ministerData.noOfMinistriesNotExpired}" width="10%"><b><a href="partyPageAction.action?partyId=${ministerData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos"><img src="images/party_flags/${ministerData.partyName}.png" width="80px" height="60px"/><br> ${ministerData.partyName}</a></b>
+			<td  width="20%"><b><a href="partyPageAction.action?partyId=${ministerData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos"><img src="images/party_flags/${ministerData.partyName}.png" width="80px" height="60px"/><br> ${ministerData.partyName}</a><br>
+
+
+			 <a href="constituencyPageAction.action?constituencyId=${ministerData.candidateConstiuencyId}" title="Click Here to View ${ministerData.candidateConstiuencyName} Constituency Details">${ministerData.candidateConstiuencyName}</a>,
+
+		  <c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+
+			<a href="statePageAction.action?stateId=${ministerData.candidateStateId}" title="Click Here to View ${ministerData.candidateStateName} Details">${ministerData.candidateStateName}</a>
+
+		  </c:if>
+
+		  <c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+
+		  <a href="districtPageAction.action?districtId=${ministerData.candidateDistrictId}&districtName=${ministerData.candidateDistrictName}" title="Click Here to View ${ministerData.candidateDistrictName}  District Details">${ministerData.candidateDistrictName}</a>
+
+		  </c:if>
+
+		 </b>
+
+		</b>
 			</td>
+
+			<td width="60%">
+			<table class="cabinetMinistersTable">
 
 			<c:forEach var="ministry" varStatus="stat" items="${ministerData.ministries}">
+			<c:if test="${ministry.toDate == null && ministry.ministerType == 'Cabinet Minister'}">
 
-			<c:if test="${ministry.toDate == null}">
-			<td style="text-align:left;" width="30%">
-			<b> ${ministry.ministry}</b>
-			</td>
-
+            <tr>			
+			<td style="text-align:left;" width="22%"><b> ${ministry.ministry}</b></td>
 			<td width="10%"><b>${ministry.fromDate}</b></td>
-			<td width="10%"><b>
-			<c:if test="${ministry.toDate == null}">Working</c:if>
-			<!--<c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if>-->
-			</b>
-			</td>
+			<td width="10%"><b><c:if test="${ministry.toDate == null}">Working</c:if></b></td>			
+		    </tr>			
+		    </c:if>
+		    </c:forEach>
 
-			</c:if>
-
+		   </table>
+		   </td>
 
 		</tr>
 		
-			</c:forEach>
+		
 		</c:if>
 	</c:forEach>
 
@@ -816,23 +974,33 @@ function getMinistryYears(taskType)
 	<c:if test="${candidateMinistriesVO[0].hasMSIC}">
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-			<div class="headingDiv"><span class="headingStyle">Ministers of State(Independent Charge) of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>
+			<div class="headingDiv"><span class="headingStyle">Ministers of State(with Independent Charge) of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>
 		</c:if>
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
 			<!--<div class="headingDiv"><span class="headingStyle">Ministers of State (Independent Charge) of India</span></div>-->
-			<h3 class="alert alert-info" style="padding:1px;text-align:center;">Ministers of State (Independent Charge) of India</h3>
+			<h3 class="alert alert-info" style="padding:1px;text-align:center;">Ministers of State (with Independent Charge) in Manmohan Singh Cabinet</h3>
 		</c:if>
 
-		<div id="DataTable" style="background:#ffffff;">
+		<div id="DataTable" class="independentMinistersDiv" style="background:#ffffff;">
 		
 		<table border="1" style="border-collapse: collapse; margin-top: 9px; width: 95%; text-align:center;margin-bottom:10px;">
 		<tr>
 			<th width="20%" style="height:30px;">Candidate Name</th>
 			<th width="15%">Party</th>
-			<th width="30%">Portfolios</th>
-			<th width="20%">From Date</th>
-			<th width="20%">To Date</th>
+			<th>
+			<table width="100%">
+					<tr>
+
+					<th width="30%">Portfolios</th>
+					<th width="20%">From Date</th>
+					<th width="20%">To Date</th>
+					</tr>
+
+			</table>
+			</th>
+
+
 		</tr>
 	
 	<c:forEach var="ministerOfStateIndData" varStatus="stat" items="${candidateMinistriesVO}">
@@ -845,32 +1013,50 @@ function getMinistryYears(taskType)
 		<c:if test="${ministerOfStateInd == 'Ministers of State with Independent Charge'}">
 		<tr>
 
-			<td rowspan="${ministerOfStateIndData.noOfMinistriesNotExpired}" width="20%"><b>
+			<td width="20%"><b>
 			<div id="ministerOfStateDiv${stat.index}" class="ministerDiv">
 			<a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerOfStateIndData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerOfStateIndData.candidateName}'s Profile - News, Election Results, photos, Videos">
 			<img src="images/candidates/${ministerOfStateIndData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerOfStateIndData.candidateName}</a>
 			</div></b>
 			</td>
 
-			<td rowspan="${ministerOfStateIndData.noOfMinistriesNotExpired}" width="10%"><b>
+			<td  width="20%"><b>
 			<a href="partyPageAction.action?partyId=${ministerOfStateIndData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerOfStateIndData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos">
-			<img src="images/party_flags/${ministerOfStateIndData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateIndData.partyName}</a></b>
+			<img src="images/party_flags/${ministerOfStateIndData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateIndData.partyName}</a><br>
+
+
+            <a href="constituencyPageAction.action?constituencyId=${ministerOfStateIndData.candidateConstiuencyId}" title="Click Here to View ${ministerOfStateIndData.candidateConstiuencyName} Constituency Details">${ministerOfStateIndData.candidateConstiuencyName}</a>		,	
+			
+
+			<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+			<a href="statePageAction.action?stateId=${ministerOfStateIndData.candidateStateId}" title="Click Here to View ${ministerOfStateIndData.candidateStateName} Details">${ministerOfStateIndData.candidateStateName}</a>
+			</c:if>
+
+			<c:if test="${electionGoverningBodyVO.electionType== 'Assembly'}">
+			<a href="districtPageAction.action?districtId=${ministerOfStateIndData.candidateDistrictId}&districtName=${ministerOfStateIndData.candidateDistrictName}" title="Click Here to View ${ministerOfStateIndData.candidateDistrictName} District Details">${ministerOfStateIndData.candidateDistrictName}</a>
+			</c:if>
+
+			
+			</b>
 			</td>
 
-			<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateIndData.ministries}">
-          <c:if test="${ministry.toDate == null}">
-			<td style="text-align:left;" width="30%"><b>${ministry.ministry}</b></td>
-			<td width="10%"><b>${ministry.fromDate}</b></td>
-			<td width="10%"><b>
-				<c:if test="${ministry.toDate == null}">Working</c:if>
-				<c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if>
-				</b>
-			</td></c:if>
-		</tr>
-		
+			<td width="60%">
+			 <table class="independentMinistersTable">
 
-		
-			</c:forEach>
+				<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateIndData.ministries}">
+			    <c:if test="${ministry.toDate == null && ministry.ministerType == 'Ministers of State with Independent Charge'}">
+					<tr>
+					<td style="text-align:left;" width="22%"><b>${ministry.ministry}</b></td>
+					<td width="10%"><b>${ministry.fromDate}</b></td>
+					<td width="10%"><b>	<c:if test="${ministry.toDate == null}">Working</c:if></b></td>	
+					</tr>
+				</c:if>
+				</c:forEach>
+			</table>
+			</td>
+
+		</tr>
+			
 		</c:if>
 		</c:forEach>
 		</c:if>
@@ -881,11 +1067,6 @@ function getMinistryYears(taskType)
 	</c:if>
 
 	<!-- Ministers of State with Independent Charge Div End -->
-
-
-
-
-
 
 
 	<!-- Ministers of State Div Start -->
@@ -903,20 +1084,30 @@ function getMinistryYears(taskType)
 			<!--<div class="headingDiv" style=" padding-left: 187px;">
 				<span class="headingStyle">Ministers of State of India</span>
 			</div>-->
-			<h3 class="alert alert-info" style="padding:1px;text-align:center;">Ministers of State of India</h3>
+			<h3 class="alert alert-info" style="padding:1px;text-align:center;">Ministers of State in Manmohan Singh Cabinet</h3>
 
 
 		</c:if>
 
 		
-		<div id="ministersofStateDiv" style="margin-bottom:10px;">
+		<div id="ministersofStateDiv" style="margin-bottom:10px;" class="ministerOfStateDiv">
 			<table border="1" style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="10%">Party</th>
-				<th width="30%">Portfolios</th>
-				<th width="20%">From Date</th>
-				<th width="20%">To Date</th>
+
+            <th>
+			<table width="100%">
+					<tr>
+
+					<th width="30%">Portfolios</th>
+					<th width="20%">From Date</th>
+					<th width="20%">To Date</th>
+					</tr>
+
+			</table>
+			</th>
+               
 			</tr>
 					
 		<c:forEach var="ministerOfStateData" varStatus="stat" items="${candidateMinistriesVO}">
@@ -929,28 +1120,44 @@ function getMinistryYears(taskType)
 			<c:if test="${ministersOfState == 'Ministers of State'}">
 			<tr>
 
-				<td rowspan="${ministerOfStateData.noOfMinistriesNotExpired}" width="20%"><b>
+				<td  width="20%"><b>
 				<div id="ministeOfState${stat.index}" class="ministerDiv">
 				<a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerOfStateData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerOfStateData.candidateName}'s Profile - News, Election Results, photos, Videos">
 				<img src="images/candidates/${ministerOfStateData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerOfStateData.candidateName}</a></div></b>
 				</td>
 
-				<td rowspan="${ministerOfStateData.noOfMinistriesNotExpired}" width="10%"><b><a href="partyPageAction.action?partyId=${ministerOfStateData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerOfStateData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos">
-				<img src="images/party_flags/${ministerOfStateData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateData.partyName}</a></b>
+				<td width="20%"><b><a href="partyPageAction.action?partyId=${ministerOfStateData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerOfStateData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos">
+				<img src="images/party_flags/${ministerOfStateData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateData.partyName}</a><br>
+
+                <a href="constituencyPageAction.action?constituencyId=${ministerOfStateData.candidateConstiuencyId}" title="Click Here to View ${ministerOfStateData.candidateConstiuencyName} Constituency Details">${ministerOfStateData.candidateConstiuencyName}</a>,
+
+				<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+				<a href="statePageAction.action?stateId=${ministerOfStateData.candidateStateId}" title="Click Here to View ${ministerOfStateData.candidateStateName} Details">${ministerOfStateData.candidateStateName}</a>
+				</c:if>
+
+				<c:if test="${electionGoverningBodyVO.electionType== 'Assembly'}">
+				<a href="districtPageAction.action?districtId=${ministerOfStateData.candidateDistrictId}&districtName=${ministerOfStateData.candidateDistrictName}" title="Click Here to View ${ministerOfStateData.candidateDistrictName} District Details">${ministerOfStateData.candidateDistrictName}</a>
+				</c:if>
+				
+				
+				</b>
 				</td>
 
-				<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateData.ministries}">
-				<c:if test="${ministry.toDate == null}">
-				<td style="text-align:left;" width="30%"><b>${ministry.ministry}</b></td>
-				<td width="20%"><b>${ministry.fromDate}</b></td>
-				<td width="20%"><b>
-					<c:if test="${ministry.toDate == null}">Working</c:if>
-					<c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if>
-					</b>
-				</td>
-			</tr>
-			</c:if>
-				</c:forEach>
+				<td width="60%">
+                    <table class="ministerOfStateTable">
+					<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateData.ministries}">			
+					  
+						<c:if test="${ministry.toDate == null && ministry.ministerType == 'Ministers of State'}">
+						<tr>
+						<td style="text-align:left;" width="22%"><b>${ministry.ministry}</b></td>
+						<td width="10%"><b>${ministry.fromDate}</b></td>
+						<td width="10%"><b><c:if test="${ministry.toDate == null}">Working</c:if></b></td>
+						</tr>	
+					   </c:if>				       			
+				   </c:forEach>
+				   </table>
+			   </td>
+				</tr>
 		
 			</c:if>
 		</c:forEach>
@@ -963,32 +1170,39 @@ function getMinistryYears(taskType)
 </c:if>
 <!-- Ministers of State Div End -->
 
-
-
-
-
-
  <!-- Cabinet Resigned Ministries START-->
 
 	
 	<c:if test="${candidateMinistriesVO[0].hasCabinetMinisters}">
-      <div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Cabinet Resigned Ministries</h3></div>
-		<!--<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-		<div class="headingDiv"><span class="headingStyle">Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>
+      <!--<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Cabinet Ministries of Manmohan Singh Cabinet</h3></div>-->
+		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3></div>
+		<!--<div class="headingDiv"><span class="headingStyle">Resigned Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>-->
 		</c:if>
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
-		<div class="headingDiv"><span class="headingStyle">Cabinet Ministers of India </span></div>
-		</c:if>-->
+		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Cabinet Ministers in Manmohan Singh Cabinet</h3></div>
+		<!--<div class="headingDiv"><span class="headingStyle">Resigned Cabinet Ministers in Manmohan Singh Cabinet </span></div>-->
+		</c:if>
 
-		<div id="DataTable" style="background:#ffffff;margin-bottom:10px;">
+		<div id="DataTable" style="background:#ffffff;margin-bottom:10px;" class="cabinetResignedMinistersDiv">
 			<table border="1" id="cabinetResigned" style="border-collapse:collapse; margin-top: 9px; width: 95%; text-align:center;">
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="15%">Party</th>
-				<th width="30%">Portfolios</th>
-				<th width="20%">From Date</th>
-				<th width="20%">To Date</th>
+
+			    <th>
+			     <table width="100%">
+					<tr>
+
+					<th width="30%">Portfolios</th>
+					<th width="20%">From Date</th>
+					<th width="20%">To Date</th>
+					</tr>
+
+			   </table>
+			 </th>
+
 			</tr>
 	</c:if>
 
@@ -1001,29 +1215,41 @@ function getMinistryYears(taskType)
 		
 		<tr>
 
-			<td rowspan="${ministerData.noOfMinistriesExpired}" width="20%"><b><div id="cabinetMinisterDiv${stat.index}" class="ministerDiv"><a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerData.candidateName}'s Profile - News, Election Results, photos, Videos"><img src="images/candidates/${ministerData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerData.candidateName}</a></div></b>
+			<td  width="20%"><b><div id="cabinetMinisterDiv${stat.index}" class="ministerDiv"><a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerData.candidateName}'s Profile - News, Election Results, photos, Videos"><img src="images/candidates/${ministerData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerData.candidateName}</a></div></b>
 
 			</td>
 
-			<td rowspan="${ministerData.noOfMinistriesExpired}" width="10%"><b><a href="partyPageAction.action?partyId=${ministerData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos"><img src="images/party_flags/${ministerData.partyName}.png" width="80px" height="60px"/><br> ${ministerData.partyName}</a></b>
+			<td  width="20%"><b><a href="partyPageAction.action?partyId=${ministerData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos"><img src="images/party_flags/${ministerData.partyName}.png" width="80px" height="60px"/><br> ${ministerData.partyName}</a><br>
+
+             <a href="constituencyPageAction.action?constituencyId=${ministerData.candidateConstiuencyId}" title="Click Here to View ${ministerData.candidateConstiuencyName} Constituency Details">${ministerData.candidateConstiuencyName}</a>,
+
+			<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+			<a href="statePageAction.action?stateId=${ministerData.candidateStateId}" title="Click Here to View ${ministerData.candidateStateName} Details">${ministerData.candidateStateName}</a>
+			</c:if>
+
+			<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+			<a href="districtPageAction.action?districtId=${ministerData.candidateDistrictId}&districtName=${ministerData.candidateDistrictName}" title="Click Here to View ${ministerData.candidateDistrictName} District Details">${ministerData.candidateDistrictName}</a>
+			</c:if>
+			
+			</b>
 			</td>
+
+			<td width="60%">
+			<table class="cabinetResignedMinistersTable">
 
 			<c:forEach var="ministry" varStatus="stat" items="${ministerData.ministries}">
-
-			<c:if test="${ministry.toDate != null}">
-			<td style="text-align:left;" width="30%">
-			<b> ${ministry.ministry}</b>
-			</td>
-
+			<c:if test="${ministry.toDate != null && ministry.ministerType == 'Cabinet Minister'}">
+			<tr>
+			<td style="text-align:left;" width="30%"><b> ${ministry.ministry}</b></td>
 			<td width="10%"><b>${ministry.fromDate}</b></td>
-			<td width="10%"><b>
-			<c:if test="${ministry.toDate == null}">Working</c:if>
-			<c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if>
-			</b>
-			</td></tr>
-
+			<td width="10%"><b><c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if></b></td>
+			</tr>
 			</c:if>
 			</c:forEach>
+
+			</table>            
+			</td>
+
 		</tr>
 		
 			
@@ -1041,25 +1267,34 @@ function getMinistryYears(taskType)
 
 	<c:if test="${candidateMinistriesVO[0].hasMSIC}">
         
-		<div id="independentResignedDiv" style="background-color:#f1f1f1;">
+		<div id="independentResignedDiv" style="background-color:#f1f1f1;" >
 			<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-				<h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Ministries of State(Independent Charge) of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
+				<h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Ministries of State(with Independent Charge) of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
 			</c:if>
 
 			<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
-				<h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Ministries  of State (Independent Charge) of India</h3>
+				<h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Ministries  of State ( with Independent Charge) of Manmohan Singh Cabinet</h3>
 			</c:if>
 		</div>
 
-		<div id="DataTable" style="background:#ffffff;">
+		<div id="DataTable" style="background:#ffffff;" class="resignedIndependentMinistersDiv">
 		
 		<table id="independentResigned" border="1" style="border-collapse: collapse; margin-top: 9px; width: 95%; text-align:center;margin-bottom:10px;" >
 		<tr>
 			<th width="20%" style="height:30px;">Candidate Name</th>
 			<th width="15%">Party</th>
-			<th width="30%">Portfolios</th>
-			<th width="20%">From Date</th>
-			<th width="20%">To Date</th>
+			<th>
+			<table width="100%">
+					<tr>
+
+					<th width="30%">Portfolios</th>
+					<th width="20%">From Date</th>
+					<th width="20%">To Date</th>
+					</tr>
+
+			</table>
+			</th>
+		
 		</tr>
 	
 	<c:forEach var="ministerOfStateIndData" varStatus="stat" items="${candidateMinistriesVO}">
@@ -1071,30 +1306,47 @@ function getMinistryYears(taskType)
 		<c:if test="${ministerOfStateInd == 'Ministers of State with Independent Charge'}">
 		<tr>
 
-			<td rowspan="${ministerOfStateIndData.noOfMinistriesExpired}" width="20%"><b>
+			<td  width="20%"><b>
 			<div id="ministerOfStateDiv${stat.index}" class="ministerDiv">
 			<a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerOfStateIndData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerOfStateIndData.candidateName}'s Profile - News, Election Results, photos, Videos">
 			<img src="images/candidates/${ministerOfStateIndData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerOfStateIndData.candidateName}</a>
 			</div></b>
 			</td>
 
-			<td rowspan="${ministerOfStateIndData.noOfMinistriesExpired}" width="10%"><b>
+			<td  width="20%"><b>
 			<a href="partyPageAction.action?partyId=${ministerOfStateIndData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerOfStateIndData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos">
-			<img src="images/party_flags/${ministerOfStateIndData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateIndData.partyName}</a></b>
-			</td>
+			<img src="images/party_flags/${ministerOfStateIndData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateIndData.partyName}</a>
 
-			<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateIndData.ministries}">
-			<c:if test="${ministry.toDate != null}">
-			<td style="text-align:left;" width="30%"><b>${ministry.ministry}</b></td>
-			<td width="10%"><b>${ministry.fromDate}</b></td>
-			<td width="10%"><b>
-				<c:if test="${ministry.toDate == null}">Working</c:if>
-				<c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if>
-				</b>
+
+
+             <a href="constituencyPageAction.action?constituencyId=${ministerOfStateIndData.candidateConstiuencyId}" title="Click Here to View ${ministerOfStateIndData.candidateConstiuencyName} Constituency Details">${ministerOfStateIndData.candidateConstiuencyName}</a>,
+
+			<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+				<a href="statePageAction.action?stateId=${ministerOfStateIndData.candidateStateId}" title="Click Here to View ${ministerOfStateIndData.candidateStateName} Details">${ministerOfStateIndData.candidateStateName}</a>
+			</c:if>
+
+			<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+				<a href="districtPageAction.action?districtId=${ministerOfStateIndData.candidateDistrictId}&districtName=${ministerOfStateIndData.candidateDistrictName}" title="Click Here to View ${ministerOfStateIndData.candidateDistrictName} District Details">${ministerOfStateIndData.candidateDistrictName}</a>
+			</c:if>
+			</b>
 			</td>
-		</tr>
-		</c:if>
-			</c:forEach>
+			<td width="60%">
+			 <table class="resignedIndependentMinistersTable">
+
+			<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateIndData.ministries}">			
+				<c:if test="${ministry.toDate != null && ministry.ministerType == 'Ministers of State with Independent Charge'}">
+				<tr>
+				<td style="text-align:left;" width="30%"><b>${ministry.ministry}</b></td>
+				<td width="10%"><b>${ministry.fromDate}</b></td>
+				<td width="10%"><b><c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if></b></td>
+				</tr>
+			    </c:if>				
+		   </c:forEach>
+
+		   </table>
+		   </td>
+
+			</tr>
 		</c:if>
 		</c:forEach>
 		</c:if>
@@ -1111,27 +1363,37 @@ function getMinistryYears(taskType)
 
 	<c:if test="${candidateMinistriesVO[0].hasMS}">
 
-	    <div id="ministersOfStateResignedDiv" style="background-color:#f1f1f1;">
+	    <div id="ministersOfStateResignedDiv" style="background-color:#f1f1f1;" class="resignedMinistersOfState">
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-			<h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Ministries of State of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
+			<h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Ministries of State of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
 		</c:if>
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
-			<h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Ministries of State of India</h3>
+			<h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Ministries of State in Manmohan Singh Cabinet</h3>
 		</c:if>
 
 		</div>
 
 		
-		<div id="ministersofStateDiv" style="margin-bottom:10px;">
-			<table border="1" id="ministersOfStateResigned" style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
+		<div id="ministersofStateDiv" style="margin-bottom:10px;" class="ministersOfStateResigned">
+			<table border="1"  style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="10%">Party</th>
-				<th width="30%">Portfolios</th>
-				<th width="20%">From Date</th>
-				<th width="20%">To Date</th>
+
+				<th>
+			    <table width="100%">
+					<tr>
+
+					<th width="30%">Portfolios</th>
+					<th width="20%">From Date</th>
+					<th width="20%">To Date</th>
+					</tr>
+
+			   </table>
+			   </th>
+				
 			</tr>
 					
 		<c:forEach var="ministerOfStateData" varStatus="stat" items="${candidateMinistriesVO}">
@@ -1144,28 +1406,49 @@ function getMinistryYears(taskType)
 			<c:if test="${ministersOfState == 'Ministers of State'}">
 			<tr>
 
-				<td rowspan="${ministerOfStateData.noOfMinistriesExpired}" width="20%"><b>
+				<td  width="20%"><b>
 				<div id="ministeOfState${stat.index}" class="ministerDiv">
 				<a id="anchor${stat.index}" href="candidateElectionResultsAction.action?candidateId=${ministerOfStateData.candidateId}" style="color:#8B4724;font-weight:bold;font-size:11px;" title="Click here to view ${ministerOfStateData.candidateName}'s Profile - News, Election Results, photos, Videos">
 				<img src="images/candidates/${ministerOfStateData.candidateName}.jpg" width="113px" height="85px" style="margin-top:10px;"/><br> ${ministerOfStateData.candidateName}</a></div></b>
 				</td>
 
-				<td rowspan="${ministerOfStateData.noOfMinistriesExpired}" width="10%"><b><a href="partyPageAction.action?partyId=${ministerOfStateData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerOfStateData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos">
-				<img src="images/party_flags/${ministerOfStateData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateData.partyName}</a></b>
+				<td  width="20%"><b><a href="partyPageAction.action?partyId=${ministerOfStateData.partyId}" style="color:#8B4724;font-weight:bold;font-size:12px;" title="Click here to view ${ministerOfStateData.partyName} Party Profile - Election Results, Voting Trenz, News, Photos, Videos, Manifesteos">
+				<img src="images/party_flags/${ministerOfStateData.partyName}.png" width="80px" height="60px"/><br>${ministerOfStateData.partyName}</a><br>
+
+
+
+				<a href="constituencyPageAction.action?constituencyId=${ministerOfStateData.candidateConstiuencyId}" title="Click Here to View ${ministerOfStateData.candidateConstiuencyName} Constituency Details">${ministerOfStateData.candidateConstiuencyName}</a>,
+				
+				
+				<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+
+				<a href="statePageAction.action?stateId=${ministerOfStateData.candidateStateId}" title="Click Here to View ${ministerOfStateData.candidateStateName} Details">${ministerOfStateData.candidateStateName}</a>
+
+			    </c:if>
+
+			    <c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+
+				<a href="districtPageAction.action?districtId=${ministerOfStateData.candidateDistrictId}&districtName=${ministerOfStateData.candidateDistrictName}" title="Click Here to View ${ministerOfStateData.candidateDistrictName} District Details" >${ministerOfStateData.candidateDistrictName}</a>
+			    </c:if>
+				
+				</b>
 				</td>
+
+                <td width="60%">
+				<table class="resignedMinistersOfStateTable">
 
 				<c:forEach var="ministry" varStatus="stat" items="${ministerOfStateData.ministries}">
 				<c:if test="${ministry.toDate != null}">
+				<tr>
 				<td style="text-align:left;" width="30%"><b>${ministry.ministry}</b></td>
-				<td width="20%"><b>${ministry.fromDate}</b></td>
-				<td width="20%"><b>
-					<c:if test="${ministry.toDate == null}">Working</c:if>
-					<c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if>
-					</b>
-				</td>
+				<td width="10%"><b>${ministry.fromDate}</b></td>
+				<td width="10%"><b><c:if test="${ministry.toDate != null}">${ministry.toDate}</c:if></b></td>
 				</tr>
 				</c:if>			
 				</c:forEach>
+				
+				</table>
+				</td>
 		
 			</c:if>
 		</c:forEach>
