@@ -545,7 +545,7 @@ function getMinistryYears(taskType)
 		</span>
 
 		<span style="margin-top:10px;margin-right:18px;float:right">
-		<a name="fb_share" share_url="www.partyanalyst.com/ministersPageAction.action?electionId=${electionId}" type="button_count">Share in Facebook</a> 
+		<a name="fb_share" share_url="ministersPageAction.action?electionId=${electionId}" type="button_count">Share in Facebook</a> 
 		<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
 		</script>
 		</span>
