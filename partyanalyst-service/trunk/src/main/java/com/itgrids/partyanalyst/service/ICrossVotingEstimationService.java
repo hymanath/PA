@@ -18,5 +18,7 @@ public interface ICrossVotingEstimationService {
 	public List<SelectOptionVO> getConstituenciesForElectionYearAndTypeWithUserAccess(Long userId,Long electionYear,Long electionTypeId);
 	
 	public List<String> getElectionYearsForBoothResult();
+	
+	public List<SelectOptionVO> getAllOptions(String type,Long stateId,Long electionType,Long electionId);
 			
 }
