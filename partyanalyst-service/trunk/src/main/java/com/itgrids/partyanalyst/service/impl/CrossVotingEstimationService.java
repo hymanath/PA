@@ -591,4 +591,37 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		}
 	}
 
+	public List<SelectOptionVO> getAllOptions(String type,Long stateId,Long electionType,Long electionId){
+		
+		List<Object[]> data = null;
+		List<SelectOptionVO> options = new ArrayList<SelectOptionVO>();
+		try{
+		  if(type.equalsIgnoreCase("states")){
+			
+			data = boothConstituencyElectionDAO.getBoothResultsContainStates();
+			
+		  }else if(type.equalsIgnoreCase("years")){
+			
+			data = boothConstituencyElectionDAO.getElectionYears(stateId,electionType);
+			
+		  }else if(type.equalsIgnoreCase("constituencies")){
+			
+			data = boothConstituencyElectionDAO.getConstituencies(electionId);
+			
+		  }
+		
+		   if(!data.isEmpty()){
+			   SelectOptionVO selectOptionVO = null;
+			   for(Object[] option:data){
+				   selectOptionVO = new SelectOptionVO();
+				   selectOptionVO.setId((Long)option[0]);
+				   selectOptionVO.setName(option[1] != null? option[1].toString():"");
+				   options.add(selectOptionVO);
+			   }
+		   }
+		}catch(Exception e){
+			log.error("Exception rised in getAllOptions method : "+e);
+		}
+		return options;
+	}
 }
