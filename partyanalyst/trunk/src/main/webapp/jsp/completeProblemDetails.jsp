@@ -170,6 +170,11 @@ table {
 .fontStyle{font-Size:13px;}
 .heading{margin-bottom: 8px;margin-top: 10px;padding: 0;}
 .selectWidth{width:170px;}
+.errorClass{ background: none repeat scroll 0 0 whitesmoke;float: none;
+ margin-bottom: -20px;margin-left: auto;margin-top: 15px;padding: 5px;text-align: center;
+ width: 200px;}
+.fileUploadDiv{margin-top:10px;}
+.fileUploadDiv span{font-size:14px;}
 </style>
 
 <script type="text/javascript">
@@ -342,22 +347,20 @@ var problemDetailsInEdit = null;
 	
 	str +='<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>';
 	str += '<div>';
-	str += '<div> Title</div>';
-	str += ' <div><input type="text" id="titleField" name="fileTitle" size="15"/></div>';
+	str += '<div class="fileUploadDiv"> <span style="margin-right: 62px;">Title</span><span><input type="text" id="titleField" name="fileTitle" size="15"/></span></div>';
 	str += '</div>';
 	str+='<span id="alertMsg1"></span>';
 	str += '<div>';
-	str += '<div>Description </div>';
-	str += '<div><textarea class="textareaid" name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></div>';
-	str += '</div>';
+	str +='<div class="fileUploadDiv"><span style="margin-right: 13px;">Description</span>';
+	str += '<span><textarea class="textareaid" name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></span></div>';
 	str+='<span id="alertMsg2"></span>';
-	
 	str+='<span id="alertMsg3"></span>';
-	str += '<div>';
-	str += '<div>Documents And Images</div>';
+	str += '<div class="fileUploadDiv">';
+	str += '<div><span style="margin-right: 8px;">Documents And Images</span>';
 	str += '<input type="hidden" name="problemHistoryId" value="${completeProblemDetailsVO.problemId}">';
-	str += '<div><input type="file" name="userImage" id="userImage"/></div>';
-	str += ' <div><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></div>';
+	str += '<span><input type="file" name="userImage" id="userImage"/></span></div>';
+	str += ' <div style="margin-top: 20px; width: 120px; margin-left: 375px;"><input type="button" style="float:none;padding: 2px;" class="button" value="Upload" onclick="postFilesAndImages()" ></div>';
+	
 	str += '</div>';
 	str += '</form>';
 	
@@ -374,25 +377,28 @@ var problemDetailsInEdit = null;
 	var userImgVal = $("#userImage").val();
 	var title = $("#titleField").val();
 	var fileDesc = $("#fileDescription").val();
-	if(userImgVal !='' && userImgVal != null && alltrim(userImgVal) !='')
-	{
+	
 		if(alltrim(title) == '' && alltrim(fileDesc) == '')
 		{
-			str +='Please Enter Title And Description.';
+			str +='Title And Description is Required.';
 			eFlag = true;
 		}
 		else if(alltrim(title) == '')
 		{
-		  str +='Please Enter Title.';
+		  str +='Title is Required.';
 		  eFlag = true;
 		}
 		else if(alltrim(fileDesc) == '')
 		{
-		  str +='Please Enter Description.';
+		  str +='Description is Required.';
 		  eFlag = true;
 		}
-
-	}
+		else if(userImgVal =='' || userImgVal == null || alltrim(userImgVal) =='')
+		{
+		str +='File is Required.';
+		eFlag = true; 
+		}
+	
 	if(eFlag)
 	{
 	$("#errorMsgDivId").addClass("errorMsgDivId").html(str);
@@ -1158,7 +1164,7 @@ function postCommentForProblem()
 	
 	var str='';
 	if(textAreaValue =='' || textAreaValue == null || alltrim(textAreaValue) ==''){
-		str +='<font color="red">Enter comments</font>';
+		str +='<font color="red">Please Enter comments</font>';
 		errotext.style.display='block';
 		errotext.innerHTML=str
 		return;
@@ -1992,7 +1998,7 @@ function displayDateText(type, args, obj) {
 </div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
-			<div id="errormsgdiv" style="padding: 5px; background: none repeat scroll 0% 0% whitesmoke; margin-top: 3px; width: 200px;display:none;"></div>
+			<div id="errormsgdiv" class="errorClass"></div>
 		<h3>Comments:</h3>
 		 <div><div>
 		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-top:10px;" class="pull-right btn btn-info">Post</a></div></div>
