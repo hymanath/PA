@@ -48,7 +48,9 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	 	 
 		Query query = getSession().createQuery("select model.gallery.gallaryId,model.gallery.name,model.gallery.description,model.gallery.createdDate," +
 				"model.gallery.updateddate from PartyGallery model  where model.party.partyId=:partyId and  " +
-				"model.gallery.contentType.contentType= :type  and model.gallery.isDelete = :isDelete and model.gallery.isPrivate = :isPrivate order by model.gallery.createdDate desc");
+				"model.gallery.contentType.contentType= :type  and model.gallery.isDelete = :isDelete and model.gallery.isPrivate = :isPrivate " +
+				" and (select count(*)  from FileGallary model1 where model1.gallary.gallaryId = model.gallery.gallaryId and model1.isDelete = :isDelete and model1.isPrivate = :isPrivate ) > 0 " +
+				" order by model.gallery.createdDate desc");
 		query.setLong("partyId", partyId);
 		query.setString("type", type);
 		query.setString("isDelete", "false");
