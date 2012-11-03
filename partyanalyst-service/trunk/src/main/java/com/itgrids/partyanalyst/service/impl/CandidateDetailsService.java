@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -92,6 +93,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StatePageVO;
 import com.itgrids.partyanalyst.model.AbusedComments;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidatePageCustomPages;
@@ -3036,15 +3038,22 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     {
     	log.debug("Entered in getAllMinistersDetails() method of CandidateDetailService");
     	List<CandidateMinistriesVO> resultList = null;
+    	List<Long> canidateIds = null;
+    	Map<Long , CandidateMinistriesVO>  candidateMap= null;
+    	boolean isParlimentElection = false;
+    	
     	try
     	{
 	    	List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllMinistersDetails(electionId);
 	    	if(list !=null && list.size() > 0)
 	    	{
 	    		resultList = new ArrayList<CandidateMinistriesVO>(0);
+	    		candidateMap = new HashMap<Long, CandidateMinistriesVO>();	    		
+	    		canidateIds = new ArrayList<Long>(0);
 	    		boolean hasCabinetMinisters = false;
 	    		boolean hasMSIC = false;
 	    		boolean hasMS = false;
+	    		
 	    	
 	    		CandidateMinistriesVO candidateMinistriesVO = null;
 		    	for(ElectionGoverningBody params : list)
@@ -3062,6 +3071,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		    			candidateMinistriesVO.setMinistries(new ArrayList<ElectionGoverningBodyVO>());
 		    			candidateMinistriesVO.setMinistryTypes(new ArrayList<String>(0));
 		    			isNew = true;
+		    			
+		    			canidateIds.add(params.getCandidate().getCandidateId());
+		    			candidateMap.put(params.getCandidate().getCandidateId(), candidateMinistriesVO);
 		    		}
 		    		
 		    		ElectionGoverningBodyVO governingBodyVO = new ElectionGoverningBodyVO();
@@ -3072,10 +3084,14 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	    				candidateMinistriesVO.setIsChiefMinister(true);
 	    			
 	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.DEPUTY_CHIEF_MINISTER))
-	    				candidateMinistriesVO.setIsDeputyChiefMinister(true);
+	    				if(params.getToDate() == null)
+	    				  candidateMinistriesVO.setIsDeputyChiefMinister(true);
 	    			
 	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.PRIME_MINISTER))
-	    				candidateMinistriesVO.setIsPrimeMinister(true);
+	    				if(params.getToDate() == null){
+	    				 candidateMinistriesVO.setIsPrimeMinister(true);
+	    				 isParlimentElection = true;
+	    				}
 	    			
 	    			governingBodyVO.setMinisterType(params.getPositionScope().getMinisterType().getMinisterType());
 	    			
@@ -3111,6 +3127,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	    			
 		    		if(isNew)
 		    			resultList.add(candidateMinistriesVO);
+		    		
+		    		
 		    	}
 		    	
 		    	if(resultList != null && resultList.size() > 0)
@@ -3119,9 +3137,11 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		    		resultList.get(0).setHasMS(hasMS);
 		    		resultList.get(0).setHasMSIC(hasMSIC);
 		    	}
+		    	
+		    	
 	    	}
 	    	
-	    	//CHANGE BY SAMBA START
+	    	//CHANGE BY SAMBA START TO DISPLAY RESIGNED MINISTRIES
 	    	
 	    	 for(CandidateMinistriesVO candidateMinistriesVO:resultList){
 	    		 
@@ -3141,11 +3161,192 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	    			 candidateMinistriesVO.setExpisreAllMinistry(true);
 	    		 
 	    		 candidateMinistriesVO.setNoOfMinistriesExpired(i);
-	    		 candidateMinistriesVO.setNoOfMinistriesNotExpired(size-i);
-    			
-	       //CHANGE BY SAMBA END
+	    		 candidateMinistriesVO.setNoOfMinistriesNotExpired(size-i);    			
+	       
 	    	 }
-	    	
+	    	 
+	    	//CHANGE BY SAMBA END TO DISPLAY RESIGNED MINISTRIES
+	    	 
+	    	 
+	    	 Map<String , Long> stateMap = null;
+	    	 Map<String , Long> stateMap1 = null;
+	    	 Map<String , Long> districtMap = null;
+	    	 Map<String , Long> districtMap1 = null;
+	    	 
+	    	 //NEW CONTENT START 
+	    	 
+	 		List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResultsByCandidateIds(canidateIds , electionId);
+	 		
+	 		if(candidateResults != null && candidateResults.size() >0){
+	 			stateMap = new HashMap<String, Long>(0);
+	 			stateMap1 = new HashMap<String, Long>(0);
+	 			districtMap = new HashMap<String, Long>(0);
+	 			districtMap1 = new HashMap<String, Long>(0);
+	 			 
+	 		}
+	 		
+	 		for(CandidateResult candidateResult:candidateResults){
+	 			
+	 			
+		 		if(candidateResult.getRank().equals(new Long(1))){
+		 				
+		 			Long candidateId = candidateResult.getNomination().getCandidate().getCandidateId();
+		 			
+		 			CandidateMinistriesVO candidateMinistresVO = candidateMap.get(candidateId);
+		 			
+		 			Constituency constituency = candidateResult.getNomination().getConstituencyElection().getConstituency();
+		 			
+		 			if(candidateMinistresVO.getExpisreAllMinistry() == null)
+                    if(stateMap.get(constituency.getState().getStateName()) == null){
+                    	
+			 			stateMap.put(constituency.getState().getStateName(),constituency.getState().getStateId());
+			 			stateMap1.put(constituency.getState().getStateName(), 1L);
+			 			
+                    }else{
+                    	
+                    	Long count = stateMap1.get(constituency.getState().getStateName());                    	
+                    	count++;                    	
+                    	stateMap1.put(constituency.getState().getStateName(), count);                    	
+                    	
+                    }
+		 			
+		 			List<StatePageVO> stateList = new ArrayList<StatePageVO>();
+		 			for (Map.Entry<String, Long> entry : stateMap1.entrySet()) {
+		 				
+		 				StatePageVO statePageVO = new StatePageVO();
+		 				
+		 				statePageVO.setStateId(stateMap.get(entry.getKey()));
+		 				statePageVO.setStateName(entry.getKey().toString());
+		 				statePageVO.setStateCount((Long)entry.getValue());
+		 				
+		 				stateList.add(statePageVO);
+		 			}
+		 			
+                     Collections.sort(stateList);
+                     
+                     
+                     
+                     
+                   //GET MINISTERS IN DISTRICTS COUNT START
+ 		 			
+                    if(!isParlimentElection )
+ 		 			if(candidateMinistresVO.getExpisreAllMinistry() == null)
+ 		 			 if(districtMap.get(constituency.getDistrict().getDistrictName()) == null){
+ 		 				if(constituency.getDistrict() != null && constituency.getDistrict().getDistrictName() != null){
+ 		 				districtMap.put(constituency.getDistrict().getDistrictName(), constituency.getDistrict().getDistrictId());
+ 		 				districtMap1.put(constituency.getDistrict().getDistrictName(), 1L);		
+ 		 				}
+ 		 				
+ 		 			}else{
+ 		 				
+ 		 				Long count = districtMap1.get(constituency.getDistrict().getDistrictName());
+ 		 				count++;
+ 		 				districtMap1.put(constituency.getDistrict().getDistrictName(),count );
+ 		 				
+ 		 			}
+ 		 			
+ 		 			
+ 		 			List<ConstituencyInfoVO> districtList = new ArrayList<ConstituencyInfoVO>(0);
+ 		 			
+ 		 			
+ 		 			for (Map.Entry<String, Long> entry : districtMap1.entrySet()) {
+ 		 				
+ 		 				ConstituencyInfoVO districtVO = new ConstituencyInfoVO();
+ 		 				
+ 		 				districtVO.setDistrictName(entry.getKey().toString());
+ 		 				districtVO.setDistrictId(districtMap.get(entry.getKey()));
+ 		 				districtVO.setDistrictCount((Long)entry.getValue());		 			
+ 		 				
+ 		 				districtList.add(districtVO);
+ 		 			}
+ 		 			
+                      Collections.sort(districtList);
+ 		 			
+ 		 			
+ 		 			
+ 		 			//GET MINISTERS IN DISTRICTS COUNT END
+                     
+                     
+                     
+                    
+                    if(resultList != null && resultList.size() > 0)
+    		    	{
+    		    		resultList.get(0).setStatesMap(stateMap1);
+    		    		resultList.get(0).setStatesList(stateList);
+    		    		resultList.get(0).setDistrictList(districtList);
+    		    		
+    		    	}
+		 			
+					if(constituency.getConstituencyId()!=null && candidateMinistresVO.getCandidateConstiuencyName() == null){
+						candidateMinistresVO.setCandidateConstiuencyId(constituency.getId());
+						candidateMinistresVO.setCandidateConstiuencyName(constituency.getName());
+					}
+					
+					if(constituency.getState() != null && candidateMinistresVO.getCandidateStateName() == null){
+						candidateMinistresVO.setCandidateStateId(constituency.getState().getStateId());	
+						candidateMinistresVO.setCandidateStateName(constituency.getState().getStateName());				
+					}
+					if(constituency.getState() == null && candidateMinistresVO.getCandidateStateName() == null){	
+						candidateMinistresVO.setCandidateStateId(constituency.getLocalElectionBody().getDistrict().getState().getStateId());
+						candidateMinistresVO.setCandidateStateName(constituency.getLocalElectionBody().getDistrict().getState().getStateName());
+					}
+					
+					if(constituency.getDistrict() != null && candidateMinistresVO.getCandidateDistrictName() == null){
+						
+						if(constituency.getLocalElectionBody() != null && constituency.getLocalElectionBody().getDistrict() != null  && constituency.getLocalElectionBody().getDistrict().getState() != null)
+						candidateMinistresVO.setCandidateStateId(constituency.getLocalElectionBody().getDistrict().getState().getStateId());
+						candidateMinistresVO.setCandidateDistrictName(constituency.getDistrict().getDistrictName());	
+					}
+			
+		 		}	 			
+	 			
+	 		}
+	 		
+	 		for(CandidateMinistriesVO candidateVO:resultList){
+	 			
+	 			if(candidateVO.getCandidateStateId() == null){
+	 				List<CandidateResult> cadtResults =candidateResultDAO.findCandidateResults(candidateVO.getCandidateId()); 
+	 				
+	 				
+	 				for(CandidateResult candidateResult:cadtResults){
+	 					
+		 				Constituency constituency = candidateResult.getNomination().getConstituencyElection().getConstituency();
+		 				
+		 				if(candidateVO.getCandidateStateName() == null){
+		 				
+		 				candidateVO.setCandidateStateId(constituency.getState().getStateId());	
+		 				candidateVO.setCandidateStateName(constituency.getState().getStateName());	
+		 				
+		 				if(resultList.get(0).getStatesMap().get(constituency.getState().getStateName()) == null){
+		 					
+		 					StatePageVO stateVO = new StatePageVO();
+		 					
+		 					stateVO.setStateCount(1L);
+		 					stateVO.setStateName(constituency.getState().getStateName());
+		 					stateVO.setStateId(constituency.getState().getStateId());
+		 					
+		 					resultList.get(0).getStatesList().add(stateVO);
+		 					
+		 					Collections.sort(resultList.get(0).getStatesList());
+		 					
+		 				}
+		 				
+		 				Long count = resultList.get(0).getStatesMap().get(constituency.getState().getStateName());
+		 				count++;
+		 				for(StatePageVO stageVO:resultList.get(0).getStatesList())		 					
+		 					if(stageVO.getStateName().equalsIgnoreCase(constituency.getState().getStateName())){
+		 						stageVO.setStateCount(count);
+		 						//candidateVO.getStatesMap().put(constituency.getState().getStateName(), count);
+		 					}
+		 				}
+	 				}
+	 				
+	 				 cadtResults = null;
+	 			}
+	 		}
+	    	 //NEW CONTENT END	  
+	 		
+	 		
 	    	
     	return resultList;
     	}

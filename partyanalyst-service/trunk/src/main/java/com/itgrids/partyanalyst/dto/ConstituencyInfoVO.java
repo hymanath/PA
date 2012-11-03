@@ -10,7 +10,7 @@ package com.itgrids.partyanalyst.dto;
 import java.util.Date;
 import java.util.List;
 
-public class ConstituencyInfoVO extends ResultStatus{
+public class ConstituencyInfoVO extends ResultStatus implements Comparable<ConstituencyInfoVO>{
 
 	/**
 	 * 
@@ -41,6 +41,8 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private List<String> uploadInfo;
 	private Long totalCandidates = 0l;
 	private Long boothsInDB = 0l; 
+	
+	private Long districtCount;
 	
 	public Boolean getVotingTrendz() {
 		return votingTrendz;
@@ -182,6 +184,21 @@ public class ConstituencyInfoVO extends ResultStatus{
 	}
 	public void setPostComments(Boolean postComments) {
 		this.postComments = postComments;
+	}
+	public Long getDistrictCount() {
+		return districtCount;
+	}
+	public void setDistrictCount(Long districtCount) {
+		this.districtCount = districtCount;
+	}
+		
+	
+	@Override
+	public int compareTo(ConstituencyInfoVO o) {
+
+		String districtName = o.getDistrictName();
+		
+		return this.districtName.compareTo(districtName);
 	}
 	 
 	

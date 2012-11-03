@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class CandidateMinistriesVO implements Serializable {
 
@@ -28,6 +29,20 @@ public class CandidateMinistriesVO implements Serializable {
 	private Boolean expisreAllMinistry;
 	private int noOfMinistriesExpired;
 	private int noOfMinistriesNotExpired;
+	
+	private String candidateConstiuencyName;
+	private String candidateStateName;
+	private String candidateDistrictName;
+	private Map<String,Long> statesMap;
+	
+	private Long candidateConstiuencyId;
+	private Long candidateStateId;
+	private Long candidateDistrictId;
+	
+	private List<StatePageVO> statesList;
+	private List<ConstituencyInfoVO> districtList;
+	
+	
 	
 	public Boolean getIsDeputyChiefMinister() {
 		return isDeputyChiefMinister;
@@ -145,6 +160,61 @@ public class CandidateMinistriesVO implements Serializable {
 	public void setNoOfMinistriesNotExpired(int noOfMinistriesNotExpired) {
 		this.noOfMinistriesNotExpired = noOfMinistriesNotExpired;
 	}
+	public String getCandidateConstiuencyName() {
+		return candidateConstiuencyName;
+	}
+	public void setCandidateConstiuencyName(String candidateConstiuencyName) {
+		this.candidateConstiuencyName = candidateConstiuencyName;
+	}
+	public String getCandidateStateName() {
+		return candidateStateName;
+	}
+	public void setCandidateStateName(String candidateStateName) {
+		this.candidateStateName = candidateStateName;
+	}
+	public String getCandidateDistrictName() {
+		return candidateDistrictName;
+	}
+	public void setCandidateDistrictName(String candidateDistrictName) {
+		this.candidateDistrictName = candidateDistrictName;
+	}
+	public Map<String,Long> getStatesMap() {
+		return statesMap;
+	}
+	public void setStatesMap(Map<String,Long> statesMap) {
+		this.statesMap = statesMap;
+	}
 	
-		
+	public Long getCandidateConstiuencyId() {
+		return candidateConstiuencyId;
+	}
+	public void setCandidateConstiuencyId(Long candidateConstiuencyId) {
+		this.candidateConstiuencyId = candidateConstiuencyId;
+	}
+	public Long getCandidateStateId() {
+		return candidateStateId;
+	}
+	public void setCandidateStateId(Long candidateStateId) {
+		this.candidateStateId = candidateStateId;
+	}
+	public Long getCandidateDistrictId() {
+		return candidateDistrictId;
+	}
+	public void setCandidateDistrictId(Long candidateDistrictId) {
+		this.candidateDistrictId = candidateDistrictId;
+	}
+	public List<StatePageVO> getStatesList() {
+		return statesList;
+	}
+	public void setStatesList(List<StatePageVO> statesList) {
+		this.statesList = statesList;
+	}
+	public List<ConstituencyInfoVO> getDistrictList() {
+		return districtList;
+	}
+	public void setDistrictList(List<ConstituencyInfoVO> districtList) {
+		this.districtList = districtList;
+	}
+	
+	
 }
