@@ -379,4 +379,34 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return query.uniqueResult();
 	}
 
+	public List<Object[]> getBoothResultsContainStates(){
+		
+		Query query = getSession().createQuery("select distinct model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName from BoothConstituencyElection model " +
+				" where  model.constituencyElection.election.electionScope.electionType.electionTypeId = 2 order by model.constituencyElection.constituency.state.stateName");
+		return query.list();
+	}
+	
+    public List<Object[]> getElectionYears(Long stateId,Long electionType){
+    	StringBuilder query = new StringBuilder();
+    	query.append("select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear from BoothConstituencyElection model " +
+				" where  model.constituencyElection.election.electionScope.electionType.electionTypeId = :electionType ");
+		if(electionType.longValue() == 2l)
+			query.append(" and model.constituencyElection.constituency.state.stateId = :stateId ");
+		query.append(" order by model.constituencyElection.election.electionYear ");
+    	Query queryObj  = getSession().createQuery(query.toString());
+    	queryObj.setParameter("electionType", electionType);
+    	
+    	if(electionType.longValue() == 2l)
+    	queryObj.setParameter("stateId", stateId);
+    	
+    	return queryObj.list();	
+	}
+    
+    public List<Object[]> getConstituencies(Long electionId){
+    	Query query = getSession().createQuery("select distinct model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from BoothConstituencyElection model " +
+				" where  model.constituencyElection.election.electionId = :electionId order by model.constituencyElection.constituency.name");
+    	query.setParameter("electionId", electionId);
+    	return query.list();
+   	}
+     
 }
