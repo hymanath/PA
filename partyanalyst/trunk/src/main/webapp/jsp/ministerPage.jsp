@@ -596,7 +596,7 @@ function getMinistryYears(taskType)
 <b class="alert alert-info" style="padding:4px;border:1px solid #005580;">Ministers Count in Districts:</b>
 	<div class="alert alert-info" style="margin-top:15px;height:89px;padding:21px;border:1px solid #3A87AD;">
 		<c:forEach var="district" items="${candidateMinistriesVO[0].districtList}">
-		<div style="width:150px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b><a href="districtPageAction.action?districtId=${district.districtId}&districtName=${district.districtName}" title="Click Here to View ${district.districtName}  District Details">${district.districtName}</a> </b>
+		<div style="width:175px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b><a href="districtPageAction.action?districtId=${district.districtId}&districtName=${district.districtName}" title="Click Here to View ${district.districtName}  District Details">${district.districtName}</a> </b>
 		<b style="float:right;"> - &nbsp${district.districtCount} </b></div>		
 		</c:forEach>
 	 </div>
@@ -836,6 +836,7 @@ function getMinistryYears(taskType)
 						</tr>
 							<c:forEach var="ministry" items="${deputyChiefMinisterData.ministries}">
 							<c:if test="${ministry.ministry != 'Deputy Chief Minister'}">
+							<c:if test="${ministry.toDate == null}">
 							<tr>
 							<td style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;text-align:center;" width="24%"><span style="font-weight:bold;">${ministry.ministry}</span></td>
 							<td style="border-bottom:1px solid #d3d3d3;text-align:center;border-right:1px solid #d3d3d3;" width="15%"><span style="font-weight:bold;">${ministry.fromDate}</span></td>
@@ -852,6 +853,7 @@ function getMinistryYears(taskType)
 							</b>
 							</td>
 							</tr>
+							</c:if>
 							</c:if>
 							</c:forEach>
 							
