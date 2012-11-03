@@ -55,7 +55,6 @@ th.thstyle{
 <script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
 <script src="js/partyBoothResults/boothResults.js" ></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-
 <script type="text/javascript">
 
 var Localization = { <%
@@ -66,7 +65,7 @@ var Localization = { <%
 		String ConstituencyNameMsg = rb.getString("ConstituencyNameMsg");
 		String partyNameMsg = rb.getString("partyNameMsg");
 			%> }
-	
+	var resultYears;
 	function showAjaxDiv()
 	{
 		var elmt = document.getElementById("ajaxImg");
@@ -173,6 +172,166 @@ var Localization = { <%
 				return true;							
 			}	
       }
+	  
+	  function getParlYears(){
+	     $("#typeAjaxImg").show();
+         var jsObj=
+             {
+			     stateId:0,
+				 electionType:1,
+				 task:"years"	
+			 }
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getOptsForBoothResultsReportAction.action?"+rparam;
+
+		callAjaxToGetData(jsObj, url);
+     }
+	 
+	 function getAssemblyStates(){
+	    $("#typeAjaxImg").show();
+	    var jsObj=
+             {
+				 task:"states"	
+			 }
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getOptsForBoothResultsReportAction.action?"+rparam;
+
+		callAjaxToGetData(jsObj, url);
+	 }
+	 
+	  function getAssemblyYears(){
+	  clearOptions(false,true,true,true);
+	  if($("#electionState option:selected").val() == 0 || $("#electionState option:selected").val() == "0")
+	   return;
+	    $("#stateAjaxImg").show();
+         var jsObj=
+             {
+			     stateId:$("#electionState option:selected").val(),
+				 electionType:2,
+				 task:"years"	
+			 }
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getOptsForBoothResultsReportAction.action?"+rparam;
+
+		callAjaxToGetData(jsObj, url);
+     }
+	 
+	 function getSelectedConsituencies(){
+	     clearOptions(false,false,true,true);
+		 if($("#electionYear1 option:selected").val() == 0 || $("#electionYear1 option:selected").val() == "0")
+	        return;
+			$("#cAjaxImg").show();
+	     var electionId = 0;
+		 var year = $("#electionYear1 option:selected").val();
+		 for(var i in resultYears){
+		  if(parseInt(resultYears[i].name) == parseInt(year))
+		    electionId = resultYears[i].id;
+		 }
+		var jsObj=
+             {
+			     electionId:electionId,				 
+				 task:"constituencies"	
+			 }
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getOptsForBoothResultsReportAction.action?"+rparam;
+
+		callAjaxToGetData(jsObj, url);
+	 
+	 }
+	 
+    function callAjaxToGetData(jsObj,url)
+	  {			
+		
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								if(jsObj.task == "states"){
+									buildSelectOptions(myResults,"electionState");
+									$("#typeAjaxImg").hide();
+								}
+								else if(jsObj.task == "years"){
+								      resultYears = myResults;
+								      buildNewSelectOptions(myResults,"electionYear1");
+									  $("#typeAjaxImg").hide();
+									  $("#stateAjaxImg").hide();
+								}
+								else if(jsObj.task == "constituencies"){
+								    buildSelectOptions(myResults,"ConstituencyName1");
+									$("#cAjaxImg").hide();
+								}
+							
+							}catch (e) {   
+							   	//alert("Invalid JSON result" + e);   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+	
+	function buildSelectOptions(result,id){
+       $("#"+id).find("option").remove();
+       $("#"+id).append('<option value=0>Select</option>');
+       if(result != null && result.length >0){
+         for(var i in result){
+	       if(result[i].id != 0)
+             $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	     }
+	   }
+    }
+	
+	function buildNewSelectOptions(result,id){
+       $("#"+id).find("option").remove();
+       $("#"+id).append('<option value=0>Select</option>');
+       if(result != null && result.length >0){
+         for(var i in result){
+	       if(result[i].id != 0)
+             $("#"+id).append('<option value='+result[i].name+'>'+result[i].name+'</option>');
+	     }
+	   }
+    }
+	
+	function clearOptions(state,year,consti,party){
+	  if(state){
+	   $("#electionState").find("option").remove();
+	   $("#electionState").append('<option value=0>Select</option>');
+	  }
+	  if(year){
+       
+	   $("#electionYear1").find("option").remove();
+	   $("#electionYear1").append('<option value=0>Select</option>');
+	  }
+	  if(consti){
+       
+	   $("#ConstituencyName1").find("option").remove();
+	   $("#ConstituencyName1").append('<option value=0>Select</option>');
+	  }
+	  if(party){
+       
+	   $("#partyName1").find("option").remove();
+	   $("#partyName1").append('<option value=0>Select</option>');
+	  }
+	}
+	
+	function getStatesOrYears(){
+	  clearOptions(true,true,true,true);
+	 var electionType =  $("#electionType1 option:selected").val();
+	 
+	 if(electionType == 0)
+	   return ;
+	 else if(electionType == 1){
+	    $("#staterow").hide();
+	   getParlYears();
+	 }else if(electionType == 2){
+	    $("#staterow").show();
+	    getAssemblyStates();
+	 }
+	}
 	 window.history.forward(1);
 </script>
 </HEAD>
@@ -192,7 +351,7 @@ var Localization = { <%
 	</div>
 	<table>
 	  <tr>
-	   <th align="left">
+	   <th align="left" style="padding-left:298px;padding-top: 22px;">
 		<div id="errorMessage"></div>
 	   </th><td></td>
 	  </tr>
@@ -202,14 +361,29 @@ var Localization = { <%
 	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 2px solid #0B3861;background-color: #F2F0EE;margin-left:auto;margin-right:auto;">
 		 <tr id="ElectionTyperow">
 			<th class="thstyle">Election type</th>
-		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="removeErrorMessage()" theme="simple"/>
+		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="getStatesOrYears();removeErrorMessage()" theme="simple"/>
 			  </td>
+			  <td style="border:none;">
+				<img id="typeAjaxImg" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+				</td>
+		   </tr>
+		   <tr id="staterow">
+			<th class="thstyle">State</th>
+		      <td> <select name="electionState" class="selectstyle" id="electionState" onchange="getAssemblyYears()" >
+				     <option value="0">Select<option>
+				  </select>
+			  </td>
+			  <td style="border:none;">
+				<img id="stateAjaxImg" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+				</td>
 		   </tr>
            <tr id="ElectionYearrow">
 			 <th class="thstyle">Election Year</th>
-			  <td><s:select cssClass="selectstyle" label="Election Year"  name="electionYear"
-					list="electionYears" headerKey="0" headerValue="Select" id="electionYear1"		onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),showImageC(),clearConstituencys(),removeErrorMessage()" theme="simple"/>
-				</td>
+			  <td>
+			      <select name="electionYear" class="selectstyle" id="electionYear1" onchange="getSelectedConsituencies(),removeErrorMessage()" >
+				     <option value="0">Select<option>
+				  </select>
+			  </td>
 
 				<td style="border:none;">
 				<img id="cAjaxImg" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
