@@ -1,5 +1,6 @@
 
 function getConstituenciesList(form, url) {
+   clearOptions(false,false,false,true);
 	if (form.electionType.value == 0
 			|| form.electionYear.value == "0")
 		return;
