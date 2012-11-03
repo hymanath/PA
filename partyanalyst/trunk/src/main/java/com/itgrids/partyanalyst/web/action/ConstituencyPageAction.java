@@ -1041,6 +1041,7 @@ public class ConstituencyPageAction extends ActionSupport implements
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         int i = 0;
+        	if(allElectionResults != null && allElectionResults.size() > 0){
         	for(ConstituencyElectionResultsVO result: allElectionResults){
         		ElectionResultVO partiesElecResultForGraph = new ElectionResultVO();    
         		if(result.getCandidateResultsVO() != null){
@@ -1068,6 +1069,7 @@ public class ConstituencyPageAction extends ActionSupport implements
         	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyShortName(),
            			graphInfo.getElectionYear());	
         }
+        	}
         return dataset;
     }
 
