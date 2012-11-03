@@ -168,7 +168,7 @@ public class StatePageVO implements Comparable<StatePageVO> {
 	public void setStateCount(Long stateCount) {
 		this.stateCount = stateCount;
 	}
-	@Override
+
 	public int compareTo(StatePageVO o) {
 		
 		String stateName = o.getStateName();		 
