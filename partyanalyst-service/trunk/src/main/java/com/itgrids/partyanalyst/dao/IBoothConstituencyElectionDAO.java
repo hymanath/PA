@@ -103,5 +103,11 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List getElectionYears();
 	
 	public Object getElectionIdInMandal(Long tehsilId, String electionType, String year);
+	
+	public List<Object[]> getBoothResultsContainStates();
+	
+	public List<Object[]> getElectionYears(Long stateId,Long electionType);
+	
+	public List<Object[]> getConstituencies(Long electionId);
 
 }
