@@ -516,7 +516,7 @@ function getMinistryYears(taskType)
 <div id="ministerAnalysisMainDiv" style="width:998px;margin-left:auto;margin-right:auto;float:none;font-family:sans-serif">
 	<div id="heading" class="main-mbg" style="width:980px;">
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-			<s:property value="%{electionGoverningBodyVO.stateName}"/> State Ministers From
+			<s:property value="%{electionGoverningBodyVO.stateName}"/> State Ministers 
 		</c:if>
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
 			Manmohan Singh Cabinet Ministers  
