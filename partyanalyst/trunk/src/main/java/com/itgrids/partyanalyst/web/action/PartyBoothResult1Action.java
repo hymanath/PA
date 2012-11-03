@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -23,7 +25,7 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private static final Logger log = Logger.getLogger(PartyBoothResult1Action.class);
 	private String task = null;
 	private String partyName;
 	private String electionType;
@@ -35,7 +37,9 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 	private HttpServletResponse response;
 	private HttpSession session;
 	private HttpServletRequest request;
-
+	private List<SelectOptionVO> options;
+	JSONObject jObj = null;
+	
 	public String getPartyName() {
 		return partyName;
 	}
@@ -121,6 +125,14 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 		this.request = request;
 	}
 
+	public List<SelectOptionVO> getOptions() {
+		return options;
+	}
+
+	public void setOptions(List<SelectOptionVO> options) {
+		this.options = options;
+	}
+
 	public String execute() throws Exception {
 
 		session = request.getSession();
@@ -140,5 +152,28 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 		return Action.SUCCESS;
 	}
 
+	public String getAllOptions(){
+		try{
+		    jObj=new JSONObject(task);
+		    if(jObj.getString("task").trim().equalsIgnoreCase("states")){
+				
+		    	  options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),null,null,null);
+				
+			  }else if(jObj.getString("task").trim().equalsIgnoreCase("years")){
+				
+				  options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),jObj.getLong("stateId"),jObj.getLong("electionType"),null);
+				
+			  }else if(jObj.getString("task").trim().equalsIgnoreCase("constituencies")){
+				
+				  options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),null,null,jObj.getLong("electionId"));
+				
+			  }
+		}catch(Exception e){
+			
+			log.error("Exception rised in getAllOptions action method"+e);
+			
+		}
+		return Action.SUCCESS;
+	}
 	
 }
