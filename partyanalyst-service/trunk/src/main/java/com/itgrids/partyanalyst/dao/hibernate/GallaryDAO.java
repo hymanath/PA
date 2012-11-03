@@ -19,7 +19,9 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		 	 
 		Query query = getSession().createQuery("select model.gallaryId,model.name,model.description,model.createdDate," +
 				"model.updateddate from Gallary model  where model.candidate.candidateId=:candidateId and  " +
-				"model.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.createdDate desc");
+				"model.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate " +
+				"and (select count(*)  from FileGallary model1 where model1.gallary.gallaryId = model.gallaryId and model1.isDelete = :isDelete " +
+				"and model1.isPrivate = :isPrivate ) > 0 order by model.createdDate desc");
 		query.setLong("candidateId", candidateId);
 		query.setString("type", type);
 		query.setString("isDelete", "false");
