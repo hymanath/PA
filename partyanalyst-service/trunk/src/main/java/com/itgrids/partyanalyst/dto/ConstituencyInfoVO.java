@@ -193,7 +193,6 @@ public class ConstituencyInfoVO extends ResultStatus implements Comparable<Const
 	}
 		
 	
-	@Override
 	public int compareTo(ConstituencyInfoVO o) {
 
 		String districtName = o.getDistrictName();
