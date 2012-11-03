@@ -584,7 +584,7 @@ function getMinistryYears(taskType)
 <b class="alert alert-info" style="padding:4px;border:1px solid #005580;">Ministers Count in States:</b>
 	<div class="alert alert-info" style="margin-top:15px;height:89px;padding:21px;border:1px solid #3A87AD;">
 		<c:forEach var="state" items="${candidateMinistriesVO[0].statesList}">
-		<div style="width:154px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b><a href="statePageAction.action?stateId=${state.stateId}" title="Click Here to View ${state.stateName}  Details ">${state.stateName} </a></b>
+		<div style="width:179px;float:left;margin-right:9px;border-bottom:1px solid #3A87AD;"><b><a href="statePageAction.action?stateId=${state.stateId}" title="Click Here to View ${state.stateName}  Details ">${state.stateName} </a></b>
 		<b style="float:right;"> - &nbsp${state.stateCount} </b></div>		
 		</c:forEach>
 	 </div>
@@ -612,7 +612,7 @@ function getMinistryYears(taskType)
 	
 	<c:if test="${ministerData.isChiefMinister == true}">
 		<!--<div class="headingDiv"><span class="headingStyle">Chief Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></span></div>-->
-		<h3 class="alert alert-info" style="padding:2px;text-align:center;">Chief Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3>
+		<h3 class="alert alert-info" style="padding:2px;text-align:center;width:95%;">Chief Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3>
 		
 	<div id="chiefMinisterDiv"  style="padding-left:0px;margin-bottom:10px;" >
 		<table cellpadding="0" border="1" style="border-color:#d3d3d3;border-collapse:collapse;" width="95%">
@@ -699,7 +699,7 @@ function getMinistryYears(taskType)
 	<c:forEach var="primeMinisterData" items="${candidateMinistriesVO}">
 	<c:if test="${primeMinisterData.isPrimeMinister == true}">
 	<!--<div class="headingDiv"><span class="headingStyle">Prime Minister Of India</span></div>-->
-     <h3 class="alert alert-info" style="padding:2px;text-align:center;">Prime Minister of India</h3>
+     <h3 class="alert alert-info" style="padding:2px;text-align:center;width:95%;">Prime Minister of India</h3>
 		<div id="primeMinisterDiv"  style="padding-left:0px;margin-bottom:10px;" >
 		<table cellpadding="0" border="1" style="border-color:#d3d3d3;border-collapse:collapse;" width="95%">
 			<tr>
@@ -793,7 +793,7 @@ function getMinistryYears(taskType)
 	<c:if test="${deputyChiefMinisterData.isDeputyChiefMinister == true}">
 		<!--<div class="headingDiv"><span class="headingStyle">Deputy Chief Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></span></div>-->
 
-		<h3 class="alert alert-info" style="padding:2px;text-align:center;">Deputy Chief Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3>
+		<h3 class="alert alert-info" style="padding:2px;text-align:center;width:95%;">Deputy Chief Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3>
 		
 		<div id="deputyChiefMinisterDiv" style="margin-bottom:10px;">
 			<table border="1" width="95%" style="border-collapse:collapse;border-color:#d3d3d3;" cellpadding="0">
@@ -876,12 +876,12 @@ function getMinistryYears(taskType)
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
 		<!--<div class="headingDiv"><span class="headingStyle">Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>-->
-       <h3 class="alert alert-info" style="padding:2px;text-align:center;">Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
+       <h3 class="alert alert-info" style="padding:2px;text-align:center;width:95%;">Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
 		</c:if>
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
 		<!--<div class="headingDiv"><span class="headingStyle">Cabinet Ministers of India </span></div>-->
-		<h3 class="alert alert-info" style="padding:1px;text-align:center;">Cabinet Ministers of Manmohan Singh  </h3>
+		<h3 class="alert alert-info" style="padding:1px;text-align:center;width:95%;">Cabinet Ministers of Manmohan Singh  </h3>
 		</c:if>
 
 		<div id="DataTable"  class="cabinetMinistersDiv" style="background:#ffffff;margin-bottom:10px;">
@@ -981,7 +981,7 @@ function getMinistryYears(taskType)
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
 			<!--<div class="headingDiv"><span class="headingStyle">Ministers of State (Independent Charge) of India</span></div>-->
-			<h3 class="alert alert-info" style="padding:1px;text-align:center;">Ministers of State (with Independent Charge) in Manmohan Singh Cabinet</h3>
+			<h3 class="alert alert-info" style="padding:1px;text-align:center;width:95%;">Ministers of State (with Independent Charge) in Manmohan Singh Cabinet</h3>
 		</c:if>
 
 		<div id="DataTable" class="independentMinistersDiv" style="background:#ffffff;">
@@ -1086,7 +1086,7 @@ function getMinistryYears(taskType)
 			<!--<div class="headingDiv" style=" padding-left: 187px;">
 				<span class="headingStyle">Ministers of State of India</span>
 			</div>-->
-			<h3 class="alert alert-info" style="padding:1px;text-align:center;">Ministers of State in Manmohan Singh Cabinet</h3>
+			<h3 class="alert alert-info" style="padding:1px;text-align:center;width:95%;">Ministers of State in Manmohan Singh Cabinet</h3>
 
 
 		</c:if>
@@ -1178,12 +1178,12 @@ function getMinistryYears(taskType)
 	<c:if test="${candidateMinistriesVO[0].hasCabinetMinisters}">
       <!--<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Cabinet Ministries of Manmohan Singh Cabinet</h3></div>-->
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3></div>
+		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;;width:95%;"><h3 class="alert alert-error" style="padding:1px;text-align:center;width:95%;">Ex Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3></div>
 		<!--<div class="headingDiv"><span class="headingStyle">Resigned Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>-->
 		</c:if>
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
-		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Cabinet Ministers in Manmohan Singh Cabinet</h3></div>
+		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;width:95%;"><h3 class="alert alert-error" style="padding:1px;text-align:center">Ex Cabinet Ministers in Manmohan Singh Cabinet</h3></div>
 		<!--<div class="headingDiv"><span class="headingStyle">Resigned Cabinet Ministers in Manmohan Singh Cabinet </span></div>-->
 		</c:if>
 
@@ -1269,7 +1269,7 @@ function getMinistryYears(taskType)
 
 	<c:if test="${candidateMinistriesVO[0].hasMSIC}">
         
-		<div id="independentResignedDiv" style="background-color:#f1f1f1;" >
+		<div id="independentResignedDiv" style="background-color:#f1f1f1;width:95%;" >
 			<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
 				<h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Ministries of State(with Independent Charge) of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
 			</c:if>
@@ -1365,7 +1365,7 @@ function getMinistryYears(taskType)
 
 	<c:if test="${candidateMinistriesVO[0].hasMS}">
 
-	    <div id="ministersOfStateResignedDiv" style="background-color:#f1f1f1;" class="resignedMinistersOfState">
+	    <div id="ministersOfStateResignedDiv" style="background-color:#f1f1f1;width:95%;" class="resignedMinistersOfState">
 
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
 			<h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Ministries of State of <s:property value="%{electionGoverningBodyVO.stateName}" /></h3>
