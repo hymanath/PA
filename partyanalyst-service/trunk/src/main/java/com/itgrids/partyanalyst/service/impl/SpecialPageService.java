@@ -1062,6 +1062,7 @@ public class SpecialPageService implements ISpecialPageService{
 			   	       }
 			   	     }
 			    	fileVO.setTitle(title);
+			    	fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(file.getFileId()).get(0));
 			    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 			    	List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
 					 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
