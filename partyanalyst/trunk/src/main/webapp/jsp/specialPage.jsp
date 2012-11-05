@@ -214,6 +214,7 @@ width: 500px;
 .titleStyle{color:black;}
 .close{opacity:1.5;}
   .close:hover{opacity:1.5;}
+#videogallery a{width:120px}
 
 </style>
 <script type="text/javascript">
@@ -1320,7 +1321,7 @@ Tweet</a>
 		
 		<s:if test="#stat.index == 0">
 		<DIV>
-		<a rel="#voverlay" title='<s:property value="title"/>' href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<a  title='<s:property value="title"/>' onclick="getVideoDetails(<s:property value='contentId'/>)">
 		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
 		</DIV>
 		</s:if>
@@ -1330,7 +1331,7 @@ Tweet</a>
 		<ul class="video-thumb-sec">
 			<s:iterator status="stat" value="fileVOList">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
-				<li><a rel="#voverlay" title='<s:property value="title"/>' href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
+				<li><a title='<s:property value="title"/>' onclick="getVideoDetails(<s:property value='contentId'/>)">
 				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
 				</s:if>
 			</s:iterator>
