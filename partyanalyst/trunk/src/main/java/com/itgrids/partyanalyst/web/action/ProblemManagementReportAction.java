@@ -604,7 +604,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			else
 				chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
-			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last 10 Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
+			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last Few Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
 					
 			locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
 		}	
