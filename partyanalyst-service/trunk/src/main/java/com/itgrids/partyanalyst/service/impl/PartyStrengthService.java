@@ -1443,7 +1443,8 @@ public class PartyStrengthService implements IPartyStrengthService {
  				partyDetailsVo.setElectionYear(parms[4].toString()); 	
  				partyDetailsVo.setPartyFlag(parms[3].toString()); 	
  				partyDetailsVo.setVotesEarned(new BigDecimal(parms[5].toString()).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
- 				partyDetailsVo.setCandidateName(parms[6].toString()); 	 				
+ 				partyDetailsVo.setCandidateName(parms[6].toString()); 
+ 				partyDetailsVo.setCandidateId((Long)parms[8]);
  				if(excludeType!=null){
  					if(excludeType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
  						if(pName.equalsIgnoreCase(partyName))
