@@ -91,7 +91,11 @@
 <script type="text/javascript">
 
 var type = '${type}';
-
+function redirectCandidateResult(id)
+{ 
+var browser2 = window.open("candidateElectionResultsAction.action?candidateId="+id+"  ");
+browser2.focus();
+}
 	function initializeResultsTable() {	
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get("mainDataTable"));
@@ -224,7 +228,7 @@ var type = '${type}';
 						<c:forEach var="requiredConstituencyDetails" varStatus="stat" items="${requiredConstituencyDetails}">		
 							<tr>
 								<td>
-									<a id='${requiredConstituencyDetails.candidateName}' href="javascript:{}" onmouseover="displayImage(this.id);" onmouseout="return nd();">${requiredConstituencyDetails.candidateName}
+									<a id='${requiredConstituencyDetails.candidateName}' href="javascript:{}" onclick="redirectCandidateResult('${requiredConstituencyDetails.candidateId}')" onmouseover="displayImage(this.id);" onmouseout="return nd();">${requiredConstituencyDetails.candidateName}
 								</td>
 								<td>
 									${requiredConstituencyDetails.constituencyName}
