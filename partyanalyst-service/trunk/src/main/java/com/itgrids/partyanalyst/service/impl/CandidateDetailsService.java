@@ -1828,6 +1828,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				fileVO.setFileId(file.getFileId());
 				fileVO.setName(file.getFileName());
 				fileVO.setTitle(file.getFileTitle());
+				fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(fileVO.getFileId()).get(0));
 				fileVO.setFileType(file.getFileType() != null ? file.getFileType().getType() : "");
 				
 				fileVO.setDescription(file.getFileDescription());
