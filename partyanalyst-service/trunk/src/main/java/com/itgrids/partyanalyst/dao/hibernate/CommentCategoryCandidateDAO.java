@@ -82,7 +82,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
-				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank "+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank,model.nomination.nominationId "+
 				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
 				"and model.nomination.party.partyId = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
 	}
@@ -219,7 +219,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		Query queryObject = getSession().createQuery("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
-				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank from CommentCategoryCandidate model where "+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank,model.nomination.nominationId from CommentCategoryCandidate model where "+
 				"model.nomination.nominationId in (:nominationIds) order by model.nomination.constituencyElection.constituency.constituencyId");
 		queryObject.setParameterList("nominationIds", nominationIds);
 		return queryObject.list();
@@ -231,7 +231,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		Query queryObject = getSession().createQuery("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
-				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank from CommentCategoryCandidate model where "+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank,model.nomination.nominationId from CommentCategoryCandidate model where "+
 				"model.commentData.commentDataCategory.commentDataCategoryId = ? and "+
 				"model.nomination.nominationId in (:nominationIds) order by model.nomination.constituencyElection.constituency.constituencyId");
 		queryObject.setParameter(0, categoryTypeId);
