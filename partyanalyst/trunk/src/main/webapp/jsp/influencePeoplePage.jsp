@@ -465,6 +465,8 @@
 										}
 										if(jsObj.task == "deleteInfluencingPerson"){
 											alert("Succesfully Deleted");
+											//window.opener.document.location.reload(true);
+											window.location.reload(true);
 										}
 									}
 								catch (e)
@@ -497,7 +499,7 @@
 
 			function deletePersonDetails(id)
 			{
-			  var ask = confirm("Do You want to delete");
+			 var ask = confirm("Do You want to delete");
 			  if (ask ==  true)
 			  {
 				var jsObj= 
@@ -509,8 +511,8 @@
 				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 				var url = "<%=request.getContextPath()%>/deleteInfluencingPeopleAjaxAction.action?"+param;
 				callAjax(jsObj,url);
-				window.opener.document.location.reload(true);
-				window.location.reload(true);
+				//window.opener.document.location.reload(true);
+				//window.location.reload(true);
 			  }	
 			
 			  else
