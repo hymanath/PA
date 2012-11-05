@@ -2914,7 +2914,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
-		query.append(" model.candidateResult.votesEarned,model.candidate.lastname,model.party.shortName");
+		query.append(" model.candidateResult.votesEarned,model.candidate.lastname,model.party.shortName,model.candidate.candidateId");
 		query.append(" from Nomination model where");	
 			
 		query.append(" model.constituencyElection.election.elecSubtype =? and model.candidateResult.rank = 1 and");
