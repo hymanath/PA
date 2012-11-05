@@ -411,7 +411,7 @@ function buildPartyPositionDataTable(info,rank)
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
-								rowsPerPageOptions: [20,40,60], 
+								rowsPerPageOptions: [10,20,30], 
 							    pageLinks: 20 
 								})
 						}); 			
@@ -902,7 +902,7 @@ function buildPartyPositionDataTable(info,rank)
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 10,		        
 				template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
-				rowsPerPageOptions: [20,40,60], 
+				rowsPerPageOptions: [10,20,30], 
 			    pageLinks: 20
 			    }) 
 				};	
@@ -1794,12 +1794,13 @@ function callMarginVotes(partyId)
 </table>
 </div>
 </s:if>
+</div>
 
-<br>
 
 <s:if test="stateData.rebelPartyCandidates.size > 0">
-<div class="partyInfoHeading"><s:label labelposition="left"><b><U>Rebel Candidates </U></b></s:label></div>
-<div id="rebelsDiv" class="yui-skin-sam" style="display: block; background-color: rgb(234, 234, 234); margin-right: 20px;">
+<div class="partyInfoHeading"><b><U>Rebel Candidates </U></b></div>
+<div id="rebelsDiv" class="yui-skin-sam" style="display: block; background-color: #ffffff;  margin-right: 58px;
+    margin-top: -10px;">
 </div>
 <script language="javascript">//wkg
 <c:forEach var="rebelsData" items="${stateData.rebelPartyCandidates}" >			
