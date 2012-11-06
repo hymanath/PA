@@ -2348,7 +2348,8 @@ function showFirstFourNewsRecords(results)
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results.fileVOList[0].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+results.fileDate+'</font>';
 	 str+='       </td>';
 	 str+='       <td>';
-	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/specialPageAction.action?specialPageId='+specialPageId+'&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	 //str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/specialPageAction.action?specialPageId='+specialPageId+'&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	 str +='<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/specialPageAction.action?specialPageId='+specialPageId+'&contentId='+results.contentId+'\')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='     </table>';
@@ -2502,7 +2503,8 @@ function showFirstFourNewsRecords(results)
 	 str+='        <B>Source</B> : <font color="#FF4500">'+fileVo.source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+results.fileDate+'</font>';
 	 str+='       </td>';
 	 str+='       <td>';
-	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	 //str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	 str +='<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'\')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='     </table>';
