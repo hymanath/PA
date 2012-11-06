@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.BaseObject;
@@ -27,8 +28,14 @@ public class StateLevelPartyReportVO extends BaseObject {
 	private int positionsLostMajorBand;
 	/** Position lost by the party by a minor percentage */
 	private int positionsLostMinorBand;
+	
 	/** Percentage of votes that might have gone to other parties */
 	private Map<String, BigDecimal> toPartySwing;
+	
+	
+	private List<PartyResultVO> partyResultList;
+	private Long totalNoOfConstituencies;
+	
 
 	public int getTotalSeatsContested() {
 		return totalSeatsContested;
@@ -111,5 +118,24 @@ public class StateLevelPartyReportVO extends BaseObject {
 	public void setToPartySwing(Map<String, BigDecimal> toPartySwing) {
 		this.toPartySwing = toPartySwing;
 	}
+	
+
+	public List<PartyResultVO> getPartyResultList() {
+		return partyResultList;
+	}
+
+	public void setPartyResultList(List<PartyResultVO> partyResultList) {
+		this.partyResultList = partyResultList;
+	}
+	
+	public Long getTotalNoOfConstituencies() {
+		return totalNoOfConstituencies;
+	}
+
+	public void setTotalNoOfConstituencies(Long totalNoOfConstituencies) {
+		this.totalNoOfConstituencies = totalNoOfConstituencies;
+	}
+
+
 
 }

@@ -452,4 +452,19 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	
+	public List<Constituency> getPresentAssemblyConstituencyDetailsByDistrictId(Long stateId,List<Long> districtIds){
+		
+		
+		Query queryObject = getSession()
+				.createQuery(
+						"select model from Constituency model where  model.district.districtId in(:districtIds) and model.state.stateId = :stateId and model.deformDate is null ");
+		
+		queryObject.setParameterList("districtIds", districtIds);
+		queryObject.setParameter("stateId", stateId);
+		
+		return queryObject.list();
+		
+	}
+	
+	
 }

@@ -38,6 +38,9 @@ public class PartyResultVO {
 	List<SelectOptionVO> partiesList;
 	String electionType;
 	String electionYear;
+	private Long totalSeatsParticipated;
+	private Integer totalSeatsOwn;
+	
 	
 	private List<SelectOptionVO> votesRange;
 	
@@ -219,6 +222,20 @@ public class PartyResultVO {
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	
+	public Integer getTotalSeatsOwn() {
+		return totalSeatsOwn;
+	}
+	public void setTotalSeatsOwn(Integer totalSeatsOwn) {
+		this.totalSeatsOwn = totalSeatsOwn;
+	}
+	
+	public Long getTotalSeatsParticipated() {
+		return totalSeatsParticipated;
+	}
+	public void setTotalSeatsParticipated(Long totalSeatsParticipated) {
+		this.totalSeatsParticipated = totalSeatsParticipated;
 	}
 	
 }

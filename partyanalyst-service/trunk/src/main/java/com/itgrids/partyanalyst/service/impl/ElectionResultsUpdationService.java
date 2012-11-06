@@ -475,7 +475,28 @@ public class ElectionResultsUpdationService implements IElectionResultsUpdationS
 	   electionGoverningBody.setToDate(positionManagementVO.getToDate());
 	   electionGoverningBody.setStatus(positionManagementVO.getStatus());
 	   
-	   electionGoverningBodyDAO.save(electionGoverningBody);
+	   
+			List countList = electionGoverningBodyDAO.checkForPositionExistanceForCandidate(
+					
+					electionGoverningBody.getElection().getElectionId(),
+					electionGoverningBody.getCandidate().getCandidateId(),
+					electionGoverningBody.getPositionScope().getPositionScopeId(),
+					electionGoverningBody.getParty().getPartyId(),
+					IConstants.WORKING_STATUS_WORKING
+							
+			);
+			
+			if(countList != null && countList.size() > 0 ){
+				
+				Long electionGoverningBodyId =(Long) countList.get(0);
+				electionGoverningBodyDAO.updateCandidatePositionDetails(
+						electionGoverningBodyId,
+						positionManagementVO.getToDate(),
+						IConstants.WORKING_STATUS_COMPLETED);				
+				
+			}
+			else	   
+	       electionGoverningBodyDAO.save(electionGoverningBody);
 	   
 	   resultStatus = new ResultStatus();
 	   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

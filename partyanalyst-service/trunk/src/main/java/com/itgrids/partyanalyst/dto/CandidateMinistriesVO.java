@@ -41,6 +41,8 @@ public class CandidateMinistriesVO implements Serializable {
 	
 	private List<StatePageVO> statesList;
 	private List<ConstituencyInfoVO> districtList;
+	private Map<String,DistrictWisePartyResultVO> districtConstituencyCountMap;
+	private Map<String , StateLevelPartyReportVO> stateConstituencyCountMap;
 	
 	
 	
@@ -214,6 +216,22 @@ public class CandidateMinistriesVO implements Serializable {
 	}
 	public void setDistrictList(List<ConstituencyInfoVO> districtList) {
 		this.districtList = districtList;
+	}
+	
+
+	public Map<String, DistrictWisePartyResultVO> getDistrictConstituencyCountMap() {
+		return districtConstituencyCountMap;
+	}
+	public void setDistrictConstituencyCountMap(
+			Map<String, DistrictWisePartyResultVO> districtConstituencyCountMap) {
+		this.districtConstituencyCountMap = districtConstituencyCountMap;
+	}
+	public Map<String, StateLevelPartyReportVO> getStateConstituencyCountMap() {
+		return stateConstituencyCountMap;
+	}
+	public void setStateConstituencyCountMap(
+			Map<String, StateLevelPartyReportVO> stateConstituencyCountMap) {
+		this.stateConstituencyCountMap = stateConstituencyCountMap;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -27,5 +28,8 @@ public interface IElectionGoverningBodyDAO extends GenericDao<ElectionGoverningB
 	
 	public List<Object[]> getChiefMinisters(Long stateId);
 	
+	public List checkForPositionExistanceForCandidate(Long electionId,Long candidateId ,Long positionScopeId,Long partyId,String workingStatus	);
+	
+	public int updateCandidatePositionDetails(Long electionGoverningBodyId,Date	toDate,String workingStatus);
 	
 }

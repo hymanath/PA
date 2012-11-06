@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
@@ -53,6 +54,19 @@ public class PartyElectionStateResultDAO extends GenericDaoHibernate<PartyElecti
 		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName, model.totalConstiParticipated, " +
 				"model.totalSeatsWon, model.votesPercentage, model.completeVotesPercent from PartyElectionStateResult model where " +
 				"model.election.electionId = ? and model.party.partyId = ? and model.state.country.countryId = ?",params);
+	}
+	
+	public List<PartyElectionStateResult> getParticipatedPartiesDetailsInStates(Long electionId , List<Long> stateIdList){
+		
+		Query query = getSession()
+				.createQuery(
+						"select model from PartyElectionStateResult model where model.election.electionId = :electionId and model.state.stateId in (:stateIdList) and model.totalSeatsWon > 0 ");
+		
+		query.setParameter("electionId", electionId);
+		query.setParameterList("stateIdList", stateIdList);
+		
+		return query.list();
+		
 	}
 	
 }
