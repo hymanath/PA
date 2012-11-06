@@ -338,6 +338,8 @@
 		<property name="userPartyRelationDAO" ref="userPartyRelationDAO"/>
 		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"/>
 		<property name="commentDAO" ref="commentDAO"/>
+		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO"/>
+		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
