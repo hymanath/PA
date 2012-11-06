@@ -5,8 +5,10 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Complete Result</title>
+<meta name="keywords" content="Opinion polls on politics ,Polls result" />
+<title>${questionsOptionsVO.question}</title>
 <!-- YUI Dependency files (Start) -->
 
 	
@@ -92,12 +94,12 @@
 .resultdisplay .previouslink{ float:left;}
 .resultdisplay .nextlink{ float:right;}
 #resultsDiv li{display:block;clear:both;margin:5px 10px;padding:5px;float:right:width:75%;}
-#resultsDiv li h5{display:inline-block;float:left;width:150px;text-align:right;}
+#resultsDiv li h5{display:inline-block;float:left;width:150px;text-align:right;font-family:verdana;}
 #resultsDiv li span{float:left;margin-left:10px;}
 		
 	.comments{position: relative; display: table; width: 780px; margin: 10px auto;background:#fff;}	
 	.comments h2{padding:10px;}
-	.commentsec{padding:10px; box-shadow:0px 2px 2px #ddd;margin:15px 5px;}
+	.commentsec{padding:10px; box-shadow:0px 2px 2px #ddd;margin:6px 5px;}
 	
 	.abs{position:relative;}
 	.abs textarea{background:#fff;border:1px solid #fff !important;width:680px;}
@@ -275,7 +277,7 @@ function initializeResultsTable() {
  
 	<p class="question"><b>${questionsOptionsVO.question}</b> 
 </p>
-	<p class="pull-right">Total Votes  Polled:<span><b id="totalVotesId">${questionsOptionsVO.totalVotesObtainedForPoll}</b></span></p>
+	<p class="pull-right">Total Votes Polled:<span class="badge badge-success"><b id="totalVotesId">${questionsOptionsVO.totalVotesObtainedForPoll}</b></span></p>
     
 	    <ul id="resultsDiv">
 	    <c:forEach var="polls" varStatus="stat" items="${questionsOptionsVO.options}">
@@ -369,25 +371,23 @@ function initializeResultsTable() {
 		
 		
 		<div class="pull-right">
-		<a class="btn btn-danger" href="javaScript:{validateCommentFields();}" title="Click Here To Post The Comment">Post Comment</a>
+		<a class="btn btn-success" href="javaScript:{validateCommentFields();}" title="Click Here To Post The Comment">Post Comment</a>
 		
 		</div>
 
 		</div>
 
-		
-	
 	<c:forEach  var="comment" varStatus="stat" items="${commentList}">
 	
 	<div class='span9 commentsec'>
 
-		 <div style="margin-bottom:2px;">${comment.comment}</div>
+		 <div style="margin-bottom:8px;">${comment.comment}</div>
 		 <span class="label label-info">Posted By:${comment.firstName} ${comment.lastName}  </span>	
 		 <span id="abuseSuccess${comment.commentId}"></span>	 
 		
 			
 
-		<a class="label pull-right"  style="margin-top:3px;margin-left:280px;" title="Click Here To Abuse This Comment" onClick="callAjaxToAbuse(${comment.commentId});" id="${comment.commentId}">Report Abuse</a>
+		<a class="label label-important pull-right"  style="margin-top:3px;margin-left:280px;" title="Click Here To Abuse This Comment" onClick="callAjaxToAbuse(${comment.commentId});" id="${comment.commentId}">Report Abuse</a>
    </div>
 	
 	 </c:forEach>
@@ -816,5 +816,3 @@ function paceDefaultValuesForFields(){
 
 </body>
 </html>
-
-
