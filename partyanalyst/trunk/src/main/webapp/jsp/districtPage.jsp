@@ -1658,9 +1658,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </span>
 <span style="margin-top:10px;margin-right:18px;float:right">
-<a name="fb_share" type="button_count" 
-share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtId}">Share in Facebook</a> 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+
+<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/districtPageAction.action?districtId=${districtId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 </span>
 <span style="margin-top:10px;float:right">
   <a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/districtPageAction.action?districtId=${districtId}&districtName=${districtName}">
