@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyUrbanDetailsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStateRegionService;
@@ -72,6 +74,17 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private Boolean hasDeatiledAnalysis = false;
 	private EntitlementsHelper entitlementsHelper;
 	private List<ConstituencyUrbanDetailsVO> urbanDetailsList;
+	private ElectionGoverningBodyVO electionGoverningBodyVO;
+    private ICandidateDetailsService candidateDetailsService;
+	
+	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
+		return electionGoverningBodyVO;
+	}
+
+	public void setElectionGoverningBodyVO(
+			ElectionGoverningBodyVO electionGoverningBodyVO) {
+		this.electionGoverningBodyVO = electionGoverningBodyVO;
+	}
 	
 	public List<ConstituencyUrbanDetailsVO> getUrbanDetailsList() {
 		return urbanDetailsList;
@@ -272,11 +285,42 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			List<PartyElectionResultVO> partyElectionResultVO) {
 		this.partyElectionResultVO = partyElectionResultVO;
 	}
+	
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
 
 	public String execute() throws Exception {
 		
 		HttpSession session = request.getSession();
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
+		
+		electionGoverningBodyVO = candidateDetailsService.getElectionDetailsForMinister(Long.parseLong(electionId));
+		
+		if(electionType == null)
+			electionType = electionGoverningBodyVO.getElectionType();
+		
+		if(electionTypeId == null)
+			electionTypeId = electionGoverningBodyVO.getElectionTypeId();
+		
+		if(stateID == null)
+			if(electionGoverningBodyVO.getStateId() != null)
+			stateID = electionGoverningBodyVO.getStateId().toString();
+		
+		if(stateID == null)
+			stateID ="1";
+		
+		if( year == null)
+			year = electionGoverningBodyVO.getElectionYear();
+		
+		if(stateName == null)
+			stateName = electionGoverningBodyVO.getStateName();
+		
 		
 		if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
 			hasDeatiledAnalysis = true;
