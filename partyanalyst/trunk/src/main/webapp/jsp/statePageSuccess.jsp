@@ -49,8 +49,6 @@
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
-	<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
-
 	<!-- Local Files-->
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/statePage/statePage.js"></script>
@@ -281,7 +279,7 @@ text-decoration:none;
 			</script>
 		</span>
 		<span style="float:right;margin-right: 20px;">
-			<a name="fb_share" type="button_count"  share_url="www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}">Share in Facebook</a> 
+			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 		</span>
 
 	</div>
