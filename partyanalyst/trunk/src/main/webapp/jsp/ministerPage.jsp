@@ -30,6 +30,11 @@
 <script type="text/javascript"> 
 $(document).ready(function(){
 
+	$('.constituencyInState').hide();
+	 $('.closebutton').hide();
+	 $('.notesDiv').hide();
+
+
 var rowCountForIndependentResigned = $('#independentResigned tr').length;
 var rowCountForministersOfStateResigned = $('#ministersOfStateResigned tr').length;
 var rowCountForCabinetResigned = $('#cabinetResigned tr').length;
@@ -169,8 +174,21 @@ if(rowCountForIndependentResigned == 1){
 	border-radius: 3px;
 	padding: 1px 8px;
 }
-
-
+.dl-horizontal-cust{display:inline-block;clear:both;background:#fff;width:100%;margin-top:0px;}
+.dl-horizontal-cust dt{display:inline-block;width:50%;text-align:right;font-weight:normal;margin:5px;}
+.dl-horizontal-cust dd{display:inline-block;width:auto;clear:right;margin:5px;}
+.constituencyInState>div:nth-child(4n+1){clear:left;}
+.constituencyInState>div{margin-left:15px;}
+.constituencyInState h4{text-align:center; background-color: #49AFCD;
+    background-image: -moz-linear-gradient(center top , #5BC0DE, #2F96B4);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);border-image: none;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);  color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);}
+.constituencyInState h4 span{margin-left:15px;}
 </style>
 
 <script type="text/javascript">
@@ -230,18 +248,7 @@ callAjax(jsObj,url);
 
 function navigateToMinisterPage()
 {
-     if($('#yearSelId').val()== "" || $('#yearSelId').val()== 0 ){
-		 alert("Please select Year");
-		 return false;
-	 }
-
-
-	 if($('#stateListId').val() == "" ||  $('#stateListId').val() == 0){
-
-		 alert("Please select State");
-		 return false;
-	 }
-
+     
 	var electionSelectEl = document.getElementById("yearSelId");
 	var electionIdVal = electionSelectEl.options[electionSelectEl.selectedIndex].value
 	window.location="ministersPageAction.action?electionId="+electionIdVal; 
@@ -552,6 +559,76 @@ function getMinistryYears(taskType)
 
 	</div>
 
+
+<div style="margin-top:46px;margin-bottom:40px;text-align:center;">
+
+
+<span class="badge badge-info" style="padding:14px;background-color:#06ABEA;" >
+	<label style="padding:9px;"><input type="radio" value="Assembly" name="selectScope" checked="true" id="state"><b style="font-size:14px;" onclick="showHidsState();showOthers();showStatesDiv();">Assembly</b></label>
+
+	<label style="padding:9px;"><input type="radio"  value="Parliament" id="parlSel" name="selectScope" onchange="hideStatesDiv(); getMinistryYears();"><b style="font-size:14px;">Parliament</b></label>
+
+
+
+	<label style="margin-left:27px;"><span class="stateLabel"><b>Select State :</b></span>
+		<select  onchange="getMinistryYears();" id="stateListId" style="padding:3px;box-shadow:1px 2px 9px #005FCC;">
+		<option value="0">Select State</option>			  
+		</select>
+	</label>
+
+	<label>
+	<span><b>Select Year :</b></span>
+		<select style="padding:3px;box-shadow:1px 2px 9px #005FCC;width:67px;" id="yearSelId">
+		<option value="0">Select Year</option>
+		</select>
+	</label>
+
+	<label>
+	<a onclick="navigateToMinisterPage()"><input type="button" class="btn" value="View"></a>
+	</label>
+
+	</span>
+
+</div>
+
+<script>
+function hideStatesDiv(){
+
+	$('#stateListId').hide();
+	$('.stateLabel').hide();
+
+}
+
+function showStatesDiv(){
+
+	$('#stateListId').show();
+	$('.stateLabel').show();
+
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
 	<div style="text-align:center;width:700px;border-radius:3px;background:#E0F3A3;;margin-top: 13px;margin-left:97px;padding:7px 11px 7px 31px;width:725px;border-radius:3px 3px 3px 3px;margin-bottom:10px;">
 	<table>
 		<tr>
@@ -567,6 +644,8 @@ function getMinistryYears(taskType)
 		</tr>
 	</table>
 	</div>
+
+	-->
 
 <!-- NO OF MINISTERS IN EACH STATE START FOR PARLIMENT-->
 <!--<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
@@ -603,8 +682,143 @@ function getMinistryYears(taskType)
  </c:if>
  <!-- NO OF MINISTERS IN EACH STATE END FOR ASSEMBLY -->
 
+
+ <!-- TOTAL CONSTITUENCIES INFORMATIONFOR ASSEMBLY  START-->
+
+ <c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+ <a  class="btn btn-primary completeDetailsBtn" href="javaScript:{showBlock();}"  title="Click here to View District wise Party Performance"><b> Click here to View District wise Party Performance </b></a>
+
+ <a class="btn btn-primary closebutton" href="javaScript:{hideBlock();}" title="Hide more details"><b> Hide District Details</b></a>
+
+   
+<a href="javaScript:{redirectToResultsPage();}" title="Click here to view  <s:property value='%{electionGoverningBodyVO.stateName}'/> ${electionGoverningBodyVO.electionYear} Assembly Election Results" class="btn btn-primary"><b>Click here to view <s:property value="%{electionGoverningBodyVO.stateName}"/> ${electionGoverningBodyVO.electionYear} Assembly Election Results</b></a>
+
+<div  class="alert alert-info notesDiv"  style="margin-left:24px;margin-top:20px;">
+	 <span><b>NOTE : </b> *  : total constituencies participated by party.</span><br>
+	 <span style="margin-left:45px;"> ** : total no of constituencies won by party.</span>
+</div>
+
+ <div class="constituencyInState row breadcrumb" style="width:999px;">
+
+
+ <c:forEach var="district" items="${candidateMinistriesVO[0].districtConstituencyCountMap}">
+<div  class="span2 breadcrumb">
+
+	<h4>${district.key}<span class="pager"><a>${district.value.totalConstituencies}</a></span></h4>
+	<dl class="dl-horizontal-cust">
+	 <c:forEach var="party" items="${district.value.partyElectionResultsList}">
+	  <dt> ${party.partyName}(${party.totalSeatsParticipated}*)</dt> <dd class="badge badge-success">${party.totalSeatsOwn}</dd>**
+	 </c:forEach>
+	 	</dl>
+	 </div>
+</c:forEach>
+</div> 
+<a class="btn btn-primary closebutton" href="javaScript:{hideBlock();}" title="Hide more details"><b>Hide District Details</b></a>
+ </c:if>
+  <!-- TOTAL CONSTITUENCIES INFORMATION FOR ASSEMBLY END-->
+
+
+
+<script>
+function redirectToResultsPage(){
+
+	var stateId = $('#stateListId').val();
+	var stateName = $('#stateListId :selected').text();
+	var year = $('#yearSelId :selected').text();
+	var url="electionDetailsReportAction.action?electionId=${electionId}";
+
+	//var url="electionDetailsReportAction.action?electionId=${electionId}&stateID="+stateId+"&stateName="+stateName+"&electionType=Assembly&electionTypeId=2&year="+year+"";
+
+	window.open(url, '_blank');
+   // window.focus();
+
+}
+</script>
+
+<!--<a class="btn btn-primary" href="electionDetailsReportAction.action?electionId=38&stateID=1&stateName=AndhraPradesh&electionType=Assembly&electionTypeId=2&year=2009" >Click here to view 2009 election results </a>-->
+
+  
+ <!-- TOTAL CONSTITUENCIES INFORMATIONFOR PARLIAMENT  START-->
+
+ <c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
+ <a class="btn btn-primary completeDetailsBtn" href="javaScript:{showBlock();}" title="Click here for State wise Party Performances"> <b>Click here for State wise Party Performances</b></a>
+
+  <a class="btn btn-primary closebutton" href="javaScript:{hideBlock();}" title="Hide more details"><b> Hide State Details</b></a>
+
+  <a href="javaScript:{redirectToResultsPage();}" title="Click here to view  ${electionGoverningBodyVO.electionYear} Parliament Election Results" class="btn btn-primary"><b>Click here to View <s:property value="%{electionGoverningBodyVO.stateName}"/> ${electionGoverningBodyVO.electionYear} Parliament Election Results</b></a>
+
+
+  <div  class="alert alert-info notesDiv"  style="margin-left:24px;margin-top:20px;">
+	 <span><b>NOTE : </b> *  : total constituencies participated by party.</span><br>
+	 <span style="margin-left:45px;"> ** : total no of constituencies won by party.</span>
+  </div>
+
+ <div class="constituencyInState row breadcrumb" style="width:999px;">
+ <c:forEach var="district" items="${candidateMinistriesVO[0].stateConstituencyCountMap}">
+<div  class="span2 breadcrumb">
+
+	<h4>${district.key}<span class="pager"><a>${district.value.totalNoOfConstituencies}</a></span></h4>
+	<dl class="dl-horizontal-cust">
+	  <c:forEach var="party" items="${district.value.partyResultList}">
+	  <dt> ${party.partyName}(${party.totalSeatsParticipated})*</dt> <dd class="badge badge-success">${party.totalSeatsOwn} </dd>**
+	 </c:forEach>
+	 	</dl>
+	 </div>
+</c:forEach>
+</div> 
+<a class="btn btn-primary closebutton" href="javaScript:{hideBlock();}"> Hide State Details</a>
+ </c:if>
+  <!-- TOTAL CONSTITUENCIES INFORMATION FOR PARLIAMENT END-->
+
+
+
+
+  <!-- TOTAL CONSTITUENCIES INFORMATIONFOR PARLIAMENT  START-->
+ <!--<c:if test="${electionGoverningBodyVO.electionType == 'Parliament'}">
+<a class="btn btn-primary" href="javaScript:{showBlock();}"> Click here for more details</a>
+
+ <div class="constituencyInState" style="width:999px;">
+
+	<c:forEach var="district" items="${candidateMinistriesVO[0].stateConstituencyCountMap}">
+	<table  class="alert alert-success" width="24%" class="alert alert-success" style="height:152px;float:left;margin-right:10px;"><tr>
+	 <td width="60%" style="border-right:1px solid #3A87AD;"> <b>${district.key} (${district.value.totalNoOfConstituencies})</b></td>
+	 <td width="50%">	 	
+		 <c:forEach var="party" items="${district.value.partyResultList}">
+		 ${party.partyName} - ${party.totalSeatsOwn} <br>
+		 </c:forEach>
+	 
+	 </td>
+
+	</tr>
+	</table>
+	</c:forEach>
+</div>
+<a class="btn btn-primary closebutton" href="javaScript:{hideBlock();}"> Hide more details</a>
+
+ </c:if>-->
+  <!-- TOTAL CONSTITUENCIES INFORMATION FOR PARLIAMENT END-->
+
+  <script>
+  function showBlock(){
+	  $('.constituencyInState').show('slow');
+	  $('.closebutton').show('slow');
+	  $('.notesDiv').show();
+	  $('.completeDetailsBtn').hide();
+  }
+  function hideBlock(){
+	   $('.constituencyInState').hide('slow');
+	   $('.closebutton').hide('slow');
+	   $('.notesDiv').hide();
+	   $('.completeDetailsBtn').show();
+
+
+  }
+  </script>
+
+
+
 	
-	<div id="DataTable" style="background:#ffffff;padding-left:70px;margin-top: 20px;">
+	<div id="DataTable" style="background:#ffffff;padding-left:70px;margin-top: 20px;clear:both;">
 
 	<!-- Chief Minister Details Div Start -->
 
@@ -1178,7 +1392,7 @@ function getMinistryYears(taskType)
 	<c:if test="${candidateMinistriesVO[0].hasCabinetMinisters}">
       <!--<div id="cabinetResignedDiv" style="background-color:#f1f1f1;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Resigned Cabinet Ministries of Manmohan Singh Cabinet</h3></div>-->
 		<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
-		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;;width:95%;"><h3 class="alert alert-error" style="padding:1px;text-align:center;width:95%;">Ex Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3></div>
+		<div id="cabinetResignedDiv" style="background-color:#f1f1f1;;width:95%;"><h3 class="alert alert-error" style="padding:1px;text-align:center;">Ex Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}"/></h3></div>
 		<!--<div class="headingDiv"><span class="headingStyle">Resigned Cabinet Minister of <s:property value="%{electionGoverningBodyVO.stateName}" /></span></div>-->
 		</c:if>
 
@@ -1253,8 +1467,6 @@ function getMinistryYears(taskType)
 			</td>
 
 		</tr>
-		
-			
 		</c:if>
 	</c:forEach>
 
