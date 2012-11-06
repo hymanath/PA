@@ -2154,7 +2154,8 @@ function showFirstFourNewsRecords(results)
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results.fileVOList[0].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+results.fileDate+'</font>';
 	 str+='       </td>';
 	 str+='       <td>';
-	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	 /*str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';*/
+	 str +='<a href="javascript:{}" onClick="shareInFacebook("www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+results.contentId+'")" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='     </table>';
@@ -2308,7 +2309,8 @@ function showFirstFourNewsRecords(results)
 	 str+='        <B>Source</B> : <font color="#FF4500">'+fileVo.source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+results.fileDate+'</font>';
 	 str+='       </td>';
 	 str+='       <td>';
-	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	/* str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';*/
+	str +='<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'\')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='     </table>';
@@ -3872,7 +3874,8 @@ function buildContentDetails()
 
 	var str = '';
 	str += ''+titleStr+' ('+curPos+' of '+totSize+')<span style="margin-top:10px;margin-right:18px;float:right">';
-	str += '<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this in Facebook"></img></a>';
+	/*str += '<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this in Facebook"></img></a>';*/
+	str +='<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'\')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
 	str += '</span>';
 	
 	document.getElementById("showContentHeaderDiv").innerHTML=str;
