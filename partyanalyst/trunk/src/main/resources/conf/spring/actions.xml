@@ -483,6 +483,7 @@
 			<property name="stateRegionService" ref="stateRegionService" />
 			<property name="partyStrengthService" ref="partyStrengthService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
+			<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
 	
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
