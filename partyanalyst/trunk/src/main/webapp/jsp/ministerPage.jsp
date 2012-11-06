@@ -25,8 +25,6 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js"></script> 
 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
-
 <script type="text/javascript"> 
 $(document).ready(function(){
 
@@ -552,9 +550,7 @@ function getMinistryYears(taskType)
 		</span>
 
 		<span style="margin-top:10px;margin-right:18px;float:right">
-		<a name="fb_share" share_url="ministersPageAction.action?electionId=${electionId}" type="button_count">Share in Facebook</a> 
-		<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
-		</script>
+		<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/ministersPageAction.action?electionId=${electionId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 		</span>
 
 	</div>
