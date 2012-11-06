@@ -643,6 +643,8 @@ function updateActionPlan(planId){
 function handleSubmit(type)
 	{
 	     $("#errorMsgDiv").html("");
+		 var errorReq = false;
+		 var str = '';
 		var eventNameVal = document.getElementById("eventNameText").value;
 		var startDateVal = document.getElementById("startDateText_new").value;
 		var endDateVal = document.getElementById("endDateText_new").value;
@@ -677,64 +679,54 @@ function handleSubmit(type)
 		 
 		//validation code
 		if(eventNameVal == '' ){
-			errorMsg.innerHTML = "Please enter event name";
-			 $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+= "Please enter Event Name.<br/>";
+			 errorReq = true;
 		}
 		else if ( /[^A-Za-z\d\s]/.test(eventNameVal))
 		{
-		  errorMsg.innerHTML = " Event name should not contain special characters & numbers";
-		   $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-		  return;
+		  str+=  " Event Name should not contain special characters & numbers.</br>";
+		   errorReq = true;
 		}
 		else if(startdate > enddate){
-		  errorMsg.innerHTML = "Please select A valid date for End date";
-		   $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-		  return;
+		  str+= "Please select A valid date for End date.<br/>";
+		   errorReq = true;
 		}
 		
 		if(scopeId == 0 ){
-			errorMsg.innerHTML = "Please Select Location Level";
-			$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+= "Please select Location Level.<br/>";
+			errorReq = true;
 		}
 	 if(type == "create" || (type == "update" && edited))
 	 {
 		if(scopeId == 2 && (stateValue == 0 || stateValue == undefined))
 		{			
-			errorMsg.innerHTML='Please select State.';
-			 $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+= 'Please select State.<br/>';
+			 errorReq = true;
 		}
 		if(scopeId == 3 && (districtValue == 0 || districtValue == undefined))
 		{
-			errorMsg.innerHTML='Please select District.';
-			$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+='Please select District.<br/>';
+			errorReq = true;
 		}
 		if((scopeId == 4 || scopeId == 10) && (constituencyValue == 0 || constituencyValue == undefined))
 		{
-			errorMsg.innerHTML='Please select Constituency.';
-			 $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+='Please select Constituency.<br/>';
+			errorReq = true;
 		}
 		if((scopeId == 5 || scopeId == 7) && (mandalValue == 0 || mandalValue == undefined))
 		{
-			errorMsg.innerHTML='Please select Mandal/Municipality/Corp/GMC.';
-			 $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+='Please select Mandal/Municipality/Corp/GMC.<br/>';
+			errorReq = true;
 		}
 		if((scopeId == 6 || scopeId == 8) && (villageValue == 0 || villageValue == undefined))
 		{
-			errorMsg.innerHTML='Please select Village/Ward/Division.';
-			$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+='Please select Village/Ward/Division.<br/>';
+			errorReq = true;
 		}
 		if(scopeId == 9 && (boothVal == 0 || boothVal == undefined))
 		{
-			errorMsg.innerHTML='Please select Booth No.';
-			 $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-			return;
+			str+='Please select Booth No.<br/>';
+			errorReq = true;
 		}
 		
 		
@@ -767,11 +759,14 @@ function handleSubmit(type)
 	}
 	    if(descVal == '')
 		{
-		  errorMsg.innerHTML = "Please enter description";
-		   $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
+		  str += "Please enter Description.";
+		  errorReq = true;
+		}
+		if(errorReq){
+		  errorMsg.innerHTML = str;
+          $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
 		  return;
 		}
-
 		var selectedEventObj={
 							userEventsId:"",
 							eventName:"",
