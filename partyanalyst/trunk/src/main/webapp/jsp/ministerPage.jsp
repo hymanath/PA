@@ -591,40 +591,6 @@ function getMinistryYears(taskType)
 
 </div>
 
-<script>
-function hideStatesDiv(){
-
-	$('#stateListId').hide();
-	$('.stateLabel').hide();
-
-}
-
-function showStatesDiv(){
-
-	$('#stateListId').show();
-	$('.stateLabel').show();
-
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!--
 
@@ -1683,6 +1649,21 @@ function redirectToResultsPage(){
 	$("#impCandPerf").removeClass("dashBoardtabsDivSelected");
     $("#minisPerf").addClass("dashBoardtabsDivSelected");
 	showHidsState();
+
+
+function hideStatesDiv(){
+
+	$('#stateListId').hide();
+	$('.stateLabel').hide();
+
+}
+
+function showStatesDiv(){
+
+	$('#stateListId').show();
+	$('.stateLabel').show();
+
+}
 
 </script>
 </body>
