@@ -3337,6 +3337,214 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </div>
 <div class="clear"></div>
 
+<div id="registerDiv" style="position:fixed;width:159px;z-index:9999;margin-top:-93px;margin-left:152px;background-color:#F9F9F9;color:#000;padding:5px;cursor:pointer;border:2px solid #06ABEA">
+<a href="javaScript:hideRegisterDiv();" style="float: right;"><b>(X)</b></a>
+<a 
+href="freeUserRegistration.action"><b>Register</b>  </a>for free to get regular updates from Party Analyst
+
+</div>
+
+<script>
+function hideRegisterDiv(){
+	$('#registerDiv').hide('slow');
+
+}
+</script>
+
+
+
+<div style="margin-top:46px;">
+
+
+<span class="badge badge-info" style="padding:14px;background:#06ABEA;" >
+	<label style="padding:9px;"><input type="radio" value="Assembly" name="selectScope" checked="true" id="state"><b style="font-size:14px;" onClick="showStates();">Assembly</b></label>
+
+	<label style="padding:9px;"><input type="radio" onchange="hideStates();getMinistryYears();"  value="Parliament" id="parlSel" name="selectScope"><b style="font-size:14px;">Parliament</b></label>
+
+
+
+	<label style="margin-left:27px;"><span class="stateLabel"><b>Select State :</b></span>
+		<select onchange="getMinistryYears();" id="stateListId" style="padding:3px;box-shadow:1px 2px 9px #005FCC;">
+		<option value="0">Select State</option>			  
+		</select>
+	</label>
+
+	<label><b>Select Year :</b>
+		<select style="padding:3px;box-shadow:1px 2px 9px #005FCC;width:67px;" id="yearSelId">
+		<option value="0">Select Year</option>
+		</select>
+	</label>
+
+	<label>
+	<a onclick="navigateToMinisterPage()"><input type="button" class="btn" value="View"></a>
+	</label>
+
+	</span>
+
+</div>
+
+
+
+
+	<script>
+
+	getStatesForAssembly();
+
+function hideStates(){
+	$('#stateListId').hide();
+	$('.stateLabel').hide();
+
+}
+
+function showStates(){
+
+	$('#yearSelId').find('option').remove();
+	$('#stateListId').show();
+	$('.stateLabel').show();
+
+}
+
+function getStatesForAssembly()
+{
+    var jsObj =
+		{ 
+            time : new Date().getTime(),
+			task:"getAllStatesForParliamentMinisters"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;			callAjax1(jsObj,url);
+}
+
+function getMinistryYears(taskType)
+{
+	
+	var selectScopeRadio = document.getElementsByName("selectScope");
+	var electionType;
+	var stateIdEle = document.getElementById("stateListId");
+	var stateId = stateIdEle.options[stateIdEle.selectedIndex].value;
+	
+	for(var i=0;i<selectScopeRadio.length;i++)
+	{
+		if(selectScopeRadio[i].checked == true)
+			electionType = selectScopeRadio[i].value;
+	}
+		
+	
+	var jsObj =
+		{ 
+            time : new Date().getTime(),
+			electionType:electionType,
+			stateId : stateId,
+			taskType : taskType,
+			task:"getMinistryYears"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getMinisterDataAvailableYearsForAState.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+function callAjax1(jsObj,url)
+{
+		var myResults;
+ 					
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {												
+									if(o.responseText)
+										myResults = YAHOO.lang.JSON.parse(o.responseText);
+									
+									if(jsObj.task == "getMinistryYears")
+									{
+
+										buildYearsData(myResults);
+
+										console.log(o.responseText);
+									     // removeData("yearSelId");
+									     // buildData(myResults,"yearSelId");
+										  
+										 // if(jsObj.taskType != null && jsObj.taskType == 'onLoad')
+										 // setSelectedyear(myResults,'${electionGoverningBodyVO.electionYear}');
+									}
+									else if(jsObj.task == "getStatesForAssign")
+									{
+									     // removeData("stateListId");
+										 // addState("stateListId");
+									     // buildData(myResults,"stateListId");
+									}
+									else if(jsObj.task == "getAllStatesForParliamentMinisters")
+									{
+
+										buildStatesData(myResults);
+									      //removeData("stateListId");
+										  //addState("stateListId");
+									      //buildData(myResults,"stateListId");
+										 // setselectedIdforAState(myResults,minStateId);
+									}
+									else if(jsObj.task == "getAllYearsAndElecIdsForAssembly")
+									{
+									      removeData("yearSelId");
+										  addData("yearSelId");										  
+									      buildData(myResults,"yearSelId");
+										 
+									}
+									else if(jsObj.task == "getAllYearsAndElecIdsForParliament")
+									{
+									       removeData("yearSelId");
+										   //addData("yearSelId");
+									      buildData(myResults,"yearSelId");
+										  
+									}
+									
+								}
+							catch (e) {   
+							   //	alert("Invalid JSON result" + e);   
+						}  
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+		                         }
+		               };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildStatesData(myResults){
+
+ $('#stateListId').find('option').remove();
+ $('#stateListId').append($("<option></option>").attr("value",0).text("Select State")); 
+
+for(var i=0;i<myResults.length;i++)
+  $('#stateListId').append($("<option></option>").attr("value",myResults[i].id).text(myResults[i].name)); 
+
+}
+
+function buildYearsData(myResults){
+
+  $('#yearSelId').find('option').remove();
+
+for(var i=0;i<myResults.length;i++)
+  $('#yearSelId').append($("<option></option>").attr("value",myResults[i].id).text(myResults[i].name)); 
+
+}
+
+function navigateToMinisterPage(){
+
+	var year = $('#yearSelId').val();
+
+	var url="electionDetailsReportAction.action?electionId ="+year+"";
+
+	//var url = "ministersPageAction.action?electionId="+$('#yearSelId').val();
+
+	window.open(url, '_blank');
+
+
+}
+	</script>
+
+
+
 <div id="topStoriesDIV">
    <DIV class="graphTop"> Highlights Of ${year} 
    <c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;</c:if>&nbsp;${electionType}&nbsp;Elections</DIV>
@@ -3412,6 +3620,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </div>
 
 
+
 <DIV id="task1"></DIV>
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV>
  </c:if>
@@ -3420,7 +3629,20 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV id="statewiseGraph">
  <DIV id="stateRegionsDiv"></DIV>
 
+
+
 <DIV id="graphImage" class="yui-skin-sam" style="width:970px;overflow:hidden;margin:auto;"></DIV>
+
+<c:if test="${electionType != 'Parliament'}"> 
+<a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${stateName}</b></a>
+</c:if>
+
+<c:if test="${electionType == 'Parliament'}">
+
+<a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${year} Parliament </b></a>
+</c:if>
+
+
 <DIV class="yui-skin-sam" style="width:880px;">
 	<TABLE border="0" width="95%" class="container" >
 		<TR>
@@ -3443,6 +3665,8 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</TABLE>
 	<DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;TP and PC% columns are empty for alliance parties in Partywise Results table, to find TP and PC% for alliance parties kindly refer TP and PC% columns of Alliance Details Table.TP and PC% are Not Applicable for Independent Candidates(IND).</P></DIV>
 </DIV>
+
+
 <c:if test="${hasDeatiledAnalysis}">
 <DIV style="padding:10px;">
 	<TABLE width="50%" border="0" cellpadding="0" cellspacing="0">
@@ -3455,6 +3679,8 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</TABLE>
 </DIV>
 </c:if>
+
+
 
 <!--<DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
 --></DIV>
