@@ -11,7 +11,7 @@
 <title>
 <div><c:out value="${selectedPartyShortName}"/>  Party Results for  <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> <c:out value="${selectedElectionTypeName}"/> Elections
 		</div></title>
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+
 <script type="text/javascript">
 var labelResources = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -119,7 +119,7 @@ table.searchresultsTable td {
 		</span>
 
 		<span style="float:right;margin-right: 25px;">
-		<a name="fb_share" type="button_count" share_url="www.partyanalyst.com/partyResultsAction.action?selectedPartyShortName=${selectedPartyShortName}&selectedPartyId=${selectedPartyId}&selectedElectionTypeName=${selectedElectionTypeName}&selectedLocationName=${selectedLocationName}&electionType=${electionType}&reportLevel=${reportLevel}&stateSelectName=${stateSelectName}&partySelectName=${partySelectName}&alliances=true&__checkbox_alliances=true">Share in Facebook</a> 
+		<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyResultsAction.action?selectedPartyShortName=${selectedPartyShortName}&selectedPartyId=${selectedPartyId}&selectedElectionTypeName=${selectedElectionTypeName}&selectedLocationName=${selectedLocationName}&electionType=${electionType}&reportLevel=${reportLevel}&stateSelectName=${stateSelectName}&partySelectName=${partySelectName}&alliances=true&__checkbox_alliances=true')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 		</span>
 	
 	</div>
