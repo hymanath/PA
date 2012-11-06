@@ -8,7 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${problemBeanVO.problem}</title>
 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -489,7 +488,8 @@ function focusOnTextareas()
 			</script>
 		</span>
 		<span style="float:right;margin-right: 20px;">
-			<a name="fb_share" type="button_count"  share_url="www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId=${problemBeanVO.problemHistoryId}">Share in Facebook</a> 
+			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId=${problemBeanVO.problemHistoryId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+
 		</span>
 			</c:if>
 
