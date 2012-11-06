@@ -250,7 +250,7 @@ function initializeResultsTable() {
           <button class="btn btn-primary"><i class="icon-share icon-white"></i> Share this Poll</button>
           <button data-toggle="dropdown" class="btn dropdown-toggle btn-primary" style="height:28px;"><span class="caret"></span></button>
           <ul class="dropdown-menu pull-right">
-            <li><div style="padding-left:15px;"><a href="#" name="fb_share" type="button_count"  share_url="www.partyanalyst.com/completeResultForAPollAction.action?questionId=${questionsOptionsVO.questionId}&comments=getComments" onClick="shareInFacebook('www.partyanalyst.com/completeResultForAPollAction.action?questionId=${questionsOptionsVO.questionId}&comments=getComments}')" title="Share this Page in Facebook" ><img alt="facebook image" style="height:18px;" src="images/facebook.png"/>Share in Facebook</a></div></li>
+            <li><div style="padding-left:15px;"><a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/completeResultForAPollAction.action?questionId=${questionsOptionsVO.questionId}&comments=getComments}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a></div></li>
 			<li><div style="margin-left:31px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/completeResultForAPollAction.action?questionId=${questionsOptionsVO.questionId}&comments=getComments">
 				Tweet</a></div>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
