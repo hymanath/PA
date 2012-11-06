@@ -6,8 +6,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>All Polls</title>
+<meta name="keywords" content="Opinion polls on politics ,Polls result" />
 
+<title>Openion Polls On Political</title>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
@@ -214,9 +215,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
         <div class="main-mbg">Recent polls details</div></div>
         <div class="main-bbg"></div>
       </div>
-      
-
-
 <div class="container">
 <div class="span8-cuswidth">
 
