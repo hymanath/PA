@@ -1650,6 +1650,12 @@ function redirectToResultsPage(){
     $("#minisPerf").addClass("dashBoardtabsDivSelected");
 	showHidsState();
 
+	if('${electionGoverningBodyVO.electionType}' == 'Parliament')
+	{
+		$('.stateLabel').hide();
+		$('#stateListId').hide();
+	}
+
 
 function hideStatesDiv(){
 
