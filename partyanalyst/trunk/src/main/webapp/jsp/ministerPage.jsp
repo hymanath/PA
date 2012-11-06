@@ -660,8 +660,8 @@ function getMinistryYears(taskType)
 <a href="javaScript:{redirectToResultsPage();}" title="Click here to view  <s:property value='%{electionGoverningBodyVO.stateName}'/> ${electionGoverningBodyVO.electionYear} Assembly Election Results" class="btn btn-primary"><b>Click here to view <s:property value="%{electionGoverningBodyVO.stateName}"/> ${electionGoverningBodyVO.electionYear} Assembly Election Results</b></a>
 
 <div  class="alert alert-info notesDiv"  style="margin-left:24px;margin-top:20px;">
-	 <span><b>NOTE : </b> *  : total constituencies participated by party.</span><br>
-	 <span style="margin-left:45px;"> ** : total no of constituencies won by party.</span>
+	 <span><b>NOTE : </b> *  : Total constituencies participated by party.</span><br>
+	 <span style="margin-left:45px;"> ** : Total no of constituencies won by party.</span>
 </div>
 
  <div class="constituencyInState row breadcrumb" style="width:999px;">
