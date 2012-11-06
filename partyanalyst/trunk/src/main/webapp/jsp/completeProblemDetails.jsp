@@ -1738,7 +1738,7 @@ function displayDateText(type, args, obj) {
           <button class="btn btn-primary"><i class="icon-share icon-white"></i> Share</button>
           <button data-toggle="dropdown" class="btn dropdown-toggle btn-primary"><span class="caret"></span></button>
           <ul class="dropdown-menu pull-right">
-            <li><div style="padding-left:15px;"><a name="fb_share" type="button_count"  share_url="www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}">Share in Facebook</a></div></li>
+            <li><div style="padding-left:15px;"><a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a></div></li>
 			<li><div style="padding-left:30px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}">
 				Tweet</a></div>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
