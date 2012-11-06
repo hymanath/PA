@@ -99,4 +99,16 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		
 	}
 
+	
+	public List<PartyElectionDistrictResult> getParticipatedPartiesDetailsInDistricts(Long electionId,List districtIdList){
+		
+		Query query = getSession().createQuery("select model from PartyElectionDistrictResult model where model.election.electionId = :electionId and model.district.districtId in (:districtIdList) and model.totalSeatsWon > 0 ");
+		
+		query.setParameter("electionId", electionId);
+		query.setParameterList("districtIdList", districtIdList);
+		
+		return query.list();
+		
+		
+	}
 }

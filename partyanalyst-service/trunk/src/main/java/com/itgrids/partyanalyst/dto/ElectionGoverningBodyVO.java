@@ -24,6 +24,7 @@ public class ElectionGoverningBodyVO implements Serializable {
 	private String partyName;
 	private Long electionId;
 	private String startDate;
+	private Long electionTypeId;
 	
 	public String getStartDate() {
 		return startDate;
@@ -118,10 +119,12 @@ public class ElectionGoverningBodyVO implements Serializable {
 	}
 	public void setMinisterType(String ministerType) {
 		this.ministerType = ministerType;
-	}
-	
-	
-	
-	
+	}	
 
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
 }

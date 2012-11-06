@@ -7,7 +7,6 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,6 +62,8 @@ import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
@@ -85,14 +87,17 @@ import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
+import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StateLevelPartyReportVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
 import com.itgrids.partyanalyst.model.AbusedComments;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -117,6 +122,8 @@ import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
+import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.PartyPageCustomPages;
 import com.itgrids.partyanalyst.model.PartySubscriptions;
 import com.itgrids.partyanalyst.model.RegionScopes;
@@ -131,6 +138,7 @@ import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+
 
 public class CandidateDetailsService implements ICandidateDetailsService {
 
@@ -188,12 +196,31 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IUserPartyRelationDAO userPartyRelationDAO;	
 	private IAbusedCommentsDAO abusedCommentsDAO;
 	private ICommentDAO commentDAO;
+	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
+	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
+	
+	public IPartyElectionStateResultDAO getPartyElectionStateResultDAO() {
+		return partyElectionStateResultDAO;
+	}
+
+	public void setPartyElectionStateResultDAO(
+			IPartyElectionStateResultDAO partyElectionStateResultDAO) {
+		this.partyElectionStateResultDAO = partyElectionStateResultDAO;
+	}
+
+	public IPartyElectionDistrictResultDAO getPartyElectionDistrictResultDAO() {
+		return partyElectionDistrictResultDAO;
+	}
+
+	public void setPartyElectionDistrictResultDAO(
+			IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO) {
+		this.partyElectionDistrictResultDAO = partyElectionDistrictResultDAO;
+	}
 	
 	
 	public ICommentDAO getCommentDAO() {
 		return commentDAO;
 	}
-
 	public void setCommentDAO(ICommentDAO commentDAO) {
 		this.commentDAO = commentDAO;
 	}
@@ -3017,6 +3044,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     		{
     			electionGoverningBodyVO = new ElectionGoverningBodyVO();
     			electionGoverningBodyVO.setElectionType(election.getElectionScope().getElectionType().getElectionType());
+    			electionGoverningBodyVO.setElectionTypeId(election.getElectionScope().getElectionType().getElectionTypeId());
     			electionGoverningBodyVO.setElectionYear(election.getElectionYear());
     			
     			if(election.getElectionScope().getState() != null)
@@ -3248,6 +3276,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
  		 			
  		 			
  		 			List<ConstituencyInfoVO> districtList = new ArrayList<ConstituencyInfoVO>(0);
+ 		 			Map<Long ,ConstituencyInfoVO > districtMap2 = new HashMap<Long, ConstituencyInfoVO>();
  		 			
  		 			
  		 			for (Map.Entry<String, Long> entry : districtMap1.entrySet()) {
@@ -3256,7 +3285,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
  		 				
  		 				districtVO.setDistrictName(entry.getKey().toString());
  		 				districtVO.setDistrictId(districtMap.get(entry.getKey()));
- 		 				districtVO.setDistrictCount((Long)entry.getValue());		 			
+ 		 				districtVO.setDistrictCount((Long)entry.getValue());	
+ 		 				
+ 		 				districtMap2.put(districtVO.getDistrictId(), districtVO);
  		 				
  		 				districtList.add(districtVO);
  		 			}
@@ -3330,7 +3361,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		 					
 		 					Collections.sort(resultList.get(0).getStatesList());
 		 					
-		 				}
+		 				}else{//need to check
 		 				
 		 				Long count = resultList.get(0).getStatesMap().get(constituency.getState().getStateName());
 		 				count++;
@@ -3340,14 +3371,19 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		 						//candidateVO.getStatesMap().put(constituency.getState().getStateName(), count);
 		 					}
 		 				}
+		 				}
 	 				}
 	 				
 	 				 cadtResults = null;
 	 			}
 	 		}
-	    	 //NEW CONTENT END	  
+	    	 //NEW CONTENT END	
 	 		
-	 		
+	 		//get Constituency Details Of Districts	 
+	 		if(!isParlimentElection )
+	 		 getConstituencyDetailsOfDistricts(resultList,electionId);
+	 		else
+	 			getParlimentConstituencyDetailsOfDistricts(resultList,electionId);
 	    	
     	return resultList;
     	}
@@ -3359,6 +3395,153 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     	}
     }
     
+    public List<CandidateMinistriesVO> getParlimentConstituencyDetailsOfDistricts(List<CandidateMinistriesVO> resultList,Long electionId){
+    	
+    	List<StatePageVO> statesList = resultList.get(0).getStatesList();
+    	
+    	 Map<String ,StateLevelPartyReportVO> stateConstituencyCountMap = new HashMap<String, StateLevelPartyReportVO>();
+    	 Map<String ,StateLevelPartyReportVO> sortedStateConstituencyCountMap = new HashMap<String, StateLevelPartyReportVO>();
+    	 
+    	 List<Long> stateIdList = new ArrayList<Long>();
+    	 
+    	 for(StatePageVO statePageVO:statesList){
+    		 stateIdList.add(statePageVO.getStateId());
+    		 stateConstituencyCountMap.put(statePageVO.getStateName(), new StateLevelPartyReportVO());
+    	 }
+    	 
+		List<PartyElectionStateResult> partyElectionStateResultList = partyElectionStateResultDAO
+				.getParticipatedPartiesDetailsInStates(electionId, stateIdList); 
+		
+		
+		for(PartyElectionStateResult partyElectionStateResult:partyElectionStateResultList){
+			
+			StateLevelPartyReportVO stateLevelPartyReportVO = stateConstituencyCountMap.get(partyElectionStateResult.getState().getStateName());
+			
+			if(stateLevelPartyReportVO.getPartyResultList() == null){
+				
+				List<PartyResultVO> partyResultVOList = new ArrayList<PartyResultVO>();
+					
+					PartyResultVO partyResultVO = new PartyResultVO();
+					
+					partyResultVO.setPartyName(partyElectionStateResult.getParty().getShortName());
+					partyResultVO.setTotalSeatsOwn(Integer.parseInt(partyElectionStateResult.getTotalSeatsWon()));
+					partyResultVO.setTotalSeatsParticipated(Long.parseLong(partyElectionStateResult.getTotalConstiParticipated()));
+					partyResultVOList.add(partyResultVO);
+					
+					stateLevelPartyReportVO.setPartyResultList(partyResultVOList);					
+ 					
+					stateLevelPartyReportVO.setTotalNoOfConstituencies(Long.parseLong(partyElectionStateResult.getTotalSeatsWon()));
+				
+			}else{
+					
+                PartyResultVO partyResultVO = new PartyResultVO();
+				
+				 partyResultVO.setPartyName(partyElectionStateResult.getParty().getShortName());
+				 partyResultVO.setTotalSeatsOwn(Integer.parseInt(partyElectionStateResult.getTotalSeatsWon()));
+				 partyResultVO.setTotalSeatsParticipated(Long.parseLong(partyElectionStateResult.getTotalConstiParticipated()));
+
+				 
+				Long count = stateLevelPartyReportVO.getTotalNoOfConstituencies();
+				
+				count = count + Long.parseLong(partyElectionStateResult.getTotalSeatsWon());
+				stateLevelPartyReportVO.setTotalNoOfConstituencies(count);
+				
+				stateLevelPartyReportVO.getPartyResultList().add(partyResultVO);
+			
+			}			
+		}
+		
+		List<String> sortedKeylist = new ArrayList<String>();
+		//Map<String, String> map = new HashMap<String, String>();
+		for (String str : stateConstituencyCountMap.keySet()) {
+			sortedKeylist.add(str);
+		}
+		Collections.sort(sortedKeylist);
+		
+
+		 for(String stateName:sortedKeylist)			 
+			 sortedStateConstituencyCountMap.put(stateName, stateConstituencyCountMap.get(stateName));
+			 
+		
+		
+		resultList.get(0).setStateConstituencyCountMap(sortedStateConstituencyCountMap);
+    	 
+    	return resultList;
+    }
+    
+    
+    public List<CandidateMinistriesVO> getConstituencyDetailsOfDistricts(List<CandidateMinistriesVO> resultList,Long electionId){
+    	
+    	
+ 		List<ConstituencyInfoVO> districtList = resultList.get(0).getDistrictList();
+        Map<String ,DistrictWisePartyResultVO> districtConstituencyCountMap = new HashMap<String, DistrictWisePartyResultVO>();
+        Map<String ,DistrictWisePartyResultVO> sortedDistrictConstituencyCountMap = new LinkedHashMap<String, DistrictWisePartyResultVO>();
+ 		
+ 		List<Long> districtIdsList = new ArrayList<Long>();
+       for(ConstituencyInfoVO constituencyInfoVO:districtList) {      	   
+    	   districtIdsList.add(constituencyInfoVO.getDistrictId());
+    	   districtConstituencyCountMap.put(constituencyInfoVO.getDistrictName(),new  DistrictWisePartyResultVO());
+       }
+       
+		List<PartyElectionDistrictResult> electionResultList = partyElectionDistrictResultDAO
+				.getParticipatedPartiesDetailsInDistricts(electionId,
+						districtIdsList);
+       
+ 			 for(PartyElectionDistrictResult partyResult:electionResultList){
+ 				 
+ 				DistrictWisePartyResultVO districtWisePartyResultVO = districtConstituencyCountMap.get(partyResult.getDistrict().getDistrictName());
+ 				
+ 				if(districtWisePartyResultVO.getPartyElectionResultsList() == null){
+ 					
+ 					List<PartyResultVO> partyResultVOList = new ArrayList<PartyResultVO>();
+ 					
+ 					PartyResultVO partyResultVO = new PartyResultVO();
+ 					
+ 					partyResultVO.setPartyName(partyResult.getParty().getShortName());
+ 					partyResultVO.setTotalSeatsOwn(Integer.parseInt(partyResult.getTotalSeatsWon()));
+ 					partyResultVO.setTotalSeatsParticipated(Long.parseLong(partyResult.getTotalConstiParticipated()));
+ 					partyResultVOList.add(partyResultVO);
+ 					
+ 					districtWisePartyResultVO.setPartyElectionResultsList(partyResultVOList);
+ 					
+ 					districtWisePartyResultVO.setTotalConstituencies(Long.parseLong(partyResult.getTotalSeatsWon()));
+ 					
+ 				}else{
+ 					
+                     PartyResultVO partyResultVO = new PartyResultVO();
+ 					
+ 					 partyResultVO.setPartyName(partyResult.getParty().getShortName());
+ 					 partyResultVO.setTotalSeatsOwn(Integer.parseInt(partyResult.getTotalSeatsWon()));
+ 					partyResultVO.setTotalSeatsParticipated(Long.parseLong(partyResult.getTotalConstiParticipated()));
+ 					 
+ 					Long count = districtWisePartyResultVO.getTotalConstituencies();
+ 					
+ 					count = count + Long.parseLong(partyResult.getTotalSeatsWon());
+ 					districtWisePartyResultVO.setTotalConstituencies(count);
+ 					
+ 					 districtWisePartyResultVO.getPartyElectionResultsList().add(partyResultVO);
+ 				}	 				 
+ 				 
+ 			 }
+ 			 
+ 			List<String> sortedKeylist = new ArrayList<String>();
+ 			//Map<String, String> map = new HashMap<String, String>();
+ 			for (String str : districtConstituencyCountMap.keySet()) {
+ 				sortedKeylist.add(str);
+ 			}
+ 			Collections.sort(sortedKeylist);
+ 			
+
+ 			 for(String districtName:sortedKeylist)			 
+ 				sortedDistrictConstituencyCountMap.put(districtName, districtConstituencyCountMap.get(districtName));
+ 		
+ 			 resultList.get(0).setDistrictConstituencyCountMap(sortedDistrictConstituencyCountMap);
+ 		
+ 			//GET CONSTITUENCY DETAILS OF DISTRICTS END 
+ 			 
+ 			 return resultList;
+    	
+    }
     public CandidateMinistriesVO getCandidateMinistriesVO(List<CandidateMinistriesVO> list,Long candidateId)
     {
     	try{

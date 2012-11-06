@@ -15,7 +15,7 @@ public class OpinionPollCommentsDAO extends GenericDaoHibernate<OpinionPollComme
 	
 	public List<Object[]> getCommentDetailsByQuestionId(Long pollId){
 		
-		return getHibernateTemplate().find("select model.comment.commentId,model.comment.comment,model.firstName,model.lastName,model.insertedTime from OpinionPollComments model where model.opinionPoll.opinionPollId=?",pollId);
+		return getHibernateTemplate().find("select model.comment.commentId,model.comment.comment,model.firstName,model.lastName,model.insertedTime from OpinionPollComments model where model.opinionPoll.opinionPollId=? order by model.insertedTime DESC",pollId);
 		
 	}
 }

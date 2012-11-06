@@ -538,4 +538,7 @@ public interface IConstants {
 	public static final String CADRE_REGISTER_FROM_ONLINE = "RegisteredFromOnline";
 	
 	public static final String CADRE_REGISTERED_BY_USER = "RegisteredByUser";
+	
+	public static final String WORKING_STATUS_WORKING = "Working";
+	public static final String WORKING_STATUS_COMPLETED = "Completed";
 }

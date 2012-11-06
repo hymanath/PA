@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.model.ElectionGoverningBody;
@@ -73,5 +75,38 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 	}
 	public List<Object[]> getChiefMinisters(Long stateId){
 		return getHibernateTemplate().find("select model.candidate.candidateId ,model.candidate.lastname,model.party.partyId,model.party.shortName,model.fromDate,model.election.electionId from ElectionGoverningBody model where model.positionScope.electionGoverningBodyPosition.governingBodyPosition = 'Chief Minister' and model.status = 'Working' and model.election.electionScope.state.stateId=?",stateId);
+	}
+	
+	public List checkForPositionExistanceForCandidate(Long electionId,Long candidateId ,Long positionScopeId,Long partyId,String workingStatus	){
+		
+		Query queryObject = getSession().createQuery("select model.governingElectionBodyId from ElectionGoverningBody model "+
+		"where model.election.electionId = ? and model.candidate.candidateId = ? and model.positionScope.positionScopeId = ? "+
+				"and model.party.partyId = ? and model.status = ?"); 
+		
+		queryObject.setParameter(0, electionId);
+		queryObject.setParameter(1, candidateId);
+		queryObject.setParameter(2, positionScopeId);
+		queryObject.setParameter(3, partyId);
+		queryObject.setParameter(4, workingStatus);
+		
+		return queryObject.list();
+		
+					
+	}
+	
+	public int updateCandidatePositionDetails(Long electionGoverningBodyId,Date	toDate,String workingStatus){
+		
+		Query queryObject = getSession()
+				.createQuery(
+						"update ElectionGoverningBody model set model.status = ? , model.toDate = ? where model.governingElectionBodyId = ?");
+		
+		
+		queryObject.setParameter(0,workingStatus );
+		queryObject.setParameter(1, toDate);
+		queryObject.setParameter(2, electionGoverningBodyId);
+		
+		return queryObject.executeUpdate();
+		
+		
 	}
 }
