@@ -96,7 +96,7 @@ text-shadow:0px 1px 1px #fff;
 <div class="pheaderleft">
 <img src="images/icons/logoPA.png" alt="logo"/></div>
 <div class="pheaderright">
-<h1><span style="color:#000;">HAPPY</span> <img src="images/Devi.png"> DUSSEHRA</h1>
+<h1><img src="images/diwali.png"></h1>
 <span style="font:bold 16px Arial;text-shadow:0px 0px 2px #d3d3d3;">CONNECT WITH PARTY ANALYST AND GET FREQUENT UPDATES.</span>
 </div>
 </div>
