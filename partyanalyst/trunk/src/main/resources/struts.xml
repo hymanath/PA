@@ -3620,5 +3620,18 @@
               <param name="root">parliamentConstituencies</param>
 			</result>			
 		</action>
-	</package>
+		<action name="twitterAction" class="twitterAction">
+			<result>/jsp/socialtwitter.jsp</result>
+		</action>
+		
+		<action name="getTwitterAction" class="twitterAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				 <param name="root">partyNamesList</param> 
+			</result>
+		</action>
+				
+			<action name="adminSocialAction" class="adminSocialAction">
+			<result>/jsp/adminsocialtwitter.jsp</result>
+		</action>
+		</package>
 </struts>      
