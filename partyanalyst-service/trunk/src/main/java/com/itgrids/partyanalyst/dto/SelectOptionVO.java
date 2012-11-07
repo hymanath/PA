@@ -7,7 +7,16 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private Long id;
+	private String url;
 	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public SelectOptionVO(){}
 	
 	public SelectOptionVO(Long id, String name){
