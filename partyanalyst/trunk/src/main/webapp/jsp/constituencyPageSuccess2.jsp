@@ -64,6 +64,7 @@
 });
 	google.load("visualization", "1", {packages:["corechart"]});
 	google.load("elements", "1", {packages : ["newsshow"]});
+	var userStatusType= "${userDetails.userStatusType}";
 	var userType = "${sessionScope.USER.userStatus}";
 	var stateName = '${constituencyDetails.stateName}';
 	var districtName = '${constituencyDetails.districtName}';
@@ -1313,6 +1314,8 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 					year:'${constituencyElectionResults.electionYear}',
 					votesEarned:'${constituencyElectionResults.candidateResultsVO.votesEarned}',
 					votesPercentage:'${constituencyElectionResults.candidateResultsVO.votesPercentage}',
+					votesMargin:'${constituencyElectionResults.candidateResultsVO.votesMargin}',
+partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}',
 					oppositionCandInfo:[]
 				 };
 			<c:forEach var="detailedResult" items="${constituencyElectionResults.candidateOppositionList}" >
@@ -1321,7 +1324,8 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 										partyName:'${detailedResult.partyName}',
 										year:'${constituencyElectionResults.electionYear}',
 										votesEarned:'${detailedResult.votesEarned}',
-										votesPercentage:'${detailedResult.votesPercentage}'										
+										votesPercentage:'${detailedResult.votesPercentage}'	,
+								partyShortName:'${detailedResult.partyShortName}'	
 									};
 						
 					constiObj.oppositionCandInfo.push(oppositionList);
@@ -2446,7 +2450,8 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 			var info = constituencyPageMainObj.constituencyInfo;
 			elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" title="Click here to view ${constituencyDetails.constituencyName} '+info.constituencyType+' constituency Election Results in '+data.year+'"  onmouseover="addCss(this.id);" onmouseout="removeCss(this.id);" onclick="showDetailedElectionResult(this.id)">';
 			elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
-			elecStr+='<span id=""> <b> In '+data.year+' - '+data.candidateName+' Won with '+data.votesEarned+' Votes &  '+data.votesPercentage+' votes %</b></span>';		
+			elecStr+='<span id=""> <b> In '+data.year+' - '+data.candidateName+' - ' +data.partyShortName+ ' Won with  '+data.votesMargin+' Majority Of Votes On '+ data.oppositionCandInfo[0].candidateName+ ' - ' +data.oppositionCandInfo[0].partyShortName+ ''
+			 '</b></span>';		
 			elecStr+='</div>';
 		}
 		
