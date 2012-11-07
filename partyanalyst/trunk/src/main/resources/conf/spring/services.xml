@@ -1202,5 +1202,11 @@
 		
 	</bean>
 	
+	<bean name="socialService" class="com.itgrids.partyanalyst.social.service.impl.SocialService">
+		<property name="partySocialDAO" ref="partySocialDAO" />
+		<property name="candidateSocialDAO" ref="candidateSocialDAO" />
+		<property name="candidateDAO" ref="candidateDAO"/>
+	</bean>
+	
 </beans>		
 	
