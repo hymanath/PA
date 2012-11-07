@@ -3337,7 +3337,17 @@ function removeOptionSelected()
 <div id="registerDiv" style="position:fixed;width:159px;z-index:9999;margin-top:-93px;margin-left:152px;background-color:#F9F9F9;color:#000;padding:5px;cursor:pointer;border:2px solid #06ABEA">
 <a href="javaScript:hideRegisterDiv();" style="float: right;"><b>(X)</b></a>
 <a 
-href="freeUserRegistration.action"><b>Register</b>  </a>for free to get regular updates from Party Analyst
+href="freeUserRegistration.action"><b>Register</b>  </a>for free to view detailed 
+election results 
+
+<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
+district
+</c:if>
+
+<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
+state
+</c:if>
+wise. 
 
 </div>
 
@@ -3345,6 +3355,10 @@ href="freeUserRegistration.action"><b>Register</b>  </a>for free to get regular 
 function hideRegisterDiv(){
 	$('#registerDiv').hide('slow');
 
+}
+
+function setDefault(){
+	$('#stateListId').val(0);
 }
 </script>
 
@@ -3354,14 +3368,24 @@ function hideRegisterDiv(){
 
 
 <span class="badge badge-info" style="padding:14px;background:#06ABEA;" >
-	<label style="padding:9px;"><input type="radio" value="Assembly" name="selectScope" checked="true" id="state"><b style="font-size:14px;" onClick="showStates();">Assembly</b></label>
+	<label style="padding:9px;"><input type="radio" value="Assembly" name="selectScope" checked="true" id="state"><b style="font-size:14px;" onClick="showStates();setDefault();">Assembly</b></label>
 
-	<label style="padding:9px;"><input type="radio" onchange="hideStates();getMinistryYears();"  value="Parliament" id="parlSel" name="selectScope"><b style="font-size:14px;">Parliament</b></label>
+	<label style="padding:9px;">
+	<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">	
+	<input type="radio" onchange="hideStates();getMinistryYearsonChangeRadio();"  value="Parliament" id="parlSel" name="selectScope">
+	</c:if>
+
+	<c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">	
+	<input type="radio" checked  onchange="hideStates();getMinistryYearsonChangeRadio();"  value="Parliament" id="parlSel" name="selectScope">
+	</c:if>
+	
+	
+	<b style="font-size:14px;">Parliament</b></label>
 
 
 
 	<label style="margin-left:27px;"><span class="stateLabel"><b>Select State :</b></span>
-		<select onchange="getMinistryYears();" id="stateListId" style="padding:3px;box-shadow:1px 2px 9px #005FCC;">
+		<select onchange="getMinistryYearsonChange();" id="stateListId" style="padding:3px;box-shadow:1px 2px 9px #005FCC;">
 		<option value="0">Select State</option>			  
 		</select>
 	</label>
@@ -3385,7 +3409,7 @@ function hideRegisterDiv(){
 
 	<script>
 
-	getStatesForAssembly();
+getStatesForAssembly();
 
 function hideStates(){
 	$('#stateListId').hide();
@@ -3401,6 +3425,15 @@ function showStates(){
 
 }
 
+var selectedRadio ;
+$(document).ready(function() {
+
+	$("input:radio[name=selectScope]").click(function() {
+     selectedRadio = $(this).val();
+});
+
+});
+
 function getStatesForAssembly()
 {
     var jsObj =
@@ -3413,9 +3446,70 @@ function getStatesForAssembly()
 	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;			callAjax1(jsObj,url);
 }
 
+
+function getMinistryYearsonChangeRadio(){
+
+	//$('#stateListId').val(0);
+
+	var jObj = {
+			stateId : 1,
+		    electionType: selectedRadio,
+				task: 'getElectionYearsForAState'
+				};
+    var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+    callAjax1(jObj,url);
+
+}
+
+function getMinistryYearsonChange(){
+
+	var electionType;
+
+	 electionType = $("input:radio[name=selectScope]").val();	
+	var stateId = $('#stateListId').val()
+		
+	
+	
+
+	var jObj = {
+			stateId : stateId,
+		    electionType: electionType,
+				task: 'getElectionYearsForAState'
+				};
+    var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+    callAjax1(jObj,url);	
+
+}
+
+getMinistryYearsDefault();
+
+function getMinistryYearsDefault(taskType){
+
+
+	var electionType = '${electionGoverningBodyVO.electionType}';
+	var stateId = '${electionGoverningBodyVO.stateId}';
+
+
+	if(electionType == "Parliament")
+		stateId = 1;
+
+
+	var jObj = {
+			stateId : stateId,
+		   electionType: electionType,
+				task: 'getElectionYearsForAState'
+				};
+    var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+    callAjax1(jObj,url);
+
+
+}
+
 function getMinistryYears(taskType)
 {
-	
 	var selectScopeRadio = document.getElementsByName("selectScope");
 	var electionType;
 	var stateIdEle = document.getElementById("stateListId");
@@ -3443,6 +3537,7 @@ function getMinistryYears(taskType)
 }
 function callAjax1(jsObj,url)
 {
+
 		var myResults;
  					
  		var callback = {			
@@ -3456,12 +3551,14 @@ function callAjax1(jsObj,url)
 
 										buildYearsData(myResults);
 
-										console.log(o.responseText);
 									     // removeData("yearSelId");
 									     // buildData(myResults,"yearSelId");
 										  
 										 // if(jsObj.taskType != null && jsObj.taskType == 'onLoad')
 										 // setSelectedyear(myResults,'${electionGoverningBodyVO.electionYear}');
+									}else if(jsObj.task ==  "getElectionYearsForAState"){
+
+                                          buildYearsData(myResults);
 									}
 									else if(jsObj.task == "getStatesForAssign")
 									{
@@ -3515,6 +3612,8 @@ function buildStatesData(myResults){
 for(var i=0;i<myResults.length;i++)
   $('#stateListId').append($("<option></option>").attr("value",myResults[i].id).text(myResults[i].name)); 
 
+$('#stateListId').val('${electionGoverningBodyVO.stateId}');
+
 }
 
 function buildYearsData(myResults){
@@ -3524,6 +3623,8 @@ function buildYearsData(myResults){
 for(var i=0;i<myResults.length;i++)
   $('#yearSelId').append($("<option></option>").attr("value",myResults[i].id).text(myResults[i].name)); 
 
+
+   $('#yearSelId').val(${electionId});
 }
 
 function navigateToMinisterPage(){
@@ -4002,6 +4103,17 @@ getResultsForAnElection(stateID,electionType,year);
 getAllTopStories(3,"TopVotesGained");
 $("#top3Id").addClass("dashBoardtabsDivSelected");
 removeOptionSelected();
+
+hideStates1();
+function hideStates1(){
+
+
+if('${electionGoverningBodyVO.electionType}' == "Parliament"){
+$('.stateLabel').hide();
+$('#stateListId').hide();
+}
+
+}
 </SCRIPT>
 </center>
 </BODY>
