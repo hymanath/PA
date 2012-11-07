@@ -958,4 +958,12 @@
 		<property name="completeProblemDetailsSearchService" ref="completeProblemDetailsSearchService" />
 		<property name="problemManagementService" ref="problemManagementService" />
 	</bean>		
+	
+	<bean id="twitterAction" class="com.itgrids.partyanalyst.web.social.action.TwitterAction" singleton="false">
+		<property name="socialService" ref="socialService" />
+	</bean>	
+		
+		<bean id="adminSocialAction" class="com.itgrids.partyanalyst.web.social.action.AdminSocialAction" singleton="false">
+		<property name="socialService" ref="socialService" />
+	</bean>	
 </beans>	
