@@ -1154,6 +1154,10 @@ function incrementHidden()
 }
 
 function deleteDetails(politicalChangeId){
+
+	var status=confirm("Are you sure want to delete");
+		if(status==false)
+			return;
 	var jsObj= 
 	{		
 		politicalChangeId :politicalChangeId,		  			
