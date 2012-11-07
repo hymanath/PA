@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1209,10 +1210,31 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(params[0] +"---"+params[1]);
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		Date date = new Date();
 		System.out.println(date.getTime());
+	}*/
+	
+	public void testGetConstituencyElectionIdsOfMarginVotesNotExisted()
+	{
+		List<Long> list = nominationDAO.getConstituencyElectionIdsOfMarginVotesNotExisted(17l);
+		System.out.println(list.size());
+		
+		if(list != null && list.size() > 0)
+			for(Long conId : list)
+				System.out.println(conId);
+	}
+	
+	public void testGetCandidatesResultsInAConstituencyElection()
+	{
+		List<CandidateResult> list = nominationDAO.getCandidatesResultsInAConstituencyElection(324l);
+		System.out.println(list.size());
+		
+		for(CandidateResult candidateResult : list)
+		{
+			System.out.println(candidateResult.getNomination().getCandidate().getLastname());
+		}
 	}
 }
 	
