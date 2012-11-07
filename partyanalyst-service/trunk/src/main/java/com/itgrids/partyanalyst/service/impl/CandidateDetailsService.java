@@ -2362,15 +2362,27 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileVO> resultList = new ArrayList<FileVO>();
-	 
- 	 List<Long> photosList = fileGallaryDAO.getRecentlyUploadedPhotoIds(startIndex, maxResults);
-	 photoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(photosList);
-	 resultList = setToFileVO(photoGallaryresultList);
-	 resultMap.put("photogallary", resultList);
-	 
-	// String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
-	 //List<Long> newsList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr1);
-	 //newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsListForNews(newsList);
+	 List<Long> latestgalIds =  fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, maxResults);
+	 if(latestgalIds != null)
+	 {
+		for(Long value :latestgalIds)
+		{
+			photoGallaryresultList = fileGallaryDAO.getStartingRecordInGallaries(value);
+				
+			List<FileVO> result = setToFileVO(photoGallaryresultList);
+			
+			if(!result.isEmpty())
+			resultList.add(result.get(0));		
+		}
+		resultMap.put("photogallary", resultList);
+	 }
+	// photoGallaryresultList=fileGallaryDAO.getStartingRecordInGallaries(latestgalIds);
+ 	/* List<Long> photosList = fileGallaryDAO.getRecentlyUploadedPhotoIds(startIndex, maxResults);
+ 	 
+	   photoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(photosList);*/
+	   // String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
+	   //List<Long> newsList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr1);
+	   //newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsListForNews(newsList);
 	 newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 	 resultList = setToFileVO(newsGallaryresultList);
 	 resultMap.put("NewsGallary", resultList);
