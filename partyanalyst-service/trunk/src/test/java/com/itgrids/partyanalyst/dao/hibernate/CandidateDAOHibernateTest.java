@@ -74,9 +74,15 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 	}
 	*/
 	
-	public void testGetCandidateNameByCandidateId()
+	/*public void testGetCandidateNameByCandidateId()
 	{
 		Object object = candidateDAO.getCandidateNameByCandidateId(900l);
 		System.out.println(object.toString());
+	}*/
+	
+	public void testgetCandidateByLastName(){
+		Long value = candidateDAO.getCandidateByLastName("BINGI SRINIVAS");
+		System.out.println(value);
+		
 	}
 }
