@@ -67,5 +67,7 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 
 	public List<Long> totalSearchCount(String searchText, String ids);*/
 	
+	public Long getCandidateByLastName(String lastName);
 	
+
 }
