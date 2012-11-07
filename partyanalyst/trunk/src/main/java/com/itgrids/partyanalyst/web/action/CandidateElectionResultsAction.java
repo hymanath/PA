@@ -123,8 +123,18 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Boolean isSubscribed = false;
 	private Long regId;
 	
+	private String status;
 	
 	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Long getRegId() {
 		return regId;
 	}
@@ -1342,5 +1352,24 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 	}
+	
+	 public String checkForMinisterData(){
+		 
+		 try{	 
+		 jObj = new JSONObject(getTask());  
+		 }catch(Exception e){
+			 e.printStackTrace(); 
+		 }
+		 
+		 String electionType = jObj.getString("electionType");;
+		 Long electionId =jObj.getLong("electionId");
+		 
+		 
+	      status = candidateDetailsService.checkForMinisterData(electionType,electionId);
+
+		 return Action.SUCCESS;
+		 
+		 
+	 }
 
 }
