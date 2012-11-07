@@ -15,4 +15,10 @@ public class SocialNetworkSiteDAOHibernateTest extends BaseDaoTestCase{
 	{
 		socialNetworkSiteDAO.getAll();
 	}
+	
+	public void testgetSocialNetworkIdByName()
+	{
+		Long value =socialNetworkSiteDAO.getSocialNetworkIdByName("twitter");
+		System.out.println(value);
+	}
 }
