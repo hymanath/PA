@@ -384,7 +384,16 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return query.list();
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<Long> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults)
+	{
+		Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
+				" and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
+		return query.list();	
+	}
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getFileGallaryByFileIdsList(List<Long> fileIdsList)
 	{
@@ -393,6 +402,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setParameterList("fileIdsList",fileIdsList);
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getStartingRecordInGallaries(Long gallaryId)
+	{
+		Query query = getSession().createQuery("select model from FileGallary  model where model.gallary.gallaryId = ? and model.isDelete = 'false' " +
+				"and model.isPrivate = 'false' order by model.file.fileDate desc,model.updateddate desc");
+		query.setParameter(0,gallaryId);
+		
+		return query.list();
+		
+		
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getFileGallaryByFileIdsListForNews(List<Long> fileIdsList)
