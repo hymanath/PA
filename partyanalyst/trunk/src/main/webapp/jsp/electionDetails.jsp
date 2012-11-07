@@ -3326,7 +3326,10 @@ function removeOptionSelected()
 <h1 style = "font-size:15px;"><c:if test="${electionType == 'Parliament'}">Parliament Election Results ${year}</c:if></h1>
 
  <span style="margin-top:-26px;margin-right:18px;float:right">
- <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+ <a name="fb_share" type="button_count" 
+share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}">Share in Facebook</a> 
+<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
+</script>
 </span></h1>
 </div>
 <div style="padding: 5px 60px 5px 0px;text-align:right;">
@@ -3731,7 +3734,7 @@ function navigateToMinisterPage(){
 
 <DIV id="graphImage" class="yui-skin-sam" style="width:970px;overflow:hidden;margin:auto;"></DIV>
 
-<c:if test="${electionType != 'Parliament'}"> 
+<!--<c:if test="${electionType != 'Parliament'}"> 
 <a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${stateName}</b></a>
 </c:if>
 
@@ -3739,6 +3742,8 @@ function navigateToMinisterPage(){
 
 <a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${year} Parliament </b></a>
 </c:if>
+
+-->
 
 
 <DIV class="yui-skin-sam" style="width:880px;">
