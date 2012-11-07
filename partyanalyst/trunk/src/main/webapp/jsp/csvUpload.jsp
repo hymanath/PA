@@ -25,18 +25,41 @@
 			<td>Election Scope</td>
 			<td><select name="electionScope">
 				<option value="0">Select option..</option>
-				<option value="Andhra Pradesh">Andhra Pradesh</option>
-				<option value="Tamil Nadu">Tamil Nadu</option>
-				<option value="Karnataka">Karnataka</option>
-				<option value="West Bengal">West Bengal</option>
-				<option value="Assam">Assam</option>
-				<option value="Kerala">Kerala</option>
-				<option value="Puducherry">Puducherry</option>
-				<option value="Punjab">Punjab</option>
-				<option value="Uttar Pradesh">Uttar Pradesh</option>
-				<option value="Uttaranchal">Uttaranchal</option>
-				<option value="Manipur">Manipur</option>
-				<option value="Goa">Goa</option>
+				<option value='Andhra Pradesh'>Andhra Pradesh</option>
+				<option value='Arunachal Pradesh'>Arunachal Pradesh</option>
+				<option value='Assam'>Assam</option>
+				<option value='Bihar'>Bihar</option>
+				<option value='Chattisgarh'>Chattisgarh</option>
+				<option value='Goa'>Goa</option>
+				<option value='Gujarat'>Gujarat</option>
+				<option value='Haryana'>Haryana</option>
+				<option value='Himachal Pradesh'>Himachal Pradesh</option>
+				<option value='Jammu & Kashmir'>Jammu & Kashmir</option>
+				<option value='Jharkhand'>Jharkhand</option>
+				<option value='Karnataka'>Karnataka</option>
+				<option value='Kerala'>Kerala</option>
+				<option value='Madhya Pradesh'>Madhya Pradesh</option>
+				<option value='Maharashtra'>Maharashtra</option>
+				<option value='Manipur'>Manipur</option>
+				<option value='Meghalaya'>Meghalaya</option>
+				<option value='Mizoram'>Mizoram</option>
+				<option value='Nagaland'>Nagaland</option>
+				<option value='Orissa'>Orissa</option>
+				<option value='Punjab'>Punjab</option>
+				<option value='Rajasthan'>Rajasthan</option>
+				<option value='Sikkim'>Sikkim</option>
+				<option value='Tamil Nadu'>Tamil Nadu</option>
+				<option value='Tripura'>Tripura</option>
+				<option value='Uttaranchal'>Uttaranchal</option>
+				<option value='Uttar Pradesh'>Uttar Pradesh</option>
+				<option value='West Bengal'>West Bengal</option>
+				<option value='Andaman & Nicobar Islands'>Andaman & Nicobar Islands</option>
+				<option value='Chandigarh'>Chandigarh</option>
+				<option value='Dadar & Nagar Haveli'>Dadar & Nagar Haveli</option>
+				<option value='Daman & diu'>Daman & diu</option>
+				<option value='Delhi'>Delhi</option>
+				<option value='Lakshadweep'>Lakshadweep</option>
+				<option value='Puducherry'>Puducherry</option>
 			</select></td>
 		</tr>
 		<tr>
