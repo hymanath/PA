@@ -21,6 +21,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
+import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Election;
@@ -3629,5 +3630,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Object[] params = {partyId,electionId};
 		 return getHibernateTemplate().find("select distinct model.candidate.candidateId,model.candidate.lastname from Nomination model where model.party.partyId = ? and " +
 			 	" model.constituencyElection.election.electionId = ? order by model.candidate.lastname",params);
+	}
+	
+	public List<Long> getConstituencyElectionIdsOfMarginVotesNotExisted(Long electionId)
+	{
+		return getHibernateTemplate().find("select distinct model.constituencyElection.constiElecId from Nomination model where (model.candidateResult.marginVotesPercentage is null or "+
+				" model.candidateResult.marginVotes is null) and model.constituencyElection.election.electionId = ?",electionId);
+	}
+	
+	public List<CandidateResult> getCandidatesResultsInAConstituencyElection(Long constituencyElectionId)
+	{
+		return getHibernateTemplate().find("select model.candidateResult from Nomination model where model.constituencyElection.constiElecId = ?",constituencyElectionId);
 	}
 }
