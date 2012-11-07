@@ -109,4 +109,16 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 		
 		
 	}
+	
+	public List checkForMinisterData(String electionType,Long electionId){
+		
+		Query query = getSession().createQuery("select count(model.governingElectionBodyId) from ElectionGoverningBody model where model.election.electionId = ? and model.election.electionScope.electionType.electionType = ?");
+		
+		query.setParameter(0, electionId);
+		query.setParameter(1, electionType);
+		
+		return query.list();
+		
+		
+	}
 }

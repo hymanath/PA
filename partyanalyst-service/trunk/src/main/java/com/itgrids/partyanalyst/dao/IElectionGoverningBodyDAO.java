@@ -32,4 +32,7 @@ public interface IElectionGoverningBodyDAO extends GenericDao<ElectionGoverningB
 	
 	public int updateCandidatePositionDetails(Long electionGoverningBodyId,Date	toDate,String workingStatus);
 	
+	public List checkForMinisterData(String electionType,Long electionId);
+		
+	
 }
