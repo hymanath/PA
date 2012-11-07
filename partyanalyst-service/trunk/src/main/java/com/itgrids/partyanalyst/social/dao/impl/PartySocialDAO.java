@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.social.dao.impl;
 
 import java.util.List;
 
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -14,11 +15,12 @@ public class PartySocialDAO extends GenericDaoHibernate<PartySocial, Long> imple
 	public PartySocialDAO() {
 		super(PartySocial.class);
 	} 
-	public List<PartySocial> getNames()
+	public List<Object[]> getPartyNames()
 	{
 		
-		Query query = getSession().createQuery("select model.party.shortName from PartySocial model where model.socialNetworkSite.socialNetworkId=1");
+		Query query = getSession().createQuery("select model.party.shortName,model.profileId from PartySocial model where model.socialNetworkSite.socialNetworkId=1");
 		return query.list();
+		
 	}
 	
 }
