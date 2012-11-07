@@ -3556,12 +3556,15 @@ function callAjax1(jsObj,url)
 
 										buildYearsData(myResults);
 
-									     // removeData("yearSelId");
-									     // buildData(myResults,"yearSelId");
-										  
-										 // if(jsObj.taskType != null && jsObj.taskType == 'onLoad')
-										 // setSelectedyear(myResults,'${electionGoverningBodyVO.electionYear}');
-									}else if(jsObj.task ==  "getElectionYearsForAState"){
+									    
+									}else if(jsObj.task == "ministerData"){
+                               
+										if(myResults == null)
+											$('#ministerDetailsDiv').hide();
+
+
+									}
+									else if(jsObj.task ==  "getElectionYearsForAState"){
 
                                           buildYearsData(myResults);
 									}
@@ -3736,7 +3739,9 @@ function navigateToMinisterPage(){
 
 <DIV id="graphImage" class="yui-skin-sam" style="width:970px;overflow:hidden;margin:auto;"></DIV>
 
-<!--<c:if test="${electionType != 'Parliament'}"> 
+
+<div id="ministerDetailsDiv">
+<c:if test="${electionType != 'Parliament'}"> 
 <a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${stateName}</b></a>
 </c:if>
 
@@ -3745,7 +3750,8 @@ function navigateToMinisterPage(){
 <a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${year} Parliament </b></a>
 </c:if>
 
--->
+</div>
+
 
 
 <DIV class="yui-skin-sam" style="width:880px;">
@@ -4119,8 +4125,23 @@ if('${electionGoverningBodyVO.electionType}' == "Parliament"){
 $('.stateLabel').hide();
 $('#stateListId').hide();
 }
-
 }
+
+hideMinisterDetailsDiv();
+function hideMinisterDetailsDiv()
+{
+
+    var jsObj =
+		{ 
+            electionType : '${electionType}',
+			electionId:'${electionId}',
+			task:"ministerData"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "checkForMinisterData.action?"+rparam;			callAjax1(jsObj,url);
+}
+
 </SCRIPT>
 </center>
 </BODY>
