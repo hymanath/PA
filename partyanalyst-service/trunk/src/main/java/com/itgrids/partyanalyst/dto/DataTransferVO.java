@@ -45,10 +45,18 @@ public class DataTransferVO extends ResultStatus{
 	private String userDetails;
 	private String email;
 	private String mobileNo;
-	
+	private String userStatusType;
 	
 	public String getMobileNo() {
 		return mobileNo;
+	}
+
+	public String getUserStatusType() {
+		return userStatusType;
+	}
+
+	public void setUserStatusType(String userStatusType) {
+		this.userStatusType = userStatusType;
 	}
 
 	public void setMobileNo(String mobileNo) {
