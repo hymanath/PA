@@ -918,7 +918,7 @@ function openAnalyzeConstituencyWindow(type)
 	if(parliamentConstiName =='')
 		parliamentConstiName = constituencyName;
 
-	if((userId != "" && userType == "FREE_USER") || type == "viewResults")
+	if((userId != "" && (userStatusType == "FREE_USER" ||userStatusType == "BOTH" )) || type == "viewResults")
 	{
 	   if(consticType == 'Assembly')
 		 var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");	
@@ -926,11 +926,11 @@ function openAnalyzeConstituencyWindow(type)
        	 var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&parlchecked=true&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");	 
 		browser1.focus();
 	}
-	else if(userId == "" && userType == "FREE_USER")
+	else if(userId == "" && userStatusType == "FREE_USER")
 	{
 		alert("Please Login To Post Comment");
 	}
-	else if(userType != "FREE_USER")
+	else if(userStatusType != "FREE_USER" || userStatusType != "BOTH")
 	{
 		alert("Comment For Free User Only");
 	}
