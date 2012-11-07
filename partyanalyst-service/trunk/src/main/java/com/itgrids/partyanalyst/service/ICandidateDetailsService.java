@@ -195,4 +195,6 @@ public interface ICandidateDetailsService {
 	 public ResultStatus deletePartyGallary(Long gallaryId);
 	 
 	 public Long getLocationScopeValue(Long scope,String locationValue);
+	 
+	 public String checkForMinisterData(String electionType , Long electionId);
 }
