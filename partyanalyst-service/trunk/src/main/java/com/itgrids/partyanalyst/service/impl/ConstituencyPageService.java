@@ -569,6 +569,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateWon.setVotesEarned(votesEarn[0]);
 				candidateWon.setVotesPercentage(candidateResult.getVotesPercengate());
+				
+				if(candidateResult.getMarginVotes() != null && candidateResult.getMarginVotes()>0)
+				{
+					calculateMarginVotesForCandidatesInAElection(candidateResult.getNomination().getConstituencyElection().getElection().getElectionId());
+				}
 				if(candidateResult.getMarginVotes() != null && candidateResult.getMarginVotes()>0)
 				{
 					String marginVotes=candidateResult.getMarginVotes().toString();
@@ -588,6 +593,67 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		{
 			log.error("Exception Occured in getCandidateWon() Method - "+e);
 			return null;
+		}
+	}
+	
+	public String calculateMarginVotesForCandidatesInAElection(Long electionId)
+	{
+		try{
+			List<Long> conElecIdsList = nominationDAO.getConstituencyElectionIdsOfMarginVotesNotExisted(electionId);
+			
+			if(conElecIdsList != null && conElecIdsList.size() > 0)
+			{
+				for(Long conElecId : conElecIdsList)
+				{
+					List<CandidateResult> candidatesResultList = nominationDAO.getCandidatesResultsInAConstituencyElection(conElecId);
+					
+					if(candidatesResultList != null && candidatesResultList.size() > 0)
+					{	
+						Double wonCandidateVotes = 0.0D;
+						Double wonCandidateVotesPercentage = 0.0D;
+						Double secondCandidateVotes = 0.0D;
+						Double secondCandidateVotesPercentage = 0.0D;
+						
+						for(CandidateResult candidateResult : candidatesResultList)
+							if(candidateResult.getRank().equals(1L))
+							{
+								wonCandidateVotes = candidateResult.getVotesEarned();
+								wonCandidateVotesPercentage = Double.parseDouble(candidateResult.getVotesPercengate());
+							}
+							else if(candidateResult.getRank().equals(2L))
+							{
+								secondCandidateVotes = candidateResult.getVotesEarned();
+								secondCandidateVotesPercentage = Double.parseDouble(candidateResult.getVotesPercengate());
+							}
+						
+						for(CandidateResult candidateResult : candidatesResultList)
+						{
+							Double marginVotes = 0.0D;
+							Double marginVotesPer;
+							
+							if(candidateResult.getRank().equals(1L))
+							{
+								marginVotes = wonCandidateVotes - secondCandidateVotes;
+								marginVotesPer = wonCandidateVotesPercentage - secondCandidateVotesPercentage;
+							}
+							else
+							{
+								marginVotes = wonCandidateVotes - candidateResult.getVotesEarned();
+								marginVotesPer = wonCandidateVotesPercentage - Double.parseDouble(candidateResult.getVotesPercengate());
+							}
+							
+							candidateResult.setMarginVotes(marginVotes);
+							candidateResult.setMarginVotesPercentage((new BigDecimal(marginVotesPer).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+							candidateResultDAO.save(candidateResult);
+						}
+					}
+				}
+			}
+			
+			return "success";
+		}catch (Exception e) {
+			log.error("Exception occured in calculateMarginVotesForCandidatesInAElection() Method - "+e);
+			return "failure";
 		}
 	}
 	
