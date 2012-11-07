@@ -478,7 +478,7 @@ select
 		}));
 
 		myTabs.addTab( new YAHOO.widget.Tab({
-			label: "All Party",
+			label: "All Parties",
 			content: pStr
 		}));
 		
