@@ -124,9 +124,34 @@ span {
  <div class="mainnewsdiv">
  <div class="Promo-box-left whitegloss" style="width:100%;">
  <div>
- <h1 class="gradlightblack">News Monitoring Service <div class="Sample-Report-top">
+ <h1 class="gradlightblack">News Monitoring Service </h1>
+ <div class="Sample-Report-top" style="padding-top: 0px; margin-top: -32px; margin-right: 9px;">
 <a class="inline" href="images/news_monitoring.pdf" target="_blank">View Sample</a>
-</div></h1></div>
+</div>
+<div style=" margin-right: 135px; ">
+		<span style="float: right; margin-top: -36px; margin-right: 25px;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</span>
+		<span style="float: right; margin-top: -36px; margin-left: 0px; margin-right: 100px;">
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/newsMonitoringService.action">
+				Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script>
+		</span>
+		
+		<span style="float: right; margin-right: 231px; margin-top: -36px;">
+			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/newsMonitoringService.action')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+		</span>
+		</div>
+ </div>
 
 <div class="row-fluid whitegloss" style="padding:15px 0px;" >
 	<div class="span7" style="height:auto;padding:5px;" >
