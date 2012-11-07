@@ -4443,6 +4443,18 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			}
 			return resultStatus;
 	 }
-	 
 	
+	public String checkForMinisterData(String electionType , Long electionId){
+		
+		List countList = electionGoverningBodyDAO.checkForMinisterData(electionType,electionId);
+		
+		if(countList != null && countList.size() > 0 ){
+			
+			Long count = (Long)countList.get(0);
+			
+			if(count > 0)
+			return "Exist";
+		}
+		return null;
+	}
 }
