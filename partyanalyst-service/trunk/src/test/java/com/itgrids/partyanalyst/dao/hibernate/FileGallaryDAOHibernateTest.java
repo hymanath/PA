@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -261,10 +262,28 @@ System.out.println("i " +i);
 		 System.out.println(list.get(0));
 		 
 	}*/
-	public void testGetHomePageNewsDetails()
+	/*public void testGetHomePageNewsDetails()
 	{
 		 List<FileGallary> list = fileGallaryDAO.getHomePageNewsDetails(0,15);
 		 System.out.println(list.size());
 		 
+	}*/
+	
+	/*public void testgetRecentlyUploadedGallaries()
+	{
+		List<Long> list =fileGallaryDAO.getRecentlyUploadedGallaries(0, 15);
+		System.out.println(list.size());
+	
+	}*/
+	
+	public void testgetStartingRecordInGallaries()
+	{
+		
+		
+		List<FileGallary> file = fileGallaryDAO.getStartingRecordInGallaries(140l);
+		System.out.println(file.size());
 	}
+	
+	
+	
 }
