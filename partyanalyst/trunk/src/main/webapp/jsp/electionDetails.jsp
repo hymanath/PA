@@ -3325,12 +3325,27 @@ function removeOptionSelected()
  <div class="main-mbg"><h1 style = "font-size:15px;"><c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;${electionType} Election Results ${year}</c:if></h1>
 <h1 style = "font-size:15px;"><c:if test="${electionType == 'Parliament'}">Parliament Election Results ${year}</c:if></h1>
 
- <span style="margin-top:-26px;margin-right:18px;float:right">
- <a name="fb_share" type="button_count" 
-share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}">Share in Facebook</a> 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
-</script>
-</span></h1>
+<span style="float: right; margin-top: -27px;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</span>
+		<span style="margin-top: -27px; margin-right: 85px; float: right;">
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}">
+				Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script>
+		</span>
+
+ <span style="margin-top: -27px; margin-right: 220px; float: right;">
+ <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+</span>
 </div>
 <div style="padding: 5px 60px 5px 0px;text-align:right;">
   <input type="button" class="buttonClass" id="buttonId" onclick="toggleOption(this.id);" value="Hide Highlights Of ${year} Election Results">
