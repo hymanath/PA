@@ -53,12 +53,36 @@
 <div class="mainnewsdiv">
 
 <div class="Promo-box-left gradfill whitegloss">
+<div>
 <h1 class="gradlightblack">Voters Pulse  - An Election / Political Survey
-	<div class="Sample-Report-top">
+</h1>
+<div>
+	<span style="float: right; margin-top: -36px;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</span>
+		<span style="float: right; margin-top: -36px; margin-right: 78px;">
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/VotersPulse.action">
+				Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script>
+		</span>
+		
+		<span style="float:right;margin-right: 20px;display:none;">
+			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/VotersPulse.action')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+		</span>
+</div>
+<div class="Sample-Report-top" style="margin: -34px 220px 0px 0px;">
 		<a class="inline" href="images/Voters-Pulse.pdf" target="_blank">View Sample</a>
 	</div>
-</h1>
-
+</div>
 <div class="row-fluid  whitegloss" style="width:99%;padding-right:0px;">
  	<div class="span7" style="height:auto;" >
 	
