@@ -705,7 +705,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		String url = request.getRequestURL().toString();
 		String substr = url.substring(7);
 		String path = substr.substring(0, substr.indexOf('/')) ;
-		
+		String userStatusType = null;
 		if(path.equalsIgnoreCase("partyanalyst.com"))
 			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
 		else
@@ -891,7 +891,27 @@ public class ConstituencyPageAction extends ActionSupport implements
 				userDetails.setLoginStatus("false");
 			}
    		}
-		messageTypes = ananymousUserService.getAllMessageTypes();
+   	//For Both roles
+   		if(user !=null)
+   		{
+   	 
+		
+   	 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+		userStatusType = IConstants.PARTY_ANALYST_USER;
+   	 userDetails.setUserStatusType(userStatusType);
+	 if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
+		userStatusType = IConstants.FREE_USER;
+	 userDetails.setUserStatusType(userStatusType);
+	 if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+		userStatusType = IConstants.BOTH;
+	 userDetails.setUserStatusType(userStatusType);
+   		}
+      else{
+        userStatusType = IConstants.NOT_LOGGED_IN;
+        userDetails.setUserStatusType(userStatusType);
+		}
+	 
+	 messageTypes = ananymousUserService.getAllMessageTypes();
 		
 	
 				
