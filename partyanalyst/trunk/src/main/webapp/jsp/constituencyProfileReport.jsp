@@ -57,12 +57,33 @@
 </style>
 <div class="mainnewsdiv">
 <div class="Promo-box-left gradfill whitegloss">
-<h1 class="gradlightblack">Constituency Profile Report  
-	<div class="Sample-Report-top">
+<h1 class="gradlightblack">Constituency Profile Report</h1>
+<div style="margin-bottom: 5px;">
+		<span style="float: right; margin-top: -36px;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</span>
+		<span style="float: right; margin-top: -36px; margin-right: 73px;">
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/constituencyProfileReport.action">
+				Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script>
+		</span>
+		
+		<span style="float: right; margin-right: 200px; margin-top: -36px;">
+			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/constituencyProfileReport.action')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+		</span>
+		</div>
+	<div class="Sample-Report-top" style="margin-right: 375px; margin-top: -40px;">
 		<a class="inline" href="images/Constituency_Profile_Report.pdf" target="_blank">View Sample</a>
 	</div>
-</h1>
-
 <div class="row-fluid breadcrumb">
 	<div class="span7" style="height:auto;display:none;">
 		<div><img src="images/services/constituency.png" style="width: 550px; height: 220px;" alt="constituency"/></div>
