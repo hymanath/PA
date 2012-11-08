@@ -648,7 +648,7 @@ function getMinistryYears(taskType)
  <!-- TOTAL CONSTITUENCIES INFORMATIONFOR ASSEMBLY  START-->
 
  <c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
- <a  class="btn btn-primary completeDetailsBtn" href="javaScript:{showBlock();}"  title="Click here to View District wise Party Performance"><b> Click here to View District wise Party Performance </b></a>
+ <a  class="btn btn-primary completeDetailsBtn" href="javaScript:{showBlock();}"  title="Click here to View District wise Party Performance"><b> Click here to View District wise Party Performances in ${electionGoverningBodyVO.electionYear} Assembly Election </b></a>
 
  <a class="btn btn-primary closebutton" href="javaScript:{hideBlock();}" title="Hide more details"><b> Hide District Details</b></a>
 

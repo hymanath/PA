@@ -3388,7 +3388,7 @@ function setDefault(){
 
 
 <span class="badge badge-info" style="padding:14px;background:#06ABEA;" >
-	<label style="padding:9px;"><input type="radio" value="Assembly" name="selectScope" checked="true" id="state"><b style="font-size:14px;" onClick="showStates();setDefault();">Assembly</b></label>
+	<label style="padding:9px;"><input type="radio" value="Assembly" name="selectScope" onClick="showStates();setDefault();" checked="true" id="state"><b style="font-size:14px;">Assembly</b></label>
 
 	<label style="padding:9px;">
 	<c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">	
@@ -3658,7 +3658,9 @@ function navigateToMinisterPage(){
 
 	//var url = "ministersPageAction.action?electionId="+$('#yearSelId').val();
 
-	window.open(url, '_blank');
+	window.location.href=url;
+
+	//window.open(url, '_blank');
 
 
 }
@@ -3757,7 +3759,7 @@ function navigateToMinisterPage(){
 
 <div id="ministerDetailsDiv">
 <c:if test="${electionType != 'Parliament'}"> 
-<a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View Minister Details of ${stateName}</b></a>
+<a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View ${stateName} Minister Details of ${year} Assembly</b></a>
 </c:if>
 
 <c:if test="${electionType == 'Parliament'}">
