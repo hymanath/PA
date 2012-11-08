@@ -69,7 +69,12 @@
 	
 <style type="text/css">
 
-
+#contenttable{
+ margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+    width: 980px;
+}
 
 #VillageTable th
 {
@@ -284,7 +289,10 @@ width:100%;
 #townshipPartyResultsPanel
 {
 	border:2px solid #3B4B58;
+	width: 901px;
+    margin-left: -10px;
 }
+
 
 #townshipPartyResultsPanel .hd
 {
@@ -322,6 +330,36 @@ width:100%;
     color: #669900;
     font-size: 15px;
     font-weight: bold;
+}
+#headingtable{
+font-size: 13px;
+font-family: arial,sans-serif;
+ color: #222;
+}
+#stateref,#districtref,#assemblyref,#parliamentref,#mandalCensusDivHead{
+	color:#669900;
+	font-weight: bold;
+}
+#mainDiv {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #FFFFFF;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    float: none;
+    font-family: arial;
+    font-size: 14px;
+    font-weight: bold;
+    height: 300px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 50px;
+    text-align: center;
+    width: 100%;
 }
 </style>
 
@@ -1412,17 +1450,26 @@ function getMoreResults(elecYear,elecType,constiId)
 	</script>
 </head>
 <body> 
-
+<c:if test='${empty mandalInfoVO}'>
+<div id="mainDiv">
+No Data Aailable
+</div>
+</c:if>
+<c:if test='${not empty mandalInfoVO}'>
 <table width="100%" border="0">
 <tr><td><%@ include file="navigator.jsp" %></td></tr>
 <tr><td align="center" id="mandalDivHeadstyle"><br>
+
+
 <u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u>
 </td></tr></table>
 <div id="boothResultsDiv">
 
+ 
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
-						
+		
+		
 		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
 		<table class="censusInfoTable" style="border:1px solid #ADADAD;">		
 				<tr>
@@ -1463,7 +1510,9 @@ function getMoreResults(elecYear,elecType,constiId)
 				</tr>
 			</table>
 		</div>
+		
 	</div>
+	</c:if>
 	<br/><br/>
 	<div id="villageCensusDiv" style="display: none;">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
@@ -1494,14 +1543,18 @@ function getMoreResults(elecYear,elecType,constiId)
 		</div>
 	</div>
 	
-	<div id="mandalPageTab" class="yui-skin-sam"></div>
+	<div id="mandalPageTab" class="yui-skin-sam" style="margin-left: -10px;
+    width: 905px;"></div>
 	
 	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
 
 <script type="text/javascript">
 
-	buildTabNavigator();
+if(allZPTCMPTCElecInfo != "")
+{
+buildTabNavigator();
+}
 	showMPTCZPTCResults();
 	showElectionResultsInPopup();
 	buildCensusDataTable();
