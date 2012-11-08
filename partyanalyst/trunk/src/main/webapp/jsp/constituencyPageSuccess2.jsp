@@ -877,8 +877,9 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<s:if test="isSubscribed == true ">
 					Unsubscribe to stop<br/>
 					updates of<br />
-					<span class="li-red">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>
-					<input  class="unsubscribebtn" type="button" onclick=
+					<span class="li-red">
+					${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>
+					<input class="unsubscribebtn" type="button" onclick=
 					"unsubscriptionDetails()" value="UNSUBSCRIBE"/>
 					</s:if>
 					
