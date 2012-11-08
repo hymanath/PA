@@ -893,9 +893,9 @@ function buildAnalyzeConstituencyWindow()
 	}
 	else {
       str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;" >';
-	  		str += '<a href="javascript:{}" class="buttnStyle" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')" >Previous Posts</a>';
-		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" title="Click to Assess Results" style="margin-right:10px;" class="buttnStyle">Assess</a>';
-
+	  	str += '<a href="javascript:{}" class="buttnStyle" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')" >Previous Posts</a>';
+		str += '<a href="loginInputAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" title="Click to Assess Results" style="margin-right:10px;" class="buttnStyle">Assess</a>';
+		//str += '<a href="javascript:{}" class="buttnStyle" title="Click to Assess Results" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')" >Assess</a>';
 		str += '</div>';			
 	}
 		
