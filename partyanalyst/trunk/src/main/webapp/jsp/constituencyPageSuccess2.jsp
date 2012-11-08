@@ -7,7 +7,8 @@
 	<html>
 	<head> 
 
-	<title><c:out value='${constituencyDetails.constituencyName}'/> <c:out value='${constituencyDetails.constituencyType}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
+	<title><c:out value='${constituencyDetails.constituencyName}'/>
+	<c:out value='${constituencyDetails.constituencyType}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 	
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
