@@ -16,7 +16,13 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
+
+<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+%>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+<% }
+%>
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
