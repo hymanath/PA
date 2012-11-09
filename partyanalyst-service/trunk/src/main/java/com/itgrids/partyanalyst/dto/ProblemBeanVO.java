@@ -111,11 +111,22 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long problemScopeId = 0l;
 	private  String visibilityType;
 	private String windowTask;
+	private CompleteProblemDetailsVO averageRating;
 	
 	private Long stateId;
 	private Long districtId;
 	private Long constituencyId;
 	
+	
+	
+	public CompleteProblemDetailsVO getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(CompleteProblemDetailsVO averageRating) {
+		this.averageRating = averageRating;
+	}
+
 	public Long getStateId() {
 		return stateId;
 	}
