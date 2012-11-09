@@ -6904,6 +6904,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				if(problemDetails.getProblem() != null && problemDetails.getProblem().getIsApproved() !=null)
 				result.setIsApproved(problemDetails.getProblem().getIsApproved());
 				result.setTotalResultsCount(getProblemsCount().toString());
+				result.setAverageRating(getAverageRatingOfAProblem(problemId));
 				
 				
 				switch (result.getProblemImpactLevelId().intValue()) {
