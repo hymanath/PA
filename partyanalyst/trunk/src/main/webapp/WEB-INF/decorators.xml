@@ -81,7 +81,7 @@
     </decorator>
 
     <decorator name="new" page="newlayout.jsp">
-        <pattern>/homePage*</pattern>
+    	<pattern>/homePage*</pattern>
         <pattern>/candidateElectionResultsAction*</pattern>
 		<pattern>/freeUserRegistration*</pattern>
 		<pattern>/loginAction*</pattern>
@@ -145,6 +145,10 @@
 		<pattern>/biElectionAction*</pattern>
 		<pattern>/mandalPageElectionInfoAction*</pattern>
 
+    </decorator>
+    
+    <decorator name="newHome" page="homelayout.jsp">
+    <pattern>/newhomePage*</pattern>
     </decorator>
 
 </decorators>
