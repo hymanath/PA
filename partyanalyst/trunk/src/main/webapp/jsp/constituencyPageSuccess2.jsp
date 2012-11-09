@@ -22,10 +22,15 @@
 	<script
 	src="js/jQuery/jquery-ui.min.js">
 		</script>
-	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
 	<script src="${mapKey}" type="text/javascript"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	
+	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){   %>	
+   <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+   
+   <% }
+   %>
 	
 	<!-- For image display on mouseover -->
 	
