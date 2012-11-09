@@ -28,11 +28,11 @@
 
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 
 <% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 %>
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 <% }
 %>
 <script type="text/javascript" src="js/main.js"></script>
