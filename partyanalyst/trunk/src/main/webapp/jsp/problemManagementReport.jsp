@@ -43,7 +43,13 @@
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
+
+<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+%>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+<% }
+%>
 
 <!-- YUI Skin Sam -->
 
