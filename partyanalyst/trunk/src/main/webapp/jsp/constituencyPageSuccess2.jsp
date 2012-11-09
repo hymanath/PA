@@ -261,6 +261,10 @@ margin-top: 4px;
 
 .opinionpoll .answer .span2{margin-left:0px;}
 .opinionpoll .answer span{margin-left:10px;}
+.main-mbg{line-height:none !important;}
+.main-title-sec {height:20px;}
+#constituencyType{margin-bottom:5px;}
+
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -283,7 +287,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
         <div class="main-mbg"><div id="constituencyType"></div></div>
         <div class="main-bbg"></div>
 
-		<div style="margin-top: 12px;">
+		<div style="margin-top: 9px;">
 		<span style="float:right;">
 			<g:plusone size="medium"></g:plusone>
 
