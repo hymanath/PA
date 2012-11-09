@@ -33,7 +33,7 @@
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 
@@ -41,6 +41,12 @@
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+
+<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+%>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+<% }
+%>
 <script src="${mapKey}" type="text/javascript"></script>
 <style type="text/css">
 	.candidateDetailsStyle{
