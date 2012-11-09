@@ -382,7 +382,7 @@ function initializeResultsTable() {
 	<div class='span9 commentsec'>
 
 		 <div style="margin-bottom:8px;">${comment.comment}</div>
-		 <span class="label label-info">Posted By:${comment.firstName} ${comment.lastName}  </span>	
+		 <span class="label label-info">Posted By:${comment.firstName} &nbsp;&nbsp; ${comment.lastName}  </span>	
 		 <span id="abuseSuccess${comment.commentId}"></span>	 
 		
 			
