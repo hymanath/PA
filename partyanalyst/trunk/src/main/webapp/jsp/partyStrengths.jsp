@@ -39,7 +39,13 @@
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+
+<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+%>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+<% }
+%>
 	
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
