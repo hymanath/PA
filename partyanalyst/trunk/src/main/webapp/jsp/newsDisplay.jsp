@@ -106,12 +106,14 @@ position:absolute;
 		width:22px;
 	}
 #fromDate_Div{
-  height:240px;
-  width:144px;
+  height:auto;
+  width:170px;
+  z-index:9999;
 }
 #toDate_Div{
-  height:240px;
-  width:144px;
+  height:auto;
+  width:170px;
+  z-index:9999;
 }
 #newsSearch_head {
     background-color: #EEF4F6;
