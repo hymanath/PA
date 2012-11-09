@@ -28,14 +28,18 @@
 
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
+
+<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+%>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
-
-
+<% }
+%>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/partyPerformance.js" ></script>
 <script type="text/javascript" src="js/partyPerformanceReport.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
+<!--<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>-->
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
