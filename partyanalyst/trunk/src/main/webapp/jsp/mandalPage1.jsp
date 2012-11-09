@@ -73,7 +73,8 @@
  margin-left: auto;
     margin-right: auto;
     background: #fff;
-    width: 93%;
+    width: 980px;
+	margin-bottom:15px;
 }
 
 #VillageTable th
@@ -285,14 +286,14 @@ width:100%;
 	color:#3B4B58;
 	font-weight:bold;
 }
-/*
-#townshipPartyResultsPanel
+
+/*#townshipPartyResultsPanel
 {
 	border:2px solid #3B4B58;
 	width: 901px;
     margin-left: -10px;
-}
-*/
+}*/
+
 
 #townshipPartyResultsPanel .hd
 {
@@ -310,7 +311,18 @@ width:100%;
 	vertical-align:top;
 	
 }
-
+.revenueVillageinfoDiv td{padding:3px;padding-left:5px;font-weight:normal;border:1px solid #d3d3d3;}
+.revenueVillageinfoDiv{
+	border:1px solid #7F7F7F;
+	border-collapse:collapse;
+	border-spacing:0;
+	font-family:arial;
+	font-size:inherit;
+	margin:0;
+	padding:0;
+	width:90%;
+}
+.revenueVillageinfoDiv tr:nth-child(even){background:#EDF5FF;}
 .yui-skin-sam .yui-dt table {
 	border:1px solid #7F7F7F;
 	border-collapse:separate;
@@ -361,19 +373,15 @@ font-family: arial,sans-serif;
     text-align: center;
     width: 100%;
 }
-#dTTableDiv2 * table * a {
-	color:#669900;
-}
 .yui-dt-liner a{
 	color:#669900;
+}
+.revenueVillageinfoDiv a{
+color:#669900;
 }
 .reportAnchors{
 	color:#3B4B58 !important;
 	font-family: verdana !important;
-}
-.yui-skin-sam .yui-dt table {
-font-family: verdana !important;
-
 }
 </style>
 
@@ -548,7 +556,7 @@ function getMoreResults(elecYear,elecType,constiId)
 
 	}
 
-function buildRevenueVillagesInfoTab(){
+	function buildRevenueVillagesInfoTab(){
 		var revenueInfo = '';
 		revenueInfo += '<br>'
 		revenueInfo += '<div id="div3_revenue">';
@@ -921,8 +929,8 @@ function buildRevenueVillagesInfoTab(){
 
 		for(var k in resultVO.partiesResultsInVillages){
 			rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' '+typeVal+' In '+yearVal+'</b></div>';
-			rvStr += '<div id="revenueVillageDiv_'+k+'" class="revenueVillageDiv">';	
-			rvStr += '<table id="revillageInfoTable_'+k+'" >';
+			rvStr += '<div id="revenueVillageDiv_'+k+'">';	
+			rvStr += '<table id="revillageInfoTable_'+k+'">';
 			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 			{			
 				rvStr += '<tr>';
@@ -1027,7 +1035,7 @@ function buildRevenueVillagesInfoTab(){
 		for(var k in resultVO.partiesResultsInVillages){
 			rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' '+typeVal+' In '+yearVal+'</b></div>';
 			rvStr += '<div id="revenueVillageDiv_'+k+'">';	
-			rvStr += '<table id="revillageInfoTable_'+k+'" class="revenuevillageInfoDiv">';
+			rvStr += '<table id="revillageInfoTable_'+k+'" class="revenueVillageinfoDiv">';
 			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 			{			
 				rvStr += '<tr>';
@@ -1558,7 +1566,7 @@ No Data Aailable
 	</div>
 	
 	<div id="mandalPageTab" class="yui-skin-sam" style="margin-left: -10px;
-    width: 973px;margin-bottom:10px;"></div>
+    width: 905px;"></div>
 	
 	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
