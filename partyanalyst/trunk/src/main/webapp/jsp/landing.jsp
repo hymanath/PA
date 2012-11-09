@@ -90,7 +90,7 @@
 		
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
     %>	
-	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
+	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 	<% }
     %>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
