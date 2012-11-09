@@ -86,7 +86,13 @@
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 	<link href="styles/landingPage/landingPage.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
+	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
+		
+	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+    %>	
 	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
+	<% }
+    %>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 </head>
 
