@@ -40,7 +40,13 @@
     <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>	
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
+	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+	
+	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+    %>
 	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+	<% }
+    %>
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage2.css" />
 
