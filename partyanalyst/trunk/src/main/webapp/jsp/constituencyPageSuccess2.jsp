@@ -22,7 +22,7 @@
 	<script
 	src="js/jQuery/jquery-ui.min.js">
 		</script>
-	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
+	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 	<script src="${mapKey}" type="text/javascript"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	
