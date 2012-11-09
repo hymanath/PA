@@ -73,7 +73,7 @@
  margin-left: auto;
     margin-right: auto;
     background: #fff;
-    width: 980px;
+    width: 93%;
 }
 
 #VillageTable th
@@ -285,14 +285,14 @@ width:100%;
 	color:#3B4B58;
 	font-weight:bold;
 }
-
+/*
 #townshipPartyResultsPanel
 {
 	border:2px solid #3B4B58;
 	width: 901px;
     margin-left: -10px;
 }
-
+*/
 
 #townshipPartyResultsPanel .hd
 {
@@ -360,6 +360,20 @@ font-family: arial,sans-serif;
     padding-top: 50px;
     text-align: center;
     width: 100%;
+}
+#dTTableDiv2 * table * a {
+	color:#669900;
+}
+.yui-dt-liner a{
+	color:#669900;
+}
+.reportAnchors{
+	color:#3B4B58 !important;
+	font-family: verdana !important;
+}
+.yui-skin-sam .yui-dt table {
+font-family: verdana !important;
+
 }
 </style>
 
@@ -534,7 +548,7 @@ function getMoreResults(elecYear,elecType,constiId)
 
 	}
 
-	function buildRevenueVillagesInfoTab(){
+function buildRevenueVillagesInfoTab(){
 		var revenueInfo = '';
 		revenueInfo += '<br>'
 		revenueInfo += '<div id="div3_revenue">';
@@ -907,7 +921,7 @@ function getMoreResults(elecYear,elecType,constiId)
 
 		for(var k in resultVO.partiesResultsInVillages){
 			rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' '+typeVal+' In '+yearVal+'</b></div>';
-			rvStr += '<div id="revenueVillageDiv_'+k+'">';	
+			rvStr += '<div id="revenueVillageDiv_'+k+'" class="revenueVillageDiv">';	
 			rvStr += '<table id="revillageInfoTable_'+k+'" >';
 			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 			{			
@@ -1013,7 +1027,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		for(var k in resultVO.partiesResultsInVillages){
 			rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' '+typeVal+' In '+yearVal+'</b></div>';
 			rvStr += '<div id="revenueVillageDiv_'+k+'">';	
-			rvStr += '<table id="revillageInfoTable_'+k+'" >';
+			rvStr += '<table id="revillageInfoTable_'+k+'" class="revenuevillageInfoDiv">';
 			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 			{			
 				rvStr += '<tr>';
@@ -1544,7 +1558,7 @@ No Data Aailable
 	</div>
 	
 	<div id="mandalPageTab" class="yui-skin-sam" style="margin-left: -10px;
-    width: 905px;"></div>
+    width: 973px;margin-bottom:10px;"></div>
 	
 	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
