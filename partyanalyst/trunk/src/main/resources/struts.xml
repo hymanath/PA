@@ -54,13 +54,18 @@
 		<action name="landing" class="com.itgrids.partyanalyst.web.action.LandingAction">
 			<result>/jsp/landing.jsp</result>
 		</action> 
+		
 		<action name="homePage" class="homePageAction">
 			<result>/jsp/homePage.jsp</result>
-			
 		</action>
+		
+		<action name="newhomePage" class="homePageAction">
+			<result>/jsp/newhomePage.jsp</result>
+		</action>
+		
 		<action name="loginInputAction" class="loginInputAction">
-		<result name="success">/jsp/loginForm.jsp</result>
-		<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
+			<result name="success">/jsp/loginForm.jsp</result>
+			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 		</action>
 		
 		<action name="newAnnouncementAction" class="announcementPageAction">
