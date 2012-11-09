@@ -250,7 +250,7 @@ width:223px; height:66px; color:#9394a8; padding:0px;}
 .main-title-sec{background:#06abea; height:25px; margin-left:auto;margin-right:auto;display:table;border-radius:5px 5px 0px 0px;-moz-border-radius:5px 5px 0px 0px;width:1000px;}
 .main-mbg{text-transform:uppercase; color:#fff;
 font:bold 14px  "Trebuchet MS", Arial, Helvetica, sans-serif;display:table-cell;padding-left:10px;}
-.main-bbg{background:url(../images/blue-crv-bgs.png) left -40px no-repeat; float:left; width:6px; height:25px;}
+.main-bbg{background:url(../images/blue-crv-bgs.png) left -40px no-repeat; float:left; width:6px;}
 
 .profile-left-sec{width:206px; float:left; background:url(../images/content-crv-bgs.png) left top no-repeat; padding-top:5px; 
 margin-right:7px;}
