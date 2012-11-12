@@ -261,12 +261,14 @@ $(document).ready(function() {
 				<td class="statusData_table_data" width="100%" style="padding-top:23px">
 					<table>
 					  <tr>
-					    <td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Create New" onClick="buildCreateNewDiv()"></b></td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Photo Gallery" type ="button" id="photoGalleryId" onClick="showPhotoGallery()"></b></td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Meta Info" id="developmentGalleryId" onClick="buildMetaInfoDiv()"></b> </td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
+					    <td style="padding-left:20px"><b><input type="button" class="buttonStyle" value="Create New" onClick="buildCreateNewDiv()"></b></td>
+						<td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Photo Gallery" type ="button" id="photoGalleryId" onClick="showPhotoGallery()"></b></td>
+						<td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
+						<td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
+						<td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Meta Info" id="developmentGalleryId" onClick="buildMetaInfoDiv()"></b> </td>
+						<td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
+
+						<td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Special Page Info" id="specialPageInfoId"  onclick="getSpecialPageInfo()"></b> </td>
 					 </tr>
 					</table>
 				</td>
@@ -336,6 +338,9 @@ $(document).ready(function() {
 
 	<div id='metaInfoDiv' class="divInfo">
 	</div>
+	
+	<div id="specialPageInfoDiv" class="divInfo"> </div>
+
 
 	<!-- for  body 2 end    result  -->
 	<div id='profileManagementMainOuterDiv3' style="display:none">
