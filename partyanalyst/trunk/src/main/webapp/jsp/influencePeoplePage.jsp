@@ -459,7 +459,7 @@
 											var statusElmt = document.getElementById("smsStatus");
 
 											if(myResults.resultStatus == null)
-												statusElmt.innerHTML = '<font color="green">SMS has been sent successfully, to '+myResults.totalSmsSent+' people .. </font>';
+												statusElmt.innerHTML = '<font color="green">SMS has been sent successfully to '+myResults.totalSmsSent+' people .. </font>';
 											else
 												statusElmt.innerHTML = '<font color="red">SMS cannot be sent to the selected people due to some technical difficulty.. </font>';
 										}
