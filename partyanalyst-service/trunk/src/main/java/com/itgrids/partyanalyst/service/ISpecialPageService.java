@@ -66,4 +66,12 @@ public interface ISpecialPageService {
 	public List<SelectOptionVO> getSpecialPageIdsList();
 	
     public  List<FileVO> getFirstThreePhotoGallaryRecords(Long specialPageId);
+    
+    public ResultStatus createOrUpdateSpecialPageInfo(SpecialPageVO specialPageVO);
+    
+    public List<SpecialPageVO> getSpecialPageInfo(Long specialPageId);
+    
+    public List<SpecialPageVO> getSpecialPageListForHomePage();
+    
+    public List<SpecialPageVO> getAllSpecialPageListForHomePage();
 }
