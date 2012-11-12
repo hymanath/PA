@@ -648,6 +648,7 @@
 		<property name="problemManagementService" ref="problemManagementService" />		
 		<property name="ananymousUserService" ref="ananymousUserService" />		
 		<property name="opinionPollService" ref="opinionPollService" />	
+		<property name="specialPageService" ref="specialPageService" />
 		
 	</bean>
 	
@@ -966,4 +967,9 @@
 		<bean id="adminSocialAction" class="com.itgrids.partyanalyst.web.social.action.AdminSocialAction" singleton="false">
 		<property name="socialService" ref="socialService" />
 	</bean>	
+	<bean id="specialPageInfoAction" class="com.itgrids.partyanalyst.web.action.SpecialPageInfoAction" singleton="false">
+		<property name="specialPageService" ref="specialPageService" />
+	</bean>	
+	
+	
 </beans>	
