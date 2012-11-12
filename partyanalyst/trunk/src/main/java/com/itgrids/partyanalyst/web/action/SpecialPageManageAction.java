@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -13,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.util.Log;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
@@ -64,7 +65,14 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 	private File userImage;
 	private InputStream inputStream;
 	private List<SelectOptionVO> specialPages;
+	private List<SpecialPageVO> specialPageVOList;
+	private File uploadImage;
+	private String title;
+	private String description;
+	private String specialPageVisibility;
+	private String speciPageId;
 	
+	private List<String> fileNamesList = new ArrayList<String>();
 	public List<SelectOptionVO> getSpecialPages() {
 		return specialPages;
 	}
@@ -238,6 +246,54 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 	public void setSpecialPageService(ISpecialPageService specialPageService) {
 		this.specialPageService = specialPageService;
 	}
+	
+	public List<SpecialPageVO> getSpecialPageVOList() {
+		return specialPageVOList;
+	}
+
+	public void setSpecialPageVOList(List<SpecialPageVO> specialPageVOList) {
+		this.specialPageVOList = specialPageVOList;
+	}
+
+	public File getUploadImage() {
+		return uploadImage;
+	}
+
+	public void setUploadImage(File uploadImage) {
+		this.uploadImage = uploadImage;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getSpecialPageVisibility() {
+		return specialPageVisibility;
+	}
+
+	public void setSpecialPageVisibility(String specialPageVisibility) {
+		this.specialPageVisibility = specialPageVisibility;
+	}
+
+	public String getSpeciPageId() {
+		return speciPageId;
+	}
+
+	public void setSpeciPageId(String speciPageId) {
+		this.speciPageId = speciPageId;
+	}
 
 	public String execute()throws Exception
 	{
@@ -403,8 +459,61 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		{
 			selectOptionList = specialPageService.getSpecialPageIdsList();
 		}
+		else if(jobj.getString("task").equalsIgnoreCase("getSpecialPageInfo"))
+		{
+			specialPageVOList = specialPageService.getSpecialPageInfo(jobj.getLong("specialPageId"));
+		}
 		return Action.SUCCESS;
 	} 
+	
+	
+	public String createOrUpdateSpecialPageInfo()
+	{
+		try{
+			
+				String filePath = null;
+				String path = null;
+				
+				SpecialPageVO specialPageVO = new SpecialPageVO();
+				Long SpecialPageId = new Long(speciPageId);
+				specialPageVO.setTitle(getTitle());
+				specialPageVO.setDescription(getDescription());
+				specialPageVO.setHeading(getSpecialPageVisibility());
+				specialPageVO.setSpecialPageId(SpecialPageId);
+				
+				if(userImage != null)
+				{
+					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				
+					if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+						filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
+					else
+						filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
+				
+					filePath = filePath+"special_page_profile"+pathSeperator+SpecialPageId+pathSeperator;
+				
+					path = IConstants.UPLOADED_FILES+"/"+"special_page_profile"+"/"+SpecialPageId+"/"+"img.jpg";
+				
+					specialPageVO.setEventImagePath(path);
+				
+					File fileToCreate = new File(filePath,"img.jpg");
+					try {
+						FileUtils.copyFile(userImage, fileToCreate);
+					} catch (IOException e) {
+						e.printStackTrace();
+						Log.error("Exception Occured in createOrUpdateSpecialPageInfo(),Exception, "+e);
+					}
+				}
+							
+				result = specialPageService.createOrUpdateSpecialPageInfo(specialPageVO);
+			
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		Log.error("Exception Occured in createOrUpdateSpecialPageInfo(),Exception, "+e);
+	} 
+		return Action.SUCCESS;
+	}
 }
 	
 	
