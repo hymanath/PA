@@ -3644,5 +3644,8 @@
               <param name="root">status</param>
 			</result>
 		</action>
+		<action name="voters">
+		<result>/jsp/votersInfo.jsp</result>
+		</action>
 		</package>
 </struts>      
