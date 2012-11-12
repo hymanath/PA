@@ -674,7 +674,7 @@ $(function() {
 			<ul style="display: none;">
 
 			<li><a href="constituencyPageAction.action?constituencyId=1">ADILABAD</a></li>
-			<li><a href="constituencyPageAction.action?constituencyId=242">BADVEL</a></li>
+			
 			<li><a href="constituencyPageAction.action?constituencyId=2">ASIFABAD</a></li>
 			<li><a href="constituencyPageAction.action?constituencyId=295">BELLAMPALLI</a></li>
 			<li><a href="constituencyPageAction.action?constituencyId=3">BOATH</a></li>
@@ -729,7 +729,7 @@ $(function() {
 			</li>
 			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah District </a>
 			<ul style="display: none;">
- 
+			<li><a href="constituencyPageAction.action?constituencyId=242">BADVEL</a></li>
 			<li><a href="constituencyPageAction.action?constituencyId=244">JAMMALAMADUGU</a></li>
 			<li><a href="constituencyPageAction.action?constituencyId=243">Kadapa</a></li>
 			<li><a href="constituencyPageAction.action?constituencyId=245">KAMALAPURAM</a></li>
