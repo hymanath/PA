@@ -1061,6 +1061,7 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService"/>
 		<property name="specialPageCustomPagesDAO" ref="specialPageCustomPagesDAO"/>
 		<property name="specialPageMetaInfoDAO" ref="specialPageMetaInfoDAO"/>
+		<property name="specialPageInfoDAO" ref="specialPageInfoDAO"></property>
 	</bean>
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
