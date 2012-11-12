@@ -395,6 +395,24 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		return query.list();	
 	}
 	@SuppressWarnings("unchecked")
+	public List<Long> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
+	{
+	Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model "+queryStr2+" and " +
+			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+	query.setFirstResult(startIndex);
+	query.setMaxResults(maxResults);
+	return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Long> getRecentlyUploadedNewsGallaryIds(Integer startIndex , Integer maxResults,String queryStr3)
+	{
+		Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model "+queryStr3+" and " +
+			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+	query.setFirstResult(startIndex);
+	query.setMaxResults(maxResults);
+	return query.list();
+	}
+	@SuppressWarnings("unchecked")
 	public List<FileGallary> getFileGallaryByFileIdsList(List<Long> fileIdsList)
 	{
 		Query query = getSession().createQuery("select model from FileGallary model where model.file.fileId in (:fileIdsList) and model.isDelete = 'false' " +
@@ -413,7 +431,15 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getStartingRecordInNewsGallaries(Long gallaryId)
+	{
+		Query query = getSession().createQuery("select model from FileGallary  model where model.gallary.gallaryId = ? and model.isDelete = 'false' " +
+				"and model.isPrivate = 'false' and model.file.regionScopes.regionScopesId < 4 order by model.file.fileDate desc,model.updateddate desc");
+		query.setParameter(0,gallaryId);
+		
+		return query.list();	
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getFileGallaryByFileIdsListForNews(List<Long> fileIdsList)
@@ -431,6 +457,8 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setMaxResults(maxResults);
 		return query.list();
 	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getNewsByGalleryId(List galleryIds){
 		 Query query = getSession().createQuery("SELECT model.file.fileId ,model.file.fileName,model.file.filePath," +
