@@ -3646,6 +3646,28 @@
 		</action>
 		<action name="voters">
 		<result>/jsp/votersInfo.jsp</result>
+		</action>	
+
+		<action name="updateSpecialPageForm" class="specialPageManageAction" method="
+		createOrUpdateSpecialPageInfo">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
 		</action>
+
+		<action name="getSpecialPageInfoAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">specialPageVOList</param>
+			</result>
+		</action>
+		<action name="getAllSpecialPageAction" class="homePageAction" method="getAllSpecialPageListForHomePage">
+			<result type="json" name="success">
+				<param name="root">specialPageVOList</param>				
+			</result>		
+		</action>
+		<action name="specialPageInfoAction" class="specialPageInfoAction">
+			<result>/jsp/specialPageInfo.jsp</result>
+		</action>
+		
 		</package>
 </struts>      
