@@ -920,5 +920,7 @@
 	<bean id="candidateSocialDAO" class="com.itgrids.partyanalyst.social.dao.impl.CandidateSocialDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="specialPageInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
