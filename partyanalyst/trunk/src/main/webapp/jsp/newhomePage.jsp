@@ -624,8 +624,22 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
 					<h2>Hot Topics</h2>
-										
+					<c:forEach var="specialPages" items="${specialPageVOList}">
 					<div class="media media_hr widget-block b-top1">
+						
+						<div class="media-body">
+						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" title="${specialPages.title}">
+							<h5>${specialPages.title}</h5>
+								<p>
+								<img src="${specialPages.eventImagePath}" class="pull-left thumbnail span7"/>
+									${specialPages.description}
+								</p>
+						</a>
+						</div>
+						
+					</div>
+						</c:forEach>				
+					<!-- <div class="media media_hr widget-block b-top1">
 						
 						<div class="media-body">
 						<a href="specialPageAction.action?specialPageId=13" title="Gujarat Elections - 2012">
@@ -637,9 +651,9 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 						</a>
 						</div>
 						
-					</div>
+					</div> -->
 					<!--------->
-					<div class="media media_hr widget-block">
+					<!-- <div class="media media_hr widget-block">
 						
 						
 						<a href="specialPageAction.action?specialPageId=14" title="Himachal Pradesh Elections - 2012">
@@ -651,9 +665,9 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 						</div></a>
 
 						
-					</div>
+					</div> !--> 
 					<!----------------->
-					<div class="media media_hr widget-block">
+					<!-- <div class="media media_hr widget-block">
 						
 						
 						<a href="specialPageAction.action?specialPageId=12" title="Vasthunna Meekosam">
@@ -664,10 +678,10 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 								Telugu Desam Party President and former Andhra Pradesh Chief Minister N Chandrababu Naidu on 2nd NOV embarked on a marathon 2,340 km-long Padayatra (foot march) to reach out to the people across the length and breadth of the state. </p>
 						</div></a>
 						
-					</div>
+					</div> !-->
 					
 					<!----------------->
-					<div class="media media_hr widget-block">
+					<!-- <div class="media media_hr widget-block">
 						
 						<a href="specialPageAction.action?specialPageId=15" title="Indiramma Bata">
 						<div class="media-body">
@@ -676,10 +690,10 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 								<p>Andhra Pradesh chief minister N Kiran Kumar Reddy launched a new mass contact program Indiramma Bata in every district of the state to assess whether the government schemes were reaching people at the grass-root level. </p>
 						</div></a>
 						
-					</div>
+					</div> !--> 
 					
 					<!----------------->
-					<div class="media media_hr widget-block">
+					<!-- <div class="media media_hr widget-block">
 						
 						<a href="specialPageAction.action?specialPageId=16" title="Maro Praja Prasthanam">
 						<div class="media-body">
@@ -689,9 +703,12 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 								Y.S. Sharmila, the daughter of former Chief Minister of Andhra Pradesh, late Dr. YS Rajasekhar Reddy is gearing up for Maro Praja Prasthanam from Idupulapaya to Ichapuram in Srikakulam district. </p>
 						</div></a>
 						
-					</div>
+					</div> !-->
 					
-				
+				<!-- <input type="button" class="btn-primary btn" value="View More" onclick="getAllSpecialPagesForHomePage()" />-->
+
+				<a href="specialPageInfoAction.action" class="btn btn-primary" >View More</a>
+
 				</div>
 				<!-----------Opinion Poll--------------->
 				<div class="widget blue">
