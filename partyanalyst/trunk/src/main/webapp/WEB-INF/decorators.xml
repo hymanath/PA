@@ -143,6 +143,7 @@
 		<pattern>/partyStrengthAction*</pattern>
 		<pattern>/crossVotingReportInputAction*</pattern>
 		<pattern>/biElectionAction*</pattern>
+		<pattern>/voters*</pattern>
 		<pattern>/mandalPageElectionInfoAction*</pattern>
 
     </decorator>
