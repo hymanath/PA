@@ -272,6 +272,7 @@
 				<value>com.itgrids.partyanalyst.social.model.SocialNetworkSite</value>
 				<value>com.itgrids.partyanalyst.social.model.CandidateSocial</value>
 				<value>com.itgrids.partyanalyst.social.model.PartySocial</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageInfo</value>
 			</list>
 		</property>
 	</bean>
