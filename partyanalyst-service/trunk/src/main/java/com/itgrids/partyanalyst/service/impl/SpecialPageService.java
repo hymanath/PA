@@ -22,9 +22,11 @@ import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageInfoDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageMetaInfoDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.SpecialPageInfoDAO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -44,6 +46,7 @@ import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageDescription;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
+import com.itgrids.partyanalyst.model.SpecialPageInfo;
 import com.itgrids.partyanalyst.model.SpecialPageMetaInfo;
 import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
@@ -84,6 +87,7 @@ public class SpecialPageService implements ISpecialPageService{
 	private ICandidateDetailsService candidateDetailsService;
 	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
 	private ISpecialPageMetaInfoDAO specialPageMetaInfoDAO;
+	private ISpecialPageInfoDAO specialPageInfoDAO;
 	
 	
 	public ISpecialPageMetaInfoDAO getSpecialPageMetaInfoDAO() {
@@ -291,6 +295,14 @@ public class SpecialPageService implements ISpecialPageService{
 		this.specialPageDescriptionDAO = specialPageDescriptionDAO;
 	}
 	
+	public ISpecialPageInfoDAO getSpecialPageInfoDAO() {
+		return specialPageInfoDAO;
+	}
+
+	public void setSpecialPageInfoDAO(ISpecialPageInfoDAO specialPageInfoDAO) {
+		this.specialPageInfoDAO = specialPageInfoDAO;
+	}
+
 	//implementations of declaration reference variable
 	public List<String> getSpecialPageDescription(Long specialPageId)
 	{
@@ -1151,4 +1163,128 @@ public class SpecialPageService implements ISpecialPageService{
 		 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
 		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
 	}
+	
+	public ResultStatus createOrUpdateSpecialPageInfo(SpecialPageVO specialPageVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		SpecialPageInfo specialPageInfo = null;
+		try{
+			if(specialPageVO == null)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+				
+			if(specialPageVO.getSpecialPageId() !=null && specialPageVO.getSpecialPageId()>0)
+			{
+				Long specialPageInfoId = specialPageInfoDAO.getSpecialPageInfoIdBySpecialPageId(specialPageVO.getSpecialPageId());
+				if(specialPageInfoId !=null && specialPageInfoId > 0)
+				 specialPageInfo = specialPageInfoDAO.get(specialPageInfoId);
+				else
+					specialPageInfo = new SpecialPageInfo();
+				
+			}
+				
+				 specialPageInfo.setTitle(specialPageVO.getTitle());
+				 specialPageInfo.setDescription(specialPageVO.getDescription());
+				 specialPageInfo.setIsDisplayEnabled(specialPageVO.getHeading());
+				 specialPageInfo.setSpecialPage(specialPageDAO.get(specialPageVO.getSpecialPageId()));
+				 if(specialPageVO.getEventImagePath() !=null)
+				specialPageInfo.setShowImgPath(specialPageVO.getEventImagePath());
+				 
+				 specialPageInfoDAO.save(specialPageInfo);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Ocuured in createOrUpdateSpecialPageInfo() Method, Exception is -"+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	
+	
+	public List<SpecialPageVO> getSpecialPageInfo(Long specialPageId)
+	{
+		List<SpecialPageVO> specialPageVOList = null;
+		SpecialPageVO specialPageVO = null;
+		try{
+			List<SpecialPageInfo> specislPagelist = specialPageInfoDAO.getSpecialPageInfo(specialPageId);
+			if(specislPagelist != null && specislPagelist.size() > 0)
+			{
+				specialPageVOList = new ArrayList<SpecialPageVO>(0);
+				for(SpecialPageInfo specialPageDet : specislPagelist)
+				{
+					specialPageVO = new SpecialPageVO();
+					specialPageVO.setTitle(specialPageDet.getTitle().toString());
+					specialPageVO.setDescription(specialPageDet.getDescription().toString());
+					specialPageVO.setEventImagePath(specialPageDet.getShowImgPath().toString());
+					specialPageVO.setHeading(specialPageDet.getIsDisplayEnabled().toString());
+					specialPageVO.setSpecialPageId(specialPageDet.getSpecialPage().getSpecialPageId());
+					specialPageVOList.add(specialPageVO);
+				}
+				
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getSpecialPageInfo() Method,Exception: "+e);
+		}
+		return specialPageVOList;
+	}
+	
+	public List<SpecialPageVO> getSpecialPageListForHomePage()
+	{
+		List<SpecialPageVO> specialPageVOList = null;
+		SpecialPageVO specialPageVO = null;
+		try{
+			List<Object[]> list = specialPageInfoDAO.getSpecialPagesForHomePage();
+			if(list != null && list.size() > 0)
+			{
+				specialPageVOList = new ArrayList<SpecialPageVO>(0);
+				for(Object[] params : list)
+				{
+					specialPageVO = new SpecialPageVO();
+					specialPageVO.setTitle(params[0].toString());
+					specialPageVO.setDescription(params[1].toString());
+					specialPageVO.setEventImagePath(params[2].toString());
+					specialPageVO.setSpecialPageId((Long)params[3]);
+					specialPageVOList.add(specialPageVO);
+				}
+			}
+			return specialPageVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getSpecialPageListForHomePage() Method,Exception: "+e);
+			return specialPageVOList;
+		}
+		
+	}
+	
+	public List<SpecialPageVO> getAllSpecialPageListForHomePage()
+	{
+		List<SpecialPageVO> specialPageList = null;
+		try{
+			List<SpecialPageInfo> list  = specialPageInfoDAO.getAllSpecialPageListForHomePage();
+			if(list!= null && list.size() >0)
+			{
+				specialPageList = new ArrayList<SpecialPageVO>(0);
+				for(SpecialPageInfo specialPage: list)
+				{
+					SpecialPageVO specialPageVO = new SpecialPageVO();
+					specialPageVO.setTitle(specialPage.getTitle().toString());
+					specialPageVO.setDescription(specialPage.getDescription().toString());
+					specialPageVO.setEventImagePath(specialPage.getShowImgPath().toString());
+					specialPageVO.setHeading(specialPage.getIsDisplayEnabled().toString());
+					specialPageVO.setSpecialPageId(specialPage.getSpecialPage().getSpecialPageId());
+					specialPageList.add(specialPageVO);
+				}
+			}
+			return specialPageList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAllSpecialPageListForHomePage() method,Exception: "+e);
+			return specialPageList;
+		}
+	}
+		
 }
