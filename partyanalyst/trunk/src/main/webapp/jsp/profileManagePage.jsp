@@ -1951,19 +1951,16 @@ function  buildUploadNews()
 	str += '       <td class="tdWidth1">Keywords</td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" style="margin-top:8px;"></text></td></tr>';
 	str += '   <TR>';
-	str += '     <td colspan="2">';
-	str += '<table>';
-	str += '   <tr>';
-	str += '     <td class="tdWidth1" style="width:162px;">File Date<font class="requiredFont">*</font></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25" style="margin-top:8px;width:184px;"/>';
-	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '     <TD>';
-	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
-	str += '     </TD>';
-	str += '   </tr>';
-	str += '</table>';
-	str += '     </td>';
+	
+	
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	
 	str += '   </TR>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
