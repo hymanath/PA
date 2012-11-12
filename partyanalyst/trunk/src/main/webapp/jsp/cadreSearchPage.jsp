@@ -338,7 +338,7 @@ function setCadreIdToProblem()
 
 			<table width="100%" class="cadreSearchInputTable">	
 				<tr>
-					<th style="width:210px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optinal)</th>
+					<th style="width:210px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optional)</th>
 					<td>
 						<input type="text" id="cadreNameText"/>
 						<input type="radio" value="StartingWith" checked="checked" name="nameBasedRadio">Starting With 
