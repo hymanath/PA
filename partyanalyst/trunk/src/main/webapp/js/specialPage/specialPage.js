@@ -42,6 +42,9 @@ function insertProfileDiscription()
 	if(document.getElementById("photoGallaryDiv").style.display = 'block')
 		document.getElementById("photoGallaryDiv").style.display = 'none' ;
 
+	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
+		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
+
 	document.getElementById("headingnames").innerHTML = "Event Description";
 	var str ='';
 	str += '<div id="content" style="width:650px;">';
@@ -271,7 +274,11 @@ function callAjax(jsObj,url){
 				 showUploadVideoStatus(myResults);
 				
 			}
-			
+			else if(jsObj.task == "getSpecialPageInfo")
+			{
+				buildSpecialPageInfoDiv(myResults);
+			}
+						
 	}
 	catch(e){   
 				//alert("Invalid JSON result" + e);   
@@ -812,6 +819,9 @@ if(document.getElementById("videoGallaryDiv").style.display = 'none')
 
 if(document.getElementById("photoGallaryDiv").style.display = 'block')
 		document.getElementById("photoGallaryDiv").style.display = 'none' ;
+
+if(document.getElementById("specialPageInfoDiv").style.display = 'block')
+		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
 
     document.getElementById("headingnames").innerHTML = "Video Gallery";
@@ -1464,6 +1474,9 @@ if(document.getElementById('newsGallaryDiv').style.display = 'none')
 
 if(document.getElementById("photoGallaryDiv").style.display = 'block')
 		document.getElementById("photoGallaryDiv").style.display = 'none' ;
+
+if(document.getElementById("specialPageInfoDiv").style.display = 'block')
+		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
 
 	//var newsGallaryDiv = document.getElementById("newsGallaryDiv");
@@ -3241,6 +3254,8 @@ function buildCreateNewDiv()
 
 	if(document.getElementById("photoGallaryDiv").style.display = 'block')
 		document.getElementById("photoGallaryDiv").style.display = 'none' ;
+	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
+		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
 
 	document.getElementById("headingnames").innerHTML = "Create New";
@@ -3785,6 +3800,9 @@ function buildMetaInfoDiv()
 	if(document.getElementById("photoGallaryDiv").style.display = 'block')
 		document.getElementById("photoGallaryDiv").style.display = 'none' ;
 
+	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
+		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
+
 
 	document.getElementById("headingnames").innerHTML = "Meta Info";
 	var metaInfoDivElmt = document.getElementById("metaInfoDiv");
@@ -4209,11 +4227,11 @@ function uploadAFile()
 	{
 		disableButton('uploadPhotoId');
 
-		/* var privateRadioId = document.getElementById('privateRadioId').checked;
+		 var privateRadioId = document.getElementById('privateRadioId').checked;
 		if(privateRadioId == true)
 	document.getElementById('privateRadioId').checked = 'true';
 		if(privateRadioId == false)
-	document.getElementById('publicRadioId').checked = 'true';*/
+	document.getElementById('publicRadioId').checked = 'true';
 
 		var uploadHandler = {
 				upload: function(o) {
@@ -4402,6 +4420,9 @@ function showPhotoGallery()
 
 	    
 		    document.getElementById("metaInfoDiv").style.display = 'none' ;
+
+			document.getElementById("specialPageInfoDiv").style.display = 'none' ;
+
 
 		    document.getElementById("photoGallaryDiv").style.display = 'block' ;
 
@@ -5003,4 +5024,196 @@ var news_Obj = {
  {
   clickid = null;
  news_Obj.initialize(viewType);
+}
+
+ 
+
+
+function buildSpecialPageInfoDiv(result)
+{
+var specialPageId = $("#specialPageId").val();
+
+	if(document.getElementById('descriptionDiv').style.display = 'block')
+		document.getElementById('descriptionDiv').style.display = 'none';
+
+	if(document.getElementById('newsGallaryDiv').style.display = 'block')
+		document.getElementById("newsGallaryDiv").style.display = 'none';
+
+	if(document.getElementById('createNewDiv').style.display = 'block')
+		document.getElementById('createNewDiv').style.display = 'none';
+	
+	if(document.getElementById("videoGallaryDiv").style.display = 'block')
+		document.getElementById("videoGallaryDiv").style.display = 'none';
+	
+    if(document.getElementById("metaInfoDiv").style.display = 'block')
+		document.getElementById("metaInfoDiv").style.display = 'none' ;
+
+	if(document.getElementById("photoGallaryDiv").style.display = 'block')
+		document.getElementById("photoGallaryDiv").style.display = 'none' ;
+	
+	if(document.getElementById("specialPageInfoDiv").style.display = 'none')
+		document.getElementById("specialPageInfoDiv").style.display = 'block';
+	
+	var str ='';
+	document.getElementById("headingnames").innerHTML = "Manage Special Page Information";
+		
+	var specialPageInfoDivElmt = document.getElementById("specialPageInfoDiv");
+
+	if(result == null || result.length == 0)
+	{
+	str += '<form id="updateSpecialPageFormId" method="post" enctype="multipart/form-data" action="updateSpecialPageForm.action" name="specialPageForm">';
+	str +='<div id="content" style="width:650px;">';
+		
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Update A Special Page</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="specialPageInfoErrorMsgDivId"  style="margin-bottom: 5px;"></div></td></tr></table>';
+	str += '<table width="75%" style="margin: 0px 38px 10px 0px;">';
+
+	str += '<tr><td><b><font color="#4B74C6">Title<font class="requiredFont">*</font></font></b></td><td><input name="title" type="text" id="specialPageTitle" size="25" maxlength="100"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
+	str += '<td><textarea id="specialPageDescription" cols="19" rows="3" name="description"></textarea></td></tr></table>';
+	str += '<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font></td><td class="selectWidthPadd"><input type="file" name="userImage" id="specialPageImgPath" style="margin-left: 11px;" size="25" /></td></tr>';
+	str += '<div id="specialPageImgDiv" style="margin-top:10px;"></div>';
+	str +='<div style="padding-right: 63px; margin-top: 10px; margin-bottom: 10px;"><b><font color="#4B74C6">Display in Home Page</font></b> <input type="radio" value="Yes" name="specialPageVisibility" id="specialPagePublicRadioId" checked="true" class="specialPagePrivateRadioCls">Yes</input>';
+	str += '<input type="radio" value="No" name="specialPageVisibility" id="specialPagePrivateRadioId" class="specialPagePrivateRadioCls">No</input></div>';
+
+	str += '<table><tr><td style="padding-right:40px"><input type="button" id="specialPageButtonId" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str +='<input type="hidden" value="'+specialPageId+'" name="speciPageId"/>';
+	str +='</form>';
+	str += '</fieldset>';
+	str +='</div>';
+
+	}
+	else if(result != null || result.length != 0)
+	{
+	for(i=0;i<result.length;i++)
+	{
+	
+	
+	str +='<div id="content" style="width:650px;">';
+		
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<form id="updateSpecialPageFormId" method="post" enctype="multipart/form-data" action="updateSpecialPageForm.action" name="specialPageForm">';
+	str += '<h2 align="center">Update A Special Page</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="specialPageInfoErrorMsgDivId"  style="margin-bottom: 5px;"></div></td></tr></table>';
+	str += '<table width="75%" style="margin: 0px 38px 10px 0px;">';
+
+	str += '<tr><td><b><font color="#4B74C6">Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="specialPageTitle" size="25" maxlength="100" value="'+result[i].title+'" name="title"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
+	str += '<td><textarea id="specialPageDescription" cols="19" rows="3" name="description">'+result[i].description+'</textarea></td></tr></table>';
+	str += '<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font></td><td class="selectWidthPadd"><input type="file" name="userImage" id="specialPageImgPath" style="margin-left: 11px;" size="25" value="'+result[i].eventImagePath+'"/></td></tr>';
+	str += '<div id="specialPageImgDiv" style="margin-top:10px;"><img src="'+result[i].eventImagePath+'" style="border: 2px solid #ccc; padding: 5px; border-radius: 3px; height: 100px; width: 130px;cursor:pointer;"/></div>';
+	str += '<div style="padding-right: 63px; margin-top: 10px; margin-bottom: 10px;"><b><font color="#4B74C6">Display in Home Page</font></b>';
+	str += '<input type="radio" value="Yes" name="specialPageVisibility" id="specialPagePublicRadioId" ';
+	if(result[i].heading == "Yes")
+		str +='checked="true"';
+	str += 'class="specialPagePrivateRadioCls">Yes</input>';
+	str += '<input type="radio" value="No" name="specialPageVisibility" id="specialPagePrivateRadioId" ';
+	if(result[i].heading == "No")
+		str +='checked="true"';
+	str += 'class="specialPagePrivateRadioCls">No</input></div>';
+
+	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str +=	'<input type="hidden" value="'+result[i].specialPageId+'" name="speciPageId"/>';
+	str +='</form>';
+	str += '</fieldset>';
+	str +='</div>';
+	}
+	}
+	specialPageInfoDivElmt.innerHTML = str;
+
+
+}
+
+function getSpecialPageInfo()
+{
+var specialPageId = $("#specialPageId").val();
+	var jsObj =
+		{ 
+        	specialPageId : specialPageId,
+			task : "getSpecialPageInfo"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSpecialPageInfoAction.action?"+rparam;						
+	callAjax(jsObj,url);
+
+}
+function createorUpdateSpecialPage()
+{
+	
+	var specialPageButtonId =document.getElementById('specialPageButtonId');
+	var title = $("#specialPageTitle").val();
+	var description = $("#specialPageDescription").val();
+	var filePath = $("#specialPageImgPath").val();
+	var visibility = $('[name=specialPageVisibility]:checked').val();
+	var specialPageId = $("#specialPageId").val();
+	var errorDivEle = document.getElementById('specialPageInfoErrorMsgDivId');
+	 
+	var eFlag = false;
+    var str = '<font color="red">';
+	if(title.length == 0 && description.length == 0)
+	{
+		str +="Title and Description is Required.";
+		eFlag = true;
+	}
+	else if(title.length == 0)
+	{
+		str +='Title is Required.';
+		eFlag = true;
+	}
+	else if(description.length == 0)
+	{
+		str +='Description is Required.';
+		eFlag = true;
+	}
+	/*else if(filePath.length == 0)
+	{
+		str +='FilePath is Required.';
+		eFlag = true;
+	}*/
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+		
+			var specialPageHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					
+					showSuccessMsgOfSpecialPageInfo(uploadResult);
+					
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('updateSpecialPageFormId',true);
+		YAHOO.util.Connect.asyncRequest('POST','updateSpecialPageForm.action',specialPageHandler);
+	
+}
+
+
+
+function showSuccessMsgOfSpecialPageInfo(result)
+{
+	var errorDivEle = document.getElementById('specialPageInfoErrorMsgDivId');
+	
+	var str = '';
+		document.getElementById("specialPageTitle").value='';
+		document.getElementById("specialPageDescription").value='';
+		document.getElementById("specialPageImgPath").value='';
+		document.getElementById("specialPageImgDiv").style.display = 'none';
+		str += '<font color="green"><b>SpecialPage Updated Successfully.</b>';
+		
+	errorDivEle.innerHTML = str;
+}
+
+function clearSpecialPageInfoDiv(ele)
+{
+var divEle = document.getElementById(ele);
+divEle.innerHTML = "";
 }
