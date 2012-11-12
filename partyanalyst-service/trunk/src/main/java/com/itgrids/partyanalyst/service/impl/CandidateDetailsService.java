@@ -2362,6 +2362,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileVO> resultList = new ArrayList<FileVO>();
+	 List<FileVO> vedioresultList = new ArrayList<FileVO>();
+	 List<FileVO> newsresultList = new ArrayList<FileVO>();
 	 List<Long> latestgalIds =  fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, maxResults);
 	 if(latestgalIds != null)
 	 {
@@ -2376,22 +2378,51 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}
 		resultMap.put("photogallary", resultList);
 	 }
+	 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
+		/* List<Long> videosList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr2);
+		 videoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(videosList);*/
+		 List<Long> latestVedioGalIds = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(startIndex, maxResults, queryStr2);
+		 if(latestVedioGalIds != null)
+		 {
+			 for(Long vediogalId : latestVedioGalIds)
+			 {
+				 videoGallaryresultList=  fileGallaryDAO.getStartingRecordInGallaries(vediogalId);
+				 List<FileVO> vedioresult = setToFileVO(videoGallaryresultList);
+				 if(!vedioresult.isEmpty())
+				vedioresultList.add(vedioresult.get(0));		
+				 
+			 	}
+			 resultMap.put("VideoGallary", vedioresultList);
+		 }
+	
 	// photoGallaryresultList=fileGallaryDAO.getStartingRecordInGallaries(latestgalIds);
  	/* List<Long> photosList = fileGallaryDAO.getRecentlyUploadedPhotoIds(startIndex, maxResults);
- 	 
-	   photoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(photosList);*/
+ 	   photoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(photosList);*/
 	   // String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
 	   //List<Long> newsList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr1);
 	   //newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsListForNews(newsList);
-	 newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
+		 
+		 
+		 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary'";
+		 List<Long> newsGalIds = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(startIndex, maxResults, queryStr3);
+		 if(newsGalIds != null)
+		 {
+			 for(Long newsgalIds : newsGalIds)
+			 {
+				 newsGallaryresultList =fileGallaryDAO.getStartingRecordInNewsGallaries(newsgalIds); 
+				List<FileVO> newsList =setToFileVO(newsGallaryresultList);
+				if(!newsList.isEmpty())
+					newsresultList.add(newsList.get(0));	
+			 }
+			 resultMap.put("NewsGallary", newsresultList);
+		 }
+	/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 	 resultList = setToFileVO(newsGallaryresultList);
-	 resultMap.put("NewsGallary", resultList);
+	 resultMap.put("NewsGallary", resultList);*/
 	 
-	 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
-	 List<Long> videosList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr2);
-	 videoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(videosList);
-	 resultList = setToFileVO(videoGallaryresultList);
-	 resultMap.put("VideoGallary", resultList);
+	
+	
+	
 		 
      return resultMap;
 	 }catch (Exception e) {
