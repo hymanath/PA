@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -31,8 +32,10 @@ import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.SpecialPageService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -76,13 +79,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private IOpinionPollService opinionPollService;
 	private IAnanymousUserService ananymousUserService;
 	private QuestionsOptionsVO questionsOptionsVO;
-	
-	
+		
 
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
 	private List<SelectOptionVO> states;
+	private List<SpecialPageVO> specialPageVOList;
+	private ISpecialPageService specialPageService;
 	
 	public List<SelectOptionVO> getStates() {
 		return states;
@@ -323,7 +327,20 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setQuestionsOptionsVO(QuestionsOptionsVO questionsOptionsVO) {
 		this.questionsOptionsVO = questionsOptionsVO;
 	}
-
+	
+	public List<SpecialPageVO> getSpecialPageVOList() {
+		return specialPageVOList;
+	}
+	public void setSpecialPageVOList(List<SpecialPageVO> specialPageVOList) {
+		this.specialPageVOList = specialPageVOList;
+	}
+		
+	public ISpecialPageService getSpecialPageService() {
+		return specialPageService;
+	}
+	public void setSpecialPageService(ISpecialPageService specialPageService) {
+		this.specialPageService = specialPageService;
+	}
 	public String execute()
 	{	
 		
@@ -369,7 +386,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		}
 		*/
 		
-		
+		specialPageVOList = specialPageService.getSpecialPageListForHomePage();
 		
 		
 		
@@ -561,5 +578,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 		
 	}	
+	
+	public String getAllSpecialPageListForHomePage()
+	{
+		try{
+		jObj = new JSONObject(getTask());	
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		specialPageVOList = specialPageService.getAllSpecialPageListForHomePage();
+		return Action.SUCCESS;
+	}
 	
 }
