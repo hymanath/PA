@@ -276,14 +276,32 @@ System.out.println("i " +i);
 	
 	}*/
 	
-	public void testgetStartingRecordInGallaries()
+	/*public void testgetStartingRecordInGallaries()
 	{
 		
 		
 		List<FileGallary> file = fileGallaryDAO.getStartingRecordInGallaries(140l);
 		System.out.println(file.size());
+	}*/
+	/*public void testgetRecentlyUploadedVedioGallaryIds()
+	{
+		 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
+		List<Long> file = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(0, 15,queryStr2);
+		System.out.println(file.size());
+	}*/
+	
+	/*public void testgetRecentlyUploadedNewsGallaryIds()
+	{
+		 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary'";
+		List<Long> file = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(0, 15,queryStr3);
+		System.out.println(file.size());
 	}
+	*/
 	
-	
+	public void testgetStartingRecordInNewsGallaries()
+	{
+		List<FileGallary> list = fileGallaryDAO. getStartingRecordInNewsGallaries(1996l);
+		System.out.println(list.size());
+	}
 	
 }
