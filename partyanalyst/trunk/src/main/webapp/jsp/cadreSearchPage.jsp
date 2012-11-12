@@ -320,7 +320,8 @@ function setCadreIdToProblem()
         <table border="0" cellpadding="0" cellspacing="0">          
           <tr>
             <td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
-            <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">Cadre ${windowTask}</span></div></td>
+            <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">Cadre 
+			SMS</span></div></td>
             <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
           </tr>
         </table>    	
