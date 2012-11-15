@@ -135,9 +135,9 @@ text-indent:-9999px; margin-top:18px;}
 .footer-left-sec li a{color:#d7d7d7; float:left;}
 .footer-left-sec li span{float:left; padding:0px 7px;}
 
-.footer-right-sec{width:316px; float:right; padding:10px 26px 0px 0px;}
-.form-title{font-size:16px; text-align:left; color:#c4c4c4; padding-bottom:9px; font-weight:normal;}
-.footer-right-sec li{width:151px; float:left; padding:0px 7px 8px 0px;}
+.footer-right-sec{width:350px; float:right;}
+.form-title{font-size:16px; text-align:left; color:#c4c4c4;font-weight:normal;}
+.footer-right-sec li{width:151px;float:left;}
 .text-fields{font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#1a1a1a; height:24px; 
 background-color:#aaa !important; 
 border:1px solid #7f7f7f !important; padding:0px 10px; width:129px; color:#000;}
