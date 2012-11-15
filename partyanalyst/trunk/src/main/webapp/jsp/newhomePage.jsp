@@ -17,17 +17,139 @@
 		<link type="">
 	         <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link href="styles/rating/jquery.rating.css" rel="stylesheet" type="text/css">
+		
+		<script src="js/rating/jquery.MetaData.js" type="text/javascript"></script>
 		<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
-	<!-----<script type="text/javascript" src=""/>--->
+	<!--	<script type="text/javascript" src="js/bootstrapInHome/bootstrap.min.js"></script> 
+		<script type="text/javascript" src="js/bootstrapInHome/bootstrap-carousel.js"></script> 
+		<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> 
+	---<script type="text/javascript" src=""/>--->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	      <script src="js/slides.min.jquery.js"></script>
-		  <script src="js/jquery.min.js"></script>
+		  <script type="text/javascript" src="js/jquery.carousel.js"></script>
 		  <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
-		  <script src="js/jquery.min.js"></script>
-		  <script src=" styles/assets/js/bootstrap-transition.js"></script>
-		    <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+
+		  
+		   <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+		   	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> 
+			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
 	</head>
 	<style>
+	.jqCarousel ul {
+		    position:absolute;
+		    overflow:hidden;
+		    margin:0;
+		    padding:0;
+		    list-style:none;
+		}
+
+		.no-js .jqCarousel ul {position:static;}
+
+		.jqCarousel .mask {
+		    position:relative;
+		    overflow:hidden;
+		   // border:6px solid #444;
+		}
+
+		.jqCarousel ul li {
+			float:left;
+			}
+
+		.jqCarousel .pagination-links {
+		    list-style:none;
+		    margin:0;
+		    padding:0;
+		}
+		 
+		.jqCarousel .pagination-links li {
+		    display:inline;
+		}
+
+		.jqCarousel .pagination-links li a {
+			padding:2px 6px;	
+		}
+
+		.jqCarousel .pagination-links li a:hover {text-decoration:none;}
+
+		.jqCarousel .pagination-links li.current a {
+			 background:#444;
+			 color:#fff;
+		}
+		
+		 
+		.jqCarousel .disabled {
+		    color:gray;
+		    cursor:default;
+		}
+		
+		/** my jqCarousel 1 **/
+		#my-jqCarousel-1 .mask {
+			width:100%;
+
+		}
+		#my-jqCarousel-1 ul li {
+			height:250px;
+			width:598px;
+			
+			position:relative;
+		}
+		
+		#my-jqCarousel-1 .prev{
+		  left:22px;
+		}
+		#my-jqCarousel-1 .next{
+		  right:22px;
+		}
+		#my-jqCarousel-1 ol{display:none;}
+		#my-jqCarousel-news .mask {
+			width:600px;
+		}
+		
+		#my-jqCarousel-news ol{display:none;}
+		#my-jqCarousel-news ul li {
+			height:210px;
+			width:596px;
+			padding:3px;
+		}
+		#my-jqCarousel-news .prev{
+		  display:none;
+		}
+		#my-jqCarousel-news .next{
+		 display:none;
+		}
+		
+		/** my jqCarousel 2 **/
+		#my-jqCarousel-2 .mask {
+			width:630px;
+		}
+
+		#my-jqCarousel-2 ul li {
+			margin:0 10px 0 0;
+		}
+
+		/** my jqCarousel 3 **/
+		#my-jqCarousel-3 .mask {
+			margin-top:20px;
+			width:600px;
+		}
+		#my-jqCarousel-3 ul li {
+			height:225px;
+			width:150px;
+			padding:3px;
+		}
+
+	.news-paginate{display: table;
+    left: 84%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 80%;}
+		
+	
+	.photogallery-caption {color:#fff;font:14px;position:absolute;bottom:0px;left:0px;width:98%;background:rgba(0,0,0,0.8);margin:0px;padding:5px;color:#fff;}
+	
 	body{background:#5D5D5D;}
 	p{color:#333;font-size:13px;line-height:18px;}
 	.media_hr{border-bottom:1px solid #333; padding-bottom:5px;}
@@ -39,10 +161,13 @@
 	
 	.form-horizontal label{  display:block; font:12px Arial;
     margin-bottom:5px;padding-top:5px;cursor:hand;cursor:pointer;}
-.form-horizontal .radio{
+	.form-horizontal .radio
+	{
 	font-size: 13px;
     font-weight: normal;
-    margin-top:-1px;}
+    margin-top:-1px;
+	margin-right:8px;
+	}
 	
 .opinionpoll .question{padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;}
 .opinionpoll .answer{border-bottom:1px dashed #ccc;padding:0px ;margin-bottom:5px;margin-left:19px;}
@@ -221,6 +346,8 @@ padding:5px 20px;
 height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 }
 
+.dropdown-toggle img{margin-right:10px;}
+ 
 
 	</style>
 	
@@ -323,7 +450,7 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 							
 							<!--View your Locality-->
 						
-							<div class="widget-block" contentindex="3c" style="">
+							<div class="widget-block" contentindex="3c" >
 								<h5>View Your Locality</h5>
                    				<div>
 									<table>								
@@ -341,11 +468,9 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 											<tr>
 												<td>
 													<div id="localBodiesRadioDiv_data">
-														<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"> Muncipality.
-															<br>
-														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"> Corporation.
-															<br>
-														<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"> Greater Municipal Corp.
+														<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality
+														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation
+														<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp
 													</div>
 												</td>									
 											</tr>
@@ -365,28 +490,100 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 								  
 								<button class="btn btn-success" type="button" onclick="navigateToLocalBodyPage()">Go</button>
 								  
-							</div>						                   
-						
-				
-		</div>
+							</div>	
+							<div class="widget-block" contentindex="4c" >
+							    <div class="btn-group">
+									<a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#" style="text-decoration:none;width:140px;"><h5>View Your Party<b class="caret"></b></h5></a>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="viewYourParty">
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=362"><img src="images/party_flags/INC.png" width="50" height="50"  alt="INC Party" /> INC</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=872"><img src="images/party_flags/TDP.PNG" width="50" height="50" alt="TDP Party" />TDP</a></li>	
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=1117"><img src="images/party_flags/YSRC.PNG" width="50" height="50" alt="YSRC Party" />YSRC</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=163"><img src="images/party_flags/BJP.png" width="50" height="50" alt="BJP Party" /> BJP</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=886"><img src="images/party_flags/TRS.png" width="50" height="50" alt="TRS Party" />TRS</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=839"><img src="images/party_flags/SP.png" width="50" height="50" alt="SP Party" />SP</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=239"><img src="images/party_flags/BSP.png" width="50" height="50" alt="BSP Party" /> BSP</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=76"><img src="images/party_flags/AITC.png" width="50" height="50" alt="AITC Party" /> AITC</a></li>
+											  <li class="divider"></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=579"><img src="images/party_flags/NCP.png" width="50" height="50" alt="NCP Party" />NCP</a></li>
+										</ul>
+								</div>
+							</div>
+			</div>
+			
+							<div class="widget yellow p-top20">
+								<h5>The right to vote is the foundation of democracy</h5>
+								<h6>your vote is your voice.don't lose your voice.</h6>
+								<a href="voters.action" class="btn btn-primary" >Look into It</a>
+							</div>
 			
 	</div>
 			
 		<!--------Center div------>
 			<div class="span6">
 			<!--sasi photo gallary start-->
-				<div class="widget blue p-top20">
+				<div class="widget blue p-top20" style="height:270px;">
 			
-				 <div id="PhotoGalleryCarousel" class="carousel">
-    <!-- Carousel items -->
-    <div class="carousel-inner">
-		<s:if test="resultMap != null && resultMap.size() > 0">
-		<s:iterator value="resultMap.photogallary" var="photogallaryDetails">
+					<div id="PhotoGalleryCarousel" class="carousel" style="display:none;">
+						<!-- Carousel items -->
+						<div class="carousel-inner">
+							<s:if test="resultMap != null && resultMap.size() > 0">
+							<s:iterator value="resultMap.photogallary" var="photogallaryDetails">
         
-		<div class="active item">
+								<div class="item">
 		
 			
-					<s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
+									<s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
+										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
+									</s:if>
+									<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
+										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
+									</s:if>
+									<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
+										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
+									</s:if>
+					
+									<img src='<s:property value="pathOfFile"/>'  alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>' /></a>
+					
+			
+									<div class="carousel-caption">
+										<p> <s:property value="gallaryName"/> Photo Gallary.</p>
+									
+									
+									<s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
+										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
+									</s:if>
+									<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
+										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
+									</s:if>
+									<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
+										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
+									</s:if>
+									View Album</a>
+									</div>	
+								</div>
+							</s:iterator>
+							</s:if>
+						</div>
+						<!-- Carousel nav -->
+						<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
+						<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
+					</div>
+					
+					<div id="my-jqCarousel-1" class="jqCarousel module thumbnail">
+					 <ul>
+		    <s:if test="resultMap != null && resultMap.size() > 0">
+			  <s:iterator value="resultMap.photogallary" var="photogallaryDetails">
+			   
+			    
+			      <li >
+			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
 					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
 			        </s:if>
 					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
@@ -395,79 +592,31 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
 			        </s:if>
-					
-		            <img src='<s:property value="pathOfFile"/>' style="width:500px;height:2px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>
-					
-			
-				<div class="carousel-caption">
-                    <p> <s:property value="gallaryName"/> Photo Gallary.</p>
-				</div>	
-					<s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
-					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
-			        </s:if>
-					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
-			        </s:if>
-					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
-			        </s:if>
-					View Album</a>
-			
-		</div>
-		</s:iterator>
-		</s:if>
-    </div>
-    <!-- Carousel nav -->
-    <a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
-    <a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
-    </div>
-				<div id="photoGallaryDisplay" style="display:none;" >
+		            <img src='<s:property value="pathOfFile"/>' style="width:600px;height:270px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+				    <p class="photogallery-caption span12">
+						  <s:property value="description"/>
 
-				<ul class="thumbnails">
-			 <s:if test="resultMap != null && resultMap.size() > 0">
-			  <s:iterator value="resultMap.photogallary" var="photogallaryDetails">
-			    
-			    
-			      <li class="span4" >
-				   <div class="thumbnail row-fluid">
-			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
-					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="span12">
-			        </s:if>
-					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="span12">
-			        </s:if>
-					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="span12">
-			        </s:if>
-		            <img src='<s:property value="pathOfFile"/>' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
-				  	
-			      
 			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
-					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'  title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' class="btn btn-mini pull-right">
 			        </s:if>
 					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' class="btn  btn-mini pull-right">
 			        </s:if>
 					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' class="btn  btn-mini pull-right">
 			        </s:if>
-					</a>
-			         <p class="caption"> <s:property value="gallaryName"/></p> 
-					</div>
+					
+			          <!--<s:property value="gallaryName"/> --> View Album</a>
+				
+
+					</p>
 				  </li>
-			   
+			    
 			  </s:iterator>
 			 </s:if>
-			  </ul>
-			  
-									<div class="pagination pagination-right">
-						  <ul>
-							<li><a href="#" class="previous-gallery">«</a></li>
-						   
-							<li><a href="#" class="next-gallery">»</a></li>
-						  </ul>
-						</div>
-		   </div>
+			 </ul>
+		</div>
+					
 				</div>
 			
 			<!--sasi photo gallary END-->
@@ -477,23 +626,24 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 				<div class="widget green">
 				  
 				<!--sasi news from database start-->
-				<div id="newsGallaryDisplay" class="viewport">
-							<ul class="overview media">
+							
+				<div id="my-jqCarousel-news" class="jqCarousel module">
+		    <ul class="overview media">
 							<s:if test="resultMap != null && resultMap.size() > 0"> 
 							<s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
 								<li>
 									<h4><s:property value="fileTitle1"/></h4>
 									<div class="row-fluid">
 									<s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
-										<a class="thumbnail span5" href="#">
+										<a class="thumbnail span4" href="#">
 											<img src="http://placehold.it/200x150">
 										</a>
-										<p><s:property value="description"/></p>
+										<p class="span7"><s:property value="description"/></p>
 										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
 									</s:if>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
-										<a class="thumbnail span5" href="#">
+										<a class="thumbnail span4" href="#">
 											<img src="http://placehold.it/200x150">
 										</a>
 										<p class="span7"><s:property value="description"/></p>
@@ -501,7 +651,7 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 									</s:if>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
-										<a class="thumbnail span5" href="#">
+										<a class="thumbnail span4" href="#">
 											<img src="http://placehold.it/200x150" class="thum">
 										</a>
 										<p class="span7"><s:property value="description"/></p>
@@ -513,32 +663,29 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 									</div>
 									
 								</li>
-				  </s:iterator>
-			 </s:if>
-			 </ul>
-			<div class="pagination pagination-right">
-              <ul>
-                <li><a href="#" class="previous-news">«</a></li>
-               
-                <li><a href="#" class="next-news">»</a></li>
-              </ul>
-            </div>
-		   </div>
-		 
+							</s:iterator>
+							</s:if>
+						</ul>
 						
-		</div>	
+			
+		</div>
+		<div class="pagination news-paginate">
+              <ul>
+                <li><a href="#" class="prev-sl" title="Previous News">Ë¼/a></li>
+                 <li><a href="#" class="next-sl" title="Next News">Û¼/a></li>
+             </ul>
+            </div>
+				</div>	
 				<!-- END OF NEWS BLOCK -->
 				<div class="widget yellow">
 				<h2>Latest Video Galleries</h2>
 				<!--video gallary-->
-				
-				<!--sasi video gallary start-->
-				<div id="videoGallariesDisplay">
-					<ul class="thumbnails">
+				<div id="my-jqCarousel-3" class="jqCarousel module">
+		    <ul class="thumbnails">
 					<s:if test="resultMap != null && resultMap.size() > 0">
 					<s:iterator value="resultMap.VideoGallary" var="videoGallaryDetails">
 
-					<li class="span4">
+					<li class="">
 					 <div class="thumbnail row-fluid">
 					<s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >
 					<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="span12" >
@@ -568,48 +715,40 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 					</s:iterator>
 					</s:if>
 					</ul>
-					
-									<div class="pagination pagination-right">
-						  <ul>
-							<li><a href="#" class="previous-gallery">«</a></li>
-						   
-							<li><a href="#" class="next-gallery">»</a></li>
-						  </ul>
-						</div>
-					</div>
+				</div>
+				<!--sasi video gallary start-->
+				
 				</div>
 				<!--sasi video gallary end-->
 							
 				
 				<!---------Your Locality ProblemsView Block----->
 				<div class="widget red">
-				
-				<div class="problem-h1"> <span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>Your Locality Problems </h2></span>
-		  <h2 class="problem-h2" style="background:none;color:#5e5e5e;"><b><font style="color:#000;"> New or Existing</font></b> - Our Platform elevates your problems to the external world.</h2>
-
-		  <a href="problemSearchAction.action" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">View All Problems</a>
-
-		  <c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
-			 <a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
-		   </c:if>
-			<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
-		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
-			</c:if>
-		</div>
-		<div id="logInDiv"></div>
+				  <h2>Your Locality Problems</h2>
+				  <h5>New or Existing - Our Platform elevates your problems to the external world. </h5>
+				<div class="pager widget-block"> 
+					
+							<a href="problemSearchAction.action" class="btn btn-danger pull-right">View All Problems</a>
+			
+								<c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
+									<a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-danger  pull-right" >Post Your Problems</a>
+								</c:if>
+								<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
+									<a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-danger btn-large pull-right" style="margin:5px;">Post Your Problems</a>
+								</c:if>
+				</div>
+				<div id="logInDiv"></div>
 					<div id="problemsShowDIV"></div>
 				</div>
+				
 				<div class="widget blue">
-			  <h2> Tweets From Parties and Leaders </h2>
-			   <div class="widget-block b-top1">
-					<jsp:include page="newsocialtwitter.jsp" /> 
-			
+					<h2> Tweets From Parties and Leaders </h2>
+						<div class="widget-block b-top1">
+							<jsp:include page="newsocialtwitter.jsp" /> 
+						</div>
 				</div>
+				<!-- Close Center DIV -->			
 			</div>
-			
-			
-	<!-- Close Center DIV -->			
-</div>
 		<!--------Right div------>
 			<div class="span3">
 			
@@ -730,7 +869,7 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 				
 				</div>
 			
-			
+				
 			</div>
 						
 		</div>
@@ -771,13 +910,13 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 		
 		str+='</p><a href="javaScript:saveCurrentPollResult(${opinionPollVO.quesitons[0].questionId});" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
 		
-		str+='<p class="resultdisplay"><a  class="previouslink" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',${opinionPollVO.quesitons[0].questionId});}" title="Click Here To See This Poll Result">View Results</a>';
+		str+='<p class="resultdisplay" style="margin-top:10px;"><a  class="previouslink" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',${opinionPollVO.quesitons[0].questionId});}" title="Click Here To See This Poll Result">View Results</a>';
 
 		    
 		str+=' <a class="nextlink" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments" title="Click Here To See Comments On This Poll" >View Comments</a></p>';
 		str+=' </div></div>';
 		str+='</div>';
-		str+='<div class="pager">';
+		str+='<div class="pager" style="margin-top:40px;">';
    
         str+='<a style="float:left;" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments"  class="btn btn-mini" title="Post Your Comment On This Poll">Post Your Comment</a>';
  
@@ -1084,14 +1223,16 @@ function showFeedBackStatus(result)
 	var probEle = document.getElementById("problemsShowDIV");
 	for(var i in result)
 	{
-		str += '<div class ="problemheadClass breadcrumb">';
+		str += '<div class ="widget-block">';
 				
 		str+='<div style="width:50%;float:left;"><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemId+'" >'+(result[i].problem).toUpperCase()+'</a></div>';
 		
-		str+='<div style="width:20%;float:left;"><span style="color:green;">'+result[i].averageRating.avgRating+'</span></div>';
+		str+='<div style="width:20%;float:left;"><div class="star"></div><input type="hidden" style="display:none;" value='+result[i].averageRating.avgRating +'" >';
+		
+		str+='</div>';
 		
 		if(result[i].url != null){
-	     str += ' <div style="width:30%;float:left;">  <a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'"> '+initialCap(result[i].problemLocation)+'</a> </div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	     str += ' <div style="width:30%;float:left;">  <a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'" style="margin-left:16px;"> '+initialCap(result[i].problemLocation)+'</a> </div>&nbsp;&nbsp;&nbsp;&nbsp;';
 	   }else{
 	     str += '   <div style="width:30%"><table><tr><td> '+initialCap(result[i].problemLocation)+'&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table></div>';
 	   }
@@ -1099,6 +1240,7 @@ function showFeedBackStatus(result)
 		str += '</div>';
 	}
 	probEle.innerHTML = str;
+
 }
 
 function initialCap(data) {
@@ -1129,30 +1271,65 @@ var emailId='${sessionScope.USER.email}';
 var changedUserName='${sessionScope.changedUserName}';
 var loadingFirstTime = '${sessionScope.loadingFirstTime}';
 
-</script>
-<!--<script type='text/javascript'>
-$(window).load(function(){
-$('#PhotoGalleryCarousel').carousel({
-    interval: 10000
+
+function viewParty(value){
+	
+}
+
+
+
+$(document).ready(function(){
+
+
+ $('#my-jqCarousel-3').jqCarousel({
+				itemsPerPage: 3,
+				itemsPerTransition: 3,
+				easing: 'linear',
+				noOfRows: 1
+			});
+			
+$('#my-jqCarousel-news').jqCarousel();
+
+$('#my-jqCarousel-1').jqCarousel();
+
+$(".news-paginate .prev-sl").click(function(){
+
+$("#my-jqCarousel-news .prev").trigger("click");
 });
 
-$("#PhotoGalleryCarousel .left").click(function(){
-//e.preventDefault();
-$('#PhotoGalleryCarousel').carousel('prev');
-});
+$(".news-paginate .next-sl").click(function(){
 
-$("#PhotoGalleryCarousel .right").click(function(){
-$('#PhotoGalleryCarousel').carousel('next');
+$("#my-jqCarousel-news .next").trigger("click");
 });
-
+			
+	setTimeout("applyRaty()",1000);
 
 });
 
-</script>
-<script type="text/javascript">
-    /* Stop page jumping when links are pressed 
+
+function applyRaty(){
+$('.star').each(function(){
+var rating=0;
+if($(this).next().val()!="null"){rating= $(this).next().val();}
+	$(this).raty({
+				half       : true,
+	     		precision  : true,
+				readOnly	: true,
+				score		:rating
+				});
+});
+}
+
+ /* Stop page jumping when links are pressed  */
     $('a[href="#"]').live("click", function(e) {
          return false; // prevent default click action from happening!
          e.preventDefault(); // same thing as above
     });
+</script>
+<!--<script type='text/javascript'>
+
+
+</script>
+<script type="text/javascript">
+   
 </script>-->
