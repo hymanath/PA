@@ -294,62 +294,7 @@
 					</tr>
 				</table>
 			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View Jr NTR Election Campaign Video Gallery" onclick="getVideoDetails(2544)" href="javascript:{}">
-						<font color="red">Jr NTR Election <br> Campaign</font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View Jr NTR Election Campaign Video Gallery" onclick="getVideoDetails(2544)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/FV0kyasqwzs/1.jpg">
-						</a></td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View Chandrababu Naidu Election Campaign In Kadapa By Election Video Gallery" onclick="getVideoDetails(2550)" href="javascript:{}">
-						<font color="red">Chandrababu Naidu <br> Election Campaign In<br> Kadapa By Election</font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View Chandrababu Naidu Election Campaign In Kadapa By Election Video Gallery" onclick="getVideoDetails(2550)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/04zgATSNJe0/1.jpg">
-						</a></td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View Chandrababu Naidu Rythu Poru Yatra Video Gallery" onclick="getVideoDetails(2556)" href="javascript:{}">
-						<font color="red">Chandrababu Naidu <br> Rythu Poru Yatra</font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View Chandrababu Naidu Rythu Poru Yatra Video Gallery" onclick="getVideoDetails(2556)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/8t5ku0ASW0k/1.jpg">
-						</a></td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View TDP 30th Anniversary Video Gallery" onclick="getVideoDetails(4992)" href="javascript:{}">
-						<font color="red">TDP 30th Anniversary</font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View TDP 30th Anniversary Video Gallery" onclick="getVideoDetails(4992)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/wTq1prJOz9M/1.jpg">
-						</a></td>
-					</tr>
-				</table>
-			</td>
+			
 			<td>
 				<table>
 					<tr>
@@ -362,34 +307,6 @@
 						<img src="http://img.youtube.com/vi/Qa3wAeJCQ-g/1.jpg">
 						</a>
 						</td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View Mahanadu 2011 Video Gallery" onclick="getVideoDetails(1582)" href="javascript:{}">
-						<font color="red">Mahanadu 2011</font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View Mahanadu 2011 Video Gallery" onclick="getVideoDetails(1582)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/Na3HiqI1Zts/1.jpg">
-						</a></td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View Mahanadu 2010 Video Gallery" onclick="getVideoDetails(1584)" href="javascript:{}">
-						<font color="red">Mahanadu 2010</font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View Mahanadu 2010 Video Gallery" onclick="getVideoDetails(1584)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/Cn1Ke8Qpglo/1.jpg">
-						</a></td>
 					</tr>
 				</table>
 			</td>
@@ -445,20 +362,6 @@
 					<tr>
 						<td><a title="Click here to View Rythu Porubata in Prakasam Video Gallery" onclick="getVideoDetails(1657)" href="javascript:{}">
 						<img src="http://img.youtube.com/vi/7OEFvX9h958/1.jpg">
-						</a></td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td><a title="Click here to View Rythu Porubata in Anantapur Video Gallery" onclick="getVideoDetails(1663)" href="javascript:{}">
-						<font color="red">Rythu Porubata <br> in Anantapur </font>
-						</a></td>
-					</tr>
-					<tr>
-						<td><a title="Click here to View Rythu Porubata in Anantapur Video Gallery" onclick="getVideoDetails(1663)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/69YEkvEfuFA/1.jpg">
 						</a></td>
 					</tr>
 				</table>
