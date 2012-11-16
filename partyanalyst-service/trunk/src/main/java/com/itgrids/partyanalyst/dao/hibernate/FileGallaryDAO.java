@@ -388,7 +388,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Long> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults)
 	{
 		Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
-				" and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+				" and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
 		
@@ -398,7 +398,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Long> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
 	{
 	Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model "+queryStr2+" and " +
-			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
 	query.setFirstResult(startIndex);
 	query.setMaxResults(maxResults);
 	return query.list();
@@ -407,7 +407,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Long> getRecentlyUploadedNewsGallaryIds(Integer startIndex , Integer maxResults,String queryStr3)
 	{
 		Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model "+queryStr3+" and " +
-			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
 	query.setFirstResult(startIndex);
 	query.setMaxResults(maxResults);
 	return query.list();
