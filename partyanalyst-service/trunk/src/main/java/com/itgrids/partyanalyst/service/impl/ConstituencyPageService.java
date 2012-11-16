@@ -1153,16 +1153,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					entry.getValue().getRevenueVillagesInfo().get(0).getBooths()),electionId);
 			List<Long> parties = new ArrayList<Long>(0);
 			
-			for(int i=1;i<=candidates.size();i++)
+			/*for(int i=1;i<=candidates.size();i++)
 			{
 				for(CandidatePartyInfoVO infoVO : candidates)
 				{
 					if(infoVO.getRank().intValue() == i)
 						candidatesTemp.add(infoVO);
 				}
-			}
+			}*/
 			
-			candidates = candidatesTemp;
+			//candidates = candidatesTemp;
 			
 			for(CandidatePartyInfoVO infoVO : candidates)
 				parties.add(infoVO.getPartyId());
