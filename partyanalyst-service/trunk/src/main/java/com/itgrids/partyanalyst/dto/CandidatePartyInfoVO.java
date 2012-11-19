@@ -1,6 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
-public class CandidatePartyInfoVO {
+public class CandidatePartyInfoVO implements Comparable<CandidatePartyInfoVO>{
 
 	private String candidateName;
 	private Long candidateId;
@@ -55,6 +55,16 @@ public class CandidatePartyInfoVO {
 	
 	public void setRank(Long rank) {
 		this.rank = rank;
+	}
+
+	public int compareTo(CandidatePartyInfoVO candidatePartyInfoVO) {
+		
+		if(candidatePartyInfoVO instanceof CandidatePartyInfoVO){
+			CandidatePartyInfoVO vo = (CandidatePartyInfoVO) candidatePartyInfoVO;
+			return rank.compareTo(vo.getRank());
+		}
+		else
+			return 0;
 	}
 	
 	
