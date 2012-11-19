@@ -794,7 +794,12 @@ legend
 			<td>&nbsp;</td>
 		</tr>
 		</table>
-		<div id="villageElectionResults" class="yui-skin-sam"></div>			
+				
+
+		<div id="villageElectionResults" class="yui-skin-sam"></div>
+
+		<b>NOTE:</b>Missed candidates are independents
+
 		</div>
 		<HR>
 		<div id="revenueVillagesInfo"></div>
