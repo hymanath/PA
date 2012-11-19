@@ -17,12 +17,12 @@ function initializeHomePage()
 	//buildLogoImage();	
 	$( "#accordion" ).accordion();
 	
-	$('#floatingDiv_absolute_main').addFloating(  
+	/*$('#floatingDiv_absolute_main').addFloating(  
 	 {  
 		 targetRight: 10,  
 		 targetTop: 10,  
 		 snap: true  
-	 });  
+	 });  */
 
 	
 
@@ -130,9 +130,7 @@ str += '</DIV><br>';
 }
 function showFeedBackFormPanel()
 {		
-	
-
-		$("#feedback_window").dialog({
+	$("#feedback_window").dialog({
 			resizable:false,
 			width: 600,
 			minHeight:350,
@@ -160,10 +158,10 @@ function showFeedBackFormPanel()
 		str += '		<tr>';
 		str += '		<th style="font-size:11px;"><font color="red">*</font> Select Feed Back type </th>';
 		str += '		<td style="font-size:12px;">';
-		str += '			<input type="radio" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
-		str += '			<input type="radio" class="selectWidth" value="2" name="commentType"> Problem ';
-		str += '			<input type="radio" class="selectWidth" value="3" name="commentType"> Praise ';
-		str += '			<input type="radio" class="selectWidth" value="4" name="commentType"> Suggestion ';
+		str += '			<input type="radio" style="margin-top:0px;margin-right:4px;" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
+		str += '			<input type="radio" style="margin-top:0px;margin-right:4px;"  margin-top:0px;margin-right:4px;class="selectWidth" value="2" name="commentType"> Problem ';
+		str += '			<input type="radio"  style="margin-top:0px;margin-right:4px;"  class="selectWidth" value="3" name="commentType"> Praise ';
+		str += '			<input type="radio" style="margin-top:0px;margin-right:4px;"  class="selectWidth" value="4" name="commentType"> Suggestion ';
 		str += '		</td>';
 		str += '		</tr>';
 
@@ -192,8 +190,8 @@ function showFeedBackFormPanel()
 		str += '		<tr>';
 		str += '		<th style="font-size:12px;"><font color="red">*</font> Select Response Type </th>';
 		str += '		<td style="font-size:12px;">';
-		str += '		      <input type="radio" checked="checked" value="Early" name="responseCategory">Early ';
-		str += '		      <input type="radio" value="Late" name="responseCategory">Late';
+		str += '		      <input type="radio" style="margin-top:0px;margin-right:4px;"  checked="checked" value="Early" name="responseCategory">Early ';
+		str += '		      <input type="radio" style="margin-top:0px;margin-right:4px;"  value="Late" name="responseCategory">Late';
 		str += '		</td>';
 		str += '		</tr>';
 
@@ -617,16 +615,14 @@ function callHomePageAjax(jsObj,url)
 						{
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							
-							if(jsObj.task == 'getComments')
+								if(jsObj.task == 'getComments')
 							{
-								showFeedBackStatus(myResults);
+								showFeedBackStatusMessage(myResults);
 								$("#taskId").prepend("<option value='0'>Select feedback</option>");
 								document.getElementById("taskId").value = 0;
-				
 							}	
 							else if(jsObj.task == 'submitRequirement')
 							{
-								
 								showQuickRequestStatus(myResults);
 							}
                             else if(jsObj.task == 'submitAricle')
@@ -732,8 +728,11 @@ legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontNa
 
 }
 }
-function showFeedBackStatus(result)
+
+function showFeedBackStatusMessage(result)
 {
+
+alert('00');
 var feedback_window = document.getElementById('feedback_window');
 	if(result.exceptionEncountered == null)
 	{
@@ -762,6 +761,7 @@ function closeFeedbackwindow()
 {
 	$("#feedback_window").dialog("destroy");
 }
+
 function buildHOmePageImageSlider()
 {
 	//var elmt = document.getElementById("homePage_Image_Header");
@@ -993,9 +993,11 @@ function buildLocalBodiesForAState(jsObj,results)
 	var str = '';
 	for(var i=0; i<results.length; i++)
 	{
-		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].id+'"> '+results[i].name+' </input>';
-		if(i == 1)
-			str += '<br/>';
+		str += '<label class="radio">';
+		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].id+'"> '+results[i].name+' </input><br>';
+		str +='</label>'
+		/*if(i == 1)
+			str += '<br/>';*/
 	}
 
 	elmtData.innerHTML = str;
