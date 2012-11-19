@@ -21,7 +21,7 @@ cursor:pointer;}
 .tc-tf{text-transform:uppercase;}
 .display{display:block;}
 
-.mainwrapper{width:999px; margin:0px auto;}
+.mainwrapper{width:100%; margin:0px auto;}
 .wrapper{width:999px; float:left;}
 
 .orange{color:#ff3b05;}
@@ -29,8 +29,8 @@ cursor:pointer;}
 .gray{color:#979797;}
 
 #header-mainsec{width:100%; float:left; background-color:#0A0B39;}
-.header{width:992px; float:left; padding:13px 7px 0px 0px; border-bottom:2px solid #05A8E9;}
-.logo{position:relative; left:20px; bottom:-14px; float:left; z-index:101;}
+.header{width:100%;padding:13px 0px 0px 0px; border-bottom:2px solid #05A8E9;}
+.logo{position:relative; left:35px; bottom:-14px; float:left; z-index:101;}
 .header-right-sec{width:720px; float:left;}
 .lr-sec{float:right; color:#80d1f1; font-weight:bold; text-transform:uppercase; padding-right:25px; line-height:11px; font-size:12px;}
 .lr-sec a{color:#80d1f1; margin:0px 10px;}

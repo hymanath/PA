@@ -10,29 +10,86 @@
 
 <link rel="stylesheet" type="text/css" href="styles/socialnetwork/newdemo.css" />
 <link rel="stylesheet" type="text/css" href="styles/socialnetwork/jScrollPane.css" />
-<link rel="stylesheet" type="text/css" href="jquerySlider.css" />
-
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
-<script type="text/javascript" src="js/socialNetwork/jquery.mousewheel.js"></script>
-<!--<script type="text/javascript" src="js/socialNetwork/jScrollPane-1.2.3.min.js"></script>-->
+<script type="text/javascript" src="js/socialNetwork/scrollpane_js/jquery.mousewheel.js"></script>
+
 <script type="text/javascript" src="js/socialNetwork/script.js"></script>
+<script type="text/javascript" src="js/socialNetwork/scrollpane_js/jquery.jscrollpane.js"></script>
+	<!-- styles specific to demo site -->
+		<!-- styles needed by jScrollPane - include in your own sites -->
+		<link type="text/css" href="styles/socialnetwork/scrollpane_style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
-<style>
-.jScrollPaneContainer{
-	height:446px !important;
-}
-</style>
-<script src="jquery.js"></script>
+<style type="text/css" id="page-css">
+			/* Styles specific to this particular page */
+			.scroll-pane
+			{
+				width: 100%;
+				height: 300px;
+				overflow: auto;
+			}
+			.horizontal-only
+			{
+				height: auto;
+				max-height: 200px;
+			}
+		</style>
+			
+		
 <script>
+			$(function()
+			{
+			$(".scroll-pane").jScrollPane();
+			});
+		</script>
 
+<script>
+function scrollpanenew()
+{
+
+var api = $(".scroll-pane").data('jsp');
+	var throttleTimeout;
+	if ($.browser.msie) {
+						// IE fires multiple resize events while you are dragging the browser window which
+						// causes it to crash if you try to update the scrollpane on every one. So we need
+						// to throttle it to fire a maximum of once every 50 milliseconds...
+						if (!throttleTimeout) {
+							throttleTimeout = setTimeout(
+								function()
+								{
+									api.reinitialise();
+									throttleTimeout = null;
+								},
+								50
+							);
+						}
+					} else {
+						api.reinitialise();
+					}
+}
 
 
  $(function(){
 
+			$('#politician').parent().hide();
+			$('#party').parent().hide();
      $('input:radio').bind('change', function(){
      $('#party').attr('disabled', !$("#rparty").is(":checked"));
 	 $('#politician').attr('disabled', !$("#rpolitician").is(":checked"));
+if($("#rparty").is(":checked")){
+	$('#party').parent().show();
 	
+}
+else{
+	$('#party').parent().hide();
+}
+
+if($("#rpolitician").is(":checked")){
+	$('#politician').parent().show();
+	
+}
+else{
+	$('#politician').parent().hide();
+}
   });
  
         });
@@ -54,9 +111,9 @@
  <div id="twitter-ticker">
 
     
-<form name="search_cat_bar" method="get" action="">
+<form name="search_cat_bar" method="get" action="" style="margin:0px;">
 <div class="span12">
-<img src="images/socialNetwork/twitter_64.png" width="64" height="64" alt="Twitter icon" class="thumbnail span2"/>
+<img src="images/socialNetwork/twitter_64.png" width="48" height="48" alt="Twitter icon" class="thumbnail pull-left"/>
 <div class="span10">
     <label class="radio inline">
     <input name="party" value="party" type="radio" id="rparty"  onclick="getPartyName()" > Party
@@ -70,15 +127,15 @@
 </div>	
 
 <div class="row-fluid span10">
-<div class="input-prepend span6 inline">
+<div class="input-prepend span12 inline">
               <span class="add-on">Party Name:</span>
              <select name="party" onChange="setTweetUser(this.options[this.selectedIndex].value)"
  id="party" class="span6"></select>
             </div>
 			
-			<div class="input-prepend span6 inline">
+			<div class="input-prepend span12 inline">
               <span class="add-on">Leader Name:</span>
-             <select name="politician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician"  class="span6" >
+             <select name="poliician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician"  class="span8" >
 			 </select>
             </div>
 </div>			
@@ -98,15 +155,16 @@
 
 
 </form>
-
-       
-        <div id="tweet-container"><img id="loading" src="img/loading.gif" width="16" height="11"/></div>
-        
-        <div id="scroll"></div>
+</div>
     </div>
 
-  
+<div class="scroll-pane">
+        <div id="tweet-container"><img id="loading" src="img/loading.gif" width="16" height="11"/></div>
 </div>
+  
+
+  
+
 
 
 <script type="text/javascript">
@@ -270,3 +328,5 @@ function getPartyNames(result)
 
  getPartyName();
 </script>
+
+
