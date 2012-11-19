@@ -306,7 +306,8 @@ legend
 				    rvStr += '</tr>';																					
 				    rvStr += '</c:forEach>';	
 				    rvStr += '</table>';	
-				    rvStr += '</div>';		
+				    rvStr += '</div>';
+					rvStr += '<div style="float:left;margin-right:23px;"><font style="color:red;"><b>* IND includes all independent candidates votes</b></font></div>';
 
 					rvStr += '<div id="revenueDataTable" class="yui-skin-sam"><div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
 					rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;" id="table_${constiElec.constituencyId}">';
@@ -780,11 +781,13 @@ legend
 				<td><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
 
 				<td>
+				
 				<a id="allPartiesResultsAnc" href="mandalRevenueVillagesElecInputAction.action?tehsilName=${mandalName}&tehsilId=${tehsilId}"><b>View All Parties Results In All Elections</b></a>
 				</td>
 				<td><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>
 				</tr>
 				</table>
+				
 			</td>
 		</tr>		
 		<tr>
@@ -798,7 +801,7 @@ legend
 
 		<div id="villageElectionResults" class="yui-skin-sam"></div>
 
-		<b>NOTE:</b>Missed candidates are independents
+		<font style="color:red;"><b>* Missed candidates are independents</b></font>
 
 		</div>
 		<HR>
