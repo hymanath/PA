@@ -3,6 +3,7 @@ var buildString = "";
 
 $(document).ready(function(){
 $('#politician').attr('disabled', !$("#rpolitician").is(":checked"));
+$('#party').attr('disabled', !$("#rparty").is(":checked"));
 	$('#twitter-ticker').slideDown('slow');
 	window.setInterval(function(){callMethod()}, 5000);
 });
@@ -82,8 +83,9 @@ function TweetTick(ob)
 		container.append(str);
 	
 	});
-	
-	container.jScrollPane();
+	//alert("checknow");
+	scrollpanenew();
+	//container.jScrollPane();
 }
 
 function formatTwitString(str)

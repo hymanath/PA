@@ -16,8 +16,8 @@ h2.tut{
 
 #twitter-ticker{
 	color:#000000;
-	display:none;
-	
+	display:block;
+	clear:both;
 	-moz-border-radius:10px 10px 6px 6px;
 	-khtml-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -26,12 +26,7 @@ h2.tut{
 	text-align:left;
 }
 
-#tweet-container{
-	height:230px;
-	overflow:hidden;
-	 padding-top: 17px;
-	 clear:both;
-}
+
 
 #twitIcon{
 	position:absolute;
@@ -58,6 +53,7 @@ h2.tut{
 	margin:5px -20px;
 border-bottom:1px solid #efefef;
 padding:5px 20px;
+width:95%;
 }
 
 .tweet .avatar,

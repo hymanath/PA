@@ -25,8 +25,9 @@
 	<link href="styles/newhome_styles.css" rel="stylesheet" type="text/css" />
 	
 
-	<!--Script file-->
-	<script type="text/javascript" src="js/jquery.js"></script>
+	<!--Script file
+	<script type="text/javascript" src="js/jquery.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 	<script type="text/javascript" src="js/ddaccordion.js"></script>
 	<script type="text/javascript" 
@@ -34,12 +35,12 @@
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 	<script type="text/javascript" src="js/homePage/newhomePage.js"> </script>
-	<script type="text/javascript" src="js/homePage/jquery-ui-1.8.24.custom.min.js"> </script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-	<link  rel="stylesheet" type="text/css" href=	"js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<!--YUI SCRIPT-->
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
 	
@@ -51,9 +52,9 @@ margin:-1px 0px 0px 0px ;
 }
 
 .header2 {
-    float: none;
-    padding: 0px 7px 0 0;
-    width: 992px;
+   left: 1%;
+    position: absolute;
+    top: -6px;
 }
 </style>
 <decorator:head/>
@@ -64,33 +65,30 @@ margin:-1px 0px 0px 0px ;
 <div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
 <div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 
-<!--<div id="floatingDiv_relative_main">
-	<div id="floatingDiv_absolute_main">
+<div id="floatingDiv_relative_main">
+	<div id="floatingDiv_absolute_main" style="position:fixed;top:25px;right:0px; z-index: 999;">
 		<c:choose>
 			<c:when test="${!empty feedback && feedback == 'true'}">
 				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedback_new.jpg"/></a>
 			</c:when>		
 		
-			<c:otherwise>
-				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
-			</c:otherwise>
+		
 		</c:choose>
-	
-		<div id="floatingDiv_absolute_close" >
-			<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg">
-		</div>
+			
 	</div>
-</div>-->
+</div>
 
 <table style="border-collapse: collapse;" width="100%">
 <tr>
 <td>
 <div id="header-mainsec">
   <div class="mainwrapper">
-    <div class="header">
-      <div class="logo"><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt=""/></a>
+  <div class="row-fluid">
+    <div class="header span10">
+	<div class="row-fluid">
+      <div class="logo span4 pull-left"><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt=""/></a>
 	  </div>
-      <div class="header-right-sec">
+      <div class="header-right-sec span8 pull-right">
         <div class="lr-sec">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 				<c:out value="Welcome, ${sessionScope.UserName} |"/>
@@ -343,7 +341,9 @@ margin:-1px 0px 0px 0px ;
 <!--MENU END-->
   
 </div><!--HEADER RIGHT SEC END-->
+</div>
 </div><!--HEADER END-->
+</div>
 </div><!--MAIN WRAPPER END-->
 </div><!--HEADER MAIN SECTION END-->
 </td>
