@@ -293,15 +293,27 @@ System.out.println("i " +i);
 	/*public void testgetRecentlyUploadedNewsGallaryIds()
 	{
 		 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary'";
-		List<Long> file = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(0, 15,queryStr3);
+		List<Long> file = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(0, 100,queryStr3);
 		System.out.println(file.size());
+		for(Long fileid:file){
+			System.out.println(fileid);
+		}
 	}
 	*/
 	
-	public void testgetStartingRecordInNewsGallaries()
+	/*public void testgetStartingRecordInNewsGallaries()
 	{
 		List<FileGallary> list = fileGallaryDAO. getStartingRecordInNewsGallaries(1996l);
 		System.out.println(list.size());
+	}*/
+	public void testGetRecentlyUploadedNewsFileIds()
+	{
+		 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary'  and  model.file.regionScopes.regionScopesId < 4 ";
+		 List<FileGallary> file = fileGallaryDAO.getRecentlyUploadedNewsFileIds(0, 10,queryStr3);
+		 System.out.println(file.size());
+		for(FileGallary fileGallary:file){
+			System.out.println("fileId: "+fileGallary.getFile().getFileId()+" gallaryId: "+fileGallary.getGallary().getGallaryId());
+		}
 	}
 	
 }
