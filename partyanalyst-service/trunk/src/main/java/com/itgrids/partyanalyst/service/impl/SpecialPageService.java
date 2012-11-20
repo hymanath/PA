@@ -394,7 +394,7 @@ public class SpecialPageService implements ISpecialPageService{
 				fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
 				
 				fileVO.setFileDate(file.getFileDate() != null ? file.getFileDate().toString() : "");
-				fileVO.setCount(totalRecords.get(0).intValue());
+				fileVO.setCount(totalRecords.size());
 				
 				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 				 Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
