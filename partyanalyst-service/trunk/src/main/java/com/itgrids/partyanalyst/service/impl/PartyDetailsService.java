@@ -478,7 +478,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 					 fileVO = new FileVO();
 	                 
 					 fileVO.setFileId(file.getFileId());
-					 fileVO.setTotalResultsCount(list.get(0));
+					 fileVO.setTotalResultsCount(new Long(list.size()));
 					 fileVO.setFileTitle1(file.getFileTitle());
 					 fileVO.setFileDescription1(file.getFileDescription());
 					 fileVO.setFileDate(data[2] != null ? (sdf.format((Date)data[2])) :"");
