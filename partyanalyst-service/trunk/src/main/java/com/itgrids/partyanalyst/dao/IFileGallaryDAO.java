@@ -112,4 +112,5 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     
     public List<FileGallary> getStartingRecordInNewsGallaries(Long gallaryId);
 	
+    public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Integer maxResults , String queryStr);
 }
