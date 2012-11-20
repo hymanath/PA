@@ -2360,6 +2360,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 Map<String ,List<FileVO>> resultMap = new HashMap<String,List<FileVO>>();
 	 List<FileGallary> photoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
+	 List<FileGallary> singleNewsGallaryresultList = null;
 	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileVO> resultList = new ArrayList<FileVO>();
 	 List<FileVO> vedioresultList = new ArrayList<FileVO>();
@@ -2403,19 +2404,63 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	   //newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsListForNews(newsList);
 		 
 		 
-		 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary'";
-		 List<Long> newsGalIds = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(startIndex, maxResults, queryStr3);
-		 if(newsGalIds != null)
+		 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary' and  model.file.regionScopes.regionScopesId < 4 ";
+		// List<Long> newsGalIds = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(startIndex, 150, queryStr3);
+		 Map<Long,Long> gallaryIds = new HashMap<Long,Long>();
+		 Map<Long,Long> fileIds = new HashMap<Long,Long>();
+		 Long fileId = null;
+		 Long gallaryId = null;
+		 int count = 0;
+		/* if(newsGalIds != null)
 		 {
 			 for(Long newsgalIds : newsGalIds)
 			 {
-				 newsGallaryresultList =fileGallaryDAO.getStartingRecordInNewsGallaries(newsgalIds); 
-				List<FileVO> newsList =setToFileVO(newsGallaryresultList);
-				if(!newsList.isEmpty())
+				if(gallaryIds.get(newsgalIds) == null){
+					
+					gallaryIds.put(newsgalIds,newsgalIds);
+				 newsGallaryresultList =fileGallaryDAO.getStartingRecordInNewsGallaries(newsgalIds);
+				if(!newsGallaryresultList.isEmpty()){
+					Long fileId = newsGallaryresultList.get(0).getFile().getFileId();
+				if(fileIds.get(fileId) == null){
+					count =count+1;
+					fileIds.put(fileId,fileId);
+					singleNewsGallaryresultList = new ArrayList<FileGallary>();
+					singleNewsGallaryresultList.add(newsGallaryresultList.get(0));
+				   List<FileVO> newsList =setToFileVO(singleNewsGallaryresultList);
+				   if(!newsList.isEmpty())
 					newsresultList.add(newsList.get(0));	
+				   }
+				  }
+				}
+				if(count >= maxResults){
+					break;
+				}
+			 }
+		  }*/
+			 List<FileGallary>  fileGallaryList =  fileGallaryDAO.getRecentlyUploadedNewsFileIds(startIndex, 400, queryStr3);
+			 for(FileGallary fileGallary:fileGallaryList){
+				 fileId = fileGallary.getFile().getFileId();
+				 gallaryId = fileGallary.getGallary().getGallaryId();
+				 if(fileId != null && fileIds.get(fileId) == null){
+					 if(gallaryId != null && gallaryIds.get(gallaryId) == null){
+						 
+						 fileIds.put(fileId,fileId);
+						 gallaryIds.put(gallaryId,gallaryId);
+						 singleNewsGallaryresultList = new ArrayList<FileGallary>();
+						 singleNewsGallaryresultList.add(fileGallary);
+						 List<FileVO> newsList =setToFileVO(singleNewsGallaryresultList);
+						 if(!newsList.isEmpty()){
+							newsresultList.add(newsList.get(0));
+							count =count+1;
+						 }
+					 }
+				 }
+				 if(count >= maxResults){
+						break;
+					}
 			 }
 			 resultMap.put("NewsGallary", newsresultList);
-		 }
+		 
 	/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 	 resultList = setToFileVO(newsGallaryresultList);
 	 resultMap.put("NewsGallary", resultList);*/
