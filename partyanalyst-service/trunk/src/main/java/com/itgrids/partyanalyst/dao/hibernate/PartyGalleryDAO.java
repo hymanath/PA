@@ -130,7 +130,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	{
 		Query query = getSession().createQuery("select model.file,model.fileGallaryId from FileGallary model where model.gallary.gallaryId in "+
 				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
-				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) order by model.file.fileDate desc");
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
 		
 		query.setLong("partyId", partyId);
 		query.setString("type", IConstants.NEWS_GALLARY);
@@ -147,7 +147,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	{
 		StringBuilder query = new StringBuilder();
 		
-		query.append("select count(*) from FileGallary model where model.gallary.gallaryId in "+
+		query.append("select count(model.file.fileId) from FileGallary model where model.gallary.gallaryId in "+
 				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
 				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) ");
 		
@@ -159,7 +159,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			
 		if(queryType.equals("Private"))
 			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
-		
+		query.append(" group by model.file.fileId ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setString("isDelete", "false");
 		queryObject.setString("isPrivate", "false");
@@ -176,14 +176,14 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	     StringBuilder query = new StringBuilder();
 			query.append("select model.file,model.fileGallaryId,model.file.fileDate from FileGallary model where model.gallary.gallaryId in "+
 				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
-				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) order by model.file.fileDate desc");
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) ");
 				if(queryType.equals("Public"))
 			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
 			
 			if(queryType.equals("Private"))
 			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			
-			query.append(" order by model.file.fileDate desc ");
+			query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc");
 			Query queryObject = getSession().createQuery(query.toString());
 			
 			queryObject.setLong("partyId", partyId);
