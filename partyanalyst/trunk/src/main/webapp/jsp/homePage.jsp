@@ -576,7 +576,54 @@ var pollStatus = [];
 			  <s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
 			    <table>
 			     <tr>
+				 <td>	
+				 
+				
+
+
+				  <s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
+
+				  <c:if test="${newsGallaryDetails.displayImagePath != null}">
+				  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+				  </c:if>
+
+				  <c:if test="${newsGallaryDetails.displayImagePath == null}">
+
+				  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg"/></a>
+				  
+				 </c:if>
+				
+
+				 </s:if>
+
+				 <s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
+
+                 <c:if test="${newsGallaryDetails.displayImagePath != null}">
+				 <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+				 </c:if>
+
+				 <c:if test="${newsGallaryDetails.displayImagePath == null}">
+				 <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}"/></a>
+				 </c:if>
+
+				 </s:if>
+
+
+				<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
+
+                 <c:if test="${newsGallaryDetails.displayImagePath != null}">
+				 <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+				 </c:if>
+
+				 <c:if test="${newsGallaryDetails.displayImagePath == null}">
+
+				  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.imagePathInUpperCase}"/></a>
+				 </c:if>
+
+				</s:if>
+				 </td>
 			      <td>
+				  
 			        <s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
 					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;font-size: 13px; line-height: 1.5em;">
 			        </s:if>
