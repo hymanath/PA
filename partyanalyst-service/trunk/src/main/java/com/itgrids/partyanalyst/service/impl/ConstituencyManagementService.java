@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
@@ -30,10 +32,13 @@ import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.CandidateSubscriptions;
 import com.itgrids.partyanalyst.model.ConstituencySubscriptions;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -49,6 +54,15 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	private IProblemProgressDAO problemProgressDAO;
 	private IConstituencySubscriptionsDAO constituencySubscriptionsDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private IVoterDAO voterDAO;
+
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
 
 	private static final Logger log = Logger.getLogger(ConstituencyManagementService.class);
 	
@@ -143,11 +157,34 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			voterVOs.get(0).setTotalVoters(totalRecords);
 		return voterVOs;
 	}
-
+//VoterCastInfo for Hamlet
 	public VoterCastInfoVO getVotersCastInfoForHamlet(Long hamletId, String year){		
 		return caluculatePercentage(boothConstituencyElectionVoterDAO.findVotersCastInfoByHamletAndElectionYear(hamletId, year));
+		
+	}
+	//Voter Cast Info for panchayat
+	public VoterCastInfoVO getVotersCastInfoForPanchayat(Long panchayatId, String year){		
+		return caluculatePercentage(boothConstituencyElectionVoterDAO.findVotersCastInfoByPanchayatAndElectionYear(panchayatId, year));
+		
 	}
 	
+	//Voter Cast Info for PollingStation
+	public VoterCastInfoVO getVotersCastInfoForPollingStation(Long panchayatId, String year){		
+		return caluculatePercentage(voterDAO.findVotersCastInfoByPollingStationAndElectionYear(panchayatId, year));
+		
+	}
+	
+	//Voter Cast Info for Constituency
+	public VoterCastInfoVO getVotersCastInfoForAssembly(Long panchayatId, String year){		
+		return caluculatePercentage(voterDAO.findVotersCastInfoByConstituencyAndElectionYear(panchayatId, year));
+		
+	}
+	
+	//voter Cast Info For Mandal
+	public VoterCastInfoVO getVotersCastInfoForMandal(Long panchayatId, String year){		
+		return caluculatePercentage(voterDAO.findVotersCastInfoByMandalAndElectionYear(panchayatId, year));
+		
+	}
 	/**
 	 * @param	parms
 	 * @return  constituencyManagementVO  to the corresponding calling method.
@@ -163,11 +200,13 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		Long maleVoters=0L;
 		Long femaleVoters=0L;
 		Long castCount = 0L;
+		Long castnoneCount=0l;
+		Long castNone=0l;
 		
 		String prevCast = "";
 		String cast = "";
 		
-		for(int i=0;i < parms.size();i++){
+		/*for(int i=0;i < parms.size();i++){
 			Object[] voterInfo  = (Object[]) parms.get(i);
 			totalVoters = totalVoters + (Long)voterInfo[0];			
 			String gender = (String)voterInfo[1];
@@ -191,8 +230,34 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				castVO.setCastCount(castCount--);
 				castVOs.add(castVO);
 			}
-		}
+		}*/
 		
+		
+
+		for(int i=0;i < parms.size();i++){
+			Object[] voterInfo  = (Object[]) parms.get(i);
+			totalVoters = totalVoters + (Long)voterInfo[0];			
+			String gender = (String)voterInfo[1];
+			
+			cast = (String)voterInfo[2];
+			if(gender.equalsIgnoreCase("m"))
+				maleVoters = maleVoters + (Long)voterInfo[0];
+			if(cast.equals("") ){
+				castVO = new CastVO();
+				cast = "N/A";
+				casts.add("N/A");
+			}
+			else{
+			casts.add(cast);
+			}
+				castVO = new CastVO();
+				
+				castVO.setCastName(cast);
+				castVO.setCastCount((Long) (voterInfo[0]));
+				castVOs.add(castVO);
+			
+			
+		}
 		femaleVoters = totalVoters-maleVoters;
 		
 		//Cast Percentage Calculation
@@ -208,6 +273,140 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				
 		return voterCastInfoVO;				
 	}
+	
+	
+	
+	public List<Long> getVoterHouseDetailsForPanchayat(Long panchayatId, String year,String checkedEle)
+	{
+		List<Object[]> voters = null;
+		if(checkedEle.equalsIgnoreCase("panchayat"))
+		{
+		voters = boothConstituencyElectionVoterDAO.getVotersInfoForPanchayatAndElectionYear(panchayatId, year);
+		}
+		if(checkedEle.equalsIgnoreCase("pollingstation"))
+		{
+		 voters = voterDAO.getVotersInfoForPollingStationAndElectionYear(panchayatId, year);
+		}
+		List<VoterVO> votersList = new ArrayList<VoterVO>();
+		Map<String,List<VoterVO>> resultMap = new LinkedHashMap<String,List<VoterVO>>();
+		List<VoterVO> aboveten = new ArrayList<VoterVO>();
+		
+		 Long totalMembers=0l;
+		resultMap.put("Below-3", new ArrayList<VoterVO>(0));
+		resultMap.put("7-5", new ArrayList<VoterVO>(0));
+		resultMap.put("10-7", new ArrayList<VoterVO>(0));
+		resultMap.put("Above-10", new ArrayList<VoterVO>(0));
+	    List<Long> returnVal = new ArrayList<Long>();
+		Long below3 = 0l;
+		Long bt3to5 = 0l;
+		Long bt5to7 = 0l;
+		Long bt7to10 = 0l;
+		Long above10 = 0l;
+		
+		Long above10Total = 0l;
+		Long below3Total = 0l;
+		Long bt3to5Total = 0l;
+		Long bt5to7Total = 0l;
+		Long bt7to10Total = 0l;
+		
+		String houseNo = "";
+		for(Object[] count : voters)
+		{
+			
+			totalMembers = (Long) count[1];
+			if(totalMembers.longValue() >= 10)
+			{
+				
+				above10 = above10+1;
+				above10Total = totalMembers + above10Total;
+			}
+			else if(totalMembers.longValue()< 10 && totalMembers.longValue() >=7)
+			{
+				bt7to10 = bt7to10+1;
+				bt7to10Total = totalMembers + bt7to10Total;
+			}
+			else if(totalMembers.longValue()< 7 && totalMembers.longValue() >=5)
+			{
+				bt5to7 = bt7to10+1;
+				bt5to7Total = totalMembers + bt5to7Total;
+			}
+			else if(totalMembers.longValue()<5 && totalMembers.longValue() >=3)
+			{
+				bt3to5 = bt7to10+1;
+				bt3to5Total = totalMembers + bt3to5Total;
+			}
+			else
+			{
+				below3 = below3+1;
+				below3Total = totalMembers + below3Total;
+			}
+			
+		}	
+		
+		returnVal.add(below3);
+		returnVal.add(bt3to5);
+		returnVal.add(bt5to7);
+		returnVal.add(bt7to10);
+		returnVal.add(above10);
+		returnVal.add(above10Total);
+		returnVal.add(bt7to10Total);
+		returnVal.add(bt5to7Total);
+		returnVal.add(bt3to5Total);
+		returnVal.add(below3Total);
+		return returnVal;
+		
+	}
+	//House Info Details for Panchayat/Polling Station
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long hamletId, String year,String checkedEle)
+	{
+		List voters = null;
+		if(checkedEle.equalsIgnoreCase("panchayat"))
+		{
+			voters = boothConstituencyElectionVoterDAO.findVotersInfoForPanchayatAndElectionYear(hamletId, year);
+		}
+		if(checkedEle.equalsIgnoreCase("pollingstation"))
+		{
+			voters = voterDAO.findVotersInfoForPollingStationAndElectionYear(hamletId, year);
+		}
+		Map<String, List<VoterVO>> voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
+		List<VoterHouseInfoVO> voterHouseInfoVOs = new ArrayList<VoterHouseInfoVO>();
+		VoterHouseInfoVO voterHouseInfoVO = null;
+		List<VoterVO> voterVOs = null;
+		VoterVO voterVO = null;
+		String houseNo = "";
+		if(voters != null)
+		for(Object[] voter : (List<Object[]>)voters){
+			houseNo = voter[2].toString();
+			voterVO = new VoterVO();
+			voterVO.setFirstName(voter[0].toString());
+			voterVO.setVoterLastName(voter[1].toString());
+			voterVO.setAge((Long)voter[3]);
+			voterVO.setCast(voter[4].toString());
+			voterVOs = voterByHouseNoMap.get(houseNo);
+			if(voterVOs ==null)
+				voterVOs = new ArrayList<VoterVO>();
+			voterVOs.add(voterVO);
+			voterByHouseNoMap.put(houseNo, voterVOs);
+			
+		}
+		for(Map.Entry<String, List<VoterVO>> entry:voterByHouseNoMap.entrySet()){
+			voterHouseInfoVO = new VoterHouseInfoVO();
+			voterVOs = entry.getValue();
+			if(voterVOs.size() == 0)
+				continue;
+			voterHouseInfoVO.setHouseNo(entry.getKey());
+			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
+			voterHouseInfoVO.setYounger(voterVOs.get(0).getFirstName());
+			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
+			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
+			voterHouseInfoVOs.add(voterHouseInfoVO);
+		}
+		
+	/*	if(voterHouseInfoVOs.size() > 0)
+			voterHouseInfoVOs.get(0).setTotalHousesCount(totalRecords);*/
+		return voterHouseInfoVOs;
+	}
+	
 	
 	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId, String year) {	
 		

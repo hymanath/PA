@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
@@ -49,6 +50,8 @@ import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
@@ -100,6 +103,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.District;
@@ -115,6 +119,7 @@ import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
@@ -187,6 +192,27 @@ public class StaticDataService implements IStaticDataService {
 	private IPartyStrengthService partyStrengthService;
 	private IHamletBoothElectionDAO hamletBoothElectionDAO;
 	private IUserDAO userDAO;
+	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IPanchayatDAO panchayatDAO;
+	private IBoothDAO boothDAO;
+
+	
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
 
 	public IUserDAO getUserDAO() {
 		return userDAO;
@@ -195,7 +221,13 @@ public class StaticDataService implements IStaticDataService {
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
 
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
 		return hamletBoothElectionDAO;
 	}
@@ -798,7 +830,20 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return townshipVOs;
 	}
-
+	
+	// get panchayaties by tehsilId 
+	public List<SelectOptionVO> getPanchayathiesByTehsilId(Long mandalID)
+	{
+		List<SelectOptionVO> panchayaties = new ArrayList<SelectOptionVO>();
+		SelectOptionVO panchayathVO = null;
+		List<Panchayat> panchayathList = townshipDAO.getPanchayathies(mandalID);
+		for(Panchayat panchayath : panchayathList)
+		{
+			panchayathVO = new SelectOptionVO(panchayath.getPanchayatId(),panchayath.getPanchayatName());
+			panchayaties.add(panchayathVO);
+		}
+		return panchayaties;
+	}
 	public List<SelectOptionVO> getStates(Long electionType) {
 		List<ElectionScope> electionScopes = electionScopeDAO
 				.findByPropertyElectionTypeId(electionType);
@@ -1133,9 +1178,11 @@ public class StaticDataService implements IStaticDataService {
 					//List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),result.getValue().toString());
 					List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),latestElecYearInConsti);
 				
-					for (int i = 0; i < candidates.size(); i++) {
+					//for (int i = 0; i < candidates.size(); i++) {
+					if(candidates != null)
+					{
 						ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
-						Object[] obj = (Object[]) candidates.get(i);
+						Object[] obj = (Object[]) candidates.get(0);
 						constituencyWinnerInfoVO.setConstituencyName(obj[0].toString());
 						constituencyWinnerInfoVO.setCandidateName(obj[1].toString());
 						constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
@@ -1159,9 +1206,11 @@ public class StaticDataService implements IStaticDataService {
 							constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
 						}
 						constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
-					}
+					//}
+						
 				}
 			}
+		}
 			/*
 			 * List parliamentCandidates =
 			 * nominationDAO.findCandidateNamePartyByConstituencyAndElection
@@ -2285,6 +2334,67 @@ public class StaticDataService implements IStaticDataService {
 		return hamlets;
 	}
 
+	
+	public List<SelectOptionVO> getPanchayatiesByMandalId(Long mandalId)
+	{
+		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
+		List<Object[]> panchayaties = panchayatDAO.getPanchayatsBymandalId(mandalId);
+		SelectOptionVO hamlet = null;
+		for (Object[] panchayat : panchayaties) {
+			hamlet = new SelectOptionVO((Long)panchayat[0],panchayat[1].toString());
+			hamlets.add(hamlet);
+		}
+		return hamlets;	
+	}
+	public List<SelectOptionVO> getPanchayatiesByConstituencyId(Long constituencyId)
+	{
+		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
+		List<Object[]> panchayaties = panchayatDAO.getPanchayatsByConstituencyId(constituencyId);
+		SelectOptionVO hamlet = null;
+		for (Object[] panchayat : panchayaties) {
+			hamlet = new SelectOptionVO((Long)panchayat[0],panchayat[1].toString());
+			hamlets.add(hamlet);
+		}
+		return hamlets;
+	}
+	public List<SelectOptionVO> getBoothsByMandalId(Long mandalId)
+	{
+		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
+		List<Booth> pollingBooths = boothDAO.getPollingStationByMandalId(mandalId); 
+		SelectOptionVO hamlet = null;
+		for (Booth panchayat : pollingBooths) {
+			hamlet = new SelectOptionVO(panchayat.getBoothId(),"Booth No- "+ panchayat.getPartNo().toString());
+			hamlets.add(hamlet);
+		}
+		return hamlets;
+	}
+	public List<SelectOptionVO> getBoothsByConstituencyId(Long constituencyId)
+	{
+		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
+		List<Booth> pollingBooths = boothDAO.getPollingStationByConstituencyId(constituencyId); 
+		SelectOptionVO hamlet = null;
+		for (Booth panchayat : pollingBooths) {
+			hamlet = new SelectOptionVO(panchayat.getBoothId(),"Booth No- "+ panchayat.getPartNo().toString());
+			hamlets.add(hamlet);
+		}
+		return hamlets;
+	}
+	public List<SelectOptionVO> getHamletsForPanchayath(Long panchayathId)
+	{
+		 List<SelectOptionVO> hamlets =new ArrayList<SelectOptionVO>();
+		 List<Object[]> hamletsList = panchayatHamletDAO.getHamletsOfAPanchayat(panchayathId);
+		 SelectOptionVO hamlet = null;
+		 if(hamletsList != null)
+		 {
+			 for(Object[] params : hamletsList)
+			 {
+			hamlet = new SelectOptionVO((Long)params[0],params[1].toString());
+			hamlets.add(hamlet);
+			 }
+		 }
+		return hamlets;
+				 	
+	}
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyBoothInfoVO> getBoothPartNosForMandalAndElection(
 			Long tehsilId, String electionYear) {
