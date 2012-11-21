@@ -157,4 +157,16 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(update);
 	}*/
 	
+	/*public void testgetPollingStationByConstituencyId()
+	{
+	 List<Booth> list = boothDAO.getPollingStationByConstituencyId(232l);
+	 System.out.println(list.size());
+	}*/
+	
+	public void testgetPollingStationByMandalId()
+	{
+	 List<Booth> list = boothDAO.getPollingStationByMandalId(295l);
+	 System.out.println(list.size());
+	}
+	
 }
