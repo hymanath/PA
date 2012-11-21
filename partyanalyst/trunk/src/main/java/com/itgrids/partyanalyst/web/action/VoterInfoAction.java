@@ -148,11 +148,33 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		if(jObj.getString("task").equalsIgnoreCase("findVoters"))
 		{
 			String hamletId = jObj.getString("selected");
+			String checkedEle = jObj.getString("checkedele");
+			
+			String constituencyId=jObj.getString("MANDAL");
 			constituencyManagementVO = new ConstituencyManagementVO();
 			//constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(new Long(hamletId), "2009", 0l, 20000, false));
-			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009"));
-			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(new Long(hamletId), "2009");
-			constituencyManagementVO.setVoterCastInfodetails(votersByCast);								
+			/*constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009"));*/
+			
+			//added for Important Families
+			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseInfoDetails(new Long(hamletId), "2009",checkedEle));
+			constituencyManagementVO.setVotersCount(constituencyManagementService.getVoterHouseDetailsForPanchayat(new Long(hamletId), "2009",checkedEle));
+			
+			
+			/*VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(new Long(hamletId), "2009");
+			constituencyManagementVO.setVoterCastInfodetails(votersByCast);		
+			*/
+			//added for Local Cast statics
+			if(checkedEle.equalsIgnoreCase("panchayat"))
+			{
+			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForPanchayat(new Long(hamletId), "2009");
+			constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+			}
+			if(checkedEle.equalsIgnoreCase("pollingstation"))
+			{
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForPollingStation(new Long(hamletId), "2009");
+				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+			}
+			
 			
 			problemManagementDataVO = problemManagementService.getProblemsForAHamlet(new Long(hamletId), "2009");
 			ResultStatus resultStatus = problemManagementDataVO.getResultStatus();
@@ -187,8 +209,26 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			constituencyManagementVO.setTotalMPTCMandalLeaderVO(mptcMandalLeaders);
 		}
 		
+		else if(jObj.getString("task").equalsIgnoreCase("findVotersByConstituencyID"))
+		{
+			constituencyManagementVO = new ConstituencyManagementVO();
+			String constituencyId = jObj.getString("selected");
+			String checkedEle = jObj.getString("checkedele");
+			if(checkedEle.equalsIgnoreCase("Assembly"))
+			{
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForAssembly(new Long(constituencyId), "2009");
+				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+			}
+			if(checkedEle.equalsIgnoreCase("Mandal"))
+			{
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForMandal(new Long(constituencyId), "2009");
+				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+			}
+		}
+		
 		return SUCCESS;
 	}
+	
 	
 	public String execute() throws Exception{
 		
