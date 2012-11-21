@@ -244,16 +244,26 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				" from Booth model where model.boothId in("+localElectionBodyIds+") ");
 	}
 	
-public int removeMappingToLocalBody(List<Long> boothIds) {
-		
-		StringBuilder query = new StringBuilder();
-		query.append("update Booth model set model.localBody = null");
-		query.append(" where model.boothId in (:boothIds)");
-		
-		Query queryObject = getSession().createQuery(query.toString());
-		
-		queryObject.setParameterList("boothIds", boothIds);
-		
-		return queryObject.executeUpdate();
-	}
+		public int removeMappingToLocalBody(List<Long> boothIds) {
+				
+				StringBuilder query = new StringBuilder();
+				query.append("update Booth model set model.localBody = null");
+				query.append(" where model.boothId in (:boothIds)");
+				
+				Query queryObject = getSession().createQuery(query.toString());
+				
+				queryObject.setParameterList("boothIds", boothIds);
+				
+				return queryObject.executeUpdate();
+			}
+
+		public List<Booth> getPollingStationByConstituencyId(Long constituencyId)
+		{
+			return getHibernateTemplate().find("from Booth model where model.year = 2009 and model.constituency.constituencyId =? ", constituencyId);	
+		}
+
+		public List<Booth> getPollingStationByMandalId(Long mandalId)
+		{
+			return getHibernateTemplate().find("from Booth model where model.year = 2009 and model.tehsil.tehsilId =? ", mandalId);	
+		}
 }

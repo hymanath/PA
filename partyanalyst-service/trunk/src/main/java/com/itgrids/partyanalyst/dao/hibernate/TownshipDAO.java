@@ -8,6 +8,7 @@ import org.appfuse.dao.jpa.GenericDaoJpa;
 
 import com.itgrids.partyanalyst.dao.ITownshipDAO; 
 import com.itgrids.partyanalyst.dao.columns.enums.TownshipColumnNames;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Township;
 
 public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements ITownshipDAO
@@ -41,7 +42,11 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 		return getHibernateTemplate().find("from Township model where model.tehsil.tehsilId=? order by model.townshipName", mandalID);
 		
 	}
-
+	@SuppressWarnings("unchecked")
+	public List<Panchayat> getPanchayathies(Long mandalID)
+	{
+		return getHibernateTemplate().find("from Panchayat model where model.tehsil.tehsilId=? order by model.panchayatName",mandalID);
+	}
 	@SuppressWarnings("unchecked")
 	public List<Township> findByTownshipNameAndTehsilId(String townshipName,Long tehsilId){
 		Object[] params = {townshipName,tehsilId};

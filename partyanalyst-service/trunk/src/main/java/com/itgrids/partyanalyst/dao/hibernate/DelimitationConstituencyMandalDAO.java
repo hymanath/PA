@@ -116,4 +116,12 @@ IDelimitationConstituencyMandalDAO {
 		return getHibernateTemplate().find("select model.dcm_id,model.tehsil.tehsilId, model.tehsil.tehsilName, model.isPartial " +
 				" from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID = ? order by model.tehsil.tehsilName",delimconstituencyId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select model.tehsil.tehsilId from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID =?",constituencyId);
+
+
 }
+	}
