@@ -122,10 +122,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     private Long constituencyId;
 	private Boolean isSubscribed = false;
 	private Long regId;
-	
 	private String status;
 	
-	
+
+	private File imageForDisplay;
+	private String imageForDisplayContentType;
+	private String imageForDisplayFileName;
 	
 	public String getStatus() {
 		return status;
@@ -133,6 +135,29 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public File getImageForDisplay() {
+		return imageForDisplay;
+	}
+
+	public void setImageForDisplay(File imageForDisplay) {
+		this.imageForDisplay = imageForDisplay;
+	}
+
+	public String getImageForDisplayContentType() {
+		return imageForDisplayContentType;
+	}
+
+	public void setImageForDisplayContentType(String imageForDisplayContentType) {
+		this.imageForDisplayContentType = imageForDisplayContentType;
+	}
+
+	public String getImageForDisplayFileName() {
+		return imageForDisplayFileName;
+	}
+
+	public void setImageForDisplayFileName(String imageForDisplayFileName) {
+		this.imageForDisplayFileName = imageForDisplayFileName;
 	}
 
 	public Long getRegId() {
@@ -1051,11 +1076,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	{
 		log.debug("Enter into uploadFiles() Method");
 		session = request.getSession();
+
 			
 		String fileName = null;
 		String filePath = null;
 		String fileNames = null;
+		
 		FileVO fileVO = new FileVO();
+		FileVO displayFileVO = new FileVO();
+		
+		
+		
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		
 		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
@@ -1179,6 +1210,33 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				}
 				//fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+fileName);
 			}
+			
+			if (imageForDisplayContentType != null && imageForDisplay != null
+					&& imageForDisplayFileName != null) {
+				
+				String imageName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+				String path1 = IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+imageName;
+
+				
+				displayFileVO.setDisplayImageName(imageName);
+				displayFileVO.setDisplayImageContentType(imageForDisplayContentType);
+				displayFileVO.setDisplayImagePath(path1);
+				fileVO.setFileVOForDiaplyImage(displayFileVO);
+				
+				
+			}
+			
+			if(fileVO.getFileVOForDiaplyImage () != null){
+				
+				//String imageNameToSave = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+
+				File fileToCreate = new File(filePath, displayFileVO.getDisplayImageName());
+				FileUtils.copyFile(imageForDisplay, fileToCreate);
+				
+			}
+			
+			
+			
 			/* Here We are saving the to uploaded_files folder */
 			if(fileNamesList !=null && fileNamesList.size()>0)
 			{
@@ -1207,6 +1265,25 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 	}
+	
+ public String checkForMinisterData(){
+	 
+	 try{	 
+	 jObj = new JSONObject(getTask());  
+	 }catch(Exception e){
+		 e.printStackTrace(); 
+	 }
+	 
+	 String electionType = jObj.getString("electionType");;
+	 Long electionId =jObj.getLong("electionId");
+	 
+	 
+      status = candidateDetailsService.checkForMinisterData(electionType,electionId);
+
+	 return Action.SUCCESS;
+	 
+	 
+ }
      
    public String getCandidatesNewsDetail()
 	{
@@ -1352,24 +1429,5 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 	}
-	
-	 public String checkForMinisterData(){
-		 
-		 try{	 
-		 jObj = new JSONObject(getTask());  
-		 }catch(Exception e){
-			 e.printStackTrace(); 
-		 }
-		 
-		 String electionType = jObj.getString("electionType");;
-		 Long electionId =jObj.getLong("electionId");
-		 
-		 
-	      status = candidateDetailsService.checkForMinisterData(electionType,electionId);
-
-		 return Action.SUCCESS;
-		 
-		 
-	 }
 
 }
