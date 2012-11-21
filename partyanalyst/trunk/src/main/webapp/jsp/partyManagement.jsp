@@ -1954,6 +1954,9 @@ function  buildUploadNews()
 	str += '      <td colspan="2"> <div id="addMoreFilesDiv"></div></td>';
 	str += '   </tr>';
 	str += '   </tr>';
+
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="newsfileId" size="25" style="margin-top:8px;"/></td></tr>';
+
 	str += '   <tr>';
 	str += '       <td></td>';
 	str += ' <td id="newsPublicRadioDiv"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv" color="#4B74C6">Visible to Public Also</font></b></input></td>';
