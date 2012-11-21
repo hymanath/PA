@@ -31,13 +31,47 @@
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
 	</head>
-		
-<div class="container-fluid m-top15">
+		<style>
+		.container{width:960px;}
+		.p-m-bottom0px{padding-bottom:0px;margin-bottom:0px;}
+		h4{font-size:13.5px;}
+		h5{font-size:12px;}
+	.votersguide .p-5px{display:inline-block;padding:5px;border:0px;}
+	.votersguide h4{ float: left;
+    margin-left: 5px;
+    width: 56%;
+ margin-top:3px;}
+ 	.votersguide h6{margin-bottom: 3px;}
+	.explore .p-5px{display:inline-block;padding:5px;border:0px;padding-bottom: 9px;}
+	.explore h4{ float: left;
+    margin-left: 5px;
+    width: 56%;
+ margin-top:22px;}
+ 	.explore h6{clear:both;text-align:center;padding-top:18px;}
+	.voterspulse-home{margin-top:10px;}
+	.voterspulse-home h3{margin-top: 0px; margin-bottom: 0px;font-size:20px;}
+	.opinionpoll .breadcrumb{margin:0px -20px;display:inline-block;}
+	.follow-us{margin-left:170px;margin-top:10px;}
+			</style>
+<div class="container m-top15">
 		<div class="row-fluid">
 			
 		<!--------left div------->
 			<div class="span3">
 			<!-------Quick Links Block--------------->
+			<div class="widget yellow votersguide p-m-bottom0px">
+			                    <div class="widget-block p-5px"> 
+								<img src="images/votersguide_home.png" class="thumbnail pull-left">
+							<h4>The right to vote is the Foundation of Democracy.</h4>
+								
+								
+															
+								<h6>Your vote is your voice. Don't lose your voice.</h6>
+								
+								<a href="voters.action" class="btn btn-primary pull-right" >Voter's Guide</a>
+								</div>	
+							</div>
+			
 		<div class="widget green quicklinks"><h2>Quick Links</h2>
 				
 				<!---- View Election Results------->
@@ -203,17 +237,87 @@
 							</div>
 			</div>
 			
-							<div class="widget yellow p-top20">
-								<h4>The right to vote is the foundation of democracy.</h4>
-								<p>Your vote is your voice. Don't lose your voice.</p>
-								<a href="voters.action" class="btn btn-primary" >Voter's Guide</a>
-							</div>
+							
 			
 	</div>
 			
 		<!--------Center div------>
 			<div class="span6">
-			<!--sasi photo gallary start-->
+			
+			
+			
+				<!-----NEWS Block-------->
+				<div class="widget green p-m-bottom0px">
+				 	<!-- <h2>Latest Political News</h2>
+			sasi news from database start-->
+							
+				<div id="my-jqCarousel-news" class="jqCarousel module widget-block">
+		    <ul class="overview media">
+							<s:if test="resultMap != null && resultMap.size() > 0"> 
+							<s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
+								<li>
+									<h4><s:property value="fileTitle1"/></h4>
+									<div class="row-fluid m-l15px">
+									<s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
+										<!--<a class="thumbnail span4" href="#">
+											<img src="http://placehold.it/200x150" style="width:100%">
+										</a>-->
+										
+										<c:if test="${newsGallaryDetails.displayImagePath != null}">
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+										</c:if>
+
+										<c:if test="${newsGallaryDetails.displayImagePath == null}">
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg"/></a>
+										</c:if>
+										
+										<p class="span6"><s:property value="description"/>
+										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
+									</s:if>
+									
+									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
+										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
+											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+										</c:if>
+
+										<c:if test="${newsGallaryDetails.displayImagePath == null}">
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}"/></a>
+										</c:if>
+										<p class="span6"><s:property value="description"/>
+										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
+									</s:if>
+									
+									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
+										<c:if test="${newsGallaryDetails.displayImagePath != null}">
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+										</c:if>
+										<c:if test="${newsGallaryDetails.displayImagePath == null}">
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}"/></a>
+										</c:if>
+										<p class="span6"><s:property value="description"/>
+										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-left round-link">
+									</s:if>
+									Read more &rarr;
+									</a>
+									</p>
+									</div>
+									
+								</li>
+							</s:iterator>
+							</s:if>
+						</ul>
+						
+				<div class="news-paginate">
+              
+                <span class="prev-sl"><i class="icon-chevron-left icon-white"></i></span>
+                <span class="next-sl"><i class="icon-chevron-right icon-white"></i></span>
+             
+            </div>
+		</div>
+	
+				</div>	
+				<!-- END OF NEWS BLOCK -->
+				<!--sasi photo gallary start-->
 				<div class="widget blue">
 			        <h2>Latest Photo Galleries</h2>
 					<div id="PhotoGalleryCarousel" class="carousel" style="display:none;">
@@ -235,7 +339,8 @@
 										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
 									</s:if>
 					
-									<img src='<s:property value="pathOfFile"/>'  alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>' /></a>
+									<img src='<s:property value="pathOfFile"/>'  
+									alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>' /></a>
 					
 			
 									<div class="carousel-caption">
@@ -313,63 +418,6 @@
 				</div>
 			
 			<!--sasi photo gallary END-->
-			
-			
-				<!-----NEWS Block-------->
-				<div class="widget green">
-				  <h2>Latest Political News</h2>
-				<!--sasi news from database start-->
-							
-				<div id="my-jqCarousel-news" class="jqCarousel module widget-block">
-		    <ul class="overview media">
-							<s:if test="resultMap != null && resultMap.size() > 0"> 
-							<s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
-								<li>
-									<h4><s:property value="fileTitle1"/></h4>
-									<div class="row-fluid m-l15px">
-									<s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
-										<a class="thumbnail span4" href="#">
-											<img src="http://placehold.it/200x150" style="width:100%">
-										</a>
-										<p class="span6"><s:property value="description"/>
-										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
-									</s:if>
-									
-									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
-										<a class="thumbnail span4" href="#">
-											<img src="http://placehold.it/200x150" style="width:100%">
-										</a>
-										<p class="span6"><s:property value="description"/>
-										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
-									</s:if>
-									
-									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
-										<a class="thumbnail span4" href="#">
-											<img src="http://placehold.it/200x150" style="width:100%">
-										</a>
-										<p class="span6"><s:property value="description"/>
-										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-left round-link">
-									</s:if>
-									Read more &rarr;
-									</a>
-									</p>
-									</div>
-									
-								</li>
-							</s:iterator>
-							</s:if>
-						</ul>
-						
-				<div class="news-paginate">
-              
-                <span class="prev-sl"><i class="icon-chevron-left icon-white"></i></span>
-                <span class="next-sl"><i class="icon-chevron-right icon-white"></i></span>
-             
-            </div>
-		</div>
-	
-				</div>	
-				<!-- END OF NEWS BLOCK -->
 				<div class="widget yellow">
 				<h2>Latest Video Galleries</h2>
 				<!--video gallary-->
@@ -445,13 +493,15 @@
 		<!--------Right div------>
 			<div class="span3">
 			
-				<div class="widget yellow p-top20">You've come to the right place!<h5>THE NEW PARTY ANALYST</h5>
-				<a href="viewFeaturesAction.action" class="btn btn-primary" >Explore!</a>
-				</div>
+				<div class="widget yellow p-m-bottom0px explore">
+				<div class="widget-block p-5px">
+				<img src="images/explore.gif" class="thumbnail pull-left"><h4>You've come to the right place!</h4><h6>The New Party Analyst</h6>
+				<a href="viewFeaturesAction.action" class="btn btn-primary pull-right" >Explore!</a>
+				</div></div>
 				
-				<div class="alert alert-info">
-				<h5>Your Ad Here...</h5>
-				
+				<div class="btn btn-info voterspulse-home">
+				<h3 style="margin-top: 0px; margin-bottom: 0px;">Voters Pulse</h3>
+				<p class="alert alert-info">Now, you can drive your survey's through Party Analyst...<a class="btn btn-inverse" href="VotersPulse.action">Discover the Advantages</a></p>
 				</div>
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
@@ -543,7 +593,7 @@
 
 				</div>
 				<!-----------Opinion Poll--------------->
-				<div class="widget blue">
+				<div class="widget blue" style="padding-bottom:0px;">
 					<h2>Opinion Poll</h2>
 				<div class="widget-block">
 						<div id="pollsWidgetHeader"></div>
@@ -581,9 +631,9 @@
 
 		str+='<div class="opinionpoll">';
 		
-		str+='<div ><p class="question"><b>${opinionPollVO.quesitons[0].question}</b></p>';	
+		str+='<div class="breadcrumb"><p class="question"><b>${opinionPollVO.quesitons[0].question}</b></p>';	
 	
-		str+='<div id="qstnDiv1" style="margin-top:3px;">';	
+		str+='<div id="qstnDiv1" style="margin:0px-20px;margin-top:3px">';	
 
 		str+='<div class="control-group form-horizontal "><p class="answer">';
 		<s:iterator status="stat" value="opinionPollVO.quesitons[0].options">
@@ -606,12 +656,12 @@
 		str+=' <a class="nextlink" style="margin-bottom:10px;"  href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments" title="Click Here To See Comments On This Poll" >View Comments</a></p>';
 		str+=' </div></div>';
 		str+='</div>';
-		str+='<div class="widget-block" style="padding:2px;height:40px;border:0px;">';
+		str+='<div class="widget-block" style="padding:2px;height:30px;border:0px;">';
    
-        str+='<a style="float:left;margin-left:5px;" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments"  class="btn btn-mini" title="Post Your Comment On This Poll">Post Your Comment</a>';
+        str+='<a style="float:left;margin-left:3px;" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments"  class="btn btn-mini" title="Post Your Comment On This Poll">Post Your Comment</a>';
  
   
-    str+='<a style="float:right;margin-right:5px;" class="btn btn-mini" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details">View Recent Polls </a>';
+    str+='<a style="float:right;margin-right:3px;" class="btn btn-mini" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details">View Recent Polls </a>';
    
     str+='</div>';
 	elmt.innerHTML = str;		

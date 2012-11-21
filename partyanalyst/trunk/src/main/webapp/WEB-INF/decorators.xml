@@ -149,7 +149,8 @@
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
-    <pattern>/newhomePage*</pattern>
+    	<pattern>/newhomePage*</pattern>
+    	<pattern>/newconnectPeoplePage*</pattern>
     </decorator>
 
 </decorators>

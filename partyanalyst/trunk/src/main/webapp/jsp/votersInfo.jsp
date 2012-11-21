@@ -6,7 +6,7 @@
 <link media="screen" rel="stylesheet" href="styles/colorbox/colorbox.css"/>
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
 <script src="js/colorbox/jquery.colorbox.js"></script>
-<script src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script src="js/jQuery/jquery-1.5.2.min.js"></script>
 
 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
@@ -124,6 +124,15 @@ h1 {
 	right:10px;
 	bottom:5px;
  }
+ .tovoters h3{
+	margin-bottom:10px;
+	
+ }
+ .tovoters{
+	list-style-type: disc !important;
+	margin-left: 30px;
+    padding: 5px;
+ }
 </style>
 
 </head>
@@ -142,15 +151,51 @@ $(document).ready(function(){
 <div class="maindiv">
 	<div class="leftdiv" id="contentBlock" >	
 		<div class="row-fluid breadcrumb whitegloss subcontents" style="margin:0px;" id="ImportanceOfVoting" >
+			
+			
+			<div class="breadcrumb">
+			<!--<h2>Do you have Answer For This Question, If not Have a look..</h2>
+				<ul>
+					<li><h3>Do you have Vote ? if not How to Register for Vote ?</h3></li><br>
+					<li><h3>Why Should You Vote ?</h3></li><br>
+					<li><h3>What is the Problem if you have more Than one Vote ?</h3></li><br>
+					<li><h3>How to transfer the Vote ?</h3></li><br>
+					<li><h3>How to Cancel the Vote ?</h3></li><br>
+					<li><h3>Are You NRI Do you know how to Register vote?</h3></li><br>
+					<li><h3>Are you working in Army, Do you know how to vote?</h3></li><br>
+					
+				</ul>-->
+				<ul class="tovoters">
+					<li>Don't you have Vote - Register Now!</li><br>
+				
+					<li><h3>Do you have more than one Vote - Keep the one at Right Place & Cancel the remaining!</h3></li><br>
+				
+					<li><h3>Does your family have Votes in different Places - Cancel Them and Register all in one Right Place!</h3></li><br>
+				
+					<li><h3>Don't you have Vote in Right Place - Transfer It to the Right Place! (OR) Cancel It & Register in Right Place!</h3></li><br>
+					
+					<li><h3>Do you know anyone having more than One Vote or Vote at Wrong Place - Cancel Them!</h3></li><br>
+					
+					<p>Do this to give your support to strengthen our Democracy! Vote is your Right, have it in Right Place and Must Use it! Not using your Vote or having Votes at more than one place causes Misuse of Vote or Decrease in Polling Percentages. As a Responsible Citizen of India don't make it happen!</p>
+
+					
+				</ul>
+			</div>
+			
 		
 			<h2>Importance of Voting</h2>
-			<div class="span12" style="">
-			  	<p>In Democracy, Government is "of the people, by the people and for the people". It means that we are not here to serve the government, but that the government is here to serve us - and we have the right to decide who will represent us and how we want to be represented. A Democracy is a nation whose leaders are elected by the people.  Out of all the nations in this world, not all are democracies. In all the other nations, which are not democratic, people are not allowed to criticize their government. They are not allowed to choose their leaders. But, in India, we can choose our leaders.  It means that we have one of the greatest rights, any individual can have: the right to vote. Every single vote makes a difference, in a democracy.</p>
+			<div class="span12">
+			  	<p id="initialdisplay1" >In Democracy, Government is "of the people, by the people and for the people". It means that we are not here to serve the government, but that the government is here to serve us - and we have the right to decide who will represent us and how we want to be represented. A Democracy is a nation whose leaders are elected by the people.<span id="displayText1" style="cursor:pointer;right: 10px;color:#4CB1CF;margin-left:2px; " onclick="toggle(1)" >Read More..</span></p>
 
-				<p>Voting is a right, for which, throughout history, many have fought for and sacrificed everything to achieve it. It's a right that millions of people throughout the world still fighting for. As Indians, we have the great privilege to live in a free society and voting is the right that makes us free. Remember the sacrifice of the leaders, who laid their lives for the protection and future of our country, our freedom and the life we are living now. If we throw away our right to vote, then, we are greatly dishonoring the heroes who have sacrificed their lives for us, our lives.</p>
+				<div id="toggleText1" style="display:none;" >
+					<p >In Democracy, Government is "of the people, by the people and for the people". It means that we are not here to serve the government, but that the government is here to serve us - and we have the right to decide who will represent us and how we want to be represented. A Democracy is a nation whose leaders are elected by the people.  Out of all the nations in this world, not all are democracies. In all the other nations, which are not democratic, people are not allowed to criticize their government. They are not allowed to choose their leaders. But, in India, we can choose our leaders.  It means that we have one of the greatest rights, any individual can have: the right to vote. Every single vote makes a difference, in a democracy.</p>
+					
+					<p>Voting is a right, for which, throughout history, many have fought for and sacrificed everything to achieve it. It's a right that millions of people throughout the world still fighting for. As Indians, we have the great privilege to live in a free society and voting is the right that makes us free. Remember the sacrifice of the leaders, who laid their lives for the protection and future of our country, our freedom and the life we are living now. If we throw away our right to vote, then, we are greatly dishonoring the heroes who have sacrificed their lives for us, our lives.</p>
 				
-				<p>Your vote is an authority given by God. Many countries don't have this opportunity. You have no right to complain about the government, if you did not try to protect your right to vote. We, as citizens of India, have not only the right to vote, but also, the responsibility to vote and help the country in getting the right leader for its development.</p>
-				<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
+					<p>Your vote is an authority given by God. Many countries don't have this opportunity. You have no right to complain about the government, if you did not try to protect your right to vote. We, as citizens of India, have not only the right to vote, but also, the responsibility to vote and help the country in getting the right leader for its development.</p>
+					
+					<span class="btn-info btn-small" id="displayText2" style="margin-bottom: 5px;cursor:pointer;right: 10px; position: absolute; bottom: 0px;;" onclick="toggle(1)" >Hide..</span>
+				</div>
 			</div>
 		</div>
 		
@@ -158,13 +203,19 @@ $(document).ready(function(){
 		
 			<h2>Why Should I Vote?</h2>
 			<div class="span12" style="">
-			  	<p>
-				Maybe you're asking yourself, "With all the millions of people who vote in any given election, does my vote really count?" Or perhaps you feel like you can't really make a difference, so why bother? The truth is that your vote does count and you do make a difference every time you vote! Every single vote decides the leadership of this nation. Every single vote, decides the future of our country, our future.
+			  	<p style="display:block" id="initialdisplay2">
+				Maybe you're asking yourself, "With all the millions of people who vote in any given election, does my vote really count?" Or perhaps you feel like you can't really make a difference, so why bother? <span id="displayText2" style="cursor:pointer;right: 10px;color:#4CB1CF;margin-left:2px; " onclick="toggle(2)" >Read More..</span>
+				</p>
+				<div id="toggleText2" style="display:none;" >
+				<p>
+					Maybe you're asking yourself, "With all the millions of people who vote in any given election, does my vote really count?" Or perhaps you feel like you can't really make a difference, so why bother? The truth is that your vote does count and you do make a difference every time you vote! Every single vote decides the leadership of this nation. Every single vote, decides the future of our country, our future.
 				</p>
 				<p>
 				We should not sit around and hope that our candidate will win; we must take action and know that our vote and our neighbours votes too, really do count. When we go to the poll and cast our vote, we are speaking loudly and clearly, about what we think and who we think are the right persons, to lead our nation.  Every single vote counts, in deciding this. Contesting candidates want to win and they need to pay attention to what people decide, by the way they vote. Make sure that your voice is heard by the candidates in every election. "Go out and vote. Your one vote will make a difference". Do not give up your voice, by choosing not to vote. 
 				</p>
-				<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
+				<span class="btn-info btn-small" id="displayText2" style="margin-bottom: 5px;cursor:pointer;right: 10px; position: absolute; bottom: 0px;" onclick="toggle(2)" >Hide..</span>
+				</div>
+				
 			</div>
 		</div>
 		
@@ -172,13 +223,22 @@ $(document).ready(function(){
 		
 			<h2>Vote! Your Right, Your Responsibility!</h2>
 			<div class="span12" style="">
-			  	<p>It is observed that mostly educated peoples don't go and cast their voting rights. If voting is done collectively, we can elect the right political parties for our country. But due to certain incidents like corruption during election, influenced voting, tampering with votes etc., cause distortion in the end results, which takes away the belief of common man, in the voting system. People must be made aware of the national issues and must be taught about the importance and the power of a single vote. It is important to make them literate, in the first place. Only literacy will make them aware of the national issues and will change their mindset, and most importantly, they will realize what their role in the country is.
+			  	<p style="display:block" id="initialdisplay3">It is observed that mostly educated peoples don't go and cast their voting rights. If voting is done collectively, we can elect the right political parties for our country. But due to certain incidents like corruption during election, influenced voting, tampering with votes etc., cause distortion in the end results, <span id="displayText2" style="cursor:pointer;right: 10px;color:#4CB1CF;margin-left:2px; " onclick="toggle(3)" >Read More..</span>
+				</p>
+				<div id="toggleText3" style="display:none;" >
+				<p>
+					It is observed that mostly educated peoples don't go and cast their voting rights. If voting is done collectively, we can elect the right political parties for our country. But due to certain incidents like corruption during election, influenced voting, tampering with votes etc., cause distortion in the end results, which takes away the belief of common man, in the voting system. People must be made aware of the national issues and must be taught about the importance and the power of a single vote. It is important to make them literate, in the first place. Only literacy will make them aware of the national issues and will change their mindset, and most importantly, they will realize what their role in the country is.
 				</p>
 				<p>
 				However it does not mean that all educated people vote. Many enjoy the election days as holidays thinking that their vote doesn't make much difference. But this is real fault on their part. We should not ignore our responsibilities towards the country. The country has given us many Rights, for our own benefit. As a Democratic nation, every citizen of India is provided with the right to choose our own leader through voting.  Rights come with duties. So, it is our responsibility to complete our duties sincerely. Only this can help in having a perfect democratic government which will work for the development of the country.
 
 				</p>
+				<span class="btn-info btn-small" id="displayText3" style="margin-bottom: 5px;cursor:pointer;right: 90px; position: absolute; bottom: 5px;" onclick="toggle(3)" >Hide</span>
+				
 				<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
+				</div>
+				
+				
 			</div>
 		</div>
 		
@@ -268,13 +328,18 @@ $(document).ready(function(){
 		
 		<div id="PostalBallotVoting" class="row-fluid breadcrumb whitegloss subcontents" style="margin:0px;">
 			<h2>Postal Ballot Voting</h2>
+			
+			
+			<p id="initialdisplay4" style="display:block;">
+			 Postal voting describes the method of voting in an election whereby ballot papers are distributed and/or returned by post to electors.
+			<span id="displayText4" style="cursor:pointer;right: 10px;color:#4CB1CF;margin-left:2px; " onclick="toggle(4)" >Read More..</span>
+			</p>
+			<div id="toggleText4" style="display:none;">
 			<p>
 			 Postal voting describes the method of voting in an election whereby ballot papers are distributed and/or returned by post to electors.
 			
 			A postal paper will have a counterfoil attached to it. As Returning Officer for an Assembly Constituency and Assistant Returning Officer for a Parliamentary Constituency, you will have to send postal ballot papers to those of the voters at each of the two elections who are entitled to vote by post. 
 			</p>
-			<a  class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
-			
 			<div class="span12" style="">
 			<h4>Voters entitled to postal ballot</h4>
 			<ul class="ulInAddPages">
@@ -285,8 +350,14 @@ $(document).ready(function(){
 					<li><b>Voters on election duty </b> means a Polling Agent, a Polling Officer, Presiding Officer or other public servant who is an elector in the constituency and is by reason of his being on election duty, unable to vote at the polling station where he is entitled to vote.</li>
 					<li><b>Notified voter's</b> means a voter who belongs to the class of persons notified by the Election Commission under clause (c) of Section 60 of the Representation of the People Act, 1951.</li>
 			</ul>
-			<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
+			
+			
+			
 			</div>
+			<span class="btn-info btn-small" id="displayText3" style="margin-bottom: 5px;cursor:pointer;right: 90px; position: absolute; bottom: 5px;" onclick="toggle(4)" >Hide</span>
+			
+			</div>
+			<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
 			
 		</div>
 		
@@ -306,13 +377,13 @@ $(document).ready(function(){
 <li class="active"><a style="margin-bottom: 5px;" href="#NRIvotes">  NRI votes</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#PostalBallotVoting">  Postal Ballot Voting</a></li>
 
-<li><a class="inline" target="_blank" href="images/votersInfo/FORM6.pdf">Form 6</a></li>
-<li><a class="inline" target="_blank" href="images/votersInfo/FORM6A.pdf">Form 6A</a></li>
-<li><a class="inline" target="_blank" href="images/votersInfo/FORM7.pdf">Form 7</a></li>
-<li><a class="inline" target="_blank" href="images/votersInfo/FORM8.pdf">Form 8</a></li>
-<li><a class="inline" target="_blank" href="images/votersInfo/FORM8A.pdf">Form 8A</a></li>
-<li><a class="inline" target="_blank" href="images/votersInfo/FORM13F&G.pdf">Form 13F& 13G</a></li>
-<li><a class="inline" target="_blank" href="images/votersInfo/EVM.pdf">EVM</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/FORM6.pdf" title="Click to view Form-6(For Registering in the Electoral roll) application">Form 6</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/FORM6A.pdf" title="Click to view Form-6(For NRI'S Registering in the Electoral roll) application">Form 6A</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/FORM7.pdf" title="Click to view Form-6(For Canceling the electoral roll) application">Form 7</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/FORM8.pdf" title="Click to view Form-6(For Modifying the particulars in the Electoral roll) application">Form 8</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/FORM8A.pdf" title="Click to view Form-6( For Transporting the roll) application">Form 8A</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/FORM13F&G.pdf" title="Click here to View Form-13F&13G ( For Proxy and substitute proxy registration ) Application">Form 13F& 13G</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/EVM.pdf" title="Click to know more about the EVM">EVM</a></li>
 </ul>
 
 		
@@ -351,10 +422,26 @@ $(document).ready(function(){
 </div>
 
 <script>
-	$(document).ready(function(){
-	alert('hi');
-	
+$(document).ready(function(){
+ alert('a');
 });
+
+function toggle(id){
+	var ele = document.getElementById("toggleText"+id);
+	var text = document.getElementById("displayText"+id);
+	var initial=document.getElementById("initialdisplay"+id);
+	initial.style.display = "none";
+	
+	if(ele.style.display == "block") {
+		initial.style.display = "block";
+		ele.style.display = "none";
+		text.innerHTML = "Read More..";
+	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "Hide";
+	}
+}
 </script>
 </body>
 </html>
