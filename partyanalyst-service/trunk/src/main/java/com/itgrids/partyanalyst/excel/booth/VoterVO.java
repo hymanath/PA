@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.excel.booth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class VoterVO {
 	
@@ -23,6 +26,16 @@ public class VoterVO {
 	private String voterId;
 	private Long totalVoters;
 	
+	private List<VoterVO> votersList = new ArrayList<VoterVO>();
+	
+	public List<VoterVO> getVotersList() {
+		return votersList;
+	}
+
+	public void setVotersList(List<VoterVO> votersList) {
+		this.votersList = votersList;
+	}
+
 	public VoterVO(){
 		
 	}
