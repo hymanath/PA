@@ -53,4 +53,50 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 		return getHibernateTemplate().find("select model.cast from Voter model where model.castCatagery = ? ",castCatageory);
 	}
 	
+	public List<Object[]> getVotersInfoForPollingStationAndElectionYear(Long boothId,
+			String year)
+	{
+		Object[] params = {boothId, year};
+		return getHibernateTemplate().find("select model.houseNo,count(model.houseNo) from Voter model,HamletBoothElection model2 where" +
+				" model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.hamlet.hamletId,model.houseNo", params);
+		}
+	
+			//Important family details
+			public List findVotersInfoForPollingStationAndElectionYear(Long boothId,String year)
+			{
+				Object[] params = {boothId, year};
+				
+				return getHibernateTemplate().find("select model.firstName,model.lastName,model.houseNo,model.age,model.cast,model.castCatagery,model.castSubCatagery,model.gender,model.relativeFirstName,model.relativeLastName ," +
+						" model.relationshipType,model.voterId  from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 order by model.voterId", params);
+				
+				
+			}
+	
+		//caste info for Polling station
+			
+			
+			public List findVotersCastInfoByPollingStationAndElectionYear(Long hamletId, String year){
+				Object[] params = {hamletId, year};
+				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
+				}
+	
+				//caste info for Constituency
+			
+			
+			public List findVotersCastInfoByConstituencyAndElectionYear(Long hamletId, String year){
+				Object[] params = {hamletId, year};
+				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.constituencyElection.constituency.constituencyId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
+				}
+	
+	
+			//caste info for Mandal
+			
+			
+			public List findVotersCastInfoByMandalAndElectionYear(Long hamletId, String year){
+				Object[] params = {hamletId, year};
+				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.tehsil.tehsilId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
+				}	
+	
+	
+	
 }
