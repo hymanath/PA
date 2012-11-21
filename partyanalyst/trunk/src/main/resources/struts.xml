@@ -3668,6 +3668,12 @@
 		<action name="specialPageInfoAction" class="specialPageInfoAction">
 			<result>/jsp/specialPageInfo.jsp</result>
 		</action>
+		<action name="getPanchayatByConstituencyAction" class="cadreRegisterAjaxAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">designationsList</param>				
+			</result>		
+		</action>
+		
 		
 		</package>
 </struts>      
