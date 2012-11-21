@@ -7,5 +7,9 @@ import com.itgrids.partyanalyst.model.Panchayat;
 public interface IPanchayatDAO extends GenericDao<Panchayat,Long>{
 	
 	public List<Object[]> getPanchayatsByTehsilId(Long tehsilId);
+	
+	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId);
+	
+	public List<Object[]> getPanchayatsBymandalId(Long mandalId);
 
 }
