@@ -12,6 +12,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.TownshipColumnNames;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Township;
 
 /**
@@ -57,4 +58,6 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findTownshipsByTehsilId(Long tehsilId);
+	
+	public List<Panchayat> getPanchayathies(Long mandalID);
 }

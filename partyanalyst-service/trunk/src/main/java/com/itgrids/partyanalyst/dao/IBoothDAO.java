@@ -74,5 +74,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List getVillageToBoothByBooths(String boothIds);
 	public List getLocalElectionBodyToBoothByBooths(String localElectionBodyIds);
 	public int removeMappingToLocalBody(List<Long> boothIds);
+	public List<Booth> getPollingStationByConstituencyId(Long constituencyId);
+	
+	public List<Booth> getPollingStationByMandalId(Long mandalId);
 	 
 }

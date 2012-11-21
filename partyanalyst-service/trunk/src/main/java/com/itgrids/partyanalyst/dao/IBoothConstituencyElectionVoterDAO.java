@@ -47,13 +47,30 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 	
 	public List getBoothsForTownship(Long townshipId);
 
-	public List findVotersInfoForHamletAndElectionYear(Long hamletId,
+	/*public List findVotersInfoForHamletAndElectionYear(Long hamletId,
 			String year);
-	
+	*/
 	public List<Object> getGenderOfVotersInALocation(String queryStr,Long locationId);
 	
 	public List<Object> getTotalNoOfVotersInALocation(String queryStr,Long locationId);
 	
 	public List<Object> getTotalNoOfMaleVotersInALocation(String queryStr,Long locationId);
+	
+	public List findVotersInfoForHamletAndElectionYear(Long panchayatId,
+			String year);
+	
+	public List<Object[]> getVotersInfoForPanchayatAndElectionYear(Long panchayatId,
+			String year);
+	
+	
+	
+	public List findVotersCastInfoByPanchayatAndElectionYear(Long panchayatId, String year);
+	
+	public List findVotersCastInfoByPollingStationAndElectionYear(Long hamletId, String year);
+	
+	
+	public List findVotersInfoForPanchayatAndElectionYear(Long hamletId,
+			String year);
+	
 	
 }

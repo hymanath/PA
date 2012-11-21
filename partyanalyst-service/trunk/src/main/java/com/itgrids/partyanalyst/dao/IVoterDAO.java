@@ -23,4 +23,15 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public List getsubCastCatageoryCastDetails(String castCatageory,String subCastCatageory);
 	
 	public List getCastDetails(String castCatageory);
+	
+	public List<Object[]> getVotersInfoForPollingStationAndElectionYear(Long boothId,
+			String year);
+	
+	public List findVotersCastInfoByPollingStationAndElectionYear(Long hamletId, String year);
+	
+	public List findVotersInfoForPollingStationAndElectionYear(Long boothId,String year);
+	
+	public List findVotersCastInfoByConstituencyAndElectionYear(Long hamletId, String year);
+	
+	public List findVotersCastInfoByMandalAndElectionYear(Long hamletId, String year);
 }
