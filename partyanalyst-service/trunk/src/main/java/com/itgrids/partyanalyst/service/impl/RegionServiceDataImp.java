@@ -206,13 +206,6 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 	}
 	
-	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID){
-		List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtID);
-		List<SelectOptionVO> constituencyNames=new ArrayList<SelectOptionVO>();
-		for(Constituency constituency:constituencies)
-			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));		
-		return constituencyNames;
-	}
 	
 
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID){
@@ -265,6 +258,51 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 		return result;
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesByStateID(Long stateID){
+		List<Constituency> constituencies = constituencyDAO.findByStateId(stateID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Constituency constituency : constituencies){
+			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+		}
+		Collections.sort(result);
+		return result;
+	}
+	
+	//modified
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesByStateIDForUser(Long stateID){
+		List<Constituency> constituencies = constituencyDAO.findByStateIdForUser(stateID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Constituency constituency : constituencies){
+			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+		}
+		Collections.sort(result);
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesByDistrictDForUser(Long districtID){
+		List<Constituency> constituencies = constituencyDAO.findByDistrictIdForUser(districtID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Constituency constituency : constituencies){
+			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+		}
+		Collections.sort(result);
+		return result;
+	}
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID){
+		List<Constituency> constituencies = constituencyDAO.getConstituenciesByDistrictID(districtID);
+		
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Constituency constituency : constituencies){
+			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+		}
+		Collections.sort(result);
+		return result;
 	}
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStateDistrictByDistrictID(Long districtID){
@@ -732,7 +770,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					for(int i=0;i<boothsList.size();i++)
 					{
 						Object[] obj = (Object[])boothsList.get(i);
-						regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+ obj[1]));
+						regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No - "+ obj[1]));
 					}
 				}	
 		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
