@@ -15,6 +15,16 @@ public class ConstituencyManagementVO {
 	private List<HamletProblemVO> hamletProblems;
 	private TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO;
 	
+	private List<Long> votersCount;
+	
+	public List<Long> getVotersCount() {
+		return votersCount;
+	}
+
+	public void setVotersCount(List<Long> votersCount) {
+		this.votersCount = votersCount;
+	}
+
 	private Long voterDetailsCount;
 
 	public Long getVoterDetailsCount() {

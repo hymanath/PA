@@ -6,6 +6,11 @@ public class CastVO {
 	private String castPercentage;
 	private Long castCount; 
 	
+	private String canstnone;
+	private Long castnoneCount;
+	
+	
+
 	public CastVO(){
 		
 	}
@@ -39,4 +44,19 @@ public class CastVO {
 		this.castCount = castCount;
 	}
 	
+	public String getCanstnone() {
+		return canstnone;
+	}
+
+	public void setCanstnone(String canstnone) {
+		this.canstnone = canstnone;
+	}
+
+	public Long getCastnoneCount() {
+		return castnoneCount;
+	}
+
+	public void setCastnoneCount(Long castnoneCount) {
+		this.castnoneCount = castnoneCount;
+	}
 }
