@@ -23,7 +23,7 @@
 	<link href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	<link type="text/css" href="styles/menu.css" rel="stylesheet" />
 	<link href="styles/newhome_styles.css" rel="stylesheet" type="text/css" />
-	
+		
 
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
@@ -71,9 +71,11 @@ margin:-1px 0px 0px 0px ;
 			<c:when test="${!empty feedback && feedback == 'true'}">
 				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedback_new.jpg"/></a>
 			</c:when>		
-		
-		
 		</c:choose>
+		<div id="floatingDiv_absolute_close" >
+			<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg" style="border: 5px solid red;
+			margin-left:0;margin-top: 1px;width: 15px;">
+		</div>
 			
 	</div>
 </div>
@@ -359,13 +361,13 @@ margin:-1px 0px 0px 0px ;
 	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
 	</div>
 	<!--Facebook and twitter follow us-->
-		<!--<div class="follow-us">
+		<div class="follow-us">
             <ul>
-              <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
-              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt=""/></a></li>
+              <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
+              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
             </ul>
-            <span class="fright">follow us on</span> 
-		</div>-->
+            <span class="fright" style="color:#fff;">follow us</span> 
+		</div>
 </div>
 
 </center>

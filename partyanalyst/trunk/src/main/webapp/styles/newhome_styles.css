@@ -21,7 +21,7 @@ cursor:pointer;}
 .tc-tf{text-transform:uppercase;}
 .display{display:block;}
 
-.mainwrapper{width:100%; margin:0px auto;}
+.mainwrapper{width:100%; margin:0px auto;border-bottom:2px solid #05A8E9;}
 .wrapper{width:999px; float:left;}
 
 .orange{color:#ff3b05;}
@@ -29,7 +29,7 @@ cursor:pointer;}
 .gray{color:#979797;}
 
 #header-mainsec{width:100%; float:left; background-color:#0A0B39;}
-.header{width:100%;padding:13px 0px 0px 0px; border-bottom:2px solid #05A8E9;}
+.header{width:100%;padding:13px 0px 0px 0px; }
 .logo{position:relative; left:35px; bottom:-14px; float:left; z-index:101;}
 .header-right-sec{width:720px; float:left;}
 .lr-sec{float:right; color:#80d1f1; font-weight:bold; text-transform:uppercase; padding-right:25px; line-height:11px; font-size:12px;}
@@ -56,7 +56,7 @@ padding:0px 2px;}
 /*FOLLOW US SECTION START*/
 
 .follow-us{float:right; padding-right:32px; text-transform:uppercase; color:#000; line-height:47px; font-size:12px; width:220px; text-align:right;}
-.follow-us ul{background:url(../images/new_homepage/sprites.png) left top no-repeat; float:right; width:81px; height:43px; padding:4px 5px 0px 0px; 
+.follow-us ul{background:url(../images/new_homepage/sprites.png) left top no-repeat; float:right; width:62px; height:32px; padding:4px 5px 0px 0px; 
 
 margin-left:7px; margin-top:-2px; }
 .follow-us ul li{float:right;}
