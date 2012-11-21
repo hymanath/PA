@@ -66,4 +66,12 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getAllParliamentConstituenciesForAState(
 			Long electionScopeId , Long stateId) ;
 	
+	public List<SelectOptionVO> getConstituenciesByStateID(Long stateID);
+	
+	public List<SelectOptionVO> getConstituenciesByStateIDForUser(Long stateID);
+	
+	public List<SelectOptionVO> getConstituenciesByDistrictDForUser(Long districtID);
+	
+	
+	
 }

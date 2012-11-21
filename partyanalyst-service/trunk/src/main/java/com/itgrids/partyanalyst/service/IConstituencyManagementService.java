@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -32,6 +34,19 @@ public interface IConstituencyManagementService {
 	public ResultStatus subscriberDetails(Long id,Long userId);
 	
 	public ResultStatus unSubscriptionDetails(Long id,Long userId);
+	
+	public List<Long> getVoterHouseDetailsForPanchayat(Long panchayatId, String year,String checkedEle);
+	
+	public VoterCastInfoVO getVotersCastInfoForPanchayat(Long panchayatId, String year);
+	
+	public VoterCastInfoVO getVotersCastInfoForPollingStation(Long panchayatId, String year);
+	
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long hamletId, String year,String checkedele);
+	//constituency wise
+	public VoterCastInfoVO getVotersCastInfoForAssembly(Long panchayatId, String year);
+	
+	public VoterCastInfoVO getVotersCastInfoForMandal(Long panchayatId, String year);
+	
 	//public Long getProblemVisibility(Long problemId);
 	
 	//public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
