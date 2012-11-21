@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.State;
+
 import com.itgrids.partyanalyst.utils.GenericException;
 
 public interface IStaticDataService {
@@ -315,4 +316,15 @@ public interface IStaticDataService {
 		public String getDistrictNameByDistrictId(Long districtId);
 		
 		public List<TownshipBoothDetailsVO> getPanchayatVotingTrendsByMandal(Long tehsilId, String electionIds,List<RevenueVillageElectionVO> panchayats);
+		public List<SelectOptionVO> getPanchayathiesByTehsilId(Long mandalID);
+		
+		public List<SelectOptionVO> getHamletsForPanchayath(Long panchayathId);
+		
+		public List<SelectOptionVO> getPanchayatiesByConstituencyId(Long constituencyId);
+		
+		public List<SelectOptionVO> getBoothsByConstituencyId(Long constituencyId);
+		
+		public List<SelectOptionVO> getPanchayatiesByMandalId(Long mandalId);
+		
+		public List<SelectOptionVO> getBoothsByMandalId(Long mandalId);
 }
