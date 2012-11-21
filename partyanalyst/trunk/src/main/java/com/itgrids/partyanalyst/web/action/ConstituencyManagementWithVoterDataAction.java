@@ -456,11 +456,14 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		
 		Long userID = user.getRegistrationID();
 		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
-		
+		Long electionYear = 2009l;
+		Long electionTypeId = 2l;
 		
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
+		constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 		mandalList = new ArrayList<SelectOptionVO>();
 		villageList = new ArrayList<SelectOptionVO>();
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
@@ -469,11 +472,12 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 			log.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
-			stateList.add(list.get(0));			
+			//constituencyList.add(list.get(2));
+			/*stateList.add(list.get(0));			
 			districtList.add(list.get(1));			
-			constituencyList.add(list.get(2));
+			
 			mandalList = regionServiceData.getMandalsByConstituencyID(accessValue);
-			mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));
+			mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));*/
 						
 		}else if("COUNTRY".equals(accessType))
 		{
@@ -484,31 +488,35 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		}else if("STATE".equals(accessType)){
 			log.debug("Access Type = State ****");
 			
-			String name = cadreManagementService.getStateName(accessValue);
+			//constituencyList =  regionServiceData.getConstituenciesByStateIDForUser(accessValue);
+			//constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			/*String name = cadreManagementService.getStateName(accessValue);
 			SelectOptionVO obj2 = new SelectOptionVO();
 			obj2.setId(accessValue);
 			obj2.setName(name);
 			stateList.add(obj2);
 			districtList = staticDataService.getDistricts(accessValue);
-			districtList.add(0,new SelectOptionVO(0l,"Select District"));
+			districtList.add(0,new SelectOptionVO(0l,"Select District"));*/
 			
 		}else if("DISTRICT".equals(accessType)){
 			log.debug("Access Type = District ****");			
 
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
-			stateList.add(list.get(0));
+			constituencyList =  regionServiceData.getConstituenciesByDistrictDForUser(accessValue);
+			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			/*stateList.add(list.get(0));
 			districtList.add(list.get(1));
 			constituencyList = regionServiceData.getConstituenciesByDistrictID(accessValue);
-			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));*/
 			
 		} else if("MP".equals(accessType)){
 			log.debug("Access Type = MP ****");
 			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-			stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
+			//stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
 			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
-			constituencyList = constituencyInfoVO.getAssembyConstituencies();
-			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));		
+			//constituencyList = constituencyInfoVO.getAssembyConstituencies();
+			//constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			//parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));		
 				
 			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
