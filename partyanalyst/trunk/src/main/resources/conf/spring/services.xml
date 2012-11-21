@@ -149,6 +149,9 @@
 		<property name="partyStrengthService" ref="partyStrengthService" />
 		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
 		<property name="userDAO" ref="userDAO" />
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
+		<property name="boothDAO" ref="boothDAO"></property>
 		
 	</bean>
 	
@@ -670,6 +673,7 @@
     	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
     	<property name="problemProgressDAO" ref="problemProgressDAO"/>
     	<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO"/>
+    	<property name="voterDAO" ref="voterDAO" />
     </bean>
 	
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
