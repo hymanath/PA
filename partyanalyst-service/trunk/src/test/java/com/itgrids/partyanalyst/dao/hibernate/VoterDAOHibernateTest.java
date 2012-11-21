@@ -40,8 +40,33 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(1, voters.size());
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List voters = voterDAO.getCastCatageory();
 		System.out.println(voters.size());
+	}*/
+	
+	/*public void test()
+	{
+		List<Object[]> list = voterDAO.getVotersInfoForPollingStationAndElectionYear(211l,
+				"2009");
+		System.out.println(list.size());
+	}*/
+	
+	/*public void test()
+	{
+		 List list = voterDAO.findVotersCastInfoByPollingStationAndElectionYear(211l, "2009");
+		 System.out.println(list.size());
+	}*/
+	/*public void testfindVotersInfoForPollingStationAndElectionYear()
+	{
+	 List list=voterDAO.findVotersInfoForPollingStationAndElectionYear(211l,"2009");
+	 System.out.println(list.size());
+	 
+}*/
+	
+	public void testgetVotersCastInfoForAssembly()
+	{
+		List list =voterDAO.findVotersCastInfoByMandalAndElectionYear(836l,"2009");
+		System.out.println(list.size());
 	}
 }

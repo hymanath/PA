@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.model.Panchayat;
 
 public class TownshipDAOHibernateTest extends BaseDaoTestCase {
 	private ITownshipDAO townshipDAO;
@@ -39,15 +40,27 @@ public class TownshipDAOHibernateTest extends BaseDaoTestCase {
 		setComplete();
 	}*/
 	
-	public void testFindByTownshipNameTehsilNameDistrictId(){
+	/*public void testFindByTownshipNameTehsilNameDistrictId(){
 		List list = townshipDAO.findByTownshipNameTehsilNameDistrictId(19l, "Allur", "Allur");
 		assertEquals(12, list.size());
 		
 	}
-	
+	*/
 	
 /*	@Test
 	public void test(){
 		Assert.assertEquals(1, 1);
 	}*/
+	
+	
+	public void testgetPAnchayathies()
+	{
+		
+		List<Panchayat> list = townshipDAO.getPanchayathies(844l);
+		System.out.println(list.size());
+		for(Panchayat params : list)
+		{
+			System.out.println(params.getPanchayatName());
+		}
+	}
 }

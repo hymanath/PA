@@ -166,7 +166,7 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetTotalNoOfVotersInALocation()
+	/*public void testGetTotalNoOfVotersInALocation()
 	{
 		String queryStr = " model.voter.hamlet.township.tehsil.tehsilId = ";
 		Long locationId = 844l;
@@ -174,13 +174,47 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		
 		System.out.println(list.get(0).toString());
 	}
-	
-	public void testGetTotalNoOfMaleVotersInALocation()
+	*/
+	/*public void testGetTotalNoOfMaleVotersInALocation()
 	{
 		String queryStr = " model.voter.hamlet.township.tehsil.tehsilId = ";
 		Long locationId = 844l;
 		List<Object> list = boothConstituencyElectionVoterDAO.getTotalNoOfMaleVotersInALocation(queryStr, locationId);
 		
 		System.out.println(list.get(0).toString());
+	}*/
+	
+	/*public void testgetVotersInfoForPollingStationAndElectionYear()
+	{
+		 List<Object[]> list = boothConstituencyElectionVoterDAO.getVotersInfoForPollingStationAndElectionYear(232l,211l,
+				"2009") ;
+			System.out.println(list.size());
+			for(Object[] params : list)
+			{
+				System.out.println(params[1].toString());
+			}
+	}*/
+	
+	/*public void testfindVotersCastInfoByPanchayatAndElectionYear()
+	{
+		Long hamletId =1l;
+		
+		List list = boothConstituencyElectionVoterDAO.findVotersCastInfoByPanchayatAndElectionYear(hamletId,"2009");
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testfindVotersCastInfoByPollingStationAndElectionYear(){
+		Long hamletId =1l;
+		
+		List list = boothConstituencyElectionVoterDAO.findVotersCastInfoByPollingStationAndElectionYear(hamletId,"2009");
+		System.out.println(list.size());
+		
+	}*/
+	
+	public void testfindVotersInfoForPanchayatAndElectionYear()
+	{
+	List list = boothConstituencyElectionVoterDAO.findVotersInfoForPanchayatAndElectionYear(1l,
+			"2009");
+	System.out.println(list.size());
 	}
 }
