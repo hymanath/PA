@@ -1393,7 +1393,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					log.error(e);
 				}
 			
+			
+			 FileVO 	displayImage = fileVO.getFileVOForDiaplyImage();
+			    
+			   if(displayImage != null){
+					file.setFileName(displayImage.getDisplayImageName());
+					file.setFilePath(displayImage.getDisplayImagePath());
+			   }
+				
 				file = fileDAO.save(file);
+			
+				//file = fileDAO.save(file);
 				/*List<Object> maxOrderNo = filePathsDAO.getMaxOrderNo();
 					if(maxOrderNo == null && maxOrderNo.size()==0)
 					 	orderNO = 1L;
@@ -2372,7 +2382,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		{
 			photoGallaryresultList = fileGallaryDAO.getStartingRecordInGallaries(value);
 				
-			List<FileVO> result = setToFileVO(photoGallaryresultList);
+			List<FileVO> result = setToFileVO(photoGallaryresultList,"Photos");
 			
 			if(!result.isEmpty())
 			resultList.add(result.get(0));		
@@ -2388,7 +2398,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 for(Long vediogalId : latestVedioGalIds)
 			 {
 				 videoGallaryresultList=  fileGallaryDAO.getStartingRecordInGallaries(vediogalId);
-				 List<FileVO> vedioresult = setToFileVO(videoGallaryresultList);
+				 List<FileVO> vedioresult = setToFileVO(videoGallaryresultList,"Videos");
 				 if(!vedioresult.isEmpty())
 				vedioresultList.add(vedioresult.get(0));		
 				 
@@ -2448,7 +2458,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 						 gallaryIds.put(gallaryId,gallaryId);
 						 singleNewsGallaryresultList = new ArrayList<FileGallary>();
 						 singleNewsGallaryresultList.add(fileGallary);
-						 List<FileVO> newsList =setToFileVO(singleNewsGallaryresultList);
+						 List<FileVO> newsList =setToFileVO(singleNewsGallaryresultList , "News");
 						 if(!newsList.isEmpty()){
 							newsresultList.add(newsList.get(0));
 							count =count+1;
@@ -2477,7 +2487,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 }
  
  
- public List<FileVO> setToFileVO(List<FileGallary> result)
+ public List<FileVO> setToFileVO(List<FileGallary> result ,String type)
  {
 	List<FileVO> fileVOs = new ArrayList<FileVO>();
 	FileVO fileVO = new FileVO();
@@ -2497,6 +2507,12 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				 fileVO.setCandidateName(WordUtils.capitalize(result.get(i).getGallary().getCandidate().getLastname().toLowerCase()));
 				 fileVO.setFileType("Candidate");
 				 fileVO.setCandidateId(result.get(i).getGallary().getCandidate().getCandidateId());
+				 
+                   if(type.equalsIgnoreCase("News")){					 
+					 fileVO.setDisplayImageName(result.get(i).getFile().getFileName());
+					 fileVO.setDisplayImagePath(result.get(i).getFile().getFilePath());
+					 fileVO.setImagePathInUpperCase(result.get(i).getGallary().getCandidate().getLastname().toUpperCase());
+				}
 			 }
 			 else
 			 {
@@ -2507,6 +2523,13 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 					fileVO.setCandidateName(party.get(0).getShortName()+" Party");
 					fileVO.setFileType("Party");
 					fileVO.setCandidateId(party.get(0).getPartyId());
+					
+					if(type.equalsIgnoreCase("News")){						 
+						 fileVO.setDisplayImageName(result.get(0).getFile().getFileName());
+						 fileVO.setDisplayImagePath(result.get(0).getFile().getFilePath());
+						 fileVO.setImagePathInUpperCase(party.get(0).getPartyFlag());
+					 }
+					
 				}
 				else
 				{
@@ -2516,7 +2539,13 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 					{
 						fileVO.setCandidateName(specialPage.get(0).getHeading()+" Page");
 						fileVO.setFileType("Special Page");
-						fileVO.setCandidateId(specialPage.get(0).getSpecialPageId());
+						fileVO.setCandidateId(specialPage.get(0).getSpecialPageId());						
+						
+						if(type.equalsIgnoreCase("News")){							 
+							 fileVO.setDisplayImageName(result.get(0).getFile().getFileName());
+							 fileVO.setDisplayImagePath(result.get(0).getFile().getFilePath());
+							 fileVO.setImagePathInUpperCase(specialPage.get(0).getProfileImgPath());
+						 }
 					}
 				}
 			 }

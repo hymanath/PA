@@ -75,6 +75,50 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String identifiedDateOn;
 	private Date reqFileDate;
 	
+	
+	private FileVO fileVOForDiaplyImage;
+	
+
+	private String displayImageName;
+	private String displayImageContentType;
+	private String displayImagePath;
+	private String imagePathInUpperCase;
+	
+	
+
+	
+	public String getImagePathInUpperCase() {
+		return imagePathInUpperCase;
+	}
+
+	public void setImagePathInUpperCase(String imagePathInUpperCase) {
+		this.imagePathInUpperCase = imagePathInUpperCase;
+	}
+
+	public String getDisplayImagePath() {
+		return displayImagePath;
+	}
+
+	public void setDisplayImagePath(String displayImagePath) {
+		this.displayImagePath = displayImagePath;
+	}
+
+	public String getDisplayImageName() {
+		return displayImageName;
+	}
+
+	public void setDisplayImageName(String displayImageName) {
+		this.displayImageName = displayImageName;
+	}
+
+	public String getDisplayImageContentType() {
+		return displayImageContentType;
+	}
+
+	public void setDisplayImageContentType(String displayImageContentType) {
+		this.displayImageContentType = displayImageContentType;
+	}
+
 	public String getExistingDateFrom() {
 		return existingDateFrom;
 	}
@@ -675,7 +719,11 @@ public class FileVO extends ResultStatus implements Serializable {
 		this.reqFileDate = reqFileDate;
 	}
 	
-    
+	public FileVO getFileVOForDiaplyImage() {
+		return fileVOForDiaplyImage;
+	}
 
-	
+	public void setFileVOForDiaplyImage(FileVO fileVOForDiaplyImage) {
+		this.fileVOForDiaplyImage = fileVOForDiaplyImage;
+	}
 }
