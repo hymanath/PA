@@ -153,8 +153,8 @@ $(document).ready(function(){
 		<div class="row-fluid breadcrumb whitegloss subcontents" style="margin:0px;" id="ImportanceOfVoting" >
 			
 			
-			<div class="breadcrumb">
-			<!--<h2>Do you have Answer For This Question, If not Have a look..</h2>
+		<!--	<div class="breadcrumb">
+			<h2>Do you have Answer For This Question, If not Have a look..</h2>
 				<ul>
 					<li><h3>Do you have Vote ? if not How to Register for Vote ?</h3></li><br>
 					<li><h3>Why Should You Vote ?</h3></li><br>
@@ -164,9 +164,9 @@ $(document).ready(function(){
 					<li><h3>Are You NRI Do you know how to Register vote?</h3></li><br>
 					<li><h3>Are you working in Army, Do you know how to vote?</h3></li><br>
 					
-				</ul>-->
+				</ul>
 				<ul class="tovoters">
-					<li>Don't you have Vote - Register Now!</li><br>
+					<li><h3>Don't you have Vote - Register Now!</h3></li><br>
 				
 					<li><h3>Do you have more than one Vote - Keep the one at Right Place & Cancel the remaining!</h3></li><br>
 				
@@ -180,7 +180,7 @@ $(document).ready(function(){
 
 					
 				</ul>
-			</div>
+			</div>-->
 			
 		
 			<h2>Importance of Voting</h2>
@@ -370,7 +370,7 @@ $(document).ready(function(){
 		<div class="span4 ">
 		<ul class="nav nav-tabs nav-stacked span3">
 <li class="active"><a style="margin-bottom: 5px;" href="#ImportanceOfVoting">Importance of Voting</a></li>
-<li class="active"><a style="margin-bottom: 5px;" href="#whyShouldIVote">Why Should I Vote?</a></li>
+<li class="active"><a style="margin-bottom: 5px;" href="#WhyShouldIVote">Why Should I Vote?</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#VoteRightResponsibility"> Vote! Your Right, Your Responsibility </a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#registerDiv"> Register/Cancel/Transfer</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#Armyvote"> Army vote</a></li>
