@@ -27,7 +27,7 @@
 		  <script type="text/javascript" src="js/homePage/newHomePage_inner.js"> </script>
 		  
 		   <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
-		   	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> 
+		  <!-- 	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> -->
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
 	</head>
@@ -52,6 +52,8 @@
 	.voterspulse-home h3{margin-top: 0px; margin-bottom: 0px;font-size:20px;}
 	.opinionpoll .breadcrumb{margin:0px -20px;display:inline-block;}
 	.follow-us{margin-left:170px;margin-top:10px;}
+	.selectBoxWidth{width:168px;}
+	.v-gallary .thumbnail{display:inline-block;float:left;}
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -75,7 +77,7 @@
 		<div class="widget green quicklinks"><h2>Quick Links</h2>
 				
 				<!---- View Election Results------->
-							<div class="widget-block" contentindex="4c">
+							<div class="widget-block" contentindex="4c" style="height:200px;">
 								<h5> View Election Result</h5>
 								<table>
 									<tbody>
@@ -84,7 +86,7 @@
 									</tr>
 										<tr>
 											<td>
-												<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 153px;"
+												<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;"
 		                                          onchange="checkElectionType(this.options[this.selectedIndex].value)">
 		                                               <option value="0">Select Type</option>
 		                                               <option value="2">Assembly</option>
@@ -94,35 +96,35 @@
 										</tr>
 										<tr>
 											<td>
-												<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:153px;"onchange="getElectionYearsInHomePage('Assembly')">
+												<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsInHomePage('Assembly')">
 		                                       	</select>
 											</td>
 										</tr>
 										<tr>
 											<td>
-                                                  <select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:153px;">
+                                                  <select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;">
 			                                      </select>
 											</td>
 										</tr>
 									</tbody>
 								</table>
 								
-								    <button class="btn btn-success" type="button" onclick="viewElectionResults()">Go</button>
+								    <button class="btn btn-success pull-right" type="button" onclick="viewElectionResults()">Go</button>
 								
 							</div>
 					<!---------------->
 		
 							<!------View Your State---------->
-							<div class="widget-block" contentindex="0c" >
+							<div class="widget-block" contentindex="0c" style="height:180px;">
 								<h5>View Your State</h5>
 								<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
 								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
 								
-								<button class="btn btn-success clear-both" type="button" onclick="navigateToStatePage()">Go</button>
+								<button class="btn btn-success clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
 										
 							</div>
 						<!----View Your district------>
-							<div class="widget-block" contentindex="1c">
+							<div class="widget-block" contentindex="1c" style="height:220px;">
 							<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
 								     <h5>View Your district</h5>
 									 <p>Select your district to view its election results in district level.</p>
@@ -130,12 +132,12 @@
                                      <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
 									     <br>
 									   <a onclick="navigateToDistrictPage()" href="javascript:{}">
-									     <button class="btn btn-success" type="button">Go</button>
+									     <button class="btn btn-success pull-right" type="button">Go</button>
 									   </a>
 								    
 							</div>
 						<!--View your constituency-->
-							<div class="widget-block" contentindex="2c">
+							<div class="widget-block" contentindex="2c" style="height:250px;">
 							<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 								<h5>View Your Constituency</h5>
 								<p>Select Constituency Type<br>
@@ -163,12 +165,12 @@
 									</tr>
 								</table>
 								
-								<button class="btn btn-success" type="button" onclick="navigateToConstituencyPage()">Go</button>
+								<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
 							</div>
 							
 							<!--View your Locality-->
 						
-							<div class="widget-block" contentindex="3c" >
+							<div class="widget-block" contentindex="3c" style="height:200px;">
 								<h5>View Your Locality</h5>
                    				<div>
 									<table>								
@@ -206,7 +208,7 @@
 									</table>
 								</div>
 								  
-								<button class="btn btn-success" type="button" onclick="navigateToLocalBodyPage()">Go</button>
+								<button class="btn btn-success pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
 								  
 							</div>	
 							<div class="widget-block" >
@@ -251,13 +253,13 @@
 				 	<!-- <h2>Latest Political News</h2>
 			sasi news from database start-->
 							
-				<div id="my-jqCarousel-news" class="jqCarousel module widget-block">
+				<div id="my-jqCarousel-news" class="jqCarousel module widget-block" >
 		    <ul class="overview media">
 							<s:if test="resultMap != null && resultMap.size() > 0"> 
 							<s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
 								<li>
 									<h4><s:property value="fileTitle1"/></h4>
-									<div class="row-fluid m-l15px">
+									<div class="row-fluid m-l15px" style="position:relative;">
 									<s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
 										<!--<a class="thumbnail span4" href="#">
 											<img src="http://placehold.it/200x150" style="width:100%">
@@ -272,7 +274,7 @@
 										</c:if>
 										
 										<p class="span6"><s:property value="description"/>
-										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
+										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;" >
 									</s:if>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
@@ -284,7 +286,7 @@
 											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}"/></a>
 										</c:if>
 										<p class="span6"><s:property value="description"/>
-										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link">
+										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;">
 									</s:if>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
@@ -294,10 +296,10 @@
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}"/></a>
 										</c:if>
-										<p class="span6"><s:property value="description"/>
-										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-left round-link">
+										<p class="span6" ><s:property value="description"/>
+										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' style="position:absolute;bottom:5px;right:20px;" class="pull-left round-link">
 									</s:if>
-									Read more &rarr;
+									Read Now &rarr;
 									</a>
 									</p>
 									</div>
@@ -421,12 +423,12 @@
 				<div class="widget yellow">
 				<h2>Latest Video Galleries</h2>
 				<!--video gallary-->
-				<div id="my-jqCarousel-3" class="jqCarousel module widget-block m-minus20px">
+				<div id="my-jqCarousel-3" class="jqCarousel module widget-block m-minus20px v-gallary">
 		    <ul>
 					<s:if test="resultMap != null && resultMap.size() > 0">
 					<s:iterator value="resultMap.VideoGallary" var="videoGallaryDetails">
 
-					<li class="thumbnail">
+					<li class="" style="height:220px;">
 					
 					<s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >
 					<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'  >
@@ -449,7 +451,8 @@
 					<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'>
 					</s:if>
 					
-					<p class="caption"><s:property value="gallaryName"/></p>
+					<!--<p class="caption"><s:property value="gallaryName"/></p>-->
+					<p class="caption"><s:property value="fileTitle1"/></p>
 					</a>
 					</li>
 
@@ -510,15 +513,13 @@
 					<div class="media media_hr widget-block">
 						
 						<div class="media-body">
-						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" title="${specialPages.title}">
 							<h5>${specialPages.title}</h5>
 								<p>
 								<img src="${specialPages.eventImagePath}" class="pull-left thumbnail span7"/>
 									${specialPages.description}
 								</p>
-						</a>
 						</div>
-						
+						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" class="btn-info btn-small pull-right" title="${specialPages.title}">View Now</a>
 					</div>
 						</c:forEach>				
 					<!-- <div class="media media_hr widget-block b-top1">
@@ -589,7 +590,7 @@
 					
 				<!-- <input type="button" class="btn-primary btn" value="View More" onclick="getAllSpecialPagesForHomePage()" />-->
 
-				<a href="specialPageInfoAction.action" class="btn btn-primary" >View More</a>
+				<a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>
 
 				</div>
 				<!-----------Opinion Poll--------------->
