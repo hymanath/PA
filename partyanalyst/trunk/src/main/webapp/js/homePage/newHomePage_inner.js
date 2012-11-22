@@ -115,7 +115,7 @@ function buildResult(voteStatus,result){
 
 	/*str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:3px 0px 2px #888;margin-bottom:5px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion Poll</span></h3>';*/
 
-	str+='<div class=""><p class="question"><b>'+result.question+'</b></p>';	
+	str+='<div class="breadcrumb"><p class="question"><b>'+result.question+'</b></p>';	
 
 
 	//str+='<p class="" style="margin-bottom:3px;"><b>'+result.question+'</b></p>'; 
@@ -126,14 +126,14 @@ function buildResult(voteStatus,result){
 	str+='<p style="margin-bottom: 0px; padding-bottom: 0px;" class="pull-right">Total Votes  Polled:<b>'+result.totalVotesObtainedForPoll+'</b></p>';
 
 	
-	str+='<ul class="span12" >';
+	str+='<ul style="margin:0px;width:100%;">';
 	for(var i=0;i<result.options.length;i++){   
 		
-          str+='<li class="widget-block">';
+          str+='<li style="width:100%;clear:both;">';
 		str+='<h6 style="margin:1px;">'+result.options[i].option+'</h6>';
 
 		str+='<div>';
-		str+='<div class="span9 pull-left">';
+		str+='<div class="span8 pull-left">';
 
 			str+='<div class="progress" style="margin:0px;">';
 			  str+='<div id="option1" class="bar" style="width:'+result.options[i].percentage+'%"></div>';
@@ -157,13 +157,13 @@ function buildResult(voteStatus,result){
 
   
 		
-	    str+='<div class="pager" style="margin-top:25px;">';
-		str+='<a href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn btn-mini" style="float:left;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
+	    str+='<div class="widget-block" style="padding:2px;height:30px;border:0px;">';
+		str+='<a href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn btn-mini" style="float:left;margin-left:3px;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
 
 		
 
 
-		str+='<a href="getAllPollsAction.action" class="btn btn-mini" style="float:right;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
+		str+='<a href="getAllPollsAction.action" class="btn btn-mini" style="float:right;margin-right:3px;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
 		str+='</div>';
 	
 	
