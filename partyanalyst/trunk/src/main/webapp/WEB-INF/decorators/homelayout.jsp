@@ -52,9 +52,9 @@ margin:-1px 0px 0px 0px ;
 }
 
 .header2 {
-   left: 1%;
-    position: absolute;
-    top: -6px;
+     position: absolute;
+    top: -126px;
+	left:-2%;
 }
 </style>
 <decorator:head/>
@@ -86,11 +86,10 @@ margin:-1px 0px 0px 0px ;
 <div id="header-mainsec">
   <div class="mainwrapper">
   <div class="row-fluid">
-    <div class="header span10">
-	<div class="row-fluid">
-      <div class="logo span4 pull-left"><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt=""/></a>
+    <div class="header">
+      <div class="logo" ><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt="" style="margin-top:10px;"/></a>
 	  </div>
-      <div class="header-right-sec span8 pull-right">
+      <div class="header-right-sec">
         <div class="lr-sec">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 				<c:out value="Welcome, ${sessionScope.UserName} |"/>
@@ -343,7 +342,6 @@ margin:-1px 0px 0px 0px ;
 <!--MENU END-->
   
 </div><!--HEADER RIGHT SEC END-->
-</div>
 </div><!--HEADER END-->
 </div>
 </div><!--MAIN WRAPPER END-->
@@ -353,7 +351,7 @@ margin:-1px 0px 0px 0px ;
 
 <tr>
 <td class="background" border="0">
-<div style="width:100%;float:left;">
+<div style="width:960px;position:relative;margin:0 auto;">
 <center>
 
 <div class="header2">
@@ -361,12 +359,12 @@ margin:-1px 0px 0px 0px ;
 	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
 	</div>
 	<!--Facebook and twitter follow us-->
-		<div class="follow-us" style="margin-left:50px;">
+		<div class="follow-us" style="margin-left:180px;">
             <ul>
               <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
               <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
             </ul>
-            <span class="fright" style="color:#fff;">follow us</span> 
+            <h5 style="color:#08AAEC;">follow us</h5> 
 		</div>
 </div>
 
