@@ -125,14 +125,14 @@ h1 {
 	bottom:5px;
  }
  .tovoters h3{
-	margin-bottom:10px;
-	
+	font-size:15px;
  }
  .tovoters{
 	list-style-type: disc !important;
 	margin-left: 30px;
     padding: 5px;
  }
+  .tovoters li{list-style-type: disc;display:list-item;}
 </style>
 
 </head>
@@ -153,8 +153,8 @@ $(document).ready(function(){
 		<div class="row-fluid breadcrumb whitegloss subcontents" style="margin:0px;" id="ImportanceOfVoting" >
 			
 			
-		<!--	<div class="breadcrumb">
-			<h2>Do you have Answer For This Question, If not Have a look..</h2>
+			<div class="breadcrumb">
+			<!--<h2>Do you have Answer For This Question, If not Have a look..</h2>
 				<ul>
 					<li><h3>Do you have Vote ? if not How to Register for Vote ?</h3></li><br>
 					<li><h3>Why Should You Vote ?</h3></li><br>
@@ -164,23 +164,21 @@ $(document).ready(function(){
 					<li><h3>Are You NRI Do you know how to Register vote?</h3></li><br>
 					<li><h3>Are you working in Army, Do you know how to vote?</h3></li><br>
 					
-				</ul>
+				</ul>-->
 				<ul class="tovoters">
-					<li><h3>Don't you have Vote - Register Now!</h3></li><br>
-				
-					<li><h3>Do you have more than one Vote - Keep the one at Right Place & Cancel the remaining!</h3></li><br>
-				
-					<li><h3>Does your family have Votes in different Places - Cancel Them and Register all in one Right Place!</h3></li><br>
-				
-					<li><h3>Don't you have Vote in Right Place - Transfer It to the Right Place! (OR) Cancel It & Register in Right Place!</h3></li><br>
-					
-					<li><h3>Do you know anyone having more than One Vote or Vote at Wrong Place - Cancel Them!</h3></li><br>
-					
-					<p>Do this to give your support to strengthen our Democracy! Vote is your Right, have it in Right Place and Must Use it! Not using your Vote or having Votes at more than one place causes Misuse of Vote or Decrease in Polling Percentages. As a Responsible Citizen of India don't make it happen!</p>
+					<li><h3>Are you 18+? Still Don't have Vote? - <small>Register Now!</small></h3></li>
 
-					
+					<li><h3>Do you or your family consists of duplicate votes?-<small> Cancel them and register all in one right place!</small></h3></li>
+
+					<li><h3>Do you know how to transfer the vote ?</h3><h3></h3></li>
+
+					<li><h3>Are you NRI? Do you know how to register for Vote ?</h3><h3></h3></li>
+
+					<li><h3>Are you working in Army ? Do you know how to Vote ?</h3><h3></h3></li>
+
 				</ul>
-			</div>-->
+
+			</div>
 			
 		
 			<h2>Importance of Voting</h2>
