@@ -3,12 +3,34 @@
 		<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<%@ page import="java.util.ResourceBundle;" %>
-		
-		
-		
-		
-		<title>Party Analyst.com</title>
-		<meta name="" content="">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<title>Party Analyst - An Election Analysis &amp; Management Platform</title>
+			<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+
+			<meta http-equiv="Content-Language" content="en" />
+
+			<meta name="description" content="Party Analyst is a complete Indian Election Analysis Platform that also offers, Constituency, Cadre Management to Indian Political Parties and Politicians." />
+
+			<meta name="keywords" content="Indian Elections, Election Analysis, Indian Democracy, Andhra Pradesh Politics, Indian Political Parties, Indian Politicians, Indian Leaders, Congress, BJP, TDP, TRS, Indian Election Commission, Know Analyze, Act, MLA Elections, MP Elections, Cross Voting, District Election Results, MPTC Elections, ZPTC Elections, Constituency Management, Cadre Management, Party Performance, Election Comparison, Municipal Elections, Corporation Elections" />
+
+			<meta name="copyright" content="IT Grids (India) Pvt. Ltd." />
+
+			<meta name="author" content="Ashok Dakavaram" />
+
+			<meta name="email" content="a.dakavaram@partyanalyst.com" />
+
+			<meta name="Charset" content="ISO-8859-1" />
+
+			<meta name="Distribution" content="Global" />
+
+			<meta name="Rating" content="General" />
+
+			<meta name="ROBOTS" content="INDEX,FOLLOW" />
+
+			<meta name="Revisit-after" content="1 Day" />
+
+			<meta name="expires" content="Never" />
 		
 		
 		<!--<link type="text/css" href="styles/assets/css/bootstrap-responsive.min.css" rel="stylesheet" />-->
@@ -30,18 +52,17 @@
 		  <!-- 	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> -->
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
-	</head>
+		</head>
 		<style>
 		.container{width:960px;}
 		.p-m-bottom0px{padding-bottom:0px;margin-bottom:0px;}
 		h4{font-size:13.5px;}
 		h5{font-size:12px;}
-	.votersguide .p-5px{display:inline-block;padding:5px;border:0px;}
-	.votersguide h4{ float: left;
-    margin-left: 5px;
-    width: 56%;
- margin-top:3px;}
- 	.votersguide h6{margin-bottom: 3px;}
+	.votersguide {display:inline-block;padding:0px;position:relative;}
+	.votersguide .btn{ bottom: 5px;
+    left: 10px;
+    position: absolute;}
+ 	
 	.explore .p-5px{display:inline-block;padding:5px;border:0px;padding-bottom: 9px;}
 	.explore h4{ float: left;
     margin-left: 5px;
@@ -54,6 +75,17 @@
 	.follow-us{margin-left:170px;margin-top:10px;}
 	.selectBoxWidth{width:168px;}
 	.v-gallary .thumbnail{display:inline-block;float:left;}
+	.v-gallary ul li{border:1px solid #EAEAEA;}
+	#problemsShowDIV h6{color:#005580;margin-bottom:10px;}
+	#problemsShowDIV p{margin-top:10px;}
+	#problemsShowDIV .widget-block{display:inline-block;width:100%;}
+	#my-jqCarousel-3 .mask li:hover{background:#fff;}
+	#icon_leftsec{margin-right:5px;}
+     .star{margin-top:-3px;}
+	 .voters-pulse-home{position:relative;}
+	 .voters-pulse-home .btn{position:absolute;left:5px;
+	 bottom:2px;}
+	 #my-jqCarousel-news{background:#fafafa;}
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -61,20 +93,15 @@
 		<!--------left div------->
 			<div class="span3">
 			<!-------Quick Links Block--------------->
-			<div class="widget yellow votersguide p-m-bottom0px">
-			                    <div class="widget-block p-5px"> 
-								<img src="images/votersguide_home.png" class="thumbnail pull-left">
-							<h4>The right to vote is the Foundation of Democracy.</h4>
+			<div class="widget blue votersguide p-m-bottom0px">
+			                  
+								<img src="images/voters_guide.gif">
+								<a href="voters.action" class="btn btn-mini" >Voter's Guide</a>
 								
-								
-															
-								<h6>Your vote is your voice. Don't lose your voice.</h6>
-								
-								<a href="voters.action" class="btn btn-primary pull-right" >Voter's Guide</a>
-								</div>	
 							</div>
 			
-		<div class="widget green quicklinks"><h2>Quick Links</h2>
+		<div class="widget blue quicklinks"><h2><span><i class="icon-random icon-white"id="icon_leftsec"></i></span>
+Quick Links</h2>
 				
 				<!---- View Election Results------->
 							<div class="widget-block" contentindex="4c" style="height:200px;">
@@ -273,7 +300,7 @@
 											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg"/></a>
 										</c:if>
 										
-										<p class="span6"><s:property value="description"/>
+										<p class="span6 more"><s:property value="description"/></p>
 										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;" >
 									</s:if>
 									
@@ -285,7 +312,7 @@
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}"/></a>
 										</c:if>
-										<p class="span6"><s:property value="description"/>
+										<p class="span6 more"><s:property value="description"/></p>
 										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;">
 									</s:if>
 									
@@ -296,12 +323,12 @@
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}"/></a>
 										</c:if>
-										<p class="span6" ><s:property value="description"/>
+										<p class="span6 more" ><s:property value="description"/></p>
 										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' style="position:absolute;bottom:5px;right:20px;" class="pull-left round-link">
 									</s:if>
 									Read Now &rarr;
 									</a>
-									</p>
+									
 									</div>
 									
 								</li>
@@ -321,7 +348,8 @@
 				<!-- END OF NEWS BLOCK -->
 				<!--sasi photo gallary start-->
 				<div class="widget blue">
-			        <h2>Latest Photo Galleries</h2>
+			        <h2><i class="icon-camera icon-white"id="icon_leftsec"></i>
+Latest Photo Galleries</h2>
 					<div id="PhotoGalleryCarousel" class="carousel" style="display:none;">
 						<!-- Carousel items -->
 						<div class="carousel-inner">
@@ -421,14 +449,15 @@
 			
 			<!--sasi photo gallary END-->
 				<div class="widget yellow">
-				<h2>Latest Video Galleries</h2>
+				<h2><span><i class="icon-facetime-video icon-black"id="icon_leftsec"></i><span>
+Latest Video Galleries</h2>
 				<!--video gallary-->
 				<div id="my-jqCarousel-3" class="jqCarousel module widget-block m-minus20px v-gallary">
 		    <ul>
 					<s:if test="resultMap != null && resultMap.size() > 0">
 					<s:iterator value="resultMap.VideoGallary" var="videoGallaryDetails">
 
-					<li class="" style="height:220px;">
+					<li class="" style="height:175px;">
 					
 					<s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >
 					<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'  >
@@ -468,7 +497,8 @@
 				
 				<!---------Your Locality ProblemsView Block----->
 				<div class="widget red">
-				  <h2>Your Locality Problems</h2>
+				  <h2><span><i class="icon-map-marker
+ icon-white"id="icon_leftsec"></i><span>Your Locality Problems</h2>
 				  <h5>New or Existing - Our Platform elevates your problems to the external world. </h5>
 				<div class="pager widget-block"> 
 					
@@ -481,12 +511,13 @@
 									<a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-info" style="margin:5px;">Post Your Problems</a>
 								</c:if>
 				</div>
-				<div id="logInDiv"></div>
+					<div id="logInDiv"></div>
 					<div id="problemsShowDIV"></div>
 				</div>
 				
 				<div class="widget blue">
-					<h2> Tweets From Parties and Leaders </h2>
+					<h2><span><i class="icon-bookmark icon-white"id="icon_leftsec"></i><span>
+ Tweets From Parties and Leaders </h2>
 						<div class="widget-block">
 							<jsp:include page="newsocialtwitter.jsp" /> 
 						</div>
@@ -494,28 +525,34 @@
 				<!-- Close Center DIV -->			
 			</div>
 		<!--------Right div------>
-			<div class="span3">
+			<div class="span4">
 			
-				<div class="widget yellow p-m-bottom0px explore">
-				<div class="widget-block p-5px">
-				<img src="images/explore.gif" class="thumbnail pull-left"><h4>You've come to the right place!</h4><h6>The New Party Analyst</h6>
-				<a href="viewFeaturesAction.action" class="btn btn-primary pull-right" >Explore!</a>
+				<div class="widget yellow " style="margin-bottom:0px;padding-bottom:0px;">
+				<div class="widget-block" style="padding: 4px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
+				<img src="images/hand-icon.gif"> You've come to the right place!
+				<h6 style="display: inline-block; margin: 5px 5px 5px 17px;">The New Party Analyst</h6><a href="viewFeaturesAction.action" class="btn btn-primary pull-right inline" >Explore!</a>
+				
 				</div></div>
 				
-				<div class="btn btn-info voterspulse-home">
-				<h3 style="margin-top: 0px; margin-bottom: 0px;">Voters Pulse</h3>
-				<p class="alert alert-info">Now, you can drive your survey's through Party Analyst...<a class="btn btn-inverse" href="VotersPulse.action">Discover the Advantages</a></p>
+				<div class="widget green voters-pulse-home" style="margin-bottom:0px;padding-bottom:0px;">
+				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
+				<img src="images/voters_pulse.gif">
+				<a class="btn btn-mini" href="VotersPulse.action">Discover the Advantages</a></div>
 				</div>
+				
+				
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
-					<h2>Hot Topics</h2>
+					<h2><span><i class="icon-fire icon-white "id="icon_leftsec"></i><span>
+Hot Topics</h2>
 					<c:forEach var="specialPages" items="${specialPageVOList}">
 					<div class="media media_hr widget-block">
 						
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
-								<p>
-								<img src="${specialPages.eventImagePath}" class="pull-left thumbnail span7"/>
+								
+								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px;"/>
+								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
 						</div>
@@ -595,7 +632,8 @@
 				</div>
 				<!-----------Opinion Poll--------------->
 				<div class="widget blue" style="padding-bottom:0px;">
-					<h2>Opinion Poll</h2>
+					<h2><span><i class="icon-signal icon-white"id="icon_leftsec"></i><span>
+Opinion Poll</h2>
 				<div class="widget-block">
 						<div id="pollsWidgetHeader"></div>
 
@@ -682,5 +720,59 @@ initializeNewHomePage();
 getProblemDetails();
 
 
+
+ 
+ $(document).ready(function() {
+    var showChar = 170;
+    var ellipsestext = "...";
+    $('#my-jqCarousel-news .more').each(function() {
+	
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + ellipsestext;
+ 
+            $(this).html(html);
+        }
+ 
+    });   
+	
+	 $('#my-jqCarousel-3 .caption').each(function() {
+	
+        var content = $(this).html();
+ 
+        if(content.length > 50) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + ellipsestext;
+ 
+            $(this).html(html);
+        }
+ 
+    });  
+	
+	$('.hottopics .hottopics_desc').each(function() {
+	
+        var content = $(this).html();
+ 
+        if(content.length > 200) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + ellipsestext;
+ 
+            $(this).html(html);
+        }
+ 
+    });  
+	
+	});
 
 </script>
