@@ -186,7 +186,7 @@
 }
 .widget{
 
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: none repeat scroll 0 0 #fafafa;
     padding:0px 20px 20px;
 	border-top: 5px solid #000;
 	box-shadow:0 0 1px rgba(0, 0, 0, 0.3);
@@ -230,7 +230,7 @@
 .yellow h2{background:#FDE498;    color: #000;}
 
 .blue:before {
-    background:#09B2EE;
+    background:#548bd4;
     content: " ";
     width: 45px;
     height: 5px;
@@ -238,7 +238,7 @@
     top: -5px;
     left: 0px;
 }
-.blue h2{background:#09B2EE;    color: #fff;}
+.blue h2{background:#548bd4;    color: #fff;}
 
 .gray:before {
     background:#aaa;
@@ -263,9 +263,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', end
 
 }
 
-.background{  /*background-attachment: fixed;
+.background{  background-attachment: fixed;
     background-color: #E5E5E5;
-    background-image: url("chrome://browser/skin/newtab/noise.png"), linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));*/background:#fff;} 
+    background-image: url("chrome://browser/skin/newtab/noise.png"), linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));/*background:#fff;*/} 
 
 .widget h2 {
 
@@ -285,12 +285,11 @@ border-top:1px solid #efefef;
 
 .widget .widget-block h5{
     color: #010101;
-    font-family: 'Abel',sans-serif,Helvetica;
-    font-weight: bold;
-   
-    font-size: 20px;
+    font-family: Cambria,'Abel',sans-serif,Helvetica;
+    font-weight: normal;   
+    font-size: 18px;
   
-    line-height: 20px;
+    line-height: 18px;
  
 
 	
@@ -407,4 +406,7 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 /* updated by Yazu */
 /* 21-11-2012*/
 #my-jqCarousel-news{padding-top:0px;}
-#my-jqCarousel-news h4{margin-top:0px;margin-bottom:5px;}
+#my-jqCarousel-news h4{margin-top:0px;margin-bottom:5px;   font: 18px cambria;text-transform: capitalize;}
+
+#contenttable > .container > .row-fluid > .span6 {margin-left:10px;}
+#contenttable > .container > .row-fluid > .span4 {margin-left:10px;width:245px;}
