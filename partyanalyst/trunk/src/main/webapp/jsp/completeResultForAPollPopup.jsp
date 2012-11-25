@@ -99,10 +99,10 @@
 		
 	.comments{position: relative; display: table; width: 780px; margin: 10px auto;background:#fff;}	
 	.comments h2{padding:10px;}
-	.commentsec{padding:10px; box-shadow:0px 2px 2px #ddd;margin:6px 5px;}
+	.commentsec{padding:10px; box-shadow:0px 2px 2px #ddd;margin:6px 5px;border:1px solid #CCC;border-radius:3px;}
 	
 	.abs{position:relative;}
-	.abs textarea{background:#fff;border:1px solid #fff !important;width:680px;}
+	.abs textarea{background:#fff;border:1px solid #CCC !important;width:680px;}
 	.abs .emsg{background:#ff0000;color:#fff;position:absolute;padding:10px;top:-40px;left:15px;display:none;}
 	.abs .emsg:after{content:" "; border:5px solid transparent;position:absolute;border-top:5px solid #ff0000;border-right:5px solid #ff0000;top:100%;left:50%;}
 
@@ -119,7 +119,7 @@
   height:36px;
   margin-left:auto;
   margin-right:auto;
-  width:923px;
+  width:890px;
   margin-left:52px;
   margin-bottom:10px;
 }
@@ -140,7 +140,7 @@
   padding-top:9px;
   padding-left:31px;
 }
-
+.pull-left abs{margin-bottom:15px;}
 	
 </style>
   
@@ -241,7 +241,7 @@ function initializeResultsTable() {
         <div class="main-mbg">Leave your comment on this poll</div></div>
       
       </div>
-<div style="height:30px;margin-left:70px;">
+<div style="margin-left:70px;">
 <div id="alrdyVoted"></div>
 
 <div id="pollSavedStatus" style="display:none;"></div>
@@ -355,18 +355,18 @@ function initializeResultsTable() {
 
 <h2 class="">Comments</h2>
    <div id="successDiv" style="height:25px;display:none;"></div>
-         <div class="span9">
+         <div class="span9" style="padding-bottom: 30px;">
 
-         <div class="span9">
+         <div class="span9" style="margin-bottom: 35px;">
            <div class="pull-left abs">
-         <textarea id="userComment" style="border:1px solid #d3d3d3;margin-bottom:10px;" onClick="clearDefaultComment(this.id);" onBlur="placeDefaultValue(this.id);">Post your comment here ....</textarea><div id="commentErrMsg" class="emsg"></div>	
+         <textarea id="userComment" style="border:1px solid #CCCCCC;margin-bottom:10px;" onClick="clearDefaultComment(this.id);" onBlur="placeDefaultValue(this.id);">Post your comment here ....</textarea><div id="commentErrMsg" class="emsg"></div>	
 		 </div>	
 	
 			  <div class="pull-left abs">
-			<input type="text" value="FirstName" id="fisrtNmId" onClick="clearDefaultFirstname(this.id);" onBlur="placeDefaultValueForFirstName(this.id);" /><div id="firstNmErrMsg" class="emsg"></div></div>
+			<input type="text" value="First Name" id="fisrtNmId" onClick="clearDefaultFirstname(this.id);" onBlur="placeDefaultValueForFirstName(this.id);" /><div id="firstNmErrMsg" class="emsg"></div></div>
 			
 			<div class="pull-left abs">
-			<input  style="margin-left:5px;" type="text" value="LastName" id="lasttNmId" onClick="clearDefaultLastname(this.id);" onBlur="placeDefaultValueForLarstName(this.id);"/><div id="lastNmErrMsg" class="emsg"></div></div>
+			<input  style="margin-left:5px;" type="text" value="Last Name" id="lasttNmId" onClick="clearDefaultLastname(this.id);" onBlur="placeDefaultValueForLarstName(this.id);"/><div id="lastNmErrMsg" class="emsg"></div></div>
 		
 		
 		
@@ -382,7 +382,7 @@ function initializeResultsTable() {
 	<div class='span9 commentsec'>
 
 		 <div style="margin-bottom:8px;">${comment.comment}</div>
-		 <span class="label label-info">Posted By:${comment.firstName} &nbsp;&nbsp; ${comment.lastName}  </span>	
+		 <span class="label label-info">Posted By: ${comment.firstName}&nbsp; ${comment.lastName}  </span>	
 		 <span id="abuseSuccess${comment.commentId}"></span>	 
 		
 			
@@ -477,17 +477,17 @@ function validateCommentFields(){
 		errorExist = true;
 		$('#commentErrMsg').show();
 	}
-	if($('#fisrtNmId').val() == "FirstName" || $('#fisrtNmId').val() == ""){
+	if($('#fisrtNmId').val() == "First Name" || $('#fisrtNmId').val() == ""){
 
 		//str+='FirstName  Required';		
 
-$('#firstNmErrMsg').html('<span style="font-size:12px;"><b>Firstname is required</b></span>');
+$('#firstNmErrMsg').html('<span style="font-size:12px;"><b>First Name is required</b></span>');
 		errorExist = true;
 		$('#firstNmErrMsg').show();
 	}
-	if($('#lasttNmId').val() == "LastName" || $('#lasttNmId').val() ==""){
+	if($('#lasttNmId').val() == "Last Name" || $('#lasttNmId').val() ==""){
 
-$('#lastNmErrMsg').html('<span style="font-size:12px;"><b>Lastname is required</b></span>');
+$('#lastNmErrMsg').html('<span style="font-size:12px;"><b>Last Name is required</b></span>');
 
 		//str+='LastName Required';	
 $('#lastNmErrMsg').show();
@@ -525,14 +525,14 @@ function placeDefaultValue(id){
 function clearDefaultFirstname(id){
 	var defaultValue = document.getElementById(id).value;
 
-	if(defaultValue == "FirstName")
+	if(defaultValue == "First Name")
         document.getElementById(id).value="";
 }
 function placeDefaultValueForFirstName(id){
 	var defaultValue = document.getElementById(id).value;
 
 	if(defaultValue == "")
-        document.getElementById(id).value="FirstName";
+        document.getElementById(id).value="First Name";
 	else
 
 		$('#firstNmErrMsg').html('');
@@ -541,14 +541,14 @@ function placeDefaultValueForFirstName(id){
 function clearDefaultLastname(id){
 	var defaultValue = document.getElementById(id).value;
 
-	if(defaultValue == "LastName")
+	if(defaultValue == "Last Name")
         document.getElementById(id).value="";
 }
 function placeDefaultValueForLarstName(id){
 	var defaultValue = document.getElementById(id).value;
 
 	if(defaultValue == "")
-        document.getElementById(id).value="LastName";
+        document.getElementById(id).value="Last Name";
 	else
 		$('#lastNmErrMsg').html('');}
 
