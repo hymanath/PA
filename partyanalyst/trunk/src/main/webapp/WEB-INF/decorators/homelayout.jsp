@@ -361,7 +361,7 @@ margin:-1px 0px 0px 0px ;
 	<!--Facebook and twitter follow us-->
 		<div class="follow-us" style="margin-left:180px;">
             <ul>
-              <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
+              <li><a href="http://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
               <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
             </ul>
             <h5 style="color:#08AAEC;">follow us</h5> 
