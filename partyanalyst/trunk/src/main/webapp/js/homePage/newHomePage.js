@@ -665,6 +665,11 @@ function callHomePageAjax(jsObj,url)
 							{
 								buildElectionTypes(myResults);
 							}
+
+							else if(jsObj.task == "getProblemDetailsBasedOnProblemRefId")
+							{
+								showProblemDescriptionByProblemRefId(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -732,7 +737,7 @@ legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontNa
 function showFeedBackStatusMessage(result)
 {
 
-alert('00');
+
 var feedback_window = document.getElementById('feedback_window');
 	if(result.exceptionEncountered == null)
 	{
@@ -2680,3 +2685,77 @@ function buildResultForPoll(voteStatus,result){
 }
 //Openion poll changes by samba end
 
+function getProblemReferenceId()
+	{
+
+		var problemRefId = document.getElementById("problemReferenceId").value.replace(/^\s+|\s+$/g,"");
+		var errorDivEle = document.getElementById('problemErrorMsgDiv');
+
+		var problemDescDivEle = document.getElementById("problemDescriptionDiv");
+		var content = "Please Enter Valid Problem Referenece Id";
+		var eFlag = false;
+		var validCharacters = /[a-zA-Z]/;
+		var onlyNumbers = /[0-9]/;
+		var invalidChars = /^[a-zA-Z0-9]{7}$/;
+		var str = '<font style="color:red">';
+		if(problemRefId.length == 0)
+		{
+			str +='Please Enter Problem Reference Id';
+			eFlag = true;
+		}
+		else if(problemRefId.length != 7)
+		{
+		str += content;
+		eFlag = true;
+		}
+		else if (!invalidChars.test(problemRefId))
+		{
+			str += content;
+			eFlag = true;
+		}
+		else if(!validCharacters.test(problemRefId.substring(0,1)))
+			{
+				str += content;
+				eFlag = true;
+			}
+		
+		else if(!onlyNumbers.test(problemRefId.substring(2,7)))
+			{
+				str += content;
+				eFlag = true;
+			
+			}
+		str +='</font>';
+		errorDivEle.innerHTML = str;
+
+		if(eFlag)
+			return;
+		else
+		{
+			document.getElementById("searchAjaxImgSpan").style.display = 'block';
+		var jsObj = 
+			{
+				problemRefId : problemRefId,
+				task         : "getProblemDetailsBasedOnProblemRefId"
+			};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getProblemDetailsAction.action?"+rparam;						
+		callHomePageAjax(jsObj,url);
+		}
+	}	
+	function showProblemDescriptionByProblemRefId(results)
+	{
+	document.getElementById("searchAjaxImgSpan").style.display = 'none';
+	var problemDescDivEle = document.getElementById("problemErrorMsgDiv");
+    document.getElementById("problemReferenceId").value = '';
+	if(results == null)
+	{
+		problemDescDivEle.innerHTML = '<font style="color:red">This Problem is not Existed.</font>';
+		
+	}
+	else if(results != null)
+	{
+		window.location.href = 'completeProblemDetailsAction.action?problemId='+results.problemHistoryId;
+	}
+	
+}
