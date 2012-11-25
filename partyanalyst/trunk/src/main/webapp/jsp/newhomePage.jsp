@@ -86,6 +86,17 @@
 	 .voters-pulse-home .btn{position:absolute;left:5px;
 	 bottom:2px;}
 	 #my-jqCarousel-news{background:#fafafa;}
+	 .widget .widget-block {padding-bottom: 20px;}
+	 .btn-group{margin-top: 10px;}
+	
+	.problemSearchBtn{background-color: #5BB75B;
+    background-image:linear-gradient(to bottom, #62C462, #51A351);
+    background-repeat: repeat-x;
+    border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;padding: 6px 10px; border-radius:5px; cursor: pointer; border: medium none; float: right; clear: both; margin-top: -38px;margin-right: 12px;}
+
+#searchAjaxImgSpan{float:right;margin-top:-33px;margin-right: -12px;display:none;}
+#problemErrorMsgDiv{margin-top: 17px;font-size:13px;}
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -510,6 +521,16 @@ Latest Video Galleries</h2>
 								<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
 									<a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-info" style="margin:5px;">Post Your Problems</a>
 								</c:if>
+								
+								<div id="problemErrorMsgDiv"></div>
+								
+								<div style="margin-top: 10px;">
+								<span style="font-size: 13px; margin-right: 160px;">To Quick View the Problem, Enter the Ref Id :</span>
+								<input type="text" style="width: 80px; float: right; margin-top: -22px; margin-right: 60px;" size="10" id="problemReferenceId">
+								<input type="button" class="problemSearchBtn" onclick="getProblemReferenceId()" value="Go">
+								<span id="searchAjaxImgSpan"><img src="images/icons/search.gif"  width="18px" height="18px;" style="margin-left: 35px;"></img></span>
+							</div>
+
 				</div>
 					<div id="logInDiv"></div>
 					<div id="problemsShowDIV"></div>
