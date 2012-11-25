@@ -553,7 +553,7 @@
 								<div class="homePage_new_footer_links_head">We are SOCIAL</div>
 								<ul class="homePage_new_footer_links">
 									<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
-									<li><a href="http://twitter.com/#!/party_analyst">Twitter</a></li>
+									<li><a href="http://twitter.com/#!/partyanalyst">Twitter</a></li>
 									<li><a href="http://www.linkedin.com/company/it-grids-ltd">LinkedIN</a></li>
 																	<li><a href="http://www.youtube.com/partyanalyst" target="_blank">YouTube</a></li>
 
