@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -1237,7 +1238,9 @@ public class SpecialPageService implements ISpecialPageService{
 		List<SpecialPageVO> specialPageVOList = null;
 		SpecialPageVO specialPageVO = null;
 		try{
-			List<Object[]> list = specialPageInfoDAO.getSpecialPagesForHomePage();
+			List<Object[]> list1 = specialPageInfoDAO.getSpecialPagesForHomePage();
+			Set<Object[]> set = new HashSet<Object[]>(list1);
+			List<Object[]> list = new ArrayList<Object[]>(set);
 			if(list != null && list.size() > 0)
 			{
 				specialPageVOList = new ArrayList<SpecialPageVO>(0);
