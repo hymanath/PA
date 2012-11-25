@@ -277,14 +277,14 @@ function showFeedBackStatus(result)
 				
 		str+='<div><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemId+'" ><h6>'+(result[i].problem)+'</h6></a></div>';
 		
-		str+='<div><span class="pull-left" style="color:#51A451;">Existing From:</span><span>'+result[i].existingFrom+'</span><span style="margin-left:10px;color:#51A451;">Identified On:</span><span>'+result[i].identifiedOn+'</span><div class="star pull-right"></div><input type="hidden" style="display:none;" value='+result[i].averageRating.avgRating +'" >';
+		str+='<div><span class="pull-left" style="color:#51A451;margin-right: 4px;">Existing From:</span><span>'+result[i].existingFrom+'</span><span style="margin-left:10px;color:#51A451;margin-right: 4px;">Identified On:</span><span>'+result[i].identifiedOn+'</span><div class="star pull-right"></div><input type="hidden" style="display:none;" value='+result[i].averageRating.avgRating +'" >';
 		str+='</div>';
 		str += '<p style="padding-top:5px;margin-bottom:10px;font-family:arial;">'+result[i].description+' </p>';
 		if(result[i].url != null){
 		
-	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;">Posted by:</span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'" class="label pull-right"> '+initialCap(result[i].problemLocation)+'</a>';
+	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;margin-right: 4px;">Posted by:  </span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'" class="label pull-right"> '+initialCap(result[i].problemLocation)+'</a>';
 	   }else{
-	     str += '<span class="pull-left">Posted by:'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</span><span class="label pull-right">'+initialCap(result[i].problemLocation)+'</span>';
+	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;margin-right: 4px;">Posted by:  </span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<span class="label pull-right">'+initialCap(result[i].problemLocation)+'</span>';
 	   }
 		
 		str += '</div>';
