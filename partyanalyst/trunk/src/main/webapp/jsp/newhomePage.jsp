@@ -93,7 +93,7 @@
     background-image:linear-gradient(to bottom, #62C462, #51A351);
     background-repeat: repeat-x;
     border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    color: #FFFFFF;padding: 6px 10px; border-radius:5px; cursor: pointer; border: medium none; float: right; clear: both; margin-top: -38px;margin-right: 12px;}
+    color: #FFFFFF;padding: 6px 10px; border-radius:5px; cursor: pointer; border: medium none; float: right; clear: both; margin-right: 12px;}
 
 #searchAjaxImgSpan{float:right;margin-top:-33px;margin-right: -12px;display:none;}
 #problemErrorMsgDiv{margin-top: 17px;font-size:13px;}
@@ -525,8 +525,8 @@ Latest Video Galleries</h2>
 								<div id="problemErrorMsgDiv"></div>
 								
 								<div style="margin-top: 10px;">
-								<span style="font-size: 13px; margin-right: 160px;">To Quick View the Problem, Enter the Ref Id :</span>
-								<input type="text" style="width: 80px; float: right; margin-top: -22px; margin-right: 60px;" size="10" id="problemReferenceId">
+								<span style="font-size: 13px;">To Quick View the Problem, Enter the Ref Id :</span>
+								<input type="text" style="width: 80px;" size="10" id="problemReferenceId">
 								<input type="button" class="problemSearchBtn" onclick="getProblemReferenceId()" value="Go">
 								<span id="searchAjaxImgSpan"><img src="images/icons/search.gif"  width="18px" height="18px;" style="margin-left: 35px;"></img></span>
 							</div>
