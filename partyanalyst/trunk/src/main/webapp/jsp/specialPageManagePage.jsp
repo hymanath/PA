@@ -298,7 +298,7 @@ $(document).ready(function() {
 			</table>
 		</div>
 
-		<div id='photoGallaryDiv' class="divInfo">
+		<div id='photoGallaryDiv' class="divInfo" style="margin-bottom:60px;">
 		
 		</div>
 
