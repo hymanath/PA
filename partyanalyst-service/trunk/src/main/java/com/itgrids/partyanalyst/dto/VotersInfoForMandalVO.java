@@ -13,6 +13,7 @@ public class VotersInfoForMandalVO {
 	private String percent;
 	private BigDecimal totVoters;
 	private Boolean isMandal = false;
+	private String unKnowVoters;
 	
 	public String getMandalId() {
 		return mandalId;
@@ -68,4 +69,11 @@ public class VotersInfoForMandalVO {
 	public void setIsMandal(Boolean isMandal) {
 		this.isMandal = isMandal;
 	}
+	public String getUnKnowVoters() {
+		return unKnowVoters;
+	}
+	public void setUnKnowVoters(String unKnowVoters) {
+		this.unKnowVoters = unKnowVoters;
+	}
+	
 }
