@@ -53,6 +53,7 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String deptName;
     private String cadreseting;
     private String deptsetng;
+    private String referenceNo;
     
 	public Long getProblemTypeId() {
 		return problemTypeId;
@@ -319,5 +320,13 @@ public class CompleteProblemDetailsVO implements Serializable {
 	public void setDeptsetng(String deptsetng) {
 		this.deptsetng = deptsetng;
 	}
+	public String getReferenceNo() {
+		return referenceNo;
+	}
+	public void setReferenceNo(String referenceNo) {
+		this.referenceNo = referenceNo;
+	}
+	
+	
     
 }
