@@ -1769,13 +1769,14 @@ function displayDateText(type, args, obj) {
             <div class="span5"><h5>${completeProblemDetailsVO.problemCompleteLoc}</h5></div>
           </div>
           <div>
-           <div id="postedon">Posted On : ${completeProblemDetailsVO.identifiedOn}</div>
-           <div style="float:right">Existing From : ${completeProblemDetailsVO.existingFrom}</div>
+           <div id="postedon" style="margin-right: 24px;">Posted On : ${completeProblemDetailsVO.identifiedOn}</div>
+           <div style="">Existing From : ${completeProblemDetailsVO.existingFrom}</div>
+		   <div  style="float: right; margin-top: -20px; clear: both; margin-right: 29px;">Ref NO : ${completeProblemDetailsVO.referenceNo}</div>
           </div>
       </div>
 
 
-<div class="row clear-b" style="margin:5px;padding:5px;">
+<div class="row clear-b" style="margin: 5px; padding: 20px 5px 5px;">
 		<div class="span pull-left">
                      <p>${completeProblemDetailsVO.problemDesc}</p>
 					
