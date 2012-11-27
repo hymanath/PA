@@ -296,5 +296,15 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	{
 		return getHibernateTemplate().find("select count(model.voter.voterId) from BoothConstituencyElectionVoter model where model.voter.gender = 'M' and "+queryStr + " "+locationId);
 	}
-
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]>  getVotersBasicInfoByPanchayatId(Long panchayatId, String year){
+		Object[] params = {panchayatId, year};
+		return getHibernateTemplate().find("select count(model.voter.voterId), model.voter.gender from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				"group by model.voter.gender ", params);
+	}
+	
+	
 }
