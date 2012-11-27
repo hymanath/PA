@@ -126,6 +126,7 @@ h1 {
  }
  .tovoters h3{
 	font-size:15px;
+	padding:6px;
  }
  .tovoters{
 	list-style-type: disc !important;
@@ -133,6 +134,10 @@ h1 {
     padding: 5px;
  }
   .tovoters li{list-style-type: disc;display:list-item;}
+  
+  h3 small{color:#595959;}
+  .tovoters a{color:#8E8E8E;}
+  .tovoters a:hover{color:#4CB1CF;font-size:16px;}
 </style>
 
 </head>
@@ -154,31 +159,41 @@ $(document).ready(function(){
 			
 			
 			<div class="breadcrumb">
-			<!--<h2>Do you have Answer For This Question, If not Have a look..</h2>
-				<ul>
-					<li><h3>Do you have Vote ? if not How to Register for Vote ?</h3></li><br>
-					<li><h3>Why Should You Vote ?</h3></li><br>
-					<li><h3>What is the Problem if you have more Than one Vote ?</h3></li><br>
-					<li><h3>How to transfer the Vote ?</h3></li><br>
-					<li><h3>How to Cancel the Vote ?</h3></li><br>
-					<li><h3>Are You NRI Do you know how to Register vote?</h3></li><br>
-					<li><h3>Are you working in Army, Do you know how to vote?</h3></li><br>
-					
-				</ul>-->
+			
 				<ul class="tovoters">
-					<li><h3>Are you 18+? Still Don't have Vote? - <small>Register Now!</small></h3></li>
+					
+					<li><h3>Are you eligible for voting? But, still don't have vote?<br> 
+					<span>- See how to <a href="#register" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Register.">register</a> your vote.</span></h3></li>
+					
+					<li><h3>Did you lost your voter Id?<br><span>- get the <a href="#lostVoterId" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Get Duplicate Voter Id.">Duplicate</a> voter Id</span></h3></li>
+					
+					<li><h3>Did you find any wrong entries in your Voter Id card? <br><span>- How to <a href="#transfer" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Modify your entries in Voter Id.">correct</a> them?</span> </h3></li>
+					
+					<li><h3>Did you registered vote in your native place, doing job in other place and unable to vote?<br> 
+					<span>- <a href="#transfer" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Transfer.">Transfer</a> the vote to your current location.</span></h3></li>
 
-					<li><h3>Do you or your family consists of duplicate votes?-<small> Cancel them and register all in one right place!</small></h3></li>
+					<li><h3>Are you married? Your spouse registered vote in her native place and unable to vote there? <br><span>
+					- <a href="#transfer" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Transfer.">Transfer</a> the vote to your current location.</span></h3></li>
 
-					<li><h3>Do you know how to transfer the vote ?</h3><h3></h3></li>
+					<li><h3>Are you re-located / transferred to other place or state with your family, and unable to votethere? <br>
+					- <span><a href="#transfer" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Transfer.">Transfer</a> the vote to your current location.</span></h3></li>
+					
+					<li><h3>Did you know, if a person is having his Vote at wrong place or more than one Vote ? <br>
+					<span>- You can <a href="#cancel" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Cancel the Vote.">Cancel</a> them.</span></h3></li>
+										
+				</ul>	
 
-					<li><h3>Are you NRI? Do you know how to register for Vote ?</h3><h3></h3></li>
-
-					<li><h3>Are you working in Army ? Do you know how to Vote ?</h3><h3></h3></li>
-
-				</ul>
-
+			
+			<div class="breadcrumb">
+					<h3>Do this to give your support to strengthen our Democracy!</h3>
+					
+					<p style="padding-left:0px;margin-top:0px;">
+						Vote is your Right, Have it in Right Place and Must Use it! Not using your Vote or having Votes at more than one place causes Misuse of Vote or Decrease in Polling Percentages. As a Responsible Citizen of India don't make it happen!
+					</p>
 			</div>
+				
+			</div>
+			
 			
 		
 			<h2>Importance of Voting</h2>
@@ -244,7 +259,7 @@ $(document).ready(function(){
 			<h2>How to Register,Transfer and Cancel A Vote</h2>
 			<div class="span12" >
 			
-			<div class="breadcrumb">
+			<div class="breadcrumb" id="register">
 			<h3>Register</h3>
 			<ul class="ulInAddPages ">
 					<li>House-to-house enumeration is done and electors residing in each house are registered by official enumerators who go physically from door-to-door to collect the information about electors. </li>
@@ -256,7 +271,7 @@ $(document).ready(function(){
 			</ul>
 			</div>
 			
-			<div class="breadcrumb">
+			<div class="breadcrumb" id="cancel">
 			<h3>Cancel</h3>
 			<ul class="ulInAddPages">
 					<li>Any eligible person can raise an objection to somebody's name or for deletion of his or any other person's name using <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="images/votersInfo/FORM7.pdf" title="Click here to View Form-7( For Deletion roll in Electoral ) Application">Form No. 7.</li>
@@ -273,7 +288,7 @@ $(document).ready(function(){
 					
 					</div>
 					
-					<div class="breadcrumb">
+					<div class="breadcrumb" id="transfer">
 			<h3>Transfer & Modify</h3>
 			<ul class="ulInAddPages">
 					<li>If any particulars in the electoral roll are to be modified such as name, house number, middle name, last name, age, sex, epic number etc. a claim in <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="images/votersInfo/FORM8.pdf" title="Click here to View Form-8 ( For modifiying the particulars in the registered roll )Application">Form No. 8</a> can be filed.</li>
@@ -317,6 +332,8 @@ $(document).ready(function(){
 					<li>Every Indian citizen staying in a foreign country, who has not acquired citizenship of a Foreign country, and has completed 18 years as on 1st January of the year, can make an Application in Form 6A for being registered in the roll for the constituency pertaining to the Locality in which his place of residence in India as mentioned in the passport is located. The Application in <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="images/votersInfo/FORM6A.pdf" title="Click here to View Form-6A ( For NRI'S to register in the Electoral roll ) Application"> Form 6A</a> can be presented to the registration officer concerned.</li>
 					<li>After Filling the Details the application should be submitted directly to the Electoral Registration Officer (ERO) of the constituency within which the place of ordinary residence of the applicant as given in the valid passport falls. The Application in <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="images/votersInfo/FORM6A.pdf" title="Click here to View Form-6A ( For NRI'S to register in the Electoral roll ) Application"> Form 6A</a> can be presented in person to the ERO or sent by post addressed to the ERO concerned.</li>
 					
+					<a class="inline link btn-inverse btn " style="position:relative;bottom:0px;right:0px;margin-top:10px;margin-bottom:10px;" target="_blank" href="images/votersInfo/Form 6A - Application for inclusion of name in electoral roll.pdf" title="Click here to know How?, Where?, When? ,Who? file the Form-6A ( For NRI's to Register in the Electoral roll )">How to File Form-6A</a>
+					
 					
 			</ul>
 			<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
@@ -348,10 +365,9 @@ $(document).ready(function(){
 					<li><b>Voters on election duty </b> means a Polling Agent, a Polling Officer, Presiding Officer or other public servant who is an elector in the constituency and is by reason of his being on election duty, unable to vote at the polling station where he is entitled to vote.</li>
 					<li><b>Notified voter's</b> means a voter who belongs to the class of persons notified by the Election Commission under clause (c) of Section 60 of the Representation of the People Act, 1951.</li>
 			</ul>
-			
-			
-			
 			</div>
+			
+			
 			<span class="btn-info btn-small" id="displayText3" style="margin-bottom: 5px;cursor:pointer;right: 90px; position: absolute; bottom: 5px;" onclick="toggle(4)" >Hide</span>
 			
 			</div>
@@ -359,7 +375,16 @@ $(document).ready(function(){
 			
 		</div>
 		
-		
+		<div id="lostVoterId" class="row-fluid breadcrumb whitegloss subcontents" style="margin:0px;">
+				<h2>Duplicate Voter Id ?</h2>
+				<ul class="ulInAddPages">
+					<li>By filling in <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="images/votersInfo/Form002.pdf" title="Click here to View Form 002 ( For getting Duplicate Voter Id ) Application">Form 002</a>, the individual applies for a duplicate Voters ID Cards in case he has lost it. But before filling in the form, the individual must first file an FIR in the local police station. After filing an FIR the individual needs to take a copy of the FIR. Along with the <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="images/votersInfo/Form002.pdf"  title="Click here to View Form 002 ( For getting Duplicate Voter Id ) Application">form 002</a> the copy of the FIR must be attached.</li>
+
+					<li>One needs to submit Rs. 25 to the local Electoral Registration Office as penalty.</li>
+				</ul>
+				
+				<a class="btn-info btn-small" style="margin-bottom: 5px;" href="#ImportanceOfVoting">Go To Top..</a>
+		</div>
 		
 		
 	</div>
@@ -367,6 +392,7 @@ $(document).ready(function(){
 	<div class="rightdiv whitegloss">
 		<div class="span4 ">
 		<ul class="nav nav-tabs nav-stacked span3">
+		<li class="active"><a style="margin-bottom: 5px;" target="_blank" href="http://www.ceoandhra.nic.in/Overseas_Electors_21.02.2011/EROs%20addresses.pdf" title="Click to find your Constituency Electorl Register Officer Details.">Find your Electrol Registration Officers.</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#ImportanceOfVoting">Importance of Voting</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#WhyShouldIVote">Why Should I Vote?</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#VoteRightResponsibility"> Vote! Your Right, Your Responsibility </a></li>
@@ -374,6 +400,7 @@ $(document).ready(function(){
 <li class="active"><a style="margin-bottom: 5px;" href="#Armyvote"> Army vote</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#NRIvotes">  NRI votes</a></li>
 <li class="active"><a style="margin-bottom: 5px;" href="#PostalBallotVoting">  Postal Ballot Voting</a></li>
+<li class="active"><a style="margin-bottom: 5px;" href="#lostVoterId">  Duplicate Voter Id</a></li>
 
 <li><a class="inline" target="_blank" href="images/votersInfo/FORM6.pdf" title="Click to view Form-6(For Registering in the Electoral roll) application">Form 6</a></li>
 <li><a class="inline" target="_blank" href="images/votersInfo/FORM6A.pdf" title="Click to view Form-6(For NRI'S Registering in the Electoral roll) application">Form 6A</a></li>
@@ -381,6 +408,7 @@ $(document).ready(function(){
 <li><a class="inline" target="_blank" href="images/votersInfo/FORM8.pdf" title="Click to view Form-6(For Modifying the particulars in the Electoral roll) application">Form 8</a></li>
 <li><a class="inline" target="_blank" href="images/votersInfo/FORM8A.pdf" title="Click to view Form-6( For Transporting the roll) application">Form 8A</a></li>
 <li><a class="inline" target="_blank" href="images/votersInfo/FORM13F&G.pdf" title="Click here to View Form-13F&13G ( For Proxy and substitute proxy registration ) Application">Form 13F& 13G</a></li>
+<li><a class="inline" target="_blank" href="images/votersInfo/Form002.pdf" title="Click here to View Form 002 ( For getting Duplicate Voter Id ) Application">Form 002</a></li>
 <li><a class="inline" target="_blank" href="images/votersInfo/EVM.pdf" title="Click to know more about the EVM">EVM</a></li>
 </ul>
 
@@ -420,9 +448,6 @@ $(document).ready(function(){
 </div>
 
 <script>
-$(document).ready(function(){
- alert('a');
-});
 
 function toggle(id){
 	var ele = document.getElementById("toggleText"+id);
