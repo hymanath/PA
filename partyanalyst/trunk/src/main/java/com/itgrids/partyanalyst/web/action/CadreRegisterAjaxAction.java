@@ -258,7 +258,9 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				log.debug("In report level Constituencies");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));	
+			//List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));
+			
+			List<SelectOptionVO> mandals= regionServiceDataImp.getSubRegionsInConstituency(new Long(selectedVal), IConstants.PRESENT_YEAR, null);
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
 			mandals.add(0, obj);
 			setNamesList(mandals);
