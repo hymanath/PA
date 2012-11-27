@@ -64,9 +64,66 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	 
 }*/
 	
-	public void testgetVotersCastInfoForAssembly()
+	/*public void testgetVotersCastInfoForAssembly()
 	{
 		List list =voterDAO.findVotersCastInfoByMandalAndElectionYear(836l,"2009");
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetVotersBasicInfoByManadalId()
+	{
+		List<Object[]> list = voterDAO.getVotersBasicInfoByManadalId(2844l, "2009");
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			
+			if(params[0].toString() != null && params[1].toString() != null)
+			{
+				if(params[1].toString().equalsIgnoreCase("M"))
+					System.out.println("Male:  "+params[0].toString());
+				if(params[1].toString().equalsIgnoreCase("F"))
+					System.out.println("FeMale:  "+params[0].toString());
+				if(params[1].toString().equalsIgnoreCase(""))
+					System.out.println("UnKnow:  "+ params[0].toString());
+			}
+		}
+	}*/
+	
+	/*public void testGetVotersBasicInfoByPollingStationId()
+	{
+		List<Object[]> list = voterDAO.getVotersBasicInfoByPollingStationId(2378l, "2009");
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			
+			if(params[0].toString() != null && params[1].toString() != null)
+			{
+				if(params[1].toString().equalsIgnoreCase("M"))
+					System.out.println("Male:  "+params[0].toString());
+				if(params[1].toString().equalsIgnoreCase("F"))
+					System.out.println("FeMale:  "+params[0].toString());
+				if(params[1].toString().equalsIgnoreCase(""))
+					System.out.println("UnKnow:  "+ params[0].toString());
+			}
+		}
+	}*/
+	
+	public void testGetVotersBasicInfoByConstituencyId()
+	{
+		List<Object[]> list = voterDAO.getVotersBasicInfoByConstituencyId(232l, "2009");
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			
+			if(params[0].toString() != null && params[1].toString() != null)
+			{
+				if(params[1].toString().equalsIgnoreCase("M"))
+					System.out.println("Male:  "+params[0].toString());
+				if(params[1].toString().equalsIgnoreCase("F"))
+					System.out.println("FeMale:  "+params[0].toString());
+				if(params[1].toString().equalsIgnoreCase(""))
+					System.out.println("UnKnow:  "+ params[0].toString());
+			}
+		}
 	}
 }
