@@ -211,10 +211,32 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		
 	}*/
 	
-	public void testfindVotersInfoForPanchayatAndElectionYear()
+	/*public void testfindVotersInfoForPanchayatAndElectionYear()
 	{
 	List list = boothConstituencyElectionVoterDAO.findVotersInfoForPanchayatAndElectionYear(1l,
 			"2009");
 	System.out.println(list.size());
+	}*/
+	
+	
+	
+	public void testGetVotersBasicInfoByPanchayatId()
+	{
+		List<Object[]> list = boothConstituencyElectionVoterDAO.getVotersBasicInfoByPanchayatId(15373l, "2009");
+		if(list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				if(params[0].toString() !=null && params[1].toString() !=null)
+				{
+					if(params[1].toString().equalsIgnoreCase("M"))
+						System.out.println("Male: "+params[0].toString());
+					if(params[1].toString().equalsIgnoreCase("F"))
+						System.out.println("FeMale: "+params[0].toString());
+					if(params[1].toString().equalsIgnoreCase(""))
+						System.out.println("UnKnow: "+params[0].toString());
+				}
+			}
+		}
 	}
 }
