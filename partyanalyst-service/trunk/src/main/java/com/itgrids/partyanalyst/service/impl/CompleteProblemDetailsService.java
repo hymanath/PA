@@ -272,6 +272,8 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			  completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
 			  completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
 			  completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
+			  if(userProblem.getProblem().getReferenceNo() != null)
+			  completeProblemDetailsVO.setReferenceNo(userProblem.getProblem().getReferenceNo().toString());
 			  if(userId != null){
 			   completeProblemDetailsVO.setIsAlreadyRated(problemManagementService.getIsUserRatedAProblem(userId,problemId));
 			   Integer rating = problemManagementService.getUserRatingOfAProblem(problemId,userId);
