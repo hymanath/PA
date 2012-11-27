@@ -56,6 +56,15 @@ margin:-1px 0px 0px 0px ;
     top: -126px;
 	left:-2%;
 }
+
+: #follow-icon{width:69px;height:24px;}
+#follow-icon a.f-icon{margin-left:7px;background: url("images/new_homepage/f.png") repeat scroll 0px 0px transparent; display: block;float: left;height: 24px;transition: all 0s ease-in-out 0s;width: 24px;}
+#follow-icon a.f-icon:hover{background: url("images/new_homepage/f.png") repeat scroll 0px -24px transparent;}
+
+#follow-icon a.t-icon{background: url("images/new_homepage/t.png") repeat scroll 0px 0px transparent; display: block;float: left;height: 24px;transition: all 0s ease-in-out 0s;width: 24px;margin-left:6px;}
+#follow-icon a.t-icon:hover{background: url("images/new_homepage/t.png") repeat scroll 0px -24px transparent;}
+
+
 </style>
 <decorator:head/>
 </head>
@@ -87,10 +96,21 @@ margin:-1px 0px 0px 0px ;
   <div class="mainwrapper">
   <div class="row-fluid">
     <div class="header">
-      <div class="logo" ><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt="" style="margin-top:10px;"/></a>
+      <div class="logo" ><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt="" style="margin-top:0px;"/></a>
 	  </div>
       <div class="header-right-sec">
-        <div class="lr-sec">
+		<div class="pull-right" style="margin-top:-15px;">
+			<div style="float:left;">
+				<h5 style="color:#08AAEC;line-height:0px;"> FOLLOW US</h5>
+			</div>
+			<div id="follow-icon" style="">
+				<a class="f-icon" title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"></a>
+				<a class="t-icon" title="twitter" href="http://twitter.com/#!/partyanalyst" target="_blank"></a>
+			</div>
+		</div>
+
+        <div class="lr-sec" style="margin-right:-18px;margin-top:0px;">
+
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 				<c:out value="Welcome, ${sessionScope.UserName} |"/>
 			</c:if>
@@ -119,7 +139,7 @@ margin:-1px 0px 0px 0px ;
 		</div>
 <div id="menu">
     <ul class="menu">
-        <li><a href="homePage.action"><span><i class="icon-home icon-white"></i></span></a>
+        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-white"></i></span></a>
 	<c:if test="${sessionScope.loginStatus == null || 	!sessionScope.hasPartyAnalystUserRole}">
         <li><a href="#" ><span>ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;">
@@ -358,14 +378,14 @@ margin:-1px 0px 0px 0px ;
 <!--Facebook like icon-->
 	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
 	</div>
-	<!--Facebook and twitter follow us-->
+	<!--Facebook and twitter follow us
 		<div class="follow-us" style="margin-left:180px;">
             <ul>
               <li><a href="http://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
               <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
             </ul>
             <h5 style="color:#08AAEC;">follow us</h5> 
-		</div>
+		</div>-->
 </div>
 
 </center>
