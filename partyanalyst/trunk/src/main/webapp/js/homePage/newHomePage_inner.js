@@ -420,6 +420,6 @@ function getProblemDetails()
 			task:"getProblemDetails"						
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getProblemDetailsForHomePageAction.action?"+rparam+"&resultsCount=6&startIndex=0";		
+		var url = "getProblemDetailsForHomePageAction.action?"+rparam+"&resultsCount=4&startIndex=0";		
 		homePageProblemAjaxCall(jsObj,url);
 }
