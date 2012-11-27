@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public interface IConstituencyManagementService {
@@ -50,5 +51,7 @@ public interface IConstituencyManagementService {
 	//public Long getProblemVisibility(Long problemId);
 	
 	//public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
+	
+	public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle);
 	
 }
