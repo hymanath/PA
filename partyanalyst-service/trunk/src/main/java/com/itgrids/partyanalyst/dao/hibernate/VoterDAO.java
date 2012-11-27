@@ -96,6 +96,31 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				Object[] params = {hamletId, year};
 				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.tehsil.tehsilId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
 				}	
+		
+			@SuppressWarnings("unchecked")
+			public List<Object[]> getVotersBasicInfoByConstituencyId(Long constituencyId, String year)
+			{
+				Object[] params = {constituencyId, year};
+				return getHibernateTemplate().find("select count(model.voterId), model.gender from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.constituencyElection.constituency.constituencyId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.gender", params);
+				
+			}
+			
+			@SuppressWarnings("unchecked")
+			public List<Object[]> getVotersBasicInfoByManadalId(Long manadalId, String year)
+			{
+				Object[] params = {manadalId, year};
+				return getHibernateTemplate().find("select count(model.voterId), model.gender from  Voter model, HamletBoothElection model2 " +
+						" where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.tehsil.tehsilId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.gender", params);
+				
+			}
+			
+			
+			
+			@SuppressWarnings("unchecked")
+			public List<Object[]> getVotersBasicInfoByPollingStationId(Long boothId, String year){
+				Object[] params = {boothId, year};
+				return getHibernateTemplate().find("select count(model.voterId), model.gender from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.gender", params);
+			}	
 	
 	
 	
