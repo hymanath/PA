@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -40,6 +41,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 	private List<HamletProblemVO> hamletProblems;
 	private ProblemManagementDataVO problemManagementDataVO;
 	private IProblemManagementService problemManagementService;
+	private VotersInfoForMandalVO votersInfoForMandalVO; 
 	
 	JSONObject jObj = null;
 	private String task = null;
@@ -131,6 +133,14 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		this.problemManagementService = problemManagementService;
 	}
 	
+	public VotersInfoForMandalVO getVotersInfoForMandalVO() {
+		return votersInfoForMandalVO;
+	}
+
+	public void setVotersInfoForMandalVO(VotersInfoForMandalVO votersInfoForMandalVO) {
+		this.votersInfoForMandalVO = votersInfoForMandalVO;
+	}
+
 	public String getVotersByHamlet()
 	{
 		String param=null;
@@ -267,6 +277,24 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		return SUCCESS;
 	}
 
+	public String getBasicVotersInfo()
+	{
+		String param = null;
+		
+		param = getTask();
+		
+		try{
+			jObj=new JSONObject(param);
+		}catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long constituencyId = jObj.getLong("constituencyId");
+		String checkedele = jObj.getString("checkedele");
+		
+		 votersInfoForMandalVO = constituencyManagementService.getBasicVotersInfo(constituencyId,"2009",checkedele);
+		
+		return SUCCESS;
+	}
 	
 	
 }
