@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.CandidateSubscriptions;
@@ -772,5 +773,56 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				return vsbltyId;
 			}
 	}*/
+		
+		
+		public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle)
+		{
+			VotersInfoForMandalVO votersInfoForMandalVO = null;
+			List<Object[]> list = null;
+			Long totalVotersCount = 0l;
+			try{
+				if(checkedEle !=null && checkedEle.equalsIgnoreCase("assembly"))
+					list = voterDAO.getVotersBasicInfoByConstituencyId(constituencyId, year);
+				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("mandal"))
+					list = voterDAO.getVotersBasicInfoByManadalId(constituencyId, year);
+				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("panchayat"))
+					list = boothConstituencyElectionVoterDAO.getVotersBasicInfoByPanchayatId(constituencyId, year);
+				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("pollingStation"))
+					list = voterDAO.getVotersBasicInfoByPollingStationId(constituencyId, year);
+					
+				if(list !=null && list.size() >0)
+				{
+					votersInfoForMandalVO = new VotersInfoForMandalVO(); 
+					for(Object[] params : list)
+					{
+						if(params[0].toString() != null && params[1].toString() != null)
+						{
+							if(params[1].toString().equalsIgnoreCase("M"))
+							{
+								votersInfoForMandalVO.setTotalMaleVoters(params[0].toString());
+								totalVotersCount += Long.parseLong(params[0].toString());
+							}
+							if(params[1].toString().equalsIgnoreCase("F"))
+							{
+								votersInfoForMandalVO.setTotalFemaleVoters(params[0].toString());
+								totalVotersCount += Long.parseLong(params[0].toString());
+							}
+							if(params[1].toString().equalsIgnoreCase(""))
+							{
+								votersInfoForMandalVO.setUnKnowVoters(params[0].toString());
+								totalVotersCount += Long.parseLong(params[0].toString());
+							}
+							votersInfoForMandalVO.setTotalVoters(totalVotersCount.toString());
+						}
+							
+					}
+				}
+				
+				return votersInfoForMandalVO;
+			}catch (Exception e) {
+				e.printStackTrace();
+				return votersInfoForMandalVO;
+			}
+		}
 	
 }
