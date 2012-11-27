@@ -52,22 +52,28 @@
 		  <!-- 	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> -->
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
+		   
+		   	<link rel="stylesheet" type="text/css" href="styles/engine3/style.css" />
+			
 		</head>
 		<style>
+		
+
+		#menu ul.menu li.active a {
+			background-position: left 0px;
+		}
+		#menu ul.menu li.active a span {
+			color: #E8F3F7;
+			background-position: right -27px;
+		}
 		.container{width:960px;}
 		.p-m-bottom0px{padding-bottom:0px;margin-bottom:0px;}
 		h4{font-size:13.5px;}
 		h5{font-size:12px;}
 	.votersguide {display:inline-block;padding:0px;position:relative;}
-	.votersguide .btn{ bottom: 5px;
-    left: 10px;
-    position: absolute;}
- 	
-	.explore .p-5px{display:inline-block;padding:5px;border:0px;padding-bottom: 9px;}
-	.explore h4{ float: left;
-    margin-left: 5px;
-    width: 56%;
- margin-top:22px;}
+	.votersguide .btn{ bottom: 5px;right: 10px;position: absolute;}
+ 	.explore .p-5px{display:inline-block;padding:5px;border:0px;padding-bottom: 9px;}
+	.explore h4{ float: left;margin-left: 5px;width: 56%;margin-top:22px;}
  	.explore h6{clear:both;text-align:center;padding-top:18px;}
 	.voterspulse-home{margin-top:10px;}
 	.voterspulse-home h3{margin-top: 0px; margin-bottom: 0px;font-size:20px;}
@@ -81,22 +87,21 @@
 	#problemsShowDIV .widget-block{display:inline-block;width:100%;}
 	#my-jqCarousel-3 .mask li:hover{background:#fff;}
 	#icon_leftsec{margin-right:5px;}
-     .star{margin-top:-3px;}
-	 .voters-pulse-home{position:relative;}
-	 .voters-pulse-home .btn{position:absolute;left:5px;
-	 bottom:2px;}
-	 #my-jqCarousel-news{background:#fafafa;}
-	 .widget .widget-block {padding-bottom: 20px;}
-	 .btn-group{margin-top: 10px;}
-	
-	.problemSearchBtn{background-color: #5BB75B;
-    background-image:linear-gradient(to bottom, #62C462, #51A351);
+    .star{margin-top:-3px;}
+	.voters-pulse-home{position:relative;}
+	.voters-pulse-home .btn{position:absolute;right:5px;bottom:5px;}
+	#my-jqCarousel-news{background:#fafafa;height:160px;}
+	.widget .widget-block {padding-bottom: 20px;}
+	.btn-group{margin-top: 10px;}
+	.problemSearchBtn{background-color: #5BB75B;background-image:linear-gradient(to bottom,#62C462, #51A351);
     background-repeat: repeat-x;
     border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     color: #FFFFFF;padding: 6px 10px; border-radius:5px; cursor: pointer; border: medium none; float: right; clear: both; margin-right: 12px;}
 
 #searchAjaxImgSpan{float:right;margin-top:-33px;margin-right: -12px;display:none;}
 #problemErrorMsgDiv{margin-top: 17px;font-size:13px;}
+#my-jqCarousel-3 .pagination-links{margin-top:5px;}
+#my-jqCarousel-3{margin-top:5px;}
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -107,15 +112,15 @@
 			<div class="widget blue votersguide p-m-bottom0px">
 			                  
 								<img src="images/voters_guide.gif">
-								<a href="voters.action" class="btn btn-mini" >Voter's Guide</a>
+								<a href="voters.action" class="btn btn-small btn-primary" >Voter's Guide</a>
 								
 							</div>
 			
-		<div class="widget blue quicklinks"><h2><span><i class="icon-random icon-white"id="icon_leftsec"></i></span>
+		<div class="widget blue quicklinks"><h2><span><i class="icon-random "id="icon_leftsec"></i></span>
 Quick Links</h2>
 				
 				<!---- View Election Results------->
-							<div class="widget-block" contentindex="4c" style="height:200px;">
+							<div class="widget-block" contentindex="4c" style="height:181px;">
 								<h5> View Election Result</h5>
 								<table>
 									<tbody>
@@ -153,7 +158,7 @@ Quick Links</h2>
 					<!---------------->
 		
 							<!------View Your State---------->
-							<div class="widget-block" contentindex="0c" style="height:180px;">
+							<div class="widget-block" contentindex="0c" style="height:160px;">
 								<h5>View Your State</h5>
 								<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
 								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
@@ -162,7 +167,7 @@ Quick Links</h2>
 										
 							</div>
 						<!----View Your district------>
-							<div class="widget-block" contentindex="1c" style="height:220px;">
+							<div class="widget-block" contentindex="1c" style="height:180px;">
 							<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
 								     <h5>View Your district</h5>
 									 <p>Select your district to view its election results in district level.</p>
@@ -175,7 +180,7 @@ Quick Links</h2>
 								    
 							</div>
 						<!--View your constituency-->
-							<div class="widget-block" contentindex="2c" style="height:250px;">
+							<div class="widget-block" contentindex="2c" style="height:210px;">
 							<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 								<h5>View Your Constituency</h5>
 								<p>Select Constituency Type<br>
@@ -208,7 +213,7 @@ Quick Links</h2>
 							
 							<!--View your Locality-->
 						
-							<div class="widget-block" contentindex="3c" style="height:200px;">
+							<div class="widget-block" contentindex="3c" style="height:230px;">
 								<h5>View Your Locality</h5>
                    				<div>
 									<table>								
@@ -358,112 +363,63 @@ Quick Links</h2>
 				</div>	
 				<!-- END OF NEWS BLOCK -->
 				<!--sasi photo gallary start-->
-				<div class="widget blue">
-			        <h2><i class="icon-camera icon-white"id="icon_leftsec"></i>
+				<div class="widget blue" style="padding-bottom:2px;">
+			        <h2><i class="icon-camera "id="icon_leftsec"></i>
 Latest Photo Galleries</h2>
-					<div id="PhotoGalleryCarousel" class="carousel" style="display:none;">
-						<!-- Carousel items -->
-						<div class="carousel-inner">
-							<s:if test="resultMap != null && resultMap.size() > 0">
-							<s:iterator value="resultMap.photogallary" var="photogallaryDetails">
-        
-								<div class="item">
-		
-			
-									<s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
-										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
-									</s:if>
-									<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
-									</s:if>
-									<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="">
-									</s:if>
-					
-									<img src='<s:property value="pathOfFile"/>'  
-									alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>' /></a>
-					
-			
-									<div class="carousel-caption">
-										<p> <s:property value="gallaryName"/> Photo Gallary.</p>
-									
-									
-									<s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
-										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
-									</s:if>
-									<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
-									</s:if>
-									<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;" class="btn btn-mini pull-right">
-									</s:if>
-									View Album</a>
-									</div>	
-								</div>
-							</s:iterator>
-							</s:if>
-						</div>
-						<!-- Carousel nav -->
-						<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
-						<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
-					</div>
-					
-					<div id="my-jqCarousel-1" class="jqCarousel module h-300px m-minus20px">
-					 <ul>
+					<div class="widget-block" style="border:none;"> 
+					<div id="wowslider-container3">
+		<div class="ws_images">
+			<ul>
 		    <s:if test="resultMap != null && resultMap.size() > 0">
 			  <s:iterator value="resultMap.photogallary" var="photogallaryDetails">
 			   
 			    
-			      <li >
+			      <li>
 			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
-					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="width:320px;">
 			        </s:if>
 					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'  style="width:320px;">
 			        </s:if>
 					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'  style="width:320px;">
 			        </s:if>
-		            <img src='<s:property value="pathOfFile"/>' style="width:100%;height:300px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
-				    <p class="photogallery-caption">
-						  <s:property value="description"/>
-
-			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
-					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' class="btn btn-mini pull-right">
-			        </s:if>
-					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
-					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' class="btn  btn-mini pull-right">
-			        </s:if>
-					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
-					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' class="btn  btn-mini pull-right">
-			        </s:if>
-					
-			          <!--<s:property value="gallaryName"/> --> View Album</a>
-				
-
-					</p>
+		            <img src='<s:property value="pathOfFile"/>' width="320px" style="width:320px;height:240px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
 				  </li>
 			    
 			  </s:iterator>
 			 </s:if>
 			 </ul>
 		</div>
+		<div class="ws_thumbs">
+			<div>
+			 <s:if test="resultMap != null && resultMap.size() > 0">
+			  <s:iterator value="resultMap.photogallary" var="photogallaryDetails">
+				<a href="#">
+		            <img src='<s:property value="pathOfFile"/>' style="width:96px;height:72px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+				 
+
+			    </s:iterator>
+			 </s:if>
+			
+			</div>
+		</div>
 		
-		<div class="photogallerynav">
-              
-              <span class="prev-nav"><i class="icon-chevron-left icon-white"></i></span>
-               <span class="next-nav"><i class="icon-chevron-right icon-white"></i></span>
-             
-            </div>
+			<div class="ws_shadow"></div>
+</div>
+	
+				
+		
+		</div>
 					
 				</div>
 			
 			<!--sasi photo gallary END-->
-				<div class="widget yellow">
+				<div class="widget yellow" style="padding-bottom:5px;">
 				<h2><span><i class="icon-facetime-video icon-black"id="icon_leftsec"></i><span>
 Latest Video Galleries</h2>
 				<!--video gallary-->
-				<div id="my-jqCarousel-3" class="jqCarousel module widget-block m-minus20px v-gallary">
+				<div id="my-jqCarousel-3" class="jqCarousel module v-gallary">
 		    <ul>
 					<s:if test="resultMap != null && resultMap.size() > 0">
 					<s:iterator value="resultMap.VideoGallary" var="videoGallaryDetails">
@@ -509,7 +465,7 @@ Latest Video Galleries</h2>
 				<!---------Your Locality ProblemsView Block----->
 				<div class="widget red">
 				  <h2><span><i class="icon-map-marker
- icon-white"id="icon_leftsec"></i><span>Your Locality Problems</h2>
+ "id="icon_leftsec"></i><span>Your Locality Problems</h2>
 				  <h5>New or Existing - Our Platform elevates your problems to the external world. </h5>
 				<div class="pager widget-block"> 
 					
@@ -537,7 +493,7 @@ Latest Video Galleries</h2>
 				</div>
 				
 				<div class="widget blue">
-					<h2><span><i class="icon-bookmark icon-white"id="icon_leftsec"></i><span>
+					<h2><span><i class="icon-bookmark "id="icon_leftsec"></i><span>
  Tweets From Parties and Leaders </h2>
 						<div class="widget-block">
 							<jsp:include page="newsocialtwitter.jsp" /> 
@@ -549,22 +505,21 @@ Latest Video Galleries</h2>
 			<div class="span4">
 			
 				<div class="widget yellow " style="margin-bottom:0px;padding-bottom:0px;">
-				<div class="widget-block" style="padding: 4px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
-				<img src="images/hand-icon.gif"> You've come to the right place!
-				<h6 style="display: inline-block; margin: 5px 5px 5px 17px;">The New Party Analyst</h6><a href="viewFeaturesAction.action" class="btn btn-primary pull-right inline" >Explore!</a>
+				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
+				<img src="images/RightPlace.gif"><a href="viewFeaturesAction.action" class="btn btn-small btn-warning pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;">Explore!</a>
 				
 				</div></div>
 				
 				<div class="widget green voters-pulse-home" style="margin-bottom:0px;padding-bottom:0px;">
 				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
 				<img src="images/voters_pulse.gif">
-				<a class="btn btn-mini" href="VotersPulse.action">Discover the Advantages</a></div>
+				<a class="btn btn-success btn-small" href="VotersPulse.action">View Now</a></div>
 				</div>
 				
 				
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
-					<h2><span><i class="icon-fire icon-white "id="icon_leftsec"></i><span>
+					<h2><span><i class="icon-fire  "id="icon_leftsec"></i><span>
 Hot Topics</h2>
 					<c:forEach var="specialPages" items="${specialPageVOList}">
 					<div class="media media_hr widget-block">
@@ -653,7 +608,7 @@ Hot Topics</h2>
 				</div>
 				<!-----------Opinion Poll--------------->
 				<div class="widget blue" style="padding-bottom:0px;">
-					<h2><span><i class="icon-signal icon-white"id="icon_leftsec"></i><span>
+					<h2><span><i class="icon-signal "id="icon_leftsec"></i><span>
 Opinion Poll</h2>
 				<div class="widget-block">
 						<div id="pollsWidgetHeader"></div>
@@ -744,10 +699,41 @@ getProblemDetails();
 
  
  $(document).ready(function() {
-    var showChar = 170;
+    
     var ellipsestext = "...";
     $('#my-jqCarousel-news .more').each(function() {
+		var showChar = 170;
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+			var html = c + ellipsestext;
+ 
+            $(this).html(html);
+        }
+ 
+    });   
 	
+	 $('#my-jqCarousel-3 .caption').each(function() {
+		
+		var showChar=50;
+        var content = $(this).html();
+	    if(content.length >showChar) {
+ 
+            var c = content.substr(0, showChar);
+			var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + ellipsestext;
+ 
+            $(this).html(html);
+        }
+ 
+    });  
+	
+	$('.hottopics .hottopics_desc').each(function() {
+		var showChar=170;
         var content = $(this).html();
  
         if(content.length > showChar) {
@@ -760,40 +746,15 @@ getProblemDetails();
             $(this).html(html);
         }
  
-    });   
-	
-	 $('#my-jqCarousel-3 .caption').each(function() {
-	
-        var content = $(this).html();
- 
-        if(content.length > 50) {
- 
-            var c = content.substr(0, showChar);
-            var h = content.substr(showChar-1, content.length - showChar);
- 
-            var html = c + ellipsestext;
- 
-            $(this).html(html);
-        }
- 
-    });  
-	
-	$('.hottopics .hottopics_desc').each(function() {
-	
-        var content = $(this).html();
- 
-        if(content.length > 200) {
- 
-            var c = content.substr(0, showChar);
-            var h = content.substr(showChar-1, content.length - showChar);
- 
-            var html = c + ellipsestext;
- 
-            $(this).html(html);
-        }
- 
     });  
 	
 	});
-
+$(document).ready(function(){
+	$(".ws_images li").each(function(i){
+	 var ids="wows3_"+i;
+	  $(this).find("a").attr("id",ids);
+	});
+	});
 </script>
+	<script type="text/javascript" src="styles/engine3/wowslider.js"></script>
+	<script type="text/javascript" src="styles/engine3/script.js"></script>
