@@ -15,7 +15,7 @@ public class UserPartyRelationDAO extends GenericDaoHibernate< UserPartyRelation
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartiesByUser(Long userId)
 	{
-		return getHibernateTemplate().find("select model.party.partyId,model.party.longName,model.party.shortName from UserPartyRelation model where model.user.userId = ?",userId);
+		return getHibernateTemplate().find("select model.party.partyId,model.party.longName,model.party.shortName from UserPartyRelation model where model.user.userId = ? order by model.party.longName",userId);
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getUserPartyRelationDetails(Long userId)
