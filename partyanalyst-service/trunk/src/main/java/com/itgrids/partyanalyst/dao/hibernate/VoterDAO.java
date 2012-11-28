@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.model.Voter;
@@ -71,6 +72,36 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				
 				
 			}
+			
+			//Impotant families age wise count For Polling station
+			public Long getVotersAgeInfoForPollingstationAndElectionYear(Long panchayatId,
+					String year,Long minAge,Long maxAge)
+			{
+			Object[] params = {panchayatId, year};
+			Query query = getSession().createQuery("select count(model.age) from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 and model.age BETWEEN ? AND ?");
+			
+			query.setParameter(0,panchayatId);
+			query.setParameter(1,"2009");
+			query.setParameter(2,minAge);
+			query.setParameter(3,maxAge);
+			
+			return (Long)query.uniqueResult();
+		}
+			
+			
+			public Long getVotersAboveAgeInfoForPollingstationAndElectionYear(Long panchayatId,
+					String year)
+			{
+			Object[] params = {panchayatId, year};
+			Query query = getSession().createQuery("select count(model.age) from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 and model.age > 60");
+			
+			query.setParameter(0,panchayatId);
+			query.setParameter(1,"2009");
+			
+			
+			return (Long)query.uniqueResult();
+				}
+			
 	
 		//caste info for Polling station
 			
@@ -80,7 +111,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
 				}
 	
-				//caste info for Constituency
+		//caste info for Constituency
 			
 			
 			public List findVotersCastInfoByConstituencyAndElectionYear(Long hamletId, String year){
@@ -89,14 +120,14 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				}
 	
 	
-			//caste info for Mandal
+		//caste info for Mandal
 			
 			
 			public List findVotersCastInfoByMandalAndElectionYear(Long hamletId, String year){
 				Object[] params = {hamletId, year};
 				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.tehsil.tehsilId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
 				}	
-		
+			
 			@SuppressWarnings("unchecked")
 			public List<Object[]> getVotersBasicInfoByConstituencyId(Long constituencyId, String year)
 			{
@@ -121,6 +152,8 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				Object[] params = {boothId, year};
 				return getHibernateTemplate().find("select count(model.voterId), model.gender from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.gender", params);
 			}	
+
+			
 	
 	
 	
