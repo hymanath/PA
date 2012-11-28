@@ -11,14 +11,14 @@
 <meta property="fb:app_id" content="167844749984003"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
-<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
+<!--<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>-->
 <style type="text/css">#videogallery a#videolb{display:none}</style>
-<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
-<script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
+<!--<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>-->
+<!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script>
+<script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  -->
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
-<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
+<!--<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>-->
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
@@ -581,11 +581,10 @@ Tweet</a>
             <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span> </h1>
 		<div id="videogallery" class="fleft" style="margin-bottom:15px;">
 
-	<s:iterator status="stat" value="fileVO">
-		
+	<s:iterator status="stat" var="vo" value="fileVO">
 		<s:if test="#stat.index == 0">
 		<DIV>
-		<a rel="#voverlay" title='<s:property value="title"/>' href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<a rel="#voverlay" title='<s:property value="title"/>' onClick="getVideoDetails(<s:property value='contentId'/>)">
 		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
 		</DIV>
 		</s:if>
@@ -595,7 +594,7 @@ Tweet</a>
 		<ul class="video-thumb-sec">
 			<s:iterator status="stat" value="fileVO">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
-				<li><a rel="#voverlay" title='<s:property value="title"/>' href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
+				<li><a rel="#voverlay" title='<s:property value="title"/>' onClick="getVideoDetails(<s:property value='contentId'/>)" style="width:72px;">
 				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
 				</s:if>
 			</s:iterator>
@@ -2838,7 +2837,6 @@ function videoGallaryPopUp()
 }
 
 function showAllVideoGalleries(){
-		
 		var str='';
 str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Video Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
 	$("#videoGallaryPopUpDiv").html(str);
@@ -2881,8 +2879,7 @@ function buildVideoGallaries(results)
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
 function getVideosInAGallary(gallaryId){
-
-    var jsObj = {
+	var jsObj = {
 			
 			time : timeST,
 			gallaryId:gallaryId,
