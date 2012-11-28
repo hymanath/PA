@@ -218,8 +218,12 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 	System.out.println(list.size());
 	}*/
 	
-	
-	
+	public void testgetVotersAgeInfoForPanchayatAndElectionYear()
+	{
+		
+		Long value = boothConstituencyElectionVoterDAO.getVotersAgeInfoForPanchayatAndElectionYear(1l, "2009",0l,65l);
+		System.out.println(value);
+	}
 	public void testGetVotersBasicInfoByPanchayatId()
 	{
 		List<Object[]> list = boothConstituencyElectionVoterDAO.getVotersBasicInfoByPanchayatId(15373l, "2009");
@@ -240,3 +244,4 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		}
 	}
 }
+
