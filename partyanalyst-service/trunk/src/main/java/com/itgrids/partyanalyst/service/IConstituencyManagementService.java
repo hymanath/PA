@@ -52,6 +52,7 @@ public interface IConstituencyManagementService {
 	
 	//public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
 	
+	public List<Long> getVoterAgeDetailsForPanchayat(Long panchayatId, String year,String checkedEle);
 	public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle);
 	
 }
