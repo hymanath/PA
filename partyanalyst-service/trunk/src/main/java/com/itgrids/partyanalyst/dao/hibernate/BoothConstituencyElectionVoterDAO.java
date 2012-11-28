@@ -257,6 +257,41 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		}
 	
 	
+	
+	//Impotant families age wise count For Panchayat
+		public Long getVotersAgeInfoForPanchayatAndElectionYear(Long panchayatId,
+				String year,Long minAge,Long maxAge)
+		{
+		Object[] params = {panchayatId, year};
+		Query query = getSession().createQuery("select count(model.voter.age) from BoothConstituencyElectionVoter model where " +
+				"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				" and model.voter.age BETWEEN ? AND ?");
+		
+		query.setParameter(0,panchayatId);
+		query.setParameter(1,"2009");
+		query.setParameter(2,minAge);
+		query.setParameter(3,maxAge);
+		
+		return (Long)query.uniqueResult();
+			}
+		
+		
+		public Long getVotersAboveAgeInfoForPanchayatAndElectionYear(Long panchayatId,
+				String year)
+		{
+		Object[] params = {panchayatId, year};
+		Query query = getSession().createQuery("select count(model.voter.age) from BoothConstituencyElectionVoter model where " +
+				"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				" and model.voter.age > 60");
+		
+		query.setParameter(0,panchayatId);
+		query.setParameter(1,"2009");
+		
+		
+		return (Long)query.uniqueResult();
+			}
+		
+		
 	//caste info for Panchayat
 		public List findVotersCastInfoByPanchayatAndElectionYear(Long hamletId, String year){
 			Object[] params = {hamletId, year};
