@@ -15,8 +15,18 @@ public class ConstituencyManagementVO {
 	private List<HamletProblemVO> hamletProblems;
 	private TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO;
 	
-	private List<Long> votersCount;
 	
+	private List<Long> votersCount;
+	private List<Long> agewisevotersCount;
+	
+	public List<Long> getAgewisevotersCount() {
+		return agewisevotersCount;
+	}
+
+	public void setAgewisevotersCount(List<Long> agewisevotersCount) {
+		this.agewisevotersCount = agewisevotersCount;
+	}
+
 	public List<Long> getVotersCount() {
 		return votersCount;
 	}
