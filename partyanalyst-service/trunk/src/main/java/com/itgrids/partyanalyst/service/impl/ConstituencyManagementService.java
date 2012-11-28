@@ -274,7 +274,43 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				
 		return voterCastInfoVO;				
 	}
-	
+	public List<Long> getVoterAgeDetailsForPanchayat(Long panchayatId, String year,String checkedEle)
+	{
+		Long abovevotersCount = null;
+		Long between18To25VotersCount = null;
+		Long between25To35VotersCount = null;
+		Long between35To50VotersCount = null;
+		Long between50To60VotersCount = null;
+		
+		Long minAge =0l;
+		Long maxAge =0l;
+		List<Long> returnVal = new ArrayList<Long>();
+		if(checkedEle.equalsIgnoreCase("panchayat"))
+		{
+			abovevotersCount = boothConstituencyElectionVoterDAO.getVotersAboveAgeInfoForPanchayatAndElectionYear(panchayatId, year);
+			between18To25VotersCount=boothConstituencyElectionVoterDAO.getVotersAgeInfoForPanchayatAndElectionYear(panchayatId, year,18l,25l);
+			between25To35VotersCount=boothConstituencyElectionVoterDAO.getVotersAgeInfoForPanchayatAndElectionYear(panchayatId, year,25l,35l);
+			between35To50VotersCount=boothConstituencyElectionVoterDAO.getVotersAgeInfoForPanchayatAndElectionYear(panchayatId, year,35l,55l);
+			between50To60VotersCount=boothConstituencyElectionVoterDAO.getVotersAgeInfoForPanchayatAndElectionYear(panchayatId, year,50l,60l);
+		}
+		
+		if(checkedEle.equalsIgnoreCase("pollingstation"))
+		{
+			abovevotersCount = voterDAO.getVotersAboveAgeInfoForPollingstationAndElectionYear(panchayatId, year);
+			between18To25VotersCount=voterDAO.getVotersAgeInfoForPollingstationAndElectionYear(panchayatId, year,18l,25l);
+			between25To35VotersCount=voterDAO.getVotersAgeInfoForPollingstationAndElectionYear(panchayatId, year,25l,35l);
+			between35To50VotersCount=voterDAO.getVotersAgeInfoForPollingstationAndElectionYear(panchayatId, year,35l,55l);
+			between50To60VotersCount=voterDAO.getVotersAgeInfoForPollingstationAndElectionYear(panchayatId, year,50l,60l);
+		}
+		returnVal.add(abovevotersCount);
+		returnVal.add(between18To25VotersCount);
+		returnVal.add(between25To35VotersCount);
+		returnVal.add(between35To50VotersCount);
+		returnVal.add(between50To60VotersCount);
+		
+		
+		return returnVal;
+	}
 	
 	
 	public List<Long> getVoterHouseDetailsForPanchayat(Long panchayatId, String year,String checkedEle)
