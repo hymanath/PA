@@ -72,8 +72,11 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 	public List findVotersInfoForPanchayatAndElectionYear(Long hamletId,
 			String year);
 	
+	public Long getVotersAgeInfoForPanchayatAndElectionYear(Long panchayatId,
+			String year,Long minAge,Long maxAge);
+	
+	public Long getVotersAboveAgeInfoForPanchayatAndElectionYear(Long panchayatId,
+			String year);
 	
 	public List<Object[]>  getVotersBasicInfoByPanchayatId(Long panchayatId, String year);
-	
-	
 }
