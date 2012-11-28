@@ -648,7 +648,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 						 break;
 				 }
 				
-				
+				fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(fileVO.getFileId()).get(0));
 				fileVO.setPath(filePath);
 				fileVO.setTitle(file.getFileTitle());
 				fileVO.setDescription(file.getFileDescription());
