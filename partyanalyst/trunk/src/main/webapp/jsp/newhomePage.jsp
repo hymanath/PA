@@ -102,6 +102,13 @@
 #problemErrorMsgDiv{margin-top: 17px;font-size:13px;}
 #my-jqCarousel-3 .pagination-links{margin-top:5px;}
 #my-jqCarousel-3{margin-top:5px;}
+
+
+#pollsWidgetBody {
+    border:none;
+   overflow: visible;
+    padding:0px;
+}
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -111,7 +118,7 @@
 			<!-------Quick Links Block--------------->
 			<div class="widget blue votersguide p-m-bottom0px">
 			                  
-								<img src="images/voters_guide.gif">
+								<img src="images/voters_guide.gif" alt="voters guide Image">
 								<a href="voters.action" class="btn btn-small btn-primary" >Voter's Guide</a>
 								
 							</div>
@@ -309,11 +316,11 @@ Quick Links</h2>
 										</a>-->
 										
 										<c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg"/></a>
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										
 										<p class="span6 more"><s:property value="description"/></p>
@@ -322,11 +329,11 @@ Quick Links</h2>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}"/></a>
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span6 more"><s:property value="description"/></p>
 										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;">
@@ -334,10 +341,10 @@ Quick Links</h2>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
 										<c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}"/></a>
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span6 more" ><s:property value="description"/></p>
 										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' style="position:absolute;bottom:5px;right:20px;" class="pull-left round-link">
@@ -365,7 +372,7 @@ Quick Links</h2>
 				<!--sasi photo gallary start-->
 				<div class="widget blue" style="padding-bottom:2px;">
 			        <h2><i class="icon-camera "id="icon_leftsec"></i>
-Latest Photo Galleries</h2>
+						Latest Photo Galleries</h2>
 					<div class="widget-block" style="border:none;"> 
 					<div id="wowslider-container3">
 		<div class="ws_images">
@@ -417,7 +424,7 @@ Latest Photo Galleries</h2>
 			<!--sasi photo gallary END-->
 				<div class="widget yellow" style="padding-bottom:5px;">
 				<h2><span><i class="icon-facetime-video icon-black"id="icon_leftsec"></i><span>
-Latest Video Galleries</h2>
+				Latest Video Galleries</h2>
 				<!--video gallary-->
 				<div id="my-jqCarousel-3" class="jqCarousel module v-gallary">
 		    <ul>
@@ -506,13 +513,13 @@ Latest Video Galleries</h2>
 			
 				<div class="widget yellow " style="margin-bottom:0px;padding-bottom:0px;">
 				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
-				<img src="images/RightPlace.gif"><a href="viewFeaturesAction.action" class="btn btn-small btn-warning pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;">Explore!</a>
+				<img src="images/RightPlace.gif"><a href="viewFeaturesAction.action" class="btn btn-small btn-warning pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Explore About PartyAnalyst Image">Explore!</a>
 				
 				</div></div>
 				
 				<div class="widget green voters-pulse-home" style="margin-bottom:0px;padding-bottom:0px;">
 				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
-				<img src="images/voters_pulse.gif">
+				<img src="images/voters_pulse.gif" alt="voters pulse Image">
 				<a class="btn btn-success btn-small" href="VotersPulse.action">View Now</a></div>
 				</div>
 				
@@ -527,7 +534,7 @@ Hot Topics</h2>
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
 								
-								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px;"/>
+								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/>
 								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
