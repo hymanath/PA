@@ -2950,7 +2950,7 @@ function buildImportantVotersInfoDataTable()
 		importantVotersTabContent+='<div id="imppanchayatDiv" style="display:none; width: 167px;margin-top:0px;">';
 		importantVotersTabContent+='<table><tr>';
 		
-		importantVotersTabContent+='<td><select id="imppanchayatField" class="selectWidth" name="state" onchange="getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
+		importantVotersTabContent+='<td><select id="imppanchayatField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
 		importantVotersTabContent+='</td></tr>';
 		importantVotersTabContent+='</table>';
 		importantVotersTabContent+='</div>';
@@ -2968,7 +2968,7 @@ function buildImportantVotersInfoDataTable()
 		importantVotersTabContent+='<div id="imppolingStationDiv" style="display:none; width: 601px;float:right;margin-top:-26px;">';
 		importantVotersTabContent+='<table><tr>';
 		
-		importantVotersTabContent+='<td><select id="imppollingStationField" class="selectWidth" name="state" onchange="getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
+		importantVotersTabContent+='<td><select id="imppollingStationField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
 		importantVotersTabContent+='</table>';
 		importantVotersTabContent+='</div>';
 		importantVotersTabContent+='<div id="importantVotersTabContent_body"></div>';
@@ -2993,7 +2993,7 @@ function buildImportantVotersInfoDataTable()
 		votersByLocBoothContent+='<div id="voterspanchayatDiv" style="display:none; width: 167px;margin-top:0px;">';
 		votersByLocBoothContent+='<table><tr>';
 		
-		votersByLocBoothContent+='<td><select id="voterspanchayatField" class="selectWidth" name="state" onchange="getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
+		votersByLocBoothContent+='<td><select id="voterspanchayatField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
 		votersByLocBoothContent+='</td></tr>';
 		votersByLocBoothContent+='</table>';
 		votersByLocBoothContent+='</div>';
@@ -3011,7 +3011,7 @@ function buildImportantVotersInfoDataTable()
 		votersByLocBoothContent+='<div id="voterspolingStationDiv" style="display:none; width: 601px;float:right;margin-top:-26px;">';
 		votersByLocBoothContent+='<table><tr>';
 		
-		votersByLocBoothContent+='<td><select id="voterspollingStationField" class="selectWidth" name="state" onchange="getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
+		votersByLocBoothContent+='<td><select id="voterspollingStationField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
 		votersByLocBoothContent+='</table>';
 		votersByLocBoothContent+='</div>';
 		votersByLocBoothContent+='<div id="votersByLocationTabContentDiv_body"></div>';
@@ -4445,54 +4445,67 @@ function buildLocalCastStatisticsDataTableForAssembly(title,name)
 	}
 	
 function buildVotersByLocBoothDataTable()
-	{
-		var votersByLocBoothColumnDefs = [ 
-		    	            {key:"voterId", label: "<%=sNo%>"}, 
-		    	            {key:"firstName", label: "<%=name%>", sortable: true}, 
-		    	            {key:"gender", label: "<%=gender%>", sortable: true},
-		    				{key:"age", label: "<%=age%>", sortable:true},
-		    				{key:"houseNo", label: "<%=hNo%>", sortable:true},
-		    				{key:"relativeFirstName", label: "<%=guardName%>", sortable:true},
-		    				{key:"relationshipType", label: "<%=relationship%>", sortable:true},	
-		    				{key:"cast", label: "<%=cast%>", sortable:true},
-		    				{key:"castCatagery", label: "<%=castCategory%>", sortable:true}		
-		    	        ]; 
-        
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("testVoterAction.action?hamletId="+hamletId+"&isVoter=true&"); 
-		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
-		votersByLocBoothDataSource.responseSchema = { 
-			resultsList: "voterDetails", 
-            fields: [
-                     {key:"voterId", parser:"number"}, 
-                     "firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
-            metaFields: {
-	            totalRecords: "voterDetailsCount" // Access to value in the server response
-	        }         
-        };
+{
 
-		var myConfigs = {
-			        initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
-			        dynamicData: true, // Enables dynamic server-driven data
-			        sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
-			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
-		};
-		
-		var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body", 
-				votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
-		
-		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {		
-		        oPayload.totalRecords = oResponse.meta.totalRecords;
-		        return oPayload;
-		}
-		
-		constMgmtTabs.getTab(4).addListener("click", function() {votersByLocBoothDataTable.onShow()});
+var voterspollingstationradioEle = document.getElementById('voterspollingstation');
+var voterspanchayatradioEle =document.getElementById('voterspanchayat');
 
-		return {
-			oDS: votersByLocBoothDataSource,
-			oDT: votersByLocBoothDataTable
-		};
-	}
+if(voterspanchayatradioEle.checked)
+{
+checkedele = "panchayat";
+}
 
+else if(voterspollingstationradioEle.checked)
+{
+checkedele = "pollingstation";
+}
+
+var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "<%=sNo%>"},
+{key:"firstName", label: "<%=name%>", sortable: true},
+{key:"gender", label: "<%=gender%>", sortable: true},
+{key:"age", label: "<%=age%>", sortable:true},
+{key:"houseNo", label: "<%=hNo%>", sortable:true},
+{key:"relativeFirstName", label: "<%=guardName%>", sortable:true},
+{key:"relationshipType", label: "<%=relationship%>", sortable:true},
+{key:"cast", label: "<%=cast%>", sortable:true},
+{key:"castCatagery", label: "<%=castCategory%>", sortable:true}
+];
+
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("testVoterAction.action?hamletId="+hamletId+"&isVoter=true&checkedele="+checkedele+"&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+constMgmtTabs.getTab(4).addListener("click", function() {votersByLocBoothDataTable.onShow()});
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
 function buildImportantVotersDataTable(title,name,name1)
 	{
 		
