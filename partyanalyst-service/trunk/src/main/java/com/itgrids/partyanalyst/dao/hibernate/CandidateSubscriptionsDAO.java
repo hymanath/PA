@@ -38,4 +38,8 @@ public class CandidateSubscriptionsDAO extends GenericDaoHibernate<CandidateSubs
 		queryObject.setParameter(1,userId);
 		return queryObject.executeUpdate();
 	}
+	
+	public List<Object[]> getAllSubscriberDetails(){
+		return getHibernateTemplate().find("select model.candidate.candidateId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName from CandidateSubscriptions model");
+	}
 }
