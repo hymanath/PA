@@ -341,5 +341,49 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"group by model.voter.gender ", params);
 	}
 	
-	
+		@SuppressWarnings("unchecked")
+		public List<Object[]> findVotersForPanchayatAndElectionYearByStartAndMaxResults(Long hamletId, String year, 
+				int startIndex, int maxResult, String order, String columnName)
+		{
+			Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+					"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
+					"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+					"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+					" order by model.voter."+columnName+" "+order);
+			queryObject.setLong(0, hamletId);
+			queryObject.setString(1, year);
+			queryObject.setFirstResult(startIndex);
+			queryObject.setMaxResults(maxResult);
+			return queryObject.list();
+		}
+
+
+
+	public List<Object[]> findVotersForBoothAndElectionYearByStartAndMaxResults(
+				Long boothId, String year, int startIndex,int maxResult, String order, String columnName) 
+				
+			{
+				Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+						"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
+						"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+						"model.voter.hamlet.hamletId in (select model1.hamlet.hamletId from HamletBoothElection model1 where model1.boothConstituencyElection.boothConstituencyElectionId in (select model2.boothConstituencyElectionId from BoothConstituencyElection model2  where model2.booth.boothId = ? )) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+						" order by model.voter."+columnName+" "+order);
+						
+				queryObject.setLong(0, boothId);
+				queryObject.setString(1, year);
+				//queryObject.setLong(1, partNo);
+				queryObject.setFirstResult(startIndex);
+				queryObject.setMaxResults(maxResult);
+				return queryObject.list();
+			}
+		
+		@SuppressWarnings("unchecked")
+		public List findTotalVotersCountByPanchayatAndElectionYear(Long panchayatId, String year){
+			Query queryObject = getSession().createQuery("select count(model.voter.voterId) from BoothConstituencyElectionVoter model " +
+					"where model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? ");
+			queryObject.setLong(0, panchayatId);
+			queryObject.setString(1, year);
+			return queryObject.list();
+		}
+
 }
