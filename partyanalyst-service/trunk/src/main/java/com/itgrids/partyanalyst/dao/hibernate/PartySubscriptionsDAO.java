@@ -39,4 +39,11 @@ public class PartySubscriptionsDAO extends GenericDaoHibernate<PartySubscription
 		queryObject.setParameter(1,userId);
 		return queryObject.executeUpdate();
 	}
+	
+	public List<Object[]> getAllSubscriberDetails()
+	{
+		
+		return getHibernateTemplate().find("select model.party.partyId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName,model.party.longName from PartySubscriptions model ");
+	}
+	
 }
