@@ -88,7 +88,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			return (Long)query.uniqueResult();
 		}
 			
-			
+			//Impotant families Aboveage wise count For Polling station
 			public Long getVotersAboveAgeInfoForPollingstationAndElectionYear(Long panchayatId,
 					String year)
 			{
@@ -126,6 +126,14 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			public List findVotersCastInfoByMandalAndElectionYear(Long hamletId, String year){
 				Object[] params = {hamletId, year};
 				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.tehsil.tehsilId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
+				}	
+			
+			//caste info for Urban
+			
+			
+			public List findVotersCastInfoByUrbanAndElectionYear(Long urbanId, String year){
+				Object[] params = {urbanId, year};
+				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.localBody.localElectionBodyId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast, model.gender order by model.cast", params);
 				}	
 			
 			@SuppressWarnings("unchecked")
