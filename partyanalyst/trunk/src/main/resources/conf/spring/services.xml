@@ -1168,12 +1168,13 @@
 	</bean>
 	
 	<bean name="partyCandidateSpecialPageScheduleService" class="com.itgrids.partyanalyst.service.impl.PartyCandidateSpecialPageScheduleService">
-		<property name="candidateUpdatesEmailDAO" ref="candidateUpdatesEmailDAO" />
-		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
-		<property name="specialPageUpdatesEmailDAO" ref="specialPageUpdatesEmailDAO" />
+		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
+		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO" />
+		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO" />
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 		<property name="mailService" ref="mailService" />
 		<property name="mailsTemplateService" ref="mailsTemplateService" />
+		<property name="velocityEngine" ref="velocityEngine" />
 	</bean>
 	
 	<bean name="sendUpdatesService" class="com.itgrids.partyanalyst.service.impl.SendUpdatesService">
@@ -1213,5 +1214,16 @@
 		<property name="candidateDAO" ref="candidateDAO"/>
 	</bean>
 	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+      <property name="velocityProperties">
+        <props>
+	      <prop key="resource.loader">file</prop>
+	      <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+		  <prop key="file.resource.loader.cache">false</prop>
+	    </props>
+	  </property>
+	  <property name="resourceLoaderPath"><value>/emailTemplates</value></property>
+    </bean>
+     
 </beans>		
 	
