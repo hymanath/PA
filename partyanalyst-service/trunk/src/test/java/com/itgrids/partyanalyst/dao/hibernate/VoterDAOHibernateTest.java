@@ -70,6 +70,17 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
+	/*public void testgetVotersAgeInfoForPollingstationAndElectionYear()
+	{
+		Long value=voterDAO.getVotersAgeInfoForPollingstationAndElectionYear(211l, "2009", 55l, 65l);
+		System.out.println(value);
+	}*/
+	/*public void testgetVotersAgeInfoForPollingstationAndElectionYear()
+	{
+		Long value=voterDAO.getVotersAboveAgeInfoForPollingstationAndElectionYear(211l, "2009");
+		System.out.println(value);
+	}
+*/
 	/*public void testGetVotersBasicInfoByManadalId()
 	{
 		List<Object[]> list = voterDAO.getVotersBasicInfoByManadalId(2844l, "2009");
@@ -108,7 +119,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetVotersBasicInfoByConstituencyId()
+	/*public void testGetVotersBasicInfoByConstituencyId()
 	{
 		List<Object[]> list = voterDAO.getVotersBasicInfoByConstituencyId(232l, "2009");
 		System.out.println(list.size());
@@ -125,5 +136,11 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 					System.out.println("UnKnow:  "+ params[0].toString());
 			}
 		}
+	}*/
+	
+	public void testfindVotersCastInfoByUrbanAndElectionYear()
+	{
+		List list=voterDAO.findVotersCastInfoByUrbanAndElectionYear(83l, "2009");
+		System.out.println(list.size());
 	}
 }
