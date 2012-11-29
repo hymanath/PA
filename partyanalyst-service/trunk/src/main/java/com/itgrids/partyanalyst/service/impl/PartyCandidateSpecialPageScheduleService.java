@@ -1,36 +1,47 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import javax.mail.internet.MimeMessage;
 
-import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
+import org.apache.log4j.Logger;
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.ui.velocity.VelocityEngineUtils;
+
+import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
-import com.itgrids.partyanalyst.dao.IPartyUpdatesEmailDAO;
-import com.itgrids.partyanalyst.dao.ISpecialPageUpdatesEmailDAO;
+import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailNotificationVO;
-import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
-import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
-import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
+import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsTemplateService;
 import com.itgrids.partyanalyst.service.IPartyCandidateSpecialPageScheduleService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyCandidateSpecialPageScheduleService implements
 		IPartyCandidateSpecialPageScheduleService {
 	
 	private static final Logger log = Logger.getLogger(PartyCandidateSpecialPageScheduleService.class);
-	private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
+	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
 	
-	private IPartyUpdatesEmailDAO partyUpdatesEmailDAO;
+	private IPartySubscriptionsDAO partySubscriptionsDAO;
 	
-	private ISpecialPageUpdatesEmailDAO specialPageUpdatesEmailDAO;
+	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
 	
 	private IFileGallaryDAO fileGallaryDAO;
 	
@@ -38,27 +49,30 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private IMailsTemplateService mailsTemplateService;
 	
-	public ICandidateUpdatesEmailDAO getCandidateUpdatesEmailDAO() {
-		return candidateUpdatesEmailDAO;
-	}
-	public void setCandidateUpdatesEmailDAO(
-			ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO) {
-		this.candidateUpdatesEmailDAO = candidateUpdatesEmailDAO;
-	}
-	public IPartyUpdatesEmailDAO getPartyUpdatesEmailDAO() {
-		return partyUpdatesEmailDAO;
-	}
-	public void setPartyUpdatesEmailDAO(IPartyUpdatesEmailDAO partyUpdatesEmailDAO) {
-		this.partyUpdatesEmailDAO = partyUpdatesEmailDAO;
-	}
-	public ISpecialPageUpdatesEmailDAO getSpecialPageUpdatesEmailDAO() {
-		return specialPageUpdatesEmailDAO;
-	}
-	public void setSpecialPageUpdatesEmailDAO(
-			ISpecialPageUpdatesEmailDAO specialPageUpdatesEmailDAO) {
-		this.specialPageUpdatesEmailDAO = specialPageUpdatesEmailDAO;
-	}
+	private VelocityEngine velocityEngine;
 	
+	
+	public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
+		return candidateSubscriptionsDAO;
+	}
+	public void setCandidateSubscriptionsDAO(
+			ICandidateSubscriptionsDAO candidateSubscriptionsDAO) {
+		this.candidateSubscriptionsDAO = candidateSubscriptionsDAO;
+	}
+	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
+		return partySubscriptionsDAO;
+	}
+	public void setPartySubscriptionsDAO(
+			IPartySubscriptionsDAO partySubscriptionsDAO) {
+		this.partySubscriptionsDAO = partySubscriptionsDAO;
+	}
+	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
+		return specialPageSubscriptionsDAO;
+	}
+	public void setSpecialPageSubscriptionsDAO(
+			ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO) {
+		this.specialPageSubscriptionsDAO = specialPageSubscriptionsDAO;
+	}
 	public IFileGallaryDAO getFileGallaryDAO() {
 		return fileGallaryDAO;
 	}
@@ -80,219 +94,307 @@ public class PartyCandidateSpecialPageScheduleService implements
 		this.mailsTemplateService = mailsTemplateService;
 	}
 	
+	public VelocityEngine getVelocityEngine() {
+		return velocityEngine;
+	}
+	
+	public void setVelocityEngine(VelocityEngine velocityEngine) {
+		this.velocityEngine = velocityEngine;
+	}
+	
 	public void sendMailsToAllSubscriders(Date startDate,Date endDate)
 	{
+		Map<Long,EmailNotificationVO> allSubscribersData = new HashMap<Long,EmailNotificationVO>();
 		try
 		{
-		List<EmailDetailsVO> emailDetailsVOList = new ArrayList<EmailDetailsVO>();
-		Map<String,List<EmailNotificationVO>> candidatePage = getDaillyUpdatesForCandidatePageSubscribers(startDate,endDate);
-		Map<String,List<EmailNotificationVO>> partyPage = getDaillyUpdatesForPartyPageSubscribers(startDate,endDate);
-		Map<String,List<EmailNotificationVO>> specialPage = getDaillyUpdatesForSpecialPageSubscribers(startDate,endDate);
-		
-		getAllMailingDetails(emailDetailsVOList,candidatePage,"candidate");
-		getAllMailingDetails(emailDetailsVOList,partyPage,"party");
-		getAllMailingDetails(emailDetailsVOList,specialPage,"specialpage");
-		
-		mailService.sendEmails(emailDetailsVOList);
+		//List<EmailDetailsVO> emailDetailsVOList = new ArrayList<EmailDetailsVO>();
+		getDaillyUpdatesForCandidatePageSubscribers(startDate,endDate,allSubscribersData);
+		getDaillyUpdatesForPartyPageSubscribers(startDate,endDate,allSubscribersData);
+		getDaillyUpdatesForSpecialPageSubscribers(startDate,endDate,allSubscribersData);
+		sendAllMails(allSubscribersData);
+	
 		}
 		catch(Exception e){
 			log.error("Exception Rised in sendMailsToAllSubscriders : ", e);
 		}
 	}
-	private Map<String,List<EmailNotificationVO>> getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate)
+	public void sendAllMails(Map<Long,EmailNotificationVO> allSubscribersData){
+		EmailNotificationVO emailNotificationVO = null;
+		Set<Long> keys = allSubscribersData.keySet();
+		for(Long key : keys){
+			try{
+				
+				String emailString = prepareMail(allSubscribersData.get(key));
+				if(emailString != null && emailString.length() > 0){
+				  emailNotificationVO = new EmailNotificationVO();
+				  emailNotificationVO.setDescription(emailString);
+				  emailNotificationVO.setSubscriberEmail(allSubscribersData.get(key).getSubscriberEmail());
+				  sendMail(emailNotificationVO);
+				}
+				
+			}catch(Exception e){
+				log.error("Exception rised in sendAllMails ",e);
+			}
+		}
+	}
+	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData)
 	{
 		Map<Long,EmailNotificationVO> candidateIdMap = new HashMap<Long,EmailNotificationVO>();
-		Map<String,List<EmailNotificationVO>> emailMap = new HashMap<String,List<EmailNotificationVO>>();
-		List<Long> candidateIds = new ArrayList<Long>();
+		Set<Long> candidateIds = new HashSet<Long>();
+		EmailNotificationVO emailNotificationVO = null;
+		EmailNotificationVO data = null;
 		try
 		{
-		      List<CandidateUpdatesEmail> subscriberDetailsList = candidateUpdatesEmailDAO.getAllSubscriberDetails();
-		      for(CandidateUpdatesEmail candidateUpdatesEmail : subscriberDetailsList)
+			  //getting all candidate subscribed details
+		      List<Object[]> subscriberDetailsList = candidateSubscriptionsDAO.getAllSubscriberDetails();
+		      
+		      for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-			     candidateIds.add(candidateUpdatesEmail.getCandidate().getCandidateId());
-			     candidateIdMap.put(candidateUpdatesEmail.getCandidate().getCandidateId(), new EmailNotificationVO());
-			     emailMap.put(candidateUpdatesEmail.getEmail(), new ArrayList<EmailNotificationVO>());
+		    	 // adding all candidates to set
+			     candidateIds.add((Long)subscriberDetail[0]);
+			     //for each candidate creating one EmailNotificationVO to set all updates related to him to this VO for ex: news , photos,videos updates
+			     if(candidateIdMap.get((Long)subscriberDetail[0]) == null)
+			       candidateIdMap.put((Long)subscriberDetail[0], new EmailNotificationVO());
+			     
+			   //for each user creating one EmailNotificationVO to set all updates related to candidate or special or party pages etc to this VO if subscribed
+			     if(allSubscribersData.get((Long)subscriberDetail[2]) == null)
+			      {
+			    	 emailNotificationVO = new EmailNotificationVO();
+			    	 //setting subscriber email to VO
+			    	 if(subscriberDetail[1] != null)
+			    	  emailNotificationVO.setSubscriberEmail(subscriberDetail[1].toString());
+			    	 //setting subscriber name to VO
+			    	 emailNotificationVO.setSubscriberName(subscriberDetail[3].toString()+" "+subscriberDetail[4].toString());
+			    	 //setting candidate VO to user
+			    	 emailNotificationVO.getCandidatePage().add(candidateIdMap.get((Long)subscriberDetail[0]));
+			    	 allSubscribersData.put((Long)subscriberDetail[2],emailNotificationVO);
+			      }
+			     else
+			     {
+			    	 emailNotificationVO = allSubscribersData.get((Long)subscriberDetail[2]);
+			    	 //setting candidate VO to user
+			    	 emailNotificationVO.getCandidatePage().add(candidateIdMap.get((Long)subscriberDetail[0]));
+			     }
 		       }
-		      for(CandidateUpdatesEmail candidateUpdatesEmail : subscriberDetailsList)
-		       {
-			     emailMap.get(candidateUpdatesEmail.getEmail()).add(candidateIdMap.get(candidateUpdatesEmail.getCandidate().getCandidateId()));
-		       }
-		       List<Object[]> photosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"photos");
-		       List<Object[]> newsList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"news");
-		       List<Object[]> videosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"videos");
+		      
+		       //getting all photo gallery updates for all candidates 
+		       List<FileGallary> photosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"photos");
+		       //getting all news gallery updates for all candidates
+		       List<FileGallary> newsList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"news");
+		       //getting all video gallery updates for all candidates 
+		       List<FileGallary> videosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"videos");
 		
-		      for(Object[] photos : photosList)
+		      for(FileGallary photos : photosList)
 		       {
 		    	 try{
-			      EmailNotificationVO emailNotificationVO = candidateIdMap.get((Long)photos[3]);
-			      emailNotificationVO.setId((Long)photos[3]);
-			      emailNotificationVO.setName(photos[4] != null?photos[4].toString():"");
-			      emailNotificationVO.setPhotopresent(1);
-			      EmailNotificationVO data = new EmailNotificationVO();
-			      data.setFileGallaryId((Long)photos[0]);
-			      data.setGallaryName(photos[1] != null?photos[1].toString():"");
-			      data.setTitle(photos[2] != null?photos[2].toString():"");
-			      data.setDescription(photos[5] != null?photos[5].toString():"");
-			
+			      emailNotificationVO = candidateIdMap.get(photos.getGallary().getCandidate().getCandidateId());
+			      emailNotificationVO.setId(photos.getGallary().getCandidate().getCandidateId());
+			      emailNotificationVO.setName(photos.getGallary().getCandidate().getLastname());
+			      emailNotificationVO.setPhotopresent(true);
+			       data = new EmailNotificationVO();
+			     
+			      convertFileGalleryToVo(photos,data);
 			      emailNotificationVO.getPhotos().add(data);
 		    	}catch(Exception e){
-		    		log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers : ", e);
+		    		log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers while iterating photos: ", e);
 		    	}
 		       }
-		     for(Object[] news : newsList)
+		     for(FileGallary news : newsList)
 		      {
 		    	 try{
-			       EmailNotificationVO emailNotificationVO = candidateIdMap.get((Long)news[3]);
-			       emailNotificationVO.setId((Long)news[3]);
-			       emailNotificationVO.setName(news[4] != null?news[4].toString():"");
-			       emailNotificationVO.setNewspresent(1);
-			       EmailNotificationVO data = new EmailNotificationVO();
-			       data.setFileGallaryId((Long)news[0]);
-			       data.setGallaryName(news[1] != null?news[1].toString():"");
-			       data.setTitle(news[2] != null?news[2].toString():"");
-			       data.setDescription(news[5] != null?news[5].toString():"");
-			       data.setSource(news[6] != null?news[6].toString():"");
-			       data.setLanguage(news[7] != null?news[7].toString():"");
-			
+			       emailNotificationVO = candidateIdMap.get(news.getGallary().getCandidate().getCandidateId());
+			       emailNotificationVO.setId(news.getGallary().getCandidate().getCandidateId());
+			       emailNotificationVO.setName(news.getGallary().getCandidate().getLastname());
+			       emailNotificationVO.setNewspresent(true);
+			       data = new EmailNotificationVO();
+			       //convertFileGalleryToVo(news,data);
+			       convertFileGalleryToVoForNews((FileGallary)news,data,"candidate",news.getGallary().getCandidate().getCandidateId().toString(),"");
 			       emailNotificationVO.getNews().add(data);
 		    	 }catch(Exception e){
-		    		 log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers : ", e);
+		    		 log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers  while iterating news: ", e);
 			     }
 		      }
-		    for(Object[] videos : videosList)
+		    for(FileGallary videos : videosList)
 		     {
 		    	try{
-		    	  EmailNotificationVO emailNotificationVO = candidateIdMap.get((Long)videos[3]);
-		    	  emailNotificationVO.setId((Long)videos[3]);
-		    	  emailNotificationVO.setName(videos[4] != null?videos[4].toString():"");
-		    	  emailNotificationVO.setVideopresent(1);
-		    	  EmailNotificationVO data = new EmailNotificationVO();
-		    	  data.setFileGallaryId((Long)videos[0]);
-		    	  data.setGallaryName(videos[1] != null?videos[1].toString():"");
-		    	  data.setTitle(videos[2] != null?videos[2].toString():"");
-		    	  data.setDescription(videos[5] != null?videos[5].toString():"");
-		    	  data.setSource(videos[6] != null?videos[6].toString():"");
-		    	  data.setLanguage(videos[7] != null?videos[7].toString():"");
-			
+		    	  emailNotificationVO = candidateIdMap.get(videos.getGallary().getCandidate().getCandidateId());
+		    	  emailNotificationVO.setId(videos.getGallary().getCandidate().getCandidateId());
+		    	  emailNotificationVO.setName(videos.getGallary().getCandidate().getLastname());
+		    	  emailNotificationVO.setVideopresent(true);
+		    	   data = new EmailNotificationVO();
+		    	   convertFileGalleryToVo(videos,data);
 		    	  emailNotificationVO.getVideos().add(data);
 		        }catch(Exception e){
-		        	log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers : ", e);
+		        	log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers  while iterating videos: ", e);
 		    	}
 		     }
+		      Set<Long> keys = allSubscribersData.keySet();
+		      for(Long key:keys){
+		    	  EmailNotificationVO userVo = allSubscribersData.get(key);
+		    	  for(EmailNotificationVO candidateVo : userVo.getCandidatePage()){
+		    		  if(candidateVo.isNewspresent() || candidateVo.isPhotopresent() || candidateVo.isVideopresent()){
+		    			  userVo.setCandidatePagepresent(true);
+		    			  break;
+		    		  }
+		    	  }
+		      }
 		}
 		catch(Exception e){
 			log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers : ", e);
 		}
-		return emailMap;
+		
 	}
 	
-	private Map<String,List<EmailNotificationVO>> getDaillyUpdatesForPartyPageSubscribers(Date startDate,Date endDate)
+	
+	private void getDaillyUpdatesForPartyPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData)
 	{
 		Map<Long,EmailNotificationVO> partyIdMap = new HashMap<Long,EmailNotificationVO>();
-		Map<String,List<EmailNotificationVO>> emailMap = new HashMap<String,List<EmailNotificationVO>>();
-		List<Long> partyIds = new ArrayList<Long>();
+		Set<Long> partyIds = new HashSet<Long>();
+		EmailNotificationVO emailNotificationVO = null;
+		EmailNotificationVO data = null;
+		
 		try
 		   {
-			 List<PartyUpdatesEmail> subscriberDetailsList = partyUpdatesEmailDAO.getAllSubscriberDetails();
-		
-			 for(PartyUpdatesEmail partyUpdatesEmail : subscriberDetailsList)
-			 {
-				 partyIds.add(partyUpdatesEmail.getParty().getPartyId());
-				 partyIdMap.put(partyUpdatesEmail.getParty().getPartyId(), new EmailNotificationVO());
-				 emailMap.put(partyUpdatesEmail.getEmail(), new ArrayList<EmailNotificationVO>());
-			 }
-			 for(PartyUpdatesEmail partyUpdatesEmail : subscriberDetailsList)
-			 {
-				 emailMap.get(partyUpdatesEmail.getEmail()).add(partyIdMap.get(partyUpdatesEmail.getParty().getPartyId()));
-			 }
+			//getting all party page subscribed details
+			 List<Object[]> subscriberDetailsList = partySubscriptionsDAO.getAllSubscriberDetails();
+		     
+			 for(Object[] subscriberDetail : subscriberDetailsList)
+		       {
+		    	 // adding all parties to set
+				 partyIds.add((Long)subscriberDetail[0]);
+			     //for each party creating one EmailNotificationVO to set all updates related to party to this VO for ex: news , photos,videos updates
+				 if(partyIdMap.get((Long)subscriberDetail[0]) == null)
+				   partyIdMap.put((Long)subscriberDetail[0], new EmailNotificationVO());
+			     
+			   //for each subscriber creating one EmailNotificationVO to set all updates related to candidate or special or party pages etc to this VO if subscribed
+			     if(allSubscribersData.get((Long)subscriberDetail[2]) == null)
+			      {
+			    	 emailNotificationVO = new EmailNotificationVO();
+			    	 //setting subscriber email to VO
+			    	 if(subscriberDetail[1] != null)
+			    	  emailNotificationVO.setSubscriberEmail(subscriberDetail[1].toString());
+			    	 //setting subscriber name to VO
+			    	 emailNotificationVO.setSubscriberName(subscriberDetail[3].toString()+" "+subscriberDetail[4].toString());
+			    	 //setting party VO to user
+			    	 emailNotificationVO.getPartyPage().add(partyIdMap.get((Long)subscriberDetail[0]));
+			    	 allSubscribersData.put((Long)subscriberDetail[2],emailNotificationVO);
+			      }
+			     else
+			     {
+			    	 emailNotificationVO = allSubscribersData.get((Long)subscriberDetail[2]);
+			    	//setting party VO to user
+			    	 emailNotificationVO.getPartyPage().add(partyIdMap.get((Long)subscriberDetail[0]));
+			     }
+		       }
+			 
+			   //getting all photo gallery updates for all parties 
 			 List<Object[]> photosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"photos");
+			   //getting all news gallery updates for all parties 
 			 List<Object[]> newsList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"news");
+			   //getting all video gallery updates for all parties 
 			 List<Object[]> videosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"videos");
 		
 			 for(Object[] photos : photosList)
 			 {
 			  try{
-				 EmailNotificationVO emailNotificationVO = partyIdMap.get((Long)photos[3]);
-				 emailNotificationVO.setId((Long)photos[3]);
-				 emailNotificationVO.setName(photos[4] != null?photos[4].toString()+" Party":"");
-				 emailNotificationVO.setPhotopresent(1);
-				 EmailNotificationVO data = new EmailNotificationVO();
-				 data.setFileGallaryId((Long)photos[0]);
-				 data.setGallaryName(photos[1] != null?photos[1].toString():"");
-				 data.setTitle(photos[2] != null?photos[2].toString():"");
-				 data.setDescription(photos[5] != null?photos[5].toString():"");
-			
+				 emailNotificationVO = partyIdMap.get((Long)photos[1]);
+				 emailNotificationVO.setId((Long)photos[1]);
+				 emailNotificationVO.setName(photos[2] != null?photos[2].toString()+" Party":"");
+				 emailNotificationVO.setPhotopresent(true);
+				 data = new EmailNotificationVO();
+				 convertFileGalleryToVo((FileGallary)photos[0],data);
 				 emailNotificationVO.getPhotos().add(data);
 			  }catch(Exception e){
-				  log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers : ", e);
+				  log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers  while iterating photos : ", e);
 		       }
 			 }
 			 for(Object[] news : newsList)
 			 {
 			  try{
-				 EmailNotificationVO emailNotificationVO = partyIdMap.get((Long)news[3]);
-				 emailNotificationVO.setId((Long)news[3]);
-				 emailNotificationVO.setName(news[4] != null?news[4].toString()+" Party":"");
-				 emailNotificationVO.setNewspresent(1);
-				 EmailNotificationVO data = new EmailNotificationVO();
-				 data.setFileGallaryId((Long)news[0]);
-				 data.setGallaryName(news[1] != null?news[1].toString():"");
-				 data.setTitle(news[2] != null?news[2].toString():"");
-				 data.setDescription(news[5] != null?news[5].toString():"");
-				 data.setSource(news[6] != null?news[6].toString():"");
-				 data.setLanguage(news[7] != null?news[7].toString():"");
-			
+				     emailNotificationVO = partyIdMap.get((Long)news[1]);
+					 emailNotificationVO.setId((Long)news[1]);
+					 emailNotificationVO.setName(news[2] != null?news[2].toString()+" Party":"");
+					 emailNotificationVO.setNewspresent(true);
+					 data = new EmailNotificationVO();
+					 //convertFileGalleryToVo((FileGallary)news[0],data);
+					 convertFileGalleryToVoForNews((FileGallary)news[0],data,"party","",news[3] != null?news[3].toString():"");
 				 emailNotificationVO.getNews().add(data);
 			  }catch(Exception e){
-				  log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers : ", e);
+				  log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers  while iterating news : ", e);
 		       }
 			 }
 			 for(Object[] videos : videosList)
 			 {
 			  try{
-				 EmailNotificationVO emailNotificationVO = partyIdMap.get((Long)videos[3]);
-				 emailNotificationVO.setId((Long)videos[3]);
-				 emailNotificationVO.setName(videos[4] != null?videos[4].toString()+" Party":"");
-				 emailNotificationVO.setVideopresent(1);
-				 EmailNotificationVO data = new EmailNotificationVO();
-				 data.setFileGallaryId((Long)videos[0]);
-				 data.setGallaryName(videos[1] != null?videos[1].toString():"");
-				 data.setTitle(videos[2] != null?videos[2].toString():"");
-				 data.setDescription(videos[5] != null?videos[5].toString():"");
-				 data.setSource(videos[6] != null?videos[6].toString():"");
-				 data.setLanguage(videos[7] != null?videos[7].toString():"");
+				     emailNotificationVO = partyIdMap.get((Long)videos[1]);
+					 emailNotificationVO.setId((Long)videos[1]);
+					 emailNotificationVO.setName(videos[2] != null?videos[2].toString()+" Party":"");
+					 emailNotificationVO.setVideopresent(true);
+					 data = new EmailNotificationVO();
+					 convertFileGalleryToVo((FileGallary)videos[0],data);
 			
 				 emailNotificationVO.getVideos().add(data);
 			  }catch(Exception e){
-				  log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers : ", e);
+				  log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers  while iterating videos : ", e);
 		       }
 			 }
+			 Set<Long> keys = allSubscribersData.keySet();
+		      for(Long key:keys){
+		    	  EmailNotificationVO userVo = allSubscribersData.get(key);
+		    	  for(EmailNotificationVO partyVo : userVo.getPartyPage()){
+		    		  if(partyVo.isNewspresent() || partyVo.isPhotopresent() || partyVo.isVideopresent()){
+		    			  userVo.setPartyPagepresent(true);
+		    			  break;
+		    		  }
+		    	  }
+		      }
 		 }
 		catch(Exception e){
 			log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers : ", e);
 		}
-		return emailMap;
+		
 	}
 	
-	private Map<String,List<EmailNotificationVO>> getDaillyUpdatesForSpecialPageSubscribers(Date startDate,Date endDate)
+	private void getDaillyUpdatesForSpecialPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData)
 	{
-		Map<Long,EmailNotificationVO> specialPageIdMap = new HashMap<Long,EmailNotificationVO>();
-		Map<String,List<EmailNotificationVO>> emailMap = new HashMap<String,List<EmailNotificationVO>>();
-		List<Long> specialPageIds = new ArrayList<Long>();
+		Map<Long,EmailNotificationVO> specialPageIdMap = new HashMap<Long,EmailNotificationVO>();		
+		Set<Long> specialPageIds = new HashSet<Long>();
+		EmailNotificationVO emailNotificationVO = null;
+		EmailNotificationVO data = null;
 		try
 		   {
-			List<SpecialPageUpdatesEmail> subscriberDetailsList = specialPageUpdatesEmailDAO.getAllSubscriberDetails();
+			 //getting all special page subscribed details
+			List<Object[]> subscriberDetailsList = specialPageSubscriptionsDAO.getAllSubscriberDetails();
 		
-			for(SpecialPageUpdatesEmail specialPageUpdatesEmail : subscriberDetailsList)
-			{
-				specialPageIds.add(specialPageUpdatesEmail.getSpecialPage().getSpecialPageId());
-				specialPageIdMap.put(specialPageUpdatesEmail.getSpecialPage().getSpecialPageId(), new EmailNotificationVO());
-				emailMap.put(specialPageUpdatesEmail.getEmail(), new ArrayList<EmailNotificationVO>());
-			}
-			for(SpecialPageUpdatesEmail specialPageUpdatesEmail : subscriberDetailsList)
-			{
-				emailMap.get(specialPageUpdatesEmail.getEmail()).add(specialPageIdMap.get(specialPageUpdatesEmail.getSpecialPage().getSpecialPageId()));
-			}
+			for(Object[] subscriberDetail : subscriberDetailsList)
+		       {
+		    	 // adding all special pages to set
+				 specialPageIds.add((Long)subscriberDetail[0]);
+			     //for each special page creating one EmailNotificationVO to set all updates related to special page to this VO for ex: news , photos,videos updates
+				 if(specialPageIdMap.get((Long)subscriberDetail[0]) == null)
+				   specialPageIdMap.put((Long)subscriberDetail[0], new EmailNotificationVO());
+			     
+			   //for each subscriber creating one EmailNotificationVO to set all updates related to candidate or special or party pages etc to this VO if subscribed
+			     if(allSubscribersData.get((Long)subscriberDetail[2]) == null)
+			      {
+			    	 emailNotificationVO = new EmailNotificationVO();
+			    	 //setting subscriber email to VO
+			    	 if(subscriberDetail[1] != null)
+			    	  emailNotificationVO.setSubscriberEmail(subscriberDetail[1].toString());
+			    	 //setting subscriber name to VO
+			    	 emailNotificationVO.setSubscriberName(subscriberDetail[3].toString()+" "+subscriberDetail[4].toString());
+			    	 //setting special page VO to user
+			    	 emailNotificationVO.getSpecialPage().add(specialPageIdMap.get((Long)subscriberDetail[0]));
+			    	 allSubscribersData.put((Long)subscriberDetail[2],emailNotificationVO);
+			      }
+			     else
+			     {
+			    	 emailNotificationVO = allSubscribersData.get((Long)subscriberDetail[2]);
+			    	//setting special page VO to user
+			    	 emailNotificationVO.getSpecialPage().add(specialPageIdMap.get((Long)subscriberDetail[0]));
+			     }
+		       }
+			
 			List<Object[]> photosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"photos");
 			List<Object[]> newsList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"news");
 			List<Object[]> videosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"videos");
@@ -300,67 +402,65 @@ public class PartyCandidateSpecialPageScheduleService implements
 			for(Object[] photos : photosList)
 			{
 			 try{
-				EmailNotificationVO emailNotificationVO = specialPageIdMap.get((Long)photos[3]);
-				emailNotificationVO.setId((Long)photos[3]);
-				emailNotificationVO.setName(photos[4] != null?photos[4].toString():"");
-				emailNotificationVO.setPhotopresent(1);
-				EmailNotificationVO data = new EmailNotificationVO();
-				data.setFileGallaryId((Long)photos[0]);
-				data.setGallaryName(photos[1] != null?photos[1].toString():"");
-				data.setTitle(photos[2] != null?photos[2].toString():"");
-				data.setDescription(photos[5] != null?photos[5].toString():"");
+				 emailNotificationVO = specialPageIdMap.get((Long)photos[1]);
+				 emailNotificationVO.setId((Long)photos[1]);
+				 emailNotificationVO.setName(photos[2] != null?photos[2].toString():"");
+				 emailNotificationVO.setPhotopresent(true);
+				 data = new EmailNotificationVO();
+				 convertFileGalleryToVo((FileGallary)photos[0],data);
 			
 				emailNotificationVO.getPhotos().add(data);
 			 }catch(Exception e){
-				 log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers : ", e);
+				 log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers  while iterating photos : ", e);
 		       }
 			}
 			for(Object[] news : newsList)
 			{
 			 try{
-				EmailNotificationVO emailNotificationVO = specialPageIdMap.get((Long)news[3]);
-				emailNotificationVO.setId((Long)news[3]);
-				emailNotificationVO.setName(news[4] != null?news[4].toString():"");
-				emailNotificationVO.setNewspresent(1);
-				EmailNotificationVO data = new EmailNotificationVO();
-				data.setFileGallaryId((Long)news[0]);
-				data.setGallaryName(news[1] != null?news[1].toString():"");
-				data.setTitle(news[2] != null?news[2].toString():"");
-				data.setDescription(news[5] != null?news[5].toString():"");
-				data.setSource(news[6] != null?news[6].toString():"");
-				data.setLanguage(news[7] != null?news[7].toString():"");
-			
+				 emailNotificationVO = specialPageIdMap.get((Long)news[1]);
+				 emailNotificationVO.setId((Long)news[1]);
+				 emailNotificationVO.setName(news[2] != null?news[2].toString():"");
+				 emailNotificationVO.setNewspresent(true);
+				 data = new EmailNotificationVO();
+				 //convertFileGalleryToVo((FileGallary)news[0],data);
+				 convertFileGalleryToVoForNews((FileGallary)news[0],data,"specialpage",news[2] != null?news[2].toString():"",news[3] != null?news[3].toString():"");
+				 
 				emailNotificationVO.getNews().add(data);
 			 }catch(Exception e){
-				 log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers : ", e);
+				 log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers  while iterating news : ", e);
 		       }
 			}
 			for(Object[] videos : videosList)
 			{
 			 try{
-				EmailNotificationVO emailNotificationVO = specialPageIdMap.get((Long)videos[3]);
-				emailNotificationVO.setId((Long)videos[3]);
-				emailNotificationVO.setName(videos[4] != null?videos[4].toString():"");
-				emailNotificationVO.setVideopresent(1);
-				EmailNotificationVO data = new EmailNotificationVO();
-				data.setFileGallaryId((Long)videos[0]);
-				data.setGallaryName(videos[1] != null?videos[1].toString():"");
-				data.setTitle(videos[2] != null?videos[2].toString():"");
-				data.setDescription(videos[5] != null?videos[5].toString():"");
-				data.setSource(videos[6] != null?videos[6].toString():"");
-				data.setLanguage(videos[7] != null?videos[7].toString():"");
+				 emailNotificationVO = specialPageIdMap.get((Long)videos[1]);
+				 emailNotificationVO.setId((Long)videos[1]);
+				 emailNotificationVO.setName(videos[2] != null?videos[2].toString():"");
+				 emailNotificationVO.setVideopresent(true);
+				 data = new EmailNotificationVO();
+				 convertFileGalleryToVo((FileGallary)videos[0],data);
 			
 				emailNotificationVO.getVideos().add(data);
 			 }catch(Exception e){
-				 log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers : ", e);		       }	
+				 log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers  while iterating videos : ", e);		       }	
 			}
+			Set<Long> keys = allSubscribersData.keySet();
+		      for(Long key:keys){
+		    	  EmailNotificationVO userVo = allSubscribersData.get(key);
+		    	  for(EmailNotificationVO specialPageVo : userVo.getSpecialPage()){
+		    		  if(specialPageVo.isNewspresent() || specialPageVo.isPhotopresent() || specialPageVo.isVideopresent()){
+		    			  userVo.setSpecialPagepresent(true);
+		    			  break;
+		    		  }
+		    	  }
+		      }
 		   }
 		catch(Exception e){
 			log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers : ", e);   
 		}
-		return emailMap;
+
 	}
-	private void getAllMailingDetails(List<EmailDetailsVO> emailDetailsVOList,Map<String,List<EmailNotificationVO>> emailMap,String type)
+	/*private void getAllMailingDetails(List<EmailDetailsVO> emailDetailsVOList,Map<String,List<EmailNotificationVO>> emailMap,String type)
 	{
 	 try
 	 {
@@ -375,13 +475,13 @@ public class PartyCandidateSpecialPageScheduleService implements
 			content.append("<div style='border:1px solid #CCCCCC;background:#EFFFFF;padding:10px;'>"+mailsTemplateService.getHeader()+" ");
 			for(EmailNotificationVO emailNotificationVO : emailNotificationVOList)
 			{
-				if(emailNotificationVO.getPhotopresent() == 1 || emailNotificationVO.getVideopresent() == 1 || emailNotificationVO.getNewspresent() == 1)
+				if(emailNotificationVO.isPhotopresent()  || emailNotificationVO.isVideopresent()  || emailNotificationVO.isNewspresent())
 				{
 					count = count+1;
 					content.append("<div style='background-color:#EEEEEE;border-radius:10px;padding:15px;margin-top:10px;'>");
 					content.append("<div style='text-align:center;font-weight:bold;color:green' >Updates For "+emailNotificationVO.getName()+"</div>");
 					
-					if(emailNotificationVO.getNewspresent() == 1){
+					if(emailNotificationVO.isNewspresent()){
 						content.append("<div style='margin-top:10px;font-weight:bold;color:#FF4500'>News Updates</div>");
 						for(EmailNotificationVO newsData : emailNotificationVO.getNews()){
 							
@@ -406,7 +506,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 							}
 						}
 					}
-                    if(emailNotificationVO.getPhotopresent() == 1){
+                    if(emailNotificationVO.isPhotopresent()){
                     	content.append("<div style='margin-top:10px;font-weight:bold;color:#FF4500'>Photos Updates</div>");
 						for(EmailNotificationVO photoData : emailNotificationVO.getPhotos()){
 							
@@ -427,7 +527,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 							}
 						}
 					}
-                    if(emailNotificationVO.getVideopresent() == 1){
+                    if(emailNotificationVO.isVideopresent()){
                     	content.append("<div style='margin-top:10px;font-weight:bold;color:#FF4500'>Videos Updates</div>");
 						for(EmailNotificationVO videoData : emailNotificationVO.getVideos()){
 							
@@ -476,5 +576,193 @@ public class PartyCandidateSpecialPageScheduleService implements
 	 {
 		 log.error("Exception Rised in getAllMailingDetails : ", e);
 	 }
+	}*/
+	
+	public void  convertFileGalleryToVo(FileGallary result,EmailNotificationVO data){
+		
+		 data.setFileGallaryId(result.getFileGallaryId());
+	     data.setGallaryName(result.getGallary().getName());
+	     data.setTitle(result.getFile().getFileTitle());
+	     data.setDescription(result.getFile().getFileDescription());
+		 Set<FileSourceLanguage> fileSourceLanguageSet = result.getFile().getFileSourceLanguage();
+		 String filePath = null;
+		 StringBuilder source = new StringBuilder();
+	     StringBuilder language = new StringBuilder();
+		 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+		 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+		 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList)
+		 {
+			 if(fileSourceLanguage.getSource()!= null)
+				 source.append(fileSourceLanguage.getSource().getSource()+", ");
+			 if(fileSourceLanguage.getLanguage()!= null)
+				 language.append(fileSourceLanguage.getLanguage().getLanguage()+", ");
+			 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+			 List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+			  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+			 if(filePath == null){
+			     for(FilePaths singleFilePath : filePathsList)
+			     {
+			    	 if(filePath == null)
+				      filePath = singleFilePath.getFilePath(); 
+			    	 else
+			    	  break;
+			     }
+			  }
+		 }
+		 if(source.length()>2)
+		  data.setSource(source.toString().substring(0,source.toString().length() - 2));
+		 if(language.length()>2)
+	      data.setLanguage(language.toString().substring(0,language.toString().length() - 2));
+	     data.setFilePath(filePath);
+		
+	}
+	public void  convertFileGalleryToVoForNews(FileGallary result,EmailNotificationVO data,String type,String name,String path){
+		
+		 data.setFileGallaryId(result.getFileGallaryId());
+	     data.setGallaryName(result.getGallary().getName());
+	     data.setTitle(result.getFile().getFileTitle());
+	     data.setDescription(result.getFile().getFileDescription());
+	     File file = result.getFile();
+		 Set<FileSourceLanguage> fileSourceLanguageSet = result.getFile().getFileSourceLanguage();
+		 StringBuilder source = new StringBuilder();
+	     StringBuilder language = new StringBuilder();
+		 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+		 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+		 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList)
+		 {
+			 if(fileSourceLanguage.getSource()!= null)
+				 source.append(fileSourceLanguage.getSource().getSource()+", ");
+			 if(fileSourceLanguage.getLanguage()!= null)
+				 language.append(fileSourceLanguage.getLanguage().getLanguage()+", ");
+		 }
+		 if(source.length()>2)
+		  data.setSource(source.toString().substring(0,source.toString().length() - 2));
+		 if(language.length()>2)
+	      data.setLanguage(language.toString().substring(0,language.toString().length() - 2));
+		 if(file.getFilePath() != null)
+	       data.setFilePath(file.getFilePath());
+		 else{
+			 if(type.equalsIgnoreCase("candidate")){
+				 data.setFilePath("images/candidates/"+name.toUpperCase()+".jpg");
+			 }
+			 else if(type.equalsIgnoreCase("party")){
+				 data.setFilePath("images/party_flags/"+path);
+			 }
+			 else if(type.equalsIgnoreCase("specialpage")){
+				 data.setFilePath(""+path);
+			 }
+		 }
+		
+	}
+	public void sendMail(final EmailNotificationVO emailNotificationVO){
+		
+		try{
+			
+			JavaMailSenderImpl javamailsender = new JavaMailSenderImpl();
+			javamailsender.setSession(mailService.getSessionObject(IConstants.DEFAULT_MAIL_SERVER));
+			MimeMessagePreparator preparator = new MimeMessagePreparator() {
+		         public void prepare(MimeMessage mimeMessage) throws Exception {
+		            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+		            message.setTo(emailNotificationVO.getSubscriberEmail());
+		            Map model = new HashMap();
+		   		    model.put("user", emailNotificationVO);
+		            String text = VelocityEngineUtils.mergeTemplateIntoString(
+		 	               velocityEngine,"dailyUpdates.vm", model);
+		            message.setText(text, true);
+		            message.setSubject("Updates From PartyAnalyst");
+		            message.setFrom(IConstants.FROMEMAILID);
+		         }
+		      };
+		      javamailsender.send(preparator);  
+	}catch(Exception e){
+		log.error("Exception Rised in sendMail : ", e);   
+	}
+	}
+	
+	public String prepareMail(EmailNotificationVO emailNotificationVO){
+		StringBuilder content = new StringBuilder();
+		try
+		 {	
+				content.append("<div style='background:#FFFFFF;padding:10px;'>"+mailsTemplateService.getHeader()+" ");
+				
+					if(emailNotificationVO.isPartyPagepresent()  || emailNotificationVO.isCandidatePagepresent()  || emailNotificationVO.isSpecialPagepresent())
+					{
+						if(emailNotificationVO.isCandidatePagepresent()){
+							content.append(getIndividualMailData("candidate",emailNotificationVO.getCandidatePage()));
+						}
+	                    if(emailNotificationVO.isPartyPagepresent()){
+	                    	content.append(getIndividualMailData("party",emailNotificationVO.getPartyPage()));
+						}
+	                    if(emailNotificationVO.isSpecialPagepresent()){
+	                    	content.append(getIndividualMailData("specialpage",emailNotificationVO.getSpecialPage()));
+						}
+					}else{
+						return "";
+					}
+				
+				content.append("</div>");
+				
+		 }catch(Exception e)
+		 {
+			 log.error("Exception Rised in getAllMailingDetails : ", e);
+			 return "";
+		 }
+		return content.toString();
+	}
+	
+	public String getIndividualMailData(String type,List<EmailNotificationVO> dataList){
+		StringBuilder mailString = new StringBuilder();
+		for(EmailNotificationVO emailNotificationVO:dataList){
+			
+			if(emailNotificationVO.isNewspresent() || emailNotificationVO.isPhotopresent() || emailNotificationVO.isNewspresent()){
+				mailString.append("<div>");
+				mailString.append("<div style='text-align:center;padding:6px;margin-top:5px;margin-bottom:5px;font-weight:bold;background-color:#17315A;color:#FFFFFF;'>Updates for "+emailNotificationVO.getName()+"</div>");
+				if(emailNotificationVO.isNewspresent()){
+					mailString.append("<div style='font-weight:bold;color:#AB3A7E;margin-top:4px;margin-bottom:4px;'> News Updates for "+emailNotificationVO.getName()+"</div>");
+					mailString.append(getCompleteData(emailNotificationVO.getNews(),type,emailNotificationVO.getId(),"news"));
+			    }
+                if(emailNotificationVO.isPhotopresent()){
+                	mailString.append("<div style='font-weight:bold;color:#AB3A7E;margin-top:4px;margin-bottom:4px;'> Photo Updates for "+emailNotificationVO.getName()+"</div>");
+                	mailString.append(getCompleteData(emailNotificationVO.getPhotos(),type,emailNotificationVO.getId(),"photo"));
+			    }
+                if(emailNotificationVO.isVideopresent()){
+                	mailString.append("<div style='font-weight:bold;color:#AB3A7E;margin-top:4px;margin-bottom:4px;'> Video Updates for "+emailNotificationVO.getName()+"</div>");
+                	mailString.append(getCompleteData(emailNotificationVO.getVideos(),type,emailNotificationVO.getId(),"video"));
+			    }
+                
+                mailString.append("</div>");
+		  }
+		}
+		return mailString.toString();
+	}
+	
+	public String getCompleteData(List<EmailNotificationVO> dataList,String type,Long id,String fileType){
+		StringBuilder individualString = new StringBuilder();
+		for(EmailNotificationVO  emailNotificationVO : dataList){
+			individualString.append("<div style='border-bottom:1px solid #ccc;padding:10px;background-color:#F3F3F3;margin-bottom:4px;'>");
+			if(type.trim().equalsIgnoreCase("candidate")){
+			   individualString.append("<div style='margin-top:5px;margin-bottom:3px;font-weight:normal;'><h4 style='margin:0px;'><a title='Click here for more details' href='http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"' style='text-decoration:none;'>"+emailNotificationVO.getTitle()+"</a></h4></div>");
+			       if(fileType.equalsIgnoreCase("video"))
+					  individualString.append("<div style='width:100%;display:inline-block;clear:both;padding:5px;'><span style='width:auto;display:inline-block;padding:2px;float:left;'><a title='Click here for more details' href='http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"'><img style='width:75px;height:75px;vertical-align:middle;' src='http://img.youtube.com/vi/"+emailNotificationVO.getFilePath()+"/1.jpg'></img></a></span>");
+				   else
+					  individualString.append("<div style='width:100%;display:inline-block;clear:both;padding:5px;'><span style='width:auto;display:inline-block;padding:2px;float:left;'><a title='Click here for more details' href='http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"'><img style='width:75px;height:75px;vertical-align:middle;' src='www.partyanalyst.com/"+emailNotificationVO.getFilePath()+"'></img></a></span>");
+			}else if(type.trim().equalsIgnoreCase("party")){
+			   individualString.append("<div style='margin-top:5px;margin-bottom:3px;font-weight:normal;'><h4 style='margin:0px;'><a title='Click here for more details' href='http://www.partyanalyst.com/partyPageAction.action?partyId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"' style='text-decoration:none;'>"+emailNotificationVO.getTitle()+"</a></h4></div>");
+			       if(fileType.equalsIgnoreCase("video"))
+					  individualString.append("<div style='width:100%;display:inline-block;clear:both;padding:5px;'><span style='width:auto;display:inline-block;padding:2px;float:left;'><a title='Click here for more details' href='http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"'><img style='width:75px;height:75px;vertical-align:middle;' src='http://img.youtube.com/vi/"+emailNotificationVO.getFilePath()+"/1.jpg'></img></a></span>");
+				   else
+					  individualString.append("<div style='width:100%;display:inline-block;clear:both;padding:5px;'><span style='width:auto;display:inline-block;padding:2px;float:left;'><a title='Click here for more details' href='http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"'><img style='width:75px;height:75px;vertical-align:middle;' src='www.partyanalyst.com/"+emailNotificationVO.getFilePath()+"'></img></a></span>");
+			}else if(type.trim().equalsIgnoreCase("specialpage")){
+			   individualString.append("<div style='margin-top:5px;margin-bottom:3px;font-weight:normal;'><h4 style='margin:0px;'><a title='Click here for more details' href='http://www.partyanalyst.com/specialPageAction.action?specialPageId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"' style='text-decoration:none;'>"+emailNotificationVO.getTitle()+"</a></h4></div>");
+			     if(fileType.equalsIgnoreCase("video"))
+			          individualString.append("<div style='width:100%;display:inline-block;clear:both;padding:5px;'><span style='width:auto;display:inline-block;padding:2px;float:left;'><a title='Click here for more details' href='http://www.partyanalyst.com/specialPageAction.action?specialPageId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"'><img style='width:75px;height:75px;vertical-align:middle;' src='http://img.youtube.com/vi/"+emailNotificationVO.getFilePath()+"/1.jpg'></img></a></span>");
+			     else
+			          individualString.append("<div style='width:100%;display:inline-block;clear:both;padding:5px;'><span style='width:auto;display:inline-block;padding:2px;float:left;'><a title='Click here for more details' href='http://www.partyanalyst.com/specialPageAction.action?specialPageId="+id+"&contentId="+emailNotificationVO.getFileGallaryId()+"'><img style='width:75px;height:75px;vertical-align:middle;' src='www.partyanalyst.com/"+emailNotificationVO.getFilePath()+"'></img></a></span>");
+			}
+			individualString.append("<span style='width:75%;font-weight:normal;float:left;display:inline-block;text-align:justify;padding-left:5px;'>"+emailNotificationVO.getDescription()+"</span></div>");
+			individualString.append("</div>");
+			
+		}
+		return individualString.toString();
 	}
 }
