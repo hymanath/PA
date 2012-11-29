@@ -10,5 +10,6 @@ public interface IPartySubscriptionsDAO extends GenericDao<PartySubscriptions, L
 	public Long getSubscriptionCount(Long userId,Long partyId);
 	public List<PartySubscriptions> getSubscriberDetails(Long partyId ,Long userId);
 	public Integer unSubscriptionDetails(Long partyId,Long userId);
+	public List<Object[]> getAllSubscriberDetails();
 
 }
