@@ -440,7 +440,7 @@ public class MailService implements IMailService{
 	}
 			 
 	
-	private Session getSessionObject(String host)
+	public Session getSessionObject(String host)
 	{
 		try{
 			Session session = null;
