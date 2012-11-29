@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import javax.mail.Session;
+
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.QuickRequestVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -24,4 +26,6 @@ public interface IMailService {
 	public ResultStatus sendEmail(EmailDetailsVO emailDetails);
 	
 	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host);
+	
+	public Session getSessionObject(String host);
 }
