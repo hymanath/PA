@@ -77,5 +77,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Booth> getPollingStationByConstituencyId(Long constituencyId);
 	
 	public List<Booth> getPollingStationByMandalId(Long mandalId);
+	
+	
 	 
 }

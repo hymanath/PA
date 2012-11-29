@@ -40,9 +40,11 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	
 	public Long getVotersAgeInfoForPollingstationAndElectionYear(Long panchayatId,
 			String year,Long minAge,Long maxAge);
-public List<Object[]> getVotersBasicInfoByConstituencyId(Long constituencyId, String year);
+	public List<Object[]> getVotersBasicInfoByConstituencyId(Long constituencyId, String year);
 	
 	public List<Object[]> getVotersBasicInfoByManadalId(Long manadalId, String year);
 	
 	public List<Object[]> getVotersBasicInfoByPollingStationId(Long boothId, String year);
+	
+	public List findVotersCastInfoByUrbanAndElectionYear(Long urbanId, String year);
 }
