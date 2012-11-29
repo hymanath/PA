@@ -143,7 +143,6 @@
 		<pattern>/partyStrengthAction*</pattern>
 		<pattern>/crossVotingReportInputAction*</pattern>
 		<pattern>/biElectionAction*</pattern>
-		<pattern>/voters*</pattern>
 		<pattern>/mandalPageElectionInfoAction*</pattern>
 		<pattern>/specialPageInfoAction*</pattern>
     </decorator>
@@ -151,6 +150,7 @@
     <decorator name="newHome" page="homelayout.jsp">
     	<pattern>/newhomePage*</pattern>
     	<pattern>/newconnectPeoplePage*</pattern>
+    	<pattern>/voters*</pattern>
     </decorator>
 
 </decorators>
