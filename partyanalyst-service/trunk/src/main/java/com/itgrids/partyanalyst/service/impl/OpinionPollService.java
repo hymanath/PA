@@ -288,7 +288,11 @@ public class OpinionPollService implements IOpinionPollService {
 				OptionVO optionVO = new OptionVO();
 				optionVO.setOption(parms[1].toString());	
 				optionVO.setVotesObtained(new Long(parms[0].toString()));
-				optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				
+				if(totalPolledVotes != 0)
+				  optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				else
+					optionVO.setPercentage(0.0);
 				opinionPollQuestionAndPercentages.add(optionVO);			
 				question.setDifferenceBetweenCurrentDateAndPolledDate(new Long(parms[3].toString()));
 				
@@ -598,10 +602,11 @@ public class OpinionPollService implements IOpinionPollService {
 	     */
 	    
 	     
-	    public void saveOpinionPollComment(final Long pollId,final RegistrationVO  regVO,final String commentDscr,final String firstName,final String lastName){    	
+	    public Long saveOpinionPollComment(final Long pollId,final RegistrationVO  regVO,final String commentDscr,final String firstName,final String lastName){    	
 	    	
 	    	log.debug("Entered into the saveOpinionPollComment service method");
 	    	
+	    	final Comment savedComment = new Comment();
 	    	try{
 	    		
 	    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -615,7 +620,9 @@ public class OpinionPollService implements IOpinionPollService {
 		    	
 		    	comment = commentDAO.save(comment);
 		    	
+		    	savedComment.setCommentId(comment.getCommentId());
 		    	
+		    			    	
 		    	OpinionPollComments opinionPollComments = new OpinionPollComments();
 		    	
 		    	
@@ -634,14 +641,17 @@ public class OpinionPollService implements IOpinionPollService {
 		    	
 		    	
 		    	opinionPollCommentsDAO.save(opinionPollComments);
-		    	
 	    			}
+	    			
 	    		});
+	    		
+	    		return savedComment.getCommentId();
 			    	
 	    	}catch(Exception e){
 	    		
 	    		log.error("Exception raised in  saveOpinionPollComment service method");	    		
-	    		e.printStackTrace();
+	    		e.printStackTrace();	    		
+	    		return null;
 	    		
 	    	}
 	   }

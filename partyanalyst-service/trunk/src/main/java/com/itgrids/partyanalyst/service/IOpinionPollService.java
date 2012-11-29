@@ -35,7 +35,7 @@ public interface IOpinionPollService {
 	
 	public Integer getAllApprovedDetails(List<Long> commentId,String actionType);
 	 
-	public void saveOpinionPollComment(Long pollId,RegistrationVO regVO,String commentDscr,String firstName,String lastName);
+	public Long saveOpinionPollComment(Long pollId,RegistrationVO regVO,String commentDscr,String firstName,String lastName);
 	
 	public List<QuestionsOptionsVO> getAllQuestionAndPercentageOfVotesForChoices();
 	
