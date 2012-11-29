@@ -85,12 +85,18 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		
 	}*/
 	
-	public void testDeleteByLocalElectionBodyAndConstituency()
+	/*public void testDeleteByLocalElectionBodyAndConstituency()
 	{
 		List<Long> ids = new ArrayList<Long>(); 
 		ids.add(566l);
 		int result=assemblyLocalElectionBodyDAO.deleteByLocalElectionBodyAndConstituency(ids,318l);
 		System.out.println("No of records deleted:"+result);
 		setComplete();
+	}*/
+	
+	public void testgetLocalElectionBodyIdByassemblyLocalElectionBodyId()
+	{
+		Long value = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByassemblyLocalElectionBodyId(80l);
+		System.out.println(value);
 	}
 }

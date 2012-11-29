@@ -163,10 +163,11 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	 System.out.println(list.size());
 	}*/
 	
-	public void testgetPollingStationByMandalId()
+	/*public void testgetPollingStationByMandalId()
 	{
 	 List<Booth> list = boothDAO.getPollingStationByMandalId(295l);
 	 System.out.println(list.size());
-	}
+	}*/
+	
 	
 }
