@@ -55,8 +55,19 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private int resultStatus;
 	private String savedStatus;
+	private Long savedCommentId;
 	
 	
+
+	public Long getSavedCommentId() {
+		return savedCommentId;
+	}
+
+
+	public void setSavedCommentId(Long savedCommentId) {
+		this.savedCommentId = savedCommentId;
+	}
+
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -321,7 +332,7 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		
-		opinionPollService.saveOpinionPollComment(pollId,regVO,comment,firstNm,lastNm);
+		savedCommentId = opinionPollService.saveOpinionPollComment(pollId,regVO,comment,firstNm,lastNm);
 		
 		return Action.SUCCESS;
 		
