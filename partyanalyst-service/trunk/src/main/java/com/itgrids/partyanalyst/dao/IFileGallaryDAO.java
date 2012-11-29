@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -89,11 +90,11 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     
     public List<FileGallary> getFileGallaryByFileIdsList(List<Long> fileIdsList);
     
-    public List<Object[]> getCandidateGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> candidateIds,String type);
+    public List<FileGallary> getCandidateGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> candidateIds,String type);
     
-    public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> partyIds,String type);
+    public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> partyIds,String type);
     
-    public List<Object[]> getSpecialPageGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> specialPageIds,String type);
+    public List<Object[]> getSpecialPageGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> specialPageIds,String type);
     
     public List<Object[]> getAllNewsDetails(Long candidateId,int firstResult,int maxResult,String queryType);
     
@@ -102,6 +103,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<FileGallary> getFileGallaryByFileIdsListForNews(List<Long> fileIdsList);
     
     public List<FileGallary> getHomePageNewsDetails(Integer startIndex , Integer maxResults );
+    
+    public FileGallary getFileGallary(Long fileGallaryId);
     
     public List<Long> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults);
     
