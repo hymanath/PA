@@ -830,7 +830,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	}*/
 		
 		
-		public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle)
+		public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle,Long flag)
 		{
 			VotersInfoForMandalVO votersInfoForMandalVO = null;
 			List<Object[]> list = null;
@@ -838,8 +838,13 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			try{
 				if(checkedEle !=null && checkedEle.equalsIgnoreCase("assembly"))
 					list = voterDAO.getVotersBasicInfoByConstituencyId(constituencyId, year);
-				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("mandal"))
+				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("mandal") && flag == -1)
 					list = voterDAO.getVotersBasicInfoByManadalId(constituencyId, year);
+				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("mandal") && flag != -1)
+				{
+					Long urbanId = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByassemblyLocalElectionBodyId(constituencyId);
+					list = voterDAO.getVotersBasicInfoByUrbanId(urbanId, year);
+				}
 				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("panchayat"))
 					list = boothConstituencyElectionVoterDAO.getVotersBasicInfoByPanchayatId(constituencyId, year);
 				else if(checkedEle !=null && checkedEle.equalsIgnoreCase("pollingStation"))
