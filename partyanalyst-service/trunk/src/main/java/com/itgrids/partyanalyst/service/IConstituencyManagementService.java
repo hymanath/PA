@@ -54,7 +54,7 @@ public interface IConstituencyManagementService {
 	
 	public List<Long> getVoterAgeDetailsForPanchayat(Long panchayatId, String year,String checkedEle);
 	
-	public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle);
+	public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle,Long flag);
 	
 	public VoterCastInfoVO getVotersCastInfoForUrban(Long assemblyLocalBodyId, String year);
 	
