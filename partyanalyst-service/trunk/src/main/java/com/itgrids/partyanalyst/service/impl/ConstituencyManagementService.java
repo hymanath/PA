@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencySubscriptionsDAO;
@@ -56,6 +57,17 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	private IConstituencySubscriptionsDAO constituencySubscriptionsDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IVoterDAO voterDAO;
+	
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
 
 	public IVoterDAO getVoterDAO() {
 		return voterDAO;
@@ -186,6 +198,13 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return caluculatePercentage(voterDAO.findVotersCastInfoByMandalAndElectionYear(panchayatId, year));
 		
 	}
+	
+	//voter Cast Info For Urban
+		public VoterCastInfoVO getVotersCastInfoForUrban(Long assemblyLocalBodyId, String year){
+			Long urbanId = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByassemblyLocalElectionBodyId(assemblyLocalBodyId);
+			return caluculatePercentage(voterDAO.findVotersCastInfoByUrbanAndElectionYear(urbanId, year));
+			
+		}
 	/**
 	 * @param	parms
 	 * @return  constituencyManagementVO  to the corresponding calling method.
