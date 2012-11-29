@@ -10,5 +10,6 @@ public interface ISpecialPageSubscriptionsDAO extends GenericDao<SpecialPageSubs
 	public Long getSubscriptionCount(Long userId,Long specialPageId);
 	public List<SpecialPageSubscriptions> getSubscriberDetails(Long specialPageId ,Long userId);
 	public Integer unSubscriptionDetails(Long specialPageId,Long userId);
+	public List<Object[]> getAllSubscriberDetails();
 
 }
