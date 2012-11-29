@@ -48,6 +48,8 @@ public interface IConstituencyManagementService {
 	
 	public VoterCastInfoVO getVotersCastInfoForMandal(Long panchayatId, String year);
 	
+	public List<VoterVO> getVoterInfoForPollingStation(Long hamletId,String year, Integer startIndex, Integer maxRecords, String order, String columnName);
+	
 	//public Long getProblemVisibility(Long problemId);
 	
 	//public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
