@@ -54,7 +54,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	
 	/*public void test()
 	{
-		 List list = voterDAO.findVotersCastInfoByPollingStationAndElectionYear(211l, "2009");
+		 List list = voterDAO.findVotersCastInfoByPollingStationAndElectionYear(201l, "2009");
 		 System.out.println(list.size());
 	}*/
 	/*public void testfindVotersInfoForPollingStationAndElectionYear()
@@ -70,17 +70,6 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testgetVotersAgeInfoForPollingstationAndElectionYear()
-	{
-		Long value=voterDAO.getVotersAgeInfoForPollingstationAndElectionYear(211l, "2009", 55l, 65l);
-		System.out.println(value);
-	}*/
-	/*public void testgetVotersAgeInfoForPollingstationAndElectionYear()
-	{
-		Long value=voterDAO.getVotersAboveAgeInfoForPollingstationAndElectionYear(211l, "2009");
-		System.out.println(value);
-	}
-*/
 	/*public void testGetVotersBasicInfoByManadalId()
 	{
 		List<Object[]> list = voterDAO.getVotersBasicInfoByManadalId(2844l, "2009");
@@ -148,5 +137,17 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List list = voterDAO.findVotersCastInfoByMandalAndElectionYear(83l,"2009");
 		System.out.println(list.size());
+	}
+	
+	public void test()
+	{
+		List list =voterDAO.findTotalVotersCountByPollingStationAndElectionYear(201l,"2009");
+		System.out.println(list.size());
+		
+		/*for (Object object : list) {
+			
+			System.out.println(object.toString());
+			
+		}*/
 	}
 }
