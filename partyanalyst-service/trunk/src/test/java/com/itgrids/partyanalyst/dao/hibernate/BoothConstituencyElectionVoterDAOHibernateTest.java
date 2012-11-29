@@ -7,10 +7,12 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.impl.ConstituencyManagementService;
 
+@SuppressWarnings("unused")
 public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestCase{
 
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
@@ -218,30 +220,49 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 	System.out.println(list.size());
 	}*/
 	
-	public void testgetVotersAgeInfoForPanchayatAndElectionYear()
+	/*public void test()
 	{
+	List<Object[]> list = boothConstituencyElectionVoterDAO.findVotersForPanchayatAndElectionYearByStartAndMaxResults(1l, "2009", 
+			0, 1700, "", "firstName");
+	System.out.println(list.size());
+	
+	for (Object[] object : list) {
 		
-		Long value = boothConstituencyElectionVoterDAO.getVotersAgeInfoForPanchayatAndElectionYear(1l, "2009",0l,65l);
-		System.out.println(value);
+		System.out.println(object[0]);
+		
 	}
-	public void testGetVotersBasicInfoByPanchayatId()
+	}*/
+	/*public void test()
 	{
-		List<Object[]> list = boothConstituencyElectionVoterDAO.getVotersBasicInfoByPanchayatId(15373l, "2009");
-		if(list.size() > 0)
-		{
-			for(Object[] params : list)
-			{
-				if(params[0].toString() !=null && params[1].toString() !=null)
-				{
-					if(params[1].toString().equalsIgnoreCase("M"))
-						System.out.println("Male: "+params[0].toString());
-					if(params[1].toString().equalsIgnoreCase("F"))
-						System.out.println("FeMale: "+params[0].toString());
-					if(params[1].toString().equalsIgnoreCase(""))
-						System.out.println("UnKnow: "+params[0].toString());
-				}
-			}
-		}
+	List<Object[]> list = boothConstituencyElectionVoterDAO.findVotersForBoothAndElectionYearByStartAndMaxResults(201l, "2009", 
+			0, 40, "", "voterId");
+	System.out.println(list.size());
+	
+	for (Object[] voterVO : list) {
+		
+		System.out.println(voterVO[0]);
+		
 	}
+	
+	}*/
+	/*public void testfindTotalVotersCountByPanchayatAndElectionYear()
+	{
+		Long list= (Long)boothConstituencyElectionVoterDAO.findTotalVotersCountByPanchayatAndElectionYear(1l,"2009").get(0);
+		System.out.println(list);
+	}*/
+	
+	/*public void test()
+	{
+	List<Object[]> list = boothConstituencyElectionVoterDAO.findTotalVotersCountByPollingStationAndElectionYear(201l, "2009");
+	System.out.println(list.size());
+	
+	for (Object[] voterVO : list) {
+		
+		System.out.println(voterVO[0]);
+		
+	}
+	
+	}*/
+
 }
 
