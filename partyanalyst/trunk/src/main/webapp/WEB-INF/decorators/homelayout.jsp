@@ -41,10 +41,32 @@
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+	
 	<!--YUI SCRIPT-->
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
 	
+	
+	<script>
+		var Localization = { <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+		String stateSelect = rb.getString("stateSelect");
+		String distSelect = rb.getString("distSelect");
+		String constSelect = rb.getString("constSelect");
+		String assembly = rb.getString("assembly");
+		String parliament = rb.getString("parliament");
+		String localBody = rb.getString("localBodies");
+		String electionTypeInHome = rb.getString("electionTypeInHome");
+		String electionYearInHome = rb.getString("electionYearInHome");
+		
+		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
+		String errorMsg = resb.getString("constTypeAlert");
+%> }
+	</script>
 	<style>
+	body{color:#5B5B5B;}
+	
 .background
 {
 background:#ffffff;
@@ -64,6 +86,10 @@ margin:-1px 0px 0px 0px ;
 #follow-icon a.t-icon{background: url("images/new_homepage/t.png") repeat scroll 0px 0px transparent; display: block;float: left;height: 24px;transition: all 0s ease-in-out 0s;width: 24px;margin-left:6px;}
 #follow-icon a.t-icon:hover{background: url("images/new_homepage/t.png") repeat scroll 0px -24px transparent;}
 
+.gradlightblack{
+	margin-top:10px;
+}
+
 
 </style>
 <decorator:head/>
@@ -79,11 +105,13 @@ margin:-1px 0px 0px 0px ;
 		<c:choose>
 			<c:when test="${!empty feedback && feedback == 'true'}">
 				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedback_new.jpg"/></a>
-			</c:when>		
+			</c:when>	
+			<c:otherwise>
+				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
+			</c:otherwise>			
 		</c:choose>
 		<div id="floatingDiv_absolute_close" >
-			<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg" style="border: 5px solid red;
-			margin-left:0;margin-top: 1px;width: 15px;">
+			<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg" alt="feedback Image">
 		</div>
 			
 	</div>
@@ -104,8 +132,8 @@ margin:-1px 0px 0px 0px ;
 				<h5 style="color:#08AAEC;line-height:0px;"> FOLLOW US</h5>
 			</div>
 			<div id="follow-icon" style="">
-				<a class="f-icon" title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"></a>
-				<a class="t-icon" title="twitter" href="http://twitter.com/#!/partyanalyst" target="_blank"></a>
+				<a class="f-icon" title="Follow us on Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank" alt="Facebook Image"></a>
+				<a class="t-icon" title="Follow us on twitter" href="http://twitter.com/#!/partyanalyst" target="_blank" alt="Twitter Image"></a>
 			</div>
 		</div>
 
@@ -400,9 +428,9 @@ margin:-1px 0px 0px 0px ;
 		</div>
 	</td>
 </tr>
-<tr><td>
+<tr><td style="background:#5d5d5d;">
 <!--FOOTER SECTION START-->
-<div class="mainwrapper"> 
+<div class="mainwrapper" > 
   <!--FOOTER LEFT SECTION (FOOTER MENU) START-->
 	<div class="footer-left-sec">
 		<ul>
@@ -480,6 +508,167 @@ margin:-1px 0px 0px 0px ;
 </td></tr>
 </table>
 <!--FOOTER SECTION END-->
+
+<div id="accordion" title="Quick View" style="display:none;">
+          	<h3 ><a href="#">View Your State</a></h3>
+				<div style="padding:0px;">
+					<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+								<table style="font-size:12px;">
+									<tr>
+										<td style="text-align:justify;padding-bottom:30px;line-height:25px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
+									</tr>
+									<tr>
+		<td style="height:40px;color:#004078;font-size=12px;">
+	<%=stateSelect%></td>
+									</tr>
+									<tr>
+									<td style="font-size:12px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="{}" listKey="id" listValue="name" /></td>									
+									</tr>								
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
+								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
+							</div>
+						</div>
+						<h3><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Your District</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+								<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
+								<table style="font-size:12px;">
+									<tr>
+										<td style="text-align:justify;padding-bottom:5px;line-height:25px;"> Select your district to view its election results in district level. </td>
+									</tr>
+									<tr>
+										<td style="color:#004078"><%=stateSelect%></td>
+									</tr>
+									<tr>
+								<td style="width:200px;font-size=12px;">
+								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList2" list="{}" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateInQuickView(this.options[this.selectedIndex].value,'districtList_d')"></s:select></td>
+										<td><span id="districtList_d_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color:#004078"><%=distSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/></td>
+									</tr>
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
+								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
+							</div>
+						</div>
+						<h3 ><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Your Constituency</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+								<div id="alertMessage" style="color:red;font-weight:bold;"></div>
+								<table style="font-size:12px;">
+									<tr>
+										<td colspan="4" style="font-size:12px;">Select Constituency Type</td>
+									</tr>	
+									<tr>
+										<td colspan="2"><input type="radio" checked="checked" name="a_radio" id="a_radio" onclick="hideUnhideSelectBoxInQuickView(this.id, 'constituency')"/><%=assembly%></td>
+										<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBoxInQuickView(this.id,'constituency')"/><%=parliament%></td>
+									</tr>
+								</table>
+								<table id="stateTable" style="display:none;font-size:12px;">
+									<tr>
+										<td style="color:#004078"><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td style="font-size:12px;"><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="{}" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByTypeInQuickView(2,this.options[this.selectedIndex].value,'constituency')"></s:select></td>
+										<td><span id="constituency_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
+										</td>
+									</tr>
+								</table>
+									
+								
+								<table id="constTable" style="display:none;font-size:12px;">
+									<tr>
+										<td style="color:#004078"><%=constSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>
+									</tr>
+								</table>										
+							</div>
+							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
+								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
+							</div>
+						</div>
+
+					<h3 ><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Your Locality</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+								<table style="font-size:12px;">								
+									<tr>
+										<td style="color:#004078"><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td style="font-size:12px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="{}" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
+									</tr>
+									<tr>
+										<td style="color:#004078"><div id="localBodiesRadioDiv_label"><%=localBody%></div></td>
+									</tr>
+									<tr>
+										<td><div id="localBodiesRadioDiv_data"></div></td>									
+									</tr>
+									<tr>
+										<td style="color:#004078"><div id="localBodiesSelectDiv_label"></div></td>
+									</tr>
+									<tr>
+										<td><div id="localBodiesSelectDiv_data"></div></td>									
+									</tr>
+									<tr>
+										<td><div id="localBodies_errorDiv"></div></td>									
+									</tr>
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
+								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
+							</div>
+						</div>
+
+						<h3 ><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Election Results</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+								<table style="font-size:12px;">
+								
+		<tr>
+		<td><select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 200px;"
+		onchange="checkElectionType(this.options[this.selectedIndex].value)"/>
+		<option value="0">Select Type</option>
+		<option value="2">Assembly</option>
+		<option value="1">Parliament</option>
+		</select>	</td></tr>
+						
+			
+
+		<tr><td>
+		<select id="states" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+		width: 200px;"
+		onchange="getElectionYearsInHomePage('Assembly')">
+			</select></td></tr>
+
+		<tr><td><select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+			width: 200px;"></select></td></tr></table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
+								<table width="90%"><tr>
+									<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
+
+									<td width="35%"><img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img></td>
+								</tr></table>
+							</div>
+						</div>
+						
+						</div>
+				
 
 <script>
 function checkElectionType(electionTypeId)
@@ -695,6 +884,353 @@ function buildAccordion()
  }
  
  
+ <!--Accordian Script functions-->
+ function getStatesInQuickView( task,selId)
+{		
+	
+	var jsObj=
+		{				
+			electionType :'Assembly',
+			elmtId:selId,
+			task:task	
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesAjaxAction.action?"+rparam;						
+	callQuickViewAjax(jsObj,url);
+}
+
+function hideUnhideSelectBoxInQuickView(radioElement, selectElement)
+{
+	
+	var stateId;
+	var tableEl = document.getElementById("constTable");
+	var stateTableEl = document.getElementById("stateTable");
+	var stateSelectEl = document.getElementById("stateList_c");
+	if(stateSelectEl.selectedIndex == -1){
+	stateId = 1;
+	}
+	else{
+	 stateId = stateSelectEl.options[stateSelectEl.selectedIndex].value;
+		}
+	var alertEl = document.getElementById("alertMessage");
+	alertEl.innerHTML = '';
+	if(radioElement == 'a_radio')
+	{
+		
+		if(stateTableEl.style.display == 'none')
+		{
+			stateTableEl.style.display = 'block';
+		}
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
+		/*election type 2 for mla const*/
+		getAllConstituenciesInStateByTypeInQuickView(2,stateId,selectElement);
+	} else if(radioElement == 'p_radio')
+	{
+		 /*election type 1 for mla const*/
+		
+		if(stateTableEl.style.display == 'block')
+		{
+			stateTableEl.style.display = 'none';
+		}
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
+		getAllParliamentConstInCountryInQuickView(selectElement);
+	}
+	 
+}
+
+function getAllConstituenciesInStateByTypeInQuickView(electionType, stateId, element)
+{
+	showBusyImgWithId(element);
+	clearOptionsListForSelectElmtId(element);
+	var jsObj=
+	{				
+			electionTypeId: electionType,
+			stateId: stateId,
+			task: "getConstituencies",
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllConstituenciesInState.action?"+rparam;						
+callQuickViewAjax(jsObj,url);
+}
+
+function getAllStatesHavingLocalBody(element){
+
+	var jsObj={
+		task: "statesListForLocalBodyElection",
+		elmtId: element
+	}
+	var rparam = "task="+YAHOO.	lang.JSON.stringify(jsObj);
+	var url="getAllStatesHavingLocalBody.action?"+rparam;
+	callQuickViewAjax(jsObj,url);
+}
+
+function getLocalBodiesForState(stateId)
+{
+	var jsObj=
+	{
+			stateId:stateId,
+			task:"getLocalBodiesForState"					
+	}; 
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocalBodiesTypesInAState.action?"+rparam;						
+	homePageAjaxCall(rparam,jsObj,url);
+}
+
+
+function homePageAjaxCall(param,jsObj,url){
+	var myResults;
+		
+		var callback = {			
+		               success : function( o ) 
+					  {
+						try {			
+								if(o.responseText)
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+
+								if(jsObj.task == "getRecentElectionsInState")
+								{									
+									showResults(myResults);
+								} 
+								else if(jsObj.task == "getAllPolls")
+								{			
+									
+								    
+									if(myResults.description==null){
+										
+										//showVotesObtainedForOptions(myResults.questionsOptionsVO);
+										if(myResults.questionsOptionsVO != null)
+										displayCurrentPollResult(myResults.questionsOptionsVO.questionId);
+
+									}else{										
+										//buildNewPoll(myResults);
+										buildNewPoll1(myResults);
+									}
+								}
+								else if(jsObj.task == "saveSelectedPoll")
+								{	
+									
+									showVotesObtainedForOptions(myResults);
+								} 
+								else if(jsObj.task == "getLocalBodiesForState")
+								{
+									buildLocalBodiesForAState(jsObj,myResults);
+								}
+								else if(jsObj.task == "getLocalBodiesSelectElmtForState")
+								{
+									buildLocalBodiesSelectElmt(jsObj,myResults)
+								}
+								
+						}
+						catch (e)
+							{   
+							  	//alert("Invalid JSON result" + e);   
+							}	  
+			              },
+			               scope : this,
+			               failure : function( o ) {
+
+			            	  			// alert( "Failed to load result" + o.status + " " + o.statusText);
+			                         }
+			               };
+
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+	
+	function getAllParliamentConstInCountryInQuickView(element)
+{
+	
+	var jsObj=
+	{				
+			task: "getAllParliamentConstituencies",
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllParliamentConstInCountry.action?"+rparam;						
+callQuickViewAjax(jsObj,url);
+}
+ 
+ 
+ 
+ 
+ 
+ <!--footer functions-->
+function contactForSupportLinkInHomePage(){
+
+			jQuery(document).ready( function(){       
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
+						//instantiate the dialog
+						$("#contactWindowDiv").dialog({ stack: false,
+							    height: 220,
+								width: 800,
+								modal: true,
+								position: [170,150],
+								title:'Contact Us www.partyanalyst.com',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+						
+
+			});	
+			//function to show dialog   
+			var showDialog = function() {
+				$("#contactWindowDiv").show(); 
+				//open the dialog
+				$("#contactWindowDiv").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#contactWindowDiv").dialog("close");
+			}
+			
+ var elmt = document.getElementById("contactWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Hyderabad.<br></td></tr>';
+str+='<tr><td>Phone: +91 40 4012 4153<br></td></tr>';
+str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Email: customer.services@partyanalyst.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
+str+='</tr>';
+str+='</table>';
+
+
+elmt.innerHTML = str;
+}
+
+function contactForDemoLinkInHomePage(){
+
+			jQuery(document).ready( function(){       
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
+						//instantiate the dialog
+						$("#contactWindowDiv").dialog({ stack: false,
+							    height: 220,
+								width: 700,
+								modal: true,
+								position: [170,150],
+								title:'Contact Us www.partyanalyst.com',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+						
+
+			});	
+			//function to show dialog   
+			var showDialog = function() {
+				$("#contactWindowDiv").show(); 
+				//open the dialog
+				$("#contactWindowDiv").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#contactWindowDiv").dialog("close");
+			}
+			
+ var elmt = document.getElementById("contactWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Hyderabad.<br></td></tr>';
+str+='<tr><td>Phone: +91 40 4012 4153<br></td></tr>';
+str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Email: sales@partyanalyst.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
+str+='</tr>';
+str+='</table>';
+
+
+elmt.innerHTML = str;
+}
+
+
+function supportLinkInHomePage(){
+
+			jQuery(document).ready( function(){       
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
+						//instantiate the dialog
+						$("#supportWindowDiv").dialog({ height: 220,
+								width: 630,
+								modal: true,
+								position: 'center',
+								title:'Support @ IT Grids',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+						
+
+			});	
+			//function to show dialog   
+			var showDialog = function() {
+				$("#supportWindowDiv").show(); 
+				//open the dialog
+				$("#supportWindowDiv").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#supportWindowDiv").dialog("close");
+			}
+			
+ var elmt = document.getElementById("supportWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Hyderabad.<br></td></tr>';
+str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Email: info@partyanalyst.com or a.dakavaram@itgrids.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
+str+='</tr>';
+str+='</table>';
+
+
+elmt.innerHTML = str;
+}
 <!--Facebook like code Start-->
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
