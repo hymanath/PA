@@ -2,8 +2,8 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.poi.hssf.record.formula.functions.Request;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -460,7 +460,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 	}
 	
 	public List<FileGallary> getHomePageNewsDetails(Integer startIndex , Integer maxResults ){
-		Query query = getSession().createQuery("select distinct model from FileGallary model where model.gallary.contentType.contentType = 'News Gallary' and model.gallary.isPrivate = 'false' " +
+		Query query = getSession().createQuery("select distinct model from FileGallary model where model.gallary.contentType.contentType = 'News Gallary' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' " +
 				" and model.isPrivate = 'false' and model.isDelete = 'false'  and model.file.regionScopes.regionScopesId < 4 order by model.file.fileDate desc,model.updateddate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
@@ -1173,28 +1173,23 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 return query.list();
      }
      
-     public List<Object[]> getCandidateGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> candidateIds,String type)
+     public List<FileGallary> getCandidateGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> candidateIds,String type)
      {
     	 StringBuilder query = new StringBuilder();
-    	 
-    	 query.append("select model.fileGallaryId,model.gallary.name,model.file.fileTitle,model.gallary.candidate.candidateId,model.gallary.candidate.lastname,model.file.fileDescription");
-    	 
-    	 if(!type.equalsIgnoreCase("photos"))
-    		query.append(",model.file.sourceObj.source,model.file.language.language ");
     		 
-    	 query.append(" from FileGallary model where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
-     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and model.gallary.candidate.candidateId in (:candidateIds) ");
-     	 
+    	 query.append("select distinct model from FileGallary model where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate  and model.gallary.candidate.candidateId in (:candidateIds) ");  	 
+    	 
     	 if(type.equalsIgnoreCase("photos"))
     	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
-    	 
+    	   
     	 else if(type.equalsIgnoreCase("news"))    	 
-    	 query.append(" and model.gallary.contentType.contentTypeId = 2 ");
-    	 
+    	   query.append(" and model.gallary.contentType.contentTypeId = 2 ");
+    	    	 
     	 else if(type.equalsIgnoreCase("videos"))
-    	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
+    	   query.append(" and model.gallary.contentType.contentTypeId = 4 ");
     	 
-    	 query.append(" order by model.createdDate desc");
+    	 query.append(" order by model.file.fileDate desc,model.createdDate desc");
     	 
     	 Query queryObj = getSession().createQuery(query.toString());
     	 
@@ -1205,17 +1200,15 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 return queryObj.list();
      }
      
-     public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> partyIds,String type)
+     public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> partyIds,String type)
      {
     	 StringBuilder query = new StringBuilder();
     	 
-    	 query.append("select model.fileGallaryId,model.gallary.name,model.file.fileTitle,model1.party.partyId,model1.party.shortName,model.file.fileDescription");
-    	 
-    	 if(!type.equalsIgnoreCase("photos"))
-    		query.append(",model.file.sourceObj.source,model.file.language.language ");
-    		 
+    	 query.append("select distinct model,model1.party.partyId,model1.party.shortName,model1.party.partyFlag ");
+	 
     	 query.append(" from FileGallary model,PartyGallery model1 where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
-     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and model.gallary.gallaryId = model1.gallery.gallaryId and model1.isDelete = 'false' and model1.isPrivate = 'false' and model1.party.partyId in (:partyIds) ");
+     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate  and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate  " +
+     	 		" and model.gallary.gallaryId = model1.gallery.gallaryId and model1.isDelete = 'false' and model1.isPrivate = 'false' and model1.party.partyId in (:partyIds) ");
      	 
     	 if(type.equalsIgnoreCase("photos"))
     	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
@@ -1226,7 +1219,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 else if(type.equalsIgnoreCase("videos"))
     	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
     	 
-    	 query.append(" order by model.createdDate desc");
+    	 query.append(" order by model.file.fileDate desc,model.createdDate desc");
     	 
     	 Query queryObj = getSession().createQuery(query.toString());
     	 
@@ -1237,17 +1230,15 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 return queryObj.list();
      }
      
-     public List<Object[]> getSpecialPageGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> specialPageIds,String type)
+     public List<Object[]> getSpecialPageGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> specialPageIds,String type)
      {
     	 StringBuilder query = new StringBuilder();
     	 
-    	 query.append("select model.fileGallaryId,model.gallary.name,model.file.fileTitle,model1.specialPage.specialPageId,model1.specialPage.heading,model.file.fileDescription");
-    	 
-    	 if(!type.equalsIgnoreCase("photos"))
-    		query.append(",model.file.sourceObj.source,model.file.language.language ");
+    	 query.append("select model,model1.specialPage.specialPageId,model1.specialPage.name,model1.specialPage.profileImgPath ");
     		 
     	 query.append(" from FileGallary model,SpecialPageGallery model1 where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
-     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and model.gallary.gallaryId = model1.gallary.gallaryId and model1.isDelect = 'false' and model1.specialPage.isDelete = 'false' and model1.specialPage.specialPageId in (:specialPageIds) ");
+     	 		" model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate   and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate " +
+     	 		" and model.gallary.gallaryId = model1.gallary.gallaryId and model1.isDelect = 'false' and model1.specialPage.isDelete = 'false' and model1.specialPage.specialPageId in (:specialPageIds) ");
      	 
     	 if(type.equalsIgnoreCase("photos"))
     	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
@@ -1258,7 +1249,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 else if(type.equalsIgnoreCase("videos"))
     	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
     	 
-    	 query.append(" order by model.createdDate desc");
+    	 query.append(" order by model.file.fileDate desc,model.createdDate desc");
     	 
     	 Query queryObj = getSession().createQuery(query.toString());
     	 
@@ -1289,6 +1280,13 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 				
 							
 			return queryObject.list(); 
+   }
+   
+   public FileGallary getFileGallary(Long fileGallaryId){
+	   Query query = getSession().createQuery("select model from FileGallary model where model.fileGallaryId = :fileGallaryId");
+            query.setParameter("fileGallaryId", fileGallaryId);
+            
+            return (FileGallary)query.uniqueResult();
    }
      
 }
