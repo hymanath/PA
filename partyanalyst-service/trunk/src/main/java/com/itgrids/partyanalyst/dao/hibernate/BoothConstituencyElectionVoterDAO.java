@@ -297,7 +297,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 			Object[] params = {hamletId, year};
 			return getHibernateTemplate().find("select count(model.voter.voterId), model.voter.gender, model.voter.cast from BoothConstituencyElectionVoter model " +
 					"where model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
-					"group by model.voter.cast, model.voter.gender order by model.voter.cast", params);
+					"group by model.voter.cast order by model.voter.cast", params);
 		}
 	
 	//caste info for Polling station
@@ -305,7 +305,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 			Object[] params = {hamletId, year};
 			return getHibernateTemplate().find("select count(model.voter.voterId), model.voter.gender, model.voter.cast from BoothConstituencyElectionVoter model " +
 					"where model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from HamletBoothElection model1 where model1.boothConstituencyElection.boothConstituencyElectionId in(?)) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
-			"group by model.voter.cast, model.voter.gender order by model.voter.cast", params);
+			"group by model.voter.cast order by model.voter.cast", params);
 		}	
 	//caste info for Hamlet
 		public List findVotersCastInfoByHamletAndElectionYear(Long hamletId, String year){
