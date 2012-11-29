@@ -315,8 +315,8 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		}
 		Long constituencyId = jObj.getLong("constituencyId");
 		String checkedele = jObj.getString("checkedele");
-		
-		 votersInfoForMandalVO = constituencyManagementService.getBasicVotersInfo(constituencyId,"2009",checkedele);
+		String flag = jObj.getString("flag");
+		 votersInfoForMandalVO = constituencyManagementService.getBasicVotersInfo(constituencyId,"2009",checkedele,new Long(flag));
 		
 		return SUCCESS;
 	}
