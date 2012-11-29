@@ -34,13 +34,9 @@ import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
-import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.CandidateSubscriptions;
 import com.itgrids.partyanalyst.model.ConstituencySubscriptions;
-import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
-import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -144,10 +140,15 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		if(!"desc".equalsIgnoreCase(order))
 			order = "";
 		
-		List voters = boothConstituencyElectionVoterDAO.findVotersForHamletAndElectionYearByStartAndMaxResults(hamletId, year, 
+		//Long partNo = null;
+		
+		List<Object[]> voters = boothConstituencyElectionVoterDAO.findVotersForPanchayatAndElectionYearByStartAndMaxResults(hamletId, year, 
 				startIndex, maxRecords, order, columnName);
 		
-		Long totalRecords = (Long)boothConstituencyElectionVoterDAO.findTotalVotersCountByHamletAndElectionYear(hamletId, year).get(0);
+		//List<Object[]> votersForPollingStation = boothConstituencyElectionVoterDAO.findVotersForBoothAndElectionYearByStartAndMaxResults(hamletId, "2009", partNo, startIndex, maxRecords, order, columnName);
+		//Hamlet
+		//Long totalRecords = (Long)boothConstituencyElectionVoterDAO.findTotalVotersCountByHamletAndElectionYear(hamletId, year).get(0);
+		Long totalRecords = (Long)boothConstituencyElectionVoterDAO.findTotalVotersCountByPanchayatAndElectionYear(hamletId, year).get(0);
 		
 		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
 		VoterVO voterVO = null;
@@ -816,20 +817,8 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 					return resultStatus;
 				}
 	}
-	/*
-	public Long getProblemVisibility(Long problemId){
-		Long vsbltyId=0l;
-			try{
-				vsbltyId=problemProgressDAO.getVisibility(problemId);
-				return vsbltyId;
-			}
-			catch(Exception e){
-				log.error("Exception occured in getProblemVisibility() Method, Exception is - "+e);
-				return vsbltyId;
-			}
-	}*/
 		
-		
+
 		public VotersInfoForMandalVO getBasicVotersInfo(Long constituencyId, String year,String checkedEle,Long flag)
 		{
 			VotersInfoForMandalVO votersInfoForMandalVO = null;
@@ -883,6 +872,89 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				e.printStackTrace();
 				return votersInfoForMandalVO;
 			}
+		}
+
+	/*
+	public Long getProblemVisibility(Long problemId){
+		Long vsbltyId=0l;
+			try{
+				vsbltyId=problemProgressDAO.getVisibility(problemId);
+				return vsbltyId;
+			}
+			catch(Exception e){
+				log.error("Exception occured in getProblemVisibility() Method, Exception is - "+e);
+				return vsbltyId;
+			}
+	}*/
+		//voters Info for polling station
+	
+		/*public List<VoterVO> getVoterInfoForPollingStation(Long hamletId,String year,
+				long partNo, Integer startIndex, Integer maxRecords,
+				String order, String columnName) {
+		
+					
+				 List<Object[]> voters = boothConstituencyElectionVoterDAO.findVotersForBoothAndElectionYearByStartAndMaxResults(hamletId, "2009",partNo, 
+						startIndex, maxRecords, order, columnName);
+				 
+				 List<VoterVO> voterVOs = new ArrayList<VoterVO>();
+					VoterVO voterVO = null;
+					Long count = new Long(startIndex);
+					for(Object[] voter:(List<Object[]>)voters){
+						voterVO = new VoterVO();
+						voterVO.setVoterId((++count)+"");
+						voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
+						voterVO.setHouseNo(voter[2].toString());
+						voterVO.setAge(Long.parseLong(voter[3].toString()));
+						voterVO.setCast(voter[4].toString());
+						voterVO.setCastCatagery(voter[5].toString()+" "+voter[6].toString());
+						voterVO.setGender(voter[7].toString());
+						voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
+						voterVO.setRelationshipType(voter[10].toString());
+						voterVOs.add(voterVO);
+					}
+
+					
+					return voterVOs;
+				
+			}*/
+		
+		public List<VoterVO> getVoterInfoForPollingStation(Long hamletId,String year,
+				 Integer startIndex, Integer maxRecords,
+				String order, String columnName) {
+			
+			if(!"desc".equalsIgnoreCase(order))
+				order = "";
+			
+			//Long partNo = null;
+			
+			List<Object[]> voters = boothConstituencyElectionVoterDAO.findVotersForBoothAndElectionYearByStartAndMaxResults(hamletId, "2009", 
+					startIndex, maxRecords, order, columnName);
+			
+			//List<Object[]> votersForPollingStation = boothConstituencyElectionVoterDAO.findVotersForBoothAndElectionYearByStartAndMaxResults(hamletId, "2009", partNo, startIndex, maxRecords, order, columnName);
+			//Hamlet
+			//Long totalRecords = (Long)boothConstituencyElectionVoterDAO.findTotalVotersCountByHamletAndElectionYear(hamletId, year).get(0);
+			Long totalRecords = (Long) voterDAO.findTotalVotersCountByPollingStationAndElectionYear(hamletId, year).get(0);
+			
+			List<VoterVO> voterVOs = new ArrayList<VoterVO>();
+			VoterVO voterVO = null;
+			Long count = new Long(startIndex);
+			for(Object[] voter:(List<Object[]>)voters){
+				voterVO = new VoterVO();
+				voterVO.setVoterId((++count)+"");
+				voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
+				voterVO.setHouseNo(voter[2].toString());
+				voterVO.setAge(Long.parseLong(voter[3].toString()));
+				voterVO.setCast(voter[4].toString());
+				voterVO.setCastCatagery(voter[5].toString()+" "+voter[6].toString());
+				voterVO.setGender(voter[7].toString());
+				voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
+				voterVO.setRelationshipType(voter[10].toString());
+				voterVOs.add(voterVO);
+			}
+
+			if(voterVOs.size() > 0)
+				voterVOs.get(0).setTotalVoters(totalRecords);
+			return voterVOs;
 		}
 	
 }
