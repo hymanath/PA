@@ -3,10 +3,23 @@
     pageEncoding="ISO-8859-1"%>
 <html>
 <head>
+
+<!--Meta Information-->
+<title>Voters Guide -The right to vote is the foundation of democracy.Your vote is your voice,Dont loose your voice,Your country is counting on you.</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+	<meta http-equiv="Content-Language" content="en" />
+	<meta name="Keywords" content="Register vote, Transfer vote, Duplicate vote, Cancel vote, Proxy vote, Sub proxy vote, Postal ballot voting, Army vote, NRI Voter, EVM, Form 6, Form 6A, Form 7 , Form 8, Form 8A ,Form 13F, Form 13G, Form 002,Form’s of Election Commission of India ,how to vote, voters guide, postal ballot , importance of voting, eligibility for voting in india, lost voter id, modify voter Id details, Democracy in india " />
+	<meta name="description" content="As an eligible voter it’s our right to vote, we provide you the information about registering, cancelling and transferring vote and getting duplicate voter id. And giving you some of the forms of Election Commission of India that are frequently used. And providing you the information about How NRI Voters to register, Voting of Army Voters using proxy and sub proxy." />
+	
+
 <link media="screen" rel="stylesheet" href="styles/colorbox/colorbox.css"/>
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
-<script src="js/colorbox/jquery.colorbox.js"></script>
-<script src="js/jQuery/jquery-1.5.2.min.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
+
+<!--<script src="js/colorbox/jquery.colorbox.js"></script>-->
+<!--<script src="js/jQuery/jquery-1.5.2.min.js"></script>-->
 
 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
@@ -22,14 +35,18 @@
 <!-- start of vedio files -->
 
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
+<!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script>
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
-<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
+<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>-->
+<script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Voters Guide</title>
 <style>
 
-
+h2{
+	font-size: 24px;
+    line-height: 36px;
+}
 .maindiv {
   
     font-family: Arial;
@@ -94,8 +111,8 @@ h1 {
 .ulInAddPages {padding:5px;margin-left:30px;list-style-type:disc !important;}
    .breadcrumb .ulInAddPages li{list-style-type:disc ;margin-top:5px;line-height:25px ;display:list-item;word-spacing:1px;text-align:justify;padding:5px;
 }
-  .row-fluid{padding:10px;}
-
+  #contenttable{margin-top:10px;background:url("./images/new_homepage/js-banner-bg1.jpg");
+margin:-1px 0px 0px 0px ;}
   .nav .active a:hover{
 	background:cornflowerblue;
 	color:#FFFFFF;
@@ -124,6 +141,12 @@ h1 {
 	right:10px;
 	bottom:5px;
  }
+ #contentBlock .breadcrumb{
+	border: 1px solid #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 0 #FFFFFF inset;
+    list-style: none outside none;
+ }
  .tovoters h3{
 	font-size:15px;
 	padding:6px;
@@ -138,20 +161,65 @@ h1 {
   h3 small{color:#595959;}
   .tovoters a{color:#8E8E8E;}
   .tovoters a:hover{color:#4CB1CF;font-size:16px;}
+  
+  h5 {
+		font-size: 12px;
+	}
+	
+	.breadcrumb {
+    background-color: #FBFBFB;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #F5F5F5);
+    background-repeat: repeat-x;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 0 #FFFFFF inset;
+    list-style: none outside none;
+    margin: 0 0 18px;
+    padding: 20px;
+}
+h3{
+	line-height:27px;
+}
+
+.btn-small {
+    font-size: 11px;
+    line-height: 16px;
+    padding: 5px 9px;
+}
+
 </style>
 
 </head>
 <body>
-<script>
-$(document).ready(function(){
-     $(".iframe").colorbox({iframe:true, width:"90%", height:"90%"});
-     });  
-</script>
+
 <div id="heading">
 	<h1 class="gradlightblack" style="width:940px;">Voters Guide</h1>
+	<div>
+		<span style="float: right; margin-top: -36px; margin-right: 25px;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</span>
+		<span style="float: right; margin-top: -36px; margin-left: 0px; margin-right: 100px;">
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/voters.action">
+				Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script>
+		</span>
+		
+		<span style="float: right; margin-right: 231px; margin-top: -36px;">
+			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/voters.action')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+		</span>
+		</div>	
 </div>
 <div style="width:960px;margin-left:auto;margin-right:auto;margin-top:5px;margin-bottom:5px;">
-<IMG src="images/Voters_Guide Img.jpg" style="width: 951px;" alt="Andhra Pradesh 2012 Bye Election"/>
+<IMG src="images/Voters_Guide Img.jpg" style="width: 951px;" alt="Voters Guide -The right to vote is the foundation of democracy.Your vote is your voice.Dont loose your voice.Your country is counting on you Image."/>
 </div>
 <div class="maindiv">
 	<div class="leftdiv" id="contentBlock" >	
@@ -465,6 +533,12 @@ function toggle(id){
 		text.innerHTML = "Hide";
 	}
 }
+
+
+$(document).ready(function(){
+     <!--$(".iframe").colorbox({iframe:true, width:"90%", height:"90%"});-->
+     });  
+
 </script>
 </body>
 </html>
