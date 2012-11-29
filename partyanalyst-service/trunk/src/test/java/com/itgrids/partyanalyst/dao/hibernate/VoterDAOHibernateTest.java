@@ -138,9 +138,15 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testfindVotersCastInfoByUrbanAndElectionYear()
+	/*public void testfindVotersCastInfoByUrbanAndElectionYear()
 	{
 		List list=voterDAO.findVotersCastInfoByUrbanAndElectionYear(83l, "2009");
+		System.out.println(list.size());
+	}*/
+	
+	public void testgetVotersBasicInfoByUrbanId()
+	{
+		List list = voterDAO.findVotersCastInfoByMandalAndElectionYear(83l,"2009");
 		System.out.println(list.size());
 	}
 }
