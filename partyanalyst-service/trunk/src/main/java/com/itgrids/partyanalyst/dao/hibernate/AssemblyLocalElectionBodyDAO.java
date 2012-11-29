@@ -114,5 +114,11 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		
 	}
 	
+	public Long getLocalElectionBodyIdByassemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId) {
+		Query query = getSession().createQuery("select model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = ?");
+		query.setParameter(0, assemblyLocalElectionBodyId);
+		return (Long)query.uniqueResult();
+	}
+	
 	
 }
