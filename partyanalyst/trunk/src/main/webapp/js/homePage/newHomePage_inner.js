@@ -349,6 +349,16 @@ $("#my-jqCarousel-news .prev").trigger("click");
 
 
 $(".news-paginate .next-sl").click(function(){
+
+var gallerylength=$("#my-jqCarousel-news .pagination-links").find("li").length-1;
+var ind=$("#my-jqCarousel-news .pagination-links").find(".current").index();
+if(gallerylength==ind)
+{
+$("#my-jqCarousel-news").find("ol.pagination-links").remove();
+$("#my-jqCarousel-news").find(".next").remove();
+$("#my-jqCarousel-news").find(".prev").remove();
+$('#my-jqCarousel-news').jqCarousel();
+}else
 $("#my-jqCarousel-news .next").trigger("click");
 });
 $("#my-jqCarousel-news ul li").width($("#my-jqCarousel-news").width());
@@ -368,19 +378,29 @@ $("#my-jqCarousel-1 .prev").trigger("click");
 
 // Automate
 setInterval(function(){
-if($('.photogallerynav').is(':hidden')) {
-var gallerylength=$("#my-jqCarousel-1 .pagination-links").find("li").length-1;
-var ind=$("#my-jqCarousel-1 .pagination-links").find(".current").index();
+if(!automate) {
+var gallerylength=$("#my-jqCarousel-news .pagination-links").find("li").length-1;
+var ind=$("#my-jqCarousel-news .pagination-links").find(".current").index();
 if(gallerylength==ind)
 {
-$("#my-jqCarousel-1").find("ol.pagination-links").remove();
-$("#my-jqCarousel-1").find(".next").remove();
-$("#my-jqCarousel-1").find(".prev").remove();
-$('#my-jqCarousel-1').jqCarousel();
+$("#my-jqCarousel-news").find("ol.pagination-links").remove();
+$("#my-jqCarousel-news").find(".next").remove();
+$("#my-jqCarousel-news").find(".prev").remove();
+$('#my-jqCarousel-news').jqCarousel();
 }
-else {$("#my-jqCarousel-1 .next").trigger("click");} 
+else {$("#my-jqCarousel-news .next").trigger("click");} 
 }
-},8000);
+},3000);
+
+var automate=false;
+$("#my-jqCarousel-news").hover(
+  function () {
+    automate=true;
+  }, 
+  function () {
+     automate=false;
+  }
+);
 
 
 /**/
