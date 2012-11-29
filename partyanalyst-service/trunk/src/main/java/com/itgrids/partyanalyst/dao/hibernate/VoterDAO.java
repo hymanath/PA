@@ -103,7 +103,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				}
 			
 	
-		//caste info for Polling station
+			//caste info for Polling station
 			
 			
 			public List findVotersCastInfoByPollingStationAndElectionYear(Long hamletId, String year){
@@ -111,7 +111,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast order by model.cast", params);
 				}
 	
-		//caste info for Constituency
+			//caste info for Constituency
 			
 			
 			public List findVotersCastInfoByConstituencyAndElectionYear(Long hamletId, String year){
@@ -120,7 +120,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				}
 	
 	
-		//caste info for Mandal
+			//caste info for Mandal
 			
 			
 			public List findVotersCastInfoByMandalAndElectionYear(Long hamletId, String year){
@@ -134,8 +134,16 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			public List findVotersCastInfoByUrbanAndElectionYear(Long urbanId, String year){
 				Object[] params = {urbanId, year};
 				return getHibernateTemplate().find("select count(model.voterId),model.gender,model.cast from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.localBody.localElectionBodyId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.cast order by model.cast", params);
-				}	
+				}
 			
+			//Basic info for Urban
+			
+			
+			public List getVotersBasicInfoByUrbanId(Long urbanId, String year){
+				Object[] params = {urbanId, year};
+				return getHibernateTemplate().find("select count(model.voterId),model.gender from Voter model,HamletBoothElection model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.localBody.localElectionBodyId = ? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.gender", params);
+				}	
+			//Basic Info for ConstituencyId
 			@SuppressWarnings("unchecked")
 			public List<Object[]> getVotersBasicInfoByConstituencyId(Long constituencyId, String year)
 			{
@@ -143,7 +151,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				return getHibernateTemplate().find("select count(model.voterId), model.gender from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.constituencyElection.constituency.constituencyId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 group by model.gender", params);
 				
 			}
-			
+			//Basic Info for ManadalId
 			@SuppressWarnings("unchecked")
 			public List<Object[]> getVotersBasicInfoByManadalId(Long manadalId, String year)
 			{
@@ -154,7 +162,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			}
 			
 			
-			
+			//Basic Info for PollingStationId
 			@SuppressWarnings("unchecked")
 			public List<Object[]> getVotersBasicInfoByPollingStationId(Long boothId, String year){
 				Object[] params = {boothId, year};
