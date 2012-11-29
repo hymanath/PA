@@ -33,4 +33,6 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	
 	public Integer deleteByLocalElectionBodyAndConstituency(List<Long> localBodyIds, Long constituencyId);
 	
+	public Long getLocalElectionBodyIdByassemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId);
+	
 }
