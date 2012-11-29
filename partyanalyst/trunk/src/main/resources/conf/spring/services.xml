@@ -674,6 +674,8 @@
     	<property name="problemProgressDAO" ref="problemProgressDAO"/>
     	<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO"/>
     	<property name="voterDAO" ref="voterDAO" />
+    	<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+    	
     </bean>
 	
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
