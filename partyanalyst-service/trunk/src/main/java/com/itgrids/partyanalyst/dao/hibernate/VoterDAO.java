@@ -103,6 +103,15 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				}
 			
 	
+			
+			// voters data for Polling station
+			
+			public List findTotalVotersCountByPollingStationAndElectionYear(Long boothId, String year){
+				Query queryObject = getSession().createQuery("select count(model.voterId) from Voter model,HamletBoothElection model2 where model.hamlet.hamletId =model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38");
+				queryObject.setString(1, year);
+				queryObject.setLong(0, boothId);
+				return queryObject.list();
+			}
 			//caste info for Polling station
 			
 			
