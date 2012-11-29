@@ -3427,7 +3427,7 @@
 	    
 	    <action name="saveOpenionPoleCommentAction" class="opinionPollPostAction" method="saveopinionPollComment">
 	    	<result type="json" name="success">
-	    	<param name="root">status</param>
+	    	<param name="root">savedCommentId</param>
 	    	</result>	    
 	    </action>
 	    

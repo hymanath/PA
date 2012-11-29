@@ -369,7 +369,6 @@ function initializeResultsTable() {
 			<input  style="margin-left:5px;" type="text" value="Last Name" id="lasttNmId" onClick="clearDefaultLastname(this.id);" onBlur="placeDefaultValueForLarstName(this.id);"/><div id="lastNmErrMsg" class="emsg"></div></div>
 		
 		
-		
 		<div class="pull-right">
 		<a class="btn btn-success" href="javaScript:{validateCommentFields();}" title="Click Here To Post The Comment">Post Comment</a>
 		
@@ -377,6 +376,7 @@ function initializeResultsTable() {
 
 		</div>
 
+		 <div id="commentsDiv"></div>
 	<c:forEach  var="comment" varStatus="stat" items="${commentList}">
 	
 	<div class='span9 commentsec'>
@@ -523,10 +523,13 @@ function placeDefaultValue(id){
 }
 
 function clearDefaultFirstname(id){
-	var defaultValue = document.getElementById(id).value;
 
-	if(defaultValue == "First Name")
+	
+	var defaultValue = document.getElementById(id).value;
+	if(defaultValue == "First Name"){
+
         document.getElementById(id).value="";
+	}
 }
 function placeDefaultValueForFirstName(id){
 	var defaultValue = document.getElementById(id).value;
@@ -553,13 +556,13 @@ function placeDefaultValueForLarstName(id){
 		$('#lastNmErrMsg').html('');}
 
 
-<c:forEach var="status" varStatus="stat" items="${questionsOptionsVO.options}">
+/*<c:forEach var="status" varStatus="stat" items="${questionsOptionsVO.options}">
 			var obj =	{
 							option:'${status.option}',
 							votesObtained:${status.votesObtained}
 						};
 			pollStatus.push(obj);
-		</c:forEach>
+		</c:forEach>*/
 initializeResultsTable();
 opinionPollChart();
 </script>
@@ -618,6 +621,8 @@ function callAjaxForComment(jsObj,url,commentId)
 					'color' : 'green'
 				}
 
+				addDynamicDiv(jsObj,myResults);
+
 				
 				$('#successDiv').css('display','block');
 
@@ -650,6 +655,22 @@ function callAjaxForComment(jsObj,url,commentId)
 		  };
 
 		 YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function addDynamicDiv(jsObj,myResults){
+
+
+	var str='';
+
+	str+='<div class="span9 commentsec">';
+	str+='<div style="margin-bottom:8px;">'+jsObj.comment+'</div>';
+	str+='<span class="label label-info">Posted By:'+jsObj.firstName+' &nbsp;&nbsp; '+jsObj.lastName+'  </span>';	
+	str+='<span id="abuseSuccess'+myResults+'"></span>';	
+	str+='<a class="label label-important pull-right" style="margin-top:3px;margin-left:280px;" title="Click Here To Abuse This Comment" onClick="callAjaxToAbuse('+myResults+');" id="${comment.commentId}">Report Abuse</a>';
+   str+='</div>';
+
+
+$('#commentsDiv').prepend(str);
 }
 
 function saveCurrentPollResult(questionId){
@@ -807,8 +828,8 @@ $('#resultsDiv').html(str);
 function paceDefaultValuesForFields(){
 
 	   $('#userComment').val("Post your comment here ....");
-	   $('#fisrtNmId').val("FirstName");
-	   $('#lasttNmId').val("LastName");
+	   $('#fisrtNmId').val("First Name");
+	   $('#lasttNmId').val("Last Name");
 		
 		
 }
