@@ -1717,7 +1717,7 @@ function buildImportantVotersInfoDataTable()
 	function getVotersForHamlet(name,value,text)
 	{
 	
-		hamletId = value;
+		 hamletId = value;
 		var selectname = text;
 		var pollingstationradioEle = document.getElementById('pollingstation');
 		var panchayatradioEle =document.getElementById('panchayat'); 
@@ -1766,7 +1766,7 @@ function buildImportantVotersInfoDataTable()
 
 	function getVotersForImportantFamilies()
 	{
-		hamletId = value;
+		var hamletId = value;
 		var selectname = text;
 		var name;
 		var value;
@@ -1830,7 +1830,7 @@ function buildImportantVotersInfoDataTable()
 		var value;
 		var selectname;
 		var selectname = selectname;
-		hamletId = value;
+		var hamletId = value;
 		var constituencyname;
 		var constituencyID = document.getElementById("constituencyList");
 		var assemblyradioEle =document.getElementById('Assembly'); 
@@ -2950,7 +2950,7 @@ function buildImportantVotersInfoDataTable()
 		importantVotersTabContent+='<div id="imppanchayatDiv" style="display:none; width: 167px;margin-top:0px;">';
 		importantVotersTabContent+='<table><tr>';
 		
-		importantVotersTabContent+='<td><select id="imppanchayatField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
+		importantVotersTabContent+='<td><select id="imppanchayatField" class="selectWidth" name="state" onchange="getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
 		importantVotersTabContent+='</td></tr>';
 		importantVotersTabContent+='</table>';
 		importantVotersTabContent+='</div>';
@@ -2968,7 +2968,7 @@ function buildImportantVotersInfoDataTable()
 		importantVotersTabContent+='<div id="imppolingStationDiv" style="display:none; width: 601px;float:right;margin-top:-26px;">';
 		importantVotersTabContent+='<table><tr>';
 		
-		importantVotersTabContent+='<td><select id="imppollingStationField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
+		importantVotersTabContent+='<td><select id="imppollingStationField" class="selectWidth" name="state" onchange="getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
 		importantVotersTabContent+='</table>';
 		importantVotersTabContent+='</div>';
 		importantVotersTabContent+='<div id="importantVotersTabContent_body"></div>';
@@ -4718,7 +4718,7 @@ var imppollingstationradioEle = document.getElementById('imppollingstation');
 var imppanchayatradioEle =document.getElementById('imppanchayat'); 
 var voterspollingstationradioEle = document.getElementById('voterspollingstation');
 var voterspanchayatradioEle =document.getElementById('voterspanchayat');
-
+var flag = 0;
 
 if(panchayatEle.checked)
 	{
@@ -4756,6 +4756,7 @@ var jsObj=
 
 constituencyId:constituencyId,
 checkedele:checkedele,
+flag:flag,
 task:"getBasicVotersInfo"
 }
 
@@ -4806,8 +4807,11 @@ localCastStatsTabContent+='<th><%=maleVoters%></th>';
 localCastStatsTabContent+='<td align="left">'+results.totalMaleVoters+'</td>';
 localCastStatsTabContent+='<th><%=femaleVoters%></th>';
 localCastStatsTabContent+='<td>'+results.totalFemaleVoters+'</td>';
+if(results.unKnowVoters != null)
+	{
 localCastStatsTabContent+='<th>UnKnown</th>';
-localCastStatsTabContent+='<td>'+results.totalFemaleVoters+'</td>';
+localCastStatsTabContent+='<td>'+results.unKnowVoters+'</td>';
+	}
 localCastStatsTabContent+='</tr>';
 localCastStatsTabContent+='</table></div>';
 localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
@@ -4824,8 +4828,11 @@ importantVotersTabContent+='<th><%=maleVoters%></th>';
 importantVotersTabContent+='<td align="left">'+results.totalMaleVoters+'</td>';
 importantVotersTabContent+='<th><%=femaleVoters%></th>';
 importantVotersTabContent+='<td>'+results.totalFemaleVoters+'</td>';
+if(results.unKnowVoters != null)
+	{
 importantVotersTabContent+='<th>UnKnown</th>';
-importantVotersTabContent+='<td>'+results.totalFemaleVoters+'</td>';
+importantVotersTabContent+='<td>'+results.unKnowVoters+'</td>';
+	}
 importantVotersTabContent+='</tr>';
 importantVotersTabContent+='</table></div>';
 importantVotersTabContent_headerEl.innerHTML=importantVotersTabContent;
@@ -4841,8 +4848,11 @@ votersByLocationTabContent+='<th><%=maleVoters%></th>';
 votersByLocationTabContent+='<td align="left">'+results.totalMaleVoters+'</td>';
 votersByLocationTabContent+='<th><%=femaleVoters%></th>';
 votersByLocationTabContent+='<td>'+results.totalFemaleVoters+'</td>';
+if(results.unKnowVoters != null)
+	{
 votersByLocationTabContent+='<th>UnKnown</th>';
-votersByLocationTabContent+='<td>'+results.totalFemaleVoters+'</td>';
+votersByLocationTabContent+='<td>'+results.unKnowVoters+'</td>';
+	}
 votersByLocationTabContent+='</tr>';
 votersByLocationTabContent+='</table></div>';
 votersByLocationTabContentDivEl.innerHTML=votersByLocationTabContent;
