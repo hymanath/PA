@@ -1229,6 +1229,5 @@
     <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
 		
 	</bean>
-     
 </beans>		
 	
