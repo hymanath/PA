@@ -78,7 +78,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	public String execute() throws Exception
 	{
-		
+		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
