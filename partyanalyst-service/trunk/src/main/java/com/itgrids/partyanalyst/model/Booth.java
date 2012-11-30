@@ -38,6 +38,8 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private Long totalVoters;
+	
+
 	private Constituency constituency;
 	private LocalElectionBody localBody;
 	private BoothLocalBodyWard boothLocalBodyWard;
@@ -46,6 +48,11 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
 	private Set<UserAddress> userAddressBooths = new HashSet<UserAddress>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
+	
+	private Set<BoothPublicationVoter> boothPublicationVoters = new HashSet<BoothPublicationVoter>(0);
+	private Set<HamletBoothPublication> hamletBoothPublications = new HashSet<HamletBoothPublication>(0);
+	
+	private PublicationDate publicationDate;
 	
 	/** default constructor */
 	public Booth() {
@@ -61,7 +68,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 			String villagesCovered, Tehsil tehsil, Long maleVoters, Long femaleVoters,
 			Long totalVoters, Constituency constituency, Long year, LocalElectionBody localBody,
 			Set<BoothConstituencyElection> boothConstituencyElections,
-			Set<BoothVillageCensus> boothVillageCensuses,Set<LocalGroupRegion> localGroupRegion) {
+			Set<BoothVillageCensus> boothVillageCensuses,Set<LocalGroupRegion> localGroupRegion,PublicationDate publicationDate) {
 		this.partNo = partNo;
 		this.partName = partName;
 		this.location = location;
@@ -76,6 +83,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.year = year;
 		this.localBody = localBody;
 		this.localGroupRegion = localGroupRegion;
+		this.publicationDate = publicationDate;
 	}
 
 	@Id
@@ -244,10 +252,41 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
 		this.localGroupRegion = localGroupRegion;
 	}
-	
-	
 
 	
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "publication_date_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PublicationDate getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(PublicationDate publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<BoothPublicationVoter> getBoothPublicationVoters() {
+		return boothPublicationVoters;
+	}
+
+	public void setBoothPublicationVoters(
+			Set<BoothPublicationVoter> boothPublicationVoters) {
+		this.boothPublicationVoters = boothPublicationVoters;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<HamletBoothPublication> getHamletBoothPublications() {
+		return hamletBoothPublications;
+	}
+
+	public void setHamletBoothPublications(
+			Set<HamletBoothPublication> hamletBoothPublications) {
+		this.hamletBoothPublications = hamletBoothPublications;
+	}
 	
 }
