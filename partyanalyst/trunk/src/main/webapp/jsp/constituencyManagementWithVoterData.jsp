@@ -1408,7 +1408,7 @@ function buildImportantVotersAgeWiseInfoDataTable(title,name,name1)
 		
 
 		var myColumnDefs = [ 
-		    	            {key:"abovevotersCount", label:"above 60", formatter:"number", sortable:true}, 
+		    	            {key:"abovevotersCount", label:"Above 60", formatter:"number", sortable:true}, 
 		    	            {key:"between18To25VotersCount", label:"Between 18 To 25 ", sortable: true}, 
 		    	            {key:"between25To35VotersCount", label:"Between 25 To 35", sortable:true},
 							{key:"between35To50VotersCount", label:"Between 35To 50 ", sortable: true}, 
@@ -4648,7 +4648,7 @@ function buildImportantVotersDataTable(title,name,name1)
 
 function getVotersBasicInfo(constituencyId)
 {
-debugger;
+
 var assemblyradioEle =document.getElementById('Assembly');
 var mandalEle = document.getElementById('mandal');
 var mandalField = document.getElementById("mandalField");
