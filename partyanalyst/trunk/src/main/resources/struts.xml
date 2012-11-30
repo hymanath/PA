@@ -3688,7 +3688,10 @@
 				<param name="root">dataTransferVO</param>				
 			</result> 
 		</action>
-		
+		<action name="votersAnalysisAction" class="votersAnalysisAction">
+			<result name="success">/jsp/votersAnalysis.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementWithVoterDataAction?cmTask=CONSTITUENCY_MANAGEMENT</result>	
+		</action>
 		
 		</package>
 </struts>      
