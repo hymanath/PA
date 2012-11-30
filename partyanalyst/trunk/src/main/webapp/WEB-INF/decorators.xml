@@ -152,6 +152,8 @@
     	<pattern>/newconnectPeoplePage*</pattern>
     	<pattern>/voters*</pattern>
     	<pattern>/userProfile*</pattern>
+    	<pattern>/votersAnalysisAction*</pattern>
+    	
     </decorator>
 
 </decorators>
