@@ -970,11 +970,17 @@
 	<bean id="specialPageInfoAction" class="com.itgrids.partyanalyst.web.action.SpecialPageInfoAction" singleton="false">
 		<property name="specialPageService" ref="specialPageService" />
 	</bean>	
-	
 	<bean id="userProfileAction" class="com.itgrids.partyanalyst.web.action.UserProfileAction" singleton="false">
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="specialPageService" ref="specialPageService" />		
 	</bean>
+	
+	<bean id="votersAnalysisAction" class="com.itgrids.partyanalyst.web.action.VotersAnalysisAction" singleton="false">			
+		
+	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		
+	</bean>
+	
 	
 </beans>	
