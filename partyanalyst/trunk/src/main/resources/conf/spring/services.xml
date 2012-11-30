@@ -1226,7 +1226,7 @@
 	  </property>
 	  <property name="resourceLoaderPath"><value>/emailTemplates</value></property>
     </bean>
-    <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.social.service.impl.VotersAnalysisService">
+    <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
 		
 	</bean>
      
