@@ -941,7 +941,7 @@ function showPhotoGallary(){
 		    time : timeST,
 			specialPageId:specialPageId,
 			startRecord:0,
-			maxRecord:20,
+			maxRecord:100,
 			task:"getPhotoGallaryWithOutGallerySizeZero"
 		};
 
