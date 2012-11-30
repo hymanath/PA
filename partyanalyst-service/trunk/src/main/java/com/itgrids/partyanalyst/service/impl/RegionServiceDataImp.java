@@ -293,17 +293,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		Collections.sort(result);
 		return result;
 	}
-	@SuppressWarnings("unchecked")
+	
 	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID){
-		List<Constituency> constituencies = constituencyDAO.getConstituenciesByDistrictID(districtID);
-		
-		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
-		for(Constituency constituency : constituencies){
-			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
-		}
-		Collections.sort(result);
-		return result;
+		List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtID);
+		List<SelectOptionVO> constituencyNames=new ArrayList<SelectOptionVO>();
+		for(Constituency constituency:constituencies)
+			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));		
+		return constituencyNames;
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStateDistrictByDistrictID(Long districtID){
 		List stateDistrictConstituency = districtDAO.getStateDistrictByDistrictID(districtID);
