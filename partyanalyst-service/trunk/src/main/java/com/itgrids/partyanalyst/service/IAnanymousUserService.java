@@ -74,5 +74,7 @@ public interface IAnanymousUserService {
 	public Long getUserConstituencyId(Long userId);
 	
 	public String changeUserPassword(String crntpassword,String newpassword,Long registrationId,String userName);
+	
+	public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messageType);
 
 }	
