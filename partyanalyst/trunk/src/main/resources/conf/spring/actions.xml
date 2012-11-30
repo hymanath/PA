@@ -971,5 +971,10 @@
 		<property name="specialPageService" ref="specialPageService" />
 	</bean>	
 	
+	<bean id="userProfileAction" class="com.itgrids.partyanalyst.web.action.UserProfileAction" singleton="false">
+		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="specialPageService" ref="specialPageService" />		
+	</bean>
 	
 </beans>	
