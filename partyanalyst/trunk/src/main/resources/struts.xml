@@ -3680,6 +3680,15 @@
 			</result> 
 		</action>
 		
+		<action name="userProfile" class="userProfileAction">
+			<result>/jsp/userProfilePage.jsp</result>
+		</action>
+		<action name="getAllRequestMessagesForAUserAction" class="userProfileAction" method="getRequestMessagesForUser">
+			<result type="json" name="success">
+				<param name="root">dataTransferVO</param>				
+			</result> 
+		</action>
+		
 		
 		</package>
 </struts>      
