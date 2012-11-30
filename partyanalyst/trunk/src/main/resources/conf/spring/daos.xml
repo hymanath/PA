@@ -923,4 +923,16 @@
 	<bean id="specialPageInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="boothPublicationVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothPublicationVoterDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="hamletBoothPublicationDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothPublicationDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="publicationDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicationDateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 </beans>		
