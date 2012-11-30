@@ -271,35 +271,51 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		return SUCCESS;
 	}
 
+	@SuppressWarnings("unused")
 	public String displayPerameters(){
-		Long hamletId = Long.parseLong(request.getParameter("hamletId"));
-		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("results"));
-		String order = request.getParameter("dir");
-		String columnName = request.getParameter("sort");
-		Boolean isVoter = Boolean.parseBoolean(request.getParameter("isVoter"));
-		List<VoterVO> voters = null;
-		List<VoterHouseInfoVO> voterHouses = null;
-		
-		constituencyManagementVO = new ConstituencyManagementVO();
-		
-		if(isVoter)
-			voters = constituencyManagementService.getVoterInfo(hamletId, "2009", startIndex, results, order, columnName);
-		/*else
-			voterHouses = constituencyManagementService.getVoterHouseDetails(hamletId, "2009", startIndex, results, order, columnName);
-		*/	
-		constituencyManagementVO.setVotersByHouseNos(voterHouses);
-		constituencyManagementVO.setVoterDetails(voters);
-		
-		Long totalVoters = 0l;
-		if(voters != null && voters.size() > 0)
-			totalVoters = voters.get(0).getTotalVoters();
-		if(voterHouses != null && voterHouses.size() > 0)
-			totalVoters = voterHouses.get(0).getTotalHousesCount();
-		
-		constituencyManagementVO.setVoterDetailsCount(totalVoters);
-		
-		return SUCCESS;
+	Long hamletId = Long.parseLong(request.getParameter("hamletId"));
+	Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+	Integer results = Integer.parseInt(request.getParameter("results"));
+	String order = request.getParameter("dir");
+	String columnName = request.getParameter("sort");
+	//long partNo = Long.parseLong(request.getParameter("partNo"));
+	Boolean isVoter = Boolean.parseBoolean(request.getParameter("isVoter"));
+	String checkedele = request.getParameter("checkedele");
+	List<VoterVO> voters = null;
+
+	List<VoterHouseInfoVO> voterHouses = null;
+	List<Object[]> votersForPollingStation = null;
+	String pollingstation = null;
+
+	constituencyManagementVO = new ConstituencyManagementVO();
+
+	if(isVoter == true && checkedele.equalsIgnoreCase("pollingstation"))
+
+	voters = constituencyManagementService.getVoterInfoForPollingStation(hamletId, "2009", startIndex, results, order, columnName);
+	else
+	voters = constituencyManagementService.getVoterInfo(hamletId, "2009", startIndex, results, order, columnName);
+
+
+
+
+	// votersForPollingStation = constituencyManagementService.getVoterInfoForPollingStation(hamletId, "2009",hamletId, startIndex, results, order, columnName);
+
+
+	/*else
+	voterHouses = constituencyManagementService.getVoterHouseDetails(hamletId, "2009", startIndex, results, order, columnName);
+	*/
+	constituencyManagementVO.setVotersByHouseNos(voterHouses);
+	constituencyManagementVO.setVoterDetails(voters);
+
+	Long totalVoters = 0l;
+	if(voters != null && voters.size() > 0)
+	totalVoters = voters.get(0).getTotalVoters();
+	if(voterHouses != null && voterHouses.size() > 0)
+	totalVoters = voterHouses.get(0).getTotalHousesCount();
+
+	constituencyManagementVO.setVoterDetailsCount(totalVoters);
+
+	return SUCCESS;
 	}
 
 	public String getBasicVotersInfo()
