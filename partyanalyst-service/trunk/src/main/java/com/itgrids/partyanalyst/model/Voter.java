@@ -50,6 +50,8 @@ public class Voter extends BaseModel implements Serializable {
 	private Date dateOfBirth;
 	
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
+	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
+
 	
 	public Voter(){
 		
@@ -250,6 +252,19 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<BoothPublicationVoter> getBoothPublicationVoters() {
+		return boothPublicationVoters;
+	}
+
+	public void setBoothPublicationVoters(
+			Set<BoothPublicationVoter> boothPublicationVoters) {
+		this.boothPublicationVoters = boothPublicationVoters;
 	}
 	
 	

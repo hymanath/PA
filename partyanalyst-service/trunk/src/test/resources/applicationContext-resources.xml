@@ -290,6 +290,10 @@
 				<value>com.itgrids.partyanalyst.social.model.CandidateSocial</value>
 				<value>com.itgrids.partyanalyst.social.model.PartySocial</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageInfo</value>
+				<value>com.itgrids.partyanalyst.model.HamletBoothPublication</value>
+				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
+				<value>com.itgrids.partyanalyst.model.BoothPublicationVoter</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -1550,5 +1554,16 @@
 	</bean>
 	<bean id="specialPageInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="boothPublicationVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothPublicationVoterDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="hamletBoothPublicationDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothPublicationDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="publicationDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicationDateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 </beans>
