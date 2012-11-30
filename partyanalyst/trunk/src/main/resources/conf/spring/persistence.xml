@@ -273,6 +273,9 @@
 				<value>com.itgrids.partyanalyst.social.model.CandidateSocial</value>
 				<value>com.itgrids.partyanalyst.social.model.PartySocial</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageInfo</value>
+				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
+				<value>com.itgrids.partyanalyst.model.BoothPublicationVoter</value>
+				<value>com.itgrids.partyanalyst.model.HamletBoothPublication</value>
 			</list>
 		</property>
 	</bean>
