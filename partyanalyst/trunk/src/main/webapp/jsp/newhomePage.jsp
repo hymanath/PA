@@ -116,7 +116,7 @@
 		<!--------left div------->
 			<div class="span3">
 			<!-------Quick Links Block--------------->
-			<div class="widget blue votersguide p-m-bottom0px">
+			<div class="widget blue votersguide ">
 			                  
 								<img src="images/voters_guide.gif" alt="voters guide Image">
 								<a href="voters.action" class="btn btn-small btn-primary" >Voter's Guide</a>
@@ -127,8 +127,9 @@
 Quick Links</h2>
 				
 				<!---- View Election Results------->
-							<div class="widget-block" contentindex="4c" style="height:181px;">
-								<h5> View Election Result</h5>
+							<div class="widget-block" contentindex="4c">
+								<h5> View Election Results</h5>
+								<p>You can view your Assembly or Parliment past Election Results.</p>
 								<table>
 									<tbody>
 									<tr>
@@ -165,7 +166,7 @@ Quick Links</h2>
 					<!---------------->
 		
 							<!------View Your State---------->
-							<div class="widget-block" contentindex="0c" style="height:160px;">
+							<div class="widget-block" contentindex="0c" >
 								<h5>View Your State</h5>
 								<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
 								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
@@ -174,9 +175,9 @@ Quick Links</h2>
 										
 							</div>
 						<!----View Your district------>
-							<div class="widget-block" contentindex="1c" style="height:180px;">
+							<div class="widget-block" contentindex="1c">
 							<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
-								     <h5>View Your district</h5>
+								     <h5>View Your District</h5>
 									 <p>Select your district to view its election results in district level.</p>
 									 <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
                                      <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
@@ -187,7 +188,7 @@ Quick Links</h2>
 								    
 							</div>
 						<!--View your constituency-->
-							<div class="widget-block" contentindex="2c" style="height:210px;">
+							<div class="widget-block" contentindex="2c" >
 							<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 								<h5>View Your Constituency</h5>
 								<p>Select Constituency Type<br>
@@ -220,7 +221,7 @@ Quick Links</h2>
 							
 							<!--View your Locality-->
 						
-							<div class="widget-block" contentindex="3c" style="height:230px;">
+							<div class="widget-block" contentindex="3c" >
 								<h5>View Your Locality</h5>
                    				<div>
 									<table>								
@@ -261,35 +262,34 @@ Quick Links</h2>
 								<button class="btn btn-success pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
 								  
 							</div>	
-							<div class="widget-block" >
-							 <h5>View Your Party</h5>
-							  <p>You can view your favourite Party updates through Party Analyst with a single click. </p>
-							    <div class="btn-group">
-									<a class="btn dropdown-toggle btn-medium" data-toggle="dropdown" href="#"><span>Select Your Party<b class="caret"></b></span></a>
-										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="viewYourParty">
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=362"><img src="images/party_flags/INC.png" width="36"  alt="INC Party" />  INC</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=872"><img src="images/party_flags/TDP.PNG" width="36"  alt="TDP Party" /> TDP</a></li>	
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=1117"><img src="images/party_flags/YSRC.PNG" width="36"  alt="YSRC Party" /> YSRC</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=163"><img src="images/party_flags/BJP.png" width="36"  alt="BJP Party" /> BJP</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=886"><img src="images/party_flags/TRS.png" width="36"  alt="TRS Party" /> TRS</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=839"><img src="images/party_flags/SP.png" width="36"  alt="SP Party" /> SP</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=239"><img src="images/party_flags/BSP.png" width="36"  alt="BSP Party" />  BSP</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=76"><img src="images/party_flags/AITC.png" width="36"  alt="AITC Party" />  AITC</a></li>
-											  <li class="divider"></li>
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=579"><img src="images/party_flags/NCP.png" width="36"  alt="NCP Party" /> NCP</a></li>
-										</ul>
-								</div>
-							</div>
+							
 			</div>
 			
-							
+				<div class="widget blue party-block" >
+							 <h2> <i class="icon-flag "id="icon_leftsec"></i>  Political Party</h2>
+							  <p>You can view your favourite Party updates through Party Analyst with a single click. </p>
+							    
+										<ul class="nav nav-tabs nav-stacked" role="menu" aria-labelledby="dLabel" id="viewYourParty">
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=362"><img src="images/party_flags/INC.png" class="thumbnail" alt="INC Party" />  <h6>Indian National Congress [INC]</h6></a></li>
+										
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=872"><img src="images/party_flags/TDP.PNG" class="thumbnail"  alt="TDP Party" /><h6> Telugu Desam Party [TDP]</h6></a></li>	
+											
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=1117"><img src="images/party_flags/YSRC.PNG" class="thumbnail"  alt="YSRC Party" /> <h6>Yuvajana Sramika Raithu Congress [YSRC]</h6></a></li>
+								
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=163"><img src="images/party_flags/BJP.png" class="thumbnail" alt="BJP Party" /><h6> Bharath Janathadal Party [BJP]</h6></a></li>
+											
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=886"><img src="images/party_flags/TRS.png" class="thumbnail"  alt="TRS Party" /> <h6>Telangana Rastra Samithi [TRS]</h6></a></li>
+											
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=839"><img src="images/party_flags/SP.png" class="thumbnail"  alt="SP Party" /> <h6>Samajwadi Party [SP]</h6></a></li>
+											
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=239"><img src="images/party_flags/BSP.png" class="thumbnail"  alt="BSP Party" /> <h6>Bahujan Samaj Party [BSP]</h6></a></li>
+										
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=76"><img src="images/party_flags/AITC.png" class="thumbnail"  alt="AITC Party" /><h6>All India Trinamool Congress [AITC]</h6></a></li>
+									
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=579"><img src="images/party_flags/NCP.png" class="thumbnail" alt="NCP Party" /> <h6>Nationalist Congress Party [NCP]</h6></a></li>
+										</ul>
+								
+							</div>			
 			
 	</div>
 			
@@ -299,7 +299,7 @@ Quick Links</h2>
 			
 			
 				<!-----NEWS Block-------->
-				<div class="widget green p-m-bottom0px">
+				<div class="widget green news-gallery">
 				 	<!-- <h2>Latest Political News</h2>
 			sasi news from database start-->
 							
@@ -511,13 +511,13 @@ Quick Links</h2>
 		<!--------Right div------>
 			<div class="span4">
 			
-				<div class="widget yellow " style="margin-bottom:0px;padding-bottom:0px;">
+				<div class="widget yellow explore-info">
 				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
 				<img src="images/RightPlace.gif"><a href="viewFeaturesAction.action" class="btn btn-small btn-warning pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Explore About PartyAnalyst Image">Explore!</a>
 				
 				</div></div>
 				
-				<div class="widget green voters-pulse-home" style="margin-bottom:0px;padding-bottom:0px;">
+				<div class="widget green voters-pulse-home">
 				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
 				<img src="images/voters_pulse.gif" alt="voters pulse Image">
 				<a class="btn btn-success btn-small" href="VotersPulse.action">View Now</a></div>
@@ -650,7 +650,7 @@ Opinion Poll</h2>
 	
 	if(${opinionPollVO.avaliability != true})
 	{
-
+		
 		str+='<div class="opinionpoll">';
 		
 		str+='<div class="breadcrumb"><p class="question"><b>${opinionPollVO.quesitons[0].question}</b></p>';	
