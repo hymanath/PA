@@ -359,8 +359,7 @@ if(request.getParameter("showMessage")!=null){
 		    <div class="span8">
 			 
 		        <h2>PARTY ANALYST</h2>
-                <p style="lead">Hundreds of aspirants used Party Analyst as a platform to
-                   share their problems, opinions and polls.</p>
+                <p style="lead">We always strive to make things easy for you, Here are our services.</p>
             
                 <div class="">
 				   			    
