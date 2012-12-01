@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +20,12 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothDataExcelReader;
 import com.itgrids.partyanalyst.excel.booth.BoothDataUploadVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
@@ -38,6 +42,7 @@ import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -54,6 +59,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IBoothVillageCensusDAO boothVillageCensusDAO;
 	private INominationDAO nominationDAO;
+	private IPublicationDateDAO publicationDateDAO;
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
 	public INominationDAO getNominationDAO() {
@@ -145,7 +151,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 	 * Uploads Booth Data For an Election Year and For A Particular Election  
 	 */
 	public ResultWithExceptionVO readExcelAndPopulateBoothData(File filePath, String electionYear, 
-			Long electionScopeId, Boolean isValidate) {
+			Long electionScopeId, Boolean isValidate,Long publicationDateId) {
 		ResultWithExceptionVO resultWithExceptionVO = new ResultWithExceptionVO();
 		List<ConstituencyInfoVO> finalResult = new ArrayList<ConstituencyInfoVO>();
 		ConstituencyInfoVO constituencyVO = null;
@@ -182,17 +188,19 @@ public class BoothPopulationService implements IBoothPopulationService{
 					continue;
 				}
 				constituency = constituencies.get(0);
-				totalBooths = (Long)boothDAO.findByConstituencyAndElectionYear(constituency.getConstituencyId(), year).get(0);
-				if(totalBooths > 0){
-					constituencyInfo.add(totalBooths+" No.of Booths Already Exists For ElectionYear::"+electionYear+" Constituency Name::"+constituencyName);
+				
+					totalBooths = (Long)boothDAO.findByConstituencyAndElectionYearAndPubDtId(constituency.getConstituencyId(), year,publicationDateId).get(0);
+			
+				  if(totalBooths > 0){
+					constituencyInfo.add(totalBooths+" No.of Booths Already Exists For ElectionYear:: "+electionYear+" Constituency Name:: "+constituencyName+" Publication Date Id :: "+publicationDateId);
 					finalResult.add(updateUploadInfo(constituencyVO, constituencyInfo, partNosCount, 
 							Long.parseLong(boothDataUploadVO.getBooths().size()+""), nullTehsilsCount, 0l));
 					continue;
 				}
-				
+			 
 				constituencyVO.setUploadInfo(constituencyInfo);
 				checkAndInsertBooth(constituency, boothDataUploadVO.getBooths(), districtId, 
-						year, constituencyVO, isValidate);
+						year, constituencyVO, isValidate, publicationDateId);
 				constituencyVO.setBoothsIdentified(Long.parseLong(boothDataUploadVO.getBooths().size()+""));
 				finalResult.add(constituencyVO);
 				
@@ -221,7 +229,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 	}
 	
 	private void checkAndInsertBooth(Constituency constituency, List<BoothInfo> boothRecords, Long districtId, 
-			Long year, ConstituencyInfoVO constituencyVO, Boolean isValidate)throws Exception{
+			Long year, ConstituencyInfoVO constituencyVO, Boolean isValidate,Long publicationDateId)throws Exception{
 		Booth booth = null;
 		String tehsilName = "";
 		String partNo = "";
@@ -249,15 +257,17 @@ public class BoothPopulationService implements IBoothPopulationService{
 			maleVoters = checkAndAssignLong(boothRecord.getMaleVoters(), constituencyVO.getUploadInfo(), partNo, "Male Voters");
 			femaleVoters = checkAndAssignLong(boothRecord.getFemaleVoters(), constituencyVO.getUploadInfo(), partNo, "Female Voters");
 			totalVoters = checkAndAssignLong(boothRecord.getTotalVoters(), constituencyVO.getUploadInfo(), partNo, "Total Voters");
+		 
+		  
+					
+					boothsCount = (Long)boothDAO.findByPartNoConstituencyIdAndYearAndPubDtId(constituency.getConstituencyId(), year, partNo,publicationDateId).get(0);
 				
-			boothsCount = (Long)boothDAO.findByPartNoConstituencyIdAndYear(constituency.getConstituencyId(), year, partNo).get(0);
-            
-			if(boothsCount > 0){
-				constituencyVO.getUploadInfo().add(boothsCount+" No of Booths Exists with Part No:"+partNo+" And Constitency Name:"+constituency.getName()+
-                        " In the Year"+year);
-				continue;
-            }
-			
+				if(boothsCount > 0){
+					constituencyVO.getUploadInfo().add(boothsCount+" No of Booths Exists with Part No:"+partNo+" And Constitency Name:"+constituency.getName()+
+	                        " In the Year"+year+" with Publication Date Id :"+publicationDateId);
+					continue;
+	            }
+			  
 			if(tehsilName.length() > 0){
 				tehsils = tehsilDAO.findByTehsilNameAndDistrict(tehsilName, districtId);
 				if(tehsils.size() != 1){
@@ -271,10 +281,12 @@ public class BoothPopulationService implements IBoothPopulationService{
 				nullTehsilsCount++;
 			
 			if(!isValidate){
+			 
 				booth = new Booth(partNo, partName, location, villagesCovered, tehsil, maleVoters, femaleVoters,
-						totalVoters, constituency, year, null,null, null,null,null);
+						totalVoters, constituency, year, null,null, null,null,publicationDateDAO.get(publicationDateId));
 				booth = boothDAO.save(booth);
-				partNosCount++;	
+				partNosCount++;	 
+				
 			}
 			
 			checkAndInsertBoothVillageCensus(booth, censusCode, constituencyVO.getUploadInfo(), isValidate);
@@ -519,6 +531,32 @@ public class BoothPopulationService implements IBoothPopulationService{
 		
 		constituencyVO.setBoothsInserted(boothsInserted);
 		
+	}
+	public List<SelectOptionVO> getPublicationDates(){
+		  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
+		  SelectOptionVO selectOptionVO = new SelectOptionVO();
+		   selectOptionVO.setId(0l);
+		   selectOptionVO.setName("Select Publication Date");
+		   selectOptionVOList.add(selectOptionVO);
+		  List<PublicationDate> publicationDatesList = publicationDateDAO.getPublicationDates();
+		  for(PublicationDate publicationDate : publicationDatesList){
+			   selectOptionVO = new SelectOptionVO();
+			   selectOptionVO.setId(publicationDate.getPublicationDateId());
+			   Date date = publicationDate.getDate();
+			   Calendar calendar = Calendar.getInstance();
+			   calendar.setTime(date);
+			   selectOptionVO.setName(calendar.get(Calendar.DAY_OF_MONTH)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.YEAR));
+			   selectOptionVOList.add(selectOptionVO);
+		  }
+		  return selectOptionVOList;
+	}
+
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
 	}
 	
 }

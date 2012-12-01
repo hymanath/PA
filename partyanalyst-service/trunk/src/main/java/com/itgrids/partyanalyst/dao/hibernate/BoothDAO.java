@@ -73,13 +73,28 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	public List findByConstituencyAndElectionYear(Long constituencyId,	Long year) {
 		Object[] params = {constituencyId, year};
 		return getHibernateTemplate().find("select count(model.boothId) from Booth model where " +
-				"model.constituency.constituencyId = ? and model.year = ?",params);
+				"model.constituency.constituencyId = ? and model.year = ? and model.boothId in(select model1.booth.boothId " +
+				" from BoothConstituencyElection model1)",params);
+	}
+	
+	public List findByConstituencyAndElectionYearAndPubDtId(Long constituencyId,Long year,Long publicationDtId) {
+		Object[] params = {constituencyId, year,publicationDtId};
+		return getHibernateTemplate().find("select count(model.boothId) from Booth model where " +
+				"model.constituency.constituencyId = ? and model.year = ? and model.publicationDate.publicationDateId = ? ",params);
 	}
 	
 	public List findByPartNoConstituencyIdAndYear(Long constituencyId, Long year, String partNo){
 		Object[] params = {constituencyId, year, partNo};
 		return getHibernateTemplate().find("select count(model.boothId) from Booth model where " +
-		"model.constituency.constituencyId = ? and model.year = ? and model.partNo = ?",params);
+		"model.constituency.constituencyId = ? and model.year = ? and model.partNo = ? " +
+		" and model.boothId in(select model1.booth.boothId from BoothConstituencyElection model1 ) ",params);
+	}
+	
+	public List findByPartNoConstituencyIdAndYearAndPubDtId(Long constituencyId, Long year, String partNo,Long publicationDtId){
+		Object[] params = {constituencyId, year, partNo,publicationDtId};
+		return getHibernateTemplate().find("select count(model.boothId) from Booth model where " +
+		"model.constituency.constituencyId = ? and model.year = ? and model.partNo = ? " +
+		"  and model.publicationDate.publicationDateId = ?  ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -266,5 +281,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		{
 			return getHibernateTemplate().find("from Booth model where model.year = 2009 and model.tehsil.tehsilId =? ", mandalId);	
 		}
-		
+	
+		public List<Booth> getBoothsByPublicationDateTehsilConstituenctPartNos(Long publicationDateId,Long thesilId,Long constituencyId,String partNos){
+			Object[] params = {publicationDateId,thesilId, constituencyId};
+			return getHibernateTemplate().find("from Booth model where model.publicationDate.publicationDateId = ? and model.tehsil.tehsilId = ? and model.constituency.constituencyId = ? and model.partNo in ("+partNos+") ", params);	
+		}
 }
