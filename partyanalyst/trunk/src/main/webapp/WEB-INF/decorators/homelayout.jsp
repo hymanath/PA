@@ -34,7 +34,6 @@
 		src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
-	<script type="text/javascript" src="js/homePage/newhomePage.js"> </script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
@@ -90,7 +89,10 @@ margin:-1px 0px 0px 0px ;
 	margin-top:10px;
 }
 
-
+.header-right-sec{width:750px;}
+.follow-us-top{width:72px;margin:0px;display:inline-block;}
+.follow-us-top h5{margin:0px;display:inline-block;color:#80D1F1;font-size: 12px;}
+.lr-sec{padding:14px 5px 5px;}
 </style>
 <decorator:head/>
 </head>
@@ -127,17 +129,16 @@ margin:-1px 0px 0px 0px ;
       <div class="logo" ><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt="" style="margin-top:0px;"/></a>
 	  </div>
       <div class="header-right-sec">
-		<div class="pull-right" style="margin-top:-15px;">
-			<div style="float:left;">
-				<h5 style="color:#08AAEC;line-height:0px;"> FOLLOW US</h5>
-			</div>
-			<div id="follow-icon" style="">
+		<div class="pull-right follow-us-top">
+		
+				<h5>FOLLOW US</h5>
+		<div id="follow-icon" >
 				<a class="f-icon" title="Follow us on Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank" alt="Facebook Image"></a>
 				<a class="t-icon" title="Follow us on twitter" href="http://twitter.com/#!/partyanalyst" target="_blank" alt="Twitter Image"></a>
 			</div>
 		</div>
 
-        <div class="lr-sec" style="margin-right:-18px;margin-top:0px;">
+        <div class="lr-sec" >
 
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 				<c:out value="Welcome, ${sessionScope.UserName} |"/>
