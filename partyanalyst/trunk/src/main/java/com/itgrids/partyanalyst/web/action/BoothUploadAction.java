@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -20,11 +21,12 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	private String electionScopeId;
 	private String electionYear;
 	private String isValidate;
+	private Long publicationDateId;
 	private HttpServletRequest request; 
 	private IBoothPopulationService boothPopulationService;
 	private List<ConstituencyInfoVO> uploadInfo;
 	private static final Logger log = Logger.getLogger(BoothUploadAction.class);
-
+    private List<SelectOptionVO> publicationDates;
 	public void setFilePath(File filePath) {
 		this.filePath = filePath;
 	}
@@ -78,7 +80,7 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	public String execute() throws Exception{
 		
 		ResultWithExceptionVO resultVO = boothPopulationService.readExcelAndPopulateBoothData(filePath, electionYear, 
-				new Long(electionScopeId.trim()), Boolean.parseBoolean(isValidate));
+				new Long(electionScopeId.trim()), Boolean.parseBoolean(isValidate),publicationDateId);
 		Throwable ex = resultVO.getExceptionEncountered();
 		if(ex!=null){
 			log.error("exception raised while Uploading Booth Data ", ex);
@@ -89,4 +91,25 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 		return SUCCESS;
 	}
 
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
+    public String getAllPublicationDates(){
+    	publicationDates = 	boothPopulationService.getPublicationDates();
+		return SUCCESS;
+	}
+
+	public List<SelectOptionVO> getPublicationDates() {
+		return publicationDates;
+	}
+
+	public void setPublicationDates(List<SelectOptionVO> publicationDates) {
+		this.publicationDates = publicationDates;
+	}
+   
 }

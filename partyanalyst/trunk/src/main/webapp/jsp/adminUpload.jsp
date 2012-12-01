@@ -365,6 +365,11 @@
 										<a class="alinkstyle" href="<s:url action="villageBoothMapperUploadAction"/>">Upload
 										</a>
 									</span><br>
+									<span class="fontStyle">
+										Upload Booth Hamlet Publication Mapping Data :&nbsp;
+										<a class="alinkstyle" href="<s:url action="boothPublicationUploadAction"/>">Upload
+										</a>
+									</span><br>
 									</fieldset>
 								</td>								
 							</tr>

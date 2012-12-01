@@ -22,8 +22,10 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 	private List<SelectOptionVO> electionSelectVO;
 	private File filePath;
 	private Long electionId;
+	private Long electionType;
 	private IStaticDataService staticDataService;
 	private String task = null;
+	private Long publicationDateId;
 	private Boolean isValidate;
 	JSONObject jObj = null;
 	private VillageBoothElectionVO villageBoothElectionVO;
@@ -128,5 +130,27 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 		}
 		return SUCCESS;
 	}
+   
+	public String uploadMappingForPublication(){
+		villageBoothElectionVO = villageBoothDataPopulationService.readExcelAndInsertDataForPublication(filePath, publicationDateId, isValidate,electionType);
+		return SUCCESS;
+	}
 
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
+	public Long getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(Long electionType) {
+		this.electionType = electionType;
+	}
+	
+	
 }
