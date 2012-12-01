@@ -473,6 +473,7 @@
 		<property name="boothResultDAO" ref="boothResultDAO" />
 		<property name="boothVillageCensusDAO" ref="boothVillageCensusDAO" />
 		<property name="nominationDAO" ref="nominationDAO"/>
+		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 	</bean>
 	
 	<bean name="voterDataUploadService" class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService" >		
@@ -832,6 +833,8 @@
     	<property name="electionDAO" ref="electionDAO" />
     	<property name="boothDAO" ref="boothDAO" />
     	<property name="transactionTemplate" ref="transactionTemplate" />
+    	<property name="tehsilDAO" ref="tehsilDAO" />
+    	<property name="hamletBoothPublicationDAO" ref="hamletBoothPublicationDAO" />
 	</bean>
 	
 	<bean name="politicalChangesService" class="com.itgrids.partyanalyst.service.impl.PoliticalChangesService" >

@@ -3698,5 +3698,18 @@
            		<param name="root">namesList</param>
         	</result>
         </action>
+        		
+		<action name="getAllPublicationDatesAction" class="boothUploadAction" method="getAllPublicationDates">
+			<result type="json" name="success">
+				<param name="root">publicationDates</param>				
+			</result> 
+		</action>
+		
+		<action name="boothPublicationUploadAction"><result>/jsp/boothPublicationMapper.jsp</result></action>
+		
+		<action name="boothPublicationMapAction" class="villageBoothElectionMapAction" method="uploadMappingForPublication">
+			<result name="success">/jsp/boothPublicationMapper.jsp</result>					
+		</action>
+		
 		</package>
 </struts>      

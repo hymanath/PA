@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Village Booth Mapping Upload</title>
+<title>Hamlet Booth Publication Mapping Upload</title>
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -44,18 +44,19 @@
 }
 </style>
 <script type="text/javascript">
-
-		function getElectionYears(id){
-			var jsObj=
+function getPublicationDates()
+ {
+				var jsObj=
 				{
-						electionTypeId:id,
-						task:"getElectionYears"						
+						
+						task:"publicationDates"						
 				};
-			
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "<%=request.getContextPath()%>/getElectionYearsForMappingAjaxAction.action?"+rparam;						
-				callAjax(rparam,jsObj,url);
-		}
+			var url = "<%=request.getContextPath()%>/getAllPublicationDatesAction.action";
+
+		callAjax('',jsObj,url);
+
+ }
+		
 		
 		function callAjax(rparam, jsObj, url){
 			var resultVO;			
@@ -64,11 +65,9 @@
 							try {								
 									resultVO = YAHOO.lang.JSON.parse(o.responseText);										
 									
-									if(jsObj.task == "getElectionYears")
-									{								
-										clearOptionsListForSelectElmtId("electionYear");
-										createOptionsForSelectElmtId("electionYear",resultVO);		
-									}				
+									 if(jsObj.task == "publicationDates"){
+                                          buildOptions(resultVO);
+                                     }									
 							}catch (e)  {   
 							   	//alert("Invalid JSON result" + e);   
 							}  
@@ -81,29 +80,52 @@
 		
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);			
 		}
-
+function buildOptions(results){
+    
+  var elmt = document.getElementById("publicationDateId");
+		for(var i in results)
+	   {
+		 var option = document.createElement('option');
+ 
+		  option.value=results[i].id;
+		  option.text=results[i].name;
+		
+		  try
+		  {
+			elmt.add(option,null); // standards compliant
+		  }
+		  catch(ex)
+		  {
+			elmt.add(option); // IE only
+		  }
+	   }
+ 
+}
 </script>
 </head>
 <body>
-  <s:if test="#session.USER !=null">
+<s:if test="#session.USER !=null">
   <s:if test="#session.USER.isAdmin == 'true'">
-	<s:form name="VillageBoothElectionAction" action="villageBoothElectionMapAction" method="post" enctype="multipart/form-data" >
+	<s:form name="VillageBoothElectionAction" action="boothPublicationMapAction" method="post" enctype="multipart/form-data" >
 		<table>
 			<tr>
 				<td>Election Type:</td>
 				<td>
-					<select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">
+					<select id="electionTypeSelect" name="electionType" class = "selectWidth">
 						<option value="0">Select </option>
 						<option value="1">Parliament</option>
 						<option value="2">Assembly</option>
 					</select>
 				</td>
-				<td>Election Year:</td>
-				<td>
-					<select id="electionYear" name="electionId">
-						<option value="0">Select </option>
-					</select>
-				</td>
+				
+			</tr>
+			<tr>
+			  <td>
+			    <b>Publication Date</b> 
+			  </td>
+			  <td>
+			    <select  name="publicationDateId"  id="publicationDateId"/>	
+			  </td>
 			</tr>
 			<tr>
 				<td><s:file name="filePath" label="File Path"/></td>
@@ -186,8 +208,11 @@
 			</table>
 		</div>
 	</c:if>
-</s:if>
-<s:else>
+	<script type="text/javascript">
+	  getPublicationDates();
+	</script>
+ </s:if>
+ <s:else>
 <%
 	response.sendRedirect("userEntitlementAction.action");
 %>

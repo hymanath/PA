@@ -6,6 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Booth Data Upload</title>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
 <style>
 
 .scopeWise_head {
@@ -24,6 +27,60 @@
 	text-align:left;	
 }
 </style>
+<script type="text/javascript">
+function getPublicationDates()
+ {
+				
+			var url = "<%=request.getContextPath()%>/getAllPublicationDatesAction.action";
+
+		callAjaxToGetpublicationDate(url);
+
+ }
+function callAjaxToGetpublicationDate(url)
+	{			
+		
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								
+									buildOptions(myResults);
+								
+							}catch (e) {   
+							   	//alert("Invalid JSON result" + e);   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+ function buildOptions(results){
+    
+  var elmt = document.getElementById("publicationDateId");
+		for(var i in results)
+	   {
+		 var option = document.createElement('option');
+ 
+		  option.value=results[i].id;
+		  option.text=results[i].name;
+		
+		  try
+		  {
+			elmt.add(option,null); // standards compliant
+		  }
+		  catch(ex)
+		  {
+			elmt.add(option); // IE only
+		  }
+	   }
+ 
+}
+ 
+</script>
 </head>
 	<body>
 <s:if test="#session.USER !=null">
@@ -32,7 +89,7 @@
 	<h3>Booth Data Upload</h3>
 		<table style="border-collapse:collapse">
 			<tr>
-				<td>Election Type</td>
+				<td><b>Election Type</b></td>
 				<td align="left">
 					<select name="electionScopeId">
 						<option value="0">Select option..</option>
@@ -43,7 +100,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td> Election Year</td>
+				<td> <b>Election Year</b></td>
 				<td align="left">
 					<select name="electionYear">
 						<option value="0">Select option..</option>
@@ -55,6 +112,12 @@
 						<option value="2006">2006</option>
 						<option value="2004">2004</option>					
 					</select>	
+				</td>			
+			</tr>
+			<tr>
+				<td> <b>Publication Date</b></td>
+				<td align="left">
+					<select  name="publicationDateId"  id="publicationDateId"/>	
 				</td>			
 			</tr>
 			<tr>
@@ -100,6 +163,9 @@
 			</c:forEach>
 		</div>
 	</c:if>	
+	<script>
+     getPublicationDates();
+    </script>
 	</s:if>
 <s:else>
 <%
@@ -112,5 +178,6 @@
 	response.sendRedirect("loginInputAction.action");
 %>
 </s:else>
+
 </body>
 </html>
