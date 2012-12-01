@@ -190,7 +190,7 @@
     padding:0px 20px 20px;
 	border-top: 5px solid #000;
 	box-shadow:0 0 1px rgba(0, 0, 0, 0.3);
-	margin:10px 0px 20px;
+	margin:5px 0px 20px;
 	position:relative;
 }
 .p-top20{padding-top:20px;}
@@ -333,7 +333,23 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 
 /* NEWS */
 .news-paginate{position:relative;}
-.news-paginate span{padding:10px;background:rgba(0,0,0,0.75);cursor: pointer; cursor: hand;box-shadow:1px 0px 1px #aaa;}
+.news-paginate span{padding:8px;background:rgba(0,0,0,0.75);cursor: pointer; cursor: hand;box-shadow:1px 0px 1px #aaa;opacity:0.2;
+filter:alpha(opacity=20); /* For IE8 and earlier */
+opacity: 0.3;
+		/* Firefox */
+		-moz-transition: opacity 1s ease 1s;
+		/* WebKit */
+		-webkit-transition: opacity 1s ease 1s;
+		/* Opera */
+		-o-transition: opacity 1s ease 1s;
+		/* Standard */
+		transition: opacity 1s ease 1s;
+
+}
+
+.news-gallery:hover .news-paginate span{opacity:0.9;
+filter:alpha(opacity=90); /* For IE8 and earlier */}
+
 .news-paginate .prev-sl{position:absolute;top:-100px;left:-20px;border-radius: 0px 5px 5px 0px;}
 .news-paginate .next-sl{position:absolute;top:-100px;right:-20px;border-radius: 5px 0px 0px 5px;}
 .m-l15px{margin-left:15px;}
@@ -411,3 +427,47 @@ height:40px;border-bottom:1px solid #f3f3f3;padding:10px;
 
 #contenttable > .container > .row-fluid > .span6 {margin-left:10px;}
 #contenttable > .container > .row-fluid > .span4 {margin-left:10px;width:245px;}
+
+
+/* 1-Dec */
+
+.voters-pulse-home{margin-bottom:12px;padding-bottom:0px;}
+.voters-pulse-home .widget-block{border-bottom-width:0px;}
+.widget{margin-bottom:10px;}
+.news-gallery{padding-bottom:0px;}
+.votersguide {padding-bottom:0px;margin-bottom:5px;}
+.explore-info{padding-bottom:0px;}
+.quicklinks .widget-block h5{font-size:17px;}
+.quicklinks .widget-block{display:inline-block;   margin: 0 -20px; width:100%;
+
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #ffffff 64%, #ffffff 65%, #fafafa 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(64%,#ffffff), color-stop(65%,#ffffff), color-stop(100%,#fafafa)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
+
+
+}
+
+.party-block{padding-bottom:5px;}
+.party-block p{margin:5px 0px;}
+.party-block li{display:inline-block;clear:both;width:100%;}
+.party-block a{margin:0px -20px !important; border-width:0px !important;border-bottom:1px solid #ccc !important;
+display:inline-block !important;width:197px;
+border-radius:0px !important;
+}
+.party-block li:nth-child(2n+1) a{background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #ffffff 64%, #ffffff 65%, #fafafa 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(64%,#ffffff), color-stop(65%,#ffffff), color-stop(100%,#fafafa)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#ffffff 64%,#ffffff 65%,#fafafa 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */}
+.party-block li:nth-child(2n+1) a:hover{background:#f8f8f8;}
+.party-block a img{width:54px; float:left;display:inline-block;vertical-align:top;}
+.party-block a h6{float:left;display:inline-block;width:125px;margin:0px;margin-left:5px;}
+
