@@ -3693,5 +3693,10 @@
 			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementWithVoterDataAction?cmTask=CONSTITUENCY_MANAGEMENT</result>	
 		</action>
 		
+         <action name="voterAnalysisAjaxAction" class="votersAnalysisAction" method="AjaxHandler">
+           <result type="json" name="success">
+           		<param name="root">namesList</param>
+        	</result>
+        </action>
 		</package>
 </struts>      
