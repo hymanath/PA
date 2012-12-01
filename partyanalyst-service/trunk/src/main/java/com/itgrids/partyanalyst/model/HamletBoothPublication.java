@@ -41,8 +41,15 @@ public class HamletBoothPublication implements Serializable {
 		this.hamletBoothPublicationId = hamletBoothPublicationId;
 	}
 	
+	public HamletBoothPublication(){
+		
+	}
 	
-	
+    public HamletBoothPublication(Booth booth,Hamlet hamlet){
+		this.booth = booth;
+		this.hamlet = hamlet;
+	}
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="booth_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)

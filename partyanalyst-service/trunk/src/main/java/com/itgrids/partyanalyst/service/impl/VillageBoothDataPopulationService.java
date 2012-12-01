@@ -17,15 +17,19 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.VillageBoothElectionVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.HamletBoothElection;
+import com.itgrids.partyanalyst.model.HamletBoothPublication;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IVillageBoothDataPopulationService;
@@ -41,6 +45,8 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
 	private IElectionDAO electionDAO;
+	private ITehsilDAO tehsilDAO;
+	private IHamletBoothPublicationDAO hamletBoothPublicationDAO;
 	private TransactionTemplate transactionTemplate;
 	private static final Logger log = Logger.getLogger(VillageBoothDataPopulationService.class);
 
@@ -263,4 +269,149 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 		return;
 	}
 
+	public VillageBoothElectionVO readExcelAndInsertDataForPublication(final File fPath, final Long publicationId, final Boolean isValidate,final Long electionType){
+				log.debug("The File Uploaded::"+fPath+" And Election Id ::"+ publicationId);
+				VillageBoothElectionVO villageBoothElectionVO = (VillageBoothElectionVO)transactionTemplate.execute
+				(new TransactionCallback(){
+					public Object doInTransaction(TransactionStatus status) {
+						VillageBoothElectionVO villageBoothElectionVO = new VillageBoothElectionVO();				
+						try{
+							readFromExcelForPublication(fPath, publicationId, villageBoothElectionVO, isValidate,electionType);
+						}catch(Exception e){
+							e.printStackTrace();
+							status.setRollbackOnly();
+							villageBoothElectionVO.setExceptionEncountered(e);
+						}		
+						return villageBoothElectionVO;
+					}					
+				});
+				return villageBoothElectionVO;
+	}
+	
+	private void readFromExcelForPublication(File filePath, Long publicationId, VillageBoothElectionVO villageBoothElectionVO, Boolean isValidate,Long electionType)throws Exception {
+		log.debug("Entered Into Uploaded Part...........");
+		Workbook workbook = Workbook.getWorkbook(filePath);	
+		Sheet[] sheets = workbook.getSheets();
+		String constituencyName = "";
+		String mandalName = "";
+		String revenueVillage = "";
+		String partNos = "";
+		String hamletName = "";
+		Long districtId = null;
+		Long tehsilId = 0l;
+		Long constituencyId = 0l;
+		Township township = null;
+		Hamlet hamlet = null;
+		//Long constituencyId = null;
+		//List<Constituency> constituencyInfo = null;
+		List<Township> townships = null;
+		List<Hamlet> hamlets = null;
+		List<String> villageErrors = new ArrayList<String>();
+		List<String> hamletErrors = new ArrayList<String>();
+		List<String> boothErrors = new ArrayList<String>();
+		List<String> dataDuplicateErrors = new ArrayList<String>();
+		boolean isHamletExists = false;
+		
+		for(Sheet sheet:sheets){
+			districtId = new Long(sheet.getCell(0,0).getContents().trim());
+			
+			for (int row = 2; row < sheet.getRows(); row++) {
+				partNos = sheet.getCell(4, row).getContents().trim();
+				if(partNos.length() == 0)
+					continue;
+				constituencyName = sheet.getCell(0, row).getContents().trim();
+				/*if(!constituencyName.equalsIgnoreCase(sheet.getCell(0, row).getContents().trim())){
+					constituencyName = sheet.getCell(0, row).getContents().trim();
+					
+					constituencyInfo = constituencyDAO.findByConstituencyNameElectionScopeAndDistrictId(constituencyName, districtId, 
+							election.getElectionScope().getElectionScopeId());
+					if(constituencyInfo.size() != 1)
+						throw new Exception(constituencyInfo.size() + "No. Of Constituencies Exists With Name \'"+constituencyName+"\' At Row No::"+(row+1));
+					constituencyId = constituencyInfo.get(0).getConstituencyId();
+				}*/
+				
+				mandalName = sheet.getCell(1, row).getContents().trim();
+				
+				List tehsilIds = tehsilDAO.findTehsilIdByTehsilNameAndDistrict(mandalName.trim(),districtId);
+					if(tehsilIds.size() != 1){
+						villageErrors.add(tehsilIds.size() + "No. of Tehsils Exists With Name \'"+mandalName+"\' In district:"+districtId);
+						continue;
+					}
+					tehsilId = (Long)tehsilIds.get(0);
+				
+				List<Constituency> constituenciesList = constituencyDAO.findByConstituencyNameAndDistrictIdElectionType(constituencyName,districtId,electionType);
+				if(constituenciesList.size() != 1){
+					boothErrors.add(constituenciesList.size() + "No. of Constituency Exists With Name \'"+constituencyName+"\' In district:"+districtId);
+					continue;
+				}
+				constituencyId = constituenciesList.get(0).getConstituencyId();
+				
+				if(!revenueVillage.equalsIgnoreCase(sheet.getCell(2, row).getContents().trim())){
+					villageBoothElectionDAO.flushAndclearSession();
+					revenueVillage = sheet.getCell(2, row).getContents().trim();
+					townships = townshipDAO.findByTownshipNameTehsilNameDistrictId(districtId, mandalName, revenueVillage);
+					if(townships.size() != 1){
+						villageErrors.add(townships.size() + "No. of Townships Exists With Name \'"+revenueVillage+"\' In Mandal:"+mandalName+" At Row No::"+(row+1));
+						continue;
+					}
+					township = townships.get(0);
+				}
+				
+				isHamletExists = false;
+				if(!hamletName.equalsIgnoreCase(sheet.getCell(3, row).getContents().trim())){
+					hamletName = sheet.getCell(3, row).getContents().trim();
+					if(hamletName.length() > 0){
+						isHamletExists = true;		
+						hamlets = hamletDAO.findByHamletNameAndTownshipId(township.getTownshipId(), hamletName);
+						if(hamlets.size() != 1){
+							hamletErrors.add(hamlets.size() + " No. Of Hamlets Exists With Name \'"+hamletName+"\' In Revenue Village:"+revenueVillage+" And In Mandal:"+mandalName+" At Row No::"+(row+1));
+							continue;
+						}
+						hamlet = hamlets.get(0);
+					}					
+				}
+				if(isHamletExists){
+				   List<Booth> boothsList = boothDAO.getBoothsByPublicationDateTehsilConstituenctPartNos(publicationId, tehsilId, constituencyId, partNos);
+				  
+				   if(boothsList.isEmpty()){
+					 boothErrors.add(0 + "No. of Booths Exists With publicationId \'"+publicationId+"\' tehsilId:"+tehsilId+"\' constituencyId:"+constituencyId+"\' partNos:"+partNos);
+				   }
+				   HamletBoothPublication hamletBoothPublication = null;
+				   if(!isValidate){
+				     for(Booth booth:boothsList){
+				    	  hamletBoothPublication = new HamletBoothPublication(booth,hamlet);
+					   hamletBoothPublicationDAO.save(hamletBoothPublication);
+				     }
+				   }
+			    }
+				
+			}
+		}		
+		
+		villageBoothElectionVO.setVillageErrors(villageErrors);
+		villageBoothElectionVO.setHamletErrors(hamletErrors);
+		villageBoothElectionVO.setBoothErrors(boothErrors);
+		villageBoothElectionVO.setDataDuplicateErrors(dataDuplicateErrors);
+		
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IHamletBoothPublicationDAO getHamletBoothPublicationDAO() {
+		return hamletBoothPublicationDAO;
+	}
+
+	public void setHamletBoothPublicationDAO(
+			IHamletBoothPublicationDAO hamletBoothPublicationDAO) {
+		this.hamletBoothPublicationDAO = hamletBoothPublicationDAO;
+	}
+	
+	
+	
 }
