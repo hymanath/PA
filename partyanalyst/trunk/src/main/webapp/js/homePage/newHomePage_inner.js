@@ -149,7 +149,7 @@ function buildResult(voteStatus,result){
 	
 	 if(voteStatus == "vote")
 
-        str+='<a class="btn btn-primary" href="javaScript:{showVotesObtainedForOpinionPoll()}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 104px;">Vote Now</a>';
+        str+='<a class="btn btn-primary" href="javaScript:{showVotesObtainedForOpinionPoll()}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 65px;">Vote Now</a>';
 
 		str+='</div>';
   
