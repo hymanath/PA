@@ -93,34 +93,7 @@ var locationDetails={
 			};
 locationDetails.constituencyArr.push(ob);
 </c:forEach>
-/*function buildOuterView(){
-var divEle = document.getElementById("votersouterDiv");	
-	var str='';
-	str+='<fieldset>';
-	str+='<div style="color:#707070;font-weight:bold;font-size:12px;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div>';
 
-	str+='<P >Fields marked with <font class="requiredFont"> * </font> are mandatory</P>';
-	str+='<div id="locationAlertMsg" align="left"></div>';
-	str+='<div id="ConstituencyDiv" style=" margin-left: 200px;margin-top: 5px;width: 290px;">';
-	str +='<label><input id="Assembly" type="radio" checked="true" value="assembly"  name="radioEle"/>&nbsp;Assembly&nbsp;';
-	str+='<select id="constituencyList" class="selectWidth" name="constituencyList" onchange="getMandalList();">';
-		for(var i in locationDetails.constituencyArr)
-		{
-			str+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
-		} 
-		str+='</select>';
-	
-	str+='</div>';
-	str+='<div id="mandalDiv" style="display:block; width: 507px;float:right;margin-top: -31px;">';
-	str+='<input id="mandal" type="radio" value="mandal"  name="radioEle" onclick="showMandalDiv();getMandalList();"/>&nbsp;Mandal&nbsp;';
-	
-	str+='<select id="mandalField" class="selectWidth" name="state" style="display:none;" onchange="getVotersForConstituency();getPanchayatList();getVotersBasicInfo(this.options[this.selectedIndex].value);"></select>';
-	str+='</div>';
-	str+='</fieldset>';
-	divEle.innerHTML= str;
-
-}
-*/
 function buildOuterView()
 	{
 
@@ -177,14 +150,42 @@ function buildOuterView()
 		document.getElementById("mandalDiv").style.display = "block";
 	}
 
+
+
+	//Important Families
+	function impshowPollingStationDiv()
+	{
+		var pollingField = document.getElementById("imppollingStationField");
+		removeSelectElements(pollingField);
+		
+		
+		document.getElementById("imppolingStationDiv").style.display = "block";
+		document.getElementById("imppanchayatDiv").style.display = "none";
+
+	}
+	function impshowPanchayatDiv()
+	{
+		var panchayatField = document.getElementById("imppanchayatField");
+		removeSelectElements(panchayatField);
+		
+		
+		document.getElementById("imppolingStationDiv").style.display = "none";
+		document.getElementById("imppanchayatDiv").style.display = "block";
+
+	}
 	function showImportantFamiliesDiv()
 	{
+		showImportantFamiliesDiv1();
 		document.getElementById('votersMainOuterDiv1').style.display='block';
 		document.getElementById('votersMainOuterDiv2').style.display='none';
 		document.getElementById('votersMainOuterDiv3').style.display='none';
+		document.getElementById('votersMainOuterDiv4').style.display='none';
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		impshowPanchayatDiv();
+		getPanchayatList();
 	}
 	
 	function showLocalCastDiv()
@@ -193,9 +194,11 @@ function buildOuterView()
 		document.getElementById('votersMainOuterDiv1').style.display='none';
 		document.getElementById('votersMainOuterDiv2').style.display='block';
 		document.getElementById('votersMainOuterDiv3').style.display='none';
+		document.getElementById('votersMainOuterDiv4').style.display='none';
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		showPanchayatDiv();
 		getPanchayatList();
 	}
@@ -205,12 +208,27 @@ function buildOuterView()
 		document.getElementById('votersMainOuterDiv1').style.display='none';
 		document.getElementById('votersMainOuterDiv2').style.display='none';
 		document.getElementById('votersMainOuterDiv3').style.display='block';
+		document.getElementById('votersMainOuterDiv4').style.display='none';
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #F61D50"});
+		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
 	}
 
+	function showAgeDiv()
+	{
 
+		document.getElementById('votersMainOuterDiv1').style.display='none';
+		document.getElementById('votersMainOuterDiv2').style.display='none';
+		document.getElementById('votersMainOuterDiv3').style.display='none';
+		document.getElementById('votersMainOuterDiv4').style.display='block';
+		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #F61D50"});
+
+
+	}
 	function showPollingStationDiv()
 	{
 		var pollingField = document.getElementById("pollingStationField");
@@ -230,6 +248,9 @@ function buildOuterView()
 		document.getElementById("panchayatDiv").style.display = "block";
 
 	}
+
+	
+
 	function showLocalCastDiv1()
 	{
 		var str='';
@@ -264,6 +285,49 @@ function buildOuterView()
 		str+='<table><tr>';
 		
 		str+='<td><select id="pollingStationField" class="selectWidth" name="state" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
+		str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		divEle.innerHTML = str;
+
+
+	}
+
+
+	function showImportantFamiliesDiv1()
+	{
+		var str='';
+		var divEle =document.getElementById('ImportantFamiliesDiv');
+		str +='<div style="margin-left: 200px;" class="control-group form-horizontal" >';
+		str+='<table>';
+		str+='<tr>';
+		str+='<td>';
+
+		str+='<label><input id="imppanchayat" type="radio" value="imppanchayat"  name="radioEle2" onclick="impshowPanchayatDiv();getPanchayatList();" />Panchayat</label>';
+		str+='</td>';
+		str+='<td>';
+		str+='<div id="imppanchayatDiv" style="display:none; width: 167px;margin-top:0px;">';
+		str+='<table><tr>';
+		
+		str+='<td><select id="imppanchayatField" class="selectWidth" name="state" onchange="getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select>';
+		str+='</td></tr>';
+		str+='</table>';
+		str+='</div>';
+		str+='</td>';
+		str+='<td>';
+		
+		str+='<label><input id="imppollingstation" type="radio" value="impvillage"  name="radioEle2"  onclick="impshowPollingStationDiv();getPanchayatList();"/>Polling Station</label>';
+		str+='</td>';
+		
+		str+='</tr>';
+		str+='</table>';
+		str+='</div>';
+		
+		
+		str+='<div id="imppolingStationDiv" style="display:none; width: 601px;float:right;margin-top:-26px;">';
+		str+='<table><tr>';
+		
+		str+='<td><select id="imppollingStationField" class="selectWidth" name="state" onchange="getVotersForImportantFamilies();getVotersBasicInfoForPanchayat(this.options[this.selectedIndex].value);"></select></td></tr>';
 		str+='</table>';
 		str+='</div>';
 		str+='</div>';
@@ -442,7 +506,7 @@ function buildOuterView()
 
 function buildPanchayatData(results)
 	{
-		
+		debugger;
 		var pollingstationradioEle = document.getElementById('pollingstation');
 		var panchayatradioEle =document.getElementById('panchayat'); 
 		var imppollingstationradioEle = document.getElementById('imppollingstation');
@@ -540,6 +604,7 @@ function buildPanchayatData(results)
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Cast Statistics" 
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters" id="votersId" style="height:24px;" onclick="showVotersDiv()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise" id="ageWiseId" style="height:24px;" onclick="showAgeDiv()"></b> </td>
 					
 				  </tr>
 				</table>
@@ -640,6 +705,33 @@ function buildPanchayatData(results)
 <!-- for  body 3 end    result  -->
 
 
+
+<!-- for  body4 start    result  -->
+
+<div id='votersMainOuterDiv4' style="display:none">
+	<div id='votersHeaderDiv4'>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			  <tr>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
+				   </td>
+				   <td width="98%">
+					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
+					   <span style="text-decoration: none;" class="headerLabelSpan2">Age Wise</span>
+					 </div>
+				   </td>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
+				   </td>
+			 </tr>
+		</table>
+	</div>
+
+	<div id='ageWiseInfoDiv' class="divInfo">
+	
+	</div>
+
+</div>
+
+<!-- for  body 4 end    result  -->
 
 </div>
 
