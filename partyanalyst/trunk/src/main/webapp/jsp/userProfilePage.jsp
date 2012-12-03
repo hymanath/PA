@@ -13,6 +13,7 @@
 
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
 </head>
 <body>
@@ -54,7 +55,7 @@
 					<p class="interestsCls"><span>Interests</span></p>
 					<p class="p3"><a href="javascript:{}">Subscriptions</a></p>
 					<p class="p3"><a href="javascript:{}">Asses Politician</a></p>
-					<p class="p3"><a href="javascript:{}">Special Pages</a></p>
+					<p class="p3"><a href="javascript:{}" id="specialPageLink">Special Pages</a></p>
 					
 				</div>
 				
@@ -86,31 +87,38 @@
 						<li>Connected Pages: </li>
 						<li>Politiciaa Assess: </li>
 						<li>Problems Posted: </li>
-						<li>Messages: </li>
+						<li>Messages: ${dataTransferVO.totalMsgCount}</li>
 						
 					</ul>
 					</div>
 				</div>
 			<!-- Profile Statistics Div End -->
 			
-			<!-- People You May Know Div start -->
+			
+
 				<div class="widget-block">
-					<p class="connectPeopleHeading"><span>People You May Know</span></p>
-					<div class="connectPeopleDiv" >
-					<img src=""></img>
-					<span>New MemberName</span>
-					<p><span>connect</span><span>Send Message</span></p>
-					</div>
-					<div class="connectPeopleDiv">
-					<img src=""></img>
-					<span>New MemberName</span>
-					<p><span>connect</span><span>Send Message</span></p>
-					</div>
-					<div class="connectPeopleDiv">
-					<img src=""></img>
-					<span>New MemberName</span>
-					<p><span>connect</span><span>Send Message</span></p>
-					</div>
+					<p class="connectPeopleHeading"><span>People You May Know</span>
+					<span><a href="javascript:{}" id="districtPeopleLink">See All</a></span>
+					</p>
+					<div style="margin-top: 14px;">
+					<c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
+						<div class="connectPeopleDiv" style="margin-top: 21px;">
+						<p style="margin-top: -12px;"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
+						<span>${connectedPeoples.candidateName}</span><br>
+						<span>${connectedPeoples.constituencyName}</span></p>
+						<p><span  style="margin-right: 60px; margin-left: 30px;">
+						
+						<a href="javascript:{}" class="connectLink">Connect</a>
+						</span>
+						<span><a href="javascript:{}" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')">Send Message</a></span></p>
+						<input type="hidden" value="${connectedPeoples.id}" class="userId" />
+						<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
+						<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
+						
+						</div>
+						</c:forEach>
+				</div>
+
 				</div>
 			<!-- People You May Know Div End -->
 
@@ -155,9 +163,11 @@
 	</div>
  </div>
 </div>
-<!-- <div id="connectPeoplePopup"></div>-->
-<div id="connectPeoplePopup" style="display:none;"><div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div></div>
+
+<div id="connectPeoplePopup" style="display:none;">
+	<div id="allConnectedUsersDisplay_main"></div>
 	</div>
+
 
 <!-- Templates -->
 
@@ -173,21 +183,35 @@
 <!-- Templated END -->
 
 
-	<!-- Dialog Box -->
-	<div class="dialogTemplate">
-		<div>
-		<span>Message</span>
-		 <textarea rows="4" cols="50">
-		 </textarea>
-		 <input type="button" value="send" />
-		</div>
-	</div>
-	<!-- End -->
 	
-
 
 <script>
 buildPolls();
+districtId = '${dataTransferVO.districtId}';
+districtName = '${dataTransferVO.districtName}';
+constituencyId = '${dataTransferVO.constituencyId}';
+constituencyName = '${dataTransferVO.constituencyName}';
+var loginUserId = '${loginUserId}';
+
+loginUserName = '${loginUserName}';	
+loginUserProfilePic = '${loginUserProfilePic}';	
+connetLocationId = constituencyId;
+userType = '${UserType}';
+
+<c:forEach var="status" varStatus="stat" items="${messageTypes.messageTypes}">
+			var obj =	{
+							id:'${status.id}',
+							name:'${status.name}'
+						};
+			connectStatus.push(obj);
+</c:forEach>
+<c:forEach var="constituency" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
+			var obj =	{
+							id:'${constituency.constituencyId}',
+							name:'${constituency.constituencyName}'
+						};
+			constituencies.push(obj);
+		</c:forEach>
 </script>
 </body>
 </html>
