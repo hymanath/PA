@@ -27,7 +27,7 @@ $("document").ready(function(){
 	});
 
 	 
-	$("#messagesLink").click(function(){
+	$(".messagesLink").click(function(){
 		
 		var jsObj ={
 			task:"getRequestMessagesForUser"						
@@ -38,7 +38,7 @@ $("document").ready(function(){
 		
 		callAjax1(jsObj,url);
 	});
-
+	
 	$("#specialPageLink").click(function(){
 		
 		var jsObj ={
@@ -47,7 +47,17 @@ $("document").ready(function(){
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getSpecialPageAction.action?"+rparam;	
 		
-		callAjax(jsObj,url);
+		callAjax1(jsObj,url);
+	});
+	$(".subscriptionsLink").click(function(){
+		
+		var jsObj ={
+			task:"getSpecialPages"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getSpecialPageAction.action?"+rparam;	
+		
+		callAjax1(jsObj,url);
 
 	});
 
@@ -551,6 +561,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 
 	str +='<span>By Status: </span>';
 	str +='<select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\')">';
+	str +='<option value="0">All</option>';
 	for(var i in connectStatus)
 	str +='<option id='+connectStatus[i].id+'>'+connectStatus[i].name+'</option>';
 	str +='</select>';
@@ -638,12 +649,12 @@ function getAllConnectedUsersByFilterView(locationType)
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html('');
-		$(".templateDiv").html('<div> Data Not Found Due To Some Exeption</div>').appendTo(".placeholderCenterDiv");
+		$(".templateDiv").html('Data Not Found Due To Some Exeption').appendTo(".placeholderCenterDiv");
 		return;
 	}
 	else if(users.length == 0)
 	{
-		$(".templateDiv").html('<div> <div> No People Connected In '+jsObj.locationName+' '+jsObj.locationType+'</div>').appendTo(".placeholderCenterDiv");
+		$(".templateDiv").html('No People Connected In '+jsObj.locationName+' '+jsObj.locationType+'').appendTo(".placeholderCenterDiv");
 		return;
 	}
 	else
