@@ -237,7 +237,7 @@ padding:5px 20px;
 						User Menu
 					</h4>
 					<p class="p1"><span>Whats's New?</span></p>
-					<p class="p1"><a href="javascript:{}" id="messagesLink">Messages</a></p>
+					<p class="p1"><a href="javascript:{}" class="messagesLink">Messages</a></p>
 					<p class="p1"><a href="javascript:{}" id="friendsLink">Friends</a></span></p>
 					<p class="p1"><a href="javascript:{}" id="requestLink">Requests</a></p>
 				</div>
@@ -258,7 +258,7 @@ padding:5px 20px;
 						<span><i class="userMenu" id="icon_leftsec"></i></span>
 						Interests
 					</h4>
-					<p class="p3"><a href="javascript:{}">Subscriptions</a></p>
+					<p class="p3"><a href="javascript:{}" class="subscriptionsLink">Subscriptions</a></p>
 					<p class="p3"><a href="javascript:{}">Asses Politician</a></p>
 					<p class="p3"><a href="javascript:{}" id="specialPageLink">Special Pages</a></p>
 				</div>
@@ -288,11 +288,11 @@ padding:5px 20px;
 						<li>Friends: </li>
 						<li>Photos: </li>
 						<li>Videos: </li>
-						<li>Subscriptions: </li>
+						<li><a href="javascript:{}" class="subscriptionsLink">Subscriptions:</a></li>
 						<li>Connected Pages: </li>
 						<li>Politiciaa Assess: </li>
 						<li>Problems Posted: </li>
-						<li>Messages: ${dataTransferVO.totalMsgCount}</li>
+						<li>Messages: <a href="javascript:{}" class="messagesLink">${dataTransferVO.totalMsgCount}</a></li>
 						
 					</ul>
 					</div>
@@ -396,7 +396,6 @@ padding:5px 20px;
 	
 
 <script>
-buildPolls();
 
 
 districtId = '${dataTransferVO.districtId}';
