@@ -106,11 +106,11 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     
     public FileGallary getFileGallary(Long fileGallaryId);
     
-    public List<Long> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults);
+    public List<FileGallary> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults);
     
     public List<FileGallary> getStartingRecordInGallaries(Long gallaryId);
     
-    public List<Long> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2);
+    public List<FileGallary> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2);
     public List<Long> getRecentlyUploadedNewsGallaryIds(Integer startIndex , Integer maxResults,String queryStr3);
     
     public List<FileGallary> getStartingRecordInNewsGallaries(Long gallaryId);
