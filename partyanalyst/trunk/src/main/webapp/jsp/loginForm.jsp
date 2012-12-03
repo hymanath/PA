@@ -414,8 +414,9 @@ if(request.getParameter("showMessage")!=null){
 			              <div>
 			                <jsp:include page="loginPage.jsp" flush="true" />
 						 </div>
-		                 <div class="span4 well"style="margin-left: 5px;">
-		                      <h3 style="margin-bottom: 7px;">New to Party Analyst?</h3>
+		                 <div class="span3 well"style="border: 5px solid #E3E3E3;
+    margin-left: 21px;">
+		                      <h4 style="margin-bottom: 7px;">New to Party Analyst?</h4>
 		                      <a href="freeUserRegistration.action" class="btn btn-success pull-right">Create an Account</a>
 		                 </div>
 		        
