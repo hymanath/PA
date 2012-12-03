@@ -44,7 +44,7 @@
 	.profileStatisticsDiv ul{ margin-left: 27px;padding-top:10px;padding-bottom: 10px;}
 	.profileStatisticsDiv ul li{ line-height: 1.8em;}
 	.connectPeopleHeading{background:#7f7f7f;color:#FFF}
-.connectPeopleDiv{background:#d8d8d8;border-bottom:2px solid #d4d4d4;}
+.connectPeopleDiv{border-bottom:2px solid #d4d4d4;}
 .opinionPollCls{background:#31859b;color: #FFFFFF;
     font-size: 17px;
     font-weight: bold;
