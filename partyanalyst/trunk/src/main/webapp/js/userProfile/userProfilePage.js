@@ -49,6 +49,9 @@ $("document").ready(function(){
 		
 		callAjax1(jsObj,url);
 	});
+
+	//subscriptions
+
 	$(".subscriptionsLink").click(function(){
 		
 		var jsObj ={
@@ -60,6 +63,32 @@ $("document").ready(function(){
 		callAjax1(jsObj,url);
 
 	});
+
+	//problems 
+
+	$(".problemsLink").click(function(){
+		var type = 'Total';
+		var jsObj ={				
+			task:"getAllPostedProblems_paginator"
+		 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getAllPostedProblemsDataAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:3,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllPostedProblems_paginator(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+	});
+
+
 
 	$("#districtPeopleLink").click(function(){
 	var locationId = districtId;
@@ -174,14 +203,51 @@ $("document").ready(function(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	callAjax1(jsObj,url);
 		
 		
 	});
 
 
-	
+	$("#connectDistrictPeopleLink").live("click",function(){
+		
+		$("#errorMsgDiv").html('');
+		var connectUserId = $(this).closest(".connectPeoplePopupInnerDiv").find('#connectedPersonId').val();
+		var connectMsg = $.trim($("#connectUserMsg").val());
+		var errorMsgDiv = $("#errorMsgDiv");
+		var connetLocationType = 'DISTRICT';
+		var distId = districtId;
+		var locationName = districtName;
+		var connectUserLoginId = loginUserId;
 
+		var users = new Array();
+		users.push(connectUserId);
+
+		 if(connectUserMsg.length > 200)
+		{
+			$("#errorMsgDiv").html('<font style="color:red">Message Should be lessthan 200 characters.</font>');
+			return;
+		}
+		
+		disableButton("connectDistrictPeopleLink");
+		$("#connectPeoplePopup").dialog('close');
+		alert(distId);
+		var jsObj ={
+
+				connetLocationId:distId,				
+				connectUserIds:users,
+				connectMessage:connectMsg,
+				userId:connectUserLoginId,
+				locationType:connetLocationType,
+				task:"connectUserSet"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "connectToUserSetAction.action?"+rparam;					
+	callAjax1(jsObj,url);			
+	
+	});
+	
 
 });//End ready
 
@@ -239,6 +305,10 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task == "connectToUser")
 					{
 						closeConnectPanel(jsObj,results);
+					}
+					else if(jsObj.task =="connectUserSet")
+					{
+
 					}
 					
 			}catch (e) {   		
@@ -547,7 +617,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	/* filterDiv.append("<span>Total People - "+totalResultsCount+"</span>");
 	filterDiv.append("<span>Connected - "+connectedPeopleCount+"</span>");
 	filterDiv.append("<span>Not Connected - "+notConnectedPeopleCount+"</span>");*/
-
+	
 	filterDiv.append("<p><span>People You May Know</span><input id='connectStatusTextBox' type='text' value='' onkeyup='getAllConnectedUsersByFilterView(\""+jsObj.locationType+"\") '/></p>");
 	if(jsObj.locationType == "DISTRICT")
 	{
@@ -569,6 +639,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	$("#headerDiv").append(filterDiv);
 	 for(var i in results.candidateVO)
 	{
+		 //alert(results.candidateVO[i].district);
 		var imageStr = "pictures/profiles/"+results.candidateVO[i].image;
 		var image = results.candidateVO[i].image;
 		var template = $(".templateDiv");
@@ -577,17 +648,21 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		if(image == null)
 			templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
 		else
-			templateClone.find(".imgClass").html('<img height="45" width="50" src="pictures/profiles/"'+results.candidateVO[i].image+'" />');
+			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
 			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
-			//templateClone.find(".districtName").html(''+results.candidateVO[i].candidateName+'');
-			//templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-			//templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
+			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
+			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')">Send a Message');
+			
 			templateClone.appendTo(".placeholderCenterDiv");
 			
 	}
 
-	
+	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
+	pagination.appendTo('.placeholderCenterDiv');
 }
 
 function getAllConnectedUsersByFilterView(locationType)
@@ -625,8 +700,7 @@ function getAllConnectedUsersByFilterView(locationType)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;					
-	/*callAjax(jsObj,url);*/
-
+	
 	custom_paginator.paginator({
 		startIndex:0,
 		resultsCount:5,
@@ -643,6 +717,7 @@ function getAllConnectedUsersByFilterView(locationType)
 
  function showAllConnectedUsersInPanelByFilterView(jsObj,results)
 {
+	
 	var users = results.candidateVO;
 	
 	$(".placeholderCenterDiv").children().remove();
@@ -654,31 +729,85 @@ function getAllConnectedUsersByFilterView(locationType)
 	}
 	else if(users.length == 0)
 	{
-		$(".templateDiv").html('No People Connected In '+jsObj.locationName+' '+jsObj.locationType+'').appendTo(".placeholderCenterDiv");
+		$(".templateDiv").html('No people connected in this district with this view..').appendTo(".placeholderCenterDiv");
 		return;
 	}
 	else
 	{
 		for(var i in results.candidateVO)
 		{
+			var template = $(".templateDiv");
 			var imageStr = "pictures/profiles/"+results.candidateVO[i].image;
 			var image = results.candidateVO[i].image;
-			var template = $(".templateDiv");
 			var templateClone = template.clone();
 			templateClone.removeClass("templateDiv");
 			if(image == null)
 				templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
 			else
-				templateClone.find(".imgClass").html('<img height="45" width="50" src="pictures/profiles/"'+results.candidateVO[i].image+'" />');
+				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
 				templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
 				templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
-				//templateClone.find(".districtName").html(''+results.candidateVO[i].candidateName+'');
-				//templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-				//templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+				templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
+				templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
+				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
+				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\')">Connect</a>');
+				templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
 				templateClone.appendTo(".placeholderCenterDiv");
 			
 		}
 	}
+}
+
+
+//total problems
+
+function showAllPostedProblems_paginator(jsObj,results)
+{
+}
+
+
+
+
+
+function connectToSelectedPerson(id,name)
+{
+	$("#allConnectedUsersDisplay_main").children().remove();			
+		var userId = id;
+		var userName = name;
+		var userLoginId = loginUserId;
+		var locationId = districtId;
+		var locationType = 'DISTRICT';
+		var locationName = districtName;
+		
+		$( "#connectPeoplePopup" ).dialog({
+			title:"Connect To  "+userName,
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			minHeight:300,
+			modal: true,
+			hide: "explode"
+		});
+
+		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
+		var Name=$("<label>"+userName+"</label>");
+		var message = $("<label>Message</label>");
+		var textArea = $("<textarea id='connectUserMsg'></textarea>");
+		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+		var connectBtn = $('<input type="button" value="Connect" id="connectDistrictPeopleLink"/>');
+		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
+		var errorDiv = $("<div id='errorMsgDiv'></div>")
+		div.append(errorDiv);
+		div.append(Name);
+		div.append(message);
+		div.append(textArea);
+		div.append(image);
+		div.append(connectBtn);
+		div.append(connectedPersonId);
+		$('#allConnectedUsersDisplay_main').append(div);
+		
+	
+
 }
 
 
