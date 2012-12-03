@@ -34,6 +34,8 @@ public class CandidateVO {
 	private Long partyId;
 	private Long noOfFriends;
 	private Long noOfPosts;
+	private Long districtId;
+	private Long stateId;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -282,5 +284,23 @@ public class CandidateVO {
 	public void setNoOfPosts(Long noOfPosts) {
 		this.noOfPosts = noOfPosts;
 	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	
+	
 
 }
