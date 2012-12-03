@@ -395,12 +395,12 @@ function showRequestedMessagesForAUser(results)
 	$(".placeholderCenterDiv").children().remove();
 	if(results.resultStatus.resultCode !="0")
 	{
-		$(".templateDiv").html("Data could not be retrived due to some technical difficulties.").appendTo(".placeholderCenterDiv");
+		$(".templateDivMsg").html("Data could not be retrived due to some technical difficulties.").appendTo(".placeholderCenterDiv");
 		return;
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$(".templateDiv").html("No messages has been sent to you.").appendTo(".placeholderCenterDiv");
+		$(".templateDivMsg").html("No messages has been sent to you.").appendTo(".placeholderCenterDiv");
 		return;
 	}
 		
@@ -408,16 +408,18 @@ function showRequestedMessagesForAUser(results)
 		$("#headerDiv").html('Unread: <span style="color:blue;">'+ results.unreadMsgCount +' </span> Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span>');
 		for(var i in results.candidateVO)
 		{
-		var template = $(".templateDiv");
+		var template = $(".templateDivMsg");
 		var templateClone = template.clone();
-		templateClone.removeClass("templateDiv");
-		templateClone.find(".imgClass").html(''+results.candidateVO[i].candidateName+'');
+		templateClone.removeClass("templateDivMsg");
+		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
 		if(results.candidateVO[i].status == "UNREAD")
-			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].message+'');
+			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
 		else
-			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].message+'');
-			templateClone.find(".constituencyName").html(''+results.candidateVO[i].postedDate+'');
-			templateClone.find(".stateName").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')">reply</a>');
+			templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
+			templateClone.find(".reply").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')" >REPLY</a>');
+			templateClone.find(".msgDelete").html('<a href="javascript:{}">DELETE</a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 		}
 }
