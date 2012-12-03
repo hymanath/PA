@@ -2371,11 +2371,14 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 List<FileGallary> photoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> singleNewsGallaryresultList = null;
+	 List<FileGallary> singleVodeosGallaryresultList = null;
 	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileVO> resultList = new ArrayList<FileVO>();
 	 List<FileVO> vedioresultList = new ArrayList<FileVO>();
 	 List<FileVO> newsresultList = new ArrayList<FileVO>();
-	 List<Long> latestgalIds =  fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, maxResults);
+	 
+	 
+	 /*List<Long> latestgalIds =  fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, maxResults);
 	 if(latestgalIds != null)
 	 {
 		for(Long value :latestgalIds)
@@ -2388,11 +2391,44 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			resultList.add(result.get(0));		
 		}
 		resultMap.put("photogallary", resultList);
+	 }*/
+	 
+	 List<FileGallary> latestPhotoGalleryList  = fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, 400);
+	 
+	 Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
+	 Map<Long,Long> photoFileIds = new HashMap<Long,Long>();
+	 Long photoFileId = null;
+	 Long photoGallaryId= null;
+	 int photoCount = 0;
+	 
+	 for(FileGallary fileGallary:latestPhotoGalleryList){
+		 photoFileId = fileGallary.getFile().getFileId();
+		 photoGallaryId = fileGallary.getGallary().getGallaryId();
+		 if(photoFileId != null && photoFileIds.get(photoFileId) == null){
+			 if(photoGallaryId != null && photoGallaryIds.get(photoGallaryId) == null){
+				 
+				 photoFileIds.put(photoFileId,photoFileId);
+				 photoGallaryIds.put(photoGallaryId,photoGallaryId);
+				 singleVodeosGallaryresultList = new ArrayList<FileGallary>();				 
+				 singleVodeosGallaryresultList.add(fileGallary);
+				 List<FileVO> photosList =setToFileVO(singleVodeosGallaryresultList , "Photos");
+				 if(!photosList.isEmpty()){
+					 resultList.add(photosList.get(0));
+					 photoCount =photoCount+1;
+				 }
+			 }
+		 }
+		 if(photoCount >= maxResults){
+				break;
+			}
 	 }
+	 
+	 resultMap.put("photogallary", resultList);
+	 
 	 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
 		/* List<Long> videosList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr2);
 		 videoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(videosList);*/
-		 List<Long> latestVedioGalIds = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(startIndex, maxResults, queryStr2);
+		/* List<Long> latestVedioGalIds = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(startIndex, maxResults, queryStr2);
 		 if(latestVedioGalIds != null)
 		 {
 			 for(Long vediogalId : latestVedioGalIds)
@@ -2404,7 +2440,40 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				 
 			 	}
 			 resultMap.put("VideoGallary", vedioresultList);
+		 }*/
+	 
+	 
+	 List<FileGallary> latestVedioGalList = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(startIndex, 400, queryStr2);
+	 Map<Long,Long> videoGallaryIds = new HashMap<Long,Long>();
+	 Map<Long,Long> videoFileIds = new HashMap<Long,Long>();
+	 Long videoFileId = null;
+	 Long vodeoGallaryId= null;
+	 int videoCount = 0;
+	 
+	 for(FileGallary fileGallary:latestVedioGalList){
+		 videoFileId = fileGallary.getFile().getFileId();
+		 vodeoGallaryId = fileGallary.getGallary().getGallaryId();
+		 if(videoFileId != null && videoFileIds.get(videoFileId) == null){
+			 if(vodeoGallaryId != null && videoGallaryIds.get(vodeoGallaryId) == null){
+				 
+				 videoFileIds.put(videoFileId,videoFileId);
+				 videoGallaryIds.put(vodeoGallaryId,vodeoGallaryId);
+				 singleVodeosGallaryresultList = new ArrayList<FileGallary>();				 
+				 singleVodeosGallaryresultList.add(fileGallary);
+				 List<FileVO> vodeosList =setToFileVO(singleVodeosGallaryresultList , "Videos");
+				 if(!vodeosList.isEmpty()){
+					 vedioresultList.add(vodeosList.get(0));
+					 videoCount =videoCount+1;
+				 }
+			 }
 		 }
+		 if(videoCount >= maxResults){
+				break;
+			}
+	 }
+	 
+	 resultMap.put("VideoGallary", vedioresultList);
+	 
 	
 	// photoGallaryresultList=fileGallaryDAO.getStartingRecordInGallaries(latestgalIds);
  	/* List<Long> photosList = fileGallaryDAO.getRecentlyUploadedPhotoIds(startIndex, maxResults);
