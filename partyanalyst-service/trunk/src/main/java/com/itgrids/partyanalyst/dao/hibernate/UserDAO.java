@@ -189,7 +189,8 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	}
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
-		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId,model ");
+		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId,model,model.constituency.district.districtId," +
+				" model.constituency.district.districtName,model.constituency.state.stateId,model.constituency.state.stateName ");
 		query.append(" from User model where ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append("model.state.stateId in (:locationIds)");
