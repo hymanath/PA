@@ -83,4 +83,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List findByPartNoConstituencyIdAndYearAndPubDtId(Long constituencyId, Long year, String partNo,Long publicationDtId);
 	
 	public List<Booth> getBoothsByPublicationDateTehsilConstituenctPartNos(Long publicationDateId,Long thesilId,Long constituencyId,String partNos);
+	
+	public List<Object[]> getPublicationDetailsBasedOnConstituency(Long constituencyId);
 }
