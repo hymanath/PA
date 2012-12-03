@@ -393,7 +393,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		
 		return query.list();
 	}
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Long> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults)
 	{
 		Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
@@ -402,11 +402,33 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		query.setMaxResults(maxResults);
 		
 		return query.list();	
-	}
+	}*/
+	
 	@SuppressWarnings("unchecked")
+	public List<FileGallary> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults)
+	{
+		Query query = getSession().createQuery("select  model from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
+				" and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
+		return query.list();	
+	}
+	
+	
+	/*@SuppressWarnings("unchecked")
 	public List<Long> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
 	{
 	Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model "+queryStr2+" and " +
+			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
+	query.setFirstResult(startIndex);
+	query.setMaxResults(maxResults);
+	return query.list();
+	}*/
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
+	{
+	Query query = getSession().createQuery("select  model from FileGallary model "+queryStr2+" and " +
 			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
 	query.setFirstResult(startIndex);
 	query.setMaxResults(maxResults);
