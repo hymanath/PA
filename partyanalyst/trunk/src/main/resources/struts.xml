@@ -3710,6 +3710,11 @@
 		<action name="boothPublicationMapAction" class="villageBoothElectionMapAction" method="uploadMappingForPublication">
 			<result name="success">/jsp/boothPublicationMapper.jsp</result>					
 		</action>
+		<action name="getSpecialPageAction" class="userProfileAction" method="getSpecialPages">
+			<result type="json" name="success">
+			  <param name="root">specialPageVOList</param>
+		    </result>
+		</action>
 		
 		</package>
 </struts>      
