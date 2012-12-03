@@ -191,7 +191,7 @@ if(request.getParameter("showMessage")!=null){
 
 
 
-		     <div class="span3 well">
+		     <div class="span3 well" style="border: 5px solid #E3E3E3;">
 				     
 				     <div id = "getLoginErrorMessageDiv" style="color:red;">
 					     <s:actionerror />
@@ -247,16 +247,16 @@ if(request.getParameter("showMessage")!=null){
         	             
 			             <div id="validate"></div>
 						 <div class="input-prepend">
-                               <span class="add-on"><i class="icon-envelope"></i></span><input type="text" class="span2" class="input-small" placeholder="Email" name="userName"  id="userName" required>
+                               <span class="add-on"><i class="icon-envelope"></i></span><input type="text" class="span2" class="input-small" placeholder="Email" name="userName"  id="userName" style="width: 176px;" required>
                          </div>
 						 <div class="input-prepend">
-                               <span class="add-on"><i class="icon-lock"></i></span><input type="password" class="span2" class="input-small" placeholder="Password" name="password" id="passWord_Id" required>
+                               <span class="add-on"><i class="icon-lock"></i></span><input type="password" class="span2" class="input-small" placeholder="Password" name="password" style="width: 176px;" id="passWord_Id" required>
                          </div>
                             
 			                <span class="divider"></span>
 			              <div class = "span3">
                              <a href="javascript:{}" onclick="showForgotPasswordPanel()" style="color:#0174DF;" >Forgot Password</a>
-			                 <input id="" class="submitButton btn btn-large btn-primary" type="submit" style="margin-left: 28px;" value="Sign In">
+			                 <input id="" class="submitButton btn btn btn-primary" type="submit" style="margin-left: 28px;" value="Sign In">
 			              </div>
 						  
 						  
