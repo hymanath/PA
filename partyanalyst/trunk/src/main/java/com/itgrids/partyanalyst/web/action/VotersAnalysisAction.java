@@ -12,11 +12,14 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.ActionSupport;
+import com.sun.org.apache.xpath.internal.Arg;
 
 public class VotersAnalysisAction extends ActionSupport implements ServletRequestAware{
 	
@@ -28,6 +31,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	JSONObject jObj;
 	
 	private RegionServiceDataImp regionServiceDataImp;
+	
+	private IVotersAnalysisService votersAnalysisService;
 	
 	private List<SelectOptionVO> namesList;
 	
@@ -61,7 +66,9 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
-	}
+	}	
+	private List<SelectOptionVO> publicationData;
+	
 	public List<SelectOptionVO> getConstituencyList() {
 		return constituencyList;
 	}
@@ -100,8 +107,15 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		this.request=arg0;
 	}
 
-
 	
+	
+	public List<SelectOptionVO> getPublicationData() {
+		return publicationData;
+	}
+
+	public void setPublicationData(List<SelectOptionVO> publicationData) {
+		this.publicationData = publicationData;
+	}
 	public String getTask() {
 		return task;
 	}
@@ -110,6 +124,16 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		this.task = task;
 	}
 	
+	
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
 	public String execute() throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -148,6 +172,13 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList.add(0, obj);
 			
 			
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate"))
+		{
+			Long constituencyId = jObj.getLong("selected");
+			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(constituencyId);
+			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
 		return Action.SUCCESS;
 	}
