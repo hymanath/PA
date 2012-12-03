@@ -264,5 +264,19 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 				
 	}
+	
+	public String getSpecialPages()
+	{
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getSpecialPages() method, Exception- "+e);
+		}
+		specialPageVOList = specialPageService.getSpecialPageListForHomePage();
+		return Action.SUCCESS;
+	}
 
 }
