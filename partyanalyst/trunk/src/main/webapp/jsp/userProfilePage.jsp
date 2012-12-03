@@ -226,9 +226,9 @@ padding:5px 20px;
 			        <div style="text-align: center; padding: 10px 0px;">         
 						<img width="90" height="100" src="pictures/profiles/human.jpg" style="border:1px solid #ADADAD;" id="userProfileImg">
 						<div id="profileUserName">${loginUserName}</div>
-						<div>${dataTransferVO.constituencyName}</div>
-						<div>${dataTransferVO.districtName}</div>
-						<div style="margin-top: 10px;">${dataTransferVO.stateName}</div>
+						<div><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></div>
+						<div><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></div>
+						<div style="margin-top: 10px;"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></div>
 					</div>			
 				</div>
 				<div class="widget blue">
