@@ -249,7 +249,7 @@ padding:5px 20px;
 						Applications
 					</h4>
 					<p class="p2"><span>Important Dates</span></p>
-					<p class="p2"><span><a href="javascript:{}" id="problemsLink">Problems</a></span></p>
+					<p class="p2"><span><a href="javascript:{}" class="problemsLink">Problems</a></span></p>
 				</div>
 				
 				
@@ -387,6 +387,7 @@ padding:5px 20px;
 				<span class="districtName"></span>
 				<span class="stateName"></span>
 				<span class="sendMsg"></span>
+				<span class="connectCls"> </span>
 			</div>
 	</div>
 	
