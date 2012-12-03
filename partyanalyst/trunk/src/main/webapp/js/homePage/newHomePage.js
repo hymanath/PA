@@ -1078,7 +1078,6 @@ function buildLocalBodiesSelectElmt(jsObj,results)
 
 function buildPolls()
 {
-	
 	var jsObj=
 	{
 			task:"getAllPolls"					
@@ -2227,7 +2226,6 @@ function hideBusyImgWithId(elmtId)
 
 
 function buildNewPoll1(result){
-
 	result1=result;  
 
 	if(result.quesitons!=null){
@@ -2476,7 +2474,7 @@ function buildResultForPoll(voteStatus,result){
 	var str='';
   
 	str+='<div class="opinionpoll">';
-	str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:1px 0px 2px #888;margin-bottom:5px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion polls</span></h3>';
+	<!--str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:1px 0px 2px #888;margin-bottom:5px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion polls</span></h3>';
 
 	str+='<div class="breadcrumb"><p style="padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;"><b>'+result.question+'</b></p>';
 
