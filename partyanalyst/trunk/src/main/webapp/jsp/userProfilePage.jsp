@@ -209,10 +209,20 @@ padding:5px 20px;
 		padding: 5px;
 		width: 200px;
 	}
-	.imgClass{width:50%;float:left;}
-	.prinfo{width:50%;float:left;color:#000000;}
+	.templatePersons .imgClass{width:50%;float:left;}
+	.templatePersons .prinfo{width:50%;float:left;color:#000000;}
 	 body{font-size:13px;}
-	.connectedPersonName{font-size:14px;}
+	.templatePersons .connectedPersonName{font-size:14px;}
+	.templateMessage {border:1px solid #CFCFCF;margin:1px;padding:4px;}
+	.templateMessage .reply a{text-decoration:none;color:white}
+	.templateMessage .msgDelete a{text-decoration:none;color:white}
+	.templateMessage .imgClass{float:left;width:20%;}
+	.templateMessage .messageFrom{float:left;width:40%;color:#3B5998;}
+	.templateMessage .dateAndTimeReceived{float:right;width:40%;color:gray;}
+	.templateMessage .message{color:#000;margin-left:50px;padding:10px;}
+	.templateMessage .msgBtns{width:50%;margin-left:auto;margin-right:auto;}
+	
+	
 </style>
 </head>
 <body>
@@ -390,6 +400,19 @@ padding:5px 20px;
 				<span class="connectCls"> </span>
 			</div>
 	</div>
+	<div class="templateDivMsg templateholder templateMessage" >
+			<div class="breadcrumb white-gloss" style="padding:10px;">
+				<div class="imgClass"></div>
+				<span class="messageFrom"></span>
+				<span class="dateAndTimeReceived"></span>
+			</div>
+			
+			<div class="message"></div>
+			<div class="msgBtns" >
+				<span class="reply btn-mini btn-info"></span>
+				<span class="msgDelete btn-mini btn-info"></span>
+			</div>
+	</div>
 	
 		
 <!-- Templated END -->
@@ -397,6 +420,7 @@ padding:5px 20px;
 	
 
 <script>
+buildPolls();
 
 
 districtId = '${dataTransferVO.districtId}';
