@@ -170,6 +170,7 @@ function buildOuterView()
 
 	function showReportLevel(value)
 	{
+		
 		if(value == 1)
 		{
 			document.getElementById('ConstituencyDiv').style.display = 'block';
@@ -189,19 +190,26 @@ function buildOuterView()
 		}
 		else if(value == 3)
 		{
+
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'block';
 			document.getElementById('pollingStationDiv').style.display = 'none';
 			getPanchayatList('panchayat','panchayatField');
+
+			
 		}
 		else if(value == 4)
 		{
+
+			
+			
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'none';
 			document.getElementById('pollingStationDiv').style.display = 'block';
 			getPanchayatList('pollingstation','pollingStationField');
+			
 		}
 	}
 	
@@ -276,21 +284,13 @@ function buildOuterView()
 	function getMandalList(selectElmt)
 	{
 		
-		var assemblyradioEle =document.getElementById('Assembly'); 
+		
 		var constituencyID = document.getElementById("constituencyList");
 		var name=constituencyID.options[constituencyID.selectedIndex].name;
 		var value=constituencyID.options[constituencyID.selectedIndex].value;
 		var choice=false;
 		var locationAlertEl =  document.getElementById("locationAlertMsg");
 		
-		if(value=='0')
-		{
-		
-			assemblyradioEle.checked = true;
-			return;
-		}
-		
-	
 		var jsObj=
 			{
 					
@@ -321,7 +321,7 @@ function buildOuterView()
 		alertEl.innerHTML = '';
 		
 		selectname = mandalField.options[mandalField.selectedIndex].text;
-		flag= selectname.search("MUNCIPALITY");
+		var flag= selectname.search("MUNCIPALITY");
 		
 		
 		 if(value == 0)
@@ -329,9 +329,23 @@ function buildOuterView()
 			alertEl.innerHTML ='<P><%=locationAlert%></P>';
 			return;
 		}
-		
-		
-			var jsObj=
+
+		//Muncipality
+		if(flag != -1)
+		{
+			document.getElementById("pollingStationDiv").style.display = 'none';
+			document.getElementById("panchayatDiv").style.display = 'none';
+			return;
+
+		}
+		//Mandal
+		if(flag == -1)
+		{
+			document.getElementById("pollingStationDiv").style.display = 'block';
+			document.getElementById("panchayatDiv").style.display = 'block';
+
+		}
+		var jsObj=
 			{
 					
 				selected:value,
