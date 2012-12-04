@@ -3681,7 +3681,8 @@
 		</action>
 		
 		<action name="userProfile" class="userProfileAction">
-			<result>/jsp/userProfilePage.jsp</result>
+			<result name="success">/jsp/userProfilePage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		<action name="getAllRequestMessagesForAUserAction" class="userProfileAction" method="getRequestMessagesForUser">
 			<result type="json" name="success">
