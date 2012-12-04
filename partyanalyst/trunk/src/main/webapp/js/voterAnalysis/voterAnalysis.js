@@ -70,7 +70,6 @@ function buildOuterView()
 		divEle.innerHTML= str;
 		
 	}
-
 function showReportLevel(value)
 	{
 		
@@ -93,7 +92,7 @@ function showReportLevel(value)
 		}
 		else if(value == 3)
 		{
-
+			
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'block';
@@ -117,11 +116,126 @@ function showReportLevel(value)
 	}
 	
 
+function buildVotersByLocBoothDataTable()
+{
+
+//var checkedele = "pollingstation";
+
+//var boothId = $('#imppollingStationField').val();
+
+var boothId = 115;
 
 
-	
+var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "SNo"},
+{key:"firstName", label: "Name", sortable: true},
+{key:"gender", label: "Gender", sortable: true},
+{key:"age", label: "Age", sortable:true},
+{key:"houseNo", label: "House No", sortable:true},
+{key:"relativeFirstName", label: "GuardName", sortable:true},
+{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"cast", label: "Cast", sortable:true},
+{key:"castCatagery", label: "CastCategory", sortable:true}
+];
 
-	function showImportantFamiliesDiv()
+//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
+
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
+
+function buildVotersByLocPanchayatDataTable()
+{
+
+//var checkedele = "pollingstation";
+
+//var boothId = $('#imppollingStationField').val();
+
+//var boothId = 115;
+
+var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "SNo"},
+{key:"firstName", label: "Name", sortable: true},
+{key:"gender", label: "Gender", sortable: true},
+{key:"age", label: "Age", sortable:true},
+{key:"houseNo", label: "House No", sortable:true},
+{key:"relativeFirstName", label: "GuardName", sortable:true},
+{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"cast", label: "Cast", sortable:true},
+{key:"castCatagery", label: "CastCategory", sortable:true}
+];
+
+//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
+
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId=1&panchaytId=444&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByPanchayatTabContentDiv_body",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}	
+
+function showImportantFamiliesDiv()
 	{
 		var ImpDiv = document.getElementById('ImportantFamiliesDiv');
 		document.getElementById('votersMainOuterDiv1').style.display='block';
@@ -135,7 +249,6 @@ function showReportLevel(value)
 		
 		
 	}
-	
 	
 	function showLocalCastDiv()
 	{
@@ -233,21 +346,8 @@ function showReportLevel(value)
 			return;
 		}
 
-		//Muncipality
-		if(flag != -1)
-		{
-			document.getElementById("pollingStationDiv").style.display = 'none';
-			document.getElementById("panchayatDiv").style.display = 'none';
-			return;
-
-		}
-		//Mandal
-		if(flag == -1)
-		{
-			document.getElementById("pollingStationDiv").style.display = 'block';
-			document.getElementById("panchayatDiv").style.display = 'block';
-
-		}
+		
+		
 		var jsObj=
 			{
 					
@@ -262,6 +362,8 @@ function showReportLevel(value)
 			var url = "getPanchayatByConstituencyAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
+	
+
 	
 	function getPublicationDate()
 {
@@ -322,6 +424,7 @@ function showReportLevel(value)
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 
+	
 	function buildMandalList(results,jsObj)
 	{
 		//var selectedElmt=document.getElementById("mandalField");
@@ -375,6 +478,14 @@ function showReportLevel(value)
 		}
 
 	}
+	function removeSelectElements(selectedElmt)
+	{
+		var len = selectedElmt.length;
+		for(var i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}
+	}
 	function buildPublicationDateList(results)
 
 	{
@@ -397,11 +508,4 @@ function showReportLevel(value)
 		}	
 	}
 }
-	function removeSelectElements(selectedElmt)
-	{
-		var len = selectedElmt.length;
-		for(var i=len-1;i>=0;i--)
-		{
-			selectedElmt.remove(i);
-		}
-	}
+	
