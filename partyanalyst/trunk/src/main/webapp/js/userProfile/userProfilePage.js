@@ -380,9 +380,9 @@ function showAllRequestMessagesForUser(results,jsObj){
 		templateClone.find('.connectedPersonName').html(''+results.friendRequest[i].candidateName+'');
 		templateClone.find('.imgClass').html('<img height="50" width="55" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/>');
 		templateClone.find('.constituencyName').html(''+results.friendRequest[i].message+'');
-		templateClone.find('.districtName').html('<input type="button" onclick="acceptRequest('+results.friendRequest[i].id+')" value="Accept" class="acceptButton"></input>');
-		templateClone.find('.stateName').html('<input type="button" onclick="rejectRequest('+results.friendRequest[i].id+')" value="Decline" class="rejectButton"></input>');
-		templateClone.find('.sendMsg').html('<input type="button" onclick="blockRequest('+results.friendRequest[i].id+')" value="Block this person" class="rejectButton"></input>');
+		templateClone.find('.districtName').html('<a class="btn-mini btn" onclick="acceptRequest('+results.friendRequest[i].id+')" class="acceptButton">Accept</a>');
+		templateClone.find('.stateName').html('<a class="btn-mini btn" onclick="rejectRequest('+results.friendRequest[i].id+')" class="rejectButton">Decline</a>');
+		templateClone.find('.sendMsg').html('<a class="btn-mini btn" onclick="blockRequest('+results.friendRequest[i].id+')" class="rejectButton">Block this person</a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 }
@@ -620,23 +620,24 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	filterDiv.append("<span>Connected - "+connectedPeopleCount+"</span>");
 	filterDiv.append("<span>Not Connected - "+notConnectedPeopleCount+"</span>");*/
 	
-	filterDiv.append("<p><span>People You May Know</span><input id='connectStatusTextBox' type='text' value='' onkeyup='getAllConnectedUsersByFilterView(\""+jsObj.locationType+"\") '/></p>");
+	filterDiv.append("<div style='padding:4px;width:100%;'><label style='width:40%;float:left;'>Search By Name :</label><input id='connectStatusTextBox' type='text' value='' onkeyup='getAllConnectedUsersByFilterView(\""+jsObj.locationType+"\") '/></div>");
 	if(jsObj.locationType == "DISTRICT")
 	{
-		str +='<span>By Constituency: </span>';
+		
+		str +='<div style="padding:4px;width:100%;"><label    style="width:40%;float:left;">By Constituency: </label>';
 		str +='<select id="connectConstituencySelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\')">';
 		str +='<option value="0">All</option>';
 		for(var i in constituencies)
 			str += '<option value="'+constituencies[i].id+'">'+constituencies[i].name+'</option>';
-		str += '</select>';
+		str += '</select></div>';
 	}
 
-	str +='<span>By Status: </span>';
+	str +='<div style="padding:4px;width:100%;"><label style="width:40%;float:left;">By Status:</label>';
 	str +='<select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\')">';
 	str +='<option value="0">All</option>';
 	for(var i in connectStatus)
 	str +='<option id='+connectStatus[i].id+'>'+connectStatus[i].name+'</option>';
-	str +='</select>';
+	str +='</select></div>';
 	filterDiv.append(str);
 	$("#headerDiv").append(filterDiv);
 	 for(var i in results.candidateVO)
