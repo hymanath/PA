@@ -1,6 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,21 +10,24 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.PublicationDate;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
-import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.org.apache.xpath.internal.Arg;
 
 public class VotersAnalysisAction extends ActionSupport implements ServletRequestAware{
 	
 	private HttpServletRequest request;
+	private ConstituencyManagementVO constituencyManagementVO;
 	
+	
+
 	private HttpSession session;
 	
 	private String task;
@@ -53,7 +56,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setNamesList(List<SelectOptionVO> namesList) {
 		this.namesList = namesList;
 	}
+	public ConstituencyManagementVO getConstituencyManagementVO() {
+		return constituencyManagementVO;
+	}
 
+	public void setConstituencyManagementVO(
+			ConstituencyManagementVO constituencyManagementVO) {
+		this.constituencyManagementVO = constituencyManagementVO;
+	}
 
 	
 	private ICrossVotingEstimationService crossVotingEstimationService;
@@ -181,6 +191,43 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
 		return Action.SUCCESS;
+	}
+	
+public String getVoterDetails(){
+		
+		String param;
+		param = getTask();
+		
+		
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		String order = request.getParameter("dir");
+		String columnName = request.getParameter("sort");
+		Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+		List<VoterVO> votersList = null;
+		constituencyManagementVO = new ConstituencyManagementVO();
+		
+		
+		Long publicationId = request.getParameter("publicationId") != null ?Long.parseLong(request.getParameter("publicationId")):0L;
+		Long boothId = request.getParameter("boothId") != null ? Long.parseLong(request.getParameter("boothId")):0L;
+		Long panchaytId = request.getParameter("panchaytId") != null? Long.parseLong(request.getParameter("panchaytId")) :0L;
+		
+			votersList = new ArrayList<VoterVO>();
+			
+			if(boothId == 0 && panchaytId != 0)			
+				votersList = votersAnalysisService.getVoterDetails(
+						publicationId, null, panchaytId, startIndex,
+						maxRecords, order, columnName);
+			else if(boothId != 0 && panchaytId == 0)
+				votersList = votersAnalysisService.getVoterDetails(
+						publicationId, boothId , null, startIndex, maxRecords,
+						order, columnName);
+
+		
+		constituencyManagementVO.setVoterDetails(votersList);
+		constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
+		
+		return Action.SUCCESS;
+		
 	}
 	
 }

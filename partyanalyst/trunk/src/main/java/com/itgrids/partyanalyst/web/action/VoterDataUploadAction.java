@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
 import com.itgrids.partyanalyst.service.IVoterDataUploadService;
@@ -25,7 +26,27 @@ public class VoterDataUploadAction extends ActionSupport implements ServletReque
 	private List<String> corrections;
 	private IVoterDataUploadService voterDataUploadService;
 	private IBoothDataValidationService boothDataValidationService;
+	private String publicationDate;
+	private List<SelectOptionVO> publicationDatesList;
+	
+
 	private static final Logger log = Logger.getLogger(VoterDataUploadAction.class);
+	
+	public List<SelectOptionVO> getPublicationDatesList() {
+		return publicationDatesList;
+	}
+
+	public void setPublicationDatesList(List<SelectOptionVO> publicationDatesList) {
+		this.publicationDatesList = publicationDatesList;
+	}
+
+	public String getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(String publicationDate) {
+		this.publicationDate = publicationDate;
+	}
 
 	public String getValidateData() {
 		return validateData;
@@ -98,12 +119,13 @@ public class VoterDataUploadAction extends ActionSupport implements ServletReque
 	}
 	
 	public String execute()throws Exception{
+				
 		if(validateData.equals("true")){
-			UploadDataErrorMessageVO errors = boothDataValidationService.readVoterExcelDataAndValidate(filePath, electionYear, new Long(stateId), new Long(electionTypeId));
+			UploadDataErrorMessageVO errors = boothDataValidationService.readVoterExcelDataAndValidate(filePath, electionYear, new Long(stateId), new Long(electionTypeId) , publicationDate);
 			corrections = errors.getCorrections();
 			return SUCCESS;
 		}
-		ResultStatus result = voterDataUploadService.readExcelAndInsertData(filePath, electionYear, new Long(stateId), new Long(electionTypeId));
+		ResultStatus result = voterDataUploadService.readExcelAndInsertData(filePath, electionYear, new Long(stateId), new Long(electionTypeId) , publicationDate);
 		if(result.getExceptionEncountered() != null){
 			if(log.isDebugEnabled())
 				log.debug("Exception Raised------",result.getExceptionEncountered());

@@ -9,6 +9,41 @@
 
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+
+	<!-- YUI Dependency files (End) -->
 
 <title>Voters analysis</title>
 <style>
@@ -619,9 +654,145 @@ function buildOuterView()
 
 </div>
 
+<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+
+<div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+
 <!-- for  body 4 end    result  -->
 
 </div>
+
+<script type="text/javascript">
+ buildOuterView();
+ 
+ showImportantFamiliesDiv();
+</script>
+
+<script>
+//buildVotersByLocBoothDataTable();
+function buildVotersByLocBoothDataTable()
+{
+
+//var checkedele = "pollingstation";
+
+//var boothId = $('#imppollingStationField').val();
+
+var boothId = 115;
+
+
+var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "SNo"},
+{key:"firstName", label: "name", sortable: true},
+{key:"gender", label: "gender", sortable: true},
+{key:"age", label: "age", sortable:true},
+{key:"houseNo", label: "hNo", sortable:true},
+{key:"relativeFirstName", label: "guardName", sortable:true},
+{key:"relationshipType", label: "relationship", sortable:true},
+{key:"cast", label: "cast", sortable:true},
+{key:"castCatagery", label: "castCategory", sortable:true}
+];
+
+//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
+
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
+</script>
+
+
+<script>
+buildVotersByLocPanchayatDataTable();
+function buildVotersByLocPanchayatDataTable()
+{
+
+//var checkedele = "pollingstation";
+
+//var boothId = $('#imppollingStationField').val();
+
+//var boothId = 115;
+
+var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "SNo"},
+{key:"firstName", label: "name", sortable: true},
+{key:"gender", label: "gender", sortable: true},
+{key:"age", label: "age", sortable:true},
+{key:"houseNo", label: "hNo", sortable:true},
+{key:"relativeFirstName", label: "guardName", sortable:true},
+{key:"relationshipType", label: "relationship", sortable:true},
+{key:"cast", label: "cast", sortable:true},
+{key:"castCatagery", label: "castCategory", sortable:true}
+];
+
+//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
+
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId=1&panchaytId=444&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByPanchayatTabContentDiv_body",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
+</script>
 
 <script type="text/javascript">
  buildOuterView();
