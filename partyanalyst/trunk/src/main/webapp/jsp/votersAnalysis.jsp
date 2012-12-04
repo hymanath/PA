@@ -8,7 +8,6 @@
 <head>
 
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -30,6 +29,7 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -261,100 +261,8 @@ locationDetails.constituencyArr.push(ob);
 	}
 	
 
-		function callAjax(jsObj,url)
-		{
-			 var myResults;
-
-			 var callback = {			
- 		               success : function( o ) {
-							try {												
-									myResults = YAHOO.lang.JSON.parse(o.responseText);					
-									if(jsObj.task == "getMandalList")
-								{
-										buildMandalList(myResults,jsObj);
-										
-								}
-
-								else if(jsObj.task == "getPanchayat")
-									{
-										buildPanchayatData(myResults,jsObj);
-									}
-
-							}catch (e) {   
-								
-							   	alert("Invalid JSON result" + e);   
-							}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
- 	}
-
-	function buildMandalList(results,jsObj)
-	{
-		//var selectedElmt=document.getElementById("mandalField");
-		var selectElmt =jsObj.selectElmt;
-		var selectedElmt=document.getElementById(selectElmt);
-		removeSelectElements(selectedElmt);
-		for(var val in results)
-		{
-			var opElmt = document.createElement('option');
-			opElmt.value=results[val].id;
-			opElmt.text=results[val].name;
-
-			try
-			{
-				selectedElmt.add(opElmt,null); // standards compliant
-			}
-			catch(ex)
-			{
-				selectedElmt.add(opElmt); // IE only
-			}	
-		}
-	}
 		
-	
 
-	function buildPanchayatData(results,jsObj)
-		{
-		
-		
-		var checkedEle = jsObj.checkedele;
-		var selectedEle = jsObj.selectedEle;
-		
-		var select = document.getElementById(selectedEle);
-		removeSelectElements(select);
-		for(var i in results)
-		{
-			if(results[i] == null)
-				continue;
-			var opElmt=document.createElement('option');
-			opElmt.value=results[i].id;
-			opElmt.text=results[i].name;
-		
-			try
-				{
-				select.add(opElmt,null); // standards compliant
-				}
-			catch(ex)
-				{
-				select.add(opElmt); // IE only
-				}
-		}
-
-	}
-	function removeSelectElements(selectedElmt)
-	{
-		var len = selectedElmt.length;
-		for(var i=len-1;i>=0;i--)
-		{
-			selectedElmt.remove(i);
-		}
-	}
 </script>
 </head>
 <body>
@@ -377,7 +285,13 @@ locationDetails.constituencyArr.push(ob);
 		
 </div>
 	<div id="ConstituencyDiv" style="width:80%;padding-top:10px;padding-bottom:10px;margin-left:auto;margin-right:auto;">
-	Select Constituency : <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');"/>
+	Select Constituency : <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/>&nbsp;&nbsp;
+
+	
+		
+		Select Publication Date : <select id="publicationDateList" class="selectWidth" style="margin-left:17px;width:175px;" name="publicationDateList">
+		</select>
+		
 	</div>
 	<div id="mandalDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 		
@@ -547,194 +461,12 @@ locationDetails.constituencyArr.push(ob);
 
 </div>
 
+
+
 <script type="text/javascript">
 
- 
- showImportantFamiliesDiv();
-</script>
-
-<script>
-//buildVotersByLocBoothDataTable();
-
-
-function showReportLevel(value)
-	{
-		
-		if(value == 1)
-		{
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'none';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-		}
-		else if(value == 2)
-		{
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			getMandalList('mandalField');
-
-			
-		}
-		else if(value == 3)
-		{
-			
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'block';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			getPanchayatList('panchayat','panchayatField');
-
-			
-		}
-		else if(value == 4)
-		{
-
-			
-			
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'block';
-			getPanchayatList('pollingstation','pollingStationField');
-			
-		}
-	}
-	
-
-
-
-	
-
-
-function buildVotersByLocBoothDataTable()
-{
-
-//var checkedele = "pollingstation";
-
-//var boothId = $('#imppollingStationField').val();
-
-var boothId = 115;
-
-
-var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"cast", label: "Cast", sortable:true},
-{key:"castCatagery", label: "CastCategory", sortable:true}
-];
-
-//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
-
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&");
-votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-votersByLocBoothDataSource.responseSchema = {
-resultsList: "voterDetails",
-fields: [
-{key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
-metaFields: {
-totalRecords: "voterDetailsCount" // Access to value in the server response
-}
-};
-
-var myConfigs = {
-initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
-dynamicData: true, // Enables dynamic server-driven data
-sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
-   paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    })  // Enables pagination
-};
-
-var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
-votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
-
-votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-oPayload.totalRecords = oResponse.meta.totalRecords;
-return oPayload;
-}
-
-
-return {
-oDS: votersByLocBoothDataSource,
-oDT: votersByLocBoothDataTable
-};
-}
-</script>
-
-
-<script>
+  showImportantFamiliesDiv();
 buildVotersByLocPanchayatDataTable();
-function buildVotersByLocPanchayatDataTable()
-{
-
-//var checkedele = "pollingstation";
-
-//var boothId = $('#imppollingStationField').val();
-
-//var boothId = 115;
-
-var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"cast", label: "Cast", sortable:true},
-{key:"castCatagery", label: "CastCategory", sortable:true}
-];
-
-//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
-
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId=1&panchaytId=444&");
-votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-votersByLocBoothDataSource.responseSchema = {
-resultsList: "voterDetails",
-fields: [
-{key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
-metaFields: {
-totalRecords: "voterDetailsCount" // Access to value in the server response
-}
-};
-
-var myConfigs = {
-initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
-dynamicData: true, // Enables dynamic server-driven data
-sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
-   paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    })  // Enables pagination
-};
-
-var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByPanchayatTabContentDiv_body",
-votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
-
-votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-oPayload.totalRecords = oResponse.meta.totalRecords;
-return oPayload;
-}
-
-
-return {
-oDS: votersByLocBoothDataSource,
-oDT: votersByLocBoothDataTable
-};
-}
-</script>
-
-<script type="text/javascript">
-
- 
  showImportantFamiliesDiv();
 </script>
 </body>
