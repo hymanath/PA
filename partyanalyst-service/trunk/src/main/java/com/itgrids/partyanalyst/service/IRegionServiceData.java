@@ -4,6 +4,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 import java.util.List;
 import java.util.Set;

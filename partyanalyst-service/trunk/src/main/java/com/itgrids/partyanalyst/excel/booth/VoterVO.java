@@ -25,7 +25,7 @@ public class VoterVO {
 	private Long age;
 	private String voterId;
 	private Long totalVoters;
-	
+	private Long boothNo;
 	private List<VoterVO> votersList = new ArrayList<VoterVO>();
 	
 	public List<VoterVO> getVotersList() {
@@ -216,6 +216,14 @@ public class VoterVO {
 
 	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
+	}
+	
+	public Long getBoothNo() {
+		return boothNo;
+	}
+
+	public void setBoothNo(Long boothNo) {
+		this.boothNo = boothNo;
 	}
 	
 }
