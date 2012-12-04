@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
+import com.itgrids.partyanalyst.dto.SubScriptionVO;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -1289,5 +1290,11 @@ public class SpecialPageService implements ISpecialPageService{
 			return specialPageList;
 		}
 	}
+	
+	/*public List<SubScriptionVO> getAllUserSubScriptions()
+	{
+		List<SubScriptionVO> subScriptionVOs = new ArrayList<SubScriptionVO>(0);
+		return subScriptionVOs;
+	}*/
 		
 }
