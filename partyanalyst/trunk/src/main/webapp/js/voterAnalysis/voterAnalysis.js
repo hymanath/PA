@@ -116,15 +116,14 @@ function showReportLevel(value)
 	}
 	
 
-function buildVotersByLocBoothDataTable()
+function buildVotersByLocBoothDataTable(id)
 {
 
-//var checkedele = "pollingstation";
+var boothId = $('#'+id).val();
 
-//var boothId = $('#imppollingStationField').val();
 
-var boothId = 115;
-
+if(boothId == "0")
+	return false;
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
@@ -176,14 +175,18 @@ oDT: votersByLocBoothDataTable
 };
 }
 
-function buildVotersByLocPanchayatDataTable()
+function buildVotersByLocPanchayatDataTable(id)
 {
 
-//var checkedele = "pollingstation";
 
-//var boothId = $('#imppollingStationField').val();
+var publicationId = $('#buildVotersByLocPanchayatDataTable').val();
+var panchaytId =  $('#publicationDateList').val();
 
-//var boothId = 115;
+if(panchaytId == "0" || publicationId == "0")
+	return false;
+
+
+
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
@@ -507,5 +510,4 @@ function showImportantFamiliesDiv()
 			selectedElmt.add(opElmt); // IE only
 		}	
 	}
-}
-	
+}	
