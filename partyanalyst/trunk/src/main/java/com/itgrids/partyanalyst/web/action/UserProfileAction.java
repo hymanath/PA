@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
+import com.itgrids.partyanalyst.dto.SubScriptionVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -47,6 +48,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private ConstituenciesStatusVO constituenciesStatusVO;
 	private ISpecialPageService specialPageService;
 	private List<SpecialPageVO> specialPageVOList;
+	private List<SubScriptionVO> subScriptionVOList;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -210,6 +212,14 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		this.specialPageVOList = specialPageVOList;
 	}
 
+	public List<SubScriptionVO> getSubScriptionVOList() {
+		return subScriptionVOList;
+	}
+
+	public void setSubScriptionVOList(List<SubScriptionVO> subScriptionVOList) {
+		this.subScriptionVOList = subScriptionVOList;
+	}
+
 	public String execute()
 	{
 		
@@ -218,7 +228,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		
 		if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
 			log.error(" No User Log In .....");			
-			return IConstants.NOT_LOGGED_IN;
+			return "error";
 		}
 		 List<Long> userId = new ArrayList<Long>(0);
 		 
@@ -278,5 +288,24 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		specialPageVOList = specialPageService.getSpecialPageListForHomePage();
 		return Action.SUCCESS;
 	}
+	
+	
+	/*public String getUserSubScription()
+	{
+		String param;
+		param = getTask();
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		try{
+			jObj = new JSONObject(param);
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getUserSubScription() Method, Exception- "+e);
+		}
+		//subScriptionVOList = specialPageService.getAllUserSubScriptions(user.getRegistrationID());
+		
+		return Action.SUCCESS;
+	}*/
 
 }
