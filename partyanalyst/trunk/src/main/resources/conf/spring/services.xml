@@ -482,6 +482,8 @@
 		<property name="voterDAO" ref="voterDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
 	</bean>
 	
 	<bean name="boothDataValidationService" class="com.itgrids.partyanalyst.service.impl.BoothDataValidationService" >		
@@ -489,6 +491,7 @@
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
+		<property name="boothDAO" ref="boothDAO"/>
 	</bean>
 		
 	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	
@@ -522,7 +525,8 @@
 		<property name="moduleRegionScopesDAO" ref="moduleRegionScopesDAO" />
 		<property name="moduleDetailsDAO" ref="moduleDetailsDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
-		<property name="regionScopesProblemTypeDAO" ref="regionScopesProblemTypeDAO"/>			
+		<property name="regionScopesProblemTypeDAO" ref="regionScopesProblemTypeDAO"/>	
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>		
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
@@ -1230,7 +1234,7 @@
 	  <property name="resourceLoaderPath"><value>/emailTemplates</value></property>
     </bean>
     <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
-		
+	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"></property>
 	</bean>
 </beans>		
 	
