@@ -299,10 +299,10 @@ locationDetails.constituencyArr.push(ob);
 		
 	<div id="panchayatDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 		
-	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;"></select></div>
+	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="buildVotersByLocPanchayatDataTable(this.id)"></select></div>
 	
 	<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
-	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"></select></div>
+	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="buildVotersByLocBoothDataTable(this.id);"></select></div>
 	
 
 	<div id="profileManagementDiv">
@@ -450,24 +450,18 @@ locationDetails.constituencyArr.push(ob);
 
 </div>
 
-
-
 <!-- for  body 4 end    result  -->
 
 
 </div>
 
-
-
 </div>
-
-
 
 <script type="text/javascript">
 
-  showImportantFamiliesDiv();
-buildVotersByLocPanchayatDataTable();
- showImportantFamiliesDiv();
+showImportantFamiliesDiv();
+//buildVotersByLocPanchayatDataTable();
+showImportantFamiliesDiv();
 </script>
 </body>
 </html>
