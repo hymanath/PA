@@ -30,6 +30,18 @@ public class BoothPublicationVoter implements Serializable{
 	 private Voter voter;
 	 
 	 
+	 public BoothPublicationVoter(){
+		 
+		 
+	 }
+	 
+	 public BoothPublicationVoter(Booth booth ,Voter voter){
+		 
+		 this.booth = booth;
+		 this.voter = voter;
+		 
+	 }
+	 
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 @Column(name="booth_publication_voter_id", unique=true, nullable=false)

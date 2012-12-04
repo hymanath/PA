@@ -27,8 +27,11 @@ public class VoterDataExcelReader {
 					BoothResultExcelColumnMapper boothResultExcelColumnMapper = new BoothResultExcelColumnMapper(sheet, row, sheet.getColumns());
 					voterExcelData.add(boothResultExcelColumnMapper);
 				}
-				voterDataUploadVO.setVoterVOs(readExcelAndBindObject(voterExcelData, voterDataUploadVO));
-				voterDataUploadVOs.add(voterDataUploadVO);
+				//voterDataUploadVO.setVoterVOs(readExcelAndBindObject(voterExcelData, voterDataUploadVOs));
+				
+				voterDataUploadVOs = readExcelAndBindObject(voterExcelData, voterDataUploadVOs);
+				
+				//voterDataUploadVOs.add(voterDataUploadVO);
 			}
 		
 		}catch(Exception ex){
@@ -37,24 +40,45 @@ public class VoterDataExcelReader {
 		return voterDataUploadVOs;
 	}
 
-	private List<VoterVO> readExcelAndBindObject(List<BoothResultExcelColumnMapper> voterExcelSheetData, VoterDataUploadVO voterDataUploadVO) throws Exception{
-		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
+	private List<VoterDataUploadVO> readExcelAndBindObject(
+			List<BoothResultExcelColumnMapper> voterExcelSheetData,
+			List<VoterDataUploadVO> voterDataUploadVOs) throws Exception {
+		
+		List<VoterVO> voterVOs = null;
+		
+		Long districtId = null;
+		String constituencyName = null;
+		String tehsilName = null;
+		VoterDataUploadVO voterDataUploadVO = null;
+		long boothNo = 0 ;
+		int count=0;
 		for(BoothResultExcelColumnMapper boothResultExcelColumnMapper:voterExcelSheetData){
-			VoterVO voterVO = new VoterVO();			
+			VoterVO voterVO = new VoterVO();
+			
+			
+			if(count==0){				
+				voterDataUploadVO = new VoterDataUploadVO();
+				voterVOs = new ArrayList<VoterVO>();
+			}
+			count++;
+			
 			String cellData = boothResultExcelColumnMapper.getColumn1();
 			if(cellData.contains("_") && boothResultExcelColumnMapper.getColumn3().length() == 0 && boothResultExcelColumnMapper.getColumn4().length() == 0){
 				if(VoterDataExcelColumnNames.DISRICT_ID.getValue().equals(cellData)){
-					voterDataUploadVO.setDistrictId(checkForLong(boothResultExcelColumnMapper.getColumn2()));
+					//voterDataUploadVO.setDistrictId(checkForLong(boothResultExcelColumnMapper.getColumn2()));
+					districtId = checkForLong(boothResultExcelColumnMapper.getColumn2());
 					continue;
 				}
 				if(VoterDataExcelColumnNames.CONSTITUENCY_NAME.getValue().equals(cellData)){
-					voterDataUploadVO.setConstituencyName(boothResultExcelColumnMapper.getColumn2());
+					//voterDataUploadVO.setConstituencyName(boothResultExcelColumnMapper.getColumn2());
+					constituencyName = boothResultExcelColumnMapper.getColumn2();
 					continue;
-				}if(VoterDataExcelColumnNames.TEHSIL_NAME.getValue().equals(cellData)){
-					voterDataUploadVO.setMandalName(boothResultExcelColumnMapper.getColumn2());
+				}if(VoterDataExcelColumnNames.TEHSIL_NAME.getValue().equals(cellData)){					
+					tehsilName = boothResultExcelColumnMapper.getColumn2();
+					//voterDataUploadVO.setMandalName(boothResultExcelColumnMapper.getColumn2());
 					continue;
 				}if(VoterDataExcelColumnNames.PART_NUMBER.getValue().equals(cellData)){
-					voterDataUploadVO.setPartNo(boothResultExcelColumnMapper.getColumn2());
+					//voterDataUploadVO.setPartNo(boothResultExcelColumnMapper.getColumn2());
 					continue;
 				}				
 			}
@@ -77,16 +101,56 @@ public class VoterDataExcelReader {
 				voterVO.setVoterIDCardNo(boothResultExcelColumnMapper.getColumn13());
 				voterVO.setGender(boothResultExcelColumnMapper.getColumn14());
 				voterVO.setAge(checkForLong(boothResultExcelColumnMapper.getColumn15()));
+				//voterVO.setBoothNo(checkForLong(boothResultExcelColumnMapper.getColumn15()));
+				
+				
+				//if(voterDataUploadVO.getConstituencyName() != null){
+					voterDataUploadVO.setConstituencyName(constituencyName);
+					voterDataUploadVO.setDistrictId(districtId);
+					voterDataUploadVO.setMandalName(tehsilName);
+					//voterDataUploadVO.setPartNo(boothResultExcelColumnMapper.getColumn16().toString());
+					if(boothNo != 0)
+					voterDataUploadVO.setPartNo(new Long(boothNo).toString());
+
+					
+				//}
+				
+			if (boothNo == checkForLong(boothResultExcelColumnMapper
+					.getColumn16())
+					|| boothNo == 0	) {
+					voterVOs.add(voterVO);
+					
+				}else{
+					
+					voterDataUploadVO.setVoterVOs(voterVOs);
+					voterDataUploadVOs.add(voterDataUploadVO);
+					
+					voterDataUploadVO = new VoterDataUploadVO();					
+					voterVOs = new ArrayList<VoterVO>();
+					voterVOs.add(voterVO);
+					
+				}
+				
+
+				boothNo = checkForLong(boothResultExcelColumnMapper.getColumn16());	
+		}
+		
+		List<VoterDataUploadVO> voterUploadVOList = new ArrayList<VoterDataUploadVO>(); 
+		
+		for(VoterDataUploadVO voterDataUploadVo:voterDataUploadVOs){
 			
-			voterVOs.add(voterVO);
-		}	
-		return voterVOs;
+			if(voterDataUploadVo.getPartNo() != null && !voterDataUploadVo.getPartNo().equalsIgnoreCase(""))
+				voterUploadVOList.add(voterDataUploadVo);
+				}
+		
+		
+		return voterUploadVOList;
 	}
 
 	public static void main(String[] args)throws Exception{
-		System.out.println("C:/Documents and Settings/ITGrids/Desktop/VoterData.xls");
+		System.out.println("C:/Documents and Settings/ITGrids/Desktop/23.xls");
 		VoterDataExcelReader voterDataExcelReader = new VoterDataExcelReader();
-		File filePath = new File("C:/Documents and Settings/ITGrids/Desktop/VoterData.xls");
+		File filePath = new File("C:/Documents and Settings/ITGrids/Desktop/23.xls");
 		List<VoterDataUploadVO> list = voterDataExcelReader.readExcel(filePath);
 		System.out.println("Total Parts:"+list.size());
 		for(VoterDataUploadVO obj:list){
