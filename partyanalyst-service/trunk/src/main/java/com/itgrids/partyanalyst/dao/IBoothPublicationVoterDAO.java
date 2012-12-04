@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.model.Voter;
 public interface IBoothPublicationVoterDAO extends
 		GenericDao<BoothPublicationVoter, Long> {
 	
+	
 	public List<BoothPublicationVoter> checkForVoterExistenceInBoothPublicationVoter(
 			Long boothId, Long voterId);
 	
@@ -22,5 +23,13 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List getVotersCountByBoothId(Long boothId);
 	public List getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId);
+
+	public List<Object[]> getPublicationDetailsBasedOnConstituency(Long constituencyId);
+	
+	public List<Object[]> findImpFamilesBasedOnPanchayat(Long PanchayatId,Long publicationDateId);
+	
+	public List<Object[]> findImpFamilesBasedOnConstituencyId(Long constituencyId,Long publicationDateId);
+	
+	public List<Object[]> findImpFamilesBasedOnBoothId(Long boothId,Long publicationDateId);
 
 }
