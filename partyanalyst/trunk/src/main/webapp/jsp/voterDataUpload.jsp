@@ -7,6 +7,76 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+
+
+
+<script type="text/javascript">
+
+
+function getPublicationDates()
+ {
+				var jsObj=
+				{
+						
+						task:"publicationDates"						
+				};
+			var url = "<%=request.getContextPath()%>/getAllPublicationDatesAction.action";
+
+		callAjax('',jsObj,url);
+
+ }
+		
+		
+		function callAjax(rparam, jsObj, url){
+			var resultVO;			
+			var callback = {			
+		               success : function( o ) {
+							try {								
+									resultVO = YAHOO.lang.JSON.parse(o.responseText);										
+									
+									 if(jsObj.task == "publicationDates"){
+                                          buildOptions(resultVO);
+                                     }									
+							}catch (e)  {   
+							   	//alert("Invalid JSON result" + e);   
+							}  
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+		                         }
+		               };
+		
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+		}
+function buildOptions(results){
+    
+  var elmt = document.getElementById("publicationDateId");
+		for(var i in results)
+	   {
+		 var option = document.createElement('option');
+ 
+		  option.value=results[i].id;
+		  option.text=results[i].name;
+		
+		  try
+		  {
+			elmt.add(option,null); // standards compliant
+		  }
+		  catch(ex)
+		  {
+			elmt.add(option); // IE only
+		  }
+	   }
+ 
+}
+
+</script>
+
+<script>
+getPublicationDates();
+
+</script>
 </head>
 <body>
 <s:if test="#session.USER !=null">
@@ -38,6 +108,12 @@
 				<option value="2004">2004</option>
 			</select></td>
 		</tr>
+
+		<tr>
+			<td>Publication date</td>
+			<td><select id="publicationDateId" name="publicationDate">
+			</select></td>
+		</tr>
 		<tr>
 			<td colspan="2"><s:file name="filePath" label="File Path" /></td>
 		</tr>
@@ -65,4 +141,5 @@
 %>
 </s:else>
 </body>
+
 </html>
