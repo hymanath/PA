@@ -682,14 +682,14 @@ var boothId = 115;
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
-{key:"firstName", label: "name", sortable: true},
-{key:"gender", label: "gender", sortable: true},
-{key:"age", label: "age", sortable:true},
+{key:"firstName", label: "Name", sortable: true},
+{key:"gender", label: "Gender", sortable: true},
+{key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "guardName", sortable:true},
-{key:"relationshipType", label: "relationship", sortable:true},
-{key:"cast", label: "cast", sortable:true},
-{key:"castCatagery", label: "castCategory", sortable:true}
+{key:"relativeFirstName", label: "GuardName", sortable:true},
+{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"cast", label: "Cast", sortable:true},
+{key:"castCatagery", label: "CastCategory", sortable:true}
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -745,14 +745,14 @@ function buildVotersByLocPanchayatDataTable()
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
-{key:"firstName", label: "name", sortable: true},
-{key:"gender", label: "gender", sortable: true},
-{key:"age", label: "age", sortable:true},
-{key:"houseNo", label: "hNo", sortable:true},
-{key:"relativeFirstName", label: "guardName", sortable:true},
-{key:"relationshipType", label: "relationship", sortable:true},
-{key:"cast", label: "cast", sortable:true},
-{key:"castCatagery", label: "castCategory", sortable:true}
+{key:"firstName", label: "Name", sortable: true},
+{key:"gender", label: "Gender", sortable: true},
+{key:"age", label: "Age", sortable:true},
+{key:"houseNo", label: "House No", sortable:true},
+{key:"relativeFirstName", label: "GuardName", sortable:true},
+{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"cast", label: "Cast", sortable:true},
+{key:"castCatagery", label: "CastCategory", sortable:true}
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -798,11 +798,6 @@ oDT: votersByLocBoothDataTable
  buildOuterView();
  
  showImportantFamiliesDiv();
-
-
-
- 
-
 </script>
 </body>
 </html>
