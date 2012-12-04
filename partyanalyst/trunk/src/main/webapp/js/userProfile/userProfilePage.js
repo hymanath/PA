@@ -52,17 +52,17 @@ $("document").ready(function(){
 
 	//subscriptions
 
-	$(".subscriptionsLink").click(function(){
+	/* $(".subscriptionsLink").click(function(){
 		
 		var jsObj ={
-			task:"getSpecialPages"
+			task:"getUserScriptions"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getSpecialPageAction.action?"+rparam;	
+		var url = "getUserScriptionsAction.action?"+rparam;	
 		
 		callAjax1(jsObj,url);
 
-	});
+	});*/
 
 	//problems 
 
@@ -231,7 +231,7 @@ $("document").ready(function(){
 		
 		disableButton("connectDistrictPeopleLink");
 		$("#connectPeoplePopup").dialog('close');
-		alert(distId);
+		
 		var jsObj ={
 
 				connetLocationId:distId,				
@@ -308,7 +308,7 @@ function callAjax1(jsObj,url){
 					}
 					else if(jsObj.task =="connectUserSet")
 					{
-
+						showAllConnectedUsersStatus(jsObj,results);
 					}
 					
 			}catch (e) {   		
@@ -571,7 +571,7 @@ function showSpecialPages(results)
 		templateClone.removeClass('templateDiv');
 		templateClone.find(".connectedPersonName").html(''+results[i].title+'');
 		templateClone.find(".imgClass").html('<img src="'+results[i].eventImagePath+'"/>');
-		templateClone.find(".constituencyName").html(''+results[i].description+'');
+		templateClone.find(".constituencyName").html(''+results[i].title+'');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 }
@@ -655,9 +655,11 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
-			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
+			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
 				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')">Send a Message');
+			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
+				templateClone.find('.connectCls').html('Pending');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')">Send a Message</a>');
 			
 			templateClone.appendTo(".placeholderCenterDiv");
 			
@@ -810,6 +812,28 @@ function connectToSelectedPerson(id,name)
 		
 	
 
+}
+
+//people  you may know "connect" response fun
+
+function showAllConnectedUsersStatus(jsObj,results)
+{
+
+if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
+	{		
+		var msga = $('<blink><font color="green" style="font-weight:bold;"> Request sent to selected users successfully.</font></blink>');
+		if(jsObj.locationType=="DISTRICT"){
+			$("#districtPeopleLink").trigger("click");
+			//showAllConnectedUsersInPanelOfDistrict(jsObj,results);		
+			//buildConnectUsersContentOfDistrict(results.candidateVO,connectDivId,connetLocationType,connetLocationId,connetLocationName,connectUserLoginStatus,connectUserLoginId, results.totalResultsCount);
+		}
+		else{
+			//showAllConnectedUsersInPanel(jsObj,results);		
+			//buildConnectUsersContent(results.candidateVO,connectDivId,connetLocationType,connetLocationId,connetLocationName,connectUserLoginStatus,connectUserLoginId);
+		}
+	}
+	//else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
+		//elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent to the selected users due to some technical difficulty.</blink></font>';
 }
 
 
