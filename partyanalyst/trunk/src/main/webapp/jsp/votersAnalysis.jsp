@@ -685,7 +685,7 @@ var votersByLocBoothColumnDefs = [
 {key:"firstName", label: "name", sortable: true},
 {key:"gender", label: "gender", sortable: true},
 {key:"age", label: "age", sortable:true},
-{key:"houseNo", label: "hNo", sortable:true},
+{key:"houseNo", label: "House No", sortable:true},
 {key:"relativeFirstName", label: "guardName", sortable:true},
 {key:"relationshipType", label: "relationship", sortable:true},
 {key:"cast", label: "cast", sortable:true},
