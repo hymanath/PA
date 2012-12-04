@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -104,25 +106,70 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	/**
 	 * @return publicationDetails
 	 * @author prasad
+	 * @param constituencyId
 	 */
 	public List<SelectOptionVO> publicationDetailsBasedOnConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(); 
 			
 		SelectOptionVO selectOptionVO = null;
-		List<Object[]> publicationDetails = boothDAO.getPublicationDetailsBasedOnConstituency(constituencyId);
+		List<Object[]> publicationDetails = boothPublicationVoterDAO.getPublicationDetailsBasedOnConstituency(constituencyId);
 		
 		if(publicationDetails != null && publicationDetails.size() > 0)
 		{
 			for(Object[] publicationDetail : publicationDetails)
 			{
+				Date date = (Date)publicationDetail[1];
 				selectOptionVO = new SelectOptionVO();
 				selectOptionVO.setId((Long)publicationDetail[0]);
-				selectOptionVO.setName((String)publicationDetail[1]);
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				selectOptionVO.setName(calendar.get(Calendar.DAY_OF_MONTH)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.YEAR));
+				
 				selectOptionVOList.add(selectOptionVO);
 			}
 		}
 		return selectOptionVOList;
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param publicationDateId
+	 * @param name
+	 * @return selectOptionVOList
+	 * @author prasad
+	 */
+	public List<SelectOptionVO> getImpFamiles(Long id,Long publicationDateId,String name){
+		
+		
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
+		List<Object[]>  impFamilesList = null;
+		
+		SelectOptionVO selectOptionVO = null;
+		if(name.equalsIgnoreCase("constituency")){
+			impFamilesList = boothPublicationVoterDAO.findImpFamilesBasedOnConstituencyId(id, publicationDateId);
+		}
+		else if(name.equalsIgnoreCase("panchayat")){
+			impFamilesList = boothPublicationVoterDAO.findImpFamilesBasedOnBoothId(id, publicationDateId);
+		}
+		else if(name.equalsIgnoreCase("booth")){
+			impFamilesList = boothPublicationVoterDAO.findImpFamilesBasedOnPanchayat(id, publicationDateId);
+		}
+		
+		if(impFamilesList != null && impFamilesList.size()>0){
+			for (Object[] impFamiles : impFamilesList) {
+				
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)impFamiles[0]);
+				selectOptionVO.setName(((Long)impFamiles[1]).toString());
+				selectOptionVOList.add(selectOptionVO);
+			}
+			
+		}
+		return selectOptionVOList;
+		
+	}
+	
 	
 }
