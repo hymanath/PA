@@ -116,9 +116,9 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		
 		this.request=arg0;
 	}
+	
+	
 
-	
-	
 	public List<SelectOptionVO> getPublicationData() {
 		return publicationData;
 	}
@@ -149,12 +149,12 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
-			return ERROR;
+		return ERROR;
 		Long userID = user.getRegistrationID();
-		
 		Long electionYear = 2009l;
 		Long electionTypeId = 2l;
 		constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		return SUCCESS;
 		
 	}
@@ -163,7 +163,11 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	{
 		String param;
 		param = getTask();
-		
+		List<SelectOptionVO> impFamiles = null;
+		Long panchayatId = jObj.getLong("panchayatId");
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long boothId = jObj.getLong("pollingStationId");
+		Long publicationDateId = jObj.getLong("publicationDateId");
 		try{
 			jObj = new JSONObject(param);	
 			
@@ -174,22 +178,24 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		if(jObj.getString("task").equalsIgnoreCase("getMandalList"))
 		{
 			String selectedVal=jObj.getString("selected");
-			
-			//List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));
-			
 			namesList = regionServiceDataImp.getSubRegionsInConstituency(new Long(selectedVal), IConstants.PRESENT_YEAR, null);
-			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
-			namesList.add(0, obj);
-			
-			
+			namesList.add(0, new SelectOptionVO(0L,"Select Mandal"));
 		}
-		
 		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate"))
 		{
-			Long constituencyId = jObj.getLong("selected");
-			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(constituencyId);
+			Long selectedId = jObj.getLong("selected");
+			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
 			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnConstituencyData")){
+			impFamiles = votersAnalysisService.getImpFamiles(constituencyId,publicationDateId,"constituency");
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnPanchayatDate")){
+			impFamiles = votersAnalysisService.getImpFamiles(panchayatId,publicationDateId,"panchayat");
+		}	
+		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnBoothDate")){
+			impFamiles = votersAnalysisService.getImpFamiles(boothId,publicationDateId,"booth");
+		}		
 		return Action.SUCCESS;
 	}
 	
@@ -205,6 +211,7 @@ public String getVoterDetails(){
 		Integer maxRecords = Integer.parseInt(request.getParameter("results"));
 		List<VoterVO> votersList = null;
 		constituencyManagementVO = new ConstituencyManagementVO();
+		
 		
 		
 		Long publicationId = request.getParameter("publicationId") != null ?Long.parseLong(request.getParameter("publicationId")):0L;
@@ -229,5 +236,5 @@ public String getVoterDetails(){
 		return Action.SUCCESS;
 		
 	}
-	
+
 }
