@@ -233,8 +233,15 @@ padding:5px 20px;
 			<div class="span3">
 
 				<div class="widget blue votersguide p-m-bottom0px">
-			        <div style="text-align: center; padding: 10px 0px;">         
-						<img width="90" height="100" src="pictures/profiles/human.jpg" style="border:1px solid #ADADAD;" id="userProfileImg">
+			        <div style="text-align: center; padding: 10px 0px;">
+					
+						<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
+							<img width="90" height="100" src="pictures/profiles/human.jpg" style="border:1px solid #ADADAD;" id="userProfileImg">
+						</c:if>
+						<c:if test="${loginUserProfilePic !='' && loginUserProfilePic != null}">
+						<img width="90" height="100" src="pictures/profiles/${loginUserProfilePic}" style="border:1px solid #ADADAD;" id="userProfileImg">
+						</c:if>
+
 						<div id="profileUserName">${loginUserName}</div>
 						<div><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></div>
 						<div><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></div>
@@ -295,7 +302,7 @@ padding:5px 20px;
 					<p class="userMenu" style="text-align:right;"><span>Your Profile Statistics</span></p>
 					<div class="profileStatisticsDiv">
 					<ul>
-						<li>Friends: </li>
+						<li>Friends:<a href="javascript:{}" class="friendsLink"></a> </li>
 						<li>Photos: </li>
 						<li>Videos: </li>
 						<li><a href="javascript:{}" class="subscriptionsLink">Subscriptions:</a></li>
@@ -343,7 +350,7 @@ padding:5px 20px;
 					<span><i class="icon-fire" id="icon_leftsec"></i></span>
 					You Might Like</h2>
 				
-					<c:forEach var="specialPages" items="${specialPageVOList}">
+					<c:forEach var="specialPages" items="${specialPageVOList}" begin="0" end="1">
 					<div class="media media_hr widget-block">
 						
 						<div class="media-body">
@@ -420,7 +427,6 @@ padding:5px 20px;
 	
 
 <script>
-buildPolls();
 
 
 districtId = '${dataTransferVO.districtId}';
