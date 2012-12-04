@@ -9,11 +9,12 @@
 <title>Profile Page</title>
 
 <script type="text/javascript" src="js/userProfile/userProfilePage.js"> </script>
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
 
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
 
 <style>
@@ -208,6 +209,7 @@ padding:5px 20px;
 		margin: 1px;
 		padding: 5px;
 		width: 200px;
+		height:110px;
 	}
 	.templatePersons .imgClass{width:50%;float:left;}
 	.templatePersons .prinfo{width:50%;float:left;color:#000000;}
@@ -242,11 +244,22 @@ padding:5px 20px;
 						<img width="90" height="100" src="pictures/profiles/${loginUserProfilePic}" style="border:1px solid #ADADAD;" id="userProfileImg">
 						</c:if>
 
-						<div id="profileUserName">${loginUserName}</div>
+						<div id="profileUserName">${loginUserName}<div class="btn-group">
+							<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="freeUserRegistration.action">Account Settings</a></li>
+								<li><a>Change Password</a></li>
+							</ul>
+						</div></div>
+						
 						<div><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></div>
 						<div><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></div>
-						<div style="margin-top: 10px;"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></div>
-					</div>			
+						<div><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></div>
+					</div>	
+					    
+						
 				</div>
 				<div class="widget blue">
 					<h4>
@@ -298,45 +311,57 @@ padding:5px 20px;
 		<!--------Right div------>
 			<div class="span4">
 		  <!-- Profile Statistics Div Start -->
-			<div class="widget-block">
+				<div class="widget red prStatistics" style="display:none;">
 					<p class="userMenu" style="text-align:right;"><span>Your Profile Statistics</span></p>
 					<div class="profileStatisticsDiv">
 					<ul>
 						<li>Friends:<a href="javascript:{}" class="friendsLink"></a> </li>
-						<li>Photos: </li>
-						<li>Videos: </li>
-						<li><a href="javascript:{}" class="subscriptionsLink">Subscriptions:</a></li>
+						<li>Subscriptions:</li>
 						<li>Connected Pages: </li>
-						<li>Politiciaa Assess: </li>
+						<li>Politician Assess: </li>
 						<li>Problems Posted: </li>
 						<li>Messages: <a href="javascript:{}" class="messagesLink">${dataTransferVO.totalMsgCount}</a></li>
 						
 					</ul>
 					</div>
+				
+
 				</div>
 			<!-- Profile Statistics Div End -->
 			
 			
 
-				<div class="widget-block">
-					<p class="connectPeopleHeading"><span>People You May Know</span>
-					<span><a href="javascript:{}" id="districtPeopleLink">See All</a></span>
+				<div class="widget blue">
+					<h4>
+						<span><i class="connectPeopleHeading" id="icon_leftsec"></i><span>People You May Know</span>
+						<p>
+						<span>
+							<a class="btn btn-mini btn-info"href="javascript:{}" id="districtPeopleLink">See All</a>
+						</span>
 					</p>
+					</h4>
+					
 					<div style="margin-top: 14px;">
 					<c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
-						<div class="connectPeopleDiv" style="margin-top: 21px;">
-						<p style="margin-top: -12px;"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
-						<span>${connectedPeoples.candidateName}</span><br>
-						<span>${connectedPeoples.constituencyName}</span></p>
-						<p><span  style="margin-right: 60px; margin-left: 30px;">
+						<div class="connectPeopleDiv" style="margin-top: 21px;width:100%;">
+							<div style="width:30%;float:left;"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /></div>
+							<div style="width:70%;float:left;">
+								<div style="margin-bottom:5px;margin-top:5px;">${connectedPeoples.candidateName}</div>
+								<div>${connectedPeoples.constituencyName}</div>
+							</div>
 						
-						<a href="javascript:{}" class="connectLink">Connect</a>
-						</span>
-						<span><a href="javascript:{}" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')">Send Message</a></span></p>
-						<input type="hidden" value="${connectedPeoples.id}" class="userId" />
-						<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
-						<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
+							<input type="hidden" value="${connectedPeoples.id}" class="userId" />
+							<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
+							<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
 						
+						</div>
+						<div style="width:100%; clear:both;margin-left:20px;">
+							<span  style="margin-right: 25px; margin-left:25px;">
+								<a href="javascript:{}" class="connectLink">Connect</a>
+							</span>
+							<span>
+								<a href="javascript:{}" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')">Send Message</a>
+							</span>
 						</div>
 						</c:forEach>
 				</div>
@@ -363,7 +388,8 @@ padding:5px 20px;
 						</div>
 						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" class="btn-info btn-small pull-right" title="${specialPages.title}">View Now</a>
 					</div>
-						</c:forEach>	
+						</c:forEach>
+						<a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>						
 				</div>
 				<!-- end special Pages -->
 				
@@ -427,6 +453,7 @@ padding:5px 20px;
 	
 
 <script>
+buildPolls();
 
 
 districtId = '${dataTransferVO.districtId}';
