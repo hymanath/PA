@@ -12,5 +12,11 @@ public interface IVotersAnalysisService {
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
 			String columnName);
+	
+	public List<SelectOptionVO> getImpFamiles(Long id,Long publicationDateId,String name);
+	
+	
+	
+	
 
 }
