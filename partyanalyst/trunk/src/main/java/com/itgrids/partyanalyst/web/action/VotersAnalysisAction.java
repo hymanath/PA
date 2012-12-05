@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -164,10 +166,10 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		String param;
 		param = getTask();
 		List<SelectOptionVO> impFamiles = null;
-		Long panchayatId = jObj.getLong("panchayatId");
+		/*Long panchayatId = jObj.getLong("panchayatId");
 		Long constituencyId = jObj.getLong("constituencyId");
 		Long boothId = jObj.getLong("pollingStationId");
-		Long publicationDateId = jObj.getLong("publicationDateId");
+		Long publicationDateId = jObj.getLong("publicationDateId");*/
 		try{
 			jObj = new JSONObject(param);	
 			
@@ -188,13 +190,13 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnConstituencyData")){
-			impFamiles = votersAnalysisService.getImpFamiles(constituencyId,publicationDateId,"constituency");
+			impFamiles = votersAnalysisService.getImpFamiles(232l,1l,"constituency");
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnPanchayatDate")){
-			impFamiles = votersAnalysisService.getImpFamiles(panchayatId,publicationDateId,"panchayat");
+			impFamiles = votersAnalysisService.getImpFamiles(1l,1l,"panchayat");
 		}	
 		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnBoothDate")){
-			impFamiles = votersAnalysisService.getImpFamiles(boothId,publicationDateId,"booth");
+			impFamiles = votersAnalysisService.getImpFamiles(201l,1l,"booth");
 		}		
 		return Action.SUCCESS;
 	}
@@ -236,5 +238,35 @@ public String getVoterDetails(){
 		return Action.SUCCESS;
 		
 	}
+
+public String getVotersCastInfoByConstituency()
+{
+	String param=null;
+	
+	param=getTask();
+	System.out.println("param:"+param);		
+	
+	try {
+		jObj=new JSONObject(param);
+		System.out.println("jObj = "+jObj);
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+	
+	if(jObj.getString("task").equalsIgnoreCase("getCastInfo"))
+	{
+		constituencyManagementVO = new ConstituencyManagementVO();
+		String constituencyId = jObj.getString("constituencyId");
+		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetailsForConstituency(new Long(constituencyId), 1l);
+		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+		
+	}
+	
+	
+	
+	return SUCCESS;
+}
+
+
 
 }
