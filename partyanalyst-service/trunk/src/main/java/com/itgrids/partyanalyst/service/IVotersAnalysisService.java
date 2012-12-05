@@ -15,7 +15,7 @@ public interface IVotersAnalysisService {
 			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
 			String columnName);
 	
-	public List<SelectOptionVO> getImpFamiles(Long id,Long publicationDateId,String name);
+	public List<Long> getImpFamiles(Long id,Long publicationDateId,String name);
 
 	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId);
 }
