@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VotersInfoForMandalVO {
 	
@@ -14,6 +16,12 @@ public class VotersInfoForMandalVO {
 	private BigDecimal totVoters;
 	private Boolean isMandal = false;
 	private String unKnowVoters;
+	private List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>();
+	private boolean subLevelExists;
+	private Long id;
+	private String name;
+	private String type;
+	private boolean datapresent = true;
 	
 	public String getMandalId() {
 		return mandalId;
@@ -74,6 +82,43 @@ public class VotersInfoForMandalVO {
 	}
 	public void setUnKnowVoters(String unKnowVoters) {
 		this.unKnowVoters = unKnowVoters;
+	}
+	public List<VotersInfoForMandalVO> getVotersInfoForMandalVOList() {
+		return votersInfoForMandalVOList;
+	}
+	public void setVotersInfoForMandalVOList(
+			List<VotersInfoForMandalVO> votersInfoForMandalVOList) {
+		this.votersInfoForMandalVOList = votersInfoForMandalVOList;
+	}
+	public boolean isSubLevelExists() {
+		return subLevelExists;
+	}
+	public void setSubLevelExists(boolean subLevelExists) {
+		this.subLevelExists = subLevelExists;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public boolean isDatapresent() {
+		return datapresent;
+	}
+	public void setDatapresent(boolean datapresent) {
+		this.datapresent = datapresent;
 	}
 	
 }

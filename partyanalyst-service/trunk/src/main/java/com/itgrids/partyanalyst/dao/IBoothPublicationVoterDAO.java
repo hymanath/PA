@@ -22,8 +22,10 @@ public interface IBoothPublicationVoterDAO extends
 			Integer maxRecords, String order, String columnName);
 	
 	public List getVotersCountByBoothId(Long boothId);
-	public List getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId);
-
+	public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId);
+	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId);
+	public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId);
+	public List<Object[]> getVotersCountFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId);
 	public List<Object[]> getPublicationDetailsBasedOnConstituency(Long constituencyId);
 	
 	public List<Object[]> findImpFamilesBasedOnPanchayat(Long PanchayatId,Long publicationDateId);
