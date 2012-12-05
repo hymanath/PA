@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -150,16 +152,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	 * @param id
 	 * @param publicationDateId
 	 * @param name
-	 * @return selectOptionVOList
+	 * @return returnVal
 	 * @author prasad
 	 */
-	public List<SelectOptionVO> getImpFamiles(Long id,Long publicationDateId,String name){
-		
-		
-		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
+	public List<Long> getImpFamiles(Long id,Long publicationDateId,String name){
 		List<Object[]>  impFamilesList = null;
 		
-		SelectOptionVO selectOptionVO = null;
 		if(name.equalsIgnoreCase("constituency")){
 			impFamilesList = boothPublicationVoterDAO.findImpFamilesBasedOnConstituencyId(id, publicationDateId);
 		}
@@ -169,19 +167,49 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		else if(name.equalsIgnoreCase("booth")){
 			impFamilesList = boothPublicationVoterDAO.findImpFamilesBasedOnPanchayat(id, publicationDateId);
 		}
-		
-		if(impFamilesList != null && impFamilesList.size()>0){
-			for (Object[] impFamiles : impFamilesList) {
-				
-				selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId((Long)impFamiles[0]);
-				selectOptionVO.setName(((Long)impFamiles[1]).toString());
-				selectOptionVOList.add(selectOptionVO);
+		Map<String,List<VoterVO>> resultMap = new LinkedHashMap<String,List<VoterVO>>();
+		resultMap.put("Below-3", new ArrayList<VoterVO>(0));
+		resultMap.put("7-5", new ArrayList<VoterVO>(0));
+		resultMap.put("10-7", new ArrayList<VoterVO>(0));
+		resultMap.put("Above-10", new ArrayList<VoterVO>(0));
+	    List<Long> returnVal = new ArrayList<Long>();
+		Long below3 = 0l;
+		Long between4To6 = 0l;
+		Long between7To10 = 0l;
+		Long above10 = 0l;
+		Long count = 0l;
+		Long above10Count = 0l;
+		Long between7T10Count = 0l;
+		Long between4To6Count = 0l;
+		Long below3Count = 0l;
+		for (Object[] impFamiles : impFamilesList) {
+			count = (Long) impFamiles[1];	
+			if(count.longValue() > 10){
+				above10 = above10+1;
+				above10Count = count + above10Count;
 			}
-			
+			else if(count.longValue() < 10 && count.longValue() >= 7){
+				between7To10 = between7To10+1;
+				between7T10Count = count + between7T10Count;
+			}
+			else if(count.longValue() < 7 && count.longValue() >=4){
+				between4To6 = between4To6 + 1;
+				between4To6Count = count + between4To6Count;	
+			}
+			else{
+				below3 = below3 + 1;
+				below3Count = count + below3Count;
+			}
 		}
-		return selectOptionVOList;
-		
+		returnVal.add(above10);
+		returnVal.add(above10Count);
+		returnVal.add(below3);
+		returnVal.add(below3Count);
+		returnVal.add(between4To6);
+		returnVal.add(between4To6Count);
+		returnVal.add(between7To10);
+		returnVal.add(between7T10Count);
+		return returnVal;
 	}
 
 	public IRegionServiceData getRegionServiceDataImp() {
