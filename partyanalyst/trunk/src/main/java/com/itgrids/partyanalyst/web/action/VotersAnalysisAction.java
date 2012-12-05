@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -43,6 +44,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
 
+	private VotersInfoForMandalVO votersInfo;
+	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
 	}
@@ -165,11 +168,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	{
 		String param;
 		param = getTask();
-		List<SelectOptionVO> impFamiles = null;
-		/*Long panchayatId = jObj.getLong("panchayatId");
-		Long constituencyId = jObj.getLong("constituencyId");
-		Long boothId = jObj.getLong("pollingStationId");
-		Long publicationDateId = jObj.getLong("publicationDateId");*/
+
 		try{
 			jObj = new JSONObject(param);	
 			
@@ -189,18 +188,10 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
 			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnConstituencyData")){
-			impFamiles = votersAnalysisService.getImpFamiles(232l,1l,"constituency");
-		}
-		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnPanchayatDate")){
-			impFamiles = votersAnalysisService.getImpFamiles(1l,1l,"panchayat");
-		}	
-		else if(jObj.getString("task").equalsIgnoreCase("impFamilesBasedOnBoothDate")){
-			impFamiles = votersAnalysisService.getImpFamiles(201l,1l,"booth");
-		}		
+			
 		return Action.SUCCESS;
 	}
-	
+
 public String getVoterDetails(){
 		
 		String param;
@@ -238,6 +229,30 @@ public String getVoterDetails(){
 		return Action.SUCCESS;
 		
 	}
+		
+	public String getVotersCount(){
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+		}
+		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
+		return Action.SUCCESS;
+	}
+
+	public VotersInfoForMandalVO getVotersInfo() {
+		return votersInfo;
+	}
+
+	public void setVotersInfo(VotersInfoForMandalVO votersInfo) {
+		this.votersInfo = votersInfo;
+	}
+
 
 public String getVotersCastInfoByConstituency()
 {

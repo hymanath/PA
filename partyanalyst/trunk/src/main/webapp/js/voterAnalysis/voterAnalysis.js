@@ -412,6 +412,11 @@ function showImportantFamiliesDiv()
 								{
 									buildPublicationDateList(myResults);
 								}
+								else if(jsObj.task == "votersbasicinfo")
+								{
+								    if(myResults != null)
+									buildVotersBasicInfo(myResults);
+								}
 
 							}catch (e) {   
 								
@@ -490,7 +495,6 @@ function showImportantFamiliesDiv()
 		}
 	}
 	function buildPublicationDateList(results)
-
 	{
 	var selectedElmt=document.getElementById("publicationDateList");
 	//var selectElmt =jsObj.selectElmt;
@@ -510,4 +514,144 @@ function showImportantFamiliesDiv()
 			selectedElmt.add(opElmt); // IE only
 		}	
 	}
+}
+$(document).ready(function(){
+    $("#constituencyList").live("change",function(){
+	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
+	      getvotersBasicInfo();
+	});
+	$("#mandalField").live("change",function(){
+	   if($(this).val() != 0 && $("#reportLevel").val() == 2 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
+	      getvotersBasicInfo();
+	});
+	$("#panchayatField").live("change",function(){
+	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
+	      getvotersBasicInfo();
+	});
+	$("#pollingStationField").live("change",function(){
+	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
+	      getvotersBasicInfo();
+	});
+    $("#publicationDateList").live("change",function(){
+	   if($(this).val() != 0 ){
+	     if($("#reportLevel").val() == 1 && $("#constituencyList option").length > 0 && $("#constituencyList").val() != 0)
+	       getvotersBasicInfo();
+		 else if($("#reportLevel").val() == 2 && $("#mandalField option").length > 0 && $("#mandalField").val() != 0 )
+		   getvotersBasicInfo();
+		 else if($("#reportLevel").val() == 3 && $("#panchayatField option").length > 0 && $("#panchayatField").val() != 0 )
+		   getvotersBasicInfo();
+		 else if($("#reportLevel").val() == 4 && $("#pollingStationField option").length > 0 && $("#pollingStationField").val() != 0 )
+		   getvotersBasicInfo();
+		}
+	});
+});
+function getvotersBasicInfo(){
+   $("#votersBasicInfoDiv").html("");
+   $("#votersBasicInfoSubChartDiv").html("");
+   $("#votersBasicInfoSubDiv").html("");
+    var level = $("#reportLevel").val();
+	var type = '';
+	var id = '';
+	var publicationDateId = $("#publicationDateList").val();
+	if(level == 1){
+	   type = 'constituency';
+	   id = $("#constituencyList").val();
+	}else if(level == 2){
+	  type = 'mandal';
+	  id = $("#mandalField").val();
+    }else if(level == 3){
+	  type = 'panchayat';
+	  id = $("#panchayatField").val();
+	}else if(level == 4){
+	  type = 'booth';
+	  id = $("#pollingStationField").val();
+	}
+	var jsObj=
+			{
+					
+				type:type,
+				id:id,
+				publicationDateId:publicationDateId,
+				task:"votersbasicinfo"
+	
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountInfoAction.action?"+rparam;						
+		callAjax(jsObj,url);
+}
+
+function buildVotersBasicInfo(votersbasicinfo){
+   var str = '<div id="votersBasicInfoDivSub">';
+   if(votersbasicinfo != null && votersbasicinfo.datapresent){
+      var name = votersbasicinfo.name+'  '+votersbasicinfo.type;
+      str+='<b>Voters Info in '+name+'</b>';
+      str+='<div>Male Voters : '+votersbasicinfo.totalMaleVoters+'  Female Voters : '+votersbasicinfo.totalFemaleVoters+'  ' ;
+	  if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
+	  str+='UnKnown Voters : '+votersbasicinfo.unKnowVoters+'  ';
+	  str+='Total Voters : '+votersbasicinfo.unKnowVoters+'</div></div>';
+	  $("#votersBasicInfoDiv").html(str);
+	  
+	  str = '';
+     if(votersbasicinfo.subLevelExists && votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
+       buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,name);
+	   
+  
+  var votersResultColumnDefs = [ 		    	             
+		    	            
+							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true},
+		    	           	{key:"totalMaleVoters", label: "Male Voters", sortable: true},
+							
+							{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
+		    				{key:"totVoters", label: "Total Voters",sortable:true},
+							{key:"percent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
+		    	        ]; 
+	var newsResultDataSource = new YAHOO.util.DataSource(votersbasicinfo.votersInfoForMandalVOList); 
+	
+
+
+    var myConfigs = { 
+			    
+				};
+	var myDataSource = new YAHOO.util.DataSource(votersbasicinfo.votersInfoForMandalVOList);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totVoters","percent"]
+					};
+
+		var newsResultDataSource = new YAHOO.widget.DataTable("votersBasicInfoSubDiv", votersResultColumnDefs,myDataSource, myConfigs);
+
+     }
+   }else{
+     $("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+   }
+}
+
+function buildVotersChart(chartInfo,reqTitle){
+
+ // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'type');
+        data.addColumn('number', 'value');
+		data.addRows(chartInfo.length);
+		for(var i = 0 ; i< chartInfo.length ; i++){
+		var name = chartInfo[i].name+' '+chartInfo[i].type;
+		var val = parseFloat(chartInfo[i].percent);
+		  data.setValue(i,0,name);
+		  data.setValue(i,1,val);
+		}
+        
+        // Set chart options
+		var title = chartInfo[0].type+' wise Voters % Share in '+reqTitle; 
+        var options = {'title':title,
+                       'width':420,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('votersBasicInfoSubChartDiv'));
+        chart.draw(data, options);
+
+
+
+
 }	

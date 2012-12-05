@@ -3727,5 +3727,11 @@
         	</result>
         </action>
 		
+		<action name="getVotersCountInfoAction" class="votersAnalysisAction" method="getVotersCount">
+			<result type="json" name="success">
+				<param name="root">votersInfo</param>				
+			</result> 
+		</action>
+		
 		</package>
 </struts>      
