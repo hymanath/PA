@@ -72,7 +72,7 @@ public class BoothPublicationVoterDAO extends
 		}
 		
 		
-		public List getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
+		public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
 			
 			Query query = getSession()
 					.createQuery(
@@ -98,9 +98,9 @@ public class BoothPublicationVoterDAO extends
 			
 			
 		}
-		
+			
 
-	
+		
 		/**
 		 * @return object[]
 		 * @author prasad
@@ -160,4 +160,38 @@ public class BoothPublicationVoterDAO extends
 		
 	}
 	
+	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		if(type.equalsIgnoreCase("constituency"))
+			query.append(" model.booth.constituency.constituencyId = :id ");
+		else if(type.equalsIgnoreCase("mandal"))
+			query.append(" model.booth.tehsil.tehsilId = :id ");
+		else if(type.equalsIgnoreCase("booth"))
+			query.append(" model.booth.boothId = :id ");
+		query.append(" group by model.voter.gender ");
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("id", id);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		return queryObj.list();
+	}
+	
+	public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
+		Query query = getSession().createQuery("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.boothId in(select distinct model1.booth.boothId from HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model1.hamlet.hamletId in(select distinct model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId =:panchayatId ))  group by model.voter.gender ") ;
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameter("panchayatId", panchayatId);
+		  return query.list();
+	}
+	
+	public List<Object[]> getVotersCountFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId){
+		Query query = getSession().createQuery("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.localBody.localElectionBodyId in(select distinct model1.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model1 where model1.assemblyLocalElectionBodyId = :assemblyLclElecBodyId )") ;
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameter("assemblyLclElecBodyId", assemblyLclElecBodyId);
+		  return query.list();
+	}
 }
