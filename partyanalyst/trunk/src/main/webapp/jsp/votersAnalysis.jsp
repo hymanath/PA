@@ -45,9 +45,23 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <title>Voters analysis</title>
 <style>
+  #votersBasicInfoDivSub{
+    background-color: #EDF5FF;
+    font-size: 15px;
+    margin-top: 5px;
+    text-align: center;
+}	
+
+#votersBasicInfoSubDiv{
+  margin-left: 240px;
+}
+
+#votersBasicInfoSubChartDiv{
+  margin-left: 308px;
+}
 .pull-right{
 	 margin-top: -15px;
 }
@@ -111,6 +125,8 @@ p {
 </style>
 
 <script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+	
 var Localization = { <%
 			
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -286,7 +302,10 @@ locationDetails.constituencyArr.push(ob);
 			 </tr>
 		</table>
 	</div>
-
+    
+	<div id="votersBasicInfoDiv"></div>
+	<div id="votersBasicInfoSubChartDiv"></div>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
 	<div id='votersDiv' class="divInfo">
 	
 	</div>
@@ -328,7 +347,6 @@ locationDetails.constituencyArr.push(ob);
 </div>
 
 </div>
-
 <script type="text/javascript">
 
 showImportantFamiliesDiv();
