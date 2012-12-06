@@ -31,10 +31,31 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 	}
 	*/
 	
-	public void testGetVotersDetailsForPanchayatByPublicationId(){
+	/*public void testGetVotersDetailsForPanchayatByPublicationId(){
 		
 		List l = boothPublicationVoterDAO.getVotersDetailsForPanchayatByPublicationId(444L,1L,0,15,"asc","voterId");
 		
 		System.out.println(l.size());
+	}*/
+	
+	public void testGetVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(){
+		
+		List l = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(11L,1L,18L,25L);
+		
+	
+		System.out.println(((Object[])l.get(0))[0].toString());
+		System.out.println(((Object[])l.get(0))[1]);
+		
+	}
+	
+	
+	public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
+		
+		List<Object[]> l = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(232L,2L,18L,25L);
+
+      for(Object[] obj:l){
+    	  System.out.println(obj[0].toString()+"-"+obj[1].toString());
+    	  
+      }		
 	}
 }

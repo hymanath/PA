@@ -1,0 +1,352 @@
+package com.itgrids.partyanalyst.dto;
+
+import java.io.Serializable;
+
+public class VotersDetailsVO implements Serializable{
+	
+	
+	private static final long serialVersionUID = 1L;
+	
+	
+	private Long maleVotersCountBetween18To25 ;
+	private Long femaleVotersCountBetween18To25 ;
+	private Long unknownVotersCountBetween18To25 ;	
+	private Long maleVotersCountBetween26To35 ;
+	private Long femaleVotersCountBetween26To35 ;
+	private Long unknownVotersCountBetween26To35 ;	
+	private Long maleVotersCountBetween36To45 ;
+	private Long femaleVotersCountBetween36To45 ;
+	private Long unknownVotersCountBetween36To45 ;	
+	private Long maleVotersCountBetween46To60 ;
+	private Long femaleVotersCountBetween46To60 ;
+	private Long unknownVotersCountBetween46To60 ;	
+	private Long maleVotersCountAbove60 ;
+	private Long femaleVotersCountAbove60 ;
+	private Long unknownVotersCountAbove60 ;
+	
+	
+	private Long totalMaleVotesFor18To25;
+	private Long totalFemaleVotersFor18To25;
+	private Long totalUnknownVotersFor18To25;
+	private Long totalVotersFor18To25;
+	
+	private Long totalMaleVotersFor26To35;
+	private Long totalFemaleVotersFor26To35;
+	private Long totalUnknownVotersFor26To35;
+	private Long totalVotersFor26To35;
+	
+	private Long totalMaleVotersFor36To45;
+	private Long totalFemaleVotersFor36To45;
+	private Long totalUnknownVotersFor36To45;
+	private Long totalVotersFor36To45;
+	
+	private Long totalMaleVotersFor46To60;
+	private Long totalFemaleVotersFor46To60;
+	private Long totalUnknownVotersFor46To60;
+	private Long totalVotersFor46To60;
+	
+	private Long totalMaleVotersForAbove60;
+	private Long totalFemaleVotersForAbove60;
+	private Long totalUnknownVotersForAbove60;
+	private Long totalVotersForAbove60;
+	
+	
+	private Long totalMaleVoters;
+	private Long totalFemaleVoters;
+	private Long totalUnknownVoters;
+	private Long totalVoters;
+	
+
+	private Float totalMaleVotersPercent;
+	private Float totalFemaleVotersPercent;
+	private Float totalUnknownVotersPercent;
+	private Float totalVotersPercent;
+	
+	private String ageRange;
+	private String boothName;
+	
+	
+	public Long getMaleVotersCountBetween18To25() {
+		return maleVotersCountBetween18To25;
+	}
+	public void setMaleVotersCountBetween18To25(Long maleVotersCountBetween18To25) {
+		this.maleVotersCountBetween18To25 = maleVotersCountBetween18To25;
+	}
+	public Long getFemaleVotersCountBetween18To25() {
+		return femaleVotersCountBetween18To25;
+	}
+	public void setFemaleVotersCountBetween18To25(
+			Long femaleVotersCountBetween18To25) {
+		this.femaleVotersCountBetween18To25 = femaleVotersCountBetween18To25;
+	}
+	public Long getUnknownVotersCountBetween18To25() {
+		return unknownVotersCountBetween18To25;
+	}
+	public void setUnknownVotersCountBetween18To25(
+			Long unknownVotersCountBetween18To25) {
+		this.unknownVotersCountBetween18To25 = unknownVotersCountBetween18To25;
+	}
+	public Long getMaleVotersCountBetween26To35() {
+		return maleVotersCountBetween26To35;
+	}
+	public void setMaleVotersCountBetween26To35(Long maleVotersCountBetween26To35) {
+		this.maleVotersCountBetween26To35 = maleVotersCountBetween26To35;
+	}
+	public Long getFemaleVotersCountBetween26To35() {
+		return femaleVotersCountBetween26To35;
+	}
+	public void setFemaleVotersCountBetween26To35(
+			Long femaleVotersCountBetween26To35) {
+		this.femaleVotersCountBetween26To35 = femaleVotersCountBetween26To35;
+	}
+	public Long getUnknownVotersCountBetween26To35() {
+		return unknownVotersCountBetween26To35;
+	}
+	public void setUnknownVotersCountBetween26To35(
+			Long unknownVotersCountBetween26To35) {
+		this.unknownVotersCountBetween26To35 = unknownVotersCountBetween26To35;
+	}
+	public Long getMaleVotersCountBetween36To45() {
+		return maleVotersCountBetween36To45;
+	}
+	public void setMaleVotersCountBetween36To45(Long maleVotersCountBetween36To45) {
+		this.maleVotersCountBetween36To45 = maleVotersCountBetween36To45;
+	}
+	public Long getFemaleVotersCountBetween36To45() {
+		return femaleVotersCountBetween36To45;
+	}
+	public void setFemaleVotersCountBetween36To45(
+			Long femaleVotersCountBetween36To45) {
+		this.femaleVotersCountBetween36To45 = femaleVotersCountBetween36To45;
+	}
+	public Long getUnknownVotersCountBetween36To45() {
+		return unknownVotersCountBetween36To45;
+	}
+	public void setUnknownVotersCountBetween36To45(
+			Long unknownVotersCountBetween36To45) {
+		this.unknownVotersCountBetween36To45 = unknownVotersCountBetween36To45;
+	}
+	public Long getMaleVotersCountBetween46To60() {
+		return maleVotersCountBetween46To60;
+	}
+	public void setMaleVotersCountBetween46To60(Long maleVotersCountBetween46To60) {
+		this.maleVotersCountBetween46To60 = maleVotersCountBetween46To60;
+	}
+	public Long getFemaleVotersCountBetween46To60() {
+		return femaleVotersCountBetween46To60;
+	}
+	public void setFemaleVotersCountBetween46To60(
+			Long femaleVotersCountBetween46To60) {
+		this.femaleVotersCountBetween46To60 = femaleVotersCountBetween46To60;
+	}
+	public Long getUnknownVotersCountBetween46To60() {
+		return unknownVotersCountBetween46To60;
+	}
+	public void setUnknownVotersCountBetween46To60(
+			Long unknownVotersCountBetween46To60) {
+		this.unknownVotersCountBetween46To60 = unknownVotersCountBetween46To60;
+	}
+	public Long getMaleVotersCountAbove60() {
+		return maleVotersCountAbove60;
+	}
+	public void setMaleVotersCountAbove60(Long maleVotersCountAbove60) {
+		this.maleVotersCountAbove60 = maleVotersCountAbove60;
+	}
+	public Long getFemaleVotersCountAbove60() {
+		return femaleVotersCountAbove60;
+	}
+	public void setFemaleVotersCountAbove60(Long femaleVotersCountAbove60) {
+		this.femaleVotersCountAbove60 = femaleVotersCountAbove60;
+	}
+	public Long getUnknownVotersCountAbove60() {
+		return unknownVotersCountAbove60;
+	}
+	public void setUnknownVotersCountAbove60(Long unknownVotersCountAbove60) {
+		this.unknownVotersCountAbove60 = unknownVotersCountAbove60;
+	}
+	public Long getTotalMaleVotesFor18To25() {
+		return totalMaleVotesFor18To25;
+	}
+	public void setTotalMaleVotesFor18To25(Long totalMaleVotesFor18To25) {
+		this.totalMaleVotesFor18To25 = totalMaleVotesFor18To25;
+	}
+	
+	public Long getTotalVotersFor18To25() {
+		return totalVotersFor18To25;
+	}
+	public void setTotalVotersFor18To25(Long totalVotersFor18To25) {
+		this.totalVotersFor18To25 = totalVotersFor18To25;
+	}
+	public Long getTotalVotersFor26To35() {
+		return totalVotersFor26To35;
+	}
+	public void setTotalVotersFor26To35(Long totalVotersFor26To35) {
+		this.totalVotersFor26To35 = totalVotersFor26To35;
+	}
+	public Long getTotalVotersFor36To45() {
+		return totalVotersFor36To45;
+	}
+	public void setTotalVotersFor36To45(Long totalVotersFor36To45) {
+		this.totalVotersFor36To45 = totalVotersFor36To45;
+	}
+	public Long getTotalVotersFor46To60() {
+		return totalVotersFor46To60;
+	}
+	public void setTotalVotersFor46To60(Long totalVotersFor46To60) {
+		this.totalVotersFor46To60 = totalVotersFor46To60;
+	}
+	public Long getTotalVotersForAbove60() {
+		return totalVotersForAbove60;
+	}
+	public void setTotalVotersForAbove60(Long totalVotersForAbove60) {
+		this.totalVotersForAbove60 = totalVotersForAbove60;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public Long getTotalFemaleVotersFor18To25() {
+		return totalFemaleVotersFor18To25;
+	}
+	public void setTotalFemaleVotersFor18To25(Long totalFemaleVotersFor18To25) {
+		this.totalFemaleVotersFor18To25 = totalFemaleVotersFor18To25;
+	}
+	public Long getTotalUnknownVotersFor18To25() {
+		return totalUnknownVotersFor18To25;
+	}
+	public void setTotalUnknownVotersFor18To25(Long totalUnknownVotersFor18To25) {
+		this.totalUnknownVotersFor18To25 = totalUnknownVotersFor18To25;
+	}
+	public Long getTotalMaleVotersFor26To35() {
+		return totalMaleVotersFor26To35;
+	}
+	public void setTotalMaleVotersFor26To35(Long totalMaleVotersFor26To35) {
+		this.totalMaleVotersFor26To35 = totalMaleVotersFor26To35;
+	}
+	public Long getTotalFemaleVotersFor26To35() {
+		return totalFemaleVotersFor26To35;
+	}
+	public void setTotalFemaleVotersFor26To35(Long totalFemaleVotersFor26To35) {
+		this.totalFemaleVotersFor26To35 = totalFemaleVotersFor26To35;
+	}
+	public Long getTotalUnknownVotersFor26To35() {
+		return totalUnknownVotersFor26To35;
+	}
+	public void setTotalUnknownVotersFor26To35(Long totalUnknownVotersFor26To35) {
+		this.totalUnknownVotersFor26To35 = totalUnknownVotersFor26To35;
+	}
+	public Long getTotalMaleVotersFor36To45() {
+		return totalMaleVotersFor36To45;
+	}
+	public void setTotalMaleVotersFor36To45(Long totalMaleVotersFor36To45) {
+		this.totalMaleVotersFor36To45 = totalMaleVotersFor36To45;
+	}
+	public Long getTotalFemaleVotersFor36To45() {
+		return totalFemaleVotersFor36To45;
+	}
+	public void setTotalFemaleVotersFor36To45(Long totalFemaleVotersFor36To45) {
+		this.totalFemaleVotersFor36To45 = totalFemaleVotersFor36To45;
+	}
+	public Long getTotalUnknownVotersFor36To45() {
+		return totalUnknownVotersFor36To45;
+	}
+	public void setTotalUnknownVotersFor36To45(Long totalUnknownVotersFor36To45) {
+		this.totalUnknownVotersFor36To45 = totalUnknownVotersFor36To45;
+	}
+	public Long getTotalMaleVotersFor46To60() {
+		return totalMaleVotersFor46To60;
+	}
+	public void setTotalMaleVotersFor46To60(Long totalMaleVotersFor46To60) {
+		this.totalMaleVotersFor46To60 = totalMaleVotersFor46To60;
+	}
+	public Long getTotalFemaleVotersFor46To60() {
+		return totalFemaleVotersFor46To60;
+	}
+	public void setTotalFemaleVotersFor46To60(Long totalFemaleVotersFor46To60) {
+		this.totalFemaleVotersFor46To60 = totalFemaleVotersFor46To60;
+	}
+	public Long getTotalUnknownVotersFor46To60() {
+		return totalUnknownVotersFor46To60;
+	}
+	public void setTotalUnknownVotersFor46To60(Long totalUnknownVotersFor46To60) {
+		this.totalUnknownVotersFor46To60 = totalUnknownVotersFor46To60;
+	}
+	public Long getTotalMaleVotersForAbove60() {
+		return totalMaleVotersForAbove60;
+	}
+	public void setTotalMaleVotersForAbove60(Long totalMaleVotersForAbove60) {
+		this.totalMaleVotersForAbove60 = totalMaleVotersForAbove60;
+	}
+	public Long getTotalFemaleVotersForAbove60() {
+		return totalFemaleVotersForAbove60;
+	}
+	public void setTotalFemaleVotersForAbove60(Long totalFemaleVotersForAbove60) {
+		this.totalFemaleVotersForAbove60 = totalFemaleVotersForAbove60;
+	}
+	public Long getTotalUnknownVotersForAbove60() {
+		return totalUnknownVotersForAbove60;
+	}
+	public void setTotalUnknownVotersForAbove60(Long totalUnknownVotersForAbove60) {
+		this.totalUnknownVotersForAbove60 = totalUnknownVotersForAbove60;
+	}
+	public Long getTotalMaleVoters() {
+		return totalMaleVoters;
+	}
+	public void setTotalMaleVoters(Long totalMaleVoters) {
+		this.totalMaleVoters = totalMaleVoters;
+	}
+	public Long getTotalFemaleVoters() {
+		return totalFemaleVoters;
+	}
+	public void setTotalFemaleVoters(Long totalFemaleVoters) {
+		this.totalFemaleVoters = totalFemaleVoters;
+	}
+	public Long getTotalUnknownVoters() {
+		return totalUnknownVoters;
+	}
+	public void setTotalUnknownVoters(Long totalUnknownVoters) {
+		this.totalUnknownVoters = totalUnknownVoters;
+	}
+	public Float getTotalMaleVotersPercent() {
+		return totalMaleVotersPercent;
+	}
+	public void setTotalMaleVotersPercent(Float totalMaleVotersPercent) {
+		this.totalMaleVotersPercent = totalMaleVotersPercent;
+	}
+	public Float getTotalFemaleVotersPercent() {
+		return totalFemaleVotersPercent;
+	}
+	public void setTotalFemaleVotersPercent(Float totalFemaleVotersPercent) {
+		this.totalFemaleVotersPercent = totalFemaleVotersPercent;
+	}
+	public Float getTotalUnknownVotersPercent() {
+		return totalUnknownVotersPercent;
+	}
+	public void setTotalUnknownVotersPercent(Float totalUnknownVotersPercent) {
+		this.totalUnknownVotersPercent = totalUnknownVotersPercent;
+	}
+	public String getAgeRange() {
+		return ageRange;
+	}
+	public void setAgeRange(String ageRange) {
+		this.ageRange = ageRange;
+	}
+	public String getBoothName() {
+		return boothName;
+	}
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+	public Float getTotalVotersPercent() {
+		return totalVotersPercent;
+	}
+	public void setTotalVotersPercent(Float totalVotersPercent) {
+		this.totalVotersPercent = totalVotersPercent;
+	}
+
+}

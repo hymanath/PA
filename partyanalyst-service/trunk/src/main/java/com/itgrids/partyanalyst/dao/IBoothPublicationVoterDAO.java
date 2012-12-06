@@ -43,6 +43,23 @@ public interface IBoothPublicationVoterDAO extends
 	public List findVotersCastInfoByBoothIdAndPublicationDate(Long boothId, Long publicationDateId);
 	
 	public List getGenderWiseCountInConstituency(Long constituencyId, Long publicationDate);
+	
+	public List<Object[]> getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+			 Long constituencyId ,Long publicationDateId, Long startAge,
+			Long endAge);
+
+	public List<Object[]> getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+			Long tehsilId, Long publicationDateId, Long startAge,
+			Long endAge);
+	
+	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+			Long panchayatId, Long publicationDateId , Long startAge, Long endAge);
+	
+	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+			Long boothId, Long publicationDateId, Long startAge, Long endAge) ;
+	
+	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+			Long localElectionBodyId, Long publicationDateId, Long startAge, Long endAge);
 
 
 }
