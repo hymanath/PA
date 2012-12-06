@@ -529,6 +529,7 @@ $(document).ready(function(){
     $("#constituencyList").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getvotersBasicInfo();
+	  
 	});
 	$("#mandalField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 2 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
@@ -552,6 +553,7 @@ $(document).ready(function(){
 		   getvotersBasicInfo();
 		 else if($("#reportLevel").val() == 4 && $("#pollingStationField option").length > 0 && $("#pollingStationField").val() != 0 )
 		   getvotersBasicInfo();
+			getVotersCastInfo();
 		}
 	});
 });
@@ -560,6 +562,9 @@ $(document).ready(function(){
 function getVotersCastInfo()
 	{
 	
+  $("#localCastStatsTabContent_header").html("");
+  var divId = document.getElementById('localCastStatsTabContent_body');
+ divId.innerHTML ='';
 	var publicationDateId = $("#publicationDateList").val();
 	var level = $("#reportLevel").val();
 	var type = '';
@@ -712,7 +717,7 @@ function buildVotersChart(chartInfo,reqTitle){
 
 	function buildCastInfoData(myresults)
 	{
-		debugger;
+
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = myresults.voterCastInfodetails.totalVoters;
 
@@ -726,7 +731,7 @@ function buildVotersChart(chartInfo,reqTitle){
 		var	castIno = new Array();
 		var cast = myresults.voterCastInfodetails.castVOs;
 		
-
+		
 		for(var i in cast)
 		{
 		var castStats = 
@@ -742,8 +747,13 @@ function buildVotersChart(chartInfo,reqTitle){
 
 		constMgmtMainObj.castStatsArray =castIno; 
 		}
+		if(cast != '')
+		{
 		buildLocalCastStatisticsDataTableForAssembly();	
-			
+		}
+		else{
+     $("#localCastStatsTabContent_body").html("No Data Found");
+   }	
 	}
 	function buildLocalCastStatisticsDataTableForAssembly()
 	{
