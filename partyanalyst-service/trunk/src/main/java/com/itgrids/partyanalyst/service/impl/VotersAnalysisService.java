@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
@@ -278,14 +280,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			return getVotersCountForMandal(type,id,publicationDateId);
 		}
 		else if(type.equalsIgnoreCase("booth")){
-			return getVotersCountForBooth(type,id,publicationDateId);
+			return getVotersCountForBooth(type,id,publicationDateId,"main");
 		}
 		else if(type.equalsIgnoreCase("panchayat")){
 			return getVotersCountForPanchayat(id,publicationDateId,"main");
 		}
 		}catch(Exception e){
 			e.printStackTrace();
-			log.error(e);
+			log.error("Exception rised in getVotersCount method : ",e);
 		}
 		VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
 		   votersInfoForMandalVO.setDatapresent(false);
@@ -313,12 +315,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public VotersInfoForMandalVO getVotersCountForMandal(String type,Long id,Long publicationDateId){
 		String name = "";
 		if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
-		  List<Object[]> assemblyLocalElectionBodyName = assemblyLocalElectionBodyDAO.getLocalElecBodyName(id.toString().substring(01));
+		  List<Object[]> assemblyLocalElectionBodyName = assemblyLocalElectionBodyDAO.getLocalElecBodyName(id.toString().substring(1));
 		  Object[] reqName = assemblyLocalElectionBodyName.get(0);
 		  name = reqName[0].toString()+" "+reqName[1].toString();
 		}
 		else{
-			name = tehsilDAO.get(new Long(id.toString().substring(01))).getTehsilName()+" Mandal/Tehsil";
+			name = tehsilDAO.get(new Long(id.toString().substring(1))).getTehsilName()+" Mandal/Tehsil";
 		}
 		VotersInfoForMandalVO votersInfoForMandalVO = getVotersCountForSelectedMandal("mandal",id.toString(),publicationDateId,name,"main");
 		if(id.toString().substring(0,1).trim().equalsIgnoreCase("2") && votersInfoForMandalVO.isDatapresent()){
@@ -330,9 +332,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		return votersInfoForMandalVO;
 	}
 	
-	public VotersInfoForMandalVO getVotersCountForBooth(String type,Long id,Long publicationDateId){
+	public VotersInfoForMandalVO getVotersCountForBooth(String type,Long id,Long publicationDateId,String reqType){
 		List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountByPublicationId(type,id,publicationDateId);
-		if(!votersCountList.isEmpty() && votersCountList.get(0)[1] != null){
+		if((!votersCountList.isEmpty() && votersCountList.get(0)[1] != null) || reqType.equalsIgnoreCase("sub")){
 		   return populateDataToVotersInfoForMandalVO(votersCountList,id,"booth-"+boothDAO.get(id).getPartNo(),"Booth");
 		}else{
 			   VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
@@ -394,7 +396,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void getVotersCountForMultipleBooths(Long panchayatId,Long publicationDateId,VotersInfoForMandalVO votersInfoForMandalVO){
 		List<Object[]> boothsList = hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(panchayatId,publicationDateId);
 	     for(Object[] booth : boothsList){
-	    	 votersInfoForMandalVO.getVotersInfoForMandalVOList().add(getVotersCountForBooth("booth",(Long)booth[0],publicationDateId)); 
+	    	 votersInfoForMandalVO.getVotersInfoForMandalVOList().add(getVotersCountForBooth("booth",(Long)booth[0],publicationDateId,"sub")); 
 	     }
 	}
 	
@@ -1028,5 +1030,163 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    	e.printStackTrace();	    	
 	    }
 	}
+			
+	//Retrieving important families information
+	public ImportantFamiliesInfoVo getImportantFamiliesInfo(String type,Long id,Long publicationDateId){	
+		try{
+			if(type.equalsIgnoreCase("constituency")){
+				return getImportantFamiliesForConstituency(type,id,publicationDateId);
+				
+			}
+			else if(type.equalsIgnoreCase("mandal")){
+				return getImportantFamiliesForMandal(type,id,publicationDateId,"main");
+			}
+			else if(type.equalsIgnoreCase("booth")){
+				return getImportantFamiliesForBooth(type,id,publicationDateId,"main");
+			}
+			else if(type.equalsIgnoreCase("panchayat")){
+				return getImportantFamiliesForPanchayat(id,publicationDateId,"","main");
+			}
+		}catch(Exception e){
+			log.error("Exception rised in getImportantFamiliesInfo method : ",e);
+		}
+		return null;
+	}
 	
+	public ImportantFamiliesInfoVo getImportantFamiliesForConstituency(String type,Long id,Long publicationDateId){
+		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"constituency"));
+		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"","main");
+		 
+		 if(importantFamiliesInfoVo.isDataPresent()){
+		    List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
+		    for(SelectOptionVO mandal : mandalsList){
+				
+			 importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForMandal("mandal",mandal.getId(),publicationDateId,"sub"));
+		    }
+		 }
+		 return  importantFamiliesInfoVo;
+	}
+	
+	public void getImpFamilesInfo(String type,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo,String queryToexe,String exeType){
+		
+        String query = "";
+        Long[] totalFamilies = getFamiliesCount(type,id,publicationDateId,null,queryToexe,exeType);
+		if(totalFamilies != null){
+          importantFamiliesInfoVo.setTotalFamalies(totalFamilies[0]);
+		}else{
+			importantFamiliesInfoVo.setDataPresent(false);
+			return;
+		}
+	     query = " having count(model.voter.voterId) <= 3 ";
+	     Long[] count = getFamiliesCount(type,id,publicationDateId,query,queryToexe,exeType);
+	     importantFamiliesInfoVo.setBelow3(count[0]);
+	     importantFamiliesInfoVo.setBelow3Popul(count[1]);
+	     
+	     query = " having count(model.voter.voterId) > 3 and count(model.voter.voterId) <= 6 ";
+	     count = getFamiliesCount(type,id,publicationDateId,query,queryToexe,exeType);
+	     importantFamiliesInfoVo.setBetwn4to6(count[0]);
+	     importantFamiliesInfoVo.setBetwn4to6Popul(count[1]);
+	    
+	     query = " having count(model.voter.voterId) > 6 and count(model.voter.voterId) <= 10 ";
+	     count = getFamiliesCount(type,id,publicationDateId,query,queryToexe,exeType);
+	     importantFamiliesInfoVo.setBetwn7to10(count[0]);
+	     importantFamiliesInfoVo.setBetwn7to10Popul(count[1]);
+	    
+	     query = " having count(model.voter.voterId) > 10 ";
+	     count = getFamiliesCount(type,id,publicationDateId,query,queryToexe,exeType);
+	     importantFamiliesInfoVo.setAbove10(count[0]);
+	     importantFamiliesInfoVo.setAbove10Popul(count[1]);
+	     
+	     if(importantFamiliesInfoVo.getTotalVoters() > 0)
+	       calculatePercentage(importantFamiliesInfoVo);
+	     
+	}
+	
+	public Long[] getFamiliesCount(String type,Long id,Long publicationDateId,String query,String queryToexe,String exeType){
+		
+		Long[] count = {0l,0l};
+		List<Object[]> totalFamiliesList = null;
+		if(queryToexe.equalsIgnoreCase(""))
+			totalFamiliesList = boothPublicationVoterDAO.findAllImpFamiles(id,publicationDateId,type,query);
+		else if(queryToexe.equalsIgnoreCase("local"))
+			totalFamiliesList = boothPublicationVoterDAO.getVotersImpFamilesForLocalElectionBody(id,publicationDateId,query);
+		else if(queryToexe.equalsIgnoreCase("panchayat"))
+			totalFamiliesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationId(id,publicationDateId,query);
+		
+		if(!totalFamiliesList.isEmpty() && totalFamiliesList.get(0)[1] != null){
+	    	count[0] = new Long(totalFamiliesList.size());
+	       if(query != null){
+	    	Long totalVoters = 0l;
+	    	for(Object[] family : totalFamiliesList){
+	    		if(family[0] != null){
+	    			totalVoters = totalVoters+(Long)family[0];
+	    		}
+	    	 }
+	    	count[1] = totalVoters;
+	       }
+	    }
+		else if(query == null && exeType.equalsIgnoreCase("main")){
+			return null;
+		}
+	    return count;
+	}
+	
+	public ImportantFamiliesInfoVo getImportantFamiliesForMandal(String type,Long id,Long publicationDateId,String exeType){
+		if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+		{
+			ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(new Long(id.toString().substring(1).trim()),publicationDateId,"mandal"));
+			 getImpFamilesInfo(type,new Long(id.toString().substring(1).trim()),publicationDateId,importantFamiliesInfoVo,"",exeType);
+			 if(exeType.equalsIgnoreCase("main") && importantFamiliesInfoVo.isDataPresent()){
+			 List<Object[]> panchayaties = panchayatDAO.getPanchayatsBymandalId(new Long(id.toString().substring(1).trim()));
+				for (Object[] panchayat : panchayaties){
+					importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForPanchayat((Long)panchayat[0],publicationDateId,"","sub"));
+				}
+			 }
+			 return importantFamiliesInfoVo;
+		}else{
+			ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getVotersCountForLocalElectionBody(new Long(id.toString().substring(1).trim()),publicationDateId));
+			 getImpFamilesInfo(type,new Long(id.toString().substring(1).trim()),publicationDateId,importantFamiliesInfoVo,"local",exeType);
+			 return importantFamiliesInfoVo;
+		}
+		
+	}
+	
+	public ImportantFamiliesInfoVo getImportantFamiliesForBooth(String type,Long id,Long publicationDateId,String exeType){
+		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"booth"));
+	
+		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"",exeType);
+		 return importantFamiliesInfoVo;
+	}
+
+	public ImportantFamiliesInfoVo getImportantFamiliesForPanchayat(Long id,Long publicationDateId,String reqType,String exeType){
+		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setTotalVoters((Long)boothPublicationVoterDAO.getVotersCountForPanchayat(id,publicationDateId).get(0));
+		 getImpFamilesInfo("",id,publicationDateId,importantFamiliesInfoVo,"panchayat",exeType);
+		 if(exeType.equalsIgnoreCase("main")  && importantFamiliesInfoVo.isDataPresent()){
+			 List<Object[]> boothsList = hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(id,publicationDateId);
+		     for(Object[] booth : boothsList){
+		    	 importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForBooth("booth",(Long)booth[0],publicationDateId,"sub"));
+		     }
+		 }
+		 return importantFamiliesInfoVo;
+	}
+	
+	public void calculatePercentage(ImportantFamiliesInfoVo importantFamiliesInfoVo){
+		 DecimalFormat df = new DecimalFormat("#.##");
+		if(importantFamiliesInfoVo.getTotalVoters() != null && importantFamiliesInfoVo.getTotalVoters() > 0){
+		    importantFamiliesInfoVo.setBelow3perc(new Double(df.format(importantFamiliesInfoVo.getBelow3Popul().doubleValue()/importantFamiliesInfoVo.getTotalVoters()*100)));
+		    importantFamiliesInfoVo.setBetwn4to6perc(new Double(df.format(importantFamiliesInfoVo.getBetwn4to6Popul().doubleValue()/importantFamiliesInfoVo.getTotalVoters()*100)));
+		    importantFamiliesInfoVo.setBetwn7to10perc(new Double(df.format(importantFamiliesInfoVo.getBetwn7to10Popul().doubleValue()/importantFamiliesInfoVo.getTotalVoters()*100)));
+		    importantFamiliesInfoVo.setAbove10perc(new Double(df.format(importantFamiliesInfoVo.getAbove10Popul().doubleValue()/importantFamiliesInfoVo.getTotalVoters()*100)));
+		 }else{
+			    importantFamiliesInfoVo.setBelow3perc(0d);
+			    importantFamiliesInfoVo.setBetwn4to6perc(0d);
+			    importantFamiliesInfoVo.setBetwn7to10perc(0d);
+			    importantFamiliesInfoVo.setAbove10perc(0d); 
+		 }
+	}
 }
