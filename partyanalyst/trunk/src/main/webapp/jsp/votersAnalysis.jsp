@@ -176,7 +176,7 @@ locationDetails.constituencyArr.push(ob);
 		
 </div>
 	<div id="ConstituencyDiv" style="width:80%;padding-top:10px;padding-bottom:10px;margin-left:auto;margin-right:auto;">
-	Select Constituency : <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/>&nbsp;&nbsp;
+	Select Constituency : <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getVoterDetailsForConstituency();getMandalList(\'mandalField\');getPublicationDate();"/>&nbsp;&nbsp;
 
 	
 		
@@ -186,14 +186,14 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 	<div id="mandalDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 		
-	Select Mandal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <select id="mandalField" class="selectWidth" style="margin-left:1px;" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
+	Select Mandal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <select id="mandalField" class="selectWidth" style="margin-left:1px;" name="state" onchange="getVoterDetailsForMandal();getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
 		
 	<div id="panchayatDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 		
-	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="buildVotersByLocPanchayatDataTable(this.id)"></select></div>
+	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="getVoterDetailsForPanchayat();buildVotersByLocPanchayatDataTable(this.id)"></select></div>
 	
 	<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
-	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="buildVotersByLocBoothDataTable(this.id);"></select></div>
+	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
 	
 
 	<div id="profileManagementDiv">
@@ -252,6 +252,8 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 
 </div>
+
+<div id="tableDiv"></div>
 
 <!-- for  body 1 end    result  -->
 
@@ -341,13 +343,14 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 
 	<div id='ageWiseInfoDiv' class="divInfo">
+
+
 	
 	</div>
 
 </div>
 
 <!-- for  body 4 end    result  -->
-
 
 </div>
 
@@ -358,6 +361,225 @@ showImportantFamiliesDiv();
 //buildVotersByLocPanchayatDataTable();
 showImportantFamiliesDiv();
 
+
+</script>
+
+<script>
+function getVoterDetailsForConstituency(){
+
+
+	var reportLevel = $('#reportLevel').val();
+	var constituencyId = $('#constituencyList').val();
+	var publicationId = $('#publicationDateList').val();
+
+	if(reportLevel == "1"){
+
+		var jsObj=
+				{
+					//constituencyId:constituencyId,
+					//publicationDateId:publicationId,
+					constituencyId:'232',
+					publicationDateId:'2',
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:'0',
+				    type:"constituency",
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;						
+		
+		callAjaxorVoterDetails(jsObj,url);
+	}
+}
+
+function getVoterDetailsForMandal(){
+
+    var reportLevel = $('#reportLevel').val();
+	var mandalId = $('#mandalField').val();
+	var publicationId = $('#publicationDateList').val();
+
+	var startNumber = mandalId.substring(0,1)
+
+		
+
+	if(reportLevel == "2"){
+
+
+        if(startNumber == "1"){
+
+			var jsObj=
+					{
+
+			        //boothId:boothId,
+					//publicationDateId:publicationId,
+					constituencyId:'0',
+					publicationDateId:'2',
+					mandalId:'844',
+					boothId:'0',
+					panchayatId:'0',
+				    type:"mandal"
+						
+					};
+		}else if(startNumber == "2"){
+
+			var jsObj=
+					{
+
+						mandalId:mandalId,
+						publicationId:publicationId,
+						type:"localElectionBody",
+						
+					};
+		}
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;
+
+		callAjaxorVoterDetails(jsObj,url);
+	}
+}
+
+
+function getVoterDetailsForPanchayat(){
+
+
+    var reportLevel = $('#reportLevel').val();
+	var panchayatId = $('#panchayatField').val();
+	var publicationId = $('#publicationDateList').val();
+
+   if(reportLevel == "3"){
+
+		var jsObj=
+				{
+			        constituencyId:'0',
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:panchayatId,
+					publicationDateId:publicationId,
+					type:"panchayat",
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;
+
+      callAjaxorVoterDetails(jsObj,url);
+   }
+}
+
+
+function getVoterDetailsForBooth(){
+
+
+    var reportLevel = $('#reportLevel').val();
+	var boothId = $('#pollingStationField').val();
+	var publicationId = $('#publicationDateList').val();
+
+	if(reportLevel == "4"){
+
+		var jsObj=
+				{
+			        //boothId:boothId,
+					//publicationId:publicationId,
+					constituencyId:'0',
+					publicationDateId:'2',
+					mandalId:'0',
+					panchayatId:'0',					
+					boothId:'202',
+					type:"booth",
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAgewiseVoterDetails.action?"+rparam;
+
+	callAjaxorVoterDetails(jsObj,url);
+	}
+}
+
+function callAjaxorVoterDetails(jsObj,url){
+
+	var myResults;
+
+		 var callback = {			
+				   success : function( o ) {
+					try {										
+					  myResults = YAHOO.lang.JSON.parse(o.responseText);					
+						  if(jsObj.type == "constituency")
+							buildConstituencyVoterDetailsTable(myResults);
+						  else if (jsObj.type == "mandal")
+							buildConstituencyVoterDetailsTable(myResults);
+						  else if (jsObj.type == "localElectionBody")
+							  buildConstituencyVoterDetailsTable(myResults);
+						  else if (jsObj.type == "panchayat")
+							  buildConstituencyVoterDetailsTable(myResults);
+						  else if (jsObj.type == "booth")
+							  buildConstituencyVoterDetailsTable(myResults);
+					
+						
+					}catch (e){   
+							
+						alert("Invalid JSON result" + e);   
+					}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+
+
+}
+
+function buildConstituencyVoterDetailsTable(result){
+
+	var str='';
+	str+='<table border="1" style="margin-left:200px;">';
+	str+='<tr>'
+	str+='<tr>'
+	str+='<th rowspan="2">Age Range</th>';
+	str+='<th colspan="2">TotalVoters</th>';
+	str+='<th colspan="2">Male</th>';
+	str+='<th colspan="2">FeMale</th>';
+	str+='<th colspan="2">UnKnown</th>';
+	str+='</tr>';
+    
+	str+='<tr>';
+	str+='<th>TotalVoters</th>';
+	str+='<th>TotalPercanrtage</th>';
+	str+='<th>Voters</th>';
+	str+='<th>Percanrtage</th>';
+	str+='<th>Voters</th>';
+	str+='<th>Percanrtage</th>';
+	str+='<th>Voters</th>';
+	str+='<th>Percanrtage</th>';
+	str+='</tr>';
+
+
+
+	for(var i in result.votersDetailsVO){
+
+	str+='<tr>';
+	str+='<th>'+result.votersDetailsVO[i].ageRange+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalVoters+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalMaleVoters+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalMaleVotersPercent.toFixed(2)+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalFemaleVoters+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalFemaleVotersPercent.toFixed(2)+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalUnknownVoters+'</th>';
+	str+='<th>'+result.votersDetailsVO[i].totalUnknownVotersPercent.toFixed(2)+'</th>';
+	
+	str+='</tr>';
+
+	}
+
+	str+='</table>';
+
+	$('#tableDiv').html(str);
+
+
+}
 
 </script>
 </body>
