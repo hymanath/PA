@@ -11,8 +11,8 @@
 <meta property="fb:app_id" content="167844749984003"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
-<!--<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>-->
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<!--<link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>-->
 <style type="text/css">#videogallery a#videolb{display:none}</style>
 <!--<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>-->
 <!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script>

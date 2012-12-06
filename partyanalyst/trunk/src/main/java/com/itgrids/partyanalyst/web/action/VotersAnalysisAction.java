@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -46,6 +47,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
 
 	private VotersInfoForMandalVO votersInfo;
+	
+	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
 	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
@@ -240,7 +243,7 @@ public String getVoterDetails(){
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 		}
 		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
 		return Action.SUCCESS;
@@ -355,6 +358,29 @@ public String getAgewiseVoterDetails(){
   
 } 
 
+public String getImportantFamaliesDetails(){
+	String param;
+	param = getTask();
+	
+	try{
+		jObj = new JSONObject(param);	
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
+	}
+	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
+	return Action.SUCCESS;
+}
+
+public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
+	return importantFamiliesInfoVo;
+}
+
+public void setImportantFamiliesInfoVo(
+		ImportantFamiliesInfoVo importantFamiliesInfoVo) {
+	this.importantFamiliesInfoVo = importantFamiliesInfoVo;
+}
 
 
 }
