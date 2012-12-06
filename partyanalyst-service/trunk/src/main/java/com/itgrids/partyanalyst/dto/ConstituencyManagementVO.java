@@ -22,6 +22,45 @@ public class ConstituencyManagementVO {
 	private List<Long> votersCount;
 	private List<Long> agewisevotersCount;
 	
+	private List<VoterVO> mandalAgewiseVotersList ;
+	private List<VoterVO> boothVotersList;
+	private List<VotersDetailsVO> mandalAgeAndGenderwiseVotersList;
+	private List<VotersDetailsVO> votersDetailsVO;
+	
+	
+	public List<VotersDetailsVO> getVotersDetailsVO() {
+		return votersDetailsVO;
+	}
+
+	public void setVotersDetailsVO(List<VotersDetailsVO> votersDetailsVO) {
+		this.votersDetailsVO = votersDetailsVO;
+	}
+
+	public List<VotersDetailsVO> getMandalAgeAndGenderwiseVotersList() {
+		return mandalAgeAndGenderwiseVotersList;
+	}
+
+	public void setMandalAgeAndGenderwiseVotersList(
+			List<VotersDetailsVO> mandalAgeAndGenderwiseVotersList) {
+		this.mandalAgeAndGenderwiseVotersList = mandalAgeAndGenderwiseVotersList;
+	}
+
+	public List<VoterVO> getMandalAgewiseVotersList() {
+		return mandalAgewiseVotersList;
+	}
+
+	public void setMandalAgewiseVotersList(List<VoterVO> mandalAgewiseVotersList) {
+		this.mandalAgewiseVotersList = mandalAgewiseVotersList;
+	}
+
+	public List<VoterVO> getBoothVotersList() {
+		return boothVotersList;
+	}
+
+	public void setBoothVotersList(List<VoterVO> boothVotersList) {
+		this.boothVotersList = boothVotersList;
+	}
+
 	public List<Long> getAgewisevotersCount() {
 		return agewisevotersCount;
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -23,4 +24,8 @@ public interface IVotersAnalysisService {
 	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId);
 	
 	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type);
+	
+	public List<VotersDetailsVO> getVotersDetailsByAgewise(Long constituencyId, Long tehsilId,Long panchayatId,Long boothId,
+			 Long publicationDateId , String type);
 }
+

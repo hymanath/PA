@@ -255,4 +255,100 @@ public class BoothPublicationVoterDAO extends
 			return query.list();	
 			
 		}
+		
+		public List<Object[]> getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+				 Long constituencyId ,Long publicationDateId, Long startAge,
+				Long endAge) {
+			
+			String qyeryString = "select count(*),model.voter.gender from BoothPublicationVoter " +
+					"model where model.booth.publicationDate.publicationDateId = ? " +
+					"and model.booth.constituency.constituencyId = ? " +
+					"and model.voter.age >= "+startAge+" and model.voter.age<= "+endAge+" group by model.voter.gender";
+			
+			Query query = getSession().createQuery(qyeryString);
+			
+			
+			query.setParameter(0, publicationDateId);
+			query.setParameter(1, constituencyId);
+			
+			return query.list();
+			
+		}
+		
+		
+		
+		public List<Object[]> getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+				Long tehsilId, Long publicationDateId, Long startAge,
+				Long endAge){
+			
+			
+			String queryString = "select count(*),model.voter.gender from BoothPublicationVoter " +
+					"model where model.booth.publicationDate.publicationDateId = ? " +
+					"and model.booth.tehsil.tehsilId = ? " +
+					"and model.voter.age >= "+startAge+" and model.voter.age<= "+endAge+" group by model.voter.gender";
+			
+			Query query = getSession().createQuery(queryString);
+			
+			query.setParameter(0, publicationDateId);
+			query.setParameter(1, tehsilId);
+			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+				Long panchayatId, Long publicationDateId , Long startAge, Long endAge) {		
+			
+			Query query = getSession()
+					.createQuery(
+							"select count(*),model.voter.gender from BoothPublicationVoter model where " +
+							"model.booth.publicationDate.publicationDateId = :publicationDateId and model.voter.age between "+startAge+" and "+endAge+
+							" and model.booth.boothId in(select distinct model1.booth.boothId from " +
+							" HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
+							"and  model1.hamlet.hamletId in(select distinct model2.hamlet.hamletId from " +
+							"PanchayatHamlet model2 where model2.panchayat.panchayatId =:panchayatId )) group by model.voter.gender");
+			
+			
+			query.setParameter("publicationDateId",publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			
+			return query.list();
+			
+			
+		}
+		
+		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+				Long boothId, Long publicationDateId, Long startAge, Long endAge) {
+			
+			Query query = getSession().createQuery("select count(*) ,model.voter.gender " +
+					"from BoothPublicationVoter model where model.booth.boothId = ? and " +
+					"model.booth.publicationDate.publicationDateId = ? " +
+					"and model.voter.age >= "+startAge+" and model.voter.age<= "+endAge+
+					" group by model.voter.gender");
+			
+			query.setParameter(0, boothId);
+			query.setParameter(1, publicationDateId);
+			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+				Long localElectionBodyId, Long publicationDateId, Long startAge, Long endAge) {
+			
+			Query query = getSession().createQuery("select count(*) ,model.voter.gender " +
+					"from BoothPublicationVoter model where model.booth.localBody.localElectionBodyId = ? and " +
+					"model.booth.publicationDate.publicationDateId = ? " +
+					"and model.voter.age >= "+startAge+" and " +
+					"model.voter.age<= "+endAge+" group by model.voter.gender");
+			
+			query.setParameter(0, localElectionBodyId);
+			query.setParameter(1, publicationDateId);
+			
+			return query.list();
+			
+		}
 }
+
+
+
