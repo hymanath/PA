@@ -34,8 +34,6 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> findImpFamilesBasedOnBoothId(Long boothId,Long publicationDateId);
 	
-	public List findVotersCastInfoByConstituencyAndPublicationDate(Long constituencyId, Long publicationDate);
-	
 	public Long findTotalVotersCastInfoByConstituencyAndPublicationDate(Long constituencyId, Long publicationDate);
 	
 	public List findVotersCastInfoByMandalAndPublicationDate(Long mandalId, Long publicationDate);
