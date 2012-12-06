@@ -460,7 +460,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		{
 			
 		
-			List genderList =boothPublicationVoterDAO.findVotersCastInfoByConstituencyAndPublicationDate(id,publicationDateId);
 			return calculatePercentageForCast(boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId));
 			
 		
@@ -473,12 +472,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 		else if(type.equalsIgnoreCase("panchayat"))
 		{
-			List genderList =boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId);
+			
 			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(id,publicationDateId));	
 		}
 		else if(type.equalsIgnoreCase("booth"))
 		{
-			List genderList =boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId);
+			
 			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByBoothIdAndPublicationDate(id,publicationDateId));	
 		}
 		else
