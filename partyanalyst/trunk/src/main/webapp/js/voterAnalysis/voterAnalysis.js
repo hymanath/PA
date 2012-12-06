@@ -1,3 +1,9 @@
+var constMgmtMainObj={
+							
+							castStatsArray:[]
+							
+						};
+
 function buildOuterView()
 		{
 		var divEle = document.getElementById("votersouterDiv");	
@@ -417,6 +423,10 @@ function showImportantFamiliesDiv()
 								    if(myResults != null)
 									buildVotersBasicInfo(myResults);
 								}
+								else if(jsObj.task == "getCastInfo")
+								{
+									buildCastInfoData(myResults);
+								}
 
 							}catch (e) {   
 								
@@ -545,6 +555,49 @@ $(document).ready(function(){
 		}
 	});
 });
+
+
+function getVotersCastInfo()
+	{
+	
+	var publicationDateId = $("#publicationDateList").val();
+	var level = $("#reportLevel").val();
+	var type = '';
+	var id='';
+	var mandalId='';
+	if(level == 1){
+	type = 'constituency';
+	id = $("#constituencyList").val();
+	}
+	else if(level == 2){
+	type = 'mandal';
+	mandalId = $("#mandalField").val();
+	id=mandalId.substring(1);
+
+	}
+	else if(level == 3){
+	  type = 'panchayat';
+	  id = $("#panchayatField").val();
+	}
+	else if(level == 4){
+		 type = 'booth';
+		 id = $("#pollingStationField").val();
+		}
+		var jsObj=
+			{
+				type:type,	
+				id:id,
+
+				publicationDateId:publicationDateId,
+				task:"getCastInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+
 function getvotersBasicInfo(){
    $("#votersBasicInfoDiv").html("");
    $("#votersBasicInfoSubChartDiv").html("");
@@ -654,4 +707,83 @@ function buildVotersChart(chartInfo,reqTitle){
 
 
 
-}	
+}
+
+
+	function buildCastInfoData(myresults)
+	{
+		debugger;
+	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
+	var totalVoters = myresults.voterCastInfodetails.totalVoters;
+
+	var localCastStatsTabContent = '<div class="basicVotersInfoDiv"><table>';
+	localCastStatsTabContent+='<tr colspan="2">';
+	localCastStatsTabContent+='<th>Total Voters : </th>';
+	localCastStatsTabContent+='<td align="left">'+totalVoters+'</td>';
+	localCastStatsTabContent+='</tr></table></div>';
+	localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
+		
+		var	castIno = new Array();
+		var cast = myresults.voterCastInfodetails.castVOs;
+		
+
+		for(var i in cast)
+		{
+		var castStats = 
+			{
+			caste : cast[i].castName,
+			castePopulation : cast[i].castCount,
+			malePopulation : cast[i].malevoters,
+			femalePopulation : cast[i].femalevoters,
+			castePercentage:cast[i].castPercentage,
+			};
+
+			castIno.push(castStats);
+
+		constMgmtMainObj.castStatsArray =castIno; 
+		}
+		buildLocalCastStatisticsDataTableForAssembly();	
+			
+	}
+	function buildLocalCastStatisticsDataTableForAssembly()
+	{
+		
+	
+		var localCastStatsColumnDefs = [ 
+		    	            
+		    	            {key:"caste", label: "caste", sortable: true}, 
+							
+		    	           	{key:"castePopulation", label: "castPopulation", formatter:"number", sortable: true},
+		    				{key:"malePopulation", label: "malePopulation", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							
+							{key:"femalePopulation", label: "femalePopulation", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"castePercentage", label: "castPercentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
+		    					    			    				
+		    	        ]; 
+		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
+		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		localCastStatsDataSource.responseSchema = { 
+            fields: ["caste",{key:"castePopulation", parser:"number"},{key:"malePopulation", parser:"number"},{key:"femalePopulation", parser:"number"},{key:"castePercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+        };
+		
+       
+
+
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    }) 
+				};
+
+		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource, myConfigs);
+
+		
+		
+
+			return {
+				oDS: localCastStatsDataSource,
+				oDT: localCastStatsDataTable
+			};
+
+				
+	} 
