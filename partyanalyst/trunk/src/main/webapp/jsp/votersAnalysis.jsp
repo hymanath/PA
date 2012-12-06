@@ -121,7 +121,10 @@ p {
  border-left: 1px solid #B3C1CE;
  border-right: 1px solid #B3C1CE;
  padding:5px;
+
 }
+
+
 </style>
 
 <script type="text/javascript">
