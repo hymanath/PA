@@ -34,6 +34,14 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> findImpFamilesBasedOnBoothId(Long boothId,Long publicationDateId);
 	
+	public Long getTotalVotersCount(Long id,Long publicationDateId,String type);
+	
+	public Long getVotersCountForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId);
+	
+	public List<Object[]> findAllImpFamiles(Long id,Long publicationDateId,String type,String queryString);
+
+	public List<Object[]> getVotersImpFamilesForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId,String queryString);
+	
 	public Long findTotalVotersCastInfoByConstituencyAndPublicationDate(Long constituencyId, Long publicationDate);
 	
 	public List findVotersCastInfoByMandalAndPublicationDate(Long mandalId, Long publicationDate);
@@ -62,4 +70,6 @@ public interface IBoothPublicationVoterDAO extends
 			Long localElectionBodyId, Long publicationDateId, Long startAge, Long endAge);
 
 
+
+	public List<Object[]> getImpFamilesForPanchayatByPublicationId(Long panchayatId,Long publicationDateId,String queryString);
 }
