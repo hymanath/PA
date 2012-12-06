@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VoterCastInfoVO {
@@ -8,7 +9,12 @@ public class VoterCastInfoVO {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private List<CastVO> castVOs;
+	private List<VoterCastInfoVO> castVosList = new ArrayList<VoterCastInfoVO>();
+	
+	private String mandalName;
 		
+	
+
 	public VoterCastInfoVO(){
 		
 	}
@@ -19,6 +25,23 @@ public class VoterCastInfoVO {
 		this.maleVoters = maleVoters;
 		this.femaleVoters = femaleVoters;
 		this.castVOs = castVOs;
+	}
+	
+	public List<VoterCastInfoVO> getCastVosList() {
+		return castVosList;
+	}
+
+	public void setCastVosList(List<VoterCastInfoVO> castVosList) {
+		this.castVosList = castVosList;
+	}
+
+	
+	public String getMandalName() {
+		return mandalName;
+	}
+
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
 	}
 	
 	public Long getTotalVoters() {
