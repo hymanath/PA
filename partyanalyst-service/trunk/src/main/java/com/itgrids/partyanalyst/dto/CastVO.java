@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
-public class CastVO {
+import java.io.Serializable;
+
+public class CastVO implements Serializable, Comparable<CastVO>{
 
 	private String castName;
 	private String castPercentage;
@@ -9,8 +11,16 @@ public class CastVO {
 	private String canstnone;
 	private Long castnoneCount;
 	
+	private String gender;
+	
+	private Long femalevoters;
+	
+	private Long malevoters;
 	
 
+	
+
+	
 	public CastVO(){
 		
 	}
@@ -51,7 +61,13 @@ public class CastVO {
 	public void setCanstnone(String canstnone) {
 		this.canstnone = canstnone;
 	}
+	public String getGender() {
+		return gender;
+	}
 
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 	public Long getCastnoneCount() {
 		return castnoneCount;
 	}
@@ -59,4 +75,32 @@ public class CastVO {
 	public void setCastnoneCount(Long castnoneCount) {
 		this.castnoneCount = castnoneCount;
 	}
+	
+	public Long getFemalevoters() {
+		return femalevoters;
+	}
+
+	public void setFemalevoters(Long femalevoters) {
+		this.femalevoters = femalevoters;
+	}
+
+	public Long getMalevoters() {
+		return malevoters;
+	}
+
+	public void setMalevoters(Long malevoters) {
+		this.malevoters = malevoters;
+	}
+	
+	public int compareTo(CastVO arg0) {
+		CastVO obj = null;
+		if(obj instanceof CastVO){
+			CastVO vo = (CastVO) obj;
+			return castName.compareToIgnoreCase(vo.getCastName());
+		}
+		else
+			return 0;
+	}
+	
+
 }
