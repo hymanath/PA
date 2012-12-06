@@ -467,7 +467,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		else if(type.equalsIgnoreCase("mandal"))
 		{
-			List genderList =boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId);
+			
 			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(id,publicationDateId));	
 		}
 		
