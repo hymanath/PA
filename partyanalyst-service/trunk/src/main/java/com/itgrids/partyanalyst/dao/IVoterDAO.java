@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -51,4 +52,6 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public List findVotersCastInfoByUrbanAndElectionYear(Long urbanId, String year);
 	
 	public List findTotalVotersCountByPollingStationAndElectionYear(Long panchayatId, String year);
+	
+	
 }
