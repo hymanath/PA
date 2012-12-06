@@ -271,11 +271,28 @@ public String getVotersCastInfoByConstituency()
 	if(jObj.getString("task").equalsIgnoreCase("getCastInfo"))
 	{
 		constituencyManagementVO = new ConstituencyManagementVO();
-		String constituencyId = jObj.getString("constituencyId");
-		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetailsForConstituency(new Long(constituencyId), 1l);
+		String id = jObj.getString("id");
+		String type = jObj.getString("type");
+		String publicationId = jObj.getString("publicationDateId");
+		
+		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetails(new Long(id), new Long(publicationId),type);
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+	
 		
 	}
+	else if(jObj.getString("task").equalsIgnoreCase("getCastInfoForsubLevels"))
+	{
+		constituencyManagementVO = new ConstituencyManagementVO();
+		String id = jObj.getString("id");
+		String type = jObj.getString("type");
+		String publicationId = jObj.getString("publicationDateId");
+		
+		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type);
+		constituencyManagementVO.setCastVosList(sublevelCastDetails);
+	
+		
+	}
+	
 	
 	
 	
