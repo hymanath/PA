@@ -3738,6 +3738,12 @@
 				<param name="root">constituencyManagementVO</param>				
 		</result> 		
 		</action>
+				
+		<action name="getImportantFamiliesInfoAction" class="votersAnalysisAction" method="getImportantFamaliesDetails">
+			<result type="json" name="success">
+				<param name="root">importantFamiliesInfoVo</param>				
+			</result> 
+		</action>
 		
 		</package>
 </struts>      

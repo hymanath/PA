@@ -427,6 +427,10 @@ function showImportantFamiliesDiv()
 								{
 									buildCastInfoData(myResults);
 								}
+								else if(jsObj.task == "importantFamiliesinfo")
+								{
+								    
+								}
 
 							}catch (e) {   
 								
@@ -637,6 +641,18 @@ function getvotersBasicInfo(){
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVotersCountInfoAction.action?"+rparam;						
 		callAjax(jsObj,url);
+	   var jsObj1=
+			{
+					
+				type:type,
+				id:id,
+				publicationDateId:publicationDateId,
+				task:"importantFamiliesinfo"
+	
+			}
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;						
+		callAjax(jsObj1,url1);
 }
 
 function buildVotersBasicInfo(votersbasicinfo){
@@ -647,7 +663,7 @@ function buildVotersBasicInfo(votersbasicinfo){
       str+='<div>Male Voters : '+votersbasicinfo.totalMaleVoters+'  Female Voters : '+votersbasicinfo.totalFemaleVoters+'  ' ;
 	  if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
 	  str+='UnKnown Voters : '+votersbasicinfo.unKnowVoters+'  ';
-	  str+='Total Voters : '+votersbasicinfo.unKnowVoters+'</div></div>';
+	  str+='Total Voters : '+votersbasicinfo.totVoters+'</div></div>';
 	  $("#votersBasicInfoDiv").html(str);
 	  
 	  str = '';
