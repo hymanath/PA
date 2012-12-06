@@ -3,10 +3,16 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +23,9 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Voter;
@@ -440,5 +448,170 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	}
 	
+	
+	
+	//get CastInfo For Constituency/Mandal/Panchayat/Booth
+	
+	public VoterCastInfoVO getVotersCastDetails(Long id,Long publicationDateId,String type)
+	
+	{
+		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		if(type.equalsIgnoreCase("constituency"))
+		{
+			
+		
+			List genderList =boothPublicationVoterDAO.findVotersCastInfoByConstituencyAndPublicationDate(id,publicationDateId);
+			return calculatePercentageForCast(boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId));
+			
+		
+		}
+		else if(type.equalsIgnoreCase("mandal"))
+		{
+			List genderList =boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId);
+			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(id,publicationDateId));	
+		}
+		
+		else if(type.equalsIgnoreCase("panchayat"))
+		{
+			List genderList =boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId);
+			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(id,publicationDateId));	
+		}
+		else if(type.equalsIgnoreCase("booth"))
+		{
+			List genderList =boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId);
+			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByBoothIdAndPublicationDate(id,publicationDateId));	
+		}
+		else
+			return voterCastInfoVO;
+		
+		
+	}
+	
+	
+		public VoterCastInfoVO calculatePercentageForCast(List params)
+		{
+		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		SortedMap<String,CastVO> castsMap = new TreeMap<String,CastVO>();
+		
+		 
+		//Set<String> casts = new HashSet<String>();
+		CastVO castvo = null;
+		
+		
+		Long totalVoters = 0l;
+		String cast ="";
+		
+		Long maleVoters=0L;
+		Long femaleVoters=0L;
+		
+		for(int i=0;i<params.size();i++)
+		{
+			Object[] voterInfo =(Object[])params.get(i);
+			
+			totalVoters = totalVoters + (Long) voterInfo[0];
+			
+			String gender = (String)voterInfo[1];
+			cast = (String) voterInfo[2];
+			
+			if(cast.equals(""))
+			{
+				
+				cast = "N/A";
+				
+			}
+			if(castsMap.get(cast) == null){
+				castvo = new CastVO();
+				castvo.setCastName(cast);
+				castvo.setCastCount((Long) voterInfo[0]);
+				//castvo.setGender(voterInfo[1].toString());
+				if(gender.equalsIgnoreCase("m"))
+				{
+					castvo.setMalevoters((Long)voterInfo[0]);
+				}
+				else if(gender.equalsIgnoreCase("f"))
+				{
+					castvo.setFemalevoters((Long)voterInfo[0]);
+				}
+				castsMap.put(cast, castvo);
+			}
+			else{
+			   castvo = castsMap.get(cast);
+			   castvo.setCastName(cast);
+			   castvo.setCastCount(castvo.getCastCount()+(Long) voterInfo[0]);
+			   //castvo.setGender(voterInfo[1].toString());
+			   if(gender.equalsIgnoreCase("m"))
+			   {
+				castvo.setMalevoters((Long)voterInfo[0]);
+			   }
+			   else if(gender.equalsIgnoreCase("f"))
+			   {
+				castvo.setFemalevoters((Long)voterInfo[0]);
+			   }
+			 }
+			
+			
+		}
+		
+		List<CastVO> castVOs = new ArrayList<CastVO>(castsMap.values());
+		
+		//Collections.sort(castVOs);
+		// Calculate Percentage
+		for(int i=0;i<castVOs.size();i++)
+		{
+			String castPercentage = "0";
+			if(totalVoters > 0)
+			   castPercentage = new BigDecimal((castVOs.get(i).getCastCount()*100.0)/totalVoters).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			castVOs.get(i).setCastPercentage(castPercentage);
+		}
+		
+		
+		voterCastInfoVO.setTotalVoters(totalVoters);
+		
+		voterCastInfoVO.setCastVOs(castVOs);
+		return voterCastInfoVO;
+		
+		
+	}
+	
+		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type)
+		
+		{
+			VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+			List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
+			if(type.equalsIgnoreCase("constituency"))
+			{
+				List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
+				
+				mandalCasts = getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId);
+				
+			}
+			
+			return mandalCasts;
+			
+		}
+		
+		
+	//getting All Mandals For Constituency
+		
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleMandal(List<SelectOptionVO> mandalList,Long publicationDateId)
+	{
+		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
+		if(mandalList != null && mandalList.size() > 0){
+			for(SelectOptionVO mandals : mandalList)
+			{
+				String mandalId= mandals.getId().toString();
+				String id=mandalId.substring(1);
+				String mandalName = mandals.getName();
+				voterCastInfoVO.setMandalName(mandalName);
+				voterCastInfoVO.getCastVosList().add(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(new Long(id),publicationDateId))) ; 
+				voterCastInfoVO.getCastVosList().add(voterCastInfoVO);
+				
+		}
+		}
+		return voterCastInfoVO.getCastVosList();
+		
+		
+	}
 	
 }
