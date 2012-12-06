@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
@@ -293,11 +294,66 @@ public String getVotersCastInfoByConstituency()
 		
 	}
 	
-	
-	
-	
 	return SUCCESS;
 }
+
+public String getAgewiseVoterDetails(){
+	  
+	  
+    String param;
+	param = getTask();
+	constituencyManagementVO = new ConstituencyManagementVO();
+	
+	try{
+		jObj = new JSONObject(param);
+		
+		Long constituencyId = Long.parseLong(jObj.getString("constituencyId"));
+		Long mandalId = Long.parseLong(jObj.getString("mandalId"));
+		Long boothId = Long.parseLong(jObj.getString("boothId"));
+		Long publicationDateId = Long.parseLong(jObj.getString("publicationDateId"));
+		String type = jObj.getString("type");
+		Long panchayatId = Long.parseLong(jObj.getString("panchayatId"));
+		
+		//VOTER DETAILS OVERVIEW FOR CONSTITUENCY  OR MANDAL
+		List<VotersDetailsVO> votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,
+				panchayatId , boothId, publicationDateId,type);
+	
+       /* //VOTER DETAILS OVERVIEW  FOR BOOTH 
+		
+		List<VotersDetailsVO> votersDeatailsForBoothist = votersAnalysisService
+				.getVotersDetailsForBooth(boothId, publicationDateId);
+		
+		
+		
+		
+		//MANDAL AGE WISE
+		List<VoterVO> mandalAgewiseVotersList = votersAnalysisService
+				.getAgewiseVoterDetailsByMandalWise(constituencyId,
+						publicationDateId,type);
+		
+		//MANDALWISE AGE AND GENDER
+		List<VotersDetailsVO> mandalAgeAndGenderVotersList = votersAnalysisService
+				.getAgeAndGenderwiseVoterDetailsByMandalWise(constituencyId,
+						publicationDateId);
+		*/
+		
+				
+		
+	/*	constituencyManagementVO.setVoterDetails(votersList);
+		constituencyManagementVO.setMandalAgewiseVotersList(mandalAgeAndGenderVotersList);*/
+		
+		constituencyManagementVO.setVotersDetailsVO(votersDeatailsForConstituency);
+		
+		
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+	}
+  
+  return Action.SUCCESS;
+  
+} 
 
 
 
