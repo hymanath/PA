@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -14,8 +15,10 @@ public class ConstituencyManagementVO {
 	private List<PoliticalChangesVO> politicalChanges;
 	private List<HamletProblemVO> hamletProblems;
 	private TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO;
+	private List<VoterCastInfoVO> castVosList;
 	
 	
+
 	private List<Long> votersCount;
 	private List<Long> agewisevotersCount;
 	
@@ -108,6 +111,14 @@ public class ConstituencyManagementVO {
 	public void setTotalMPTCMandalLeaderVO(
 			TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO) {
 		this.totalMPTCMandalLeaderVO = totalMPTCMandalLeaderVO;
+	}
+	
+	public List<VoterCastInfoVO> getCastVosList() {
+		return castVosList;
+	}
+
+	public void setCastVosList(List<VoterCastInfoVO> castVosList) {
+		this.castVosList = castVosList;
 	}
 
 }
