@@ -202,7 +202,7 @@ locationDetails.constituencyArr.push(ob);
 				  <tr>
 			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Cast Statistics" 
-					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv()"></b> </td>
+					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters" id="votersId" style="height:24px;" onclick="showVotersDiv()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise" id="ageWiseId" style="height:24px;" onclick="showAgeDiv()"></b> </td>
 					
@@ -275,6 +275,8 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 
 	<div id='LocalCastDiv' class="divInfo">
+	<div id='localCastStatsTabContent_header'></div>
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">
 	
 	</div>
 
@@ -352,6 +354,8 @@ locationDetails.constituencyArr.push(ob);
 showImportantFamiliesDiv();
 //buildVotersByLocPanchayatDataTable();
 showImportantFamiliesDiv();
+
+
 </script>
 </body>
 </html>
