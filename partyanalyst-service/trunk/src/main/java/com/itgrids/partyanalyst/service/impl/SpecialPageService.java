@@ -11,11 +11,14 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.IConstituencySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
@@ -25,9 +28,11 @@ import com.itgrids.partyanalyst.dao.ISpecialPageDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageInfoDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageMetaInfoDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageUpdatesEmailDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.SpecialPageInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -36,7 +41,8 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
-import com.itgrids.partyanalyst.dto.SubScriptionVO;
+import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
+import com.itgrids.partyanalyst.dto.SubscriptionsVO;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -90,7 +96,12 @@ public class SpecialPageService implements ISpecialPageService{
 	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
 	private ISpecialPageMetaInfoDAO specialPageMetaInfoDAO;
 	private ISpecialPageInfoDAO specialPageInfoDAO;
-	
+	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
+	private IPartySubscriptionsDAO partySubscriptionsDAO;
+	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO; 
+	private IConstituencySubscriptionsDAO constituencySubscriptionsDAO;
+	private List<SpecialPageVO> specialPageVOList;
+	private IUserDAO userDAO;
 	
 	public ISpecialPageMetaInfoDAO getSpecialPageMetaInfoDAO() {
 		return specialPageMetaInfoDAO;
@@ -305,7 +316,73 @@ public class SpecialPageService implements ISpecialPageService{
 		this.specialPageInfoDAO = specialPageInfoDAO;
 	}
 
+	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
+		return specialPageSubscriptionsDAO;
+	}
+
+	public void setSpecialPageSubscriptionsDAO(
+			ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO) {
+		this.specialPageSubscriptionsDAO = specialPageSubscriptionsDAO;
+	}
+	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
+		return partySubscriptionsDAO;
+	}
+
+	public void setPartySubscriptionsDAO(
+			IPartySubscriptionsDAO partySubscriptionsDAO) {
+		this.partySubscriptionsDAO = partySubscriptionsDAO;
+	}
+
+	public static Logger getLog() {
+		return log;
+	}
+
+	public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
+		return candidateSubscriptionsDAO;
+	}
+
+	public void setCandidateSubscriptionsDAO(
+			ICandidateSubscriptionsDAO candidateSubscriptionsDAO) {
+		this.candidateSubscriptionsDAO = candidateSubscriptionsDAO;
+	}
+	
+	public IConstituencySubscriptionsDAO getConstituencySubscriptionsDAO() {
+		return constituencySubscriptionsDAO;
+	}
+
+	public void setConstituencySubscriptionsDAO(
+			IConstituencySubscriptionsDAO constituencySubscriptionsDAO) {
+		this.constituencySubscriptionsDAO = constituencySubscriptionsDAO;
+	}
+	
+	public List<SpecialPageVO> getSpecialPageVOList() {
+		return specialPageVOList;
+	}
+
+	public void setSpecialPageVOList(List<SpecialPageVO> specialPageVOList) {
+		this.specialPageVOList = specialPageVOList;
+	}
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+	
 	//implementations of declaration reference variable
+	
+
 	public List<String> getSpecialPageDescription(Long specialPageId)
 	{
 		 List<String> descList = new ArrayList<String>(0); 
@@ -1291,10 +1368,336 @@ public class SpecialPageService implements ISpecialPageService{
 		}
 	}
 	
-	/*public List<SubScriptionVO> getAllUserSubScriptions()
+	/* Public Profile Subscriptions Start*/
+	
+	public SubscriptionsMainVO getAllUserSubScriptions(Long userId, Long profileId)
 	{
-		List<SubScriptionVO> subScriptionVOs = new ArrayList<SubScriptionVO>(0);
-		return subScriptionVOs;
-	}*/
+	SubscriptionsMainVO subscriptionsMainVO = new SubscriptionsMainVO();
 		
+		try{
+			
+			subscriptionsMainVO.setUserSpecialPageSubscriptions(getAllUserSubscribedSpecialPages(userId));
+			subscriptionsMainVO.setUserPartySubscriptions(getAllUserSubscribedPartyPages(userId));
+			subscriptionsMainVO.setUserCandidateSubscriptions(getAllUserSubscribedCandidatePages(userId));
+			subscriptionsMainVO.setUserConstituencySubscriptions(getAllUserSubscribedConstituencyPages(userId));
+			if(!userId.toString().equalsIgnoreCase(profileId.toString()))
+			{
+				subscriptionsMainVO.setProfileSpecialPageSubscriptions(getAllProfileSubscribedSpecialPages(profileId));
+				subscriptionsMainVO.setProfilePartySubscriptions(getAllProfileSubscribedPartyPages(profileId));
+				subscriptionsMainVO.setProfileCandidateSubscriptions(getAllProfileSubscribedCandidatePages(profileId));
+				subscriptionsMainVO.setProfileConstituencySubscriptions(getAllProfileSubscribedConstituencyPages(profileId));
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return subscriptionsMainVO;
+	}
+	
+	public List<SubscriptionsVO> getAllUserSubscribedSpecialPages(Long userId)
+	{
+		List<SubscriptionsVO> userSpecialPageSubscriptions = null ;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = specialPageSubscriptionsDAO.getAllUserSubscribedSpecialPages(userId);
+			if(list !=null && list.size() >0)
+			{
+				userSpecialPageSubscriptions = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					subscriptionsVO.setName(params[1].toString());
+					subscriptionsVO.setImageURL(params[2].toString());
+					subscriptionsVO.setTitle(params[3].toString());
+					subscriptionsVO.setDescription(params[4].toString());
+					subscriptionsVO.setType("userSpecialPageSunscription");
+					subscriptionsVO.setUserId((Long)params[5]);
+					userSpecialPageSubscriptions.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getSubScribedSpecialPages() Method, Exception - "+e);
+		}
+		return userSpecialPageSubscriptions;
+	}
+	
+	public List<SubscriptionsVO> getAllProfileSubscribedSpecialPages(Long profileId)
+	{
+		List<SubscriptionsVO> profileSpecialPageSubscriptions = null ;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = specialPageSubscriptionsDAO.getAllUserSubscribedSpecialPages(profileId);
+			if(list != null && list.size() >0)
+			{
+				profileSpecialPageSubscriptions = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					subscriptionsVO.setName(params[1].toString());
+					if(params[2] !=null)
+					subscriptionsVO.setImageURL(params[2].toString());
+					subscriptionsVO.setTitle(params[3].toString());
+					subscriptionsVO.setDescription(params[4].toString());
+					subscriptionsVO.setType("profileSpecialPageSunscription");
+					subscriptionsVO.setUserId((Long)params[5]);
+					profileSpecialPageSubscriptions.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAllProfileSubscribedSpecialPages() Method, Exception - "+e);
+		}
+		return profileSpecialPageSubscriptions;
+	}
+	
+	public List<SubscriptionsVO> getAllUserSubscribedPartyPages(Long userId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = null;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = partySubscriptionsDAO.getAllUserSubscribedPartyPages(userId);
+			if(list !=null && list.size() > 0)
+			{
+				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					if(params[1] !=null)
+					subscriptionsVO.setName(params[1].toString());
+					if(params[2] !=null)
+					subscriptionsVO.setTitle(params[2].toString());
+					subscriptionsVO.setUserId((Long)params[3]);
+					subscriptionsVO.setType("userPartyPageSunscription");
+					subscriptionsVOList.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getAllUserSubscribedPartyPages() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	public List<SubscriptionsVO> getAllProfileSubscribedPartyPages(Long profileId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = null;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = partySubscriptionsDAO.getAllUserSubscribedPartyPages(profileId);
+			if(list !=null && list.size() > 0)
+			{
+				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					if(params[1] !=null)
+					subscriptionsVO.setName(params[1].toString());
+					if(params[2] !=null)
+					subscriptionsVO.setTitle(params[2].toString());
+					subscriptionsVO.setUserId((Long)params[3]);
+					subscriptionsVO.setType("profilePartyPageSunscription");
+					subscriptionsVOList.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getAllProfileSubscribedPartyPages() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	public List<SubscriptionsVO> getAllUserSubscribedCandidatePages(Long userId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = null;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = candidateSubscriptionsDAO.getAllUserSubscribedCandidatePages(userId);
+			if(list != null && list.size() >0)
+			{
+				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					subscriptionsVO.setName(params[1].toString());
+					subscriptionsVO.setUserId((Long)params[2]);
+					subscriptionsVO.setType("userSubscribedCandidatePages");
+					subscriptionsVOList.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getAllUserSubscribedCandidatePages() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	
+	public List<SubscriptionsVO> getAllProfileSubscribedCandidatePages(Long profileId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = null;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = candidateSubscriptionsDAO.getAllUserSubscribedCandidatePages(profileId);
+			if(list != null && list.size() >0)
+			{
+				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					subscriptionsVO.setName(params[1].toString());
+					subscriptionsVO.setUserId((Long)params[2]);
+					subscriptionsVO.setType("profileSubscribedCandidatePages");
+					subscriptionsVOList.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getAllProfileSubscribedCandidatePages() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	public List<SubscriptionsVO> getAllUserSubscribedConstituencyPages(Long userId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = null;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = constituencySubscriptionsDAO.getAllUserSubscribedConstituencyPages(userId);
+			if(list != null && list.size() >0)
+			{
+				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					subscriptionsVO.setName(params[1].toString());
+					subscriptionsVO.setUserId((Long)params[2]);
+					subscriptionsVO.setType("userSubscribedConstituencyPages");
+					subscriptionsVOList.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getAllUserSubscribedConstituencyPages() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	public List<SubscriptionsVO> getAllProfileSubscribedConstituencyPages(Long profileId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = null;
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<Object[]> list = constituencySubscriptionsDAO.getAllUserSubscribedConstituencyPages(profileId);
+			if(list != null && list.size() >0)
+			{
+				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+				for(Object[] params : list)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					subscriptionsVO.setId((Long)params[0]);
+					subscriptionsVO.setName(params[1].toString());
+					subscriptionsVO.setUserId((Long)params[2]);
+					subscriptionsVO.setType("profileSubscribedConstituencyPages");
+					subscriptionsVOList.add(subscriptionsVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getAllProfileSubscribedConstituencyPages() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	/* Public Profile Subscriptions End*/
+	
+	/* User Profile Subscriptions Start*/
+	
+	public SubscriptionsMainVO getUserProfileSubScriptions(Long userId)
+	{
+		SubscriptionsMainVO subscriptionsMainVO = new SubscriptionsMainVO();
+		try{
+			subscriptionsMainVO.setUserSpecialPageSubscriptions(getAllSpecialPagesForUserProfile(userId));
+			subscriptionsMainVO.setUserPartySubscriptions(getAllUserSubscribedPartyPages(userId));
+			subscriptionsMainVO.setUserCandidateSubscriptions(getAllUserSubscribedCandidatePages(userId));
+			subscriptionsMainVO.setUserConstituencySubscriptions(getAllUserSubscribedConstituencyPages(userId));
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getUserProfileSubScriptions() Method, Exception - "+e);
+		}
+		
+		return subscriptionsMainVO;
+	}
+	
+	public List<SubscriptionsVO> getAllSpecialPagesForUserProfile(Long userId)
+	{
+		List<SubscriptionsVO> subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+		List<SpecialPageVO> specialPageVOList = new ArrayList<SpecialPageVO>(0);
+		try{
+			specialPageVOList = getAllSpecialPageListForHomePage();
+			SubscriptionsVO subscriptionsVO = null;
+			
+			List<Long> list = specialPageSubscriptionsDAO.getUserSubscribedSpecialPageIds(userId);
+				if(list != null && list.size() >0 && specialPageVOList != null)
+					for(SpecialPageVO specialPageVO : specialPageVOList)
+					{
+						subscriptionsVO = new SubscriptionsVO();
+						if(list.contains(specialPageVO.getSpecialPageId()))
+							subscriptionsVO.setSubscribed(true);
+						subscriptionsVO.setSpecialPageVOList(specialPageVOList);
+						subscriptionsVOList.add(subscriptionsVO);
+					}
+						
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAllSpecialPagesForUserProfile() Method, Exception - "+e);
+		}
+		return subscriptionsVOList;
+	}
+	
+	
+	/* User Profile Subscriptions End*/
+	
+	
+	public String getProfileUserName(Long profileId)
+	{
+		String name = "";
+		try{
+			List<Object[]> list = userDAO.getUserEmailByUserId(profileId);
+			if(list != null && list.size() >0)
+			{
+				for(Object[] params : list)
+				{
+					if(params[1].toString() != null)
+						name += params[1].toString();
+					if(params[2].toString() != null)
+						name +=" "+params[2].toString();
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getProfileUserName() Method,Exception- "+e);
+		}
+		
+		return name;
+	}
+	
 }

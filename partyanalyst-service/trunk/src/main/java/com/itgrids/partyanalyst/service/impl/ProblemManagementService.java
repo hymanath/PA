@@ -79,6 +79,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IVisibilityDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -214,6 +215,7 @@ public class ProblemManagementService implements IProblemManagementService {
     private IProblemRatingDAO problemRatingDAO;
     private ICommentDAO commentDAO;
     private IAbusedCommentsDAO abusedCommentsDAO; 
+    
 	
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
@@ -6893,6 +6895,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				result.setIdentifiedOn(problemDetails.getProblem().getIdentifiedOn().toString());
 				//result.setPostedPersonName(problemDetails.getUser().getFirstName().toString());
 				result.setPostedDate(problemDetails.getProblem().getIdentifiedOn().toString());
+				result.setPostDate(problemDetails.getProblem().getIdentifiedOn());
 				result.setProblemImpactLevelId(problemDetails.getProblem().getRegionScopes().getRegionScopesId());
 				result.setName(problemDetails.getUser().getFirstName().toString());
 				result.setLastName(problemDetails.getUser().getLastName().toString());
@@ -6905,7 +6908,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				result.setIsApproved(problemDetails.getProblem().getIsApproved());
 				result.setTotalResultsCount(getProblemsCount().toString());
 				result.setAverageRating(getAverageRatingOfAProblem(problemId));
-				
+				result.setUserImageURL(userDAO.getUserProfileImageNameByUserId(problemDetails.getUser().getUserId()));
 				
 				switch (result.getProblemImpactLevelId().intValue()) {
 
@@ -8334,6 +8337,50 @@ public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
 		});
 		return this.problemBeanVO;
 	}
+
+
+
+public List<ProblemBeanVO> getProblemDetailsForProfilePage(int startIndex,int maxIndex)
+{
+	List<ProblemBeanVO> problemsList = null;
+	List<ProblemBeanVO> problemBeanVOList = getProblemDetailsForHomePage(startIndex,maxIndex);
+	try{
+		
+	
+	Map<String, ProblemBeanVO> problemsMapList = new HashMap<String, ProblemBeanVO>(0);
+	
+	
+	for(ProblemBeanVO problemDetails : problemBeanVOList)
+	{
+		String key = problemDetails.getPostedDate();
+		
+		if(problemsMapList.get(key) == null)
+		{ 
+			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+		    problemBeanVO.setPostedDate(key);
+		    problemBeanVO.setPostDate(problemDetails.getPostDate());
+			List<ProblemBeanVO> list = new ArrayList<ProblemBeanVO>();
+			list.add(problemDetails);
+			problemBeanVO.setProblemBeanVOList(list);
+			problemsMapList.put(key, problemBeanVO);
+		}else{
+			ProblemBeanVO problemBeanVO = problemsMapList.get(key);
+			problemBeanVO.getProblemBeanVOList().add(problemDetails);
+		}
+		
+	}
+	problemsList = new ArrayList<ProblemBeanVO>(problemsMapList.values());
+	Collections.sort(problemsList, new Comparator<ProblemBeanVO>() {
+	    public int compare(ProblemBeanVO m1, ProblemBeanVO m2) {
+	        return m1.getPostDate().compareTo(m2.getPostDate());
+	    }
+	});
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getProblemDetailsForProfilePage() Method, Exception- "+e);
+	}
+	return problemsList;
+}
 
 
 
