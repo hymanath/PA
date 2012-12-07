@@ -2248,4 +2248,115 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 }
 //getAllMessagesForUser
 
+
+/*public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
+{
+	List<RegistrationVO> friendsDetails = new ArrayList<RegistrationVO>(0);
+	
+	try{
+		
+		List<Object[]> list =null;
+		List<Object[]> userDetailsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
+		List<Long> userIds = null;
+		if(userDetailsList != null && userDetailsList.size()>0)
+		{
+			Map<Long, Object[]> map = new HashMap<Long, Object[]>(0);
+			for(Object[] params: userDetailsList)
+			{
+				if(params[0] != userId)
+				map.put((Long)params[0], params);
+			}
+			 list = new ArrayList<Object[]>(map.values());
+		}
+		
+		if(list != null && list.size() >0)
+		{
+			
+			for(Object[] friendsList : list)
+			{
+				userIds = new ArrayList<Long>(0);
+				userIds.add((Long)friendsList[0]);
+				userIds.add((Long)friendsList[1]);
+			}
+		     if(userIds != null && userIds.size() > 0)
+			  {
+		    	 //for(Long userId12 : userIds)
+		    	 //{
+		    		 
+				List<Object[]> userDetails = userDAO.getUserBasicDetailsForProfile(userIds);
+				for(Object[] senderDet : userDetails)
+				{
+				  selectOptionVO = new SelectOptionVO();
+				  selectOptionVO.setId((Long)senderDet[0]);
+				       selectOptionVO.setName(senderDet[1].toString() +" "+senderDet[2].toString());
+					if(senderDet[3] != null)
+				       selectOptionVO.setUrl(senderDet[3].toString());
+					 else
+					 selectOptionVO.setUrl("human.jpg"); 
+					 selectOptionVOList.add(selectOptionVO);
+							 
+					//}
+		    	 }
+				}
+			}
+				
+				
+			
+		
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occuted in getFriendsListForUserProfile() Method, Exception - "+e);
+	}
+	return friendsDetails;
+}
+*/
+
+
+public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
+{
+	List<RegistrationVO> friendsDetails = new ArrayList<RegistrationVO>(0);
+	try{
+		
+		List<Object[]> userDetailsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
+
+		if(userDetailsList != null && userDetailsList.size() > 0)
+		{
+			List<Long> userIds = new ArrayList<Long>(0);
+			for(Object[] params : userDetailsList)
+			{
+				Long friendId = (Long)params[0];
+				if(!friendId.equals(userId) && !userIds.contains(friendId))
+					userIds.add(friendId);
+				friendId = (Long)params[1];
+				if(!friendId.equals(userId) && !userIds.contains(friendId))
+					userIds.add(friendId);
+			}
+			
+			List<Object[]> userDetails = userDAO.getUserBasicDetailsForProfile(userIds);
+			
+			RegistrationVO registrationVO = null;
+			for(Object[] params2 : userDetails)
+			{
+				registrationVO = new RegistrationVO();
+				registrationVO.setRegistrationID((Long)params2[0]);
+				registrationVO.setFirstName(params2[1].toString());
+				registrationVO.setLastName(params2[2].toString());
+				
+				if(params2[3] != null && params2[3].toString().length() > 0)
+					registrationVO.setUserProfilePic(params2[3].toString());
+				else
+					registrationVO.setUserProfilePic("member.jpg");
+				
+				friendsDetails.add(registrationVO);
+			}
+		}
+		return friendsDetails;	
+	}catch (Exception e) {
+		log.error("Exception Occuted in getFriendsListForUserProfile() Method, Exception - "+e);
+		return friendsDetails;
+	}
+	
+}
+
 }
