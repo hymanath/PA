@@ -30,6 +30,7 @@ public class PartiesDetailsVO implements Serializable {
 	private List<Long> constIds;
 	private String partyFlag;
 	private Long candidateId;
+	private boolean isSubscribed;
 
 	
 	public Long getCandidateId() {
@@ -146,4 +147,11 @@ public class PartiesDetailsVO implements Serializable {
 	public void setVotesEarned(String votesEarned) {
 		this.votesEarned = votesEarned;
 	}
+	public boolean isSubscribed() {
+		return isSubscribed;
+	}
+	public void setSubscribed(boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
+	}
+	
 }
