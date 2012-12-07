@@ -15,4 +15,6 @@ public interface IConstituencySubscriptionsDAO extends GenericDao<ConstituencySu
 	public List<ConstituencySubscriptions> getSubscriberDetails(Long constituencyId ,Long userId);
 	
 	public Integer unSubscriptionDetails(Long constituencyId,Long userId);
+	
+	public List<Object[]> getAllUserSubscribedConstituencyPages(Long userId);
 }
