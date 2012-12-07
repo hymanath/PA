@@ -49,7 +49,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 	}
 	
 	
-	public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
+	/*public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
 		
 		List<Object[]> l = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(232L,2L,18L,25L);
 
@@ -57,5 +57,5 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
     	  System.out.println(obj[0].toString()+"-"+obj[1].toString());
     	  
       }		
-	}
+	}*/
 }
