@@ -155,7 +155,7 @@
     	<pattern>/votersAnalysisAction*</pattern>
 		<pattern>/loginInputAction*</pattern>
 		<pattern>/freeUserRegistration*</pattern>
-		
+		<pattern>/publicProfile*</pattern>
     </decorator>
 
 </decorators>
