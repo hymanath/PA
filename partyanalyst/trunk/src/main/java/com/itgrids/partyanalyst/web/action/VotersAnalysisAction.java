@@ -290,7 +290,8 @@ public String getVotersCastInfoByConstituency()
 		String id = jObj.getString("id");
 		String type = jObj.getString("type");
 		String publicationId = jObj.getString("publicationDateId");
-		
+				
+		String searchText = jObj.getString("searchText");
 		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type);
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 	
