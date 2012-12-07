@@ -5,12 +5,12 @@ var connetLocationId = '';
 $("document").ready(function(){
 	
 	 $("#friendsLink").click(function(){
-		var jsObj ={	
+		var jsObj ={
 			task:"getLatestFriendsList"
 	};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getLatestFriendsList.action?"+rparam;						
+		var url = "getLatestFriendsListAction.action?"+rparam;						
 		callAjax1(jsObj,url);
 		
 	});
@@ -21,7 +21,7 @@ $("document").ready(function(){
 		};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getRequestMessagesForUserAction.action?"+rparam;						
+		var url = "getReqMessagesForUserAction.action?"+rparam;						
 		callAjax1(jsObj,url);
 		
 	});
@@ -52,32 +52,58 @@ $("document").ready(function(){
 
 	//subscriptions
 
-	/* $(".subscriptionsLink").click(function(){
+	 $(".subscriptionsLink").click(function(){
 		
 		var jsObj ={
 			task:"getUserScriptions"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getUserScriptionsAction.action?"+rparam;	
+		var url = "getUserSubScriptionsAction.action?"+rparam;	
 		
 		callAjax1(jsObj,url);
 
-	});*/
+	});
+
+
+	$('.assessPoliticianLink').click(function(){
+		getAllPostedReasonsForUser();
+		var type = "Total";
+		var jsObj ={
+				task:"getAllPostedReasons_paginator"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getAllPostedReasonsAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:8,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllPostedReasons_paginator(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+	
+
+	});
 
 	//problems 
 
 	$(".problemsLink").click(function(){
 		var type = 'Total';
-		var jsObj ={				
+		var jsObj ={
 			task:"getAllPostedProblems_paginator"
 		 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getAllPostedProblemsDataAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
+	var url = "getAllPostedProblemsAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
 
 	custom_paginator.paginator({
 		startIndex:0,
-		resultsCount:3,
+		resultsCount:8,
 		jsObj:jsObj,
 		ajaxCallURL:url,
 		paginatorElmt:"custom_paginator_class",
@@ -192,6 +218,7 @@ $("document").ready(function(){
 		disableButton("connectPeopleLink");
 		$("#connectPeoplePopup").dialog('close');
 		var jsObj ={
+				
 				locationId:locationId,			
 				locationName:locationName,
 				connectUserId:connectUserId,
@@ -233,7 +260,7 @@ $("document").ready(function(){
 		$("#connectPeoplePopup").dialog('close');
 		
 		var jsObj ={
-
+			
 				connetLocationId:distId,				
 				connectUserIds:users,
 				connectMessage:connectMsg,
@@ -248,6 +275,29 @@ $("document").ready(function(){
 	
 	});
 	
+
+	//subscribed
+
+
+	//unsubscribed
+	/* $('.unSubscribedLink').live("click",function(){
+		
+		var id = $(this).closest("div").find('.hiddenVarId').val();
+		var type = $(this).closest("div").find('.subscripType').val();
+			
+		var jsObj=
+		{		
+            time : timeST,	
+			id: id,
+			task: "unsubscriptionDetails",
+			page:"type"
+		}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+		
+	});*/
 
 });//End ready
 
@@ -310,6 +360,14 @@ function callAjax1(jsObj,url){
 					{
 						showAllConnectedUsersStatus(jsObj,results);
 					}
+					else if(jsObj.task =="getUserScriptions")
+					{
+						showAllUserSubScribedSpecialPagesPages(jsObj,results);
+						showAllUserCandidateSubscriptions(jsObj,results);
+						showAllUserConstituencySubscriptions(jsObj,results);
+						showAllUserPartySubscriptions(jsObj,results);
+						
+					}
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -329,6 +387,7 @@ function callAjax1(jsObj,url){
 function getFriendsListForUser(results)
 {
 	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
 	{
 		$(".templateDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
@@ -365,6 +424,7 @@ function getFriendsListForUser(results)
 function showAllRequestMessagesForUser(results,jsObj){
 
 	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
 	if(results.friendRequest ==null)
 	{
 		$("#headerDiv").html('You have 0 Requests');
@@ -393,6 +453,7 @@ function showRequestedMessagesForAUser(results)
 	
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
 	if(results.resultStatus.resultCode !="0")
 	{
 		$(".templateDivMsg").html("Data could not be retrived due to some technical difficulties.").appendTo(".placeholderCenterDiv");
@@ -405,6 +466,7 @@ function showRequestedMessagesForAUser(results)
 	}
 		
 	$(".placeholderCenterDiv").children().remove();
+	
 		$("#headerDiv").html('Unread: <span style="color:blue;">'+ results.unreadMsgCount +' </span> Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span>');
 		for(var i in results.candidateVO)
 		{
@@ -413,10 +475,10 @@ function showRequestedMessagesForAUser(results)
 		templateClone.removeClass("templateDivMsg");
 		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
 		if(results.candidateVO[i].status == "UNREAD")
-			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+			templateClone.find(".message").html(''+results.candidateVO[i].message+'').css("font-weight","bold");
 		else
-			templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
 			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+			templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			templateClone.find(".reply").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')" >REPLY</a>');
 			templateClone.find(".msgDelete").html('<a href="javascript:{}">DELETE</a>');
@@ -559,6 +621,7 @@ function showSpecialPages(results)
 {
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
 	if(results.length == 0)
 	{
 		$(".templateDiv").html("Special Pages Are Not Available.");
@@ -599,6 +662,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 {
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();	
+	clearAllSubscriptionDivs();
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
 	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
@@ -726,6 +790,7 @@ function getAllConnectedUsersByFilterView(locationType)
 	var users = results.candidateVO;
 	
 	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html('');
@@ -768,6 +833,34 @@ function getAllConnectedUsersByFilterView(locationType)
 
 function showAllPostedProblems_paginator(jsObj,results)
 {
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	
+	var problemsData = results.problemsInfo;
+
+	if(problemsData == null)
+	{
+		$('.problemTemplateDiv').html('Problems Does Not Exists').appendTo('.placeholderCenterDiv');
+		return;
+	}
+	
+	for(var i in problemsData)
+	{
+		var template = $('.problemTemplateDiv');
+		var templateClone = template.clone();
+		templateClone.removeClass('problemTemplateDiv');
+		templateClone.find('.problemTitle').html(''+problemsData[i].definition+'');
+		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
+		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
+		templateClone.find('.likeCls').html('Like');
+		templateClone.find('.commentCls').html('Comment');
+		templateClone.find('.shareCls').html('Share');
+		templateClone.appendTo('.placeholderCenterDiv');
+	}
+
+	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
+	pagination.appendTo('.placeholderCenterDiv');
 }
 
 
@@ -836,6 +929,260 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 	//else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
 		//elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent to the selected users due to some technical difficulty.</blink></font>';
 }
+
+
+//politial Reasons 
+
+
+function showAllPostedReasons_paginator(jsObj,results)
+{
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+
+	var data = results.candidateComments;
+
+	if(data == null)
+	{
+		$(".templateDivMsg").html('<div>No comments.</div>').appendTo(".placeholderCenterDiv");;
+			return;
+	}
+	for(var i in data)
+	{
+		var status;
+		var template = $('.politicalReasonsTemplate');
+		var templateClone = template.clone();
+		templateClone.removeClass('politicalReasonsTemplate');
+		
+		if(data[i].rank == 1)
+			status = "winning";
+		else
+			status = "losing";
+
+		templateClone.find('.headingCls').html('Political Reason for'+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
+		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
+		templateClone.find('.politicalDescCls').html('Description: '+data[i].commentDesc+'');
+		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
+		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
+		templateClone.appendTo('.placeholderCenterDiv');
+	}
+	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
+	pagination.appendTo('.placeholderCenterDiv');
+
+}
+
+//political reasons Count 
+
+
+function getAllPostedReasonsForUser()
+{
+
+	var jsObj=
+	{
+			task:"getAllPostedReasonsStatusUser"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllPostedReasonsStatusUserAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+
+
+/* -- subscription functions Start -- */
+
+function showAllUserSubScribedSpecialPagesPages(jsObj,results)
+{
+	
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	$('#userSpecialPageSubscriptionsDiv').children().remove();
+
+	var specialPages = results.userSpecialPageSubscriptions;
+	if(specialPages == null || specialPages.length == 0)
+	{
+		$('#userSpecialPageSubscriptionsDiv').html("Special page subscriptions are not available.");
+		return;
+	}
+	
+	var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Special Pages</span>');
+	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	div.append(label);
+	div.append(btns);
+	$('#userSpecialPageSubscriptionsDiv').append(div);
+	for(var i in specialPages)
+	{
+		if(specialPages[i].subscribed)
+		{
+		  var template = $(".specialPagSubscrTemplDiv");
+		  var templateClone = template.clone();
+		  templateClone.removeClass('specialPagSubscrTemplDiv');
+		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
+		  templateClone.find('.imgClass').html('<img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
+		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
+		  templateClone.appendTo('#userSpecialPageSubscriptionsDiv');
+		}
+		else
+		{
+		  var template = $(".specialPagSubscrTemplDiv");
+		  var templateClone = template.clone();
+		  templateClone.removeClass('specialPagSubscrTemplDiv');
+		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
+		  templateClone.find('.imgClass').html('<img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Subscribed</a>');
+		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
+		  templateClone.appendTo('#userSpecialPageUnSubscriptionsDiv');
+		
+		}
+	}
+	
+}
+
+
+function buildSubscribeButtons(id,userSubscribedPages)
+{
+	
+	if(userSubscribedPages != null)
+	  if(id == userSubscribedPages.id)
+		return true
+		else 
+	return true;
+
+}
+
+
+function showAllUserCandidateSubscriptions(jsObj,results)
+{
+	
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	$('#userCandidateSubscriptionsDiv').children().remove();
+	var politicians = results.userCandidateSubscriptions;
+
+	if(politicians == null || politicians.length == 0)
+	{
+		$('#userCandidateSubscriptionsDiv').html("Politician subscriptions are not available.");
+		return;
+	}
+	
+	var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Politicians</span>');
+	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	div.append(label);
+	div.append(btns);
+	$('#userCandidateSubscriptionsDiv').append(div);
+	
+	for(var i in politicians)
+	{
+		
+		var template = $(".specialPagSubscrTemplDiv");
+		var templateClone = template.clone();
+		templateClone.removeClass('specialPagSubscrTemplDiv');
+		templateClone.find('.titleCls').html(''+politicians[i].name+'');
+		templateClone.find('.imgClass').html('<img height="100" width="95" src="images/candidates/'+politicians[i].name+'.jpg"/>');
+		/*if(buildSubscribeButtons(results.profileCandidateSubscriptions[i].id,results.userCandidateSubscriptions))
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
+		else*/
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		
+		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+politicians[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="candidatePage"/>');
+		templateClone.appendTo('#userCandidateSubscriptionsDiv');
+	}
+}
+
+
+
+function showAllUserConstituencySubscriptions(jsObj,results)
+{
+	
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	$('#userConstituencySubscriptionsDiv').children().remove();
+	var constituencies = results.userConstituencySubscriptions;
+
+	if(constituencies == null || constituencies.length == 0)
+	{
+		$('#userConstituencySubscriptionsDiv').html("Constituency subscriptions are not available.");
+		return;
+	}
+	
+	var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Constituencies</span>');
+	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	div.append(label);
+	div.append(btns);
+	$('#userConstituencySubscriptionsDiv').append(div);
+	for(var i in constituencies)
+	{
+		var template = $(".specialPagSubscrTemplDiv");
+		var templateClone = template.clone();
+		templateClone.removeClass('specialPagSubscrTemplDiv');
+		templateClone.find('.titleCls').html(''+constituencies[i].name+'');
+		//templateClone.find('.imgClass').html('<img height="100" width="95" src="images/party_flags/'+results.profilePartySubscriptions[i].name+'.png"/>');
+		/* if(buildSubscribeButtons(results.profileConstituencySubscriptions[i].id,results.userConstituencySubscriptions))
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
+		else*/
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
+		templateClone.appendTo('#userConstituencySubscriptionsDiv');
+	}
+}
+
+function showAllUserPartySubscriptions(jsObj,results)
+{
+	
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	$('#userPartySubscriptionsDiv').children().remove();
+	var partySubscriptions = results.userPartySubscriptions;
+
+	if(partySubscriptions == null || partySubscriptions.length == 0)
+	{
+		$('#userPartySubscriptionsDiv').html("Party subscriptions are not available.");
+		return;
+	}
+	
+	var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Parties</span>');
+	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	div.append(label);
+	div.append(btns);
+	$('#userPartySubscriptionsDiv').append(div);
+	for(var i in partySubscriptions)
+	{
+		var template = $(".specialPagSubscrTemplDiv");
+		var templateClone = template.clone();
+		templateClone.removeClass('specialPagSubscrTemplDiv');
+		templateClone.find('.titleCls').html(''+partySubscriptions[i].title+'');
+		templateClone.find('.imgClass').html('<img height="100" width="95" src="images/party_flags/'+results.userPartySubscriptions[i].name+'.png"/>');
+		/* if(buildSubscribeButtons(results.profilePartySubscriptions[i].id,results.userPartySubscriptions))
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
+		else*/
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
+		templateClone.appendTo('#userPartySubscriptionsDiv');
+	}
+}
+
+function clearAllSubscriptionDivs()
+{
+	$("#userSpecialPageSubscriptionsDiv").html('');
+	$("#userSpecialPageUnSubscriptionsDiv").html('');
+	$("#userCandidateSubscriptionsDiv").html('');
+	$("#userPartySubscriptionsDiv").html('');
+	$("#userConstituencySubscriptionsDiv").html('');
+
+	$("#userSpecialPageSubscriptionsDiv").children().remove();
+	$("#userSpecialPageUnSubscriptionsDiv").children().remove();
+	$("#userCandidateSubscriptionsDiv").children().remove();
+	$("#userPartySubscriptionsDiv").children().remove();
+	$("#userConstituencySubscriptionsDiv").children().remove();
+
+}
+
+/* -- subscription functions End -- */
+
 
 
 <!--OPINION POLL SCRIPTS START-->
