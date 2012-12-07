@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class ProblemBeanVO extends ResultStatus implements Serializable{
@@ -116,8 +117,9 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long stateId;
 	private Long districtId;
 	private Long constituencyId;
-	
-	
+	private List<ProblemBeanVO> problemBeanVOList;
+	private Date postDate;
+	private String userImageURL;
 	
 	public CompleteProblemDetailsVO getAverageRating() {
 		return averageRating;
@@ -975,6 +977,30 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setHasPartyAnalystUserRole(Boolean hasPartyAnalystUserRole) {
 		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
+	}
+
+	public List<ProblemBeanVO> getProblemBeanVOList() {
+		return problemBeanVOList;
+	}
+
+	public void setProblemBeanVOList(List<ProblemBeanVO> problemBeanVOList) {
+		this.problemBeanVOList = problemBeanVOList;
+	}
+
+	public Date getPostDate() {
+		return postDate;
+	}
+
+	public void setPostDate(Date postDate) {
+		this.postDate = postDate;
+	}
+
+	public String getUserImageURL() {
+		return userImageURL;
+	}
+
+	public void setUserImageURL(String userImageURL) {
+		this.userImageURL = userImageURL;
 	}
 
 	
