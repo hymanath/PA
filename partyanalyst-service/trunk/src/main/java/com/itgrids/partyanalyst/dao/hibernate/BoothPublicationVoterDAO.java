@@ -419,4 +419,16 @@ public class BoothPublicationVoterDAO extends
 		queryObj.setParameter("panchayatId", panchayatId);
 		  return queryObj.list();
 	}
-}
+	
+	//caste Info For Municipality
+	public List getVotersCastInfoFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.localBody.localElectionBodyId in(select distinct model1.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model1 where model1.assemblyLocalElectionBodyId = :assemblyLclElecBodyId ) group by model.voter.cast,model.voter.gender order by model.voter.cast");
+		 query.setParameter("publicationDateId", publicationDateId);
+		 query.setParameter("assemblyLclElecBodyId", assemblyLclElecBodyId);
+		  return query.list();
+	}
+
+	
+	}
