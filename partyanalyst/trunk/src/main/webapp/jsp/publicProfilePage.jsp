@@ -8,12 +8,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Profile Page</title>
 
-<script type="text/javascript" src="js/userProfile/userProfilePage.js"> </script>
+<script type="text/javascript" src="js/publicProfile/publicProfilePage.js"> </script>
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
 
-<link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
+<link type="text/css" href="styles/publicProfile/publicProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 
 
@@ -221,7 +221,9 @@ padding:5px 20px;
 			<div class="friendsDiv widget blue">
 			<h2>
 				<span><i class="icon-fire" id="icon_leftsec"></i></span>
-					Friends</h2>
+					Friends 
+					<!-- <span style="font-size: 11px;margin-left: 120px;text-transform: none;cursor:pointer;" class="friendsLink">See All</span>-->
+					</h2>
 					<div>
 					<ul>
 				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
