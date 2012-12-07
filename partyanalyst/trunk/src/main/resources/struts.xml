@@ -3745,5 +3745,81 @@
 			</result> 
 		</action>
 		
+		<action name="getUserSubScriptionsAction" class="userProfileAction" method="getUserSubScription">
+			<result type="json" name="success">
+			  <param name="root">subscriptionsMainVO</param>
+		    </result>
+		</action> 
+		
+		<action name="getLatestFriendsListAction" class="userProfileAction" method="AjaxHandler">
+		  <result type="json" name="success">
+           		<param name="root">connectedUsers</param>
+			</result>
+		</action>
+		
+		<action name="getReqMessagesForUserAction" class="userProfileAction" method="AjaxHandler">
+		  <result type="json" name="success">
+           		<param name="root">userDetails</param>
+			</result>
+		</action>
+		
+		<action name="getAllPostedReasonsAction" class="userProfileAction" method="getAllPostedReasonsDataForProfilePage">
+			<result type="json" name="success">
+				<param name="root">userComments</param>				
+			</result>		
+		</action>
+		
+		<action name="getAllPostedProblemsAction" class="userProfileAction" method="getAllPostedProblemsForProfilePage">
+			<result type="json" name="success">
+				<param name="root">problemDetailsVO</param>				
+			</result>		
+		</action>
+		
+		<action name="publicProfile" class="publicProfileAction">
+			<result name="success">/jsp/publicProfilePage.jsp</result>
+		</action>
+        
+        <action name="getFriendsListForPublicProfileAction" class="publicProfile" method="AjaxHandler">
+		  <result type="json" name="success">
+           		<param name="root">connectedUsers</param>
+			</result>
+		</action>
+		
+		<action name="getReqMessagesForPublicProfileAction" class="publicProfile" method="AjaxHandler">
+		  <result type="json" name="success">
+           		<param name="root">userDetails</param>
+			</result>
+		</action>
+		
+		<action name="getAllRequestMessagesForPublicProfileAction" class="publicProfile" method="getRequestMessagesForUser">
+			<result type="json" name="success">
+				<param name="root">dataTransferVO</param>				
+			</result> 
+		</action>
+		
+        <action name="getSpecialPageForPublicProfileAction" class="publicProfile" method="getSpecialPages">
+			<result type="json" name="success">
+			  <param name="root">specialPageVOList</param>
+		    </result>
+		</action>
+		
+		 <action name="getUserSubScriptionsForPublicProfileAction" class="publicProfile" method="getUserSubScription">
+			<result type="json" name="success">
+			  <param name="root">subscriptionsMainVO</param>
+		    </result>
+		</action>
+		
+		<action name="getAllPostedReasonsForPublicProfileAction" class="publicProfile" method="getAllPostedReasonsDataForProfilePage">
+			<result type="json" name="success">
+				<param name="root">userComments</param>				
+			</result>		
+		</action>
+		
+		<action name="getAllPostedProblemsForPublicProfileAction" class="publicProfile" method="getAllPostedProblemsForProfilePage">
+			<result type="json" name="success">
+				<param name="root">problemDetailsVO</param>				
+			</result>		
+		</action>
+		
 		</package>
 </struts>      
