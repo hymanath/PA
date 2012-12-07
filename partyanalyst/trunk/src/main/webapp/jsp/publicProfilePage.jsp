@@ -174,6 +174,11 @@ padding:5px 20px;
 .publicProfileInnerDiv{background:#fafafa}
 .problemShowDiv{ background: #FFFFFF;border: 1px solid #CDCDCD;margin-top: 15px;padding:10px;margin-bottom:10px;}
 .problemTitle{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
+.friendsImgs{border: 1px solid #CDCDCD;margin-top: 10px; margin-right: 6px; background:  #00FFFF;}
+.imgLi{clear: both;
+    display: -moz-inline-stack;
+    
+    width: 85px;}
 </style>
 </head>
 <body>
@@ -213,7 +218,22 @@ padding:5px 20px;
 				</div>
 			</div>
 			<div class="span4">
-			
+			<div class="friendsDiv widget blue">
+			<h2>
+				<span><i class="icon-fire" id="icon_leftsec"></i></span>
+					Friends</h2>
+					<div>
+					<ul>
+				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
+
+					<li class="imgLi">
+						<a href="publicProfile.action?profileId=${friendsDetails.registrationID}"><img width="70px" height="70px" src="pictures/profiles/${friendsDetails.userProfilePic}" class="friendsImgs"/></a>
+						<span>${friendsDetails.firstName} ${friendsDetails.lastName}</span>
+					</li>
+				</c:forEach>
+				</ul>
+				</div>
+			</div>
 			<!-- opinionPollDiv Start -->
 				<div class="widget blue" style="padding-bottom:0px;">
 					<h2><span><i class="icon-signal "id="icon_leftsec"></i><span>
@@ -235,7 +255,7 @@ padding:5px 20px;
 					<span><i class="icon-fire" id="icon_leftsec"></i></span>
 					You Might Like</h2>
 				
-					<c:forEach var="specialPages" items="${specialPageVOList}" begin="0" end="1">
+					<c:forEach var="specialPages" items="${specialPageVOList}">
 					<div class="media media_hr widget-block">
 						
 						<div class="media-body">
