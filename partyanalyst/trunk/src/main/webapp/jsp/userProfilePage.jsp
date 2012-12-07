@@ -224,6 +224,23 @@ padding:5px 20px;
 	.templateMessage .message{color:#000;margin-left:50px;padding:10px;}
 	.templateMessage .msgBtns{width:50%;margin-left:auto;margin-right:auto;}
 	
+	/* subscription Styles Start */
+	.specialPagSubscrDiv{margin-top: 10px;} 
+	.specialPagSubscrDiv .btnClass{margin-top: 35px;}
+	.subscriptionType{font-size: 15px;font-weight: bold;margin-right: 133px;}
+	.unSubscriptionBtn{margin-left: 25px;}
+    .subscriptionInnerDiv{clear:both; margin-bottom: 10px;margin-top: 10px;display: table;}
+
+	
+	.problemheadClass{margin-bottom: 20px;margin-top: 10px;}
+	.problemsShowDiv,.politicalReasonsDiv{border: 1px solid #D3D3D3;border-radius: 5px;padding: 10px; padding-top: 2px;margin-top: 10px;}
+	.problemTitle,.headingCls{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
+	.likeCls{margin-right: 55px; margin-left: 62px;}
+	.commentCls{margin-right: 62px;}
+	.problemFromDate{margin-left: 245px;}
+
+	
+	/* subscription Styles End */
 	
 </style>
 </head>
@@ -289,7 +306,7 @@ padding:5px 20px;
 						Interests
 					</h4>
 					<p class="p3"><a href="javascript:{}" class="subscriptionsLink">Subscriptions</a></p>
-					<p class="p3"><a href="javascript:{}">Asses Politician</a></p>
+					<p class="p3"><a href="javascript:{}" class="assessPoliticianLink">Asses Politician</a></p>
 					<p class="p3"><a href="javascript:{}" id="specialPageLink">Special Pages</a></p>
 				</div>
 				
@@ -301,7 +318,16 @@ padding:5px 20px;
 			<div class="span6">
 				<div class="widget green">
 				<div id="headerDiv"></div>
-					<div class="placeholderCenterDiv"></div>	  
+					<div class="placeholderCenterDiv"></div>
+						<div id="subscriptionsDiv">
+							<div id="userSpecialPageSubscriptionsDiv" class="subscriptionInnerDiv"></div>
+							<div id="userSpecialPageUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
+
+							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
+							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+							
+					</div>
 				</div>
 
 			</div>
@@ -447,13 +473,55 @@ padding:5px 20px;
 			</div>
 	</div>
 	
+
+	<div class="specialPagSubscrTemplDiv templateholder specialPagSubscrDiv templatePersons">
+		<div class="imgClass"></div>
+		<div class="prinfo">
+			<span class="titleCls"></span>
+			<span class="btnClass"></span>
+			<span class="hiddenVar"></span>
+		</div>
 		
+	</div>
+
+	<div class="problemTemplateDiv templateholder problemsShowDiv">
+		<div class="problemsShowDIV">
+			<div class="">
+				<span class="problemImg"></span>
+				<span class="postedPersonName"></span>
+			</div>
+			<div class="problemheadClass">
+				<p class="problemTitle"></p>
+				<p class="problemDescription"></p>
+				<span class="problemFromDate"></span>
+			</div>
+			<span class="likeCls"></span>
+			<span class="commentCls"></span>
+			<span class="shareCls"></span>
+		</div>
+	</div>
+	
+		
+	<div class="politicalReasonsTemplate templateholder politicalReasonsDiv">
+		<div class="politicalReasonsInnerDiv">
+			<p class="headingCls"></p>
+			<div class="politicalReasons">
+				<p class="politicalReaCls"></p>
+				<p class="politicalDescCls"></p>
+				<p class="polReaPostedDate"></p>
+				<p class="polReaPostedPerName"></p>
+
+			</div>
+		</div>
+	</div>
+
+
 <!-- Templated END -->
 
 	
 
 <script>
-buildPolls();
+
 
 
 districtId = '${dataTransferVO.districtId}';
