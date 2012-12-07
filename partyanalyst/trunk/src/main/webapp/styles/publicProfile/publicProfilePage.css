@@ -1,0 +1,70 @@
+#profilePageMainDiv{margin-left:auto;margin-right:auto;float:none;width:980px;}
+.widget-block{margin-top:5px;}
+/*.userMenu{background:#7596c0;color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: right;}*/
+#profileUserName{margin-left:10px;font-size:16px;font-weight:bold;}
+.p1{color: #000; text-align:center;}
+/*.applicationCls{background:#789440;color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: right;}*/
+.p2{color: #000; text-align:center;}
+
+/*.interestsCls{background:#31859b;color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: right;}*/
+.p3{text-align:center;}
+.p3 a{color: #000;}
+
+
+.centerDivCls{background:#FAFAFA;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 10px 0 20px;
+    padding: 20px;
+    position: relative;}
+	#profilePageMainDiv textarea{background:#FFF;border:1px solid #E1EAF7 !important;}
+	.centerDivCls textarea{margin-left: 63px;}
+	.p4{margin-left: 222px;margin-top: 15px;}
+	.p4 select{ width: 150px;}
+
+	.postBtn{background: #D6ADAA;
+    border: 3px solid #6F423E;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-left: 270px;
+    padding: 1px 35px;}
+	#profilePageMainDiv{padding:10px;margin-top:10px;margin-bottom:10px;background:#FFF;}
+	.centerDivCls span{margin-left: 65px;}
+	/*.profileStatisticsDiv{background: #BFCFE2;}*/
+	.profileStatisticsDiv ul{ margin-left: 27px;padding-top:10px;padding-bottom: 10px;}
+	.profileStatisticsDiv ul li{ line-height: 1.8em;}
+	.connectPeopleHeading{background:#7f7f7f;color:#FFF}
+.connectPeopleDiv{border-bottom:2px solid #d4d4d4;}
+.opinionPollCls{background:#31859b;color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+	margin-bottom: -11px; padding-top: 4px;
+    }
+	
+ .opinionPollDiv{border: 1px solid #D3D3D3;}
+.specialPageCls{ background:#C4D6A0;
+    margin-top: 0;
+    padding-top: 10px;height: 300px;
+    margin-bottom: 13px;
+    padding: 5px;}
+	.specialPageHeading{background:#789440;color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+	margin-bottom: -11px; padding-top: 4px;}
+	.specialPageHeading span{margin-left: 151px; font-size: 12px;}
+	.specialPageHeading a{color:#FFF;}
+	.specialPageCls h5{ color: #000000;
+    font-size: 14px;}
+	#opinionPollInnerDiv{ margin-top: 20px;
+    padding: 5px;}
+	.pager a{margin-bottom:5px;float:none !important;}
+	.opinionpoll h5{font-size:15px;}
