@@ -46,4 +46,16 @@ public class PartySubscriptionsDAO extends GenericDaoHibernate<PartySubscription
 		return getHibernateTemplate().find("select model.party.partyId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName,model.party.longName from PartySubscriptions model ");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllSubScribedPartyPages(Long userId)
+	{
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName from PartySubscriptions model where model.user.userId =?",userId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUserSubscribedPartyPages(Long userId)
+	{
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.party.longName,model.user.userId from PartySubscriptions model,Party model2 where model.user.userId = ? and model.party.partyId = model2.partyId ",userId);
+	}
+	
 }
