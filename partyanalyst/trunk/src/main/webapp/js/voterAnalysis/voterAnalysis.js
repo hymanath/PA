@@ -1,8 +1,9 @@
 var constMgmtMainObj={
 							
-							castStatsArray:[]
+							castStatsArray:[],
+							castStatssubArray:[],
 							
-						};
+					};
 
 function buildOuterView()
 		{
@@ -423,14 +424,16 @@ function showImportantFamiliesDiv()
 								    if(myResults != null)
 									buildVotersBasicInfo(myResults);
 								}
-								else if(jsObj.task == "getCastInfo")
+							else if(jsObj.task == "getCastInfo")
 								{
 									buildCastInfoData(myResults);
 								}
-								else if(jsObj.task == "importantFamiliesinfo")
+
+								else if(jsObj.task == "getCastInfoForsubLevels")
 								{
-								    
+									buildCastInfoForSubLevels(myResults);
 								}
+								
 
 							}catch (e) {   
 								
@@ -557,18 +560,20 @@ $(document).ready(function(){
 		   getvotersBasicInfo();
 		 else if($("#reportLevel").val() == 4 && $("#pollingStationField option").length > 0 && $("#pollingStationField").val() != 0 )
 		   getvotersBasicInfo();
-			getVotersCastInfo();
+			
 		}
 	});
 });
+
+
 
 
 function getVotersCastInfo()
 	{
 	
   $("#localCastStatsTabContent_header").html("");
-  var divId = document.getElementById('localCastStatsTabContent_body');
- divId.innerHTML ='';
+  var divEle = document.getElementById('localCastStatsTabContent_body');
+	divEle.innerHTML ='';
 	var publicationDateId = $("#publicationDateList").val();
 	var level = $("#reportLevel").val();
 	var type = '';
@@ -606,6 +611,76 @@ function getVotersCastInfo()
 		callAjax(jsObj,url);
 	}
 
+function buildCastInfoForSubLevels(myresults)
+	{
+		
+		var str ='';
+		var divId=document.getElementById('localCastStatsTabContent_subbody');
+		var	subLevelcastInfo = new Array();
+		var cast = myresults.castVosList;
+		
+		for(var i in cast)
+		{
+		if(cast[i].voterCastInfoVO != null)
+		{
+		var subLevelcastData = cast[i].voterCastInfoVO; 
+		var name = cast[i].mandalName;
+		var totalVoters=subLevelcastData.totalVoters;
+		var cast1 =subLevelcastData.castVOs;
+			
+			for(var k in cast1)
+			{
+		var castStats1 = {
+			mandal : name,
+			caste : cast1[k].castName,
+			castePopulation : cast1[k].castCount,
+			malePopulation : cast1[k].malevoters,
+			femalePopulation : cast1[k].femalevoters,
+			castePercentage:cast1[k].castPercentage,
+			totalVoters:totalVoters,
+			};
+
+			subLevelcastInfo.push(castStats1);
+
+		
+		}
+		}
+		}
+		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
+
+		str +='<table id="subLevelTable">';
+		str+='<tr>';
+		str +='<th>MandalName</th>';
+		str +='<th> Caste</th>';
+		str +='<th>TotalVoters</th>';
+		str +='<th>castPopulation</th>';
+		str +='<th>malePopulation</th>';
+		str +='<th>FemalePopulation</th>';
+		str +='<th>castPercentage</th>';
+		
+		str+='</tr>';
+		
+		
+		for(var i in constMgmtMainObj.castStatssubArray)
+		{
+		str+='<tr>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
+		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePopulation+'</td>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].malePopulation+'</td>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].femalePopulation+'</td>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePercentage+'</td>';
+	
+		}
+		str +='</tr>';
+		str +='</table>';
+
+		divId.innerHTML = str;
+		
+
+	
+}
 
 function getvotersBasicInfo(){
    $("#votersBasicInfoDiv").html("");
@@ -771,7 +846,7 @@ function buildVotersChart(chartInfo,reqTitle){
      $("#localCastStatsTabContent_body").html("No Data Found");
    }	
 	}
-	function buildLocalCastStatisticsDataTableForAssembly()
+   function buildLocalCastStatisticsDataTableForAssembly()
 	{
 		
 	
@@ -813,3 +888,5 @@ function buildVotersChart(chartInfo,reqTitle){
 
 				
 	} 
+
+	
