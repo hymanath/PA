@@ -54,7 +54,7 @@ public void setBoothPublicationVoterDAO(
 	}
 }*/
 
-public void testgetGenderWiseCountInConstituency()
+/*public void testgetGenderWiseCountInConstituency()
 {
 	List list = boothPublicationVoterDAO. getGenderWiseCountInConstituency(232l,2l);
 	for(Object[] voter:(List<Object[]>)list)
@@ -63,6 +63,28 @@ public void testgetGenderWiseCountInConstituency()
 		System.out.println(voter[1]);
 		System.out.println(voter[2]);
 	}
+}*/
+
+/*public void testfindVotersCastInfoByMandalAndPublicationDateBasedOnSearch()
+{
+	 List list = boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(835l, 2l);
+	 for(Object[] voter:(List<Object[]>)list)
+		{
+			System.out.println(voter[0]);
+			System.out.println(voter[1]);
+			System.out.println(voter[2]);
+		}
+}*/
+
+public void testgetVotersCastInfoFromLocalElectionBody()
+{
+	 List list = boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(31l,2l);
+	 for(Object[] voter:(List<Object[]>)list)
+	 {
+		 System.out.println(voter[0]);
+		 System.out.println(voter[1]);
+		 System.out.println(voter[2]);
+	 }
 }
 	
 }
