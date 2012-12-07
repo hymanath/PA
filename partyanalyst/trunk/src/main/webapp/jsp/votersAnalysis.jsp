@@ -123,6 +123,22 @@ p {
  padding:5px;
 
 }
+#subLevelTable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;}
+#subLevelTable tr:nth-child(even){background:#EdF5FF;}
+
+#subLevelTable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+
+#subLevelTable th
+{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	}
 
 
 </style>
@@ -205,7 +221,7 @@ locationDetails.constituencyArr.push(ob);
 				  <tr>
 			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Cast Statistics" 
-					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();"></b> </td>
+					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters" id="votersId" style="height:24px;" onclick="showVotersDiv()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise" id="ageWiseId" style="height:24px;" onclick="showAgeDiv()"></b> </td>
 					
@@ -281,9 +297,11 @@ locationDetails.constituencyArr.push(ob);
 
 	<div id='LocalCastDiv' class="divInfo">
 	<div id='localCastStatsTabContent_header'></div>
-	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
+	<div id='localCastStatsTabContent_subbody'>
 	
-	</div>
+		</div>
+
 
 </div>
 
@@ -365,6 +383,50 @@ showImportantFamiliesDiv();
 </script>
 
 <script>
+
+function getCastInfoForsubLevel()
+	{
+
+	var publicationDateId = $("#publicationDateList").val();
+	var level = $("#reportLevel").val();
+	var type = '';
+	var id='';
+	var mandalId='';
+	if(level == 1){
+	type = 'constituency';
+	id = $("#constituencyList").val();
+	}
+	else if(level == 2){
+	type = 'mandal';
+	mandalId = $("#mandalField").val();
+	id=mandalId.substring(1);
+
+	}
+	else if(level == 3){
+	  type = 'panchayat';
+	  id = $("#panchayatField").val();
+	}
+	else if(level == 4){
+		 type = 'booth';
+		 id = $("#pollingStationField").val();
+	}
+		
+		var jsObj=
+		{		
+				
+				searchType : "Caste",
+				searchText : "R",
+				type:type,	
+				id:id,
+
+				publicationDateId:publicationDateId,	
+				task:"getCastInfoForsubLevels"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	}
 function getVoterDetailsForConstituency(){
 
 
