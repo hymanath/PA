@@ -453,7 +453,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
 		
-		//electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId);
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId);
 		return Action.SUCCESS;
 	
 	}
