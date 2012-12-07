@@ -72,4 +72,6 @@ public interface IBoothPublicationVoterDAO extends
 
 
 	public List<Object[]> getImpFamilesForPanchayatByPublicationId(Long panchayatId,Long publicationDateId,String queryString);
+	
+	public List getVotersCastInfoFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId);
 }
