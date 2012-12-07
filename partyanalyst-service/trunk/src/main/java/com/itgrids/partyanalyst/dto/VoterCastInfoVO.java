@@ -9,8 +9,8 @@ public class VoterCastInfoVO {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private List<CastVO> castVOs;
-	private List<VoterCastInfoVO> castVosList = new ArrayList<VoterCastInfoVO>();
-	
+	private List<VoterCastInfoVO> voterCastInfoVOList;
+	private VoterCastInfoVO voterCastInfoVO;
 	private String mandalName;
 		
 	
@@ -27,15 +27,15 @@ public class VoterCastInfoVO {
 		this.castVOs = castVOs;
 	}
 	
-	public List<VoterCastInfoVO> getCastVosList() {
-		return castVosList;
-	}
-
-	public void setCastVosList(List<VoterCastInfoVO> castVosList) {
-		this.castVosList = castVosList;
-	}
-
 	
+	public List<VoterCastInfoVO> getVoterCastInfoVOList() {
+		return voterCastInfoVOList;
+	}
+
+	public void setVoterCastInfoVOList(List<VoterCastInfoVO> voterCastInfoVOList) {
+		this.voterCastInfoVOList = voterCastInfoVOList;
+	}
+
 	public String getMandalName() {
 		return mandalName;
 	}
@@ -74,6 +74,14 @@ public class VoterCastInfoVO {
 	
 	public void setCastVOs(List<CastVO> castVOs) {
 		this.castVOs = castVOs;
+	}
+
+	public VoterCastInfoVO getVoterCastInfoVO() {
+		return voterCastInfoVO;
+	}
+
+	public void setVoterCastInfoVO(VoterCastInfoVO voterCastInfoVO) {
+		this.voterCastInfoVO = voterCastInfoVO;
 	}
 	
 	
