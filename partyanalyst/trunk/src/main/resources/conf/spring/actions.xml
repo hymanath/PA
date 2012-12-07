@@ -983,6 +983,12 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		
 	</bean>
-
-
+	
+	<bean id="publicProfileAction" class="com.itgrids.partyanalyst.web.action.PublicProfileAction">
+		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="specialPageService" ref="specialPageService" />	
+		<property name="problemManagementService" ref="problemManagementService" /> 
+	</bean>
+	
 </beans>	
