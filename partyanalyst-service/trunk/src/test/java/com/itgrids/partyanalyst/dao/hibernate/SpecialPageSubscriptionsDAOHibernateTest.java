@@ -31,7 +31,7 @@ public class SpecialPageSubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(specialPageSubscriptionsDAO.unSubscriptionDetails(10l,611l));
 	}*/
 	
-	public void testGetResult()
+	/*public void testGetResult()
 	{
 		List<SpecialPageSubscriptions> results=specialPageSubscriptionsDAO.getSubscriberDetails(10l,611l);
 				System.out.println("Size :" + results.size());
@@ -40,6 +40,24 @@ public class SpecialPageSubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(subscriptions.getSpecialpage().getName());
 		}
 			
+	}*/
+	
+	/*public void testGetAllSubScribedSpecialPages()
+	{
+		List<Object[]> list =specialPageSubscriptionsDAO.getAllUserSubscribedSpecialPages(1l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println(params[0].toString());
+		}
+	}*/
+	public void testGetUserSubscribedSpecialPageIds()
+	{
+		List<Long> list =specialPageSubscriptionsDAO.getUserSubscribedSpecialPageIds(1l);
+		System.out.println(list.size());
+		
 	}
+	
+	
 
 }

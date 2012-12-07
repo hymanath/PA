@@ -30,14 +30,30 @@ public class PartySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(partySubscriptionsDAO.unSubscriptionDetails(1117l,611l));
 	}*/
 	
-	public void testGetResults()
+	/*public void testGetResults()
 	{
 		List<PartySubscriptions> results=partySubscriptionsDAO.getSubscriberDetails(1117l, 611l);
 		for(PartySubscriptions subscriptions:results)
 		{
 			System.out.println(subscriptions.getParty().getLongName());
 		}
+	}*/
+	/*public void testGetAllSubScribedPartyPages()
+	{
+		List<Object[]> list = partySubscriptionsDAO.getAllSubScribedPartyPages(1l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+			System.out.println(params[0].toString());
+	}*/
+	
+	public void testGetAllUserSubscribedPartyPages()
+	{
+		List<Object[]> list = partySubscriptionsDAO.getAllUserSubscribedPartyPages(1l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]);
+		}
 	}
-
 
 }

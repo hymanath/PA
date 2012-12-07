@@ -84,7 +84,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(user.getFirstName());
 	}*/
 	
-	public void testAllRegisteredUsersData()
+	/*public void testAllRegisteredUsersData()
 	{
 		List<Object[]> users = userDAO.allRegisteredUsersData();
 		System.out.println(users.size());
@@ -96,7 +96,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 		
-	}
+	}*/
 	/*public void testGetUserByUserName()
 	{
 		List<User> params = userDAO.getUserByUserName("a.dakavaram@itgrids.com");
@@ -240,5 +240,38 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}*/
+	
+	/*public void testGetUserBasicDetailsForProfile()
+	{
+		List<Object[]> userList = userDAO.getUserBasicDetailsForProfile(1l);
+		System.out.println(userList.size());
+		if(userList !=null && userList.size() > 0)
+		{
+			for(Object[] params : userList)
+			{
+				System.out.println(params[1]);
+			}
+		}
+		
+	}*/
+	
+	
+	
+	public void testGetUserBasicDetailsForProfile()
+	{
+		List<Long> userId = new ArrayList<Long>(0);
+		userId.add(1l);
+		userId.add(2l);
+		List<Object[]> userList = userDAO.getUserBasicDetailsForProfile(userId);
+		System.out.println(userList.size());
+		if(userList !=null && userList.size() > 0)
+		{
+			for(Object[] params : userList)
+			{
+				System.out.println(params[1]);
+			}
+		}
+		
+	}
 	
 }
