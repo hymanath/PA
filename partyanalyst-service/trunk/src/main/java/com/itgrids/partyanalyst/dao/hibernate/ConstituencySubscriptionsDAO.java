@@ -38,4 +38,10 @@ public class ConstituencySubscriptionsDAO extends  GenericDaoHibernate<Constitue
 		queryObject.setParameter(1,userId);
 		return queryObject.executeUpdate();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUserSubscribedConstituencyPages(Long userId)
+	{
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name,model.user.userId from ConstituencySubscriptions model,Constituency model2 where model.user.userId = ? and model.constituency.constituencyId = model2.constituencyId",userId);
+	}
 }

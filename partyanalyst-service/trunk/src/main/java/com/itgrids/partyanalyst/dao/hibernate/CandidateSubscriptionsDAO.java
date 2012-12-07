@@ -39,7 +39,14 @@ public class CandidateSubscriptionsDAO extends GenericDaoHibernate<CandidateSubs
 		return queryObject.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllSubscriberDetails(){
 		return getHibernateTemplate().find("select model.candidate.candidateId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName from CandidateSubscriptions model");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUserSubscribedCandidatePages(Long userId)
+	{
+		return getHibernateTemplate().find("select model.candidate.candidateId, model.candidate.lastname, model.user.userId from CandidateSubscriptions model,Candidate model2 where model.user.userId = ? and model.candidate.candidateId = model2.candidateId",userId);
 	}
 }

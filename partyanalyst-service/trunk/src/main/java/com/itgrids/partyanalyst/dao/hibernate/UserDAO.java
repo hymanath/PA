@@ -403,6 +403,14 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return queryObject.list(); 
 	}
 	
-
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserBasicDetailsForProfile(List<Long> userId)
+	{
+		Query queryObject = getSession().createQuery("select model.userId,model.firstName,model.lastName,model.profileImg from User model where model.userId in (:userIds)");
+		queryObject.setParameterList("userIds", userId);
+		return queryObject.list(); 
+	}
 	
 }

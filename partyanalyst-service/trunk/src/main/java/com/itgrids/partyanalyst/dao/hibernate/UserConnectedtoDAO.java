@@ -201,4 +201,29 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		queryObject.setParameter("role", IConstants.FREE_USER);
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllConnectedPeoplesForPublicProfile(Long recepientId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select model.userSource.userId,model.userSource.firstName,model.userSource.lastName,model.userSource.profileImg from UserConnectedto model where");
+		stringBuilder.append(" model.userTarget.userId = ?");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter(0, recepientId);
+		return query.list();
+		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllConnectedPeopleForPublicProfile(Long userId){
+		StringBuilder query = new StringBuilder();	
+		query.append(" select model.userSource.userId, model.userTarget.userId from UserConnectedto model where ");
+		query.append(" (model.userSource.userId =:senderId or  model.userTarget.userId =:senderId) ");	
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter("senderId", userId);
+		
+		return queryObject.list();
+	}
 }
