@@ -29,5 +29,9 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	public List<Object> getConnectedUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
 	
 	public List<Long> getConnectedUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType);
+	
+	public List<Object[]> getAllConnectedPeoplesForPublicProfile(Long recepientId);
+	
+	public List<Object[]> getAllConnectedPeopleForPublicProfile(Long userId);
 
 }
