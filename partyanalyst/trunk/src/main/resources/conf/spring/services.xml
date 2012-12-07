@@ -1248,7 +1248,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
-
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 </beans>		
 	
