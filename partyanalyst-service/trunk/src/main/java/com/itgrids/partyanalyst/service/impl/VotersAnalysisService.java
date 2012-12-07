@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -45,6 +46,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ITehsilDAO tehsilDAO;
 	
+	private IStaticDataService staticDataService;
+	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -575,6 +586,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 		{
 			VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+			SelectOptionVO selectOptionVO = null;
 			List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
 			if(type.equalsIgnoreCase("constituency"))
 			{
@@ -584,6 +596,24 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 			}
 			
+			if(type.equalsIgnoreCase("mandal"))
+			{
+				List<SelectOptionVO> panchayatList= staticDataService.getPanchayatiesByMandalId(new Long(id));
+				
+				mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId);
+			}
+			
+			/*if(type.equalsIgnoreCase("panchayat"))
+			{
+				 List<Object[]> boothsList = hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(id,publicationDateId);
+				 for(Object[] params : boothsList)
+				 {
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long) params[0]);
+				 }
+				
+				
+			}*/
 			return mandalCasts;
 			
 		}
@@ -593,25 +623,51 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleMandal(List<SelectOptionVO> mandalList,Long publicationDateId)
 	{
-		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		VoterCastInfoVO voterCastInfoVO = null;
 		List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
 		if(mandalList != null && mandalList.size() > 0){
 			for(SelectOptionVO mandals : mandalList)
 			{
+				voterCastInfoVO = new VoterCastInfoVO();
 				String mandalId= mandals.getId().toString();
 				String id=mandalId.substring(1);
 				String mandalName = mandals.getName();
 				voterCastInfoVO.setMandalName(mandalName);
-				voterCastInfoVO.getCastVosList().add(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(new Long(id),publicationDateId))) ; 
-				voterCastInfoVO.getCastVosList().add(voterCastInfoVO);
+				// For Mandal
+				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+				voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(new Long(id),publicationDateId)));
+				//Muncipality
+				if(mandalId.substring(0, 1).toString().trim().equalsIgnoreCase("1"))
+				voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(new Long(id),publicationDateId))); 
+				mandalCasts.add(voterCastInfoVO);
 				
 		}
 		}
-		return voterCastInfoVO.getCastVosList();
+		return mandalCasts;
 		
 		
 	}
 	
+//getting All Panchayaties For Mandal
+	
+	public List<VoterCastInfoVO> getVotersCastInfoForMultiplePanchayats(List<SelectOptionVO> panchayatList,Long publicationDateId)
+	{
+		VoterCastInfoVO voterCastInfo = null;
+		List<VoterCastInfoVO> panchayatsList = new ArrayList<VoterCastInfoVO>();
+		if(panchayatList != null)
+		{
+			for(SelectOptionVO pancahyats :panchayatList)
+			{
+				voterCastInfo = new VoterCastInfoVO();
+				Long panchayatId = pancahyats.getId();
+				String panchayatName = pancahyats.getName();
+				voterCastInfo.setMandalName(panchayatName);
+				voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(new Long(panchayatId),publicationDateId)));
+				panchayatsList.add(voterCastInfo);
+			}
+		}
+		return panchayatsList;
+	}
 
 	
 	/**
@@ -902,7 +958,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 			if(type.equalsIgnoreCase("constituency"))
 			   votersListOf46To60 = boothPublicationVoterDAO
-						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
 								constituencyId, publicationDateId,46L, 60L);
 			else if(type.equalsIgnoreCase("mandal"))
 				votersListOf46To60 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
@@ -975,10 +1031,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    
 	    try{
 	       
-	       if(type.equalsIgnoreCase("constituency"))
-	         votersListOfAbove60 = boothPublicationVoterDAO
-					.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
-							constituencyId, publicationDateId,60L , 150L);
+	        if(type.equalsIgnoreCase("constituency"))
+		         votersListOfAbove60 = boothPublicationVoterDAO
+						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+								constituencyId, publicationDateId,60L , 150L);
 	       else if(type.equalsIgnoreCase("mandal"))
 	    	   votersListOfAbove60 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
 	    			   tehsilId, publicationDateId,60L ,150L);
