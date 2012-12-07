@@ -77,4 +77,5 @@ public interface IAnanymousUserService {
 	
 	public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messageType);
 
+	public List<RegistrationVO> getFriendsListForUserProfile(Long userId);
 }	

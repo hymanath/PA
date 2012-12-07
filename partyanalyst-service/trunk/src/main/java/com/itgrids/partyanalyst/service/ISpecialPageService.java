@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
+import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
 
 public interface ISpecialPageService {
 	
@@ -74,4 +75,10 @@ public interface ISpecialPageService {
     public List<SpecialPageVO> getSpecialPageListForHomePage();
     
     public List<SpecialPageVO> getAllSpecialPageListForHomePage();
+    
+    public SubscriptionsMainVO getAllUserSubScriptions(Long userId, Long profileId);
+    
+    public SubscriptionsMainVO getUserProfileSubScriptions(Long userId);
+    
+    public String getProfileUserName(Long profileId);
 }
