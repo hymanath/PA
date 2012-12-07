@@ -33,7 +33,7 @@ public class CandidateSubscriptionsDAOHibernateTest extends BaseDaoTestCase
 		System.out.println(candidateSubscriptionsDAO.unSubscriptionDetails(1l,1l));
 	}*/
 	
-	public void testgetResults()
+	/*public void testgetResults()
 	{
 		List<CandidateSubscriptions> results = candidateSubscriptionsDAO.getSubscriberDetails(3424l, 611l);
 		System.out.println("Size :" + results.size());
@@ -41,6 +41,16 @@ public class CandidateSubscriptionsDAOHibernateTest extends BaseDaoTestCase
 		for(CandidateSubscriptions subscriptions : results)
 		{
 			System.out.println(subscriptions.getCandidate().getLastname());
+		}
+	}*/
+	
+	public void testGetAllUserSubscribedCandidatePages()
+	{
+		List<Object[]> list = candidateSubscriptionsDAO.getAllUserSubscribedCandidatePages(1l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]);
 		}
 	}
 }

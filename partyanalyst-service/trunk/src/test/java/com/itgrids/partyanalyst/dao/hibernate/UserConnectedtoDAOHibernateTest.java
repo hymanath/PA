@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -76,7 +78,7 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-public void testgetAllConnectedPeopleForFreeUser()
+/*public void testgetAllConnectedPeopleForFreeUser()
 	{
 		List<Long> senderId = new ArrayList<Long>();
 		senderId.add(1L);
@@ -88,7 +90,7 @@ public void testgetAllConnectedPeopleForFreeUser()
 			System.out.println(params[1].toString());
 		}
 	}
-
+*/
 
 /*public void testgetAllConnectedPeoplesForFreeUser()
 {
@@ -137,6 +139,53 @@ public void testgetAllConnectedPeopleForFreeUser()
 		for(Long connId : list)
 			System.out.println(connId.toString());
 	}*/
+
+	/*public void testGetAllConnectedPeopleForPublicProfile()
+	{
+		List<Object[]> list = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(1l);
+
+		for(Object[] params : list)
+		{
+			System.out.println("First: "+params[0]+"  "+params[1].toString()+"------"+params[2].toString());
+		}
+	}
 	
+	public void testGetAllConnectedPeoplesForPublicProfile()
+	{
+		List<Object[]> list = userConnectedtoDAO.getAllConnectedPeoplesForPublicProfile(1l);
+		
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println("second "+params[0]+"  "+params[1].toString()+"------"+params[2].toString());
+		}
+	}
+	*/
+	
+	
+	public void testgetAllConnectedPeopleForPublicProfile()
+	{
+		
+		List<Object[]> userDetailsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(1l);
+		/*
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println("second "+params[0]+"  "+params[1].toString()+"------");
+		}*/
+		
+		Map<Long, Object[]> map = new HashMap<Long, Object[]>(0);
+		
+		for(Object[] params: userDetailsList)
+		{
+			if((Long)params[0] != 1l)
+			map.put((Long)params[0], params);
+		}
+		List<Object[]> list = new ArrayList<Object[]>(map.values());
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"  "+params[1]);
+		}
+	}
 	
 }
