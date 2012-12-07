@@ -1076,6 +1076,11 @@
 		<property name="specialPageCustomPagesDAO" ref="specialPageCustomPagesDAO"/>
 		<property name="specialPageMetaInfoDAO" ref="specialPageMetaInfoDAO"/>
 		<property name="specialPageInfoDAO" ref="specialPageInfoDAO"></property>
+		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO" />
+		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO" />
+		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
+		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO" />
+		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
