@@ -619,11 +619,13 @@ function getVotersCastInfo()
 		callAjax(jsObj,url);
 	}
 
-function buildCastInfoForSubLevels(myresults)
+function buildCastInfoForSubLevels(myresults,jsObj)
 	{
 		
 		var str ='';
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
+
+		var type=jsObj.type;
 		var	subLevelcastInfo = new Array();
 		var cast = myresults.castVosList;
 		
@@ -632,7 +634,10 @@ function buildCastInfoForSubLevels(myresults)
 		if(cast[i].voterCastInfoVO != null)
 		{
 		var subLevelcastData = cast[i].voterCastInfoVO; 
+		if(cast[i].mandalName != null)
 		var name = cast[i].mandalName;
+		else
+		var name ="";
 		var totalVoters=subLevelcastData.totalVoters;
 		var cast1 =subLevelcastData.castVOs;
 			
@@ -658,7 +663,12 @@ function buildCastInfoForSubLevels(myresults)
 
 		str +='<table id="subLevelTable">';
 		str+='<tr>';
+		if(type == "constituency")
 		str +='<th>MandalName</th>';
+		if(type == "mandal")
+		str +='<th>PanchayatName</th>';
+		if(type =="panchayat")
+		str +='<th>Booth No</th>';
 		str +='<th> Caste</th>';
 		str +='<th>TotalVoters</th>';
 		str +='<th>castPopulation</th>';
