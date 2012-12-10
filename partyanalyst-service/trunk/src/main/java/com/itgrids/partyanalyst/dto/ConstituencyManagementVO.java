@@ -15,8 +15,7 @@ public class ConstituencyManagementVO {
 	private List<PoliticalChangesVO> politicalChanges;
 	private List<HamletProblemVO> hamletProblems;
 	private TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO;
-	private List<VoterCastInfoVO> castVosList;
-	
+	private List<VoterCastInfoVO> castVosList;	
 	
 
 	private List<Long> votersCount;
@@ -26,6 +25,10 @@ public class ConstituencyManagementVO {
 	private List<VoterVO> boothVotersList;
 	private List<VotersDetailsVO> mandalAgeAndGenderwiseVotersList;
 	private List<VotersDetailsVO> votersDetailsVO;
+	
+	private List<VotersDetailsVO> mandalsVotersDetails;
+	private List<VotersDetailsVO> panchayatVotersDetails;
+	private List<VotersDetailsVO> boothVotersDetails;
 	
 	
 	public List<VotersDetailsVO> getVotersDetailsVO() {
@@ -158,6 +161,31 @@ public class ConstituencyManagementVO {
 
 	public void setCastVosList(List<VoterCastInfoVO> castVosList) {
 		this.castVosList = castVosList;
+	}
+
+	public List<VotersDetailsVO> getMandalsVotersDetails() {
+		return mandalsVotersDetails;
+	}
+
+	public void setMandalsVotersDetails(List<VotersDetailsVO> mandalsVotersDetails) {
+		this.mandalsVotersDetails = mandalsVotersDetails;
+	}
+
+	public List<VotersDetailsVO> getPanchayatVotersDetails() {
+		return panchayatVotersDetails;
+	}
+
+	public void setPanchayatVotersDetails(
+			List<VotersDetailsVO> panchayatVotersDetails) {
+		this.panchayatVotersDetails = panchayatVotersDetails;
+	}
+
+	public List<VotersDetailsVO> getBoothVotersDetails() {
+		return boothVotersDetails;
+	}
+
+	public void setBoothVotersDetails(List<VotersDetailsVO> boothVotersDetails) {
+		this.boothVotersDetails = boothVotersDetails;
 	}
 
 }
