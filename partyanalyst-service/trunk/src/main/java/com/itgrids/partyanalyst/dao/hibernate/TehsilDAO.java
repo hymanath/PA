@@ -92,4 +92,24 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		
 		
 	}
+	
+	public List<Object[]> findTehsilsByConstituencyIdAndPublicationDateId(
+			Long constituencyId, Long publicationDateId) {
+		
+		String queryString = "select distinct model.tehsil.tehsilId , model.tehsil.tehsilName from Booth model where " +
+				"model.publicationDate.publicationDateId = ? and model.constituency.constituencyId = ?";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter(0, publicationDateId);
+		query.setParameter(1, constituencyId);
+		
+		return query.list();
+		
+		
+		
+	}
+	
+
+	
 }
