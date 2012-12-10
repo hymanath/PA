@@ -541,4 +541,8 @@ public interface IConstants {
 	
 	public static final String WORKING_STATUS_WORKING = "Working";
 	public static final String WORKING_STATUS_COMPLETED = "Completed";
+	
+	public static final Long TWITTER_ID = 1l;
+	
+	public static final Long FACEBOOK_ID = 2l;
 }
