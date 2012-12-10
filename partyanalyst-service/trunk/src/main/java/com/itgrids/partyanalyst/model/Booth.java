@@ -38,6 +38,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private Long totalVoters;
+	private Panchayat panchayat;
 	
 
 	private Constituency constituency;
@@ -287,6 +288,18 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	public void setHamletBoothPublications(
 			Set<HamletBoothPublication> hamletBoothPublications) {
 		this.hamletBoothPublications = hamletBoothPublications;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="panchayat_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Panchayat getPanchayat() {
+		return panchayat;
+	}
+
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
 	}
 	
 }
