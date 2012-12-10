@@ -156,6 +156,8 @@
 		<pattern>/loginInputAction*</pattern>
 		<pattern>/freeUserRegistration*</pattern>
 		<pattern>/publicProfile*</pattern>
+		<pattern>/adminSocialAction*</pattern>
+		<pattern>/candidateUpdateFormAction*</pattern>
     </decorator>
 
 </decorators>
