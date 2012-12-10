@@ -232,14 +232,15 @@ padding:5px 20px;
     .subscriptionInnerDiv{clear:both; margin-bottom: 10px;margin-top: 10px;display: table;}
 
 	
-	.problemheadClass{margin-bottom: 20px;margin-top: 10px;}
+	.problemheadClass{margin-bottom: 20px;margin-top: 10px;font-family: Verdana,Arial,sans-serif;}
 	.problemsShowDiv,.politicalReasonsDiv{border: 1px solid #D3D3D3;border-radius: 5px;padding: 10px; padding-top: 2px;margin-top: 10px;}
 	.problemTitle,.headingCls{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 	.likeCls{margin-right: 55px; margin-left: 62px;}
 	.commentCls{margin-right: 62px;}
-	.problemFromDate{margin-left: 245px;}
-	.problemReportedDate{float: right;}
-	
+	.problemFromDate{margin-left: 220px;color: #273241;}
+	.problemReportedDate{float: right;color: #273241;}
+	.problemsShowDIV p{font-size: 12px; text-align: justify;color: #273241;}
+	.problemsShowDIV .problemTitle{font-size: 13px;}
 	/* subscription Styles End */
 	/* upload image */
 
@@ -256,6 +257,25 @@ padding:5px 20px;
     padding: 5px;
     text-align: left;
 }
+
+#profileUserName{ margin-bottom: 5px;margin-top: 10px;}
+.btn-group{margin-left: 8px;}
+
+#sendMessageButtonId{margin-left: 265px;margin-top: 20px;padding: 3px;}
+#connectMessageText,#connectUserMsg{background: none repeat scroll 0 0 transparent !important;}
+.messageLabel{margin-bottom: 9px; margin-top: 5px;font-family: verdana;}
+#ErrorMsgDivId{clear: both;margin-top: 5px;font-family: helvetica;}
+#connectPeopleLink {
+    background-color: #2D5773;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0 10px;
+    padding: 5px;
+	float: right; margin: -11px 38px 16px 0px;
+}
+#connectUserMsg{margin-left: 12px;}
 </style>
 </head>
 <body>
