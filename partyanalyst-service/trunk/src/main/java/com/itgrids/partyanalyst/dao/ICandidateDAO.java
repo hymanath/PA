@@ -69,5 +69,9 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 	
 	public Long getCandidateByLastName(String lastName);
 	
+	public Integer findEmailInsertionInCandidate(String emailId,Long candidateId);
 
+	public List<Candidate> getEmailInfo(Long candidateId);
+	
+	public Integer findNameInsertionInCandidate(String candidateName,Long candidateId);
 }
