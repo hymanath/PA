@@ -56,7 +56,6 @@ ServletRequestAware, ServletResponseAware, ServletContextAware  {
 		this.request = request;
 		this.session = request.getSession();
 	}
-   
 	
 	public List<SocialNetworkVO> getPartyNamesList() {
 		return partyNamesList;
@@ -75,8 +74,6 @@ ServletRequestAware, ServletResponseAware, ServletContextAware  {
 		/*List list=socialService.getNames();
 				
 		*/
-		
-		
 		return Action.SUCCESS;
 	}
 	
@@ -93,15 +90,13 @@ ServletRequestAware, ServletResponseAware, ServletContextAware  {
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getPartyNames"))
 		{
-			
-			
+			System.out.println("with in the action of twitter");
 			partyNamesList = socialService.getPartyNames();
-			
-			}else if(jObj.getString("task").equalsIgnoreCase("getCandidateNames")){
+			System.out.println("partyNamesList value is:"+partyNamesList);
+		}else if(jObj.getString("task").equalsIgnoreCase("getCandidateNames")){
 			
 				partyNamesList = socialService.getCandidateNames();
-		}
-			else if(jObj.getString("task").equalsIgnoreCase("getNames")){
+		}else if(jObj.getString("task").equalsIgnoreCase("getNames")){
 			partyNamesList = socialService.getNames();
 			}
 	
