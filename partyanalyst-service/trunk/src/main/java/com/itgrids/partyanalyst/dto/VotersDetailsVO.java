@@ -64,6 +64,15 @@ public class VotersDetailsVO implements Serializable{
 	
 	private String ageRange;
 	private String boothName;
+	private String panchayatname;
+	private String tehsilName;
+	
+	private String votersPercentFor18To25;
+	private String votersPercentFor26To35;
+	private String votersPercentFor36To45;
+	private String votersPercentFor46To60;
+	private String votersPercentForAbove60;
+	
 	
 	
 	public Long getMaleVotersCountBetween18To25() {
@@ -200,10 +209,7 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setTotalVotersForAbove60(Long totalVotersForAbove60) {
 		this.totalVotersForAbove60 = totalVotersForAbove60;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+	}	
 	public Long getTotalFemaleVotersFor18To25() {
 		return totalFemaleVotersFor18To25;
 	}
@@ -347,6 +353,48 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setTotalVotersPercent(Float totalVotersPercent) {
 		this.totalVotersPercent = totalVotersPercent;
+	}
+	public String getPanchayatname() {
+		return panchayatname;
+	}
+	public void setPanchayatname(String panchayatname) {
+		this.panchayatname = panchayatname;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+	public String getVotersPercentFor18To25() {
+		return votersPercentFor18To25;
+	}
+	public void setVotersPercentFor18To25(String votersPercentFor18To25) {
+		this.votersPercentFor18To25 = votersPercentFor18To25;
+	}
+	public String getVotersPercentFor26To35() {
+		return votersPercentFor26To35;
+	}
+	public void setVotersPercentFor26To35(String votersPercentFor26To35) {
+		this.votersPercentFor26To35 = votersPercentFor26To35;
+	}
+	public String getVotersPercentFor36To45() {
+		return votersPercentFor36To45;
+	}
+	public void setVotersPercentFor36To45(String votersPercentFor36To45) {
+		this.votersPercentFor36To45 = votersPercentFor36To45;
+	}
+	public String getVotersPercentFor46To60() {
+		return votersPercentFor46To60;
+	}
+	public void setVotersPercentFor46To60(String votersPercentFor46To60) {
+		this.votersPercentFor46To60 = votersPercentFor46To60;
+	}
+	public String getVotersPercentForAbove60() {
+		return votersPercentForAbove60;
+	}
+	public void setVotersPercentForAbove60(String votersPercentForAbove60) {
+		this.votersPercentForAbove60 = votersPercentForAbove60;
 	}
 
 }
