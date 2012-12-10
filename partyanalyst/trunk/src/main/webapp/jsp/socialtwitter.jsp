@@ -59,7 +59,7 @@
         
       <div id="twitIcon"><img src="images/socialNetwork/twitter_64.png" width="64" height="64" alt="Twitter icon" /></div>
     
-        <h2 class="tut"> Tweets From Partys and Leaders </h2>
+        <h2 class="tut"> Tweets From Parties and Leaders </h2>
 	     
         </div>
 		
@@ -72,10 +72,10 @@
 <table>
 <tr><td>
  Party Name:&nbsp; <select name="party" onChange="setTweetUser(this.options[this.selectedIndex].value)"
- id="party" style="width:100px"; >
+ id="party" style="width:100px;" >
 
 </select></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leader Name: &nbsp;<select name="politician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician" style="width:150px";>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leader Name: &nbsp;<select name="politician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician" style="width:150px;">
 
 </select> </td></tr>
 </table></center>
@@ -105,6 +105,7 @@ function getPartyName()
 	var politicianRadioele=document.getElementById('rpolitician');
 	var allRadioele=document.getElementById('rall');
 	var task = null;
+	
 	if(partyRadioele.checked)
 	{
 	partyRadio =partyRadioele.value;
@@ -171,6 +172,7 @@ function clearOptionsListForSelectElmtId(elmtId)
 
 	if(!elmt)
 		return;
+	
 	var len=elmt.length;			
 	for(i=len-1;i>=0;i--)
 	{
@@ -220,7 +222,7 @@ function getPartyNames(result)
 	var elmt = document.getElementById('party');
 	var option = document.createElement('option');
 
-	 clearOptionsListForSelectElmtId('party');
+	clearOptionsListForSelectElmtId('party');
 	option.value="0";
 	option.text="select";
 		try
