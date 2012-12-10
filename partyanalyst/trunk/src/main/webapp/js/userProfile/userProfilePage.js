@@ -1,6 +1,9 @@
 var connectStatus = [];
 var constituencies = [];
 var connetLocationId = '';
+var uploadPicStatus = false;
+var refreshTime=5;
+var uploadResult;
 
 $("document").ready(function(){
 	
@@ -103,7 +106,7 @@ $("document").ready(function(){
 
 	custom_paginator.paginator({
 		startIndex:0,
-		resultsCount:8,
+		resultsCount:18,
 		jsObj:jsObj,
 		ajaxCallURL:url,
 		paginatorElmt:"custom_paginator_class",
@@ -299,9 +302,306 @@ $("document").ready(function(){
 		
 	});*/
 
+
+//change Password
+
+
+
+$(".changePwdLink").live("click",function(){
+	
+	$("#allConnectedUsersDisplay_main").children().remove();
+	
+	$("#connectPeoplePopup").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:225,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
+
+		var elmt = $("#allConnectedUsersDisplay_main");
+		var div = $("<div class='changePwdDiv'></div>");
+		div.append('<div id="password_window" style=" background-color: #7898BC; color: #FFFFFF;font-weight: bold;padding: 5px;">Change Password</div>');
+		div.append('<div id="password_window_errorMsg"></div>');
+		div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span>');
+		div.append('<div><font color="red">*</font> <span>Current Password</span> <input type="password" id="currentPwdId" name="currentPassword"/></div>');
+		div.append('<div><font color="red">*</font> <span>New Password</span> <input type="password" id="newPwdId" name="newPassword"/></div>');
+		div.append('<div><font color="red">*</font> <span>Confirm Password</span> <input type="password" id="confirmPwdId" name="confirmPassword"/></div>');
+		div.append('<input id="changePWDButton" type="button" value="Change Password"></input>');
+		div.append('<input id="cancelButtonID" type="button" value="No"></input>');
+		elmt.append(div);
+		
+  });
+
+   $("#cancelButtonID").live("click",function(){
+	 $("#connectPeoplePopup").dialog("destroy");
+   });
+
+   $("#changePWDButton").live("click",function(){
+
+		var cpwd = $.trim($("#currentPwdId").val());
+		var npwd = $.trim($("#newPwdId").val());
+		var cfmpwd = $.trim($("#confirmPwdId").val());
+		var errorDiv = $("#password_window_errorMsg");
+		errorDiv.html('');		
+		if(cpwd.length > 0 &&cpwd.length < 6)
+		{
+		  errorDiv.html("<font color='red'>Current Password Minimum Of 6 Characters.</font>");
+	      return;
+		}
+	if(npwd.length > 0 &&npwd.length < 6)
+	{
+	  errorDiv.html("<font color='red'>New Password Minimum Of 6 Characters.</font>");
+	  return;
+	}
+	if(cpwd=="")
+	{
+     errorDiv.html("<font color='red'>Please enter password.</font>");	
+	 return;
+	}
+     if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd)
+	{
+ 	  errorDiv.html("<font color='red'>Passwords do not match.</font>");
+       return
+	}
+	if(cpwd=='')
+	{
+     errorDiv.html("<font color='red'>Please enter current password.</font>");
+	 return;
+	}
+	if(npwd=='')
+	{
+      errorDiv.html("<font color='red'>Please enter new password.</font>");
+	   return;
+	}
+	if(cfmpwd=='')
+	{
+	   errorDiv.html("<font color='red'>Please enter confirm password.</font>");
+	   return;
+	}
+	if(cpwd == npwd)
+	{
+	  errorDiv.html("<font color='green'>Your new password is same as existing one.</font>");
+	  setTimeout("closewdw()",3000);
+	  return;
+	}
+	if(cpwd!='')
+	{
+	  errorDiv.html("Sending Your Request.Please wait</font>");
+	  errorDiv.html('<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">');
+
+      var jsObj={
+      crntPassword:cpwd,
+      newPassword:npwd,
+	  task:"changePassword"	 
+	 };
+     var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeUserPasswordAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+	}
+  });
+
+
+//edit picture
+
+$(".editPictureLink").live("click",function(){
+
+	
+$("#allConnectedUsersDisplay_main").children().remove();
+	
+	$("#connectPeoplePopup").dialog({
+		resizable:false,
+		width: 582,
+		minHeight:200,
+		show:'slide',
+		modal:true
+	});
+	
+	
+	$(".ui-dialog-titlebar").hide();
+
+	var elmt = $("#allConnectedUsersDisplay_main");
+	var div =$("<div></div>");
+	var str = '';
+	str += '<div id="uploadPic_window_head">Upload Your Picture</div>';
+	str += '<div id="uploadPic_window_body">';
+	str += '<form name="uploadForm" action="uploadPicAction.action" enctype="multipart/form-data" method="post" id="uploadPicForm">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th valign="top">';
+	str += '	<table width="100%" class="uploadPic_string_table">';
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Select a image from your computer.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Image size should be less than 2MB.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Image should be .jpg or.png or .gif formats only.</td>';
+	str += '	</tr>';
+
+	str += '	</table>';	
+	str += '</th>';
+	str += '<td rowspan="3">';
+	str += '	<div style="border:1px solid #ADADAD;"><img width="90" height="100" id="Imgpreview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '</td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;"/>';
+	str += '</td>';
+	str += '</tr>';
+	
+	str += '</table>';	
+	str += '</form>';
+	str += '</div>';
+	str += '<div id="uploadPic_window_footer" class="yui-skin-sam">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
+	str += '<td width="40%" valign="top"><input type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<input type="button" value="Cancel" id="cancelPicButton"/>';	
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';	
+	str += '</div>';
+	div.append(str);
+	elmt.append(div);
+
+	/* 
+	
+
+	oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
+	
+	
+	oPushButton1.on("click",function(){
+	   
+		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+		     str += ' Please Select a image .<br>';
+		     document.getElementById("uploadPic_window_status").innerHTML = str;
+	     }
+		 else{
+		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
+		
+		 getUploadpic();
+		}
+	});
+
+	*/
+
+
+	
+});
+
+$("#cancelPicButton").live("click",function(){
+	$("#connectPeoplePopup").dialog("destroy");
+});
+
+$("#uploadPicButton").live("click",function(){
+	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+	       $("#uploadPic_window_status").html('Please Select a image .<br>');
+		   return;
+	     }
+		 else
+		 {
+		   $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 getUploadpic();
+		}
+});
 });//End ready
 
+function previewImg()
+{
+	var photoElmt = document.getElementById("photoUploadElmt");
+	var photoStatusElmt = $("#uploadPic_window_status");
+	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
+	
+	var file = photoElmt.files[0];
+	
+	var fileType = file.type;
+	var fileImgType = fileType.substring(fileType.indexOf('/')+1,fileType.length);
+	
+	if(fileImgType == "jpeg" || fileImgType == "png" || fileImgType == "gif")
+	{
+		var fileSize = file.fileSize/fileLimit;
+		if(fileSize > 2)
+		{
+			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image size should be < 2MB.</span>';
+		}
+		else
+		{
+			var reader = new FileReader();
+           //  init the reader event handlers
+			reader.onloadend = handleReaderLoadEnd;
+			 
+			// begin the read operation
+			reader.readAsDataURL(file);
+			
+			photoStatusElmt.innerHTML = '';
+			var previewElmt = document.getElementById("Imgpreview");
+			//previewElmt.src = file.getAsDataURL();
+			uploadPicStatus = true;
+		}
+	}
+	else
+	{
+		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
+	}
 
+	
+}
+function handleReaderLoadEnd(evt) {
+  var img = document.getElementById("Imgpreview");
+  img.src = evt.target.result;
+}
+function getUploadpic()
+{
+	if(!uploadPicStatus)
+		return;
+		
+	//oPushButton1.set('disabled', true)	
+	uploadPicStatus = false;
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				showUploadStatus();				
+			}
+		};
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'uploadPicAction.action', uploadHandler);
+}
+function showUploadStatus()
+{
+	if(refreshTime > 0)
+	{
+		var photoStatusElmt = $("#uploadPic_window_status");
+		photoStatusElmt.html("<font color='#473E37'>"+uploadResult+" Page refreshing in "+refreshTime+" seconds.Please wait..</font>");
+		refreshTime=refreshTime-1;
+		t=setTimeout("showUploadStatus()",1000);
+	}
+	else
+	{
+		$("#connectPeoplePopup").dialog("destroy");
+		window.location.reload();
+	}
+}
 
 function callAjax1(jsObj,url){
 	var results;	
@@ -367,6 +667,10 @@ function callAjax1(jsObj,url){
 						showAllUserConstituencySubscriptions(jsObj,results);
 						showAllUserPartySubscriptions(jsObj,results);
 						
+					}
+					else if(jsObj.task =="changePassword")
+					{
+						showChangePwdStatus(results);
 					}
 					
 			}catch (e) {   		
@@ -850,6 +1154,7 @@ function showAllPostedProblems_paginator(jsObj,results)
 		var template = $('.problemTemplateDiv');
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
+		templateClone.find('.problemReportedDate').html(''+problemsData[i].identifiedDate+'');
 		templateClone.find('.problemTitle').html(''+problemsData[i].definition+'');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
 		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
@@ -864,8 +1169,58 @@ function showAllPostedProblems_paginator(jsObj,results)
 }
 
 
+/*function showAllPostedProblems_paginator(jsObj,results)
+{
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	
+	//var problemsData = results.problemsInfo;
 
+	if(results == null)
+	{
+		$('.problemTemplateDiv').html('Problems Does Not Exists').appendTo('.placeholderCenterDiv');
+		return;
+	}
+	
+	for(var i in results)
+	{
+		
+		var problemsData = results[i].problemsInfo;
+		
+		var existingfromDate = $("<div class='existingFromDiv'></div>"); 
+		existingfromDate.append('<span>'+results[i].postedDate+'</span>');
+		existingfromDate.appendTo('.placeholderCenterDiv');
 
+		for(var j in problemsData)
+		{
+		
+		var template = $('.problemTemplateDiv');
+		var templateClone = template.clone();
+		templateClone.removeClass('problemTemplateDiv');
+		alert(problemsData[j].definition);
+		if(problemsData[j].definition != null)
+		templateClone.find('.problemTitle').html(''+problemsData[j].definition+'');
+		if(problemsData[j].description != null)
+		templateClone.find('.problemDescription').html(''+problemsData[j].description+'');
+		if(problemsData[j].existingFrom != null)
+		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[j].existingFrom+'');
+		templateClone.find('.likeCls').html('Like');
+		templateClone.find('.commentCls').html('Comment');
+		templateClone.find('.shareCls').html('Share');
+		
+		templateClone.appendTo('.placeholderCenterDiv');
+		}
+		
+		
+	}
+	
+
+	//var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
+	//pagination.appendTo('.placeholderCenterDiv');
+}
+
+*/
 
 function connectToSelectedPerson(id,name)
 {
@@ -1184,6 +1539,27 @@ function clearAllSubscriptionDivs()
 /* -- subscription functions End -- */
 
 
+function showChangePwdStatus(results)
+{
+	$("#password_window_errorMsg").html('');
+	var result = $("#password_window_errorMsg");
+	if(results==121)
+	{
+	  result.html('<div style="color:green">Password changed successfully, Window Closing...</div>');
+      setTimeout("closewdw()",3000);
+	  return;
+	}	
+    else if(results==0)
+	{
+	 result.html('<div style="color:red"> Invalid Current Password</div>');	
+	 return;
+	}
+}
+
+function closewdw()
+{
+	$("#connectPeoplePopup").dialog("destroy");
+}
 
 <!--OPINION POLL SCRIPTS START-->
 
