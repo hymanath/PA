@@ -51,7 +51,7 @@ public class BoothPublicationVoterDAO extends
 		 
 	 }  
 
-		public List<Voter> getVotersDetailsForPanchayatByPublicationId(
+		/*public List<Voter> getVotersDetailsForPanchayatByPublicationId(
 				Long panchayatId, Long publicationDateId, Integer startIndex,
 				Integer maxRecords, String order, String columnName) {
 			
@@ -69,10 +69,20 @@ public class BoothPublicationVoterDAO extends
 			query.setFirstResult(startIndex);
 			query.setMaxResults(maxRecords);
 			return query.list();
+		}*/
+	 public List<Voter> getVotersDetailsForPanchayatByPublicationId(
+				Long panchayatId, Long publicationDateId, Integer startIndex,
+				Integer maxRecords, String order, String columnName) {
+			
+			 Query query = getSession().createQuery("select BPV.voter from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.panchayat.panchayatId = :panchayatId  order by BPV.voter."+columnName+" "+order) ;
+	 			  query.setParameter("publicationDateId", publicationDateId);
+	 			  query.setParameter("panchayatId", panchayatId);
+	 			query.setFirstResult(startIndex);
+	 			query.setMaxResults(maxRecords);
+	 			return query.list();
 		}
 		
-		
-		public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
+		/*public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
 			
 			Query query = getSession()
 					.createQuery(
@@ -84,8 +94,19 @@ public class BoothPublicationVoterDAO extends
 
 			return query.list();
 			
-		}
+		}*/
 		
+         public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
+			
+        	 Query query = getSession().createQuery("select count(BPV.voter.voterId) from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+ 					" BPV.booth.panchayat.panchayatId = :panchayatId  ") ;
+ 			  query.setParameter("publicationDateId", publicationDateId);
+ 			  query.setParameter("panchayatId", panchayatId);
+
+			return query.list();
+	
+		}
+
 		public List getVotersCountByBoothId(Long boothId){
 			
 			String queryString = "select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.boothId = ?";
@@ -119,7 +140,7 @@ public class BoothPublicationVoterDAO extends
 	 * @param PanchayatId
 	 * @param publicationDateId
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> findImpFamilesBasedOnPanchayat(Long PanchayatId,Long publicationDateId){
 		Object[] params = {PanchayatId,publicationDateId};
 		return getHibernateTemplate().find("select model.voter.houseNo,count(model.voter.houseNo) from " +
@@ -127,7 +148,14 @@ public class BoothPublicationVoterDAO extends
 				"(select model1.hamlet.hamletId from PanchayatHamlet model1 " +
 				"where model1.panchayat.panchayatId = ? ) and model.booth.publicationDate.publicationDateId = ? " +
 				" group by model.voter.hamlet.hamletId,model.voter.houseNo", params);
-		}
+		}*/
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findImpFamilesBasedOnPanchayat(Long PanchayatId,Long publicationDateId){
+		Object[] params = {publicationDateId,PanchayatId};
+		
+	return getHibernateTemplate().find("select BPV.voter.houseNo,count(BPV.voter.houseNo)  from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = ? and " +
+				" BPV.booth.panchayat.panchayatId = ?  group by BPV.voter.hamlet.hamletId,BPV.voter.houseNo ", params) ;
+	}
 	
 	/**
 	 * @return object[]
@@ -177,10 +205,18 @@ public class BoothPublicationVoterDAO extends
 		return queryObj.list();
 	}
 	
-	public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
+	/*public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
 		Query query = getSession().createQuery("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				" model.booth.boothId in(select distinct model1.booth.boothId from HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				" model1.hamlet.hamletId in(select distinct model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId =:panchayatId ))  group by model.voter.gender ") ;
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameter("panchayatId", panchayatId);
+		  return query.list();
+	}*/
+	
+	public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
+		Query query = getSession().createQuery("select count(*),BPV.voter.gender from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" BPV.booth.panchayat.panchayatId = :panchayatId group by BPV.voter.gender ") ;
 		  query.setParameter("publicationDateId", publicationDateId);
 		  query.setParameter("panchayatId", panchayatId);
 		  return query.list();
@@ -216,7 +252,7 @@ public class BoothPublicationVoterDAO extends
 	
 	
 	//caste info for Panchayat
-	public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Long publicationDateId){
+	/*public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Long publicationDateId){
 		
 		Query query = getSession()
 				.createQuery(
@@ -233,7 +269,16 @@ public class BoothPublicationVoterDAO extends
 	
 		return query.list();
 		
+	}*/
+	
+public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Long publicationDateId){
 		
+
+		Query query = getSession().createQuery("select count(BPV.voter.voterId),BPV.voter.gender,BPV.voter.cast from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" BPV.booth.panchayat.panchayatId = :panchayatId  group by BPV.voter.cast,BPV.voter.gender order by BPV.voter.cast ") ;
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("publicationDateId", publicationDateId);
+		  return query.list();
 		
 	}
 	
@@ -296,7 +341,7 @@ public class BoothPublicationVoterDAO extends
 			
 		}
 		
-		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+/*		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
 				Long panchayatId, Long publicationDateId , Long startAge, Long endAge) {		
 			
 			Query query = getSession()
@@ -312,8 +357,18 @@ public class BoothPublicationVoterDAO extends
 			query.setParameter("publicationDateId",publicationDateId);
 			query.setParameter("panchayatId", panchayatId);
 			
-			return query.list();
+			return query.list();		
 			
+		}*/
+		
+		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+				Long panchayatId, Long publicationDateId , Long startAge, Long endAge) {		
+				
+			Query query = getSession().createQuery("select count(*),BPV.voter.gender from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId  and BPV.voter.age between "+startAge+" and "+endAge+" and " +
+					" BPV.booth.panchayat.panchayatId = :panchayatId  group by BPV.voter.gender  ") ;
+			query.setParameter("publicationDateId",publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			  return query.list();
 			
 		}
 		
@@ -406,7 +461,7 @@ public class BoothPublicationVoterDAO extends
 		  return queryObj.list();
 	}
 	
-	public List<Object[]> getImpFamilesForPanchayatByPublicationId(Long panchayatId,Long publicationDateId,String queryString){
+	/*public List<Object[]> getImpFamilesForPanchayatByPublicationId(Long panchayatId,Long publicationDateId,String queryString){
 		StringBuilder query = new StringBuilder();
 		query.append("select count(model.voter.voterId),model.voter.houseNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				" model.booth.boothId in(select distinct model1.booth.boothId from HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
@@ -418,7 +473,49 @@ public class BoothPublicationVoterDAO extends
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		queryObj.setParameter("panchayatId", panchayatId);
 		  return queryObj.list();
+	}*/
+	
+	public List<Object[]> getImpFamilesForPanchayatByPublicationId(Long panchayatId,Long publicationDateId,String queryString){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.voter.voterId),model.voter.houseNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.panchayat.panchayatId = :panchayatId    group by model.booth.boothId,model.voter.houseNo ") ;
+		if(queryString != null)
+			query.append(queryString);
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("panchayatId", panchayatId);
+		  return queryObj.list();
 	}
+	
+/*	public List findFamiliesVotersInfoForPanchayat(Long id,Long publicationDateId) {
+				Object[] params = {publicationDateId,publicationDateId,id};
+				return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+						"model.voter.cast,model.booth.boothId from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? " +
+						" and model.booth.boothId in(select distinct model1.booth.boothId from HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = ? and " +
+						" model1.hamlet.hamletId in(select distinct model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId = ? ))  order by model.voter.voterId ",params) ;
+		}*/
+	
+	public List findFamiliesVotersInfoForPanchayat(Long id,Long publicationDateId) {
+		Object[] params = {publicationDateId,id};
+		return getHibernateTemplate().find("select  model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age,model.voter.cast,model.booth.boothId  " +
+				" from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? and " +
+				" model.booth.panchayat.panchayatId = ? order by model.voter.voterId ",params) ;
+	
+	}
+	
+	public List findFamiliesVotersInfoForBooth(Long id,Long publicationDateId) {
+		Object[] params = {publicationDateId,id};
+		return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+				"model.voter.cast,model.booth.boothId from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? " +
+				" and model.booth.boothId = ?",params) ;
+     }
+	
+	public List<Voter> findFamiliesInfo(Long boothId,Long publicationDateId,String houseNo) {
+		Object[] params = {publicationDateId,boothId,houseNo};
+		return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? " +
+				" and model.booth.boothId = ? and model.voter.houseNo = ?",params) ;
+     }
 	
 	//caste Info For Municipality
 	public List getVotersCastInfoFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId)
