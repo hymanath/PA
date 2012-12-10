@@ -104,6 +104,21 @@ IDistrictDAO {
 		return query.uniqueResult();
 	}
 	
+public List<Object[]> getAllDistrictDetails(Long stateId){
+		
+		Query query = getSession().createQuery("select model.districtId , model.districtName from District model where model.state.stateId=?");
+		query.setParameter(0,stateId );
+		return query.list();
+		
+		
+	}
+
+public List<Object[]> getAllDistrictInfoDetails(){
+	
+	Query query = getSession().createQuery("select model.districtId , model.districtName from District model");
+	return query.list();
 	
 	
+}
+
 }
