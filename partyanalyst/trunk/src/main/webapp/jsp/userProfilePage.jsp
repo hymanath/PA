@@ -238,10 +238,24 @@ padding:5px 20px;
 	.likeCls{margin-right: 55px; margin-left: 62px;}
 	.commentCls{margin-right: 62px;}
 	.problemFromDate{margin-left: 245px;}
-
+	.problemReportedDate{float: right;}
 	
 	/* subscription Styles End */
-	
+	/* upload image */
+
+	#uploadPic_window_head {
+    background-color: #9AB0C3;
+    background-image: url("../images/icons/homePage_new/accordianHeader_selected.jpeg");
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 5px;
+}
+.uploadPic_string_table td {
+    color: #69645B;
+    font-size: 10px;
+    padding: 5px;
+    text-align: left;
+}
 </style>
 </head>
 <body>
@@ -266,8 +280,9 @@ padding:5px 20px;
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li><a href="freeUserRegistration.action">Account Settings</a></li>
-								<li><a>Change Password</a></li>
+								<li><a href="freeUserRegistration.action">Edit Profile</a></li>
+								<li><a href="javascript:{}" class="changePwdLink">Change Password</a></li>
+								<li><a href="javascript:{}" class="editPictureLink">Edit Picture</a></li>
 							</ul>
 						</div></div>
 						
@@ -491,6 +506,7 @@ padding:5px 20px;
 				<span class="postedPersonName"></span>
 			</div>
 			<div class="problemheadClass">
+				<span class="problemReportedDate"></span>
 				<p class="problemTitle"></p>
 				<p class="problemDescription"></p>
 				<span class="problemFromDate"></span>
