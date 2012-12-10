@@ -149,6 +149,14 @@ p {
     width: 84%;
 }
 
+#localCastStatsTabContent_subbody caption,#localCastStatsTabContent_body caption{
+    color: #000;
+    font-size: 13px;
+    margin-left: -460px;
+    font-style: normal;
+	font-family: verdana,sans-serif;
+   }
+
 </style>
 
 <script type="text/javascript">
@@ -309,8 +317,11 @@ locationDetails.constituencyArr.push(ob);
 	<div id='localCastStatsTabContent_header'></div>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
 	<div id='localCastStatsTabContent_subbody'>
+
 	
 		</div>
+
+		<div id='localCastStatsTabContent_subbody1'></div>
 
 
 </div>
@@ -401,20 +412,23 @@ function getCastInfoForsubLevel()
 	var level = $("#reportLevel").val();
 	var type = '';
 	var id='';
+	var typeName='';
 	var mandalId='';
 	if(level == 1){
 	type = 'constituency';
 	id = $("#constituencyList").val();
+	typeName = $("#constituencyList :selected").text();
 	}
 	else if(level == 2){
 	type = 'mandal';
 	mandalId = $("#mandalField").val();
 	id=mandalId.substring(1);
-
+	typeName = $("#mandalField :selected").text();
 	}
 	else if(level == 3){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
+	  typeName = $("#panchayatField :selected").text();
 	}
 	else if(level == 4){
 		 type = 'booth';
@@ -428,7 +442,7 @@ function getCastInfoForsubLevel()
 				searchText : "R",
 				type:type,	
 				id:id,
-
+				typeName:typeName,
 				publicationDateId:publicationDateId,	
 				task:"getCastInfoForsubLevels"				
 		};
