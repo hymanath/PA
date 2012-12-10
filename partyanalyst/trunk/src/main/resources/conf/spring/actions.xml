@@ -990,5 +990,10 @@
 		<property name="specialPageService" ref="specialPageService" />	
 		<property name="problemManagementService" ref="problemManagementService" /> 
 	</bean>
+	<bean id="candidateUpdateFormAction"
+		class="com.itgrids.partyanalyst.web.action.CandidateUpdateFormAction"
+		singleton="false">
+		<property name="socialService" ref="socialService" />
+	</bean>
 	
 </beans>	
