@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -49,6 +50,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private VotersInfoForMandalVO votersInfo;
 	
 	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
+	
+	private List<VoterHouseInfoVO> votersFamilyInfo;
 	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
@@ -374,6 +377,22 @@ public String getImportantFamaliesDetails(){
 	return Action.SUCCESS;
 }
 
+public String getVotersFamilyDetails(){
+	try{
+		String param;
+		param = getTask();
+		jObj = new JSONObject(param);
+		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
+		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"));
+		else
+			votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
+	}catch(Exception e){
+		log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
+	}
+	
+	return SUCCESS;
+}
+
 public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
 	return importantFamiliesInfoVo;
 }
@@ -381,6 +400,14 @@ public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
 public void setImportantFamiliesInfoVo(
 		ImportantFamiliesInfoVo importantFamiliesInfoVo) {
 	this.importantFamiliesInfoVo = importantFamiliesInfoVo;
+}
+
+public List<VoterHouseInfoVO> getVotersFamilyInfo() {
+	return votersFamilyInfo;
+}
+
+public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
+	this.votersFamilyInfo = votersFamilyInfo;
 }
 
 
