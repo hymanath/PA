@@ -1227,6 +1227,26 @@
 		<property name="partySocialDAO" ref="partySocialDAO" />
 		<property name="candidateSocialDAO" ref="candidateSocialDAO" />
 		<property name="candidateDAO" ref="candidateDAO"/>
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="casteDAO" ref="casteDAO" />
+		<property name="casteStatewiseDAO" ref="casteStatewiseDAO" />
+		<property name="casteCategoryDAO" ref="casteCategoryDAO"></property>
+		<property name="casteCategoryGroupDAO" ref="casteCategoryGroupDAO"></property>
+		<property name="tehsilDAO" ref="tehsilDAO"></property>
+		<property name="addressDAO" ref="addressDAO"></property>
+		<property name="candidateAddressDAO" ref="candidateAddressDAO"/>
+		<property name="addressTypeDAO" ref="addressTypeDAO"></property>
+		<property name="candidateWebsiteDAO" ref="candidateWebsiteDAO"></property>
+		<property name="phoneTypeDAO" ref="phoneTypeDAO"></property>
+		<property name="stateDAO" ref="stateDAO"></property>
+		<property name="phoneCategoryDAO" ref="phoneCategoryDAO"></property>
+		<property name="phoneNumberDAO" ref="phoneNumberDAO"></property>
+		<property name="candidatePhoneDAO" ref="candidatePhoneDAO"></property>
+		<property name="candidateCasteDAO" ref="candidateCasteDAO"></property>
+		<property name="addressContactDAO" ref="addressContactDAO"></property>
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="socialNetworkSiteDAO" ref="socialNetworkSiteDAO" />
+		
 	</bean>
 	
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
