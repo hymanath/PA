@@ -9,6 +9,8 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.entity.State;
 
 
@@ -133,4 +135,6 @@ public interface StateDAO {
 	 * @return List<State> all State entities
 	 */
 	public List<State> findAll();
+	
+	//public List<Object[]> getAllStateDetails();
 }
