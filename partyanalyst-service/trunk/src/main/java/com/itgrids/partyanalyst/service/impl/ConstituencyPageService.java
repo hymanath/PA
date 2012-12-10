@@ -1740,9 +1740,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					List<Object[]> result = new ArrayList<Object[]>(0);
 					for(int j = 0 ; j < assembliesData.size() ; j++)
 					{
-						Long constId = (Long)((Object[])assembliesData.get(j))[0];
-						result.add(nominationDAO.getCandidateAndPartyInfo(constId,IConstants.ASSEMBLY_ELECTION_TYPE, 1L).get(0));
-						
+						try{
+						 Long constId = (Long)((Object[])assembliesData.get(j))[0];
+						 result.add(nominationDAO.getCandidateAndPartyInfo(constId,IConstants.ASSEMBLY_ELECTION_TYPE, 1L).get(0));
+						}catch(Exception e){
+							e.printStackTrace();
+						}
 					}
 					if(result.size()!=0){
 						candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(result));
