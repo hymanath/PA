@@ -431,7 +431,7 @@ function showImportantFamiliesDiv()
 
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{
-									buildCastInfoForSubLevels(myResults);
+									buildCastInfoForSubLevels(myResults,jsObj);
 								}								
 								else if(jsObj.task == "importantFamiliesinfo")
 								{
