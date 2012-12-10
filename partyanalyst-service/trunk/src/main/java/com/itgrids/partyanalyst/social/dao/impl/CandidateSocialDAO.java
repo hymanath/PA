@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 
 import com.itgrids.partyanalyst.dto.SocialNetworkVO;
+import com.itgrids.partyanalyst.model.CandidateWebsite;
 import com.itgrids.partyanalyst.social.dao.ICandidateSocialDAO;
 import com.itgrids.partyanalyst.social.model.CandidateSocial;
 
@@ -26,5 +27,16 @@ public class CandidateSocialDAO extends GenericDaoHibernate<CandidateSocial, Lon
 		
 	}
 	
+public List<CandidateSocial> getCandidateUrlDetails(Long candidateId){
+		
+		
+		Query query = getSession().createQuery("from CandidateSocial model where model.candidate.candidateId = ?");
+		query.setParameter(0,candidateId);
+		return query.list();
+	
+	}
+
+
+
 
 }
