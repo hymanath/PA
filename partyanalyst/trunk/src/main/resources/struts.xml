@@ -3827,5 +3827,50 @@
 			</result> 
 		</action>
 		
+		
+		
+		<action name="getAdminSocialAction" class="adminSocialAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				 <param name="root">parliamentInfoList</param> 
+			</result>
+		</action>
+		
+		<action name="candidateUpdateFormAction" class="candidateUpdateFormAction">
+			<result>/jsp/candidateUpdateForm.jsp</result>
+		</action>
+		
+		<action name="candidateUpdateAction" class="candidateUpdateFormAction" method="getCandidateDetails">
+			<result>/jsp/resultPage.jsp</result>
+		</action>
+
+		 <action name="getcandidateFormAction" class="candidateUpdateFormAction" method="callAjaxHandlerCasteNamesByAutoPopulate">
+			<result type="json" name="success">
+				 <param name="root">resultNames</param> 
+			</result>
+		</action>
+		 
+		<action name="getCasteCategory" class="candidateUpdateFormAction" method="callAjaxHandler">
+			<result type="json" name="success">
+				 <param name="root">casteCategory</param> 
+			</result>
+		</action>
+		
+		<action name="getCasteCategoryGroupNames" class="candidateUpdateFormAction" method="callAjaxHandlerCasteGroupNames">
+			<result type="json" name="success">
+				 <param name="root">casteCategoryGroupNames</param> 
+			</result>
+		</action>
+				
+		<action name="getCasteNames" class="candidateUpdateFormAction" method="callAjaxHandlerCasteNames">
+			<result type="json" name="success">
+				 <param name="root">casteNames</param> 
+			</result>
+		</action>
+		
+		<action name="getMandalsForDistricts" class="candidateUpdateFormAction" method="callAjaxHandlerMandalNames">
+			<result type="json" name="success">
+				 <param name="root">mandalNames</param> 
+			</result>
+		</action>
 		</package>
 </struts>      
