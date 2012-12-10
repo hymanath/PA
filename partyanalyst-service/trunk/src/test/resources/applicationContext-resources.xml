@@ -293,6 +293,32 @@
 				<value>com.itgrids.partyanalyst.model.HamletBoothPublication</value>
 				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
 				<value>com.itgrids.partyanalyst.model.BoothPublicationVoter</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageInfo</value>
+				<value>com.itgrids.partyanalyst.model.HamletBoothPublication</value>
+				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
+				<value>com.itgrids.partyanalyst.model.BoothPublicationVoter</value>
+				
+				
+				<value>com.itgrids.partyanalyst.model.Caste</value>
+				<value>com.itgrids.partyanalyst.model.CasteCategory</value>
+				<value>com.itgrids.partyanalyst.model.CasteCategoryGroup</value>
+				<value>com.itgrids.partyanalyst.model.CasteStatewise</value>
+				<value>com.itgrids.partyanalyst.model.CandidateCaste</value>
+		
+						
+				<value>com.itgrids.partyanalyst.model.CandidatePhone</value>  
+				<value>com.itgrids.partyanalyst.model.PhoneType</value>  
+				<value>com.itgrids.partyanalyst.model.AddressType</value>
+				<value>com.itgrids.partyanalyst.model.Address</value>
+				<value>com.itgrids.partyanalyst.model.CandidateAddress</value>
+				<value>com.itgrids.partyanalyst.model.PhoneNumber</value>
+				<value>com.itgrids.partyanalyst.model.PhoneCategory</value> 
+				<value>com.itgrids.partyanalyst.model.AddressContact</value>
+				<value>com.itgrids.partyanalyst.model.CandidateWebsite</value>
+
+
+
+				
 				
 			</list>
 		</property>
@@ -1566,4 +1592,65 @@
 	<bean id="publicationDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicationDateDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	
+	<bean id="casteDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="casteCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="casteCategoryGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteCategoryGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="casteStatewiseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteStatewiseDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateCasteDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateCasteDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<bean id="phoneTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PhoneTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<bean id="candidatePhoneDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePhoneDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+		
+	<bean id="addressTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AddressTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="addressDAO" class="com.itgrids.partyanalyst.dao.hibernate.AddressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateAddressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="phoneCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PhoneCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="phoneNumberDAO" class="com.itgrids.partyanalyst.dao.hibernate.PhoneNumberDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateWebsiteDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateWebsiteDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+		<bean id="addressContactDAO" class="com.itgrids.partyanalyst.dao.hibernate.AddressContactDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+				
+	
 </beans>
