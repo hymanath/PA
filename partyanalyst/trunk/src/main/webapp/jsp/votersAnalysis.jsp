@@ -49,6 +49,32 @@
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <title>Voters analysis</title>
+
+<style type="text/css">
+table.gridtable {
+	font-family: arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+</style>
+
 <style>
   #votersBasicInfoDivSub{
     background-color: #EDF5FF;
@@ -300,12 +326,17 @@ locationDetails.constituencyArr.push(ob);
 
 </div>
 
-<div id="tableDiv"></div>
+
+<div id="voterDetailsNote"></div>
+<div id="tableDiv" style="margin-left:119px;padding:10px;"></div>
+
+<div id="voterAgewiseDetailsNote"></div>
+<div id="agewiseDetails" style="margin-left:35px;padding:10px;"></div>
+
+<div id="voterAgeAngGenderwiseDetailsNote"></div>
+<div id="ageAndgenderWiseDetails" style="margin-left:10px;padding:10px;"> </div>
 
 <!-- for  body 1 end    result  -->
-
-
-
 
 <!-- for  body 2 start    result  -->
 
@@ -483,7 +514,7 @@ function getVoterDetailsForMandal(){
 	if(reportLevel == "2"){
 
 
-        if(startNumber == "1"){
+        if(startNumber == "2"){
 
 			var jsObj=
 					{
@@ -498,7 +529,7 @@ function getVoterDetailsForMandal(){
 				    type:"mandal"
 						
 					};
-		}else if(startNumber == "2"){
+		}else if(startNumber == "1"){
 
 			var jsObj=
 					{
@@ -570,28 +601,31 @@ function getVoterDetailsForBooth(){
 	var url = "getAgewiseVoterDetails.action?"+rparam;
 
 	callAjaxorVoterDetails(jsObj,url);
+
 	}
 }
 
 function callAjaxorVoterDetails(jsObj,url){
 
+	$('#tableDiv').html('');
+	$('#agewiseDetails').html('');
+	$('#ageAndgenderWiseDetails').html('');
+
 	var myResults;
 
 		 var callback = {			
 				   success : function( o ) {
-					try {										
-					  myResults = YAHOO.lang.JSON.parse(o.responseText);					
-						  if(jsObj.type == "constituency")
-							buildConstituencyVoterDetailsTable(myResults);
-						  else if (jsObj.type == "mandal")
-							buildConstituencyVoterDetailsTable(myResults);
-						  else if (jsObj.type == "localElectionBody")
-							  buildConstituencyVoterDetailsTable(myResults);
-						  else if (jsObj.type == "panchayat")
-							  buildConstituencyVoterDetailsTable(myResults);
-						  else if (jsObj.type == "booth")
-							  buildConstituencyVoterDetailsTable(myResults);
-					
+					try {	
+						
+						//console.log(o.responseText);
+					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
+							buildConstituencyVoterDetailsTable(myResults,jsObj.type);
+
+							if(jsObj.type != "booth"){
+								buildAgewiseDetails(myResults,jsObj.type);
+								buildAgeAndGenderWiseDetails(myResults,jsObj.type);
+							}
+						 
 						
 					}catch (e){   
 							
@@ -608,44 +642,76 @@ function callAjaxorVoterDetails(jsObj,url){
 
 }
 
-function buildConstituencyVoterDetailsTable(result){
+function buildConstituencyVoterDetailsTable(result,type){
+
+	var noteString = '';
+
+	if(type == "constituency")
+		noteString = $('#constituencyList :selected').text()+" "+"constituency";
+	else if(type == "mandal")
+		noteString = $('#mandalField :selected').text()+" ";
+	else if(type == "panchayat")
+		noteString = $('#panchayatField :selected').text()+" "+"panchayat";
+	else if(type == "localElectionBody")
+		noteString = $('#mandalField :selected').text()+" "+"localElection";
+	else 
+		noteString = $('#pollingStationField :selected').text();
+
+	$('#voterDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+" "+"voters details"+'</h4>');
 
 	var str='';
-	str+='<table border="1" style="margin-left:200px;">';
+	str+='<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
 	str+='<tr>'
 	str+='<tr>'
 	str+='<th rowspan="2">Age Range</th>';
 	str+='<th colspan="2">TotalVoters</th>';
 	str+='<th colspan="2">Male</th>';
-	str+='<th colspan="2">FeMale</th>';
+	str+='<th colspan="2">Female</th>';
 	str+='<th colspan="2">UnKnown</th>';
 	str+='</tr>';
     
 	str+='<tr>';
 	str+='<th>TotalVoters</th>';
-	str+='<th>TotalPercanrtage</th>';
+	str+='<th>TotalPetcentage</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percanrtage</th>';
+	str+='<th>Percentage</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percanrtage</th>';
+	str+='<th>Percentage</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percanrtage</th>';
+	str+='<th>Percentage</th>';
 	str+='</tr>';
-
-
 
 	for(var i in result.votersDetailsVO){
 
 	str+='<tr>';
-	str+='<th>'+result.votersDetailsVO[i].ageRange+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalVoters+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalMaleVoters+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalMaleVotersPercent.toFixed(2)+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalFemaleVoters+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalFemaleVotersPercent.toFixed(2)+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalUnknownVoters+'</th>';
-	str+='<th>'+result.votersDetailsVO[i].totalUnknownVotersPercent.toFixed(2)+'</th>';
+	str+='<td>'+result.votersDetailsVO[i].ageRange+'</td>';
+	str+='<td>'+result.votersDetailsVO[i].totalVoters+'</td>';
+
+	if(result.votersDetailsVO[i].totalVotersPercent != null)
+		 str+='<td>'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</td>';	 
+	else
+		str+='<td>0.00</td>';
+	
+
+	str+='<td>'+result.votersDetailsVO[i].totalMaleVoters+'</td>';
+    
+	if(result.votersDetailsVO[i].totalMaleVotersPercent != null)
+		str+='<td>'+result.votersDetailsVO[i].totalMaleVotersPercent.toFixed(2)+'</td>';
+	else
+		str+='<td>0.00</td>';
+
+	str+='<td>'+result.votersDetailsVO[i].totalFemaleVoters+'</td>';
+
+	if(result.votersDetailsVO[i].totalFemaleVotersPercent != null)
+	  str+='<td>'+result.votersDetailsVO[i].totalFemaleVotersPercent.toFixed(2)+'</td>';
+	else
+		str+='<td>0.00</td>';
+	str+='<td>'+result.votersDetailsVO[i].totalUnknownVoters+'</td>';
+
+	if(result.votersDetailsVO[i].totalUnknownVotersPercent != null)
+	   str+='<td>'+result.votersDetailsVO[i].totalUnknownVotersPercent.toFixed(2)+'</td>';
+	else
+		str+='<td>0.00</td>';
 	
 	str+='</tr>';
 
@@ -657,7 +723,226 @@ function buildConstituencyVoterDetailsTable(result){
 
 
 }
+function buildAgewiseDetails(results , type){
 
+
+   var innerResults;
+   var noteString;
+
+	if(type == "constituency"){
+		innerResults = results.mandalsVotersDetails;
+		//noteString = "Mandals of "+$('#constituencyList :selected').text()+" "+"constituency";
+
+		noteString = "Mandal wise voter details:Agewise";
+	}
+	else if(type == "mandal"){
+		innerResults = results.panchayatVotersDetails;
+		//noteString ="Panchayatis of "+ $('#panchayatField :selected').text();
+		noteString = "Panchayat wise voter details:Agewise";
+	}
+	else if(type == "panchayat"){
+		innerResults = results.boothVotersDetails;
+	    // noteString = "Booths of "+$('#panchayatField :selected').text()+" "+"panchayat";
+		noteString = "Booth wise voter details:Agewise";
+	}
+	else if(type == "localElectionBody"){
+		innerResults = results.boothVotersDetails;
+		//noteString = "Booths of "+$('#mandalField :selected').text()+" "+"localElection";
+		noteString = "Booth wise voter details:Agewise";
+	}
+	
+
+
+	if(innerResults.length == 0){
+		alert("No Records");
+		return false;
+	}
+
+	//$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+" "+"voters agewise details"+'</h4>');
+	$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
+
+	
+
+	var str='';
+
+str+='<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
+
+
+str+='<tr>';
+
+str+='<th rowspan="2">Mandal Name</th>';
+str+='<th  rowspan="2">Total Voters</th>';
+str+='<th colspan="2">18-25</th>';
+str+='<th colspan="2">26-35</th>';
+str+='<th colspan="2">36-45</th>';
+str+='<th colspan="2">46-60</th>';
+str+='<th colspan="2">60-Above</th>';
+
+str+='</tr>';
+str+='<tr>';
+
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='</tr>';
+
+for(var i=0;i<innerResults.length;i++){
+
+	str+='<tr>';
+
+	if(type == "constituency")
+	 str+='<td>'+innerResults[i].tehsilName+'</td>';
+	else if(type == "mandal")
+	 str+='<td>'+innerResults[i].panchayatname+'</td>';
+	else if(type == "panchayat")
+	 str+='<td>'+innerResults[i].boothName+'</td>';
+	else if(type == "localElectionBody")
+	 str+='<td>'+innerResults[i].boothName+'</td>';
+
+	str+='<td>'+innerResults[i].totalVoters+'</td>';
+	str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
+	str+='<td>'+innerResults[i].votersPercentFor18To25+'</td>';
+	str+='<td>'+innerResults[i].totalVotersFor26To35+'</td>';
+	str+='<td>'+innerResults[i].votersPercentFor26To35+'</td>';
+	str+='<td>'+innerResults[i].totalVotersFor36To45+'</td>';
+	str+='<td>'+innerResults[i].votersPercentFor36To45+'</td>';
+	str+='<td>'+innerResults[i].totalVotersFor46To60+'</td>';
+	str+='<td>'+innerResults[i].votersPercentFor46To60+'</td>';
+	str+='<td>'+innerResults[i].totalVotersForAbove60+'</td>';
+	str+='<td>'+innerResults[i].votersPercentForAbove60+'</td>';
+	str+='</tr>';
+
+}
+
+str+='</table>';
+
+
+$('#agewiseDetails').html(str);
+
+}
+
+function buildAgeAndGenderWiseDetails(results , type){
+
+
+
+	 var innerResults;
+	    var noteString;
+
+
+	if(type == "constituency"){
+		innerResults = results.mandalsVotersDetails;
+		//noteString = "Mandals of "+$('#constituencyList :selected').text()+" "+"constituency";
+		noteString = "Mandal wise voter details:Age and gender wise";
+
+	}
+	else if(type == "mandal"){
+		innerResults = results.panchayatVotersDetails;
+		//noteString = "Booths of "+$('#panchayatField :selected').text()+" "+"panchayat";
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+	else if(type == "panchayat"){
+		innerResults = results.boothVotersDetails;
+		innerResults = results.boothVotersDetails;
+	    // noteString = "Booths of "+$('#panchayatField :selected').text()+" "+"panchayat";
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+	else if(type == "localElectionBody"){
+		innerResults = results.boothVotersDetails;
+		//noteString = "Booths of "+$('#mandalField :selected').text()+" "+"localElection";
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+
+	if(innerResults.length == 0){
+		alert("No Records");
+		return false;
+	}
+
+	//$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+" "+"voters agewise details"+'</h4>');'
+
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
+
+	var str='';
+
+str+='	<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
+
+str+='<tr>';
+str+='<th rowspan="2">Mandal Name</th>';
+str+='<th colspan="3">18-25</th>';
+str+='<th colspan="3">26-35</th>';
+str+='<th colspan="3">36-45</th>';
+str+='<th colspan="3">46-60</th>';
+str+='<th colspan="3">60-Above</th>';
+
+str+='</tr>';
+str+='<tr>';
+
+
+str+='<th>Male</th>';
+str+='<th>Female</th>';
+str+='<th>Unknown</th>';
+str+='<th>Male</th>';
+str+='<th>Female</th>';
+str+='<th>Unknown</th>';
+str+='<th>Male</th>';
+str+='<th>Female</th>';
+str+='<th>Unknown</th>';
+str+='<th>Male</th>';
+str+='<th>Female</th>';
+str+='<th>Unknown</th>';
+str+='<th>Male</th>';
+str+='<th>Female</th>';
+str+='<th>Unknown</th>';
+str+='</tr>';
+
+for(var i=0;i<innerResults.length;i++){
+
+
+	str+='<tr>';
+
+	if(type == "constituency")
+	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	else if(type == "mandal")
+	str+='<td>'+innerResults[i].panchayatname+'</td>';
+	else if(type == "panchayat")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+	else if(type == "localElectionBody")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
+	str+='<td>'+innerResults[i].totalUnknownVotersFor18To25+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor26To35+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor26To35+'</td>';
+	str+='<td>'+innerResults[i].totalUnknownVotersFor26To35+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor36To45+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor36To45+'</td>';
+	str+='<td>'+innerResults[i].totalUnknownVotersFor36To45+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor46To60+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor46To60+'</td>';
+	str+='<td>'+innerResults[i].totalUnknownVotersFor46To60+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersForAbove60+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersForAbove60+'</td>';
+	str+='<td>'+innerResults[i].totalUnknownVotersForAbove60+'</td>';
+
+	str+='</tr>';
+
+}
+
+str+='</table>';
+
+$('#ageAndgenderWiseDetails').html(str);
+}
 	
 </script>
 </body>
