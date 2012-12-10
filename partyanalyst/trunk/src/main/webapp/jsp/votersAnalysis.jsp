@@ -156,6 +156,25 @@ p {
     font-style: normal;
 	font-family: verdana,sans-serif;
    }
+.votersWidgetHeader
+	{
+		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		height:30px;
+	}
+
+	.votersWidgetMainHeader
+	{
+		background-image:url("images/icons/districtPage/header_body.png");
+		height:36px;
+	}
+	.votersWidgetHeader_span
+	{
+		position:relative;
+		top:8px;
+		left:10px;
+		color:#4B74C6;
+		font-weight:bold;
+	}
 
 </style>
 
@@ -222,7 +241,7 @@ locationDetails.constituencyArr.push(ob);
 		
 	<div id="panchayatDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 		
-	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="getVoterDetailsForPanchayat();buildVotersByLocPanchayatDataTable(this.id)"></select></div>
+	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="getVoterDetailsForPanchayat();buildVotersByLocPanchayatDataTable(this.id);"></select></div>
 	
 	<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
@@ -238,8 +257,8 @@ locationDetails.constituencyArr.push(ob);
 			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Cast Statistics" 
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters" id="votersId" style="height:24px;" onclick="showVotersDiv()"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise" id="ageWiseId" style="height:24px;" onclick="showAgeDiv()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
 					
 				  </tr>
 				</table>
@@ -262,19 +281,13 @@ locationDetails.constituencyArr.push(ob);
 <HR>
 <div id='votersMainOuterDiv1' style="display:none">
 	<div id='votersHeaderDiv1'>
-		<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Important Families</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>
+		<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Important Families</span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
+				</table>
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
@@ -298,30 +311,20 @@ locationDetails.constituencyArr.push(ob);
 
 <div id='votersMainOuterDiv2' style="display:none">
 	<div id='votersHeaderDiv2'>
-		<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Local Cast statistics</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>
+		<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Local Cast Statistics</span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
+				</table>
 	</div>
 
 	<div id='LocalCastDiv' class="divInfo">
 	<div id='localCastStatsTabContent_header'></div>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
-	<div id='localCastStatsTabContent_subbody'>
-
-	
-		</div>
-
-		<div id='localCastStatsTabContent_subbody1'></div>
+	<div id='localCastStatsTabContent_subbody'></div>
+	<div id='localCastStatsTabContent_subbody1'></div>
 
 
 </div>
@@ -334,27 +337,21 @@ locationDetails.constituencyArr.push(ob);
 
 <div id='votersMainOuterDiv3' style="display:none">
 	<div id='votersHeaderDiv3'>
-		<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Voters Info</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>
+		<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Voters Info</span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
+				</table>
 	</div>
     
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv"></div>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
-	<div id='votersDiv' class="divInfo">
+	<div id='votersDiv' class="divInfo"></div>
 	
-	</div>
+	
 
 </div>
 
@@ -366,19 +363,13 @@ locationDetails.constituencyArr.push(ob);
 
 <div id='votersMainOuterDiv4' style="display:none">
 	<div id='votersHeaderDiv4'>
-		<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Age Wise</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>
+		<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Age Wise</span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
+				</table>
 	</div>
 
 	<div id='ageWiseInfoDiv' class="divInfo">
@@ -667,6 +658,7 @@ function buildConstituencyVoterDetailsTable(result){
 
 }
 
+	
 </script>
 </body>
 </html>
