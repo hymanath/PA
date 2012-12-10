@@ -8,6 +8,14 @@ public class VoterHouseInfoVO {
 	private String elder;
 	private String younger;
 	private Long totalHousesCount; 
+	private Long boothId;
+	private Long sNo;
+	private String name;
+	private String gender;
+	private Long age;
+	private String gaurdian;
+	private String relationship;
+	private String castCategory;
 	
 	public VoterHouseInfoVO(){
 		
@@ -68,6 +76,70 @@ public class VoterHouseInfoVO {
 
 	public void setTotalHousesCount(Long totalHousesCount) {
 		this.totalHousesCount = totalHousesCount;
+	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+
+	public Long getsNo() {
+		return sNo;
+	}
+
+	public void setsNo(Long sNo) {
+		this.sNo = sNo;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Long getAge() {
+		return age;
+	}
+
+	public void setAge(Long age) {
+		this.age = age;
+	}
+
+	public String getGaurdian() {
+		return gaurdian;
+	}
+
+	public void setGaurdian(String gaurdian) {
+		this.gaurdian = gaurdian;
+	}
+
+	public String getRelationship() {
+		return relationship;
+	}
+
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
+	}
+
+	public String getCastCategory() {
+		return castCategory;
+	}
+
+	public void setCastCategory(String castCategory) {
+		this.castCategory = castCategory;
 	}
 	
 	
