@@ -162,9 +162,9 @@ $("document").ready(function(){
 		
 		$(this).click(function(){
 		$("#allConnectedUsersDisplay_main").children().remove();			
-		var userId = $(this).closest(".connectPeopleDiv").find(".userId").val();
-		var userName = $(this).closest(".connectPeopleDiv").find(".userName").val();
-		var constituencyName = $(this).closest(".connectPeopleDiv").find(".constituencyName").val();
+		var userId = $(".userId").val();
+		var userName = $(".userName").val();
+		var constituencyName = $(".constituencyName").val();
 		var userLoginId = loginUserId;
 		var locationId = constituencyId;
 		var locationType = 'CONSTITUENCY';
@@ -181,11 +181,11 @@ $("document").ready(function(){
 		});
 
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
-		var Name=$("<label>"+userName+"</label>");
-		var constituencyName = $("<label>"+constituencyName+"</label>");
-		var message = $("<label>Message</label>");
+		var Name=$("<label style='color:#094776;font-family: Verdana;font-size: 13px;'>"+userName+"</label>");
+		var constituencyName = $("<label style='color: #754815;font-family: verdana;font-size: 12px;'>"+constituencyName+"</label>");
+		var message = $("<label class='messageLabel'>Message</label>");
 		var textArea = $("<textarea id='connectUserMsg'></textarea>");
-		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -45px;">');
 		var connectBtn = $('<input type="button" value="Connect" id="connectPeopleLink"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
@@ -806,7 +806,7 @@ function showMailPopup(id,name,type)
 		
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
-		var label = $("<label>Message</label>");
+		var label = $("<label class='messageLabel'>Message</label>");
 		var textarea = $("<textarea id='connectMessageText'></textarea><br>");
 		var button = $("<input id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
 		div.append(errorDiv);
@@ -844,7 +844,7 @@ function sendMessageToConnectedUser(userId,type)
 			 };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "messageToConnectedUser.action?"+rparam;					
-	callAjax(jsObj,url);
+	callAjax1(jsObj,url);
 }
 
 
@@ -875,7 +875,7 @@ function blockRequest(requestId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	callAjax1(jsObj,url);
 }
 
 function acceptRequest(requestId)
@@ -889,7 +889,7 @@ function acceptRequest(requestId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	callAjax1(jsObj,url);
 }
 
 function rejectRequest(requestId)
@@ -903,7 +903,7 @@ function rejectRequest(requestId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	callAjax1(jsObj,url);
 }
  function showStatus(results,jsObj)
 {
@@ -1155,9 +1155,9 @@ function showAllPostedProblems_paginator(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
 		templateClone.find('.problemReportedDate').html(''+problemsData[i].identifiedDate+'');
-		templateClone.find('.problemTitle').html(''+problemsData[i].definition+'');
+		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
-		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
+		templateClone.find('.problemFromDate').html('<span style="color:seagreen;">Existing From: </span>'+problemsData[i].existingFrom+'');
 		templateClone.find('.likeCls').html('Like');
 		templateClone.find('.commentCls').html('Comment');
 		templateClone.find('.shareCls').html('Share');
@@ -1244,7 +1244,7 @@ function connectToSelectedPerson(id,name)
 
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var Name=$("<label>"+userName+"</label>");
-		var message = $("<label>Message</label>");
+		var message = $("<label class='messageLabel'>Message</label>");
 		var textArea = $("<textarea id='connectUserMsg'></textarea>");
 		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
 		var connectBtn = $('<input type="button" value="Connect" id="connectDistrictPeopleLink"/>');
