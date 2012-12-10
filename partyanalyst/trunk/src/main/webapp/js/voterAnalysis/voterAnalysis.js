@@ -433,7 +433,10 @@ function showImportantFamiliesDiv()
 								{
 									buildCastInfoForSubLevels(myResults);
 								}
-								
+								else if(jsObj.task == "gettotalimpfamlies")
+								{
+								    buildFamilyMembers(myResults);
+								}
 
 							}catch (e) {   
 								
@@ -728,6 +731,24 @@ function getvotersBasicInfo(){
 	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 			var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;						
 		callAjax(jsObj1,url1);
+	if(type == 'panchayat' || type == 'booth' ){
+	 var reqtype = type;
+	 if(type == 'booth'){
+	    reqtype = 'pollingstation';
+	 }
+	    var jsObj2=
+			{
+					
+				type:reqtype,
+				id:id,
+				publicationDateId:publicationDateId,
+				task:"gettotalimpfamlies"
+	
+			}
+	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+		callAjax(jsObj2,url2);
+	}
 }
 
 function buildVotersBasicInfo(votersbasicinfo){
@@ -887,6 +908,51 @@ function buildVotersChart(chartInfo,reqTitle){
 			};
 
 				
-	} 
-
+	}
 	
+  function  buildFamilyMembers(result){
+      var str =' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%">';
+          str+='  <thead>';
+          str+='   <tr>';
+          str+='     <th>SNo</th>';
+          str+='     <th>House No</th>';
+          str+='     <th>Members In Family</th>';
+          str+='	 <th>Eldest Person</th>';
+          str+='     <th>Youngest Person</th>';
+          str+='     <th>Cast</th>';
+          str+='   </tr>';
+          str+='  </thead>';
+          str+='  <tbody>';
+	 for(var i in result){
+	   var sno = i+1;
+	      str+='   <tr>';
+          str+='     <td>'+sno+'</td>';
+          str+='     <td>'+result[i].houseNo+'</td>';
+          str+='     <td>'+result[i].numberOfPeople+'</td>';
+          str+='	 <td>'+result[i].elder+'</td>';
+          str+='     <td>'+result[i].younger+'</td>';
+          str+='     <td>'+result[i].cast+'</td>';
+          str+='   </tr>';
+	 }
+          str+='  </tbody>';
+          str+=' </table>';
+	  
+	  $("#impFamPancBothDtls").html(str);
+	  
+	  	$('#impfamilydatatable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [
+      {"sType":"numeric"},
+      null,
+      null,
+      null,
+      null, 
+	  null,
+	  null,
+	  null
+    ] 
+		});
+  } 
