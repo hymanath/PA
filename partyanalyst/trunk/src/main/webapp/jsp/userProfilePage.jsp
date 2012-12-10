@@ -565,6 +565,7 @@ userType = '${UserType}';
 						};
 			constituencies.push(obj);
 		</c:forEach>
+		buildPolls();
 </script>
 </body>
 </html>
