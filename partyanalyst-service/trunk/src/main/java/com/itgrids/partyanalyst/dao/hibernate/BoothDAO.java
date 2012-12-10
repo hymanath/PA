@@ -309,5 +309,27 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 					"and model.publicationDate.publicationDateId = ? " +					
 					"and model.partNo = ?",params);
 		}
+		
+		public List<Object[]> findBoothsInLocalElectionBodyByPublicationDateId(
+				Long localElectionBodyId, Long publicationDateId) {		
+			
+			Object[] params ={localElectionBodyId, publicationDateId};
+			
+			return getHibernateTemplate().find("select model.boothId , model.partNo from Booth model where model.localBody.localElectionBodyId = ? and model.publicationDate.publicationDateId = ?",params);
+			
+		}
+		
+	/*@SuppressWarnings("unchecked")
+	public List<Long> getTehsilIdsByConstituencyIdAndPublicationDateId(
+			Long constituencyId, Long publicationDateId) {
+		
+		Object[] params ={constituencyId, publicationDateId};
+		
+		return getHibernateTemplate().find("select distinct model.tehsil.tehsilId from Booth model where model.constituency.constituencyId = ? " +
+				"and model.publicationDate.publicationDateId = ?" , params);
+			
+		}*/
+		
+	
 	
 }
