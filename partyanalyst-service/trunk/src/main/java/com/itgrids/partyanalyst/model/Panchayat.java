@@ -37,6 +37,7 @@ public class Panchayat extends BaseModel implements java.io.Serializable{
 	private String panchayatName;
 	private Tehsil tehsil;
 	private Set<PanchayatHamlet> panchayatHamlets = new HashSet<PanchayatHamlet>(0);
+	private Set<Booth> booths = new HashSet<Booth>(0);
 	
 	public Panchayat()
 	{}
@@ -89,4 +90,15 @@ public class Panchayat extends BaseModel implements java.io.Serializable{
 		this.panchayatHamlets = panchayatHamlets;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "panchayat")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Booth> getBooths() {
+		return booths;
+	}
+
+	public void setBooths(Set<Booth> booths) {
+		this.booths = booths;
+	}
+
+	
 }
