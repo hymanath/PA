@@ -259,6 +259,8 @@ locationDetails.constituencyArr.push(ob);
 				   </td>
 			 </tr>
 		</table>
+		<div id="impFamPancBothDtls"></div>
+		<div id="impFamDtls"></div>
 	</div>
 
 	<div id='ImportantFamiliesDiv' class="divInfo">
