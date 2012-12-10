@@ -3820,6 +3820,12 @@
 				<param name="root">problemDetailsVO</param>				
 			</result>		
 		</action>
+				
+		<action name="votersFamilyDetailsAction" class="votersAnalysisAction" method="getVotersFamilyDetails">
+			<result type="json" name="success">
+				<param name="root">votersFamilyInfo</param>				
+			</result> 
+		</action>
 		
 		</package>
 </struts>      
