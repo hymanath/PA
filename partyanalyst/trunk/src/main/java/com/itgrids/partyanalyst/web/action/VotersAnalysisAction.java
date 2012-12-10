@@ -321,9 +321,32 @@ public String getAgewiseVoterDetails(){
 		String type = jObj.getString("type");
 		Long panchayatId = Long.parseLong(jObj.getString("panchayatId"));
 		
+		List<VotersDetailsVO> tehsilVotersDetails = null;
+		List<VotersDetailsVO> panchatyVotersDetails = null;
+		List<VotersDetailsVO> boothVotersDetails = null;
+		
 		//VOTER DETAILS OVERVIEW FOR CONSTITUENCY  OR MANDAL
 		List<VotersDetailsVO> votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,
 				panchayatId , boothId, publicationDateId,type);
+		
+		if(type.equalsIgnoreCase("constituency")){
+			 tehsilVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForTehsilsByConstituencyId(constituencyId,publicationDateId);
+			 constituencyManagementVO.setMandalsVotersDetails(tehsilVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("mandal")){
+			 panchatyVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForPanchayatisByTehsilId(mandalId,publicationDateId);
+			 constituencyManagementVO.setPanchayatVotersDetails(panchatyVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("panchayat")){
+			 boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
+			 constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("localElectionBody")){
+			 boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(mandalId,publicationDateId);
+			 constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+		}
+
+		
 	
        /* //VOTER DETAILS OVERVIEW  FOR BOOTH 
 		
