@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.columns.enums.StateColumnNames;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -155,5 +156,11 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId = ? and "+
 	" model.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.userId = ?) "+
 	" and model.stateId not in (select model2.state.stateId from UserStateAccessInfo model2 where model2.user.userId = ?)",params);
+	}
+	
+	public List<Object[]> getAllStateDetails(){
+		Query query = getSession().createQuery("select model.stateId , model.stateName from State model");
+			return query.list();
+		
 	}
 }

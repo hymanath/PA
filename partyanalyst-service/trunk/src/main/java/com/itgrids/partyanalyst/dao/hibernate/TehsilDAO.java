@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.TehsilColumnNames;
@@ -75,4 +76,20 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil, Long> implements ITeh
 		return getHibernateTemplate().find("select model.tehsilId from Tehsil model where model.tehsilName = ? and model.district.districtId = ?", params);
 	}
 	
+	public List<Object[]> getAllTehsilInfoDetails(){
+		
+		Query query = getSession().createQuery("select model.tehsilId , model.tehsilName from Tehsil model");
+		return query.list();
+		
+		
+	}
+	
+public List<Object[]> getAllTehsilDetails(Long districtId){
+		
+		Query query = getSession().createQuery("select model.tehsilId , model.tehsilName from Tehsil model where model.district.districtId=?");
+		query.setParameter(0, districtId);
+		return query.list();
+		
+		
+	}
 }
