@@ -591,6 +591,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		{
 			VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 			SelectOptionVO selectOptionVO = null;
+			List<SelectOptionVO> booths1 = new ArrayList<SelectOptionVO>();
 			List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
 			if(type.equalsIgnoreCase("constituency"))
 			{
@@ -607,22 +608,27 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId);
 			}
 			
-			/*if(type.equalsIgnoreCase("panchayat"))
+			if(type.equalsIgnoreCase("panchayat"))
 			{
-				 List<Object[]> boothsList = hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(id,publicationDateId);
-				 for(Object[] params : boothsList)
-				 {
-				selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId((Long) params[0]);
-				 }
+				List<SelectOptionVO> booths = getBoothsByPanchayatId(id,publicationDateId);
+				mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId);
 				
-				
-			}*/
+			}
 			return mandalCasts;
 			
 		}
 		
-		
+		public List<SelectOptionVO> getBoothsByPanchayatId(Long id,Long publicationDateId)
+		{
+			List<SelectOptionVO> booths = new ArrayList<SelectOptionVO>();
+			List<Object[]> PollingBooths = hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(id,publicationDateId);
+			SelectOptionVO hamlet = null;
+			for (Object[] panchayat : PollingBooths) {
+				hamlet = new SelectOptionVO((Long)panchayat[0],panchayat[1].toString());
+				booths.add(hamlet);
+			}
+			return booths;	
+		}
 	//getting All Mandals For Constituency
 		
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleMandal(List<SelectOptionVO> mandalList,Long publicationDateId)
@@ -673,7 +679,27 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		return panchayatsList;
 	}
 
-	
+	//getting SubLevel Data For Booths
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleBooths(List<SelectOptionVO> boothsList,Long publicationDateId)
+	{
+		VoterCastInfoVO voterCastInfo = null;
+		
+		List<VoterCastInfoVO> boothInfo = new ArrayList<VoterCastInfoVO>();
+		if(boothsList != null)
+		{
+			for(SelectOptionVO booths :boothsList)
+			{
+				voterCastInfo = new VoterCastInfoVO();
+				Long boothId=booths.getId();
+				String boothPartNo = booths.getName();
+				voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(new Long(boothId),publicationDateId)));
+				voterCastInfo.setMandalName(boothPartNo);
+				boothInfo.add(voterCastInfo);
+			}
+		}
+		return boothInfo;
+		
+	}
 	/**
 	 * This method will get overview voters details for a constituency or for a mandal
 	 */
