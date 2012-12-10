@@ -200,4 +200,33 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return query.uniqueResult();
 	}
 	
+	public Integer findEmailInsertionInCandidate(String emailId,Long candidateId){
+		
+		StringBuffer query1 = new StringBuffer();
+		query1.append("update Candidate model set model.emailAddress=? where model.candidateId=?");
+		Query queryObject = getSession().createQuery(query1.toString());
+		queryObject.setParameter(0,emailId);
+		queryObject.setParameter(1,candidateId); 
+		
+		return queryObject.executeUpdate();	
+	
+	}
+	
+	public Integer findNameInsertionInCandidate(String candidateName,Long candidateId){
+		
+		StringBuffer query1 = new StringBuffer();
+		query1.append("update Candidate model set model.lastname=? where model.candidateId=?");
+		Query queryObject = getSession().createQuery(query1.toString());
+		queryObject.setParameter(0,candidateName);
+		queryObject.setParameter(1,candidateId); 
+		
+		return queryObject.executeUpdate();	
+	
+	}
+	
+	public List<Candidate> getEmailInfo(Long candidateId){
+		
+		return getHibernateTemplate().find("from Candidate model where model.candidateId = ?", candidateId);
+	}
+	
 }
