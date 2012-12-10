@@ -125,12 +125,12 @@ p {
  padding:5px;
 
 }
-#subLevelTable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;}
-#subLevelTable tr:nth-child(even){background:#EdF5FF;}
+#subLevelTable,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;}
+#subLevelTable tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even){background:#EdF5FF;}
 
-#subLevelTable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#subLevelTable td,#localCastStatsTabContent_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
-#subLevelTable th
+#subLevelTable th,#localCastStatsTabContent_body table th
 {
 	background-color: #CDE6FC;
     font-size: 13px;
@@ -141,7 +141,6 @@ p {
     padding-top: 10px;
     text-align: left;
 	}
-
 
 #impFamPancBothDtls,#impFamDtls{
  margin-top:25px;
