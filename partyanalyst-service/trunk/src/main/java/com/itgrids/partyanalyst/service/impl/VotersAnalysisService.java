@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -723,8 +725,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			}
 			
 			for(VotersDetailsVO votersDetailsVO:constituencyVotersList){
-				if(totalVoters != 0)
-				votersDetailsVO.setTotalVotersPercent((float)votersDetailsVO.getTotalVoters()*100f/totalVoters);				
+				if(totalVoters != 0){					
+				votersDetailsVO.setTotalVotersPercent((float)votersDetailsVO.getTotalVoters()*100f/totalVoters);
+				}
 			}
 			
 		}catch(Exception e){			
@@ -796,6 +799,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			 voterDetailsForAgeBetween18To25.setAgeRange("18-25");
 			 
 			  if(totalVotersBetween18To25 != 0){
+				  
+						
 				 voterDetailsForAgeBetween18To25.setTotalMaleVotersPercent((float) (maleVotersBetween18To25 *100f/ totalVotersBetween18To25 ));
 				 voterDetailsForAgeBetween18To25.setTotalFemaleVotersPercent((float)(femaleVotersBetween18To25 *100f / totalVotersBetween18To25 ));
 				 voterDetailsForAgeBetween18To25.setTotalUnknownVotersPercent((float) (unKnownVotersBetween18To25 *100f / totalVotersBetween18To25 ));
@@ -877,6 +882,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterDetailsForAgeBetween26To35.setAgeRange("26-35");
 			
 				if(totalVotersBetween26To35 != 0){
+					
+					
 					voterDetailsForAgeBetween26To35.setTotalMaleVotersPercent((float) (maleVotersBetween26To35 *100f/ totalVotersBetween26To35 ));
 					voterDetailsForAgeBetween26To35.setTotalFemaleVotersPercent((float)(femaleVotersBetween26To35 *100f/ totalVotersBetween26To35 ));
 					voterDetailsForAgeBetween26To35.setTotalUnknownVotersPercent((float) (unKnownVotersBetween26To35 *100f/ totalVotersBetween26To35 ));
@@ -1116,6 +1123,523 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    	e.printStackTrace();	    	
 	    }
 	}
+	
+	
+	//retrieve all the low level stage voters details
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForTehsilsByConstituencyId(Long constituencyId,Long publicationDateId){
+		
+		List<Object[]> tehsilIds = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(constituencyId,publicationDateId);
+		List<VotersDetailsVO> mandalVotersList = new ArrayList<VotersDetailsVO>();
+		
+		
+			for(Object[] obj:tehsilIds){
+				
+				VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+				
+				getDetailsOfVotersHasAgeBetween18And25(null,(Long)obj[0],null,null, publicationDateId,voterDetailsVO,"mandal");
+				getDetailsOfVotersHasAgeBetween26And35(null,(Long)obj[0],null,null, publicationDateId,voterDetailsVO,"mandal");			
+				getDetailsOfVotersHasAgeBetween36And45(null,(Long)obj[0],null,null, publicationDateId,voterDetailsVO,"mandal");		
+				getDetailsOfVotersHasAgeBetween46And60(null,(Long)obj[0],null,null, publicationDateId,voterDetailsVO,"mandal");       
+				getDetailsOfVotersHasAgeAbove60(null,(Long)obj[0],null,null, publicationDateId,voterDetailsVO,"mandal");
+				
+				
+			Long totalVoters = voterDetailsVO.getTotalVotersFor18To25()
+					+ voterDetailsVO.getTotalVotersFor26To35()
+					+ voterDetailsVO.getTotalVotersFor36To45()
+					+ voterDetailsVO.getTotalVotersFor46To60()
+					+ voterDetailsVO.getTotalVotersForAbove60();
+						
+				voterDetailsVO.setTehsilName(obj[1].toString());
+				voterDetailsVO.setTotalVoters(totalVoters);
+				
+				
+				/*voterDetailsVO.setVotersPercentFor18To25((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters);
+				voterDetailsVO.setVotersPercentFor26To35((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters);
+				voterDetailsVO.setVotersPercentFor36To45((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters);
+				voterDetailsVO.setVotersPercentFor46To60((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters);
+				voterDetailsVO.setVotersPercentForAbove60((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters);
+			*/	
+				
+				voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
+				voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
+				voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
+				voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
+				voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != 0? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
+				mandalVotersList.add(voterDetailsVO);
+			}
+			
+			return mandalVotersList;
+	}
+	
+	public void getDetailsOfVotersHasAgeBetween18And25(
+			Long constituencyId,Long tehsilId,Long panchayatId, Long boothId, Long publicationDateId,
+			VotersDetailsVO votersDetailsVO,String type) {		
+		
+		//VotersDetailsVO voterDetailsForAgeBetween18To25 = new VotersDetailsVO();
+		List<Object[]> votersListOf18To25 = null;
+		
+		try{
+		
+			if(type.equalsIgnoreCase("constituency"))
+			    votersListOf18To25 = boothPublicationVoterDAO
+					.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+							constituencyId, publicationDateId,18L, 25L);
+			 else if(type.equalsIgnoreCase("mandal"))
+				 votersListOf18To25 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+						 tehsilId, publicationDateId,18L, 25L);
+			 else if(type.equalsIgnoreCase("panchayat"))
+			     votersListOf18To25 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+					panchayatId, publicationDateId,18L,25L);
+			 else if(type.equalsIgnoreCase("booth"))
+			    votersListOf18To25 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+						boothId, publicationDateId,18L,25L);
+			 else if(type.equalsIgnoreCase("localElectionBody"))
+				 votersListOf18To25 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+						 tehsilId, publicationDateId,18L,25L);
+				 
+			
+			
+			Long maleVotersBetween18To25 = 0L;
+			Long femaleVotersBetween18To25 = 0L;
+			Long unKnownVotersBetween18To25 = 0L;
+			
+			for(Object[] obj:votersListOf18To25){			
+				
+				if(obj[1].toString().equalsIgnoreCase(IConstants.MALE))
+					maleVotersBetween18To25 = (Long)obj[0];
+				else if(obj[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+					femaleVotersBetween18To25 = (Long)obj[0];
+				else 
+					unKnownVotersBetween18To25 = (Long)obj[0];
+				
+			}
+		
+			 Long totalVotersBetween18To25 = maleVotersBetween18To25
+					+ femaleVotersBetween18To25 + unKnownVotersBetween18To25;
+			
+			 votersDetailsVO.setTotalMaleVotesFor18To25(maleVotersBetween18To25);
+			 votersDetailsVO.setTotalFemaleVotersFor18To25(femaleVotersBetween18To25);
+			 votersDetailsVO.setTotalUnknownVotersFor18To25(unKnownVotersBetween18To25);
+			 votersDetailsVO.setTotalVotersFor18To25(totalVotersBetween18To25);
+			// votersDetailsVO.setAgeRange("18-25");
+			 
+			  if(totalVotersBetween18To25 != 0){
+				  votersDetailsVO.setTotalMaleVotersPercent((float) (maleVotersBetween18To25 *100f/ totalVotersBetween18To25 ));
+				  votersDetailsVO.setTotalFemaleVotersPercent((float)(femaleVotersBetween18To25 *100f / totalVotersBetween18To25 ));
+				  votersDetailsVO.setTotalUnknownVotersPercent((float) (unKnownVotersBetween18To25 *100f / totalVotersBetween18To25 ));
+			  }
+		 
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+	}
+	
+	
+	public void getDetailsOfVotersHasAgeBetween26And35(Long constituencyId,Long tehsilId,
+			Long panchayatId,Long boothId, Long publicationDateId, VotersDetailsVO votersDetailsVO ,String type) {		
+		
+       //VotersDetailsVO voterDetailsForAgeBetween26To35 = new VotersDetailsVO();
+       List<Object[]> votersListOf26To35 = null;
+       
+       try
+       {
+      
+			if(type.equalsIgnoreCase("constituency"))
+			 votersListOf26To35 = boothPublicationVoterDAO
+					.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+							constituencyId, publicationDateId,26L, 35L);
+			else if(type.equalsIgnoreCase("mandal"))
+				votersListOf26To35 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+						tehsilId, publicationDateId,26L, 35L);
+			 else if(type.equalsIgnoreCase("panchayat"))
+				 votersListOf26To35 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+					panchayatId, publicationDateId,26L, 35L);
+			 else if(type.equalsIgnoreCase("booth"))
+				 votersListOf26To35 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+						boothId, publicationDateId,26L, 35L);
+			 else if(type.equalsIgnoreCase("localElectionBody"))
+				 votersListOf26To35 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+						 boothId, publicationDateId,26L, 35L);
+			
+			
+			Long maleVotersBetween26To35 = 0L;
+			Long femaleVotersBetween26To35 = 0L;
+			Long unKnownVotersBetween26To35 = 0L;
+			
+			for(Object[] obj:votersListOf26To35){
+				
+				if(obj[1].toString().equalsIgnoreCase(IConstants.MALE))
+					maleVotersBetween26To35 = (Long)obj[0];
+				else if(obj[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+					femaleVotersBetween26To35 = (Long)obj[0];
+				else 
+					unKnownVotersBetween26To35 = (Long)obj[0];
+			}
+			
+			
+			Long totalVotersBetween26To35 = maleVotersBetween26To35
+						+ femaleVotersBetween26To35 + unKnownVotersBetween26To35;
+			
+			
+			votersDetailsVO.setTotalMaleVotersFor26To35(femaleVotersBetween26To35);
+			votersDetailsVO.setTotalFemaleVotersFor26To35(femaleVotersBetween26To35);
+			votersDetailsVO.setTotalUnknownVotersFor26To35(unKnownVotersBetween26To35);
+			votersDetailsVO.setTotalVotersFor26To35(totalVotersBetween26To35);
+			//votersDetailsVO.setAgeRange("26-35");
+			
+				if(totalVotersBetween26To35 != 0){
+					votersDetailsVO.setTotalMaleVotersPercent((float) (maleVotersBetween26To35 *100f/ totalVotersBetween26To35 ));
+					votersDetailsVO.setTotalFemaleVotersPercent((float)(femaleVotersBetween26To35 *100f/ totalVotersBetween26To35 ));
+					votersDetailsVO.setTotalUnknownVotersPercent((float) (unKnownVotersBetween26To35 *100f/ totalVotersBetween26To35 ));
+					}
+			
+			
+			//constituencyVotersList.add(voterDetailsForAgeBetween26To35);
+		
+       }catch(Exception e){    	   
+    	   e.printStackTrace();    	   
+       }		
+	}
+	
+	public void getDetailsOfVotersHasAgeBetween36And45(
+			Long constituencyId,Long tehsilId,Long panchayatId ,Long boothId, Long publicationDateId,
+			VotersDetailsVO votersDetailsVO , String type){
+
+		//VotersDetailsVO voterDetailsForAgeBetween36To45 = new VotersDetailsVO();
+		List<Object[]> votersListOf36To45 = null;
+		
+		try{
+		
+				if(type.equalsIgnoreCase("constituency"))
+				 votersListOf36To45 = boothPublicationVoterDAO
+						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+								constituencyId, publicationDateId,36L, 45L);
+				else if(type.equalsIgnoreCase("mandal"))
+					votersListOf36To45 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+							tehsilId, publicationDateId,36L, 45L);
+				 else if(type.equalsIgnoreCase("panchayat"))
+					 votersListOf36To45 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+						panchayatId, publicationDateId,36L, 45L);
+				 else if(type.equalsIgnoreCase("booth"))
+					 votersListOf36To45 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+							boothId, publicationDateId,36L, 45L);
+				else if(type.equalsIgnoreCase("localElectionBody"))
+					votersListOf36To45 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+							tehsilId, publicationDateId,36L, 45L);
+					
+				Long maleVotersBetween36To45 = 0L;
+				Long femaleVotersBetween36To45 = 0L;
+				Long unKnownVotersBetween36To45 = 0L;
+				
+				
+		        for(Object[] obj:votersListOf36To45){
+					
+					if(obj[1].toString().equalsIgnoreCase(IConstants.MALE))
+						maleVotersBetween36To45 = (Long)obj[0];
+					else if(obj[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+						femaleVotersBetween36To45 = (Long)obj[0];
+					else 
+						unKnownVotersBetween36To45 = (Long)obj[0];
+				}
+		        
+					Long totalVotersBetween36To45 = maleVotersBetween36To45
+							+ femaleVotersBetween36To45 + unKnownVotersBetween36To45;
+			
+			
+					votersDetailsVO.setTotalMaleVotersFor36To45(maleVotersBetween36To45);
+					votersDetailsVO.setTotalFemaleVotersFor36To45(femaleVotersBetween36To45);
+					votersDetailsVO.setTotalUnknownVotersFor36To45(unKnownVotersBetween36To45);
+					votersDetailsVO.setTotalVotersFor36To45(totalVotersBetween36To45);
+					//votersDetailsVO.setAgeRange("36-45");
+
+			if(totalVotersBetween36To45 != 0){
+				votersDetailsVO.setTotalMaleVotersPercent((float) (maleVotersBetween36To45 *100f/ totalVotersBetween36To45 ));
+				votersDetailsVO.setTotalFemaleVotersPercent((float)(femaleVotersBetween36To45 *100f/ totalVotersBetween36To45 ));
+				votersDetailsVO.setTotalUnknownVotersPercent((float) (unKnownVotersBetween36To45 *100f/ totalVotersBetween36To45 ));
+			}
+			//constituencyVotersList.add(voterDetailsForAgeBetween36To45);
+			
+		
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+	}
+	
+	public void  getDetailsOfVotersHasAgeBetween46And60(
+			Long constituencyId,Long tehsilId,Long panchayatId,Long boothId, Long publicationDateId,
+			VotersDetailsVO votersDetailsVO ,String type){
+		
+		    List<Object[]> votersListOf46To60 = null;
+		   // VotersDetailsVO voterDetailsForAgeBetween46To60 = new VotersDetailsVO();
+		    
+		try{
+		
+			if(type.equalsIgnoreCase("constituency"))
+			   votersListOf46To60 = boothPublicationVoterDAO
+						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+								constituencyId, publicationDateId,46L, 60L);
+			else if(type.equalsIgnoreCase("mandal"))
+				votersListOf46To60 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+						tehsilId, publicationDateId,46L, 60L);
+			else if(type.equalsIgnoreCase("panchayat"))
+				votersListOf46To60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+					panchayatId, publicationDateId,46L, 60L);
+			 else if(type.equalsIgnoreCase("booth"))
+				 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+						boothId, publicationDateId,46L, 60L);
+			else if(type.equalsIgnoreCase("localElectionBody"))
+				votersListOf46To60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+						tehsilId, publicationDateId,46L, 60L);
+			
+			Long maleVotersBetween46To60 = 0L;
+			Long femaleVotersBetween46To60 = 0L;
+			Long unKnownVotersBetween46To60 = 0L;
+			
+	       for(Object[] obj:votersListOf46To60){
+				
+				if(obj[1].toString().equalsIgnoreCase(IConstants.MALE))
+					maleVotersBetween46To60 = (Long)obj[0];
+				else if(obj[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+					femaleVotersBetween46To60 = (Long)obj[0];
+				else 
+					unKnownVotersBetween46To60 = (Long)obj[0];
+			}
+	       
+	       Long totalVotersBetween46To60 = maleVotersBetween46To60
+					+ femaleVotersBetween46To60 + unKnownVotersBetween46To60;
+	       
+	   
+	       votersDetailsVO.setTotalMaleVotersFor46To60(maleVotersBetween46To60);
+	       votersDetailsVO.setTotalFemaleVotersFor46To60(femaleVotersBetween46To60);
+	       votersDetailsVO.setTotalUnknownVotersFor46To60(unKnownVotersBetween46To60);
+	       votersDetailsVO.setTotalVotersFor46To60(totalVotersBetween46To60);
+	      // votersDetailsVO.setAgeRange("46-60");
+	       
+	       if(totalVotersBetween46To60 != 0){
+	    	   votersDetailsVO.setTotalMaleVotersPercent((float) (maleVotersBetween46To60 *100f/ totalVotersBetween46To60 ));
+	    	   votersDetailsVO.setTotalFemaleVotersPercent((float)(femaleVotersBetween46To60 *100f/ totalVotersBetween46To60 ));
+	    	   votersDetailsVO.setTotalUnknownVotersPercent((float) (unKnownVotersBetween46To60 *100f/ totalVotersBetween46To60 ));
+	       }    
+				       
+	      // constituencyVotersList.add(voterDetailsForAgeBetween46To60);
+       
+		}catch(Exception e){
+			e.printStackTrace();			
+		}
+	}
+	
+	public void  getDetailsOfVotersHasAgeAbove60(
+			Long constituencyId,Long tehsilId,Long panchayatId,Long boothId,Long  publicationDateId,
+			VotersDetailsVO votersDetailsVO ,String type){
+		
+
+		//VotersDetailsVO voterDetailsForAgeAbove60 = new VotersDetailsVO();
+	    List<Object[]> votersListOfAbove60  = null;
+	    
+	    try{
+	       
+	        if(type.equalsIgnoreCase("constituency"))
+		         votersListOfAbove60 = boothPublicationVoterDAO
+						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
+								constituencyId, publicationDateId,60L , 150L);
+	       else if(type.equalsIgnoreCase("mandal"))
+	    	   votersListOfAbove60 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+	    			   tehsilId, publicationDateId,60L ,150L);
+	       else if(type.equalsIgnoreCase("panchayat"))
+	    	   votersListOfAbove60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+					panchayatId, publicationDateId,60L ,150L);
+			 else if(type.equalsIgnoreCase("booth"))
+				 votersListOfAbove60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
+						boothId, publicationDateId,60L ,150L);
+	       else if(type.equalsIgnoreCase("localElectionBody"))
+	    	   votersListOfAbove60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
+	    			   tehsilId, publicationDateId,46L, 150L);
+	       
+	        Long maleVotersAbove60 = 0L;
+			Long femaleVotersAbove60 = 0L;
+			Long unKnownVotersAbove60 = 0L;
+			
+			
+	          for(Object[] obj:votersListOfAbove60){
+				
+				if(obj[1].toString().equalsIgnoreCase(IConstants.MALE))
+					maleVotersAbove60 = (Long)obj[0];
+				else if(obj[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+					femaleVotersAbove60 = (Long)obj[0];
+				else 
+					unKnownVotersAbove60 = (Long)obj[0];
+			}
+	          
+	          Long totalVotersAbove60 = maleVotersAbove60
+	  				+ femaleVotersAbove60 + unKnownVotersAbove60;
+	          
+	          
+	          votersDetailsVO.setTotalMaleVotersForAbove60(maleVotersAbove60);
+	          votersDetailsVO.setTotalFemaleVotersForAbove60(femaleVotersAbove60);
+	          votersDetailsVO.setTotalUnknownVotersForAbove60(unKnownVotersAbove60);
+	          votersDetailsVO.setTotalVotersForAbove60(totalVotersAbove60);	 
+	        //  votersDetailsVO.setAgeRange("60-Above");
+	          if(totalVotersAbove60 != 0){
+	        	  votersDetailsVO.setTotalMaleVotersPercent((float) (maleVotersAbove60 *100f/ totalVotersAbove60 ));
+	        	  votersDetailsVO.setTotalFemaleVotersPercent((float)(femaleVotersAbove60 *100f/ totalVotersAbove60 ));
+	        	  votersDetailsVO.setTotalUnknownVotersPercent((float) (unKnownVotersAbove60 *100f/ totalVotersAbove60 ));
+		       }
+
+	   		
+	         // constituencyVotersList.add(voterDetailsForAgeAbove60);
+	          
+	    }catch(Exception e){
+	    	
+	    	e.printStackTrace();	    	
+	    }
+	}
+	
+	
+	
+	public List<VotersDetailsVO>   getAgewiseVotersDetailsForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId){
+		
+		
+		List<Object[]> panchayatis = panchayatDAO.getPanchayatsByTehsilId(tehsilId);
+		List<VotersDetailsVO> constituencyVotersList = new ArrayList<VotersDetailsVO>();
+		for(Object[] obj:panchayatis){
+
+            VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+			
+			getDetailsOfVotersHasAgeBetween18And25(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat");
+			getDetailsOfVotersHasAgeBetween26And35(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");			
+			getDetailsOfVotersHasAgeBetween36And45(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");		
+			getDetailsOfVotersHasAgeBetween46And60(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");       
+			getDetailsOfVotersHasAgeAbove60(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");
+			
+			voterDetailsVO.setPanchayatname(obj[1].toString());
+			
+			Long totalVoters = voterDetailsVO.getTotalVotersFor18To25()
+					+ voterDetailsVO.getTotalVotersFor26To35()
+					+ voterDetailsVO.getTotalVotersFor36To45()
+					+ voterDetailsVO.getTotalVotersFor46To60()
+					+ voterDetailsVO.getTotalVotersForAbove60();
+			
+			voterDetailsVO.setTotalVoters(totalVoters);
+			
+			/*voterDetailsVO.setVotersPercentFor18To25(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentFor26To35(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentFor36To45(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentFor46To60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentForAbove60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters));
+			
+*/
+			
+			
+			voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
+			voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
+			voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
+			voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
+			voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != 0? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
+			
+			constituencyVotersList.add(voterDetailsVO);
+		}
+		
+		return constituencyVotersList;
+		
+	}
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByPanchayatId(Long panchayatId,Long publicationDateId){
+		
+		List<Object[]> booths =hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(panchayatId, publicationDateId);
+		List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+		
+		for(Object[] obj:booths){
+			
+			VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+			
+			
+			getDetailsOfVotersHasAgeBetween18And25(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth");
+			getDetailsOfVotersHasAgeBetween26And35(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth");			
+			getDetailsOfVotersHasAgeBetween36And45(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth");		
+			getDetailsOfVotersHasAgeBetween46And60(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth");       
+			getDetailsOfVotersHasAgeAbove60(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth");
+			
+			voterDetailsVO.setBoothName(obj[1].toString());
+			
+			Long totalVoters = voterDetailsVO.getTotalVotersFor18To25()
+					+ voterDetailsVO.getTotalVotersFor26To35()
+					+ voterDetailsVO.getTotalVotersFor36To45()
+					+ voterDetailsVO.getTotalVotersFor46To60()
+					+ voterDetailsVO.getTotalVotersForAbove60();
+			
+			voterDetailsVO.setTotalVoters(totalVoters);
+			
+			/*voterDetailsVO.setVotersPercentFor18To25(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentFor26To35(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentFor36To45(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentFor46To60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters));
+			voterDetailsVO.setVotersPercentForAbove60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters));
+			*/		
+			
+			
+			voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
+			voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
+			voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
+			voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
+			voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != 0? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
+			boothVotersList.add(voterDetailsVO);
+			
+		}
+		return boothVotersList;
+		
+	}
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(Long localElectionBodyId,Long publicationDateId){
+		
+		List<Object[]> booths= boothDAO.findBoothsInLocalElectionBodyByPublicationDateId(localElectionBodyId,publicationDateId);
+		List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+		
+			
+			for(Object[] obj:booths){
+				
+				VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+				
+				getDetailsOfVotersHasAgeBetween18And25(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth");
+				getDetailsOfVotersHasAgeBetween26And35(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth");			
+				getDetailsOfVotersHasAgeBetween36And45(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth");		
+				getDetailsOfVotersHasAgeBetween46And60(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth");       
+				getDetailsOfVotersHasAgeAbove60(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth");
+				
+				voterDetailsVO.setBoothName(obj[1].toString());
+				
+				Long totalVoters = voterDetailsVO.getTotalVotersFor18To25()
+						+ voterDetailsVO.getTotalVotersFor26To35()
+						+ voterDetailsVO.getTotalVotersFor36To45()
+						+ voterDetailsVO.getTotalVotersFor46To60()
+						+ voterDetailsVO.getTotalVotersForAbove60();
+				
+				voterDetailsVO.setTotalVoters(totalVoters);
+				
+				/*voterDetailsVO.setVotersPercentFor18To25(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentFor26To35(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentFor36To45(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentFor46To60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentForAbove60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters));
+				*/	
+				
+				
+				voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
+				voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
+				voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
+				voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != 0 ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
+				voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != 0? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
+			
+				boothVotersList.add(voterDetailsVO);
+				
+			}
+			
+			return boothVotersList;
+		
+	}
+	
+
 			
 	//Retrieving important families information
 	public ImportantFamiliesInfoVo getImportantFamiliesInfo(String type,Long id,Long publicationDateId){	
@@ -1414,5 +1938,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				importantFamiliesInfoVo.setTotalVoters(above10Count+between7T10Count+between4To6Count+below3Count);
 				
 			}
+		    
+		    
+public String roundTo2DigitsFloatValue(Float number){
+	
+	NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+	f.setMaximumFractionDigits(2);  
+	f.setMinimumFractionDigits(2);
+	
+	return f.format(number);
+	
+}
 
 }
