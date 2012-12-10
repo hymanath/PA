@@ -61,6 +61,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String gender;
 	private String image;
 	private Party party;
+	
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
@@ -70,7 +71,15 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<ConstituencyLeadCandidate> constituencyLeadCandidate = new HashSet<ConstituencyLeadCandidate>(0);
 	private Set<CandidatePageCustomPages> CandidatePageCustomPages = new HashSet<CandidatePageCustomPages>(0);
 	private KeyCandidate keyCandidate;
+	private Set<CandidatePhone> candidatePhone = new HashSet<CandidatePhone>(0);
+	private Set<CandidateCaste> candidateCaste = new HashSet<CandidateCaste>(0);
+	private Set<CandidateAddress> candidateAddress = new HashSet<CandidateAddress>(0);
+	private Set<CandidateWebsite> candidateWebsite = new HashSet<CandidateWebsite>(0);
+	
+ 
 	// Constructors
+
+	
 
 	/** default constructor */
 	public Candidate() {
@@ -318,5 +327,50 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setParty(Party party) {
 		this.party = party;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidatePhone> getCandidatePhone() {
+		return candidatePhone;
+	}
+
+	public void setCandidatePhone(Set<CandidatePhone> candidatePhone) {
+		this.candidatePhone = candidatePhone;
+	}
+	
+	
+	
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidateCaste> getCandidateCaste() {
+		return candidateCaste;
+	}
+
+	public void setCandidateCaste(Set<CandidateCaste> candidateCaste) {
+		this.candidateCaste = candidateCaste;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidateAddress> getCandidateAddress() {
+		return candidateAddress;
+	}
+
+	public void setCandidateAddress(Set<CandidateAddress> candidateAddress) {
+		this.candidateAddress = candidateAddress;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidateWebsite> getCandidateWebsite() {
+		return candidateWebsite;
+	}
+
+	public void setCandidateWebsite(Set<CandidateWebsite> candidateWebsite) {
+		this.candidateWebsite = candidateWebsite;
+	}
+	
 	
 }

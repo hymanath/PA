@@ -66,6 +66,8 @@ public class State implements java.io.Serializable {
 	private Date startDate;
 	private Date deformDate;
 	private String adminControl;
+	
+	
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<District> districts = new HashSet<District>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
@@ -75,6 +77,7 @@ public class State implements java.io.Serializable {
 	private Set<ProblemSourceScope> problemSourceScope = new HashSet<ProblemSourceScope>(0);
 	private Set<StateRegion> stateRegion = new HashSet<StateRegion>(0);
 	private Set<User> users = new HashSet<User>(0);
+	private Set<CasteStatewise> casteStatewise=new HashSet<CasteStatewise>(0);
 	
 	// Constructors
 
@@ -96,7 +99,8 @@ public class State implements java.io.Serializable {
 			String stateTree, String stateSport, String stateDance,
 			String stateFlower, String isoCode, Long stateCode, Date startDate,
 			Date deformDate, Set<Constituency> constituencies,
-			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<Party> party,Set<LocalGroupRegion> localGroupRegion) {
+			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
+			Set<Party> party,Set<LocalGroupRegion> localGroupRegion) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -359,7 +363,24 @@ public class State implements java.io.Serializable {
 	public void setParty(Set<Party> party) {
 		this.party = party;
 	}
+	
+	
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CasteStatewise> getCasteStatewise() {
+		return casteStatewise;
+	}
+
+	public void setCasteStatewise(Set<CasteStatewise> casteStatewise) {
+		this.casteStatewise = casteStatewise;
+	}
+	
+	
+	
+	
+	
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<LocalGroupRegion> getLocalGroupRegion() {
