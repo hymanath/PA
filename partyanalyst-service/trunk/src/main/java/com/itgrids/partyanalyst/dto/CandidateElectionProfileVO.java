@@ -1,3 +1,10 @@
+/* 
+ * Copyright (c) 2010 IT Grids.
+ * All Rights Reserved.
+ *
+ * IT Grids Confidential Information.
+ * Created on August 05, 2010
+ */
 package com.itgrids.partyanalyst.dto;
 
 public class CandidateElectionProfileVO {

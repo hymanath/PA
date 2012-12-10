@@ -14,9 +14,6 @@ import java.util.List;
 
 public class CandidateDetailsVO implements Serializable , Comparable<CandidateDetailsVO>{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private Long candidateId;
@@ -62,6 +59,214 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private String parliamentConstituencyName;
 	private Long partyId;
 	private String candidateRole;
+	
+	
+	
+	// Candidate update form properties
+	
+	private String newCaste;
+	private String emailId;
+	private String websiteAddress;
+	private String twitterUrl;
+	private String facebookUrl;
+	private String casteCategory1;
+	private Long casteGroupId;
+	private Long casteId;
+	private Long phoneType;
+	
+	private Long casteCategoryId;
+	private List<SelectOptionVO> casteGroupList;
+	private List<SelectOptionVO> casteGroupNameList;
+	//private boolean isSaved;
+	
+	private Long candidatecasteId;
+	private Long socialNetworkSiteId;
+	private Long websiteId;
+	private Long casteStateId;
+	private Long candidateSocialTwitterId;
+	private Long candidateSocialFacebookId;
+	
+	
+	public Long getCandidateSocialFacebookId() {
+		return candidateSocialFacebookId;
+	}
+	public void setCandidateSocialFacebookId(Long candidateSocialFacebookId) {
+		this.candidateSocialFacebookId = candidateSocialFacebookId;
+	}
+	public Long getCandidateSocialTwitterId() {
+		return candidateSocialTwitterId;
+	}
+	public void setCandidateSocialTwitterId(Long candidateSocialTwitterId) {
+		this.candidateSocialTwitterId = candidateSocialTwitterId;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+
+	public Long getCandidatecasteId() {
+		return candidatecasteId;
+	}
+
+	public void setCandidatecasteId(Long candidatecasteId) {
+		this.candidatecasteId = candidatecasteId;
+	}
+
+	public Long getSocialNetworkSiteId() {
+		return socialNetworkSiteId;
+	}
+
+	public void setSocialNetworkSiteId(Long socialNetworkSiteId) {
+		this.socialNetworkSiteId = socialNetworkSiteId;
+	}
+
+	public Long getWebsiteId() {
+		return websiteId;
+	}
+
+	public void setWebsiteId(Long websiteId) {
+		this.websiteId = websiteId;
+	}
+/*
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
+	}*/
+
+	public List<SelectOptionVO> getCasteGroupNameList() {
+		return casteGroupNameList;
+	}
+
+	public void setCasteGroupNameList(List<SelectOptionVO> casteGroupNameList) {
+		this.casteGroupNameList = casteGroupNameList;
+	}
+
+	public List<SelectOptionVO> getCasteGroupList() {
+		return casteGroupList;
+	}
+
+	public void setCasteGroupList(List<SelectOptionVO> casteGroupList) {
+		this.casteGroupList = casteGroupList;
+	}
+
+	public Long getCasteCategoryId() {
+		return casteCategoryId;
+	}
+
+	public void setCasteCategoryId(Long casteCategoryId) {
+		this.casteCategoryId = casteCategoryId;
+	}
+
+
+
+	private String casteGroupName;
+	
+   private List<AddressVO> addressList;
+	
+	public List<AddressVO> getAddressList() {
+		return addressList;
+	}
+
+	public void setAddressList(List<AddressVO> addressList) {
+		this.addressList = addressList;
+	}
+
+	
+	
+	//private AddressVO address;
+	
+	
+
+
+	private String casteName;
+	
+
+	
+	
+
+	
+	
+
+	public String getCasteCategory1() {
+		return casteCategory1;
+	}
+	public void setCasteCategory1(String casteCategory1) {
+		this.casteCategory1 = casteCategory1;
+	}
+	public String getCasteGroupName() {
+		return casteGroupName;
+	}
+	public void setCasteGroupName(String casteGroupName) {
+		this.casteGroupName = casteGroupName;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+
+	public Long getPhoneType() {
+		return phoneType;
+	}
+
+	public String getNewCaste() {
+		return newCaste;
+	}
+	public void setNewCaste(String newCaste) {
+		this.newCaste = newCaste;
+	}
+
+	public void setPhoneType(Long phoneType) {
+		this.phoneType = phoneType;
+	}
+	
+	public Long getCasteGroupId() {
+		return casteGroupId;
+	}
+	public void setCasteGroupId(Long casteGroupId) {
+		this.casteGroupId = casteGroupId;
+	}
+	public Long getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+
+
+
+	
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+	public String getWebsiteAddress() {
+		return websiteAddress;
+	}
+	public void setWebsiteAddress(String websiteAddress) {
+		this.websiteAddress = websiteAddress;
+	}
+	public String getTwitterUrl() {
+		return twitterUrl;
+	}
+	public void setTwitterUrl(String twitterUrl) {
+		this.twitterUrl = twitterUrl;
+	}
+	public String getFacebookUrl() {
+		return facebookUrl;
+	}
+	public void setFacebookUrl(String facebookUrl) {
+		this.facebookUrl = facebookUrl;
+	}
+
 	
 	//getters and setters
 	

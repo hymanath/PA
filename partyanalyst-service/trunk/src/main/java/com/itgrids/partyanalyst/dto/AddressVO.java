@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.itgrids.partyanalyst.model.AddressType;
 
 public class AddressVO implements Serializable {
 
@@ -27,6 +30,74 @@ public class AddressVO implements Serializable {
 	private String street;
 	private String pinCode;
 	
+	
+	private Long mandalId;
+	private String mandalName;
+	private Long addressTypeId;
+	private String address1;
+	private String address2;
+	private Long pincode;
+	private String city;
+
+	private List<SocialNetworkVO> phoneList;
+	private List<SelectOptionVO> districtList ;
+	private List<SelectOptionVO> tehsilList ;
+	private List<SelectOptionVO> addressTypeList;
+	
+	private Long addressId;
+	private Long candidateAddressId;
+	private Long addressContactId;
+
+	
+
+	public Long getAddressContactId() {
+		return addressContactId;
+	}
+	public void setAddressContactId(Long addressContactId) {
+		this.addressContactId = addressContactId;
+	}
+	public Long getCandidateAddressId() {
+		return candidateAddressId;
+	}
+	public void setCandidateAddressId(Long candidateAddressId) {
+		this.candidateAddressId = candidateAddressId;
+	}
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	public List<SelectOptionVO> getAddressTypeList() {
+		return addressTypeList;
+	}
+	public void setAddressTypeList(List<SelectOptionVO> addressTypeList) {
+		this.addressTypeList = addressTypeList;
+	}
+	public List<SelectOptionVO> getTehsilList() {
+		return tehsilList;
+	}
+	public void setTehsilList(List<SelectOptionVO> tehsilList) {
+		this.tehsilList = tehsilList;
+	}
+	public List<SelectOptionVO> getDistrictList() {
+		return districtList;
+	}
+	public void setDistrictList(List<SelectOptionVO> districtList) {
+		this.districtList = districtList;
+	}
+	public List<SocialNetworkVO> getPhoneList() {
+		return phoneList;
+	}
+	public void setPhoneList(List<SocialNetworkVO> phoneList) {
+		this.phoneList = phoneList;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	public Long getCountryId() {
 		return countryId;
 	}
@@ -128,6 +199,43 @@ public class AddressVO implements Serializable {
 	}
 	public void setPinCode(String pinCode) {
 		this.pinCode = pinCode;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+
+	public Long getAddressTypeId() {
+		return addressTypeId;
+	}
+	public void setAddressTypeId(Long addressTypeId) {
+		this.addressTypeId = addressTypeId;
+	}
+	public String getAddress1() {
+		return address1;
+	}
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+	public String getAddress2() {
+		return address2;
+	}
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+	public Long getPincode() {
+		return pincode;
+	}
+	public void setPincode(Long pincode) {
+		this.pincode = pincode;
 	}
 	
 	
