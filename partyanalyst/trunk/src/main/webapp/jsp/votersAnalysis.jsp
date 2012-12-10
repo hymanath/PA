@@ -45,7 +45,9 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+   <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <title>Voters analysis</title>
 <style>
   #votersBasicInfoDivSub{
@@ -140,6 +142,13 @@ p {
     text-align: left;
 	}
 
+
+#impFamPancBothDtls,#impFamDtls{
+ margin-top:25px;
+ margin-left: auto;
+    margin-right: auto;
+    width: 84%;
+}
 
 </style>
 
@@ -260,7 +269,7 @@ locationDetails.constituencyArr.push(ob);
 			 </tr>
 		</table>
 		<div id="impFamPancBothDtls"></div>
-		<div id="impFamDtls"></div>
+		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 
 	<div id='ImportantFamiliesDiv' class="divInfo">
