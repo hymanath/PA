@@ -432,12 +432,19 @@ function showImportantFamiliesDiv()
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{
 									buildCastInfoForSubLevels(myResults);
+								}								
+								else if(jsObj.task == "importantFamiliesinfo")
+								{
+								    
 								}
 								else if(jsObj.task == "gettotalimpfamlies")
 								{
-								    buildFamilyMembers(myResults);
+								    buildFamilyMembers(myResults,jsObj.publicationDateId);
 								}
-
+                                else if(jsObj.task == "getVotersInAFamily")
+								{
+								    buildVotersInFamily(myResults);
+								}
 							}catch (e) {   
 								
 							   	alert("Invalid JSON result" + e);   
@@ -567,8 +574,6 @@ $(document).ready(function(){
 		}
 	});
 });
-
-
 
 
 function getVotersCastInfo()
@@ -751,6 +756,51 @@ function getvotersBasicInfo(){
 	}
 }
 
+function getVotersInAFamily(id,publicationDateId,hNo){
+    var jsObj=
+			{
+					
+				hno:hNo,
+				id:id,
+				publicationDateId:publicationDateId,
+				task:"getVotersInAFamily"
+	
+			}
+	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "votersFamilyDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+function buildVotersInFamily(results){
+   
+     var votersResultColumnDefs = [ 		    	             
+		    	            
+							{key:"sNo", label: "SNo", sortable: true},
+		    	           	{key:"name", label: "Name", sortable: true},
+							
+							{key:"gender", label: "Gender", sortable: true},
+		    				{key:"age", label: "Age",sortable:true},
+							{key:"houseNo", label: "House No",sortable:true},
+							{key:"gaurdian", label: "Guardian Name",sortable:true},
+							{key:"relationship", label: "Relationship",sortable:true},
+							{key:"cast", label: "Cast",sortable:true},
+							{key:"castCategory", label: " Cast Category", sortable: true}
+		    	        ]; 
+
+    var myConfigs = { 
+			    
+				};
+	var myDataSource = new YAHOO.util.DataSource(results);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory"]
+					};
+
+		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
+
+}
+
 function buildVotersBasicInfo(votersbasicinfo){
    var str = '<div id="votersBasicInfoDivSub">';
    if(votersbasicinfo != null && votersbasicinfo.datapresent){
@@ -776,9 +826,6 @@ function buildVotersBasicInfo(votersbasicinfo){
 		    				{key:"totVoters", label: "Total Voters",sortable:true},
 							{key:"percent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
 		    	        ]; 
-	var newsResultDataSource = new YAHOO.util.DataSource(votersbasicinfo.votersInfoForMandalVOList); 
-	
-
 
     var myConfigs = { 
 			    
@@ -789,7 +836,7 @@ function buildVotersBasicInfo(votersbasicinfo){
 						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totVoters","percent"]
 					};
 
-		var newsResultDataSource = new YAHOO.widget.DataTable("votersBasicInfoSubDiv", votersResultColumnDefs,myDataSource, myConfigs);
+		var impFamliesResultDataSource = new YAHOO.widget.DataTable("votersBasicInfoSubDiv", votersResultColumnDefs,myDataSource, myConfigs);
 
      }
    }else{
@@ -909,8 +956,7 @@ function buildVotersChart(chartInfo,reqTitle){
 
 				
 	}
-	
-  function  buildFamilyMembers(result){
+  function  buildFamilyMembers(result,publicationDateId){
       var str =' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%">';
           str+='  <thead>';
           str+='   <tr>';
@@ -924,10 +970,10 @@ function buildVotersChart(chartInfo,reqTitle){
           str+='  </thead>';
           str+='  <tbody>';
 	 for(var i in result){
-	   var sno = i+1;
+	   var sno = parseInt(i)+1;
 	      str+='   <tr>';
           str+='     <td>'+sno+'</td>';
-          str+='     <td>'+result[i].houseNo+'</td>';
+          str+='     <td><a href="javascript:{}" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str+='     <td>'+result[i].numberOfPeople+'</td>';
           str+='	 <td>'+result[i].elder+'</td>';
           str+='     <td>'+result[i].younger+'</td>';
@@ -944,15 +990,9 @@ function buildVotersChart(chartInfo,reqTitle){
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [
-      {"sType":"numeric"},
-      null,
-      null,
-      null,
-      null, 
-	  null,
-	  null,
-	  null
+		  "aoColumns": [null,null,null,null,null,null
+     
+	  
     ] 
 		});
   } 
