@@ -24,12 +24,13 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		System.out.println(count.size());
 	}
 	*/
-/*	public void testGetVotersCountForPanchayatByPublicationId(){
-		List<Object[]> count = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationId(10l,2l);
+	public void testGetVotersCountForPanchayatByPublicationId(){
+		List<Object[]> count = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationId(1l,2l);
 		System.out.println(count.size());
-		//System.out.println(count.get(0)[0]+" "+count.get(0)[1]);
+		System.out.println(count.get(0)[0]+" "+count.get(0)[1]);
+		System.out.println(count.get(1)[0]+" "+count.get(1)[1]);
 	}
-	*/
+	
 	
 	/*public void testGetVotersDetailsForPanchayatByPublicationId(){
 		
@@ -38,7 +39,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		System.out.println(l.size());
 	}*/
 	
-	public void testGetVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(){
+/*	public void testGetVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(){
 		
 		List l = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(11L,1L,18L,25L);
 		
@@ -49,7 +50,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 	}
 	
 	
-	/*public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
+	public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
 		
 		List<Object[]> l = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(232L,2L,18L,25L);
 
