@@ -495,7 +495,7 @@ locationDetails.constituencyArr.push(ob);
 	 <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
      <div id="votersbasicinfoForAgeWiseDetls" style="display:none;">
         <div id="votersBasicInfoDivForAgeWiseDetls"></div>
-	    <!--<div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>-->
+	    <div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>
 
