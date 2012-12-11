@@ -328,24 +328,23 @@ locationDetails.constituencyArr.push(ob);
 		
 </div>
 	<div id="ConstituencyDiv" class="selectDiv">
-	Select Constituency &nbsp;&nbsp;:&nbsp;&nbsp; <s:select theme="simple" style="margin-left:-4px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getVoterDetailsForConstituency();getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
+	Select Constituency &nbsp;&nbsp;:&nbsp;&nbsp; <s:select theme="simple" style="margin-left:-4px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
 
-	
 		
-	Select Publication Date &nbsp;&nbsp;:&nbsp;&nbsp; <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" onChange="getVoterDetailsForConstituency();" name="publicationDateList">
+	Select Publication Date &nbsp;&nbsp;:&nbsp;&nbsp; <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList">
 		</select>
 		
 	</div>
 	<div id="mandalDiv" class="selectDiv" style="display:none;">
 		
-	Select Mandal  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;&nbsp; <select id="mandalField" class="selectWidth" name="state" onchange="getVoterDetailsForMandal();getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
+	Select Mandal  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;&nbsp; <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
 		
 	<div id="panchayatDiv" class="selectDiv" style="display:none;">
 	Select Panchayat 	
-	 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);getVoterDetailsForPanchayat();"></select></div>
+	 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);"></select></div>
 	
 	<div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	Select PollingStation &nbsp;: &nbsp;&nbsp;<select id="pollingStationField" class="selectWidth" name="state" onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
+	Select PollingStation &nbsp;: &nbsp;&nbsp;<select id="pollingStationField" class="selectWidth" name="state" onChange="buildVotersByLocBoothDataTable(this.id);"></select></div>
 
 	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 
@@ -503,13 +502,13 @@ locationDetails.constituencyArr.push(ob);
 <div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
 <div id="voterDetailsNote" class="noteDiv"></div>
 
-<div id="tableDiv" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
+<div id="tableDiv" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
 
 <div id="voterAgewiseDetailsNote" class="noteDiv"></div>
-<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
+<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
 
 <div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
-<div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"> </div>
+<div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"> </div>
 
 
 <div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
@@ -584,15 +583,12 @@ function getCastInfoForsubLevel()
 	}
 function getVoterDetailsForConstituency(){
 
-
-	var reportLevel = $('#reportLevel').val();
 	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
 
-	if(publicationId == null)
-		return false;
 
-	if(reportLevel == "1"){
+	if(publicationId == null || publicationId == "0" || constituencyId == null || constituencyId == "0")
+		return false;
 
 		var jsObj=
 				{					
@@ -608,19 +604,18 @@ function getVoterDetailsForConstituency(){
 		var url = "getAgewiseVoterDetails.action?"+rparam;						
 		
 		callAjaxorVoterDetails(jsObj,url);
-	}
+	
 }
 
 function getVoterDetailsForMandal(){
 
-    var reportLevel = $('#reportLevel').val();
 	var mandalId = $('#mandalField').val();
 	var publicationId = $('#publicationDateList').val();
 
+	if(publicationId == null || publicationId == "0" || mandalId == null || mandalId == "0")
+		return false;
+
 	var startNumber = mandalId.substring(0,1);
-
-	if(reportLevel == "2"){
-
 
         if(startNumber == "2"){
 
@@ -649,18 +644,17 @@ function getVoterDetailsForMandal(){
 		var url = "getAgewiseVoterDetails.action?"+rparam;
 
 		callAjaxorVoterDetails(jsObj,url);
-	}
 }
 
 
 function getVoterDetailsForPanchayat(){
 
-
-    var reportLevel = $('#reportLevel').val();
 	var panchayatId = $('#panchayatField').val();
 	var publicationId = $('#publicationDateList').val();
 
-   if(reportLevel == "3"){
+	if(publicationId == null || publicationId == "0" || panchayatId == null || panchayatId =="0")
+		return false;
+
 
 		var jsObj=
 				{
@@ -676,18 +670,19 @@ function getVoterDetailsForPanchayat(){
 		var url = "getAgewiseVoterDetails.action?"+rparam;
 
       callAjaxorVoterDetails(jsObj,url);
-   }
+   
 }
 
 
 function getVoterDetailsForBooth(){
 
 
-    var reportLevel = $('#reportLevel').val();
 	var boothId = $('#pollingStationField').val();
 	var publicationId = $('#publicationDateList').val();
 
-	if(reportLevel == "4"){
+	if(publicationId == null || publicationId == "0" || boothId == null || boothId == "0")
+		return false;
+
 
 		var jsObj=
 				{ 
@@ -704,13 +699,12 @@ function getVoterDetailsForBooth(){
 
 	callAjaxorVoterDetails(jsObj,url);
 
-	}
 }
 
 function callAjaxorVoterDetails(jsObj,url){
 
-	$('.voterDetails').html('');
-	$('.noteDiv').html('');
+	//$('.voterDetails').html('');
+	//$('.noteDiv').html('');
 $('#ajaxImageDiv').css('display','block');
 
 	var myResults;
