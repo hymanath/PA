@@ -168,8 +168,8 @@ p {
  padding:5px;
 
 }
-#subLevelTable,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;}
-#subLevelTable tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even){background:#EdF5FF;}
+#subLevelTable,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;}
+#subLevelTable tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even){background:#EdF5FF;}
 
 #subLevelTable td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
@@ -264,6 +264,15 @@ table.dataTable tr.even td.sorting_1 {
 		font-family:verdana;
 		margin-bottom: 20px;
 	}
+#impFamShowBasicInfo,#lclCastStsShowBasicInfo,#ageWiseDetlsShowBasicInfo{
+   float:right;
+}
+#votersbasicinfoForImpFam,#votersbasicinfoForLclCastSts,#votersbasicinfoForAgeWiseDetls{
+  border:1px solid #3d3d3d;
+   margin-top: 32px;
+   paddinf:10px;
+   margin-bottom:5px;
+}
 </style>
 
 <script type="text/javascript">
@@ -376,8 +385,14 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 
 <div id='votersMainOuterDiv1'>
-	<div id="ImportantFamiliesDiv">
-	<div id ="impFamilesBasicDetails" class="yui-skin-sam yui-dt-sortable"></div>
+     <input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
+     <div id="votersbasicinfoForImpFam" style="display:none;">
+        <div id="votersBasicInfoDivForImpFam"></div>
+	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
+	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
+     </div>
+     	<div id="ImportantFamiliesDiv">
+	<div id ="impFamilesBasicDetails"></div>
         <div id ="impFamilesBasicInfoSubChartDiv" ></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 		</br>
@@ -407,8 +422,8 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
 <div id='votersMainOuterDiv2' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
-	<input type="button" id="lclCastStsShowBasicInfo" />
-    <div id="votersbasicinfoForLclCastSts" style="display:block;">
+	<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
+    <div id="votersbasicinfoForLclCastSts" style="display:none;">
         <div id="votersBasicInfoDivForLclCastSts"></div>
 	    <div id="votersBasicInfoSubChartDivForLclCastSts"></div>
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
@@ -471,8 +486,8 @@ locationDetails.constituencyArr.push(ob);
 <div id='votersMainOuterDiv4' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
 	
 
-	 <input type="button" id="ageWiseDetlsShowBasicInfo" />
-     <div id="votersbasicinfoForAgeWiseDetls" style="display:block;">
+	 <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
+     <div id="votersbasicinfoForAgeWiseDetls" style="display:none;">
         <div id="votersBasicInfoDivForAgeWiseDetls"></div>
 	    <!--<div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>-->
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
