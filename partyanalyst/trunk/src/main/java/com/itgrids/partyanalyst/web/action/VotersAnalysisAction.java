@@ -200,7 +200,12 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	}
 
 public String getVoterDetails(){
+	
+	if(log.isDebugEnabled())	
+	log.debug("Executing getVoterDetails() Method,Exception is- ");	
+	try{
 		
+	
 		String param;
 		param = getTask();
 		
@@ -231,7 +236,16 @@ public String getVoterDetails(){
 
 		
 		constituencyManagementVO.setVoterDetails(votersList);
+		
+		if(votersList.size() > 0 )
 		constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
+		
+	}catch(Exception e){
+		
+		e.printStackTrace();
+		log.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
+		
+	}
 		
 		return Action.SUCCESS;
 		
