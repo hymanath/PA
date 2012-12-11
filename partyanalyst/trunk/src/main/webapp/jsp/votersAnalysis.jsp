@@ -420,7 +420,9 @@ locationDetails.constituencyArr.push(ob);
 	<div id="votersBasicInfoSubChartDiv"></div>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
 	<div id='votersDiv' class="divInfo"></div>
+	<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
+	<div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
 <!-- for  body 3 end    result  -->
 </div>
@@ -791,7 +793,6 @@ function buildAgewiseDetails(results , type){
 
 
 	if(innerResults.length == 0){
-		alert("No Records");
 		return false;
 	}
 
@@ -856,6 +857,7 @@ $('#agewiseDetails').html(str);
 
 }
 
+
 function buildAgeAndGenderWiseDetails(results , type){
 
 	var innerResults;
@@ -869,20 +871,19 @@ function buildAgeAndGenderWiseDetails(results , type){
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Panchayat wise voter details:Age and gender wise";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		innerResults = results.boothVotersDetails;
-	   	noteString = "Mandal wise voter details:Age and gender wise";
+	   	noteString = "Booth wise voter details:Age and gender wise";
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Booth wise voter details:Age and gender wise";
 	}
 
 	if(innerResults.length == 0){
-		alert("No Records");
 		return false;
 	}
 
@@ -961,20 +962,19 @@ function buildAgeAndGenderWiseDetails(results , type){
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Panchayat wise voter details:Age and gender wise";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		innerResults = results.boothVotersDetails;
-	   	noteString = "Mandal wise voter details:Age and gender wise";
+	   	noteString = "Booth wise voter details:Age and gender wise";
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Booth wise voter details:Age and gender wise";
 	}
 
 	if(innerResults.length == 0){
-		alert("No Records");
 		return false;
 	}
 
@@ -1053,20 +1053,19 @@ function buildAgeAndGenderWiseDetailsForPercent(results , type){
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Panchayat wise voter details:Age and gender wise";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		innerResults = results.boothVotersDetails;
-	   	noteString = "Mandal wise voter details:Age and gender wise";
+	   	noteString = "Booth wise voter details:Age and gender wise";
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Booth wise voter details:Age and gender wise";
 	}
 
 	if(innerResults.length == 0){
-		alert("No Records");
 		return false;
 	}
 
