@@ -756,8 +756,20 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
 		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePopulation+'</td>';
+		if(constMgmtMainObj.castStatssubArray[i].malePopulation ==null)
+		str+='<td>'+0+'</td>';
+		else
+		{
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].malePopulation+'</td>';
+		}
+		if(constMgmtMainObj.castStatssubArray[i].femalePopulation ==null)
+		{
+			str+='<td>'+0+'</td>';
+		}
+		else
+		{
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].femalePopulation+'</td>';
+		}
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePercentage+'</td>';
 	
 		}
@@ -1027,16 +1039,8 @@ function buildVotersChart(chartInfo,reqTitle,to){
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = myresults.voterCastInfodetails.totalVoters;
 	var totalCasts = myresults.voterCastInfodetails.totalCasts;
-	var localCastStatsTabContent = '<div class="basicVotersInfoDiv"><table>';
-	localCastStatsTabContent+='<tr>';
-	localCastStatsTabContent+='<th>Total Voters : </th>';
-	localCastStatsTabContent+='<th>Total Casts : </th>';
-	
-	localCastStatsTabContent+='</tr>';
-	
-	localCastStatsTabContent+='<tr>';
-	localCastStatsTabContent+='<td >'+totalVoters+'</td>';
-	localCastStatsTabContent+='<td >'+totalCasts+'</td></tr></table></div>';
+	var localCastStatsTabContent = '<div style="font-family: verdana;font-size: 13px;margin-left: 124px;"> Total Voters : '+totalVoters+' ';
+	localCastStatsTabContent+='&nbsp;&nbsp;&nbsp; Total Casts : '+totalCasts+'</div>';
 	localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
 	var typeName =jsObj.typename;	
 		var	castIno = new Array();
@@ -1069,14 +1073,14 @@ function buildVotersChart(chartInfo,reqTitle,to){
    function buildLocalCastStatisticsDataTableForAssembly(typeName)
 	{
 		
-		$("#localCastStatsTabContentTitle").html("Cast Statistics in "+typeName+" ");
+		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		var localCastStatsColumnDefs = [ 
 		    	            
 		    	            {key:"caste", label: "caste", sortable: true}, 
-							{key:"castePopulation", label: "castPopulation", formatter:"number", sortable: true},
-		    				{key:"malePopulation", label: "malePopulation", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"femalePopulation", label: "femalePopulation", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"castePercentage", label: "castPercentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
+							{key:"castePopulation", label: "caste Population", formatter:"number", sortable: true},
+		    				{key:"malePopulation", label: "male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"femalePopulation", label: "female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"castePercentage", label: "caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
 		    	        ]; 
 		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
