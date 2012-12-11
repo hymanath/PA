@@ -87,8 +87,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		if (log.isDebugEnabled())
 			log.debug("Excecuting getVoterDetails() method in RegionServiceDataImp service");
 
-		List<VoterVO> voters = null;
-		List<Voter> votersList = null;
+		List<VoterVO> voters = new ArrayList<VoterVO>();
+		List<Voter> votersList = new ArrayList<Voter>();;
 		Long totalCount = 0L;
 
 		try {   
@@ -108,9 +108,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 			}
 	
-				if (votersList != null && votersList.size() > 0)
-					voters = new ArrayList<VoterVO>();
-	
+				
 				Long count = new Long(startIndex);
 				
 				for (Voter voter : votersList) {
@@ -129,6 +127,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 				}
 				
+				if(voters != null)
 				if(voters.size() > 0)
 					voters.get(0).setTotalVoters(totalCount);
 
