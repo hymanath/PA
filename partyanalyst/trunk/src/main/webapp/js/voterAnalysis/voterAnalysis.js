@@ -128,10 +128,8 @@ function buildVotersByLocBoothDataTable(id)
 
 var boothId = $('#'+id).val();
 var publicationDateId = $('#publicationDateList').val();
-
 if(boothId == "0" || boothId == null || publicationDateId == null || publicationDateId == "0")
 	return false;
-
 
 if(boothId == "0")
 	return false;
