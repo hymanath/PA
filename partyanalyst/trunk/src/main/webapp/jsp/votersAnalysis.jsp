@@ -258,7 +258,7 @@ table.dataTable tr.even td.sorting_1 {
 	#constituencyList,#mandalField,
 	#panchayatField,#reportLevel,
 	#pollingStationField{width:160px;height:25px;}
-	#sublevelHeading{
+	#sublevelHeading,#localCastStatsTabContentTitle{
 		color:steelblue;
 		font-size:13px;
 		font-family:verdana;
@@ -429,6 +429,7 @@ locationDetails.constituencyArr.push(ob);
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
     </div>
 	<div id='LocalCastDiv' class="divInfo">
+	<div id ="localCastStatsTabContentTitle" ></div>
 	<div id='localCastStatsTabContent_header'></div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
 	<div id='localCastStatsTabContent_subbody'></div><br>
