@@ -677,7 +677,7 @@ $('#ajaxImageDiv').css('display','block');
 
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
 							buildVoterDetailsTable(myResults,jsObj.type);
-                           //  buildAgeWiseVoterAnalysisChart(myResults);
+                             buildAgeWiseVoterAnalysisChart(myResults);
 
 							if(jsObj.type != "booth"){
 								buildAgewiseDetails(myResults,jsObj.type);
