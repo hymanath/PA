@@ -87,7 +87,7 @@ table.gridtable td {
 }	
 
 #votersBasicInfoSubDiv{
-  margin-left: 100px;
+  margin-left: 0px;
  
 }
 
@@ -217,6 +217,10 @@ table.dataTable tr.even td.sorting_1 {
    font-size: 16px;
     margin-left: 0px;
     margin-top: 35px;
+}
+#impfamilydatatable_filter{
+	 margin-left: 0px;
+	 
 }
 #impFamilesBasicSubDetails{
   margin-left: 5px;
@@ -384,7 +388,7 @@ locationDetails.constituencyArr.push(ob);
 		
 	</div>
 
-<div id='votersMainOuterDiv1'>
+<div id='votersMainOuterDiv1' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
      <input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
      <div id="votersbasicinfoForImpFam" style="display:none;">
         <div id="votersBasicInfoDivForImpFam"></div>
@@ -393,13 +397,14 @@ locationDetails.constituencyArr.push(ob);
      </div>
      	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
-        <div id ="impFamilesBasicInfoSubChartDiv" ></div>
+	</br>
+        <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black"></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 		</br>
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsTitle"></div>
-		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
+		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
 	
 
 	</div>
@@ -460,7 +465,7 @@ locationDetails.constituencyArr.push(ob);
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable" style="width:0px;border:1px solid black"></div>
+	<div id="votersBasicInfoSubDiv" style="border:1px solid black"></div>
 	
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
