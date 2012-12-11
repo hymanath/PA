@@ -276,6 +276,20 @@ padding:5px 20px;
 	float: right; margin: -11px 38px 16px 0px;
 }
 #connectUserMsg{margin-left: 12px;}
+
+
+.changePwdDiv{ font-family: arial;margin-bottom: 12px;}
+#password_window{ margin-bottom: 15px;}
+#currentPwdId{margin-left: 22px;}
+#confirmPwdId{margin-left: 20px;}
+#newPwdId{ margin-left: 44px;}
+#changePWDButton,#cancelButtonID{padding:3px;}
+#password_window_errorMsg{  margin-bottom: 8px;}
+#changePWDButton{margin-left: 165px;margin-right: 26px;}
+#uploadPic_window_footer{margin-top: 10px;}
+#uploadPic_string_table{ margin-top: 6px;}
+.fontStyle{color: #000000;font-family: verdana;font-size: 12px;}
+.l1{color: maroon;font-family: verdana;padding: 4px;}
 </style>
 </head>
 <body>
@@ -306,9 +320,9 @@ padding:5px 20px;
 							</ul>
 						</div></div>
 						
-						<div><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></div>
-						<div><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></div>
-						<div><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></div>
+						<div style="margin-bottom: 4px; font-size: 13px; font-family: verdana;"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></div>
+						<div style="margin-bottom: 4px; font-size: 13px; font-family: verdana;"><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></div>
+						<div style="font-size: 13px; font-family: verdana;"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></div>
 					</div>	
 					    
 						
@@ -331,7 +345,7 @@ padding:5px 20px;
 						Applications
 					</h4>
 					<p class="p2"><span>Important Dates</span></p>
-					<p class="p2"><span><a href="javascript:{}" class="problemsLink">Problems</a></span></p>
+					<p class="p2"><span><a href="javascript:{}" class="problemsLink">Problems</a><input type="hidden" value="Total" class="problemTypeVariable"/></span></p>
 				</div>
 				
 				
