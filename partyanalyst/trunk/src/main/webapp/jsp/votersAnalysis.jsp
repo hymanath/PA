@@ -385,9 +385,7 @@ locationDetails.constituencyArr.push(ob);
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsTitle"></div>
 		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
-		<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
-
-<div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	
 
 	</div>
 
@@ -448,9 +446,9 @@ locationDetails.constituencyArr.push(ob);
 	</br>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable" style="width:0px;border:1px solid black"></div>
 	
-	<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
-	<div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
 <!-- for  body 3 end    result  -->
 </div>
