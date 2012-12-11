@@ -168,13 +168,33 @@ p {
     text-align: left;
 	}
 
-#impFamPancBothDtls,#impFamDtls{
- margin-top:25px;
+#impFamPancBothDtls,#impFamDtls,#impFamPancBothDtlstitle{
+ margin-top:12px;
  margin-left: auto;
     margin-right: auto;
     width: 84%;
 }
-
+table.impTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
+table.impTableDiv th, table.impTableDiv td {text-align:center;border:1px solid black;padding:5px;}
+table.impTableDiv th {background-color:AntiqueWhite;}
+table.impTableDiv td:first-child {width:50%;}
+#impFamilesBasicSubDetailsTitle{
+  font-weight:bold;
+}
+#impFamDtlsTitle,#impFamilesBasicSubDetailsTitle{
+   font-size: 16px;
+    margin-left: 82px;
+    margin-top: 35px;
+}
+#impFamilesBasicSubDetails{
+  margin-left: 82px;
+}
+#impFamilesBasicInfoSubChartDiv{
+   margin-left:290px;
+}
+#impFamPancBothDtls{
+  margin-top:25px;
+}
 #localCastStatsTabContent_subbody caption,#localCastStatsTabContent_body caption{
     color: #000;
     font-size: 13px;
@@ -314,7 +334,12 @@ locationDetails.constituencyArr.push(ob);
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
+		<div id ="impFamilesBasicDetails" class="yui-skin-sam yui-dt-sortable"></div>
+        <div id ="impFamilesBasicInfoSubChartDiv" ></div>
+		<div id ="impFamilesBasicSubDetailsTitle" ></div>
+		<div id ="impFamilesBasicSubDetails" class="yui-skin-sam yui-dt-sortable"></div>
 		<div id="impFamPancBothDtls"></div>
+		<div id="impFamDtlsTitle"></div>
 		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 
