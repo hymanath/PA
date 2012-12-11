@@ -1206,7 +1206,7 @@ var data = google.visualization.arrayToDataTable([
 
 
 // Set chart options
-var title = " Age wise detail chart of in 2013";
+var title = " Age wise detail chart of in "+publicationYear+"";
 var options = {'title':title,
 'width':450,
 'height':280};
