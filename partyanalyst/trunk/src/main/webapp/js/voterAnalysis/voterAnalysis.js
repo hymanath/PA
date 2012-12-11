@@ -1119,7 +1119,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
 	  type = "";
 	   name = $("#pollingStationField option:selected").text();
 	 }
-      var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in'+name+' '+type+' in '+publicationYear+'</b></div>';
+      var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in '+name+' '+type+' in '+publicationYear+'</b></div>';
           str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
@@ -1295,7 +1295,7 @@ str+='</br>';
 str+='<div>';
 str+='<table class="impTableDiv">';
 str+='<tr>';
-str+='<th>Report</th><th>Below3</th><th>Between4To6</th><th>Between7To10</th><th>Above10</th>';
+str+='<th>Report</th><th>Below3</th><th>Between4-6</th><th>Between7-10</th><th>Above10</th>';
 str+='</tr>';
 str+='<tr>';
 str+='<th>No of Familes</th>';
