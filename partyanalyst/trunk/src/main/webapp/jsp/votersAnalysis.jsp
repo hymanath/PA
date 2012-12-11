@@ -87,7 +87,7 @@ table.gridtable td {
 }	
 
 #votersBasicInfoSubDiv{
-  margin-left: 240px;
+  margin-left: 170px;
 }
 
 #votersBasicInfoSubChartDiv{
@@ -167,12 +167,12 @@ p {
  padding:5px;
 
 }
-#subLevelTable,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;}
-#subLevelTable tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even){background:#EdF5FF;}
+#subLevelTable,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;}
+#subLevelTable tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even){background:#EdF5FF;}
 
-#subLevelTable td,#localCastStatsTabContent_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#subLevelTable td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
-#subLevelTable th,#localCastStatsTabContent_body table th
+#subLevelTable th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th
 {
 	background-color: #CDE6FC;
     font-size: 13px;
@@ -184,7 +184,7 @@ p {
     text-align: left;
 	}
 
-#impFamPancBothDtls,#impFamDtls,#impFamPancBothDtlstitle{
+#impFamPancBothDtls,#impFamDtls{
  margin-top:12px;
  margin-left: auto;
     margin-right: auto;
@@ -197,13 +197,13 @@ table.impTableDiv td:first-child {width:50%;}
 #impFamilesBasicSubDetailsTitle{
   font-weight:bold;
 }
-#impFamDtlsTitle,#impFamilesBasicSubDetailsTitle{
+#impFamDtlsTitle,#impFamilesBasicSubDetailsTitle,#impFamPancBothDtlstitle{
    font-size: 16px;
     margin-left: 82px;
     margin-top: 35px;
 }
 #impFamilesBasicSubDetails{
-  margin-left: 82px;
+  margin-left: 5px;
 }
 #impFamilesBasicInfoSubChartDiv{
    margin-left:290px;
@@ -211,7 +211,7 @@ table.impTableDiv td:first-child {width:50%;}
 #impFamPancBothDtls{
   margin-top:25px;
 }
-#localCastStatsTabContent_subbody caption,#localCastStatsTabContent_body caption{
+#localCastStatsTabContent_subbody caption,#impFamDtls caption,#impFamilesBasicSubDetails caption,#votersBasicInfoSubDiv caption,#localCastStatsTabContent_body caption{
     color: #000;
     font-size: 13px;
     margin-left: -460px;
@@ -355,8 +355,13 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 
 <div id='votersMainOuterDiv1'>
-	
-<div id ="impFamilesBasicDetails" class="yui-skin-sam yui-dt-sortable"></div>
+     <input type="button" id="impFamShowBasicInfo" />
+     <div id="votersbasicinfoForImpFam" style="display:block;">
+        <div id="votersBasicInfoDivForImpFam"></div>
+	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
+	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
+     </div>
+	<div id ="impFamilesBasicDetails"></div>
         <div id ="impFamilesBasicInfoSubChartDiv" ></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 		<div id ="impFamilesBasicSubDetails" class="yui-skin-sam yui-dt-sortable"></div>
@@ -386,8 +391,12 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
 <div id='votersMainOuterDiv2'>
-	
-
+	<input type="button" id="lclCastStsShowBasicInfo" />
+    <div id="votersbasicinfoForLclCastSts" style="display:block;">
+        <div id="votersBasicInfoDivForLclCastSts"></div>
+	    <div id="votersBasicInfoSubChartDivForLclCastSts"></div>
+	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
+    </div>
 	<div id='LocalCastDiv' class="divInfo">
 	<div id='localCastStatsTabContent_header'></div>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
@@ -445,8 +454,12 @@ locationDetails.constituencyArr.push(ob);
 <div id='votersMainOuterDiv4'>
 	
 
-	
-
+	 <input type="button" id="ageWiseDetlsShowBasicInfo" />
+     <div id="votersbasicinfoForAgeWiseDetls" style="display:block;">
+        <div id="votersBasicInfoDivForAgeWiseDetls"></div>
+	    <div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>
+	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
+     </div>
 <div id='ageWiseInfoDiv' class="divInfo">
 <div id="voterDetailsNote" class="noteDiv"></div>
 <div id="tableDiv" style="margin-left:119px;padding:10px;" class="noteDiv"></div>
