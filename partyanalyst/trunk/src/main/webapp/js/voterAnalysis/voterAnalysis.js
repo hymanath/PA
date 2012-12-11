@@ -186,7 +186,12 @@ function showImportantFamiliesDiv()
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
-		
+		 getvotersBasicInfo("impFamilies","");
+		  $("#votersbasicinfoForImpFam").hide();
+		  $("#votersBasicInfoDivForImpFam").html("");
+		  $("#votersBasicInfoSubChartDivForImpFam").html("");
+		  $("#votersBasicInfoSubDivForImpFam").html("");
+		  $("#votersbasicinfoForImpFam").val("View Basic Voter Details");
 		
 	}
 	
@@ -202,7 +207,11 @@ function showImportantFamiliesDiv()
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
-		
+		  $("#votersbasicinfoForLclCastSts").hide();
+		  $("#votersBasicInfoDivForLclCastSts").html("");
+		  $("#votersBasicInfoSubChartDivForLclCastSts").html("");
+		  $("#votersBasicInfoSubDivForLclCastSts").html("");
+		  $("#votersbasicinfoForLclCastSts").val("View Basic Voter Details");
 	}
 
 	function showVotersDiv()
@@ -217,7 +226,7 @@ function showImportantFamiliesDiv()
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
-		
+		 getvotersBasicInfo("voters","");
 	}
 
 	function showAgeDiv()
@@ -232,8 +241,11 @@ function showImportantFamiliesDiv()
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #F61D50"});
-		
-
+		  $("#votersbasicinfoForAgeWiseDetls").hide();
+		  $("#votersBasicInfoDivForAgeWiseDetls").html("");
+		  $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
+		  $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
+          $("#votersbasicinfoForAgeWiseDetls").val("View Basic Voter Details");
 	}
 	
 	
@@ -352,7 +364,7 @@ function showImportantFamiliesDiv()
 								else if(jsObj.task == "votersbasicinfo")
 								{
 								    if(myResults != null)
-									buildVotersBasicInfo(myResults);
+									buildVotersBasicInfo(myResults,jsObj.to);
 								}
 							else if(jsObj.task == "getCastInfo")
 								{
@@ -478,38 +490,107 @@ function showImportantFamiliesDiv()
 	}
 }
 $(document).ready(function(){
+    $("#impFamShowBasicInfo").click(function(){
+	   if($('#votersbasicinfoForImpFam').css('display') == 'none'){
+	     $(this).val("Hide Basic Voter Details");
+		  getvotersBasicInfo("voters","impfamilies");
+		 $('#votersbasicinfoForImpFam').show();  
+	   }else{
+	     $(this).val("View Basic Voter Details");
+		 $('#votersbasicinfoForImpFam').hide();
+	   }
+	});
+	$("#lclCastStsShowBasicInfo").click(function(){
+	  if($('#votersbasicinfoForLclCastSts').css('display') == 'none'){
+	     $(this).val("Hide Basic Voter Details");
+		  getvotersBasicInfo("voters","localcaststs");
+		 $('#votersbasicinfoForLclCastSts').show();  
+	   }else{
+	     $(this).val("View Basic Voter Details");
+		 $('#votersbasicinfoForLclCastSts').hide();
+	   }
+	});
+	$("#ageWiseDetlsShowBasicInfo").click(function(){
+	   if($('#votersbasicinfoForAgeWiseDetls').css('display') == 'none'){
+	     $(this).val("Hide Basic Voter Details");
+		  getvotersBasicInfo("voters","agewise");
+		 $('#votersbasicinfoForAgeWiseDetls').show();  
+	   }else{
+	     $(this).val("View Basic Voter Details");
+		 $('#votersbasicinfoForAgeWiseDetls').hide();
+	   }
+	});
     $("#constituencyList").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
-	      getvotersBasicInfo();
+	      getBasicInfo();
 	  
 	});
 	$("#mandalField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 2 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
-	      getvotersBasicInfo();
+	      getBasicInfo();
 	});
 	$("#panchayatField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
-	      getvotersBasicInfo();
+	      getBasicInfo();
 	});
 	$("#pollingStationField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
-	      getvotersBasicInfo();
+	      getBasicInfo();
 	});
     $("#publicationDateList").live("change",function(){
 	   if($(this).val() != 0 ){
 	     if($("#reportLevel").val() == 1 && $("#constituencyList option").length > 0 && $("#constituencyList").val() != 0)
-	       getvotersBasicInfo();
+	       getBasicInfo();
 		 else if($("#reportLevel").val() == 2 && $("#mandalField option").length > 0 && $("#mandalField").val() != 0 )
-		   getvotersBasicInfo();
+		   getBasicInfo();
 		 else if($("#reportLevel").val() == 3 && $("#panchayatField option").length > 0 && $("#panchayatField").val() != 0 )
-		   getvotersBasicInfo();
+		   getBasicInfo();
 		 else if($("#reportLevel").val() == 4 && $("#pollingStationField option").length > 0 && $("#pollingStationField").val() != 0 )
-		   getvotersBasicInfo();
+		   getBasicInfo();
 			
 		}
 	});
 });
 
+function getBasicInfo(){
+         if($('#votersDiv1').css('display') == 'block'){
+		   getvotersBasicInfo("impFamilies","");
+		   $("#votersbasicinfoForImpFam").hide();
+		   $("#votersBasicInfoDivForImpFam").html("");
+		   $("#votersBasicInfoSubChartDivForImpFam").html("");
+		   $("#votersBasicInfoSubDivForImpFam").html("");
+		   $("#votersbasicinfoForImpFam").val("View Basic Voter Details");
+		 }else if($('#votersDiv2').css('display') == 'block'){
+		   getVotersCastInfo();
+		   getCastInfoForsubLevel();
+		   $("#votersbasicinfoForLclCastSts").hide();
+		   $("#votersBasicInfoDivForLclCastSts").html("");
+		   $("#votersBasicInfoSubChartDivForLclCastSts").html("");
+		   $("#votersBasicInfoSubDivForLclCastSts").html("");
+		   $("#votersbasicinfoForLclCastSts").val("View Basic Voter Details");
+		 }else if($('#votersDiv3').css('display') == 'block'){
+		   getvotersBasicInfo("voters","");
+		   getVotersData();
+		 }else if($('#votersDiv4').css('display') == 'block'){
+		   $("#votersbasicinfoForAgeWiseDetls").hide();
+		   $("#votersBasicInfoDivForAgeWiseDetls").html("");
+		   $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
+		   $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
+		   $("#votersbasicinfoForAgeWiseDetls").val("View Basic Voter Details");
+		 }else{
+		   getvotersBasicInfo("voters","");
+		   getVotersData();
+		 }
+}
+
+function getVotersData(){
+  var level = $("#reportLevel").val();
+    if(level == 3){
+	  buildVotersByLocPanchayatDataTable("panchayatField");
+	}else if(level == 4){
+	  buildVotersByLocBoothDataTable("pollingStationField");
+	}
+}
 
 function getVotersCastInfo()
 	{
@@ -672,10 +753,13 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	
 }
 
-function getvotersBasicInfo(){
-   $("#votersBasicInfoDiv").html("");
-   $("#votersBasicInfoSubChartDiv").html("");
-   $("#votersBasicInfoSubDiv").html("");
+function getvotersBasicInfo(buttonType,voterBasicInfoFor){
+  if(buttonType == "voters"){
+     $("#votersBasicInfoDiv").html("");
+     $("#votersBasicInfoSubChartDiv").html("");
+     $("#votersBasicInfoSubDiv").html("");
+   }
+  if(buttonType == "impFamilies"){
    $("#impFamilesBasicDetails").html("");
    $("#impFamilesBasicInfoSubChartDiv").html("");
    $("#impFamilesBasicSubDetails").html("");
@@ -683,6 +767,7 @@ function getvotersBasicInfo(){
    $("#impFamPancBothDtls").html("");
    $("#impFamDtlsTitle").html("");
    $("#impFamDtls").html("");
+  }
     var level = $("#reportLevel").val();
 	var type = '';
 	var id = '';
@@ -700,12 +785,14 @@ function getvotersBasicInfo(){
 	  type = 'booth';
 	  id = $("#pollingStationField").val();
 	}
+   if(buttonType == "voters"){
 	var jsObj=
 			{
 					
 				type:type,
 				id:id,
 				publicationDateId:publicationDateId,
+				to:voterBasicInfoFor,
 				task:"votersbasicinfo"
 	
 			}
@@ -713,6 +800,8 @@ function getvotersBasicInfo(){
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVotersCountInfoAction.action?"+rparam;						
 		callAjax(jsObj,url);
+	}
+	if(buttonType == "impFamilies"){
 	   var jsObj1=
 			{
 					
@@ -743,6 +832,7 @@ function getvotersBasicInfo(){
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2);
 	}
+   }
 }
 
 function getVotersInAFamily(id,publicationDateId,hNo){
@@ -790,7 +880,7 @@ function buildVotersInFamily(results,hno){
 
 }
 
-function buildVotersBasicInfo(votersbasicinfo){
+function buildVotersBasicInfo(votersbasicinfo,to){
    var str = '<div id="votersBasicInfoDivSub">';
    if(votersbasicinfo != null && votersbasicinfo.datapresent){
       var name = votersbasicinfo.name+'  '+votersbasicinfo.type;
@@ -799,13 +889,28 @@ function buildVotersBasicInfo(votersbasicinfo){
 	  if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
 	  str+='UnKnown Voters : '+votersbasicinfo.unKnowVoters+'  ';
 	  str+='Total Voters : '+votersbasicinfo.totVoters+'</div></div>';
-	  $("#votersBasicInfoDiv").html(str);
+	  if(to == "")
+	   $("#votersBasicInfoDiv").html(str);
+	  else if(to == "impfamilies")
+	   $("#votersBasicInfoDivForImpFam").html(str);
+	  else if(to == "localcaststs")
+	   $("#votersBasicInfoDivForLclCastSts").html(str);
+	  else if(to == "agewise")
+	   $("#votersBasicInfoDivForAgeWiseDetls").html(str);
 	  
 	  str = '';
      if(votersbasicinfo.subLevelExists && votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
-       buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,name);
-	   
-  
+       buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,name,to);
+	   var reqDiv ='';
+        if(to == "")
+	     reqDiv = 'votersBasicInfoSubDiv' ;
+	    else if(to == "impfamilies")
+	     reqDiv = 'votersBasicInfoSubDivForImpFam';
+	    else if(to == "localcaststs")
+	     reqDiv = 'votersBasicInfoSubDivForLclCastSts';
+	    else if(to == "agewise")
+	     reqDiv = 'votersBasicInfoSubDivForAgeWiseDetls';
+		 
   var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true},
@@ -825,15 +930,22 @@ function buildVotersBasicInfo(votersbasicinfo){
 						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totVoters","percent"]
 					};
 
-		var impFamliesResultDataSource = new YAHOO.widget.DataTable("votersBasicInfoSubDiv", votersResultColumnDefs,myDataSource, myConfigs);
+		var impFamliesResultDataSource = new YAHOO.widget.DataTable(reqDiv, votersResultColumnDefs,myDataSource, myConfigs);
 
      }
    }else{
-     $("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
-   }
+      if(to == "")
+	   $("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+	  else if(to == "impfamilies")
+	   $("#votersBasicInfoDivForImpFam").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+	  else if(to == "localcaststs")
+	   $("#votersBasicInfoDivForLclCastSts").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+	  else if(to == "agewise")
+	   $("#votersBasicInfoDivForAgeWiseDetls").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");	 
+	 }
 }
 
-function buildVotersChart(chartInfo,reqTitle){
+function buildVotersChart(chartInfo,reqTitle,to){
 
  // Create the data table.
         var data = new google.visualization.DataTable();
@@ -854,7 +966,17 @@ function buildVotersChart(chartInfo,reqTitle){
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('votersBasicInfoSubChartDiv'));
+		var reqDiv = '';
+		if(to == "")
+	     reqDiv = 'votersBasicInfoSubChartDiv' ;
+	    else if(to == "impfamilies")
+	     reqDiv = 'votersBasicInfoSubChartDivForImpFam';
+	    else if(to == "localcaststs")
+	     reqDiv = 'votersBasicInfoSubChartDivForLclCastSts';
+	    else if(to == "agewise")
+	     reqDiv = 'votersBasicInfoSubChartDivForAgeWiseDetls';
+		 
+        var chart = new google.visualization.PieChart(document.getElementById(reqDiv));
         chart.draw(data, options);
 
 
