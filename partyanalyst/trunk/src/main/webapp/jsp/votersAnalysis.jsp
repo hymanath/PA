@@ -480,14 +480,15 @@ function getVoterDetailsForConstituency(){
 	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
 
+	if(publicationId == null)
+		return false;
+
 	if(reportLevel == "1"){
 
 		var jsObj=
-				{
-					//constituencyId:constituencyId,
-					//publicationDateId:publicationId,
-					constituencyId:'232',
-					publicationDateId:'2',
+				{					
+					constituencyId:constituencyId,
+					publicationDateId:publicationId,
 					mandalId:'0',
 					boothId:'0',
 					panchayatId:'0',
@@ -507,9 +508,7 @@ function getVoterDetailsForMandal(){
 	var mandalId = $('#mandalField').val();
 	var publicationId = $('#publicationDateList').val();
 
-	var startNumber = mandalId.substring(0,1)
-
-		
+	var startNumber = mandalId.substring(0,1);
 
 	if(reportLevel == "2"){
 
@@ -518,25 +517,21 @@ function getVoterDetailsForMandal(){
 
 			var jsObj=
 					{
-
-			        //boothId:boothId,
-					//publicationDateId:publicationId,
-					constituencyId:'0',
-					publicationDateId:'2',
-					mandalId:'844',
-					boothId:'0',
-					panchayatId:'0',
-				    type:"mandal"
+						constituencyId:'0',
+						publicationDateId:publicationId,
+						mandalId:mandalId,
+						boothId:'0',
+						panchayatId:'0',
+						type:"mandal"
 						
 					};
 		}else if(startNumber == "1"){
 
 			var jsObj=
 					{
-
 						mandalId:mandalId,
-						publicationId:publicationId,
-						type:"localElectionBody",
+						publicationDateId:publicationId,
+						type:"localElectionBody"
 						
 					};
 		}
@@ -565,7 +560,7 @@ function getVoterDetailsForPanchayat(){
 					boothId:'0',
 					panchayatId:panchayatId,
 					publicationDateId:publicationId,
-					type:"panchayat",
+					type:"panchayat"
 				};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -586,14 +581,12 @@ function getVoterDetailsForBooth(){
 	if(reportLevel == "4"){
 
 		var jsObj=
-				{
-			        //boothId:boothId,
-					//publicationId:publicationId,
+				{ 
 					constituencyId:'0',
-					publicationDateId:'2',
+					publicationDateId:publicationId,
 					mandalId:'0',
 					panchayatId:'0',					
-					boothId:'202',
+					boothId:boothId,
 					type:"booth",
 				};
 
