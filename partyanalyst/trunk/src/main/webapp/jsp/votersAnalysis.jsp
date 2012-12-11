@@ -88,6 +88,7 @@ table.gridtable td {
 
 #votersBasicInfoSubDiv{
   margin-left: 0px;
+  padding:10px;
  
 }
 
