@@ -4,7 +4,7 @@ var constMgmtMainObj={
 							castStatssubArray:[],
 							
 					};
-
+var publicationYear = "";
 function showReportLevel(value)
 	{
 		
@@ -492,6 +492,18 @@ function showImportantFamiliesDiv()
 	}
 }
 $(document).ready(function(){
+    $("#publicationDateList").change(function(){
+	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
+		   var str = $('#publicationDateList :selected').text();
+		   var year=str.split("-");
+		   try{
+		    publicationYear =year[2];
+		    }catch(e){
+		    }
+		}else{
+		    publicationYear = "";
+		}
+	});
     $("#impFamShowBasicInfo").click(function(){
 	   if($('#votersbasicinfoForImpFam').css('display') == 'none'){
 	     $(this).val("Hide Basic Voter Details");
@@ -1103,7 +1115,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
 	  type = "";
 	   name = $("#pollingStationField option:selected").text();
 	 }
-      var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in'+name+' '+type+' in 2013</b></div>';
+      var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in'+name+' '+type+' in '+publicationYear+'</b></div>';
           str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
@@ -1228,7 +1240,7 @@ oDT: votersByLocBoothDataTable
 	 impFamiList.push(data);
   }
   
-  $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise voters family analysis of "+name+" "+type+" in 2013");
+  $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise voters family analysis of "+name+" "+type+" in "+publicationYear+"");
   var impFamilesColumnDefs = [
     {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
     {key:"below3", label: "Below 3", formatter:"number", sortable: true},
@@ -1260,7 +1272,7 @@ function impFamilesStaticTable(myresults)
 var str='';
 str+='<div class="impFamilesMainDiv" >';
 str+='<div><h5><strong>';
-str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in 2013';
+str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in '+publicationYear+'';
 str+='</strong></h5></div>';
 str+='</br>';
 str+='<div style="border:1px solid black">';
@@ -1312,7 +1324,7 @@ var data = google.visualization.arrayToDataTable([
         ]);
 
 // Set chart options
-var title = " Family wise detail chart of "+chartInfo.name+" "+chartInfo.type+" in 2013";
+var title = " Family wise detail chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
 var options = {'title':title,
 'width':800,
 'height':280};
