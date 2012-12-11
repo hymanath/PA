@@ -223,6 +223,9 @@ table.dataTable tr.even td.sorting_1 {
 	 margin-left: 0px;
 	 
 }
+#impfamilydatatable{
+ font-size: 11px;
+}
 #impFamilesBasicSubDetails{
   margin-left: 5px;
 }
