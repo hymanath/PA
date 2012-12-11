@@ -519,7 +519,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 		Long maleVoters=0L;
 		Long femaleVoters=0L;
-		
+		Long TotalCasts =0l;
 		for(int i=0;i<params.size();i++)
 		{
 			Object[] voterInfo =(Object[])params.get(i);
@@ -548,6 +548,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				{
 					castvo.setFemalevoters((Long)voterInfo[0]);
 				}
+				
 				castsMap.put(cast, castvo);
 			}
 			else{
@@ -578,12 +579,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			if(totalVoters > 0)
 			   castPercentage = new BigDecimal((castVOs.get(i).getCastCount()*100.0)/totalVoters).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
 			castVOs.get(i).setCastPercentage(castPercentage);
+			
+			
 		}
 		
 		
 		voterCastInfoVO.setTotalVoters(totalVoters);
 		
 		voterCastInfoVO.setCastVOs(castVOs);
+		voterCastInfoVO.setTotalCasts(voterCastInfoVO.getCastVOs().size());
 		return voterCastInfoVO;
 		
 		
