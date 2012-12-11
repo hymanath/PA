@@ -169,7 +169,7 @@ p {
 
 }
 #subLevelTable,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;}
-#subLevelTable tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even){background:#EdF5FF;}
+#subLevelTable tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even){background:#EdF5FF;}
 
 #subLevelTable td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
