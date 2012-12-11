@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -1665,6 +1666,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	public ImportantFamiliesInfoVo getImportantFamiliesForConstituency(String type,Long id,Long publicationDateId){
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setType("Constituency");
+		importantFamiliesInfoVo.setName(constituencyDAO.get(id).getName());
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"constituency"));
 		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"","main");
 		 
@@ -1746,6 +1749,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 		{
 			ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+			importantFamiliesInfoVo.setType("Mandal/Tehsil");
+			importantFamiliesInfoVo.setName(tehsilDAO.get(new Long(id.toString().substring(1))).getTehsilName());
 			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(new Long(id.toString().substring(1).trim()),publicationDateId,"mandal"));
 			 getImpFamilesInfo(type,new Long(id.toString().substring(1).trim()),publicationDateId,importantFamiliesInfoVo,"",exeType);
 			 if(exeType.equalsIgnoreCase("main") && importantFamiliesInfoVo.isDataPresent()){
@@ -1757,6 +1762,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			 return importantFamiliesInfoVo;
 		}else{
 			ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+			importantFamiliesInfoVo.setType("Muncipality/Corporation");
+			List<Object[]> assemblyLocalElectionBodyName = assemblyLocalElectionBodyDAO.getLocalElecBodyName(id.toString().substring(1));
+			  Object[] reqName = assemblyLocalElectionBodyName.get(0);
+			  String name = reqName[0].toString()+" "+reqName[1].toString();
+			importantFamiliesInfoVo.setName(name);
 			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getVotersCountForLocalElectionBody(new Long(id.toString().substring(1).trim()),publicationDateId));
 			 getImpFamilesInfo(type,new Long(id.toString().substring(1).trim()),publicationDateId,importantFamiliesInfoVo,"local",exeType);
 			 return importantFamiliesInfoVo;
@@ -1766,6 +1776,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	public ImportantFamiliesInfoVo getImportantFamiliesForBooth(String type,Long id,Long publicationDateId,String exeType){
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setType("Booth");
+		importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"booth"));
 	
 		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"",exeType);
@@ -1774,6 +1786,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 	public ImportantFamiliesInfoVo getImportantFamiliesForPanchayat(Long id,Long publicationDateId,String reqType,String exeType){
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setType("Panchayat");
+		importantFamiliesInfoVo.setName(panchayatDAO.get(id).getPanchayatName());
 		importantFamiliesInfoVo.setTotalVoters((Long)boothPublicationVoterDAO.getVotersCountForPanchayat(id,publicationDateId).get(0));
 		 //getImpFamilesInfo("",id,publicationDateId,importantFamiliesInfoVo,"panchayat",exeType);
 		getImpFamilesForPanchayat(id,publicationDateId,importantFamiliesInfoVo);
@@ -1812,7 +1826,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		{
 			voters = boothPublicationVoterDAO.findFamiliesVotersInfoForBooth(id,publicationDateId);
 		}
-		Map<String, List<VoterVO>> voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
+		Map<Long,Map<String, List<VoterVO>>> boothMap = new HashMap<Long,Map<String, List<VoterVO>>>();
+		Map<String, List<VoterVO>> voterByHouseNoMap = null;
 		List<VoterHouseInfoVO> voterHouseInfoVOs = new ArrayList<VoterHouseInfoVO>();
 		VoterHouseInfoVO voterHouseInfoVO = null;
 		List<VoterVO> voterVOs = null;
@@ -1827,13 +1842,23 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterVO.setAge((Long)voter[3]);
 			voterVO.setCast(voter[4].toString());
 			voterVO.setBoothNo((Long)voter[5]);
+			voterByHouseNoMap = boothMap.get((Long)voter[5]);
+			if( voterByHouseNoMap == null){
+				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
+				boothMap.put((Long)voter[5], voterByHouseNoMap);
+			}
 			voterVOs = voterByHouseNoMap.get(houseNo);
-			if(voterVOs ==null)
+			if(voterVOs ==null){
 				voterVOs = new ArrayList<VoterVO>();
+				voterByHouseNoMap.put(houseNo, voterVOs);
+			}
 			voterVOs.add(voterVO);
-			voterByHouseNoMap.put(houseNo, voterVOs);
+			//voterByHouseNoMap.put(houseNo, voterVOs);
 			
 		}
+		Set<Long> keys = boothMap.keySet();
+		for(Long key:keys){
+			voterByHouseNoMap = boothMap.get(key);
 		for(Map.Entry<String, List<VoterVO>> entry:voterByHouseNoMap.entrySet()){
 			voterHouseInfoVO = new VoterHouseInfoVO();
 			voterVOs = entry.getValue();
@@ -1847,6 +1872,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
 			voterHouseInfoVO.setBoothId(voterVOs.get(0).getBoothNo());
 			voterHouseInfoVOs.add(voterHouseInfoVO);
+		}
 		}
 		
 	/*	if(voterHouseInfoVOs.size() > 0)
@@ -1935,8 +1961,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				importantFamiliesInfoVo.setBetwn4to6(between4To6);
 				importantFamiliesInfoVo.setBelow3(below3);
 				importantFamiliesInfoVo.setBelow3Popul(below3Count);
+				importantFamiliesInfoVo.setTotalFamalies(above10+between7To10+between4To6+below3);
 				importantFamiliesInfoVo.setTotalVoters(above10Count+between7T10Count+between4To6Count+below3Count);
-				
+				calculatePercentage(importantFamiliesInfoVo);
 			}
 		    
 		    
