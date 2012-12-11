@@ -462,14 +462,14 @@ locationDetails.constituencyArr.push(ob);
      </div>
 <div id='ageWiseInfoDiv' class="divInfo">
 <div id="voterDetailsNote" class="noteDiv"></div>
-<div id="tableDiv" style="margin-left:119px;padding:10px;" class="noteDiv"></div>
+<div id="tableDiv" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
 <div id="voterAgewiseDetailsNote" class="noteDiv"></div>
 <div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
 <div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
-<div id="ageAndgenderWiseDetails" style="margin-left:10px;padding:10px;" class="noteDiv"> </div>
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
+<div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"> </div>
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
 	
 	</div>
 
@@ -677,7 +677,7 @@ $('#ajaxImageDiv').css('display','block');
 
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
 							buildVoterDetailsTable(myResults,jsObj.type);
-                             buildAgeWiseVoterAnalysisChart(myResults);
+                           //  buildAgeWiseVoterAnalysisChart(myResults);
 
 							if(jsObj.type != "booth"){
 								buildAgewiseDetails(myResults,jsObj.type);
