@@ -278,6 +278,17 @@ table.dataTable tr.even td.sorting_1 {
    padding:10px;
    margin-bottom:5px;
 }
+.basicVotersInfoDiv{border: 1px solid #CCCCCC;
+border-radius: 5px 5px 5px 5px;
+float: none;
+margin: 13px auto 12px;
+padding: 7px;
+width: 860px;}
+#subLevelTable_info,#subLevelTable_paginate{
+	font-family: verdana;
+    font-size: 12px;
+    margin-top: 12px;
+}
 </style>
 
 <script type="text/javascript">
@@ -357,7 +368,7 @@ locationDetails.constituencyArr.push(ob);
 				<table>
 				  <tr>
 			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Cast Statistics" 
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Caste Statistics" 
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters Info" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
@@ -388,14 +399,14 @@ locationDetails.constituencyArr.push(ob);
 		
 	</div>
 
-<div id='votersMainOuterDiv1' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
-     <input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
+<div id='votersMainOuterDiv1'>
+     <input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForImpFam" style="display:none;">
         <div id="votersBasicInfoDivForImpFam"></div>
 	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
 	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>
-     	<div id="ImportantFamiliesDiv">
+     	<div id="ImportantFamiliesDiv" class="divInfo">
 	<div id ="impFamilesBasicDetails"></div>
 	</br>
         <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black"></div>
@@ -421,24 +432,25 @@ locationDetails.constituencyArr.push(ob);
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Local Cast Statistics</span></div></td>
+					<td><div class="votersWidgetMainHeader"><span id="localCastStatsTabContentTitle" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv2' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
-	<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
+<div id='votersMainOuterDiv2'>
+	<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
     <div id="votersbasicinfoForLclCastSts" style="display:none;">
         <div id="votersBasicInfoDivForLclCastSts"></div>
 	    <div id="votersBasicInfoSubChartDivForLclCastSts"></div>
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
     </div>
 	<div id='LocalCastDiv' class="divInfo">
-	<div id ="localCastStatsTabContentTitle" ></div>
+	
+	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	<div id='localCastStatsTabContent_header'></div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
-	<div id='localCastStatsTabContent_subbody'></div><br>
-	<div id='localCastStatsTabContent_subbody1'></div>
+	<div id='localCastStatsTabContent_subbody'></div><br><br>
+	<div id='localCastStatsTabContent_subbody1'></div><br><br>
 
 
 </div>
@@ -460,7 +472,7 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
     
-<div id='votersMainOuterDiv3' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
+<div id='votersMainOuterDiv3'>
 	
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
@@ -489,10 +501,10 @@ locationDetails.constituencyArr.push(ob);
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv4' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
+<div id='votersMainOuterDiv4'>
 	
 
-	 <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" />
+	 <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForAgeWiseDetls" style="display:none;">
         <div id="votersBasicInfoDivForAgeWiseDetls"></div>
 	    <div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>
