@@ -22,7 +22,7 @@ public class CasteDAO extends GenericDaoHibernate<Caste, Long> implements ICaste
 	{
 
 	String queryString = "select distinct model.candidate.candidateId,model.candidate.lastname from Nomination model where " +
-			" model.constituencyElection.election.electionScope.electionType.electionType = :electionType and  model.constituencyElection.election.electionYear='"+IConstants.PRESENT_YEAR+"'" +
+			" model.constituencyElection.election.electionScope.electionType.electionType = :electionType" +
 			" and model.constituencyElection.election.electionScope.state.stateId = :stateId and " +
 			" model.constituencyElection.constituency.district.districtId = :districtId and  model.constituencyElection.constituency.constituencyId = :constituencyId ";
 	if(status.equals("all"))
