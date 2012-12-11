@@ -1744,7 +1744,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						 Long constId = (Long)((Object[])assembliesData.get(j))[0];
 						 result.add(nominationDAO.getCandidateAndPartyInfo(constId,IConstants.ASSEMBLY_ELECTION_TYPE, 1L).get(0));
 						}catch(Exception e){
-							e.printStackTrace();
+							//e.printStackTrace();
 						}
 					}
 					if(result.size()!=0){
