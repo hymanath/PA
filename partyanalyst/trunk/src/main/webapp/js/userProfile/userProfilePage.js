@@ -4,6 +4,7 @@ var connetLocationId = '';
 var uploadPicStatus = false;
 var refreshTime=5;
 var uploadResult;
+var userType = '';
 
 $("document").ready(function(){
 	
@@ -95,8 +96,10 @@ $("document").ready(function(){
 
 	//problems 
 
-	$(".problemsLink").click(function(){
-		var type = 'Total';
+	$(".problemsLink").live("click",function(){
+		var type= $(this).closest('span').find(".problemTypeVariable").val();
+		
+		getAllPostedProblemsForUser();
 		var jsObj ={
 			task:"getAllPostedProblems_paginator"
 		 };
@@ -327,9 +330,9 @@ $(".changePwdLink").live("click",function(){
 		div.append('<div id="password_window_errorMsg"></div>');
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span>');
-		div.append('<div><font color="red">*</font> <span>Current Password</span> <input type="password" id="currentPwdId" name="currentPassword"/></div>');
+		div.append('<div style="margin-top: 10px;"><font color="red">*</font> <span>Current Password</span> <input type="password" id="currentPwdId" name="currentPassword"/></div>');
 		div.append('<div><font color="red">*</font> <span>New Password</span> <input type="password" id="newPwdId" name="newPassword"/></div>');
-		div.append('<div><font color="red">*</font> <span>Confirm Password</span> <input type="password" id="confirmPwdId" name="confirmPassword"/></div>');
+		div.append('<div style="margin-bottom: 10px;"><font color="red">*</font> <span>Confirm Password</span> <input type="password" id="confirmPwdId" name="confirmPassword"/></div>');
 		div.append('<input id="changePWDButton" type="button" value="Change Password"></input>');
 		div.append('<input id="cancelButtonID" type="button" value="No"></input>');
 		elmt.append(div);
@@ -477,33 +480,6 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	div.append(str);
 	elmt.append(div);
 
-	/* 
-	
-
-	oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
-	
-	
-	oPushButton1.on("click",function(){
-	   
-		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
-		var str = '<font color="red">';
-		if(uploadPhotoId.length == 0)
-	     {   
-		     str += ' Please Select a image .<br>';
-		     document.getElementById("uploadPic_window_status").innerHTML = str;
-	     }
-		 else{
-		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
-		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
-		
-		 getUploadpic();
-		}
-	});
-
-	*/
-
-
-	
 });
 
 $("#cancelPicButton").live("click",function(){
@@ -673,6 +649,12 @@ function callAjax1(jsObj,url){
 						showChangePwdStatus(results);
 					}
 					
+					else if(jsObj.task == "getAllPostedProblemsByUser")
+					{
+						showPostedProblems(jsObj,results);
+						
+					}
+
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
 			}  
@@ -694,15 +676,14 @@ function getFriendsListForUser(results)
 	clearAllSubscriptionDivs();
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
 	{
-		$(".templateDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
+		$("#headerDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
 			return;
 	}
 	else if(results.connectedPeople == "")
 	{
-		$(".templateDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
+		$("#headerDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
 			return;
 	}
-	
 	
 	
 	$("#headerDiv").html('You have total <span style="color:blue;">'+results.connectedPeople.length+'</span>  connections.');
@@ -760,17 +741,16 @@ function showRequestedMessagesForAUser(results)
 	clearAllSubscriptionDivs();
 	if(results.resultStatus.resultCode !="0")
 	{
-		$(".templateDivMsg").html("Data could not be retrived due to some technical difficulties.").appendTo(".placeholderCenterDiv");
+		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
 		return;
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$(".templateDivMsg").html("No messages has been sent to you.").appendTo(".placeholderCenterDiv");
+		$("#headerDiv").html("No messages has been sent to you.");
 		return;
 	}
 		
-	$(".placeholderCenterDiv").children().remove();
-	
+		
 		$("#headerDiv").html('Unread: <span style="color:blue;">'+ results.unreadMsgCount +' </span> Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span>');
 		for(var i in results.candidateVO)
 		{
@@ -1137,7 +1117,7 @@ function getAllConnectedUsersByFilterView(locationType)
 
 function showAllPostedProblems_paginator(jsObj,results)
 {
-	$("#headerDiv").html('');
+	
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	
@@ -1559,6 +1539,61 @@ function showChangePwdStatus(results)
 function closewdw()
 {
 	$("#connectPeoplePopup").dialog("destroy");
+}
+
+
+//problem count
+
+function getAllPostedProblemsForUser()
+{
+	
+	var jsObj=
+	{
+			task:"getAllPostedProblemsByUser"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllPostedProblemsByUserAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+
+function showPostedProblems(jsObj,results)
+{
+
+	$('#headerDiv').html('');
+	var div = $('<div style="line-height:1.5em;"></div>');
+	if(results.totalPostedProblemsCount == 0)
+		div.append('<span class="fontStyle">Total posted problems - '+results.totalPostedProblemsCount+'</span>');
+	else
+	  div.append('<span class="fontStyle">Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></span>');
+		
+	if(results.postedProblemsCountByLoggedInUsers == 0)
+		div.append('<span class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - '+results.postedProblemsCountByLoggedInUsers+'</span>'); 
+	else
+	  div.append('<span class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></span>');
+		
+	if(results.postedProblemsCountByOtherUsers == 0)
+		div.append('<span class="fontStyle">By Others - '+results.postedProblemsCountByOtherUsers+'</span>');
+	else
+	  div.append('<span class="fontStyle">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></span>');
+		
+	div.append('<label class="l1">Problem Status Details Posted By You </label>');
+
+	if(results.approvedProblemsCount ==0)
+		div.append('<span class="fontStyle" style="margin-left: 2px;">Problems Approved	- '+results.approvedProblemsCount+'</span>');
+	else
+	 div.append('<span class="fontStyle" style="margin-left: 2px;">Problems Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></span>');
+	 
+	
+	if(results.rejectedProblemsCount ==0)
+		div.append('<span class="fontStyle" style="margin-left: 35px;">Problems Rejected - '+results.rejectedProblemsCount+'</span>');
+	else
+	 div.append('<span class="fontStyle" style="margin-left: 35px;">Problems Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></span> ');
+	 div.append('');
+	
+
+	$('#headerDiv').append(div);
+	
 }
 
 <!--OPINION POLL SCRIPTS START-->
