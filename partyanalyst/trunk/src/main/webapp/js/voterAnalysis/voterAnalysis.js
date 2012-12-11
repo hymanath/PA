@@ -127,6 +127,10 @@ function buildVotersByLocBoothDataTable(id)
 {
 
 var boothId = $('#'+id).val();
+var publicationDateId = $('#publicationDateList').val();
+
+if(boothId == "0" || boothId == null || publicationDateId == null || publicationDateId == "0")
+	return false;
 
 
 if(boothId == "0")
@@ -146,7 +150,7 @@ var votersByLocBoothColumnDefs = [
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
 
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&");
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&publicationId="+publicationDateId+"&");
 votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
@@ -184,6 +188,8 @@ oDT: votersByLocBoothDataTable
 
 function buildVotersByLocPanchayatDataTable(id)
 {
+
+	alert("123");
 
 
 var publicationId = $('#buildVotersByLocPanchayatDataTable').val();
