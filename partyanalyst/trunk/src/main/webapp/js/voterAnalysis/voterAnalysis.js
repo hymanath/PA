@@ -188,8 +188,6 @@ oDT: votersByLocBoothDataTable
 
 function buildVotersByLocPanchayatDataTable(id)
 {
-
-
 var publicationId = $('#buildVotersByLocPanchayatDataTable').val();
 var panchaytId =  $('#publicationDateList').val();
 
@@ -679,6 +677,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
 
 		str +='<table id="subLevelTable">';
+		if(type == 'constituency')
+		str+='<span>Mandal/Muncipality wise Cast Statistics In '+typeName+'Constituency</span>';
+		else if(type == "mandal")
+		str+='<span>Panchayat wise Cast Statistics In '+typeName+' </span>';
+		else if(type =="panchayat")
+		str+='<span>Booth wise Cast Statistics In '+typeName+' Panchayat</span>';
 		str+='<tr>';
 		if(type == "constituency")
 		str +='<th>MandalName</th>';
