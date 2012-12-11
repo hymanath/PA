@@ -352,14 +352,16 @@ locationDetails.constituencyArr.push(ob);
 </div>
 
 
-<div id="voterDetailsNote" class="voterDetails"></div>
-<div id="tableDiv" style="margin-left:119px;padding:10px;" class="noteDiv"></div>
+<div id="voterDetailsNote" class="noteDiv" ></div>
+<div id="tableDiv" style="margin-left:40px;padding:10px;"class="voterDetails" ></div>
 
-<div id="voterAgewiseDetailsNote" class="voterDetails"></div>
-<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
+<div id="voterAgewiseDetailsNote" class="noteDiv" ></div>
+<div id="agewiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
 
-<div id="voterAgeAngGenderwiseDetailsNote" class="voterDetails"></div>
-<div id="ageAndgenderWiseDetails" style="margin-left:10px;padding:10px;" class="noteDiv"> </div>
+<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"  ></div>
+<div id="ageAndgenderWiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"> </div>
+
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
 
 <!-- for  body 1 end    result  -->
 
@@ -626,6 +628,7 @@ function getVoterDetailsForBooth(){
 function callAjaxorVoterDetails(jsObj,url){
 
 	$('.voterDetails').html('');
+	$('.noteDiv').html('');
 
 	var myResults;
 
@@ -638,6 +641,7 @@ function callAjaxorVoterDetails(jsObj,url){
 							if(jsObj.type != "booth"){
 								buildAgewiseDetails(myResults,jsObj.type);
 								buildAgeAndGenderWiseDetails(myResults,jsObj.type);
+								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj.type);
 							}
 						 
 						
@@ -669,7 +673,7 @@ function buildConstituencyVoterDetailsTable(result,type){
 	else 
 		noteString = $('#pollingStationField :selected').text();
 
-	$('#voterDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+" "+"voters details"+'</h4>');
+	$('#voterDetailsNote').html('<h4 style="color:green;margin-left:40px;">'+noteString+" "+"voters details"+'</h4>');
 
 	var str='';
 	str+='<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
@@ -679,7 +683,7 @@ function buildConstituencyVoterDetailsTable(result,type){
 	str+='<th colspan="2">TotalVoters</th>';
 	str+='<th colspan="2">Male</th>';
 	str+='<th colspan="2">Female</th>';
-	str+='<th colspan="2">UnKnown</th>';
+	//str+='<th colspan="2">UnKnown</th>';
 	str+='</tr>';
     
 	str+='<tr>';
@@ -689,8 +693,8 @@ function buildConstituencyVoterDetailsTable(result,type){
 	str+='<th>Percentage</th>';
 	str+='<th>Voters</th>';
 	str+='<th>Percentage</th>';
-	str+='<th>Voters</th>';
-	str+='<th>Percentage</th>';
+	//str+='<th>Voters</th>';
+	//str+='<th>Percentage</th>';
 	str+='</tr>';
 
 	for(var i in result.votersDetailsVO){
@@ -718,12 +722,12 @@ function buildConstituencyVoterDetailsTable(result,type){
 	  str+='<td>'+result.votersDetailsVO[i].totalFemaleVotersPercent.toFixed(2)+'</td>';
 	else
 		str+='<td>0.00</td>';
-	str+='<td>'+result.votersDetailsVO[i].totalUnknownVoters+'</td>';
+	//str+='<td>'+result.votersDetailsVO[i].totalUnknownVoters+'</td>';
 
-	if(result.votersDetailsVO[i].totalUnknownVotersPercent != null)
-	   str+='<td>'+result.votersDetailsVO[i].totalUnknownVotersPercent.toFixed(2)+'</td>';
-	else
-		str+='<td>0.00</td>';
+	//if(result.votersDetailsVO[i].totalUnknownVotersPercent != null)
+	 //  str+='<td>'+result.votersDetailsVO[i].totalUnknownVotersPercent.toFixed(2)+'</td>';
+	//else
+	//	str+='<td>0.00</td>';
 	
 	str+='</tr>';
 
@@ -763,7 +767,7 @@ function buildAgewiseDetails(results , type){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
+	$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
 
 	var str='';
 	str+='<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
@@ -854,7 +858,7 @@ function buildAgeAndGenderWiseDetails(results , type){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -862,29 +866,24 @@ function buildAgeAndGenderWiseDetails(results , type){
 
 	str+='<tr>';
 	str+='<th rowspan="2">Mandal Name</th>';
-	str+='<th colspan="3">18-25</th>';
-	str+='<th colspan="3">26-35</th>';
-	str+='<th colspan="3">36-45</th>';
-	str+='<th colspan="3">46-60</th>';
-	str+='<th colspan="3">60-Above</th>';
+	str+='<th colspan="2">18-25</th>';
+	str+='<th colspan="2">26-35</th>';
+	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">46-60</th>';
+	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
-	str+='<th>Unknown</th>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
-	str+='<th>Unknown</th>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
-	str+='<th>Unknown</th>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
-	str+='<th>Unknown</th>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
-	str+='<th>Unknown</th>';
 	str+='</tr>';
 
 for(var i=0;i<innerResults.length;i++){
@@ -901,23 +900,18 @@ for(var i=0;i<innerResults.length;i++){
 
 	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
-	str+='<td>'+innerResults[i].totalUnknownVotersFor18To25+'</td>';
 
 	str+='<td>'+innerResults[i].totalMaleVotersFor26To35+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor26To35+'</td>';
-	str+='<td>'+innerResults[i].totalUnknownVotersFor26To35+'</td>';
 
 	str+='<td>'+innerResults[i].totalMaleVotersFor36To45+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor36To45+'</td>';
-	str+='<td>'+innerResults[i].totalUnknownVotersFor36To45+'</td>';
 
 	str+='<td>'+innerResults[i].totalMaleVotersFor46To60+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor46To60+'</td>';
-	str+='<td>'+innerResults[i].totalUnknownVotersFor46To60+'</td>';
 
 	str+='<td>'+innerResults[i].totalMaleVotersForAbove60+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersForAbove60+'</td>';
-	str+='<td>'+innerResults[i].totalUnknownVotersForAbove60+'</td>';
 
 	str+='</tr>';
 }
@@ -925,6 +919,201 @@ for(var i=0;i<innerResults.length;i++){
 
 $('#ageAndgenderWiseDetails').html(str);
 }
+
+function buildAgeAndGenderWiseDetails(results , type){
+
+	var innerResults;
+	var noteString;
+
+
+	if(type == "constituency"){
+		innerResults = results.mandalsVotersDetails;
+		noteString = "Mandal wise voter details:Age and gender wise";
+
+	}
+	else if(type == "mandal"){
+		innerResults = results.panchayatVotersDetails;
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+	else if(type == "panchayat"){
+		innerResults = results.boothVotersDetails;
+		innerResults = results.boothVotersDetails;
+	   	noteString = "Mandal wise voter details:Age and gender wise";
+	}
+	else if(type == "localElectionBody"){
+		innerResults = results.boothVotersDetails;
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+
+	if(innerResults.length == 0){
+		alert("No Records");
+		return false;
+	}
+
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
+
+	var str='';
+
+	str+='	<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
+
+	str+='<tr>';
+	str+='<th rowspan="2">Mandal Name</th>';
+	str+='<th colspan="2">18-25</th>';
+	str+='<th colspan="2">26-35</th>';
+	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">46-60</th>';
+	str+='<th colspan="2">60-Above</th>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='</tr>';
+
+for(var i=0;i<innerResults.length;i++){
+
+	str+='<tr>';
+	if(type == "constituency")
+	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	else if(type == "mandal")
+	str+='<td>'+innerResults[i].panchayatname+'</td>';
+	else if(type == "panchayat")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+	else if(type == "localElectionBody")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor26To35+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor26To35+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor36To45+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor36To45+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor46To60+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor46To60+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersForAbove60+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersForAbove60+'</td>';
+
+	str+='</tr>';
+}
+   str+='</table>';
+
+$('#ageAndgenderWiseDetails').html(str);
+}
+
+function buildAgeAndGenderWiseDetailsForPercent(results , type){
+
+	var innerResults;
+	var noteString;
+
+
+	if(type == "constituency"){
+		innerResults = results.mandalsVotersDetails;
+		noteString = "Mandal wise voter details:Age and gender wise";
+
+	}
+	else if(type == "mandal"){
+		innerResults = results.panchayatVotersDetails;
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+	else if(type == "panchayat"){
+		innerResults = results.boothVotersDetails;
+		innerResults = results.boothVotersDetails;
+	   	noteString = "Mandal wise voter details:Age and gender wise";
+	}
+	else if(type == "localElectionBody"){
+		innerResults = results.boothVotersDetails;
+		noteString = "Mandal wise voter details:Age and gender wise";
+	}
+
+	if(innerResults.length == 0){
+		alert("No Records");
+		return false;
+	}
+
+	//$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
+
+	var str='';
+
+	str+='	<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
+
+	str+='<tr>';
+	str+='<th rowspan="2">Mandal Name</th>';
+	str+='<th colspan="3">18-25</th>';
+	str+='<th colspan="3">26-35</th>';
+	str+='<th colspan="3">36-45</th>';
+	str+='<th colspan="3">46-60</th>';
+	str+='<th colspan="3">60-Above</th>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Total</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Total</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Total</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Total</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Total</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='</tr>';
+
+for(var i=0;i<innerResults.length;i++){
+
+	str+='<tr>';
+	if(type == "constituency")
+	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	else if(type == "mandal")
+	str+='<td>'+innerResults[i].panchayatname+'</td>';
+	else if(type == "panchayat")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+	else if(type == "localElectionBody")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+
+    str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
+	str+='<td>'+innerResults[i].maleVotersPercentFor18To25+'</td>';
+	str+='<td>'+innerResults[i].femaleVotersPercentFor18To25+'</td>';
+
+    str+='<td>'+innerResults[i].totalVotersFor26To35+'</td>';
+	str+='<td>'+innerResults[i].maleVotersPercentFor26To35+'</td>';
+	str+='<td>'+innerResults[i].femaleVotersPercentFor26To35+'</td>';
+
+    str+='<td>'+innerResults[i].totalVotersFor36To45+'</td>';
+	str+='<td>'+innerResults[i].maleVotersPercentFor36To45+'</td>';
+	str+='<td>'+innerResults[i].femaleVotersPercentFor36To45+'</td>';
+
+    str+='<td>'+innerResults[i].totalVotersFor46To60+'</td>';
+	str+='<td>'+innerResults[i].maleVotersPercentFor46To60+'</td>';
+	str+='<td>'+innerResults[i].femaleVotersPercentFor46To60+'</td>';
+
+    str+='<td>'+innerResults[i].totalVotersForAbove60+'</td>';
+	str+='<td>'+innerResults[i].maleVotersPercentForAbove60+'</td>';
+	str+='<td>'+innerResults[i].femaleVotersPercentForAbove60+'</td>';
+
+	str+='</tr>';
+}
+   str+='</table>';
+
+$('#voterAgeAngGenderwiseDetailsNoteInPercent').html(str);
+}
+	
 	
 </script>
 </body>
