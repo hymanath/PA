@@ -990,12 +990,17 @@ function buildVotersChart(chartInfo,reqTitle,to){
 
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = myresults.voterCastInfodetails.totalVoters;
-
+	var totalCasts = myresults.voterCastInfodetails.totalCasts;
 	var localCastStatsTabContent = '<div class="basicVotersInfoDiv"><table>';
-	localCastStatsTabContent+='<tr colspan="2">';
+	localCastStatsTabContent+='<tr>';
 	localCastStatsTabContent+='<th>Total Voters : </th>';
-	localCastStatsTabContent+='<td align="left">'+totalVoters+'</td>';
-	localCastStatsTabContent+='</tr></table></div>';
+	localCastStatsTabContent+='<th>Total Casts : </th>';
+	
+	localCastStatsTabContent+='</tr>';
+	
+	localCastStatsTabContent+='<tr>';
+	localCastStatsTabContent+='<td >'+totalVoters+'</td>';
+	localCastStatsTabContent+='<td >'+totalCasts+'</td></tr></table></div>';
 	localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
 	var typeName =jsObj.typename;	
 		var	castIno = new Array();
@@ -1028,6 +1033,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
    function buildLocalCastStatisticsDataTableForAssembly(typeName)
 	{
 		
+		$("#localCastStatsTabContentTitle").html("Cast Statistics in "+typeName+" ");
 		var localCastStatsColumnDefs = [ 
 		    	            
 		    	            {key:"caste", label: "caste", sortable: true}, 
@@ -1051,8 +1057,9 @@ function buildVotersChart(chartInfo,reqTitle,to){
 		        rowsPerPage    : 10
 			    }) 
 				};
-
-		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs,{caption:'Cast Statistics in '+typeName+' '});
+		
+		
+		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs);
 
 		
 		
