@@ -168,8 +168,8 @@ p {
  padding:5px;
 
 }
-#subLevelTable,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;}
-#subLevelTable tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even){background:#EdF5FF;}
+#subLevelTable,#localCastStatsTabContent_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;}
+#subLevelTable tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even){background:#EdF5FF;}
 
 #subLevelTable td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
@@ -195,6 +195,21 @@ table.impTableDiv {background-color:transparent;border-collapse:collapse;width:1
 table.impTableDiv th, table.impTableDiv td {text-align:center;border:1px solid black;padding:5px;}
 table.impTableDiv th {background-color:AntiqueWhite;}
 table.impTableDiv td:first-child {width:50%;}
+
+table.dataTable tr.odd {
+    background-color: #ffffff;
+}
+table.dataTable tr.even {
+    background-color:#EdF5FF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #ffffff;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EdF5FF;
+}
+
+
 #impFamilesBasicSubDetailsTitle{
   font-weight:bold;
 }
@@ -212,10 +227,10 @@ table.impTableDiv td:first-child {width:50%;}
 #impFamPancBothDtls{
   margin-top:25px;
 }
-#localCastStatsTabContent_subbody caption,#impFamDtls caption,#impFamilesBasicSubDetails caption,#votersBasicInfoSubDiv caption,#localCastStatsTabContent_body caption{
+#localCastStatsTabContent_subbody caption,#localCastStatsTabContent_body caption,#subLevelTitle{
     color: #000;
     font-size: 13px;
-    margin-left: -460px;
+  
     font-style: normal;
 	font-family: verdana,sans-serif;
    }
@@ -243,7 +258,12 @@ table.impTableDiv td:first-child {width:50%;}
 	#constituencyList,#mandalField,
 	#panchayatField,#reportLevel,
 	#pollingStationField{width:160px;height:25px;}
-
+	#sublevelHeading{
+		color:steelblue;
+		font-size:13px;
+		font-family:verdana;
+		margin-bottom: 20px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -355,25 +375,20 @@ locationDetails.constituencyArr.push(ob);
 		
 	</div>
 
-<div id='votersMainOuterDiv1' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
-     <input type="button" id="impFamShowBasicInfo" />
-     <div id="votersbasicinfoForImpFam" style="display:block;">
-        <div id="votersBasicInfoDivForImpFam"></div>
-	    <div id="votersBasicInfoSubChartDivForImpFam" ></div>
-	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
-     </div>
-	<div id ="impFamilesBasicDetails"></div>
-	</br>
-        <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black" ></div>
+<div id='votersMainOuterDiv1'>
+	<div id="ImportantFamiliesDiv">
+	<div id ="impFamilesBasicDetails" class="yui-skin-sam yui-dt-sortable"></div>
+        <div id ="impFamilesBasicInfoSubChartDiv" ></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 		</br>
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsTitle"></div>
-		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>	
+		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
 		<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 
 <div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+
 	</div>
 
 </div><!-- for  body 1 end    result  -->
@@ -401,9 +416,9 @@ locationDetails.constituencyArr.push(ob);
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
     </div>
 	<div id='LocalCastDiv' class="divInfo">
-	<div id='localCastStatsTabContent_header'></div>
+	<div id='localCastStatsTabContent_header'></div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
-	<div id='localCastStatsTabContent_subbody'></div>
+	<div id='localCastStatsTabContent_subbody'></div><br>
 	<div id='localCastStatsTabContent_subbody1'></div>
 
 
