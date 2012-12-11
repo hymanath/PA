@@ -250,10 +250,12 @@ oDT: votersByLocBoothDataTable
 function showImportantFamiliesDiv()
 	{
 		var ImpDiv = document.getElementById('ImportantFamiliesDiv');
-		document.getElementById('votersMainOuterDiv1').style.display='block';
-		document.getElementById('votersMainOuterDiv2').style.display='none';
-		document.getElementById('votersMainOuterDiv3').style.display='none';
-		document.getElementById('votersMainOuterDiv4').style.display='none';
+		document.getElementById('votersDiv1').style.display='block';
+		document.getElementById('votersDiv2').style.display='none';
+		document.getElementById('votersDiv3').style.display='none';
+		document.getElementById('votersDiv4').style.display='none';
+		
+		
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -266,10 +268,10 @@ function showImportantFamiliesDiv()
 	{
 		var LocalCastDiv = document.getElementById('LocalCastDiv');
 		
-		document.getElementById('votersMainOuterDiv1').style.display='none';
-		document.getElementById('votersMainOuterDiv2').style.display='block';
-		document.getElementById('votersMainOuterDiv3').style.display='none';
-		document.getElementById('votersMainOuterDiv4').style.display='none';
+		document.getElementById('votersDiv1').style.display='none';
+		document.getElementById('votersDiv2').style.display='block';
+		document.getElementById('votersDiv3').style.display='none';
+		document.getElementById('votersDiv4').style.display='none';
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -281,10 +283,10 @@ function showImportantFamiliesDiv()
 	{
 		var VotersDiv = document.getElementById('votersDiv');
 		
-		document.getElementById('votersMainOuterDiv1').style.display='none';
-		document.getElementById('votersMainOuterDiv2').style.display='none';
-		document.getElementById('votersMainOuterDiv3').style.display='block';
-		document.getElementById('votersMainOuterDiv4').style.display='none';
+		document.getElementById('votersDiv1').style.display='none';
+		document.getElementById('votersDiv2').style.display='none';
+		document.getElementById('votersDiv3').style.display='block';
+		document.getElementById('votersDiv4').style.display='none';
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #F61D50"});
@@ -296,10 +298,10 @@ function showImportantFamiliesDiv()
 	{
 		var VotersDiv = document.getElementById('ageWiseInfoDiv');
 		
-		document.getElementById('votersMainOuterDiv1').style.display='none';
-		document.getElementById('votersMainOuterDiv2').style.display='none';
-		document.getElementById('votersMainOuterDiv3').style.display='none';
-		document.getElementById('votersMainOuterDiv4').style.display='block';
+		document.getElementById('votersDiv1').style.display='none';
+		document.getElementById('votersDiv2').style.display='none';
+		document.getElementById('votersDiv3').style.display='none';
+		document.getElementById('votersDiv4').style.display='block';
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -683,7 +685,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<span>Panchayat wise Cast Statistics In '+typeName+' </span>';
 		else if(type =="panchayat")
 		str+='<span>Booth wise Cast Statistics In '+typeName+' Panchayat</span>';
+		str+='<thead>';
 		str+='<tr>';
+		
 		if(type == "constituency")
 		str +='<th>MandalName</th>';
 		if(type == "mandal")
@@ -698,11 +702,13 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>castPercentage</th>';
 		
 		str+='</tr>';
+		str+='</thead>';
 		
-		
+		str+='<tbody>';
 		for(var i in constMgmtMainObj.castStatssubArray)
 		{
 		str+='<tr>';
+		
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
 		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
@@ -712,10 +718,26 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePercentage+'</td>';
 	
 		}
+		
 		str +='</tr>';
+		str+='</tbody>';
 		str +='</table>';
 
 		divId.innerHTML = str;
+
+
+		
+	  
+	  	$('#subLevelTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null,null
+     
+	  
+    ] 
+		});
 		
 
 	
@@ -978,7 +1000,7 @@ function buildVotersChart(chartInfo,reqTitle){
 
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
+		        rowsPerPage    : 10
 			    }) 
 				};
 
@@ -1106,8 +1128,7 @@ return {
 oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
 };
-}	
-  
+}
  function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
   var impFamiList = new Array();
@@ -1216,4 +1237,4 @@ var options = {'title':title,
 // Instantiate and draw our chart, passing in some options.
 var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDiv'));
 chart.draw(data, options);
-}
+}	
