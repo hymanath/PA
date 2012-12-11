@@ -120,11 +120,22 @@ table.gridtable td {
 }
  #votersouterDiv{
 	 margin-left: auto;
-    margin-right: auto;
+	margin-right: auto;
     width: 980px;
  }
+ .selectDiv{
+	 width:80%;
+	 padding-top:10px;
+	 padding-bottom:10px;
+	 font-family: verdana;
+	 font-size: 12px;
+	 margin-left:auto;
+	 margin-right:auto;
 
- fieldset {
+ }
+
+ fieldset,#votersMainOuterDiv1,#votersMainOuterDiv2,
+	 #votersMainOuterDiv3,#votersMainOuterDiv4{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -139,12 +150,14 @@ table.gridtable td {
 }
 p {
     color: #333333;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 18px;
+	font-family: verdana;
 }
 .divInfo
 {
  background-color:#FFFFFF;
+  border-top: 1px solid #B3C1CE;
  border-bottom: 1px solid #B3C1CE;
  border-left: 1px solid #B3C1CE;
  border-right: 1px solid #B3C1CE;
@@ -220,7 +233,12 @@ table.impTableDiv td:first-child {width:50%;}
 		left:10px;
 		color:#4B74C6;
 		font-weight:bold;
+		font-size:14px;
+		font-family:verdana;
 	}
+	#constituencyList,#mandalField,
+	#panchayatField,#reportLevel,
+	#pollingStationField{width:160px;height:25px;}
 
 </style>
 
@@ -261,10 +279,10 @@ locationDetails.constituencyArr.push(ob);
 
 
 <fieldset>
-<div style="color:#707070;font-weight:bold;font-size:12px;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div><P >Fields marked with <font class="requiredFont"> * </font> are mandatory</P>
+<div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
 <div id="locationAlertMsg" align="left"></div>
 
-<div id="reportLevelDiv" style="width:80%;padding-top:10px;padding-bottom:10px;margin-left:auto;margin-right:auto;">Select Report Level : <select id="reportLevel" class="selectWidth" style="margin-left:3px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+<div id="reportLevelDiv" class="selectDiv">Select Report Level   &nbsp;&nbsp;:&nbsp;&nbsp;<select id="reportLevel" class="selectWidth" style="margin-left:3px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=3>Panchayat</option>
@@ -272,28 +290,27 @@ locationDetails.constituencyArr.push(ob);
 		</select>
 		
 </div>
-	<div id="ConstituencyDiv" style="width:80%;padding-top:10px;padding-bottom:10px;margin-left:auto;margin-right:auto;">
-	Select Constituency : <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getVoterDetailsForConstituency();getMandalList(\'mandalField\');getPublicationDate();"/>&nbsp;&nbsp;
+	<div id="ConstituencyDiv" class="selectDiv">
+	Select Constituency &nbsp;&nbsp;:&nbsp;&nbsp; <s:select theme="simple" style="margin-left:-4px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getVoterDetailsForConstituency();getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
 
 	
 		
-		Select Publication Date : <select id="publicationDateList" class="selectWidth" style="margin-left:17px;width:175px;" onChange="getVoterDetailsForConstituency();" name="publicationDateList">
+	Select Publication Date &nbsp;&nbsp;:&nbsp;&nbsp; <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" onChange="getVoterDetailsForConstituency();" name="publicationDateList">
 		</select>
 		
 	</div>
-	<div id="mandalDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
+	<div id="mandalDiv" class="selectDiv" style="display:none;">
 		
-	Select Mandal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <select id="mandalField" class="selectWidth" style="margin-left:1px;" name="state" onchange="getVoterDetailsForMandal();getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
+	Select Mandal  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;&nbsp; <select id="mandalField" class="selectWidth" name="state" onchange="getVoterDetailsForMandal();getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
 		
-	<div id="panchayatDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
-		
-	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="buildVotersByLocPanchayatDataTable(this.id);getVoterDetailsForPanchayat();"></select></div>
+	<div id="panchayatDiv" class="selectDiv" style="display:none;">
+	Select Panchayat 	
+	 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);getVoterDetailsForPanchayat();"></select></div>
 	
-	<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
-	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
+	<div id="pollingStationDiv" class="selectDiv" style="display:none;">
+	Select PollingStation &nbsp;: &nbsp;&nbsp;<select id="pollingStationField" class="selectWidth" name="state" onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
 
 	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
-	
 
 	<div id="profileManagementDiv">
 		<table class="statusData_table" width="100%">	
@@ -305,8 +322,8 @@ locationDetails.constituencyArr.push(ob);
 			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Cast Statistics" 
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters Info" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
 					
 				  </tr>
 				</table>
@@ -316,19 +333,14 @@ locationDetails.constituencyArr.push(ob);
 	
 </div>
 	
-	</div>
-
-
-
-</div>
 </fieldset>
 
 </div>
 
 <!-- for  body 1 start    result  -->
 <HR>
-<div id='votersMainOuterDiv1' style="display:none">
-	<div id='votersHeaderDiv1'>
+<div id="votersDiv1" style="display:none">
+<div id='votersHeaderDiv1'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
@@ -336,29 +348,33 @@ locationDetails.constituencyArr.push(ob);
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
-		<div id ="impFamilesBasicDetails" class="yui-skin-sam yui-dt-sortable"></div>
+		
+	</div>
+
+<div id='votersMainOuterDiv1'>
+	
+<div id ="impFamilesBasicDetails" class="yui-skin-sam yui-dt-sortable"></div>
         <div id ="impFamilesBasicInfoSubChartDiv" ></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 		<div id ="impFamilesBasicSubDetails" class="yui-skin-sam yui-dt-sortable"></div>
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsTitle"></div>
-		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
-	</div>
-
-	<div id='ImportantFamiliesDiv' class="divInfo">
-	<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>	
+		<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 
 <div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 
 </div>
 
+</div>
+
+
 <!-- for  body 1 end    result  -->
 
 <!-- for  body 2 start    result  -->
-
-<div id='votersMainOuterDiv2' style="display:none">
-	<div id='votersHeaderDiv2'>
+<div id="votersDiv2" style="display:none">
+<div id='votersHeaderDiv2'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
@@ -367,6 +383,8 @@ locationDetails.constituencyArr.push(ob);
 					</tr>					
 				</table>
 	</div>
+<div id='votersMainOuterDiv2'>
+	
 
 	<div id='LocalCastDiv' class="divInfo">
 	<div id='localCastStatsTabContent_header'></div>
@@ -375,16 +393,15 @@ locationDetails.constituencyArr.push(ob);
 	<div id='localCastStatsTabContent_subbody1'></div>
 
 
+</div></div>
 </div>
-
 <!-- for  body 2 end    result  -->
 
 
 
 <!-- for  body3 start    result  -->
-
-<div id='votersMainOuterDiv3' style="display:none">
-	<div id='votersHeaderDiv3'>
+<div id="votersDiv3" style="display:none">
+<div id='votersHeaderDiv3'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
@@ -394,6 +411,8 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
     
+<div id='votersMainOuterDiv3'>
+	
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv"></div>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
@@ -408,53 +427,44 @@ locationDetails.constituencyArr.push(ob);
 
 
 <!-- for  body4 start    result  -->
-
-<div id='votersMainOuterDiv4' style="display:none">
-	<div id='votersHeaderDiv4'>
+<div id="votersDiv4" style="display:none">
+<div id='votersHeaderDiv4'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Age Wise</span></div></td>
+					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Age Wise Details</span></div></td>
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
 	</div>
+<div id='votersMainOuterDiv4'>
+	
 
 	
 
-	<div id='ageWiseInfoDiv' class="divInfo">
+<div id='ageWiseInfoDiv' class="divInfo">
+<div id="voterDetailsNote" class="noteDiv"></div>
+<div id="tableDiv" style="margin-left:119px;padding:10px;" class="noteDiv"></div>
 
-	
+<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
+<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
-    	<div id="ageWiseVotersBasicInfoSubChartDiv"></div>
-
-		<div id="voterDetailsNote" class="noteDiv" ></div>
-		<div id="tableDiv" style="margin-left:40px;padding:10px;"class="voterDetails" ></div>
-
-		<div id="voterAgewiseDetailsNote" class="noteDiv" ></div>
-		<div id="agewiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
-
-		<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"  ></div>
-		<div id="ageAndgenderWiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"> </div>
-
-		<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
+<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
+<div id="ageAndgenderWiseDetails" style="margin-left:10px;padding:10px;" class="noteDiv"> </div>
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
 	
 	</div>
 
-</div>
+
 
 <!-- for  body 4 end    result  -->
 
 </div>
-
 </div>
 <script type="text/javascript">
 
 showImportantFamiliesDiv();
 //buildVotersByLocPanchayatDataTable();
-showImportantFamiliesDiv();
-
-
 </script>
 
 <script>
@@ -771,6 +781,7 @@ function buildAgewiseDetails(results , type){
 		innerResults = results.boothVotersDetails;
 		noteString = "Booth wise voter details:Agewise";
 	}
+
 
 	if(innerResults.length == 0){
 		alert("No Records");
