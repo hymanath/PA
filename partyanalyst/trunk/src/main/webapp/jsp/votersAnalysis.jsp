@@ -480,9 +480,9 @@ locationDetails.constituencyArr.push(ob);
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>
 <div id='ageWiseInfoDiv' class="divInfo">
+<div id="ageWiseVotersBasicInfoSubChartDiv" ></div>
 <div id="voterDetailsNote" class="noteDiv"></div>
 <div id="tableDiv" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
-<div id="ageWiseVotersBasicInfoSubChartDiv" ></div>
 <div id="voterAgewiseDetailsNote" class="noteDiv"></div>
 <div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
