@@ -888,7 +888,7 @@ function buildVotersBasicInfo(votersbasicinfo,to){
       str+='<div>Male Voters : '+votersbasicinfo.totalMaleVoters+'  Female Voters : '+votersbasicinfo.totalFemaleVoters+'  ' ;
 	  if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
 	  str+='UnKnown Voters : '+votersbasicinfo.unKnowVoters+'  ';
-	  str+='Total Voters : '+votersbasicinfo.totVoters+'</div></div>';
+	  str+='Total Voters : '+votersbasicinfo.totVoters+'</div></div></br></br>';
 	  if(to == "")
 	   $("#votersBasicInfoDiv").html(str);
 	  else if(to == "impfamilies")
@@ -962,7 +962,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
         // Set chart options
 		var title = chartInfo[0].type+' wise Voters % Share in '+reqTitle; 
         var options = {'title':title,
-                       'width':420,
+                       'width':800,
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
@@ -1080,7 +1080,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
 	   name = $("#pollingStationField option:selected").text();
 	 }
       var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in'+name+' '+type+' in 2013</b></div>';
-          str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%">';
+          str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>SNo</th>';
@@ -1235,10 +1235,11 @@ function impFamilesStaticTable(myresults)
 {
 var str='';
 str+='<div class="impFamilesMainDiv" >';
-str+='<div><h5><b>';
+str+='<div><h5><strong>';
 str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in 2013';
-str+='</b></h5></div>';
-str+='<div>';
+str+='</strong></h5></div>';
+str+='</br>';
+str+='<div style="border:1px solid black">';
 str+='<table>';
 str+='<tr>';
 str+='<th style="color:black">TotalVoters :</th>';
@@ -1250,6 +1251,8 @@ str+='<td>'+myresults.totalFamalies+'</td>';
 str+='</tr>';
 str+='</table>';
 str+='</div>';
+str+='</br>';
+str+='<div>';
 str+='<table class="impTableDiv">';
 str+='<tr>';
 str+='<th>Report</th><th>Below3</th><th>Between4To6</th><th>Between7To10</th><th>Above10</th>';
@@ -1287,7 +1290,7 @@ var data = google.visualization.arrayToDataTable([
 // Set chart options
 var title = " Family wise detail chart of "+chartInfo.name+" "+chartInfo.type+" in 2013";
 var options = {'title':title,
-'width':450,
+'width':800,
 'height':280};
 // Instantiate and draw our chart, passing in some options.
 var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDiv'));
