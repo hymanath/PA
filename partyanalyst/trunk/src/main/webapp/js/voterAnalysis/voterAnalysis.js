@@ -191,7 +191,7 @@ function showImportantFamiliesDiv()
 		  $("#votersBasicInfoDivForImpFam").html("");
 		  $("#votersBasicInfoSubChartDivForImpFam").html("");
 		  $("#votersBasicInfoSubDivForImpFam").html("");
-		  $("#votersbasicinfoForImpFam").val("View Basic Voter Details");
+		  $("#impFamShowBasicInfo").val("View Basic Voter Details");
 		
 	}
 	
@@ -211,7 +211,7 @@ function showImportantFamiliesDiv()
 		  $("#votersBasicInfoDivForLclCastSts").html("");
 		  $("#votersBasicInfoSubChartDivForLclCastSts").html("");
 		  $("#votersBasicInfoSubDivForLclCastSts").html("");
-		  $("#votersbasicinfoForLclCastSts").val("View Basic Voter Details");
+		  $("#lclCastStsShowBasicInfo").val("View Basic Voter Details");
 	}
 
 	function showVotersDiv()
@@ -245,7 +245,7 @@ function showImportantFamiliesDiv()
 		  $("#votersBasicInfoDivForAgeWiseDetls").html("");
 		  $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
 		  $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
-          $("#votersbasicinfoForAgeWiseDetls").val("View Basic Voter Details");
+          $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
 	}
 	
 	
@@ -559,7 +559,7 @@ function getBasicInfo(){
 		   $("#votersBasicInfoDivForImpFam").html("");
 		   $("#votersBasicInfoSubChartDivForImpFam").html("");
 		   $("#votersBasicInfoSubDivForImpFam").html("");
-		   $("#votersbasicinfoForImpFam").val("View Basic Voter Details");
+		   $("#impFamShowBasicInfo").val("View Basic Voter Details");
 		 }else if($('#votersDiv2').css('display') == 'block'){
 		   getVotersCastInfo();
 		   getCastInfoForsubLevel();
@@ -567,7 +567,7 @@ function getBasicInfo(){
 		   $("#votersBasicInfoDivForLclCastSts").html("");
 		   $("#votersBasicInfoSubChartDivForLclCastSts").html("");
 		   $("#votersBasicInfoSubDivForLclCastSts").html("");
-		   $("#votersbasicinfoForLclCastSts").val("View Basic Voter Details");
+		   $("#lclCastStsShowBasicInfo").val("View Basic Voter Details");
 		 }else if($('#votersDiv3').css('display') == 'block'){
 		   getvotersBasicInfo("voters","");
 		   getVotersData();
@@ -576,7 +576,7 @@ function getBasicInfo(){
 		   $("#votersBasicInfoDivForAgeWiseDetls").html("");
 		   $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
 		   $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
-		   $("#votersbasicinfoForAgeWiseDetls").val("View Basic Voter Details");
+		   $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
 		 }else{
 		   getvotersBasicInfo("voters","");
 		   getVotersData();
