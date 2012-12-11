@@ -479,16 +479,23 @@ locationDetails.constituencyArr.push(ob);
 	    <!--<div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>-->
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>
+
 <div id='ageWiseInfoDiv' class="divInfo">
-<div id="ageWiseVotersBasicInfoSubChartDiv" ></div>
+<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
 <div id="voterDetailsNote" class="noteDiv"></div>
+
 <div id="tableDiv" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
+
 <div id="voterAgewiseDetailsNote" class="noteDiv"></div>
 <div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
 <div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
 <div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"> </div>
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+
+
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
+
+<div id="voterAgeAngGenderwiseDetailsInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
 	
 	</div>
 
@@ -1080,28 +1087,28 @@ function buildAgeAndGenderWiseDetailsForPercent(results , type){
 
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Mandal wise voter details:Age and gender wise(Percentage)";
 
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Panchayat wise voter details:Age and gender wise";
+		noteString = "Panchayat wise voter details:Age and gender wise(Percentage)";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		innerResults = results.boothVotersDetails;
-	   	noteString = "Booth wise voter details:Age and gender wise";
+	   	noteString = "Booth wise voter details:Age and gender wise(Percentage)";
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter details:Age and gender wise";
+		noteString = "Booth wise voter details:Age and gender wise(Percentage)";
 	}
 
 	if(innerResults.length == 0){
 		return false;
 	}
 
-	//$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -1170,7 +1177,7 @@ for(var i=0;i<innerResults.length;i++){
 }
    str+='</table>';
 
-$('#voterAgeAngGenderwiseDetailsNoteInPercent').html(str);
+$('#voterAgeAngGenderwiseDetailsInPercent').html(str);
 }
 
 function buildAgeWiseVoterAnalysisChart(chartInfo){
