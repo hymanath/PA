@@ -257,7 +257,7 @@ locationDetails.constituencyArr.push(ob);
 
 	
 		
-		Select Publication Date : <select id="publicationDateList" class="selectWidth" style="margin-left:17px;width:175px;" name="publicationDateList">
+		Select Publication Date : <select id="publicationDateList" class="selectWidth" style="margin-left:17px;width:175px;" onChange="getVoterDetailsForConstituency();" name="publicationDateList">
 		</select>
 		
 	</div>
@@ -267,7 +267,7 @@ locationDetails.constituencyArr.push(ob);
 		
 	<div id="panchayatDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 		
-	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="getVoterDetailsForPanchayat();buildVotersByLocPanchayatDataTable(this.id);"></select></div>
+	Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:19px;" onChange="buildVotersByLocPanchayatDataTable(this.id);getVoterDetailsForPanchayat();"></select></div>
 	
 	<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
