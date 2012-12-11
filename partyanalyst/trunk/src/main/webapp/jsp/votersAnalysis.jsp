@@ -291,6 +291,8 @@ locationDetails.constituencyArr.push(ob);
 	
 	<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">
 	Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:3px;"  onChange="getVoterDetailsForBooth();buildVotersByLocBoothDataTable(this.id);"></select></div>
+
+	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 	
 
 	<div id="profileManagementDiv">
@@ -418,7 +420,11 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
 
+	
+
 	<div id='ageWiseInfoDiv' class="divInfo">
+
+	
 
     	<div id="ageWiseVotersBasicInfoSubChartDiv"></div>
 
@@ -628,12 +634,15 @@ function callAjaxorVoterDetails(jsObj,url){
 
 	$('.voterDetails').html('');
 	$('.noteDiv').html('');
+$('#ajaxImageDiv').css('display','block');
 
 	var myResults;
 
 		 var callback = {			
 				   success : function( o ) {
 					try {
+							$('#ajaxImageDiv').css('display','none');
+
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
 							buildVoterDetailsTable(myResults,jsObj.type);
                              buildAgeWiseVoterAnalysisChart(myResults);
@@ -656,6 +665,7 @@ function callAjaxorVoterDetails(jsObj,url){
 				   };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+
 
 }
 function buildVoterDetailsTable(result,type){
@@ -1042,6 +1052,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , type){
 		return false;
 	}
 
+	//$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
 
 	var str='';
 
