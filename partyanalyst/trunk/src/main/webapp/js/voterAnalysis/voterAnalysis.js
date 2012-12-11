@@ -189,8 +189,6 @@ oDT: votersByLocBoothDataTable
 function buildVotersByLocPanchayatDataTable(id)
 {
 
-	alert("123");
-
 
 var publicationId = $('#buildVotersByLocPanchayatDataTable').val();
 var panchaytId =  $('#publicationDateList').val();
@@ -441,15 +439,20 @@ function showImportantFamiliesDiv()
 								}								
 								else if(jsObj.task == "importantFamiliesinfo")
 								{
-								    
+								  if(myResults != null){
+								    impFamilesStaticTable(myResults);
+									buildImpFamilesChart(myResults);
+								    if(myResults.subList != null && myResults.subList.length > 0)
+								      buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
+								   }
 								}
 								else if(jsObj.task == "gettotalimpfamlies")
 								{
-								    buildFamilyMembers(myResults,jsObj.publicationDateId);
+								    buildFamilyMembers(myResults,jsObj.publicationDateId,jsObj.type);
 								}
                                 else if(jsObj.task == "getVotersInAFamily")
 								{
-								    buildVotersInFamily(myResults);
+								    buildVotersInFamily(myResults,jsObj.hno);
 								}
 							}catch (e) {   
 								
@@ -549,7 +552,6 @@ function showImportantFamiliesDiv()
 	}
 }
 $(document).ready(function(){
-	subLevelTable
     $("#constituencyList").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getvotersBasicInfo();
@@ -719,6 +721,13 @@ function getvotersBasicInfo(){
    $("#votersBasicInfoDiv").html("");
    $("#votersBasicInfoSubChartDiv").html("");
    $("#votersBasicInfoSubDiv").html("");
+   $("#impFamilesBasicDetails").html("");
+   $("#impFamilesBasicInfoSubChartDiv").html("");
+   $("#impFamilesBasicSubDetails").html("");
+   $("#impFamilesBasicSubDetailsTitle").html("");
+   $("#impFamPancBothDtls").html("");
+   $("#impFamDtlsTitle").html("");
+   $("#impFamDtls").html("");
     var level = $("#reportLevel").val();
 	var type = '';
 	var id = '';
@@ -797,8 +806,8 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 
 }
 
-function buildVotersInFamily(results){
-   
+function buildVotersInFamily(results,hno){
+    $("#impFamDtlsTitle").html("<b>Voter Details in House No : "+hno+"</b>");
      var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"sNo", label: "SNo", sortable: true},
@@ -981,8 +990,16 @@ function buildVotersChart(chartInfo,reqTitle){
 
 				
 	}
-  function  buildFamilyMembers(result,publicationDateId){
-      var str =' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%">';
+  function  buildFamilyMembers(result,publicationDateId,type){
+    var name = "";
+     if(type == "panchayat"){
+	    name = $("#panchayatField option:selected").text();
+	 }else{
+	  type = "";
+	   name = $("#pollingStationField option:selected").text();
+	 }
+      var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in'+name+' '+type+' in 2013</b></div>';
+          str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%">';
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>SNo</th>';
@@ -1086,3 +1103,113 @@ oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
 };
 }	
+  
+ function buildTableForImpFamilesMandal(impFamilesData,name,type)
+{
+  var impFamiList = new Array();
+  for(var i in impFamilesData){
+     var data={};
+	 if(impFamilesData[i].type != "Booth")
+	   data["name"] = impFamilesData[i].name+" "+impFamilesData[i].type;
+	  else
+	    data["name"] = impFamilesData[i].name+" ";  
+	 data["below3"] = impFamilesData[i].below3;
+	 data["below3perc"] = impFamilesData[i].below3perc;
+	 data["betwn4to6"] = impFamilesData[i].betwn4to6;
+	 data["betwn4to6perc"] = impFamilesData[i].betwn4to6perc;
+	 data["betwn7to10"] = impFamilesData[i].betwn7to10;
+	 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
+	 data["above10"] = impFamilesData[i].above10;
+	 data["above10perc"] = impFamilesData[i].above10perc;
+	 impFamiList.push(data);
+  }
+  
+  $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise voters family analysis of "+name+" "+type+" in 2013");
+  var impFamilesColumnDefs = [
+    {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
+    {key:"below3", label: "Below 3", formatter:"number", sortable: true},
+    {key:"below3perc", label: "Below 3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"betwn4to6", label: "Between 4-6", formatter:"number", sortable: true},
+    {key:"betwn4to6perc", label: "Between 4-6 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"betwn7to10", label: "Between 7-10", formatter:"number", sortable: true},
+    {key:"betwn7to10perc", label: "Between 7-10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"above10", label: "Above10", formatter:"number",sortable:true},
+    {key:"above10perc", label: "Above10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
+  ];
+var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
+impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+impFamilesDataSource.responseSchema = {
+fields: [{key:"name"},{key:"below3", parser:"number"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
+};
+var myConfigs = {
+};
+var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetails", impFamilesColumnDefs,
+impFamilesDataSource, myConfigs);
+return {
+oDS: impFamilesDataSource,
+oDT: impFamilesDataTable
+};
+
+}
+function impFamilesStaticTable(myresults)
+{
+var str='';
+str+='<div class="impFamilesMainDiv" >';
+str+='<div><h5><b>';
+str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in 2013';
+str+='</b></h5></div>';
+str+='<div>';
+str+='<table>';
+str+='<tr>';
+str+='<th style="color:black">TotalVoters :</th>';
+str+='<td>'+myresults.totalVoters+'</td>';
+str+='</tr>';
+str+='<tr>';
+str+='<th style="color:black">TotalFamiles :</th>';
+str+='<td>'+myresults.totalFamalies+'</td>';
+str+='</tr>';
+str+='</table>';
+str+='</div>';
+str+='<table class="impTableDiv">';
+str+='<tr>';
+str+='<th>Report</th><th>Below3</th><th>Between4To6</th><th>Between7To10</th><th>Above10</th>';
+str+='</tr>';
+str+='<tr>';
+str+='<th>No of Familes</th>';
+str+='<td>'+myresults.below3+'</td>';
+str+='<td>'+myresults.betwn4to6Popul+'</td>';
+str+='<td>'+myresults.betwn7to10Popul+'</td>';
+str+='<td>'+myresults.above10+'</td>';
+str+='<tr>';
+str+='<tr>';
+str+='<th>Familes %</th>';
+str+='<td>'+myresults.below3perc+'%</td>';
+str+='<td>'+myresults.betwn4to6perc+'%</td>';
+str+='<td>'+myresults.betwn7to10perc+'%</td>';
+str+='<td>'+myresults.above10perc+'%</td>';
+str+='<tr>';
+str+='</table>';
+str+='</div>';
+$("#impFamilesBasicDetails").html(str);
+}
+
+function buildImpFamilesChart(chartInfo){
+// Create the data table.
+
+var data = google.visualization.arrayToDataTable([
+          ['Task', 'Percentage'],
+          ['Below 3',  chartInfo.below3perc],
+          ['Between 4-6', chartInfo.betwn4to6perc],
+          ['Between 7-10',  chartInfo.betwn7to10perc],
+          ['Above 10', chartInfo.above10perc]
+        ]);
+
+// Set chart options
+var title = " Family wise detail chart of "+chartInfo.name+" "+chartInfo.type+" in 2013";
+var options = {'title':title,
+'width':450,
+'height':280};
+// Instantiate and draw our chart, passing in some options.
+var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDiv'));
+chart.draw(data, options);
+}
