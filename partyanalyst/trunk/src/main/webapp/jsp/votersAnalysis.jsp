@@ -408,7 +408,7 @@ locationDetails.constituencyArr.push(ob);
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv2'>
+<div id='votersMainOuterDiv2' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
 	<input type="button" id="lclCastStsShowBasicInfo" />
     <div id="votersbasicinfoForLclCastSts" style="display:block;">
         <div id="votersBasicInfoDivForLclCastSts"></div>
@@ -441,7 +441,7 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
     
-<div id='votersMainOuterDiv3'>
+<div id='votersMainOuterDiv3' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
 	
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
@@ -470,7 +470,7 @@ locationDetails.constituencyArr.push(ob);
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv4'>
+<div id='votersMainOuterDiv4' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
 	
 
 	 <input type="button" id="ageWiseDetlsShowBasicInfo" />
@@ -482,7 +482,7 @@ locationDetails.constituencyArr.push(ob);
 <div id='ageWiseInfoDiv' class="divInfo">
 <div id="voterDetailsNote" class="noteDiv"></div>
 <div id="tableDiv" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
-<div id="ageWiseVotersBasicInfoSubChartDiv"></div>
+<div id="ageWiseVotersBasicInfoSubChartDiv" ></div>
 <div id="voterAgewiseDetailsNote" class="noteDiv"></div>
 <div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
