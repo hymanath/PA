@@ -87,11 +87,12 @@ table.gridtable td {
 }	
 
 #votersBasicInfoSubDiv{
-  margin-left: 170px;
+  margin-left: 100px;
+ 
 }
 
 #votersBasicInfoSubChartDiv{
-  margin-left: 308px;
+  margin-left: 0px;
 }
 .pull-right{
 	 margin-top: -15px;
@@ -199,14 +200,14 @@ table.impTableDiv td:first-child {width:50%;}
 }
 #impFamDtlsTitle,#impFamilesBasicSubDetailsTitle,#impFamPancBothDtlstitle{
    font-size: 16px;
-    margin-left: 82px;
+    margin-left: 0px;
     margin-top: 35px;
 }
 #impFamilesBasicSubDetails{
   margin-left: 5px;
 }
 #impFamilesBasicInfoSubChartDiv{
-   margin-left:290px;
+   margin-left:0px;
 }
 #impFamPancBothDtls{
   margin-top:25px;
@@ -354,17 +355,19 @@ locationDetails.constituencyArr.push(ob);
 		
 	</div>
 
-<div id='votersMainOuterDiv1'>
+<div id='votersMainOuterDiv1' style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;border:2px">
      <input type="button" id="impFamShowBasicInfo" />
      <div id="votersbasicinfoForImpFam" style="display:block;">
         <div id="votersBasicInfoDivForImpFam"></div>
-	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
+	    <div id="votersBasicInfoSubChartDivForImpFam" ></div>
 	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>
 	<div id ="impFamilesBasicDetails"></div>
-        <div id ="impFamilesBasicInfoSubChartDiv" ></div>
+	</br>
+        <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black" ></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
-		<div id ="impFamilesBasicSubDetails" class="yui-skin-sam yui-dt-sortable"></div>
+		</br>
+		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsTitle"></div>
 		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>	
@@ -426,9 +429,10 @@ locationDetails.constituencyArr.push(ob);
 <div id='votersMainOuterDiv3'>
 	
 	<div id="votersBasicInfoDiv"></div>
-	<div id="votersBasicInfoSubChartDiv"></div>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
-	<div id='votersDiv' class="divInfo"></div>
+	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
+	</br>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable" style="width:0px;border:1px solid black"></div>
+	
 	<div style="margin-left:120px;" id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
 	<div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -457,13 +461,13 @@ locationDetails.constituencyArr.push(ob);
 	 <input type="button" id="ageWiseDetlsShowBasicInfo" />
      <div id="votersbasicinfoForAgeWiseDetls" style="display:block;">
         <div id="votersBasicInfoDivForAgeWiseDetls"></div>
-	    <div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>
+	    <!--<div id="votersBasicInfoSubChartDivForAgeWiseDetls"></div>-->
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>
 <div id='ageWiseInfoDiv' class="divInfo">
 <div id="voterDetailsNote" class="noteDiv"></div>
 <div id="tableDiv" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
-
+<div id="ageWiseVotersBasicInfoSubChartDiv"></div>
 <div id="voterAgewiseDetailsNote" class="noteDiv"></div>
 <div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
