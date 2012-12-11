@@ -351,18 +351,6 @@ locationDetails.constituencyArr.push(ob);
 
 </div>
 
-
-<div id="voterDetailsNote" class="noteDiv" ></div>
-<div id="tableDiv" style="margin-left:40px;padding:10px;"class="voterDetails" ></div>
-
-<div id="voterAgewiseDetailsNote" class="noteDiv" ></div>
-<div id="agewiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
-
-<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"  ></div>
-<div id="ageAndgenderWiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"> </div>
-
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
-
 <!-- for  body 1 end    result  -->
 
 <!-- for  body 2 start    result  -->
@@ -412,7 +400,7 @@ locationDetails.constituencyArr.push(ob);
 	
 
 </div>
-
+</div>
 <!-- for  body 3 end    result  -->
 
 
@@ -432,7 +420,18 @@ locationDetails.constituencyArr.push(ob);
 
 	<div id='ageWiseInfoDiv' class="divInfo">
 
+    	<div id="ageWiseVotersBasicInfoSubChartDiv"></div>
 
+		<div id="voterDetailsNote" class="noteDiv" ></div>
+		<div id="tableDiv" style="margin-left:40px;padding:10px;"class="voterDetails" ></div>
+
+		<div id="voterAgewiseDetailsNote" class="noteDiv" ></div>
+		<div id="agewiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
+
+		<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"  ></div>
+		<div id="ageAndgenderWiseDetails" style="margin-left:40px;padding:10px;" class="voterDetails"> </div>
+
+		<div id="voterAgeAngGenderwiseDetailsNoteInPercent" style="margin-left:40px;padding:10px;" class="voterDetails"></div>
 	
 	</div>
 
@@ -636,7 +635,8 @@ function callAjaxorVoterDetails(jsObj,url){
 				   success : function( o ) {
 					try {
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
-							buildConstituencyVoterDetailsTable(myResults,jsObj.type);
+							buildVoterDetailsTable(myResults,jsObj.type);
+                             buildAgeWiseVoterAnalysisChart(myResults);
 
 							if(jsObj.type != "booth"){
 								buildAgewiseDetails(myResults,jsObj.type);
@@ -658,7 +658,7 @@ function callAjaxorVoterDetails(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 
 }
-function buildConstituencyVoterDetailsTable(result,type){
+function buildVoterDetailsTable(result,type){
 
 	var noteString = '';
 
@@ -1042,7 +1042,6 @@ function buildAgeAndGenderWiseDetailsForPercent(results , type){
 		return false;
 	}
 
-	//$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:120px;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -1113,8 +1112,29 @@ for(var i=0;i<innerResults.length;i++){
 
 $('#voterAgeAngGenderwiseDetailsNoteInPercent').html(str);
 }
-	
-	
+
+function buildAgeWiseVoterAnalysisChart(chartInfo){
+// Create the data table.
+var data = google.visualization.arrayToDataTable([
+['Task', 'Percentage'],
+[chartInfo.votersDetailsVO[0].ageRange, chartInfo.votersDetailsVO[0].totalVotersPercent],
+[chartInfo.votersDetailsVO[1].ageRange, chartInfo.votersDetailsVO[1].totalVotersPercent],
+[chartInfo.votersDetailsVO[2].ageRange, chartInfo.votersDetailsVO[2].totalVotersPercent],
+[chartInfo.votersDetailsVO[3].ageRange, chartInfo.votersDetailsVO[3].totalVotersPercent],
+[chartInfo.votersDetailsVO[4].ageRange, chartInfo.votersDetailsVO[4].totalVotersPercent]
+]);
+
+
+// Set chart options
+var title = " Age wise detail chart of in 2013";
+var options = {'title':title,
+'width':450,
+'height':280};
+// Instantiate and draw our chart, passing in some options.
+var chart = new google.visualization.PieChart(document.getElementById('ageWiseVotersBasicInfoSubChartDiv'));
+chart.draw(data, options);
+
+}	
 </script>
 </body>
 </html>
