@@ -327,14 +327,14 @@ locationDetails.constituencyArr.push(ob);
 </div>
 
 
-<div id="voterDetailsNote"></div>
-<div id="tableDiv" style="margin-left:119px;padding:10px;"></div>
+<div id="voterDetailsNote" class="noteDiv"></div>
+<div id="tableDiv" style="margin-left:119px;padding:10px;" class="noteDiv"></div>
 
-<div id="voterAgewiseDetailsNote"></div>
-<div id="agewiseDetails" style="margin-left:35px;padding:10px;"></div>
+<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
+<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="noteDiv"></div>
 
-<div id="voterAgeAngGenderwiseDetailsNote"></div>
-<div id="ageAndgenderWiseDetails" style="margin-left:10px;padding:10px;"> </div>
+<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
+<div id="ageAndgenderWiseDetails" style="margin-left:10px;padding:10px;" class="noteDiv"> </div>
 
 <!-- for  body 1 end    result  -->
 
@@ -600,9 +600,11 @@ function getVoterDetailsForBooth(){
 
 function callAjaxorVoterDetails(jsObj,url){
 
-	$('#tableDiv').html('');
-	$('#agewiseDetails').html('');
-	$('#ageAndgenderWiseDetails').html('');
+	//$('#tableDiv').html('');
+	//$('#agewiseDetails').html('');
+	//$('#ageAndgenderWiseDetails').html('');
+
+	$('.noteDiv').html('');
 
 	var myResults;
 
