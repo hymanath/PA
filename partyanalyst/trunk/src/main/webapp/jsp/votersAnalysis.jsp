@@ -51,6 +51,11 @@
 <title>Voters analysis</title>
 
 <style type="text/css">
+#MainDiv{
+margin-left:auto;
+margin-right:auto;
+width:980px;
+}
 table.gridtable {
 	font-family: arial,sans-serif;
 	font-size:11px;
@@ -73,10 +78,8 @@ table.gridtable td {
 	border-color: #666666;
 	background-color: #ffffff;
 }
-</style>
 
-<style>
-  #votersBasicInfoDivSub{
+#votersBasicInfoDivSub{
     background-color: #EDF5FF;
     font-size: 15px;
     margin-top: 5px;
@@ -273,7 +276,7 @@ locationDetails.constituencyArr.push(ob);
 </head>
 <body>
 <br><br>
-
+<div id="MainDiv">
 <div id="votersouterDiv" >
 
 
@@ -365,12 +368,11 @@ locationDetails.constituencyArr.push(ob);
 <div style="margin-left:120px;" id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 
-</div>
+</div><!-- for  body 1 end    result  -->
 
-</div>
+</div><!-- for  body 1 end -->
 
 
-<!-- for  body 1 end    result  -->
 
 <!-- for  body 2 start    result  -->
 <div id="votersDiv2" style="display:none">
@@ -393,9 +395,10 @@ locationDetails.constituencyArr.push(ob);
 	<div id='localCastStatsTabContent_subbody1'></div>
 
 
-</div></div>
 </div>
-<!-- for  body 2 end    result  -->
+</div><!-- for  body 2 end    result  -->
+</div><!-- for  body 2 end >
+
 
 
 
@@ -419,10 +422,10 @@ locationDetails.constituencyArr.push(ob);
 	<div id='votersDiv' class="divInfo"></div>
 	
 	
-
-</div>
-</div>
 <!-- for  body 3 end    result  -->
+</div>
+</div><!-- body 3 end -->
+
 
 
 
@@ -460,6 +463,10 @@ locationDetails.constituencyArr.push(ob);
 <!-- for  body 4 end    result  -->
 
 </div>
+</div>
+
+
+<!-- main div  End-->
 </div>
 <script type="text/javascript">
 
