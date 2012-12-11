@@ -74,6 +74,19 @@ public class VotersDetailsVO implements Serializable{
 	private String votersPercentForAbove60;
 	
 	
+	private String maleVotersPercentFor18To25;
+	private String maleVotersPercentFor26To35;
+	private String maleVotersPercentFor36To45;
+	private String maleVotersPercentFor46To60;
+	private String maleVotersPercentForAbove60;
+	
+	private String femaleVotersPercentFor18To25;
+	private String femaleVotersPercentFor26To35;
+	private String femaleVotersPercentFor36To45;
+	private String femaleVotersPercentFor46To60;
+	private String femaleVotersPercentForAbove60;
+	
+	
 	
 	public Long getMaleVotersCountBetween18To25() {
 		return maleVotersCountBetween18To25;
@@ -395,6 +408,67 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setVotersPercentForAbove60(String votersPercentForAbove60) {
 		this.votersPercentForAbove60 = votersPercentForAbove60;
+	}
+	public String getMaleVotersPercentFor18To25() {
+		return maleVotersPercentFor18To25;
+	}
+	public void setMaleVotersPercentFor18To25(String maleVotersPercentFor18To25) {
+		this.maleVotersPercentFor18To25 = maleVotersPercentFor18To25;
+	}
+	public String getMaleVotersPercentFor26To35() {
+		return maleVotersPercentFor26To35;
+	}
+	public void setMaleVotersPercentFor26To35(String maleVotersPercentFor26To35) {
+		this.maleVotersPercentFor26To35 = maleVotersPercentFor26To35;
+	}
+	public String getMaleVotersPercentFor36To45() {
+		return maleVotersPercentFor36To45;
+	}
+	public void setMaleVotersPercentFor36To45(String maleVotersPercentFor36To45) {
+		this.maleVotersPercentFor36To45 = maleVotersPercentFor36To45;
+	}
+	public String getMaleVotersPercentFor46To60() {
+		return maleVotersPercentFor46To60;
+	}
+	public void setMaleVotersPercentFor46To60(String maleVotersPercentFor46To60) {
+		this.maleVotersPercentFor46To60 = maleVotersPercentFor46To60;
+	}
+	public String getMaleVotersPercentForAbove60() {
+		return maleVotersPercentForAbove60;
+	}
+	public void setMaleVotersPercentForAbove60(String maleVotersPercentForAbove60) {
+		this.maleVotersPercentForAbove60 = maleVotersPercentForAbove60;
+	}
+	public String getFemaleVotersPercentFor18To25() {
+		return femaleVotersPercentFor18To25;
+	}
+	public void setFemaleVotersPercentFor18To25(String femaleVotersPercentFor18To25) {
+		this.femaleVotersPercentFor18To25 = femaleVotersPercentFor18To25;
+	}
+	public String getFemaleVotersPercentFor26To35() {
+		return femaleVotersPercentFor26To35;
+	}
+	public void setFemaleVotersPercentFor26To35(String femaleVotersPercentFor26To35) {
+		this.femaleVotersPercentFor26To35 = femaleVotersPercentFor26To35;
+	}
+	public String getFemaleVotersPercentFor36To45() {
+		return femaleVotersPercentFor36To45;
+	}
+	public void setFemaleVotersPercentFor36To45(String femaleVotersPercentFor36To45) {
+		this.femaleVotersPercentFor36To45 = femaleVotersPercentFor36To45;
+	}
+	public String getFemaleVotersPercentFor46To60() {
+		return femaleVotersPercentFor46To60;
+	}
+	public void setFemaleVotersPercentFor46To60(String femaleVotersPercentFor46To60) {
+		this.femaleVotersPercentFor46To60 = femaleVotersPercentFor46To60;
+	}
+	public String getFemaleVotersPercentForAbove60() {
+		return femaleVotersPercentForAbove60;
+	}
+	public void setFemaleVotersPercentForAbove60(
+			String femaleVotersPercentForAbove60) {
+		this.femaleVotersPercentForAbove60 = femaleVotersPercentForAbove60;
 	}
 
 }
