@@ -5,78 +5,6 @@ var constMgmtMainObj={
 							
 					};
 
-function buildOuterView()
-		{
-		var divEle = document.getElementById("votersouterDiv");	
-		var str='';
-		
-		str+='<fieldset>';
-		str+='<div style="color:#707070;font-weight:bold;font-size:12px;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div>';
-		str+='<P >Fields marked with <font class="requiredFont"> * </font> are mandatory</P>';
-		str+='<div id="locationAlertMsg" align="left"></div>';
-
-		str +='<div class="control-group form-horizontal" >';
-
-
-		str+='<div id="reportLevelDiv" style="width:80%;padding-top:10px;padding-bottom:10px;margin-left:auto;margin-right:auto;">';
-		
-		
-		
-		str+='Select Report Level : <select id="reportLevel" class="selectWidth" style="margin-left:21px;" name="reportLevel" onchange="showReportLevel(this.options[this.selectedIndex].value);">';
-		str+='<option value=1>Constituency</option>';
-		str+='<option value=2>Mandal</option>';
-		str+='<option value=3>Panchayat</option>';
-		str+='<option value=4>PollingStation</option>';
-		str+='</select>';
-		
-		str+='</div>';
-		
-
-		str+='<div id="ConstituencyDiv" style="width:80%;padding-top:10px;padding-bottom:10px;margin-left:auto;margin-right:auto;">';
-		
-		
-		
-		str+='Select Constituency : <select id="constituencyList" class="selectWidth" style="margin-left:17px;" name="constituencyList" onchange="getPublicationDate();getMandalList(\'mandalField\');">';
-		for(var i in locationDetails.constituencyArr)
-		{
-			str+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
-		} 
-		str+='</select>';
-		
-		str+='Select Publication Date : <select id="publicationDateList" class="selectWidth" style="margin-left:17px;width:175px;" name="publicationDateList">';
-		str+='</select>';
-		str+='</div>';
-		
-		
-		
-		str+='<div id="mandalDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">';
-		
-		
-		
-		str+='Select Mandal : <select id="mandalField" class="selectWidth" style="margin-left:49px;" name="state" onchange="getPanchayatList(\'panchayat\',\'panchayatField\');getPanchayatList(\'pollingstation\',\'pollingStationField\');"></select></div>';
-		
-	
-	
-		
-
-		str+='<div id="panchayatDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">';
-		
-		str+='Select Panchayat :<select id="panchayatField" class="selectWidth" name="state" style="margin-left:32px;"></select></div>';
-	
-		
-		
-		
-		str+='<div id="pollingStationDiv" style="width:80%;padding-top:10px;padding-bottom:10px;display:none;margin-left:auto;margin-right:auto;">';
-		
-	
-		str+='Select PollingStation : <select id="pollingStationField" class="selectWidth" name="state" style="margin-left:15px;"></select></div>';
-	
-
-
-		str+='</div>';
-		divEle.innerHTML= str;
-		
-	}
 function showReportLevel(value)
 	{
 		
@@ -678,11 +606,11 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
-		str+='<span>Mandal/Muncipality wise Cast Statistics In '+typeName+'Constituency</span>';
+		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Cast Statistics In '+typeName+'Constituency</h4>';
 		else if(type == "mandal")
-		str+='<span>Panchayat wise Cast Statistics In '+typeName+' </span>';
+		str+='<h4 id="sublevelHeading">Panchayat wise Cast Statistics In '+typeName+' </h4>';
 		else if(type =="panchayat")
-		str+='<span>Booth wise Cast Statistics In '+typeName+' Panchayat</span>';
+		str+='<h4 id="sublevelHeading">Booth wise Cast Statistics In '+typeName+' Panchayat</h4>';
 		str+='<thead>';
 		str+='<tr>';
 		
@@ -736,6 +664,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	  
     ] 
 		});
+	$('#subLevelTable tr').removeClass("odd");
+	$('#subLevelTable tr').removeClass("even");
+	$('#subLevelTable td').removeClass("sorting_1"); 
 		
 
 	
@@ -975,14 +906,11 @@ function buildVotersChart(chartInfo,reqTitle){
    function buildLocalCastStatisticsDataTableForAssembly(typeName)
 	{
 		
-		
 		var localCastStatsColumnDefs = [ 
 		    	            
 		    	            {key:"caste", label: "caste", sortable: true}, 
-							
-		    	           	{key:"castePopulation", label: "castPopulation", formatter:"number", sortable: true},
+							{key:"castePopulation", label: "castPopulation", formatter:"number", sortable: true},
 		    				{key:"malePopulation", label: "malePopulation", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							
 							{key:"femalePopulation", label: "femalePopulation", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
 							{key:"castePercentage", label: "castPercentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
@@ -1002,7 +930,7 @@ function buildVotersChart(chartInfo,reqTitle){
 			    }) 
 				};
 
-		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,{caption:"Cast Statistics in "+typeName+" "},myConfigs);
+		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs,{caption:'Cast Statistics in '+typeName+' '});
 
 		
 		
