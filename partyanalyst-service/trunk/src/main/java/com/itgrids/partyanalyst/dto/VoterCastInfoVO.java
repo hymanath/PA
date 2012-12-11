@@ -12,8 +12,11 @@ public class VoterCastInfoVO {
 	private List<VoterCastInfoVO> voterCastInfoVOList;
 	private VoterCastInfoVO voterCastInfoVO;
 	private String mandalName;
+	
+	private int totalCasts;
 		
 	
+
 
 	public VoterCastInfoVO(){
 		
@@ -27,7 +30,18 @@ public class VoterCastInfoVO {
 		this.castVOs = castVOs;
 	}
 	
+
+
+
+	public int getTotalCasts() {
+		return totalCasts;
+	}
+
+	public void setTotalCasts(int totalCasts) {
+		this.totalCasts = totalCasts;
+	}
 	
+
 	public List<VoterCastInfoVO> getVoterCastInfoVOList() {
 		return voterCastInfoVOList;
 	}
