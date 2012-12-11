@@ -246,6 +246,8 @@ function showImportantFamiliesDiv()
 		  $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
 		  $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
           $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
+
+		  callCorrespondingAjaxCall();
 	}
 	
 	
@@ -534,10 +536,15 @@ $(document).ready(function(){
 	      getBasicInfo();
 	});
 	$("#pollingStationField").live("change",function(){
+	  $('.voterDetails').html('');
+	   $('.noteDiv').html('');
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
 	});
     $("#publicationDateList").live("change",function(){
+    
+       $('.voterDetails').html('');
+	   $('.noteDiv').html('');
 	   if($(this).val() != 0 ){
 	     if($("#reportLevel").val() == 1 && $("#constituencyList option").length > 0 && $("#constituencyList").val() != 0)
 	       getBasicInfo();
@@ -572,6 +579,9 @@ function getBasicInfo(){
 		   getvotersBasicInfo("voters","");
 		   getVotersData();
 		 }else if($('#votersDiv4').css('display') == 'block'){
+
+             callCorrespondingAjaxCall();
+           
 		   $("#votersbasicinfoForAgeWiseDetls").hide();
 		   $("#votersBasicInfoDivForAgeWiseDetls").html("");
 		   $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
@@ -581,6 +591,20 @@ function getBasicInfo(){
 		   getvotersBasicInfo("voters","");
 		   getVotersData();
 		 }
+}
+
+
+function callCorrespondingAjaxCall(){
+	var reportLevel = $('#reportLevel').val();
+
+	if(reportLevel == "1")
+		getVoterDetailsForConstituency();
+	else if(reportLevel == "2")
+		getVoterDetailsForMandal();
+	else if(reportLevel == "3")
+		getVoterDetailsForPanchayat();
+	else if(reportLevel == "4")
+		getVoterDetailsForBooth();
 }
 
 function getVotersData(){
