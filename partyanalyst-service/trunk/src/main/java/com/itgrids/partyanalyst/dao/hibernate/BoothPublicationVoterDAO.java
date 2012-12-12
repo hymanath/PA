@@ -526,6 +526,15 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		 query.setParameter("assemblyLclElecBodyId", assemblyLclElecBodyId);
 		  return query.list();
 	}
+	
+	//get voter details By caste
+	public List<Voter> getVoterDetailsByCaste(Long boothid,Long publicationDateId,String caste)
+	{
+		Object[] params={boothid,publicationDateId,caste};
+	return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model where model.booth.boothId=? and model.booth.publicationDate.publicationDateId = ? and model.voter.cast =? ",params);
+	
+	
+	}
 
 	
 	}
