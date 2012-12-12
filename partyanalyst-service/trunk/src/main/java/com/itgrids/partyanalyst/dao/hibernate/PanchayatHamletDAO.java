@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PanchayatHamlet;
 
 public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long> implements IPanchayatHamletDAO{
@@ -24,5 +25,13 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	public List<Object[]> getCount(Long panchayatId)
 	{
 		return getHibernateTemplate().find("select");
+	}
+	
+	public List<Panchayat> getPanchayatByHamletId(Long hamletId){
+		
+		
+		return getHibernateTemplate().find("select model.panchayat from PanchayatHamlet model where model.hamlet.hamletId = ? ",hamletId);
+
+		
 	}
 }
