@@ -636,6 +636,7 @@ function getVotersCastInfo()
 	{
 	
   $("#localCastStatsTabContent_header").html("");
+  $("#localCastStatsTabContentTitle").html("");
   var divEle = document.getElementById('localCastStatsTabContent_body');
 	divEle.innerHTML ='';
 	var publicationDateId = $("#publicationDateList").val();
@@ -1135,12 +1136,13 @@ function buildVotersChart(chartInfo,reqTitle,to){
 		buildLocalCastStatisticsDataTableForAssembly(typeName);	
 		}
 		else{
+	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
      $("#localCastStatsTabContent_body").html("No Data Found");
    }	
 	}
    function buildLocalCastStatisticsDataTableForAssembly(typeName)
 	{
-		
+	
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		var localCastStatsColumnDefs = [ 
 		    	            
