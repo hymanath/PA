@@ -7,7 +7,7 @@
 	<html>
 	<head> 
 
-	<title><c:out value='${constituencyDetails.constituencyName}'/>
+	<title><c:out value='${constituencyDetails.constituencyName}'/>&nbsp;
 	<c:out value='${constituencyDetails.constituencyType}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 	
