@@ -307,11 +307,22 @@ public String getVotersCastInfoByConstituency()
 		String id = jObj.getString("id");
 		String type = jObj.getString("type");
 		String publicationId = jObj.getString("publicationDateId");
-				
-		String searchText = jObj.getString("searchText");
 		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type);
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 	
+		
+	}
+	
+	else if(jObj.getString("task").equalsIgnoreCase("getVotersInACaste"))
+	{
+		constituencyManagementVO = new ConstituencyManagementVO();
+		String id=jObj.getString("id");
+		String publicationDateId = jObj.getString("publicationDateId");
+		String caste=jObj.getString("caste");
+		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),caste);
+		constituencyManagementVO.setVotersByHouseNos(votersByHouseNos);
+		
+		
 		
 	}
 	
