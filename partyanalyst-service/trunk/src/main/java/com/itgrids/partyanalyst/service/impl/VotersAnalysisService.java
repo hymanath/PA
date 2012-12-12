@@ -476,7 +476,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		if(type.equalsIgnoreCase("constituency"))
 		{
 			
-		
+			
 			return calculatePercentageForCast(boothPublicationVoterDAO.getGenderWiseCountInConstituency(id,publicationDateId));
 			
 		
@@ -582,17 +582,37 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			
 		}
-		
-		
+		/*List list1 = new ArrayList();
+		list1 = removeCastNoneElements(castVOs);*/
+		voterCastInfoVO.setTotalCasts(castVOs.size());
 		voterCastInfoVO.setTotalVoters(totalVoters);
 		
 		voterCastInfoVO.setCastVOs(castVOs);
-		voterCastInfoVO.setTotalCasts(voterCastInfoVO.getCastVOs().size());
+		
 		return voterCastInfoVO;
 		
 		
 	}
 	
+		
+		/*public List removeCastNoneElements(List<CastVO> list)
+		{
+			Long totalCasts = 0l;
+			if(list != null && list.size() > 0)
+			{
+				for(int i=0;i<list.size();i++)
+				{
+				if(list.get(i).getCastName().equals("N/A"))
+				{
+					list.remove(list.get(i));
+				}
+					
+					
+				}	
+			}
+			return list;
+			
+		}*/
 		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type)
 		
 		{
@@ -699,7 +719,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfo = new VoterCastInfoVO();
 				Long boothId=booths.getId();
 				String boothPartNo = booths.getName();
-				voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(new Long(boothId),publicationDateId)));
+				voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByBoothIdAndPublicationDate(new Long(boothId),publicationDateId)));
 				voterCastInfo.setMandalName(boothPartNo);
 				boothInfo.add(voterCastInfo);
 			}
