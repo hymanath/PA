@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.HamletBoothElection;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IVillageBoothDataPopulationService;
@@ -48,6 +50,17 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	private ITehsilDAO tehsilDAO;
 	private IHamletBoothPublicationDAO hamletBoothPublicationDAO;
 	private TransactionTemplate transactionTemplate;
+	private IPanchayatHamletDAO panchayatHamletDAO;
+
+	
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
 	private static final Logger log = Logger.getLogger(VillageBoothDataPopulationService.class);
 
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
@@ -379,6 +392,14 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				   HamletBoothPublication hamletBoothPublication = null;
 				   if(!isValidate){
 				     for(Booth booth:boothsList){
+				    	 
+				    	List<Panchayat> panchayatsList =  panchayatHamletDAO.getPanchayatByHamletId(hamlet.getHamletId());
+				    	
+				    	 Panchayat panchayat = panchayatsList.get(0);
+				    	 Booth boothToUpdate = boothDAO.get(booth.getBoothId());
+				    	 boothToUpdate.setPanchayat(panchayat);
+				    	 boothDAO.save(boothToUpdate);
+				    	 
 				    	  hamletBoothPublication = new HamletBoothPublication(booth,hamlet);
 					   hamletBoothPublicationDAO.save(hamletBoothPublication);
 				     }
