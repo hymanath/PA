@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase{
 	
@@ -76,7 +77,7 @@ public void setBoothPublicationVoterDAO(
 		}
 }*/
 
-public void testgetVotersCastInfoFromLocalElectionBody()
+/*public void testgetVotersCastInfoFromLocalElectionBody()
 {
 	 List list = boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(31l,2l);
 	 for(Object[] voter:(List<Object[]>)list)
@@ -85,6 +86,16 @@ public void testgetVotersCastInfoFromLocalElectionBody()
 		 System.out.println(voter[1]);
 		 System.out.println(voter[2]);
 	 }
+}*/
+
+public void testgetVoterDetailsByCaste()
+{
+	List<Voter> list =boothPublicationVoterDAO.getVoterDetailsByCaste(206l,2l,"YERUKULA");
+	for(Voter params :list)
+	{
+		System.out.println(params.getFirstName());
+	}
+	
 }
 	
 }
