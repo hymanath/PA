@@ -190,7 +190,9 @@ if(request.getParameter("showMessage")!=null){
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-
+			<style>
+				.background{background: url("./images/new_homepage/js-banner-bg1.jpg")}
+			</style>
 		     <div class="span3 well" style="border: 5px solid #E3E3E3;">
 				     
 				     <div id = "getLoginErrorMessageDiv" style="color:red;">
