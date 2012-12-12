@@ -948,9 +948,14 @@ function buildVotersInACaste(results,jsObj)
 							{key:"castCategory", label: " Cast Category", sortable: true}
 		    	        ]; 
 
-    var myConfigs = { 
-			    
+    
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 20
+			    }) 
 				};
+		
+		
 	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
@@ -1225,68 +1230,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
   
 
 
-  function buildVotersByLocalCastPanchayatDataTable(id)
-{
 
-
-var publicationId = $('#buildVotersByLocPanchayatDataTable').val();
-var panchaytId =  $('#publicationDateList').val();
-
-if(panchaytId == "0" || publicationId == "0")
-	return false;
-
-
-
-
-var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"cast", label: "Cast", sortable:true},
-{key:"castCatagery", label: "CastCategory", sortable:true}
-];
-
-//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
-
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId=1&panchaytId=444&");
-votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-votersByLocBoothDataSource.responseSchema = {
-resultsList: "voterDetails",
-fields: [
-{key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
-metaFields: {
-totalRecords: "voterDetailsCount" // Access to value in the server response
-}
-};
-
-var myConfigs = {
-initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
-dynamicData: true, // Enables dynamic server-driven data
-sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
-   paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    })  // Enables pagination
-};
-
-var votersByLocBoothDataTable = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1",
-votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
-
-votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-oPayload.totalRecords = oResponse.meta.totalRecords;
-return oPayload;
-}
-
-
-return {
-oDS: votersByLocBoothDataSource,
-oDT: votersByLocBoothDataTable
-};
-}
  function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
   var impFamiList = new Array();
