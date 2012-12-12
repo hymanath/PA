@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,6 +24,10 @@ public class ProblemDetailsVO {
 	private Long postedProblemsCountByLoggedInUsers;
 	private Long problemHistoryId;
 	private EmailDetailsVO emailDetailsVO;
+	private Date postedDate;
+	private String userImageURL;
+	private Long userId;
+	private String rating;
 	
 	
 	
@@ -137,5 +142,30 @@ public class ProblemDetailsVO {
 	public Long getProblemHistoryId() {
 		return problemHistoryId;
 	}
+	public Date getPostedDate() {
+		return postedDate;
+	}
+	public void setPostedDate(Date postedDate) {
+		this.postedDate = postedDate;
+	}
+	public String getUserImageURL() {
+		return userImageURL;
+	}
+	public void setUserImageURL(String userImageURL) {
+		this.userImageURL = userImageURL;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getRating() {
+		return rating;
+	}
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+	
 	
 }
