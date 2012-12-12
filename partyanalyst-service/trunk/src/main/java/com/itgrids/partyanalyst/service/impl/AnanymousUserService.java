@@ -749,14 +749,15 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					candidateVO.setStatus(IConstants.NOTCONNECTED);
 					candidateVO.setConstituencyId(new Long(parms[4].toString()));
 					candidateVO.setConstituencyName(parms[3].toString());
-					if(parms[6].toString() !=null)
+					
+					/* if(parms[6].toString() !=null)
 					  candidateVO.setDistrictId(new Long(parms[6].toString()));
 					if(parms[7].toString() !=null)
 					  candidateVO.setDistrict(parms[7].toString());
 					if(parms[8].toString() !=null)
 						candidateVO.setStateId(new Long(parms[8].toString()));
 					if(parms[9].toString() !=null)	
-						candidateVO.setState(parms[9].toString());
+						candidateVO.setState(parms[9].toString());*/
 					
 					
 					if(parms[5] != null){
@@ -1840,8 +1841,13 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					problem.setProblemID(params[0]!=null?(Long)params[0]:0);
 					problem.setDescription(params[2]!=null?params[2].toString():"");
 					problem.setIdentifiedDate(params[3]!=null?params[3].toString():"");
+					if(params[3]!=null)
+					problem.setPostedDate((Date)params[3]);
+					
 					problem.setDefinition(params[1]!=null?params[1].toString():"");
 					problem.setExistingFrom(params[4]!=null?params[4].toString():"");
+					problem.setUserId((Long)params[9]);
+					problem.setUserImageURL(params[10] != null && params[10].toString().length() > 0 ? params[10].toString() : "human.jpg");
 					if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.STATE))
 					{
 						if(params[5] != null)
@@ -2358,5 +2364,54 @@ public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
 	}
 	
 }
+
+
+
+/*public List<ProblemBeanVO> getProblemDetailsForProfilePage(Long registrationId, Integer startIndex, Integer results, 
+		String order, String columnName, String reasonType)
+{
+	List<ProblemBeanVO> problemBeanVOList = null;
+	ProblemBeanVO problemDetails = getAllPostedProblemsByUserId(registrationId,startIndex,results,order,columnName,reasonType);
+	List<ProblemDetailsVO> problemsInfo = problemDetails.getProblemsInfo();
+	
+	Map<String, ProblemBeanVO> problemsMapList = new HashMap<String, ProblemBeanVO>(0);
+	try{
+		if(problemsInfo != null && problemsInfo.size() > 0)
+		{
+			for(ProblemDetailsVO problems : problemsInfo)
+			{
+				String key = problems.getIdentifiedDate();
+				
+				if(problemsMapList.get(key) == null)
+				{
+					ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+					problemBeanVO.setPostedDate(key);
+					problemBeanVO.setPostDate(problems.getPostedDate());
+					List<ProblemDetailsVO> list = new ArrayList<ProblemDetailsVO>();
+					list.add(problems);
+					problemBeanVO.setProblemsInfo(list);
+					
+					problemsMapList.put(key, problemBeanVO);
+					
+				}
+				else
+				{
+					ProblemBeanVO problemBeanVO = problemsMapList.get(key);
+					problemBeanVO.getProblemsInfo().add(problems);
+				}
+			}
+		}
+		problemBeanVOList = new ArrayList<ProblemBeanVO>(problemsMapList.values());
+		Collections.sort(problemBeanVOList, new Comparator<ProblemBeanVO>() {
+		    public int compare(ProblemBeanVO m1, ProblemBeanVO m2) {
+		        return m2.getPostDate().compareTo(m1.getPostDate());
+		    }
+		});
+		return problemBeanVOList;
+	}catch (Exception e) {
+		log.error("Exception Occured in getProblemDetailsForProfilePage() method, Exception- "+e);
+		return problemBeanVOList;
+	}
+}*/
 
 }
