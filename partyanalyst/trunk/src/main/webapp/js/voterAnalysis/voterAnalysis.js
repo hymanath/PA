@@ -394,6 +394,10 @@ function showImportantFamiliesDiv()
 								{
 								    buildVotersInFamily(myResults,jsObj.hno);
 								}
+								else if(jsObj.task =="getVotersInACaste")
+								{
+									buildVotersInACaste(myResults,jsObj)
+								}
 							}catch (e) {   
 								
 							   	alert("Invalid JSON result" + e);   
@@ -663,7 +667,7 @@ function getVotersCastInfo()
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 typename = $('#pollingStationField :selected').text() + ' Booth';
-		}
+	}
 		var jsObj=
 			{
 				type:type,	
@@ -684,7 +688,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		
 		var str ='';
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
-
+		var publicationDateId = jsObj.publicationDateId;
 		var type=jsObj.type;
 		var	subLevelcastInfo = new Array();
 		var cast = myresults.castVosList;
@@ -720,7 +724,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		}
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
-
+		if(type != 'booth')
+		{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
 		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Cast Statistics In '+typeName+'Constituency</h4>';
@@ -753,7 +758,14 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<tr>';
 		
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
+		if(type =="panchayat")
+		{
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].mandal+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else
+		{
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
+		}
 		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePopulation+'</td>';
 		if(constMgmtMainObj.castStatssubArray[i].malePopulation ==null)
@@ -796,11 +808,32 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	$('#subLevelTable tr').removeClass("odd");
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1"); 
-		
+	}	
 
 	
 }
+function getVotersInACaste(id,publicationDateId,caste)
+{
+$("#localCastStatsVotersTitle").html("");
+$("#localCastStatsTabContent_subbody1").html("");
+var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
+var publicationDateVal=$('#publicationDateList :selected').text();
+var year=publicationDateVal.substr(publicationDateVal.length - 4)
+var jsObj={
+			id:id,
+			publicationDateId:publicationDateId,
+			caste:caste,
+			typename:typename,
+			publicationDate:year,
+			task:"getVotersInACaste"
 
+		}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
+	callAjax(jsObj,url);
+
+}
 function getvotersBasicInfo(buttonType,voterBasicInfoFor){
   if(buttonType == "voters"){
      $("#votersBasicInfoDiv").html("");
@@ -896,6 +929,36 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "votersFamilyDetailsAction.action?"+rparam;						
 		callAjax(jsObj,url);
+
+}
+function buildVotersInACaste(results,jsObj)
+{
+	$("#localCastStatsVotersTitle").html("voters Details In "+jsObj.typename+" in "+jsObj.publicationDate+" ");
+	 var votersResultColumnDefs = [ 		    	             
+		    	            
+							{key:"sNo", label: "SNo", sortable: true},
+		    	           	{key:"name", label: "Name", sortable: true},
+							
+							{key:"gender", label: "Gender", sortable: true},
+		    				{key:"age", label: "Age",sortable:true},
+							{key:"houseNo", label: "House No",sortable:true},
+							{key:"gaurdian", label: "Guardian Name",sortable:true},
+							{key:"relationship", label: "Relationship",sortable:true},
+							{key:"cast", label: "Cast",sortable:true},
+							{key:"castCategory", label: " Cast Category", sortable: true}
+		    	        ]; 
+
+    var myConfigs = { 
+			    
+				};
+	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory"]
+					};
+
+		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
+
 
 }
 
@@ -1335,4 +1398,4 @@ var options = {'title':title,
 // Instantiate and draw our chart, passing in some options.
 var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDiv'));
 chart.draw(data, options);
-}	
+}
