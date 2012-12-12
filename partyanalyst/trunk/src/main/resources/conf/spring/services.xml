@@ -840,6 +840,7 @@
     	<property name="transactionTemplate" ref="transactionTemplate" />
     	<property name="tehsilDAO" ref="tehsilDAO" />
     	<property name="hamletBoothPublicationDAO" ref="hamletBoothPublicationDAO" />
+    	<property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
 	</bean>
 	
 	<bean name="politicalChangesService" class="com.itgrids.partyanalyst.service.impl.PoliticalChangesService" >

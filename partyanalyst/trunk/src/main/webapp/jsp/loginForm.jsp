@@ -319,6 +319,11 @@ if(request.getParameter("showMessage")!=null){
 		width: 450px;
 		border-bottom: 2px solid #06ABEA;
 	}
+
+	.newFontSize{
+		font-size:14px;
+
+	}
 	body{background:#5d5d5d !important;}
 	
     #cnstituencyDiv{
@@ -358,8 +363,8 @@ if(request.getParameter("showMessage")!=null){
 	    <div class="row">
 		    <div class="span8">
 			 
-		        <h2>PARTY ANALYST</h2>
-                <p style="lead">We always strive to make things easy for you, Here are our services.</p>
+		        <h4>PARTY ANALYST</h4>
+                <p style="lead" class="newFontSize">We always strive to make things easy for you, Here are our services.</p>
             
                 <div class="">
 				   			    
@@ -368,7 +373,7 @@ if(request.getParameter("showMessage")!=null){
 						         <div class="service-box">
 				                 <a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span style="padding: 16px 15px;">Election Analysis and Management Tool</span></a>
                                  <img src="images/new_homepage/sp-pa.jpg"/>
-                                 <span style = "padding: 24px;"><p>Analyze your constituency,   track your constituency problems,manage your cadres,  share your updates to <font size="2px"><strong>Cadre, Influencing people and Voters</strong></font>.</p></span>
+                                 <span style = "padding: 24px;"  class="newFontSize" ><p>Analyze your constituency,   track your constituency problems,manage your cadres,  share your updates to <font size="2px"><strong>Cadre, Influencing people and Voters</strong></font>.</p></span>
                                  </div>  
 			                 </div>
 
@@ -376,7 +381,7 @@ if(request.getParameter("showMessage")!=null){
 				                 <div class="service-box">
                                  <a href="VotersPulse.action?src=homePageAd"><span>Voters Pulse</span></a>
                                  <img src="images/new_homepage/checklist.jpg"/>
-                                 <span style = "padding: 34px;"><p>Now, you can drive your survey's through Party Analyst...
+                                 <span style = "padding: 34px;"><p class="newFontSize">Now, you can drive your survey's through Party Analyst...
                                  Ask, Analyze, Improve.</p></span>
                                  </div>
 				            </div>
@@ -391,7 +396,7 @@ if(request.getParameter("showMessage")!=null){
 						         <div id ="cnstituencyDiv" class="service-box">
                                  <a href="constituencyProfileReport.action?src=homePageAd"><span>Constituency Profile Report</span></a>
                                  <img src="images/site/imgpartyperf.jpg">
-                                 <span style = "padding: 39px;"><p>Are you aspirant candidate for
+                                 <span style = "padding: 39px;"><p class="newFontSize">Are you aspirant candidate for
                                  2014 elections in Andhra Pradesh get the complete picture of your constituency profile report.</p></span>
                                 </div>
 			                 </div>
@@ -401,7 +406,7 @@ if(request.getParameter("showMessage")!=null){
                                  <div class="service-box">
                                  <a href="newsMonitoringService.action?src=homePageAd"><span>News Monitoring Service</span></a>
                                  <img src="images/new_homepage/NewsTracker.png"/>
-                                 <span style = "padding: 40px;"><p>As a Politician or Political Party, News Monitoring and analyzing is very important &nbsp;to keep upper hand in the political arena.</p></span>
+                                 <span style = "padding: 40px;"><p class="newFontSize">As a Politician or Political Party, News Monitoring and analyzing is very important &nbsp;to keep upper hand in the political arena.</p></span>
                                  </div>
 				            </div>
 					   
@@ -894,4 +899,3 @@ if('<%=showMessage%>' == 'yes')
 </script>
 </body>
 </html>
-
