@@ -338,6 +338,8 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	color:red;font-weight:normal;
 }
 
+.background{background: url("./images/new_homepage/js-banner-bg1.jpg")}
+
 </style>
 
 </head>  
