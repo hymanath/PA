@@ -141,7 +141,7 @@ $("document").ready(function(){
 
 	custom_paginator.paginator({
 		startIndex:0,
-		resultsCount:6,
+		resultsCount:20,
 		jsObj:jsObj,
 		ajaxCallURL:url,
 		paginatorElmt:"custom_paginator_class",
@@ -1028,7 +1028,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	
 	custom_paginator.paginator({
 		startIndex:0,
-		resultsCount:5,
+		resultsCount:20,
 		jsObj:jsObj,
 		ajaxCallURL:url,
 		paginatorElmt:"custom_paginator_class",
@@ -1044,7 +1044,6 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 {
 	
 	var users = results.candidateVO;
-	
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
@@ -1055,7 +1054,8 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	}
 	else if(users.length == 0)
 	{
-		$(".templateDiv").html('No people connected in this district with this view..').appendTo(".placeholderCenterDiv");
+		//$(".templateDiv").html('No people connected in this district with this view..').appendTo(".placeholderCenterDiv");
+		$(".placeholderCenterDiv").html('<div class="templateDiv">No people connected in this district with this view..</div>');
 		return;
 	}
 	else
@@ -1067,20 +1067,26 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 			var image = results.candidateVO[i].image;
 			var templateClone = template.clone();
 			templateClone.removeClass("templateDiv");
+			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
+			templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
+			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
+
 			if(image == null)
 				templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
 			else
 				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
-				templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
-				templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
-				templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
-				templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
-				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
-				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\')">Connect</a>');
-				templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
-				templateClone.appendTo(".placeholderCenterDiv");
+
+			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
+				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+			templateClone.appendTo(".placeholderCenterDiv");
+			
 			
 		}
+		
+	 var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
+	pagination.appendTo('.placeholderCenterDiv');
 	}
 }
 
