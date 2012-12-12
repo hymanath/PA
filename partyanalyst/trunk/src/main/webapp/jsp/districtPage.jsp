@@ -480,8 +480,12 @@ background:white;border-radius:50%; margin:0px 10px;}
 						}
 					}
 					if(jsObj.task == "getCorporationPartyDetails") 
-					{
+					{    
+						
+						 $('#CorporationPieChartDiv').hide();
 						if(results.resultStatus.resultCode==0){
+							$('#CorporationPieChartDiv').show();
+						
 							showMuncipalDetailsForLatestElectionYear(results.muncipalityVO,corporationElectionType);
 							//buildCorporationChart(results.muncipalityVO);
 						}
