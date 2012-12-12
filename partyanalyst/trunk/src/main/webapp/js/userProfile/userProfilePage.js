@@ -69,9 +69,10 @@ $("document").ready(function(){
 	});
 
 
-	$('.assessPoliticianLink').click(function(){
+	$('.assessPoliticianLink').live("click",function(){
+		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
+		
 		getAllPostedReasonsForUser();
-		var type = "Total";
 		var jsObj ={
 				task:"getAllPostedReasons_paginator"
 			 };
@@ -97,7 +98,7 @@ $("document").ready(function(){
 	//problems 
 
 	$(".problemsLink").live("click",function(){
-		var type= $(this).closest('span').find(".problemTypeVariable").val();
+		var type= $(this).closest('li').find(".problemTypeVariable").val();
 		
 		getAllPostedProblemsForUser();
 		var jsObj ={
@@ -122,7 +123,7 @@ $("document").ready(function(){
 
 
 
-	$("#districtPeopleLink").click(function(){
+	$(".districtPeopleLink").click(function(){
 	var locationId = districtId;
 	var locationType = "DISTRICT";
 	var locationName = districtName;
@@ -150,24 +151,16 @@ $("document").ready(function(){
 	});
 	custom_paginator.initialize();
 
-	//-------
-
-	//getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType);
-
-
-
-
 	});
 
 
 
-	$(".connectLink").each(function(){
+	$(".connectLink").click(function(){
 		
-		$(this).click(function(){
 		$("#allConnectedUsersDisplay_main").children().remove();			
-		var userId = $(".userId").val();
-		var userName = $(".userName").val();
-		var constituencyName = $(".constituencyName").val();
+		var userId = $(this).closest("div").find(".userId").val();
+		var userName = $(this).closest("div").find(".userName").val();
+		var constituencyName = $(this).closest("div").find(".constituencyName").val();
 		var userLoginId = loginUserId;
 		var locationId = constituencyId;
 		var locationType = 'CONSTITUENCY';
@@ -201,7 +194,7 @@ $("document").ready(function(){
 		div.append(connectBtn);
 		div.append(connectedPersonId);
 		$('#allConnectedUsersDisplay_main').append(div);
-		});
+		
 	});
 
 
@@ -281,34 +274,7 @@ $("document").ready(function(){
 	
 	});
 	
-
-	//subscribed
-
-
-	//unsubscribed
-	/* $('.unSubscribedLink').live("click",function(){
-		
-		var id = $(this).closest("div").find('.hiddenVarId').val();
-		var type = $(this).closest("div").find('.subscripType').val();
-			
-		var jsObj=
-		{		
-            time : timeST,	
-			id: id,
-			task: "unsubscriptionDetails",
-			page:"type"
-		}
-   
-   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-   callAjax(jsObj,url);
-		
-	});*/
-
-
 //change Password
-
-
 
 $(".changePwdLink").live("click",function(){
 	
@@ -333,8 +299,8 @@ $(".changePwdLink").live("click",function(){
 		div.append('<div style="margin-top: 10px;"><font color="red">*</font> <span>Current Password</span> <input type="password" id="currentPwdId" name="currentPassword"/></div>');
 		div.append('<div><font color="red">*</font> <span>New Password</span> <input type="password" id="newPwdId" name="newPassword"/></div>');
 		div.append('<div style="margin-bottom: 10px;"><font color="red">*</font> <span>Confirm Password</span> <input type="password" id="confirmPwdId" name="confirmPassword"/></div>');
-		div.append('<input id="changePWDButton" type="button" value="Change Password"></input>');
-		div.append('<input id="cancelButtonID" type="button" value="No"></input>');
+		div.append('<input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input>');
+		div.append('<input class="btn-info btn-small" id="cancelButtonID" type="button" value="No"></input>');
 		elmt.append(div);
 		
   });
@@ -411,7 +377,6 @@ $(".changePwdLink").live("click",function(){
 //edit picture
 
 $(".editPictureLink").live("click",function(){
-
 	
 $("#allConnectedUsersDisplay_main").children().remove();
 	
@@ -471,8 +436,8 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
-	str += '<td width="40%" valign="top"><input type="button" value="Upload" id="uploadPicButton"/>';
-	str += '<input type="button" value="Cancel" id="cancelPicButton"/>';	
+	str += '<td width="40%" valign="top"><input class="btn-info btn-small" type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<input class="btn-info btn-small" type="button" value="Cancel" id="cancelPicButton"/>';	
 	str += '</td>';
 	str += '</tr>';
 	str += '</table>';	
@@ -654,6 +619,11 @@ function callAjax1(jsObj,url){
 						showPostedProblems(jsObj,results);
 						
 					}
+					else if(jsObj.task == "getAllPostedReasonsStatusUser")
+					{
+						showPostedReasons(jsObj,results);
+								
+					}
 
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -788,7 +758,7 @@ function showMailPopup(id,name,type)
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'>Message</label>");
 		var textarea = $("<textarea id='connectMessageText'></textarea><br>");
-		var button = $("<input id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
 		div.append(errorDiv);
 		div.append(label);
 		div.append(textarea);
@@ -916,7 +886,7 @@ function showSpecialPages(results)
 		var template = $(".templateDiv");
 		var templateClone = template.clone();
 		templateClone.removeClass('templateDiv');
-		templateClone.find(".connectedPersonName").html(''+results[i].title+'');
+		templateClone.find(".connectedPersonName").html('<a href="specialPageAction.action?specialPageId='+results[i].specialPageId+'">'+results[i].title+'</a>');
 		templateClone.find(".imgClass").html('<img src="'+results[i].eventImagePath+'"/>');
 		templateClone.find(".constituencyName").html(''+results[i].title+'');
 		templateClone.appendTo(".placeholderCenterDiv");
@@ -968,12 +938,12 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	filterDiv.append("<span>Connected - "+connectedPeopleCount+"</span>");
 	filterDiv.append("<span>Not Connected - "+notConnectedPeopleCount+"</span>");*/
 	
-	filterDiv.append("<div style='padding:4px;width:100%;'><label style='width:40%;float:left;'>Search By Name :</label><input id='connectStatusTextBox' type='text' value='' onkeyup='getAllConnectedUsersByFilterView(\""+jsObj.locationType+"\") '/></div>");
+	filterDiv.append("<div style='padding:4px;width:100%;'><label style='width:40%;float:left;'>Search By Name :</label><input id='connectStatusTextBox' type='text' value='' onkeyup='getAllConnectedUsersByFilterView(\""+jsObj.locationType+"\",\""+jsObj.userId+"\") '/></div>");
 	if(jsObj.locationType == "DISTRICT")
 	{
 		
 		str +='<div style="padding:4px;width:100%;"><label    style="width:40%;float:left;">By Constituency: </label>';
-		str +='<select id="connectConstituencySelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\')">';
+		str +='<select id="connectConstituencySelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\',\''+jsObj.userId+'\')">';
 		str +='<option value="0">All</option>';
 		for(var i in constituencies)
 			str += '<option value="'+constituencies[i].id+'">'+constituencies[i].name+'</option>';
@@ -981,7 +951,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	}
 
 	str +='<div style="padding:4px;width:100%;"><label style="width:40%;float:left;">By Status:</label>';
-	str +='<select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\')">';
+	str +='<select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\',\''+jsObj.userId+'\')">';
 	str +='<option value="0">All</option>';
 	for(var i in connectStatus)
 	str +='<option id='+connectStatus[i].id+'>'+connectStatus[i].name+'</option>';
@@ -990,7 +960,6 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	$("#headerDiv").append(filterDiv);
 	 for(var i in results.candidateVO)
 	{
-		 //alert(results.candidateVO[i].district);
 		var imageStr = "pictures/profiles/"+results.candidateVO[i].image;
 		var image = results.candidateVO[i].image;
 		var template = $(".templateDiv");
@@ -1018,7 +987,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	pagination.appendTo('.placeholderCenterDiv');
 }
 
-function getAllConnectedUsersByFilterView(locationType)
+function getAllConnectedUsersByFilterView(locationType,userId)
 {
 	
 	var connectConstiSelectElmtValue = '';
@@ -1026,8 +995,11 @@ function getAllConnectedUsersByFilterView(locationType)
 	
 	if(locationType == "DISTRICT")
 	{
-		var connectConstiSelectElmtValue = $("#connectConstituencySelect").val();
-		
+		var connectConstiSelectElmt = document.getElementById("connectConstituencySelect");
+		if(connectConstiSelectElmt)
+			connectConstiSelectElmtValue = connectConstiSelectElmt.options[connectConstiSelectElmt.selectedIndex].value;
+
+				
 		if(connectConstiSelectElmtValue == 0)
 		{
 			for(var i in constituencies)
@@ -1149,58 +1121,6 @@ function showAllPostedProblems_paginator(jsObj,results)
 }
 
 
-/*function showAllPostedProblems_paginator(jsObj,results)
-{
-	$("#headerDiv").html('');
-	$(".placeholderCenterDiv").children().remove();
-	clearAllSubscriptionDivs();
-	
-	//var problemsData = results.problemsInfo;
-
-	if(results == null)
-	{
-		$('.problemTemplateDiv').html('Problems Does Not Exists').appendTo('.placeholderCenterDiv');
-		return;
-	}
-	
-	for(var i in results)
-	{
-		
-		var problemsData = results[i].problemsInfo;
-		
-		var existingfromDate = $("<div class='existingFromDiv'></div>"); 
-		existingfromDate.append('<span>'+results[i].postedDate+'</span>');
-		existingfromDate.appendTo('.placeholderCenterDiv');
-
-		for(var j in problemsData)
-		{
-		
-		var template = $('.problemTemplateDiv');
-		var templateClone = template.clone();
-		templateClone.removeClass('problemTemplateDiv');
-		alert(problemsData[j].definition);
-		if(problemsData[j].definition != null)
-		templateClone.find('.problemTitle').html(''+problemsData[j].definition+'');
-		if(problemsData[j].description != null)
-		templateClone.find('.problemDescription').html(''+problemsData[j].description+'');
-		if(problemsData[j].existingFrom != null)
-		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[j].existingFrom+'');
-		templateClone.find('.likeCls').html('Like');
-		templateClone.find('.commentCls').html('Comment');
-		templateClone.find('.shareCls').html('Share');
-		
-		templateClone.appendTo('.placeholderCenterDiv');
-		}
-		
-		
-	}
-	
-
-	//var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
-	//pagination.appendTo('.placeholderCenterDiv');
-}
-
-*/
 
 function connectToSelectedPerson(id,name)
 {
@@ -1271,7 +1191,6 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 
 function showAllPostedReasons_paginator(jsObj,results)
 {
-	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 
@@ -1322,6 +1241,74 @@ function getAllPostedReasonsForUser()
 	callAjax1(jsObj,url);
 }
 
+function showPostedReasons(jsObj,results)
+{
+	$("#headerDiv").html('');
+	
+	var approvedReasonsCount = 0;
+	var rejectedReasonsCount = 0;
+	var notConsideredReasonsCount = 0;
+	var totalPostedReasonsCount = 0;
+	var postedReasonsCountByOtherUsers = 0;
+	var postedReasonsByLoggedInUser = 0;
+
+	if(results != null)
+	{
+		approvedReasonsCount = results.approvedReasonsCount;
+		rejectedReasonsCount = results.rejectedReasonsCount;
+		notConsideredReasonsCount = results.notConsideredReasonsCount;
+		totalPostedReasonsCount = results.totalPostedReasonsCount;
+		postedReasonsCountByOtherUsers = results.postedReasonsCountByOtherUsers;
+		postedReasonsByLoggedInUser = totalPostedReasonsCount - postedReasonsCountByOtherUsers;
+	}
+
+	var div = $('<div class="politicalReasonsInnerDiv"></div>');
+	var ul = $('<ul></ul>');
+	if(userType != "PartyAnalyst")
+	{
+			
+      if(totalPostedReasonsCount ==0)
+		ul.append('<li class="fontStyle">Total Political reasons posted - '+totalPostedReasonsCount+'</li>');
+	   else
+		ul.append('<li class="fontStyle">Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
+	   if(postedReasonsByLoggedInUser ==0)
+			 ul.append('<li class="fontStyle">By User - '+postedReasonsByLoggedInUser+'</li>');
+	   else
+   		 ul.append('<li class="fontStyle">By User - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+	   if(postedReasonsCountByOtherUsers ==0)
+		 ul.append('<li class="fontStyle">By Others - '+postedReasonsCountByOtherUsers+'</li>');
+	   else
+		ul.append('<li class="fontStyle">By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
+	}
+	else
+	{
+		ul.append('<li class="fontStyle"> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
+		ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+		ul.append('<li class="fontStyle"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
+	}
+		
+	/* if(userType != "PartyAnalyst"){		
+		div.append('<span class="fontStyle"><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" style="color:#669900;text-decoration: underline;">Add Reasons</a>');
+		div.append('<span class="fontStyle"><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" style="color:#669900;text-decoration: underline;">View Reasons</a>');
+	}*/
+	
+	var label = $('<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By You </div>');
+	
+	var ulinner = $('<ul></ul>');
+	if(approvedReasonsCount == 0)
+	 ulinner.append('<li class="fontStyle">Reasons Approved - '+approvedReasonsCount+'</li>');
+	else
+	ulinner.append('<li class="fontStyle">Reasons Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></li>');
+	
+	if(rejectedReasonsCount ==0)
+		ulinner.append('<li class="fontStyle">Reasons Rejected - '+rejectedReasonsCount+'</li>');
+	else
+	ulinner.append('<li class="fontStyle">Reasons Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></li>');
+	div.append(ul);
+	div.append(label);
+	div.append(ulinner);
+	$("#headerDiv").append(div);
+}
 
 /* -- subscription functions Start -- */
 
@@ -1454,11 +1441,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass('specialPagSubscrTemplDiv');
 		templateClone.find('.titleCls').html(''+constituencies[i].name+'');
-		//templateClone.find('.imgClass').html('<img height="100" width="95" src="images/party_flags/'+results.profilePartySubscriptions[i].name+'.png"/>');
-		/* if(buildSubscribeButtons(results.profileConstituencySubscriptions[i].id,results.userConstituencySubscriptions))
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
-		else*/
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
 		templateClone.appendTo('#userConstituencySubscriptionsDiv');
 	}
@@ -1491,10 +1474,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 		templateClone.removeClass('specialPagSubscrTemplDiv');
 		templateClone.find('.titleCls').html(''+partySubscriptions[i].title+'');
 		templateClone.find('.imgClass').html('<img height="100" width="95" src="images/party_flags/'+results.userPartySubscriptions[i].name+'.png"/>');
-		/* if(buildSubscribeButtons(results.profilePartySubscriptions[i].id,results.userPartySubscriptions))
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
-		else*/
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
 		templateClone.appendTo('#userPartySubscriptionsDiv');
 	}
@@ -1562,666 +1542,34 @@ function showPostedProblems(jsObj,results)
 
 	$('#headerDiv').html('');
 	var div = $('<div style="line-height:1.5em;"></div>');
+	var ul = $('<ul></ul>');
 	if(results.totalPostedProblemsCount == 0)
-		div.append('<span class="fontStyle">Total posted problems - '+results.totalPostedProblemsCount+'</span>');
+		ul.append('<li class="fontStyle">Total posted problems - '+results.totalPostedProblemsCount+'</li>');
 	else
-	  div.append('<span class="fontStyle">Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></span>');
+	  ul.append('<li class="fontStyle">Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></li>');
 		
 	if(results.postedProblemsCountByLoggedInUsers == 0)
-		div.append('<span class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - '+results.postedProblemsCountByLoggedInUsers+'</span>'); 
+		ul.append('<li class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - '+results.postedProblemsCountByLoggedInUsers+'</li>'); 
 	else
-	  div.append('<span class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></span>');
+	  ul.append('<li class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></li>');
 		
 	if(results.postedProblemsCountByOtherUsers == 0)
-		div.append('<span class="fontStyle">By Others - '+results.postedProblemsCountByOtherUsers+'</span>');
+		ul.append('<li class="fontStyle">By Others - '+results.postedProblemsCountByOtherUsers+'</li>');
 	else
-	  div.append('<span class="fontStyle">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></span>');
-		
-	div.append('<label class="l1">Problem Status Details Posted By You </label>');
+	  ul.append('<li class="fontStyle">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></li>');
+	var label = $('<label class="l1">Problem Status Details Posted By You </label>');
+	var ulInner = $('<ul></ul>');
 
 	if(results.approvedProblemsCount ==0)
-		div.append('<span class="fontStyle" style="margin-left: 2px;">Problems Approved	- '+results.approvedProblemsCount+'</span>');
+		ulInner.append('<li class="fontStyle" style="margin-left: 2px;">Problems Approved	- '+results.approvedProblemsCount+'</li>');
 	else
-	 div.append('<span class="fontStyle" style="margin-left: 2px;">Problems Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></span>');
-	 
-	
+	 ulInner.append('<li class="fontStyle" style="margin-left: 2px;">Problems Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></li>');
 	if(results.rejectedProblemsCount ==0)
-		div.append('<span class="fontStyle" style="margin-left: 35px;">Problems Rejected - '+results.rejectedProblemsCount+'</span>');
+		ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - '+results.rejectedProblemsCount+'</li>');
 	else
-	 div.append('<span class="fontStyle" style="margin-left: 35px;">Problems Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></span> ');
-	 div.append('');
-	
-
+	 ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></li> ');
+	 div.append(ul);
+	 div.append(label);
+	div.append(ulInner);
 	$('#headerDiv').append(div);
-	
 }
-
-<!--OPINION POLL SCRIPTS START-->
-
-function buildPolls()
-{	
-	var jsObj=
-	{
-			task:"getAllPolls"					
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllPolls.action?"+rparam;						
-	homePageAjaxCall(rparam,jsObj,url);
-}
-
-function homePageAjaxCall(param,jsObj,url){
-	var myResults;
-		
-		var callback = {			
-		               success : function( o ) 
-					  {
-						try {			
-								if(o.responseText)
-								myResults = YAHOO.lang.JSON.parse(o.responseText);								
-
-								if(jsObj.task == "getRecentElectionsInState")
-								{									
-									showResults(myResults);
-								} 
-								else if(jsObj.task == "getAllPolls")
-								{			
-									
-								    
-									if(myResults.description==null){
-										
-										//showVotesObtainedForOptions(myResults.questionsOptionsVO);
-										if(myResults.questionsOptionsVO != null)
-										displayCurrentPollResult(myResults.questionsOptionsVO.questionId);
-
-									}else{										
-										//buildNewPoll(myResults);
-										buildNewPoll1(myResults);
-									}
-								}
-								else if(jsObj.task == "saveSelectedPoll")
-								{	
-									
-									showVotesObtainedForOptions(myResults);
-								} 
-								else if(jsObj.task == "getLocalBodiesForState")
-								{
-									buildLocalBodiesForAState(jsObj,myResults);
-								}
-								else if(jsObj.task == "getLocalBodiesSelectElmtForState")
-								{
-									buildLocalBodiesSelectElmt(jsObj,myResults)
-								}
-								
-						}
-						catch (e)
-							{   
-							  	//alert("Invalid JSON result" + e);   
-							}	  
-			              },
-			               scope : this,
-			               failure : function( o ) {
-
-			            	  			// alert( "Failed to load result" + o.status + " " + o.statusText);
-			                         }
-			               };
-
-			YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
-	
-	function displayCurrentPollResult(questionId){
-
-	
-
-	callAjaxToGetQuestionsDetails("",questionId);
-}
-
-function callAjaxToGetQuestionsDetails(voteStatus,questionId){
-
-		
-
-	var jsObj =
-			{				
-			   questionId:questionId,
-				task:"getPollDetails"
-
-			};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getQuestionAndPercentageOfVotesForChoices.action?"+rparam;						
-		callAjaxToGetPollDetails(voteStatus,jsObj,url); 
-
-}
-
-function callAjaxToGetPollDetails(voteStatus,jsObj,url){
-
-
-	var callback = {			
-	 	success : function( o ) {
-		try
-		{ 
-			myResults = YAHOO.lang.JSON.parse(o.responseText);
-
-			
-			if(jsObj.task == "getPollDetails"){					
-				
-				buildResultForPoll(voteStatus,myResults);		   
-			}
-		    
-		}catch(e){}
-	  },
-			scope : this,
-			failure : function( o )
-			{}
-		  };
-
-		 YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-
-function buildResultForPoll(voteStatus,result){
-
-	var elmt = document.getElementById("pollsWidgetBody");
-
-	var str='';
-  
-	str+='<div class="opinionpoll">';
-	str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:1px 0px 2px #888;margin-bottom:5px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion polls</span></h3>';
-
-	str+='<div class="breadcrumb"><p style="padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;"><b>'+result.question+'</b></p>';
-
-	str+='<p class="pull-right">Total Votes  Polled:<b>'+result.totalVotesObtainedForPoll+'</b></p>';
-
-	str+='<ul style="padding:0px ;margin-bottom:5px;">';
-	for(var i=0;i<result.options.length;i++){ 
-		
-	 str+='<li>';
-	   str+='<h5>'+result.options[i].option+'</h5>';
-
-		str+='<div>';
-		str+='<div class="span2 pull-left" style="margin-left:0px;">';
-
-			str+='<div class="progress" style="margin:0px;">';
-			  str+='<div id="option1" class="bar" style="width:'+result.options[i].percentage+'%"></div>';
-			str+='</div>';							
-			str+='</div>	';
-
-			str+='<span class="label  label-info" style="margin-left:6px;">'+result.options[i].percentage+'% </span>';
-	  str+= '</div>';
-	   str+='</li>';
-	}  
-  str+='</ul>';	
-	 if(voteStatus == "vote")
-
-        str+='<a href="javaScript:{buildNewPoll1(result1)}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 88px;">Vote Now</a>';
-  	    str+='</div>';
-		
-	    str+='<div class="pager">';
-		str+='<a class="btn" style="margin-left:-11px;" href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn" style="float:left;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
-
-		str+='<a class="btn" href="getAllPollsAction.action" class="btn" style="float:right;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
-		
-
-		str+='</div>';
-
-	  elmt.innerHTML=str;
-
-
-}
-
-function getCompletePollResult(questionId){  
-	var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=350,width=450,left=200,top=200");
-	browser1.focus();
-}
-
-function getAllPollsResult(){ 
-	var browser1 = window.open("getAllPollsAction.action?","allPollResults","scrollbars=yes,height=600,width=650,left=200,top=200");
-	browser1.focus();
-}
-
-function buildNewPoll(result){
-	
-	if(result.quesitons!=null){
-		var elmt = document.getElementById("pollsWidgetBody");
-		if(!elmt)
-			return;
-		
-		var questionId = '';
-		var str = '';
-		for(var i=0; i<1;i++)
-		{
-			questionId = result.quesitons[i].questionId;
-			str += '<div id="pollQuestionDiv">';
-			str += result.quesitons[i].question;
-			str += '</div>';
-			str += '<div id="pollOptionsDiv">';
-			str += '<table>';
-			for(var j=0 ; j<result.quesitons[i].options.length; j++){
-				if(j==0){
-					str += '<tr><td><input type="radio" name="pollradio" checked=checked value="'+result.quesitons[i].options[j].optionId+'">&nbsp;&nbsp;';
-				}else{
-					str += '<tr><td><input type="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">&nbsp&nbsp;';
-				}				
-				str += result.quesitons[i].options[j].option;
-				str += '</td></tr>';			
-			}
-			str += '</table>';
-			str += '</div>';
-		}
-		
-		
-		str += '<div id="pollSubmitDiv">';
-		str += '<div onclick="savePollResult(\''+questionId+'\')" class="viewReportButtonSpan" style="left:">';
-		str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Vote</span>';		
-		str += '</div>';
-		str += '</div>';
-		
-		
-		str += '<table><tr><td>';
-		str += '<div id="viewPollResDiv">';
-		str += '<table><tr>';
-		str += '<td><a href="completeResultForAPollAction.action?questionId='+questionId+'" style="text-decoration:underline;cursor:pointer;padding-right:43px;color:#3d3d3d;"> View Result</a>';
-		str += '</td>';
-		str += '<td><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View Previous Polls</a>';
-		str += '</td>';	
-		str += '</tr></table>';
-		str += '</div>';
-		str += '</tr></table>';
-
-		elmt.innerHTML = str;
-
-	}
-}
-
-function savePollResult(questionId){
-
-	var elmts = document.getElementsByName("pollradio");
-	var checkedElmtId = '';
-	
-	for(var i=0; i<elmts.length;i++)
-	{
-		if(elmts[i].checked == true)
-			checkedElmtId = elmts[i].value;
-	}
-	var jsObj=
-	{
-			questionId:questionId,
-			selectedPollId:checkedElmtId,
-			task:"saveSelectedPoll"					
-	};
-		
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "saveSelectedPoll.action?"+rparam;						
-	homePageAjaxCall(rparam,jsObj,url);	
-}
-
-function buildNewPoll1(result){
-
-	result1=result;  
-
-	if(result.quesitons!=null){
-
-		var elmt = document.getElementById("pollsWidgetBody");
-		if(!elmt)
-			return;
-
-	}
-
-
-    var str='';
-
-
-     str+='<div class="opinionpoll">';
-
-		<!--str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:3px 0px 2px #888;margin-bottom:5px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion Poll</span></h3>';-->
-
-		for(var i=0; i<1;i++){
-
-		questionId = result.quesitons[i].questionId;
-
-		str+='<div class="breadcrumb"><p class="question"><b>'+result.quesitons[i].question+'</b></p>';	
-	
-		str+='<div id="qstnDiv1" style="margin:0px-20px;margin-top:3px">';	
-
-		str+='<div class="control-group form-horizontal "><p class="answer">';
-		for(var j=0 ; j<result.quesitons[i].options.length; j++){ 
-
-			if(j==0){      
-
-				str +='<label><input type="radio" class="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'" checked="true">';
-				str +=result.quesitons[i].options[j].option+"</label>"; 
-
-				
-			}else{
-				str +='<label><input type="radio" class="radio"  name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">';
-				str+=result.quesitons[i].options[j].option+"</label>";
-			}
-			
-		}
-		}
-		str+='</p><a href="javaScript:saveCurrentPollResult(\''+questionId+'\');" style="margin:0px auto;display:block;width:75px;" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
-		
-		str+='<p class="resultdisplay"><a  style="float:left;" class="previouslink" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',\''+questionId+'\')}" title="Click Here To See This Poll Result">View Results</a>';
-
-		    
-		str+=' <a class="nextlink" style="float:right;" href="completeResultForAPollAction.action?questionId='+questionId+'&comments=getComments" title="Click Here To See Comments On This Poll" >View Comments</a></p>';
-		str+=' </div></div>';
-
-		
-		str+='</div>';
-		str+='<div class="widget-block" style="padding:2px;height:30px;border:0px;">';
-   
-        str+='<a href="completeResultForAPollAction.action?questionId='+questionId+'&comments=getComments"  class="btn btn-mini" title="Post Your Comment On This Poll"  style="float:left;margin-left:3px;">Post Your Comment</a>';
- 
-  
-    str+='<a   style="float:right;margin-right:3px;"" class="btn btn-mini" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details" >View Recent Polls </a>';
-   
-    str+='</div>';
-	elmt.innerHTML = str;	
-
-	}
-	
-	function saveCurrentPollResult(questionId){
-
-	var elmts = document.getElementsByName("pollradio");
-	var checkedElmtId = '';
-	
-	for(var i=0; i<elmts.length;i++)
-	{
-		if(elmts[i].checked == true)
-			checkedElmtId = elmts[i].value;
-	}
-	var jsObj=
-	{
-			questionId:questionId,
-			selectedPollId:checkedElmtId,
-			task:"saveSelectedPoll"					
-	};
-		
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "saveSelectedPoll.action?"+rparam;						
-	callAjaxToSaveSelectedPollDetails(rparam,jsObj,url,questionId);	
-}
-
-
-function callAjaxToSaveSelectedPollDetails(param,jsObj,url,questionId){
-
-	var myResults;
-		
-		var callback = {			
-		               success : function( o ) 
-					  {
-						try {			
-								if(o.responseText)
-								myResults = YAHOO.lang.JSON.parse(o.responseText);
-								 
-								 if(myResults.availability == true){
-
-									 var cssObj = {    
-										'font-weight' : 'bold',
-										'color' : 'green'
-								      }
-									   $('#alreadyVotedDivId').text("You are already voted.").css(cssObj).show().delay(2000).fadeOut(400);
-										
-								 }
-							     displayCurrentPollResult(questionId);						
-													
-								
-						}
-						catch (e)
-							{   
-							  	//alert("Invalid JSON result" + e);   
-							}	  
-			              },
-			               scope : this,
-			               failure : function( o ) {
-
-			            }
-			               };
-
-			YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-
-function displayCurrentPollResult(questionId){
-
-	
-
-	callAjaxToGetQuestionsDetails("",questionId);
-}
-
-function callAjaxToGetQuestionsDetails(voteStatus,questionId){
-
-		
-
-	var jsObj =
-			{				
-			   questionId:questionId,
-				task:"getPollDetails"
-
-			};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getQuestionAndPercentageOfVotesForChoices.action?"+rparam;						
-		callAjaxToGetPollDetails(voteStatus,jsObj,url); 
-
-}
-
-function callAjaxToGetPollDetails(voteStatus,jsObj,url){
-
-
-	var callback = {			
-	 	success : function( o ) {
-		try
-		{ 
-			myResults = YAHOO.lang.JSON.parse(o.responseText);
-
-			
-			if(jsObj.task == "getPollDetails"){					
-				
-				buildResultForPoll(voteStatus,myResults);		   
-			}
-		    
-		}catch(e){}
-	  },
-			scope : this,
-			failure : function( o )
-			{}
-		  };
-
-		 YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-
-function buildResultForPoll(voteStatus,result){
-
-
-	var elmt = document.getElementById("pollsWidgetBody");
-
-	var str='';
-  
-	str+='<div class="opinionpoll">';
-	<!--str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:1px 0px 2px #888;margin-bottom:5px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion polls</span></h3>';-->
-
-	str+='<div class="breadcrumb"><p style="padding:5px;border-bottom:1px dashed #ccc;font:13px Arial;"><b>'+result.question+'</b></p>';
-
-	str+='<p class="pull-right">Total Votes  Polled:<b>'+result.totalVotesObtainedForPoll+'</b></p>';
-
-	str+='<ul style="padding:0px ;margin-bottom:5px;">';
-	for(var i=0;i<result.options.length;i++){ 
-		
-	 str+='<li style="width: 100%; clear: both;">';
-	   str+='<h5>'+result.options[i].option+'</h5>';
-
-		str+='<div>';
-		str+='<div class="span8 pull-left" style="margin-left:0px;">';
-
-			str+='<div class="progress" style="margin:0px;">';
-			  str+='<div id="option1" class="bar" style="width:'+result.options[i].percentage+'%" ></div>';
-			str+='</div>';							
-			str+='</div>	';
-
-			str+='<span class="label  label-info" style="margin-left:6px;">'+result.options[i].percentage+'% </span>';
-	  str+= '</div>';
-	   str+='</li>';
-	}  
-  str+='</ul>';	
-	 if(voteStatus == "vote")
-
-        str+='<a href="javaScript:{buildNewPoll1(result1)}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 65px;">Vote Now</a>';
-  	    str+='</div>';
-		
-	    str+='<div class="widget-block" style="padding:2px;height:30px;border:0px;">';
-		str+='<a class="btn btn-mini" style="float:left;margin-left:3px;" href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn" style="float:left;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
-
-		str+='<a class="btn btn-mini" href="getAllPollsAction.action" class="btn" style="float:right;margin-right:3px;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
-		
-
-		str+='</div>';
-
-	  elmt.innerHTML=str;
-
-
-}
-function displayPollResult(questionId){
-	callAjaxToGetQuestionsDetails("",questionId);
-}
-
-function afterRefreshOpinionPOll()
-{
-var elmt = document.getElementById("pollsWidgetBody");
-	var str = '';
-	str += '<table><tr><td>';
-	str += '<div id="pollQuestionDiv" > Q) '  +'${opinionPollVO.questionsOptionsVO.question}';
-	str += '</div>';
-	str += '</td></tr>';
-	
-	str += '<tr><td>';
-	//str += '<img src="charts/'+myResults.imagePath+'"></img>';
-	str += '</td></tr>';
-	
-	str += '<tr><td>';
-	str += '<div id="viewPollResDiv">';
-	str += '<table style="margin-left: 26px;"><tr>';
-	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.questionsOptionsVO.questionId}" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a></div>';
-	str += '</td>';
-	str += '<td><div style="width:94px;"><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a></div>';
-	str += '</td>';	
-	str += '</tr></table>';
-	str += '</div>';
-	str += '</tr></table>';
-	
-
-	str+='<div id="pollsChart" style=" height: auto;width: 324px; overflow: hidden;"></div>';
-	elmt.innerHTML = str;
-
-
-var arrData = pollStatus;
-
-	var data = new google.visualization.DataTable();
-	data.addColumn('string','option');
-	data.addColumn('number','votesObtained');
-		
-	data.addRows(arrData.length);
-
-		for(var j=0; j<arrData.length; j++)
-		{
-			
-			data.setValue(j,0,arrData[j].option);
-			data.setValue(j,1,arrData[j].votesObtained);
-			
-		}
-			var chart = new google.visualization.LineChart(document.getElementById('pollsChart'));
-	
-	chart.draw(data,{width: 300, height: 280,legend:'right', 
-	legendTextStyle:{fontSize:12},title:'${opinionPollVO.questionsOptionsVO.title}',titleTextStyle:{fontName:'verdana',fontSize:9}});
-	
-}
-
-function callAjax(voteStatus,jsObj,url)
-{
-	
-		var callback = {			
-	 	success : function( o ) {
-		try
-		{ 
-			myResults = YAHOO.lang.JSON.parse(o.responseText);
-
-		    
-			if(jsObj.task == "getPollDetails"){				
-				buildResult(voteStatus,myResults);		   
-			}
-		    
-		}catch(e){}
-	  },
-			scope : this,
-			failure : function( o )
-			{}
-		  };
-
-		 YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-
-function buildResult(voteStatus,result){
-
-	var elmt = document.getElementById("pollsWidgetBody");
-
-	var str='';
-  
-	str+='<div class="opinionpoll">';
-
-	/*str+='<h3 style="background:#0088CC;color:#fff;padding:5px;margin-left:-10px;box-shadow:3px 0px 2px #888;margin-bottom:5px;border-radius:0px 5px 5px 0px;"><i class="icon-forward icon-white" style="margin-top:3px;"></i> Opinion Poll</span></h3>';*/
-
-	str+='<div class="breadcrumb"><p class="question"><b>'+result.question+'</b></p>';	
-
-
-	//str+='<p class="" style="margin-bottom:3px;"><b>'+result.question+'</b></p>'; 
-
-	str+='<div id="qstnDiv1" style="margin-top:3px;">';	
-
-
-	str+='<p style="margin-bottom: 0px; padding-bottom: 0px;" class="pull-right">Total Votes  Polled:<b>'+result.totalVotesObtainedForPoll+'</b></p>';
-
-	
-	str+='<ul style="margin:0px;width:100%;">';
-	for(var i=0;i<result.options.length;i++){   
-		
-          str+='<li style="width:100%;clear:both;">';
-		str+='<h6 style="margin:1px;">'+result.options[i].option+'</h6>';
-
-		str+='<div>';
-		str+='<div class="span8 pull-left">';
-
-			str+='<div class="progress" style="margin:0px;">';
-			  str+='<div id="option1" class="bar" style="width:'+result.options[i].percentage+'%"></div>';
-			str+='</div>';							
-			str+='</div>	';
-
-			str+='<span class="label label-info m-left5">'+result.options[i].percentage+'% </span>';
-	  str+= '</div>';
-	   str+='</li>';
-		
-	}
-	str+='</ul></div>';
-	
-	 if(voteStatus == "vote")
-
-        str+='<a class="btn btn-primary" href="javaScript:{showVotesObtainedForOpinionPoll()}");" class="btn btn-primary" title="Click Here To Vote" style="margin:10px 0px 0px 104px;">Vote Now</a>';
-
-		str+='</div>';
-  
-		//str+='</div>';
-
-  
-		
-	    str+='<div class="widget-block" style="padding:2px;height:30px;border:0px;">';
-		str+='<a href="completeResultForAPollAction.action?questionId='+result.questionId+'&comments=getComments"  id='+result.questionId+' class="btn btn-mini" style="float:left;margin-left:3px;" title="Click Here To Post Your Comment On This poll">Post Your Comment</a>';
-
-		
-
-
-		str+='<a href="getAllPollsAction.action" class="btn btn-mini" style="float:right;margin-right:3px;" title="Click Here To See Recent Poll Details">View Recent Polls</a>';
-		str+='</div>';
-	
-	
-
-	elmt.innerHTML=str;
-
-}
-<!--OPINION POLL SCRIPTS END-->
