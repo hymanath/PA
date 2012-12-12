@@ -207,7 +207,7 @@ padding:5px 20px;
 						${problems.postDate}
 						<c:forEach var="problemData" items="${problems.problemBeanVOList}">
 						 <div class="problemDetails">
-							<p class="problemTitle">${problemData.problem}</p>
+							<p class="problemTitle"><a href="completeProblemDetailsAction.action?problemId=${problemData.problemId}">${problemData.problem}</a></p>
 							<p class="problemDescription">${problemData.description}</p>
 							<p><span>Existing From: </span>${problemData.existingFrom}</p>
 						 </div>
