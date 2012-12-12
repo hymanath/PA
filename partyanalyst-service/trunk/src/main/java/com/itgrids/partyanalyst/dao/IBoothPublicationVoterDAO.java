@@ -78,4 +78,6 @@ public interface IBoothPublicationVoterDAO extends
 	public List findFamiliesVotersInfoForBooth(Long id,Long publicationDateId);
 	
 	public List<Voter> findFamiliesInfo(Long boothId,Long publicationDateId,String houseNo);
+	
+	public List<Voter> getVoterDetailsByCaste(Long boothid,Long publicationDateId,String caste);
 }
