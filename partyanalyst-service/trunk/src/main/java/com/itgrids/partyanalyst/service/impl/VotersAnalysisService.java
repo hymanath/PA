@@ -718,7 +718,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			{
 				voterCastInfo = new VoterCastInfoVO();
 				Long boothId=booths.getId();
-				String boothPartNo = booths.getName();
+				String boothPartNo = booths.getId().toString();
 				voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByBoothIdAndPublicationDate(new Long(boothId),publicationDateId)));
 				voterCastInfo.setMandalName(boothPartNo);
 				boothInfo.add(voterCastInfo);
@@ -726,6 +726,56 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		return boothInfo;
 		
+	}
+	
+	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo)
+	{
+		List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();
+		VoterHouseInfoVO voterHouseInfoVO = null;
+		List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfo(boothId, publicationDateId, houseNo);
+	    long sno = 1;
+		for(Voter voter : votersInfoList){
+	    	voterHouseInfoVO = new VoterHouseInfoVO();
+	    	voterHouseInfoVO.setsNo(sno);
+	    	voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+	    	voterHouseInfoVO.setGender(voter.getGender());
+	    	voterHouseInfoVO.setAge(voter.getAge());
+	    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
+	    	voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+	    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+	    	voterHouseInfoVO.setCast(voter.getCast());
+	    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
+	    	voterHouseInfoVOList.add(voterHouseInfoVO);
+	    	sno = sno+1;
+	    }
+		return voterHouseInfoVOList;
+	} 
+	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,String caste)
+	{
+		
+		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+		List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
+		VoterHouseInfoVO voterHouseInfoVO = null;
+		long sno = 1;
+		if(list != null && list.size() > 0)
+		{
+			for(Voter voter : list)
+			{
+				voterHouseInfoVO = new VoterHouseInfoVO();
+				voterHouseInfoVO.setsNo(sno);
+				voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+				voterHouseInfoVO.setGender(voter.getGender());
+				voterHouseInfoVO.setAge(voter.getAge());
+				voterHouseInfoVO.setHouseNo(voter.getHouseNo());
+				voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+				voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+				voterHouseInfoVO.setCast(voter.getCast());
+				voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
+				votersList.add(voterHouseInfoVO);
+				sno = sno + 1;
+			}
+		}
+		return votersList;
 	}
 	/**
 	 * This method will get overview voters details for a constituency or for a mandal
@@ -1893,28 +1943,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		return voterHouseInfoVOs;
 	}
 	
-	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo)
-	{
-		List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();
-		VoterHouseInfoVO voterHouseInfoVO = null;
-		List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfo(boothId, publicationDateId, houseNo);
-	    long sno = 1;
-		for(Voter voter : votersInfoList){
-	    	voterHouseInfoVO = new VoterHouseInfoVO();
-	    	voterHouseInfoVO.setsNo(sno);
-	    	voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
-	    	voterHouseInfoVO.setGender(voter.getGender());
-	    	voterHouseInfoVO.setAge(voter.getAge());
-	    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
-	    	voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
-	    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
-	    	voterHouseInfoVO.setCast(voter.getCast());
-	    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
-	    	voterHouseInfoVOList.add(voterHouseInfoVO);
-	    	sno = sno+1;
-	    }
-		return voterHouseInfoVOList;
-	} 
 	
 	public static Comparator<VoterVO> sortData = new Comparator<VoterVO>()
 		    {
