@@ -9,9 +9,10 @@
 <title>Profile Page</title>
 
 <script type="text/javascript" src="js/userProfile/userProfilePage.js"> </script>
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/opinionpoll/opinionpoll.js"> </script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
@@ -45,6 +46,7 @@
 	box-shadow:0 0 1px rgba(0, 0, 0, 0.3);
 	margin:10px 0px 20px;
 	position:relative;
+	padding-bottom: 0;
 }
 .p-top20{padding-top:20px;}
 .p-2px{padding:2px !important;}
@@ -122,7 +124,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', end
 
 .widget h4,h2 {
 
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     line-height: 20px;
     text-transform: uppercase;
@@ -144,7 +146,7 @@ border-top:1px solid #efefef;
     font-size: 18px;
   
     line-height: 18px;
- 
+	margin-bottom: 10px;
 
 	
 }
@@ -237,7 +239,7 @@ padding:5px 20px;
 	.problemTitle,.headingCls{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 	.likeCls{margin-right: 55px; margin-left: 62px;}
 	.commentCls{margin-right: 62px;}
-	.problemFromDate{margin-left: 220px;color: #273241;}
+	.problemFromDate{margin-left: 200px;color: #273241;}
 	.problemReportedDate{float: right;color: #273241;}
 	.problemsShowDIV p{font-size: 12px; text-align: justify;color: #273241;}
 	.problemsShowDIV .problemTitle{font-size: 13px;}
@@ -258,7 +260,7 @@ padding:5px 20px;
     text-align: left;
 }
 
-#profileUserName{ margin-bottom: 5px;margin-top: 10px;}
+
 .btn-group{margin-left: 8px;}
 
 #sendMessageButtonId{margin-left: 265px;margin-top: 20px;padding: 3px;}
@@ -290,6 +292,50 @@ padding:5px 20px;
 #uploadPic_string_table{ margin-top: 6px;}
 .fontStyle{color: #000000;font-family: verdana;font-size: 12px;}
 .l1{color: maroon;font-family: verdana;padding: 4px;}
+.hottopics_desc{font-family:arial;}
+.p3 a{color:#0088CC;}
+.btn-small{font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;}
+	.btn-small:hover{ text-decoration: none;}
+	.resultdisplay{ margin-top: 15px;}
+	.dropdown-menu{text-align: left;
+    width: 150px;}
+	#uploadPicButton{margin-right: 18px;}
+	.p1,.p2,.p3{font-family: verdana;}
+	.problemTitle, .headingCls{font-family: verdana;text-align: justify; font-size: 13px;}
+	.p4{margin-top: 19px; margin-left: 130px; margin-bottom: -10px;font-weight:bold;font-family:arial;}
+	.TemplateCollection{display:none;}
+	
+	/* 11/12/12 */
+	.bs-docs-sidenav {
+    background-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    margin: 0px -20px 0px -20px;
+    padding: 0;
+	
+   }
+   
+   .bs-docs-sidenav > li > a {
+    border: 1px solid #E5E5E5;
+    display: block;
+    margin: 0 0 -1px;
+    padding: 8px 14px;}
+	
+	.bs-docs-sidenav .icon-chevron-right {
+    float: right;
+    margin-right: -6px;
+    margin-top: 2px;
+    opacity: 0.25;
+}
+
+.bs-docs-sidenav .active .icon-chevron-right, .bs-docs-sidenav .active a:hover .icon-chevron-right {
+    background-image: url("../img/glyphicons-halflings-white.png");
+    opacity: 1;
+}
+body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
+#profileUserName{ word-wrap: break-word;}
 </style>
 </head>
 <body>
@@ -300,16 +346,16 @@ padding:5px 20px;
 			<div class="span3">
 
 				<div class="widget blue votersguide p-m-bottom0px">
-			        <div style="text-align: center; padding: 10px 0px;">
-					
+			        <div class="row">
+					<div class="span5 profileimg pull-left">
 						<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
-							<img width="90" height="100" src="pictures/profiles/human.jpg" style="border:1px solid #ADADAD;" id="userProfileImg">
+							<img src="pictures/profiles/human.jpg" id="userProfileImg" class="thumbnail">
 						</c:if>
 						<c:if test="${loginUserProfilePic !='' && loginUserProfilePic != null}">
-						<img width="90" height="100" src="pictures/profiles/${loginUserProfilePic}" style="border:1px solid #ADADAD;" id="userProfileImg">
+						<img src="pictures/profiles/${loginUserProfilePic}" class="thumbnail" id="userProfileImg">
 						</c:if>
-
-						<div id="profileUserName">${loginUserName}<div class="btn-group">
+					</div>
+						<div id="profileUserName" class="span7 pull-right"><h6>${loginUserName}</h6><div class="btn-group">
 							<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
 								<span class="caret"></span>
 							</button>
@@ -320,32 +366,38 @@ padding:5px 20px;
 							</ul>
 						</div></div>
 						
-						<div style="margin-bottom: 4px; font-size: 13px; font-family: verdana;"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></div>
-						<div style="margin-bottom: 4px; font-size: 13px; font-family: verdana;"><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></div>
-						<div style="font-size: 13px; font-family: verdana;"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></div>
+												
 					</div>	
 					    
 						
 				</div>
 				<div class="widget blue">
 					<h4>
-						<span><i class="userMenu" id="icon_leftsec"></i></span>
+						<span><i class="icon icon_left" id="icon_leftsec"></i></span>
 						User Menu
 					</h4>
-					<p class="p1"><span>Whats's New?</span></p>
-					<p class="p1"><a href="javascript:{}" class="messagesLink">Messages</a></p>
-					<p class="p1"><a href="javascript:{}" id="friendsLink">Friends</a></span></p>
-					<p class="p1"><a href="javascript:{}" id="requestLink">Requests</a></p>
-				</div>
 				
+								
+					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
+					<li class="active"><a href="javascript:{}" class="whatsnew"><i class="icon-chevron-right"></i> Whats's New?</a></li>
+					<li><a href="javascript:{}" class="messagesLink"><i class="icon-chevron-right"></i> Messages</a></li>
+					<li><a href="javascript:{}" id="friendsLink"><i class="icon-chevron-right"></i> Friends</a></li>
+					<li><a href="javascript:{}" id="requestLink"><i class="icon-chevron-right"></i> Requests</a></li>
+					</ul>
+				
+				</div>
 				
 				<div class="widget yellow">
 					<h4>
 						<span><i class="userMenu" id="icon_leftsec"></i></span>
 						Applications
 					</h4>
-					<p class="p2"><span>Important Dates</span></p>
-					<p class="p2"><span><a href="javascript:{}" class="problemsLink">Problems</a><input type="hidden" value="Total" class="problemTypeVariable"/></span></p>
+					
+					
+					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
+					<li><a href="javascript:{}" class="ImportantDates"><i class="icon-chevron-right"></i> Important Dates</a></li>
+					<li><a  href="javascript:{}" class="problemsLink"><i class="icon-chevron-right"></i> Problems</a><input type="hidden" value="Total" class="problemTypeVariable"/></li>
+					</ul>
 				</div>
 				
 				
@@ -354,9 +406,12 @@ padding:5px 20px;
 						<span><i class="userMenu" id="icon_leftsec"></i></span>
 						Interests
 					</h4>
-					<p class="p3"><a href="javascript:{}" class="subscriptionsLink">Subscriptions</a></p>
-					<p class="p3"><a href="javascript:{}" class="assessPoliticianLink">Asses Politician</a></p>
-					<p class="p3"><a href="javascript:{}" id="specialPageLink">Special Pages</a></p>
+					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
+					<li ><a href="javascript:{}" class="subscriptionsLink"><i class="icon-chevron-right"></i> Subscriptions</a></li>
+					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-chevron-right"></i> Asses Politician</a>
+					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
+					<li><a href="javascript:{}" id="specialPageLink"><i class="icon-chevron-right"></i> Special Pages</a></li>
+					</ul>
 				</div>
 				
 				
@@ -365,7 +420,7 @@ padding:5px 20px;
 
 		<!--------Center div------>
 			<div class="span6">
-				<div class="widget green">
+				<div class="widget green" id="MyProfileActions">
 				<div id="headerDiv"></div>
 					<div class="placeholderCenterDiv"></div>
 						<div id="subscriptionsDiv">
@@ -407,13 +462,13 @@ padding:5px 20px;
 			
 
 				<div class="widget blue">
+				<!-- <h4>People In Your Location</h4>
+				<div>
+				<p>From ${dataTransferVO.districtName} District - <a href="javascript:{}" onclick="getAllConnectedUsersByFilterView('DISTRICT')">${dataTransferVO.districtUsersCount}</a></p>
+				<p>From ${dataTransferVO.constituencyName} Constituency - ${dataTransferVO.constituencyUsersCount}</p>
+				</div>-->
 					<h4>
 						<span><i class="connectPeopleHeading" id="icon_leftsec"></i><span>People You May Know</span>
-						<p>
-						<span>
-							<a class="btn btn-mini btn-info"href="javascript:{}" id="districtPeopleLink">See All</a>
-						</span>
-					</p>
 					</h4>
 					
 					<div style="margin-top: 14px;">
@@ -425,9 +480,6 @@ padding:5px 20px;
 								<div>${connectedPeoples.constituencyName}</div>
 							</div>
 						
-							<input type="hidden" value="${connectedPeoples.id}" class="userId" />
-							<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
-							<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
 						
 						</div>
 						<div style="width:100%; clear:both;margin-left:20px;">
@@ -437,9 +489,15 @@ padding:5px 20px;
 							<span>
 								<a href="javascript:{}" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')">Send Message</a>
 							</span>
+							<input type="hidden" value="${connectedPeoples.id}" class="userId" />
+							<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
+							<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
+
 						</div>
 						</c:forEach>
 				</div>
+						
+				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink"href="javascript:{}">See All</a></p>
 
 				</div>
 			<!-- People You May Know Div End -->
@@ -496,6 +554,7 @@ padding:5px 20px;
 
 
 <!-- Templates -->
+<div class="TemplateCollection">
 
 	<div class="templateDiv templateholder templatePersons">
 			<span class="connectedPersonName" style="color:#3B5998;"></span>
@@ -565,7 +624,7 @@ padding:5px 20px;
 		</div>
 	</div>
 
-
+</div>
 <!-- Templated END -->
 
 	
