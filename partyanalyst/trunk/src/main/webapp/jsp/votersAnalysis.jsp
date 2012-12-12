@@ -169,7 +169,7 @@ p {
  padding:5px;
 
 }
-#subLevelTable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;}
+#subLevelTable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 #subLevelTable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even){background:#EdF5FF;}
 
 #subLevelTable td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
@@ -271,6 +271,7 @@ table.dataTable tr.even td.sorting_1 {
 		font-size:13px;
 		font-family:verdana;
 		margin-bottom: 20px;
+		font-weight: bold;
 	}
 #impFamShowBasicInfo,#lclCastStsShowBasicInfo,#ageWiseDetlsShowBasicInfo{
    float:right;
@@ -291,6 +292,7 @@ width: 860px;}
 	font-family: verdana;
     font-size: 12px;
     margin-top: 12px;
+	
 }
 </style>
 
@@ -452,9 +454,9 @@ locationDetails.constituencyArr.push(ob);
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	<div id='localCastStatsTabContent_header'></div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
-	<div id='localCastStatsTabContent_subbody'></div><br>
-	<div id ="localCastStatsVotersTitle" ></div><br>
-	<div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br><br>
+	<div id='localCastStatsTabContent_subbody'></div><br><br>
+	<div id ="localCastStatsVotersTitle" ></div>
+	<div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
 
 
 </div>
@@ -580,7 +582,10 @@ function getCastInfoForsubLevel()
 	  id = $("#panchayatField").val();
 	  typeName = $("#panchayatField :selected").text();
 	}
-	
+	else if(level == 4)
+	{
+		return false;
+	}
 		
 		var jsObj=
 		{		
