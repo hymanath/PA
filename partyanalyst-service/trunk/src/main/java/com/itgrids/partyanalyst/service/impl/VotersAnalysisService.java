@@ -519,7 +519,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 		Long maleVoters=0L;
 		Long femaleVoters=0L;
-		Long TotalCasts =0l;
+		int TotalCasts =0;
 		for(int i=0;i<params.size();i++)
 		{
 			Object[] voterInfo =(Object[])params.get(i);
@@ -570,7 +570,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		
 		List<CastVO> castVOs = new ArrayList<CastVO>(castsMap.values());
-		
+		List<CastVO> castVOs1 = new ArrayList<CastVO>(castsMap.values());
 		//Collections.sort(castVOs);
 		// Calculate Percentage
 		for(int i=0;i<castVOs.size();i++)
@@ -582,12 +582,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			
 		}
-		/*List list1 = new ArrayList();
-		list1 = removeCastNoneElements(castVOs);*/
-		voterCastInfoVO.setTotalCasts(castVOs.size());
+		voterCastInfoVO.setCastVOs(castVOs);
+		
+		TotalCasts = removeCastNoneElements(castVOs1);
+		voterCastInfoVO.setTotalCasts(TotalCasts);
 		voterCastInfoVO.setTotalVoters(totalVoters);
 		
-		voterCastInfoVO.setCastVOs(castVOs);
+		
 		
 		return voterCastInfoVO;
 		
@@ -595,24 +596,24 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 		
-		/*public List removeCastNoneElements(List<CastVO> list)
+	public int removeCastNoneElements(List<CastVO> list)
 		{
-			Long totalCasts = 0l;
-			if(list != null && list.size() > 0)
-			{
+			int totalCasts = 0;
+			
 				for(int i=0;i<list.size();i++)
 				{
 				if(list.get(i).getCastName().equals("N/A"))
 				{
-					list.remove(list.get(i));
+					list.remove(i);
 				}
 					
 					
-				}	
-			}
-			return list;
+				}
+				
+				totalCasts = list.size();
+			return totalCasts;
 			
-		}*/
+		}
 		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type)
 		
 		{
