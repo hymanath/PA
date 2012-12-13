@@ -294,6 +294,10 @@ width: 860px;}
     margin-top: 12px;
 	
 }
+.requiredFont{
+	color:red;
+	font-size:13px;
+}
 </style>
 
 <script type="text/javascript">
@@ -329,9 +333,10 @@ locationDetails.constituencyArr.push(ob);
 
 <fieldset>
 <div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
-<div id="locationAlertMsg" align="left"></div>
+<div id="AlertMsg" style="font-family: verdana;
+    font-size: 13px;"></div>
 
-<div id="reportLevelDiv" class="selectDiv">Select Report Level   &nbsp;&nbsp;:&nbsp;&nbsp;<select id="reportLevel" class="selectWidth" style="margin-left:3px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+<div id="reportLevelDiv" class="selectDiv">Select Report Level<font class="requiredFont">*</font>&nbsp;&nbsp;:&nbsp;&nbsp;<select id="reportLevel" class="selectWidth" style="margin-left:3px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=3>Panchayat</option>
@@ -340,23 +345,25 @@ locationDetails.constituencyArr.push(ob);
 		
 </div>
 	<div id="ConstituencyDiv" class="selectDiv">
-	Select Constituency &nbsp;&nbsp;:&nbsp;&nbsp; <s:select theme="simple" style="margin-left:-4px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
+	Select Constituency<font class="requiredFont">*</font> &nbsp;:&nbsp;&nbsp; <s:select theme="simple" style="margin-left:-4px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
 
 		
-	Select Publication Date &nbsp;&nbsp;:&nbsp;&nbsp; <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList">
+	Select Publication Date<font class="requiredFont">*</font> &nbsp;&nbsp;:&nbsp;&nbsp; <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList">
 		</select>
 		
 	</div>
 	<div id="mandalDiv" class="selectDiv" style="display:none;">
 		
-	Select Mandal  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;&nbsp; <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
+	Select Mandal<font class="requiredFont">*</font>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;&nbsp; <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
 		
 	<div id="panchayatDiv" class="selectDiv" style="display:none;">
-	Select Panchayat 	
+	Select Panchayat<font class="requiredFont">*</font> 	
 	 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);"></select></div>
 	
 	<div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	Select PollingStation &nbsp;: &nbsp;&nbsp;<select id="pollingStationField" class="selectWidth" name="state" onChange="buildVotersByLocBoothDataTable(this.id);"></select></div>
+	Select PollingStation<font class="requiredFont">*</font> &nbsp;: &nbsp;&nbsp;<select id="pollingStationField" class="selectWidth" name="state" onChange="buildVotersByLocBoothDataTable(this.id);"></select></div>
+
+	
 
 	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 
@@ -542,27 +549,48 @@ function getCastInfoForsubLevel()
 	var id='';
 	var typeName='';
 	var mandalId='';
+	var str ='';
+	var flag = true;
 	if(level == 1){
 	type = 'constituency';
 	id = $("#constituencyList").val();
 	typeName = $("#constituencyList :selected").text();
+	if(id == 0 || id == null)
+	{
+	flag =false;
 	}
-	else if(level == 2){
+	}
+	else if(level == 2 ||id == null){
 	type = 'mandal';
 	mandalId = $("#mandalField").val();
 	id=mandalId.substring(1);
 	typeName = $("#mandalField :selected").text();
+	if(id == 0)
+	{
+		
+	flag =false;
 	}
-	else if(level == 3){
+	}
+	else if(level == 3 || id == null){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
 	  typeName = $("#panchayatField :selected").text();
+	  if(id == 0)
+		{
+				
+		flag =false;
+		}
 	}
-	else if(level == 4)
+	else if(level == 4 || id == null)
 	{
 		return false;
 	}
-		
+	if(publicationDateId == 0|| publicationDateId == null)
+		{
+		flag =false;
+		}
+		if(flag)
+		{
 		var jsObj=
 		{		
 				
@@ -575,7 +603,7 @@ function getCastInfoForsubLevel()
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
 		callAjax(jsObj,url);
-
+		}
 }
 </script>
 </body>
