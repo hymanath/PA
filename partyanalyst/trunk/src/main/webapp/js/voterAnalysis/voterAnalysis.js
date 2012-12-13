@@ -260,7 +260,10 @@ function showImportantFamiliesDiv()
 		var value=constituencyID.options[constituencyID.selectedIndex].value;
 		var choice=false;
 		var locationAlertEl =  document.getElementById("locationAlertMsg");
-		
+		if(value == 0)
+		{
+			return false;
+		}
 		var jsObj=
 			{
 					
@@ -287,22 +290,21 @@ function showImportantFamiliesDiv()
 		var value = value1.substring(1);
 		
 		
-		var alertEl = document.getElementById("locationAlertMsg");
+		var alertEl = document.getElementById("AlertMsg");
 		alertEl.innerHTML = '';
 		
 		selectname = mandalField.options[mandalField.selectedIndex].text;
 		var flag= selectname.search("MUNCIPALITY");
 		
 		
-		 if(value == 0)
+		 if(value1 == 0)
 		{
-			alertEl.innerHTML ='<P><%=locationAlert%></P>';
+			alertEl.innerHTML ='<P>Please Select Mandal</P>';
 			return;
 		}
 
 		
-		
-		var jsObj=
+	var jsObj=
 			{
 					
 				selected:value,
@@ -637,6 +639,7 @@ function getVotersCastInfo()
 	
   $("#localCastStatsTabContent_header").html("");
   $("#localCastStatsTabContentTitle").html("");
+  var errorDivEle = document.getElementById('AlertMsg');
   var divEle = document.getElementById('localCastStatsTabContent_body');
 	divEle.innerHTML ='';
 	var publicationDateId = $("#publicationDateList").val();
@@ -645,30 +648,61 @@ function getVotersCastInfo()
 	var id='';
 	var typename='';
 	var mandalId='';
+	var flag =true;
+	var str= '<font color="red">';
+	
 	if(level == 1){
 	type = 'constituency';
 	id = $("#constituencyList").val();
 	typename = $('#constituencyList :selected').text() + ' Constituency ';
+		if(id == 0 ||id == null)
+		{
+		str +='Please Select Constituency';
+		flag =false;
+		}
 	}
 	else if(level == 2){
 	type = 'mandal';
 	mandalId = $("#mandalField").val();
 	id=mandalId.substring(1);
 	typename = $('#mandalField :selected').text();
-	
+			if(id == 0 || id == null)
+			{
+			str +='Please Select Mandal';
+			flag =false;
+			}
 
 	}
 	else if(level == 3){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
 	  typename = $('#panchayatField :selected').text()+ ' Panchayat ';
-
+			if(id == 0 || id == null)
+			{
+				str +='Please Select Panchayat';
+				flag =false;
+			}
 	}
 	else if(level == 4){
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 typename = $('#pollingStationField :selected').text() + ' Booth';
+			if(id == 0 || id == null)
+			{
+			str +='Please Select Booth';
+			flag =false;
+			}
 	}
+	if(publicationDateId == 0 || publicationDateId == null )
+		{
+		str +='<br>Please Select Publication Date';
+		flag =false;
+		}
+		
+		errorDivEle.innerHTML = str;
+		if(flag)
+		{
+		errorDivEle.innerHTML ='';
 		var jsObj=
 			{
 				type:type,	
@@ -682,6 +716,7 @@ function getVotersCastInfo()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
 		callAjax(jsObj,url);
+	}
 	}
 
 function buildCastInfoForSubLevels(myresults,jsObj)
@@ -857,24 +892,57 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
     var level = $("#reportLevel").val();
 	var type = '';
 	var id = '';
+	var str ='<font color="red">';
+	var flag =true;
+	var errorDivEle =document.getElementById('AlertMsg'); 
 	var publicationDateId = $("#publicationDateList").val();
 	if(level == 1){
 	   type = 'constituency';
 	   id = $("#constituencyList").val();
+	   if(id == 0 ||id == null)
+		{
+		  str +='Please Select Constituency';
+		  flag=false;
+		}
+
 	}else if(level == 2){
 	  type = 'mandal';
 	  id = $("#mandalField").val();
+	   if(id == 0 ||id == null)
+		{
+		  str +='Please Select Mandal';
+		  flag=false;
+		}
     }else if(level == 3){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
+	   if(id == 0 ||id == null)
+		{
+		  str +='Please Select Panchayat';
+		  flag=false;
+		}
 	}else if(level == 4){
 	  type = 'booth';
 	  id = $("#pollingStationField").val();
+	   if(id == 0 || id == null)
+		{
+		  str +='Please Select Booth';
+		  flag=false;
+		}
 	}
+	if(publicationDateId == 0 || publicationDateId == null)
+	{
+		str +='<br>Please Select Publication Date';
+		flag = false;
+	}
+	errorDivEle.innerHTML = str;
+	if(flag)
+	{
+	errorDivEle.innerHTML = '';		
    if(buttonType == "voters"){
 	var jsObj=
 			{
-					
+				
 				type:type,
 				id:id,
 				publicationDateId:publicationDateId,
@@ -919,6 +987,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 		callAjax(jsObj2,url2);
 	}
    }
+	}
 }
 
 function getVotersInAFamily(id,publicationDateId,hNo){
@@ -1365,11 +1434,24 @@ function getVoterDetailsForConstituency(){
 
 	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
-
-
-	if(publicationId == null || publicationId == "0" || constituencyId == null || constituencyId == "0")
-		return false;
-
+	var str='<font color="red">';
+	var errorDivEle = document.getElementById('AlertMsg');
+	var flag = true;
+	
+	 if(constituencyId == null || constituencyId == "0")
+	{
+		str +='Please Select Constituency';
+		flag=false;
+	}
+	else if(publicationId == null || publicationId == "0")
+	{
+		str +='<br>Please Select Publication Date';
+		flag=false;
+	}
+	errorDivEle.innerHTML = str;
+	if(flag)
+	{
+		errorDivEle.innerHTML='';
 		var jsObj=
 				{					
 					constituencyId:constituencyId,
@@ -1384,19 +1466,32 @@ function getVoterDetailsForConstituency(){
 		var url = "getAgewiseVoterDetails.action?"+rparam;						
 		
 		callAjaxorVoterDetails(jsObj,url);
-	
+	}
 }
 
 function getVoterDetailsForMandal(){
 
 	var mandalId = $('#mandalField').val();
 	var publicationId = $('#publicationDateList').val();
-
-	if(publicationId == null || publicationId == "0" || mandalId == null || mandalId == "0")
-		return false;
-
+	var str='<font color="red">';
+	var errorDivEle = document.getElementById('AlertMsg');
+	var flag = true;
+	
+	if(mandalId == null || mandalId == "0")
+	{
+	str +='Please Select Mandal';
+	flag=false;
+	}
+	else if(publicationId == null || publicationId == "0")
+	{
+	str +='<br>Please Select Publication Date';
+	flag=false;
+	}
+	errorDivEle.innerHTML=str;
 	var startNumber = mandalId.substring(0,1);
-
+	if(flag)
+	{
+		errorDivEle.innerHTML='';
         if(startNumber == "2"){
 
 			var jsObj=
@@ -1424,17 +1519,30 @@ function getVoterDetailsForMandal(){
 		var url = "getAgewiseVoterDetails.action?"+rparam;
 
 		callAjaxorVoterDetails(jsObj,url);
+	}
 }
 
 function getVoterDetailsForPanchayat(){
 
 	var panchayatId = $('#panchayatField').val();
 	var publicationId = $('#publicationDateList').val();
-
-	if(publicationId == null || publicationId == "0" || panchayatId == null || panchayatId =="0")
-		return false;
-
-
+	var str='<font color="red">';
+	var errorDivEle = document.getElementById('AlertMsg');
+	var flag = true;
+	if(panchayatId == null || panchayatId =="0")
+	{
+	str +='Please Select Panchatyat';
+	flag=false;
+	}
+	else if(publicationId == null || publicationId == "0" )
+	{
+	str +='<br>Please Select Publication Date';
+	flag=false;
+	}
+	errorDivEle.innerHTML=str;
+	if(flag)
+	{
+	errorDivEle.innerHTML='';
 		var jsObj=
 				{
 			        constituencyId:'0',
@@ -1449,7 +1557,7 @@ function getVoterDetailsForPanchayat(){
 		var url = "getAgewiseVoterDetails.action?"+rparam;
 
       callAjaxorVoterDetails(jsObj,url);
-   
+	} 
 }
 
 function getVoterDetailsForBooth(){
@@ -1457,12 +1565,24 @@ function getVoterDetailsForBooth(){
 
 	var boothId = $('#pollingStationField').val();
 	var publicationId = $('#publicationDateList').val();
-
-	if(publicationId == null || publicationId == "0" || boothId == null || boothId == "0")
-		return false;
-
-
-		var jsObj=
+	var str='<font color="red">';
+	var errorDivEle = document.getElementById('AlertMsg');
+	var flag = true;
+	if(boothId == null || boothId == "0")
+	{
+	str +='Please Select Booth';
+	flag=false;
+	}
+	else if(publicationId == null || publicationId == "0")
+	{
+	str +='<br>Please Select Publication Date';
+	flag=false;
+	}
+	errorDivEle.innerHTML=str;
+	if(flag)
+	{
+	errorDivEle.innerHTML='';
+	var jsObj=
 				{ 
 					constituencyId:'0',
 					publicationDateId:publicationId,
@@ -1476,7 +1596,7 @@ function getVoterDetailsForBooth(){
 	var url = "getAgewiseVoterDetails.action?"+rparam;
 
 	callAjaxorVoterDetails(jsObj,url);
-
+	}
 }
 
 function callAjaxorVoterDetails(jsObj,url){
