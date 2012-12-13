@@ -241,11 +241,11 @@ function showImportantFamiliesDiv()
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #F61D50"});
-		  $("#votersbasicinfoForAgeWiseDetls").hide();
-		  $("#votersBasicInfoDivForAgeWiseDetls").html("");
-		  $("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
-		  $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
-          $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
+		$("#votersbasicinfoForAgeWiseDetls").hide();
+		$("#votersBasicInfoDivForAgeWiseDetls").html("");
+		$("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
+		$("#votersBasicInfoSubDivForAgeWiseDetls").html("");
+        $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
 
 		  callCorrespondingAjaxCall();
 	}
@@ -597,7 +597,7 @@ function getBasicInfo(){
 		   getvotersBasicInfo("voters","");
 		   getVotersData();
 		 }else if($('#votersDiv4').css('display') == 'block'){
-
+			
              callCorrespondingAjaxCall();
            
 		   $("#votersbasicinfoForAgeWiseDetls").hide();
@@ -636,7 +636,7 @@ function getVotersData(){
 
 function getVotersCastInfo()
 	{
-	
+
   $("#localCastStatsTabContent_header").html("");
   $("#localCastStatsTabContentTitle").html("");
   var errorDivEle = document.getElementById('AlertMsg');
@@ -666,35 +666,68 @@ function getVotersCastInfo()
 	mandalId = $("#mandalField").val();
 	id=mandalId.substring(1);
 	typename = $('#mandalField :selected').text();
-			if(id == 0 || id == null)
-			{
-			str +='Please Select Mandal';
-			flag =false;
-			}
+	if(id == 0 || id == null)
+	{
+	str +='Please Select Mandal';
+	flag =false;
+	}
 
 	}
 	else if(level == 3){
+	var constituencyValue =$("#constituencyList").val(); 
+	var mandalValue = $("#mandalField").val();
+
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
 	  typename = $('#panchayatField :selected').text()+ ' Panchayat ';
-			if(id == 0 || id == null)
+		 if(constituencyValue == 0 || constituencyValue == null)
+			{
+				str +='Please Select Constituency';
+				flag =false;
+			}
+			else if(mandalValue == 0 || mandalValue == null)
+			{
+				str +='Please Select Mandal';
+				flag =false;
+			}
+
+			else if(id == 0 || id == null)
 			{
 				str +='Please Select Panchayat';
 				flag =false;
 			}
+
+
 	}
 	else if(level == 4){
+		var constituencyValue =$("#constituencyList").val(); 
+		var mandalValue = $("#mandalField").val();
+		
+
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 typename = $('#pollingStationField :selected').text();
-			if(id == 0 || id == null)
+		 if(constituencyValue == 0 || constituencyValue == null)
+			{
+				str +='Please Select Constituency';
+				flag =false;
+			}
+			else if(mandalValue == 0 || mandalValue == null)
+			{
+				str +='Please Select Mandal';
+				flag =false;
+			}
+			
+			else if(id == 0 || id == null)
 			{
 			str +='Please Select Booth';
 			flag =false;
 			}
 	}
-	if(publicationDateId == 0 || publicationDateId == null )
+
+	 if(publicationDateId == 0 || publicationDateId == null )
 		{
+
 		str +='<br>Please Select Publication Date';
 		flag =false;
 		}
@@ -919,19 +952,43 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 		  flag=false;
 		}
     }else if(level == 3){
+		var constituencyValue =$("#constituencyList").val(); 
+		var mandalValue = $("#mandalField").val();
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
 	 typename =$("#panchayatField :selected").text()+' Panchayat';
-	   if(id == 0 ||id == null)
+	 if(constituencyValue == 0 || constituencyValue == null)
+		{
+				str +='Please Select Constituency';
+				flag =false;
+		}
+		else if(mandalValue == 0 || mandalValue == null)
+		{
+				str +='Please Select Mandal';
+				flag =false;
+		}
+	   else if(id == 0 ||id == null)
 		{
 		  str +='Please Select Panchayat';
 		  flag=false;
 		}
 	}else if(level == 4){
+	var constituencyValue =$("#constituencyList").val(); 
+	var mandalValue = $("#mandalField").val();
 	  type = 'booth';
 	  id = $("#pollingStationField").val();
 	  typename =$("#pollingStationField :selected").text();
-	   if(id == 0 || id == null)
+	  if(constituencyValue == 0 || constituencyValue == null)
+		{
+				str +='Please Select Constituency';
+				flag =false;
+		}
+		else if(mandalValue == 0 || mandalValue == null)
+		{
+				str +='Please Select Mandal';
+				flag =false;
+		}
+	   else if(id == 0 || id == null)
 		{
 		  str +='Please Select Booth';
 		  flag=false;
@@ -1544,14 +1601,25 @@ function getVoterDetailsForMandal(){
 }
 
 function getVoterDetailsForPanchayat(){
-
+	var constituencyValue =$("#constituencyList").val(); 
+	var mandalValue = $("#mandalField").val();
 	var panchayatId = $('#panchayatField').val();
 	var publicationId = $('#publicationDateList').val();
 	var name = $('#panchayatField option:selected').text()+' Panchayat';
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
 	var flag = true;
-	if(panchayatId == null || panchayatId =="0")
+	if(constituencyValue == 0 || constituencyValue == null)
+		{
+				str +='Please Select Constituency';
+				flag =false;
+		}
+	else if(mandalValue == 0 || mandalValue == null)
+		{
+				str +='Please Select Mandal';
+				flag =false;
+		}
+	else if(panchayatId == null || panchayatId =="0")
 	{
 	str +='Please Select Panchatyat';
 	flag=false;
@@ -1585,14 +1653,25 @@ function getVoterDetailsForPanchayat(){
 
 function getVoterDetailsForBooth(){
 
-
+	var constituencyValue =$("#constituencyList").val(); 
+	var mandalValue = $("#mandalField").val();
 	var boothId = $('#pollingStationField').val();
 	var publicationId = $('#publicationDateList').val();
 	var name = $('#pollingStationField option:selected').text();
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
 	var flag = true;
-	if(boothId == null || boothId == "0")
+	if(constituencyValue == 0 || constituencyValue == null)
+		{
+				str +='Please Select Constituency';
+				flag =false;
+		}
+	else if(mandalValue == 0 || mandalValue == null)
+		{
+				str +='Please Select Mandal';
+				flag =false;
+		}
+	else if(boothId == null || boothId == "0")
 	{
 	str +='Please Select Booth';
 	flag=false;
