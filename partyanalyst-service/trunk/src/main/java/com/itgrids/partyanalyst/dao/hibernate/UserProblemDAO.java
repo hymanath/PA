@@ -99,7 +99,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		query.append(" select model.problem.problemId, ");
 		query.append(" model.problem.title,model.problem.description,model.problem.identifiedOn,model.problem.existingFrom, ");
 		query.append(" model.problem.impactLevelValue,model.problem.regionScopes.regionScopesId,model.problem.regionScopes.scope, ");
-		query.append(" model.problem.isApproved,model.userProblemId from UserProblem model where (model.problem.isDelete = 'false' or model.problem.isDelete is null) and model.visibility.type = '"+IConstants.PUBLIC+"'");
+		query.append(" model.problem.isApproved,model.userProblemId,model.user.userId,model.user.profileImg from UserProblem model where (model.problem.isDelete = 'false' or model.problem.isDelete is null) and model.visibility.type = '"+IConstants.PUBLIC+"'");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = 'true'");			
