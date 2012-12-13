@@ -13,6 +13,6 @@ public interface ISpecialPageSubscriptionsDAO extends GenericDao<SpecialPageSubs
 	public List<Object[]> getAllSubscriberDetails();
 	public List<Object[]> getAllUserSubscribedSpecialPages(Long userId);
 	public List<Long> getUserSubscribedSpecialPageIds(Long userId);
-	
-
+	public List<Object[]> getAllSpecialPages();
+ 
 }

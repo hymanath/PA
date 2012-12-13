@@ -1199,7 +1199,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
      {
     	 StringBuilder query = new StringBuilder();
     		 
-    	 query.append("select distinct model from FileGallary model where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+    	 query.append("select model from FileGallary model where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
      	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate  and model.gallary.candidate.candidateId in (:candidateIds) ");  	 
     	 
     	 if(type.equalsIgnoreCase("photos"))
@@ -1226,7 +1226,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
      {
     	 StringBuilder query = new StringBuilder();
     	 
-    	 query.append("select distinct model,model1.party.partyId,model1.party.shortName,model1.party.partyFlag ");
+    	 query.append("select  model,model1.party.partyId,model1.party.shortName,model1.party.partyFlag ");
 	 
     	 query.append(" from FileGallary model,PartyGallery model1 where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
      	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate  and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate  " +
