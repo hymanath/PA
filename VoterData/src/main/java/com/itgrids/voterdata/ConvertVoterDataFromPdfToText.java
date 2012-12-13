@@ -1,8 +1,15 @@
 package com.itgrids.voterdata;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
 
 public class ConvertVoterDataFromPdfToText {
 	
@@ -121,7 +131,7 @@ public class ConvertVoterDataFromPdfToText {
                                        
                     String [] fileName = input.getName().split("-");
                     // Matcher refers to the actual text where the pattern will be found
-                    Matcher m = newp.matcher(sb);
+                    Matcher m = p.matcher(sb);
                     VoterInfo voter = null;
                     
                     StringBuilder sb2 = new StringBuilder();
@@ -136,14 +146,14 @@ public class ConvertVoterDataFromPdfToText {
                         i++;
                         voter = new VoterInfo();
                         // group() method refers to the next number that follows the pattern we have specified.
-                        voter.setAge(m.group(7).replaceAll("\\n","").trim());
-                        voter.setSex(m.group(1).replaceAll("\\n","").trim());
-                        voter.setVoterId(m.group(2).replaceAll("\\n","").trim());
-                        voter.setVoterName(m.group(4).replaceAll("\\n","").trim());
-                        voter.setGuardianName(m.group(5).replaceAll("\\n","").trim());
-                        voter.setGuardianRelation(m.group(3).substring(0, m.group(3).indexOf("'s Name")).replaceAll("\\n","").trim());
-                        voter.setHouseNumber(m.group(6).replaceAll("\\n","").trim());
-                        String sNo = m.group(8).replaceAll("\\n","").trim(); 
+                        voter.setAge(m.group(7).replaceAll("\\r\\n","").trim());
+                        voter.setSex(m.group(1).replaceAll("\\r\\n","").trim());
+                        voter.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
+                        voter.setVoterName(m.group(4).replaceAll("\\r\\n","").trim());
+                        voter.setGuardianName(m.group(5).replaceAll("\\r\\n","").trim());
+                        voter.setGuardianRelation(m.group(3).substring(0, m.group(3).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+                        voter.setHouseNumber(m.group(6).replaceAll("\\r\\n","").trim());
+                        String sNo = m.group(8).replaceAll("\\r\\n","").trim(); 
                         try{
                         if(sNo != null && sNo.length() > 0)
                         	voter.setsNo(new Long(sNo).longValue());
