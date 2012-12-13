@@ -122,6 +122,12 @@ table.gridtable td {
     text-decoration: none;
     white-space: nowrap;
 	height:24px;
+	
+}
+#impFamShowBasicInfo,#lclCastStsShowBasicInfo,
+#ageWiseVotersBasicInfoSubChartDiv
+{
+	margin-right:10px;
 }
  #votersouterDiv{
 	 margin-left: auto;
