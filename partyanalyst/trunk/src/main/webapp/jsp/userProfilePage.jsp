@@ -14,10 +14,20 @@
 
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 
-<link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-
-
+	
+<!-- rating -->
+		<!-- <link href="styles/rating/jquery.rating.css" rel="stylesheet" type="text/css">
+		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
+		<script src="js/rating/jquery.MetaData.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
+		<script src="js/slides.min.jquery.js"></script>-->
+<!-- rating -->
+    <!-- syntax highlighter -->
+    <link href="styles/rating/shCore.css" rel="stylesheet" type="text/css">
+    <link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
+	
+  <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <style>
 	.widget .widget-block{
 		padding-bottom: 20px;
@@ -234,7 +244,7 @@ padding:5px 20px;
     .subscriptionInnerDiv{clear:both; margin-bottom: 10px;margin-top: 10px;display: table;}
 
 	
-	.problemheadClass{margin-bottom: 20px;margin-top: 10px;font-family: Verdana,Arial,sans-serif;}
+	.problemheadClass{margin-bottom: 100px;margin-top: 10px;font-family: Verdana,Arial,sans-serif;}
 	.problemsShowDiv,.politicalReasonsDiv{border: 1px solid #D3D3D3;border-radius: 5px;padding: 10px; padding-top: 2px;margin-top: 10px;}
 	.problemTitle,.headingCls{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 	.likeCls{margin-right: 55px; margin-left: 62px;}
@@ -472,11 +482,19 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 					</h4>
 					
 					<div style="margin-top: 14px;">
-					<c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
+					 <c:if test="${not empty dataTransferVO.peopleYouMayKnow}">
+					   <c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
 						<div class="connectPeopleDiv" style="margin-top: 21px;width:100%;">
-							<div style="width:30%;float:left;"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /></div>
+							<div style="width:30%;float:left;">
+							<a href="publicProfile.action?profileId=${connectedPeoples.id}">
+							<!-- <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
+						
+							</c:if>-->
+							
+								<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
+							</a></div>
 							<div style="width:70%;float:left;">
-								<div style="margin-bottom:5px;margin-top:5px;">${connectedPeoples.candidateName}</div>
+								<div style="margin-bottom:5px;margin-top:5px;"><a href="publicProfile.action?profileId=${connectedPeoples.id}">${connectedPeoples.candidateName}</a></div>
 								<div>${connectedPeoples.constituencyName}</div>
 							</div>
 						
@@ -495,6 +513,12 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 
 						</div>
 						</c:forEach>
+						</c:if>
+						<c:if test="${empty dataTransferVO.peopleYouMayKnow}">
+							<div>
+							Right now there are no friend suggestion for you.	We will get back with more suggesstions as soon as possible..
+							</div>
+						</c:if>
 				</div>
 						
 				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink"href="javascript:{}">See All</a></p>
