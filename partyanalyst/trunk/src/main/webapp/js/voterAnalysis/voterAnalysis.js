@@ -1193,7 +1193,7 @@ function buildCastInfoData(myresults,jsObj)
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = myresults.voterCastInfodetails.totalVoters;
 	var totalCasts = myresults.voterCastInfodetails.totalCasts;
-	var localCastStatsTabContent = '<div style="font-family: verdana;font-size: 13px;margin-left: 124px;"> Total Voters : '+totalVoters+' ';
+	var localCastStatsTabContent = '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;"> Total Voters : '+totalVoters+' ';
 	localCastStatsTabContent+='&nbsp;&nbsp;&nbsp; Total Casts : '+totalCasts+'</div>';
 	localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
 	var typeName =jsObj.typename;	
@@ -1386,7 +1386,7 @@ str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in '+publicat
 str+='</strong></h5></div>';*/
 $("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
 str+='</br>';
-str+='<div style="border:1px solid black">';
+/*str+='<div style="border:1px solid black">';
 str+='<table>';
 str+='<tr>';
 str+='<th style="color:black">TotalVoters :</th>';
@@ -1397,7 +1397,9 @@ str+='<th style="color:black">TotalFamiles :</th>';
 str+='<td>'+myresults.totalFamalies+'</td>';
 str+='</tr>';
 str+='</table>';
-str+='</div>';
+str+='</div>';*/
+str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;"> Total Voters : '+myresults.totalVoters+' ';
+str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'</div>';
 str+='</br>';
 str+='<div>';
 str+='<table class="impTableDiv">';
