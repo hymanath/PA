@@ -1655,7 +1655,7 @@ public class SpecialPageService implements ISpecialPageService{
 			SubscriptionsVO subscriptionsVO = null;
 			
 			List<Long> list = specialPageSubscriptionsDAO.getUserSubscribedSpecialPageIds(userId);
-				if(list != null && list.size() >0 && specialPageVOList != null)
+				if(specialPageVOList != null && specialPageVOList.size() >0)
 					for(SpecialPageVO specialPageVO : specialPageVOList)
 					{
 						subscriptionsVO = new SubscriptionsVO();
