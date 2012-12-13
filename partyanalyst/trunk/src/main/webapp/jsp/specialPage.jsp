@@ -44,13 +44,13 @@
     padding: 32px 0 16px 21px;
     width: 244px;
 }
-.popupcontainer {
-    	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+.popupcontainer {		
     	background-color: #FFFFFF;
     	margin: 9px auto 10px;
     	max-width: 780px;
     	padding: 10px;
-	}
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
 	.main-mbg {
     -moz-border-radius: 6px 6px 6px 6px;
 	border-radius :6px;
@@ -1077,7 +1077,7 @@ $(document).ready(function() {
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to subscribe. <a href="loginInputAction.action" style="color:#80D1F1;"> Click here to Login</a></div></div>';
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to subscribe. <a href="loginInputAction.action" style="color:#80D1F1;"> Click here to Login</a></div></div>';
 		document.getElementById("logInDiv").innerHTML = str;
 }
 
