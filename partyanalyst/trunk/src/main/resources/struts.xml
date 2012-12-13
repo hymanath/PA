@@ -3873,5 +3873,21 @@
 				 <param name="root">mandalNames</param> 
 			</result>
 		</action>
+		
+		<action name="dailyUpdatesAction" class="dailyUpdatesAction">
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=adminUpload</result>
+			<result name="success">/jsp/dailyUpdates.jsp</result>
+		</action>
+		
+		<action name="sendDailyUpdates" class="dailyUpdatesAction" method="sendDailyUpdates">
+			<result type="json" name="success">
+				 <param name="root">message</param> 
+			</result>
+			<result type="json" name="data">
+				 <param name="root">options</param> 
+			</result>
+		</action>
+		
 		</package>
 </struts>      
