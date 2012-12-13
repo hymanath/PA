@@ -713,8 +713,6 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 <input type="hidden" name="CandidateDetailsVO.websiteId" value="${CandidateDetailsVO.websiteId}"/>
 
 
-<div class="well"></div>
-
 
 
 	<div id="div1" align="center" style="font-size: 15px;">
