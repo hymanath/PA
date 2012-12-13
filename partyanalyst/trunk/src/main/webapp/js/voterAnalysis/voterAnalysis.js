@@ -197,6 +197,7 @@ function showImportantFamiliesDiv()
 	
 	function showLocalCastDiv()
 	{
+		
 		var LocalCastDiv = document.getElementById('LocalCastDiv');
 		document.getElementById('votersDiv1').style.display='none';
 		document.getElementById('votersDiv2').style.display='block';
@@ -1285,7 +1286,7 @@ function buildCastInfoData(myresults,jsObj)
 	  type = "";
 	   name = $("#pollingStationField option:selected").text();
 	 }
-      var str ='<div id="impFamPancBothDtlstitle"><b>Voters Family details in '+name+' '+type+' in '+publicationYear+'</b></div>';
+      var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
           str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
