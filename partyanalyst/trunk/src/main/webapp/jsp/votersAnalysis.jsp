@@ -399,7 +399,7 @@ locationDetails.constituencyArr.push(ob);
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Important Families</span></div></td>
+					<td><div class="votersWidgetMainHeader"><span id="impFamiliesTitle" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
@@ -469,7 +469,7 @@ locationDetails.constituencyArr.push(ob);
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Voters Info</span></div></td>
+					<td><div class="votersWidgetMainHeader"><span id="votersTitle" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
@@ -496,7 +496,7 @@ locationDetails.constituencyArr.push(ob);
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="votersPopulationRange_head_span" class="votersWidgetHeader_span" style="top:11px;"> Age Wise Details</span></div></td>
+					<td><div class="votersWidgetMainHeader"><span id="AgeWisetitle" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
