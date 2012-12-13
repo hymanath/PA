@@ -465,7 +465,63 @@ $("#uploadPicButton").live("click",function(){
 			 getUploadpic();
 		}
 });
+
+//problem rating
+//setTimeout("applyRaty()",1000);
+
+//subscription
+
+$(".unSubscribedLink").live("click",function(){
+	var id = $(this).closest('div').find('.hiddenVarId').val();
+	var type = $(this).closest('div').find('.subscripType').val();
+	var jsObj=
+	{		
+            time : new Date().getTime(),	
+			id: id,
+			task: "unsubscriptionDetails",
+			page:type
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+});
+
+$(".subscribedLink").live("click",function(){
+	var id = $(this).closest('div').find('.hiddenVarId').val();
+	var type = $(this).closest('div').find('.subscripType').val();
+	var jsObj=
+	{		
+            time : new Date().getTime(),	
+			id: id,
+			task: "subscriptionDetails",
+			page:type
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+});
+
 });//End ready
+
+
+
+/* 
+//problem rating
+
+function applyRaty(){
+$('.star').each(function(){
+var rating=0;
+if($(this).next().val()!="null"){rating= $(this).next().val();}
+	$(this).raty({
+				half       : true,
+	     		precision  : true,
+				readOnly	: true,
+				score		:rating
+				});
+});
+}*/
 
 function previewImg()
 {
@@ -624,6 +680,14 @@ function callAjax1(jsObj,url){
 						showPostedReasons(jsObj,results);
 								
 					}
+					else if(jsObj.task == "unsubscriptionDetails")
+					{
+						$(".subscriptionsLink").trigger("click");
+					}
+					else if(jsObj.task == "subscriptionDetails")
+					{
+						$(".subscriptionsLink").trigger("click");
+					}
 
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -661,11 +725,15 @@ function getFriendsListForUser(results)
 	for(var i in results.connectedPeople)
 	{
 		
+		var imageStr = "pictures/profiles/"+results.connectedPeople[i].image;
 		var template = $(".templateDiv");
 		var templateClone =  template.clone();
 		templateClone.removeClass("templateDiv");
 		templateClone.find('.connectedPersonName').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'">'+results.connectedPeople[i].candidateName+'</a>');
-		templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+		if(results.connectedPeople[i].image == null)
+			templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+		else
+			templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
@@ -1106,7 +1174,6 @@ function showAllPostedProblems_paginator(jsObj,results)
 		$('.problemTemplateDiv').html('Problems Does Not Exists').appendTo('.placeholderCenterDiv');
 		return;
 	}
-	
 	for(var i in problemsData)
 	{
 		var template = $('.problemTemplateDiv');
@@ -1119,9 +1186,10 @@ function showAllPostedProblems_paginator(jsObj,results)
 		templateClone.find('.likeCls').html('Like');
 		templateClone.find('.commentCls').html('Comment');
 		templateClone.find('.shareCls').html('Share');
+		//if(problemsData[i].rating != null)
+			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-
 	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
 	pagination.appendTo('.placeholderCenterDiv');
 }
@@ -1164,9 +1232,6 @@ function connectToSelectedPerson(id,name)
 		div.append(connectBtn);
 		div.append(connectedPersonId);
 		$('#allConnectedUsersDisplay_main').append(div);
-		
-	
-
 }
 
 //people  you may know "connect" response fun
@@ -1324,6 +1389,9 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userSpecialPageSubscriptionsDiv').children().remove();
+	$('#userSpecialPageUnSubscriptionsDiv').children().remove();
+	$('#userSpecialPageSubscriptionsDiv').html('');
+	$('#userSpecialPageUnSubscriptionsDiv').html('');
 
 	var specialPages = results.userSpecialPageSubscriptions;
 	if(specialPages == null || specialPages.length == 0)
@@ -1347,8 +1415,8 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
 		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
 		  templateClone.find('.imgClass').html('<img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/>');
-		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
-		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
+		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageSubscriptionsDiv');
 		}
 		else
@@ -1358,8 +1426,8 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
 		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
 		  templateClone.find('.imgClass').html('<img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/>');
-		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Subscribed</a>');
-		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">SUBSCRIBE</a>');
+		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageUnSubscriptionsDiv');
 		
 		}
@@ -1386,6 +1454,7 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userCandidateSubscriptionsDiv').children().remove();
+	$('#userCandidateSubscriptionsDiv').html('');
 	var politicians = results.userCandidateSubscriptions;
 
 	if(politicians == null || politicians.length == 0)
@@ -1410,9 +1479,9 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 		templateClone.find('.titleCls').html(''+politicians[i].name+'');
 		templateClone.find('.imgClass').html('<img height="100" width="95" src="images/candidates/'+politicians[i].name+'.jpg"/>');
 		/*if(buildSubscribeButtons(results.profileCandidateSubscriptions[i].id,results.userCandidateSubscriptions))
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">Un Subscribed</a>');
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		else*/
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+politicians[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="candidatePage"/>');
 		templateClone.appendTo('#userCandidateSubscriptionsDiv');
@@ -1427,6 +1496,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userConstituencySubscriptionsDiv').children().remove();
+	$('#userConstituencySubscriptionsDiv').html('');
 	var constituencies = results.userConstituencySubscriptions;
 
 	if(constituencies == null || constituencies.length == 0)
@@ -1447,7 +1517,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass('specialPagSubscrTemplDiv');
 		templateClone.find('.titleCls').html(''+constituencies[i].name+'');
-		templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
 		templateClone.appendTo('#userConstituencySubscriptionsDiv');
 	}
@@ -1459,6 +1529,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userPartySubscriptionsDiv').children().remove();
+	$('#userPartySubscriptionsDiv').html('');
 	var partySubscriptions = results.userPartySubscriptions;
 
 	if(partySubscriptions == null || partySubscriptions.length == 0)
@@ -1480,7 +1551,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 		templateClone.removeClass('specialPagSubscrTemplDiv');
 		templateClone.find('.titleCls').html(''+partySubscriptions[i].title+'');
 		templateClone.find('.imgClass').html('<img height="100" width="95" src="images/party_flags/'+results.userPartySubscriptions[i].name+'.png"/>');
-		templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">Un Subscribed</a>');
+		templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
 		templateClone.appendTo('#userPartySubscriptionsDiv');
 	}
