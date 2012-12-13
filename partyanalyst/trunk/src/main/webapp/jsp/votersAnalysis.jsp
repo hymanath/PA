@@ -530,8 +530,6 @@ locationDetails.constituencyArr.push(ob);
 <!-- main div  End-->
 </div>
 <script type="text/javascript">
- showImportantFamiliesDiv();
-
 function getCastInfoForsubLevel()
 	{
 	
