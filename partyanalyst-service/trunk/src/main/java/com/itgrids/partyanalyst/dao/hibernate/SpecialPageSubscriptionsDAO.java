@@ -59,4 +59,9 @@ public class SpecialPageSubscriptionsDAO extends GenericDaoHibernate<SpecialPage
 				" model.user.userId = ? and model.specialpage.specialPageId = model2.specialPage.specialPageId",userId);
 		
 	}
+	
+	public List<Object[]> getAllSpecialPages(){
+		return getHibernateTemplate().find("select distinct model.specialpage.specialPageId,model.specialpage.name from SpecialPageSubscriptions model ");
+	
+	}
 }

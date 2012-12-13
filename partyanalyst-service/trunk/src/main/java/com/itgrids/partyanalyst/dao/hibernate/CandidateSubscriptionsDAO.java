@@ -49,4 +49,8 @@ public class CandidateSubscriptionsDAO extends GenericDaoHibernate<CandidateSubs
 	{
 		return getHibernateTemplate().find("select model.candidate.candidateId, model.candidate.lastname, model.user.userId from CandidateSubscriptions model,Candidate model2 where model.user.userId = ? and model.candidate.candidateId = model2.candidateId",userId);
 	}
+	
+	public List<Object[]> getAllCandidates(){
+		return getHibernateTemplate().find("select distinct model.candidate.candidateId, model.candidate.lastname from CandidateSubscriptions model ");
+	}
 }
