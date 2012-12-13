@@ -198,7 +198,6 @@ function showImportantFamiliesDiv()
 	function showLocalCastDiv()
 	{
 		var LocalCastDiv = document.getElementById('LocalCastDiv');
-		
 		document.getElementById('votersDiv1').style.display='none';
 		document.getElementById('votersDiv2').style.display='block';
 		document.getElementById('votersDiv3').style.display='none';
@@ -368,7 +367,7 @@ function showImportantFamiliesDiv()
 								else if(jsObj.task == "votersbasicinfo")
 								{
 								    if(myResults != null)
-									buildVotersBasicInfo(myResults,jsObj.to);
+									buildVotersBasicInfo(myResults,jsObj.to,jsObj);
 								}
 							else if(jsObj.task == "getCastInfo")
 								{
@@ -382,7 +381,7 @@ function showImportantFamiliesDiv()
 								else if(jsObj.task == "importantFamiliesinfo")
 								{
 								  if(myResults != null){
-								    impFamilesStaticTable(myResults);
+								    impFamilesStaticTable(myResults,jsObj);
 									buildImpFamilesChart(myResults);
 								    if(myResults.subList != null && myResults.subList.length > 0)
 								      buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
@@ -686,7 +685,7 @@ function getVotersCastInfo()
 	else if(level == 4){
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
-		 typename = $('#pollingStationField :selected').text() + ' Booth';
+		 typename = $('#pollingStationField :selected').text();
 			if(id == 0 || id == null)
 			{
 			str +='Please Select Booth';
@@ -896,9 +895,13 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	var flag =true;
 	var errorDivEle =document.getElementById('AlertMsg'); 
 	var publicationDateId = $("#publicationDateList").val();
+	var publicationDateText =$("#publicationDateList option:selected").text();
+	var year=publicationDateText.substr(publicationDateText.length - 4);
+	var typename='';
 	if(level == 1){
 	   type = 'constituency';
 	   id = $("#constituencyList").val();
+	   typename =$("#constituencyList :selected").text() + ' Constituency';
 	   if(id == 0 ||id == null)
 		{
 		  str +='Please Select Constituency';
@@ -908,6 +911,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	}else if(level == 2){
 	  type = 'mandal';
 	  id = $("#mandalField").val();
+	  typename =$("#mandalField :selected").text();
 	   if(id == 0 ||id == null)
 		{
 		  str +='Please Select Mandal';
@@ -916,6 +920,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
     }else if(level == 3){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
+	 typename =$("#panchayatField :selected").text()+' Panchayat';
 	   if(id == 0 ||id == null)
 		{
 		  str +='Please Select Panchayat';
@@ -924,6 +929,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	}else if(level == 4){
 	  type = 'booth';
 	  id = $("#pollingStationField").val();
+	  typename =$("#pollingStationField :selected").text();
 	   if(id == 0 || id == null)
 		{
 		  str +='Please Select Booth';
@@ -947,6 +953,8 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 				id:id,
 				publicationDateId:publicationDateId,
 				to:voterBasicInfoFor,
+				year:year,
+				typename:typename,
 				task:"votersbasicinfo"
 	
 			}
@@ -962,6 +970,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 				type:type,
 				id:id,
 				publicationDateId:publicationDateId,
+				typename:typename,
 				task:"importantFamiliesinfo"
 	
 			}
@@ -979,6 +988,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 				type:reqtype,
 				id:id,
 				publicationDateId:publicationDateId,
+				typename:typename,
 				task:"gettotalimpfamlies"
 	
 			}
@@ -1070,11 +1080,12 @@ function buildVotersInFamily(results,hno){
 
 }
 
-function buildVotersBasicInfo(votersbasicinfo,to){
+function buildVotersBasicInfo(votersbasicinfo,to,jsObj){
+
    var str = '<div id="votersBasicInfoDivSub">';
    if(votersbasicinfo != null && votersbasicinfo.datapresent){
-      var name = votersbasicinfo.name+'  '+votersbasicinfo.type;
-      str+='<b>Voters Info in '+name+'</b>';
+    
+	 $("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
       str+='<div>Male Voters : '+votersbasicinfo.totalMaleVoters+'  Female Voters : '+votersbasicinfo.totalFemaleVoters+'  ' ;
 	  if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
 	  str+='UnKnown Voters : '+votersbasicinfo.unKnowVoters+'  ';
@@ -1124,6 +1135,7 @@ function buildVotersBasicInfo(votersbasicinfo,to){
 
      }
    }else{
+	   $("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
       if(to == "")
 	   $("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
 	  else if(to == "impfamilies")
@@ -1364,13 +1376,14 @@ oDT: impFamilesDataTable
 };
 
 }
-function impFamilesStaticTable(myresults)
+function impFamilesStaticTable(myresults,jsObj)
 {
 var str='';
 str+='<div class="impFamilesMainDiv" >';
-str+='<div><h5><strong>';
+/*str+='<div id="impFamiliesTitle"><h5><strong>';
 str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in '+publicationYear+'';
-str+='</strong></h5></div>';
+str+='</strong></h5></div>';*/
+$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
 str+='</br>';
 str+='<div style="border:1px solid black">';
 str+='<table>';
@@ -1434,6 +1447,7 @@ function getVoterDetailsForConstituency(){
 
 	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
+	var name = $('#constituencyList option:selected').text() +' Constituency';
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
 	var flag = true;
@@ -1459,6 +1473,7 @@ function getVoterDetailsForConstituency(){
 					mandalId:'0',
 					boothId:'0',
 					panchayatId:'0',
+					name:name,
 				    type:"constituency",
 				};
 
@@ -1472,6 +1487,7 @@ function getVoterDetailsForConstituency(){
 function getVoterDetailsForMandal(){
 
 	var mandalId = $('#mandalField').val();
+	var name = $('#mandalField option:selected').text();
 	var publicationId = $('#publicationDateList').val();
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
@@ -1501,6 +1517,7 @@ function getVoterDetailsForMandal(){
 						mandalId:mandalId,
 						boothId:'0',
 						panchayatId:'0',
+						name:name,
 						type:"mandal"
 						
 					};
@@ -1510,6 +1527,7 @@ function getVoterDetailsForMandal(){
 					{
 						mandalId:mandalId,
 						publicationDateId:publicationId,
+						name:name,
 						type:"localElectionBody"
 						
 					};
@@ -1526,6 +1544,7 @@ function getVoterDetailsForPanchayat(){
 
 	var panchayatId = $('#panchayatField').val();
 	var publicationId = $('#publicationDateList').val();
+	var name = $('#panchayatField option:selected').text()+' Panchayat';
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
 	var flag = true;
@@ -1550,6 +1569,7 @@ function getVoterDetailsForPanchayat(){
 					boothId:'0',
 					panchayatId:panchayatId,
 					publicationDateId:publicationId,
+					name:name,
 					type:"panchayat"
 				};
 
@@ -1565,6 +1585,7 @@ function getVoterDetailsForBooth(){
 
 	var boothId = $('#pollingStationField').val();
 	var publicationId = $('#publicationDateList').val();
+	var name = $('#pollingStationField option:selected').text();
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
 	var flag = true;
@@ -1589,6 +1610,7 @@ function getVoterDetailsForBooth(){
 					mandalId:'0',
 					panchayatId:'0',					
 					boothId:boothId,
+					name:name,
 					type:"booth",
 				};
 
@@ -1613,7 +1635,7 @@ $('#ajaxImageDiv').css('display','block');
 
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
 							buildVoterDetailsTable(myResults,jsObj.type);
-                             buildAgeWiseVoterAnalysisChart(myResults);
+                             buildAgeWiseVoterAnalysisChart(myResults,jsObj);
 
 							if(jsObj.type != "booth"){
 								buildAgewiseDetails(myResults,jsObj.type);
@@ -2092,7 +2114,9 @@ $('#voterAgeAngGenderwiseDetailsInPercent').html(str);
 }
 
 
-function buildAgeWiseVoterAnalysisChart(chartInfo){
+function buildAgeWiseVoterAnalysisChart(chartInfo,jsObj){
+
+$("#AgeWisetitle").html("Age Wise Voters Information Of "+jsObj.name+" in "+publicationYear+" ");
 // Create the data table.
 var data = google.visualization.arrayToDataTable([
 ['Task', 'Percentage'],
