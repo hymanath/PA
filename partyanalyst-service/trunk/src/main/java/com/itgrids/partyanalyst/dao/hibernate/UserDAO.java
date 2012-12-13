@@ -123,7 +123,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	public List<Object[]> getUserLocationDetailsByUserIds(List<Long> userIds)
 	{
 		Query query = getSession().createQuery("select model.state.stateId, model.state.stateName, model.district.districtId, " +
-				" model.district.districtName, model.constituency.constituencyId, model.constituency.name from User model " +
+				" model.district.districtName, model.constituency.constituencyId, model.constituency.name,model.userId,model.profileImg from User model " +
 				" where model.userId in (:userIds)");	
 		
 		query.setParameterList("userIds", userIds);
