@@ -817,7 +817,11 @@ function getVotersInACaste(id,publicationDateId,caste)
 {
 $("#localCastStatsVotersTitle").html("");
 $("#localCastStatsTabContent_subbody1").html("");
+var level = $("#reportLevel").val();
+if(level == 3)
 var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
+if(level == 4)
+var typename = $('#pollingStationField :selected').text();
 var publicationDateVal=$('#publicationDateList :selected').text();
 var year=publicationDateVal.substr(publicationDateVal.length - 4)
 var jsObj={
@@ -934,7 +938,7 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 }
 function buildVotersInACaste(results,jsObj)
 {
-	$("#localCastStatsVotersTitle").html("voters Details In "+jsObj.typename+" in "+jsObj.publicationDate+" ");
+	$("#localCastStatsVotersTitle").html(" "+jsObj.caste+" Caste voters Details In " +jsObj.typename+" in "+jsObj.publicationDate+" ");
 	 var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"sNo", label: "SNo", sortable: true},
@@ -1101,8 +1105,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
 
 }
 
-
-	function buildCastInfoData(myresults,jsObj)
+function buildCastInfoData(myresults,jsObj)
 	{
 
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
@@ -1112,6 +1115,8 @@ function buildVotersChart(chartInfo,reqTitle,to){
 	localCastStatsTabContent+='&nbsp;&nbsp;&nbsp; Total Casts : '+totalCasts+'</div>';
 	localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
 	var typeName =jsObj.typename;	
+	var publicationDateId=jsObj.publicationDateId;
+	var boothId=jsObj.id;
 		var	castIno = new Array();
 		var cast = myresults.voterCastInfodetails.castVOs;
 		
@@ -1133,20 +1138,30 @@ function buildVotersChart(chartInfo,reqTitle,to){
 		}
 		if(cast != '')
 		{
-		buildLocalCastStatisticsDataTableForAssembly(typeName);	
+		buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId);	
 		}
 		else{
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
      $("#localCastStatsTabContent_body").html("No Data Found");
    }	
 	}
-   function buildLocalCastStatisticsDataTableForAssembly(typeName)
+   function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
 	{
 	
-		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+	YAHOO.widget.DataTable.casteLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var caste = oData;
+		
+		var caste = oRecord.getData("caste");
+
+		
+		elLiner.innerHTML ='<a onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+caste+'\')">'+caste+'</a>';		
+	};
+
 		var localCastStatsColumnDefs = [ 
 		    	            
-		    	            {key:"caste", label: "caste", sortable: true}, 
+		    	            {key:"caste", label: "caste", sortable: true,formatter:YAHOO.widget.DataTable.casteLink},
 							{key:"castePopulation", label: "caste Population", formatter:"number", sortable: true},
 		    				{key:"malePopulation", label: "male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
 							{key:"femalePopulation", label: "female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
