@@ -124,8 +124,9 @@ table.gridtable td {
 	height:24px;
 	
 }
+#votersBasicInfoDivSub{font-family:verdana;}
 #impFamShowBasicInfo,#lclCastStsShowBasicInfo,
-#ageWiseVotersBasicInfoSubChartDiv
+#ageWiseDetlsShowBasicInfo
 {
 	margin-right:10px;
 }
@@ -518,7 +519,9 @@ locationDetails.constituencyArr.push(ob);
      </div>
 
 <div id='ageWiseInfoDiv' class="divInfo">
+<br><br>
 <div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
+
 <div id="voterDetailsNote" class="noteDiv"></div>
 
 <div id="tableDiv" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
