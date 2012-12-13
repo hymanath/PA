@@ -73,6 +73,7 @@
 		<property name="userRolesDAO" ref="userRolesDAO"/>
 		<property name="userDAO" ref="userDAO"></property>
 		<property name="userProblemDAO" ref="userProblemDAO"></property>
+		<property name="problemManagementService" ref="problemManagementService" /> 
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
