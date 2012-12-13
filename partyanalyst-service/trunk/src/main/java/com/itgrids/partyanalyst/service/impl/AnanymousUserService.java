@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -64,6 +65,7 @@ import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -99,7 +101,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserReferralEmailsDAO userReferralEmailsDAO;
 	private IUserDAO userDAO;
 	private IUserProblemDAO userProblemDAO;
-	
+	private IProblemManagementService problemManagementService;
 	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
 	}
@@ -305,6 +307,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
+	}
+
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
 	}
 
 public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
@@ -1034,7 +1045,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				dataTransferVO.setDistrictId((Long)params[2]);
 				dataTransferVO.setDistrictName(params[3].toString());
 				dataTransferVO.setConstituencyId((Long)params[4]);
-				dataTransferVO.setConstituencyName(WordUtils.capitalize(params[5].toString().toLowerCase()));				
+				dataTransferVO.setConstituencyName(WordUtils.capitalize(params[5].toString().toLowerCase()));
+				dataTransferVO.setUserId((Long)params[6]);
+				if(params[7] != null)
+				dataTransferVO.setProfileImg(params[7].toString());
 			}
 			else
 			{
@@ -1374,6 +1388,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						candidateResults.setState(details.getState().getStateName());
 						candidateResults.setDistrict(details.getDistrict().getDistrictName());						
 						candidateResults.setConstituencyName(details.getConstituency().getName());
+						candidateResults.setImage(details.getProfileImg());
 						candiateVO.add(candidateResults);
 					}
 				}else{
@@ -1389,7 +1404,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							candidateName+=name;
 						}
 						candidateResults.setCandidateName(candidateName);
-						candidateResults.setId(details.getUserId());					
+						candidateResults.setId(details.getUserId());
+						candidateResults.setImage(details.getProfileImg());
 						candiateVO.addAll(candiateVO);
 					}
 				}
@@ -1824,7 +1840,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		List<ProblemDetailsVO> problemList = null;
 		ProblemBeanVO problemDetailsVO = new ProblemBeanVO();
 		Long totalRecords = 0l;
-		
+		CompleteProblemDetailsVO problemRating = new CompleteProblemDetailsVO();
 		try
 		{			
 			List problems = userProblemDAO.getAllPostedProblemsByAnanymousUserId(registrationId, startIndex, results, order, dbColoumnName, reasonType);
@@ -1841,6 +1857,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					problem.setProblemID(params[0]!=null?(Long)params[0]:0);
 					problem.setDescription(params[2]!=null?params[2].toString():"");
 					problem.setIdentifiedDate(params[3]!=null?params[3].toString():"");
+					problemRating = problemManagementService.getAverageRatingOfAProblem((Long)params[0]);
+					problem.setAverageRating(problemRating);
+					problem.setRating(problemRating.getAvgRating());
+					
 					if(params[3]!=null)
 					problem.setPostedDate((Date)params[3]);
 					
