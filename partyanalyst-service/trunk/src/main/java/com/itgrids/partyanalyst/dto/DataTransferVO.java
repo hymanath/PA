@@ -46,6 +46,7 @@ public class DataTransferVO extends ResultStatus{
 	private String email;
 	private String mobileNo;
 	private String userStatusType;
+	private String profileImg;
 	
 	public String getMobileNo() {
 		return mobileNo;
@@ -383,6 +384,14 @@ public class DataTransferVO extends ResultStatus{
 
 	public void setTotalResultsCnt(Long totalResultsCnt) {
 		this.totalResultsCnt = totalResultsCnt;
+	}
+
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
 	}	
 
 }
