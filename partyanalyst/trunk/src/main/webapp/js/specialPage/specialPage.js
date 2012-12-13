@@ -2255,7 +2255,7 @@ function showFirstFourNewsRecords(results)
  { 
   newsData = results;
   var str ='';
-  
+
   if(results.length>0)
   {
    
@@ -2282,7 +2282,7 @@ function showFirstFourNewsRecords(results)
      str+='<div class="year-time"><span class="li-red">'+source+'</span> | '+results[i].fileDate+'</div>';
      
 	 if(results[i].fileDescription1.length > 62)
-		str += results[i].fileDescription1.substring(0,62)+'..</li>';
+		str += results[i].fileDescription1.substring(0,103)+'..</li>';
 	 else
 		str += ''+results[i].fileDescription1+'</li>';
 

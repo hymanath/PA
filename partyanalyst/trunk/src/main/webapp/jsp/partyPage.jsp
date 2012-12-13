@@ -33,6 +33,15 @@
 
 
 <style type="text/css">
+
+.popupcontainer {		
+    	background-color: #FFFFFF;
+    	margin: 9px auto 10px;
+    	max-width: 780px;
+    	padding: 10px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
+
 .yui-skin-sam.yui-dt table th {
 		background-color: #CEEDF0;
 		font-size: 13px;
@@ -2045,6 +2054,7 @@ function fireEvent(obj,evt){
 
 function showFirstFourNewsRecords(results)
  { 
+
   newsData = results;
   var str ='';
   
@@ -2073,7 +2083,7 @@ function showFirstFourNewsRecords(results)
      str+='<div class="year-time"><span class="li-red">'+source+'</span> | '+results[i].fileDate+'</div>';
      
 	 if(results[i].fileDescription1.length > 100)
-		str += results[i].fileDescription1.substring(0,100)+'..</li>';
+		str += results[i].fileDescription1.substring(0,110)+'..</li>';
 	 else
 		str += ''+results[i].fileDescription1+'</li>';
 
@@ -2172,7 +2182,7 @@ function showFirstFourNewsRecords(results)
 	 }
 
 	 
-		str+='             <td><div  id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+		str+='             <td><div  id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 
 	 if(currentSize+1 <= (arraySize-1))
@@ -2191,7 +2201,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 
 	 
-	 str+='             <td><div id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	 str+='             <td><div id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 	 
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
@@ -2235,7 +2245,7 @@ function showFirstFourNewsRecords(results)
 	  str += '  </tr></table>';
 	  str +='</center></div>';
 	}
-	str += '<div id="facebookCommentsInNewsDiv" class="container" style="overflow:auto;width:600px;"></div>';
+	str += '<div id="facebookCommentsInNewsDiv" class="popupcontainer" style="overflow:auto;width:600px;"></div>';
 
 	document.getElementById("showNewsDiv").innerHTML=str;
 
@@ -2327,7 +2337,7 @@ function showFirstFourNewsRecords(results)
 	 }
 
 	 
-		str+='             <td><div  id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+		str+='             <td><div  id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 
 	 if(currentSize+1 <= (arraySize-1))
@@ -2346,7 +2356,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 
 	 
-	 str+='             <td><div id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	 str+='             <td><div id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 	 
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
@@ -3669,7 +3679,7 @@ function buildContentDetails()
 
 		if(result.relatedGalleries[0].filesList.length >= 2){
 		str += '<td valign="top">';
-		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
 		str += '<b><font color="blue">Other Videos</font></b>';
 		str += '<Table>';
 		
@@ -3684,7 +3694,7 @@ function buildContentDetails()
 		}
 		
 		str += '<td valign="top" style="horizontal-align:center;">';
-		str += '<div class="container" id="nextPartImage" style="width:500px;">';
+		str += '<div class="popupcontainer" id="nextPartImage" style="width:500px;">';
 		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></div>';
 		str += '<table><tr>';
 		str += '<td>';
@@ -3724,7 +3734,7 @@ function buildContentDetails()
 		
 		if(result.relatedGalleries[0].filesList.length >= 2){
 		str += '<td valign="top">';
-		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
 		str += '<b><font color="blue">Other Videos</font></b>';
 		str += '<Table>';
 
@@ -3761,7 +3771,7 @@ function buildContentDetails()
 			   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 			}
 		  }
-			str += '<td><div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+			str += '<td><div class="popupcontainer" id="nextPartImage" style="text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
 
 			 if(result.relatedGalleries[0].filesList.length == 1){
 			
@@ -3833,7 +3843,7 @@ function buildContentDetails()
 		str += '<div class="main-title-sec">';
 		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${partyVO.partyShortName} Party </div><div class="main-bbg"/></div>';
 		
-		str += '<div class="container" style="overflow:auto;width:880px;max-width:850px;">';
+		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
 		
 		for(var i=0;i<result.otherGalleries.length;i++)
@@ -4326,7 +4336,7 @@ function openAnalyzeConstituencyWindow(result,type)
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Assess Party Leaders.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Assess Party Leaders.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
 		document.getElementById("logInDiv").innerHTML = str;
 
 		//alert("Please Login To Post Comment");
@@ -4368,7 +4378,7 @@ function openAnalyzeConstituencyWindow(result,type)
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Comment For Free User Only.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">Comment For Free User Only.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
 		document.getElementById("logInDiv").innerHTML = str;
 
 		//alert("Comment For Free User Only");
@@ -4382,9 +4392,9 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
     if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
 	{
 	  if(type != 'video')
-	    var str='<div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'"></img></div>';
+	    var str='<div class="popupcontainer" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'"></img></div>';
 	  else
-	   var str='<div class="container" id="nextPartImage" style="width:500px;"><iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
+	   var str='<div class="popupcontainer" id="nextPartImage" style="width:500px;"><iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
 	  document.getElementById("nextPartImage").innerHTML = str;
 	
 	   str = '<center><table><tr>';
@@ -4423,9 +4433,9 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  if(document.getElementById("sourceChangeSpan") != null)
 	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
 	  if(type != 'video')
-	    var str='<div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
+	    var str='<div class="popupcontainer" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
 	  else
-	    var str='<div class="container" id="nextPartImage" style="width:500px;"><iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
+	    var str='<div class="popupcontainer" id="nextPartImage" style="width:500px;"><iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
 	  document.getElementById("nextPartImage").innerHTML = str;
 	
 	   str = '<center><table><tr>';
@@ -4481,7 +4491,7 @@ function showNotLogIn()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to subscribe. <a href="loginInputAction.action" style="color:#80D1F1;">Click here to Login </a></div></div>';	
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to subscribe. <a href="loginInputAction.action" style="color:#80D1F1;">Click here to Login </a></div></div>';	
 		document.getElementById("logInDiv").innerHTML = str;
 }
 
@@ -4498,7 +4508,7 @@ function subscribeAlert()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 function unSubscribeAlert()
 {
@@ -4513,7 +4523,7 @@ function unSubscribeAlert()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 </script>
 

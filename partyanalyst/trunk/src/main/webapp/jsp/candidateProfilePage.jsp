@@ -53,6 +53,14 @@
     white-space: nowrap;
 }
 
+.popupcontainer {		
+    	background-color: #FFFFFF;
+    	margin: 9px auto 10px;
+    	max-width: 780px;
+    	padding: 10px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
+
 .titleStyle {
     font-family:sans-serif;
     font-size: 13px;
@@ -1908,7 +1916,7 @@ function getFirstFourNewsRecords(){
 	callAjax(jsObj,url);
 }
 function showFirstFourNewsRecords(results)
- { 
+ {
      newsData = results;
   var str ='';
   
@@ -1938,7 +1946,7 @@ function showFirstFourNewsRecords(results)
      str+='<div class="year-time"><span class="li-red">'+source+'</span> | '+results[i].fileDate+'</div>';
      
 	 if(results[i].fileDescription1.length > 60)
-		str += results[i].fileDescription1.substring(0,100)+'..</li>';
+		str += results[i].fileDescription1.substring(0,127)+'..</li>';
 	 else
 		str += ''+results[i].fileDescription1+'</li>';
 
@@ -2037,7 +2045,7 @@ function showFirstFourNewsRecords(results)
 	 }
 
 	 
-		str+='             <td><div  id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+		str+='             <td><div  id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 
 	 if(currentSize+1 <= (arraySize-1))
@@ -2056,7 +2064,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 
 	 
-	 str+='             <td><div id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	 str+='             <td><div id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 	 
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
@@ -2100,7 +2108,7 @@ function showFirstFourNewsRecords(results)
 	  str += '  </tr></table>';
 	  str +='</center></div>';
 	}
-	str += '<div id="facebookCommentsInNewsDiv" class="container" style="overflow:auto;width:600px;"></div>';
+	str += '<div id="facebookCommentsInNewsDiv" class="popupcontainer" style="overflow:auto;width:600px;"></div>';
 
 	document.getElementById("showNewsDiv").innerHTML=str;
 
@@ -2191,7 +2199,7 @@ function showFirstFourNewsRecords(results)
 	 }
 
 	 
-		str+='             <td><div  id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+		str+='             <td><div  id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 
 	 if(currentSize+1 <= (arraySize-1))
@@ -2210,7 +2218,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 
 	 
-	 str+='             <td><div id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	 str+='             <td><div id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 	 
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
@@ -3033,7 +3041,7 @@ function buildContentDetails()
 
 		if(result.relatedGalleries[0].filesList.length >= 2){
 		str += '<td valign="top">';
-		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
 		str += '<b><font color="blue">Other Videos</font></b>';
 		str += '<Table>';
 		
@@ -3048,7 +3056,7 @@ function buildContentDetails()
 		}
 		
 		str += '<td valign="top" style="horizontal-align:center;">';
-		str += '<div class="container" style="width:500px;">';
+		str += '<div class="popupcontainer" style="width:500px;">';
 		str += '<span id="nextPartImage"><iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></span>';
 		str += '<table><tr>';
 		str += '<td>';
@@ -3086,7 +3094,7 @@ function buildContentDetails()
 		
 		if(result.relatedGalleries[0].filesList.length >= 2){
 		str += '<td valign="top">';
-		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
 		str += '<b><font color="blue">Other Videos</font></b>';
 		str += '<Table>';
 
@@ -3122,7 +3130,7 @@ function buildContentDetails()
 			   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 			}
 		  }
-			str += '<td><div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+			str += '<td><div class="popupcontainer" id="nextPartImage" style="text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
           if(result.relatedGalleries[0].filesList.length == 1){
 			
 		  }else{
@@ -3191,7 +3199,7 @@ function buildContentDetails()
 		str += '<div class="main-title-sec">';
 		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${candidateVO.candidateName}</div><div class="main-bbg"/></div>';
 		
-		str += '<div class="container" style="overflow:auto;width:880px;max-width:850px;">';
+		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
 		
 		for(var i=0;i<result.otherGalleries.length;i++)
@@ -3259,7 +3267,7 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
     if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
 	{
 	  if(type != 'video')
-	    var str='<div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'"></div></img>';
+	    var str='<div class="popupcontainer" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'"></div></img>';
 	  else
 	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
 	  document.getElementById("nextPartImage").innerHTML = str;
@@ -3300,7 +3308,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  if(document.getElementById("sourceChangeSpan") != null)
 	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
 	  if(type != 'video')
-	    var str='<div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></div></img>';
+	    var str='<div class="popupcontainer" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></div></img>';
 	  else
 	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
 	  document.getElementById("nextPartImage").innerHTML = str;
@@ -3361,7 +3369,7 @@ function showNotLogIn()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to ';
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to ';
 		str+='subscribe. <a href="loginInputAction.action" style="color:#80D1F1;">Click here to Login </a></div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 
@@ -3378,7 +3386,7 @@ function subscribeAlert()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 function unSubscribeAlert()
 {
@@ -3393,7 +3401,7 @@ function unSubscribeAlert()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 
 </script>
