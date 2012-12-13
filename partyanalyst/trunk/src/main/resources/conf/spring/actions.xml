@@ -995,5 +995,11 @@
 		singleton="false">
 		<property name="socialService" ref="socialService" />
 	</bean>
+	<bean id="dailyUpdatesAction"
+		class="com.itgrids.partyanalyst.web.action.DailyUpdatesAction"
+		singleton="false">
+		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
+	</bean>
 	
 </beans>	

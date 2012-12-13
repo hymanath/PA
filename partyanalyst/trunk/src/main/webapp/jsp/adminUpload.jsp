@@ -294,6 +294,10 @@
 									<span class="fontStyle">AddHomePageQuestion&nbsp;:
 										<a class="alinkstyle" href='<s:url action="homePageQuestionsAction"/>'><b>&nbsp;Home Page(Presently not using)</b>
 										</a>
+									</span><br>
+									<span class="fontStyle">Send Updates To Subscribed Users&nbsp;:
+										<a class="alinkstyle" href='<s:url action="dailyUpdatesAction"/>'><b>&nbsp;Send Updates</b>
+										</a>
 									</span>
 								    </fieldset>
 								</td>
