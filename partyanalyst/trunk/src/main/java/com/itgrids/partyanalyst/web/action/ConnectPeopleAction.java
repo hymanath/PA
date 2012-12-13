@@ -853,6 +853,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	public String uploadUserPic()
 	{
 		session = request.getSession();
+		String myPath=request.getParameter("param");
+		String candidateName=request.getParameter("candidateName");
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		String sPath = (String)session.getAttribute("imagePath");
@@ -860,24 +862,39 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 String filePath = "";
 		 
 		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-		 
-		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+		 if(myPath==null){
+		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE)){
 			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
-		 else
+		 }else{
 			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";	
-		 
+		 }
+		 }
+		 else{
+			 filePath=IWebConstants.STATIC_CONTENT_FOLDER_URL+"images\\candidates\\";
+		 }
 		BufferedImage image = null;
         try {
             
             image = ImageIO.read(this.upload);
             String constiName[] = uploadContentType.split("/");
             //String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+           
             if(constiName[1].equalsIgnoreCase("jpeg") || !(constiName[1].equalsIgnoreCase("jpeg")))
+            	 if(myPath==null){
             	constiName[1]="jpeg";
-          
-            String fileName = filePath+user.getRegistrationID()+"."+constiName[1];
+                }else{
+            	constiName[1]="jpg";
+            }
+            String imageName =null;
+            String fileName=null;
+          if(candidateName==null){
+            fileName = filePath+user.getRegistrationID()+"."+constiName[1];
             //String fileName = filePath+this.uploadFileName;
-            String imageName =  user.getRegistrationID()+"."+constiName[1];
+            imageName =  user.getRegistrationID()+"."+constiName[1];
+          }else{
+        	   fileName = filePath+candidateName+"."+constiName[1];
+        	  imageName =  candidateName+"."+constiName[1];
+          }
             uploadStatus = ananymousUserService.saveUserProfileImageName(user.getRegistrationID(), imageName);
                         
             if(uploadStatus.getResultCode() > 0)
