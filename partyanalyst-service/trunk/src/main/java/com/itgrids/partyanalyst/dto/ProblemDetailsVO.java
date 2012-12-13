@@ -27,8 +27,8 @@ public class ProblemDetailsVO {
 	private Date postedDate;
 	private String userImageURL;
 	private Long userId;
+	private CompleteProblemDetailsVO averageRating;
 	private String rating;
-	
 	
 	
 	public EmailDetailsVO getEmailDetailsVO() {
@@ -160,12 +160,17 @@ public class ProblemDetailsVO {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	public CompleteProblemDetailsVO getAverageRating() {
+		return averageRating;
+	}
+	public void setAverageRating(CompleteProblemDetailsVO averageRating) {
+		this.averageRating = averageRating;
+	}
 	public String getRating() {
 		return rating;
 	}
 	public void setRating(String rating) {
 		this.rating = rating;
 	}
-	
 	
 }
