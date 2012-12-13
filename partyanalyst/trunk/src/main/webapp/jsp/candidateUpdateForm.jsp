@@ -7,9 +7,8 @@
 
 <html>
 <head>
-	
 
-<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+<!--<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>-->
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">
 </script>
@@ -63,6 +62,77 @@
     </script>
 
 <script type="text/javascript">
+function handleReaderLoadEnd(evt) {
+  var img = document.getElementById("Imgpreview");
+  img.src = evt.target.result;
+}
+function previewImg()
+{
+alert("hghj");
+	var photoElmt = document.getElementById("photoUploadElmt");
+	var photoStatusElmt = document.getElementById("uploadPic_window_status");
+	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
+	
+	var file = photoElmt.files[0];
+	
+	var fileType = file.type;
+	var fileImgType = fileType.substring(fileType.indexOf('/')+1,fileType.length);
+	
+
+	if(fileImgType == "jpeg" || fileImgType == "png" || fileImgType == "gif")
+	{
+	
+		var fileSize = file.fileSize/fileLimit;
+		if(fileSize > 2)
+		{
+			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image size should be < 2MB.</span>';
+		}
+		else
+		{
+			var reader = new FileReader();
+           //  init the reader event handlers
+			//reader.onloadend = handleReaderLoadEnd;
+			 
+			// begin the read operation
+			reader.readAsDataURL(file);
+			
+			photoStatusElmt.innerHTML = '';
+			var previewElmt = document.getElementById("Imgpreview");
+			//previewElmt.src = file.getAsDataURL();
+			uploadPicStatus = true;
+		}
+	}
+	else
+	{
+		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
+	}
+alert("here");
+	
+
+}
+var refreshTime=5;
+function getUploadpic()
+{
+alert("1");
+//var photoStatusElmt = document.getElementById("uploadPic_window_status");
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				showUploadStatus();				
+			}
+		};
+
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'uploadPicAction.action?param=true', uploadHandler);
+}
+
+function showUploadStatus()
+{
+//alert("2");
+	window.location.reload();
+	
+}
 
 function getDistrictsComboBoxForAState(value,elmtId)
 {
@@ -258,7 +328,7 @@ function clearOptionsListForSelectElmtId(elmtId)
 }
 function getCasteCategoryGroupName(){
 
-//	debugger;
+
 	var categoryEle=document.getElementById('categoryNames').value;
 	var jsObj=
 	{						
@@ -271,7 +341,7 @@ function getCasteCategoryGroupName(){
 }
 
 function getCasteCategoriesGroupNames(myResults){
-	//debugger;
+
 	var elmt1 = document.getElementById('casteCategoryGroupNames');
 	elmt1.options.length=0;
 
@@ -594,14 +664,39 @@ function disableNewCasteNames(){
 #candidateName,#categoryNames,#newCasteName,
 #address1,#address2,#pincode,#phoneNumber,#city{
 width :225px;
+ 
 }
+#div1{margin-left: auto;
+    margin-right: auto;
+    width: 990px;
+	}
 
 
 </style>
 <body>
+
+<form name="uploadForm1" action="uploadPicAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">
+<br>
+			<h2 class="reg" align="center"><b style="font-size:20px"> ${candidateName} Profile Information  </b></h2><br>
+			<input type="hidden" name="candidateName"  id="candidateName" value="${candidateName}">
+<div id="uploadPic_window_status"></div>
+
+			<span style="margin-left: 210px;">
+				<img src="images/candidates/${candidateName}.jpg" height="100px" style="margin-left: 460px; cursor: default; width: 100px; height: 130px;"/>
+			</span>
+</br>
+</br>
+			<span style="margin-left: 320px;"> 
+				<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width: 430px; margin-left: 343px;"/>
+			</span>
+			 <span style="margin-left: -9px;"> 
+			 <input type="button" value="Upload" id="uploadPicButton" style="margin-left: 665px; height: 30px; width: 72px;" onclick="getUploadpic()"/>
+
+			</span>
+</form>
 <form name="uploadForm" action="candidateUpdateAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">'
 
-<h2 class="reg" align="center"><b> ${candidateName} Profile Information  </b></h2>
+
 
 <input type="hidden" name="CandidateDetailsVO.addressList[0].candidateAddressId" 
 value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
@@ -618,18 +713,12 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 <input type="hidden" name="CandidateDetailsVO.websiteId" value="${CandidateDetailsVO.websiteId}"/>
 
 
-	<div id="div1" align="center"  style="border:2px solid blue">
-<br>
-				<span style="margin-left: 210px;">
-				<img src="images/candidates/${candidateName}.jpg" height="100px" style="margin-left: 20px;cursor: default;"/>
-			</span>
-</br>
-</br>
-<span style="margin-left: 320px;"> 
-				<input type="file" name="userImage"id="newsFileId" size="25" />
-			</span>
-<br>
-	<b style="margin-left: -347px;">Candidate Name : &nbsp<input type="hidden" value="${candidateName}"  
+<div class="well"></div>
+
+
+
+	<div id="div1" align="center" style="font-size: 15px;">
+	<b style="margin-left: -337px;">Candidate Name : &nbsp<input type="hidden" value="${candidateName}"  
 				name="candidateName"  id="candidateName" class="required" style="width: 220px;"/></b>
 		  <span style="margin-left: -9px;"> 
 									<b style="margin-left: 15px;">	 ${candidateName}</b>
@@ -638,7 +727,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			<input type="hidden" name="candidateId" value="${candidateId}">
 </br>
 </br>
-		<div id="webDetails" style="width: 800px; height: 185px; margin-top: -19px; margin-left: -6px;">
+		<div id="webDetails" style="width: 800px; height: 230px; margin-top: -19px; font-size: 15px;margin-left: -12px;">
 		<br>
 			<span  style="margin-left: -185px;"> 
 				email-id : &nbsp<input type="text" value="${CandidateDetailsVO.emailId}" 
@@ -646,7 +735,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 <br>
 <br>
-			<span  style="margin-left: -240px;">
+			<span  style="margin-left: -238px;">
 				Website Address : &nbsp<input type="text" value="${CandidateDetailsVO.websiteAddress}" name="websiteAddress" id="website"/>
 			</span>
 </br>
@@ -661,7 +750,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 </br>
 		</div>		
-		<div id="casteDetails" style="width: 1000px; height: 90px;">
+		<div id="casteDetails" style="width: 1000px; height: 99px; font-size: 15px; margin-top: 5px; margin-left: -10px;">
 <br>
 <table  style="margin-left: 54px;">
 <tr>
@@ -689,7 +778,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 </tr>
 </table>
 <br>
-			<span style="margin-left: 149px;"> 
+			<span style="margin-left: 154px;"> 
 				Caste Name : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" label="Select  Caste" 
 					name="candidateDetailsVO.casteId" id="casteNames" style="width: 235px; height: 25px;"
 					list="candidateDetailsVO.casteGroupNameList" listKey="id" listValue="name" onchange="disableNewCasteNames()"/>
@@ -701,12 +790,12 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 <br>
 		</div>	
 
-		<div id="AddressDiv" style="width: 1000px; margin-left: -240px; margin-top: 15px;">
+		<div id="AddressDiv" style="width: 1000px; margin-left: -240px; font-size: 15px; margin-top: 15px;">
 <br>
-		<b style="margin-left: -236px;">Address Details : </b>
+		<b style="margin-left: -256px;">Address Details : </b>
 <br>
 <br>
-			<span style="margin-left: 21px;">
+			<span style="margin-left: 8px;">
 				Address Type : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].addressTypeId" 
 				id="addressType" list="candidateDetailsVO.addressList[0].addressTypeList" 
@@ -715,14 +804,14 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 <br>
 </br>
-			<span style="margin-left: 42px;">
+			<span style="margin-left: 36px;">
 				Address1 : &nbsp;<input type="text" id="address1" 
 				name="candidateDetailsVO.addressList[0].address1" 
 				value="${CandidateDetailsVO.addressList[0].address1}"/>
 			</span>
 <br>
 <br>
-			<span style="margin-left: 42px;">
+			<span style="margin-left: 36px;">
 				Address2 : &nbsp;<input type="text" id="address2" 
 			 name="candidateDetailsVO.addressList[0].address2" 
 			 value="${CandidateDetailsVO.addressList[0].address2}"/>
@@ -730,14 +819,14 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 </br>
 </br>
-			<span style="margin-left: 80px;">
+			<span style="margin-left: 60px;">
 				City : &nbsp;<input type="text" id="city" name="candidateDetailsVO.addressList[0].city"
 				value="${CandidateDetailsVO.addressList[0].city}"/>
 			</span>
 <br>
 <br>
 
-			<span style="margin-left: 71px;">
+			<span style="margin-left: 50px;">
 				State : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" label="Select  Caste" 
 				name="candidateDetailsVO.addressList[0].stateId" id="state" list="statesList" listKey="id"
 				listValue="name" style="width: 235px; height: 25px;"
@@ -746,7 +835,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 <br>
 <br>
-			<span style="margin-left: 58px;">
+			<span style="margin-left: 38px;">
 				District : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].districtId" 
 				id="district" list="candidateDetailsVO.addressList[0].districtList" listKey="id" 
@@ -756,7 +845,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 <br>
 <br>
-			<span style="margin-left: 60px;">
+			<span style="margin-left: 43px;">
 				Mandal : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].mandalId" id="mandal" 
 				list="candidateDetailsVO.addressList[0].tehsilList" listKey="id" 
@@ -764,17 +853,17 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 </br>
 </br>
-			<span style="margin-left: 47px;">
+			<span style="margin-left: 39px;">
 				Pin Code : &nbsp;<input type="text" id="pincode" style="height: 16px;" 
 				name="candidateDetailsVO.addressList[0].pincode" 
 				value="${CandidateDetailsVO.addressList[0].pincode}" maxlength="6"/>
 			</span>
 </br>
 </br>
-			<b style="margin-left: -236px;">Contact Details : </b>
+			<b style="margin-left: -252px;">Contact Details : </b>
 </br>
 </br>
-			<span style="margin-left: 33px;">
+			<span style="margin-left: 23px;">
 				Phone Type : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].phoneList[0].phoneType"
 				id="phoneType" list="candidateDetailsVO.addressList[0].phoneList[0].phoneTypeList" 
@@ -783,7 +872,7 @@ value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 			</span>
 </br>
 </br>
-			<span style="margin-left: 5px;">
+			<span>
 				Phone Category : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
 				label="Select  Caste" 
 				name="candidateDetailsVO.addressList[0].phoneList[0].phoneCategory" id="phoneCategory" 
@@ -836,5 +925,5 @@ getStatesForCountry('${CandidateDetailsVO.stateId}');
 
 </script>
 
-</script>
+
 </body>
