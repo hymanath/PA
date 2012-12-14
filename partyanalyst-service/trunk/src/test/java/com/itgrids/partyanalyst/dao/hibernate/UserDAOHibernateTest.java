@@ -257,7 +257,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	
 	
 	
-	public void testGetUserBasicDetailsForProfile()
+	/*public void testGetUserBasicDetailsForProfile()
 	{
 		List<Long> userId = new ArrayList<Long>(0);
 		userId.add(1l);
@@ -272,6 +272,44 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 		
+	}*/
+	
+	public void testgetAllUsersInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(10l);
+		List<Object> list = userDAO.getAllUsersInSelectedLocations(locationIds, "DISTRICT", 2l, 0l, null);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(int i=0;i<list.size(); i++)
+			{
+				Object[] result = (Object[])list.get(i);
+				System.out.println(result[6]+"  "+result[7]);
+				System.out.println(result[8]+"  "+result[9]);
+				
+			}
+		}
+	}
+	public void testgetNotConnectedUsersInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(10l);
+		List<Long> otherUsers = new ArrayList<Long>();
+		otherUsers.add(10l);
+		
+		List<Object> list = userDAO.getNotConnectedUsersInSelectedLocations(817l, locationIds, "DISTRICT", otherUsers, 2l, 0l, null);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(int i=0;i<list.size(); i++)
+			{
+				Object[] result = (Object[])list.get(i);
+				System.out.println(result[6]+"  "+result[7]);
+				System.out.println(result[8]+"  "+result[9]);
+				
+			}
+		}
 	}
 	
 }
