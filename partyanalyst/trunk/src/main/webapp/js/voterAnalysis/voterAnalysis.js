@@ -1354,6 +1354,7 @@ function buildCastInfoData(myresults,jsObj)
 				
 	}
   function  buildFamilyMembers(result,publicationDateId,type){
+
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
     var name = "";
@@ -1368,6 +1369,7 @@ function buildCastInfoData(myresults,jsObj)
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>SNo</th>';
+		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
           str+='	 <th>Eldest Person</th>';
@@ -1380,6 +1382,7 @@ function buildCastInfoData(myresults,jsObj)
 	   var sno = parseInt(i)+1;
 	      str+='   <tr>';
           str+='     <td>'+sno+'</td>';
+		  str +='<td>'+result[i].boothId+'</td>';
           str+='     <td><a href="javascript:{}" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str+='     <td>'+result[i].numberOfPeople+'</td>';
           str+='	 <td>'+result[i].elder+'</td>';
@@ -1397,7 +1400,7 @@ function buildCastInfoData(myresults,jsObj)
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null,null
      
 	  
     ] 
