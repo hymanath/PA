@@ -418,7 +418,7 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 
 <div id='votersMainOuterDiv1'>
-     <input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
+	 <input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForImpFam" style="display:none;">
         <div id="votersBasicInfoDivForImpFam"></div>
 	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
@@ -552,7 +552,7 @@ locationDetails.constituencyArr.push(ob);
 <script type="text/javascript">
 function getCastInfoForsubLevel()
 	{
-	
+
 	document.getElementById('localCastStatsVotersTitle').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody1').innerHTML='';
@@ -562,6 +562,7 @@ function getCastInfoForsubLevel()
 	var id='';
 	var typeName='';
 	var mandalId='';
+	var validflag =0;
 	var str ='';
 	var flag = true;
 	if(level == 1){
@@ -575,27 +576,38 @@ function getCastInfoForsubLevel()
 	}
 	else if(level == 2 ||id == null){
 	type = 'mandal';
-	mandalId = $("#mandalField").val();
-	id=mandalId.substring(1);
+	id = $("#mandalField").val();
+	var mandalText = $('#mandalField :selected').text();
+	var validflag= mandalText.search("MUNCIPALITY");
 	typeName = $("#mandalField :selected").text();
 	if(id == 0)
 	{
-		
+	flag =false;
+	}
+	else if(validflag != -1)
+	{
 	flag =false;
 	}
 	}
 	else if(level == 3 || id == null){
-	  type = 'panchayat';
-	  id = $("#panchayatField").val();
-	  typeName = $("#panchayatField :selected").text();
-	  if(id == 0)
+	type = 'panchayat';
+	id = $("#panchayatField").val();
+	 typeName = $("#panchayatField :selected").text();
+	var mandalText = $('#mandalField :selected').text();
+	 validflag= mandalText.search("MUNCIPALITY");
+	if(validflag != -1)
 		{
-				
+		flag=false;
+		}
+	  else if(id == 0)
+		{
 		flag =false;
 		}
+		
 	}
 	else if(level == 4 || id == null)
 	{
+	
 		return false;
 	}
 	if(publicationDateId == 0|| publicationDateId == null)
@@ -609,6 +621,7 @@ function getCastInfoForsubLevel()
 				
 				type:type,	
 				id:id,
+				validflag:validflag,
 				typeName:typeName,
 				publicationDateId:publicationDateId,	
 				task:"getCastInfoForsubLevels"				
