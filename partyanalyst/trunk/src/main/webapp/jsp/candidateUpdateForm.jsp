@@ -1,24 +1,102 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 	<%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html>
-<head>
 
-<!--<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>-->
+<html>
+   <head>
+     <title>User Details Updation</title>
+  </head>
+  
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">
 </script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js">
 </script>
 </head>
- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
+<style>
+ h1 {
+    font: 1.2em Arial, Helvetica, sans-serif;
+}
+ 
+input.txt {
+    color: #00008B;
+    /*background-color: #E3F2F7;*/
+    border: 1px solid #c3c3c3;
+    width: 200px;
+	border-radius:2px;
+	height:17px;
+}
+
+select {
+    color: #00008B;
+    /*background-color: #E3F2F7;*/
+    border: 1px solid #c3c3c3;
+    width: 212px;
+	height:27px;
+	border-radius:2px;
+}
+ 
+input.btn {
+    color: #00008B;
+    background-color: #ADD8E6;
+    border: 1px outset #00008B;
+}
+ 
+form {
+    width: 40%;
+	margin-left:250px;
+}
+ 
+form div {
+    clear: left;
+    margin: 0;
+    padding: 0;
+    padding-top: 0.6em;
+}
+ 
+form div label {
+    float: left;
+    width: 40%;
+    font: bold 0.9em Arial, Helvetica, sans-serif;
+}
+
+.spanClass {
+    float: left;
+    width: 36%;
+    font-weight: bold;
+	font-family:verdana;
+	font-size:13px;
+}
+ fieldset {
+    border: 1px dotted #61B5CF;
+    margin-top: 1.4em;
+    padding: 0.6em;
+}
+ 
+.legendClass {
+    font: bold 0.8em Arial, Helvetica, sans-serif;
+    color: #00008B;
+    background-color: #FFFFFF;
+	border-style:none ;
+	margin-bottom:0px;
+	width:42%;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+}
+.error{
+	color:red;
+	font-size:12px;
+}
+ 
+ </style>
 <script>
 
     $(function() {
@@ -59,7 +137,7 @@
         });
     });
 
-    </script>
+ </script>
 
 <script type="text/javascript">
 function handleReaderLoadEnd(evt) {
@@ -68,7 +146,6 @@ function handleReaderLoadEnd(evt) {
 }
 function previewImg()
 {
-alert("hghj");
 	var photoElmt = document.getElementById("photoUploadElmt");
 	var photoStatusElmt = document.getElementById("uploadPic_window_status");
 	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
@@ -106,14 +183,11 @@ alert("hghj");
 	{
 		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
 	}
-alert("here");
-	
-
 }
+
 var refreshTime=5;
 function getUploadpic()
 {
-alert("1");
 //var photoStatusElmt = document.getElementById("uploadPic_window_status");
 	var uploadHandler = {
 			upload: function(o) {
@@ -129,7 +203,6 @@ alert("1");
 
 function showUploadStatus()
 {
-//alert("2");
 	window.location.reload();
 	
 }
@@ -381,78 +454,6 @@ function getCasteCategoriesGroupNames(myResults){
 	}
 }
 
-/*function getCasteNames(groupName){
-var id = document.getElementById('casteCategoryGroupNames').value;
-	
-	var jsObj=
-	{
-			casteGroupId:id,
-			task:"getCasteNames"					
-	};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCasteNames.action?"+rparam;						
-	callCandidateUpdatePageAjax(jsObj,url);
-}
-
-function getCasteName(myResults){
-
-	
-	var elmt = document.getElementById('casteNames');
-	elmt.options.length=0;
-	var option = document.createElement('option');
-
-	clearOptionsListForSelectElmtId('casteNames');
-	option.value="0";
-	option.text="select";
-	try
-	{
-	elmt.add(option,null);	
-
-	}
-	catch (ex)
-	{
-		elmt.add(option);
-	}
-	for(var i in myResults)
-	{
-		
-		var option=document.createElement('option');
-		option.value=myResults[i].casteId
-		option.text=myResults[i].casteNames;
-		
-	
-		try
-	{
-	elmt.add(option,null);	
-
-	}
-	catch (ex)
-	{
-		elmt.add(option);
-	}
-	}
-}*/
-	/*	function checkElectionType(electionTypeId)
-{
-
-var electionType = document.getElementById('country').value;
-
-if(electionType == 1)
-	{
-getStates();
-document.getElementById('state').style.display="none";
-getElectionYearsInHomePage('Parliament');
-	}
-
-if(electionType == 2)
-	{
-	document.getElementById('state').style.display="block";
-
-getStatesForNewLayOut();
-
-	}
-}*/
 function getStatesForCountry(val)
 {
 
@@ -654,254 +655,228 @@ function disableNewCasteNames(){
 	 }
 }
 
+
 </script>
-
-
-<style type="text/css">
-
-
-#mailId,#website,#twitterId,#facebookid,
-#candidateName,#categoryNames,#newCasteName,
-#address1,#address2,#pincode,#phoneNumber,#city{
-width :225px;
  
-}
-#div1{margin-left: auto;
-    margin-right: auto;
-    width: 990px;
-	}
+    <body>
+
+	<form name="uploadForm1" action="uploadPicAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">
+
+	<h4 style="padding:14px;">${candidateName} Profile Information</h4>
+	<input type="hidden" name="candidateName"  id="candidateName" value="${candidateName}">
+
+	<div id="uploadPic_window_status"></div>
+
+    <div>
+	<img src="images/candidates/${candidateName}.jpg" height="100px" style="float:right;width:100px;"/>
+
+	<input style="height:28px;" type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" />
+
+	 <input type="button" class="btn" value="Upload" id="uploadPicButton"  onclick="getUploadpic()"/>
+	 </div>
 
 
-</style>
-<body>
+	</form>
 
-<form name="uploadForm1" action="uploadPicAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">
-<br>
-			<h2 class="reg" align="center"><b style="font-size:20px"> ${candidateName} Profile Information  </b></h2><br>
-			<input type="hidden" name="candidateName"  id="candidateName" value="${candidateName}">
-<div id="uploadPic_window_status"></div>
+       <form name="uploadForm" action="candidateUpdateAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">
 
-			<span style="margin-left: 210px;">
-				<img src="images/candidates/${candidateName}.jpg" height="100px" style="margin-left: 460px; cursor: default; width: 100px; height: 130px;"/>
-			</span>
-</br>
-</br>
-			<span style="margin-left: 320px;"> 
-				<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width: 430px; margin-left: 343px;"/>
-			</span>
-			 <span style="margin-left: -9px;"> 
-			 <input type="button" value="Upload" id="uploadPicButton" style="margin-left: 665px; height: 30px; width: 72px;" onclick="getUploadpic()"/>
+		<input type="hidden" name="CandidateDetailsVO.addressList[0].candidateAddressId" 
+		value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
 
-			</span>
-</form>
-<form name="uploadForm" action="candidateUpdateAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">'
+		<input type="hidden" name="candidateDetailsVO.addressList[0].phoneList[0].candidatePhoneId" value="${candidateDetailsVO.addressList[0].phoneList[0].candidatePhoneId}"/>
 
+		<input type="hidden" name="CandidateDetailsVO.addressList[0].addressContactId" value="${CandidateDetailsVO.addressList[0].addressContactId}"/>
 
+		<input type="hidden" name="CandidateDetailsVO.casteStateId" value="${CandidateDetailsVO.casteStateId}"/>
 
-<input type="hidden" name="CandidateDetailsVO.addressList[0].candidateAddressId" 
-value="${CandidateDetailsVO.addressList[0].candidateAddressId}"/>
-<input type="hidden" name="candidateDetailsVO.addressList[0].phoneList[0].candidatePhoneId" value="${candidateDetailsVO.addressList[0].phoneList[0].candidatePhoneId}"/>
-<input type="hidden" name="CandidateDetailsVO.addressList[0].addressContactId" value="${CandidateDetailsVO.addressList[0].addressContactId}"/>
-<input type="hidden" name="CandidateDetailsVO.casteStateId" value="${CandidateDetailsVO.casteStateId}"/>
+		<input type="hidden" name="CandidateDetailsVO.addressList[0].addressId" value="${CandidateDetailsVO.addressList[0].addressId}"/>
+
+		<input type="hidden" name="candidateDetailsVO.addressList[0].phoneList[0].phoneNumberId" value="${candidateDetailsVO.addressList[0].phoneList[0].phoneNumberId}"/>
+
+		<input type="hidden" name="CandidateDetailsVO.candidatecasteId" value="${CandidateDetailsVO.candidatecasteId}"/>
+
+		<input type="hidden" name="CandidateDetailsVO.candidateSocialFacebookId" value="${CandidateDetailsVO.candidateSocialFacebookId}"/>
+
+		<input type="hidden" name="CandidateDetailsVO.candidateSocialTwitterId" value="${CandidateDetailsVO.candidateSocialTwitterId}"/>
+
+		<input type="hidden" name="CandidateDetailsVO.websiteId" value="${CandidateDetailsVO.websiteId}"/>
+
+		<input type="hidden" value="${candidateName}"  
+				name="candidateName"  id="candidateName" class="required" style="width: 220px;"/>
+
+		<input type="hidden" name="candidateId" value="${candidateId}">
 
 
-<input type="hidden" name="CandidateDetailsVO.addressList[0].addressId" value="${CandidateDetailsVO.addressList[0].addressId}"/>
-<input type="hidden" name="candidateDetailsVO.addressList[0].phoneList[0].phoneNumberId" value="${candidateDetailsVO.addressList[0].phoneList[0].phoneNumberId}"/>
-<input type="hidden" name="CandidateDetailsVO.candidatecasteId" value="${CandidateDetailsVO.candidatecasteId}"/>
-<input type="hidden" name="CandidateDetailsVO.candidateSocialFacebookId" value="${CandidateDetailsVO.candidateSocialFacebookId}"/>
-<input type="hidden" name="CandidateDetailsVO.candidateSocialTwitterId" value="${CandidateDetailsVO.candidateSocialTwitterId}"/>
-<input type="hidden" name="CandidateDetailsVO.websiteId" value="${CandidateDetailsVO.websiteId}"/>
+       
 
+		
+ 
+            <fieldset>
+                <legend class="legendClass">Personal Information</legend>
+ 
+            <div>
+                <span class="spanClass">Candidate Name:</span>
+                 <b>${candidateName}</b>
+            </div>
+			<br>
+ 
+            <div> 
+                 <span class="spanClass">Email Address:</span>
+                <input type="text" class="txt"  value="${CandidateDetailsVO.emailId}"  name="emailId"  id="mailId"/>
+				<span id="emailErrMsg" class="error" style="float:right;margin-right:18px;"></span>
+            </div>
+ 
+            <div>
+                 <span class="spanClass">Website Address :</span>
+                <input type="text"  class="txt" value="${CandidateDetailsVO.websiteAddress}" name="websiteAddress" id="website"/>
+            </div>
+ 
+            <div>
+                <span class="spanClass">Twitter Id :</span>
+                <input type="text"  class="txt" value="${CandidateDetailsVO.twitterUrl}" name="twitterUrl" id="twitterId"/>
+            </div>
 
+			<div>
+                 <span class="spanClass">Facebook Id :</span>
+                <input type="text" value="${CandidateDetailsVO.facebookUrl}" name="facebookUrl" id="facebookid" class="txt" />
+            </div>
 
+			 </fieldset>
 
-	<div id="div1" align="center" style="font-size: 15px;">
-	<b style="margin-left: -337px;">Candidate Name : &nbsp<input type="hidden" value="${candidateName}"  
-				name="candidateName"  id="candidateName" class="required" style="width: 220px;"/></b>
-		  <span style="margin-left: -9px;"> 
-									<b style="margin-left: 15px;">	 ${candidateName}</b>
-			</span>
+			 <fieldset>
+			  <legend class="legendClass">Caste Information</legend>
 
-			<input type="hidden" name="candidateId" value="${candidateId}">
-</br>
-</br>
-		<div id="webDetails" style="width: 800px; height: 230px; margin-top: -19px; font-size: 15px;margin-left: -12px;">
-		<br>
-			<span  style="margin-left: -185px;"> 
-				email-id : &nbsp<input type="text" value="${CandidateDetailsVO.emailId}" 
- name="emailId"  id="mailId" class="required"/>
-			</span>
-<br>
-<br>
-			<span  style="margin-left: -238px;">
-				Website Address : &nbsp<input type="text" value="${CandidateDetailsVO.websiteAddress}" name="websiteAddress" id="website"/>
-			</span>
-</br>
-</br>
-			<span  style="margin-left: -196px;">	
-				Twitter Id : &nbsp;<input type="text" value="${CandidateDetailsVO.twitterUrl}" name="twitterUrl" id="twitterId"/>
-			</span>
-</br>
-</br>
-			<span  style="margin-left: -208px;">
-				Facebook Id : &nbsp;<input type="text" value="${CandidateDetailsVO.facebookUrl}" name="facebookUrl" id="facebookid"/>
-			</span>
-</br>
-		</div>		
-		<div id="casteDetails" style="width: 1000px; height: 99px; font-size: 15px; margin-top: 5px; margin-left: -10px;">
-<br>
-<table  style="margin-left: 54px;">
-<tr>
-<td>
-			<span style="margin-left: 93px;"> 
-				Caste : &nbsp;<select theme="simple" cssClass="selectBoxWidth" label="Select  Caste"
-				name="casteCategoryId" id="categoryNames" 
-				onchange="getCasteCategoryGroupNames(this.options[this.selectedIndex].value)" style="width: 235px; height: 25px;">
+			<div>
+			 <span class="spanClass">Caste Category:</span>
+                <select theme="simple" class="txt" name="casteCategoryId" id="categoryNames"  onchange="getCasteCategoryGroupNames(this.options[this.selectedIndex].value)">
 				<option>- select -</option>
 				</select>
-			</span> 
-</td>
-<td >
-			<span  style="margin-left: 60px;"> 
-				Group : &nbsp;
-				</span>
-</td> 
-<td>		<span><s:select theme="simple" cssClass="selectBoxWidth" label="Select  Caste" 
+            </div>
+
+			<div>
+			 <span class="spanClass">Caste Group:</span>
+                <s:select theme="simple"  label="Select  Caste" 
 					name="candidateDetailsVO.casteGroupId" 
 				onchange="getCasteNames(this.options[this.selectedIndex].value)" 
 				id="casteCategoryGroupNames" list="candidateDetailsVO.casteGroupList" listKey="id" 
-				listValue="name" value="casteGroupId"/>
-			</span>
-</td>
-</tr>
-</table>
-<br>
-			<span style="margin-left: 154px;"> 
-				Caste Name : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" label="Select  Caste" 
-					name="candidateDetailsVO.casteId" id="casteNames" style="width: 235px; height: 25px;"
-					list="candidateDetailsVO.casteGroupNameList" listKey="id" listValue="name" onchange="disableNewCasteNames()"/>
-			</span> 
-			<span style="margin-left: 42px;"> 
-				if, Others : &nbsp;<input type="text" id="newCasteName" value="${CandidateDetailsVO.newCaste}" 
-				 name="newCaste" />
-			</span> 
-<br>
-		</div>	
+				listValue="name" value="casteGroupId"/>          
+			</div>
 
-		<div id="AddressDiv" style="width: 1000px; margin-left: -240px; font-size: 15px; margin-top: 15px;">
-<br>
-		<b style="margin-left: -256px;">Address Details : </b>
-<br>
-<br>
-			<span style="margin-left: 8px;">
-				Address Type : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
+			<div>
+			 <span class="spanClass">Caste Name:</span>
+               <s:select theme="simple"  label="Select  Caste" 
+					name="candidateDetailsVO.casteId" id="casteNames" 
+					list="candidateDetailsVO.casteGroupNameList" listKey="id" listValue="name" onchange="disableNewCasteNames()"/>
+            </div>
+
+			<div>
+                 <span class="spanClass">if, Others :</span>
+                <input type="text" id="newCasteName" value="${CandidateDetailsVO.newCaste}" 
+				 name="newCaste" class="txt" />
+            </div>
+            </fieldset>
+ 
+            <fieldset>
+                <legend class="legendClass">Address Details</legend>
+ 
+                <div>
+                    <span class="spanClass">Address Type :</span>
+                 <s:select theme="simple" 
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].addressTypeId" 
 				id="addressType" list="candidateDetailsVO.addressList[0].addressTypeList" 
-				listKey="id" listValue="name" style="width: 235px; height: 25px;" />
+				listKey="id" listValue="name"/>
+                </div>
 
-			</span>
-<br>
-</br>
-			<span style="margin-left: 36px;">
-				Address1 : &nbsp;<input type="text" id="address1" 
+                <div>
+                    <span class="spanClass">Address1 :</span>
+                    <input type="text"  class="txt" id="address1" 
 				name="candidateDetailsVO.addressList[0].address1" 
 				value="${CandidateDetailsVO.addressList[0].address1}"/>
-			</span>
-<br>
-<br>
-			<span style="margin-left: 36px;">
-				Address2 : &nbsp;<input type="text" id="address2" 
+                </div>
+
+				<div>
+                   <span class="spanClass">Address2 :</span>
+                    <input type="text" id="address2" 
 			 name="candidateDetailsVO.addressList[0].address2" 
-			 value="${CandidateDetailsVO.addressList[0].address2}"/>
-			
-			</span>
-</br>
-</br>
-			<span style="margin-left: 60px;">
-				City : &nbsp;<input type="text" id="city" name="candidateDetailsVO.addressList[0].city"
+			 value="${CandidateDetailsVO.addressList[0].address2}" class="txt" />
+                </div>
+ 
+                <div>
+					<span class="spanClass">Town / City:</span>
+					<input type="text"  class="txt" id="city" name="candidateDetailsVO.addressList[0].city"
 				value="${CandidateDetailsVO.addressList[0].city}"/>
-			</span>
-<br>
-<br>
+                </div>
 
-			<span style="margin-left: 50px;">
-				State : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" label="Select  Caste" 
+				<div>
+					<span class="spanClass">State :</span>
+					<s:select theme="simple"  label="Select  Caste" 
 				name="candidateDetailsVO.addressList[0].stateId" id="state" list="statesList" listKey="id"
-				listValue="name" style="width: 235px; height: 25px;"
+				listValue="name" 
 				onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value)"/>
+                </div>
 
-			</span>
-<br>
-<br>
-			<span style="margin-left: 38px;">
-				District : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
+				<div>
+					<span class="spanClass">District</span>
+					<s:select theme="simple"  
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].districtId" 
 				id="district" list="candidateDetailsVO.addressList[0].districtList" listKey="id" 
-				style="width: 235px; height: 25px;"
 				listValue="name" onchange="getMandalNames(this.options[this.selectedIndex].value)"/>
+                </div>
 
-			</span>
-<br>
-<br>
-			<span style="margin-left: 43px;">
-				Mandal : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
+				<div>
+					<span class="spanClass">Mandal:</span>
+					<s:select theme="simple" 
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].mandalId" id="mandal" 
 				list="candidateDetailsVO.addressList[0].tehsilList" listKey="id" 
-				style="width: 235px; height: 25px;" listValue="name"/>
-			</span>
-</br>
-</br>
-			<span style="margin-left: 39px;">
-				Pin Code : &nbsp;<input type="text" id="pincode" style="height: 16px;" 
-				name="candidateDetailsVO.addressList[0].pincode" 
-				value="${CandidateDetailsVO.addressList[0].pincode}" maxlength="6"/>
-			</span>
-</br>
-</br>
-			<b style="margin-left: -252px;">Contact Details : </b>
-</br>
-</br>
-			<span style="margin-left: 23px;">
-				Phone Type : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
+				 listValue="name"/>
+                </div>
+ 
+                <div>
+					<span class="spanClass">Zip / Post Code:</span>
+					<input type="text"  id="pincode"  name="candidateDetailsVO.addressList[0].pincode" 
+				value="${CandidateDetailsVO.addressList[0].pincode}" maxlength="6" class="txt"/> 
+                </div>
+            </fieldset>
+
+			 <fieldset>
+                <legend class="legendClass">Contact Details</legend>
+ 
+                <div>
+                   <span class="spanClass">Phone Type :</span>
+                     <s:select theme="simple"  
 				label="Select  Caste" name="candidateDetailsVO.addressList[0].phoneList[0].phoneType"
 				id="phoneType" list="candidateDetailsVO.addressList[0].phoneList[0].phoneTypeList" 
-				listKey="id" listValue="name" style="width: 235px; height: 25px;"/>
-
-			</span>
-</br>
-</br>
-			<span>
-				Phone Category : &nbsp;<s:select theme="simple" cssClass="selectBoxWidth" 
+				listKey="id" listValue="name"/>
+                </div>
+                <div>
+                   <span class="spanClass">Phone Category :</span>
+                   <s:select theme="simple"  
 				label="Select  Caste" 
 				name="candidateDetailsVO.addressList[0].phoneList[0].phoneCategory" id="phoneCategory" 
 				list="candidateDetailsVO.addressList[0].phoneList[0].phoneCategoryList"
-				listKey="id" listValue="name" style="width: 235px; height: 25px;" />
+				listKey="id" listValue="name" />
+                </div>
+ 
+                <div>
+					<span class="spanClass">Phone Number :</span>
+					<input type="text" class="txt" id="phoneNumber" name="candidateDetailsVO.addressList[0].phoneList[0].phoneNumber" maxLength=10 
+				value="${CandidateDetailsVO.addressList[0].phoneList[0].phoneNumber}" size="10"/>
+                </div>
+ 
+               
+            </fieldset>
+            <div style="float:right;">
+             <input class="btn btn-success" type="submit" onclick="return ValidateForm();" value="Update">
+			<!-- <input class="btn btn-success" type="reset"  value="clear">-->
+			 </div>
+			<br>
+        </form>
 
-			</span>
-</br>
-</br>
-			<span style="margin-left: 12px;">
-				Phone Number : &nbsp;<input type="text" id="phoneNumber" name="candidateDetailsVO.addressList[0].phoneList[0].phoneNumber" maxLength=10 
-				value="${CandidateDetailsVO.addressList[0].phoneList[0].phoneNumber}" size="10" />
-			</span>
-			
-		</div>
 
-<br>
-			<span style="margin-left: -131px;">
-				<input type="reset" style="margin-left: 35px; height: 30px; width: 60px;" value="clear"/>
-			</span>
-			<span>
-				<input type="submit" style="margin-left: 35px; height: 30px; width: 60px;" value="submit" 
-				onclick="return ValidateForm();"/>
-			</span>
-<br><br>
-	</div>
-	
-</form>
+
 <script type="text/javascript">
 function ValidateForm(){
-
+//alert("sri");
 var flag = false;
 	var emailID=document.getElementById('mailId').value;
 var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[c,o,m,i,n,c,o]{2,8}$/i;
@@ -912,7 +887,9 @@ var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[c,o,m,i,n,c,o]{2,8}$/i;
 	else if (emailID.match(emailRegEx)){
 			return true;
 	}
-	alert("invalid e-mailID ");
+	//alert("invalid e-mailID ");
+
+	$('#emailErrMsg').html('Enter a valid email id');
 return false;
  }
 disableNewCasteNames();
@@ -922,6 +899,6 @@ getStatesForCountry('${CandidateDetailsVO.stateId}');
 
 
 </script>
-
-
-</body>
+    </body>
+</html>
+ 
