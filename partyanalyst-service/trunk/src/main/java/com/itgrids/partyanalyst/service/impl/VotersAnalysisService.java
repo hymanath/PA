@@ -484,7 +484,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		else if(type.equalsIgnoreCase("mandal"))
 		{
 			
-			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(id,publicationDateId));	
+			if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+			{
+			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(id,publicationDateId));
+			}
+			else
+			{
+			return calculatePercentageForCast(boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(id,publicationDateId));
+			}
+			
 		}
 		
 		else if(type.equalsIgnoreCase("panchayat"))
@@ -631,9 +639,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			if(type.equalsIgnoreCase("mandal"))
 			{
+				if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+				{
 				List<SelectOptionVO> panchayatList= staticDataService.getPanchayatiesByMandalId(new Long(id));
-				
 				mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId);
+				}
+				
+				
 			}
 			
 			if(type.equalsIgnoreCase("panchayat"))
