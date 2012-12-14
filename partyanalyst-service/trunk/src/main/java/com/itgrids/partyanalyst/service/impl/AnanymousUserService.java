@@ -761,15 +761,17 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					candidateVO.setConstituencyId(new Long(parms[4].toString()));
 					candidateVO.setConstituencyName(parms[3].toString());
 					
-					/* if(parms[6].toString() !=null)
-					  candidateVO.setDistrictId(new Long(parms[6].toString()));
-					if(parms[7].toString() !=null)
-					  candidateVO.setDistrict(parms[7].toString());
-					if(parms[8].toString() !=null)
-						candidateVO.setStateId(new Long(parms[8].toString()));
-					if(parms[9].toString() !=null)	
-						candidateVO.setState(parms[9].toString());*/
-					
+					if(result.size() > 5)
+					{
+						if(parms[6].toString() !=null)
+							candidateVO.setDistrictId(new Long(parms[6].toString()));
+						if(parms[7].toString() !=null)
+							candidateVO.setDistrict(parms[7].toString());
+						if(parms[8].toString() !=null)
+							candidateVO.setStateId(new Long(parms[8].toString()));
+						if(parms[9].toString() !=null)	
+							candidateVO.setState(parms[9].toString());
+					}
 					
 					if(parms[5] != null){
 						if(status.equalsIgnoreCase(IConstants.PENDING)){
@@ -1810,6 +1812,80 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		return problemVO;
 	}
 	
+	
+	public List<Long> getConnectedUserIdsByUserId(Long userId)
+	{
+		List<Long> connectedUserIds = null;
+		try{
+			List<Object[]> connectedUserIdsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
+			if(connectedUserIdsList != null && connectedUserIdsList.size() > 0)
+			{
+				connectedUserIds = new ArrayList<Long>(0);
+				for(Object[] params : connectedUserIdsList)
+				{
+					Long friendId = (Long)params[0];
+					if(!friendId.equals(userId) && !connectedUserIds.contains(friendId))
+						connectedUserIds.add(friendId);
+					friendId = (Long)params[1];
+					if(!friendId.equals(userId) && !connectedUserIds.contains(friendId))
+						connectedUserIds.add(friendId);
+				}
+			}
+			return connectedUserIds;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getConnectedUserIdsByUserId() method, Exception is- "+e);
+			return connectedUserIds;
+		}
+	}
+	
+	/*public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
+	{
+		List<RegistrationVO> friendsDetails = new ArrayList<RegistrationVO>(0);
+		try{
+			
+			List<Object[]> userDetailsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
+
+			if(userDetailsList != null && userDetailsList.size() > 0)
+			{
+				List<Long> userIds = new ArrayList<Long>(0);
+				for(Object[] params : userDetailsList)
+				{
+					Long friendId = (Long)params[0];
+					if(!friendId.equals(userId) && !userIds.contains(friendId))
+						userIds.add(friendId);
+					friendId = (Long)params[1];
+					if(!friendId.equals(userId) && !userIds.contains(friendId))
+						userIds.add(friendId);
+				}
+				
+				List<Object[]> userDetails = userDAO.getUserBasicDetailsForProfile(userIds);
+				
+				RegistrationVO registrationVO = null;
+				for(Object[] params2 : userDetails)
+				{
+					registrationVO = new RegistrationVO();
+					registrationVO.setRegistrationID((Long)params2[0]);
+					registrationVO.setFirstName(params2[1].toString());
+					registrationVO.setLastName(params2[2].toString());
+					
+					if(params2[3] != null && params2[3].toString().length() > 0)
+						registrationVO.setUserProfilePic(params2[3].toString());
+					else
+						registrationVO.setUserProfilePic("member.jpg");
+					
+					friendsDetails.add(registrationVO);
+				}
+			}
+			return friendsDetails;	
+		}catch (Exception e) {
+			log.error("Exception Occuted in getFriendsListForUserProfile() Method, Exception - "+e);
+			return friendsDetails;
+		}
+		
+	}
+
+*/
 	
 
 	public String getProblemTableColoumnName(String columnType)
