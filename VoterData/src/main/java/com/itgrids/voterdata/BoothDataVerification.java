@@ -18,6 +18,7 @@ public class BoothDataVerification {
         int pdfPartNo = 0;
         int filePartNo = 0;
         int index = 0;
+        StringBuilder sb2 = new StringBuilder();
         
         //Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)\\r\\n([0-9\\-_/A-Za-z]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
         
@@ -27,7 +28,7 @@ public class BoothDataVerification {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(args[0] + "/" + "result.txt")));
             File inputDir = new File(args[0]);
-            StringBuilder sb2 = new StringBuilder();
+            
             
             for (File input : inputDir.listFiles(new FilenameFilter() {
                 @Override
@@ -55,6 +56,7 @@ public class BoothDataVerification {
                 		pdfPartNo = Integer.parseInt(m.group(1).replaceAll("\\r\\n","").trim());
                 		}catch (Exception e) {
                 			System.out.println("Exception Occured while processing File - "+input.getName());
+                			sb2.append("Exception Occured while processing File - "+input.getName());
 							e.printStackTrace();
 						}
                 	}
