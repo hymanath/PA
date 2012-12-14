@@ -156,7 +156,8 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getPendingUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.recepient.firstName,model.recepient.lastName,model.recepient.userId,model.recepient.constituency.name,model.recepient.constituency.constituencyId, model ");
+		query.append(" select model.recepient.firstName,model.recepient.lastName,model.recepient.userId,model.recepient.constituency.name,model.recepient.constituency.constituencyId, model,model.recepient.constituency.district.districtId, ");
+		query.append(" model.recepient.constituency.district.districtName,model.recepient.constituency.state.stateId,model.recepient.constituency.state.stateName ");
 		query.append(" from CustomMessage model where model.sender.userId = :userId and ");
 		query.append(" model.messageType.messageType = :messageType and ");
 		
