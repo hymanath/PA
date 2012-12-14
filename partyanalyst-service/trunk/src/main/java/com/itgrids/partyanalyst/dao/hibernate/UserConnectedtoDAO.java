@@ -147,7 +147,7 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	@SuppressWarnings("unchecked")
 	public List<Object> getConnectedUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
-		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model ");
+		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model, model.constituency.district.districtId,model.constituency.district.districtName,model.constituency.state.stateId,model.constituency.state.stateName  ");
 		query.append("from User model, UserConnectedto model1 where (model1.userSource.userId = :userId or model1.userTarget.userId = :userId) and ");
 		query.append("(model.userId = model1.userTarget.userId or model.userId = model1.userSource.userId) and model.userId != :userId  ");
 		
