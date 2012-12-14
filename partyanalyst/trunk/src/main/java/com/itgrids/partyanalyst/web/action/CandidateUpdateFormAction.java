@@ -38,7 +38,7 @@ public class CandidateUpdateFormAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware , Preparable,ModelDriven<CandidateDetailsVO>{
 	
 	private static final long serialVersionUID = 1L;
-	
+	private static final Logger log = Logger.getLogger(CandidateUpdateFormAction.class);
 	JSONObject jObj = null;
 	private String task = null;
 	private List<SocialNetworkVO> casteCategory;
@@ -146,7 +146,7 @@ ServletRequestAware, ServletResponseAware, ServletContextAware , Preparable,Mode
 	private List<SelectOptionVO> phoneTypesList;
 	private List<SelectOptionVO> phoneCategorysList;
 	
-	private static final Logger log = Logger.getLogger(CandidateElectionResultsAction.class);
+	
 	
 	
 	public List<SelectOptionVO> getCasteList() {
@@ -612,7 +612,7 @@ return Action.SUCCESS;
 public String getCandidateDetails(){
 	
 	
-	uploadImage();
+	//uploadImage();
 	
 	result=socialService.insertAddressDetails(candidateDetailsVO);
 	
