@@ -927,7 +927,7 @@ public CandidateDetailsVO getcandidateFullInformation(Long candidateId){
 				List<SelectOptionVO> districtList = getAllDistrictDetails(addressVO.getStateId());
 				addressVO.setDistrictList(districtList);
 				
-				
+				if(params.getAddress().getDistrict() != null)
 				addressVO.setDistrictId(new Long(params.getAddress().getDistrict()));
 				
 				
@@ -935,7 +935,7 @@ public CandidateDetailsVO getcandidateFullInformation(Long candidateId){
 				addressVO.setTehsilList(tehsilList);
 				
 				
-				
+				if(params.getAddress().getMandal() != null)
 				addressVO.setMandalId(new Long(params.getAddress().getMandal()));
 				addressVO.setPincode(params.getAddress().getPincode());
 				addressList.add(addressVO);
@@ -965,7 +965,7 @@ public CandidateDetailsVO getcandidateFullInformation(Long candidateId){
 						List<SelectOptionVO> phoneCategoryList=getAllPhoneCategorys();
 						socialNetworkVO.setPhoneCategoryList(phoneCategoryList);
 						
-						if(param.getPhoneNumber().getPhoneCategory()!=null)	
+						if(param.getPhoneNumber().getNumber()!=null)	
 							socialNetworkVO.setPhoneCategory(new Long(param.getPhoneNumber().getNumber()));
 							
 							phoneList.add(socialNetworkVO);
@@ -1012,7 +1012,7 @@ public CandidateDetailsVO getcandidateFullInformation(Long candidateId){
 					}
 				}
 				List<CandidateWebsite> websiteDetails=candidateWebsiteDAO.getCandidateWebsiteDetails1(candidateId);
-				if(casteDetails.size()>0){
+				if(websiteDetails.size()>0){
 					for(CandidateWebsite param2:websiteDetails){
 						candidateDetailsVO.setWebsiteId(param2.getCandidateWebsiteId());
 						candidateDetailsVO.setWebsiteAddress(param2.getWebsiteAddress());
