@@ -35,6 +35,15 @@
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+
+%>
+
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+
+<% }
+
+%>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
