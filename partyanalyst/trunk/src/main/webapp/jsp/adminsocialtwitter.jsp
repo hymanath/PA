@@ -15,16 +15,12 @@
 #resultofajax * tr:nth-child(odd){background:#E0E0E0 ;}
 #resultofajax * tr:nth-child(even){background:#F0F0F0 ;}
 
-img{
-    cursor: default;
-    margin-left: 20px;
-}
-
 
 #electionTypeId,#state,#district,#constituency{
 width :225px;
 }
 </style>
+
 <script type="text/javascript">
 
 		var timeST = new Date().getTime();
@@ -211,9 +207,9 @@ for(i=0; i<result.length ;i++){
 	else  
 	   str +='<td id="td" style="width: 60px; height: 100px;">--</td>';
 	if(result[i].addressName!=null)     
-	    str +='<td id="td" style="width: 25px; height: 100px;"><img src="images/candidates/'+result[i].lastName+'.jpg" height="100px" width="100px"/></td>';
+	    str +='<td id="td" style="width: 25px; height: 100px; cursor: default; margin-left: 20px;"><img src="images/candidates/'+result[i].lastName+'.jpg" height="100px" width="100px"/></td>';
 	else 
-		str +='<td id="td" style="width: 25px; height: 100px;"><img src="pictures/profiles/member.jpg"/></td>';
+		str +='<td id="td" style="width: 25px; height: 100px; cursor: default; margin-left: 20px;"><img src="pictures/profiles/member.jpg"/></td>';
 	   str +='<td id="td" style="width: 40px; height: 100px;"><a href="candidateUpdateFormAction.action?stateId='+stateId+'&candidateId='+result[i].candId+'&candidateName='+result[i].lastName+'">Edit</a></td>';
 	str +='</tr>';
 }
