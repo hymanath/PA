@@ -28,8 +28,6 @@ import com.itgrids.partyanalyst.dao.IPhoneTypeDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AddressContactDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CasteDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -38,7 +36,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SocialNetworkVO;
 import com.itgrids.partyanalyst.model.Address;
 import com.itgrids.partyanalyst.model.AddressContact;
-import com.itgrids.partyanalyst.model.AddressType;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateAddress;
 import com.itgrids.partyanalyst.model.CandidateCaste;
@@ -51,7 +48,6 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.social.dao.ICandidateSocialDAO;
 import com.itgrids.partyanalyst.social.dao.IPartySocialDAO;
 import com.itgrids.partyanalyst.social.dao.ISocialNetworkSiteDAO;
-import com.itgrids.partyanalyst.social.dao.impl.SocialNetworkSiteDAO;
 import com.itgrids.partyanalyst.social.model.CandidateSocial;
 import com.itgrids.partyanalyst.social.service.ISocialService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -386,6 +382,7 @@ public List<SocialNetworkVO> getParliamentInfo(String electionType, Long stateId
 		List<CandidateCaste> casteDetails=candidateCasteDAO.getCandidateCasteDetails1(socialNetworkVO.getCandId());
 		if(casteDetails!=null && casteDetails.size()>0){
 			for(CandidateCaste paramValue:casteDetails){
+				if(paramValue.getCasteStatewise() != null && paramValue.getCasteStatewise().getCaste() != null && paramValue.getCasteStatewise().getCaste().getCasteName() != null)
 				socialNetworkVO.setCasteName(paramValue.getCasteStatewise().getCaste().getCasteName().toString());
 			}
 		}
@@ -565,125 +562,43 @@ public List findByTehsilNameAndDistrict(Long districtId){
 public ResultStatus insertAddressDetails(CandidateDetailsVO candidateDetailsVO){
 	ResultStatus resultStatus = new ResultStatus();
 	CandidateAddress candidateAddress=null;
-	try{
-	/*if(candidateDetailsVO.getAddressList().get(0).getAddressId()==null){
-		address=new Address();
-	}else{
-		address = addressDAO.get(candidateDetailsVO.getAddressList().get(0).getAddressId());
-	}*/
-		if(candidateDetailsVO.getAddressList().get(0).getCandidateAddressId()==null){
-			candidateAddress= new CandidateAddress();
-		}else{
-			
-			candidateAddress = candidateAddressDAO.get(candidateDetailsVO.getAddressList().get(0).getCandidateAddressId());
-		}
-	
-		//CandidateAddress candidateAddress=null;
-		AddressContact addressContact=null;
 	List<SocialNetworkVO> socialList=new ArrayList<SocialNetworkVO>();
-	List<AddressVO> addresslist=new ArrayList<AddressVO>();	
 	Address address=null;
-	if(candidateDetailsVO.getAddressList().get(0).getAddressId()==null){
-		address=new Address();
-	}else{
+	PhoneNumber phoneNumbers=null;
+	try{
 		
-		address =  addressDAO.get(candidateDetailsVO.getAddressList().get(0).getAddressId());
-	}
-
-	//Address address=new Address();
-		for(AddressVO addressVo : candidateDetailsVO.getAddressList()){
+		if(candidateDetailsVO.getAddressList() != null){
 			
-			if(addressVo.getAddress1()!=null)
-				address.setAddress1(addressVo.getAddress1());
-			if(addressVo.getAddress2()!=null)
-		address.setAddress2(addressVo.getAddress2());
-/*			if(addressVo.getCountryId()!=null)
-		address.setCountry(addressVo.getCountryId().toString());*/
-			if(addressVo.getMandalId()!=null)
-		address.setMandal(addressVo.getMandalId().toString());
-			if(addressVo.getCity()!=null)
-		address.setCity(addressVo.getCity());
-			if(addressVo.getStateId()!=null)
-		address.setState(addressVo.getStateId().toString());
-			if(addressVo.getPincode()!=null)
-		address.setPincode(addressVo.getPincode());
+			AddressVO addressVo = candidateDetailsVO.getAddressList().get(0);
 			
-			if(addressVo.getDistrictId()!=null)
-				address.setDistrict(addressVo.getDistrictId().toString());
 			
-					if(address!=null)
-						address = addressDAO.save(address);
-					addresslist=candidateDetailsVO.getAddressList();
-					
-					/*for(int i=0;i<;i++){
+			if(candidateDetailsVO.getAddressList().get(0).getAddressId()==null)
+				address=new Address();
+			else			
+				address =  addressDAO.get(candidateDetailsVO.getAddressList().get(0).getAddressId());
+			
+			saveAddressDetails(addressVo,address);
+			
+			
+			if(candidateDetailsVO.getAddressList().get(0).getCandidateAddressId()==null)
+				candidateAddress= new CandidateAddress();
+			else			
+				candidateAddress = candidateAddressDAO.get(candidateDetailsVO.getAddressList().get(0).getCandidateAddressId());
 						
-					}*/
-				
-					PhoneNumber phoneNumbers=null;
-					
-					if(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getPhoneNumberId()==null){
-						phoneNumbers=new PhoneNumber();
-					}else{
-						phoneNumbers = phoneNumberDAO.get(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getPhoneNumberId());
-					}
-					
-					for(int i=0;i<addresslist.size();i++)
-					{
-					socialList=addresslist.get(i).getPhoneList();
-					for(SocialNetworkVO socialNetworkVO : socialList){
-						CandidatePhone candidatePhone=null;
+			saveCandidateAddressDetails(candidateDetailsVO,address,candidateAddress);
 						
-						if(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getCandidatePhoneId()==null){
-							candidatePhone=new CandidatePhone();
-						}else{
-							candidatePhone = candidatePhoneDAO.get(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getCandidatePhoneId());
-						}
-						
-						
-					//	PhoneNumber phoneNumbers=new PhoneNumber();
-						if(candidateDetailsVO.getAddressList().get(0).getAddressContactId()==null){
-							addressContact = new AddressContact();
-						}else{
-							addressContact = addressContactDAO.get(candidateDetailsVO.getAddressList().get(0).getAddressContactId());
-						}
-						
-						if(socialNetworkVO.getPhoneType()!=null)
-						phoneNumbers.setPhoneType(phoneTypeDAO.get(socialNetworkVO.getPhoneType()));
-						if(socialNetworkVO.getPhoneCategory()!=null)
-						phoneNumbers.setPhoneCategory(phoneCategoryDAO.get(socialNetworkVO.getPhoneCategory()));
-						if(socialNetworkVO.getPhoneNumber()!=null)
-						phoneNumbers.setNumber(socialNetworkVO.getPhoneNumber().toString());
-						
-						phoneNumbers=phoneNumberDAO.save(phoneNumbers);
-						
-						if(candidateDetailsVO.getCandidateId()!=null)
-						candidatePhone.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
-						if(phoneNumbers!=null)
-						candidatePhone.setPhoneNumber(phoneNumbers);
-						
-						candidatePhone = candidatePhoneDAO.save(candidatePhone);
-						
-						addressContact.setAddress(address);
-						addressContact.setPhoneNumber(phoneNumbers);
-						
-						addressContactDAO.save(addressContact);
-						
-					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-							
-					}
-					}
-			}
-		
-		
-		if(candidateDetailsVO.getCandidateId()!=null)
-	candidateAddress.setCandidate(candidateDAO.get(new Long(candidateDetailsVO.getCandidateId())));
-		if(candidateDetailsVO.getCandidateId()!=null)
-	candidateAddress.setAddressType(addressTypeDAO.get(new Long(candidateDetailsVO.getAddressList().get(0).getAddressTypeId())));
-	
-	candidateAddress.setAddress(address);
-		if(candidateAddress!=null)
-	candidateAddressDAO.save(candidateAddress);
-		
+			socialList=addressVo.getPhoneList();
+			
+		    if(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getPhoneNumberId()==null)
+				phoneNumbers=new PhoneNumber();
+		    else
+				phoneNumbers = phoneNumberDAO.get(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getPhoneNumberId());
+		  
+		    savePhoneNumberDetails(socialList.get(0) ,phoneNumbers);
+			saveCandidatePhoneDetails(candidateDetailsVO,phoneNumbers);
+			saveAddressContactDetails(candidateDetailsVO,address,phoneNumbers);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}
 
 	}
 	catch (Exception e) {
@@ -695,110 +610,161 @@ public ResultStatus insertAddressDetails(CandidateDetailsVO candidateDetailsVO){
 	
 }
 
-
-
-/*public ResultStatus insertPhoneDetails(CandidateDetailsVO candidateDetailsVO){
-ResultStatus resultStatus = new ResultStatus();
+public void saveCandidateAddressDetails(CandidateDetailsVO candidateDetailsVO,Address address,CandidateAddress candidateAddress){
 	
-	try{
-		
-		PhoneNumber phoneNumbers=new PhoneNumber();
-		CandidatePhone candidatePhone=new CandidatePhone();
-		AddressContact addressContact=new AddressContact();
-		
-		for(SocialNetworkVO socialNetworkVO : candidateDetailsVO.getAddressList().get(0).getPhoneList()){
-		if(socialNetworkVO.getPhoneType()!=null)
-		phoneNumbers.setPhoneType(phoneTypeDAO.get(socialNetworkVO.getPhoneType()));
-		if(socialNetworkVO.getPhoneCategory()!=null)
-		phoneNumbers.setPhoneCategory(phoneCategoryDAO.get(socialNetworkVO.getPhoneCategory()));
-		if(socialNetworkVO.getPhoneNumber()!=null)
-		phoneNumbers.setNumber(socialNetworkVO.getPhoneNumber().toString());
-		
-		phoneNumbers=phoneNumberDAO.save(phoneNumbers);
-		
-		
-		
-		if(candidateDetailsVO.getCandidateId()!=null)
-		candidatePhone.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
-		if(phoneNumbers!=null)
-		candidatePhone.setPhoneNumber(phoneNumbers);
-		
-		candidatePhoneDAO.save(candidatePhone);
-		
-		
-		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		}
-	}catch (Exception e) {
-		resultStatus.setExceptionEncountered(e);
-		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-		e.printStackTrace();
-	}	
-	
-	return resultStatus;
+	  if(candidateDetailsVO.getCandidateId()!=null)
+          candidateAddress.setCandidate(candidateDAO.get(new Long(candidateDetailsVO.getCandidateId())));
+	   if(candidateDetailsVO.getCandidateId()!=null)
+      	candidateAddress.setAddressType(addressTypeDAO.get(new Long(candidateDetailsVO.getAddressList().get(0).getAddressTypeId())));
+
+        candidateAddress.setAddress(address);
+	   if(candidateAddress!=null)
+       candidateAddressDAO.save(candidateAddress);
 	
 }
-*/
+
+public void saveAddressDetails(AddressVO addressVo,Address address){
+	
+	if(addressVo.getAddress1()!=null && !addressVo.getAddress1().equalsIgnoreCase(""))
+		address.setAddress1(addressVo.getAddress1());
+	
+	if(addressVo.getAddress2()!=null && !addressVo.getAddress2().equalsIgnoreCase(""))
+       address.setAddress2(addressVo.getAddress2());			
+
+	if(addressVo.getMandalId()!=null && addressVo.getMandalId() != 0)
+      address.setMandal(addressVo.getMandalId().toString());			
+	
+	if(addressVo.getCity()!=null && !addressVo.getCity().equalsIgnoreCase(""))
+      address.setCity(addressVo.getCity());
+	
+	if(addressVo.getStateId()!=null && addressVo.getStateId()!= 0)
+      address.setState(addressVo.getStateId().toString());
+	
+	if(addressVo.getPincode()!=null && !addressVo.getPincode().equals(""))
+      address.setPincode(addressVo.getPincode());
+	
+	if(addressVo.getDistrictId()!=null)
+		address.setDistrict(addressVo.getDistrictId().toString());
+	
+	address = addressDAO.save(address);	
+	
+}
+
+public void savePhoneNumberDetails(SocialNetworkVO socialNetworkVO,PhoneNumber phoneNumbers){
+	
+	if(socialNetworkVO.getPhoneType()!=null)
+		  phoneNumbers.setPhoneType(phoneTypeDAO.get(socialNetworkVO.getPhoneType()));
+		
+		if(socialNetworkVO.getPhoneCategory()!=null)
+		  phoneNumbers.setPhoneCategory(phoneCategoryDAO.get(socialNetworkVO.getPhoneCategory()));
+		
+		if(socialNetworkVO.getPhoneNumber()!=null)
+		  phoneNumbers.setNumber(socialNetworkVO.getPhoneNumber().toString());
+		
+		phoneNumbers=phoneNumberDAO.save(phoneNumbers);
+			
+	
+}
+
+public void saveCandidatePhoneDetails(CandidateDetailsVO candidateDetailsVO ,PhoneNumber phoneNumbers){
+	
+	CandidatePhone candidatePhone=null;
+	
+	
+	if(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getCandidatePhoneId()==null)
+		candidatePhone=new CandidatePhone();
+	else
+		candidatePhone = candidatePhoneDAO.get(candidateDetailsVO.getAddressList().get(0).getPhoneList().get(0).getCandidatePhoneId());
+	
+	
+	if(candidateDetailsVO.getCandidateId()!=null)
+		candidatePhone.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
+	
+	if(phoneNumbers!=null)
+		candidatePhone.setPhoneNumber(phoneNumbers);
+		
+		candidatePhone = candidatePhoneDAO.save(candidatePhone);
+	
+}
+
+public void saveAddressContactDetails(CandidateDetailsVO candidateDetailsVO,Address address ,PhoneNumber phoneNumbers){
+	
+	AddressContact addressContact=null;
+	
+	if(candidateDetailsVO.getAddressList().get(0).getAddressContactId()==null)
+		addressContact = new AddressContact();
+	else
+		addressContact = addressContactDAO.get(candidateDetailsVO.getAddressList().get(0).getAddressContactId());
+	
+	
+	addressContact.setAddress(address);
+	addressContact.setPhoneNumber(phoneNumbers);
+	
+	addressContactDAO.save(addressContact);
+	
+}
+
 
 public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 	ResultStatus resultStatus = new ResultStatus();
+	CandidateCaste candidateCaste=null;
+	CasteStatewise casteStatewise=null;
+	Caste caste=null;
 	
 	try{
-		CandidateCaste candidateCaste=null;
-		if(candidateDetailsVO.getCandidatecasteId()==null){
+		
+		if(candidateDetailsVO.getCandidatecasteId()==null)
 			candidateCaste=new CandidateCaste();
-		}else{
+		else
 			candidateCaste = candidateCasteDAO.get(candidateDetailsVO.getCandidatecasteId());
-		}
 		
-		CasteStatewise casteStatewise=null;
-		if(candidateDetailsVO.getCasteStateId()==null){
+		
+		if(candidateDetailsVO.getCasteStateId()==null)
 			casteStatewise=new CasteStatewise();
-		}else{
+		else
 			casteStatewise = casteStatewiseDAO.get(candidateDetailsVO.getCasteStateId());
-		}
-	
-		Caste caste=null;
 		
-		if(candidateDetailsVO.getCasteId()==null ||candidateDetailsVO.getCasteId()==0 ){
+		
+		if(candidateDetailsVO.getCasteId()==null ||candidateDetailsVO.getCasteId()==0 )
 			caste=new Caste();
-		}else{
-			
+		else		
 			caste = casteDAO.get(candidateDetailsVO.getCasteId());
 		
-		}
-		if(candidateDetailsVO.getCasteId()!=null && candidateDetailsVO.getCasteId() > 0)
-			
-		casteStatewise.setCaste(casteDAO.get(candidateDetailsVO.getCasteId()));
 		
-		if(candidateDetailsVO.getNewCaste()!=null){
-		List<Object[]> list=casteDAO.getCasteNames();
+		if(candidateDetailsVO.getCasteId()!=null && candidateDetailsVO.getCasteId() > 0)			
+		   casteStatewise.setCaste(casteDAO.get(candidateDetailsVO.getCasteId()));
 		
-		for(Object[] cast:list){
-			if(!candidateDetailsVO.getNewCaste().equals("")){
-			if(cast[1].equals(candidateDetailsVO.getNewCaste())){
-				
-				casteStatewise.setCaste(casteDAO.get((Long)cast[0]));
-						
-			}else{
-				caste.setCasteName(candidateDetailsVO.getNewCaste());
-				caste=casteDAO.save(caste);
-				casteStatewise.setCaste(caste);
-						
-			}
-		}
-		}
-	}
-	
 		casteStatewise.setState(stateDAO.get(candidateDetailsVO.getAddressList().get(0).getStateId()));
+
+		
+			if(candidateDetailsVO.getNewCaste()!=null && !candidateDetailsVO.getNewCaste().equalsIgnoreCase("")){
+			   List<Object[]> list=casteDAO.getCasteNames();
+			
+					for(Object[] cast:list){
+						
+							if(!candidateDetailsVO.getNewCaste().equals("")){
+								
+								if(cast[1].equals(candidateDetailsVO.getNewCaste()))					
+									casteStatewise.setCaste(casteDAO.get((Long)cast[0]));							
+								else{									
+									caste.setCasteName(candidateDetailsVO.getNewCaste());
+									caste=casteDAO.save(caste);
+									casteStatewise.setCaste(caste);						
+								}
+						    }
+						
+					}
+		  }
+	
 		
 		if(candidateDetailsVO.getCasteCategoryId()==3 || candidateDetailsVO.getCasteCategoryId()==4){
 			casteGroupId=casteCategoryGroupDAO.getCasteNamesOfCategories(candidateDetailsVO.getCasteCategoryId());
 			casteStatewise.setCasteCategoryGroup(casteCategoryGroupDAO.get(casteGroupId));
 		}else{
-			if(candidateDetailsVO.getCasteGroupId()!=0)
+			if(candidateDetailsVO.getCasteGroupId() != null && candidateDetailsVO.getCasteGroupId()!=0)
 			casteStatewise.setCasteCategoryGroup(casteCategoryGroupDAO.get(candidateDetailsVO.getCasteGroupId()));
 		}
-	casteStatewise=casteStatewiseDAO.save(casteStatewise);
+	   casteStatewise=casteStatewiseDAO.save(casteStatewise);
 	
 	candidateCaste.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
 	candidateCaste.setCasteStatewise(casteStatewise);
@@ -815,68 +781,110 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 	
 }
 
-	
+
+
 public ResultStatus insertOtherDetails(CandidateDetailsVO candidateDetailsVO){
 	ResultStatus resultStatus = new ResultStatus();
 	
 	try{
-		CandidateSocial candidateSocial=null;
-		CandidateSocial candidateSocial1=null;
 		
-		if(candidateDetailsVO.getCandidateSocialFacebookId()==null ){
-			candidateSocial=new CandidateSocial();
-		}else{
-			candidateSocial = candidateSocialDAO.get(candidateDetailsVO.getCandidateSocialFacebookId());
-		}
-		if(candidateDetailsVO.getCandidateSocialTwitterId()==null ){
-			candidateSocial1=new CandidateSocial();
-		}else{
-			candidateSocial1 = candidateSocialDAO.get(candidateDetailsVO.getCandidateSocialTwitterId());
-		}
+		saveFaceBookIdDetails(candidateDetailsVO);
+		saveTwitterIdDetails(candidateDetailsVO);	
+		saveWebsiteAddressDetails(candidateDetailsVO);
+			
+		candidateDAO.findEmailInsertionInCandidate(candidateDetailsVO.getEmailId(),candidateDetailsVO.getCandidateId());		
+		candidateDAO.findNameInsertionInCandidate(candidateDetailsVO.getCandidateName(),candidateDetailsVO.getCandidateId());
 		
-		CandidateWebsite candidateWebsite=null;
-		if(candidateDetailsVO.getWebsiteId()==null){
-			candidateWebsite=new CandidateWebsite();
-		}else{
-			candidateWebsite = candidateWebsiteDAO.get(candidateDetailsVO.getWebsiteId());
-		}
 		
-		//candidateSocial.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
-		candidateSocial1.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+	}catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			e.printStackTrace();
+	}	
+	return resultStatus;
+	
+}
+
+public void saveFaceBookIdDetails(CandidateDetailsVO candidateDetailsVO){
+	CandidateSocial candidateSocial=null;
+	
+	
+	if(candidateDetailsVO.getCandidateSocialFacebookId()==null ){
 		
-		if(candidateDetailsVO.getTwitterUrl() != null)
-		candidateSocial1.setSocialNetworkSite(socialNetworkSiteDAO.get(IConstants.TWITTER_ID));
+		candidateSocial = candidateSocialDAO.get(candidateDetailsVO.getCandidateSocialFacebookId());
+		candidateSocial.setSocialNetworkSite(socialNetworkSiteDAO.get(IConstants.FACEBOOK_ID));
+		candidateSocial.setProfileId(candidateDetailsVO.getFacebookUrl());		
+	    candidateSocial.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
+	
+	    candidateSocialDAO.save(candidateSocial);
+	}else if(candidateDetailsVO.getFacebookUrl() != null && !candidateDetailsVO.getFacebookUrl().equalsIgnoreCase("")){
+		
+		candidateSocial=new CandidateSocial();
+		candidateSocial = candidateSocialDAO.get(candidateDetailsVO.getCandidateSocialFacebookId());
+		candidateSocial.setSocialNetworkSite(socialNetworkSiteDAO.get(IConstants.FACEBOOK_ID));
+		candidateSocial.setProfileId(candidateDetailsVO.getFacebookUrl());		
+	    candidateSocial.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
+	
+	    candidateSocialDAO.save(candidateSocial);
+		
+	}
+}
+
+public void saveTwitterIdDetails(CandidateDetailsVO candidateDetailsVO){
+	
+	CandidateSocial candidateSocial1=null;
+	
+	if(candidateDetailsVO.getCandidateSocialTwitterId() != null){
+		
+		candidateSocial1 = candidateSocialDAO.get(candidateDetailsVO.getCandidateSocialTwitterId());
+
+		candidateSocial1.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));		
+	    candidateSocial1.setSocialNetworkSite(socialNetworkSiteDAO.get(IConstants.TWITTER_ID));
+		candidateSocial1.setProfileId(candidateDetailsVO.getTwitterUrl());
+	
+		candidateSocialDAO.save(candidateSocial1);
+	}else if(candidateDetailsVO.getTwitterUrl() != null && !candidateDetailsVO.getTwitterUrl().equalsIgnoreCase("")){
+		
+		candidateSocial1=new CandidateSocial();
+		
+		candidateSocial1.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));		
+	    candidateSocial1.setSocialNetworkSite(socialNetworkSiteDAO.get(IConstants.TWITTER_ID));
 		candidateSocial1.setProfileId(candidateDetailsVO.getTwitterUrl());
 	
 		candidateSocialDAO.save(candidateSocial1);
 		
-		candidateSocial.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
 		
-		if(candidateDetailsVO.getFacebookUrl() != null)
-			candidateSocial.setSocialNetworkSite(socialNetworkSiteDAO.get(IConstants.FACEBOOK_ID));
-			candidateSocial.setProfileId(candidateDetailsVO.getFacebookUrl());
+	}
+	
+	
+	
+}
+
+public void saveWebsiteAddressDetails(CandidateDetailsVO candidateDetailsVO){
+	
+	CandidateWebsite candidateWebsite=null;
+	
+	if(candidateDetailsVO.getWebsiteId() != null){
+		candidateWebsite = candidateWebsiteDAO.get(candidateDetailsVO.getWebsiteId());
+	
+		candidateWebsite.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
+		candidateWebsite.setWebsiteAddress(candidateDetailsVO.getWebsiteAddress());
 		
-		candidateSocialDAO.save(candidateSocial);
-		//candidateSocialDAO.save(candidateSocial1);
-		
-		candidateDAO.findEmailInsertionInCandidate(candidateDetailsVO.getEmailId(),candidateDetailsVO.getCandidateId());
-		
-		candidateDAO.findNameInsertionInCandidate(candidateDetailsVO.getCandidateName(),candidateDetailsVO.getCandidateId());
+		candidateWebsiteDAO.save(candidateWebsite);
+	}else if(candidateDetailsVO.getWebsiteAddress() != null && !candidateDetailsVO.getWebsiteAddress().equalsIgnoreCase("")){
+		candidateWebsite=new CandidateWebsite();
 		
 		candidateWebsite.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
 		candidateWebsite.setWebsiteAddress(candidateDetailsVO.getWebsiteAddress());
 		
 		candidateWebsiteDAO.save(candidateWebsite);
 		
-		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		}catch (Exception e) {
-			resultStatus.setExceptionEncountered(e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			e.printStackTrace();
-		}	
-		return resultStatus;
+	}
 	
 }
+
+	
 
 
 public List<SelectOptionVO> getCasteNamesByAutoPopulate(Long stateId,String letters){
@@ -892,30 +900,96 @@ public List<SelectOptionVO> getCasteNamesByAutoPopulate(Long stateId,String lett
 	return casteNamesAndIds;	
 }
 
+
 public CandidateDetailsVO getcandidateFullInformation(Long candidateId){
 	CandidateDetailsVO candidateDetailsVO=new CandidateDetailsVO();
 	
-	AddressVO addressVO=new AddressVO();
-	List<AddressVO> addressList = new ArrayList<AddressVO>();
-	List<AddressVO> addressList1 = new ArrayList<AddressVO>();
-	boolean isSaved=false;
 	try{
-		List<Candidate> emailDetails=candidateDAO.getEmailInfo(candidateId);
-		if(emailDetails.size()>0){
-			for(Candidate params:emailDetails){
-				candidateDetailsVO.setEmailId(params.getEmailAddress());
+		
+		getCandidateEmailDetails(candidateId,candidateDetailsVO);		
+		getWebsiteAddressDetails(candidateId,candidateDetailsVO);
+		getCandidateSocialUrlDetails(candidateId,candidateDetailsVO);
+		getCandidateAddressDetails(candidateId,candidateDetailsVO);
+		getCandidatePhoneDetails(candidateId,candidateDetailsVO );
+		getCandidateCasteDetails(candidateId,candidateDetailsVO);
+				
+	}catch (Exception e) {
+		System.out.println(e);
+	}
+	
+	return candidateDetailsVO;
+}
+
+
+public void getCandidateEmailDetails(Long candidateId,CandidateDetailsVO candidateDetailsVO){
+	
+	List<Candidate> emailDetails=candidateDAO.getEmailInfo(candidateId);
+	if(emailDetails.size()>0){
+		for(Candidate params:emailDetails){
+			candidateDetailsVO.setEmailId(params.getEmailAddress());
+		}
+	}
+	
+}
+
+public void getWebsiteAddressDetails(Long candidateId ,CandidateDetailsVO candidateDetailsVO){
+	List<CandidateWebsite> websiteDetails=candidateWebsiteDAO.getCandidateWebsiteDetails1(candidateId);
+	if(websiteDetails.size()>0){
+		for(CandidateWebsite param2:websiteDetails){
+			candidateDetailsVO.setWebsiteId(param2.getCandidateWebsiteId());
+			candidateDetailsVO.setWebsiteAddress(param2.getWebsiteAddress());
+		}
+	}
+
+	
+}
+
+public void getCandidateSocialUrlDetails(Long candidateId ,CandidateDetailsVO candidateDetailsVO){
+	
+	List<CandidateSocial> UrlDetails=candidateSocialDAO.getCandidateUrlDetails(candidateId);
+
+	
+	if(UrlDetails.size()>0){
+		//isSaved=true;
+		
+	for(CandidateSocial param3:UrlDetails){
+		if(param3.getSocialNetworkSite()!=null)
+		
+			if(param3.getSocialNetworkSite().getSocialNetworkId()==1){
+				candidateDetailsVO.setCandidateSocialTwitterId(param3.getCandidateSocialId());
+				candidateDetailsVO.setTwitterUrl(param3.getProfileId());
+			}
+		if(param3.getSocialNetworkSite()!=null)
+			if(param3.getSocialNetworkSite().getSocialNetworkId()==2){
+				candidateDetailsVO.setCandidateSocialFacebookId(param3.getCandidateSocialId());
+				candidateDetailsVO.setFacebookUrl(param3.getProfileId());
 			}
 		}
-		List<CandidateAddress> details=candidateAddressDAO.getCandidateAddressDetails(candidateId);
-		if(details.size()>0){
+	}
+	
+	
+}
+
+
+public void getCandidateAddressDetails(Long candidateId ,CandidateDetailsVO candidateDetailsVO){
+	
+	List<AddressVO> addressList = new ArrayList<AddressVO>();
+	List<AddressVO> addressList1 = new ArrayList<AddressVO>();
+	AddressVO addressVO=new AddressVO();
+	
+	List<CandidateAddress> details=candidateAddressDAO.getCandidateAddressDetails(candidateId);
+	if(details.size()>0){
 			for(CandidateAddress params:details){
-				if(params.getAddress().getAddress1()!=null)
-				//candidateAddressId
+				
+				//if(params.getAddress().getAddress1()!=null)
+					
 				addressVO.setCandidateAddressId(params.getCandidateAddressId());
+				
 				addressVO.setAddressId(params.getAddress().getAddressId());
 				addressVO.setAddress1(params.getAddress().getAddress1());
 				addressVO.setAddress2(params.getAddress().getAddress2());
 				addressVO.setAddressContactId(addressVO.getAddressId());
+				
 				List<SelectOptionVO> addressTypeList=getAllAddressTypes();
 				addressVO.setAddressTypeList(addressTypeList);
 				
@@ -936,118 +1010,109 @@ public CandidateDetailsVO getcandidateFullInformation(Long candidateId){
 				
 				
 				if(params.getAddress().getMandal() != null)
-				addressVO.setMandalId(new Long(params.getAddress().getMandal()));
-				addressVO.setPincode(params.getAddress().getPincode());
+					addressVO.setMandalId(new Long(params.getAddress().getMandal()));
+					addressVO.setPincode(params.getAddress().getPincode());
+					addressList.add(addressVO);
+					candidateDetailsVO.setAddressList(addressList);
+				
+			}
+   }
+	
+}
+
+public void getCandidatePhoneDetails(Long candidateId,
+			CandidateDetailsVO candidateDetailsVO) {
+	
+	SocialNetworkVO socialNetworkVO=new SocialNetworkVO();
+	List<SocialNetworkVO> candidatePhoneList=new ArrayList<SocialNetworkVO>();
+	AddressVO addressVO = new AddressVO();
+    List<AddressVO> addressList = new ArrayList<AddressVO>();
+	
+	List<CandidatePhone> phoneDetails=candidatePhoneDAO.getCandidatePhoneDetails(candidateId);
+			if(phoneDetails.size()>0){
+				for(CandidatePhone param:phoneDetails){
+					
+					socialNetworkVO.setCandidatePhoneId(new Long(param.getCandidatePhoneId()));
+					
+					List<SelectOptionVO> phoneTypeList=getAllPhoneTypes();
+					socialNetworkVO.setPhoneTypeList(phoneTypeList);
+					
+					List<SelectOptionVO> phoneCategoryList=getAllPhoneCategorys();
+					socialNetworkVO.setPhoneCategoryList(phoneCategoryList);
+					
+					
+					socialNetworkVO.setPhoneNumberId(param.getPhoneNumber().getPhoneNumberId());
+					
+					if(param.getPhoneNumber().getPhoneType()!=null)
+						socialNetworkVO.setPhoneType(param.getPhoneNumber().getPhoneType().getPhoneTypeId());
+					if(param.getPhoneNumber().getNumber()!=null)
+						socialNetworkVO.setPhoneNumber(new Long(param.getPhoneNumber().getNumber()));
+					if(param.getPhoneNumber().getPhoneCategory()!=null && param.getPhoneNumber().getNumber() != null)	
+						socialNetworkVO.setPhoneCategory(new Long(param.getPhoneNumber().getNumber()));
+						
+						
+					candidatePhoneList.add(socialNetworkVO);
+						
+				}
+				
+				   
+				/*addressVO.setPhoneList(candidatePhoneList);
+				addressVO.setAddressContactId(addressContactDAO.getAddressContactId(addressVO.getAddressId(), socialNetworkVO.getPhoneNumberId()));
+				addressList1.add(addressVO);
+				candidateDetailsVO.setAddressList(addressList1);*/
+				
+			if(candidateDetailsVO.getAddressList() != null && candidateDetailsVO.getAddressList().size() >0)
+				candidateDetailsVO.getAddressList().get(0).setPhoneList(candidatePhoneList);
+			else{
+				addressVO.setPhoneList(candidatePhoneList);
 				addressList.add(addressVO);
 				candidateDetailsVO.setAddressList(addressList);
 				
 			}
-	}
-		SocialNetworkVO socialNetworkVO=new SocialNetworkVO();
-		List<SocialNetworkVO> phoneList=new ArrayList<SocialNetworkVO>();
-		
-		List<CandidatePhone> phoneDetails=candidatePhoneDAO.getCandidatePhoneDetails(candidateId);
-				if(phoneDetails.size()>0){
-					for(CandidatePhone param:phoneDetails){
-						
-						//candidatePhoneId
-						socialNetworkVO.setCandidatePhoneId(new Long(param.getCandidatePhoneId()));
-						
-						//addressVO.setAddressId(params.getAddress().getAddressId());
-						List<SelectOptionVO> phoneTypeList=getAllPhoneTypes();
-						socialNetworkVO.setPhoneTypeList(phoneTypeList);
-						socialNetworkVO.setPhoneNumberId(param.getPhoneNumber().getPhoneNumberId());
-						if(param.getPhoneNumber().getPhoneType()!=null)
-							socialNetworkVO.setPhoneType(param.getPhoneNumber().getPhoneType().getPhoneTypeId());
-						if(param.getPhoneNumber().getNumber()!=null)
-							socialNetworkVO.setPhoneNumber(new Long(param.getPhoneNumber().getNumber()));
-						
-						List<SelectOptionVO> phoneCategoryList=getAllPhoneCategorys();
-						socialNetworkVO.setPhoneCategoryList(phoneCategoryList);
-						
-						if(param.getPhoneNumber().getNumber()!=null)	
-							socialNetworkVO.setPhoneCategory(new Long(param.getPhoneNumber().getNumber()));
-							
-							phoneList.add(socialNetworkVO);
-							addressVO.setPhoneList(phoneList);
-							addressVO.setAddressContactId(addressContactDAO.getAddressContactId(addressVO.getAddressId(), socialNetworkVO.getPhoneNumberId()));
-							addressList1.add(addressVO);
-							candidateDetailsVO.setAddressList(addressList1);
-							
-					}
-				}
-				
-				List<CandidateCaste> casteDetails=candidateCasteDAO.getCandidateCasteDetails1(candidateId);
-				if(casteDetails.size()>0){
-					for(CandidateCaste param1:casteDetails){
-						
-						candidateDetailsVO.setCasteStateId(param1.getCasteStatewise().getCasteStateId());
-						
-						candidateDetailsVO.setCandidatecasteId(param1.getCandidateCasteId());
-						if(param1.getCasteStatewise().getCaste()!=null)
-							candidateDetailsVO.setCasteId(new Long(param1.getCasteStatewise().getCaste().getCasteId()));
-						if(param1.getCasteStatewise().getCaste()!=null)
-						candidateDetailsVO.setCasteName(param1.getCasteStatewise().getCaste().getCasteName());
-						if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
-							candidateDetailsVO.setCasteGroupId(new Long(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId()));
-						
-						if(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory()!=null)
-							candidateDetailsVO.setCasteCategory1(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory().getCategoryName());
-						
-						if(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory()!=null)
-							candidateDetailsVO.setCasteCategoryId(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId());
 					
-						List<SelectOptionVO> casteGroupList = getAllCasteCategoryGroupDetails(candidateDetailsVO.getCasteCategoryId());
-						candidateDetailsVO.setCasteGroupList(casteGroupList);
-						
-						if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
-							candidateDetailsVO.setCasteGroupId(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId());
-						
-						List<SelectOptionVO> casteList = getAllCasteDetails();
-						casteList.add(0, new SelectOptionVO(0l,"others"));
-						candidateDetailsVO.setCasteGroupNameList(casteList);
-						
-						if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
-							candidateDetailsVO.setCasteGroupName(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupName());
-					}
-				}
-				List<CandidateWebsite> websiteDetails=candidateWebsiteDAO.getCandidateWebsiteDetails1(candidateId);
-				if(websiteDetails.size()>0){
-					for(CandidateWebsite param2:websiteDetails){
-						candidateDetailsVO.setWebsiteId(param2.getCandidateWebsiteId());
-						candidateDetailsVO.setWebsiteAddress(param2.getWebsiteAddress());
-					}
-				}
+		}
+				
+}
+
+
+public void getCandidateCasteDetails(Long candidateId ,CandidateDetailsVO candidateDetailsVO){
+	
+	List<CandidateCaste> casteDetails=candidateCasteDAO.getCandidateCasteDetails1(candidateId);
+	if(casteDetails.size()>0){
+		for(CandidateCaste param1:casteDetails){
 			
-				
-				List<CandidateSocial> UrlDetails=candidateSocialDAO.getCandidateUrlDetails(candidateId);
+			candidateDetailsVO.setCasteStateId(param1.getCasteStatewise().getCasteStateId());
+			
+			candidateDetailsVO.setCandidatecasteId(param1.getCandidateCasteId());
+			if(param1.getCasteStatewise() != null && param1.getCasteStatewise().getCaste()!=null && param1.getCasteStatewise().getCaste().getCasteId() != null)
+				candidateDetailsVO.setCasteId(new Long(param1.getCasteStatewise().getCaste().getCasteId()));
+			if(param1.getCasteStatewise().getCaste()!=null)
+			candidateDetailsVO.setCasteName(param1.getCasteStatewise().getCaste().getCasteName());
+			if(param1.getCasteStatewise().getCasteCategoryGroup()!=null && param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId() != null)
+				candidateDetailsVO.setCasteGroupId(new Long(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId()));
+			
+			if(param1.getCasteStatewise() != null && param1.getCasteStatewise().getCasteCategoryGroup() != null && param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory()!=null)
+				candidateDetailsVO.setCasteCategory1(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory().getCategoryName());
+			
+			if(param1.getCasteStatewise() != null && param1.getCasteStatewise().getCasteCategoryGroup() != null && param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory()!=null)
+				candidateDetailsVO.setCasteCategoryId(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId());
 		
-				
-					if(UrlDetails.size()>0){
-						isSaved=true;
-						
-					for(CandidateSocial param3:UrlDetails){
-						if(param3.getSocialNetworkSite()!=null)
-						
-							if(param3.getSocialNetworkSite().getSocialNetworkId()==1){
-								candidateDetailsVO.setCandidateSocialTwitterId(param3.getCandidateSocialId());
-								candidateDetailsVO.setTwitterUrl(param3.getProfileId());
-							}
-						if(param3.getSocialNetworkSite()!=null)
-							if(param3.getSocialNetworkSite().getSocialNetworkId()==2){
-								candidateDetailsVO.setCandidateSocialFacebookId(param3.getCandidateSocialId());
-								candidateDetailsVO.setFacebookUrl(param3.getProfileId());
-							}
-						}
-					}
-				
-	}catch (Exception e) {
-		System.out.println(e);
+			List<SelectOptionVO> casteGroupList = getAllCasteCategoryGroupDetails(candidateDetailsVO.getCasteCategoryId());
+			candidateDetailsVO.setCasteGroupList(casteGroupList);
+			
+			if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
+				candidateDetailsVO.setCasteGroupId(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId());
+			
+			List<SelectOptionVO> casteList = getAllCasteDetails();
+			casteList.add(0, new SelectOptionVO(0l,"others"));
+			candidateDetailsVO.setCasteGroupNameList(casteList);
+			
+			if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
+				candidateDetailsVO.setCasteGroupName(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupName());
+		}
 	}
 	
-	return candidateDetailsVO;
-	}
-
+}
 
 
 public List<SelectOptionVO> getAllCasteDetails(){
@@ -1249,14 +1314,3 @@ if(tehsilList.size() >0){
 }*/
 
 }
-	
-	
-	
-	
-	
-	
-
-
-
-
-
