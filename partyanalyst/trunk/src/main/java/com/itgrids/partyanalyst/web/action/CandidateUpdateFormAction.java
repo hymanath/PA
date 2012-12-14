@@ -612,20 +612,12 @@ return Action.SUCCESS;
 public String getCandidateDetails(){
 	
 	
-	//uploadImage();
-	
 	result=socialService.insertAddressDetails(candidateDetailsVO);
-	
-	//result1=socialService.insertPhoneDetails(candidateDetailsVO);
 	
 	result2=socialService.insertCasteDetails(candidateDetailsVO);
 	
 	result3=socialService.insertOtherDetails(candidateDetailsVO);
 
-
-		
-		
-	
 
 	return Action.SUCCESS;
 	
