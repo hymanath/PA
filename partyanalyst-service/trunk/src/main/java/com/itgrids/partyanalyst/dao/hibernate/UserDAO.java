@@ -216,7 +216,8 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	public List<Object> getNotConnectedUsersInSelectedLocations(Long userId,List<Long> locationIds,String locationType,List<Long> otherUsers,Long retrivalCount,Long startIndex,String nameString) 
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model ");
+		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model,model.constituency.district.districtId, ");
+		query.append(" model.constituency.district.districtName, model.constituency.state.stateId,model.constituency.state.stateName ");
 		query.append(" from User model where ");
 		query.append(" model.userId != :userId and model.userId not in (:otherUsers) and ");
 		
