@@ -639,6 +639,7 @@ function getVotersCastInfo()
 
   $("#localCastStatsTabContent_header").html("");
   $("#localCastStatsTabContentTitle").html("");
+  var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
   var errorDivEle = document.getElementById('AlertMsg');
   var divEle = document.getElementById('localCastStatsTabContent_body');
 	divEle.innerHTML ='';
@@ -736,6 +737,7 @@ function getVotersCastInfo()
 		if(flag)
 		{
 		errorDivEle.innerHTML ='';
+		showAjaxImgDiv('ajaxImageDiv');
 		var jsObj=
 			{
 				type:type,	
@@ -751,7 +753,15 @@ function getVotersCastInfo()
 		callAjax(jsObj,url);
 	}
 	}
-
+function showAjaxImgDiv(id)
+{
+	
+	document.getElementById(id).style.display = 'block';
+}
+function hideAjaxImgDiv(id)
+{
+	document.getElementById(id).style.display = 'none';
+}
 function buildCastInfoForSubLevels(myresults,jsObj)
 	{
 		
@@ -922,6 +932,8 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
    $("#impFamDtlsTitle").html("");
    $("#impFamDtls").html("");
   }
+   var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+  
     var level = $("#reportLevel").val();
 	var type = '';
 	var id = '';
@@ -1004,6 +1016,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	{
 	errorDivEle.innerHTML = '';		
    if(buttonType == "voters"){
+	  showAjaxImgDiv('ajaxImageDiv');
 	var jsObj=
 			{
 				
@@ -1022,6 +1035,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 		callAjax(jsObj,url);
 	}
 	if(buttonType == "impFamilies"){
+		showAjaxImgDiv('ajaxImageDiv');
 	   var jsObj1=
 			{
 					
@@ -1040,6 +1054,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	 if(type == 'booth'){
 	    reqtype = 'pollingstation';
 	 }
+	 showAjaxImgDiv('ajaxImageDiv');
 	    var jsObj2=
 			{
 					
@@ -1139,7 +1154,9 @@ function buildVotersInFamily(results,hno){
 }
 
 function buildVotersBasicInfo(votersbasicinfo,to,jsObj){
-
+	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+	hideAjaxImgDiv('ajaxImageDiv');
+	
    var str = '<div id="votersBasicInfoDivSub">';
    if(votersbasicinfo != null && votersbasicinfo.datapresent){
     
@@ -1246,7 +1263,8 @@ function buildVotersChart(chartInfo,reqTitle,to){
 
 function buildCastInfoData(myresults,jsObj)
 	{
-
+	var ajaxImageDiv = document.getElementById('ajaxImageDiv');
+	hideAjaxImgDiv('ajaxImageDiv');
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = myresults.voterCastInfodetails.totalVoters;
 	var totalCasts = myresults.voterCastInfodetails.totalCasts;
@@ -1336,6 +1354,8 @@ function buildCastInfoData(myresults,jsObj)
 				
 	}
   function  buildFamilyMembers(result,publicationDateId,type){
+	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+	hideAjaxImgDiv('ajaxImageDiv');
     var name = "";
      if(type == "panchayat"){
 	    name = $("#panchayatField option:selected").text();
@@ -1484,7 +1504,8 @@ $("#impFamilesBasicDetails").html(str);
 
 function buildImpFamilesChart(chartInfo){
 // Create the data table.
-
+var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+hideAjaxImgDiv('ajaxImageDiv');
 var data = google.visualization.arrayToDataTable([
           ['Task', 'Percentage'],
           ['Below 3',  chartInfo.below3perc],
