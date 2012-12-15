@@ -36,6 +36,8 @@
 		<class>com.itgrids.partyanalyst.model.PublicationDate</class>				
 		<class>com.itgrids.partyanalyst.model.HamletBoothPublication</class>				
 		<class>com.itgrids.partyanalyst.model.BoothPublicationVoter</class>
+		<class>com.itgrids.partyanalyst.model.UserFavoriteLinks</class>				
+		<class>com.itgrids.partyanalyst.model.FavoriteLinkPage</class>
 		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
