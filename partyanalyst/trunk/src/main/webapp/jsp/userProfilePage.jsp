@@ -54,9 +54,9 @@
 									
 						</div>	
 						
-						<div class="widget-block">
+						<!--<div class="widget-block">
 							<button class="btn  dropdown-toggle" data-toggle="dropdown">
-								<i class="icon-fire"></i>Settings<span class="caret"></span>
+								<i class="icon-wrench"></i>Settings<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
 								<li><a href="freeUserRegistration.action">Edit Profile</a></li>
@@ -64,7 +64,7 @@
 								<li><a href="javascript:{}" class="editPictureLink">Edit Picture</a></li>
 								<li><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink">Edit  View Settings</a></li>
 							</ul>
-						</div>
+						</div>-->
 										
 					
 					    <div class="widget-block" id="profileUserName">
@@ -110,6 +110,7 @@
 					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
 					<li><a href="javascript:{}" id="specialPageLink"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favorite Links</a></li>
+					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
 					</ul>
 				</div>
 				
@@ -401,6 +402,12 @@ userType = '${UserType}';
 		});
 	
 	});	
+	
+	
+	
+	
+	
+
 
 	function getUserSettingsDetails(){
 
