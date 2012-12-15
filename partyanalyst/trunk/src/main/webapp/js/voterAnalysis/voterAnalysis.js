@@ -2,12 +2,10 @@ var constMgmtMainObj={
 							
 							castStatsArray:[],
 							castStatssubArray:[],
-							
-					};
+					 };
 var publicationYear = "";
 function showReportLevel(value)
 	{
-		
 		if(value == 1)
 		{
 			document.getElementById('ConstituencyDiv').style.display = 'block';
@@ -23,7 +21,6 @@ function showReportLevel(value)
 			document.getElementById('pollingStationDiv').style.display = 'none';
 			getMandalList('mandalField');
 
-			
 		}
 		else if(value == 3)
 		{
@@ -34,19 +31,14 @@ function showReportLevel(value)
 			document.getElementById('pollingStationDiv').style.display = 'none';
 			getPanchayatList('panchayat','panchayatField');
 
-			
 		}
 		else if(value == 4)
 		{
-
-			
-			
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'none';
 			document.getElementById('pollingStationDiv').style.display = 'block';
 			getPanchayatList('pollingstation','pollingStationField');
-			
 		}
 	}
 	
@@ -119,10 +111,6 @@ var panchaytId =  $('#publicationDateList').val();
 
 if(panchaytId == "0" || publicationId == "0")
 	return false;
-
-
-
-
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
 {key:"firstName", label: "Name", sortable: true},
@@ -165,8 +153,6 @@ votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse
 oPayload.totalRecords = oResponse.meta.totalRecords;
 return oPayload;
 }
-
-
 return {
 oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
@@ -180,8 +166,6 @@ function showImportantFamiliesDiv()
 		document.getElementById('votersDiv2').style.display='none';
 		document.getElementById('votersDiv3').style.display='none';
 		document.getElementById('votersDiv4').style.display='none';
-		
-		
 		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		$("#votersId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -246,15 +230,12 @@ function showImportantFamiliesDiv()
 		$("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
 		$("#votersBasicInfoSubDivForAgeWiseDetls").html("");
         $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
-
-		  callCorrespondingAjaxCall();
+		 callCorrespondingAjaxCall();
 	}
 	
 	
 	function getMandalList(selectElmt)
 	{
-		
-		
 		var constituencyID = document.getElementById("constituencyList");
 		var name=constituencyID.options[constituencyID.selectedIndex].name;
 		var value=constituencyID.options[constituencyID.selectedIndex].value;
@@ -272,28 +253,22 @@ function showImportantFamiliesDiv()
 					task:"getMandalList"
 			};
 		
-
-
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "voterAnalysisAjaxAction.action?"+rparam;						
-		
 		callAjax(jsObj,url);
 	}
 
 
 	function getPanchayatList(checkedele,selectedEle)
 	{
-		
 		var mandalId=document.getElementById("mandalField");
 		var name=mandalId.options[mandalId.selectedIndex].name;
 		var value1=mandalId.options[mandalId.selectedIndex].value;
 		var value = value1.substring(1);
 		var alertEl = document.getElementById("AlertMsg");
 		alertEl.innerHTML = '';
-		
-		selectname = mandalField.options[mandalField.selectedIndex].text;
+		var selectname = mandalField.options[mandalField.selectedIndex].text;
 		var flag= selectname.search("MUNCIPALITY");
-		
 		 if(value1 == 0)
 		{
 			alertEl.innerHTML ='<P>Please Select Mandal</P>';
@@ -307,7 +282,6 @@ function showImportantFamiliesDiv()
 		
 		if(flag == -1)
 		{
-		
 		var jsObj=
 			{
 					
@@ -326,9 +300,7 @@ function showImportantFamiliesDiv()
 	
 	
 	function getPublicationDate()
-{
-	
-	
+	{
 	var constituencyID = document.getElementById("constituencyList");
 	var name=constituencyID.options[constituencyID.selectedIndex].name;
 	var value=constituencyID.options[constituencyID.selectedIndex].value;
@@ -374,7 +346,7 @@ function showImportantFamiliesDiv()
 								    if(myResults != null)
 									buildVotersBasicInfo(myResults,jsObj.to,jsObj);
 								}
-							else if(jsObj.task == "getCastInfo")
+							    else if(jsObj.task == "getCastInfo")
 								{
 									buildCastInfoData(myResults,jsObj);
 								}
@@ -442,8 +414,6 @@ function showImportantFamiliesDiv()
 		}
 	}
 		
-	
-
 	function buildPanchayatData(results,jsObj)
 		{
 	
@@ -821,38 +791,35 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 			castePercentage:cast1[k].castPercentage,
 			totalVoters:totalVoters,
 			};
-
-			subLevelcastInfo.push(castStats1);
-
-		
-		}
-		}
-		}
+		subLevelcastInfo.push(castStats1);
+			}
+		   }
+		 }
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
 		if(type != 'booth')
 		{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
-		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Cast Statistics In '+typeName+'Constituency</h4>';
+		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+'Constituency</h4>';
 		else if(type == "mandal")
-		str+='<h4 id="sublevelHeading">Panchayat wise Cast Statistics In '+typeName+' </h4>';
+		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
 		else if(type =="panchayat")
-		str+='<h4 id="sublevelHeading">Booth wise Cast Statistics In '+typeName+' Panchayat</h4>';
+		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
 		str+='<thead>';
 		str+='<tr>';
 		
 		if(type == "constituency")
-		str +='<th>MandalName</th>';
+		str +='<th>Mandal</th>';
 		if(type == "mandal")
-		str +='<th>PanchayatName</th>';
+		str +='<th>Panchayat</th>';
 		if(type =="panchayat")
-		str +='<th>Booth No</th>';
-		str +='<th> Caste</th>';
-		str +='<th>TotalVoters</th>';
-		str +='<th>castPopulation</th>';
-		str +='<th>malePopulation</th>';
-		str +='<th>FemalePopulation</th>';
-		str +='<th>castPercentage</th>';
+		str +='<th>Booth</th>';
+		str +='<th>Caste</th>';
+		str +='<th>Total Voters</th>';
+		str +='<th>Caste Population</th>';
+		str +='<th>Male Population</th>';
+		str +='<th>Female Population</th>';
+		str +='<th>CastePercentage</th>';
 		
 		str+='</tr>';
 		str+='</thead>';
@@ -896,27 +863,19 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='</table>';
 
 		divId.innerHTML = str;
-
-
-		
-	  
-	  	$('#subLevelTable').dataTable({
+		$('#subLevelTable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
 		  "aoColumns": [null,null,null,null,null,null,null
-     
-	  
-    ] 
+		] 
 		});
 	$('#subLevelTable tr').removeClass("odd");
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1"); 
 	}	
-
-	
-}
+	}
 function getVotersInACaste(id,publicationDateId,caste)
 {
 $("#localCastStatsVotersTitle").html("");
@@ -1127,27 +1086,21 @@ function buildVotersInACaste(results,jsObj)
 							{key:"houseNo", label: "House No",sortable:true},
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
 							{key:"relationship", label: "Relationship",sortable:true},
-							{key:"cast", label: "Cast",sortable:true},
-							{key:"castCategory", label: " Cast Category", sortable: true}
+							{key:"cast", label: "Caste",sortable:true},
+							{key:"castCategory", label: " Caste Category", sortable: true}
 		    	        ]; 
 
-    
-		var myConfigs = { 
+	var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 20
 			    }) 
 				};
-		
-		
 	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
 						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory"]
 					};
-
-		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
-
-
+	var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
 }
 
 function buildVotersInFamily(results,hno){
@@ -1281,10 +1234,6 @@ function buildVotersChart(chartInfo,reqTitle,to){
 		 
         var chart = new google.visualization.PieChart(document.getElementById(reqDiv));
         chart.draw(data, options);
-
-
-
-
 }
 
 function buildCastInfoData(myresults,jsObj)
@@ -1302,10 +1251,8 @@ function buildCastInfoData(myresults,jsObj)
 	var publicationDateId=jsObj.publicationDateId;
 	var boothId=jsObj.id;
 	var type =jsObj.type;
-		var	castIno = new Array();
-		var cast = myresults.voterCastInfodetails.castVOs;
-		
-		
+	var	castIno = new Array();
+	var cast = myresults.voterCastInfodetails.castVOs;
 		for(var i in cast)
 		{
 		var castStats = 
@@ -1316,14 +1263,11 @@ function buildCastInfoData(myresults,jsObj)
 			femalePopulation : cast[i].femalevoters,
 			castePercentage:cast[i].castPercentage,
 			};
-
-			castIno.push(castStats);
-
+		castIno.push(castStats);
 		constMgmtMainObj.castStatsArray =castIno; 
 		}
 		if(cast != ''&& type =='booth')
 		{
-		
 		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId);	
 		}
 		else if(cast != ''&& type!='booth')
@@ -1331,9 +1275,9 @@ function buildCastInfoData(myresults,jsObj)
 		buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId);	
 		}
 		else{
-	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
-     $("#localCastStatsTabContent_body").html("No Data Found");
-   }
+		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+		$("#localCastStatsTabContent_body").html("No Data Found");
+		}
    
 	}
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId)
@@ -1348,46 +1292,36 @@ function buildCastInfoData(myresults,jsObj)
 		var caste = oRecord.getData("caste");
 
 		elLiner.innerHTML ='<a onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+caste+'\')">'+caste+'</a>';
-	
 	};
 
-
-		var localCastStatsColumnDefs = [ 
+	var localCastStatsColumnDefs = [ 
 		    	            
-		    	            {key:"caste", label: "caste", sortable: true,formatter:YAHOO.widget.DataTable.casteLink},
-							{key:"castePopulation", label: "caste Population", formatter:"number", sortable: true},
-		    				{key:"malePopulation", label: "male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"femalePopulation", label: "female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"castePercentage", label: "caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
+		    	            {key:"caste", label: "Caste", sortable: true,formatter:YAHOO.widget.DataTable.casteLink},
+							{key:"castePopulation", label: "Caste Population", formatter:"number", sortable: true},
+		    				{key:"malePopulation", label: "Male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"femalePopulation", label: "Female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"castePercentage", label: "Caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
 		    	        ]; 
-
-		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
+	var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
 		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		localCastStatsDataSource.responseSchema = { 
             fields: ["caste",{key:"castePopulation", parser:"number"},{key:"malePopulation", parser:"number"},{key:"femalePopulation", parser:"number"},{key:"castePercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
         };
 		
-       
-
-
-		var myConfigs = { 
+    var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 10
 			    }) 
 				};
 		
-		
-		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs);
+	var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs);
 
-		
-		
-
-			return {
+		return {
 				oDS: localCastStatsDataSource,
 				oDT: localCastStatsDataTable
 			};
-		}
+	}
 
 	function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
 	{
@@ -1396,11 +1330,11 @@ function buildCastInfoData(myresults,jsObj)
 	
 	var localCastStatsColumnDefs = [ 
 		    	            
-		    	            {key:"caste", label: "caste", sortable: true},
-							{key:"castePopulation", label: "caste Population", formatter:"number", sortable: true},
-		    				{key:"malePopulation", label: "male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"femalePopulation", label: "female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"castePercentage", label: "caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
+		    	            {key:"caste", label: "Caste", sortable: true},
+							{key:"castePopulation", label: "Caste Population", formatter:"number", sortable: true},
+		    				{key:"malePopulation", label: "Male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"femalePopulation", label: "Female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"castePercentage", label: "Caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
 		    	        ]; 
 
@@ -1410,28 +1344,21 @@ function buildCastInfoData(myresults,jsObj)
             fields: ["caste",{key:"castePopulation", parser:"number"},{key:"malePopulation", parser:"number"},{key:"femalePopulation", parser:"number"},{key:"castePercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
         };
 		
-       
-
-
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 10
 			    }) 
 				};
 		
-		
 		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs);
 
 		
-		
-
-			return {
+		return {
 				oDS: localCastStatsDataSource,
 				oDT: localCastStatsDataTable
 			};
 
-				
-	}
+		}
   function  buildFamilyMembers(result,publicationDateId,type){
 
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
@@ -1487,8 +1414,6 @@ function buildCastInfoData(myresults,jsObj)
   }
   
 
-
-
  function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
   var impFamiList = new Array();
@@ -1540,23 +1465,10 @@ function impFamilesStaticTable(myresults,jsObj)
 {
 var str='';
 str+='<div class="impFamilesMainDiv" >';
-/*str+='<div id="impFamiliesTitle"><h5><strong>';
-str+=''+myresults.name+' '+myresults.type+' Family Wise Statistics in '+publicationYear+'';
-str+='</strong></h5></div>';*/
+
 $("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
 str+='</br>';
-/*str+='<div style="border:1px solid black">';
-str+='<table>';
-str+='<tr>';
-str+='<th style="color:black">TotalVoters :</th>';
-str+='<td>'+myresults.totalVoters+'</td>';
-str+='</tr>';
-str+='<tr>';
-str+='<th style="color:black">TotalFamiles :</th>';
-str+='<td>'+myresults.totalFamalies+'</td>';
-str+='</tr>';
-str+='</table>';
-str+='</div>';*/
+
 str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;"> Total Voters : '+myresults.totalVoters+' ';
 str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'</div>';
 str+='</br>';
