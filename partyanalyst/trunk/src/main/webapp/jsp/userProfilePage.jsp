@@ -31,6 +31,8 @@
 <style>
 .profile-left .widget-block{margin-top:0px;margin-bottom:0px;padding-bottom:0px;padding-top:0px;border:none;}
 .profile-left .widget-block h4{border:none;background:#e5e5e5;display:none;}
+/* 14-12 -12 */
+.unreadfont{font-weight:bold;}
 </style>
 </head>
 <body>
@@ -117,7 +119,8 @@
 			<div class="span6">
 				<div class="widget green" id="MyProfileActions">
 				<div id="headerDiv"></div>
-					<div class="placeholderCenterDiv"></div>
+						<div class="placeholderCenterDiv"></div>
+						
 						<div id="subscriptionsDiv">
 							<div id="userSpecialPageSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userSpecialPageUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
@@ -125,8 +128,7 @@
 							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
-							
-					</div>
+						</div>
 				</div>
 
 			</div>
@@ -284,16 +286,20 @@
 			</div>
 	</div>
 	<div class="templateDivMsg templateholder templateMessage" >
-			<div class="breadcrumb white-gloss" style="padding:10px;">
+			<div class="white-gloss readMsg popover-title" style="padding:2px;height:30px;">
 				<div class="imgClass"></div>
 				<span class="messageFrom"></span>
 				<span class="dateAndTimeReceived"></span>
+				
 			</div>
-			
-			<div class="message"></div>
-			<div class="msgBtns" >
-				<span class="reply btn-mini btn-info"></span>
-				<span class="msgDelete btn-mini btn-info"></span>
+			<input type="hidden" class="msgid">
+			<div class="msgbox popover-content" style="display:none;">
+				<div class="message" ></div>
+				<div class="msgBtns" >
+					<span class="reply"></span>
+					
+					<!--<span class="msgDelete icon-remove"></span>-->
+				</div>
 			</div>
 	</div>
 	
