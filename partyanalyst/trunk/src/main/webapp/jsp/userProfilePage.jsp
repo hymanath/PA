@@ -62,7 +62,7 @@
 								<li><a href="freeUserRegistration.action">Edit Profile</a></li>
 								<li><a href="javascript:{}" class="changePwdLink">Change Password</a></li>
 								<li><a href="javascript:{}" class="editPictureLink">Edit Picture</a></li>
-								<li><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink">Edit View Settings</a></li>
+								<li><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink">Edit  View Settings</a></li>
 							</ul>
 						</div>
 										
@@ -431,21 +431,25 @@ $('#userSettingsDialog').html('');
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b>Private</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b>Private View</b></label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b>Private</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b>Private View</b></label>';
 
     if(results.selectedOptionId == 1)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b>Public</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b>Public View</b></label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b>Public</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b>Public View</b></label>';
 	
 	if(results.selectedOptionId == 3)
-	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b>Friends</b></label>';
+	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b>Friends View</b></label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b>Friends</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b>Friends View</b></label>';
 
-	str+='<input style="float:right;margin-right:48px;margin-top:20px;" type="button" class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
+    str+='<div style="margin-top:10px;">';
+	str+='<input  type="button"   class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
+
+	str+='<input  style="margin:10px;" type="button" class="btn btn-success" value="Cancel" onClick="closeDialog();"/>';
+	str+='</div>';
 
 
 	str+='</div>';
