@@ -1650,9 +1650,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		commentsVO.setRejectedReasonsCount(0L);
 		commentsVO.setNotConsideredReasonsCount(0L);
 		commentsVO.setTotalPostedReasonsCount(0L);
-		
+		commentsVO.setPostedReasonsCountByConnectedUsers(0L);
 		try 
 		{	
+			List<Long> connectedUserIds = getConnectedUserIdsByUserId(registrationId);
 			List comments = commentCategoryCandidateDAO.getPostedReasonsCountByFreeUserId(registrationId);
 			if(comments != null && comments.size() > 0)
 			{
@@ -1668,15 +1669,34 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				}				
 			}
 			
-			List commentsCount = commentCategoryCandidateDAO.getPostedReasonsCountOtherThanLoginUserId(registrationId);
+			//get Connected Users Posted Reasons Count
 			
-			if(commentsCount != null && commentsCount.size() == 1)
+			if(connectedUserIds != null && connectedUserIds.size() > 0)
 			{
-				commentsVO.setPostedReasonsCountByOtherUsers((Long)commentsCount.get(0));				
+				List connUsersPostedReasCount = commentCategoryCandidateDAO.getConnectedUsersPostedReasonsCount(connectedUserIds);
+				if(connUsersPostedReasCount != null && connUsersPostedReasCount.size() > 0)
+				{
+					for(int i=0;i<connUsersPostedReasCount.size();i++)
+					{
+						Object[] reasonsCount = (Object[])connUsersPostedReasCount.get(i);
+						if(reasonsCount[1].toString().equalsIgnoreCase("true"))
+							commentsVO.setPostedReasonsCountByConnectedUsers((Long)reasonsCount[0]);
+						
+					}
+				}
 			}
 			
-			commentsVO.setTotalPostedReasonsCount(commentsVO.getApprovedReasonsCount()+ commentsVO.getRejectedReasonsCount() + commentsVO.getNotConsideredReasonsCount() + commentsVO.getPostedReasonsCountByOtherUsers());
-			
+			//List commentsCount = commentCategoryCandidateDAO.getPostedReasonsCountOtherThanLoginUserId(registrationId,connectedUserIds);
+			List commentsCount = commentCategoryCandidateDAO.getPostedReasonsCountOtherThanLoginUserId(registrationId);
+			if(commentsCount != null && commentsCount.size() == 1)
+			{
+				Long count = (Long)commentsCount.get(0) - commentsVO.getPostedReasonsCountByConnectedUsers();
+				
+				//commentsVO.setPostedReasonsCountByOtherUsers((Long)commentsCount.get(0));	
+				commentsVO.setPostedReasonsCountByOtherUsers(count);
+			}
+			//commentsVO.setTotalPostedReasonsCount(commentsVO.getApprovedReasonsCount()+ commentsVO.getRejectedReasonsCount() + commentsVO.getNotConsideredReasonsCount() + commentsVO.getPostedReasonsCountByOtherUsers()+commentsVO.getPostedReasonsCountByConnectedUsers());
+			commentsVO.setTotalPostedReasonsCount(commentsVO.getApprovedReasonsCount()+  commentsVO.getPostedReasonsCountByOtherUsers()+commentsVO.getPostedReasonsCountByConnectedUsers());
 			return commentsVO;
 		}
 		catch (Exception e) {
@@ -1697,7 +1717,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		
 		try 
 		{	
-			List comments = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(registrationId, startIndex, results, order, columnInModel, reasonType);
+			List<Long> connectedUserIds = getConnectedUserIdsByUserId(registrationId); 
+			List comments = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(registrationId, startIndex, results, order, columnInModel, reasonType,connectedUserIds);
 			
 			if(comments != null && comments.size() > 0)
 			{
@@ -1730,10 +1751,13 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			
 			userComments.setCandidateComments(commentsList);
 			
-			if(reasonType.equals(IConstants.TOTAL) || reasonType.equals(IConstants.OTHERUSERS))
+			/*if(reasonType.equals(IConstants.TOTAL) || reasonType.equals(IConstants.OTHERUSERS))
 				userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId());
 			else
 				userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(registrationId));
+			
+			*/
+			userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCount(reasonType, registrationId, connectedUserIds));
 			
 			return userComments; 
 			
@@ -1776,8 +1800,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		problemVO.setPostedProblemsCountByLoggedInUsers(0l);
 		problemVO.setPostedProblemsCountByOtherUsers(0l);
 		problemVO.setTotalPostedProblemsCount(0l);
+		problemVO.setPostedProblemsCountByConnectedUsers(0l);
 		try
 		{
+			List<Long> connectedUserIds = getConnectedUserIdsByUserId(userId);
 			List problems = userProblemDAO.getAllPostedProblemCount(userId);
 			if(problems !=null && problems.size() > 0)
 			{
@@ -1796,12 +1822,32 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				}
 			}
 			
+			//problem Count by ConnectedUsers
+			
+			if(connectedUserIds != null && connectedUserIds.size() > 0)
+			{
+				List connectedUsersPostedProbCount = userProblemDAO.getConnectedUsersProblemCount(connectedUserIds);
+				if(connectedUsersPostedProbCount != null && connectedUsersPostedProbCount.size() > 0)
+				{
+					for(int i=0;i<connectedUsersPostedProbCount.size();i++)
+					{
+						Object[] approvedProblemCount = (Object[])connectedUsersPostedProbCount.get(i);
+					if(approvedProblemCount[1].toString().equalsIgnoreCase("true"))
+						problemVO.setPostedProblemsCountByConnectedUsers((Long)approvedProblemCount[0]);
+					}
+				}
+			}
+			
+			//List commentsCount = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(userId,connectedUserIds);
+			
 			List commentsCount = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(userId);
 			if(commentsCount != null && commentsCount.size() == 1)
 			{
-				problemVO.setPostedProblemsCountByOtherUsers((Long)commentsCount.get(0));				
+				Long PostedProblemCountBYOtherUser = (Long)commentsCount.get(0) - problemVO.getPostedProblemsCountByConnectedUsers();
+				
+				problemVO.setPostedProblemsCountByOtherUsers(PostedProblemCountBYOtherUser);				
 			}
-			problemVO.setTotalPostedProblemsCount(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount() + problemVO.getPostedProblemsCountByOtherUsers());
+			problemVO.setTotalPostedProblemsCount(problemVO.getApprovedProblemsCount() + problemVO.getPostedProblemsCountByOtherUsers()+problemVO.getPostedProblemsCountByConnectedUsers());
 			problemVO.setPostedProblemsCountByLoggedInUsers(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount());
 		} 
 		catch(Exception e)
@@ -1812,82 +1858,6 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		return problemVO;
 	}
 	
-	
-	public List<Long> getConnectedUserIdsByUserId(Long userId)
-	{
-		List<Long> connectedUserIds = null;
-		try{
-			List<Object[]> connectedUserIdsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
-			if(connectedUserIdsList != null && connectedUserIdsList.size() > 0)
-			{
-				connectedUserIds = new ArrayList<Long>(0);
-				for(Object[] params : connectedUserIdsList)
-				{
-					Long friendId = (Long)params[0];
-					if(!friendId.equals(userId) && !connectedUserIds.contains(friendId))
-						connectedUserIds.add(friendId);
-					friendId = (Long)params[1];
-					if(!friendId.equals(userId) && !connectedUserIds.contains(friendId))
-						connectedUserIds.add(friendId);
-				}
-			}
-			return connectedUserIds;
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in getConnectedUserIdsByUserId() method, Exception is- "+e);
-			return connectedUserIds;
-		}
-	}
-	
-	/*public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
-	{
-		List<RegistrationVO> friendsDetails = new ArrayList<RegistrationVO>(0);
-		try{
-			
-			List<Object[]> userDetailsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
-
-			if(userDetailsList != null && userDetailsList.size() > 0)
-			{
-				List<Long> userIds = new ArrayList<Long>(0);
-				for(Object[] params : userDetailsList)
-				{
-					Long friendId = (Long)params[0];
-					if(!friendId.equals(userId) && !userIds.contains(friendId))
-						userIds.add(friendId);
-					friendId = (Long)params[1];
-					if(!friendId.equals(userId) && !userIds.contains(friendId))
-						userIds.add(friendId);
-				}
-				
-				List<Object[]> userDetails = userDAO.getUserBasicDetailsForProfile(userIds);
-				
-				RegistrationVO registrationVO = null;
-				for(Object[] params2 : userDetails)
-				{
-					registrationVO = new RegistrationVO();
-					registrationVO.setRegistrationID((Long)params2[0]);
-					registrationVO.setFirstName(params2[1].toString());
-					registrationVO.setLastName(params2[2].toString());
-					
-					if(params2[3] != null && params2[3].toString().length() > 0)
-						registrationVO.setUserProfilePic(params2[3].toString());
-					else
-						registrationVO.setUserProfilePic("member.jpg");
-					
-					friendsDetails.add(registrationVO);
-				}
-			}
-			return friendsDetails;	
-		}catch (Exception e) {
-			log.error("Exception Occuted in getFriendsListForUserProfile() Method, Exception - "+e);
-			return friendsDetails;
-		}
-		
-	}
-
-*/
-	
-
 	public String getProblemTableColoumnName(String columnType)
 	{
 		String dbColumnName = "";
@@ -1919,8 +1889,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		CompleteProblemDetailsVO problemRating = new CompleteProblemDetailsVO();
 		try
 		{			
-			List problems = userProblemDAO.getAllPostedProblemsByAnanymousUserId(registrationId, startIndex, results, order, dbColoumnName, reasonType);
-			totalRecords = userProblemDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(registrationId, reasonType);
+			List<Long> connectedUserIds = getConnectedUserIdsByUserId(registrationId);
+			
+			List problems = userProblemDAO.getAllPostedProblemsByAnanymousUserId(registrationId, startIndex, results, order, dbColoumnName, reasonType,connectedUserIds);
+			totalRecords = userProblemDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(registrationId, reasonType,connectedUserIds);
 			
 			if(problems != null && problems.size() > 0 )
 			{
@@ -2532,6 +2504,32 @@ public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
 		return friendsDetails;
 	}
 	
+}
+
+public List<Long> getConnectedUserIdsByUserId(Long userId)
+{
+	List<Long> connectedUserIds = null;
+	try{
+		List<Object[]> connectedUserIdsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(userId);
+		if(connectedUserIdsList != null && connectedUserIdsList.size() > 0)
+		{
+			connectedUserIds = new ArrayList<Long>(0);
+			for(Object[] params : connectedUserIdsList)
+			{
+				Long friendId = (Long)params[0];
+				if(!friendId.equals(userId) && !connectedUserIds.contains(friendId))
+					connectedUserIds.add(friendId);
+				friendId = (Long)params[1];
+				if(!friendId.equals(userId) && !connectedUserIds.contains(friendId))
+					connectedUserIds.add(friendId);
+			}
+		}
+		return connectedUserIds;
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getConnectedUserIdsByUserId() method, Exception is- "+e);
+		return connectedUserIds;
+	}
 }
 
 

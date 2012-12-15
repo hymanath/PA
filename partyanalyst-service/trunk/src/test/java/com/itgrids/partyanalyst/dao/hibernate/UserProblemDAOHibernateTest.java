@@ -81,8 +81,9 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	}
 */
 	/*public void testgetAllPostedProblemsByAnanymousUserId(){
-	
-	List list1 = userProblemDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "desc", "model.problem.problemId", IConstants.TOTAL);
+	List<Long> connecteduserIds = new ArrayList<Long>(0);
+	connecteduserIds.add(611l);
+	List list1 = userProblemDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "desc", "model.problem.problemId", IConstants.TOTAL,connecteduserIds);
 	System.out.println(list1.size());
 }
 	*/
@@ -92,12 +93,6 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		 System.out.println(list.size());
 	}*/
 	
-	/*public void testgetAllPostedProblemCountOtherThanLoggedInUser()
-	{
-		List list = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(2l);
-		System.out.println(list.size());
-	}*/
-
 	
 	/*public void testgetCommonDataForAllProblems()
 	{
@@ -367,10 +362,28 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(problenIdsList.size());
 		
 	}*/
-	public void testGetAllProblemCount(){
+	/*public void testGetAllProblemCount(){
 		List<Long> countList = userProblemDAO.getAllProblemCount(1l,1l," and model.problem.problemCompleteLocation.district.districtId != null ");
 		
 		for(Long count :countList)
 		System.out.println(count);
-	}
+	}*/
+	
+	/*public void testgetConnectedUsersProblemCount()
+	{
+		List<Long> connectedUserIds = new ArrayList<Long>(0);
+		connectedUserIds.add(611l);
+		connectedUserIds.add(1l);
+		 List list = userProblemDAO.getConnectedUsersProblemCount(connectedUserIds);
+		 System.out.println(list.size());
+		 if(list != null && list.size() > 0)
+		 {
+			 for(int i=0;i<list.size();i++)
+			 {
+			 Object[] params = (Object[])list.get(i); 
+			 for(Object o : params)
+			 System.out.println("\t"+o.toString());
+			 }
+		 }
+	}*/
 }
