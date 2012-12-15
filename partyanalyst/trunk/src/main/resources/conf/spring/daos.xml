@@ -1002,4 +1002,10 @@
 	<bean id="userPrivacySettingsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserPrivacySettingsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="jobDAO" class="com.itgrids.partyanalyst.dao.hibernate.JobDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="jobRunDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.JobRunDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
