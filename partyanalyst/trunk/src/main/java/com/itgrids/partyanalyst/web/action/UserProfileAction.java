@@ -306,6 +306,30 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 				
 	}
 	
+	public String getSentBoxMessagesForUser()
+	{
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		List<Long> userId = new ArrayList<Long>();
+		userId.add(user.getRegistrationID());
+		dataTransferVO = ananymousUserService.getAllSentMessagesForLoggedUser(userId,IConstants.COMMENTS);
+		return Action.SUCCESS;
+				
+	}
+	
 	public String getSpecialPages()
 	{
 		String param;
