@@ -30,11 +30,17 @@ $("document").ready(function(){
 		
 	});
 	
+	$("#settings").click(function(){
+		$(".placeholderCenterDiv").children().remove();
+		$("#headerDiv").html('');
+		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li></ul>");
+	});
+	
 	$(".messagesLink").click(function(){
 	    
 				
-		if($("#MyProfileActions").find("#Inbox").length<1) {
-		$('#MyProfileActions').prepend("<ul class='nav nav-tabs'><li class='active'><a id='Inbox' >Inbox</a></li><li><a id='SentBox'>Sent</a></li></ul>"); }
+		if($("#headerDiv").find("#Inbox").length<1) {
+		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active'><a id='Inbox' >Inbox</a></li><li><a id='SentBox'>Sent</a></li></ul>"); }
 		
 		$("#Inbox").trigger("click");
 				
@@ -43,6 +49,7 @@ $("document").ready(function(){
 	$("#Inbox").live("click",function(){
 		$(this).closest(".nav-tabs").find("li").removeClass("active");
 		$(this).parent().addClass("active");
+		
 		
 		var jsObj ={
 			task:"getRequestMessagesForUser"						
@@ -72,7 +79,6 @@ $("document").ready(function(){
 	
 	
 	$("#specialPageLink").click(function(){
-		
 		var jsObj ={
 			task:"getSpecialPages"
 		};
@@ -551,6 +557,13 @@ $(".unreadfont").live("click",function(){
 	$(".readMsg").live("click",function(){
 		$(this).closest(".templateMessage").find(".msgbox").toggle('slow');
 	});
+	
+	$(".postProblemLink").live("click",function(){
+
+		var browser1 = window.open("addNewProblemAction.action?requestSrc=4&constituencyId="+constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");
+		browser1.focus();
+	});
+
 
 });//End ready
 
@@ -847,8 +860,7 @@ function showRequestedMessagesForAUser(results)
 		return;
 	}
 		
-		
-		$("#headerDiv").html('<h6 class="pull-right">Unread: <span style="color:blue;">'+ results.unreadMsgCount +' </span> Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" >Inbox ( '+results.unreadMsgCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -856,9 +868,9 @@ function showRequestedMessagesForAUser(results)
 		templateClone.removeClass("templateDivMsg");
 		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
 		templateClone.find(".message").html(''+results.candidateVO[i].message+'');
-		
 		if(results.candidateVO[i].status == "UNREAD"){
 	      templateClone.addClass("unreadfont");
+		  templateClone.find(".readMsg").removeClass("popover-title");
 		}
 		templateClone.find(".msgid").val(results.candidateVO[i].costumMessageId);
 		
@@ -883,6 +895,7 @@ function showSentBoxMessagesForAUser(results)
 {
 	
 	$("#headerDiv").html('');
+	
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	if(results.resultStatus.resultCode !="0")
@@ -897,7 +910,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<h6 class="pull-right">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1489,10 +1502,10 @@ function showPostedReasons(jsObj,results)
 	if(approvedReasonsCount == 0)
 	 ulinner.append('<li class="fontStyle">Reasons Approved - '+approvedReasonsCount+'</li>');
 	else
-	ulinner.append('<li class="fontStyle">Reasons Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></li>');
+	ulinner.append('<li class="fontStyle" style="margin-left:35px;">Reasons Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></li>');
 	
 	if(rejectedReasonsCount ==0)
-		ulinner.append('<li class="fontStyle">Reasons Rejected - '+rejectedReasonsCount+'</li>');
+		ulinner.append('<li class="fontStyle" style="margin-left:35px;">Reasons Rejected - '+rejectedReasonsCount+'</li>');
 	else
 	ulinner.append('<li class="fontStyle">Reasons Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></li>');
 	div.append(ul);
@@ -1746,9 +1759,9 @@ function showPostedProblems(jsObj,results)
 	  ul.append('<li class="fontStyle">Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></li>');
 		
 	if(results.postedProblemsCountByLoggedInUsers == 0)
-		ul.append('<li class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - '+results.postedProblemsCountByLoggedInUsers+'</li>'); 
+		ul.append('<li class="fontStyle">By You - '+results.postedProblemsCountByLoggedInUsers+'</li>'); 
 	else
-	  ul.append('<li class="fontStyle" style="margin-left: 9px; margin-right: 11px;">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></li>');
+	  ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></li>');
 		
 	if(results.postedProblemsCountByOtherUsers == 0)
 		ul.append('<li class="fontStyle">By Others - '+results.postedProblemsCountByOtherUsers+'</li>');
@@ -1766,11 +1779,15 @@ function showPostedProblems(jsObj,results)
 	if(results.approvedProblemsCount ==0)
 		ulInner.append('<li class="fontStyle" style="margin-left: 2px;">Problems Approved	- '+results.approvedProblemsCount+'</li>');
 	else
-	 ulInner.append('<li class="fontStyle" style="margin-left: 2px;">Problems Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></li>');
+	 ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></li>');
 	if(results.rejectedProblemsCount ==0)
 		ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - '+results.rejectedProblemsCount+'</li>');
 	else
 	 ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></li> ');
+	 
+	 if(userType != "PartyAnalyst")
+		ulInner.append('<span><a href="javascript:{}" class="postProblemLink btn btn-success btn-small" style="">Post Problem</a></span>');
+
 	 div.append(ul);
 	 div.append(label);
 	div.append(ulInner);
