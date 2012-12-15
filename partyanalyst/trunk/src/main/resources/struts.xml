@@ -3775,12 +3775,6 @@
 			</result>		
 		</action>
 		
-		<action name="getAllPostedProblemsAction" class="userProfileAction" method="getAllPostedProblemsForProfilePage">
-			<result type="json" name="success">
-				<param name="root">problemDetailsVO</param>				
-			</result>		
-		</action>
-		
 		<action name="publicProfile" class="publicProfileAction">
 			<result name="success">/jsp/publicProfilePage.jsp</result>
 		</action>
@@ -3906,6 +3900,20 @@
 		<result type="json" name="success">
 				 <param name="root">status</param> 
 			</result>
+		</action>
+		
+		<!-- view more Details -->
+		
+		<action name="getPostedProblemsUserProfileAction" class="userProfileAction" method="getPostedProblemsForProfilePage">
+			<result type="json" name="success">
+				<param name="root">problemDetailsVO</param>				
+			</result>		
+		</action>
+		
+		<action name="getPostedReasonsUserProfileAction" class="userProfileAction" method="getAllPostedReasonsDataForProfilePage">
+			<result type="json" name="success">
+				<param name="root">userComments</param>				
+			</result>		
 		</action>
 		
 		</package>
