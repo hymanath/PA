@@ -22,9 +22,9 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<UserProblem> getAllProblemDetails(Long problemId);
 	
 	public List getAllPostedProblemsByAnanymousUserId(Long userId, Integer startIndex, Integer results, 
-			String order, String columnName, String reasonType);
+			String order, String columnName, String reasonType, List<Long> connectedUserIds);
 	
-	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType);
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType, List<Long> conectedUserIds);
 	
 	public List getAllPostedProblemCount(Long userId);
 	
@@ -167,5 +167,7 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 public List<UserProblem> getProblemDeatilsByProblemId(Long problemId);
 	 
 	 public List<UserProblem> getUserProblemId(Long userId,Long problemId);
-	
+	 
+	 public List getConnectedUsersProblemCount(List<Long> connectedUserIds);
+	 
 }
