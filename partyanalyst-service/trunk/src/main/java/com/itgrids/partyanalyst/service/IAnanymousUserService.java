@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
+import com.itgrids.partyanalyst.dto.UserSettingsVO;
 
 public interface IAnanymousUserService {
 
