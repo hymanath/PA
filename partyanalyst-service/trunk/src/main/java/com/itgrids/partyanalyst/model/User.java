@@ -98,7 +98,10 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserProblem> userProblems = new HashSet<UserProblem>(0);
 	private Set<ProblemRating> problemRatings = new HashSet<ProblemRating>(0);
 	private Set<UserPartyRelation> userPartyRelations = new HashSet<UserPartyRelation>(0);
+	
 	private Set<CadreOnlineRegistration> CadreOnlineRegistrations = new HashSet<CadreOnlineRegistration>(0);
+	private Set<UserPrivacySettings> userPrivacySettings = new HashSet<UserPrivacySettings>(0);
+	
 	
 	public User(){}
 	 
@@ -808,6 +811,16 @@ public class User extends BaseModel implements Serializable{
 			Set<CadreOnlineRegistration> cadreOnlineRegistrations) {
 		CadreOnlineRegistrations = cadreOnlineRegistrations;
 	}
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserPrivacySettings> getUserPrivacySettings() {
+		return userPrivacySettings;
+	}
 
+	public void setUserPrivacySettings(Set<UserPrivacySettings> userPrivacySettings) {
+		this.userPrivacySettings = userPrivacySettings;
+	}
+
+
+	
 }
