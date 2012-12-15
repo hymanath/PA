@@ -5,6 +5,7 @@ var uploadPicStatus = false;
 var refreshTime=5;
 var uploadResult;
 var userType = '';
+var startIndex;
 
 $("document").ready(function(){
 	
@@ -129,33 +130,82 @@ $("document").ready(function(){
 
 	});
 
+
+	$('.assessPoliticianLink1').live("click",function(){
+		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
+		var linkType = "assessPoliticianLink";
+		startIndex = 0;
+		getAllPostedReasonsForUser();
+		var jsObj ={
+				startIndex : startIndex,
+				maxIndex   : 10,
+				type       : type,
+				linkType   : linkType,
+				task:"getAllPostedReasons"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
+	callAjax1(jsObj,url);
+	});
+
+$('.PoliticalReaViewMoreLink').live("click",function(){
+		var type = $(this).closest('div').find('.politicalReasonViewMoreTypeVar').val();
+		var linkType = "PoliticalReaViewMoreLink";
+		startIndex = 0;
+		getAllPostedReasonsForUser();
+		var jsObj ={
+				startIndex : startIndex,
+				maxIndex   : 10,
+				type       : type,
+				linkType   : linkType,
+				task:"getAllPostedReasons"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
+	callAjax1(jsObj,url);
+	});
+
+
 	//problems 
 
 	$(".problemsLink").live("click",function(){
-		var type= $(this).closest('li').find(".problemTypeVariable").val();
-		
+		var type = $(this).closest('li').find(".problemTypeVariable").val();
+		var linkType = "problemsLink";
+		startIndex = 0;
 		getAllPostedProblemsForUser();
 		var jsObj ={
-			task:"getAllPostedProblems_paginator"
+			startIndex : startIndex,
+			maxIndex   : 10,
+			type       : type,
+			linkType   : linkType,
+			task:"getAllPostedProblems"
 		 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getAllPostedProblemsAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
-
-	custom_paginator.paginator({
-		startIndex:0,
-		resultsCount:18,
-		jsObj:jsObj,
-		ajaxCallURL:url,
-		paginatorElmt:"custom_paginator_class",
-		callBackFunction:function(){
-			showAllPostedProblems_paginator(jsObj,results);
-		}
-	});
-	custom_paginator.initialize();
+	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
+	callAjax1(jsObj,url);
 	});
 
+	$(".problemsViewMoreLink").live("click",function(){
+		var type = $(this).closest('div').find(".problemViewMoreTypeVar").val();
+		var linkType = "problemsViewMoreLink";		
+		startIndex = startIndex+10;
+		$('.ajaxImg').css("display","block");
+		getAllPostedProblemsForUser();
+		var jsObj ={
+			startIndex : startIndex,
+			maxIndex   : 10,
+			type       : type,
+			linkType   : linkType,
+			task:"getAllPostedProblems"
+		 };
 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
+	callAjax1(jsObj,url);
+	});
 
 	$(".districtPeopleLink").click(function(){
 	var locationId = districtId;
@@ -757,6 +807,11 @@ function callAjax1(jsObj,url){
 						$(".subscriptionsLink").trigger("click");
 					}
 
+					else if(jsObj.task == "getAllPostedProblems")
+						showAllPostedProblems(jsObj,results);
+					else if(jsObj.task == "getAllPostedReasons")
+						showAllPostedReasonsForUserProfile(jsObj,results);
+
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
 			}  
@@ -1285,19 +1340,29 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 
 //total problems
 
-function showAllPostedProblems_paginator(jsObj,results)
+function showAllPostedProblems(jsObj,results)
 {
 	
-	$(".placeholderCenterDiv").children().remove();
+	$('.viewMoreDiv').html('');
+		
 	clearAllSubscriptionDivs();
 	
 	var problemsData = results.problemsInfo;
-
-	if(problemsData == null)
+	
+	if(problemsData == null && jsObj.linkType == "problemsLink")
 	{
 		$('.problemTemplateDiv').html('Problems Does Not Exists').appendTo('.placeholderCenterDiv');
 		return;
 	}
+	else if(problemsData == null && jsObj.linkType == "problemsViewMoreLink")
+	{
+		$('.problemsViewMoreLink').css("display","none");
+		return;
+	}
+	
+	if(jsObj.linkType == "problemsLink"){
+		$(".placeholderCenterDiv").children().remove();
+	  	}
 	for(var i in problemsData)
 	{
 		var template = $('.problemTemplateDiv');
@@ -1307,15 +1372,14 @@ function showAllPostedProblems_paginator(jsObj,results)
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
 		templateClone.find('.problemFromDate').html('<span style="color:seagreen;">Existing From: </span>'+problemsData[i].existingFrom+'');
-		templateClone.find('.likeCls').html('Like');
-		templateClone.find('.commentCls').html('Comment');
-		templateClone.find('.shareCls').html('Share');
+		templateClone.find('.commentCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Comment</a>');
+		templateClone.find('.shareCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Share</a>');
 		//if(problemsData[i].rating != null)
 			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
-	pagination.appendTo('.placeholderCenterDiv');
+	var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
+	viewMore.appendTo('.placeholderCenterDiv');
 }
 
 
@@ -1417,6 +1481,48 @@ function showAllPostedReasons_paginator(jsObj,results)
 	}
 	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
 	pagination.appendTo('.placeholderCenterDiv');
+
+}
+
+function showAllPostedReasonsForUserProfile(jsObj,results)
+{
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+
+	var data = results.candidateComments;
+
+	if(data == null && jsObj.linkType == "assessPoliticianLink1")
+	{
+		$(".templateDivMsg").html('<div>No comments.</div>').appendTo(".placeholderCenterDiv");;
+			return;
+	}
+	if(data == null && jsObj.linkType == "PoliticalReaViewMoreLink")
+	{
+		$(".viewMoreDiv").css("display","none");
+			return;
+	}
+
+	for(var i in data)
+	{
+		var status;
+		var template = $('.politicalReasonsTemplate');
+		var templateClone = template.clone();
+		templateClone.removeClass('politicalReasonsTemplate');
+		
+		if(data[i].rank == 1)
+			status = "winning";
+		else
+			status = "losing";
+
+		templateClone.find('.headingCls').html('Political Reason for'+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
+		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
+		templateClone.find('.politicalDescCls').html('Description: '+data[i].commentDesc+'');
+		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
+		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
+		templateClone.appendTo('.placeholderCenterDiv');
+	}
+	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
+	viewMore.appendTo('.placeholderCenterDiv');
 
 }
 
@@ -1784,8 +1890,8 @@ function showPostedProblems(jsObj,results)
 		ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - '+results.rejectedProblemsCount+'</li>');
 	else
 	 ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></li> ');
-	 
-	 if(userType != "PartyAnalyst")
+
+	if(userType != "PartyAnalyst")
 		ulInner.append('<span><a href="javascript:{}" class="postProblemLink btn btn-success btn-small" style="">Post Problem</a></span>');
 
 	 div.append(ul);
