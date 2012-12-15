@@ -78,7 +78,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 					String year,Long minAge,Long maxAge)
 			{
 			Object[] params = {panchayatId, year};
-			Query query = getSession().createQuery("select count(model.age) from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 and model.age BETWEEN ? AND ?");
+			Query query = getSession().createQuery("select count(model.voterId) from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 and model.age BETWEEN ? AND ?");
 			
 			query.setParameter(0,panchayatId);
 			query.setParameter(1,"2009");
@@ -93,7 +93,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 					String year)
 			{
 			Object[] params = {panchayatId, year};
-			Query query = getSession().createQuery("select count(model.age) from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 and model.age > 60");
+			Query query = getSession().createQuery("select count(model.voterId) from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 and model.age > 60");
 			
 			query.setParameter(0,panchayatId);
 			query.setParameter(1,"2009");
