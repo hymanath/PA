@@ -296,8 +296,11 @@
 				<value>com.itgrids.partyanalyst.model.CasteStatewise</value>
 				<value>com.itgrids.partyanalyst.model.CandidateCaste</value>
 				<value>com.itgrids.partyanalyst.model.AddressContact</value>
+				
 			<!-- end caste -->
-			
+			<value>com.itgrids.partyanalyst.model.Content</value>
+			<value>com.itgrids.partyanalyst.model.UserPrivacySettings</value>
+			<value>com.itgrids.partyanalyst.model.SettingsOption</value>
 			</list>
 		</property>
 	</bean>
