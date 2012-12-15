@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,6 +34,15 @@
 .profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
 .profile-left .widget-block h4{border:none;background:#e5e5e5;display:none;}
 .left-section{width:175px  !important;}
+.centerSpan6{width:515px !important;}
+.problemsViewMoreLink{cursor:pointer;}
+.connectPeopleDiv{display:inline-block;  border-bottom: 1px solid #EFEFEF;
+    
+    padding: 5px 20px;padding-left:5px;clear:both;width:222px; margin:0px -20px;text-transform:Capitalize;}
+	
+.ajaxImg{display:none;}
+.opacityFilter-50{filter: alpha(opacity=65);
+	opacity: 0.65;}
 </style>
 </head>
 <body>
@@ -119,9 +130,9 @@
 		<!--------left div End ------->
 
 		<!--------Center div------>
-			<div class="span6">
+			<div class="span6 centerSpan6">
 				<div class="widget green" id="MyProfileActions">
-				<div id="headerDiv"></div>
+				<div id="headerDiv" class="whitegloss"></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
@@ -168,53 +179,59 @@
 				<p>From ${dataTransferVO.constituencyName} Constituency - ${dataTransferVO.constituencyUsersCount}</p>
 				</div>-->
 					<h4>
-						<span><i class="connectPeopleHeading" id="icon_leftsec"></i><span>People You May Know</span>
+						<span><i class="icon-info-sign" id="icon_leftsec"></i><span>People You May Know</span>
 					</h4>
 					
-					<div style="margin-top: 14px;">
-
+					
+					<ul>
 					 <c:if test="${not empty dataTransferVO.peopleYouMayKnow}">
 
 					<c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
 
-						<div class="connectPeopleDiv" style="margin-top: 21px;width:100%;">
-							<div style="width:30%;float:left;">
-							<a href="publicProfile.action?profileId=${connectedPeoples.id}">
-							 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
-								<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${connectedPeoples.image}" />
-							</c:if>
-							<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
-								<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
-							</c:if>
-							</a></div>
-							<div style="width:70%;float:left;">
-								<div style="margin-bottom:5px;margin-top:5px;"><a href="publicProfile.action?profileId=${connectedPeoples.id}">${connectedPeoples.candidateName}</a></div>
-								<div>${connectedPeoples.constituencyName}</div>
+						<li class="connectPeopleDiv">
+							<div class="span3">
+								<a href="publicProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
+								 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
+									<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${connectedPeoples.image}" />
+									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
+								</c:if>
+								<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
+									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
+								</c:if>
+								</a>
+							</div>
+							<div class="span9">
+								<a href="publicProfile.action?profileId=${connectedPeoples.id}"><h6>${connectedPeoples.candidateName}</h6></a>
+								<i>${fn:toLowerCase(connectedPeoples.constituencyName)}
+								</i>
+									<div class="pull-right">
+									<span>
+										<a rel="tooltip" href="javascript:{}" class="connectLink" title="Connect"><i class="icon-plus-sign opacityFilter-50"></i></a>
+									</span>
+									<span>
+																				
+										<a rel="tooltip" href="javascript:{}" title="Send A Message" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')"><i class="icon-envelope opacityFilter-50"></i></a>
+									</span>
+									<input type="hidden" value="${connectedPeoples.id}" class="userId" />
+									<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
+									<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
+
+									</div>
 							</div>
 						
 						
-						</div>
-						<div style="width:100%; clear:both;margin-left:20px;">
-							<span  style="margin-right: 25px; margin-left:25px;">
-								<a href="javascript:{}" class="connectLink">Connect</a>
-							</span>
-							<span>
-								<a href="javascript:{}" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')">Send Message</a>
-							</span>
-							<input type="hidden" value="${connectedPeoples.id}" class="userId" />
-							<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
-							<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
-
-						</div>
+						</li>
+						
 						</c:forEach>
 						</c:if>
+						</ul>
 
 						<c:if test="${empty dataTransferVO.peopleYouMayKnow}">
 							<div>
 							Right now there are no friend suggestion for you.	We will get back with more suggesstions as soon as possible..
 							</div>
 						</c:if>
-				</div>
+				
 						
 				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink"href="javascript:{}">See All</a></p>
 
@@ -400,6 +417,11 @@ userType = '${UserType}';
 			$(this).closest("li").addClass("active");
 		
 		});
+		
+		$("a").tooltip({
+                  'selector': '',
+                  'placement': 'top'
+                });
 	
 	});	
 	
