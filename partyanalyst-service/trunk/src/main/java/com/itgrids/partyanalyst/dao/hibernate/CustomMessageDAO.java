@@ -78,7 +78,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		StringBuilder query = new StringBuilder();				
 		query.append(" select model.subject, model.sender.userId, model.sender.firstName, model.sender.lastName, ");
 		query.append(" model.sender.state.stateName, model.sender.district.districtName, model.sender.constituency.name, " +
-				"model.customMessageId, model.status, model.sentDate, model.recepient.userId ,model.sender.profileImg from CustomMessage");//7,8,9
+				"model.customMessageId, model.status, model.sentDate, model.recepient.userId,model.sender.profileImg from CustomMessage");//7,8,9
 		query.append(" model where model.messageType.messageType = ? and model.recepient.userId in (:senderId)");
 		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) ");
 		query.append(" and model.sender.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
@@ -90,7 +90,6 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		
 		return queryObject.list();
 	}
-	
 	public List<Object> getAllSentMessagesForUser(List<Long> senderId,String messageType){
 		StringBuilder query = new StringBuilder();				
 		query.append(" select model.subject, model.recepient.userId, model.recepient.firstName, model.recepient.lastName, ");
@@ -107,7 +106,6 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		
 		return queryObject.list();
 	}
-	
 	@SuppressWarnings("unchecked")
 	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate){
 		StringBuilder query = new StringBuilder();				
