@@ -29,10 +29,9 @@
 	
   <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <style>
-.profile-left .widget-block{margin-top:0px;margin-bottom:0px;padding-bottom:0px;padding-top:0px;border:none;}
+.profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
 .profile-left .widget-block h4{border:none;background:#e5e5e5;display:none;}
-/* 14-12 -12 */
-.unreadfont{font-weight:bold;}
+.left-section{width:175px  !important;}
 </style>
 </head>
 <body>
@@ -40,33 +39,35 @@
 		<div class="row-fluid">
 			
 		<!--------left div------->
-			<div class="span3">
+			<div class="span3 left-section">
 
 				<div class="widget blue profile-left">
-			        <div class="row">
-					<div class="span5 profileimg pull-left">
-						<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
-							<img src="pictures/profiles/human.jpg" id="userProfileImg" class="thumbnail">
-						</c:if>
-						<c:if test="${loginUserProfilePic !='' && loginUserProfilePic != null}">
-						<img src="pictures/profiles/${loginUserProfilePic}" class="thumbnail" id="userProfileImg">
-						</c:if>
-					</div>
-						<div id="profileUserName" class="span7 pull-right"><h6>${loginUserName}</h6><div class="btn-group">
-							<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-								<span class="caret"></span>
+			        <div class="profile-pic widget-block">
+								<div class="profileimg span12 thumbnail">
+									<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
+										<img src="pictures/profiles/human.jpg" id="userProfileImg" >
+									</c:if>
+									<c:if test="${loginUserProfilePic !='' && loginUserProfilePic != null}">
+									<img src="pictures/profiles/${loginUserProfilePic}" id="userProfileImg">
+									</c:if>
+								</div>
+									
+						</div>	
+						
+						<div class="widget-block">
+							<button class="btn  dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-fire"></i>Settings<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
 								<li><a href="freeUserRegistration.action">Edit Profile</a></li>
 								<li><a href="javascript:{}" class="changePwdLink">Change Password</a></li>
 								<li><a href="javascript:{}" class="editPictureLink">Edit Picture</a></li>
 							</ul>
-						</div></div>
-						
-												
-					</div>	
-					    
-						
+						</div>
+										
+					
+					    <div class="widget-block" id="profileUserName">
+						<h5>${loginUserName}</h5> </div>
 				
 				<div class="widget-block">
 					<h4>
