@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
+import com.itgrids.partyanalyst.dto.UserSettingsVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -49,6 +50,8 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private DataTransferVO dataTransferVO,connectedUsers;
 	private NavigationVO messageTypes;
 	private ConstituenciesStatusVO constituenciesStatusVO;
+	
+
 	private ISpecialPageService specialPageService;
 	private List<SpecialPageVO> specialPageVOList;
 	private Long profileId;
@@ -56,6 +59,25 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private ProblemBeanVO problemDetailsVO;
 	private SubscriptionsMainVO subscriptionsMainVO;
 	private List<ProblemBeanVO> problemBeanVOList;
+	private UserSettingsVO userSettingsList;
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public UserSettingsVO getUserSettingsList() {
+		return userSettingsList;
+	}
+
+	public void setUserSettingsList(UserSettingsVO userSettingsList) {
+		this.userSettingsList = userSettingsList;
+	}
+
 	
 	public ProblemBeanVO getProblemDetailsVO() {
 		return problemDetailsVO;
@@ -477,6 +499,48 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		//problemBeanVOList = ananymousUserService.getProblemDetailsForProfilePage(user.getRegistrationID(), startIndex, results, order, columnName, reasonType);
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getTotalSettingsOptionsOfAnUser(){
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+	
+		userSettingsList = ananymousUserService.getTotalSettingsOptionsOfAnUser(user.getRegistrationID());
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String updateUserSettingsDetailsAction(){
+		
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+		}
+		
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		status = ananymousUserService.updateUserSettingsDetailsAction(jObj.getLong("selectedValue"),user.getRegistrationID());;
+		
+		
+		return Action.SUCCESS;
+		
+		
+	}
+	
+	
+	
 	
 	
 

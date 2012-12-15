@@ -74,6 +74,9 @@
 		<property name="userDAO" ref="userDAO"></property>
 		<property name="userProblemDAO" ref="userProblemDAO"></property>
 		<property name="problemManagementService" ref="problemManagementService" /> 
+		<property name="settingsOptionDAO" ref="settingsOptionDAO"/>
+		<property name="contentDAO" ref="contentDAO"/>
+		<property name="userPrivacySettingsDAO" ref="userPrivacySettingsDAO"/>
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
