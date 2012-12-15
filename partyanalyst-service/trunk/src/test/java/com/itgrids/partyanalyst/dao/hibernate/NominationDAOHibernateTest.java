@@ -137,11 +137,11 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1, result.size());
 	}*/
 
-	public void testFindByConstituencyPartyAndElectionYear(){
+	/*public void testFindByConstituencyPartyAndElectionYear(){
 		
 		List list = nominationDAO.findCandidateNamePartyByConstituencyAndElection("3382", "2009");		
 		System.out.println(list.size());
-	}
+	}*/
 	/*
 	public void testFindByElectionTypeTehsilAndParty(){
 		List list = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty("MPTC", new Long(844), new Long(24));
@@ -248,10 +248,10 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	
 	*/
 	
-	public void testConstituencyCandidatesInfo(){
+	/*public void testConstituencyCandidatesInfo(){
 		List result = nominationDAO.getCandidatesInfoForTheGivenConstituency("3358","2004",IConstants.ASSEMBLY_ELECTION_TYPE);
 		System.out.println(result.size());
-	}	
+	}*/	
 	/*
 	public void testFindTotalMPtc(){
 		List zptcCount = nominationDAO.getZptcCountInADistrict(19l,IConstants.ZPTC_ELECTION_TYPE,IConstants.ZPTC_ELECTION_TYPE,1L);
@@ -1236,5 +1236,15 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(candidateResult.getNomination().getCandidate().getLastname());
 		}
 	}*/
+	
+	public void testfindCandidateNamePartyByConstituencyAndElectionDate()
+	{
+	 List list=nominationDAO.getCandidatesInfoForTheGivenConstituency("32862","2008", "Assembly") ;
+	 System.out.println(list.size());
+	 for(Object[] params : (List<Object[]>)list)
+	 {
+		System.out.println(params[1]); 
+	 }
 }
+}	
 	
