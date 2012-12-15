@@ -389,7 +389,7 @@ locationDetails.constituencyArr.push(ob);
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Caste Statistics" 
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters Info" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="AgeWise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Age Wise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
 					
 				  </tr>
 				</table>
