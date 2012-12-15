@@ -760,12 +760,15 @@ function showAllRequestMessagesForUser(results,jsObj){
 		var template = $(".templateDiv");
 		var templateClone =  template.clone();
 		templateClone.removeClass("templateDiv");
-		templateClone.find('.connectedPersonName').html(''+results.friendRequest[i].candidateName+'');
-		templateClone.find('.imgClass').html('<img height="50" width="55" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/>');
-		templateClone.find('.constituencyName').html(''+results.friendRequest[i].message+'');
-		templateClone.find('.districtName').html('<a class="btn-mini btn" onclick="acceptRequest('+results.friendRequest[i].id+')" class="acceptButton">Accept</a>');
-		templateClone.find('.stateName').html('<a class="btn-mini btn" onclick="rejectRequest('+results.friendRequest[i].id+')" class="rejectButton">Decline</a>');
-		templateClone.find('.sendMsg').html('<a class="btn-mini btn" onclick="blockRequest('+results.friendRequest[i].id+')" class="rejectButton">Block this person</a>');
+		templateClone.find('.connectedPersonName').html('<a href="publicProfile.action?profileId='+results.friendRequest[i].id+'">'+results.friendRequest[i].candidateName+'</a>');
+		templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.friendRequest[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+		templateClone.find('.messageCls').html(''+results.friendRequest[i].message+'').css("display","block");
+		templateClone.find('.constituencyName').html(''+results.friendRequest[i].constituencyName+'');
+		templateClone.find('.districtName').html(''+results.friendRequest[i].district+'');
+		templateClone.find('.stateName').html(''+results.friendRequest[i].state+'');
+		templateClone.find('.sendMsg').html('<a class="btn-mini btn" onclick="acceptRequest('+results.friendRequest[i].id+')" class="acceptButton">Accept</a>');
+		templateClone.find('.connectCls').html('<a class="btn-mini btn" onclick="rejectRequest('+results.friendRequest[i].id+')" class="rejectButton">Decline</a>');
+		templateClone.find('.blockPersonBtn').html('<a class="btn-mini btn" onclick="blockRequest('+results.friendRequest[i].id+')" class="rejectButton">Block this person</a>').css("display","block");
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 }
@@ -773,7 +776,6 @@ function showAllRequestMessagesForUser(results,jsObj){
 
 function showRequestedMessagesForAUser(results)
 {
-	
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
@@ -831,9 +833,7 @@ function showMailPopup(id,name,type)
 		div.append(label);
 		div.append(textarea);
 		div.append(button);
-		
 		$('#allConnectedUsersDisplay_main').append(div);
-
 
 }
 
@@ -1322,6 +1322,7 @@ function showPostedReasons(jsObj,results)
 	var totalPostedReasonsCount = 0;
 	var postedReasonsCountByOtherUsers = 0;
 	var postedReasonsByLoggedInUser = 0;
+	var connectedUsersReasCount = 0;
 
 	if(results != null)
 	{
@@ -1345,7 +1346,13 @@ function showPostedReasons(jsObj,results)
 	   if(postedReasonsByLoggedInUser ==0)
 			 ul.append('<li class="fontStyle">By User - '+postedReasonsByLoggedInUser+'</li>');
 	   else
-   		 ul.append('<li class="fontStyle">By User - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+   		 ul.append('<li class="fontStyle">By User - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+	   
+	   /* if(connectedUsersReasCount ==0)
+		 ul.append('<li class="fontStyle">By Friends - '+connectedUsersReasCount+'</li>');
+	   else
+		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');*/	
+
 	   if(postedReasonsCountByOtherUsers ==0)
 		 ul.append('<li class="fontStyle">By Others - '+postedReasonsCountByOtherUsers+'</li>');
 	   else
@@ -1355,6 +1362,7 @@ function showPostedReasons(jsObj,results)
 	{
 		ul.append('<li class="fontStyle"> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
 		ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+		//ul.append('<li class="fontStyle"> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');	
 		ul.append('<li class="fontStyle"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
 	}
 		
@@ -1634,6 +1642,12 @@ function showPostedProblems(jsObj,results)
 		ul.append('<li class="fontStyle">By Others - '+results.postedProblemsCountByOtherUsers+'</li>');
 	else
 	  ul.append('<li class="fontStyle">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></li>');
+
+	/* if(results.postedProblemsCountByConnectedUsers == 0)
+		ul.append('<li class="fontStyle">By Friends - '+results.postedProblemsCountByConnectedUsers+'</li>');
+	else 
+		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></li>');*/
+	
 	var label = $('<label class="l1">Problem Status Details Posted By You </label>');
 	var ulInner = $('<ul></ul>');
 
