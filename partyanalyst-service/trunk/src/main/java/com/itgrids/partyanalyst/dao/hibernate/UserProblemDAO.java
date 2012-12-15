@@ -93,7 +93,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	
 	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemsByAnanymousUserId(Long userId, Integer startIndex, Integer results, 
-			String order, String columnName, String reasonType)
+			String order, String columnName, String reasonType, List<Long> connectedUserIds)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.problem.problemId, ");
@@ -104,20 +104,25 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = 'true'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
+			query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' and model.user.userId not in(:connectedUserIds) ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.REJECTED+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.FALSE+"'");
+		else if(reasonType.equalsIgnoreCase("ConnectedUserProblems"))
+			query.append(" and model.user.userId in (:connectedUserIds) and model.problem.isApproved = '"+IConstants.TRUE+"'");
 		
 		query.append(" order by "+columnName+" "+order);
 
 		Query queryObject = getSession().createQuery(query.toString());
 
-		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType) && !reasonType.equalsIgnoreCase("ConnectedUserProblems"))
 			queryObject.setParameter(0, userId);
+		
+		if(reasonType.equalsIgnoreCase("ConnectedUserProblems") || reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+			queryObject.setParameterList("connectedUserIds", connectedUserIds);
 		
 		queryObject.setFirstResult(startIndex);		
 		queryObject.setMaxResults(results);
@@ -128,7 +133,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 	}
 	@SuppressWarnings("unchecked")
-	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType){
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType, List<Long> conectedUserIds){
 
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(*) from UserProblem model ");
@@ -137,21 +142,28 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append("where model.user.userId = ? ");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+		{
 			query.append("where model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+			if(conectedUserIds != null && conectedUserIds.size() > 0)
+				query.append(" and model.user.userId not in (:conectedUserIds) ");
+		}
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.TRUE+"'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
 			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.REJECTED+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
-			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.FALSE+"'");	
+			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.FALSE+"'");
+		else if(reasonType.equalsIgnoreCase("ConnectedUserProblems") && (conectedUserIds != null && conectedUserIds.size() > 0))
+			query.append("where model.user.userId in (:conectedUserIds) and model.problem.isApproved = '"+IConstants.TRUE+"'");
 		
 		query.append(" and (model.problem.isDelete = 'false' or model.problem.isDelete is null) and model.visibility.type ='"+IConstants.PUBLIC+"'");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
-		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType) && !reasonType.equalsIgnoreCase("ConnectedUserProblems"))
 			queryObject.setParameter(0, userId);
-		
+		if((conectedUserIds != null && conectedUserIds.size() > 0) && (reasonType.equalsIgnoreCase("ConnectedUserProblems") || reasonType.equalsIgnoreCase(IConstants.OTHERUSERS)))
+			queryObject.setParameterList("conectedUserIds", conectedUserIds);
 		return (Long)queryObject.uniqueResult();
 		
 	}
@@ -1087,4 +1099,17 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
     	   query.setParameter("visibilityId", 1l);
     	   return query.list();
        }
+       
+    @SuppressWarnings("rawtypes")
+	public List getConnectedUsersProblemCount(List<Long> connectedUserIds)
+   	{
+   		StringBuilder queryString = new StringBuilder();
+   		queryString.append("select count(distinct model.problem.problemId),model.problem.isApproved from UserProblem model where model.user.userId in (:connectedUserIds) ");
+   		queryString.append(" and model.visibility.type = '"+IConstants.PUBLIC+"' and (model.problem.isDelete ='false'or model.problem.isDelete is null) group by model.problem.isApproved");
+   		Query queryObj = getSession().createQuery(queryString.toString());
+   		queryObj.setParameterList("connectedUserIds", connectedUserIds);
+   		return queryObj.list();
+   		
+   	}
+  
 }
