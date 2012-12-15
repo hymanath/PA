@@ -1262,7 +1262,7 @@ function buildResultForPoll(voteStatus,result){
 	for(var i=0;i<result.options.length;i++){ 
 		
 	 str+='<li>';
-	   str+='<h5>'+result.options[i].option+'</h5>';
+	   str+='<h6>'+result.options[i].option+'</h6>';
 
 		str+='<div>';
 		str+='<div class="span2 pull-left" style="margin-left:0px;">';
@@ -1575,7 +1575,7 @@ function buildResultForPoll(voteStatus,result){
 	for(var i=0;i<result.options.length;i++){ 
 		
 	 str+='<li style="width: 100%; clear: both;">';
-	   str+='<h5>'+result.options[i].option+'</h5>';
+	   str+='<h6>'+result.options[i].option+'</h6>';
 
 		str+='<div>';
 		str+='<div class="span8 pull-left" style="margin-left:0px;">';
