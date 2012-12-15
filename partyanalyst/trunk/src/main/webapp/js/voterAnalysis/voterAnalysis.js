@@ -619,14 +619,12 @@ function getVotersData(){
 
 function getVotersCastInfo()
 	{
-
   $("#localCastStatsTabContent_header").html("");
   $("#localCastStatsTabContentTitle").html("");
+  $("#localCastStatsTabContent_body").html("");
   var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
   var errorDivEle = document.getElementById('AlertMsg');
-  var divEle = document.getElementById('localCastStatsTabContent_body');
-	divEle.innerHTML ='';
-	var publicationDateId = $("#publicationDateList").val();
+  var publicationDateId = $("#publicationDateList").val();
 	var level = $("#reportLevel").val();
 	var type = '';
 	var id='';
@@ -634,12 +632,11 @@ function getVotersCastInfo()
 	var mandalId='';
 	var flag =true;
 	var str= '<font color="red">';
-	
 	if(level == 1){
 	type = 'constituency';
 	id = $("#constituencyList").val();
 	typename = $('#constituencyList :selected').text() + ' Constituency ';
-		if(id == 0 ||id == null)
+	if(id == 0 ||id == null)
 		{
 		str +='Please Select Constituency';
 		flag =false;
@@ -648,15 +645,13 @@ function getVotersCastInfo()
 	else if(level == 2){
 	type = 'mandal';
 	id = $("#mandalField").val();
-	//id=mandalId.substring(1);
 	typename = $('#mandalField :selected').text();
 	if(id == 0 || id == null)
 	{
 	str +='Please Select Mandal';
 	flag =false;
 	}
-
-	}
+ }
 	else if(level == 3){
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
@@ -665,37 +660,34 @@ function getVotersCastInfo()
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
 	  typename = $('#panchayatField :selected').text()+ ' Panchayat ';
-		 if(constituencyValue == 0 || constituencyValue == null)
+	if(constituencyValue == 0 || constituencyValue == null)
 			{
 				str +='Please Select Constituency';
 				flag =false;
 			}
-			else if(validflag != -1)
+	else if(validflag != -1)
 			{
-				str +='There are No Panchayats';
+				str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
+				flag =false;
 				
 			}
-			else if(mandalValue == 0 || mandalValue == null)
+	else if(mandalValue == 0 || mandalValue == null)
 			{
 				str +='Please Select Mandal';
 				flag =false;
 			}
 			
-			else if(id == 0 || id == null)
+	else if(id == 0 || id == null)
 			{
 				str +='Please Select Panchayat';
 				flag =false;
 			}
-
-
 	}
 	else if(level == 4){
 		var constituencyValue =$("#constituencyList").val(); 
 		var mandalValue = $("#mandalField").val();
 		var mandalText = $('#mandalField :selected').text();
 		var validflag= mandalText.search("MUNCIPALITY");
-		
-
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 typename = $('#pollingStationField :selected').text();
@@ -706,7 +698,7 @@ function getVotersCastInfo()
 			}
 			else if(validflag != -1)
 			{
-				str +='There are No Booths';
+				str +='There are No Booths,Select Other Report Level to view Report';
 				flag =false;
 			}
 			else if(mandalValue == 0 || mandalValue == null)
@@ -724,11 +716,9 @@ function getVotersCastInfo()
 
 	 if(publicationDateId == 0 || publicationDateId == null )
 		{
-
 		str +='<br>Please Select Publication Date';
 		flag =false;
 		}
-		
 		errorDivEle.innerHTML = str;
 		if(flag)
 		{
@@ -739,7 +729,6 @@ function getVotersCastInfo()
 				type:type,	
 				id:id,
 				typename:typename,
-		
 				publicationDateId:publicationDateId,
 				task:"getCastInfo"
 			}
@@ -747,11 +736,10 @@ function getVotersCastInfo()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
 		callAjax(jsObj,url);
-	}
-	}
+	 }
+}
 function showAjaxImgDiv(id)
 {
-	
 	document.getElementById(id).style.display = 'block';
 }
 function hideAjaxImgDiv(id)
@@ -951,9 +939,11 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
     }else if(level == 3){
 		var constituencyValue =$("#constituencyList").val(); 
 		var mandalValue = $("#mandalField").val();
-	  type = 'panchayat';
-	  id = $("#panchayatField").val();
-	 typename =$("#panchayatField :selected").text()+' Panchayat';
+		var mandalText = $('#mandalField :selected').text();
+		var validflag= mandalText.search("MUNCIPALITY");
+		type = 'panchayat';
+		id = $("#panchayatField").val();
+		typename =$("#panchayatField :selected").text()+' Panchayat';
 	 if(constituencyValue == 0 || constituencyValue == null)
 		{
 				str +='Please Select Constituency';
@@ -964,6 +954,12 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 				str +='Please Select Mandal';
 				flag =false;
 		}
+	  else if(validflag != -1)
+		{
+				str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
+				flag =false;
+				
+		}
 	   else if(id == 0 ||id == null)
 		{
 		  str +='Please Select Panchayat';
@@ -972,6 +968,9 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	}else if(level == 4){
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
+	var mandalText = $('#mandalField :selected').text();
+	var validflag= mandalText.search("MUNCIPALITY");
+
 	  type = 'booth';
 	  id = $("#pollingStationField").val();
 	  typename =$("#pollingStationField :selected").text();
@@ -979,6 +978,12 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 		{
 				str +='Please Select Constituency';
 				flag =false;
+		}
+	else if(validflag != -1)
+		{
+				str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
+				flag =false;
+				
 		}
 		else if(mandalValue == 0 || mandalValue == null)
 		{
@@ -1620,6 +1625,8 @@ function getVoterDetailsForPanchayat(){
 	var mandalValue = $("#mandalField").val();
 	var panchayatId = $('#panchayatField').val();
 	var publicationId = $('#publicationDateList').val();
+	var mandalText = $('#mandalField :selected').text();
+	var validflag= mandalText.search("MUNCIPALITY");
 	var name = $('#panchayatField option:selected').text()+' Panchayat';
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
@@ -1628,6 +1635,12 @@ function getVoterDetailsForPanchayat(){
 		{
 				str +='Please Select Constituency';
 				flag =false;
+		}
+	else if(validflag != -1)
+		{
+		  str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
+		  flag =false;
+				
 		}
 	else if(mandalValue == 0 || mandalValue == null)
 		{
@@ -1673,6 +1686,8 @@ function getVoterDetailsForBooth(){
 	var boothId = $('#pollingStationField').val();
 	var publicationId = $('#publicationDateList').val();
 	var name = $('#pollingStationField option:selected').text();
+	var mandalText = $('#mandalField :selected').text();
+	var validflag= mandalText.search("MUNCIPALITY");
 	var str='<font color="red">';
 	var errorDivEle = document.getElementById('AlertMsg');
 	var flag = true;
@@ -1680,6 +1695,12 @@ function getVoterDetailsForBooth(){
 		{
 				str +='Please Select Constituency';
 				flag =false;
+		}
+	else if(validflag != -1)
+		{
+				str +='There are No Booths In Muncipality,Select Other Report Level to view Report';
+				flag =false;
+				
 		}
 	else if(mandalValue == 0 || mandalValue == null)
 		{
