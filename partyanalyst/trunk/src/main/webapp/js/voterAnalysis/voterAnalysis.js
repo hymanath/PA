@@ -1289,6 +1289,7 @@ function buildVotersChart(chartInfo,reqTitle,to){
 
 function buildCastInfoData(myresults,jsObj)
 	{
+	
 	var ajaxImageDiv = document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
@@ -1300,6 +1301,7 @@ function buildCastInfoData(myresults,jsObj)
 	var typeName =jsObj.typename;	
 	var publicationDateId=jsObj.publicationDateId;
 	var boothId=jsObj.id;
+	var type =jsObj.type;
 		var	castIno = new Array();
 		var cast = myresults.voterCastInfodetails.castVOs;
 		
@@ -1319,28 +1321,36 @@ function buildCastInfoData(myresults,jsObj)
 
 		constMgmtMainObj.castStatsArray =castIno; 
 		}
-		if(cast != '')
+		if(cast != ''&& type =='booth')
+		{
+		
+		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId);	
+		}
+		else if(cast != ''&& type!='booth')
 		{
 		buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId);	
 		}
 		else{
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
      $("#localCastStatsTabContent_body").html("No Data Found");
-   }	
+   }
+   
 	}
-   function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
+   function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId)
 	{
 	
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+	
 	YAHOO.widget.DataTable.casteLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var caste = oData;
 		
 		var caste = oRecord.getData("caste");
 
-		
-		elLiner.innerHTML ='<a onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+caste+'\')">'+caste+'</a>';		
+		elLiner.innerHTML ='<a onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+caste+'\')">'+caste+'</a>';
+	
 	};
+
 
 		var localCastStatsColumnDefs = [ 
 		    	            
@@ -1351,6 +1361,49 @@ function buildCastInfoData(myresults,jsObj)
 							{key:"castePercentage", label: "caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
 		    	        ]; 
+
+		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
+		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		localCastStatsDataSource.responseSchema = { 
+            fields: ["caste",{key:"castePopulation", parser:"number"},{key:"malePopulation", parser:"number"},{key:"femalePopulation", parser:"number"},{key:"castePercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+        };
+		
+       
+
+
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};
+		
+		
+		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs);
+
+		
+		
+
+			return {
+				oDS: localCastStatsDataSource,
+				oDT: localCastStatsDataTable
+			};
+		}
+
+	function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
+	{
+	
+	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+	
+	var localCastStatsColumnDefs = [ 
+		    	            
+		    	            {key:"caste", label: "caste", sortable: true},
+							{key:"castePopulation", label: "caste Population", formatter:"number", sortable: true},
+		    				{key:"malePopulation", label: "male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"femalePopulation", label: "female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"castePercentage", label: "caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
+		    					    			    				
+		    	        ]; 
+
 		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
 		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		localCastStatsDataSource.responseSchema = { 
