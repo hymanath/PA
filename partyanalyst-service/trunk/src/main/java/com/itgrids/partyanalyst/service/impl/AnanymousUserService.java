@@ -2330,6 +2330,8 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 				candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
 				candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversion(parms[9].toString()):"");
 				candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
+				String profileImg=(parms[11]!=null)?parms[11].toString():"";
+				candidateResults.setProfileImg(profileImg);
 				candiateVO.add(candidateResults);
 			}
 		}
@@ -2349,7 +2351,78 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 	return dataTransferVO;
 }
 //getAllMessagesForUser
-
+public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String messageType)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
+	DataTransferVO dataTransferVO = new DataTransferVO();
+	Long totalMsgCount = 0l;
+	Long unreadMsgCount= 0l;
+	String message,data;
+	try{
+		List<Object> result = customMessageDAO.getAllSentMessagesForUser(userId,messageType);
+		if(result!=null && result.size()!=0){
+			totalMsgCount = new Long(result.size());
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				CandidateVO candidateResults = new CandidateVO();
+				
+				if(parms[0] != null)
+					message = staticDataService.removeSpecialCharectersFromString(parms[0].toString());
+				else
+					message = "";
+				
+				
+				
+				data = StringUtils.replace(parms[0].toString(),"\n"," ");
+				data = staticDataService.removeSpecialCharectersFromString(data);
+				
+				if(data.length() < 20)
+					candidateResults.setData(data);
+				else
+					candidateResults.setData(data.substring(0, 19));
+				
+				candidateResults.setMessage(message);
+				candidateResults.setId(new Long(parms[1].toString()));
+				String candidateName="";
+				
+				if(parms[2]!=null)
+					candidateName+=parms[2].toString().concat("  ").concat("  ");
+				
+				if(parms[3]!=null)
+					candidateName+=parms[3].toString();
+				candidateResults.setState(parms[4].toString());
+				candidateResults.setDistrict(parms[5].toString());					
+				candidateResults.setConstituencyName(parms[6].toString());
+				candidateResults.setCandidateName(candidateName.toUpperCase());
+				String status = (parms[8]!=null)?parms[8].toString():"";
+				candidateResults.setStatus(status);
+				if(IConstants.MSG_UNREAD.equalsIgnoreCase(status))
+					unreadMsgCount++;
+				
+				candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
+				candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversion(parms[9].toString()):"");
+				candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
+				String profileImg=(parms[11]!=null)?parms[11].toString():"";
+				candidateResults.setProfileImg(profileImg);
+				candiateVO.add(candidateResults);
+			}
+		}
+		dataTransferVO.setTotalMsgCount(totalMsgCount);
+		dataTransferVO.setUnreadMsgCount(unreadMsgCount);
+		dataTransferVO.setCandidateVO(candiateVO);
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		resultStatus.setResultPartial(false);
+		dataTransferVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+	return dataTransferVO;
+}
 
 /*public List<RegistrationVO> getFriendsListForUserProfile(Long userId)
 {

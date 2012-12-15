@@ -36,7 +36,18 @@ public class CandidateVO {
 	private Long noOfPosts;
 	private Long districtId;
 	private Long stateId;
+	private String profileImg;
 	
+	
+	
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
+
 	public Long getPartyId() {
 		return partyId;
 	}
