@@ -55,6 +55,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private UserCommentsInfoVO userComments;
 	private ProblemBeanVO problemDetailsVO;
 	private SubscriptionsMainVO subscriptionsMainVO;
+	private List<ProblemBeanVO> problemBeanVOList;
 	
 	public ProblemBeanVO getProblemDetailsVO() {
 		return problemDetailsVO;
@@ -249,6 +250,14 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	public void setSubscriptionsMainVO(SubscriptionsMainVO subscriptionsMainVO) {
 		this.subscriptionsMainVO = subscriptionsMainVO;
 	}
+	
+	public List<ProblemBeanVO> getProblemBeanVOList() {
+		return problemBeanVOList;
+	}
+
+	public void setProblemBeanVOList(List<ProblemBeanVO> problemBeanVOList) {
+		this.problemBeanVOList = problemBeanVOList;
+	}
 
 	public String execute()
 	{
@@ -297,7 +306,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user==null){
-			return IConstants.NOT_LOGGED_IN;
+			return "error";
 		}
 		List<Long> userId = new ArrayList<Long>();
 		userId.add(user.getRegistrationID());
@@ -377,7 +386,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		
 		if(user == null)
 		{
-			return IConstants.NOT_LOGGED_IN ;
+			return "error" ;
 		}	
 		List<Long> userId = new ArrayList<Long>(0);
 		if(jObj.getString("task").equalsIgnoreCase("getLatestFriendsList"))
@@ -416,13 +425,14 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			reasonType = IConstants.REJECTED;
 		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
 			reasonType = IConstants.NOTCONSIDERED;
-		
-		
-		
+		else if("ConnectedUserPoliticalReasons".equalsIgnoreCase(type))
+			reasonType = "ConnectedUserPoliticalReasons";
 		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
 		userComments = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID(), startIndex, results, order, columnName, reasonType);
 		//candidateCommentsVO = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID());
 		
@@ -453,6 +463,8 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			reasonType = IConstants.REJECTED;
 		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
 			reasonType = IConstants.NOTCONSIDERED;
+		else if("ConnectedUserProblems".equalsIgnoreCase(type))
+			reasonType = "ConnectedUserProblems";
 		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -462,6 +474,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		
 		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(user.getRegistrationID(), 
 				startIndex, results, order, columnName, reasonType);
+		//problemBeanVOList = ananymousUserService.getProblemDetailsForProfilePage(user.getRegistrationID(), startIndex, results, order, columnName, reasonType);
 		return Action.SUCCESS;
 	}
 	
