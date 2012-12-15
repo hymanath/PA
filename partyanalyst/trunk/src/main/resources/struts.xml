@@ -3894,5 +3894,19 @@
 			</result>
 		</action>
 		
+		
+		<action name="getTotalSettingsOptionsOfAnUser" class="userProfileAction" method="getTotalSettingsOptionsOfAnUser">
+		<result type="json" name="success">
+				 <param name="root">userSettingsList</param> 
+			</result>
+		</action>
+		
+		
+		<action name="updateUserSettingsDetailsAction" class="userProfileAction" method="updateUserSettingsDetailsAction">
+		<result type="json" name="success">
+				 <param name="root">status</param> 
+			</result>
+		</action>
+		
 		</package>
 </struts>      

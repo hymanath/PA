@@ -62,6 +62,7 @@
 								<li><a href="freeUserRegistration.action">Edit Profile</a></li>
 								<li><a href="javascript:{}" class="changePwdLink">Change Password</a></li>
 								<li><a href="javascript:{}" class="editPictureLink">Edit Picture</a></li>
+								<li><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink">Edit View Settings</a></li>
 							</ul>
 						</div>
 										
@@ -265,6 +266,8 @@
  </div>
 </div>
 
+<div id="userSettingsDialog"></div>
+
 <div id="connectPeoplePopup" style="display:none;">
 	<div id="allConnectedUsersDisplay_main"></div>
 	</div>
@@ -398,6 +401,123 @@ userType = '${UserType}';
 		});
 	
 	});	
+
+	function getUserSettingsDetails(){
+
+	var jsObj=
+			{				
+				task:"getSettings"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "updateUserSettingsDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	var url = "getTotalSettingsOptionsOfAnUser.action";
+	callAjaxForUserSettings(jsObj,url);
+}
+
+
+
+
+function buildSettingsDetails(results){
+
+$('#userSettingsDialog').html('');
+
+	var str='';
+
+	str+='<div style="width:285px;">';
+
+	//str+='<label>Profile Settings:</label><br>';
+
+	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b>Private</b></label>';
+	else
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b>Private</b></label>';
+
+    if(results.selectedOptionId == 1)
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b>Public</b></label>';
+	else
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b>Public</b></label>';
+	
+	if(results.selectedOptionId == 3)
+	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b>Friends</b></label>';
+	else
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b>Friends</b></label>';
+
+	str+='<input style="float:right;margin-right:48px;margin-top:20px;" type="button" class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
+
+
+	str+='</div>';
+	str+='<div id="successMsg"></div>';
+
+	$('#userSettingsDialog').html(str);
+
+	$('#userSettingsDialog').dialog({
+        title:'Update Profile View',
+		hide:'explode'
+	});
+
+	
+}
+
+function updateSelectedOption(){
+
+var selectedValue = $('input[name=profile]:radio:checked').val();
+
+var jsObj=
+			{					
+				selectedValue:selectedValue,				
+				task:"updateSettings"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "updateUserSettingsDetailsAction.action?"+rparam;						
+		callAjaxForUserSettings(jsObj,url);
+
+}
+
+function callAjaxForUserSettings(jsObj,url)
+{
+
+	 var myResults;
+
+	 var callback = {			
+	   success : function( o ) {
+			try {												
+				myResults = YAHOO.lang.JSON.parse(o.responseText);	
+
+                     if(jsObj.task == "getSettings")								
+						buildSettingsDetails(myResults);
+					 else if(jsObj.task == "updateSettings"){
+
+						 var cssObj = {    
+					        'font-weight' : 'bold',
+					        'color' : 'green'
+				          }
+					 		 $('#successMsg').text("Updated Successfully.").css(cssObj).show().delay(2000).fadeOut(400);
+
+							 setTimeout(closeDialog,2000 );
+					 }
+										
+											
+			}catch (e) { 
+				alert("Invalid JSON result" + e);   
+			}  
+	   },
+	   scope : this,
+	   failure : function( o ) {
+					
+		}
+	 };
+
+YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function closeDialog(){
+
+$('#userSettingsDialog').dialog('close');
+}
 </script>
 </body>
 </html>
