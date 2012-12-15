@@ -978,30 +978,45 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 		
+@SuppressWarnings("unchecked")
+	public List getCandidatesInfoForTheGivenConstituency(String constituencyId,String electionYear,String electionType) {
+		Object[] params = {electionYear,electionType,electionYear,electionType};
+		return getHibernateTemplate().find("select model.candidate.candidateId," +//0
+		" model.candidate.lastname," +//1
+		" model.candidateResult.votesEarned," +//2
+		" model.candidateResult.votesPercengate," +//3
+		" model.candidateResult.rank," +//4
+		" model.party.partyId," + //5
+		" model.party.partyFlag," +//6
+		" model.party.longName," +//7
+		" model.party.shortName," +//8
+		" model.constituencyElection.constituency.constituencyId," +//9
+		" model.constituencyElection.constituency.name," + //10
+		" model.constituencyElection.election.electionYear," +//11
+		" model.constituencyElection.constituency.electionScope.electionType.electionType," +//12
+		" model.constituencyElection.constituencyElectionResult.totalVotes," +//13
+		" model.constituencyElection.constituencyElectionResult.totalVotesPolled," +//14
+		" model.constituencyElection.constituencyElectionResult.votingPercentage," +//15
+		" model.constituencyElection.reservationZone" +//16
+		" from Nomination model where model.constituencyElection.constituency.constituencyId in (" + constituencyId +
+		" ) and model.constituencyElection.election.electionYear = ? " +
+		" and model.constituencyElection.election.electionDate = (select max(model1.constituencyElection.election.electionDate) " +
+		" from Nomination model1 where model1.constituencyElection.constituency.constituencyId in (" + constituencyId +
+		" ) and model.constituencyElection.election.electionYear = ? and model1.constituencyElection.constituency.electionScope.electionType.electionType = ? ) " +
+		" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? order by model.candidateResult.rank",params);
+		}
+	
 	@SuppressWarnings("unchecked")
-	public List getCandidatesInfoForTheGivenConstituency(String constituencyId,String electionYear,String electionType)	{
-		Object[] params = {electionYear,electionType};		
-	return getHibernateTemplate().find("select model.candidate.candidateId," +//0
-			" model.candidate.lastname," +//1
-			" model.candidateResult.votesEarned," +//2
-			" model.candidateResult.votesPercengate," +//3
-			" model.candidateResult.rank," +//4
-			" model.party.partyId," +  //5
-			" model.party.partyFlag," +//6
-			" model.party.longName," +//7
-			" model.party.shortName," +//8
-			" model.constituencyElection.constituency.constituencyId," +//9
-			" model.constituencyElection.constituency.name," +	//10
-			" model.constituencyElection.election.electionYear," +//11
-			" model.constituencyElection.constituency.electionScope.electionType.electionType," +//12
-			" model.constituencyElection.constituencyElectionResult.totalVotes," +//13
-			" model.constituencyElection.constituencyElectionResult.totalVotesPolled," +//14
-			" model.constituencyElection.constituencyElectionResult.votingPercentage," +//15
-			" model.constituencyElection.reservationZone" +//16
-			" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
-			" ) and model.constituencyElection.election.electionYear = ? " +
-			" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? order by model.candidateResult.rank",params);		
+	public List findCandidateNamePartyByConstituencyAndElectionDate(String constituencyIds, String electionYear) {
+		return getHibernateTemplate().find("select upper(model.constituencyElection.constituency.name)," +
+				" upper(model.candidate.lastname), upper(model.party.shortName), " +
+				" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId ," +
+				" model.party.partyFlag,model.constituencyElection.reservationZone,model.party.partyId from Nomination model " +
+				" where model.constituencyElection.constituency.constituencyId in (" + constituencyIds + ") and model.constituencyElection.election.electionYear = ? " +
+				" and model.constituencyElection.election.electionDate = (select max(model1.constituencyElection.election.electionDate) "+
+				" from Nomination model1 where model1.constituencyElection.constituency.constituencyId in (" + constituencyIds + " )) and model.candidateResult.rank = 1 ", electionYear);
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List getCandidatesInfoForTheGivenConstituencyForLocalBody(String constituencyId,String electionYear,String electionType)	{
