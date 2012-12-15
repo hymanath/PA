@@ -242,38 +242,49 @@ padding:5px 20px;
 	}
 	
 	#headerDiv{
-		font-size:16px;
-		background: none repeat scroll 0 0 #ECEFF5;
-		border-bottom: 1px solid #D8DFEA;
-		margin: 3px;
-		padding: 14px 26px;
-		color:black;
-		font-weight:bold;
+		margin:0px -20px;
+border-bottom:1px solid #efefef;
+padding:5px 20px;
+
+		
 	}
+	.placeholderCenterDiv{margin:0px -20px;padding:5px 5px;}
 	.templatePersons span{
 		clear:both;
 		width:100%;
 		display:inline-block;
 	}
 	.templatePersons{
-		border: 1px solid #CFCFCF;
-		float: left;
-		margin: 1px;
-		padding: 5px;
-		width: 200px;
-		height:110px;
+		border: 1px solid #f8f8f8;
+		 float: left;
+    height: 110px;
+    margin: 4px;
+    padding: 5px;
+    width: 46%;
+	
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+
+	border-radius:3px;
+	box-shadow:0px 0px 1px #aaa;
 	}
+	.templatePersons:hover{background:#fff;box-shadow:0px 0px 2px #aaa;}
 	.templatePersons .imgClass{width:50%;float:left;}
 	.templatePersons .prinfo{width:50%;float:left;color:#000000;}
 	 body{font-size:13px;}
 	.templatePersons .connectedPersonName{font-size:14px;}
-	.templateMessage {border:1px solid #ECECEC;}
+	.templateMessage {border:1px solid #CFCFCF;margin:1px;padding:4px;}
 	.templateMessage .reply a{text-decoration:none;color:white}
 	.templateMessage .msgDelete a{text-decoration:none;color:white}
 	.templateMessage .imgClass{float:left;width:20%;}
 	.templateMessage .messageFrom{float:left;width:40%;color:#3B5998;}
 	.templateMessage .dateAndTimeReceived{float:right;width:40%;color:gray;}
-	.templateMessage .message{color:#000;margin-left:5px;padding:2px;}
+	.templateMessage .message{color:#000;margin-left:50px;padding:10px;}
 	.templateMessage .msgBtns{width:50%;margin-left:auto;margin-right:auto;}
 	
 	/* subscription Styles Start */
@@ -387,3 +398,4 @@ padding:5px 20px;
 body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 #profileUserName h5{ word-wrap: break-word;text-align:center;padding-top:4px;}
 .messageCls{word-wrap: break-word;}
+
