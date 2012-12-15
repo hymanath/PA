@@ -29,6 +29,7 @@ public class ProblemDetailsVO {
 	private Long userId;
 	private CompleteProblemDetailsVO averageRating;
 	private String rating;
+	private Long postedProblemsCountByConnectedUsers;
 	
 	
 	public EmailDetailsVO getEmailDetailsVO() {
@@ -172,5 +173,13 @@ public class ProblemDetailsVO {
 	public void setRating(String rating) {
 		this.rating = rating;
 	}
+	public Long getPostedProblemsCountByConnectedUsers() {
+		return postedProblemsCountByConnectedUsers;
+	}
+	public void setPostedProblemsCountByConnectedUsers(
+			Long postedProblemsCountByConnectedUsers) {
+		this.postedProblemsCountByConnectedUsers = postedProblemsCountByConnectedUsers;
+	}
+	
 	
 }
