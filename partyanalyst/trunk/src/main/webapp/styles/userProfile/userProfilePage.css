@@ -4,7 +4,6 @@
     font-size: 17px;
     font-weight: bold;
     text-align: right;}*/
-#profileUserName{margin-left:10px;font-size:16px;font-weight:bold;}
 .p1{color: #000; text-align:center;}
 /*.applicationCls{background:#789440;color: #FFFFFF;
     font-size: 17px;
@@ -386,5 +385,5 @@ padding:5px 20px;
     opacity: 1;
 }
 body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
-#profileUserName{ word-wrap: break-word;}
+#profileUserName h5{ word-wrap: break-word;text-align:center;padding-top:4px;}
 .messageCls{word-wrap: break-word;}
