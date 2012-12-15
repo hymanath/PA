@@ -95,7 +95,7 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	
 	public List getAllOpenedComments(Date fromDate, Date toDate);
 	
-	public List getPostedReasonsByFreeUserId(Long userId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
+	public List getPostedReasonsByFreeUserId(Long userId, Integer startIndex, Integer results, String order, String columnName, String reasonType,List<Long> connectedUserIds);
 	
 	public List getPostedReasonsCountByFreeUserId(Long userId);
 	
@@ -110,4 +110,8 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds);
 	
 	public List getAllOpenedApprovedComments(Date fromDate, Date toDate,String status);
+	
+	public List getConnectedUsersPostedReasonsCount(List<Long> connectedUserIds);
+	
+	public Long getTotalPostedReasonsCount(String reasonType, Long userId,List<Long> connectedUserIds);
 }
