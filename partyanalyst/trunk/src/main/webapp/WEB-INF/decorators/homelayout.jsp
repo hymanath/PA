@@ -1040,6 +1040,7 @@ function homePageAjaxCall(param,jsObj,url){
 									buildLocalBodiesSelectElmt(jsObj,myResults)
 								}
 								
+								
 						}
 						catch (e)
 							{   
@@ -1241,6 +1242,299 @@ str+='</table>';
 
 elmt.innerHTML = str;
 }
+
+
+
+
+function navigateToStatePage()
+{
+	var stateSelectEl = document.getElementById("stateList_s");
+	var stateSelectElVal = stateSelectEl.options[stateSelectEl.selectedIndex].value
+	window.location="statePageAction.action?stateId="+stateSelectElVal; 
+}
+function navigateToDistrictPage()
+{
+	var distSelectEl = document.getElementById("districtList_d");
+	var alertEl = document.getElementById("alertMessage_district");
+	var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
+	var distSelectElText =  distSelectEl.options[distSelectEl.selectedIndex].text;
+	if(distSelectElVal == 0)
+	{
+		alertEl.innerHTML = 'Please Select District';
+		return;
+	}
+	else
+		alertEl.innerHTML = '';
+	window.location="districtPageAction.action?districtId="+distSelectElVal+"&districtName="+distSelectElText;
+	
+}
+function navigateToConstituencyPage()
+{
+	var constSelectEl = document.getElementById("constituency");
+	var alertEl = document.getElementById("alertMessage");
+	var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value
+	alertEl.innerHTML = '';
+	if(constSelectElVal == 0)
+	{
+		alertEl.innerHTML = errotMsg;
+		return;
+	}
+	window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
+	
+}
+
+
+function navigateToLocalBodyPage()
+{
+	var errorElmt = document.getElementById("localBodies_errorDiv");
+	var stateElmt = document.getElementById("stateList_l");		
+	var localBodySelectElmt = document.getElementById("localBodySelectElmt");
+	var radioElmts = document.getElementsByName("localBodyRadio");
+	var localBodyElectionId;
+
+	if(!stateElmt || !localBodySelectElmt || !radioElmts || radioElmts.length == 0)
+		return;
+	
+	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+	var localBodySelectElmtValue = localBodySelectElmt.options[localBodySelectElmt.selectedIndex].value;
+	for(var i=0; i<radioElmts.length; i++)
+	{
+		if(radioElmts[i].checked == true)
+			localBodyElectionId = radioElmts[i].value;
+	}
+	
+	if(localBodySelectElmtValue == 0 && errorElmt)
+	{
+		errorElmt.innerHTML = '<font color="red" style="font-size:10px;"> Please Select Location.. </font>';
+		return;
+	}
+	else
+		errorElmt.innerHTML = '';
+
+	window.location="localBodyElectionAction.action?stateId="+stateId+"&localBodyElectionTypeId="+localBodyElectionId+"&localBodyId="+localBodySelectElmtValue;
+}
+
+function getSelectElmtForLocalBody(localBodyId)
+{
+	var statelocalEl = document.getElementById("stateList_l");
+	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
+	
+	var jsObj =
+		{
+			stateId: stateSelectlocalElVal,
+			electionTypeId:localBodyId,
+			task: "getLocalBodiesSelectElmtForState"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getLocalBodiesInAState.action?"+rparam; 
+	homePageAjaxCall(rparam,jsObj,url);	
+}
+
+function buildLocalBodiesSelectElmt(jsObj,results)
+{
+	var labelElmt = document.getElementById("localBodiesSelectDiv_label");
+	var dataElmt = document.getElementById("localBodiesSelectDiv_data");
+
+	if(!labelElmt || !dataElmt)
+		return;
+
+	var labelStr = '';
+	labelStr += 'Select Location';
+	labelElmt.innerHTML = labelStr;
+	
+	var dataStr = '';
+	dataStr += '<select id="localBodySelectElmt"></select>';
+
+	dataElmt.innerHTML = dataStr;
+
+	clearOptionsListForSelectElmtId("localBodySelectElmt");
+	createOptionsForSelectElmtIdWithSelectOption("localBodySelectElmt",results);
+}
+
+function buildLocalBodiesForAState(jsObj,results)
+{
+	var localBodyString = '';
+	var elmtLabel = document.getElementById("localBodiesRadioDiv_label");
+	var elmtData = document.getElementById("localBodiesRadioDiv_data");
+
+	var selectElmtLabel = document.getElementById("localBodiesSelectDiv_label");
+	var selectElmtdata = document.getElementById("localBodiesSelectDiv_data");
+
+
+	if(!elmtLabel || !elmtData || !selectElmtLabel || !selectElmtdata)
+		return;
+	
+
+	selectElmtLabel.innerHTML = '';
+	selectElmtdata.innerHTML = '';
+
+	if(results.length == 0)
+		elmtLabel.innerHTML = '';
+	else
+		elmtLabel.innerHTML = localBodyString;
+
+	var str = '';
+	for(var i=0; i<results.length; i++)
+	{
+		str += '<label class="radio">';
+		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].id+'"> '+results[i].name+' </input><br>';
+		str +='</label>'
+		/*if(i == 1)
+			str += '<br/>';*/
+	}
+
+	elmtData.innerHTML = str;
+}
+
+
+function callHomePageAjax(jsObj,url)
+{			
+	
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+
+							if(jsObj.task == 'getElectionYearsForAState')
+							{
+								buildElectionYearsSelect(myResults);
+							}
+							
+							else if(jsObj.task == "getStates")
+							{
+								buildElectionTypes(myResults);
+							}
+
+						}
+						catch(e)
+						{   
+							//alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function buildElectionYearsSelect(myResult)
+{
+	if(myResult == null || myResult.length == 0)
+		return;
+
+	var electionYearsElmt = document.getElementById("electionYears");
+	electionYearsElmt.options.length=0;
+
+	for(var i in myResult)
+	{
+		var option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionYearsElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionYearsElmt.add(option); // IE only
+		}
+	}	
+
+}
+function buildElectionTypes(myResult)
+{	
+	
+	if(myResult == null || myResult.length == 0)
+		return;
+	
+	var electionTypeElmt = document.getElementById("states");
+	electionTypeElmt.options.length=0;
+
+	var option = document.createElement('option');
+	option.value = "0";
+	option.text = "Select State";
+	try
+	{
+		electionTypeElmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		electionTypeElmt.add(option); // IE only
+	}
+	
+	for(var i in myResult)
+	{
+		var option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionTypeElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionTypeElmt.add(option); // IE only
+		}
+	}	
+
+	hideBusyImgWithId("states");
+
+}
+
+function showBusyImgWithId(elmtId)
+{		
+		
+		var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+		if(spanElmt)
+			spanElmt.style.display = 'block';
+}
+function hideBusyImgWithId(elmtId)
+{
+	
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+	if(spanElmt)
+		spanElmt.style.display = "none";
+}
+
+function viewElectionResults()
+{
+   var errorMsgDivEle = document.getElementById("electionDetailsErrorMsgDiv");
+  try
+	{
+	  var stateSelectEle = document.getElementById("states");
+	  var electionYearEle = document.getElementById("electionYears");
+	  var electionTypeEle = document.getElementById("electionTypeId");
+	  
+
+	  var stateId = stateSelectEle.options[stateSelectEle.selectedIndex].value;
+	  var stateName = stateSelectEle.options[stateSelectEle.selectedIndex].text;
+	  var electionTypeId = electionTypeEle.options[electionTypeEle.selectedIndex].value;
+	  var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
+	  var electionId = electionYearEle.options[electionYearEle.selectedIndex].value;
+	  var electionYear = electionYearEle.options[electionYearEle.selectedIndex].text;
+	if(electionType == 'Parliament')
+		stateId = 1;
+		if(stateId == 0 || electionTypeId == 0 || electionId == 0)
+		{
+			errorMsgDivEle.style.display = 'block';
+			return;
+		}
+		
+		errorMsgDivEle.style.display = 'none';
+		document.location = "electionDetailsReportAction.action?electionId="+electionId+"&stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear;
+	}
+	catch(err)
+	{
+		errorMsgDivEle.style.display = 'block';
+		return;
+	}
+}
+
+
 <!--Facebook like code Start-->
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
