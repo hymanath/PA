@@ -1008,4 +1008,11 @@
 	<bean id="jobRunDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.JobRunDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="favoriteLinkPageDAO" class="com.itgrids.partyanalyst.dao.hibernate.FavoriteLinkPageDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userFavoriteLinksDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFavoriteLinksDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

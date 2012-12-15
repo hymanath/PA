@@ -304,6 +304,9 @@
 			
 			<value>com.itgrids.partyanalyst.model.Job</value>
 			<value>com.itgrids.partyanalyst.model.JobRunDetails</value>
+			
+			<value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
+			<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
 			</list>
 		</property>
 	</bean>
