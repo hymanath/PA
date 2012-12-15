@@ -267,13 +267,13 @@ padding:5px 20px;
 	.templatePersons .prinfo{width:50%;float:left;color:#000000;}
 	 body{font-size:13px;}
 	.templatePersons .connectedPersonName{font-size:14px;}
-	.templateMessage {border:1px solid #CFCFCF;margin:1px;padding:4px;}
+	.templateMessage {border:1px solid #ECECEC;}
 	.templateMessage .reply a{text-decoration:none;color:white}
 	.templateMessage .msgDelete a{text-decoration:none;color:white}
 	.templateMessage .imgClass{float:left;width:20%;}
 	.templateMessage .messageFrom{float:left;width:40%;color:#3B5998;}
 	.templateMessage .dateAndTimeReceived{float:right;width:40%;color:gray;}
-	.templateMessage .message{color:#000;margin-left:50px;padding:10px;}
+	.templateMessage .message{color:#000;margin-left:5px;padding:2px;}
 	.templateMessage .msgBtns{width:50%;margin-left:auto;margin-right:auto;}
 	
 	/* subscription Styles Start */
