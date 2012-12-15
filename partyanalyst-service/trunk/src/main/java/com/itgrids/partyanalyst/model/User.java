@@ -98,6 +98,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserProblem> userProblems = new HashSet<UserProblem>(0);
 	private Set<ProblemRating> problemRatings = new HashSet<ProblemRating>(0);
 	private Set<UserPartyRelation> userPartyRelations = new HashSet<UserPartyRelation>(0);
+	private Set<UserFavoriteLinks> userFavoriteLinks = new HashSet<UserFavoriteLinks>(0);
 	
 	private Set<CadreOnlineRegistration> CadreOnlineRegistrations = new HashSet<CadreOnlineRegistration>(0);
 	private Set<UserPrivacySettings> userPrivacySettings = new HashSet<UserPrivacySettings>(0);
@@ -819,6 +820,16 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUserPrivacySettings(Set<UserPrivacySettings> userPrivacySettings) {
 		this.userPrivacySettings = userPrivacySettings;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserFavoriteLinks> getUserFavoriteLinks() {
+		return userFavoriteLinks;
+	}
+
+	public void setUserFavoriteLinks(Set<UserFavoriteLinks> userFavoriteLinks) {
+		this.userFavoriteLinks = userFavoriteLinks;
 	}
 
 
