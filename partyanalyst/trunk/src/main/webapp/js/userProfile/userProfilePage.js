@@ -29,9 +29,20 @@ $("document").ready(function(){
 		callAjax1(jsObj,url);
 		
 	});
-
-	 
+	
 	$(".messagesLink").click(function(){
+	    
+				
+		if($("#MyProfileActions").find("#Inbox").length<1) {
+		$('#MyProfileActions').prepend("<ul class='nav nav-tabs'><li class='active'><a id='Inbox' >Inbox</a></li><li><a id='SentBox'>Sent</a></li></ul>"); }
+		
+		$("#Inbox").trigger("click");
+				
+	});
+	 
+	$("#Inbox").live("click",function(){
+		$(this).closest(".nav-tabs").find("li").removeClass("active");
+		$(this).parent().addClass("active");
 		
 		var jsObj ={
 			task:"getRequestMessagesForUser"						
@@ -42,6 +53,23 @@ $("document").ready(function(){
 		
 		callAjax1(jsObj,url);
 	});
+	
+	
+	
+	$("#SentBox").live("click",function(){
+		$(this).closest(".nav-tabs").find("li").removeClass("active");
+		$(this).parent().addClass("active");
+		
+		var jsObj ={
+			task:"getSentBoxMessagesForUser"						
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAllSentMessagesForAUserAction.action?"+rparam;	
+		
+		callAjax1(jsObj,url);
+	});
+	
 	
 	$("#specialPageLink").click(function(){
 		
@@ -503,6 +531,27 @@ $(".subscribedLink").live("click",function(){
    callAjax1(jsObj,url);
 });
 
+$(".unreadfont").live("click",function(){
+ 
+	var msgid=$(this).find(".msgid").val();
+	var jsObj=
+	{		
+			customMasgId:msgid,
+			task:"updateReadMessageInDB"								
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateReadMessageInDBAction.action?"+rparam;					
+	callAjax1(jsObj,url);
+
+	$(this).removeClass("unreadfont");
+  
+	});
+	
+	$(".readMsg").live("click",function(){
+		$(this).closest(".templateMessage").find(".msgbox").toggle('slow');
+	});
+
 });//End ready
 
 
@@ -613,10 +662,16 @@ function callAjax1(jsObj,url){
 										
 					else if(jsObj.task == "getLatestFriendsList")
 						getFriendsListForUser(results);				
-					
+
 
 					else if(jsObj.task == "getRequestMessagesForUser")
 						showRequestedMessagesForAUser(results);
+						
+					else if(jsObj.task == "getSentBoxMessagesForUser")
+						showSentBoxMessagesForAUser(results);
+						
+					else if(jsObj.task == "updateReadMessageInDB")
+						updatedInfo(results);
 					
 					else if(jsObj.task == "sendMessageToConnectUser")
 					{
@@ -703,7 +758,9 @@ function callAjax1(jsObj,url){
 }
 
 
-
+function updatedInfo(results){
+	return;
+}
 function getFriendsListForUser(results)
 {
 	$(".placeholderCenterDiv").children().remove();
@@ -791,24 +848,78 @@ function showRequestedMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('Unread: <span style="color:blue;">'+ results.unreadMsgCount +' </span> Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span>');
+		$("#headerDiv").html('<h6 class="pull-right">Unread: <span style="color:blue;">'+ results.unreadMsgCount +' </span> Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDivMsg");
 		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
-		if(results.candidateVO[i].status == "UNREAD")
-			templateClone.find(".message").html(''+results.candidateVO[i].message+'').css("font-weight","bold");
-		else
-			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
-			templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+		templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+		
+		if(results.candidateVO[i].status == "UNREAD"){
+	      templateClone.addClass("unreadfont");
+		}
+		templateClone.find(".msgid").val(results.candidateVO[i].costumMessageId);
+		
+		if(results.candidateVO[i].profileImg!=""){
+			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
+			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
+			}
+		else{
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+			}
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
-			templateClone.find(".reply").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')" >REPLY</a>');
-			templateClone.find(".msgDelete").html('<a href="javascript:{}">DELETE</a>');
+			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"><i class=" icon-repeat"></i> Reply</a>');
+			
+			/*templateClone.find(".reply").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')" class="btn" title="reply">Reply</a>');
+			
+			templateClone.find(".msgDelete").html('<a href="javascript:{}" class="icon-remove"></a>');*/
 		templateClone.appendTo(".placeholderCenterDiv");
 		}
 }
+
+function showSentBoxMessagesForAUser(results)
+{
+	
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	if(results.resultStatus.resultCode !="0")
+	{
+		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
+		return;
+	}
+	else if(results.candidateVO == null || results.candidateVO.length == 0)
+	{
+		$("#headerDiv").html("No messages has been sent by you.");
+		return;
+	}
+		
+		
+		$("#headerDiv").html('<h6 class="pull-right">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
+		for(var i in results.candidateVO)
+		{
+		var template = $(".templateDivMsg");
+		var templateClone = template.clone();
+		templateClone.removeClass("templateDivMsg");
+		templateClone.find(".reply").remove();
+		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+			//templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
+			if(results.candidateVO[i].profileImg!=""){
+			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
+			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
+			}
+			else{
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+			}
+			
+		templateClone.appendTo(".placeholderCenterDiv");
+		}
+}
+
 
 
 function showMailPopup(id,name,type)
@@ -873,7 +984,7 @@ function showMessageSentConfirmation(results)
     if(results.resultCode == 0)
 	{
 		$("#connectMessageText").val('');
-		$("#ErrorMsgDivId").html('<blink><font color="green">Message Sent Successfully..</font></blink>');
+		$("#ErrorMsgDivId").html('<font color="green">Message Sent Successfully..</font>');
 		setTimeout('self.close();',2000);
 		
 	}
@@ -966,14 +1077,14 @@ function closeConnectPanel(jsObj,results)
 	var connectUserMsg = $("#connectUserMsg").val('');
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
-		$("#errorMsgDiv").html('<blink><font color="green" style="font-weight:bold;"> Requested sent successfully.</font></blink>');
+		$("#errorMsgDiv").html('<font color="green" style="font-weight:bold;"> Requested sent successfully.</font>');
 		//var t=setTimeout("closeConnectPopup()",2000);
 		//buildConnectUsersContent(results.candidateVO,connectDivId,jsObj.locationType,jsObj.locationId,jsObj.locationName,connectUserLoginStatus,jsObj.userId);		
 		return;
 	}
 	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
 	{
-		$("#errorMsgDiv").html('<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent due to some technically difficulty.</blink></font>');
+		$("#errorMsgDiv").html('<font color="red" style="font-weight:bold;">Request Cannot be sent due to some technically difficulty.</font>');
 		return;
 	}
 	
@@ -1241,7 +1352,7 @@ function showAllConnectedUsersStatus(jsObj,results)
 
 if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{		
-		var msga = $('<blink><font color="green" style="font-weight:bold;"> Request sent to selected users successfully.</font></blink>');
+		var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');
 		if(jsObj.locationType=="DISTRICT"){
 			$("#districtPeopleLink").trigger("click");
 			//showAllConnectedUsersInPanelOfDistrict(jsObj,results);		
