@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IContentDAO;
@@ -9,6 +11,13 @@ public class ContentDAO extends GenericDaoHibernate<Content, Long> implements IC
 
 	public ContentDAO() {
 		super(Content.class);
+		
+	}
+	
+	public List<Content> getContentTypes(){
+		
+		return getHibernateTemplate().find("from Content");
+		
 		
 	}
 

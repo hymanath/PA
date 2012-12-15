@@ -80,4 +80,9 @@ public interface IAnanymousUserService {
 	public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String messageType);
 
 	public List<RegistrationVO> getFriendsListForUserProfile(Long userId);
+	
+	public UserSettingsVO getTotalSettingsOptionsOfAnUser(Long userId);
+	
+	public String updateUserSettingsDetailsAction(Long selectedId , Long userId);
+	
 }	

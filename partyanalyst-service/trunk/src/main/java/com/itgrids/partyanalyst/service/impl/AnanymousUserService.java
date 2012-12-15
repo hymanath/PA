@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IContentDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -31,10 +32,12 @@ import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IRoleDAO;
+import com.itgrids.partyanalyst.dao.ISettingsOptionDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserPrivacySettingsDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
@@ -52,13 +55,17 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
+import com.itgrids.partyanalyst.dto.UserSettingsVO;
 import com.itgrids.partyanalyst.model.CommentData;
+import com.itgrids.partyanalyst.model.Content;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
 import com.itgrids.partyanalyst.model.Role;
+import com.itgrids.partyanalyst.model.SettingsOption;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserConnectedto;
+import com.itgrids.partyanalyst.model.UserPrivacySettings;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.model.UserReferralEmails;
 import com.itgrids.partyanalyst.model.UserRoles;
@@ -102,6 +109,37 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserDAO userDAO;
 	private IUserProblemDAO userProblemDAO;
 	private IProblemManagementService problemManagementService;
+	
+	
+	private ISettingsOptionDAO settingsOptionDAO;
+	private IContentDAO contentDAO;	
+	private IUserPrivacySettingsDAO userPrivacySettingsDAO;
+	
+	public ISettingsOptionDAO getSettingsOptionDAO() {
+		return settingsOptionDAO;
+	}
+
+	public void setSettingsOptionDAO(ISettingsOptionDAO settingsOptionDAO) {
+		this.settingsOptionDAO = settingsOptionDAO;
+	}
+
+	public IContentDAO getContentDAO() {
+		return contentDAO;
+	}
+
+	public void setContentDAO(IContentDAO contentDAO) {
+		this.contentDAO = contentDAO;
+	}
+
+	public IUserPrivacySettingsDAO getUserPrivacySettingsDAO() {
+		return userPrivacySettingsDAO;
+	}
+
+	public void setUserPrivacySettingsDAO(
+			IUserPrivacySettingsDAO userPrivacySettingsDAO) {
+		this.userPrivacySettingsDAO = userPrivacySettingsDAO;
+	}
+
 	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
 	}
@@ -2580,5 +2618,103 @@ public List<Long> getConnectedUserIdsByUserId(Long userId)
 		return problemBeanVOList;
 	}
 }*/
+
+/**
+ * This method will fetch all setting options 
+ * @param userId
+ */
+public UserSettingsVO getTotalSettingsOptionsOfAnUser(Long userId){
+	
+	if(log.isDebugEnabled())
+	log.debug("Entered into getTotalSettingsOptions service method");
+	
+	List<UserSettingsVO> userSettingsList = new ArrayList<UserSettingsVO>();
+	List<String> optionsList = new ArrayList<String>();
+	UserSettingsVO userSettingsVO = new UserSettingsVO();
+	
+	try{
+		
+		
+		List<SettingsOption> settingsOptions = settingsOptionDAO.getAllSettingsOptions();
+		
+		for(SettingsOption selectOption:settingsOptions)
+			optionsList.add(selectOption.getOptionName());
+		
+		
+		userSettingsVO.setOptionsList(optionsList);
+		
+		List<UserPrivacySettings> userSettings = userPrivacySettingsDAO.getUserSavedSettings(userId);
+		
+		if(userSettings != null && userSettings.size() >0)			
+			userSettingsVO.setSelectedOptionId(userSettings.get(0).getSettingsOption().getSettingsOptionId());
+		else
+			userSettingsVO.setSelectedOptionId(0L);
+			
+		
+		
+		//List<Content> conents = contentDAO.getContentTypes();
+		
+		
+		
+		
+		/*Map<Long , Long> map = new HashMap<Long , Long>();
+		Map<Long , String> map1 = new HashMap<Long , String>();
+		
+		
+		for(SettingsOption selectOption:settingsOptions)
+			optionsList.add(selectOption.getOptionName());
+		
+		for(UserPrivacySettings userSetting:userSettings){				
+			map.put(userSetting.getContent().getContentId(), userSetting.getSettingsOption().getSettingsOptionId());
+			map1.put(userSetting.getContent().getContentId(), userSetting.getSettingsOption().getOptionName());
+		}
+			
+		
+		for(Content content:conents){	
+			
+			UserSettingsVO userSettingsVO = new UserSettingsVO();
+			userSettingsVO.setContentName(content.getName());
+			userSettingsVO.setOptionsList(optionsList);
+			userSettingsVO.setSelectedOptionId(map.get(content.getContentId()));
+			userSettingsVO.setSelectedOptionName(map1.get(content.getContentId()));
+			
+			userSettingsList.add(userSettingsVO);
+			
+		}*/
+	}catch(Exception e){
+		log.debug("Exception raised in getTotalSettingsOptions service method");
+		e.printStackTrace();
+		
+	}
+	
+	return userSettingsVO;
+}
+
+
+public String updateUserSettingsDetailsAction(Long selectedOptionId , Long userId){
+	
+	try{
+	UserPrivacySettings userPrivacySettings = null;
+	
+	userPrivacySettings  = userPrivacySettingsDAO.get(userId);
+	
+	
+	if(userPrivacySettings == null)
+		userPrivacySettings = new UserPrivacySettings();
+	
+	userPrivacySettings.setUser(userDAO.getUserByUserId(userId));
+	userPrivacySettings.setContent(contentDAO.get(1L));
+	userPrivacySettings.setSettingsOption(settingsOptionDAO.get(selectedOptionId));
+	
+	userPrivacySettingsDAO.save(userPrivacySettings);
+	
+	}catch(Exception e){	
+	  e.printStackTrace();
+	return null;
+	}
+	
+	return IConstants.SUCCESS;	
+	
+}
 
 }
