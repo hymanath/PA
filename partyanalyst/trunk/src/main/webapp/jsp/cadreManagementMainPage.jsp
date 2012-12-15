@@ -2175,9 +2175,11 @@ function fillDataForCadreLevel(results,jsObj)
 		//var mainEventCalendarNavigator = new YAHOO.widget.CalendarNavigator(mainEventCalendar);
 		
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
+		if(taskType == "impEvent"){
            var browser2 = window.open("createNewEvent.action?eventId="+eid,"cadreCreateNewEvent","scrollbars=yes,height=600,width=700,left=150,top=100");	
 		   browser2.focus();
 		   return;
+		 }
 		var jsObj={
 					eventId:eid,
 					currentDay:dateObj.dateVal,
