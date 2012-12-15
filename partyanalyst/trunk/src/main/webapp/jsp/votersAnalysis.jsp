@@ -592,10 +592,15 @@ function getCastInfoForsubLevel()
 	else if(level == 3 || id == null){
 	type = 'panchayat';
 	id = $("#panchayatField").val();
-	 typeName = $("#panchayatField :selected").text();
+	mandalid = $("#mandalField").val();
+	typeName = $("#panchayatField :selected").text();
 	var mandalText = $('#mandalField :selected').text();
 	 validflag= mandalText.search("MUNCIPALITY");
-	if(validflag != -1)
+	 if(mandalid == 0)
+		{
+		 flag =false;
+		}
+	else if(validflag != -1)
 		{
 		flag=false;
 		}
@@ -618,7 +623,6 @@ function getCastInfoForsubLevel()
 		{
 		var jsObj=
 		{		
-				
 				type:type,	
 				id:id,
 				validflag:validflag,
