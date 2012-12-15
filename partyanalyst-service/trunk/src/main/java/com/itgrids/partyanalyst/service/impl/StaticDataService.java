@@ -1176,11 +1176,14 @@ public class StaticDataService implements IStaticDataService {
 					//
 					
 					//List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),result.getValue().toString());
-					List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),latestElecYearInConsti);
+					/*List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),latestElecYearInConsti);*/
+					List candidates = nominationDAO.findCandidateNamePartyByConstituencyAndElectionDate(result.getKey().toString(), latestElecYearInConsti);
 				
-					for (int i = 0; i < candidates.size(); i++) {
+					//for (int i = 0; i < candidates.size(); i++) {
+					if(candidates != null)
+					{
 						ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
-						Object[] obj = (Object[]) candidates.get(i);
+						Object[] obj = (Object[]) candidates.get(0);
 						constituencyWinnerInfoVO.setConstituencyName(obj[0].toString());
 						constituencyWinnerInfoVO.setCandidateName(obj[1].toString());
 						constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
@@ -1204,9 +1207,11 @@ public class StaticDataService implements IStaticDataService {
 							constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
 						}
 						constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
-					}
+					//}
+						
 				}
 			}
+		}
 			/*
 			 * List parliamentCandidates =
 			 * nominationDAO.findCandidateNamePartyByConstituencyAndElection
