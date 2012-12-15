@@ -384,7 +384,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	
 	@SuppressWarnings("unchecked")
 	public List getPostedReasonsByFreeUserId(Long userId, Integer startIndex, Integer results, 
-			String order, String columnName, String reasonType)
+			String order, String columnName, String reasonType,List<Long> connectedUserIds)
 	{	
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.commentData, ");			
@@ -398,26 +398,35 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		query.append(" from CommentCategoryCandidate model ");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
-			query.append(" where model.user.userId is not null ");
+			query.append(" where model.user.userId is not null and model.commentData.isApproved = '"+IConstants.TRUE+"'");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append(" where model.user.userId = ? ");
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append(" where model.user.userId != ? ");
+		{
+			query.append(" where model.user.userId != ? and model.commentData.isApproved = '"+IConstants.TRUE+"'");
+			if(connectedUserIds != null && connectedUserIds.size() > 0)
+				query.append(" and model.user.userId not in (:connectedUserIds)");
+		}
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append(" where model.user.userId = ? and model.commentData.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
 			query.append(" where model.user.userId = ? and model.commentData.isApproved = '"+IConstants.FALSE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
 			query.append(" where model.user.userId = ? and model.commentData.isApproved is null");		
-		
+		else if(reasonType.equalsIgnoreCase("ConnectedUserPoliticalReasons") && connectedUserIds != null && connectedUserIds.size() > 0)
+			query.append(" where model.user.userId in (:connectedUserIds) and model.commentData.isApproved = '"+IConstants.TRUE+"'");
 			
 			
 		query.append(" order by "+columnName+" "+order);
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
-		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType) && !reasonType.equalsIgnoreCase("ConnectedUserPoliticalReasons"))
 			queryObject.setParameter(0, userId);
+		
+		if(connectedUserIds != null && connectedUserIds.size() > 0 && (reasonType.equalsIgnoreCase("ConnectedUserPoliticalReasons") || reasonType.equalsIgnoreCase(IConstants.OTHERUSERS)))
+			queryObject.setParameterList("connectedUserIds", connectedUserIds);
+		
 		queryObject.setFirstResult(startIndex);		
 		queryObject.setMaxResults(results);
 		
@@ -435,6 +444,40 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		queryObject.setParameter(0, userId);
 				
 		return (Long)queryObject.uniqueResult();
+	}
+	
+	public Long getTotalPostedReasonsCount(String reasonType, Long userId,List<Long> connectedUserIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model.commentCategoryCandidateId) ");		
+		query.append(" from CommentCategoryCandidate model where ");
+		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
+			query.append(" model.user.userId is not null and model.commentData.isApproved = '"+IConstants.TRUE+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
+			query.append(" model.user.userId = ? ");
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+		{
+			query.append(" model.user.userId != ? and model.commentData.isApproved = '"+IConstants.TRUE+"'");
+			if(connectedUserIds != null && connectedUserIds.size() > 0)
+				query.append(" and model.user.userId not in (:connectedUserIds) ");
+		}
+		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
+			query.append(" model.user.userId = ? and model.commentData.isApproved = '"+IConstants.TRUE+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
+			query.append(" model.user.userId = ? and model.commentData.isApproved = '"+IConstants.FALSE+"' ");
+		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
+			query.append(" model.user.userId = ? and model.commentData.isApproved is null");
+		else if(reasonType.equalsIgnoreCase("ConnectedUserPoliticalReasons") && connectedUserIds != null && connectedUserIds.size() > 0)
+			query.append(" model.user.userId in (:connectedUserIds) and model.commentData.isApproved = '"+IConstants.TRUE+"'");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType) && !reasonType.equalsIgnoreCase("ConnectedUserPoliticalReasons"))
+			queryObject.setParameter(0, userId);
+		if(connectedUserIds != null && connectedUserIds.size() > 0 && (reasonType.equalsIgnoreCase("ConnectedUserPoliticalReasons") || reasonType.equalsIgnoreCase(IConstants.OTHERUSERS)))
+			queryObject.setParameterList("connectedUserIds", connectedUserIds);
+				
+		return (Long)queryObject.uniqueResult();
+		
 	}
 	
 	public Long getTotalPostedReasonsCountByFreeUserId()
@@ -458,7 +501,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getPostedReasonsCountOtherThanLoginUserId(Long userId)
 	{
 		return getHibernateTemplate().find("select count(*) "+
-				"from CommentCategoryCandidate model where model.user.userId != ? and model.user.userId != null",userId);
+				"from CommentCategoryCandidate model where model.user.userId != ? and model.user.userId != null and model.commentData.isApproved = '"+IConstants.TRUE+"'",userId);
 	}
 	@SuppressWarnings("unchecked")
 	/*public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
@@ -476,4 +519,17 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return queryObject.list();
 			
 	}
+	
+	public List getConnectedUsersPostedReasonsCount(List<Long> connectedUserIds)
+   	{
+   		StringBuilder queryString = new StringBuilder();
+   		queryString.append("select count(model.commentCategoryCandidateId), model.commentData.isApproved from CommentCategoryCandidate model where model.user.userId in (:connectedUserIds) ");
+   		queryString.append(" group by model.commentData.isApproved");
+   		Query queryObj = getSession().createQuery(queryString.toString());
+   		queryObj.setParameterList("connectedUserIds", connectedUserIds);
+   		return queryObj.list();
+   		
+   	}
+	
+		
 }
