@@ -169,12 +169,23 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 	}
 	 */	
 	
-	public void testGetPostedReasonsByFreeUserId()
+	/*public void testGetPostedReasonsByFreeUserId()
 	{
-		List list = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(2L, 0, 3, "asc", "model.commentData.commentDesc",IConstants.TOTAL);
+		List<Long> connectedUserIds = new ArrayList<Long>(0);
+		connectedUserIds.add(1l);
+		List list = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(2L, 0, 3, "asc", "model.commentData.commentDesc","ConnectedUserPoliticalReasons",connectedUserIds);
 		
 		System.out.println(list.size());
-	}
+		if(list != null && list.size() > 0)
+		{
+			for(int i=0 ; i<list.size();i++)
+			{
+				Object[] params = (Object[])list.get(i);
+				for(Object result : params)
+					System.out.println("\t"+result);
+			}
+		}
+	}*/
 	
 	/*public void testGetPostedReasonsCountByFreeUserId()
 	{
@@ -188,14 +199,14 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		List list = commentCategoryCandidateDAO.getPostedReasonsCountOtherThanLoginUserId(2L);
 		
 		System.out.println(list.size());
-	}*/
-	
+	}
+	*/
 	/*public void testGetTotalPostedReasonsCountByFreeUserId()
 	{
 		Long count = commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(2L);
 		System.out.println(count);
-	}*/
-	
+	}
+	*/
 	/*public void testgetCommonDataForAllProblems()
 	{
 		
@@ -262,4 +273,29 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 	{
 		commentCategoryCandidateDAO.getAll();
 	}*/
+	
+	/*public void testgetConnectedUsersPostedReasonsCount()
+	{
+		List<Long> connectedUserIds = new ArrayList<Long>(0);
+		connectedUserIds.add(1l);
+		List list = commentCategoryCandidateDAO.getConnectedUsersPostedReasonsCount(connectedUserIds);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(int i=0;i<list.size();i++)
+			{
+				Object[] params = (Object[])list.get(i);
+				for(Object result : params)
+					System.out.println("\t" +result);
+			}
+				
+		}
+	}*/
+	
+	public void testGetTotalPostedReasonsCount()
+	{
+		List<Long> connectedUserIds = new ArrayList<Long>(0);
+		Long count = commentCategoryCandidateDAO.getTotalPostedReasonsCount(IConstants.TOTAL, 1l, connectedUserIds);
+		System.out.println(count);
+	}
 }
