@@ -45,15 +45,7 @@ function homePageAjaxCall(param,jsObj,url){
 									
 									showVotesObtainedForOptions(myResults);
 								} 
-								else if(jsObj.task == "getLocalBodiesForState")
-								{
-									buildLocalBodiesForAState(jsObj,myResults);
-								}
-								else if(jsObj.task == "getLocalBodiesSelectElmtForState")
-								{
-									buildLocalBodiesSelectElmt(jsObj,myResults)
-								}
-								
+									
 						}
 						catch (e)
 							{   
