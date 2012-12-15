@@ -486,11 +486,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 			{
-			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(id,publicationDateId));
+			return calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(new Long(id.toString().substring(1)),publicationDateId));
 			}
 			else
 			{
-			return calculatePercentageForCast(boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(id,publicationDateId));
+			return calculatePercentageForCast(boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(new Long(id.toString().substring(1)),publicationDateId));
 			}
 			
 		}
@@ -641,7 +641,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			{
 				if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 				{
-				List<SelectOptionVO> panchayatList= staticDataService.getPanchayatiesByMandalId(new Long(id));
+				List<SelectOptionVO> panchayatList= staticDataService.getPanchayatiesByMandalId(new Long(id.toString().substring(1)));
 				mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId);
 				}
 				
