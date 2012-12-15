@@ -993,4 +993,13 @@
 	<bean id="addressContactDAO" class="com.itgrids.partyanalyst.dao.hibernate.AddressContactDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	 <bean id="contentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="settingsOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.SettingsOptionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userPrivacySettingsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserPrivacySettingsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
