@@ -1442,7 +1442,8 @@ function showPostedReasons(jsObj,results)
 		notConsideredReasonsCount = results.notConsideredReasonsCount;
 		totalPostedReasonsCount = results.totalPostedReasonsCount;
 		postedReasonsCountByOtherUsers = results.postedReasonsCountByOtherUsers;
-		postedReasonsByLoggedInUser = totalPostedReasonsCount - postedReasonsCountByOtherUsers;
+		connectedUsersReasCount = results.postedReasonsCountByConnectedUsers;
+		postedReasonsByLoggedInUser = approvedReasonsCount + rejectedReasonsCount;
 	}
 
 	var div = $('<div class="politicalReasonsInnerDiv"></div>');
@@ -1455,14 +1456,14 @@ function showPostedReasons(jsObj,results)
 	   else
 		ul.append('<li class="fontStyle">Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
 	   if(postedReasonsByLoggedInUser ==0)
-			 ul.append('<li class="fontStyle">By User - '+postedReasonsByLoggedInUser+'</li>');
+			 ul.append('<li class="fontStyle">By You - '+postedReasonsByLoggedInUser+'</li>');
 	   else
-   		 ul.append('<li class="fontStyle">By User - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+   		 ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
 	   
-	   /* if(connectedUsersReasCount ==0)
+	   if(connectedUsersReasCount ==0)
 		 ul.append('<li class="fontStyle">By Friends - '+connectedUsersReasCount+'</li>');
 	   else
-		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');*/	
+		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');	
 
 	   if(postedReasonsCountByOtherUsers ==0)
 		 ul.append('<li class="fontStyle">By Others - '+postedReasonsCountByOtherUsers+'</li>');
@@ -1473,7 +1474,7 @@ function showPostedReasons(jsObj,results)
 	{
 		ul.append('<li class="fontStyle"> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
 		ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
-		//ul.append('<li class="fontStyle"> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');	
+		ul.append('<li class="fontStyle"> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');	
 		ul.append('<li class="fontStyle"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
 	}
 		
@@ -1754,10 +1755,10 @@ function showPostedProblems(jsObj,results)
 	else
 	  ul.append('<li class="fontStyle">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></li>');
 
-	/* if(results.postedProblemsCountByConnectedUsers == 0)
+	if(results.postedProblemsCountByConnectedUsers == 0)
 		ul.append('<li class="fontStyle">By Friends - '+results.postedProblemsCountByConnectedUsers+'</li>');
 	else 
-		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></li>');*/
+		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></li>');
 	
 	var label = $('<label class="l1">Problem Status Details Posted By You </label>');
 	var ulInner = $('<ul></ul>');
