@@ -76,6 +76,8 @@ public interface IAnanymousUserService {
 	public String changeUserPassword(String crntpassword,String newpassword,Long registrationId,String userName);
 	
 	public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messageType);
+	
+	public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String messageType);
 
 	public List<RegistrationVO> getFriendsListForUserProfile(Long userId);
 }	
