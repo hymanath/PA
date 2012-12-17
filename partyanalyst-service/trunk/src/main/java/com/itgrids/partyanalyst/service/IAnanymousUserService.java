@@ -86,4 +86,8 @@ public interface IAnanymousUserService {
 	
 	public String updateUserSettingsDetailsAction(Long selectedId , Long userId);
 	
+	public List<UserSettingsVO> getUserFavouriteLinksAction(Long userId);
+	
+	public String removeFavouriteLink(Long linkId);
+	
 }	
