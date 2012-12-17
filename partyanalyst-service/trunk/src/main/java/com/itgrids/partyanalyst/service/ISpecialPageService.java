@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -10,6 +12,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
+import com.itgrids.partyanalyst.model.FilePaths;
 
 public interface ISpecialPageService {
 	
@@ -68,7 +71,7 @@ public interface ISpecialPageService {
 	
     public  List<FileVO> getFirstThreePhotoGallaryRecords(Long specialPageId);
     
-    public ResultStatus createOrUpdateSpecialPageInfo(SpecialPageVO specialPageVO);
+     public ResultStatus createOrUpdateSpecialPageInfo(SpecialPageVO specialPageVO);
     
     public List<SpecialPageVO> getSpecialPageInfo(Long specialPageId);
     
@@ -76,9 +79,14 @@ public interface ISpecialPageService {
     
     public List<SpecialPageVO> getAllSpecialPageListForHomePage();
     
-    public SubscriptionsMainVO getAllUserSubScriptions(Long userId, Long profileId);
+ public SubscriptionsMainVO getAllUserSubScriptions(Long userId, Long profileId);
     
     public SubscriptionsMainVO getUserProfileSubScriptions(Long userId);
     
     public String getProfileUserName(Long profileId);
+    
+    public Map<String,List<?>> getYoutubeVideosList(Date startDate,Date endDate);
+    
+    public int[]  deleteExpiredVideosList (List<String> filePaths,List<Long> languageIds);
+    public int  updateLastUpdateDateInFilePaths(List<Long> languageIds);
 }
