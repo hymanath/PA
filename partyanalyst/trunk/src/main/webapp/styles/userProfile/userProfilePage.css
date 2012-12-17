@@ -251,16 +251,32 @@ padding:5px 20px;
 	.placeholderCenterDiv{margin:0px -20px;padding:5px 5px;}
 	.templatePersons span{
 		clear:both;
-		width:100%;
 		display:inline-block;
+		font-size:12px; 
+		color:#999;
+		float:right;
+
 	}
+	.templatePersons .icon-groups{clear:both;
+		display:inline-block;
+		font-size:12px; 
+		color:#999;
+		float:right; width:auto;}
+ .templatePersons .icon-groups span{float:left;
+		font-size:12px; 
+		color:#999;
+		display:inline-block;
+		clear:none;
+		margin:0px 2px;
+		}
+	.templatePersons{text-transform:Capitalize;}
 	.templatePersons{
 		border: 1px solid #f8f8f8;
 		 float: left;
-    height: 110px;
+    height: auto;
     margin: 4px;
-    padding: 5px;
-    width: 46%;
+    padding: 5px 6px;
+    width: 45%;
 	
 	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
@@ -272,12 +288,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 	border-radius:3px;
 	box-shadow:0px 0px 1px #aaa;
+	 transition: all 0.4s ease-in-out 0s;
 	}
-	.templatePersons:hover{background:#fff;box-shadow:0px 0px 2px #aaa;}
-	.templatePersons .imgClass{width:50%;float:left;}
-	.templatePersons .prinfo{width:50%;float:left;color:#000000;}
-	 body{font-size:13px;}
-	.templatePersons .connectedPersonName{font-size:14px;}
+	.templatePersons:hover{background:#fff;box-shadow:0px 0px 2px #04A9E9;}
+	/*.templatePersons .imgClass{width:50%;float:left;}*/
+	.templatePersons .prinfo{}
+	
+	.templatePersons .connectedPersonName{}
 	.templateMessage {border:1px solid #CFCFCF;margin:1px;padding:4px;}
 	.templateMessage .reply a{text-decoration:none;color:white}
 	.templateMessage .msgDelete a{text-decoration:none;color:white}
