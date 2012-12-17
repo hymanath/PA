@@ -43,6 +43,8 @@
 .ajaxImg{display:none;}
 .opacityFilter-50{filter: alpha(opacity=65);
 	opacity: 0.65;}
+	.viewMoreDiv{margin-top: 12px;}
+	.ajaxImg{margin-left: 35px;}
 </style>
 </head>
 <body>
