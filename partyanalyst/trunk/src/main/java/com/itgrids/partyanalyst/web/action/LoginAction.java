@@ -5,12 +5,9 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
@@ -19,9 +16,9 @@ import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.sun.net.httpserver.Authenticator.Failure;
 
 public class LoginAction extends ActionSupport implements ServletContextAware, ServletRequestAware{
 
@@ -85,8 +82,29 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private boolean hasPartyAnalystUserRole;
     private boolean hasFreeUserRole;
     private List<String> userRoles;
+   // JSONObject jObj = null;
+    private String resultForAjax;
+    private String SUCCESS = "success";
+    private String FAILURE = "failure";
     
-    public List<String> getUserRoles() {
+    
+    public String getResultForAjax() {
+		return resultForAjax;
+	}
+
+	public void setResultForAjax(String resultForAjax) {
+		this.resultForAjax = resultForAjax;
+	}
+
+	/*public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}*/
+
+	public List<String> getUserRoles() {
 		return userRoles;
 	}
 
@@ -565,5 +583,76 @@ public String saveUserSessionDetails(String status)
 		return IWebConstants.FAILURE;
 	}
 }
+
+public String ajaxCallForLoginPopup(){
+	
+	//String param = null;
+	//param = getTask();
+	try {
+		//jObj = new JSONObject(param);
+		//System.out.println(jObj);
+		if(getTask().equalsIgnoreCase("validateUserForLogin"))
+		{
+			userName = getUserName();
+			password=getPassword();
+			 
+			session = request.getSession();
+			
+			RegistrationVO regVO = loginService.checkForValidUser(userName, password);
+			
+			//Check User Availability
+			if (regVO == null || regVO.getRegistrationID() == null)
+			{
+				session.setAttribute("loginStatus", "in");
+				//addActionError("Invalid username or password! Please try again!");
+				session.setAttribute("checkedTypeValue", userType);
+				resultForAjax=FAILURE;
+				return Action.SUCCESS;
+			}	
+			
+			int hiden = 0;
+			
+			userFullName = regVO.getFirstName() + " " + regVO.getLastName();
+			session.setAttribute("loginStatus", "out");
+			session.setAttribute("HiddenCount", hiden);
+			session.setAttribute("UserName", userFullName);
+			session.setAttribute(IConstants.USER,regVO);
+			
+			userRoles = regVO.getUserRoles();
+			
+			if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
+			{
+				hasPartyAnalystUserRole = true;
+				session.setAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE, true);
+				session.setAttribute("UserType", "PartyAnalyst");
+				
+				if(userRoles.contains(IConstants.FREE_USER))
+				{
+					session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+					hasFreeUserRole = true;
+				}
+				saveUserSessionDetails(IWebConstants.LOGIN);
+			}
+			
+			else if(userRoles.contains(IConstants.FREE_USER))
+			{
+				session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+				hasFreeUserRole = true;
+				session.setAttribute("UserType", "FreeUser");
+				changedUserName = "true";
+				saveUserSessionDetails(IWebConstants.LOGIN);
+				//return getRedirectPageDetails();	
+			}
+		}
+		 String typeOfUser= finalResultString();
+		 if(typeOfUser!=null)
+			 resultForAjax=SUCCESS;
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
+}
+
 
 }
