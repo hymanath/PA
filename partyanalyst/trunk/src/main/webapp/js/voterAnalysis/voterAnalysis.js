@@ -1484,16 +1484,32 @@ str+='<th>Report</th><th>Below3</th><th>Between4-6</th><th>Between7-10</th><th>A
 str+='</tr>';
 str+='<tr>';
 str+='<th>No of Familes</th>';
+if(myresults.below3 != null)
 str+='<td>'+myresults.below3+'</td>';
+else
+str+='<td>'+0+'</td>';
+if(myresults.betwn4to6Popul != null)
 str+='<td>'+myresults.betwn4to6Popul+'</td>';
+else
+str+='<td>'+0+'</td>';
+if(myresults.betwn7to10Popul != null)
 str+='<td>'+myresults.betwn7to10Popul+'</td>';
+else
+str+='<td>'+0+'</td>';
+if(myresults.above10 != null)
 str+='<td>'+myresults.above10+'</td>';
+else
+str+='<td>'+0+'</td>';
 str+='<tr>';
 str+='<tr>';
 str+='<th>Familes %</th>';
+if(myresults.below3perc != null)
 str+='<td>'+myresults.below3perc+'%</td>';
+if(myresults.betwn4to6perc != null)
 str+='<td>'+myresults.betwn4to6perc+'%</td>';
+if(myresults.betwn7to10perc != null)
 str+='<td>'+myresults.betwn7to10perc+'%</td>';
+if(myresults.above10perc != null)
 str+='<td>'+myresults.above10perc+'%</td>';
 str+='<tr>';
 str+='</table>';
