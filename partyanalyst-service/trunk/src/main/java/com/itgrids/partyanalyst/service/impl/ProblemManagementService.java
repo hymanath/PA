@@ -8383,5 +8383,83 @@ public List<ProblemBeanVO> getProblemDetailsForProfilePage(int startIndex,int ma
 }
 
 
+public List<ProblemBeanVO> getProblemDetailsForPublicProfile(Long profileId, int startIndex, int maxIndex)
+{
+	List<ProblemBeanVO> problemBeanVOList = new ArrayList<ProblemBeanVO>(0);
+	try{
+		ProblemBeanVO problemBeanVO = null;
+		List<Object[]> problemsList = userProblemDAO.getProblemDetailsForPublicProfile(profileId, startIndex, maxIndex);
+		
+		if(problemsList != null && problemsList.size() > 0)
+		{
+			for(Object[] params : problemsList)
+			{
+				problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setProblemId((Long)params[0]);
+				problemBeanVO.setProblem(params[1].toString());
+				problemBeanVO.setDescription(params[2].toString());
+				problemBeanVO.setReportedDate(params[3].toString());
+				problemBeanVO.setExistingFrom(params[4].toString());
+				problemBeanVO.setPostDate((Date)params[3]);
+				problemBeanVOList.add(problemBeanVO);
+				
+			}
+		}
+		
+	return problemBeanVOList;
+	}catch (Exception e) {
+		log.error("Exception Occured in getProblemDetailsForPublicProfile() Method, Exception - "+e);
+		return problemBeanVOList;
+	}
+	
+	
+			
+}
+
+
+
+public List<ProblemBeanVO> getProblemDetailsByProfileId(Long profileId,int startIndex,int maxIndex)
+{
+	List<ProblemBeanVO> problemsList = null;
+	List<ProblemBeanVO> problemBeanVOList = getProblemDetailsForPublicProfile(profileId,startIndex,maxIndex);
+	try{
+		
+	
+	Map<String, ProblemBeanVO> problemsMapList = new HashMap<String, ProblemBeanVO>(0);
+	
+	
+	for(ProblemBeanVO problemDetails : problemBeanVOList)
+	{
+		String key = problemDetails.getPostedDate();
+		
+		if(problemsMapList.get(key) == null)
+		{ 
+			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+		    problemBeanVO.setPostedDate(key);
+		    problemBeanVO.setPostDate(problemDetails.getPostDate());
+			List<ProblemBeanVO> list = new ArrayList<ProblemBeanVO>();
+			list.add(problemDetails);
+			problemBeanVO.setProblemBeanVOList(list);
+			problemsMapList.put(key, problemBeanVO);
+		}else{
+			ProblemBeanVO problemBeanVO = problemsMapList.get(key);
+			problemBeanVO.getProblemBeanVOList().add(problemDetails);
+		}
+		
+	}
+	problemsList = new ArrayList<ProblemBeanVO>(problemsMapList.values());
+	Collections.sort(problemsList, new Comparator<ProblemBeanVO>() {
+	    public int compare(ProblemBeanVO m1, ProblemBeanVO m2) {
+	        return m1.getPostDate().compareTo(m2.getPostDate());
+	    }
+	});
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getProblemDetailsByProfileId() Method, Exception- "+e);
+	}
+	return problemsList;
+}
+
+
 
 }
