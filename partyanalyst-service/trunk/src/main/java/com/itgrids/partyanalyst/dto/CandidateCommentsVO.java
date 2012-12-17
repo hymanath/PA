@@ -55,6 +55,7 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long messageToPartyId;
 	private Long partyId;
 	private Long postedReasonsCountByConnectedUsers;
+	private String imgURL;
 	
 	public Long getConsituencyId() {
 		return consituencyId;
@@ -294,6 +295,12 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	public void setPostedReasonsCountByConnectedUsers(
 			Long postedReasonsCountByConnectedUsers) {
 		this.postedReasonsCountByConnectedUsers = postedReasonsCountByConnectedUsers;
+	}
+	public String getImgURL() {
+		return imgURL;
+	}
+	public void setImgURL(String imgURL) {
+		this.imgURL = imgURL;
 	}
 	
 	
