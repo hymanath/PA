@@ -448,6 +448,28 @@
                                     </fieldset>
                                 </td>
 							</tr>
+								<tr> 
+							 <td>
+									<fieldset class="f2">
+									<legend class="l2">Towards Maintanace</legend>
+									<span class="fontStyle">Remove youtube videos &nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href="<s:url action="removeVideosAction"/>"><b>RemoveVideos</b>
+										</a>
+									</span><br>
+									</fieldset>
+								</td>
+							
+						
+							 <td>
+									<fieldset class="f2">
+									<legend class="l2">Towards ImagesAppearance</legend>
+									<span class="fontStyle">Resize Images &nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href="<s:url action="createThumbNailsAction"/>"><b>createThumbNails</b>
+										</a>
+									</span><br>
+									</fieldset>
+								</td>
+								</tr>
 							
 							
 						</table>
