@@ -143,6 +143,8 @@ table.gridtable td {
 	 font-size: 12px;
 	 margin-left:auto;
 	 margin-right:auto;
+	 font-weight:bold;
+	 color:#333333;
 
  }
 
@@ -347,7 +349,7 @@ locationDetails.constituencyArr.push(ob);
 <div id="AlertMsg" style="font-family: verdana;
     font-size: 13px;"></div>
 
-<div id="reportLevelDiv" class="selectDiv">Select Report Level<font class="requiredFont">*</font>&nbsp;&nbsp;:&nbsp;&nbsp;<select id="reportLevel" class="selectWidth" style="margin-left:3px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+<div id="reportLevelDiv" class="selectDiv">Select Report Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:30px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=3>Panchayat</option>
@@ -356,23 +358,23 @@ locationDetails.constituencyArr.push(ob);
 		
 </div>
 	<div id="ConstituencyDiv" class="selectDiv">
-	Select Constituency<font class="requiredFont">*</font> &nbsp;:&nbsp;&nbsp; <s:select theme="simple" style="margin-left:-4px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
+	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
 
 		
-	Select Publication Date<font class="requiredFont">*</font> &nbsp;&nbsp;:&nbsp;&nbsp; <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList">
+	Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList">
 		</select>
 		
 	</div>
 	<div id="mandalDiv" class="selectDiv" style="display:none;">
 		
-	Select Mandal<font class="requiredFont">*</font>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;:&nbsp;&nbsp; <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');"></select></div>
+	Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');" style="margin-left:60px;"></select></div>
 		
 	<div id="panchayatDiv" class="selectDiv" style="display:none;">
 	Select Panchayat<font class="requiredFont">*</font> 	
-	 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);"></select></div>
+	<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);" style="margin-left:39px;"></select></div>
 	
 	<div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	Select PollingStation<font class="requiredFont">*</font> &nbsp;: &nbsp;&nbsp;<select id="pollingStationField" class="selectWidth" name="state" onChange="buildVotersByLocBoothDataTable(this.id);"></select></div>
+	Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state" onChange="buildVotersByLocBoothDataTable(this.id);" style="margin-left:24px;"></select></div>
 
 	
 
