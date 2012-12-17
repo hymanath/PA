@@ -1537,11 +1537,6 @@ function showPostedReasons(jsObj,results)
 		ul.append('<li class="fontStyle"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
 	}
 		
-	/* if(userType != "PartyAnalyst"){		
-		div.append('<span class="fontStyle"><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" style="color:#669900;text-decoration: underline;">Add Reasons</a>');
-		div.append('<span class="fontStyle"><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" style="color:#669900;text-decoration: underline;">View Reasons</a>');
-	}*/
-	
 	var label = $('<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By You </div>');
 	
 	var ulinner = $('<ul></ul>');
@@ -1554,6 +1549,12 @@ function showPostedReasons(jsObj,results)
 		ulinner.append('<li class="fontStyle" style="margin-left:35px;">Reasons Rejected - '+rejectedReasonsCount+'</li>');
 	else
 	ulinner.append('<li class="fontStyle">Reasons Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></li>');
+
+	if(userType != "PartyAnalyst"){		
+		ulinner.append('<span><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" class="btn btn-success btn-small politicalReasAddLink">Add Reasons</a></span>');
+		ulinner.append('<span><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" class="btn btn-success btn-small" style="margin-bottom: 10px;">View Reasons</a></span>');
+	}
+
 	div.append(ul);
 	div.append(label);
 	div.append(ulinner);
@@ -1838,4 +1839,10 @@ function showPostedProblems(jsObj,results)
 	 div.append(label);
 	div.append(ulInner);
 	$('#headerDiv').append(div);
+}
+
+function openAddReasonWindow(taskType)
+{
+	var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstId+"&parliamentConstiName="+parliamentConstName+"&constituencyName="+constituencyName+"&userId="+loginUserId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+	browser1.focus();
 }
