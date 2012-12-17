@@ -394,7 +394,8 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		query.append(" model.nomination.constituencyElection.constituency.name, ");
 		query.append(" model.nomination.candidateResult.rank, ");
 		query.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
-		query.append(" model.nomination.constituencyElection.election.electionYear");
+		query.append(" model.nomination.constituencyElection.election.electionYear, ");
+		query.append(" model.user.userId,model.user.profileImg");
 		query.append(" from CommentCategoryCandidate model ");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
