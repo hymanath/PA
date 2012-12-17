@@ -835,7 +835,7 @@ function getFriendsListForUser(results)
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 
@@ -871,9 +871,10 @@ function showAllRequestMessagesForUser(results,jsObj){
 	}
 }
 
-
+var inboxCount=0;
 function showRequestedMessagesForAUser(results)
 {
+	inboxCount=results.unreadMsgCount;
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
@@ -888,7 +889,7 @@ function showRequestedMessagesForAUser(results)
 		return;
 	}
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" >Inbox ( '+results.unreadMsgCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -938,7 +939,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1194,10 +1195,10 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
-				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" rel="tooltip" title="Connect"><i class="icon-plus-sign opacityFilter-50"></i></a>');
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
-				templateClone.find('.connectCls').html('Pending');
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')">Send a Message</a>');
+				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending"><i class="icon-adjust opacityFilter-50"></i></a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
 			
 			templateClone.appendTo(".placeholderCenterDiv");
 			
@@ -1299,7 +1300,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
 				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip"><i class="icon-envelope opacityFilter-50"></i></a>');
 			templateClone.appendTo(".placeholderCenterDiv");
 			
 			
