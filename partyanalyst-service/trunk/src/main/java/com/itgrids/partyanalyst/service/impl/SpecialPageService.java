@@ -1,14 +1,25 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
@@ -41,6 +52,8 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
+import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.CadreSkills;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsVO;
 import com.itgrids.partyanalyst.model.ContentType;
@@ -49,6 +62,7 @@ import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
+import com.itgrids.partyanalyst.model.PartyCadreSkills;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
@@ -60,6 +74,7 @@ import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
+import com.itgrids.partyanalyst.utils.YouTubeManager;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -95,7 +110,8 @@ public class SpecialPageService implements ISpecialPageService{
 	private ICandidateDetailsService candidateDetailsService;
 	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
 	private ISpecialPageMetaInfoDAO specialPageMetaInfoDAO;
-	private ISpecialPageInfoDAO specialPageInfoDAO;
+    private ISpecialPageInfoDAO specialPageInfoDAO;
+    private TransactionTemplate transactionTemplate ;
 	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
 	private IPartySubscriptionsDAO partySubscriptionsDAO;
 	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO; 
@@ -103,6 +119,14 @@ public class SpecialPageService implements ISpecialPageService{
 	private List<SpecialPageVO> specialPageVOList;
 	private IUserDAO userDAO;
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	public ISpecialPageMetaInfoDAO getSpecialPageMetaInfoDAO() {
 		return specialPageMetaInfoDAO;
 	}
@@ -315,7 +339,7 @@ public class SpecialPageService implements ISpecialPageService{
 	public void setSpecialPageInfoDAO(ISpecialPageInfoDAO specialPageInfoDAO) {
 		this.specialPageInfoDAO = specialPageInfoDAO;
 	}
-
+	
 	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
 		return specialPageSubscriptionsDAO;
 	}
@@ -1153,7 +1177,7 @@ public class SpecialPageService implements ISpecialPageService{
 			   	       }
 			   	     }
 			    	fileVO.setTitle(title);
-			    	fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(file.getFileId()).get(0));
+			    	    	fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(file.getFileId()).get(0));
 			    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 			    	List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
 					 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
@@ -1218,6 +1242,7 @@ public class SpecialPageService implements ISpecialPageService{
 			return null;
 		}
 	}
+
 	private void setSourceLanguageAndPaths(FileSourceLanguage fileSourceLanguage,List<FileVO> fileVOSourceLanguageList){
 		FileVO fileVOSourceLanguage = new FileVO();
 		 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():"");
@@ -1243,7 +1268,7 @@ public class SpecialPageService implements ISpecialPageService{
 		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
 	}
 	
-	public ResultStatus createOrUpdateSpecialPageInfo(SpecialPageVO specialPageVO)
+		public ResultStatus createOrUpdateSpecialPageInfo(SpecialPageVO specialPageVO)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		SpecialPageInfo specialPageInfo = null;
@@ -1367,8 +1392,7 @@ public class SpecialPageService implements ISpecialPageService{
 			return specialPageList;
 		}
 	}
-	
-	/* Public Profile Subscriptions Start*/
+/* Public Profile Subscriptions Start*/
 	
 	public SubscriptionsMainVO getAllUserSubScriptions(Long userId, Long profileId)
 	{
@@ -1698,6 +1722,154 @@ public class SpecialPageService implements ISpecialPageService{
 		}
 		
 		return name;
+	}
+	        // start youtube delete videos realated code
+	
+  public Map<String,List<?>> getYoutubeVideosList(Date startDate,Date endDate){
+		//conertdate 
+	             
+	  Map<String,List<?>> rest= new HashMap<String,List<?>>();
+	  System.out.println("hello service");
+		List<FilePaths> fileVOList = new ArrayList<FilePaths>();
+		List<Object[]> listOfVideos = specialPageGalleryDAO.getExpiredVideosList(startDate,endDate,IConstants.VIDEO);
+		List <String> file_paths=new ArrayList <String>();
+		List <Long> file_source_language=new ArrayList <Long>();
+	   //	List <String> Intilal_file_paths=new ArrayList <String>();
+		List <Long> Intilal_file_source_language=new ArrayList <Long>();
+		boolean validVideo=true;
+		
+		 if(listOfVideos != null && listOfVideos.size() >0){
+			for(int i=0; i<listOfVideos.size();i++ )
+			{    
+		    String path=(String)listOfVideos.get(i)[0];
+			
+		  //  Intilal_file_paths.add(path);
+		  Intilal_file_source_language.add((Long)listOfVideos.get(i)[1]);
+		    
+		    
+		    validVideo= isInvalidValidVedio(path, i);
+			if(!validVideo){
+			file_paths.add((String)listOfVideos.get(i)[0]);
+			file_source_language.add((Long)listOfVideos.get(i)[1]);
+			}
+			}
+			if(file_paths != null && Intilal_file_source_language != null )
+			{
+				rest.put("filepaths", file_paths);
+				rest.put("languageIdsNotChecked",Intilal_file_source_language );
+			}
+		
+		}
+		 
+		return rest;
+	}
+
+	private boolean isInvalidValidVedio(String pathOfFile,int n) {
+		
+		YouTubeManager ym1 = new YouTubeManager("rak"+n);
+        boolean flag=  ym1.getVedioDetails(pathOfFile);
+		return flag;
+	}
+@Transactional	
+  public int[]  deleteExpiredVideosList (List<String> filePaths,List<Long> languageIds){
+	
+	
+ int[] results=(int[]) deleteVideosInTransaction(filePaths, languageIds);
+	 
+	/*
+	
+	List<Object> fsli= getFileSourceLanguageIds(filePaths);
+	  List<Object> fileIds= getFileIds(fsli);
+	
+	     
+	  
+	    
+	  
+	  int[] results= deleteYoutubeVideoRecords(filePaths, fileIds, fsli, languageIds);
+	                
+	
+	*/
+	return results;
+	} 
+        // method for updating file_paths of lastverfied date of filepaths in database
+public int[] deleteYoutubeVideoRecords(List<String> filePaths ,List<Object> fileIds, List<Object> fileSourceLanguageIds, List<Long> languageIds)
+{    int[] res=new int[5];
+
+	res[0]=updateLastUpdateDateInFilePaths(languageIds);
+	res[1]=deleteRecordsFromFilePath(filePaths);
+	res[2]=deleteRecordsFromFileSourceLanguage(fileSourceLanguageIds);
+	res[3]=deleteRecordsFromFileGallary(fileIds);
+	res[4]=deleteRecordsFromFile(fileIds);
+
+	
+return res;
+}  
+
+  public List<Object> getFileSourceLanguageIds(List<String> filePaths)
+	{
+	 List<Object> fsli= specialPageGalleryDAO.getFileSourceLanguageIds(filePaths);
+
+	return fsli;
+	}
+  public List<Object> getFileIds(List<Object> languageIds)
+	{
+	 
+	 List<Object> fileIds= specialPageGalleryDAO.getFileIds(languageIds);
+	 return fileIds;
+	}
+   
+  public int  updateLastUpdateDateInFilePaths(List<Long> languageIds)
+ {   
+	 return specialPageGalleryDAO.updateLastUpdateDateInFilePaths(languageIds);
+ }
+ 
+  public int  deleteRecordsFromFilePath(List<String> filePaths)
+ { 
+	 return specialPageGalleryDAO.deleteRecordsFromFilePath(filePaths);
+ }
+ 
+ public int  deleteRecordsFromFileSourceLanguage(List<Object> fileSourceLanguageIds)
+ {
+	 return specialPageGalleryDAO.deleteRecordsFromFileSourceLanguage(fileSourceLanguageIds);
+ }
+ 
+ public int  deleteRecordsFromFileGallary(List<Object> fileIds)
+ {
+	 return specialPageGalleryDAO.deleteRecordsFromFileGallary(fileIds);
+ }
+ 
+ public int   deleteRecordsFromFile(List<Object> fileIds)
+ {
+	 return specialPageGalleryDAO.deleteRecordsFromFile(fileIds);
+ }
+ @Transactional
+	public  Object  deleteVideosInTransaction (final List<String> filePaths,final List<Long> languageIds) {
+		log.debug("inside cadre skills block");
+	Object res=	transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+		
+				Object results= null;
+				try{
+					List<Object> fsli= getFileSourceLanguageIds(filePaths);
+					  List<Object> fileIds= getFileIds(fsli);							    
+					  	   					  
+					results= deleteYoutubeVideoRecords(filePaths, fileIds, fsli, languageIds);
+					
+				}
+				 catch(Exception e){
+					status.setRollbackOnly();
+					
+					log.debug(e);
+					if(log.isDebugEnabled()){
+						log.debug("Exception Raised while setCadreSkillsInfo() method::", e);
+						throw new RuntimeException();
+					}					
+					e.printStackTrace();
+				}
+				return results;
+			}
+		});		
+	return res;
 	}
 	
 }
