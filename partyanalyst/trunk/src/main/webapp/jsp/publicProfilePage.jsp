@@ -168,7 +168,7 @@ padding:5px 20px;
 
 /* profile Style */
 .imageClass{width:300px;}
-.profilerDetails{float: right;margin-top: -100px;width: 300px;margin-right: 80px;}
+.profilerDetails{width: 300px;}
 .profileUserName{ font-size: 17px;font-weight: bold;}
 .fontStyle{font-size:14px;}
 .publicProfileInnerDiv{background:#fafafa}
@@ -202,6 +202,27 @@ padding:5px 20px;
 				</div>
 
 				<div id="problemsDiv">
+					
+					
+					<c:if test="${not empty problems.problemBeanVOList}">
+
+						<c:forEach var="problems" items="${problemList}">
+							<div class="problemShowDiv">
+								${problems.postDate}
+							<c:forEach var="problemData" items="${problems.problemBeanVOList}">
+								 <div class="problemDetails">
+								<p class="problemTitle"><a href="completeProblemDetailsAction.action?problemId=${problemData.problemId}">${problemData.problem}</a></p>
+								<p class="problemDescription">${problemData.description}</p>
+								<p><span>Existing From: </span>${problemData.existingFrom}</p>
+							 </div>
+							</c:forEach>
+							</div>
+				 
+						</c:forEach>
+					</c:if>
+
+					<c:if test="${empty problems.problemBeanVOList}">
+
 					<c:forEach var="problems" items="${problemBeanVOList}">
 						<div class="problemShowDiv">
 						${problems.postDate}
@@ -214,7 +235,9 @@ padding:5px 20px;
 						</c:forEach>
 						</div>
 				 
-					</c:forEach>
+					  </c:forEach>
+					</c:if>
+
 				</div>
 			</div>
 			<div class="span4">
