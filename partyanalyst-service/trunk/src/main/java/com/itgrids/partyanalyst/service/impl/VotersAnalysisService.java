@@ -775,6 +775,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			for(Voter voter : list)
 			{
 				voterHouseInfoVO = new VoterHouseInfoVO();
+				voterHouseInfoVO.setVoterId(voter.getVoterId());
 				voterHouseInfoVO.setsNo(sno);
 				voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
 				voterHouseInfoVO.setGender(voter.getGender());
