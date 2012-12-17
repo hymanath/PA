@@ -361,7 +361,7 @@ locationDetails.constituencyArr.push(ob);
 	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
 
 		
-	Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList">
+	Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
 		
 	</div>
@@ -371,10 +371,10 @@ locationDetails.constituencyArr.push(ob);
 		
 	<div id="panchayatDiv" class="selectDiv" style="display:none;">
 	Select Panchayat<font class="requiredFont">*</font> 	
-	<select id="panchayatField" class="selectWidth" name="state" onChange="buildVotersByLocPanchayatDataTable(this.id);" style="margin-left:39px;"></select></div>
+	<select id="panchayatField" class="selectWidth" name="state"  style="margin-left:39px;"></select></div>
 	
 	<div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state" onChange="buildVotersByLocBoothDataTable(this.id);" style="margin-left:24px;"></select></div>
+	Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;"></select></div>
 
 	
 
