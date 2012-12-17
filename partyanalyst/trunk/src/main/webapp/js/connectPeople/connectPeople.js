@@ -1,5 +1,5 @@
-
-
+var jcrop_api;
+ 
 var connectedPeopleInfo = {
 							connectPeopleStatus:{
 													resultCode:'',													
@@ -730,15 +730,21 @@ function getAllRequestMessagesForUser(){
 function uploadUserPic()
 {
 	$("#uploadPic_window").dialog({
-		resizable:false,
-		width: 582,
-		minHeight:200,
+		resizable:true,
+		width: 600,
+		minHeight:400,
 		show:'slide',
-		modal:true
+		modal:true,
+		draggable:true,
+		close:true,
+		open: function(event) {
+	  $('div.ui-dialog-titlebar').css('height', '1em');
+     $('.ui-dialog-buttonpane').find('button:contains("Upload")').addClass('cancelButtonClass1');
+    }
 	});
 	
 	
-	$(".ui-dialog-titlebar").hide();
+	//$(".ui-dialog-titlebar").hide();
 
 	var elmt = document.getElementById("uploadPic_window_inner");
 	if(!elmt)
@@ -766,34 +772,45 @@ function uploadUserPic()
 	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
 	str += '	<td>Image should be .jpg or.png or .gif formats only.</td>';
 	str += '	</tr>';
-
+	
 	str += '	</table>';	
 	str += '</th>';
+
 	str += '<td rowspan="3">';
-	str += '	<div style="border:1px solid #ADADAD;"><img width="90" height="100" id="Imgpreview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '	<div style="width:100px;height:100px;overflow:hidden;"><img width="90" height="100" id="Imgpreview" class="jcrop-preview" src="images/icons/indexPage/human.jpg"></div>';
 	str += '</td>';
 	str += '</tr>';
-
+     
+	 
 	str += '<tr>';
 	str += '<td>';
 	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;"/>';
 	str += '</td>';
 	str += '</tr>';
 	
+	 str += ' <input type="hidden" size="4" value=""  id="xcoardinate"  name="xcoardinate"   value="0" />'; 
+     str += ' <input type="hidden" size="4"  value="" id="ycoardinate"  name="ycoardinate"   value="0" />';  
+     str += ' <input type="hidden" size="4" value=""  id="width"        name="width" />';  
+     str += ' <input type="hidden" size="4"  value="" id="height"       name="height" />'; 
+	 
 	str += '</table>';	
 	str += '</form>';
 	str += '</div>';
 	str += '<div id="uploadPic_window_footer" class="yui-skin-sam">';
+	
+
+	 
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
-	str += '<td width="40%" valign="top"><input type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<td width="40%" valign="top"><input type="submit" value="button" id="uploadPicButton"/>';
 	str += '<input type="button" value="Cancel" id="cancelPicButton"/>';	
 	str += '</td>';
 	str += '</tr>';
 	str += '</table>';	
+	
 	str += '</div>';
-
+    str += '<div style="width:300px;height:300px; id="Imgpreview2"><img width="300" height="300" id="Imgpreview1"  src=""></div>';
 	elmt.innerHTML = str;
 
 	oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
@@ -961,7 +978,8 @@ function showresults(results){
 }
 
 function previewImg()
-{
+{   
+    var photoElmt=null;
 	var photoElmt = document.getElementById("photoUploadElmt");
 	var photoStatusElmt = document.getElementById("uploadPic_window_status");
 	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
@@ -1003,8 +1021,14 @@ function previewImg()
 
 }
 function handleReaderLoadEnd(evt) {
+ 
   var img = document.getElementById("Imgpreview");
-  img.src = evt.target.result;
+  var img1 = document.getElementById("Imgpreview1");
+//  img.src = evt.target.result;
+    createCropImage(img,img1,evt);
+    // img1.src = evt.target.result;
+  evt=null;
+  
 }
 function getUploadpic()
 {
@@ -2127,6 +2151,84 @@ function closewindow()
 {
 	$("#username_change_window").dialog("destroy");
 }
+// image crop files
+function createCropImage(imgpreview,imgtarget,event)
+{     
+      //alert(event.target.result); 
+	  
+   var a=document.getElementById("Imgpreview").src = event.target.result;
 
+   if(jcrop_api){
+   
+   	
+	
+	
+    jcrop_api.destroy();
+	 $('#Imgpreview1').removeAttr('style'); 
+	document.getElementById("Imgpreview1").src = event.target.result;
+  
+  
+
+}
+else{
+ document.getElementById("Imgpreview1").src = event.target.result;
+  $('#xcoardinate').val("0");
+  $('#ycoardinate').val("0");
+   $('#width').val("300");
+   $('#height').val("300");
+   
+}
+    
+    // document.getElementById("Imgpreview1").src = event.target.result;
+      // Create variables (in this scope) to hold the API and image size
+      var  boundx, boundy;
+      
+      $('#Imgpreview1').Jcrop({
+        onChange: updatePreview,
+        onSelect: updatePreview,
+		minSize:[100,100],
+        aspectRatio: 1
+      },function(){
+        // Use the API to get the real image size
+        
+		var bounds = this.getBounds();
+        boundx = bounds[0];
+        boundy = bounds[1];
+        // Store the API in the jcrop_api variable
+        jcrop_api = this;
+		jcrop_api.animateTo([100,100,200,300]);
+		 
+		
+      });
+
+      function updatePreview(c)
+      {
+  
+	 
+        if (parseInt(c.w) > 0)
+        {
+			   $('#xcoardinate').val( Math.round(c.x));
+      $('#ycoardinate').val( Math.round(c.y));
+      
+      $('#width').val( Math.round(c.w));
+      $('#height').val( Math.round(c.h));
+          var rx = 100 / c.w;
+          var ry = 100 / c.h;
+
+          $('#Imgpreview').css({
+            width: Math.round(rx * boundx) + 'px',
+            height: Math.round(ry * boundy) + 'px',
+            marginLeft: '-' + Math.round(rx * c.x) + 'px',
+            marginTop: '-' + Math.round(ry * c.y) + 'px'
+          });
+        }
+      };
+	 
+}
+
+
+    
+
+ 
 
 	
