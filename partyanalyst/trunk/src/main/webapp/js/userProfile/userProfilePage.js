@@ -971,7 +971,7 @@ function getFriendsListForUser(results)
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 
@@ -1000,9 +1000,9 @@ function showAllRequestMessagesForUser(results,jsObj){
 		templateClone.find('.constituencyName').html(''+results.friendRequest[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.friendRequest[i].district+'');
 		templateClone.find('.stateName').html(''+results.friendRequest[i].state+'');
-		templateClone.find('.sendMsg').html('<a class="btn-mini btn" onclick="acceptRequest('+results.friendRequest[i].id+')" class="acceptButton">Accept</a>');
-		templateClone.find('.connectCls').html('<a class="btn-mini btn" onclick="rejectRequest('+results.friendRequest[i].id+')" class="rejectButton">Decline</a>');
-		templateClone.find('.blockPersonBtn').html('<a class="btn-mini btn" onclick="blockRequest('+results.friendRequest[i].id+')" class="rejectButton">Block this person</a>').css("display","block");
+		templateClone.find('.sendMsg').html('<a onclick="acceptRequest('+results.friendRequest[i].id+')" class="acceptButton btn btn-mini" rel="tooltip" title="Confirm"><i class="icon-thumbs-up opacityFilter-50"></i></a>');
+		templateClone.find('.connectCls').html('<a onclick="rejectRequest('+results.friendRequest[i].id+')" class="rejectButton btn btn-mini" rel="tooltip" title="Reject" ><i class="icon-thumbs-down opacityFilter-50"></i></a>');
+		templateClone.find('.blockPersonBtn').html('<a onclick="blockRequest('+results.friendRequest[i].id+')" class="rejectButton btn btn-mini" rel="tooltip" title="Block This Person"><i class="icon-ban-circle opacityFilter-50"></i></a>').css("display","block");
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 }
@@ -1341,8 +1341,8 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
 				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
-				templateClone.find('.connectCls').html('Pending');
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')">Send a Message</a>');
+				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
 			
 			templateClone.appendTo(".placeholderCenterDiv");
 			
@@ -1444,7 +1444,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
 				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
 			templateClone.appendTo(".placeholderCenterDiv");
 			
 			
@@ -1484,10 +1484,12 @@ function showAllPostedProblems(jsObj,results)
 	  	}
 	for(var i in problemsData)
 	{
+		var imageStr = "pictures/profiles/"+problemsData[i].userImageURL;
 		var template = $('.problemTemplateDiv');
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
 		templateClone.find('.problemReportedDate').html(''+problemsData[i].identifiedDate+'');
+		templateClone.find('.problemImg').html('<img height="30" width="30" src='+imageStr+'></img>');
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
 		templateClone.find('.problemFromDate').html('<span style="color:seagreen;">Existing From: </span>'+problemsData[i].existingFrom+'');
