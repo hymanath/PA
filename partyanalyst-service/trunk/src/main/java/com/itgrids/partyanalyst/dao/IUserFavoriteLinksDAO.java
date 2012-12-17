@@ -1,9 +1,15 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.UserFavoriteLinks;
 
 public interface IUserFavoriteLinksDAO extends GenericDao<UserFavoriteLinks, Long>{
+	
+	public List<UserFavoriteLinks> getUserFavouriteLinksAction(Long userId);
+	
+	public int deleteUserFavouritelinkById(Long linkId);
 
 }

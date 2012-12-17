@@ -13,7 +13,37 @@ public class UserSettingsVO {
 	private String selectedOptionName;
 	
 	
+	private String favouriteLinkTitle;
+	private String favouriteLink;
+	private Long userFavoriteLinksId;
+	private String favouriteLinkType;
+	
+	
 
+	public String getFavouriteLinkType() {
+		return favouriteLinkType;
+	}
+	public void setFavouriteLinkType(String favouriteLinkType) {
+		this.favouriteLinkType = favouriteLinkType;
+	}
+	public Long getUserFavoriteLinksId() {
+		return userFavoriteLinksId;
+	}
+	public void setUserFavoriteLinksId(Long userFavoriteLinksId) {
+		this.userFavoriteLinksId = userFavoriteLinksId;
+	}
+	public String getFavouriteLinkTitle() {
+		return favouriteLinkTitle;
+	}
+	public void setFavouriteLinkTitle(String favouriteLinkTitle) {
+		this.favouriteLinkTitle = favouriteLinkTitle;
+	}
+	public String getFavouriteLink() {
+		return favouriteLink;
+	}
+	public void setFavouriteLink(String favouriteLink) {
+		this.favouriteLink = favouriteLink;
+	}
 	public String getSelectedOptionName() {
 		return selectedOptionName;
 	}

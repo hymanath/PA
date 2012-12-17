@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.model.Role;
 import com.itgrids.partyanalyst.model.SettingsOption;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserConnectedto;
+import com.itgrids.partyanalyst.model.UserFavoriteLinks;
 import com.itgrids.partyanalyst.model.UserPrivacySettings;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.model.UserReferralEmails;
@@ -109,6 +110,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserDAO userDAO;
 	private IUserProblemDAO userProblemDAO;
 	private IProblemManagementService problemManagementService;
+	
+	private IUserFavoriteLinksDAO userFavoriteLinksDAO;
 	
 	
 	private ISettingsOptionDAO settingsOptionDAO;
@@ -355,6 +358,16 @@ public class AnanymousUserService implements IAnanymousUserService {
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
+	
+
+	public IUserFavoriteLinksDAO getUserFavoriteLinksDAO() {
+		return userFavoriteLinksDAO;
+	}
+
+	public void setUserFavoriteLinksDAO(IUserFavoriteLinksDAO userFavoriteLinksDAO) {
+		this.userFavoriteLinksDAO = userFavoriteLinksDAO;
+	}
+
 
 public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
 		
@@ -2714,6 +2727,75 @@ public String updateUserSettingsDetailsAction(Long selectedOptionId , Long userI
 	}
 	
 	return IConstants.SUCCESS;	
+	
+}
+
+
+public List<UserSettingsVO> getUserFavouriteLinksAction(Long userId){
+	
+	
+    if(log.isDebugEnabled())
+    	log.debug("Entered into getUserFavouriteLinksAction service method");
+	
+	List<UserSettingsVO> userFavoriteLinks = null;
+	
+	
+	try{
+	
+	
+		List<UserFavoriteLinks>  userFavoriteLinksList = userFavoriteLinksDAO.getUserFavouriteLinksAction(userId);
+	
+	  if(userFavoriteLinksList != null && userFavoriteLinksList.size() >0)
+		userFavoriteLinks = new ArrayList<UserSettingsVO>();
+	
+		for(UserFavoriteLinks userFavoriteLink:userFavoriteLinksList){
+			
+			UserSettingsVO userSettingsVO = new UserSettingsVO();
+			
+			userSettingsVO.setUserFavoriteLinksId(userFavoriteLink.getUserFavoriteLinksId());
+			userSettingsVO.setFavouriteLink(userFavoriteLink.getUrl());
+			userSettingsVO.setFavouriteLinkTitle(userFavoriteLink.getPageTitle());	
+			userSettingsVO.setFavouriteLinkType(userFavoriteLink.getFavoriteLinkPage().getPage());
+			
+			userFavoriteLinks.add(userSettingsVO);
+		}
+	
+	}catch(Exception e){
+		
+		
+		log.debug("Exception raised in getUserFavouriteLinksAction service method");
+		e.printStackTrace();
+		
+	}
+	
+	return userFavoriteLinks;
+	
+	
+}
+
+
+public String removeFavouriteLink(Long linkId){	
+	
+	if(log.isDebugEnabled())
+		log.debug("Exception raised in removeFavouriteLink service method");	
+	
+	try{
+	
+	int count = userFavoriteLinksDAO.deleteUserFavouritelinkById(linkId);
+	
+	
+		if(count >0)	
+		    return IConstants.SUCCESS;
+		else 
+			return null;
+	
+	}catch(Exception e){
+		
+		log.error("Exception raised in removeFavouriteLink service method");
+		e.printStackTrace();
+		return null;
+		
+	}
 	
 }
 
