@@ -978,7 +978,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 		
-@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public List getCandidatesInfoForTheGivenConstituency(String constituencyId,String electionYear,String electionType) {
 		Object[] params = {electionYear,electionType,electionYear,electionType};
 		return getHibernateTemplate().find("select model.candidate.candidateId," +//0
@@ -998,11 +998,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		" model.constituencyElection.constituencyElectionResult.totalVotesPolled," +//14
 		" model.constituencyElection.constituencyElectionResult.votingPercentage," +//15
 		" model.constituencyElection.reservationZone" +//16
-		" from Nomination model where model.constituencyElection.constituency.constituencyId in (" + constituencyId +
+		" from Nomination model where model.constituencyElection.constituency.constituencyId in ( " + constituencyId +
 		" ) and model.constituencyElection.election.electionYear = ? " +
 		" and model.constituencyElection.election.electionDate = (select max(model1.constituencyElection.election.electionDate) " +
-		" from Nomination model1 where model1.constituencyElection.constituency.constituencyId in (" + constituencyId +
-		" ) and model.constituencyElection.election.electionYear = ? and model1.constituencyElection.constituency.electionScope.electionType.electionType = ? ) " +
+		" from Nomination model1 where model1.constituencyElection.constituency.constituencyId in ( " + constituencyId +
+		" ) and model1.constituencyElection.constituency.electionScope.electionType.electionType = ?  and model1.constituencyElection.election.electionYear = ? ) " +
 		" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? order by model.candidateResult.rank",params);
 		}
 	
