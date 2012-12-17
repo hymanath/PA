@@ -399,3 +399,7 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 #profileUserName h5{ word-wrap: break-word;text-align:center;padding-top:4px;}
 .messageCls{word-wrap: break-word;}
 
+.unreadfont{font-weight:bold;}
+#accountStngs a{text-decoration:none;}
+#accountStngs{margin-left:auto;margin-right:auto;width:180px;}
+#accountStngs li{margin:5px;}
