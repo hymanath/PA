@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.itgrids.partyanalyst.utils.DateUtilService;
+
 
 @Entity
 @Table(name = "file_paths")
@@ -36,6 +39,27 @@ public class FilePaths extends BaseModel implements Serializable {
 	private FileType fileType;
 	private Long orderNo;
 	
+	 //set presentdate date
+	private Date lastUpdatedDate=new DateUtilService().getCurrentDateAndTime();
+	
+
+	private String haveThumnails="true";
+	
+		
+	@Column(name = "is_have_thumnails", length = 10)
+	public String getHaveThumnails() {
+		return haveThumnails;
+	}
+	public void setHaveThumnails(String haveThumnails) {
+		this.haveThumnails = haveThumnails;
+	}
+	@Column(name = "latest_updated_date", length = 10)
+	public Date getLastUpdatedDate() {
+		return lastUpdatedDate;
+	}
+	public void setLastUpdatedDate(Date lastUpdatedDate) {
+		this.lastUpdatedDate = lastUpdatedDate;
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "file_paths_id", unique = true, nullable = false)
