@@ -106,41 +106,14 @@ $("document").ready(function(){
 
 	$('.assessPoliticianLink').live("click",function(){
 		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
-		
-		getAllPostedReasonsForUser();
-		var jsObj ={
-				task:"getAllPostedReasons_paginator"
-			 };
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getAllPostedReasonsAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
-
-	custom_paginator.paginator({
-		startIndex:0,
-		resultsCount:8,
-		jsObj:jsObj,
-		ajaxCallURL:url,
-		paginatorElmt:"custom_paginator_class",
-		callBackFunction:function(){
-			showAllPostedReasons_paginator(jsObj,results);
-		}
-	});
-	custom_paginator.initialize();
-	
-
-	});
-
-
-	$('.assessPoliticianLink1').live("click",function(){
-		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
 		var linkType = "assessPoliticianLink";
 		startIndex = 0;
 		getAllPostedReasonsForUser();
 		var jsObj ={
-				startIndex : startIndex,
-				maxIndex   : 10,
-				type       : type,
-				linkType   : linkType,
+				startIndex   : startIndex,
+				maxIndex     : 10,
+				type         : type,
+				linkType     : linkType,
 				task:"getAllPostedReasons"
 			 };
 
@@ -149,16 +122,16 @@ $("document").ready(function(){
 	callAjax1(jsObj,url);
 	});
 
-$('.PoliticalReaViewMoreLink').live("click",function(){
+	$('.PoliticalReaViewMoreLink').live("click",function(){
 		var type = $(this).closest('div').find('.politicalReasonViewMoreTypeVar').val();
 		var linkType = "PoliticalReaViewMoreLink";
-		startIndex = 0;
 		getAllPostedReasonsForUser();
+		startIndex = startIndex+10;
 		var jsObj ={
-				startIndex : startIndex,
-				maxIndex   : 10,
-				type       : type,
-				linkType   : linkType,
+				startIndex     : startIndex,
+				maxIndex       : 10,
+				type           : type,
+				linkType       : linkType,
 				task:"getAllPostedReasons"
 			 };
 
@@ -1378,7 +1351,7 @@ function showAllPostedProblems(jsObj,results)
 			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
+	var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 }
 
@@ -1448,50 +1421,14 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 //politial Reasons 
 
 
-function showAllPostedReasons_paginator(jsObj,results)
-{
-	$(".placeholderCenterDiv").children().remove();
-	clearAllSubscriptionDivs();
-
-	var data = results.candidateComments;
-
-	if(data == null)
-	{
-		$(".templateDivMsg").html('<div>No comments.</div>').appendTo(".placeholderCenterDiv");;
-			return;
-	}
-	for(var i in data)
-	{
-		var status;
-		var template = $('.politicalReasonsTemplate');
-		var templateClone = template.clone();
-		templateClone.removeClass('politicalReasonsTemplate');
-		
-		if(data[i].rank == 1)
-			status = "winning";
-		else
-			status = "losing";
-
-		templateClone.find('.headingCls').html('Political Reason for'+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
-		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
-		templateClone.find('.politicalDescCls').html('Description: '+data[i].commentDesc+'');
-		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
-		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
-		templateClone.appendTo('.placeholderCenterDiv');
-	}
-	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
-	pagination.appendTo('.placeholderCenterDiv');
-
-}
-
 function showAllPostedReasonsForUserProfile(jsObj,results)
 {
-	$(".placeholderCenterDiv").children().remove();
+	
 	clearAllSubscriptionDivs();
 
 	var data = results.candidateComments;
-
-	if(data == null && jsObj.linkType == "assessPoliticianLink1")
+	$('.viewMoreDiv').html('');
+	if(data == null && jsObj.linkType == "assessPoliticianLink")
 	{
 		$(".templateDivMsg").html('<div>No comments.</div>').appendTo(".placeholderCenterDiv");;
 			return;
@@ -1501,6 +1438,9 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		$(".viewMoreDiv").css("display","none");
 			return;
 	}
+	if(jsObj.linkType == "assessPoliticianLink"){
+		$(".placeholderCenterDiv").children().remove();
+	  	}
 
 	for(var i in data)
 	{
@@ -1521,7 +1461,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
+	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 
 }
