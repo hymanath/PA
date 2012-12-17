@@ -1792,7 +1792,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					comment.setRank((Long)params[5]);
 					comment.setElectionType(params[6].toString());
 					comment.setElectionYear(params[7].toString());		
-					
+					comment.setUserId((Long)params[8]);
+					comment.setImgURL((params[9]!=null && params[9].toString().length() > 0 )? params[9].toString() : "human.jpg");
 					//comment.setCommentCategory(commentDataCategoryDAO.get(commentData.getCommentDataCategory().getCommentDataCategoryId()).getCommentDataCategoryType());
 					comment.setCommentCategory(commentData.getCommentDataCategory().getCommentDataCategoryType());
 					
