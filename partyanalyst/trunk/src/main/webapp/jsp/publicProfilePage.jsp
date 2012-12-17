@@ -200,7 +200,10 @@ padding:5px 20px;
 					<span class="fontStyle"><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></span>&nbsp;&nbsp;&nbsp;
 					<span class="fontStyle"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
 				</div>
-
+				
+				<div id="headerDiv" class="whitegloss"></div>
+				<div class="placeholderCenterDiv"></div>
+				
 				<div id="problemsDiv">
 					
 					
@@ -245,17 +248,26 @@ padding:5px 20px;
 			<h2>
 				<span><i class="icon-fire" id="icon_leftsec"></i></span>
 					Friends 
-					<!-- <span style="font-size: 11px;margin-left: 120px;text-transform: none;cursor:pointer;" class="friendsLink">See All</span>-->
+					<span style="font-size: 11px;margin-left: 120px;text-transform: none;cursor:pointer;" class="friendsInPP">See All</span>
 					</h2>
 					<div>
 					<ul>
-				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
+				<c:forEach var="friendsDetails" items="${registrationVOList}" >
 
 					<li class="imgLi">
-						<a href="publicProfile.action?profileId=${friendsDetails.registrationID}"><img width="70px" height="70px" src="pictures/profiles/${friendsDetails.userProfilePic}" class="friendsImgs"/></a>
+						<a href="publicProfile.action?profileId=${friendsDetails.registrationID}"></a>
+						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
+									<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
+									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
+								</c:if>
+						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
+								<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
+						</c:if>
+						
 						<span>${friendsDetails.firstName} ${friendsDetails.lastName}</span>
 					</li>
 				</c:forEach>
+			
 				</ul>
 				</div>
 			</div>
@@ -304,11 +316,28 @@ padding:5px 20px;
 	</div>
 
 	</div>
+	
   </div>
 	
-
+<div class="TemplateCollection">
+	<div class="templateDiv templateholder templatePersons">
+			
+			<div class="imgClass span3 thumbnail"></div>
+			<div class="prinfo span9">
+				<h6 class="connectedPersonName"></h6>
+				<span class="messageCls" style="display:none"></span>
+				<span class="constituencyName"></span>
+				<span class="districtName"></span>
+				<span class="stateName"></span>
+				<div class="icon-groups">
+				<span class="sendMsg"></span>
+				<span class="connectCls"></span>
+				<span class="blockPersonBtn" style="display:none;"></span>
+				</div>
+			</div>
+	</div>
+</div>
 <script>
-
 
 var profileId = '${profileId}';
 
@@ -338,6 +367,19 @@ userType = '${UserType}';
 			constituencies.push(obj);
 		</c:forEach>
 		buildPolls();
+		
+		
+	
+				<c:forEach var="friendsDtls" items="${registrationVOList}" >
+
+					var obj1 =	{
+							id:'${friendsDtls.registrationId}',
+							profilePic:'${friendsDtls.userProfilePic}',
+							firstName:'${friendsDtls.firstName}',
+							lastName:'${friendsDtls.lastName}',
+						};
+						friendsInPP.push(obj1);
+				</c:forEach>
 </script>
 </body>
 </html>
