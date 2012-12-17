@@ -15,6 +15,11 @@ $("document").ready(function(){
 		callAjax1(jsObj,url);
 		
 	});
+	
+	$('.friendsInPP').click(function(){
+		//getFriendsForUser();
+		
+	});
 
 	$("#requestLink").click(function(){
 		var jsObj ={
@@ -1753,3 +1758,52 @@ function buildResult(voteStatus,result){
 
 }
 <!--OPINION POLL SCRIPTS END-->
+
+
+
+var friendsInPP = {
+					id:'',
+					profilePic:'',
+					firstName:'',
+					lastName:''
+					};
+					
+function getFriendsForUser(){
+console.log(friendsInPP);
+
+
+
+
+	/*$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	if(results.resultStatusForConnectedPeople.resultCode != "0")
+	{
+		$(".templateDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
+			return;
+	}
+	else if(results.connectedPeople == "")
+	{
+		$(".templateDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
+			return;
+	}
+	
+	
+	
+	$("#headerDiv").html('You have total <span style="color:blue;">'+results.connectedPeople.length+'</span>  connections.');
+	
+	for(var i in results.connectedPeople)
+	{
+		
+		var template = $(".templateDiv");
+		var templateClone =  template.clone();
+		templateClone.removeClass("templateDiv");
+		templateClone.find('.connectedPersonName').html(''+results.connectedPeople[i].candidateName+'');
+		templateClone.find('.imgClass').html('<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
+		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
+		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
+		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
+		templateClone.appendTo(".placeholderCenterDiv");
+	}*/
+}
+
