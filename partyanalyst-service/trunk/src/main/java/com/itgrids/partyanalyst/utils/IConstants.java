@@ -539,10 +539,27 @@ public interface IConstants {
 	
 	public static final String CADRE_REGISTERED_BY_USER = "RegisteredByUser";
 	
+	public static final String VIDEO  = "video";
+	
 	public static final String WORKING_STATUS_WORKING = "Working";
 	public static final String WORKING_STATUS_COMPLETED = "Completed";
 	
 	public static final Long TWITTER_ID = 1l;
 	
 	public static final Long FACEBOOK_ID = 2l;
+	
+	//constants for thumbnails
+	public static final String SMALL  = "Small";
+	public static final String MEDIUM  = "Medium";
+	public static final String LARGE  = "Large";
+	
+	public static final int SMALL_WIDTH   = 120;
+	public static final int SMALL_HEIGHT  = 90;
+	public static final int MEDIUM_WIDTH  = 150;
+	public static final int MEDIUM_HEIGHT = 110;
+	public static final int LARGE_WIDTH   = 320;
+	public static final int LARGE_HEIGHT  = 240;
+	
+	
+	
 }
