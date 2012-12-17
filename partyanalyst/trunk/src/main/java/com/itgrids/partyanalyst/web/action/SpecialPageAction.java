@@ -1,7 +1,13 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +17,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
@@ -21,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
+import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,10 +46,12 @@ public class SpecialPageAction extends ActionSupport implements
 	private List<SpecialPageVO> specialPageList;
 	private JSONObject jObj;
 	private String task = null;
+	private String task1 = null;
 	private Long specialPageId;
 	private List<String> descriptions;
 	private SpecialPageVO specialPageVO;
 	private List<FileVO> fileVOList;
+	private List<String> pathVOList;
 	private ISpecialPageService specialPageService;
 	private List<CustomPageVO> customPages;
 	private MetaInfoVO metaInfoVO;
@@ -48,9 +59,33 @@ public class SpecialPageAction extends ActionSupport implements
 	private String isAdmin;
 	private Boolean isSubscribed;
 	private ICandidateDetailsService candidateDetailsService;
+	private String delVideo;
 	
 	
-	
+	public String getDelVideo() {
+		return delVideo;
+	}
+
+	public void setDelVideo(String delVideo) {
+		this.delVideo = delVideo;
+	}
+
+	public List<String> getPathVOList() {
+		return pathVOList;
+	}
+
+	public void setPathVOList(List<String> pathVOList) {
+		this.pathVOList = pathVOList;
+	}
+
+	public String getTask1() {
+		return task1;
+	}
+
+	public void setTask1(String task1) {
+		this.task1 = task1;
+	}
+
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
 	}
@@ -270,4 +305,97 @@ public class SpecialPageAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
+       public String getVideosForRemove(){
+		
+	// specialPageService.getExpiredVideosList();
+		
+		return Action.SUCCESS;
+	}
+       
+       public String ajaxCallHandlerForRemoveYoutubeVideo(){
+   		 System.out.println("insideajaxcall");
+   		try {
+   			jObj = new JSONObject(getTask());
+   			        
+   		       String stDate=jObj.getString("fromDate").trim();
+   		       String edDate=jObj.getString("endDate").trim();
+   		    Date startDate=null;;
+   		 Date endDate=null;
+   		       if(stDate !=null && edDate!=null)
+   		       {
+   		         startDate= getDate(stDate);
+   		        endDate=   getDate(edDate);
+   			//	fileVOList = specialPageService.getNewsGalleryBasedOnSpecialPageId(jObj.getLong("specialPageId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),jObj.getString("queryType"));
+   			
+   		   //  pathVOList=	specialPageService.getExpiredVideosList(startDate, endDate);
+   	            
+   		        Map<String,List<?>> result=specialPageService.getYoutubeVideosList(startDate, endDate);
+   		   if(result !=null){
+   		        
+   	    pathVOList=(List<String>)result.get("filepaths");
+   	    List<Long> preLanguageIds =( List<Long> ) result.get("languageIdsNotChecked");
+   	  
+   	 if( ( pathVOList ==null || pathVOList.size()<1) &&  preLanguageIds!= null)
+   		specialPageService.updateLastUpdateDateInFilePaths(preLanguageIds);
+   	   
+   	   session=request.getSession();
+   		  if(session!=null);  
+   		     session.setAttribute("languageIdsToUpdate",(List<Long>) result.get("languageIdsNotChecked"));
+   		}
+   		   }
+   		}catch (ParseException e) {
+   			e.printStackTrace();
+   		}
+   		
+       
+   		
+   		return Action.SUCCESS;
+   		
+   	}
+       public String ajaxCallHandlerForDeleteYoutubeVideo(){
+      		List<String> filePaths =new ArrayList<String>();
+      		int[] results;
+      		try {
+      			jObj = new JSONObject(getTask1());
+      			        
+      		 JSONArray    jArray =jObj.getJSONArray("filePaths");
+      		    
+      		           
+      		for (int i = 0; i < jArray.length(); i++) 
+			{
+      			filePaths.add((String)jArray.get(i));        	
+								
+			}     
+      		    			if(filePaths.size()>0)
+      		    	
+      		    				if(session != null)
+      		    				  results =	specialPageService.deleteExpiredVideosList(filePaths,(List<Long>)session.getAttribute("languageIdsToUpdate"));
+      	         	        		      			
+      		    			
+      		} catch (ParseException e) {
+      			e.printStackTrace();
+      		}
+      
+      		return Action.SUCCESS;
+      		
+      	}
+       public Date getDate(String dateStr){
+    	 /* Date date=null;
+    		try{
+    		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+    		date = (Date)formatter.parse(dateStr);
+    		
+    		}catch(Exception e){
+    			e.printStackTrace();
+    			}    		
+    		return date;*/
+    	   
+    	
+    			  String[] dateArray =  dateStr.split("-");
+    			  Calendar cal = Calendar.getInstance(); 
+    			  cal.set(Integer.parseInt(dateArray[0]),Integer.parseInt(dateArray[1])-1, Integer.parseInt(dateArray[2]));
+    			  return cal.getTime();
+    		  
+    	   }
+       
 }
