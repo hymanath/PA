@@ -3769,11 +3769,6 @@
 			</result>
 		</action>
 		
-		<action name="getAllPostedReasonsAction" class="userProfileAction" method="getAllPostedReasonsDataForProfilePage">
-			<result type="json" name="success">
-				<param name="root">userComments</param>				
-			</result>		
-		</action>
 		
 		<action name="publicProfile" class="publicProfileAction">
 			<result name="success">/jsp/publicProfilePage.jsp</result>
@@ -3910,7 +3905,7 @@
 			</result>		
 		</action>
 		
-		<action name="getPostedReasonsUserProfileAction" class="userProfileAction" method="getAllPostedReasonsDataForProfilePage">
+		<action name="getPostedReasonsUserProfileAction" class="userProfileAction" method="getPostedReasonsDataForProfilePage">
 			<result type="json" name="success">
 				<param name="root">userComments</param>				
 			</result>		
