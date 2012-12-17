@@ -188,6 +188,7 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="partyDetailsService" ref="partyDetailsService" />
 		<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
+	     <property name="thumbnailService" ref="thumbnailService"></property>
 	</bean>
 	<!--  <bean id="candidateProfileAction" class="com.itgrids.partyanalyst.web.action.CandidateProfileAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
@@ -636,6 +637,7 @@
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">			
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 		<property name="problemManagementReportService" ref="problemManagementReportService" />	
+		<property name="thumbnailService" ref="thumbnailService"></property>
 		
 	</bean>
 	
@@ -707,7 +709,8 @@
 	<bean id="connectPeopleAction" class="com.itgrids.partyanalyst.web.action.ConnectPeopleAction" singleton="false">
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="staticDataService" ref="staticDataService" />		
-		<property name="mailService" ref="mailService" />	
+		<property name="mailService" ref="mailService" />
+		<property name="thumbnailService" ref="thumbnailService"></property>	
 	</bean>
 	
 	<bean id="createLocalGroupAction" class="com.itgrids.partyanalyst.web.action.CreateLocalGroupAction" singleton="false">
