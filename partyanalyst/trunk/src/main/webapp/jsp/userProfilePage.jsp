@@ -43,8 +43,23 @@
 .ajaxImg{display:none;}
 .opacityFilter-50{filter: alpha(opacity=65);
 	opacity: 0.65;}
-	.viewMoreDiv{margin-top: 12px;}
-	.ajaxImg{margin-left: 35px;}
+
+	
+.favouriteLinkDivClass{
+border:1px solid #c3c3c3;
+border-radius:2px;
+height:50px;
+}
+.favouriteLinksHeading{
+margin-bottom:10px;
+margin-top:9px;
+}
+.removeLinkButton{
+
+float:right;
+margin:8px 9px 0px 0px;
+}
+
 </style>
 </head>
 <body>
@@ -91,7 +106,6 @@
 				
 								
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
-					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
 					<li class="active"><a href="javascript:{}" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
 					<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
@@ -123,8 +137,8 @@
 					<li ><a href="javascript:{}" class="subscriptionsLink"><i class="icon-list"></i><i class="icon-chevron-right"></i> Subscriptions</a></li>
 					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
-					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
-					
+					<li><a href="javascript:{}" id="specialPageLink"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favorite Links</a></li>
+					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
 					</ul>
 				</div>
 				
@@ -135,6 +149,7 @@
 		<!--------Center div------>
 			<div class="span6 centerSpan6">
 				<div class="widget green" id="MyProfileActions">
+				<div id="fLinks"></div>
 				<div id="headerDiv" class="whitegloss"></div>
 						<div class="placeholderCenterDiv"></div>
 						
@@ -145,6 +160,16 @@
 							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+						</div>
+						<div class="FavoriteLinksDiv">
+							<div>
+								<div class="favouriteLinksHeading constituencyDivheading"></div>
+								<div class="constituencyDiv"></div>
+							</div>
+							<div>
+								<div class="favouriteLinksHeading stateDivheading" ></div>
+						        <div class="stateDiv"></div>
+							</div>
 						</div>
 				</div>
 
@@ -261,7 +286,7 @@
 						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" class="btn-info btn-small pull-right" title="${specialPages.title}">View Now</a>
 					</div>
 						</c:forEach>
-						<a id="specialPageLink" href="javascript:{}" class="btn btn-primary" >View More Special Pages</a>						
+						<a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>						
 				</div>
 				<!-- end special Pages -->
 				
@@ -298,19 +323,16 @@
 <div class="TemplateCollection">
 
 	<div class="templateDiv templateholder templatePersons">
-			
-			<div class="imgClass span3 thumbnail"></div>
-			<div class="prinfo span9">
-				<h6 class="connectedPersonName"></h6>
+			<span class="connectedPersonName" style="color:#3B5998;"></span>
+			<div class="imgClass"></div>
+			<div class="prinfo">
 				<span class="messageCls" style="display:none"></span>
 				<span class="constituencyName"></span>
 				<span class="districtName"></span>
 				<span class="stateName"></span>
-				<div class="icon-groups">
 				<span class="sendMsg"></span>
-				<span class="connectCls"></span>
+				<span class="connectCls"> </span>
 				<span class="blockPersonBtn" style="display:none;"></span>
-				</div>
 			</div>
 	</div>
 	<div class="templateDivMsg templateholder templateMessage" >
@@ -379,7 +401,24 @@
 		</div>
 	</div>
 
+
+<div class="favouriteLinkConstituencyClass favouriteLinkDivClass" >
+	<span class="imageClass"></span>
+	<span class="titleClass"></span>
+	<span class="removeClass"></span>
+
 </div>
+
+<div class="favouriteLinkStateClass favouriteLinkDivClass" >
+	<span class="imageClass"></span>
+	<span class="titleClass"></span>
+	<span class="removeClass"></span>
+
+</div>
+
+</div>
+
+
 <!-- Templated END -->
 
 	
@@ -424,9 +463,10 @@ userType = '${UserType}';
 		
 		});
 		
-		$('body').tooltip({
-    selector: '[rel=tooltip]'
-});
+		$("a").tooltip({
+                  'selector': '',
+                  'placement': 'top'
+                });
 	
 	});	
 	
@@ -462,6 +502,7 @@ $('#userSettingsDialog').html('');
 
 	str+='<div style="width:285px;">';
 
+	str+='<p class="well" style="margin-left:-18px;">Select "private view" to hide your profile from public.<br>Select "public view" to make your profile visible to public.<br>Select "friends view" to make your profile visible  only to your friends.</p>';
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
