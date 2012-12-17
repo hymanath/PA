@@ -219,16 +219,23 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model,model.constituency.district.districtId, ");
 		query.append(" model.constituency.district.districtName, model.constituency.state.stateId,model.constituency.state.stateName ");
 		query.append(" from User model where ");
-		query.append(" model.userId != :userId and model.userId not in (:otherUsers) and ");
+		query.append(" model.userId != :userId and ");
 		
-		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-			query.append("model.state.stateId in (:locationIds)");
-		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-			query.append("model.district.districtId in (:locationIds)");
-		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-			query.append("model.constituency.constituencyId in (:locationIds)");
-		}	
-		query.append(" and model.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
+		if(otherUsers != null && otherUsers.size() > 0)
+			query.append(" model.userId not in (:otherUsers) and ");
+		
+		if(locationIds != null && locationIds.size() > 0)
+		{
+			if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+				query.append("model.state.stateId in (:locationIds)");
+			}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+				query.append("model.district.districtId in (:locationIds)");
+			}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+				query.append("model.constituency.constituencyId in (:locationIds)");
+			}
+			query.append(" and ");
+		}
+		query.append(" model.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
 		
 		if(nameString != null && nameString.trim().length() >0)
 		 query.append("and model.firstName like '"+nameString+"%' ");
@@ -236,7 +243,10 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setParameter("userId",userId);
-		queryObject.setParameterList("otherUsers",otherUsers);
+		
+		if(otherUsers != null && otherUsers.size() > 0)
+			queryObject.setParameterList("otherUsers",otherUsers);
+		
 		queryObject.setParameter("role", IConstants.FREE_USER);
 		if(startIndex!=null)
 			queryObject.setFirstResult(startIndex.intValue());
