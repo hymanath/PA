@@ -457,6 +457,7 @@ $('#userSettingsDialog').html('');
 
 	str+='<div style="width:285px;">';
 
+	str+='<p class="well" style="margin-left:-18px;">Select "private view" to hide your profile from public.<br>Select "public view" to make your profile visible to public.<br>Select "friends view" to make your profile visible  only to your friends.</p>';
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
