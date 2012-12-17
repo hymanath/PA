@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.web.action;
 
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -19,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.RequestUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.imgscalr.Scalr;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -36,6 +39,7 @@ import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IThumbnailService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -87,9 +91,61 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
     private String loginUserProfilePic;
     private String pwdVal;
     private IMailService mailService;
-    
-    
-    public IMailService getMailService() {
+    private String xcoardinate;
+    private String ycoardinate;
+    private String width;
+    private String height;
+    private InputStream inputErrorStream;
+    private  IThumbnailService thumbnailService;
+	
+   	public IThumbnailService getThumbnailService() {
+   		return thumbnailService;
+   	}
+
+   	public void setThumbnailService(IThumbnailService thumbnailService) {
+   		this.thumbnailService = thumbnailService;
+   	}
+    public String getXcoardinate() {
+		return xcoardinate;
+	}
+
+
+	public void setXcoardinate(String xcoardinate) {
+		this.xcoardinate = xcoardinate;
+	}
+
+
+	public String getYcoardinate() {
+		return ycoardinate;
+	}
+
+
+	public void setYcoardinate(String ycoardinate) {
+		this.ycoardinate = ycoardinate;
+	}
+
+
+	public String getWidth() {
+		return width;
+	}
+
+
+	public void setWidth(String width) {
+		this.width = width;
+	}
+
+
+	public String getHeight() {
+		return height;
+	}
+
+
+	public void setHeight(String height) {
+		this.height = height;
+	}
+
+
+	public IMailService getMailService() {
 		return mailService;
 	}
 
@@ -852,36 +908,53 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	
 	public String uploadUserPic()
 	{
+		requestParam();
+		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		String sPath = (String)session.getAttribute("imagePath");
 		
 		 String filePath = "";
-		 
+		
 		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-		
-		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE)){
+		 
+		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
-		 }else{
+		 else
 			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";	
-		 }
-		
-		
+		 
 		BufferedImage image = null;
         try {
             
             image = ImageIO.read(this.upload);
+           int t=   image.getType();
+           int IMG_WIDTH =Integer.parseInt(width);
+           int IMG_HEIGHT =Integer.parseInt(height);
+           int x =Integer.parseInt(xcoardinate);
+           int y =Integer.parseInt(ycoardinate);
+               
+         /*  BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT,t);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(image, x, y, IMG_WIDTH, IMG_HEIGHT, null);
+                g.dispose();
+*/
+
+ 
+
+          image=   Scalr.resize(image, Scalr.Method.ULTRA_QUALITY,Scalr.Mode.FIT_EXACT, 300, 300);	 
+          BufferedImage resizedImage =Scalr.crop(image, x, y, IMG_WIDTH, IMG_HEIGHT);
+ 
+                
+            
             String constiName[] = uploadContentType.split("/");
             //String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
-           
             if(constiName[1].equalsIgnoreCase("jpeg") || !(constiName[1].equalsIgnoreCase("jpeg")))
             	constiName[1]="jpeg";
-               
+          
             String fileName = filePath+user.getRegistrationID()+"."+constiName[1];
             //String fileName = filePath+this.uploadFileName;
-            String   imageName =  user.getRegistrationID()+"."+constiName[1];
-        
+            String imageName =  user.getRegistrationID()+"."+constiName[1] ;
             uploadStatus = ananymousUserService.saveUserProfileImageName(user.getRegistrationID(), imageName);
                         
             if(uploadStatus.getResultCode() > 0)
@@ -893,15 +966,19 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
     	
     	                log.info("Image Name :" + image);
     	                log.info("File :" + filName);
-    	                ImageIO.write(image, constiName[1],filName);
+    	                ImageIO.write(resizedImage, constiName[1],filName);
     	                filName.close();
     	                
     	                photoUploadStatus = "true";
     	            	inputStream = new StringBufferInputStream("File Uploaded successfully");
-                	
+    	            	String status=thumbnailService.crateThumnaiForProfiles(fileName,IWebConstants.STATIC_CONTENT_FOLDER_URL);
+    	            	 if(status.equalsIgnoreCase("sucess"))
+    	            		 inputStream = new StringBufferInputStream(" File Uploaded successfully As Thumb"); 
+    	            	 else
+    	            		 inputStream = new StringBufferInputStream(" File Uploaded successfully  Xthumb"); 
 
     			} catch (Exception e) {
-    			
+    				inputStream = new StringBufferInputStream("File not uploaded due to failed saving file in machine but database is sucess");
     				log.error(e);
     			}
             	/*ImageIO.write(image, constiName[1],new File(fileName));
@@ -918,12 +995,15 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
            request.setAttribute("uploadStatus", photoUploadStatus);
  
         } catch (IOException e) {
+			inputStream = new StringBufferInputStream("File not uploaded due to converting resize  file  ");
+
         	e.printStackTrace();
         }		
 		
 		return Action.SUCCESS;
 	}
 	
+
 	public String candidateUploadUserPic()
 	{
 		session = request.getSession();
@@ -1047,5 +1127,14 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 log.info("Path for invitation link :" + path);
 
 		return path;
+	}
+	public void requestParam()
+	{
+		
+		Enumeration e= request.getParameterNames();
+		while(e.hasMoreElements())
+		{
+			System.out.println((String)e.nextElement());
+		}
 	}
 }
