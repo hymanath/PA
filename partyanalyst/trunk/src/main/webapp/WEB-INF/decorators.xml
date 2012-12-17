@@ -69,7 +69,7 @@
 		<pattern>/editAnnouncementPageAction*</pattern>
 		<pattern>/getImageInfoAction*</pattern>
 		<pattern>/panchayatWiseElectionResultsAction*</pattern>
-		<pattern>/createNewEvent.action*</pattern>
+	    <pattern>/createNewEvent.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -81,7 +81,7 @@
     </decorator>
 
     <decorator name="new" page="newlayout.jsp">
-    	<pattern>/homePage*</pattern>
+        <pattern>/homePage*</pattern>
         <pattern>/candidateElectionResultsAction*</pattern>
 		<pattern>/freeUserRegistration*</pattern>
 		<pattern>/loginAction*</pattern>
@@ -140,11 +140,14 @@
 		<pattern>/cadreManagementAction*</pattern>
 		<pattern>/cadreReportAction*</pattern>
 		<pattern>/completeProblemDetailsSearchAction*</pattern>
-		<pattern>/partyStrengthAction*</pattern>
+		 <pattern>/partyStrengthAction*</pattern>
 		<pattern>/crossVotingReportInputAction*</pattern>
 		<pattern>/biElectionAction*</pattern>
 		<pattern>/mandalPageElectionInfoAction*</pattern>
 		<pattern>/specialPageInfoAction*</pattern>
+		<pattern>/removeVideosAction*</pattern>
+		<pattern>/createThumbNailsAction*</pattern>
+		
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
