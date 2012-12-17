@@ -545,7 +545,7 @@ var pollStatus = [];
 					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
 			        </s:if>
-		            <img src='<s:property value="pathOfFile"/>' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+		            <img src='Thumbs/Small/<s:property value="pathOfFile"/>' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
 				  </td>		
 			      <td>
 			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
@@ -584,7 +584,7 @@ var pollStatus = [];
 				  <s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
 
 				  <c:if test="${newsGallaryDetails.displayImagePath != null}">
-				  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+				  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="Thumbs/Small/${newsGallaryDetails.displayImagePath}"/></a>
 				  </c:if>
 
 				  <c:if test="${newsGallaryDetails.displayImagePath == null}">
@@ -599,7 +599,7 @@ var pollStatus = [];
 				 <s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 
                  <c:if test="${newsGallaryDetails.displayImagePath != null}">
-				 <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+				 <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="Thumbs/Small/${newsGallaryDetails.displayImagePath}"/></a>
 				 </c:if>
 
 				 <c:if test="${newsGallaryDetails.displayImagePath == null}">
@@ -612,7 +612,7 @@ var pollStatus = [];
 				<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
 
                  <c:if test="${newsGallaryDetails.displayImagePath != null}">
-				 <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="${newsGallaryDetails.displayImagePath}"/></a>
+				 <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img width="95px" height="80px;" src="Thumbs/Small/${newsGallaryDetails.displayImagePath}"/></a>
 				 </c:if>
 
 				 <c:if test="${newsGallaryDetails.displayImagePath == null}">
