@@ -81,6 +81,35 @@ public class DateUtilService {
 			return null;
 		}
 	}
-	
+	public Date getDayBeforeYesterDayDate()
+	{
+		try{
+			Date updatedDate = new Date();
+			Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+			geCal.setTimeInMillis(updatedDate.getTime());
+
+			Calendar calendar = Calendar.getInstance();
+			
+			calendar.set(Calendar.YEAR, geCal.get(Calendar.YEAR));
+			calendar.set(Calendar.MONTH, geCal.get(Calendar.MONTH));
+			calendar.set(Calendar.DAY_OF_MONTH, geCal.get(Calendar.DAY_OF_MONTH));
+	            	calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.MINUTE, geCal.get(Calendar.MINUTE));
+			calendar.set(Calendar.SECOND, geCal.get(Calendar.SECOND));
+			calendar.set(Calendar.MILLISECOND, geCal.get(Calendar.MILLISECOND));
+			calendar.add(Calendar.DATE, -2);
+			
+			return calendar.getTime();
+		}catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " +
+			" check for log details");
+			return null;
+		}
+	}
+	public static void main(String[] args) {
+		
+	System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
+	System.out.println( new  DateUtilService().getCurrentDateAndTime());
+	}
 
 }
