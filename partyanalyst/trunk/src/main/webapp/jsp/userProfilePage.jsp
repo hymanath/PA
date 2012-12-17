@@ -298,16 +298,19 @@
 <div class="TemplateCollection">
 
 	<div class="templateDiv templateholder templatePersons">
-			<span class="connectedPersonName" style="color:#3B5998;"></span>
-			<div class="imgClass"></div>
-			<div class="prinfo">
+			
+			<div class="imgClass span3 thumbnail"></div>
+			<div class="prinfo span9">
+				<h6 class="connectedPersonName"></h6>
 				<span class="messageCls" style="display:none"></span>
 				<span class="constituencyName"></span>
 				<span class="districtName"></span>
 				<span class="stateName"></span>
+				<div class="icon-groups">
 				<span class="sendMsg"></span>
-				<span class="connectCls"> </span>
+				<span class="connectCls"></span>
 				<span class="blockPersonBtn" style="display:none;"></span>
+				</div>
 			</div>
 	</div>
 	<div class="templateDivMsg templateholder templateMessage" >
@@ -421,10 +424,9 @@ userType = '${UserType}';
 		
 		});
 		
-		$("a").tooltip({
-                  'selector': '',
-                  'placement': 'top'
-                });
+		$('body').tooltip({
+    selector: '[rel=tooltip]'
+});
 	
 	});	
 	
@@ -460,7 +462,6 @@ $('#userSettingsDialog').html('');
 
 	str+='<div style="width:285px;">';
 
-	str+='<p class="well" style="margin-left:-18px;">Select "private view" to hide your profile from public.<br>Select "public view" to make your profile visible to public.<br>Select "friends view" to make your profile visible  only to your friends.</p>';
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
