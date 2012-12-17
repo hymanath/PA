@@ -63,8 +63,11 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Set<PartyElectionResultsWithGenderAnalysis> partyElectionResultsWithGenderAnalysis = new HashSet<PartyElectionResultsWithGenderAnalysis>(0);
 	private String isPartial;
 	private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
+	private Date electionDate;
 
 	// Constructors
+
+	
 
 	/** default constructor */
 	public Election() {
@@ -138,7 +141,15 @@ public class Election extends BaseModel implements java.io.Serializable {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	@Temporal(TemporalType.DATE)
+	@Column(name="election_date",length = 25)
+	public Date getElectionDate() {
+		return electionDate;
+	}
 
+	public void setElectionDate(Date electionDate) {
+		this.electionDate = electionDate;
+	}
 	@Column(name = "end_date", length = 25)
 	public String getEndDate() {
 		return this.endDate;
