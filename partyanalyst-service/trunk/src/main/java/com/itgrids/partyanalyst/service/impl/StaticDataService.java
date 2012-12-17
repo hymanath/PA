@@ -1180,7 +1180,7 @@ public class StaticDataService implements IStaticDataService {
 					List candidates = nominationDAO.findCandidateNamePartyByConstituencyAndElectionDate(result.getKey().toString(), latestElecYearInConsti);
 				
 					//for (int i = 0; i < candidates.size(); i++) {
-					if(candidates != null)
+					if(candidates != null && candidates.size()> 0)
 					{
 						ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
 						Object[] obj = (Object[]) candidates.get(0);
