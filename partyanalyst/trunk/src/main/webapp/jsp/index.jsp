@@ -69,7 +69,12 @@
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+<!-- jquery for imagecrop --->
+<script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
+<link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
+ 
 
+ <!-- -->
 <!-- JQuery files (End) -->
 
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
