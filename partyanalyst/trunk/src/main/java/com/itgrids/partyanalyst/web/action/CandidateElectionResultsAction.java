@@ -43,6 +43,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.service.IThumbnailService;
+import com.itgrids.partyanalyst.service.impl.ThumbnailService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -128,6 +130,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private File imageForDisplay;
 	private String imageForDisplayContentType;
 	private String imageForDisplayFileName;
+    private  IThumbnailService thumbnailService;
+	
+	public IThumbnailService getThumbnailService() {
+		return thumbnailService;
+	}
+
+	public void setThumbnailService(IThumbnailService thumbnailService) {
+		this.thumbnailService = thumbnailService;
+	}
 	
 	public String getStatus() {
 		return status;
@@ -1074,6 +1085,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	@SuppressWarnings("deprecation")
 	public String uploadFiles()
 	{
+		
+		System.out.println(context.getRealPath("/"));
+		
+		
 		log.debug("Enter into uploadFiles() Method");
 		session = request.getSession();
 
@@ -1248,12 +1263,22 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 				/*File fileToCreate = new File(filePath, fileName);
 				FileUtils.copyFile(userImage, fileToCreate);*/
-			
+			                         
+				List<String> filepaths= new ArrayList<String>(fileVO.getFilePath());
 				
+				 if(fileVO.getFileVOForDiaplyImage()!=null && fileVO.getFileVOForDiaplyImage().getDisplayImagePath()!= null && !fileVO.getFileVOForDiaplyImage().getDisplayImagePath().equalsIgnoreCase(""))
+				 {
+				  filepaths.add(fileVO.getFileVOForDiaplyImage().getDisplayImagePath());  
+				
+				 }      
 			result = candidateDetailsService.uploadAFile(fileVO);
 			
-			if(result.getResultCode() == ResultCodeMapper.SUCCESS)
+			if(result.getResultCode() == ResultCodeMapper.SUCCESS){
+				log.debug("fileuploades is sucess Method");
 				inputStream = new StringBufferInputStream(SUCCESS);
+			//logic to create tumbnails and resizing images
+			   thumbnailService.crateThumnailDynamically(filepaths,IWebConstants.STATIC_CONTENT_FOLDER_URL,0,0);
+			}
 			else
 				inputStream = new StringBufferInputStream("fail");
 						
@@ -1427,6 +1452,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String ajaxHandlerForThumbnails()
+	{
+		int[] ids= new int[]{1,2,5,10,11,24,25,35};
+	
+		  
+		status=thumbnailService.crateThumnailForAdmin(ids,IWebConstants.STATIC_CONTENT_FOLDER_URL);
+		
+		
+	
+		
 		return Action.SUCCESS;
 	}
 
