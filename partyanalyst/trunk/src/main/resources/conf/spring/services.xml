@@ -345,7 +345,7 @@
 		<property name="userPartyRelationDAO" ref="userPartyRelationDAO"/>
 		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"/>
 		<property name="commentDAO" ref="commentDAO"/>
-		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO"/>
+	    <property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO"/>
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO"/>
 	</bean>
 	
@@ -665,8 +665,9 @@
     	<property name="stateDAO" ref="stateDAO" />
     	<property name="tehsilDAO" ref="tehsilDAO" />
     	<property name="constituencyDAO" ref="constituencyDAO" />
-    	<property name="userDAO" ref="userDAO" />
-    	<property name="candidateDetailsService" ref="candidateDetailsService"/>	
+    	<property name="userDAO" ref="userDAO" />	
+	     <property name="candidateDetailsService" ref="candidateDetailsService"/>	
+	
 	</bean>
 	
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
@@ -1086,6 +1087,8 @@
 		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
 		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO" />
 		<property name="userDAO" ref="userDAO"/>
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		 
 	</bean>
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
@@ -1228,7 +1231,7 @@
 		
 	</bean>
 	
-	<bean name="socialService" class="com.itgrids.partyanalyst.social.service.impl.SocialService">
+		<bean name="socialService" class="com.itgrids.partyanalyst.social.service.impl.SocialService">
 		<property name="partySocialDAO" ref="partySocialDAO" />
 		<property name="candidateSocialDAO" ref="candidateSocialDAO" />
 		<property name="candidateDAO" ref="candidateDAO"/>
@@ -1265,7 +1268,7 @@
 	  <property name="resourceLoaderPath"><value>/emailTemplates</value></property>
     </bean>
     <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
-    	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="panchayatDAO" ref="panchayatDAO" />
@@ -1274,6 +1277,10 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
+			<property name="filePathsDAO" ref="filePathsDAO"/>
+
 	</bean>
 </beans>		
 	
