@@ -19,7 +19,7 @@
 <!--<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>-->
 
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
-<!--<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>-->
+<!-- <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script> -->
 <script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
 <!--<script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 -->
@@ -1920,7 +1920,7 @@ function buildCandidatePhotoGallary(results)
 			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			if(results[i].path!=null)
 			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'"/></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="Thumbs/Medium/'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'"/></a></td></tr>';
             }
 			else
 			{
@@ -1975,7 +1975,7 @@ function showPhotosInAGallary(results){
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="Thumbs/Medium/'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
@@ -2014,7 +2014,7 @@ function showPhotosInInitialGallary(results){
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery"  id="photoClickId'+i+''+k+'"  href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery"  id="photoClickId'+i+''+k+'"  href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="Thumbs/Medium/'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
@@ -2835,20 +2835,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img class="imageClass" alt="'+results[0].title+'" title="'+results[0].gallaryDescription+'" src="'+results[0].path+'"  onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
+	   str+='<li><img class="imageClass" alt="'+results[0].title+'" title="'+results[0].gallaryDescription+'" src="Thumbs/Medium/'+results[0].path+'"  onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img class="imageClass" alt="'+results[1].title+'" title="'+results[1].gallaryDescription+'" src="'+results[1].path+'"  onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
+	  str+='<li><img class="imageClass" alt="'+results[1].title+'" title="'+results[1].gallaryDescription+'" src="Thumbs/Medium/'+results[1].path+'"  onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img class="imageClass" alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="'+results[2].path+'"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li><img class="imageClass" alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="Thumbs/Medium/'+results[2].path+'"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -2857,7 +2857,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li><img class="imageClass" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="'+results[i].path+'"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li><img class="imageClass" alt="Thumbs/Medium/'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="Thumbs/Medium/'+results[i].path+'"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].title+'</li>';
 	   }
 	  }
@@ -3858,7 +3858,7 @@ function buildContentDetails()
 			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
 			
 			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
-				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
+				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="Thumbs/Small/'+result.otherGalleries[i].filesList[0].path+'"></img>';
 				
 			else if(result.contentType == 'Video Gallary')
 				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
