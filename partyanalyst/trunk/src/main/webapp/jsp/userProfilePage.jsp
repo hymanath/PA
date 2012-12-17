@@ -60,6 +60,8 @@ float:right;
 margin:8px 9px 0px 0px;
 }
 
+
+	.politicalReasAddLink{margin-left: 200px; margin-right: 26px; margin-bottom: 10px;}
 </style>
 </head>
 <body>
@@ -431,6 +433,9 @@ districtId = '${dataTransferVO.districtId}';
 districtName = '${dataTransferVO.districtName}';
 constituencyId = '${dataTransferVO.constituencyId}';
 constituencyName = '${dataTransferVO.constituencyName}';
+parliamentConstId =	'${dataTransferVO.parliamentConstId}';
+parliamentConstName = '${dataTransferVO.parliamentConstName}';
+
 var loginUserId = '${loginUserId}';
 
 loginUserName = '${loginUserName}';	
