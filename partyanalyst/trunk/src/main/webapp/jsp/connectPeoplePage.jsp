@@ -79,6 +79,16 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/ConnectStyle.css">
+
+<!-- jquery for imagecrop --->
+<script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
+<link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
+ 
+
+ <!-- -->
+
+
+
 <!-- JQuery files (End) -->
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
