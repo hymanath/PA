@@ -206,4 +206,6 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public List<ProblemBeanVO> getProblemDetailsForProfilePage(int startIndex,int maxIndex);
 	
+	public List<ProblemBeanVO> getProblemDetailsByProfileId(Long profileId,int startIndex,int maxIndex);
+	
 }
