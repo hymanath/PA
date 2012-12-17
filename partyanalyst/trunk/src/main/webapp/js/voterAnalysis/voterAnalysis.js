@@ -63,7 +63,7 @@ var votersByLocBoothColumnDefs = [
 {key:"relativeFirstName", label: "GuardName", sortable:true},
 {key:"relationshipType", label: "Relationship", sortable:true},
 {key:"cast", label: "Cast", sortable:true},
-{key:"castCatagery", label: "CastCategory", sortable:true}
+{key:"castCatagery", label: "Caste Category", sortable:true}
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -211,6 +211,7 @@ function showImportantFamiliesDiv()
 		$("#votersId").css({"background":"none repeat scroll 0 0 #F61D50"});
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		 getvotersBasicInfo("voters","");
+		 getVotersData();
 	}
 
 	function showAgeDiv()
@@ -1702,7 +1703,8 @@ function getVoterDetailsForPanchayat(){
 }
 
 function getVoterDetailsForBooth(){
-	$("#votersByLocationTabContentDiv_body").html("");
+	//$("#votersByLocationTabContentDiv_body").html("");
+
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
 	var boothId = $('#pollingStationField').val();
