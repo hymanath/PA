@@ -89,6 +89,7 @@
 				
 								
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
+					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
 					<li class="active"><a href="javascript:{}" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
 					<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
@@ -120,8 +121,8 @@
 					<li ><a href="javascript:{}" class="subscriptionsLink"><i class="icon-list"></i><i class="icon-chevron-right"></i> Subscriptions</a></li>
 					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
-					<li><a href="javascript:{}" id="specialPageLink"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favorite Links</a></li>
-					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
+					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
+					
 					</ul>
 				</div>
 				
@@ -258,7 +259,7 @@
 						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" class="btn-info btn-small pull-right" title="${specialPages.title}">View Now</a>
 					</div>
 						</c:forEach>
-						<a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>						
+						<a id="specialPageLink" href="javascript:{}" class="btn btn-primary" >View More Special Pages</a>						
 				</div>
 				<!-- end special Pages -->
 				
