@@ -58,7 +58,7 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 	private ProblemBeanVO problemDetailsVO;
 	private SubscriptionsMainVO subscriptionsMainVO;
 	private String profileUserName;
-	private List<ProblemBeanVO> problemBeanVOList;
+	private List<ProblemBeanVO> problemBeanVOList,problemList;
 	private IProblemManagementService problemManagementService;
 	private List<RegistrationVO> registrationVOList;
 	
@@ -289,6 +289,14 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 		this.registrationVOList = registrationVOList;
 	}
 
+	public List<ProblemBeanVO> getProblemList() {
+		return problemList;
+	}
+
+	public void setProblemList(List<ProblemBeanVO> problemList) {
+		this.problemList = problemList;
+	}
+
 	public String execute()
 	{
 		
@@ -320,6 +328,9 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 			profileUserName = specialPageService.getProfileUserName(profileId); 
 				
 			registrationVOList = ananymousUserService.getFriendsListForUserProfile(profileId);
+			
+			problemList = problemManagementService.getProblemDetailsByProfileId(profileId,0,10);
+			
 			
 		return Action.SUCCESS;
 	}
