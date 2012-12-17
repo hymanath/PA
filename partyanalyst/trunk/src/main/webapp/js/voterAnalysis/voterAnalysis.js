@@ -1525,6 +1525,8 @@ chart.draw(data, options);
 
 function getVoterDetailsForConstituency(){
 
+	$("#votersBasicInfoSubDiv").html("");
+	$("#votersByLocationTabContentDiv_body").html("");
 	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
 	var name = $('#constituencyList option:selected').text() +' Constituency';
@@ -1565,7 +1567,8 @@ function getVoterDetailsForConstituency(){
 }
 
 function getVoterDetailsForMandal(){
-
+	$("#votersBasicInfoSubDiv").html("");
+	$("#votersBasicInfoSubChartDiv").html("");
 	var mandalId = $('#mandalField').val();
 	var name = $('#mandalField option:selected').text();
 	var publicationId = $('#publicationDateList').val();
@@ -1621,6 +1624,9 @@ function getVoterDetailsForMandal(){
 }
 
 function getVoterDetailsForPanchayat(){
+	$("#votersBasicInfoSubDiv").html("");
+	$("#votersBasicInfoSubChartDiv").html("");
+
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
 	var panchayatId = $('#panchayatField').val();
@@ -1680,7 +1686,7 @@ function getVoterDetailsForPanchayat(){
 }
 
 function getVoterDetailsForBooth(){
-
+	$("#votersByLocationTabContentDiv_body").html("");
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
 	var boothId = $('#pollingStationField').val();
