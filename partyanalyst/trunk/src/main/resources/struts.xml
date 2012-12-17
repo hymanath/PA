@@ -60,12 +60,12 @@
 		</action>
 		
 		<action name="newhomePage" class="homePageAction">
-			<result>/jsp/newhomePage.jsp</result>
+		    <result>/jsp/newhomePage.jsp</result>
 		</action>
-		
+	
 		<action name="loginInputAction" class="loginInputAction">
-			<result name="success">/jsp/loginForm.jsp</result>
-			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
+		<result name="success">/jsp/loginForm.jsp</result>
+		<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 		</action>
 		
 		<action name="newAnnouncementAction" class="announcementPageAction">
@@ -618,7 +618,7 @@
             </result>
         </action>
         
-        <action name="getOptsForBoothResultsReportAction" class="partyBoothResult1Action"  method="getAllOptions">
+            <action name="getOptsForBoothResultsReportAction" class="partyBoothResult1Action"  method="getAllOptions">
             <result type="json" name="success">
             	<param name="root">options</param>
             </result>
@@ -1941,7 +1941,7 @@
 		<action name="uploadPicAction" class="connectPeopleAction" method="uploadUserPic">			
 			<result name="success" type="stream">			   
 			    <param name="inputName">inputStream</param>
-			</result>						
+			</result>								
 		</action>
 		
 		<action name="connectToUserAction" class="connectPeopleAction" method="connectToUser">
@@ -3617,7 +3617,7 @@
 			   <param name="root">problemManagementChartVO</param>
 			</result>		
 		</action>
-		<action name="createNewEvent" class="createEventAction" method="createUpdateEvent">
+				<action name="createNewEvent" class="createEventAction" method="createUpdateEvent">
 			<result  name="success">/jsp/createNewEvent.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
@@ -3911,5 +3911,34 @@
 			</result>		
 		</action>
 		
-		</package>
+		 <action name="removeVideosAction" class="adminPageAction" method="checkAdmin" >
+			<result name="error">/jsp/selectRemovingVideos.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=adminUpload</result>
+			<result name="success">/jsp/selectRemovingVideos.jsp</result>
+		</action>
+		<!-- <action name="removeVideosAction">  class="specialPageAction" method="checkAdmin">
+			<result>/jsp/selectremovingvideos.jsp</result>
+		</action> -->
+		<action name="removeVideosAction1" class="specialPageAction" method="ajaxCallHandlerForRemoveYoutubeVideo" >
+			<result type="json" name="success">
+			   <param name="root">pathVOList</param>
+			</result>	
+		</action>
+		<action name="deleteVideosAction" class="specialPageAction" method="ajaxCallHandlerForDeleteYoutubeVideo" >
+			<result type="json" name="success">
+			   <param name="root">delVideo</param>
+			</result>	
+		</action>
+		<action name="createThumbNailsAction" class="adminPageAction" method="checkAdmin" >
+			<result name="error">/jsp/ThumnailsProcessing.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=adminUpload</result>
+			<result name="success">/jsp/ThumnailsProcessing.jsp</result>
+		</action>
+			
+		<action name="processThumbNailsAction" class="candidateElectionResultsAction" method="ajaxHandlerForThumbnails">			
+			<result name="success" type="json">			   
+			    <param name="root">status</param>
+			</result>
+			</action>
+	</package>
 </struts>      
