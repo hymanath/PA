@@ -16,6 +16,8 @@ public class VoterHouseInfoVO {
 	private String gaurdian;
 	private String relationship;
 	private String castCategory;
+	private Long voterId;
+	
 	
 	public VoterHouseInfoVO(){
 		
@@ -141,6 +143,15 @@ public class VoterHouseInfoVO {
 	public void setCastCategory(String castCategory) {
 		this.castCategory = castCategory;
 	}
+	
+	public Long getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+
 	
 	
 }
