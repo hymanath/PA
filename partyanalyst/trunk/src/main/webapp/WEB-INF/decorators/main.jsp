@@ -29,6 +29,7 @@
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<script type="text/javascript" src="js/loginpopup.js"> </script>
 
 <% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 %>
@@ -345,7 +346,8 @@ function openAddNewProblemWindow()
 									</c:if>	         		
 								</c:if>			
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action?url=${pageContext.request.servletPath}?&${pageContext.request.queryString}" >Login</a>  | 
+									<!--<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action?url=${pageContext.request.servletPath}?&${pageContext.request.queryString}" >Login</a> -->
+									<a href="javascript:{}" onClick="openDialogForLoginWindow()"> Login</a>| 
 									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />" >Register</a>
 								</c:if>		
 							</th>
@@ -358,7 +360,13 @@ function openAddNewProblemWindow()
 			</tr>
 		</table>		
 	</div>	
-	
+	<!-- For LoginPoppWindow
+   <a href="javascript:{}" onClick="openDialogForLoginWindow()"> new Login</a>-->
+   <div id="login_window">
+		<div id="login_window_inner"></div>
+   </div>
+   
+   <!-- End of LoginPoppWindow-->
 	<div id="indexNavContainer"  class="indexLayoutContainer yui-skin-sam">
 		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
