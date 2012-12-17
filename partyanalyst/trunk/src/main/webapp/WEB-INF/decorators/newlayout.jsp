@@ -56,7 +56,7 @@
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="js/statePage/statePage.js"> </script>
 <script type="text/javascript" src="js/cncSearch.js"> </script>
-
+<script type="text/javascript" src="js/loginpopup.js"> </script>
  <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>   
 <!-- JQuery files (Start) -->
 <script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
@@ -233,7 +233,8 @@ function buildAccordion()
 											|
 										</c:if>
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-										<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> 
+									<!--	<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> -->
+									<a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a>
 										<span>|</span>
 										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
 										
@@ -245,6 +246,13 @@ function buildAccordion()
 								<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        
 								<a href="logoutAction.action">Logout</a>
 								</c:if>	
+								<!-- For LoginPoppWindow-->
+   								
+   								<!--<a href="javascript:{}" onClick="openDialogForLoginWindow()"> new Login</a>-->
+  								<div id="login_window">
+									<div id="login_window_inner"></div>
+  								</div>
+   	 							<!-- End of LoginPoppWindow-->
 		</div>
         
         

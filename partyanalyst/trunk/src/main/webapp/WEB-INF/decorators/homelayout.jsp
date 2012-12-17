@@ -27,6 +27,7 @@
 
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
+	<script type="text/javascript" src="js/loginpopup.js"> </script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 	<script type="text/javascript" src="js/ddaccordion.js"></script>
@@ -162,8 +163,10 @@ margin:-1px 0px 0px 0px ;
 			</c:if>
 			
 			<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-				<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> 
+				<!--<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> -->
+				<a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a>
 				<span>|</span>
+				
 				<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
 			</c:if>
 									
@@ -174,6 +177,12 @@ margin:-1px 0px 0px 0px ;
 			<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        
 				<a href="logoutAction.action">Logout</a>
 			</c:if>	
+			<!-- For LoginPoppWindow-->
+  			<!-- <a href="javascript:{}" onClick="openDialogForLoginWindow()"> New Login</a>-->
+   			<div id="login_window">
+				<div id="login_window_inner"></div>
+   			</div>
+   			<!-- End of LoginPoppWindow-->
 		</div>
 <div id="menu">
     <ul class="menu">
