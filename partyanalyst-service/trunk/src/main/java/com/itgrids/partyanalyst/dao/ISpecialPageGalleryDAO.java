@@ -1,10 +1,12 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
 
@@ -28,4 +30,18 @@ public interface ISpecialPageGalleryDAO extends GenericDao<SpecialPageGallery, L
 	public List<Long> getGalleryCountBasedOnSpecialPageId(Long specialPageId, String contentType);
 	
 	public List<Object[]> getGalleriesBasedOnSpecialPageId(Long specialPageId,int firstRecord, int maxRecord, String contentType);
+	
+	        //dao calls for youtube videos
+	 public List<Object[]> getExpiredVideosList( Date from, Date to ,String contentType);
+	
+	 public List<Object> getFileSourceLanguageIds(List<String> filePaths);
+	 public List<Object> getFileIds(List<Object> languageIds);
+	 public int[] deleteYoutubeVideoRecords(List<String> filePaths ,List<Object> fileIds, List<Object> fileSourceLanguageIds, List<Long> languageIds);
+	
+	 public int   deleteRecordsFromFile(List<Object> fileIds);
+	 public int  deleteRecordsFromFileGallary(List<Object> fileIds);
+	 public int  deleteRecordsFromFileSourceLanguage(List<Object> fileSourceLanguageIds);
+	 public int  deleteRecordsFromFilePath(List<String> filePaths);
+	 public int  updateLastUpdateDateInFilePaths(List<Long> languageIds);
+
 }
