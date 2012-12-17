@@ -1,12 +1,23 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+
+import java.util.Arrays;
 
 public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements IFilePathsDAO {
 
@@ -55,5 +66,119 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		
 	}
 	
+/*	public List<Object> getFilePathsBasedOnFileTypeIds(List<Integer> fileTypeIds )
+	{
+		
+	
+		//return getHibernateTemplate().findByNamedParam("select model.filePath from FilePaths model where model.fileType.fileTypeId in (:fileTypeIds)", "fileTypeIds", fileTypeIds); 
+		
+       	
+	Query query = getSession().createQuery("select model.filePath from FilePaths model where model.fileType.fileTypeId in (:fileTypeIds) and model.haveThumnails=:haveThumnails ").setParameterList("fileTypeIds", fileTypeIds);
 
+//query.setParameter("specialPageId", specialPageId); and model4.updateddate <=:toDate and lastVerifiedDate < :today  
+	      query.setParameter("haveThumnails", "false");
+          query.setFirstResult(0);
+          query.setMaxResults(1000);
+
+   return query.list();
+	}*/
+	
+	/*public void insertThumbnailPath ( final Map<String,List<String>> dataToSave)
+	{  
+		Query query=null;
+		     if(dataToSave !=null){
+		Iterator <String> itr=dataToSave.keySet().iterator();
+		while(itr.hasNext()){
+			
+		String obj=(itr.next());
+		query= getSession().createQuery("update  FilePaths model set  model.thumb=:thumb,model.small=:small,model.medium=:medium where  model.filePath = :filePaths)");
+		
+		query.setParameter("thumb", dataToSave.get(obj).get(0) );
+		query.setParameter("small",  dataToSave.get(obj).get(1) );
+		query.setParameter("medium", dataToSave.get(obj).get(2));
+	}
+	}
+	}*/
+	@Override
+	public int  updateFilePathsThumbnails(List<String> dataToSave)
+	  {  
+		
+		
+		Query query=null;
+			
+		query= getSession().createQuery("update  FilePaths model set  model.haveThumnails=:haveThumnails where  model.filePath in(:filePath))");	   
+		query.setParameterList("filePath",dataToSave);
+		query.setParameter("haveThumnails", "true");
+	  return      query.executeUpdate();
+	      
+	
+	  }
+	public void  updateThumbFilePaths(Map<String,String> dataToSave)
+	  {  
+		
+		
+		Iterator <String> itr=dataToSave.keySet().iterator();
+		Query query=null;
+				while(itr.hasNext()){
+			
+			String obj=(itr.next());
+		query= getSession().createQuery("update  FilePaths model set  model.thumb=:thumb where  model.filePath = :filePath)");	   
+		query.setParameter("thumb", dataToSave.get(obj) );
+		query.setParameter("haveThumnails", "true");
+	        query.executeUpdate();
+	      
+	  }
+	
+	  }
+	public void  updateMediumFilePaths(Map<String,String> dataToSave)
+	  {  
+		
+		
+		Iterator <String> itr=dataToSave.keySet().iterator();
+		Query query=null;
+				while(itr.hasNext()){
+			
+			String obj=(itr.next());
+		query= getSession().createQuery("update  FilePaths model set  model.medium=:medium where  model.filePath = :filePath)");	   
+		query.setParameter("medium", dataToSave.get(obj) );
+		query.setParameter("haveThumnails", "true");
+	        query.executeUpdate();
+	      
+	  }
+	
+	  }
+
+	@Override
+	public List<Object> getFilePathsBasedOnFileTypeIds(List<?> fileTypeIds  )
+	{       /* String[] ids = {"1","2"};
+		
+		 List<?> contentType = Arrays.asList(ids);*/
+		List<Long> contentType = new ArrayList<Long>();
+		contentType.add(1l);
+		contentType.add(2l);
+		
+		Query query = getSession().createQuery("select  model.filePath from FilePaths model where " +
+				                                "  model.fileSourceLanguage.fileSourceLanguageId " +
+				                                " in (select model3.fileSourceLanguageId from FileSourceLanguage  model3 " +
+				                                " where model3.file.fileId " +
+				                                " in( select model5.file.fileId from  FileGallary model5 where  model5.gallary.gallaryId " +
+				                                " in( select model6.gallaryId from Gallary model6 where model6.contentType.contentTypeId in (:contentType) " +
+				                                " and model6.isDelete =:isDelete ))) " +
+				                               " and model.haveThumnails = :haveThumnails " );
+		
+		//query.setParameter("specialPageId", specialPageId); and model4.updateddate <=:toDate and lastVerifiedDate < :today  
+		// query.setParameterList("fileType", fileTypeIds);
+	     query.setParameterList("contentType", contentType);
+	     query.setParameter("isDelete", "false");
+	     query.setParameter("haveThumnails", "false");
+		 query.setFirstResult(0);
+		 query.setMaxResults(500);
+	
+		
+		  return query.list();
+		
+	}
+
+	
+	
 }
