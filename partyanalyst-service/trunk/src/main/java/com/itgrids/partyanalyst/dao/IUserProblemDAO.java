@@ -170,4 +170,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 
 	 public List getConnectedUsersProblemCount(List<Long> connectedUserIds);
 	 
+	 public List<Object[]> getProblemDetailsForPublicProfile(Long userId,int startIndex, int maxIndex);
+	 
 }

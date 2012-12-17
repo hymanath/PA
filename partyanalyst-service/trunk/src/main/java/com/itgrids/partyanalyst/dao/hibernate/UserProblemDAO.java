@@ -1111,5 +1111,22 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
    		return queryObj.list();
    		
    	}
+    
+    @SuppressWarnings("unchecked")
+	public List<Object[]> getProblemDetailsForPublicProfile(Long userId,int startIndex, int maxIndex)
+    {
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.problem.problemId, ");
+		query.append(" model.problem.title,model.problem.description,model.problem.identifiedOn,model.problem.existingFrom, ");
+		query.append(" model.problem.impactLevelValue,model.problem.regionScopes.regionScopesId,model.problem.regionScopes.scope, ");
+		query.append(" model.problem.isApproved,model.userProblemId,model.user.userId,model.user.profileImg from UserProblem model where (model.problem.isDelete = 'false' or model.problem.isDelete is null) and model.visibility.type = '"+IConstants.PUBLIC+"'");
+		query.append(" and model.user.userId = ? and model.problem.isApproved = 'true' ORDER BY model.updatedTime");	
+		
+    	Query queryObj = getSession().createQuery(query.toString());
+    	queryObj.setParameter(0, userId);
+    	queryObj.setFirstResult(startIndex);
+    	queryObj.setMaxResults(maxIndex);
+    	return queryObj.list();
+    }
   
 }
