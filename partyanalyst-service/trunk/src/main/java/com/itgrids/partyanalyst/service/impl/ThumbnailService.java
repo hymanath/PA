@@ -42,7 +42,7 @@ public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
 	this.filePathsDAO = filePathsDAO;
 }
 
-  @Override
+
 	public String  crateThumnailForAdmin(int[] ids1,String realContextPath)
 	
 	{ 
@@ -104,7 +104,7 @@ public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
 	      return flag;
 	}
 
-@Override	
+//@Override	
 public void  crateThumnailDynamically( List<String> filePaths, String realContextPath, int width ,int height   ) 
 	
 	{ 
@@ -205,7 +205,7 @@ log.debug("profiles thumnail creation");
    		}
 	
 	
-	@Override
+	//@Override
 	public  String  resizeImages(String path, String destinationSize, int width ,int height ,File f2,String realContextPath) 
 	
 	{
