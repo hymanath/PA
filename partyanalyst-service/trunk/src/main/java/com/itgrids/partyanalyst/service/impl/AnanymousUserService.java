@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IContentDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFavoriteLinkPageDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
@@ -58,8 +59,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.dto.UserSettingsVO;
 import com.itgrids.partyanalyst.model.CommentData;
-import com.itgrids.partyanalyst.model.Content;
 import com.itgrids.partyanalyst.model.CustomMessage;
+import com.itgrids.partyanalyst.model.FavoriteLinkPage;
 import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
 import com.itgrids.partyanalyst.model.Role;
@@ -113,11 +114,22 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IProblemManagementService problemManagementService;
 	
 	private IUserFavoriteLinksDAO userFavoriteLinksDAO;
+	private IFavoriteLinkPageDAO favoriteLinkPageDAO;
+	
 	
 	
 	private ISettingsOptionDAO settingsOptionDAO;
 	private IContentDAO contentDAO;	
 	private IUserPrivacySettingsDAO userPrivacySettingsDAO;
+	
+	public IFavoriteLinkPageDAO getFavoriteLinkPageDAO() {
+		return favoriteLinkPageDAO;
+	}
+
+	public void setFavoriteLinkPageDAO(IFavoriteLinkPageDAO favoriteLinkPageDAO) {
+		this.favoriteLinkPageDAO = favoriteLinkPageDAO;
+	}
+
 	
 	public ISettingsOptionDAO getSettingsOptionDAO() {
 		return settingsOptionDAO;
@@ -2799,6 +2811,59 @@ public String removeFavouriteLink(Long linkId){
 		
 	}
 	
+}
+
+/**
+ * This method will save the user favourite link details
+ * @param userId
+ * @param link
+ * @param pageTitle
+ */
+public String saveUserFavouriteLink(Long userId , String link,String pageTitle, String queryString , String environment){
+	
+	if(log.isDebugEnabled())
+		log.debug("Exception raised in saveUserFavouriteLink service method");
+	
+	
+	try{		
+		
+		List<FavoriteLinkPage> favouriteLinkList = favoriteLinkPageDAO.getFavoriteLinkByActionName(link);		
+		
+		if(favouriteLinkList != null && favouriteLinkList.size() >0){
+			
+			FavoriteLinkPage  favoriteLinkPage = favouriteLinkList.get(0);
+			
+			UserFavoriteLinks  userFavoriteLinks = new UserFavoriteLinks();
+			
+			userFavoriteLinks.setUser(userDAO.getUserByUserId(userId));
+			userFavoriteLinks.setFavoriteLinkPage(favoriteLinkPage);
+			
+			queryString = queryString.replaceAll(",", "&");
+			
+			queryString = queryString.substring(0, queryString.length() - 1);
+			
+			if(environment.equalsIgnoreCase("live"))
+				queryString = "http://partyanalyst.com/"+queryString;
+			else
+				queryString = "http://localhost:8080/"+queryString;
+			
+			userFavoriteLinks.setUrl(link+".action?"+queryString);
+			userFavoriteLinks.setPageTitle(pageTitle);
+			
+			userFavoriteLinksDAO.save(userFavoriteLinks);
+			
+			return IConstants.SUCCESS;
+			
+			
+		}
+		return null;
+		
+	}catch(Exception e){
+		log.error("Exception raised in saveUserFavouriteLink service method");
+		e.printStackTrace();
+		return null;
+		
+	}
 }
 
 }
