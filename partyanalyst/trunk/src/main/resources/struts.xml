@@ -3952,12 +3952,20 @@
 					<param name="root">status</param>				
 			</result>	
 		</action>
-		
 		<action name="loginPopUpsAction" class="loginAction" method="ajaxCallForLoginPopup">
 			<result type="json" name="success">
 				<param name="root">resultForAjax</param>				
 			</result>		
 		</action>
 		
+		
+		
+		<action name="saveUserFavouriteLink" class="userProfileAction"  method="saveUserFavouriteLink">
+		
+		<result type="json" name="success">
+					<param name="root">status</param>				
+			</result>	
+		
+		</action>
 	</package>
 </struts>      
