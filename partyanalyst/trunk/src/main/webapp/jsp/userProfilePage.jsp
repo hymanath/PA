@@ -13,6 +13,10 @@
 <script type="text/javascript" src="js/opinionpoll/opinionpoll.js"> </script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
+<script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
+<link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
+
+
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
@@ -396,6 +400,7 @@ margin:8px 9px 0px 0px;
 	<div class="politicalReasonsTemplate templateholder politicalReasonsDiv">
 		<div class="politicalReasonsInnerDiv">
 			<p class="headingCls"></p>
+			<span class="candidateImg"></span>
 			<div class="politicalReasons">
 				<p class="politicalReaCls"></p>
 				<p class="politicalDescCls"></p>
@@ -562,7 +567,7 @@ var jsObj=
 
 }
 
-/*function callAjaxForUserSettings(jsObj,url)
+function callAjaxForUserSettings(jsObj,url)
 {
 
 	 var myResults;
@@ -597,7 +602,7 @@ var jsObj=
 	 };
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}*/
+}
 
 function closeDialog(){
 
