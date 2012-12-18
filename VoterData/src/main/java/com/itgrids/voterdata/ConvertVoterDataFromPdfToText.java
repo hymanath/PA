@@ -67,9 +67,9 @@ public class ConvertVoterDataFromPdfToText {
     		for(VoterInfo info : votersInfoList)
     		{
     			String insertQuery = "INSERT INTO voter(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
-    				" constituency_name, booth_id, booth_name,sno) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
+    				" constituency_name, booth_id, booth_name) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
     				"','"+info.getAge()+"','"+info.getHouseNumber()+"','"+info.getGuardianName()+"','"+info.getGuardianRelation()+
-    				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"','"+info.getsNo()+"')";
+    				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"')";
     			stmt.executeUpdate(insertQuery);
     		}
     		
@@ -98,7 +98,7 @@ public class ConvertVoterDataFromPdfToText {
         //Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n([A-Z\\d]*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\nHouse No:\\n([A-Za-z\\.\\s\\n]*)\\n([A-Za-z\\.\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n([\\s0-9a-zA-Z]*)\\n");
        /* This Pattern will use full for 2013 */
         Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)\\r\\n([0-9\\-_/A-Za-z]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
-        Pattern newp = Pattern.compile("([\\s0-9a-zA-Z\\s]*)\\r\\nAge:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\s]*)\\r\\n([\\s0-9]*)\\r\\n");
+       // Pattern newp = Pattern.compile("([\\s0-9a-zA-Z\\s]*)\\r\\nAge:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\s]*)\\r\\n([\\s0-9]*)\\r\\n");
         //Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)Father's Name:\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\s([a-zA-Z]*)\\r\\n");
         
         //Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)Father's Name:\\r\\n()\\r\\n");
@@ -109,6 +109,9 @@ public class ConvertVoterDataFromPdfToText {
                 //  PDF file from where the voter data is extracted
                 File inputDir = new File(args[0]);
                 String voterInfo = "";
+                StringBuilder sb2 = new StringBuilder();
+                File resultFile  = new File(args[0]+"/"+args[1]);
+                BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
                     @Override
@@ -133,11 +136,6 @@ public class ConvertVoterDataFromPdfToText {
                     // Matcher refers to the actual text where the pattern will be found
                     Matcher m = p.matcher(sb);
                     VoterInfo voter = null;
-                    
-                    StringBuilder sb2 = new StringBuilder();
-                    File reultFile  = new File(args[0]+"/"+args[1]);
-                    BufferedWriter outwriter = new BufferedWriter(new FileWriter(reultFile));
-                    outwriter.write(sb.toString());
                     
                     List<VoterInfo> voterInfoList = new ArrayList<VoterInfo>(10);
                     
@@ -175,11 +173,12 @@ public class ConvertVoterDataFromPdfToText {
                     if (pd != null) {
                         pd.close();
                     }
-                    System.out.println("Kamalakar - "+i);
                     saveVotersData(voterInfoList);  
             }
+            outwriter.write(sb2.toString());
             System.out.println("Total No of Voters:" + voterList.size());
             writer.close();
+            outwriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
