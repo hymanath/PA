@@ -50,7 +50,7 @@ public class UserFavoriteLinks extends BaseModel implements Serializable{
 	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
@@ -61,7 +61,7 @@ public class UserFavoriteLinks extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "favorite_link_page_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "favorite_link_page_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public FavoriteLinkPage getFavoriteLinkPage() {
