@@ -72,7 +72,7 @@ public class SpecialPageHighlights implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+@Column(name="order_no")
 	public Long getOrderNo() {
 		return orderNo;
 	}
