@@ -1015,4 +1015,7 @@
 	<bean id="userFavoriteLinksDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFavoriteLinksDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="specialPageHighlightsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageHighlightsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
