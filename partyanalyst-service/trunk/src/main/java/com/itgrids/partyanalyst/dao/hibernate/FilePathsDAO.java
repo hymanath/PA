@@ -99,7 +99,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 	}
 	}
 	}*/
-	@Override
+	
 	public int  updateFilePathsThumbnails(List<String> dataToSave)
 	  {  
 		
@@ -148,7 +148,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 	
 	  }
 
-	@Override
+	//@Override
 	public List<Object> getFilePathsBasedOnFileTypeIds(List<?> fileTypeIds  )
 	{       /* String[] ids = {"1","2"};
 		
