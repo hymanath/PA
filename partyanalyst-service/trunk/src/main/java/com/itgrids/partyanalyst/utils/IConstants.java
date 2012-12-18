@@ -447,6 +447,7 @@ public interface IConstants {
     public static final String ALL_PARTIES = "ALL PARTIES";
     
     public static final String PROFILE_PIC = "profiles";
+    public static final String COVER_PIC = "coverImage";
     public static final String PROBLEM_PIC = "problems";
     public static final String CADRE_IMAGES = "cadre_images";
     
