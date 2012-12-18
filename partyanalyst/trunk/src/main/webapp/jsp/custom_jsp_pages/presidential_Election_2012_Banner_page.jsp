@@ -164,7 +164,7 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
 </tbody>
 
 </table>
-</div
+</div>
 
 
 
