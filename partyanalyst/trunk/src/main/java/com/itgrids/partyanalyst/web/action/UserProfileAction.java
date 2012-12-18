@@ -632,5 +632,37 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 		
 	}
+	
+	
+	public String saveUserFavouriteLink(){
+		
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getPostedProblemsForProfilePage() Method,Exception is- "+e);
+		}
+		
+		String link = jObj.getString("link");
+		String pageTitle = jObj.getString("pageTitle");
+		String queryString = jObj.getString("queryString");
+		String environment = jObj.getString("environment");
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		
+		status = ananymousUserService.saveUserFavouriteLink( user.getRegistrationID(), link, pageTitle , queryString , environment);
+		
+		return Action.SUCCESS;
+		
+		
+	}
+	
+
 
 }
