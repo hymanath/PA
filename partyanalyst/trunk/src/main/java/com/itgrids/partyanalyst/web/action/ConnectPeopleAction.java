@@ -97,8 +97,18 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
     private String height;
     private InputStream inputErrorStream;
     private  IThumbnailService thumbnailService;
+    
+    private String coverImg;
 	
-   	public IThumbnailService getThumbnailService() {
+   	public String getCoverImg() {
+		return coverImg;
+	}
+
+	public void setCoverImg(String coverImg) {
+		this.coverImg = coverImg;
+	}
+
+	public IThumbnailService getThumbnailService() {
    		return thumbnailService;
    	}
 
@@ -909,6 +919,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	public String uploadUserPic()
 	{
 		requestParam();
+		String coverImg= request.getParameter("coverImg");
 		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -918,12 +929,24 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 String filePath = "";
 		
 		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-		 
+		 if(coverImg == null)
+		 {
 		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
 		 else
-			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";	
-		 
+			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+		 }
+		 else if(coverImg != null && coverImg.equalsIgnoreCase("true"))
+		 {
+			 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+			 
+					filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
+			
+				 else
+				
+					 filePath = context.getRealPath("/")+"pictures\\"+IConstants.COVER_PIC+"\\";
+				
+		 }
 		BufferedImage image = null;
         try {
             
