@@ -30,8 +30,24 @@ public class ProblemDetailsVO {
 	private CompleteProblemDetailsVO averageRating;
 	private String rating;
 	private Long postedProblemsCountByConnectedUsers;
+	private String firstName;
+	private String lastName;
 	
 	
+	
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 	public EmailDetailsVO getEmailDetailsVO() {
 		return emailDetailsVO;
 	}
