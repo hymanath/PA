@@ -77,6 +77,9 @@
 		<property name="settingsOptionDAO" ref="settingsOptionDAO"/>
 		<property name="contentDAO" ref="contentDAO"/>
 		<property name="userPrivacySettingsDAO" ref="userPrivacySettingsDAO"/>
+		<property name="favoriteLinkPageDAO" ref="favoriteLinkPageDAO"/>
+		<property name="userFavoriteLinksDAO" ref="userFavoriteLinksDAO"/>
+		
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
