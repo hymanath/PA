@@ -436,15 +436,25 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	
 
 	//political comments
-	public String getAllPostedReasonsDataForProfilePage()
+	public String getPostedReasonsDataForProfilePage()
 	{
-		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("resultsCount"));
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getPostedReasonsDataForProfilePage() Method,Exception is- "+e);
+		}
+		Integer startIndex = jObj.getInt("startIndex");
+		Integer results = jObj.getInt("maxIndex");
 		String order = request.getParameter("dir");
 		String columnName = request.getParameter("sort");
 		String type = request.getParameter("type");
 		String reasonType = "";
-		
+			
 		if(IConstants.TOTAL.equalsIgnoreCase(type))
 			reasonType = IConstants.TOTAL;
 		else if (IConstants.LOGGED_USER.equalsIgnoreCase(type))
@@ -471,44 +481,6 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
-	
-	//get problems
-	
-	public String getAllPostedProblemsForProfilePage()
-	{		
-		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("resultsCount"));
-		String order = request.getParameter("dir");
-		String columnName = request.getParameter("sort");
-		String type = request.getParameter("type");
-		String reasonType = "";
-		
-		if(IConstants.TOTAL.equalsIgnoreCase(type))
-			reasonType = IConstants.TOTAL;
-		else if (IConstants.LOGGED_USER.equalsIgnoreCase(type))
-			reasonType = IConstants.LOGGED_USER;
-		else if (IConstants.OTHERUSERS.equalsIgnoreCase(type))
-			reasonType = IConstants.OTHERUSERS;
-		else if (IConstants.APPROVED.equalsIgnoreCase(type))
-			reasonType = IConstants.APPROVED;
-		else if (IConstants.REJECTED.equalsIgnoreCase(type)) 
-			reasonType = IConstants.REJECTED;
-		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
-			reasonType = IConstants.NOTCONSIDERED;
-		else if("ConnectedUserProblems".equalsIgnoreCase(type))
-			reasonType = "ConnectedUserProblems";
-		
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user==null){
-			return IConstants.NOT_LOGGED_IN;
-		}
-		
-		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(user.getRegistrationID(), 
-				startIndex, results, order, columnName, reasonType);
-		//problemBeanVOList = ananymousUserService.getProblemDetailsForProfilePage(user.getRegistrationID(), startIndex, results, order, columnName, reasonType);
-		return Action.SUCCESS;
-	}
 	
 	
 	public String getTotalSettingsOptionsOfAnUser(){
