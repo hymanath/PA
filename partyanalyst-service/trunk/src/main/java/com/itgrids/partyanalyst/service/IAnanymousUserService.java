@@ -90,4 +90,6 @@ public interface IAnanymousUserService {
 	
 	public String removeFavouriteLink(Long linkId);
 	
+	public String saveUserFavouriteLink(Long userId , String link,String pageTitle, String queryString,String environment);
+	
 }	
