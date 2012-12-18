@@ -27,7 +27,7 @@ public class SpecialPageHighlights implements Serializable{
 	
 	private String description;
 	
-	private String orderNo;
+	private Long orderNo;
 	
 	
 	//Default Constructor
@@ -38,7 +38,7 @@ public class SpecialPageHighlights implements Serializable{
 	
 	//Full Constructor
 	
-	public SpecialPageHighlights(Long specialPageHighlightsId,SpecialPage specialPage,String description,String orderNo)
+	public SpecialPageHighlights(Long specialPageHighlightsId,SpecialPage specialPage,String description,Long orderNo)
 	{
 		this.specialPageHighlightsId =specialPageHighlightsId;
 		this.specialPage=specialPage;
@@ -72,14 +72,15 @@ public class SpecialPageHighlights implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	@Column(name="order_no")
-	public String getOrderNo() {
+
+	public Long getOrderNo() {
 		return orderNo;
 	}
 
-	public void setOrderNo(String orderNo) {
+	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
+	
 	
 	
 
