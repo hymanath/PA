@@ -1981,6 +1981,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					problem.setExistingFrom(params[4]!=null?params[4].toString():"");
 					problem.setUserId((Long)params[10]);
 					problem.setUserImageURL(params[11] != null && params[11].toString().length() > 0 ? params[11].toString() : "human.jpg");
+					problem.setFirstName(params[12].toString());
+					problem.setLastName(params[13].toString());
 					if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.STATE))
 					{
 						if(params[5] != null)
