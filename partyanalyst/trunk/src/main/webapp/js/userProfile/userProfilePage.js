@@ -107,7 +107,7 @@ $("document").ready(function(){
 	
 
 
-   $("#specialPageLink").click(function(){
+   $("#FavouriteLinks").click(function(){
 
 		var jsObj ={
 			task:"getFavouriteLinks"
@@ -136,41 +136,14 @@ $("document").ready(function(){
 
 	$('.assessPoliticianLink').live("click",function(){
 		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
-		
-		getAllPostedReasonsForUser();
-		var jsObj ={
-				task:"getAllPostedReasons_paginator"
-			 };
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getAllPostedReasonsAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
-
-	custom_paginator.paginator({
-		startIndex:0,
-		resultsCount:8,
-		jsObj:jsObj,
-		ajaxCallURL:url,
-		paginatorElmt:"custom_paginator_class",
-		callBackFunction:function(){
-			showAllPostedReasons_paginator(jsObj,results);
-		}
-	});
-	custom_paginator.initialize();
-	
-
-	});
-
-
-	$('.assessPoliticianLink1').live("click",function(){
-		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
 		var linkType = "assessPoliticianLink";
 		startIndex = 0;
 		getAllPostedReasonsForUser();
 		var jsObj ={
-				startIndex : startIndex,
-				maxIndex   : 10,
-				type       : type,
-				linkType   : linkType,
+				startIndex   : startIndex,
+				maxIndex     : 10,
+				type         : type,
+				linkType     : linkType,
 				task:"getAllPostedReasons"
 			 };
 
@@ -182,13 +155,13 @@ $("document").ready(function(){
 $('.PoliticalReaViewMoreLink').live("click",function(){
 		var type = $(this).closest('div').find('.politicalReasonViewMoreTypeVar').val();
 		var linkType = "PoliticalReaViewMoreLink";
-		startIndex = 0;
 		getAllPostedReasonsForUser();
+		startIndex = startIndex+10;
 		var jsObj ={
-				startIndex : startIndex,
-				maxIndex   : 10,
-				type       : type,
-				linkType   : linkType,
+				startIndex     : startIndex,
+				maxIndex       : 10,
+				type           : type,
+				linkType       : linkType,
 				task:"getAllPostedReasons"
 			 };
 
@@ -867,6 +840,7 @@ function callAjax1(jsObj,url){
 function buildFavouriteLinks(results){
 
 $(".placeholderCenterDiv").children().remove();
+$("#headerDiv").html('');
 $('.constituencyDiv').children().remove();
 $('.stateDiv').children().remove();
 $('.constituencyDivheading').children().remove();
@@ -938,8 +912,6 @@ function updatedInfo(results){
 }
 function getFriendsListForUser(results)
 {
-		$(".placeholderCenterDiv").children().remove();
-
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
@@ -1007,14 +979,13 @@ function showAllRequestMessagesForUser(results,jsObj){
 	}
 }
 
-
+var inboxCount=0;
 function showRequestedMessagesForAUser(results)
 {
-		$(".placeholderCenterDiv").children().remove();
-
-	$(".FavoriteLinksDiv").children().remove();
+	inboxCount=results.unreadMsgCount;
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
+	$(".FavoriteLinksDiv").children().remove();
 	clearAllSubscriptionDivs();
 	if(results.resultStatus.resultCode !="0")
 	{
@@ -1027,7 +998,7 @@ function showRequestedMessagesForAUser(results)
 		return;
 	}
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" >Inbox ( '+results.unreadMsgCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1060,7 +1031,7 @@ function showRequestedMessagesForAUser(results)
 
 function showSentBoxMessagesForAUser(results)
 {
-	$(".placeholderCenterDiv").children().remove();
+	
 	$("#headerDiv").html('');
 	
 	$(".placeholderCenterDiv").children().remove();
@@ -1077,7 +1048,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1160,7 +1131,7 @@ function sendMessageToConnectedUser(userId,type)
 function showMessageSentConfirmation(results)
 {
 		$(".placeholderCenterDiv").children().remove();
-
+	
 	var elmt = $("#ErrorMsgDivId");
 	enableButton("sendMessageButtonId");
     if(results.resultCode == 0)
@@ -1234,7 +1205,6 @@ function rejectRequest(requestId)
 
 function showSpecialPages(results)
 {
-		$(".placeholderCenterDiv").children().remove();
 
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
@@ -1258,8 +1228,8 @@ function showSpecialPages(results)
 
 function closeConnectPanel(jsObj,results)
 { 
-		$(".placeholderCenterDiv").children().remove();
-
+	$(".placeholderCenterDiv").children().remove();
+	
 	var connectUserMsg = $("#connectUserMsg").val('');
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
@@ -1339,7 +1309,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
-				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" rel="tooltip" title="Connect"><i class="icon-plus-sign opacityFilter-50"></i></a>');
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
 				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
 			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
@@ -1460,8 +1430,6 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 
 function showAllPostedProblems(jsObj,results)
 {
-	$(".placeholderCenterDiv").children().remove();
-	
 	$('.viewMoreDiv').html('');
 		
 	clearAllSubscriptionDivs();
@@ -1499,7 +1467,7 @@ function showAllPostedProblems(jsObj,results)
 			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
+	var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 }
 
@@ -1547,7 +1515,7 @@ function connectToSelectedPerson(id,name)
 
 function showAllConnectedUsersStatus(jsObj,results)
 {
-		$(".placeholderCenterDiv").children().remove();
+$(".placeholderCenterDiv").children().remove();
 
 
 if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
@@ -1571,51 +1539,14 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 //politial Reasons 
 
 
-function showAllPostedReasons_paginator(jsObj,results)
-{
-	$(".placeholderCenterDiv").children().remove();
-	clearAllSubscriptionDivs();
-
-	var data = results.candidateComments;
-
-	if(data == null)
-	{
-		$(".templateDivMsg").html('<div>No comments.</div>').appendTo(".placeholderCenterDiv");;
-			return;
-	}
-	for(var i in data)
-	{
-		var status;
-		var template = $('.politicalReasonsTemplate');
-		var templateClone = template.clone();
-		templateClone.removeClass('politicalReasonsTemplate');
-		
-		if(data[i].rank == 1)
-			status = "winning";
-		else
-			status = "losing";
-
-		templateClone.find('.headingCls').html('Political Reason for'+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
-		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
-		templateClone.find('.politicalDescCls').html('Description: '+data[i].commentDesc+'');
-		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
-		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
-		templateClone.appendTo('.placeholderCenterDiv');
-	}
-	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
-	pagination.appendTo('.placeholderCenterDiv');
-
-}
-
 function showAllPostedReasonsForUserProfile(jsObj,results)
 {
-	$(".placeholderCenterDiv").children().remove();
-	$(".placeholderCenterDiv").children().remove();
+	
 	clearAllSubscriptionDivs();
 
 	var data = results.candidateComments;
-
-	if(data == null && jsObj.linkType == "assessPoliticianLink1")
+	$('.viewMoreDiv').html('');
+	if(data == null && jsObj.linkType == "assessPoliticianLink")
 	{
 		$(".templateDivMsg").html('<div>No comments.</div>').appendTo(".placeholderCenterDiv");;
 			return;
@@ -1625,6 +1556,9 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		$(".viewMoreDiv").css("display","none");
 			return;
 	}
+	if(jsObj.linkType == "assessPoliticianLink"){
+		$(".placeholderCenterDiv").children().remove();
+	  	}
 
 	for(var i in data)
 	{
@@ -1645,7 +1579,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
+	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 
 }
@@ -1668,7 +1602,6 @@ function getAllPostedReasonsForUser()
 
 function showPostedReasons(jsObj,results)
 {
-	$(".placeholderCenterDiv").children().remove();
 	$("#headerDiv").html('');
 	
 	var approvedReasonsCount = 0;
@@ -1722,11 +1655,6 @@ function showPostedReasons(jsObj,results)
 		ul.append('<li class="fontStyle"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
 	}
 		
-	/* if(userType != "PartyAnalyst"){		
-		div.append('<span class="fontStyle"><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" style="color:#669900;text-decoration: underline;">Add Reasons</a>');
-		div.append('<span class="fontStyle"><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" style="color:#669900;text-decoration: underline;">View Reasons</a>');
-	}*/
-	
 	var label = $('<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By You </div>');
 	
 	var ulinner = $('<ul></ul>');
@@ -1739,6 +1667,12 @@ function showPostedReasons(jsObj,results)
 		ulinner.append('<li class="fontStyle" style="margin-left:35px;">Reasons Rejected - '+rejectedReasonsCount+'</li>');
 	else
 	ulinner.append('<li class="fontStyle">Reasons Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></li>');
+
+	if(userType != "PartyAnalyst"){		
+		ulinner.append('<span><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" class="btn btn-success btn-small politicalReasAddLink">Add Reasons</a></span>');
+		ulinner.append('<span><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" class="btn btn-success btn-small" style="margin-bottom: 10px;">View Reasons</a></span>');
+	}
+
 	div.append(ul);
 	div.append(label);
 	div.append(ulinner);
@@ -1815,8 +1749,7 @@ function buildSubscribeButtons(id,userSubscribedPages)
 function showAllUserCandidateSubscriptions(jsObj,results)
 {
 	
-	$(".placeholderCenterDiv").children().remove();
-
+	
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userCandidateSubscriptionsDiv').children().remove();
@@ -1858,8 +1791,7 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 
 function showAllUserConstituencySubscriptions(jsObj,results)
 {
-	$(".placeholderCenterDiv").children().remove();
-
+	
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userConstituencySubscriptionsDiv').children().remove();
@@ -1892,8 +1824,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 
 function showAllUserPartySubscriptions(jsObj,results)
 {
-	$(".placeholderCenterDiv").children().remove();
-
+	
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	$('#userPartySubscriptionsDiv').children().remove();
@@ -1985,7 +1916,6 @@ function getAllPostedProblemsForUser()
 
 function showPostedProblems(jsObj,results)
 {
-    $(".placeholderCenterDiv").children().remove();
 	$('#headerDiv').html('');
 	var div = $('<div style="line-height:1.5em;"></div>');
 	var ul = $('<ul></ul>');
@@ -2030,6 +1960,11 @@ function showPostedProblems(jsObj,results)
 	$('#headerDiv').append(div);
 }
 
+function openAddReasonWindow(taskType)
+{
+	var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstId+"&parliamentConstiName="+parliamentConstName+"&constituencyName="+constituencyName+"&userId="+loginUserId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+	browser1.focus();
+}
 
 function removeFavouriteLink(id){
 
