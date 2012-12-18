@@ -45,7 +45,7 @@ $("document").ready(function(){
 	$("#settings").click(function(){
 		$(".placeholderCenterDiv").children().remove();
 		$("#headerDiv").html('');
-		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li></ul>");
+		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload cover Image</a></li></ul>");
 	});
 	
 	$(".messagesLink").click(function(){
@@ -460,7 +460,77 @@ $(".changePwdLink").live("click",function(){
 	}
   });
 
+//edit cover Image
 
+$(".editCoverImgLink").live("click",function(){
+
+$("#allConnectedUsersDisplay_main").children().remove();
+	
+	$("#connectPeoplePopup").dialog({
+		resizable:false,
+		width: 582,
+		minHeight:200,
+		show:'slide',
+		modal:true
+	});
+	
+	
+	$(".ui-dialog-titlebar").hide();
+
+	var elmt = $("#allConnectedUsersDisplay_main");
+	var div =$("<div></div>");
+	var str = '';
+	str += '<div id="uploadPic_window_head">Upload Your Picture</div>';
+	str += '<div id="uploadPic_window_body">';
+	str += '<form name="uploadForm" action="uploadPicAction.action" enctype="multipart/form-data" method="post" id="uploadPicForm">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th valign="top">';
+	str += '	<table width="100%" class="uploadPic_string_table">';
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Select a image from your computer.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Image size should be less than 2MB.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Image should be .jpg or.png or .gif formats only.</td>';
+	str += '	</tr>';
+
+	str += '	</table>';	
+	str += '</th>';
+	str += '<td rowspan="3">';
+	str += '	<div style="border:1px solid #ADADAD;"><img width="90" height="100" id="Imgpreview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '</td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;"/>';
+	str += '</td>';
+	str += '</tr>';
+	
+	str += '</table>';	
+	str += '</form>';
+	str += '</div>';
+	str += '<div id="uploadPic_window_footer" class="yui-skin-sam">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
+	str += '<td width="40%" valign="top"><input class="btn-info btn-small" type="button" value="Upload" id="uploadCoverPicButton"/>';
+	str += '<input class="btn-info btn-small" type="button" value="Cancel" id="cancelPicButton"/>';	
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';	
+	str += '</div>';
+	div.append(str);
+	elmt.append(div);
+});
 //edit picture
 
 $(".editPictureLink").live("click",function(){
@@ -553,6 +623,20 @@ $("#uploadPicButton").live("click",function(){
 		}
 });
 
+$("#uploadCoverPicButton").live("click",function(){
+	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+	       $("#uploadPic_window_status").html('Please Select a image .<br>');
+		   return;
+	     }
+		 else
+		 {
+		   $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 getUploadCoverpic();
+		}
+});
 //problem rating
 //setTimeout("applyRaty()",1000);
 
@@ -698,6 +782,24 @@ function getUploadpic()
 	
 	YAHOO.util.Connect.setForm('uploadPicForm',true);
 	YAHOO.util.Connect.asyncRequest('POST', 'uploadPicAction.action', uploadHandler);
+}
+
+function getUploadCoverpic()
+{
+	if(!uploadPicStatus)
+		return;
+		
+	//oPushButton1.set('disabled', true)	
+	uploadPicStatus = false;
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				showUploadStatus();				
+			}
+		};
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'uploadPicAction.action?coverImg=true', uploadHandler);
 }
 function showUploadStatus()
 {
