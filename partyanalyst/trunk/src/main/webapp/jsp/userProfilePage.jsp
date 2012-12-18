@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,11 +33,6 @@
 .profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
 .profile-left .widget-block h4{border:none;background:#e5e5e5;display:none;}
 .left-section{width:175px  !important;}
-/* 14-12 -12 */
-.unreadfont{font-weight:bold;}
-#accountStngs a{text-decoration:none;}
-#accountStngs{margin-left:auto;margin-right:auto;width:180px;}
-#accountStngs li{margin:5px;}
 .centerSpan6{width:515px !important;}
 .problemsViewMoreLink{cursor:pointer;}
 .connectPeopleDiv{display:inline-block;  border-bottom: 1px solid #EFEFEF;
@@ -46,9 +42,9 @@
 .ajaxImg{display:none;}
 .opacityFilter-50{filter: alpha(opacity=65);
 	opacity: 0.65;}
-
-	
-.favouriteLinkDivClass{
+	.viewMoreDiv{margin-top: 12px;}
+	.ajaxImg{margin-left: 35px;}
+	.favouriteLinkDivClass{
 border:1px solid #c3c3c3;
 border-radius:2px;
 height:50px;
@@ -111,6 +107,7 @@ margin:8px 9px 0px 0px;
 				
 								
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
+					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
 					<li class="active"><a href="javascript:{}" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
 					<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
@@ -142,8 +139,8 @@ margin:8px 9px 0px 0px;
 					<li ><a href="javascript:{}" class="subscriptionsLink"><i class="icon-list"></i><i class="icon-chevron-right"></i> Subscriptions</a></li>
 					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
-					<li><a href="javascript:{}" id="specialPageLink"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favorite Links</a></li>
-					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
+					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
+					
 					</ul>
 				</div>
 				
@@ -152,10 +149,10 @@ margin:8px 9px 0px 0px;
 		<!--------left div End ------->
 
 		<!--------Center div------>
-			<div class="span6">
+			<div class="span6 centerSpan6">
 				<div class="widget green" id="MyProfileActions">
 				<div id="fLinks"></div>
-				<div id="headerDiv"></div>
+				<div id="headerDiv" class="whitegloss"></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
@@ -212,53 +209,59 @@ margin:8px 9px 0px 0px;
 				<p>From ${dataTransferVO.constituencyName} Constituency - ${dataTransferVO.constituencyUsersCount}</p>
 				</div>-->
 					<h4>
-						<span><i class="connectPeopleHeading" id="icon_leftsec"></i><span>People You May Know</span>
+						<span><i class="icon-info-sign" id="icon_leftsec"></i><span>People You May Know</span>
 					</h4>
 					
-					<div style="margin-top: 14px;">
-
+					
+					<ul>
 					 <c:if test="${not empty dataTransferVO.peopleYouMayKnow}">
 
 					<c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
 
-						<div class="connectPeopleDiv" style="margin-top: 21px;width:100%;">
-							<div style="width:30%;float:left;">
-							<a href="publicProfile.action?profileId=${connectedPeoples.id}">
-							 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
-								<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${connectedPeoples.image}" />
-							</c:if>
-							<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
-								<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
-							</c:if>
-							</a></div>
-							<div style="width:70%;float:left;">
-								<div style="margin-bottom:5px;margin-top:5px;"><a href="publicProfile.action?profileId=${connectedPeoples.id}">${connectedPeoples.candidateName}</a></div>
-								<div>${connectedPeoples.constituencyName}</div>
+						<li class="connectPeopleDiv">
+							<div class="span3">
+								<a href="publicProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
+								 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
+									<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${connectedPeoples.image}" />
+									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
+								</c:if>
+								<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
+									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
+								</c:if>
+								</a>
+							</div>
+							<div class="span9">
+								<a href="publicProfile.action?profileId=${connectedPeoples.id}"><h6>${connectedPeoples.candidateName}</h6></a>
+								<i>${fn:toLowerCase(connectedPeoples.constituencyName)}
+								</i>
+									<div class="pull-right">
+									<span>
+										<a rel="tooltip" href="javascript:{}" class="connectLink" title="Connect"><i class="icon-plus-sign opacityFilter-50"></i></a>
+									</span>
+									<span>
+																				
+										<a rel="tooltip" href="javascript:{}" title="Send A Message" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')"><i class="icon-envelope opacityFilter-50"></i></a>
+									</span>
+									<input type="hidden" value="${connectedPeoples.id}" class="userId" />
+									<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
+									<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
+
+									</div>
 							</div>
 						
 						
-						</div>
-						<div style="width:100%; clear:both;margin-left:20px;">
-							<span  style="margin-right: 25px; margin-left:25px;">
-								<a href="javascript:{}" class="connectLink">Connect</a>
-							</span>
-							<span>
-								<a href="javascript:{}" onclick="showMailPopup('${connectedPeoples.id}',' ${connectedPeoples.candidateName}','Message')">Send Message</a>
-							</span>
-							<input type="hidden" value="${connectedPeoples.id}" class="userId" />
-							<input type="hidden" value="${connectedPeoples.candidateName}" class="userName" />
-							<input type="hidden" value="${connectedPeoples.constituencyName}" class="constituencyName" />
-
-						</div>
+						</li>
+						
 						</c:forEach>
 						</c:if>
+						</ul>
 
 						<c:if test="${empty dataTransferVO.peopleYouMayKnow}">
 							<div>
 							Right now there are no friend suggestion for you.	We will get back with more suggesstions as soon as possible..
 							</div>
 						</c:if>
-				</div>
+				
 						
 				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink"href="javascript:{}">See All</a></p>
 
@@ -285,7 +288,7 @@ margin:8px 9px 0px 0px;
 						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" class="btn-info btn-small pull-right" title="${specialPages.title}">View Now</a>
 					</div>
 						</c:forEach>
-						<a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>						
+						<a id="specialPageLink" href="javascript:{}" class="btn btn-primary" >View More Special Pages</a>						
 				</div>
 				<!-- end special Pages -->
 				
@@ -322,16 +325,19 @@ margin:8px 9px 0px 0px;
 <div class="TemplateCollection">
 
 	<div class="templateDiv templateholder templatePersons">
-			<span class="connectedPersonName" style="color:#3B5998;"></span>
-			<div class="imgClass"></div>
-			<div class="prinfo">
+			
+			<div class="imgClass span3 thumbnail"></div>
+			<div class="prinfo span9">
+				<h6 class="connectedPersonName"></h6>
 				<span class="messageCls" style="display:none"></span>
 				<span class="constituencyName"></span>
 				<span class="districtName"></span>
 				<span class="stateName"></span>
-				<span class="sendMsg"></span>
-				<span class="connectCls"> </span>
-				<span class="blockPersonBtn" style="display:none;"></span>
+				<div class="icon-groups">
+					<span class="sendMsg"></span>
+					<span class="connectCls"></span>
+					<span class="blockPersonBtn" style="display:none;"></span>
+				</div>
 			</div>
 	</div>
 	<div class="templateDivMsg templateholder templateMessage" >
@@ -464,12 +470,10 @@ userType = '${UserType}';
 			$(this).closest("li").addClass("active");
 		
 		});
-
 		
-		$("a").tooltip({
-                  'selector': '',
-                  'placement': 'top'
-                });
+			$('body').tooltip({
+  			 selector: '[rel=tooltip]'
+			});
 	
 	});	
 	
@@ -505,25 +509,28 @@ $('#userSettingsDialog').html('');
 
 	str+='<div style="width:285px;">';
 
-	str+='<p class="well" style="margin-left:-18px;">Select "private view" to hide your profile from public.<br>Select "public view" to make your profile visible to public.<br>Select "friends view" to make your profile visible  only to your friends.</p>';
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b>Private</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b>Private View</b></label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b>Private</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b>Private View</b></label>';
 
     if(results.selectedOptionId == 1)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b>Public</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b>Public View</b></label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b>Public</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b>Public View</b></label>';
 	
 	if(results.selectedOptionId == 3)
-	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b>Friends</b></label>';
+	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b>Friends View</b></label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b>Friends</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b>Friends View</b></label>';
 
-	str+='<input style="float:right;margin-right:48px;margin-top:20px;" type="button" class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
+    str+='<div style="margin-top:10px;">';
+	str+='<input  type="button"   class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
+
+	str+='<input  style="margin:10px;" type="button" class="btn btn-success" value="Cancel" onClick="closeDialog();"/>';
+	str+='</div>';
 
 
 	str+='</div>';
@@ -555,7 +562,7 @@ var jsObj=
 
 }
 
-function callAjaxForUserSettings(jsObj,url)
+/*function callAjaxForUserSettings(jsObj,url)
 {
 
 	 var myResults;
@@ -590,7 +597,7 @@ function callAjaxForUserSettings(jsObj,url)
 	 };
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
+}*/
 
 function closeDialog(){
 
