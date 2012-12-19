@@ -7,6 +7,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -97,6 +98,8 @@ public interface ISpecialPageService {
     public String getSpecialPageDataBySpecialPageId(Long specialPageId);
     
     public List<SelectOptionVO> getAllSpecialPages();
+    
+    public List<ImportantDatesVO> getImportantCandidatesInfoByElectionId(Long electionId);
     
     public ResultStatus saveSpecialPageHighLights(SpecialPageVO specialPageVO);
     
