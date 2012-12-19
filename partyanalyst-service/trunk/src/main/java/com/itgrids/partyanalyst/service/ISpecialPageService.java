@@ -101,4 +101,9 @@ public interface ISpecialPageService {
     public ResultStatus saveSpecialPageHighLights(SpecialPageVO specialPageVO);
     
     public ResultStatus deleteSpecialPageHighLights(Long id);
+    
+    public ResultStatus deleteSpecialPageHighLightDescription(Long specialPageDescriptionId);
+    
+    public ResultStatus updateSpecialPageHighLightsDesc(
+			List<SpecialPageVO> specialPageVO, Long specialPageId) ;
 }
