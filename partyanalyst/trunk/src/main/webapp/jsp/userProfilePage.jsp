@@ -58,7 +58,7 @@ var requestPath = '<%=request.getContextPath()%>';
 	.viewMoreDiv{margin-top: 12px;}
 	.ajaxImg{margin-left: 35px;}
 	.favouriteLinkDivClass{
-border:1px solid #c3c3c3;
+/*border:1px solid #c3c3c3;*/
 border-radius:2px;
 height:50px;
 }
