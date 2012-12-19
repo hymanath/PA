@@ -1093,6 +1093,7 @@
 		<property name="specialPageHighlightsDAO" ref="specialPageHighlightsDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="specialPageDataDAO" ref="specialPageDataDAO" />
+		<property name="keyCandidateDAO" ref="keyCandidateDAO" />
 		 
 	</bean>
 	
