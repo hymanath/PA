@@ -1584,7 +1584,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
-				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" rel="tooltip" title="Connect"><i class="icon-plus-sign opacityFilter-50"></i></a>');
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" rel="tooltip" title="Connect" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
 				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
 			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
@@ -1688,7 +1688,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
 
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
-				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')">Connect</a>');
+				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
 			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
 			templateClone.appendTo(".placeholderCenterDiv");
 			
@@ -1731,12 +1731,13 @@ function showAllPostedProblems(jsObj,results)
 		var template = $('.problemTemplateDiv');
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
-		templateClone.find('.problemReportedDate').html(''+problemsData[i].identifiedDate+'');
-		templateClone.find('.problemImg').html('<img height="30" width="30"  class="thumbnail" src='+imageStr+'></img>');
-		templateClone.find('.postedPersonName').html(''+problemsData[i].firstName+'');
+		templateClone.find('.problemReportedDate').html('Posted On: '+problemsData[i].identifiedDate+'');
+		templateClone.find('.problemImg').html('<img height="40" width="40"  class="thumbnail" src='+imageStr+'></img>');
+		templateClone.find('.postedPersonName').html('<h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5>');
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
-		templateClone.find('.problemFromDate').html('<span style="color:seagreen;">Existing From: </span>'+problemsData[i].existingFrom+'');
+		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
+		templateClone.find('.location').html('Location: '+problemsData[i].location+'')
 		templateClone.find('.commentCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Comment</a>');
 		templateClone.find('.shareCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Share</a>');
 		//if(problemsData[i].rating != null)
@@ -1840,6 +1841,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 	{
 		var status;
 		var imageStr = "/PartyAnalyst/images/candidates/"+data[i].candidate;
+		var postedByImg="pictures/profiles/"+data[i].imgURL;
 		
 		var template = $('.politicalReasonsTemplate');
 		var templateClone = template.clone();
@@ -1850,12 +1852,19 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		else
 			status = "losing";
 
-		templateClone.find('.headingCls').html('Political Reason for'+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
-		templateClone.find('.candidateImg').html('<img height="30" width="30"  class="thumbnail" src="'+imageStr+'.jpg" onerror="setDefaultImage(this)"></img>');
+		templateClone.find('.headingCls').html('<h5>'+data[i].commentedBy+'</h5> Posted a Political Reason for '+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
+		templateClone.find('.candidateImg').html('<img src="'+imageStr+'.jpg" onerror="setDefaultImage(this)" style="width:100px;height:100px;vertical-align:middle;"></img>');
 		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
+		
+		if(data[i].imgURL == null)
+			templateClone.find('.postedBy').html('<a href="publicProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
+		else
+			templateClone.find('.postedBy').html('<img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img>');
+			
+		
 		templateClone.find('.politicalDescCls').html('Description: '+data[i].commentDesc+'');
 		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
-		templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');
+		/*templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');*/
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
 	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
@@ -1907,53 +1916,53 @@ function showPostedReasons(jsObj,results)
 	}
 
 	var div = $('<div class="politicalReasonsInnerDiv"></div>');
-	var ul = $('<ul></ul>');
+	var ul = $('<ul class="prblmsHeader"></ul>');
 	if(userType != "PartyAnalyst")
 	{
 			
       if(totalPostedReasonsCount ==0)
-		ul.append('<li class="fontStyle">Total Political reasons posted - '+totalPostedReasonsCount+'</li>');
+		ul.append('<h4>Total Political reasons posted - '+totalPostedReasonsCount+'</h4>');
 	   else
-		ul.append('<li class="fontStyle">Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
+		ul.append('<h4>Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></h4>');
 	   if(postedReasonsByLoggedInUser ==0)
-			 ul.append('<li class="fontStyle">By You - '+postedReasonsByLoggedInUser+'</li>');
+			 ul.append('<span>By You - '+postedReasonsByLoggedInUser+'</span>');
 	   else
    		 ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
 	   
 	   if(connectedUsersReasCount ==0)
-		 ul.append('<li class="fontStyle">By Friends - '+connectedUsersReasCount+'</li>');
+		 ul.append('<span>By Friends - '+connectedUsersReasCount+'</span>');
 	   else
-		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');	
+		ul.append('<span>By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
 
 	   if(postedReasonsCountByOtherUsers ==0)
-		 ul.append('<li class="fontStyle">By Others - '+postedReasonsCountByOtherUsers+'</li>');
+		 ul.append('<span>By Others - '+postedReasonsCountByOtherUsers+'</span>');
 	   else
-		ul.append('<li class="fontStyle">By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
+		ul.append('<span>By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
 	}
 	else
 	{
-		ul.append('<li class="fontStyle"> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></li>');
-		ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
-		ul.append('<li class="fontStyle"> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></li>');	
-		ul.append('<li class="fontStyle"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></li>');	
+		ul.append('<span> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></span>');
+		ul.append('<span>By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></span>');
+		ul.append('<span> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
+		ul.append('<span> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
 	}
 		
-	var label = $('<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By You </div>');
+	var label = $('<h4> Reasons Status Details Posted By You </h4>');
 	
-	var ulinner = $('<ul></ul>');
+	var ulinner = $('<ul class="prblmsHeader"></ul>');
 	if(approvedReasonsCount == 0)
-	 ulinner.append('<li class="fontStyle">Reasons Approved - '+approvedReasonsCount+'</li>');
+	 ulinner.append('<span> Approved - '+approvedReasonsCount+'</span>');
 	else
-	ulinner.append('<li class="fontStyle" style="margin-left:35px;">Reasons Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></li>');
+	ulinner.append('<span> Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></span>');
 	
 	if(rejectedReasonsCount ==0)
-		ulinner.append('<li class="fontStyle" style="margin-left:35px;">Reasons Rejected - '+rejectedReasonsCount+'</li>');
+		ulinner.append('<span>Rejected - '+rejectedReasonsCount+'</span>');
 	else
-	ulinner.append('<li class="fontStyle">Reasons Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></li>');
+		ulinner.append('<span>Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></span>');
 
 	if(userType != "PartyAnalyst"){		
-		ulinner.append('<span><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" class="btn btn-success btn-small politicalReasAddLink">Add Reasons</a></span>');
-		ulinner.append('<span><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" class="btn btn-success btn-small" style="margin-bottom: 10px;">View Reasons</a></span>');
+		ulinner.append('<h5 style="clear:both;float:left;margin-right:14px;" ><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" class="btn btn-success btn-small ">Add Reasons</a></h5>');
+		ulinner.append('<h5 style="float:left;"><a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" class="btn btn-success btn-small" >View Reasons</a></h5>');
 	}
 
 	div.append(ul);
@@ -2202,41 +2211,41 @@ function showPostedProblems(jsObj,results)
 {
 	$('#headerDiv').html('');
 	var div = $('<div style="line-height:1.5em;"></div>');
-	var ul = $('<ul></ul>');
+	var ul = $('<ul class="prblmsHeader"></ul>');
 	if(results.totalPostedProblemsCount == 0)
-		ul.append('<li class="fontStyle">Total posted problems - '+results.totalPostedProblemsCount+'</li>');
+		ul.append('<li class="fontStyle"><h4>Total posted problems - '+results.totalPostedProblemsCount+'</h4></li>');
 	else
-	  ul.append('<li class="fontStyle">Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></li>');
+	  ul.append('<li class="fontStyle"><h4>Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></h4></li>');
 		
 	if(results.postedProblemsCountByLoggedInUsers == 0)
-		ul.append('<li class="fontStyle">By You - '+results.postedProblemsCountByLoggedInUsers+'</li>'); 
+		ul.append('<span>By You - '+results.postedProblemsCountByLoggedInUsers+'</span>'); 
 	else
-	  ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></li>');
+	  ul.append('<span>By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></span>');
 		
 	if(results.postedProblemsCountByOtherUsers == 0)
-		ul.append('<li class="fontStyle">By Others - '+results.postedProblemsCountByOtherUsers+'</li>');
+		ul.append('<span>By Others - '+results.postedProblemsCountByOtherUsers+'</span>');
 	else
-	  ul.append('<li class="fontStyle">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></li>');
+	  ul.append('<span>By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></span>');
 
 	if(results.postedProblemsCountByConnectedUsers == 0)
-		ul.append('<li class="fontStyle">By Friends - '+results.postedProblemsCountByConnectedUsers+'</li>');
+		ul.append('<span>By Friends - '+results.postedProblemsCountByConnectedUsers+'</span>');
 	else 
-		ul.append('<li class="fontStyle">By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></li>');
+		ul.append('<span>By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></span>');
 	
-	var label = $('<label class="l1">Problem Status Details Posted By You </label>');
-	var ulInner = $('<ul></ul>');
+	var label = $('<h4 style="color:black;clear:both;">Problem Status Details Posted By You </h4>');
+	var ulInner = $('<ul class="prblmsHeader"></ul>');
 
 	if(results.approvedProblemsCount ==0)
-		ulInner.append('<li class="fontStyle" style="margin-left: 2px;">Problems Approved	- '+results.approvedProblemsCount+'</li>');
+		ulInner.append('<span">Approved	- '+results.approvedProblemsCount+'</span>');
 	else
-	 ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></li>');
+	 ulInner.append('<span>Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></span>');
 	if(results.rejectedProblemsCount ==0)
-		ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - '+results.rejectedProblemsCount+'</li>');
+		ulInner.append('<span>Rejected - '+results.rejectedProblemsCount+'</span>');
 	else
-	 ulInner.append('<li class="fontStyle" style="margin-left: 35px;">Problems Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></li> ');
+	 ulInner.append('<span>Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></span> ');
 
 	if(userType != "PartyAnalyst")
-		ulInner.append('<span><a href="javascript:{}" class="postProblemLink btn btn-success btn-small" style="">Post Problem</a></span>');
+		ulInner.append('<h5 style="clear:both;"><a href="javascript:{}" class="postProblemLink btn btn-success btn-small">Post Problem</a></h5>');
 
 	 div.append(ul);
 	 div.append(label);
