@@ -37,12 +37,9 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 	private static final Logger log = Logger.getLogger(UserProfileAction.class);
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private HttpSession session;
 	private String redirectLoc;
 	private String task;
 	JSONObject jObj;
-	private String loginUserName;
-	private Long loginUserId;
 	private String loginUserProfilePic;
 	private IAnanymousUserService ananymousUserService;
 	private IStaticDataService staticDataService;
@@ -103,13 +100,7 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 		this.response = response;
 	}
 
-	public HttpSession getSession() {
-		return session;
-	}
-
-	public void setSession(HttpSession session) {
-		this.session = session;
-	}
+	
 
 	public String getRedirectLoc() {
 		return redirectLoc;
@@ -133,22 +124,6 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 
 	public void setjObj(JSONObject jObj) {
 		this.jObj = jObj;
-	}
-
-	public String getLoginUserName() {
-		return loginUserName;
-	}
-
-	public void setLoginUserName(String loginUserName) {
-		this.loginUserName = loginUserName;
-	}
-
-	public Long getLoginUserId() {
-		return loginUserId;
-	}
-
-	public void setLoginUserId(Long loginUserId) {
-		this.loginUserId = loginUserId;
 	}
 
 	public String getLoginUserProfilePic() {
@@ -300,15 +275,7 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 	public String execute()
 	{
 		
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
 		 List<Long> userId = new ArrayList<Long>(0);
-		 if(user !=null)
-		 {
-			 loginUserId = user.getRegistrationID();
-			 loginUserName = user.getFirstName()+" "+user.getLastName();
-		 }
 		 loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(profileId);
 		 
 		 userId.add(profileId);
@@ -335,30 +302,6 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	public String getRequestMessagesForUser()
-	{
-		String param;
-		param = getTask();
-		
-		try{
-			jObj = new JSONObject(param);	
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
-		}
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user==null){
-			return IConstants.NOT_LOGGED_IN;
-		}
-		List<Long> userId = new ArrayList<Long>();
-		userId.add(jObj.getLong("profileId"));
-		dataTransferVO = ananymousUserService.getAllMessagesForLoggedUser(userId,IConstants.COMMENTS);
-		return Action.SUCCESS;
-				
-	}
-	
 	public String getSpecialPages()
 	{
 		String param;
@@ -370,125 +313,6 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 			log.error("Exception Occured in getSpecialPages() method, Exception- "+e);
 		}
 		specialPageVOList = specialPageService.getAllSpecialPageListForHomePage();
-		return Action.SUCCESS;
-	}
-	
-	
-	public String getUserSubScription()
-	{
-		String param;
-		param = getTask();
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		try{
-			jObj = new JSONObject(param);
-		
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in getUserSubScription() Method, Exception- "+e);
-		}
-		subscriptionsMainVO = specialPageService.getAllUserSubScriptions(user.getRegistrationID(), jObj.getLong("profileId"));
-		
-		return Action.SUCCESS;
-	}
-	
-	public String AjaxHandler()
-	{
-		try {
-			jObj = new JSONObject(getTask());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
-		if(user == null)
-		{
-			return IConstants.NOT_LOGGED_IN ;
-		}	
-		List<Long> userId = new ArrayList<Long>(0);
-		if(jObj.getString("task").equalsIgnoreCase("getLatestFriendsList"))
-		{
-			userId.add(jObj.getLong("profileId"));
-			connectedUsers = ananymousUserService.getAllPeopleConnectedPeopleForUser(userId);
-		}
-		else if(jObj.getString("task").equalsIgnoreCase("getAllRequestMessagesForUser"))
-		{
-			userId.add(jObj.getLong("profileId"));
-			userDetails = ananymousUserService.getDataForAUserProfile(userId,IConstants.FRIEND_REQUEST);
-		}
-		return Action.SUCCESS;
-	}
-	
-
-	//political comments
-	public String getAllPostedReasonsDataForProfilePage()
-	{
-		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("resultsCount"));
-		String order = request.getParameter("dir");
-		String columnName = request.getParameter("sort");
-		String type = request.getParameter("type");
-		String reasonType = "";
-		
-		if(IConstants.TOTAL.equalsIgnoreCase(type))
-			reasonType = IConstants.TOTAL;
-		else if (IConstants.LOGGED_USER.equalsIgnoreCase(type))
-			reasonType = IConstants.LOGGED_USER;
-		else if (IConstants.OTHERUSERS.equalsIgnoreCase(type))
-			reasonType = IConstants.OTHERUSERS;
-		else if (IConstants.APPROVED.equalsIgnoreCase(type))
-			reasonType = IConstants.APPROVED;
-		else if (IConstants.REJECTED.equalsIgnoreCase(type)) 
-			reasonType = IConstants.REJECTED;
-		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
-			reasonType = IConstants.NOTCONSIDERED;
-		
-		
-		
-		
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
-		userComments = ananymousUserService.getAllPostedReasonsByUserId(jObj.getLong("profileId"), startIndex, results, order, columnName, reasonType);
-		//candidateCommentsVO = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID());
-		
-		return Action.SUCCESS;
-	}
-	
-	
-	//get problems
-	
-	public String getAllPostedProblemsForProfilePage()
-	{		
-		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("resultsCount"));
-		String order = request.getParameter("dir");
-		String columnName = request.getParameter("sort");
-		String type = request.getParameter("type");
-		String reasonType = "";
-		
-		if(IConstants.TOTAL.equalsIgnoreCase(type))
-			reasonType = IConstants.TOTAL;
-		else if (IConstants.LOGGED_USER.equalsIgnoreCase(type))
-			reasonType = IConstants.LOGGED_USER;
-		else if (IConstants.OTHERUSERS.equalsIgnoreCase(type))
-			reasonType = IConstants.OTHERUSERS;
-		else if (IConstants.APPROVED.equalsIgnoreCase(type))
-			reasonType = IConstants.APPROVED;
-		else if (IConstants.REJECTED.equalsIgnoreCase(type)) 
-			reasonType = IConstants.REJECTED;
-		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
-			reasonType = IConstants.NOTCONSIDERED;
-		
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user==null){
-			return IConstants.NOT_LOGGED_IN;
-		}
-		
-		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(jObj.getLong("profileId"), 
-				startIndex, results, order, columnName, reasonType);
 		return Action.SUCCESS;
 	}
 	
