@@ -421,14 +421,6 @@ public class SpecialPageService implements ISpecialPageService{
 	}
 	
 
-	public ISpecialPageHighlightsDAO getSpecialPageHighlightsDAO() {
-		return specialPageHighlightsDAO;
-	}
-
-	public void setSpecialPageHighlightsDAO(
-			ISpecialPageHighlightsDAO specialPageHighlightsDAO) {
-		this.specialPageHighlightsDAO = specialPageHighlightsDAO;
-	}
 	//implementations of declaration reference variable
 	
 
