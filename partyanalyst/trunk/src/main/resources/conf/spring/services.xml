@@ -1091,6 +1091,8 @@
 		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO" />
 		<property name="userDAO" ref="userDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="specialPageDataDAO" ref="specialPageDataDAO" />
+		
 		 
 	</bean>
 	
@@ -1285,5 +1287,10 @@
 			<property name="filePathsDAO" ref="filePathsDAO"/>
 
 	</bean>
+	
+	<bean name="specialPageDataUploadService" class="com.itgrids.partyanalyst.service.impl.SpecialPageDataUploadService">
+
+	</bean>
+	
 </beans>		
 	
