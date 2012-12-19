@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -22,10 +24,13 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
+import com.itgrids.partyanalyst.dto.UserProfileVO;
 import com.itgrids.partyanalyst.dto.UserSettingsVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IUserProfileService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -45,6 +50,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private String loginUserProfilePic;
 	private IAnanymousUserService ananymousUserService;
 	private IStaticDataService staticDataService;
+	private IUserProfileService userProfileService;
 	private ResultStatus resultStatus;
 	private DataTransferVO userDetails;
 	private DataTransferVO dataTransferVO,connectedUsers;
@@ -62,6 +68,8 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private UserSettingsVO userSettingsList;
 	private String status;
 	private List<UserSettingsVO> userFavoutiteLinks;
+	private List<UserProfileVO> subscriptionsList;
+	private String notLogged = "sessionExpired";
 	
 	public String getStatus() {
 		return status;
@@ -290,6 +298,29 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		this.userFavoutiteLinks = userFavoutiteLinks;
 	}
 
+	public IUserProfileService getUserProfileService() {
+		return userProfileService;
+	}
+
+	public void setUserProfileService(IUserProfileService userProfileService) {
+		this.userProfileService = userProfileService;
+	}
+
+	public List<UserProfileVO> getSubscriptionsList() {
+		return subscriptionsList;
+	}
+
+	public void setSubscriptionsList(List<UserProfileVO> subscriptionsList) {
+		this.subscriptionsList = subscriptionsList;
+	}
+
+	public String getNotLogged() {
+		return notLogged;
+	}
+
+	public void setNotLogged(String notLogged) {
+		this.notLogged = notLogged;
+	}
 
 	public String execute()
 	{
@@ -636,5 +667,82 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	}
 	
 
+	
+	public String getSubscriptions()
+	{
+		String param;
+		param = getTask();
+		try{
+			session = request.getSession();
+			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
+				log.error(" No User Log In .....");			
+				return "error";
+			}
+			jObj = new JSONObject(param);
+			if(jObj.getString("type").equalsIgnoreCase("allsubscriptions")){
+				int count = 0;
+				DateUtilService dateUtilService = new DateUtilService();
+				Date toDate = dateUtilService.getCurrentDateAndTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(toDate);
+				cal.add(Calendar.DATE, -7);
+				Date fromDate = cal.getTime();
+				session.setAttribute("fromDate", fromDate);
+				session.setAttribute("toDate", toDate);
+				while(count < 10){
+				 if(subscriptionsList == null || subscriptionsList.size() == 0){
+					 Date newFromDate = null;
+					 Date newToDate = null;
+					 if(count == 0){
+						 newFromDate = fromDate;
+						 newToDate = toDate;
+					 }else{
+						 cal = Calendar.getInstance();
+						 cal.setTime(fromDate);
+						 cal.add(Calendar.DATE, -7);
+						 newFromDate = cal.getTime();
+						 newToDate = fromDate;
+						 fromDate = newFromDate;
+						 session.setAttribute("fromDate", fromDate);
+					 }
+				     subscriptionsList = userProfileService.getPartyAnalystLatestUpdates(newFromDate,newToDate,user.getRegistrationID());
+				   count = count+1;
+				 }else{
+					 break;
+				 }
+				}
+			 }else if(jObj.getString("type").equalsIgnoreCase("latestsubscriptions")){
+				Date toDate = (Date)session.getAttribute("toDate");
+				DateUtilService dateUtilService = new DateUtilService();
+				Date newToDate = dateUtilService.getCurrentDateAndTime();
+				session.setAttribute("toDate",newToDate);
+				subscriptionsList = userProfileService.getPartyAnalystLatestUpdates(toDate,newToDate,user.getRegistrationID());
+			}else if(jObj.getString("type").equalsIgnoreCase("oldersubscriptions")){
+				int count = 0;
+				while(count < 10){
+				 if(subscriptionsList == null || subscriptionsList.size() == 0){
+				   Date fromDate = (Date)session.getAttribute("fromDate");
+				   Calendar cal = Calendar.getInstance();
+				   cal.setTime(fromDate);
+				   cal.add(Calendar.DATE, -2);
+				   Date newFromDate = cal.getTime();
+				   session.setAttribute("fromDate",newFromDate);
+				   subscriptionsList = userProfileService.getPartyAnalystLatestUpdates(newFromDate,fromDate,user.getRegistrationID());
+				   count = count+1;
+				 }else{
+					 break;
+				 }
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getSubscriptions() method, Exception- "+e);
+		}
+		
+		return Action.SUCCESS;
+	}
 
 }

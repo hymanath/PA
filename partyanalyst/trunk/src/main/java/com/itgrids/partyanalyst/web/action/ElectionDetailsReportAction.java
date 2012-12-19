@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -76,6 +77,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private List<ConstituencyUrbanDetailsVO> urbanDetailsList;
 	private ElectionGoverningBodyVO electionGoverningBodyVO;
     private ICandidateDetailsService candidateDetailsService;
+	private List<PartyElectionResultsVO> wonCandidateResults;
 	
 	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
 		return electionGoverningBodyVO;
@@ -295,6 +297,15 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		this.candidateDetailsService = candidateDetailsService;
 	}
 
+	public List<PartyElectionResultsVO> getWonCandidateResults() {
+		return wonCandidateResults;
+	}
+
+	public void setWonCandidateResults(
+			List<PartyElectionResultsVO> wonCandidateResults) {
+		this.wonCandidateResults = wonCandidateResults;
+	}
+
 	public String execute() throws Exception {
 		
 		HttpSession session = request.getSession();
@@ -359,7 +370,12 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 						.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}
 		}
-
+		try{
+		  if(electionTypeId != null && electionTypeId.longValue() == 1 || electionTypeId.longValue() == 2)
+		    wonCandidateResults = electionReportService.getAllWonCandidates(new Long(electionId),electionTypeId);
+		}catch(Exception e){
+			log.error("Exception occured in getting winning candidates ",e);
+		}
 		return Action.SUCCESS;
 	}
 
