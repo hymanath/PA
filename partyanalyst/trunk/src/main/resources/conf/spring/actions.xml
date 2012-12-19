@@ -978,7 +978,8 @@
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="specialPageService" ref="specialPageService" />
-		<property name="userProfileService" ref="userProfileService" />			
+		<property name="userProfileService" ref="userProfileService" />	
+		<property name="userCadreManagementService" ref="userCadreManagementService" />	
 	</bean>
 	
 	<bean id="votersAnalysisAction" class="com.itgrids.partyanalyst.web.action.VotersAnalysisAction" singleton="false">			
