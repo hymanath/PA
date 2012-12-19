@@ -40,6 +40,10 @@
 
  <input type="button" style="background:#c3c3c3;" value="UploadData" onClick="saveTextForSpecialPage();"/>
 
+ <input type="button" style="background:#c3c3c3;" value="Preview" onClick="showPreview();"/>
+
+ <div id="previewDiv" style="background-color:#fff;border:1px solid #e5e5e5;padding:20px;">${specilaPageText}</div>
+
 
  <div id="successDiv"></div>
 
@@ -62,6 +66,11 @@ var specialPageText={
 	id:'',
    text:''
 };
+
+function showPreview(){
+	$('#previewDiv').html($('#description').val());
+
+}
 
 function saveTextForSpecialPage(){
 
