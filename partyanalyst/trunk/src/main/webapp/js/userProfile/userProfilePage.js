@@ -9,7 +9,7 @@ var startIndex;
 var jcrop_api;
 
 $("document").ready(function(){
-	
+	setInterval("callForEveryFiveMins()", 10*60*60*5);
     $("#subscriptionsStreamingMore").live("click",function(){
 	  getSubscriptionDetails("old");
 	});
@@ -988,7 +988,16 @@ function callAjax1(jsObj,url){
 						  openDialogForLoginWindow();
 					   }
 					   else{
-					     buildAllSubscriptions(results);
+					     buildAllSubscriptions(results,"end");
+					   }
+					}
+					else if(jsObj.task == "latestsubscriptions"){
+					   $("#subscriptionsStreamingAjaxImg").hide();
+					   if(results == "sessionExpired"){
+						  openDialogForLoginWindow();
+					   }
+					   else{
+					     buildAllSubscriptions(results,"start");
 					   }
 					}
 
@@ -1162,7 +1171,7 @@ function getFriendsListForUser(results)
 
 }
 
-function buildAllSubscriptions(results){
+function buildAllSubscriptions(results,place){
    if(results != null && results.length > 0){
     for(var i in results)
 	{
@@ -1174,8 +1183,17 @@ function buildAllSubscriptions(results){
 		templateClone.find('.subscriptionsDescription').html(''+results[i].description);
 		templateClone.find('.subscriptionsFileImgDiv').html("<a href='"+results[i].fileLink+"'><img src='"+results[i].imageUrl+"' style='width:100px;height:100px;vertical-align:middle;' ></img></a>");
 		templateClone.find('.activity-title').html("<a href='"+results[i].fileLink+"'>"+results[i].title+"</a>");
-		templateClone.appendTo("#subscriptionsStreamingData");
+		if(place == "end")
+		  templateClone.appendTo("#subscriptionsStreamingData");
+		else
+		  templateClone.prependTo("#subscriptionsStreamingData");		 
 	}
+  }
+}
+
+function callForEveryFiveMins(){
+  if(document.getElementById("subscriptionsStreamingMoreDiv").style.display == "block"){
+     getSubscriptionDetails("new");
   }
 }
 
