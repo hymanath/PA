@@ -62,6 +62,7 @@ $("document").ready(function(){
 	$("#settings").click(function(){
 	     $("#subscriptionsStreamingMoreDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
+		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
 		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload cover Image</a></li></ul>");
 		$("#impdatesDiv").hide();
@@ -281,22 +282,22 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var locationName = constituencyName;
 		
 		$( "#connectPeoplePopup" ).dialog({
-			title:"Connect To  "+userName,
+			title:"Connect To  "+userName+"("+constituencyName+")",
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			minHeight:300,
+			minHeight:250,
 			modal: true,
 			hide: "explode"
 		});
 
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
-		var Name=$("<label style='color:#094776;font-family: Verdana;font-size: 13px;'>"+userName+"</label>");
-		var constituencyName = $("<label style='color: #754815;font-family: verdana;font-size: 12px;'>"+constituencyName+"</label>");
-		var message = $("<label class='messageLabel'>Message</label>");
-		var textArea = $("<textarea id='connectUserMsg'></textarea>");
-		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -45px;">');
-		var connectBtn = $('<input type="button" value="Connect" id="connectPeopleLink"/>');
+		var Name=$(userName);
+		var constituencyName = $(constituencyName);
+		var message = $("<label class='messageLabel'></label>");
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'></textarea>");
+		var image = $('<img height="80" width="80" src="/PartyAnalyst/images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
+		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:12px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
@@ -1305,7 +1306,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;" class="pull-right">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1338,15 +1339,15 @@ function showMailPopup(id,name,type)
 			autoOpen: true,
 			show: "blind",
 			width: 400,
-			minHeight:300,
+			minHeight:250,
 			modal: true,
 			hide: "explode"
 		});
 		
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
-		var label = $("<label class='messageLabel'>Message</label>");
-		var textarea = $("<textarea id='connectMessageText'></textarea><br>");
+		var label = $("<label class='messageLabel'></label>");
+		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'></textarea><br>");
 		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
 		div.append(errorDiv);
 		div.append(label);
@@ -1746,7 +1747,7 @@ function connectToSelectedPerson(id,name)
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			minHeight:300,
+			minHeight:250,
 			modal: true,
 			hide: "explode"
 		});
