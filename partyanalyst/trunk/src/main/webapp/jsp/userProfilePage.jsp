@@ -176,6 +176,12 @@ margin:8px 9px 0px 0px;
 								<div class="favouriteLinksHeading stateDivheading" ></div>
 						        <div class="stateDiv"></div>
 							</div>
+
+							<div>
+								<div class="favouriteLinksHeading districtDivheading" ></div>
+						        <div class="districtDiv"></div>
+							</div>
+
 						</div>
 				</div>
 
@@ -420,6 +426,13 @@ margin:8px 9px 0px 0px;
 </div>
 
 <div class="favouriteLinkStateClass favouriteLinkDivClass" >
+	<span class="imageClass"></span>
+	<span class="titleClass"></span>
+	<span class="removeClass"></span>
+
+</div>
+
+<div class="favouriteLinkDistrictClass favouriteLinkDivClass" >
 	<span class="imageClass"></span>
 	<span class="titleClass"></span>
 	<span class="removeClass"></span>
