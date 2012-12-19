@@ -1222,6 +1222,24 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 return queryObj.list();
      }
      
+     public List<FileGallary> getCandidateGallaryDetailsForProfilePageStreaming(Date fromDate,Date toDate,Set<Long> candidateIds)
+     {
+    	 StringBuilder query = new StringBuilder();
+    		 
+    	 query.append("select model from FileGallary model where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate  and model.gallary.candidate.candidateId in (:candidateIds) "); 
+    	 
+    	 query.append(" order by model.file.fileDate desc,model.createdDate desc");
+    	 
+    	 Query queryObj = getSession().createQuery(query.toString());
+    	 
+    	 queryObj.setTimestamp("fromDate",fromDate);
+    	 queryObj.setTimestamp("toDate",toDate);
+    	 queryObj.setParameterList("candidateIds",candidateIds);
+    	 
+    	 return queryObj.list();
+     }
+     
      public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> partyIds,String type)
      {
     	 StringBuilder query = new StringBuilder();
@@ -1232,13 +1250,13 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
      	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate  and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate  " +
      	 		" and model.gallary.gallaryId = model1.gallery.gallaryId and model1.isDelete = 'false' and model1.isPrivate = 'false' and model1.party.partyId in (:partyIds) ");
      	 
-    	 if(type.equalsIgnoreCase("photos"))
+    	 if(type != null && type.equalsIgnoreCase("photos"))
     	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
     	 
-    	 else if(type.equalsIgnoreCase("news"))    	 
+    	 else if(type != null && type.equalsIgnoreCase("news"))    	 
     	 query.append(" and model.gallary.contentType.contentTypeId = 2 ");
     	 
-    	 else if(type.equalsIgnoreCase("videos"))
+    	 else if(type != null && type.equalsIgnoreCase("videos"))
     	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
     	 
     	 query.append(" order by model.file.fileDate desc,model.createdDate desc");
@@ -1262,13 +1280,13 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
      	 		" model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate   and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate " +
      	 		" and model.gallary.gallaryId = model1.gallary.gallaryId and model1.isDelect = 'false' and model1.specialPage.isDelete = 'false' and model1.specialPage.specialPageId in (:specialPageIds) ");
      	 
-    	 if(type.equalsIgnoreCase("photos"))
+    	 if(type!= null && type.equalsIgnoreCase("photos"))
     	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
     	 
-    	 else if(type.equalsIgnoreCase("news"))    	 
+    	 else if(type!= null && type.equalsIgnoreCase("news"))    	 
     	 query.append(" and model.gallary.contentType.contentTypeId = 2 ");
     	 
-    	 else if(type.equalsIgnoreCase("videos"))
+    	 else if(type!= null && type.equalsIgnoreCase("videos"))
     	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
     	 
     	 query.append(" order by model.file.fileDate desc,model.createdDate desc");

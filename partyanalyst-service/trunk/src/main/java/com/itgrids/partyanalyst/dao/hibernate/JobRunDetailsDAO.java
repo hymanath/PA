@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IJobRunDetailsDAO;
@@ -12,6 +15,9 @@ public class JobRunDetailsDAO extends GenericDaoHibernate<JobRunDetails, Long> i
 			
 	}
 	
+	public List<Date> getStartTime(){
+		return getHibernateTemplate().find("select max(model.startTime) from JobRunDetails model");
+	}
 	
 
 }

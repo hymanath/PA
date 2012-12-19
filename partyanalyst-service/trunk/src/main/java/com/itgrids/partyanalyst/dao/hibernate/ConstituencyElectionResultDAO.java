@@ -198,4 +198,9 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ? group by model.constituencyElection.constituency.areaType " +
 				" order by model.constituencyElection.constituency.areaType desc",electionId);
 	}
+	
+	public List<Object[]> getTotalSeatsCastWise(Long electionId){
+		return getHibernateTemplate().find("select count(model.reservationZone),model.reservationZone " +
+				" from ConstituencyElection model where model.election.electionId = ? group by model.reservationZone ",electionId);
+	}
 }
