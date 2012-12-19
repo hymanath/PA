@@ -115,6 +115,7 @@ public class SpecialPageService implements ISpecialPageService{
 	private List<SpecialPageVO> specialPageVOList;
 	private IUserDAO userDAO;
 	private ISpecialPageHighlightsDAO specialPageHighlightsDAO;
+	private SpecialPageHighlights specialPageHighlights;
 	
 	private ISpecialPageDataDAO specialPageDataDAO;
 	
@@ -421,6 +422,14 @@ public class SpecialPageService implements ISpecialPageService{
 	}
 	
 
+
+	public SpecialPageHighlights getSpecialPageHighlights() {
+		return specialPageHighlights;
+	}
+
+	public void setSpecialPageHighlights(SpecialPageHighlights specialPageHighlights) {
+		this.specialPageHighlights = specialPageHighlights;
+	}
 	//implementations of declaration reference variable
 	
 
@@ -774,6 +783,7 @@ public class SpecialPageService implements ISpecialPageService{
 					filevo.setOrderNo((Long)params[0]);
 					if(params[1] != null)
 					filevo.setDescription(params[1].toString());
+					filevo.setIds((Long)params[2]);
 					result.add(filevo);
 				}
 			}
@@ -2052,5 +2062,49 @@ return res;
 		}
 
 	}
+ 	
+ 	public ResultStatus deleteSpecialPageHighLightDescription(Long specialPageDescriptionId) {
+		log
+				.debug("Entered into deleteSpecialPageHighLightDescription() method in SpecialPageService");
+		ResultStatus resultStatus = new ResultStatus();
+		int flag = specialPageHighlightsDAO
+				.deleteSpecialHighlightsDescription(specialPageDescriptionId);
+		if (flag != 0) {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		} else {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+
+	}
+ 	
+ 	public ResultStatus updateSpecialPageHighLightsDesc(
+			List<SpecialPageVO> specialPageVO, Long specialPageId) {
+		log
+				.debug("Entered into updateSpecialPageHighLightsDesc() in specialPageService");
+		ResultStatus resultStatus = new ResultStatus();
+		SpecialPage specialPage = specialPageDAO.get(specialPageId);
+		try {
+			for (SpecialPageVO params : specialPageVO) {
+				specialPageHighlights = specialPageHighlightsDAO.get(params
+						.getSpecialPageDescriptionId());
+				specialPageHighlights.setSpecialPage(specialPage);
+				specialPageHighlights.setOrderNo(params.getOrderNo());
+				specialPageHighlights.setDescription(params.getDescription());
+				specialPageHighlightsDAO.save(specialPageHighlights);
+
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+ 	
+ 	
 
 }
