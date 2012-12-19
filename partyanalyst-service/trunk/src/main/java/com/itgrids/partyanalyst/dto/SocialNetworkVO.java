@@ -50,7 +50,11 @@ public class SocialNetworkVO implements Serializable {
 	private Long candidatePhoneId;
 	private String addressName;
 	
-	
+	private String partyOrCandidateName;
+	private String twitterId;
+	private String yourName;
+	private String emailId;
+		
 	public String getAddressName() {
 		return addressName;
 	}
@@ -259,6 +263,30 @@ public class SocialNetworkVO implements Serializable {
 	}
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
+	}
+	public String getPartyOrCandidateName() {
+		return partyOrCandidateName;
+	}
+	public void setPartyOrCandidateName(String partyOrCandidateName) {
+		this.partyOrCandidateName = partyOrCandidateName;
+	}
+	public String getTwitterId() {
+		return twitterId;
+	}
+	public void setTwitterId(String twitterId) {
+		this.twitterId = twitterId;
+	}
+	public String getYourName() {
+		return yourName;
+	}
+	public void setYourName(String yourName) {
+		this.yourName = yourName;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	
