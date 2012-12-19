@@ -211,4 +211,19 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		return Action.SUCCESS;
 	}
 
+public String getLiveResults(){	
+		try 
+		{
+			jObj = new JSONObject(getTask());
+			
+				Long electionId = new Long(jObj.getString("electionId"));
+				electionLiveResultVO = electionLiveResultsAnalysisService.getLiveResultsDetails(electionId);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }

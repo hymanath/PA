@@ -3983,6 +3983,12 @@
 			<result type="json" name="success">
 				<param name="root">result</param></result>
 		</action>
+				
+		<action name="getLiveResultsAction" class="electionLiveResultsAnalysisAction"  method="getLiveResults">
+		   <result type="json" name="success">
+		    <param name="root">electionLiveResultVO</param>				
+		   </result>	
+		</action>
 		
 	</package>
 </struts>      
