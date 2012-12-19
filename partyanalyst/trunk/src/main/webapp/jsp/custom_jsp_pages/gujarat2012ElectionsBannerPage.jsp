@@ -999,10 +999,14 @@ function buildSpecialPageHightLights(results)
 
 function buildImportantCnadidatesData(results){
 
-    var str='';
+	if(results == null || results == "null");{
+	 $('#importantCandidateHeadingDiv').hide();
+	  return false;
+	}
+var str='';
 
+alert("11");
     str+='<div class="span12" style="border:1px solid #c3c3c3;">';
-
 
 	if(results.length == 0){
 	  $('#importantCandidateHeadingDiv').hide();
