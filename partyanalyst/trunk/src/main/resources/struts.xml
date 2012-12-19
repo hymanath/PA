@@ -3774,12 +3774,6 @@
 			<result name="success">/jsp/publicProfilePage.jsp</result>
 		</action>
         
-        <action name="getFriendsListForPublicProfileAction" class="publicProfile" method="AjaxHandler">
-		  <result type="json" name="success">
-           		<param name="root">connectedUsers</param>
-			</result>
-		</action>
-		
         <action name="getSpecialPageForPublicProfileAction" class="publicProfile" method="getSpecialPages">
 			<result type="json" name="success">
 			  <param name="root">specialPageVOList</param>
