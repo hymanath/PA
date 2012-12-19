@@ -44,9 +44,18 @@ public class CandidateSubscriptionsDAOHibernateTest extends BaseDaoTestCase
 		}
 	}*/
 	
-	public void testGetAllUserSubscribedCandidatePages()
+	/*public void testGetAllUserSubscribedCandidatePages()
 	{
 		List<Object[]> list = candidateSubscriptionsDAO.getAllUserSubscribedCandidatePages(1l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]);
+		}
+	}*/
+	public void testGetAllSubscriberDetails()
+	{
+		List<Object[]> list = candidateSubscriptionsDAO.getAllSubscriberDetails();
 		System.out.println(list.size());
 		for(Object[] params : list)
 		{
