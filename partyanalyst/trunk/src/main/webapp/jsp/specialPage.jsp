@@ -1115,6 +1115,32 @@ function unSubscribeAlert()
 </head>
 
 <body>
+
+<s:set name="actionName" value="%{#context[@com.opensymphony.xwork2.ActionContext@ACTION_NAME]}"/>
+
+<s:set name="parameters" value="%{#context[@com.opensymphony.xwork2.ActionContext@PARAMETERS]}"/>
+<script>
+
+  <%
+      String environment = "local";
+	  if(request.getRequestURL().indexOf("partyanalyst.com") != -1)
+	  environment = "live";
+
+    %>
+	
+var queryString='';
+
+<s:iterator value="#parameters" var="param">	
+	
+	queryString+='<s:property value="%{#param.key}"/>'+'=';
+	queryString+='<s:property value="%{#param.value}"/>'+',';
+	
+</s:iterator>
+
+
+</script>
+
+
 <!--CONTENT MAIN SECTION START-->
 <!--PROFILE LEFT CONENT SECTION START-->
 <!--<div style="text-align:center;margin-bottom:10px;">
@@ -1162,6 +1188,14 @@ Tweet</a>
 </span>
 </div>
  <div id="logInDiv"></div>
+
+<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
+	<div style="float:right;margin-right:140px;">
+	<input type="button" style="position:fixed;z-index:2;" class="btn btn-success" value="Add to favourite links" onClick="savefavouriteLink();"/>
+	</div>
+</c:if>
+
+
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
 <s:if test="#custom.type == 'banner'">
@@ -1404,6 +1438,55 @@ $(document).ready(function(){
 <s:if test="contentId != null">
 	showSelectedContentAndRelatedGalleries();
 </s:if>
+</script>
+
+<script>
+function savefavouriteLink(){
+
+	var pageTitle = '${specialPageVO.title}';
+
+	environment = '<%=environment%>';
+
+
+	var jObj = {
+				link: '${actionName}',
+				queryString:queryString,
+				pageTitle:pageTitle,
+				environment:environment,
+				task: 'saveFavouriteLink'
+				
+			};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "saveUserFavouriteLink.action?"+rparam;
+	callAjaxTosaveUserFavouriteLink(jObj,url);
+
+}
+
+function callAjaxTosaveUserFavouriteLink(jObj,url){
+
+	var myResults;
+ 					
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {												
+									if(o.responseText)
+										myResults = YAHOO.lang.JSON.parse(o.responseText);
+									
+									if(jObj.task == "saveFavouriteLink")
+										alert("Link added successfully");																	
+								}
+							catch (e) {   
+						}  
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                }
+		               };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+
+}
 </script>
 </body>
 </html>
