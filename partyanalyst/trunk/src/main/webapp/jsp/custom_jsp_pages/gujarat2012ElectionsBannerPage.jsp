@@ -10,8 +10,12 @@
 <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.columnFilter.js"></script>
 
 <style>
+body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 	.main-mbg{
 		width:962px;
+		margin:0px;
+		border-radius:6px 6px 0px 0px;
+		
 	}
 
 .electionresulttable{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
@@ -142,27 +146,44 @@ table.gujaratTableDiv td:first-child {width:50%;}
 }
 
 #GujaratResultBody{display:inline-block;background:#EDF9FF;width:100%;padding:5px;}
+.popover {
+     padding: 5px;
+    position: relative;
+	display:inline-block;
+    }
+.popover-title {
+    background-color: #777;
+    border-bottom: 1px solid #f8f8f8;
+    border-radius: 3px 3px 0 0;
+    line-height: 1;
+    padding: 9px 15px;
+	color:#fff;
+
+}	
+.popover-content{	height:115px;
+	position:relative;}
+.popover-content  a{position:absolute;bottom:5px;right:5px;}
 </style>
 
 <div style="margin-bottom:10px;">
-<img src="images/specialPage/gujarat_banner.jpg" style="align:center;width:985px;">
+<img src="images/specialPage/gujarat_banner.jpg" style="align:center;width:975px;">
 </div>
 
 <!--<input type="button" class="btn btn-success" value="TestAjax" onClick="getImportantCandidatesInfo()"/>-->
 
-<div style="float:left;" id="importantCandidateHeadingDiv">
+<div id="importantCandidateHeadingDiv">
 
-	<div class="main-mbg"><span style="margin-left:42px;">Important candidates present status</span>
+	<div class="breadcrumb"><h3>Important Candidates Present Status
 
-    <div style="float:left;">
+    
 
-	<a class="btn btn-success" id="showLink" href="javaScript:{showDetails();}" style="display:none;margin-top:3px;">Show</a>
-	<a  style="margin-top:3px;" class="btn btn-inverse" id="hideLink"  href="javaScript:{hideDetails();}" >Hide</a>
+	<a class="btn btn-mini btn-warning" id="showLink" href="javaScript:{showDetails();}" style="display:none;">Show <i class=" icon-chevron-up icon-white" style="margin-top: -1px;"></i></a>
+	<a class="btn btn-mini btn-warning" id="hideLink"  href="javaScript:{hideDetails();}" title="Hide">Hide <i class=" icon-chevron-down icon-white" style="margin-top: -1px;"></i> </a>
 
-	</div>
-
-
-	<span style="text-decoration:blink;float:right;margin-right:163px;"><a  style="color:#fff;" href="javaScript:{getImportantCandidatesInfo();}" title="Click here to refresh">Refresh<i class="icon-refresh"></i></a></span>
+	<a class="btn btn-inverse pull-right" href="javaScript:{getImportantCandidatesInfo();}" style="text-transform: capitalize; margin-right: 5px;" title="Click here to Update Results" rel="tooltip"><i class="icon-refresh icon-white" style="margin-top: 1px;"></i> Refresh</a>
+	
+</h3>
+	
 
 	</div>
 
@@ -171,11 +192,45 @@ table.gujaratTableDiv td:first-child {width:50%;}
 </div>
 
 
+<!-- Analysis Tools Start-->
+<div class="breadcrumb">
+<h3>Live Results Analysis Tools</h3>
+<div class="row-fluid">
 
-<div>
 
-<div id="upComing" style="background:#FFF;padding-top: 12px;">
-<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Gujarat 2012 Vidhan Sabha Election</span>
+<div class="span4 popover" >
+<h4 class="popover-title">Compare Live <small class="badge">vs</small> Previous Results</h4>
+<p class="popover-content">
+Compare Present election live results with previous election results,  
+Analyze the party's performances in gaining and losing of seats from other parties 
+Party's performances in the new constituencies.
+<a class="btn btn-success pull-right" href="#">Compare Now !!</a>
+</p>
+
+</div>
+
+<div class="span4 popover">
+<h4 class="popover-title">State Ministers Trend </h4>
+<p class="popover-content">
+Analyze the present status of Gujarat state ministers for 2007-2012 duration.
+<a class="btn btn-success pull-right" href="#">Analyze Now !!</a>
+</p>
+
+</div>
+<div class="span4 popover">
+<h4 class="popover-title">Key Candidates Present Status</h4>
+<p class="popover-content">
+Analyze the present status of key candidates from Gujarat State
+<a class="btn btn-success pull-right" href="#">View Now !!</a>
+</p>
+
+</div>
+</div></div>
+<!-- Analysis Tools END-->
+
+
+<div id="upComing" class="breadcrumb">
+<h3 class="resulth3">Gujarat 2012 Vidhan Sabha Election</h3>
 
 <br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">140</font></span>
 
@@ -187,12 +242,12 @@ table.gujaratTableDiv td:first-child {width:50%;}
 </span></br></br>
 <div id="electionResultDivMain" style="padding-bottom:10px;">
   <div id="electionResultDiv"></div>
-<div>
+</div>
 
 	
 <div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
 <div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">DISTRICT WISE RESULTS ANALYSIS FOR GUJARAT VIDHAN SABHA 2012</h3></div>
-  <div style="background:#EDF9FF;width:935px;padding:4px;">
+  <div style="background:#EDF9FF;width:100%;padding:4px;">
   <select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;" onchange="getDistrictWiseElectionResults()">
      <option value="0">Select District</option>
      <option value="152">Ahmadabad</option>
@@ -787,7 +842,7 @@ CPM</a>
 </td></tr>
 </table>
  
-  
+  </div>
 
 
 <div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
@@ -804,7 +859,7 @@ CPM</a>
 		</tr>
 		</table>
 </div>
-<br/>
+
 <div id="genderInfoDiv">
 <div id="genderAnalysisDiv"></div></div>
 
@@ -1005,7 +1060,7 @@ function buildImportantCnadidatesData(results){
 	}
 var str='';
 
-alert("11");
+
     str+='<div class="span12" style="border:1px solid #c3c3c3;">';
 
 	if(results.length == 0){
@@ -1181,9 +1236,9 @@ function getImportantCandidatesInfo()
 
  function showDetails(){
 
-	 $('#showLink').css('display','none');
-	 $('#hideLink').css('display','block');
-	 $('#refreshDiv').css('display','block');
+	 $('#showLink').hide();
+	 $('#hideLink').show();
+	 $('#refreshDiv').show();
 
 
 	 $('.importantPersonsDivClass').show();
@@ -1191,9 +1246,9 @@ function getImportantCandidatesInfo()
  }
  function hideDetails(){
 
-	$('#showLink').css('display','block');
-	$('#hideLink').css('display','none');
-	$('#refreshDiv').css('display','none');
+	$('#showLink').show();
+	$('#hideLink').hide();
+	$('#refreshDiv').hide();
 
 	$('.importantPersonsDivClass').hide('slow');
 
