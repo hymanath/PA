@@ -21,5 +21,7 @@ public interface ICandidateSubscriptionsDAO extends GenericDao<CandidateSubscrip
 	
 	public List<Object[]> getAllCandidates();
 	
+	public List<Long> getAllCandidatesSubscribedByUser(Long userId);
+	
 
 }
