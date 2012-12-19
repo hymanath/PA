@@ -41,7 +41,7 @@ public class CandidateSubscriptionsDAO extends GenericDaoHibernate<CandidateSubs
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllSubscriberDetails(){
-		return getHibernateTemplate().find("select model.candidate.candidateId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName from CandidateSubscriptions model");
+		return getHibernateTemplate().find("select model.candidate.candidateId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName from CandidateSubscriptions model where model.user.email is not null");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -52,5 +52,9 @@ public class CandidateSubscriptionsDAO extends GenericDaoHibernate<CandidateSubs
 	
 	public List<Object[]> getAllCandidates(){
 		return getHibernateTemplate().find("select distinct model.candidate.candidateId, model.candidate.lastname from CandidateSubscriptions model ");
+	}
+	
+	public List<Long> getAllCandidatesSubscribedByUser(Long userId){
+		return getHibernateTemplate().find("select model.candidate.candidateId from CandidateSubscriptions model where model.user.userId = ?",userId);	
 	}
 }

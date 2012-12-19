@@ -41,7 +41,7 @@ public class SpecialPageSubscriptionsDAO extends GenericDaoHibernate<SpecialPage
 	}
 	
 	public List<Object[]> getAllSubscriberDetails(){
-		return getHibernateTemplate().find("select model.specialpage.specialPageId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName,model.specialpage.name from SpecialPageSubscriptions model");
+		return getHibernateTemplate().find("select model.specialpage.specialPageId,model.user.email,model.user.userId,model.user.firstName,model.user.lastName,model.specialpage.name from SpecialPageSubscriptions model where model.user.email is not null");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -63,5 +63,8 @@ public class SpecialPageSubscriptionsDAO extends GenericDaoHibernate<SpecialPage
 	public List<Object[]> getAllSpecialPages(){
 		return getHibernateTemplate().find("select distinct model.specialpage.specialPageId,model.specialpage.name from SpecialPageSubscriptions model ");
 	
+	}
+	public List<Long> getAllSpecialPagesSubscribedByUser(Long userId){
+		return getHibernateTemplate().find("select model.specialpage.specialPageId from SpecialPageSubscriptions model where model.user.userId = ?",userId);	
 	}
 }
