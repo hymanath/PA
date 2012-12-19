@@ -8,9 +8,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="js/cleditor/jquery.cleditor.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="css/cleditor/jquery.cleditor.css">
 
 <script type="text/javascript">
+
+ $(document).ready(function() {
+        $("#description").cleditor();
+      });
 
 
 function getPublicationDates()
@@ -82,6 +89,53 @@ getPublicationDates();
 <s:if test="#session.USER !=null">
 <s:if test="#session.USER.isAdmin == 'true'">
 <s:form action="voterDataUploadAction" method="POST" enctype="multipart/form-data">
+
+
+ <select id="specialPage">
+<option value="1">SpecialPage1</option>
+<option value="2">SpecialPage2</option>
+<option value="3">SpecialPage3</option>
+<option value="4">SpecialPage4</option>
+<option value="5">SpecialPage5</option>
+ </select>
+ <textarea id="description" style="width:618px;height:92px;margin:2px 0px 0px 20px;" class='jbDscrptnReq' placeholder="Enter job description here...."></textarea>
+
+ <input type="button" class="btn btn-success" value="Test" onClick="saveTextForSpecialPage();"/>
+
+<script>
+var specialPageText={
+	id:'',
+   text:''
+};
+
+function saveTextForSpecialPage(){
+
+	specialPageText.id = $('#specialPage').val();
+	specialPageText.text = $('#description').val();
+
+	$.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	});
+
+	$.ajax({
+		type:'POST',
+		url: 'saveSpecialPageTextAction',
+		dataType: 'json',
+		data: {specialPageText:JSON.stringify(specialPageText)},
+		success: function(data){
+			
+			console.log(data);
+			
+		},
+		error:function() { 
+			alert("failure");
+			
+		}
+	});
+}
+ </script>
+
 	<h3>Voter Data Upload</h3>
 	<table border="1">
 		<tr>
