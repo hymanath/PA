@@ -204,7 +204,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		dateObj.monthVal = date.getMonth();
 		dateObj.yearVal = date.getFullYear();
 		var nameOfMonth = monthname[month];
-		$('#headerDiv').html('<b><font color="cyan">'+year+' '+nameOfMonth+'</font> Month Importent Dates</b>');
+		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 		var jsObj={
 					monthVal:month,
 					yearval:year,
