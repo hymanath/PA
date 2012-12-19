@@ -57,6 +57,40 @@
     text-align: justify;margin-top:8px;padding-bottom: 10px; display: table;}
 	.voterLinksCls span{font-family:arial;font-size:12px;line-height:1.5em;}
 	.voterLinksCls p a{float:right;}
+
+.hglgts {
+   text-align: left;
+    width: 880px;
+	float :left;
+}
+
+.hglgts li {
+    -moz-font-feature-settings: normal;
+    -moz-font-language-override: normal;
+    -x-system-font: none;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    /*background-image:url("images/icons/diamond.png");*/
+    background-origin: padding-box;
+    background-position: 0 12px;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    color: #333333;
+    font-family: verdana;
+    font-size: 13px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+   /* line-height: 1.5em;*/
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    margin-bottom: 15px;
+    padding-left: 15px;
+}
 </style>
 
 <div>
@@ -78,53 +112,87 @@
 
 <span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b>. <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b> Total Constituencies 68ACs Date of Poll in 4.11.2012 and Counting of Votes in 20.12.2012.</span><br /><br />
 
-<!--<center>
-<table border="2" cellpadding="5" >
+<div id="specialPageHighLight"  style="margin-left: 11px;
+    width: 900px;"></div>
+
+<div id="ExitPoll" style="display:table;margin-left: 11px;">
+
+<div style="width:450px;display:table-cell;">
+<span style="font-weight:bold;background:#D2E888;padding:4px;-moz-border-radius: 3px;">Himachal Pradesh Exit Polls</span>
+<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px; width:99%;">
+
 <tr>
-<th>Poll Event</th>
-<th>Dates</th>
+<th>Source</th>
+<th>BJP</th>
+<th>CONG+</th>
+<th>GPP/OTHERS</th>
 </tr>
 <tr>
-<td>Issue of Notification</td>
-<td><center>10.10.2012 <br>
-(Wednesday)</center></td>
+<td>C-VOTER</td>
+<td>27-35</td>
+<td>30-38</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>CNN-IBN</td>
+<td>30</td>
+<td>29-35</td>
+<td>-</td>
 </tr>
 <tr>
-<td>Last date for making Nominations</td>
-<td><center>17.10.2012 <br>
-(Wednesday)</center></td>
-</tr>
-<td>Scrutiny of Nominations</td>
-<td><center>18.10.2012 <br>
-(Thursday)</center></td>
+<td>CHANAKYA</td>
+<td>23</td>
+<td>40</td>
+<td>-</td>
 </tr>
 <tr>
-<td>Last date for withdrawal of
-candidature</td>
-<td><center>20.10.2012 <br>
-(Saturday)</center></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+
+</table>
+</div>
+<div style="width:450px;">
+<span style="font-weight:bold;background:#D2E888;padding:4px;-moz-border-radius: 3px;">Gujarat Exit Polls</span>
+<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;width:100%;">
+<tr>
+<th>Source</th>
+<th>BJP</th>
+<th>CONG+</th>
+<th>GPP/OTHERS</th>
 </tr>
 <tr>
-<td>Date of Poll</td>
-<td><center>04.11.2012 <br>
-((Sunday)</center></td>
+<td>C-VOTER</td>
+<td>119-129</td>
+<td>49-59</td>
+<td>-</td>
 </tr>
 <tr>
-<td>Counting of Votes</td>
-<td><center>20.12.2012 <br>
-(Thursday)</center></td>
+<td>CHANAKYA</td>
+<td>140</td>
+<td>40</td>
+<td>2</td>
+
 </tr>
 <tr>
-<td>Date before which election process
-shall be completed</td>
-<td><center>24.12.2012 <br>
-(Monday)</center></td>
+<td>ABP NEWS</td>
+<td>116</td>
+<td>60</td>
+<td>6</td>
+</tr>
+<tr>
+<td>HEAD LINES TODAY</td>
+<td>118-128</td>
+<td>50-56</td>
+<td>-</td>
 </tr>
 </table>
-</center><br><br>-->
-<!---
-<span style="font-family:verdana;font-size:13px;right:20px;color:#ED5B21;float:right;"> *All 68 ACs will go to poll on a single day</span><br>-->
-
+</div>
+</div>
+<br>
 <table width="100%" style="border-top: 1px solid rgb(221, 221, 221);">
 <tr>
 
@@ -508,6 +576,10 @@ function callAjax(jsObj,url){
 									if(jsObj.task =="getPartyGenderInfo"){
 										buildGenderCountResultsDataTable(myResults,jsObj.elecYearId);
 									}
+										else if(jsObj.task =="getHighLights")
+								{
+										buildSpecialPageHightLights(myResults);
+								}
 							}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -521,7 +593,28 @@ function callAjax(jsObj,url){
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function buildSpecialPageHightLights(results)
+{
+	
+	var str ='';
+	var specialPageHighLight = document.getElementById('specialPageHighLight');
+	if(results != null && results!='')
+	{
+	str +='<fieldset style="verdana,sans-serif;font-weight:bold;">';
+	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Himachal Pradesh HighLights</legend>';
+	str +='<div class="hglgts">';
+	for(var i in results)
+	{
+	str += '<ul><li><img src="images/icons/diamond.png"/>';
+	str += ' '+results[i].description+'</li></ul>';
+	}
+	
+	str +='</div>';
+	str +='</fieldset>';
+	}
 
+	specialPageHighLight.innerHTML = str;
+}
 function buildGenderCountResultsDataTable(myResults,elecYearId){
 	var selectedYearEle = document.getElementById(''+elecYearId+'');
 	var year = selectedYearEle.options[selectedYearEle.selectedIndex].text;
@@ -619,5 +712,21 @@ if(myResults == null)
 	document.getElementById('genderAnalysisDiv').innerHTML = str;
 
 }
+
+function getSpecialPageHighLights()
+{
+var jsObj = {
+				specialPageId:"14",
+	           
+				task:"getHighLights"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSpecialPageHighLights.action?"+param;						
+		
+	callAjax(jsObj,url);
+}
+
+
+ getSpecialPageHighLights();
 
 </script>
