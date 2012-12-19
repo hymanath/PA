@@ -1092,7 +1092,7 @@
 		<property name="userDAO" ref="userDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="specialPageDataDAO" ref="specialPageDataDAO" />
-		
+		<property name="specialPageHighlightsDAO" ref="specialPageHighlightsDAO" />
 		 
 	</bean>
 	
