@@ -863,12 +863,12 @@ function buildGujaratElectionResult(myResults)
 	var data = new google.visualization.DataTable();
 	data.addColumn('string','Area Type');
 	data.addColumn('number','Count');
-	data.addRows(myResults.electionLiveResultVOList.length-1);
+	data.addRows(myResults.electionLiveResultVOList.length);
 	
-	for(var j=1; j<myResults.electionLiveResultVOList.length; j++)
+	for(var j=0; j<myResults.electionLiveResultVOList.length; j++)
 	{
-		data.setValue(j-1,0,myResults.electionLiveResultVOList[j].partyName);
-		data.setValue(j-1,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
+		data.setValue(j,0,myResults.electionLiveResultVOList[j].partyName);
+		data.setValue(j,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
 	}
 	var chart = new google.visualization.PieChart(document.getElementById('GujaratResultGraph')); 
 	chart.draw(data,{width:400, height: 370, title:'HimachalPradesh Vidhan Sabha Election 2012 Lead/Won Chart'});
