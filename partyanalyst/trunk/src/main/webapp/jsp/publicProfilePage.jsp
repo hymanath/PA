@@ -179,6 +179,7 @@ padding:5px 20px;
     display: -moz-inline-stack;
     
     width: 85px;}
+	.TemplateCollection{display:none;}
 </style>
 </head>
 <body>
@@ -252,7 +253,7 @@ padding:5px 20px;
 					</h2>
 					<div>
 					<ul>
-				<c:forEach var="friendsDetails" items="${registrationVOList}" >
+				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
 
 					<li class="imgLi">
 						<a href="publicProfile.action?profileId=${friendsDetails.registrationID}"></a>
@@ -306,7 +307,9 @@ padding:5px 20px;
 						<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}" class="btn-info btn-small pull-right" title="${specialPages.title}">View Now</a>
 					</div>
 						</c:forEach>
-						<a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>						
+
+						 <a href="specialPageInfoAction.action" class="btn btn-primary" >View More Special Pages</a>
+						<!-- <a href="javascript:{}" class="btn btn-primary" id="specialPageLink">View More Special Pages</a> -->	
 				</div>
 				<!-- end special Pages -->
 				
@@ -336,6 +339,12 @@ padding:5px 20px;
 				</div>
 			</div>
 	</div>
+ <div class="friendListTemplate templateholder">
+	<ul>
+	<li class="imgLi"></li>
+	<li class="nameLi"></li>
+	</ul>
+ </div>
 </div>
 <script>
 
@@ -352,34 +361,17 @@ loginUserProfilePic = '${loginUserProfilePic}';
 connetLocationId = constituencyId;
 userType = '${UserType}';
 
-<c:forEach var="status" varStatus="stat" items="${messageTypes.messageTypes}">
-			var obj =	{
-							id:'${status.id}',
-							name:'${status.name}'
-						};
-			connectStatus.push(obj);
-</c:forEach>
-<c:forEach var="constituency" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
-			var obj =	{
-							id:'${constituency.constituencyId}',
-							name:'${constituency.constituencyName}'
-						};
-			constituencies.push(obj);
-		</c:forEach>
-		buildPolls();
-		
-		
-	
-				<c:forEach var="friendsDtls" items="${registrationVOList}" >
+buildPolls();
 
-					var obj1 =	{
-							id:'${friendsDtls.registrationID}',
-							profilePic:'${friendsDtls.userProfilePic}',
-							firstName:'${friendsDtls.firstName}',
-							lastName:'${friendsDtls.lastName}',
-						};
-						friendsInPP.push(obj1);
-				</c:forEach>
+ <c:forEach var="friendsDtls" items="${registrationVOList}" >
+		var obj = {
+					 id:'${friendsDtls.registrationID}',
+					 profilePic:'${friendsDtls.userProfilePic}',
+					 firstName:'${friendsDtls.firstName}',
+					 lastName:'${friendsDtls.lastName}',
+					};
+				friendsInPP.push(obj);
+  </c:forEach>
 </script>
 </body>
 </html>
