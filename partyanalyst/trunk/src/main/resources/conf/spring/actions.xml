@@ -1014,4 +1014,8 @@
 		
 	</bean>
 	
+	<bean id="userSocialNetworkSiteAction" class="com.itgrids.partyanalyst.web.action.UserSocialNetworkSiteAction" singleton="false">
+		<property name="userSocialNetworkSiteService" ref="userSocialNetworkSiteService" />
+	</bean>	
+	
 </beans>	
