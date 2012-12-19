@@ -52,6 +52,12 @@
 {
 	text-decoration: none;
 }
+.pft-sec{ border: 1px solid #DDDDDD;padding-left: 10px;padding-right: 5px;padding-bottom: 65px;}
+.voterLinksCls{clear: both; padding-right: 6px;}
+.voterLinksCls p{padding:0px;font-size: 13px;
+    text-align: justify;margin-top:8px;padding-bottom: 10px; display: table;}
+	.voterLinksCls span{font-family:arial;font-size:12px;line-height:1.5em;}
+	.voterLinksCls p a{float:right;}
 </style>
 
 <div>
@@ -202,17 +208,40 @@ shall be completed</td>
 		</tr>
 
 	</table>
-	<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
 
-	<span class="gray">Are you a</span>
-	<strong>Politician
-	<span class="orange">/</span>Political Party
-	<span class="orange">/</span>Media...</strong> Want to know how you can be benefited with 
-	<span class="orange">PartyAnalyst</span> 
-	<div class="clear"></div>
-	<div class="clickhere-button">
-	<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
-	</div>
+	<table style="border:1px solid #D2E888; margin-top: 12px; width: 98%; margin-left: 8px;">
+	<tr>
+	<td style="display: table;">
+		<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
+
+		<span class="gray">Are you a</span>
+		<strong>Politician
+		<span class="orange">/</span>Political Party
+		<span class="orange">/</span>Media...</strong> Want to know how you can be benefited	with 
+		<span class="orange">PartyAnalyst</span> 
+		<div class="clear"></div>
+		<div class="clickhere-button">
+		<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
+		</div>
+		</td>
+		<td style="vertical-align: top;">
+		<div class="voterLinksCls">
+		
+		<p style="border-bottom:1px solid #ddd;padding-bottom: 10px;">
+			<span>The Right To <font style="font-weight:bold;">VOTE</font> is the Foundation Of Democracy. Your Vote is your Voice.Don't lose your Voice.</span>
+		   <a style="margin-top: 5px;" class="btn btn-primary" href="voters.action">Voter's Guide</a></p>
+		
+		 <p style="border-bottom:1px solid #ddd;padding-bottom: 10px;"> 
+		 <span><font style="font-weight:bold;">Voters Pulse</font>
+		 Now You can drive your survey's through Party Analyst.</span><br>
+		   <a style="" href="VotersPulse.action" class="btn btn-success">View Now</a></p>
+
+		   <p >
+		<span>You've come to the Right Place! The New Party Analyst.</span><br>
+		  <a alt="Explore About PartyAnalyst Image" style="margin-top: -10px;" class="btn btn-warning inline" href="viewFeaturesAction.action">Explore!</a></p>
+		</div>
+		</td>
+		</tr></table>
 
 </td>
 
