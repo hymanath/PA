@@ -30,6 +30,7 @@ public class SpecialPageDescriptionDAO extends GenericDaoHibernate<SpecialPageDe
 		queryObject.setParameter(0,specialPageDescriptionId);
 		return queryObject.executeUpdate();
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object> getMaxOrderNo(Long specialPageId)
 	{
 		return getHibernateTemplate().find("select max(model.orderNo) from SpecialPageDescription model where model.specialPage.specialPageId=?",specialPageId);
