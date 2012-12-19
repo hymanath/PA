@@ -109,8 +109,38 @@
    overflow: visible;
     padding:0px;
 }
+
+.election-resulthome{margin-bottom: 6px;}
+.election-resulthome h1{font-size:20px;text-align:center;}
+.election-resulthome img{margin-bottom: 12px; margin-left: 0px;vertical-align:middle;}
+.election-resulthome .btn-mini a{text-decoration:none;}
+.election-resulthome .btn-mini a:hover{text-decoration:none;}
 			</style>
 <div class="container m-top15">
+
+<!-- 2012 Election Results -->
+<div style="margin-bottom: 6px;" class="row-fluid election-resulthome">
+<div class="span6  btn btn-inverse" style="margin-left: 0px;">
+<h1 style="font-size:20px;text-align:center;">Gujarat Elections - Live Results</h1>
+<img width="300px" height="125px" src="uploaded_files/special_page_profile/13/img.jpg" class="span5" style="margin-bottom: 12px; margin-left: 0px;vertical-align:middle" alt="Gujarath 2012 Elections Image">
+<div class="span7 btn btn-inverse"> 
+The most awaiting Gujarat 2012 Election Live Result updates through Party Analyst.
+<h5 class="btn btn-mini"><a href="specialPageAction.action?specialPageId=13" title="Gujarat 2012 Election Live Result">Click Here To See Live Updates</a></h5>
+</div></div>
+
+<div class="span6  btn btn-inverse" style="margin-left: 20px;">
+<h1 style="font-size:20px;text-align:center;">Himachal Pradesh Elections - Live Results</h1>
+<img width="200px" height="85px" src="uploaded_files/special_page_profile/14/img.jpg" class="span5" style="margin-bottom: 12px; margin-left: 0px;" alt="Gujarath 2012 Elections Image">
+
+<div class="span7 btn btn-inverse"> 
+Interesting news, who will win in new constituencies in Himachal Pradesh 2012 Election?
+<h5 class="btn btn-mini"><a href="specialPageAction.action?specialPageId=14" title="Gujarat 2012 Election Live Result">Click Here To See Live Updates</a></h5>
+</div></div>
+
+
+</div>
+<!-- 2012 Election Results -->
+
 		<div class="row-fluid">
 			
 		<!--------left div------->
@@ -160,7 +190,7 @@ Quick Links</h2>
 									</tbody>
 								</table>
 								
-								    <button class="btn btn-success pull-right" type="button" onclick="viewElectionResults()">Go</button>
+								    <button class="btn btn-success btn-small pull-right" type="button" onclick="viewElectionResults()">Go</button>
 								
 							</div>
 					<!---------------->
@@ -171,7 +201,7 @@ Quick Links</h2>
 								<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
 								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
 								
-								<button class="btn btn-success clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
+								<button class="btn btn-success btn-small clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
 										
 							</div>
 						<!----View Your district------>
@@ -183,7 +213,7 @@ Quick Links</h2>
                                      <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
 									     <br>
 									   <a onclick="navigateToDistrictPage()" href="javascript:{}">
-									     <button class="btn btn-success pull-right" type="button">Go</button>
+									     <button class="btn btn-success btn-small pull-right" type="button">Go</button>
 									   </a>
 								    
 							</div>
@@ -216,7 +246,7 @@ Quick Links</h2>
 									</tr>
 								</table>
 								
-								<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
+								<button class="btn btn-success btn-small pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
 							</div>
 							
 							<!--View your Locality-->
@@ -259,7 +289,7 @@ Quick Links</h2>
 									</table>
 								</div>
 								  
-								<button class="btn btn-success pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
+								<button class="btn btn-success btn-small pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
 								  
 							</div>	
 							
