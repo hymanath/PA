@@ -1187,10 +1187,32 @@
     	<property name="cronExpression" value="0 0 14 * * ?" />
 	</bean>
 	
+	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="partyCandidateSpecialPageScheduleService" />
+	  	<property name="targetMethod" value="sendUpdates" />
+	</bean>
+	
+	<bean name="cronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayBatchJobForUpdates" />
+    	<property name="cronExpression" value="00 00 13 * * ?" />
+	</bean>
+	
+	<bean name="everyDaySecondBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="partyCandidateSpecialPageScheduleService" />
+	  	<property name="targetMethod" value="sendUpdates" />
+	</bean>
+	
+	<bean name="secondCronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDaySecondBatchJobForUpdates" />
+    	<property name="cronExpression" value="00 00 02 * * ?" />
+	</bean>
+	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
             <ref bean="cronTriggerForEveryDayJob" />
+            <ref bean="cronTriggerForUpdates" />
+            <ref bean="secondCronTriggerForUpdates" />
         </list>
     	</property>
 	</bean>
@@ -1203,6 +1225,8 @@
 		<property name="mailService" ref="mailService" />
 		<property name="mailsTemplateService" ref="mailsTemplateService" />
 		<property name="velocityEngine" ref="velocityEngine" />
+		<property name="jobRunDetailsDAO" ref="jobRunDetailsDAO" />
+		<property name="jobDAO" ref="jobDAO" />
 	</bean>
 	
 	<bean name="sendUpdatesService" class="com.itgrids.partyanalyst.service.impl.SendUpdatesService">
@@ -1297,6 +1321,12 @@
 	    <property name="velocityEngine" ref="velocityEngine"></property>
 		<property name="templateVM" value="test.vm"></property>
 		<property name="mailService" ref="mailService" />	
+	</bean>
+	<bean name="userProfileService" class="com.itgrids.partyanalyst.service.impl.UserProfileService">
+    	<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
+		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO" />
+		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO" />
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 	</bean>
 	
 </beans>		
