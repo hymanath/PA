@@ -5318,9 +5318,9 @@ function addSpecialPageHighLights()
 		$('#specPagehighLightsErrorMsgDivId').addClass('specPagehighLightsErrorMsgDivId').html('Description is Required.');
 		return;
 	}
-	else if(description.length > 200)
+	else if(description.length > 2000)
 	{
-		$('#specPagehighLightsErrorMsgDivId').addClass('specPagehighLightsErrorMsgDivId').html('Description should be less than 200 characters.');
+		$('#specPagehighLightsErrorMsgDivId').addClass('specPagehighLightsErrorMsgDivId').html('Description should be less than 2000 characters.');
 		return;
 	}
 	var jsObj =
