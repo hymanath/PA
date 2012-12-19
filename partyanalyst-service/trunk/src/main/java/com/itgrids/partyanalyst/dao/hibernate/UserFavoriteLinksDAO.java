@@ -38,13 +38,12 @@ public class UserFavoriteLinksDAO  extends GenericDaoHibernate<UserFavoriteLinks
 	}
 	
 	
-	public List<UserFavoriteLinks> checkForAlreadyExistedOrNot(String url){
+	public List<UserFavoriteLinks> checkForAlreadyExistedOrNot(Long userId,String url){
 		
-		Query query = getSession().createQuery("select model from UserFavoriteLinks model where model.url = ?");
+		Query query = getSession().createQuery("select model from UserFavoriteLinks model where model.url = ? and model.user.userId = ?");
 		
 		query.setParameter(0, url);
-
-		
+		query.setParameter(1, userId);
 		return query.list();
 		
 	}

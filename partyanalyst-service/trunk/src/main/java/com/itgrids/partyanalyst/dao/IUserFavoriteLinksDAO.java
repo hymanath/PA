@@ -12,6 +12,5 @@ public interface IUserFavoriteLinksDAO extends GenericDao<UserFavoriteLinks, Lon
 	
 	public int deleteUserFavouritelinkById(Long linkId);
 	
-	public List<UserFavoriteLinks> checkForAlreadyExistedOrNot(String url);
-
+	public List<UserFavoriteLinks> checkForAlreadyExistedOrNot(Long userId,String url);
 }
