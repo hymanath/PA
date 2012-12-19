@@ -55,8 +55,15 @@
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 <link href='http://fonts.googleapis.com/css?family=Asap' rel='stylesheet' type='text/css'>
+<LINK rel="stylesheet" type="text/css" href="styles/jqueryDataTable/css/datatable.css">
 
+<!--<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.columnFilter.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+-->
 
+        <script src="js/jqueryDataTable/jquery.dataTables.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.columnFilter.js"></script>
 <style>
 .yui-skin-sam .yui-dt caption{
 	background:#a3a3a3;
@@ -256,7 +263,12 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
     padding: 5px;
     width: 610px;
 }
-
+#wonCandidatesTable tr:nth-child(even){
+ background:#EDF5FF;
+}
+#wonCandidatesTable tr:nth-child(odd){
+ background:#FFFFFF;
+}
 #ConstituecyAreaTypeSelectOptionsDiv
 {
 	background: none repeat scroll 0 0 #EBE4F2;
@@ -267,9 +279,88 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
     padding: 5px;
     width: 610px;
 }
+.text_filter{
+   width:120px;
+}
+.number_filter{
+  width:90px;
+}
+#wonCandidatesTableSearch th,#wonCandidatesTablefooter th{
+    background-color: #C4DEFF;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    text-align: center;
+}
 
+#wonCandidatesTableSearch th{
+  cursor:pointer;
+}
+   table.dataTable thead th {
+    border-bottom-color: black;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    cursor: pointer;
+    font-weight: bold;
+}
+ #wonCandidatesTableDiv{
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+	border-bottom: 1px solid #d3d3d3;
+    color: #606060;
+    width: 998px;
+	padding-bottom: 30px;
+	margin-bottom:5px;
+	background:#f5f5f5;
+	font-family: arial;
+    font-size: 13px;
+}
+ #wonCandidatesTable_wrapper{
+   padding-top:10px;
+ }
+.textalignclass{
+  text-align:center;
+}
+.search_init{
+  color:#d3d3d3 !important;
+}
+#wonCandidatesTable{
+  margin-left:auto;
+  margin-right:auto;
+}
+#overallDataTable{
+   margin-left: 60px;
+    margin-top: 19px;
+}
 </style>
 <SCRIPT type="text/javascript">
+$(document).ready(function(){
+	  $('#wonCandidatesTable').dataTable({
+		"aLengthMenu": [[15,50,100,200, -1], [15, 50,100,200,"All"]]
+	})
+		  .columnFilter({ 	sPlaceHolder: "head:before",
+		  	
+			aoColumns: [ { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "number"},
+				         { type: "number"},
+						 { type: "number"},
+						 { type: "number"},
+						 { type: "number"}
+						 
+				]
+
+		});
+	    <c:if test="${loginStatus ==null && sessionScope.USER == null}">
+		  $("#partyperformance").html("");
+		</c:if>
+});
+
 var electionId = '${electionId}';
 var electionType = '${electionType}';
 var stateID =  '${stateID}' ;
@@ -1635,6 +1726,9 @@ function showPartywiseDetailsDataTable(results)
 		str +='	<tr>';
 		str +='		<th style="background-color : #C4DEFF">Year</th>';
 		str +='		<th style="background-color : #C4DEFF">Total Seats</th>';
+		str +='		<th style="background-color : #C4DEFF">General</th>';
+		str +='		<th style="background-color : #C4DEFF">SC</th>';
+		str +='		<th style="background-color : #C4DEFF">ST</th>';
 		str +='		<th style="background-color : #C4DEFF">Total Votes</th> ';
 		str +='		<th style="background-color : #C4DEFF">Total Polled Votes</th> ';
 		str +='		<th style="background-color : #C4DEFF">Voting Percentage </th> ';
@@ -1643,6 +1737,9 @@ function showPartywiseDetailsDataTable(results)
 		str +='	<tr>';
 		str +='		<th style="background-color:#C4DEFF">'+results.electionBasicVotersData[0].partyName+'</th>';
 		str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalSeatsParticipated+'</td>';
+		str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].generalCount+'</td>';
+		str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].scCoutn+'</td>';
+		str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].stCount+'</td>';
 		str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalVotesForState+'</td>';
 		str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalPolledVotesForState+'</td>';
 		str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalVotingPercentageForState+'%</td>';
@@ -1653,6 +1750,9 @@ function showPartywiseDetailsDataTable(results)
 			str +='	<tr>';
 			str +='		<th style="background-color:#C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
 			str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalSeatsParticipated+'</td>';
+		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].generalCount+'</td>';
+		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].scCoutn+'</td>';
+		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].stCount+'</td>';			
 			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalVotesForState+'</td>';
 			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalPolledVotesForState+'</td>';
 			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalVotingPercentageForState+'%</td>';
@@ -1769,7 +1869,32 @@ function showPartyResultsWithoutAlliance(chartId)
 
 function buildPartywiseResultsDataTable(divId,dtSourceArray)
 {	
+    <c:if test="${hasDeatiledAnalysis == false}">
+	  if(divId == "partywiseResultsDataTable" && dtSourceArray != null && dtSourceArray.length > 0 && document.getElementById("overallDataTable") != null){
+	     
+	       var data = new google.visualization.DataTable();
+           data.addColumn('string', 'type');
+           data.addColumn('number', 'value');
+		   data.addRows(dtSourceArray.length);
+		 for(var i = 0 ; i< dtSourceArray.length ; i++){
+		   var name = dtSourceArray[i].party;
+		   var val = parseInt(dtSourceArray[i].seatsWon);
+		  data.setValue(i,0,name);
+		  data.setValue(i,1,val);
+		}
+        
+        // Set chart options
+		var title =  "Partywise seats sharing chart "; 
+        var options = {'title':title,
+                       'width':410,
+                       'height':250};
+
+		 
+        var chart = new google.visualization.PieChart(document.getElementById("overallDataTable"));
+        chart.draw(data, options);
 	
+	  }
+	</c:if>
 	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var Party = oRecord.getData("party");
@@ -3361,7 +3486,7 @@ function removeOptionSelected()
 <div id="registerDiv" style="position:fixed;width:159px;z-index:9999;margin-top:-93px;margin-left:152px;background-color:#F9F9F9;color:#000;padding:5px;cursor:pointer;border:2px solid #06ABEA">
 <a href="javaScript:hideRegisterDiv();" style="float: right;"><b>(X)</b></a>
 <a 
-href="freeUserRegistration.action"><b>Register</b>  </a>for free to view detailed 
+href="freeUserRegistration.action"><b>Register</b>  </a>for free to view more details like 
 election results 
 
 <c:if test="${electionGoverningBodyVO.electionType == 'Assembly'}">
@@ -3371,7 +3496,7 @@ district
 <c:if test="${electionGoverningBodyVO.electionType != 'Assembly'}">
 state
 </c:if>
-wise. 
+wise etc. 
 
 </div>
 </c:if>
@@ -3791,6 +3916,9 @@ function navigateToMinisterPage(){
 			<!--<c:if test="${electionType == 'Assembly'}"> 
 			    <TD valign="top"><DIV id="allianceResultsDataTable"></DIV></TD>
 			</c:if>-->
+			<c:if test="${!hasDeatiledAnalysis}">
+			   <TD><DIV id="overallDataTable"></DIV></TD>
+			</c:if>
 		</TR>
 		<TR>
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
@@ -3970,6 +4098,82 @@ function navigateToMinisterPage(){
 </c:if>
 </div>
 </DIV>
+<c:if test="${electionType == 'Assembly' || electionType == 'Parliament'}">
+ <s:if test="wonCandidateResults != null && wonCandidateResults.size() > 0">
+  <div style="width:980px;margin-left:auto;margin-right:auto;">
+ <DIV class="graphTop" style="text-align: center;"> Winning Candidates in ${year} 
+   <c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;</c:if>&nbsp;${electionType}&nbsp;Elections</DIV>
+  <div id="wonCandidatesTableDiv" >
+    
+	  <table id="wonCandidatesTable">
+	     <thead>
+		  <tr id="wonCandidatesTableSearch">
+		   <th>Constituency</th>
+		   <th>Candidate</th>
+		   <th>Party</th> 
+		   <th>Total Voters</th>
+		   <th>Polled Votes</th>
+		   <th>Polled Votes %</th>
+		   <th>Votes Gained</th>
+		   <th>Votes Gained %</th>
+<!--		   <th>Margin</th>
+		   <th>Margin %</th>-->
+		  </tr>
+		  <tr id="wonCandidatesTablehead">
+		   <th>Constituency</th>
+		   <th>Candidate</th>
+		   <th>Party</th> 
+		   <th>Total Voters</th>
+		   <th>Polled Votes</th>
+		   <th>Polled Votes %</th>
+		   <th>Votes Gained</th>
+		   <th>Votes Gained %</th>
+<!--		   <th>Margin</th>
+		   <th>Margin %</th>-->
+		  </tr>
+		 </thead>
+		 
+		 <tbody>
+		  <s:iterator value="wonCandidateResults" var="candidatesresults">
+		   <tr> 
+		      <td><a href='constituencyPageAction.action?constituencyId=<s:property value="constituencyId"/>'><s:property value="constituencyName"/></a></td>
+			  <td><a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>'><s:property value="candidateName"/></a></td>
+			  <c:if test="${candidatesresults.partyName != 'IND'}">
+			    <td class="textalignclass"><a href='partyPageAction.action?partyId=<s:property value="partyId"/>' ><s:property value="partyName"/></a></td>
+			  </c:if>
+			  <c:if test="${candidatesresults.partyName == 'IND'}">
+			    <td class="textalignclass"><s:property value="partyName"/></td>
+			  </c:if>
+			  <td class="textalignclass"><s:property value="totalVotes"/></td>
+			  <td class="textalignclass"><s:property value="polledVotes"/></td>
+			  <td class="textalignclass"><s:property value="votesPercentage"/></td>
+			  <td class="textalignclass"><s:property value="votesEarned"/></td>
+			  <td class="textalignclass"><s:property value="votesPercentageBySecond"/></td>
+<!--			  <td class="textalignclass"><s:property value="marginVotes"/></td>
+			  <td class="textalignclass"><s:property value="marginPercent"/></td>-->
+		   </tr>
+		  </s:iterator>
+		 </tbody>
+		 <tfoot>
+		  <tr  id="wonCandidatesTablefooter">
+		   <th>Constituency</th>
+		   <th>Candidate</th>
+		   <th>Party</th> 
+		   <th>Total Voters</th>
+		   <th>Polled Votes</th>
+		   <th>Polled Votes %</th>
+		   <th>Votes Gained</th>
+		   <th>Votes Gained %</th>
+<!--		   <th>Margin</th>
+		   <th>Margin %</th> -->
+		  </tr>
+		 </tfoot>
+	  </table>
+  </div>
+  <DIV class="graphBottom"></DIV>
+   </div>
+ </s:if>
+</c:if>
 <div id="accessDiv" style="display:none"></div>
 <div class="clear"></div>
 <DIV id="analysisToolsDataDiv">
@@ -4118,7 +4322,6 @@ function navigateToMinisterPage(){
 </DIV>
 <DIV id="task10"></DIV>
 <div id="regionAccessDiv" style="display:none;"></div>
-
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 //alert(<%=session.getAttribute("USER")%>);

@@ -65,6 +65,24 @@ margin:8px 9px 0px 0px;
 
 
 	.politicalReasAddLink{margin-left: 200px; margin-right: 26px; margin-bottom: 10px;}
+.subscriptionsMain{
+display:inline-block;
+    height: auto;
+    padding: 8px 20px;
+	margin:5px -11px;
+    width: 96%;
+	
+	background:#f2f2f2; 
+
+	transition: all 0.4s ease-in-out 0s;
+}
+
+.subscriptionsImgTitleDescDiv {width:100%;background:#fafafa;display:inline-block;padding:5px;margin:5px;}
+.subscriptionsHeaderTitleDiv{margin-left:-5px;}
+.subscriptionsHeaderTitleDiv .span2{width:60px;}
+.subscriptionsHeaderTitleDiv .date-span{font-style:italic;font-size:11px;text-transform:Capitalize;color:#999;text-align:right;}
+ .activity-name{padding-left:5px;  color: #777777;}
+ .activity-title h5{font-size:13px;}
 </style>
 </head>
 <body>
@@ -112,7 +130,7 @@ margin:8px 9px 0px 0px;
 								
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
 					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
-					<li class="active"><a href="javascript:{}" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
+					<li class="active"><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
 					<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
 					<li><a href="javascript:{}" id="requestLink"><i class="icon-retweet"></i><i class="icon-chevron-right"></i> Requests</a></li>
@@ -155,8 +173,15 @@ margin:8px 9px 0px 0px;
 		<!--------Center div------>
 			<div class="span6 centerSpan6">
 				<div class="widget green" id="MyProfileActions">
-				<div id="fLinks"></div>
-				<div id="headerDiv" class="whitegloss"></div>
+				        <div id="subscriptionsStreamingMain">
+				           <div id="subscriptionsStreamingData">
+
+				           </div>
+				           <div id="subscriptionsStreamingMoreDiv"><input type="button" value="More" id="subscriptionsStreamingMore" class="btn"/></div>
+				        </div>
+				
+				        <div id="fLinks"></div>
+				        <div id="headerDiv" class="whitegloss"></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
@@ -333,7 +358,39 @@ margin:8px 9px 0px 0px;
 
 <!-- Templates -->
 <div class="TemplateCollection">
-
+    
+     <div class="subscriptionsMainTemplate subscriptionsMain">
+    	   <div class="subscriptionsHeaderTitleDiv">
+    		   <div class="span2 thumbnail">
+    				<img src="images/new_homepage/logo.png" style="width:50px;height:50px;vertical-align:bottom;" class="img-rounded"/>
+    		   </div>
+    		   <div class="span10">
+    				   <span class="span9 activity-name">
+    						<h6><span class="subscriptionsHeaderTitle"/></h6>
+    				   </span>
+    					<span class="span3 pull-right date-span">
+    						<span class="subscriptionsDateDiff"></span>
+    					</span>
+    	   
+    	   
+    				   <div class="subscriptionsImgTitleDescDiv">
+    					  <span class="subscriptionsFileImgDiv span4">
+    						 
+    					  </span>
+    					  
+    					 <span class="subscriptionsDescDiv span8">
+    						  <span class="activity-title">
+    						 
+    						  </span>
+    						  <span>
+    						   <p><span class="subscriptionsDescription"/></p>
+    						  </span>
+    					  </span>
+    				   </div>
+    	   </div>
+       </div>
+     </div>
+    
 	<div class="templateDiv templateholder templatePersons">
 			
 			<div class="imgClass span3 thumbnail"></div>
@@ -448,7 +505,7 @@ margin:8px 9px 0px 0px;
 
 <script>
 
-
+getInitialUpdates();
 
 districtId = '${dataTransferVO.districtId}';
 districtName = '${dataTransferVO.districtName}';
