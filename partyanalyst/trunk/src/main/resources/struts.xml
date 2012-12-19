@@ -3992,6 +3992,11 @@
 		
 		</action>
 		
+		<action name="getDistrictWiseLiveResultsAction" class="electionLiveResultsAnalysisAction" method="getDistrictWiseLiveResults">
+		    <result type="json" name="success">
+			 <param name="root">districtWiseResults</param>			
+			</result>
 		
+		</action>
 			</package>
 </struts>      
