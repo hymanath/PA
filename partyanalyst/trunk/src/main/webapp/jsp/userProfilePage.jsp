@@ -112,7 +112,7 @@ display:inline-block;
  #prblmCommentShare .commentCls a{text-decoration:none;}
  #prblmCommentShare .shareCls a{text-decoration:none;}
  
- .prblmsHeader span{width:25%;float:left;padding:15px;}
+ .prblmsHeader .APSpan{width:25%;float:left;padding:15px;}
 </style>
 </head>
 <body>
