@@ -346,7 +346,7 @@ Quick Links</h2>
 										</a>-->
 										
 										<c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="Thumbs/Medium/${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
@@ -359,7 +359,7 @@ Quick Links</h2>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="Thumbs/Medium/${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
@@ -371,7 +371,7 @@ Quick Links</h2>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
 										<c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="Thumbs/Medium/${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
@@ -421,7 +421,7 @@ Quick Links</h2>
 					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'  style="width:320px;">
 			        </s:if>
-		            <img src='Thumbs/Large/<s:property value="pathOfFile"/>' width="320px" style="width:320px;height:240px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+		            <img src='<s:property value="pathOfFile"/>' width="320px" style="width:320px;height:240px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
 				  </li>
 			    
 			  </s:iterator>
@@ -433,7 +433,7 @@ Quick Links</h2>
 			 <s:if test="resultMap != null && resultMap.size() > 0">
 			  <s:iterator value="resultMap.photogallary" var="photogallaryDetails">
 				<a href="#">
-		            <img src='Thumbs/Small/<s:property value="pathOfFile"/>' style="width:96px;height:72px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+		            <img src='<s:property value="pathOfFile"/>' style="width:96px;height:72px;" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
 				 
 
 			    </s:iterator>
