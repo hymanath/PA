@@ -107,8 +107,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	public void setCoverImg(String coverImg) {
 		this.coverImg = coverImg;
 	}
-
-	public IThumbnailService getThumbnailService() {
+    
+   	public IThumbnailService getThumbnailService() {
    		return thumbnailService;
    	}
 
@@ -918,8 +918,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	
 	public String uploadUserPic()
 	{
-		requestParam();
 		String coverImg= request.getParameter("coverImg");
+		
 		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -934,7 +934,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
 		 else
-			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";	
 		 }
 		 else if(coverImg != null && coverImg.equalsIgnoreCase("true"))
 		 {
@@ -1151,13 +1151,5 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 
 		return path;
 	}
-	public void requestParam()
-	{
-		
-		Enumeration e= request.getParameterNames();
-		while(e.hasMoreElements())
-		{
-			System.out.println((String)e.nextElement());
-		}
-	}
+	
 }
