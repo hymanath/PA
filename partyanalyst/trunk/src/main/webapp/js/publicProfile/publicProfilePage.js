@@ -1,34 +1,36 @@
 
+var friendsInPP = [];
 
 $("document").ready(function(){
 	
-	 $("#friendsLink").click(function(){
-		var jsObj ={
-			profileId:profileId,
-			task:"getLatestFriendsList"
-	};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getFriendsListForPublicProfileAction.action?"+rparam;						
-		callAjax1(jsObj,url);
-		
-	});
-	
 	$('.friendsInPP').click(function(){
-		//getFriendsForUser();
-		
+		$(".placeholderCenterDiv").children().remove();
+		$("#problemsDiv").children().remove();
+	
+		for(var i in friendsInPP)
+		{
+ 		   var name = friendsInPP[i].firstName+" "+friendsInPP[i].lastName;
+		   var imageStr = "pictures/profiles/"+friendsInPP[i].profilePic;
+		   var template = $(".friendListTemplate");
+		   var templateClone =  template.clone();
+		   templateClone.removeClass("friendListTemplate");
+		   templateClone.find('.nameLi').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
+		   if(friendsInPP[i].profilePic == null)
+			  templateClone.find('.imgLi').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg"/></a>');
+		   else
+			  templateClone.find('.imgLi').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
+		 templateClone.appendTo(".placeholderCenterDiv");
+	    }
 	});
 
 
 	$("#specialPageLink").click(function(){
 		
 		var jsObj ={
-			profileId:profileId,
 			task:"getSpecialPages"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getSpecialPageForPublicProfileAction.action?"+rparam;	
-		
 		callAjax1(jsObj,url);
 	});
 
@@ -45,10 +47,7 @@ function callAjax1(jsObj,url){
 					
 					results = YAHOO.lang.JSON.parse(o.responseText);
 					
-					 if(jsObj.task == "getLatestFriendsList")
-						getFriendsListForUser(results);				
-										
-					else if(jsObj.task == "getSpecialPages")
+					 if(jsObj.task == "getSpecialPages")
 					{
 						showSpecialPages(results);
 					}
@@ -68,45 +67,6 @@ function callAjax1(jsObj,url){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-
-
-
-function getFriendsListForUser(results)
-{
-	$(".placeholderCenterDiv").children().remove();
-	clearAllSubscriptionDivs();
-	if(results.resultStatusForConnectedPeople.resultCode != "0")
-	{
-		$(".templateDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
-			return;
-	}
-	else if(results.connectedPeople == "")
-	{
-		$(".templateDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
-			return;
-	}
-	
-	
-	
-	$("#headerDiv").html('You have total <span style="color:blue;">'+results.connectedPeople.length+'</span>  connections.');
-	
-	for(var i in results.connectedPeople)
-	{
-		
-		var template = $(".templateDiv");
-		var templateClone =  template.clone();
-		templateClone.removeClass("templateDiv");
-		templateClone.find('.connectedPersonName').html(''+results.connectedPeople[i].candidateName+'');
-		templateClone.find('.imgClass').html('<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
-		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
-		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
-		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
-		templateClone.appendTo(".placeholderCenterDiv");
-	}
-
-}
-
 
 function showSpecialPages(results)
 {
@@ -130,48 +90,4 @@ function showSpecialPages(results)
 	}
 }
 
-
-var friendsInPP = {
-					id:'',
-					profilePic:'',
-					firstName:'',
-					lastName:''
-					};
-					
-function getFriendsForUser()
-{
-//console.log(friendsInPP);
-
-	/*$(".placeholderCenterDiv").children().remove();
-	clearAllSubscriptionDivs();
-	if(results.resultStatusForConnectedPeople.resultCode != "0")
-	{
-		$(".templateDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
-			return;
-	}
-	else if(results.connectedPeople == "")
-	{
-		$(".templateDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
-			return;
-	}
-	
-	
-	
-	$("#headerDiv").html('You have total <span style="color:blue;">'+results.connectedPeople.length+'</span>  connections.');
-	
-	for(var i in results.connectedPeople)
-	{
-		
-		var template = $(".templateDiv");
-		var templateClone =  template.clone();
-		templateClone.removeClass("templateDiv");
-		templateClone.find('.connectedPersonName').html(''+results.connectedPeople[i].candidateName+'');
-		templateClone.find('.imgClass').html('<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
-		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
-		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
-		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>');
-		templateClone.appendTo(".placeholderCenterDiv");
-	}*/
-}
 
