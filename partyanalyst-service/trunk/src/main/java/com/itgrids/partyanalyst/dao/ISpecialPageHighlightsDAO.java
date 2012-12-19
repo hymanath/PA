@@ -10,4 +10,6 @@ import com.itgrids.partyanalyst.model.SpecialPageHighlights;
 
 	public List<Object> getMaxOrderNo(Long specialPageId);
 
+	
+	public List<Object[]> getSpecialPageHighLightsBySpecailPageId(Long specialPageId);
 }
