@@ -722,7 +722,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 				subscriptionsList = userProfileService.getPartyAnalystLatestUpdates(toDate,newToDate,user.getRegistrationID());
 			}else if(jObj.getString("type").equalsIgnoreCase("oldersubscriptions")){
 				int count = 0;
-				while(count < 10){
+				while(count < 20){
 				 if(subscriptionsList == null || subscriptionsList.size() == 0){
 				   Date fromDate = (Date)session.getAttribute("fromDate");
 				   Calendar cal = Calendar.getInstance();
