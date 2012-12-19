@@ -638,6 +638,7 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 		<property name="problemManagementReportService" ref="problemManagementReportService" />	
 		<property name="thumbnailService" ref="thumbnailService"></property>
+		<property name="specialPageService" ref="specialPageService" />
 		
 	</bean>
 	
@@ -1003,6 +1004,14 @@
 		singleton="false">
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+	</bean>
+	
+	
+	<bean id="specialPageDataUploadAction" class="com.itgrids.partyanalyst.web.action.SpecialPageDataUploadAction" singleton="false">			
+		
+		<property name="specialPageService" ref="specialPageService" />
+		<property name="specialPageDataUploadService" ref="specialPageDataUploadService"/>
+		
 	</bean>
 	
 </beans>	
