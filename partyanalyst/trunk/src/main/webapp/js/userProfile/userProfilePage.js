@@ -1061,7 +1061,7 @@ var district = false;
 		    if(results[k].favouriteLinkType == "district"){
 
 
-				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">State</span>');
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
