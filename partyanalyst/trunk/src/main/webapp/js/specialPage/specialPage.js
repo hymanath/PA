@@ -42,6 +42,9 @@ function insertProfileDiscription()
 	if(document.getElementById("photoGallaryDiv").style.display = 'block')
 		document.getElementById("photoGallaryDiv").style.display = 'none' ;
 
+	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
+
 	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
@@ -823,6 +826,8 @@ if(document.getElementById("photoGallaryDiv").style.display = 'block')
 if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
+if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
     document.getElementById("headingnames").innerHTML = "Video Gallery";
 		
@@ -1478,6 +1483,8 @@ if(document.getElementById("photoGallaryDiv").style.display = 'block')
 if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
+if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
 	//var newsGallaryDiv = document.getElementById("newsGallaryDiv");
 	document.getElementById("headingnames").innerHTML = "News Gallery";
@@ -3259,6 +3266,8 @@ function buildCreateNewDiv()
 	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
+	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
 	document.getElementById("headingnames").innerHTML = "Create New";
 	var createNewDivElmt = document.getElementById("createNewDiv");
@@ -3805,6 +3814,8 @@ function buildMetaInfoDiv()
 	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
+	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
 	document.getElementById("headingnames").innerHTML = "Meta Info";
 	var metaInfoDivElmt = document.getElementById("metaInfoDiv");
@@ -4425,6 +4436,8 @@ function showPhotoGallery()
 
 			document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
+			
+		   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
 		    document.getElementById("photoGallaryDiv").style.display = 'block' ;
 
@@ -5055,6 +5068,9 @@ var specialPageId = $("#specialPageId").val();
 	
 	if(document.getElementById("specialPageInfoDiv").style.display = 'none')
 		document.getElementById("specialPageInfoDiv").style.display = 'block';
+
+	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 	
 	var str ='';
 	document.getElementById("headingnames").innerHTML = "Manage Special Page Information";
@@ -5223,6 +5239,33 @@ divEle.innerHTML = "";
 function getSpecialPageHighlights()
 {
 	
+	if(document.getElementById('descriptionDiv').style.display = 'none')
+		document.getElementById('descriptionDiv').style.display = 'block';
+
+	if(document.getElementById('newsGallaryDiv').style.display = 'block')
+		document.getElementById("newsGallaryDiv").style.display = 'none';
+
+	if(document.getElementById('createNewDiv').style.display = 'block')
+		document.getElementById('createNewDiv').style.display = 'none';
+	
+	if(document.getElementById("videoGallaryDiv").style.display = 'block')
+		document.getElementById("videoGallaryDiv").style.display = 'none';
+	
+    if(document.getElementById("metaInfoDiv").style.display = 'block')
+		document.getElementById("metaInfoDiv").style.display = 'none' ;
+
+	if(document.getElementById("photoGallaryDiv").style.display = 'block')
+		document.getElementById("photoGallaryDiv").style.display = 'none' ;
+
+	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
+		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
+
+	if(document.getElementById('descriptionDiv').style.display = 'block')
+	   document.getElementById('descriptionDiv').style.display = 'none' ;
+
+	if(document.getElementById('specialPageHighLightsDiv').style.display = 'none')
+	   document.getElementById('specialPageHighLightsDiv').style.display = 'block' ;
+
 	var specialPageHighLightsDiv = document.getElementById("specialPageHighLightsDiv");
 	var str ='';
 	str += '<div id="content" style="width:650px;">';
@@ -5233,7 +5276,7 @@ function getSpecialPageHighlights()
 	str += '</tr>';
 	str += '</table>'
     str += '<fieldset class="imgFieldset" style="width:400px;">';	
-	str += '<center><b style="font-size:15px"><font color="#4B74C6">Add The SpecialPage HighLights</font> </b> </center>';
+	str += '<center style="margin-top: 7px;"><b style="font-size:15px"><font color="#4B74C6">Add The SpecialPage HighLights</font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<div id="specPagehighLightsErrorMsgDivId"></div>';
@@ -5254,12 +5297,12 @@ function addSpecialPageHighLights()
 	var description = $.trim($("#specialPageHighLightDescId").val());
 	if(description == "")
 	{
-		$('#specPagehighLightsErrorMsgDivId').html('Description is Required.');
+		$('#specPagehighLightsErrorMsgDivId').addClass('specPagehighLightsErrorMsgDivId').html('Description is Required.');
 		return;
 	}
 	else if(description.length > 200)
 	{
-		$('#specPagehighLightsErrorMsgDivId').html('Description should be less than 200 characters.');
+		$('#specPagehighLightsErrorMsgDivId').addClass('specPagehighLightsErrorMsgDivId').html('Description should be less than 200 characters.');
 		return;
 	}
 	var jsObj =
