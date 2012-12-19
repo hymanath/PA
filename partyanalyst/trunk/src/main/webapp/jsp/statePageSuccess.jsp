@@ -310,8 +310,8 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 									if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
 									
-									if(jsObj.task == "saveFavouriteLink")
-										console.log(myResults);																	
+									if(jObj.task == "saveFavouriteLink")
+										alert("Link added successfully");																	
 								}
 							catch (e) {   
 						}  
