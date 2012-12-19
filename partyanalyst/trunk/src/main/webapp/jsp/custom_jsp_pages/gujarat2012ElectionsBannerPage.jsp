@@ -4,7 +4,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/javascript" src="js/overlib_mini.js"></script> 
-<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
+<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script>
+<LINK rel="stylesheet" type="text/css" href="styles/jqueryDataTable/css/datatable.css"> 
+<script src="js/jqueryDataTable/jquery.dataTables.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.columnFilter.js"></script>
+
 <style>
 	.main-mbg{
 		width:962px;
@@ -130,7 +134,14 @@ table.gujaratTableDiv th, table.gujaratTableDiv td {text-align:center;border:1px
 table.gujaratTableDiv th {background-color:AntiqueWhite;}
 table.gujaratTableDiv td:first-child {width:50%;}
 
+.textalignright{
+  text-align:right;
+}
+.textalignclass{
+  text-align:center;
+}
 
+#GujaratResultBody{display:inline-block;background:#EDF9FF;width:100%;padding:5px;}
 </style>
 
 <div style="margin-bottom:10px;">
@@ -174,7 +185,45 @@ table.gujaratTableDiv td:first-child {width:50%;}
 
 <span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=7"> Gujarat</a></b> Legislative Assembly, 2012. Polls in <b><a href="statePageAction.action?stateId=7">Gujarat</a></b> will take place in two phases. First phase on December 13, 2012 and second phase on December 17, 2012. The counting will take place on December 20, 2012.
 </span></br></br>
-<div id="electionResultDiv"></div>
+<div id="electionResultDivMain" style="padding-bottom:10px;">
+  <div id="electionResultDiv"></div>
+<div>
+
+	
+<div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">DISTRICT WISE RESULTS ANALYSIS FOR GUJARAT VIDHAN SABHA 2012</h3></div>
+  <div style="background:#EDF9FF;width:935px;padding:4px;">
+  <select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;" onchange="getDistrictWiseElectionResults()">
+     <option value="0">Select District</option>
+     <option value="152">Ahmadabad</option>
+     <option value="158">Amreli</option>
+     <option value="160">Anand</option>
+     <option value="147">Banas Kantha</option>
+     <option value="166">Bharuch</option>
+     <option value="159">Bhavnagar</option>
+     <option value="163">Dohad</option>
+     <option value="151">Gandhinagar</option>
+     <option value="155">Jamnagar</option>
+     <option value="157">Junagadh</option>
+     <option value="146">Kachchh</option>
+     <option value="161">Kheda</option>
+     <option value="149">Mahesana</option>
+     <option value="165">Narmada</option>
+     <option value="169">Navsari</option>
+     <option value="162">Panch Mahals</option>
+     <option value="148">Patan</option>
+     <option value="156">Porbandar</option>
+     <option value="154">Rajkot</option>
+     <option value="150">Sabar Kantha</option>
+     <option value="167">Surat</option>
+     <option value="153">Surendranagar</option>
+     <option value="168">The Dangs</option>
+     <option value="164">Vadodara</option>
+     <option value="170">Valsad</option>  
+  </select>
+  <div id="districtWiseElectionResultDisplayDiv"></div>
+  </div>
+</div>
 <!--<div id="specialPageHighLight"  style="margin-left: 11px;
     width: 900px;margin-left: 10px"></div>-->
 
@@ -765,6 +814,23 @@ google.load("visualization", "1", {packages:["corechart"]});
 $(document).ready(function() {
   getElectionInfo();
 });
+
+function getDistrictWiseElectionResults(){
+  var districtId = $("#selectDistrictWise").val();
+  if(districtId == 0)
+     return;
+  var jsObj = {
+				electionId:202,
+	            time:new Date().getTime(),
+				districtId:districtId,
+				task:"getDistrictWiseLiveResults"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getDistrictWiseLiveResultsAction.action?"+param;
+	callAjax(jsObj,url);
+
+}
+
 function getGenderInfo(selectedYear,elecYearId)
 {
 	var jsObj = {
@@ -815,6 +881,11 @@ function callAjax(jsObj,url){
 									
 										buildImportantCnadidatesData(myResults)
 									}
+									else if(jsObj.task == "getDistrictWiseLiveResults")
+									{
+									
+										buildDistrictWiseLiveResults(myResults)
+									}
 								}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -828,6 +899,79 @@ function callAjax(jsObj,url){
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function buildDistrictWiseLiveResults(results){
+    if(results != null && results.length >0){
+	var str='';
+	
+	  str+='<table id="districtResultTableDiv" style="width:95%;margin-left:auto;margin-right:auto;">';
+	     str+='<thead>';
+		 str+=' <tr>';
+		 str+='  <th>Constituency</th>';
+		 str+='  <th>Candidate</th>';
+		 str+='  <th>Party</th> ';
+		 str+='  <th>Status</th>';
+		 str+='  <th>Assests</th>';
+		 str+='  <th>liabilities</th>';
+		 str+=' </tr>';
+		
+		 str+='</thead>';
+		 
+		 str+='<tbody>';
+		  for(var i in results){
+		  
+		  str+=' <tr> ';
+		  str+='    <td><a href="constituencyPageAction.action?constituencyId='+results[i].constiId+'">'+results[i].constiName+'</a></td>';
+		  str+='	  <td><a href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+'">'+results[i].candidateName+'</a></td>';
+		  if(results[i].partyName != 'IND'){
+		    str+='	    <td class="textalignclass"><a href="partyPageAction.action?partyId='+results[i].partyId+'" >'+results[i].partyName+'</a></td>';
+		  }else{
+		    str+='	    <td class="textalignclass">'+results[i].partyName+'</td>';
+		}
+		str+='	  <td class="textalignclass">'+results[i].status+'</td>';
+		if(results[i].assets != null)
+		  str+='	  <td class="textalignright">'+results[i].assets+'</td>';
+		else
+		   str+='	  <td ></td>';
+		if(results[i].liabilities != null)
+		  str+='	  <td class="textalignright">'+results[i].liabilities+'</td>';
+		else
+		 str+='	  <td ></td>';
+		str+='   </tr>';
+		}
+		 str+='</tbody>';
+		str+=' <tfoot>';
+		str+='  <tr>';
+		str+='   <th>Constituency</th>';
+		str+='   <th>Candidate</th>';
+		str+='   <th>Party</th> ';
+		str+='   <th>Status</th>';
+		str+='   <th>Assests</th>';
+		str+='   <th>liabilities</th>';
+		str+='  </tr>';
+		str+=' </tfoot>';
+	  str+='</table>';
+		$("#districtWiseElectionResultDisplayDiv").html(str);
+		
+
+		  $('#districtResultTableDiv').dataTable({
+		"aLengthMenu": [[10,25,50,100, -1], [10, 25,50,100,"All"]]
+	})
+		  .columnFilter({ 
+		  	
+			aoColumns: [ { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "number"},
+						 { type: "number"}
+						 
+				]
+
+		});
+	}
+}
+
 function buildSpecialPageHightLights(results)
 {
 	
@@ -1056,10 +1200,10 @@ function getImportantCandidatesInfo()
 	{
 	var electionResult= '';	
 	electionResult+='<div id="gujratResultsHeader">';
-	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">';
+	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">';
 	electionResult+='PARTY WISE RESULTS OF GUJARAT VIDHAN SABHA 2012</h3>';
-	electionResult+='</div></br>';
-	electionResult+='<div id="GujaratResultBody">';
+	electionResult+='</div>';
+	electionResult+='<div id="GujaratResultBody" >';
 	electionResult+='<span id="gujratResultsBody1" style ="width:500px;float:left">';
 	electionResult+='<table class="table table-bordered">';
 	electionResult+='<tr>';
@@ -1102,15 +1246,15 @@ function getImportantCandidatesInfo()
 	var data = new google.visualization.DataTable();
 	data.addColumn('string','Area Type');
 	data.addColumn('number','Count');
-	data.addRows(myResults.electionLiveResultVOList.length-1);
+	data.addRows(myResults.electionLiveResultVOList.length);
 	
-	for(var j=1; j<myResults.electionLiveResultVOList.length; j++)
+	for(var j=0; j<myResults.electionLiveResultVOList.length; j++)
 	{
-		data.setValue(j-1,0,myResults.electionLiveResultVOList[j].partyName);
-		data.setValue(j-1,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
+		data.setValue(j,0,myResults.electionLiveResultVOList[j].partyName);
+		data.setValue(j,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
 	}
 	var chart = new google.visualization.PieChart(document.getElementById('GujaratResultGraph')); 
-	chart.draw(data,{width:400, height: 370, title:'Gujarat Vidhan Sabha Election 2012 Lead/Won Chart'});
+	chart.draw(data,{width:400, height: 250, title:'Gujarat Vidhan Sabha Election 2012 Lead/Won Chart'});
 	}
 }
 
