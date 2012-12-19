@@ -269,21 +269,21 @@ margin:3px;
 						</div>
 						<div class="FavoriteLinksDiv">
 							<div>
-								<div class="favouriteLinksHeading constituencyDivheading"></div>
+								<div style="background:#2D6987;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
 								<div class="constituencyDiv"></div>
 							</div>
 							<div>
-								<div class="favouriteLinksHeading stateDivheading" ></div>
+								<div style="background:#2D6987;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
 						        <div class="stateDiv"></div>
 							</div>
 
 							<div>
-								<div class="favouriteLinksHeading districtDivheading" ></div>
+								<div style="background:#2D6987;" class="favouriteLinksHeading districtDivheading districtHeadingCls" ></div>
 						        <div class="districtDiv"></div>
 							</div>
 
 							<div>
-								<div class="favouriteLinksHeading specialPageDivheading" ></div>
+								<div style="background:#2D6987;" class="favouriteLinksHeading specialPageDivheading specialPageHeadingCls" ></div>
 						        <div class="specialPageDiv"></div>
 							</div>
 
