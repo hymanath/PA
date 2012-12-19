@@ -1,12 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<title>A jQuery Twitter Ticker | Tutorialzine demo</title>
 
 <link rel="stylesheet" type="text/css" href="styles/socialnetwork/newdemo.css" />
 <link rel="stylesheet" type="text/css" href="styles/socialnetwork/jScrollPane.css" />
@@ -18,7 +11,11 @@
 	<!-- styles specific to demo site -->
 		<!-- styles needed by jScrollPane - include in your own sites -->
 		<link type="text/css" href="styles/socialnetwork/scrollpane_style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
-
+		<!-- For UserSocialNetworkSite.jsp-->
+		
+ <script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+ <script type="text/javascript" src="js/UserSocialNetworkSite.js"></script>
+ <!--End UserSocialNetworkSite.jsp-->
 <style type="text/css" id="page-css">
 			/* Styles specific to this particular page */
 			.scroll-pane
@@ -32,9 +29,16 @@
 				height: auto;
 				max-height: 200px;
 			}
-		</style>
+
+	 .error{
+    
+	color:red;
+	font-weight: normal;
+
+	}
+	</style>
 			
-		
+	
 <script>
 			$(function()
 			{
@@ -42,7 +46,7 @@
 			});
 		</script>
 
-<script>
+<script type="text/javascript">
 function scrollpanenew()
 {
 
@@ -94,86 +98,8 @@ else{
  
         });
 
-
-       
-    </script>
-
-
-</head>
-
-
-
-
-<div id="main">
-
- 
-  
- <div id="twitter-ticker">
-
-    
-<form name="search_cat_bar" method="get" action="" style="margin:0px;">
-<div class="span12">
-<img src="images/socialNetwork/twitter_64.png" width="48" height="48" alt="Twitter icon" class="thumbnail pull-left"/>
-<div class="span10">
-    <label class="radio inline">
-    <input name="party" value="party" type="radio" id="rparty"  onclick="getPartyName()" > Party
-    </label>
-    <label class="radio inline">
-    <input name="party" value="party" type="radio" id="rpolitician" onclick="getPartyName()">Leader
-    </label>
-    <label class="radio inline">
-	<input name="party" value="party" type="radio" id="rall"  checked="true" onclick="getPartyName()">All 
-    </label>
-</div>	
-
-<div class="row-fluid span10">
-<div class="input-prepend span12 inline">
-              <span class="add-on">Party Name:</span>
-             <select name="party" onChange="setTweetUser(this.options[this.selectedIndex].value)"
- id="party" class="span6"></select>
-            </div>
-			
-			<div class="input-prepend span12 inline">
-              <span class="add-on">Leader Name:</span>
-             <select name="poliician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician"  class="span8" >
-			 </select>
-            </div>
-</div>			
-</div>
-		<!-- Search : <input type="text" class="searchbox" name="s" value=" search for..." />
-		
-
-		<div>
-		<label><input name="party" value="party" type="radio" id="rparty" checked="true" onclick="getPartyName()" style="cursor:pointer;">Party</label>    
-		
-		<label><input name="party" value="party" type="radio" id="rpolitician" onclick="getPartyName()">Leader</label>   
-
-		<label>		
-		<input name="party" value="party" type="radio" id="rall" onclick="getPartyName()" style="cursor:pointer;">All 
-		</label> 
-		</div> -->
-
-
-</form>
-</div>
-    </div>
-
-<div class="scroll-pane">
-        <div id="tweet-container"><img id="loading" src="img/loading.gif" width="16" height="11"/></div>
-</div>
-  
-
-  
-
-
-
-<script type="text/javascript">
-
-
-
 function getPartyName()
 {
-	
 	var str='';
 	var partyRadio;
 	var ele=document.getElementById('ele');
@@ -326,7 +252,108 @@ function getPartyNames(result)
 	}
 }
 
- getPartyName();
-</script>
+setTimeout("getPartyName()",1000);
+ 
+    </script>
 
+<div id="main">
+ <div id="twitter-ticker">
+
+<form name="search_cat_bar" method="get" action="" style="margin:0px;">
+<div class="span12">
+<img src="images/socialNetwork/twitter_64.png" width="48" height="48" alt="Twitter icon" class="thumbnail pull-left"/>
+<div class="span10">
+    <label class="radio inline">
+    <input name="party" value="party" type="radio" id="rparty"  onclick="getPartyName()" > Party
+    </label>
+    <label class="radio inline">
+    <input name="party" value="party" type="radio" id="rpolitician" onclick="getPartyName()">Leader
+    </label>
+    <label class="radio inline">
+	<input name="party" value="party" type="radio" id="rall"  checked="true" onclick="getPartyName()">All 
+    </label>
+</div>	
+
+<div class="row-fluid span10">
+<div class="input-prepend span12 inline">
+              <span class="add-on">Party Name:</span>
+             <select name="party" onChange="setTweetUser(this.options[this.selectedIndex].value)"
+ id="party" class="span6"></select>
+            </div>
+			
+			<div class="input-prepend span12 inline">
+              <span class="add-on">Leader Name:</span>
+             <select name="poliician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician"  class="span8" >
+			 </select>
+            </div>
+</div>			
+</div>
+	
+</form>
+</div>
+ </div>
+ <div class="scroll-pane">
+        <div id="tweet-container"><img id="loading" src="img/loading.gif" width="16" height="11"/></div>
+</div>
+
+
+	<!-- For UserSocialNetworkSite.jsp-->
+
+	<div id="twitter_dialog"> 
+	<div id="innerdiv" style="display:none;">
+	<form  id="userSocialNetworkSiteForm" name="userSocialNetworkSiteForm"  method="POST" >
+	<div class="placeholder">
+
+	    <div style="height:45px;">
+		<span style="font-size: 13px;"><font color="red">*</font>Your Name:</span>
+		<span><input  id="username" type="text" class="yourNameRequired" style="height:18px;margin-bottom:-2px;margin-left: 116px;"/>
+		<div id="usernameerrormssg"></div>
+		</span></div>
+
+		<div style="height:45px;">
+		<span style="font-size: 13px;"><font color="red">*</font>Your EmailId:</span>
+		<span><input id="emailId" type="text" class="emailRequired email" style="height:18px;margin-bottom:-2px;margin-left: 107px;"/>
+		<div id="usermailerrmsg"></div>
+		</span></div>
+	
+	<div style="height:45px;"> 
+	<span style="font-size: 13px;"><font color="red">*</font>Select Category:</span>
+	<span><select id="category"  class="selectoptionisRequired" style="width: 219px;height:28px;margin-bottom:-2px;margin-left: 80px;">
+		<option value='0'>--Select Category--</option>
+		<option value='1'>Party</option>
+		<option value='2'>Candidate</option>
+		</select>
+		<div id="selectoptionErrormsg"></div>
+		</span></div>
+
+		<div style="height:45px;">
+		<span style="font-size: 13px;"><font color="red">*</font>Party/Candidate Name:</span>
+		<span><input  type="text" id="name" class="NameRequired" style="height: 18px; margin-bottom: -2px; margin-left: 39px;"/>
+		<div id="accnameerrormsg"></div>
+		</span></div>
+
+		<div style="height:45px;"> 
+		<span style="font-size: 13px;"><font color="red">*</font>TwitterId:</span>
+		<span><input id="twitterAcc" type="text"  class="twitterIdRequired" style="height: 18px; margin-bottom: -2px; margin-left: 126px;"/>
+		<div  id="twitteraccerrormsg"></div>
+		</span></div>
+		<div style="height:45px">
+		<div id="LoadingImage"  style="display: none;height:30px">
+		    Your Request has been Processing...
+		<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 10px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/>
+		</div></div>
+			
+	</div>
+ 
+</form>
+
+		<div id="resultmessage"></div>
+		 </div>
+	     </div>
+		 <hr>
+		<div class="thumbnail" style="margin-top:25px;text-align:center;"><span style="font-weight:bold;font-size:14px;">
+		Share Twitter ID's of your known Leaders & Parties  </span>
+		<input type="button" id="click" class="btn btn-inverse btn-small" value="Click to Share Now!" onclick="openDialogForTwitterID()" style="margin-top:5px;margin-bottom:5px;"/></div>
+		<!-- end of UserSocialNetworkSite.jsp-->
+	
 
