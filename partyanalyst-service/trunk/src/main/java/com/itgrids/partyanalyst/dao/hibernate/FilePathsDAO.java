@@ -1,23 +1,15 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.model.FilePaths;
-import com.itgrids.partyanalyst.utils.DateUtilService;
-
-import java.util.Arrays;
 
 public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements IFilePathsDAO {
 
@@ -172,7 +164,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 	     query.setParameter("isDelete", "false");
 	     query.setParameter("haveThumnails", "false");
 		 query.setFirstResult(0);
-		 query.setMaxResults(500);
+		 query.setMaxResults(5000);
 	
 		
 		  return query.list();
