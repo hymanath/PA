@@ -1,1409 +1,936 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+    pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>${specialPageVO.title}</title>
-<s:if test="metaInfoVO != null && metaInfoVO.keywords != null">
-<META NAME="Keywords" CONTENT="${metaInfoVO.keywords}"/>
-</s:if>
-<s:if test="metaInfoVO != null && metaInfoVO.description != null">
-<meta name="description" content="${metaInfoVO.description}"/>
-</s:if>
-<meta property="fb:app_id" content="167844749984003"/>
-<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
-<style type="text/css">#videogallery a#videolb{display:none}</style>
-<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
-<script type="text/javascript" src="js/specialPage/specialPage.js"></script>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
-<script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
-<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
-<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
-<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
-<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
-<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
+<script type="text/javascript" src="js/overlib_mini.js"></script> 
+<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
 <style>
+	.main-mbg{
+		width:962px;
+	}
 
-.pr-cont-sec
-{
-	margin-left: 10px;
+.electionresulttable{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
+.electionresulttable td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;}
+.electionresulttable th{background:#21B2ED;color:#fff;}
+.nominationresulttable{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
+.nominationresulttable td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;}
+.nominationresulttable tr:nth-child(odd){background:#e5e5e5;}
+.nominationresulttable tr:nth-child(even){background:#f3f3f3;}
+.nominationresulttable th{padding:5px;background:#489CDF;color:#fff;}
+.buttonClass {
+	background-color: background;
+    border-radius: 6px 6px 6px 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 6px;
 }
+.thStyle{background:#5e5e5e;color:#fff;font-weight:bold;text-align: center;}
 
-.pft-sec {
-    color: #777777;
-    float: left;
-    font-size: 20px;
-    line-height: 24px;
-    padding: 32px 0 16px 21px;
-    width: 244px;
-}
-.popupcontainer {		
-    	background-color: #FFFFFF;
-    	margin: 9px auto 10px;
-    	max-width: 780px;
-    	padding: 10px;
-		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
-}
-	.main-mbg {
-    -moz-border-radius: 6px 6px 6px 6px;
-	border-radius :6px;
-    background-color: #06ABEA;
-    clear: both;
-    color: #FFFFFF;
-    float: left;
-    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
-    height: 35px;
-    margin-bottom: 5px;
-    padding-left: 13px;
-    text-align: left;
-    text-transform: uppercase;
-    width: 974px;
-}
-.profile-left-sec {
-    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll left top transparent;
-    display: inline-block;
-    float: left;
-    margin-right: 2px;
-    padding-top: 5px;
-    width: 204px;
-}
-.profile-mid-sec {
-    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -211px top transparent;
-    display: inline-block;
-    float: left;
-    padding-top: 5px;
-    position: relative;
-    width: 441px;
-}
-.profile-right-sec {
-    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -683px top transparent;
-    float: left;
-    margin-left: 2px;
-    padding-top: 5px;
-    width: 300px;
-}
-#contenttable {
+#presidentelection ul li a {
+    background: none repeat scroll 0 0 #D2E888;
+    border-radius: 5px 5px 5px 5px;
+    color: #3D3D3D;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding: 0;
-    width: 975px;
+    margin-top: 20px;
+    padding: 10px;
+    width: 360px;
 }
-.imageButton{
-	
-	-moz-border-radius: 4px 4px 4px 4px;
-    background: none repeat scroll 0 0 #0063DC;
-    border: medium none;
-    color: #FFFFFF;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 4px 6px;
-    text-decoration: none;
-    white-space: nowrap;
+#presidentelection ul li a:hover{
+    background: none repeat scroll 0 0 #21B2ED;
+	text-decoration: none;
 }
-.view-results a {
-    background: url("images/icons/homePage_new/b3.jpg") no-repeat scroll 0 0 transparent;
-    border: medium none;
-    cursor: pointer;
-    display: block;
-    height: 27px;
-    margin: 11px 0 15px 113px;
-    text-indent: -9999px;
-    width: 94px;
+#presidentelection{
+  margin-left:100px;
+  border:1px solid #CCCCCC;
+  padding:0px 10px 10px 10px;
 }
-.selectBoxWidth{
-	margin-left: 4px;
-    margin-top: 26px;
-    padding-left: 3px;
-    width: 179px;
-}
-.selectDivStyle {
-   
-    background-color: #21B2ED;
-    color: #FFFFFF;
-    float: left;
-    padding: 4px;
-    width: 179px;
-	 font-weight: bold;
-	 margin-bottom:10px;
-}
-.flagStyle  
+#presidentelectionDiv ul li a:hover
 {
-	background:#f0f0f0;float: left;
-	width: 60px;
-	text-align: center;
-	left: 0px;
-	clear:both;
-	bottom: 0px;
-	height: 21px;
-	color: #2A4F97;
-	font-size: 12px;
-    font-weight: bold;
-	font-size: 11px;
-	line-height: 21px;
-
+	text-decoration: none;
 }
-.selectHeading{
-font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); border-left: 1px solid rgb(205, 205, 205); border-bottom: 1px solid rgb(205, 205, 205); margin-bottom: 16px;
+.importantPersonsDivClass{
 
+	height:196px;
+	width:126px;
+	float:left;
+	background:#fff;
+	padding: 11px;
+	margin:3px;
+	border:1px solid #c3c3c3;
+	border-radius:3px;
 
 }
 
-  .gallaryImg
-{
-	width  : 150px;
-	height : 130px;
-}
-.pagenationStyle{
-  background-color:#F5371C;color:#fff;
-}
-.paginatorElmtClass a {
-    border: 1px solid #ADADAD;
-    font-size: 11px;
-    margin: 0 3px;
-    padding: 3px;
-}
-#buildSources,#buildNewSources{
-border:1px solid #d3d3d3;
-margin-left: auto;
-margin-right: auto;
-margin-top: 10px;
-margin-bottom: 20px;
-width: 618px;
-}
-#buildVideoNewSources{
-border:1px solid #d3d3d3;
-margin-left: auto;
-margin-right: auto;
-margin-top: 10px;
-margin-bottom: 20px;
-width: 500px;
-}
-.newssources{
- background-color:#97DFEB;
- padding:8px 8px 8px 8px;
- margin-left:5px;
- border-radius: 5px 5px 5px 5px;
 
+.alignCenter{
+	text-align:center;
 }
-.newsParts{
-  
-  color:#FF4500;
-}
- #contentAjaxCallImg{ 
-	padding-left: 369px;
-    padding-top: 110px;
-	display:none;
-  }
 
+.leadStatusClass{
 
-#videoGallaryPopUpDiv {
-    height: 526px;
-    min-height: 0;
-    width: auto;
+	color: green;
+	font-weight: bold;
 }
-.titleStyle{color:black;}
-.close{opacity:1.5;}
-  .close:hover{opacity:1.5;}
-#videogallery a{width:120px}
+
+.candidateNameClass{
+
+color: #21B2ED;
+font-weight: bold;
+font-family:arial;
+font-size:11px;
+/*width: 200px;*/
+}
 
 </style>
-<script type="text/javascript">
-var isSubscribed = '${sessionScope.isSubscribed}';
-var userName = '${sessionScope.UserName}';
 
-var specialPageId = '${specialPageId}';
-var showContentResultList = null;
+<div style="margin-bottom:10px;">
+<img src="images/specialPage/gujarat_banner.jpg" style="align:center;width:985px;">
+</div>
+
+<!--<input type="button" class="btn btn-success" value="TestAjax" onClick="getImportantCandidatesInfo()"/>-->
+
+<div style="float:left;" id="importantCandidateHeadingDiv">
+
+	<div class="main-mbg"><span style="margin-left:42px;">Important candidates present status</span>
+
+    <div style="float:left;">
+
+	<a class="btn btn-success" id="showLink" href="javaScript:{showDetails();}" style="display:none;margin-top:3px;">Show</a>
+	<a  style="margin-top:3px;" class="btn btn-inverse" id="hideLink"  href="javaScript:{hideDetails();}" >Hide</a>
+
+	</div>
 
 
-function unSubscribeBtnBuild()
-{
-$('#subscribeSpan').html('');
+	<span style="text-decoration:blink;float:right;margin-right:163px;"><a  style="color:#fff;" href="javaScript:{getImportantCandidatesInfo();}" title="Click here to refresh">Refresh<i class="icon-refresh"></i></a></span>
 
-var str='';
-str+='Unsubscribe to stop<br/>updates of<br />';
-str+='<span class="li-red">${specialPageVO.heading}</span><br/>';
-str+='<input  class="unsubscribebtn" type="button" onclick="unsubscriptionDetails()" value="UNSUBSCRIBE"/>';
+	</div>
 
-$('#subscribeSpan').html(str);
-subscribeAlert();
-}
+	<div id="importantPersonsDiv"></div>
 
-function subscribeBtnBuild()
-{
-$('#subscribeSpan').html('');
-var str='';
-str+='Subscribe to get<br/>updates of<br />';
-str+='<span class="li-red">${specialPageVO.heading}</span><br/>';
-str+='<input  class="subscribebtn" type="button" onclick="subscriptionDetails()" value="SUBSCRIBE"/>';
+</div>
 
-$('#subscribeSpan').html(str);
-unSubscribeAlert();
-}
-function subscriptionDetails()
- {
-	if(userName==''){
-       showNotLogIn();
-    return false;}
-	
-	else{	
-	var timeST = new Date().getTime();
-	var jsObj=
-	{		
-            time : timeST,	
-			id: specialPageId,
-			task: "subscriptionDetails",
-			page:"specialPage"
-	}
-   
-   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-   callAjaxForSpecialPage(jsObj,url);
-   }
- }
- 
- function unsubscriptionDetails()
- {
+
+
+<div>
+
+<div id="upComing" style="background:#FFF;padding-top: 12px;">
+<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Gujarat 2012 Vidhan Sabha Election</span>
+
+<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">140</font></span>
+
+<div style="text-align:justify;margin:10px;padding:10px;"> 
+<!--<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">AP Bi Election Schedule</span> -
+
+<span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
+-->
+<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Gujarat </span> -
+
+<span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=7"> Gujarat</a></b> Legislative Assembly, 2012. Polls in <b><a href="statePageAction.action?stateId=7">Gujarat</a></b> will take place in two phases. First phase on December 13, 2012 and second phase on December 17, 2012. The counting will take place on December 20, 2012.
+</span><br /><br />
+
+<!--<center>
+<table border="2" cellpadding="5" >
+<tr>
+<th>Poll Event</th>
+<th>Dates</th>
+</tr>
+<tr>
+<td>Issue of Notification</td>
+<td><center>10.10.2012 <br>
+(Wednesday)</center></td>
+</tr>
+<tr>
+<td>Last date for making Nominations</td>
+<td><center>17.10.2012 <br>
+(Wednesday)</center></td>
+</tr>
+<td>Scrutiny of Nominations</td>
+<td><center>18.10.2012 <br>
+(Thursday)</center></td>
+</tr>
+<tr>
+<td>Last date for withdrawal of
+candidature</td>
+<td><center>20.10.2012 <br>
+(Saturday)</center></td>
+</tr>
+<tr>
+<td>Date of Poll</td>
+<td><center>04.11.2012 <br>
+((Sunday)</center></td>
+</tr>
+<tr>
+<td>Counting of Votes</td>
+<td><center>20.12.2012 <br>
+(Thursday)</center></td>
+</tr>
+<tr>
+<td>Date before which election process
+shall be completed</td>
+<td><center>24.12.2012 <br>
+(Monday)</center></td>
+</tr>
+</table>
+</center><br><br>-->
+<!---
+<span style="font-family:verdana;font-size:13px;right:20px;color:#ED5B21;float:right;"> *All 68 ACs will go to poll on a single day</span><br>-->
+
+<table width="100%" style="border-top: 1px solid rgb(221, 221, 221);">
+<tr>
+
+<td  width="45%" valign="top">
+<table style="border:1px solid #d2e888;margin-left: 9px;" width="98%" valign="top">
 		
-    var timeST = new Date().getTime();
-	var jsObj=
-	{		
-            time : timeST,	
-			id: specialPageId,
-			task: "unsubscriptionDetails",
-			page:"specialPage"
-	}
-   
-   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-   callAjaxForSpecialPage(jsObj,url);
- }
- function displayProfile()
- {
-   var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
-   
-   if(profileInfoElmt == null)
-	   return;
-   
-   var str = '';
-   var descFlag = 1;
-   
-   str += '<s:if test="descriptions != null"> ';
-   str += '<h1 class="inc-title">About ${specialPageVO.heading}</h1>';
-   
-   str += '<s:iterator value="descriptions">';
-   
-   if(descFlag <= 2)
-   {
-	  str += '  <p style="font-size:13px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
-	  descFlag++;
-   }
-   str += '  </s:iterator>';
-
-   str += '<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
-   str += 'Read More >></a></div>';
-   str += '</s:if>';
-   
-   profileInfoElmt.innerHTML = str;
- }
-
-function getContentDetails(contentId)
-{
-	document.getElementById("contentAjaxCallImg").style.display="block";
-	var jsObj =
-		{   
-		    contentId : contentId,
-			requestFrom : 'Special Page',
-			requestPageId : '${specialPageId}',
-			task:"getSelectedContent"
-		};
 	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getSelectedContentAndRelatedGalleriesAction.action?"+rparam;					callAjaxForSpecialPage(jsObj,url); 
+		
+<h4 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left: 9px;">Schedule for the Gujarat Legislative Assembly, 2012	</h4>
+		
+		
+			<td>
+			<table class="nominationresulttable">
+<tr>
+<th>Poll Event</th>
+<th>1st Phase
+( 87 ACs)
+<th>2nd Phase
+( 95 ACs)</th>
+
+</tr>
+<tr>
+<td>Issue of Notification</td>
+<td>17.11.2012
+(Saturday)</td>
+<td>23.11.2012
+(Friday)</td>
+</tr>
+<tr>
+<td>Last date for making Nominations</td>
+<td>24.11.2012
+(Saturday)</td>
+<td>30.11.2012
+(Friday)</td>
+</tr>
+<td>Scrutiny of Nominations</td>
+<td>26.11.2012
+(Monday)</td>
+<td>01.12.2012
+(Saturday)</td>
+</tr>
+<tr>
+<!--<td>Last date for withdrawal of
+candidature</td>-->
+<td>Last date for withdrawal of candidature</td>
+<td>28.11.2012
+(Wednesday)</td>
+<td>03.12.2012
+(Monday)</td>
+</tr>
+<tr>
+<td>Date of Poll</td>
+<td>13.12.2012
+(Thursday)</td>
+<td>17.12.2012
+(Monday)</td>
+</tr>
+<tr>
+<td>Counting of Votes</td>
+<td>20.12.2012
+(Thursday)</td>
+<td>20.12.2012
+(Thursday)</td>
+</tr>
+<tr>
+<td>Date before which election process
+shall be completed</td>
+<td>24.12.2012
+(Monday)</td>
+<td>24.12.2012
+(Monday)</td>
+</tr>
+</table>	
+
+			</td>
+
+
+		</tr>
+
+	</table>
+	<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
+
+	<span class="gray">Are you a</span>
+	<strong>Politician
+	<span class="orange">/</span>Political Party
+	<span class="orange">/</span>Media...</strong> Want to know how you can be benefited with 
+	<span class="orange">PartyAnalyst</span> 
+	<div class="clear"></div>
+	<div class="clickhere-button">
+	<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
+	</div>
+
+</td>
+
+
+ <td width="2%"></td>
+
+	<!------------RIGHT SIDE PANEL ------------>
+	<td width="43%" valign="top">
+<table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
+Gujarat Assembly 2012 Live Election Analysis</h3>
+
+<tr>
+<td colspan="2">
+
+
+<div>
+	<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 6px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
+	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+
+		<select id="selectedElectionYears" onchange="getGenderInfo(this.value,this.id)" style="width:120px;">
+			<option value="0">Select Year</option>
+			<option value="126">2007</option>
+			<option value="127">2002</option>
+			<option value="128">1998</option>
+			<option value="129">1995</option>
+			<option value="130">1990</option>
+			<option value="131">1985</option>
+			<option value="132">1980</option>
+			<option value="133">1975</option>
+		</select>
+	</div>
+	</div>
+
+
+<table>
+
+<br>
+
+<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1977 - 2012</span>
+<br><br>
+<tr>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+BSP</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+BJP</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+INC</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=SAD&selectedPartyId=794&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=794&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPI</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+CPI</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}">
+<a href="partyResultsAction.action?selectedPartyShortName=SAD(M)&selectedPartyId=796&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=796&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPM</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+CPM</a>
+</c:if>
+</th></tr>
+</table>
+</td>
+</tr>
+
+<tr><td colspan="7"> <br />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Gujarat Assembly Elections Results </span></b><br /><br />
+
+	
+<img src="images/icons/diamond.png">
+	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=126&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
+
+&nbsp;<img src="images/icons/diamond.png">
+
+
+	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=127&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2002"> 2002</a>
+&nbsp;<img src="images/icons/diamond.png">
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=128&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1997"> 1998</a>
+&nbsp;<img src="images/icons/diamond.png">
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=129&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1992"> 1995</a>
+&nbsp;<img src="images/icons/diamond.png">
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=130&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1985"> 1990</a>
+&nbsp;<img src="images/icons/diamond.png">
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=131&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1980"> 1985</a>
+&nbsp;<br /><br /><img src="images/icons/diamond.png">
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=132&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1977"> 1980</a>
+&nbsp;<img src="images/icons/diamond.png">
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=133&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1977"> 1975</a>
+
+<br /><br /></td></tr>
+<tr>
+<td width="50%" colspan="2"><span style="background:#D2E888;color:#000;font-weight:bold;width:374px;margin:0px;padding:5px;-moz-border-radius:3px;">View Gujarat Districts And Constituencies Results</span>
+<br></br></td></tr>
+<tr>
+<td >
+<div class="selectHeading">
+	<span class="selectDivStyle">Gujarat Districts</span>
+	<span style="margin-left: 5px;">Know About Your District  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district" style="margin-top:45px;">
+	<option value="0">Select District</option>
+       <option value='152'>Ahmadabad</option>
+	<option value='158'>Amreli</option>
+	<option value='160'>Anand</option>
+	<option value='147'>Banas kantha</option>
+	<option value='166'>Bharuch</option>
+	<option value='159'>Bhavnagar</option>
+	<option value='163'>Dohad</option>
+	<option value='151'>Gandhinagar</option>
+	<option value='155'>Jamnagar</option>
+	<option value='157'>Junagadh</option>
+	<option value='146'>Kachchh</option>
+	<option value='161'>Kheda</option>
+	<option value='149'>Mahesana</option>
+	<option value='165'>Narmada</option>
+	<option value='169'>Navsari</option>
+	<option value='162'>Panch mahals</option>
+	<option value='148'>Patan</option>
+	<option value='156'>Porbandar</option>
+	<option value='154'>Rajkot</option>
+	<option value='150'>Sabar kantha</option>
+	<option value='167'>Surat</option>
+	<option value='153'>Surendranagar</option>
+	<option value='168'>The dangs</option>
+	<option value='164'>Vadodara</option>
+	<option value='170'>Valsad</option>
+
+
+
+
+   </select>
+   <div id="alertMessage_district"></div>
+
+	<div class="view-results"><a onclick="navigateToDistrictPageFrmSpeclPge('selectedDistrictInSpecialPage','alertMessage_district')" href="javascript:{}">view results</a></div>
+
+
+</div>
+</td>
+<td>
+<div class="selectHeading">
+	<span class="selectDivStyle">Gujarat Constituencies </span>
+	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
+<select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
+<option value="0">Select Constituency</option>
+<option value='34777'>Abdasa</option>
+<option value='34821'>Amreli</option>
+<option value='34909'>Anand</option>
+<option value='34781'>Anjar</option>
+<option value='34933'>Ankleshwar</option>
+<option value='34848'>Asarwa</option>
+<option value='34819'>Babra</option>
+<option value='34900'>Balasinor</option>
+<option value='34942'>Bardoli</option>
+<option value='34923'>Baroda</option>
+<option value='34927'>City</option>
+<option value='34837'>Baroda</option>
+<option value='34885'>Rural</option>
+<option value='34915'>Bavla</option>
+<option value='34805'>Bayad</option>
+<option value='34833'>Bhadran</option>
+<option value='34834'>Bhanvad</option>
+<option value='34881'>Bhavnagar north</option>
+<option value='34779'>Bhavnagar south</option>
+<option value='34914'>Bhiloda</option>
+<option value='34825'>Bhuj</option>
+<option value='34932'>Borsad</option>
+<option value='34954'>Botad</option>
+<option value='34916'>Broach</option>
+<option value='34908'>Bulsar</option>
+<option value='34868'>Cambay</option>
+<option value='34917'>Chakalasi</option>
+<option value='34952'>Chanasma</option>
+<option value='34948'>Chhota udaipur</option>
+<option value='34786'>Chikhli</option>
+<option value='34921'>Chorasi</option>
+<option value='34953'>Chotila</option>
+<option value='34878'>Dabhoi</option>
+<option value='34845'>Dangs bansda</option>
+<option value='34783'>Danta</option>
+<option value='34841'>Dariapur kazipur</option>
+<option value='34935'>Dasada</option>
+<option value='34874'>Daskroi</option>
+<option value='34842'>Dediapada</option>
+<option value='34872'>Deesa</option>
+<option value='34892'>Dehgam</option>
+<option value='34835'>Deodar</option>
+<option value='34875'>Devgadh baria</option>
+<option value='34955'>Dhandhuka</option>
+<option value='34822'>Dhanera</option>
+<option value='34836'>Dharampur</option>
+<option value='34798'>Dhari</option>
+<option value='34788'>Dholka</option>
+<option value='34890'>Dhoraji</option>
+<option value='34807'>Dhrangadhra</option>
+<option value='34844'>Dohad</option>
+<option value='34826'>Dwarka</option>
+<option value='34951'>Ellis</option>
+<option value='34855'>Bridge</option>
+<option value='34832'>Gadhada</option>
+<option value='34896'>Gandevi</option>
+<option value='34796'>Gandhinagar</option>
+<option value='34894'>Ghogho</option>
+<option value='34787'>Godhra</option>
+<option value='34882'>Gondal</option>
+<option value='34880'>Halol</option>
+<option value='34949'>Halvad</option>
+<option value='34852'>Himatnagar</option>
+<option value='34930'>Idar</option>
+<option value='34804'>Jalalpore</option>
+<option value='34801'>Jamalpur</option>
+<option value='34802'>Jambusar</option>
+<option value='34792'>Jamjodhpur</option>
+<option value='34797'>Jamnagar</option>
+<option value='34918'>Jamnagar rural</option>
+<option value='34934'>Jasdan</option>
+<option value='34888'>Jetpur</option>
+<option value='34800'>Jetpur</option>
+<option value='34858'>Jhagadia</option>
+<option value='34818'>Jhalod</option>
+<option value='34857'>Jodiya</option>
+<option value='34803'>Jotana</option>
+<option value='34895'>Junagadh</option>
+<option value='34856'>Kadi</option>
+<option value='34847'>Kalawad</option>
+<option value='34943'>Kalol</option>
+<option value='34873'>Kalol</option>
+<option value='34901'>Kalupur</option>
+<option value='34929'>Kamrej</option>
+<option value='34904'>Kankrej</option>
+<option value='34812'>Kapadvanj</option>
+<option value='34851'>Karjan</option>
+<option value='34806'>Kathlal</option>
+<option value='34879'>Keshod</option>
+<option value='34863'>Khadia</option>
+<option value='34823'>Khambhalia</option>
+<option value='34829'>Khedbrahma</option>
+<option value='34809'>Kheralu</option>
+<option value='34820'>Kodinar</option>
+<option value='34785'>Kundla</option>
+<option value='34889'>Kutiyana</option>
+<option value='34891'>Lathi</option>
+<option value='34898'>Limbdi</option>
+<option value='34906'>Limdi</option>
+<option value='34941'>Limkheda</option>
+<option value='34830'>Lunavada</option>
+<option value='34817'>Mahudha</option>
+<option value='34811'>Mahuva</option>
+<option value='34838'>Mahuva</option>
+<option value='34778'>Maliya</option>
+<option value='34938'>Manavadar</option>
+<option value='34810'>Mandal</option>
+<option value='34853'>Mandvi</option>
+<option value='34860'>Mangrol</option>
+<option value='34913'>Mangrol</option>
+<option value='34886'>Maninagar</option>
+<option value='34905'>Mansa</option>
+<option value='34859'>Matar</option>
+<option value='34884'>Meghraj</option>
+<option value='34789'>Mehmedabad</option>
+<option value='34956'>Mehsana</option>
+<option value='34780'>Modasa</option>
+<option value='34907'>Morvi</option>
+<option value='34854'>Mota pondha</option>
+<option value='34919'>Mundra</option>
+<option value='34950'>Nadiad</option>
+<option value='34937'>Naroda</option>
+<option value='34944'>Nasvadi</option>
+<option value='34928'>Navsari</option>
+<option value='34876'>Nijhar</option>
+<option value='34827'>Olpad</option>
+<option value='34957'>Padra</option>
+<option value='34867'>Palanpur</option>
+<option value='34911'>Palitana</option>
+<option value='34808'>Pardi</option>
+<option value='34883'>Patan</option>
+<option value='34870'>Petlad</option>
+<option value='34893'>Porbandar</option>
+<option value='34793'>Prantij</option>
+<option value='34794'>Radhanpur</option>
+<option value='34795'>Rajgadh</option>
+<option value='34936'>Rajkoti</option>
+<option value='34824'>Rajkotii</option>
+<option value='34849'>Rajkot rural</option>
+<option value='34899'>Rajpipla</option>
+<option value='34925'>Rajula</option>
+<option value='34782'>Rakhial</option>
+<option value='34843'>Randhikpur</option>
+<option value='34869'>Raopura</option>
+<option value='34920'>Rapar</option>
+<option value='34887'>Sabarmati</option>
+<option value='34840'>Sami</option>
+<option value='34910'>Sankheda</option>
+<option value='34922'>Santrampur</option>
+<option value='34924'>Sarkhej</option>
+<option value='34850'>Sarsa</option>
+<option value='34846'>Savli</option>
+<option value='34897'>Sayajiganj</option>
+<option value='34865'>Shaher kotda</option>
+<option value='34828'>Shahpur</option>
+<option value='34912'>Shehra</option>
+<option value='34814'>Sidhpur</option>
+<option value='34939'>Sihor</option>
+<option value='34946'>Sojitra</option>
+<option value='34945'>Somnath</option>
+<option value='34947'>Songadh</option>
+<option value='34831'>Surat city east</option>
+<option value='34813'>Surat city north</option>
+<option value='34790'>Surat city west</option>
+<option value='34902'>Talaja</option>
+<option value='34958'>Talala</option>
+<option value='34903'>Tankara</option>
+<option value='34815'>Thasra</option>
+<option value='34864'>Umbergaon</option>
+<option value='34799'>Umreth</option>
+<option value='34877'>Una</option>
+<option value='34866'>Unjha</option>
+<option value='34926'>Upleta</option>
+<option value='34931'>Vadgam</option>
+<option value='34871'>Vagdod</option>
+<option value='34861'>Vaghodia</option>
+<option value='34839'>Vagra</option>
+<option value='34816'>Vav</option>
+<option value='34862'>Vijapur</option>
+<option value='34940'>Viramgam</option>
+<option value='34784'>Visavadar</option>
+<option value='34791'>Visnagar</option>
+
+
+ </select>
+<div id="alertMessage_const_Gujarat"></div>
+
+<div class="view-results"><a onclick="navigateToConstituencyPageFrmSpeclPge('selectedConstituencyInSpecialPage','alertMessage_const_Gujarat')" href="javascript:{}">view constituency</a></div>
+</div>
+</td>
+</tr>
+
+
+<!--<tr><td colspan="7">
+<br>
+<center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3"></object></center></td>
+</tr>-->
+</table>
+</td></tr>
+</table>
+ 
+  
+
+<!-- <div>
+  <table>
+     <tr>
+	   <td>INC won in Narsapuram (4,702) and Ramachandra Puram.<br><br>
+           TRS won in Parkal with only 1562 (Votes).</td>
+	   <td><div id="presidentelection"><ul><li><a title="Indian Presidential Elections 2012" href="specialPageAction.action?specialPageId=10"><span style="font-weight: bold;">Click Here To View Indian Presidential Election 2012</span></a></li>
+	   </ul></div></td>
+	 </tr>
+  </table>
+</div> -->
+
+<!--<div style="width:250px; "><span style="font-weight:bold;font-family:verdana;margin:63px;top:10px;bottom:2px;padding:5px;width:560px;color:#ED5B21;">2007 Election Result</span>
+<table class="electionresulttable" style="margin-left:35px;"> 
+<th> Party</th>
+<th>Seats</th>
+<tr>
+<td>BJP</td>
+<td>43</td>
+</tr>
+<tr>
+<td>INC</td>
+<td>23</td>
+</tr>
+<tr>
+<td>IND</td>
+<td>3</td>
+</tr>
+<tr>
+<td>BSP</td>
+<td>1</td>
+</tr>
+
+</table>
+</div>-->
+<!--<div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
+	<table>
+		<tr>
+			<td>
+				<div style="padding: 8px; font-weight: bold; margin-top: 10px; font-size: 15px; border-radius: 3px 3px 3px 3px; border: 1px solid #d3d3d3;">
+				<ul>
+				<li style="background:#D2E888; padding: 5px 0px; border-radius: 2px 2px 2px 2px; width: 402px; margin-left: 5px;">
+				<a title="Gujarat 2012 Vidhan Sabha Election" href="specialPageAction.action?specialPageId=14"><span style="font-weight: bold; color: black; margin-left: 16px;">Click Here To View Himachal Pradesh Election 2012</span></a></li>
+				</ul>
+				</div>
+			</td>
+		</tr>
+		</table>
+</div>-->
+<div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
+	<table>
+		<tr>
+			<td>
+				<div style="padding: 8px; font-weight: bold; margin-top: 47px; font-size: 15px; border-radius: 3px 3px 3px 3px; border: 1px solid #d3d3d3;">
+				<ul>
+				<li style="background:#D2E888; padding: 5px 0px; border-radius: 2px 2px 2px 2px; width: 402px; margin-left: 5px;">
+				<a title="Gujarat 2012 Vidhan Sabha Election" href="specialPageAction.action?specialPageId=14"><span style="font-weight: bold; color: black; margin-left: 16px;">Click Here To View Himachal Pradesh Election 2012</span></a></li>
+				</ul>
+				</div>
+			</td>
+		</tr>
+		</table>
+</div>
+<br/>
+<div id="genderInfoDiv">
+<div id="genderAnalysisDiv"></div></div>
+
+<script type="text/javascript">
+
+function getGenderInfo(selectedYear,elecYearId)
+{
+	var jsObj = {
+				elecYearId:elecYearId,
+	            time:new Date().getTime(),
+				electionId:selectedYear,
+				task:"getPartyGenderInfo"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
+	callAjax(jsObj,url);
 }
 
-function showSelectedContentAndRelatedGalleries()
-{
-	$.fx.speeds._default = 1000;
-	  $("#showContentDiv").dialog({ stack: false,
+function callAjax(jsObj,url){
+		var myResults;
+ 					
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {												
+									if(o.responseText)
+										myResults = YAHOO.lang.JSON.parse(o.responseText);
+									if(jsObj.task =="getPartyGenderInfo"){
+										buildGenderCountResultsDataTable(myResults,jsObj.elecYearId);
+									}else if(jsObj.task == "getImportantCandidatesInfo")
+buildImportantCnadidatesData(myResults);							}
+							catch (e) {   
+							   	//alert("Invalid JSON result" + e);   
+						}  
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+		                         }
+		               };
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+
+
+function buildImportantCnadidatesData(results){
+
+    var str='';
+
+    str+='<div class="span12" style="border:1px solid #c3c3c3;">';
+
+
+	if(results.length == 0){
+	  $('#importantCandidateHeadingDiv').hide();
+	  return false;
+	}
+	for(var i in results){
+
+		 str+='<div class="importantPersonsDivClass">';
+
+             if(results[i].status == "Won")
+ 			   str+='<div style="text-align:center;margin-bottom:10px;"><span class="leadStatusClass" style="font-size:16px;">'+results[i].status+'</span><i style="float:right;" class="icon-thumbs-up"></i></div>';
+
+			 else if(results[i].status == "Lead")
+			
+				str+='<div class="alignCenter" style="margin-bottom:10px;"><span style="color: #4D6185; font-weight: bold;font-size:16px;">'+results[i].status+'</span><i  style="float:right;" class="icon-circle-arrow-up"></i></div>';
+
+			else
+
+				str+='<div class="alignCenter" style="margin-bottom:10px;"><span style="color: red; font-weight: bold;font-size:16px;">'+results[i].status+'</span><i style="float:right;" class="icon-thumbs-down"></i></div>';
+
+			str+='<div class="alignCenter"><img width="80" height="79" onerror="setImage(this)" src="images/candidates/'+results[i].candidateName+'.jpg"></div><br>';
+
+			str+='<div class="alignCenter candidateNameClass"><span >'+results[i].candidateName+'</span></div>';
+
+			str+='<div class="alignCenter"><span style="color: #716F64; font-weight: bold;">'+results[i].party+'</span></div>';
+
+			str+='<div class="alignCenter"><span style="color: red; font-weight: bold; text-align: center;">'+results[i].constituency+'</span></div>';
+
+
+        str+='</div>';
+
+		
+	}
+
+
+	str+='</div>';
+
+
+	$('#importantPersonsDiv').html(str);
+
+setTimeout(getImportantCandidatesInfo, 120000);
+
+}
+
+function buildGenderCountResultsDataTable(myResults,elecYearId){
+	var selectedYearEle = document.getElementById(''+elecYearId+'');
+	var year = selectedYearEle.options[selectedYearEle.selectedIndex].text;
+
+if(myResults == null)
+		return;
+
+	  $.fx.speeds._default = 1000;
+	  $("#genderInfoDiv").dialog({ stack: false,
 								height: 'auto',
-								width: 950,
+								width: 850,
 								closeOnEscape: true,
 								position:[30,30],
 								show: "blind",
 								hide: "explode",
 								modal: true,
 								maxWidth : 950,
-								minHeight: 650,
-								overlay: { opacity: 0.5, background: 'black'},
-								close: function(event, ui) {
-							  document.getElementById("showContentDivInnerDiv").innerHTML ='';
-							}
-								});
-		$("#showContentDiv").dialog();
-		getContentDetails('${contentId}');
-}
-
-function buildContentDetails()
-{
-	document.getElementById("contentAjaxCallImg").style.display="none";
-	result = showContentResultList;
-	if(result == null)
-		return;
-
-	var divEle = document.getElementById('showContentDivInnerDiv');
-	var str = '';
-	var titleStr = null;
-	var pathStr = null;
-	var descriptionStr = null;
-	var preContentId = null;
-	var curPos = null;
-	var totSize = null;
-	
-	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${specialPageVO.heading} - '+result.contentType;
-
-	str += '<Div><center>';
-	str += '<div class="main-title-sec">';
-	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
-	
-	
-	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
-	{
-	    selectedContentFile = result.relatedGalleries[0].filesList[i];
-		titleStr = result.relatedGalleries[0].filesList[i].title;
-		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
-		descriptionStr = result.relatedGalleries[0].filesList[i].description;
-		preContentId = result.relatedGalleries[0].filesList[i].contentId;
-		curPos = i+1;
-		totSize = result.relatedGalleries[0].filesList.length;
-
-		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
-		{
-			str+='<table>';
-			str+='<tr>';
-			str+='<td>';
-			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
-				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
-
-			if(result.relatedGalleries[0].filesList[i].fileDate != null)
-				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
-
-			 str+='</td>';
-			 str+='</tr>';
-			 str+='</table>';
-		}
-	}
-	
-	if(result.contentType == 'Video Gallary')
-	{
-		if(result.relatedGalleries[0].filesList.length < 2)
-			str += '<table width="530px">';
-		else
-			str += '<table width="880px">';
-		str += '<tr>';
-
-		if(result.relatedGalleries[0].filesList.length >= 2){
-		str += '<td valign="top">';
-		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
-		str += '<b><font color="blue">Other Videos</font></b>';
-		str += '<Table>';
-		
-		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
-		{
-			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
-		}
-		str += '</Table>';
-		str += '</div>';
-		str += '</td>';
-		}
-		
-		str += '<td valign="top" style="horizontal-align:center;">';
-		str += '<div class="popupcontainer" id="nextPartImage" style="width:500px;text-align:center;">';
-		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></div>';
-		str += '<table><tr>';
-		str += '<td>';
-		str += ''+descriptionStr+'';
-		str += '</td>';
-		str += '</tr>';
-		str += '</table>';
-		
-		str +='<div id="buildNewSourceParts">';
-	       str += '<center><table><tr>';
-
-	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
-	         {
-	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[0].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
-	         }
-		 
-	       str += '  </tr></table>';
-	       str +='</center></div>';
-		   
-		   if(selectedContentFile.multipleSource >1 )
-	          {
-	             str +='<div id="buildVideoNewSources">';
-	             str += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';
-	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
-	           
-			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
-	              {
-	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
-	              }
-	            str += '  </tr></table>';
-	            str +='</center></div>';
-	          }
-		   
-		
-		str += '</div>';
-		str += '</td>';
-		
-		if(result.relatedGalleries[0].filesList.length >= 2){
-		str += '<td valign="top">';
-		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
-		str += '<b><font color="blue">Other Videos</font></b>';
-		str += '<Table>';
-
-		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
-		{
-			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
-		}
-		str += '</Table>';
-		str += '</div>';
-		str += '</td>';
-		}
-		
-	str += '</tr>';
-	str += '</table>';
-	}
-
-	else if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
-	{
-		str += '<table>';
-
-		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
-		{
-			descriptionStr = result.relatedGalleries[0].filesList[i].description;
-
-			
-			 if(result.relatedGalleries[0].filesList.length == 1){
-					
-			  }else{
-			    if(i > 0)
-				{
-					str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
-				}else{
-				   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
-				}
-			  }
-			str += '<td><div class="popupcontainer" id="nextPartImage" style="width:700px;text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
-
-			
-			if(result.relatedGalleries[0].filesList.length == 1){
-				
-			  }else{
-				if(i != result.relatedGalleries[0].filesList.length-1)
-				{
-					str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i+1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i+1].contentId+')"><img src="images/icons/jQuery/next.png" class="newsImage" /></a></td>';
-				}else{
-				   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[0].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[0].contentId+')"><img src="images/icons/jQuery/next.png" class="newsImage" /></a></td>';
-				}
-			  }
-		}
-
-		str += '</table>';
-		
-		str += '<div>';
-		str += '<table>';
-		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
-		str += '</table>';
-		str += '</div>';
-		
-	   for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
-		{
-		   selectedContentFile = result.relatedGalleries[0].filesList[i];
-		   str +='<div id="buildNewSourceParts">';
-	       str += '<center><table><tr>';
-
-	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
-	         {
-	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
-	         }
-		 
-	       str += '  </tr></table>';
-	       str +='</center></div>';
-		   
-		   if(selectedContentFile.multipleSource >1 )
-	          {
-	             str +='<div id="buildNewSources">';
-	             str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
-	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
-	           
-			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
-	              {
-	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
-	              }
-	            str += '  </tr></table>';
-	            str +='</center></div>';
-	          }
-		}
-		
-	}
-
-	if(result.otherGalleries != null && result.otherGalleries.length > 0)
-	{
-		var galType = null;
-		
-		if(result.contentType == 'Photo Gallary')
-			galType = ' Photo ';
-		else if(result.contentType == 'News Gallary')
-			galType = ' News ';
-		else if(result.contentType == 'Video Gallary')
-			galType = ' Video ';
-
-		str += '<div>';
-
-		str += '<Div><center>';
-		str += '<div class="main-title-sec">';
-		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${specialPageVO.heading}</div><div class="main-bbg"/></div>';
-		
-		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
-		str += '<Table>';
-		
-		for(var i=0;i<result.otherGalleries.length;i++)
-		{
-			if(i%5 == 0)
-				str += '<tr>';
-			
-			str += '<td width="20%" valign="top">';
-
-			str += '<table>';
-			str += '<tr><td class="videoGalTitleStyle"><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
-			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
-			
-			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
-				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="Thumbs/Small/'+result.otherGalleries[i].filesList[0].path+'"></img>';
-				
-			else if(result.contentType == 'Video Gallary')
-				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
-			
-			str += '</a></td></tr>';
-			str += '<tr><td class="videoGallDescStyle">Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
-			str += '<tr><td class="videoGallDescStyle">'+result.otherGalleries[i].description+'</td></tr>';
-			str += '</table>';
-
-			str += '</td>';
-
-			if(i%5 == 4)
-				str += '</tr>';
-		}
-		str += '</Table>';
-		str += '</div>';
-
-		str += '</div>';
-	}
-	
-	str += '</center></Div>';
-
-	divEle.innerHTML = str;
-
-	var str = '';
-	str += ''+titleStr+' ('+curPos+' of '+totSize+')<span style="margin-top:10px;margin-right:18px;float:right">';
-	str +='<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}&contentId='+preContentId+'\')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
-	str += '</span>';
-	
-	document.getElementById("showContentHeaderDiv").innerHTML=str;
-	
-}
-
-function buildContentDetailsOfSelected(preId,selId)
-{
-	for(var i=0;i<showContentResultList.relatedGalleries[0].filesList.length;i++)
-	{
-		if(showContentResultList.relatedGalleries[0].filesList[i].contentId == preId)
-			showContentResultList.relatedGalleries[0].filesList[i].isSelectedContent = false;
-		if(showContentResultList.relatedGalleries[0].filesList[i].contentId == selId)
-			showContentResultList.relatedGalleries[0].filesList[i].isSelectedContent = true;
-	}
-
-	buildContentDetails();
-}
-function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
-{
-  for(var i in selectedContentFile.fileVOList)
-  {
-    if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
-	{
-	  if(type != 'video')
-	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+path+'" />';
-	  else
-	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
-	  document.getElementById("nextPartImage").innerHTML = str;
-	
-	   str = '<center><table><tr>';
-
-	    for(var j=0;j<selectedContentFile.fileVOList[i].fileVOList.length;j++)
-	     {
-		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
-		    {
-			  if(type != 'video')
-	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
-	          else
-			     str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[i].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
-		    }
-		 }
-		 
-	   str += '  </tr></table>';
-	   str +='</center>';
-	  document.getElementById("buildNewSourceParts").innerHTML = str;
-	}
-  
-  }
-
-}
-function showNewAnotherSource(fileSourceLanguageId,type)
-{
-     var str1 ='';
-	   if(type != 'video')
-	     str1 += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
-	   else 
-         str1 += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';	   
-		 str1 += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
-  for(var m in selectedContentFile.fileVOList)
-  {
-    if(selectedContentFile.fileVOList[m].fileSourceLanguageId == fileSourceLanguageId)
-	{
-	  if(document.getElementById("sourceChangeSpan") != null)
-	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
-	  if(type != 'video')
-	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle"  style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
-	  else
-	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
-	  document.getElementById("nextPartImage").innerHTML = str;
-	
-	   str = '<center><table><tr>';
-
-	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
-	     {
-		    if(type != 'video')
-	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
-			else 
-			 str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[m].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
-	     }
-		 
-	   str += '  </tr></table>';
-	   str +='</center>';
-	  document.getElementById("buildNewSourceParts").innerHTML = str;
-	}
-    else
-	{
-	   if(type != 'video')
-	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';	             	          	
-	   else
-	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';
-	}
-  }
-     	str1 += '  </tr></table>';
-	    str1 +='</center>';
-     if(document.getElementById("buildNewSources") != null)
-       document.getElementById("buildNewSources").innerHTML = str1;
-	 else
-	   document.getElementById("buildVideoNewSources").innerHTML = str1;
-}
-function getTotalProfile()
- {
-
- $.fx.speeds._default = 900;
-  $("#showProfile").dialog({ stack: false,
-                                show: "clip",
-			                    hide: "clip",
-							    height: 'auto',
-								width:600,
-								position:[130,130],								
-								modal: true,
-								title:'<font color="Navy"><b>${specialPageVO.heading}</b></font>',
+								minHeight: 450,
+								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
-	$("#showProfile").dialog();
-   
- 
-   var str ='';
-    str+='<fieldset class="imgFieldset">';
-    str+='  <table><tr><td>';
-    str+='  <s:if test="descriptions != null">'; 
-    str+='  <div style="font-weight: bold; font-size: 14px;">About ${specialPageVO.heading}</div>';
-    str+=' <br><s:iterator value="descriptions">';
-	str+=' <div style="margin-bottom:-5px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
-    str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
-	str+='</div>';
-    str+='</s:iterator>';
-    str+=' </s:if>';
-    str+=' </td></tr> </table>';
-    str+='</fieldset>';
-    document.getElementById("showProfile").innerHTML=str;
-   
-    
- }
+		$("#genderInfoDiv").dialog();
 
- function openFile(filePath){
-
-	window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
- }
-
-	function callAjax(jsObj,url)
-	{
 	
-		var callback = {			
-	 	success : function( o ) {
-		try
-		{ 
-		   myResults = YAHOO.lang.JSON.parse(o.responseText);
-		    if(jsObj.task == "setEmailAlertsForEvent")
-            {
-			   showStatusForEmailSubscription(myResults);
-			}
-		    
-			
-			/*else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="old")
-			{
-				
-               showPhotosInAGallary(myResults);
-			}
-			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
-			{
-			 showPhotosInInitialGallary(myResults);
-			}
-			else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
-			{
-               buildCandidatePhotoGallary(myResults);
-			}
-			else if(jsObj.task == "subscriptionDetails")
-			{
-				unSubscribeBtnBuild();
-			}
-			else if(jsObj.task == "unsubscriptionDetails")
-			{
-				subscribeBtnBuild();
-			}*/
+	var str= '';
+	str +='<div style="margin-left: 490px;">';
+	str +='<table>';
+	str +='<tr>';
+	str +='<td><b style="font-size:13px;">Select Election Year:</b></td>';
+	str +='<td>';
+	str +='<select id="selectedEleYear" onchange="getGenderInfo(this.value,this.id)" style="width:120px;">';
+	str +='<option value="0">Select Year</option>';
 
-		}catch(e){   
-			// alert("Invalid JSON result" + e);   
-		 }
-	  },
-			scope : this,
-			failure : function( o )
-			{
-										//alert( "Failed to load result" + o.status + " " + o.statusText);
-			}
-		  };
+	str +='<option value="126">2007</option>';
+	str +='	<option value="127">2002</option>';
+	str +='	<option value="128">1998</option>';
+	str +='	<option value="129">1995</option>';
+	str +='	<option value="130">1990</option>';
+	str +='	<option value="131">1985</option>';
+	str +='	<option value="132">1980</option>';
+	str +='	<option value="133">1975</option>';
+	str +='</select>';
+	str +='</td>';
+	str +='</tr>';
+	str +='</table>';
+	str +='</div>';
+	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 7px 0px 6px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 43px; font-size: 13px; border-radius: 3px 3px 3px 3px; text-align: center; width: 726px;">Partywise Male And Female Participation and their Performance In Gujarat <font color="pink">'+year+'</font> Assembly Election</h3>';
 
-		 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
+	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
+	str +='<th style="font-size: 13px;">Party</th>';
+	str +='<th style="font-size: 13px;">TP*</th>';
+	str +='<th style="font-size: 13px;">Won</th>';
+	str +='<th style="font-size: 13px;">CV* %</th>';
+	str +='<th style="font-size: 13px;">PV* %</th>';
+	str +='<th style="font-size: 13px;">Male Participants</th>';
+	str +='<th style="font-size: 13px;">Male Won</th>';
+	str +='<th style="font-size: 13px;">MCGV* %</th>';
+	str +='<th style="font-size: 13px;">Female Participants</th>';
+	str +='<th style="font-size: 13px;">Female Won</th>';
+	str +='<th style="font-size: 13px;">FCGV* %</th>';
+	str +='</tr>';
+	for(var i=0 ; i<myResults.length ; i++)
+	{
+	str +='<tr>';
+	
+	str +='<td><a href="partyPageAction.action?partyId='+myResults[i].partyId+'"><font color="blue">'+myResults[i].partyName+'</font></a></td>';
+	str +='<td>'+myResults[i].totalParticipated+'</td>';
+	str +='<td>'+myResults[i].totalSeatsWon+'</td>';
+	str +='<td>'+myResults[i].completeVotesPercent+'</td>';
+	str +='<td>'+myResults[i].PVotesPercent+'</td>';
+	str +='<td>'+myResults[i].malePerticipated+'</td>';
+	str +='<td>'+myResults[i].maleWon+'</td>';
+	str +='<td>'+myResults[i].MVotesPercent+'</td>';
+	str +='<td>'+myResults[i].femalePerticipated+'</td>';
+	str +='<td>'+myResults[i].femaleWon+'</td>';
+	str +='<td>'+myResults[i].FVotesPercent+'</td>';
+	str +='</tr>';
 	}
-function navigateToConstituencyPageFrmSpeclPge(elmtId,alertId)
+	str +='</table>';
+	str +='<div style="margin-top: 31px;padding-left: 75px;">';
+	str +='<table>';
+	str +='<tr><td><b>TP* = Total Participation</b></td></tr>'
+	str +='<tr><td><b>CV* % = Complete Votes Percentage</b></td></tr>';
+	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>MCGV* % = Male Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>FCGV* % = Female Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='</table>';
+	str +='</div>';
+	document.getElementById('genderAnalysisDiv').innerHTML = str;
+
+	
+
+}
+
+function getImportantCandidatesInfo()
 {
- var constSelectEl = document.getElementById(elmtId);
- var alertEl = document.getElementById(alertId);
- var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value
- alertEl.innerHTML = '';
- if(constSelectElVal == 0)
- {
-	 alertEl.innerHTML = '<font color="red">Please Select Constituency</font>';
-	 return;
- }
- window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
-
-} 
-function navigateToDistrictPageFrmSpeclPge(elmtId,alertElmtId)
-{
- var distSelectEl = document.getElementById(elmtId);
- var alertEl = document.getElementById(alertElmtId);
-	alertEl.innerHTML = '';
- var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
- var distSelectElText = distSelectEl.options[distSelectEl.selectedIndex].text;
-if(distSelectElVal == 0)
- {
- alertEl.innerHTML = '<font color="red">Please Select District</font>';
- return;
- }
- else
- alertEl.innerHTML = '';
- window.location="districtPageAction.action?districtId="+distSelectElVal+"&districtName="+distSelectElText;
-
-} 
-function getFirstThreePhotoRecords(){
-
-	   var jsObj =
-			{   
-			    time : timeST,
-			    specialPageId : specialPageId,
-				task:"getFirstThreePhotoRecords"
+	var jsObj = {
+	           	electionId:18,
+				task:"getImportantCandidatesInfo"
 			};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getFirstThreePhotoRecordsAction.action?"+rparam;						
-		callAjaxForSpecialPage(jsObj,url);  
-}
-
-/*function getCandidatesPhotosInAGallary(gallaryId)
-{
-	alert('new');
-    var jsObj =
-		{   time : timeST,
-			value:"new",
-		    gallaryId:gallaryId,
-			task:"getPhotosInAGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);  
-}*/
-function showPhotosInInitialGallary(results){
-
-	
-   var str ='';
-   str+='<div id="content" style="display:none;">';
-	count = 0;
-   for(var i =0;i<results.length; i++)
-   {
-   for(var k in results[i].filePath)
-	{
-     no_of_imagesPerRow = 3; 
-     j = count;
-     if(j++ % no_of_imagesPerRow == 0){
-       str+= '<tr style="display:none">';
-     }
-     str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
-	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" id="photoClickId'+i+''+k+'" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="Thumbs/Medium/'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
-	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
-     str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
-     if(j % no_of_imagesPerRow == 0){
-       str+= '</tr>';
-     }
-	 count++;
-    }
-   }
-   str+= ' </table>';
-   str+='</div>';
-   document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
-
-   $("a[rel=photo_gallery]").fancybox({
-     'transitionIn'		: 'none',
-     'transitionOut'		: 'none',
-     'titlePosition' 	: 'over',
-     'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-        return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
-     }
-   });
-    $('#photoClickId00').trigger('click');
-   //fireEvent(document.getElementById('photoClickId'),'click');
-    //document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
-}
-function photoGallaryPopUp(){
-	
-	var str='';
-	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
-	$("#buildPhotoGallaryDiv").html(str);
-
-	if(document.getElementById('buildPhotoGallaryDiv') == null)
-		return;
-     $("#buildPhotoGallaryDiv").dialog({ stack: false,
-							    height: 570,
-								width: 720,
-								position:[130,130],								
-								modal: true,
-								title:'<font color="Navy">Photo Galleries</font>',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-	$("#buildPhotoGallaryDiv").dialog();
-	showPhotoGallary();
-}
-function showPhotoGallary(){
-
-	var str='';
-	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
-	$("#buildPhotoGallaryDiv").html(str);
-	var jsObj =
-		{   
-		    time : timeST,
-			specialPageId:specialPageId,
-			startRecord:0,
-			maxRecord:100,
-			task:"getPhotoGallaryWithOutGallerySizeZero"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "showPhotoGallaryAction.action?"+rparam;						
-	callAjaxForSpecialPage(jsObj,url);
-}
-function buildCandidatePhotoGallary(results)
-{
-	var str ='';
-
-		str+='<div id="content" style="width:650px;">';		
-		str += '<fieldset class="imgFieldset">';
-		str +='<table  width="100%" style="margin-top:10px;">';
-		
-	if(results.length<=0)
-	{
-		str+='<b>&nbsp;No Photo Galleries Found </b>';
-	}
-		for(var i in results)
-		{
-			no_of_imagesPerRow = 3; 
-			j = i;
-
-			if(j++ % no_of_imagesPerRow == 0)
-				str += '<tr style="height:220px;">';
-			
-			str += '<td width="33%" class="imageStyle">';
-			str += '<table class="tableStyle">';
-			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
-			if(results[i].path!=null)
-			{
-			str += '<tr><td class="imgStyle"><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="Thumbs/Medium/'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'"/></a></td></tr>';
-            }
-			else
-			{
-			str += '<tr><td class="imgStyle"><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'"/></a></td></tr>';
-			}
-			str+= '<tr><td class="fontStyle"><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-			str += '<tr><td class="fontStyle"><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-			
-			str += '</table>';
-			str += '</td>';
-			
-			if(j % no_of_imagesPerRow == 0)
-				str+= '</tr>';
-		
-		}
-		str += ' </table>';
-		str += ' </fieldset>';
-		str+='</div>';
-		document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
-}
-/*function getCompleteGallaries(gallaryId){
-	alert('old');
-    var jsObj =
-		{ 
-            time : timeST,
-			value:"old",
-		    gallaryId:gallaryId,
-			task:"getPhotosInAGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getImportantCandidatesInfoAction.action?"+param;
 	callAjax(jsObj,url);
-}*/
-function showPhotosInAGallary(results){
-   var str ='';
-   str+='<div id="content" style="width:650px;">';
-   str += '<fieldset class="imgFieldset">';
-   str+='<table width="100%" style="margin-top:10px;">'
-   str+='<tr><td>';
-   str+='<input type="button" value="Back To Gallery"  class="imageButton" onclick="showPhotoGallary();" />';
-   str+= '</td></tr>';
-   count = 0;
-   for(var i in results)
-   {
-    for(var k in results[i].filePath)
-	{
-     no_of_imagesPerRow = 3; 
-     j = count;
-     if(j++ % no_of_imagesPerRow == 0){
-       str+= '<tr style="height:220px;">';
-     }
-     str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
-	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="Thumbs/Medium/'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
-	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
-     str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
-     if(j % no_of_imagesPerRow == 0){
-       str+= '</tr>';
-     }
-    count++;
-   }
-  }
-   str+= ' </table>';
-   str += ' </fieldset>';
-   str+='</div>';
-   document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
-
-   $("a[rel=photo_gallery]").fancybox({
-     'transitionIn'		: 'none',
-     'transitionOut'		: 'none',
-     'titlePosition' 	: 'over',
-     'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-        return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
-     }
-   });
 }
 
+ function showDetails(){
 
-$(document).ready(function() {
-	   $("a[rel=photo_gallery]").fancybox({
-					'transitionIn'		: 'none',
-					'transitionOut'		: 'none',
-					'titlePosition' 	: 'over',
-					'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-						return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
-					}
-				});
-	  });
-	  function showNotLogIn()
-{
-   document.getElementById("logInDiv").style.display='block';
-			var str='';
-		$("#logInDiv").dialog({ stack: false,
-									height: 'auto',
-									width: 500,
-									position:'center',								
-									modal: true,
-									title:'<font color="#000">ALERT</font>',
-									overlay: { opacity: 0.5, background: 'black'},
-									
-							});
-		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;"> Please Login to subscribe. <a href="loginInputAction.action" style="color:#80D1F1;"> Click here to Login</a></div></div>';
-		document.getElementById("logInDiv").innerHTML = str;
-}
+	 $('#showLink').css('display','none');
+	 $('#hideLink').css('display','block');
+	 $('#refreshDiv').css('display','block');
 
-function subscribeAlert()
-{
-   document.getElementById("logInDiv").style.display='block';
-			var str='';
-		$("#logInDiv").dialog({ stack: false,
-									height: 'auto',
-									width: 500,
-									position:'center',								
-									modal: true,
-									title:'<font color="#000">ALERT</font>',
-									overlay: { opacity: 0.5, background: 'black'},
-									
-							});
-		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
-}
-function unSubscribeAlert()
-{
-   document.getElementById("logInDiv").style.display='block';
-			var str='';
-		$("#logInDiv").dialog({ stack: false,
-									height: 'auto',
-									width: 500,
-									position:'center',								
-									modal: true,
-									title:'<font color="#000">ALERT</font>',
-									overlay: { opacity: 0.5, background: 'black'},
-									
-							});
-		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
-}
+
+	 $('.importantPersonsDivClass').show();
+
+ }
+ function hideDetails(){
+
+	$('#showLink').css('display','block');
+	$('#hideLink').css('display','none');
+	$('#refreshDiv').css('display','none');
+
+	$('.importantPersonsDivClass').hide('slow');
+
+ }
+
+getImportantCandidatesInfo();
+
 </script>
-</head>
-
-<body>
-<!--CONTENT MAIN SECTION START-->
-<!--PROFILE LEFT CONENT SECTION START-->
-<!--<div style="text-align:center;margin-bottom:10px;">
-<script type="text/javascript"><!--
-google_ad_client = "ca-pub-0938408694174139";
-/* PartyPageHeader */
-google_ad_slot = "2678494123";
-google_ad_width = 728;
-google_ad_height = 90;
-//-->
-<!--</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-</div> -->
-<a id="inline" href="#fancydivbox" style="displaynone"></a>
-<div id="promodiv" style="display:none;">
-	<div id="fancydivbox">
-	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
-	</div>
-</div>
-
-<div class="main-mbg">${specialPageVO.heading}
-<span style="margin-top:10px;margin-right:30px;float:right">
-<g:plusone size="medium"></g:plusone>
-
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-</span>
-
-<span style="margin-top:10px;float:right">
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}">
-Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-</script>
-</span>
-
-<span style="margin-top:10px;margin-right:18px;float:right">
-<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
-</span>
-</div>
- <div id="logInDiv"></div>
-<s:if test="customPages != null && customPages.size() > 0">
-<s:iterator value="customPages" var="custom"> 
-<s:if test="#custom.type == 'banner'">
-	<div>
-		<jsp:include page='${custom.name}' flush="true"/> 
-	</div>
-</s:if>
-</s:iterator>
-</s:if>
-
-<div style="background-color:#fff;border:1px solid #e5e5e5;padding:20px;">${specilaPageText}</div>
-
-      <div class="profile-left-sec">
-        <div class="pl-cont-sec">
-          <div class="ptd-sec"><img src="${specialPageVO.eventImagePath}" alt=""/> <span class="tc-tf pa-fi"></span>
-            <label class="c-red"></label>
-            </div>
-          <div class="clear"></div>
-          <div class="pl-sub-fields"> <span style="margin-left:14px;"></span>
-            <ul>
-             
-              <li><a href="javascript:{getTotalNews('totalNews')}">News and Events</a><span></span></li>
-              <li><a href="javascript:{videoGallaryPopUp();}">Video Gallery</a><span></span></li>
-              <li><a href="javascript:{photoGallaryPopUp();}">Photo Gallery</a><span></span></li>
-               
-            </ul>
-          </div>
-          <div class="clear"></div>
-          
-		<s:if test="customPages != null && customPages.size() > 0">
-		    <s:iterator value="customPages" var="custom"> 
-			<s:if test="#custom.type == 'left_navigation'">
-				<div style="width:200px;">
-					<jsp:include page='${custom.name}' flush="true"/> 
-				</div>
-			</s:if>
-			</s:iterator>
-		</s:if>
-          <!--EMAIL ALERT SECTION START-->
-
-             <div class="ea-fc-sec">
-              <h2 class="ea-fc-title">email alert <span class="blue-down-arrow">
-               <img	src="images/icons/candidatePage/blue-down-arrow.png" alt="" /></span></h2>
-                  <div class="ea-fc-cont-sec" style="font-size:13px;">
-                 
-			<span id="subscribeSpan">
- 
-			<s:if test="isSubscribed == true ">
-			Unsubscribe to stop<br/>
-			updates of<br />
-			<span class="li-red">${specialPageVO.heading}</span><br/>
-            <input  class="unsubscribebtn" type="button" onclick=
-            "unsubscriptionDetails()" value="UNSUBSCRIBE"/>
-            </s:if>
-			
-			<s:else>
-			Subscribe and get <br/>
-			updates of<br />
-			<span class="li-red">${specialPageVO.heading}</span><br/>
-			<input  class="subscribebtn" type="button" onclick=
-			"subscriptionDetails()" value="SUBSCRIBE"/>
- 			</s:else>
-
-            
-
-			</span>
-				  <!--<input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
-					onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value=''; document.getElementById('alertMsg').innerHTML = '';" />
-
-			<div id="alertMsg" style="dispaly:block"></div>
-			<div class="pl-sub-but"><a onclick="validateEmailField()"
-				href="javascript:{};"><strong>Subscribe Alert</strong></a></div>-->
-
-		</div>
-		</div>
-
-<!--EMAIL ALERT SECTION END--></div>
-<s:if test="isAdmin == 'true'">
-<div><a href="specialPageManageAction.action?specialPageId=${specialPageId}">Manage Special Pages</a></div>
-</s:if>
-</div>
-      </div>
-      
-      <!--PROFILE LEFT CONENT SECTION END--> 
-      
-      <!--PROFILE MIDDLE CONTENT SECTION START-->
-      
-      <div class="profile-mid-sec">
-        <div class="pm-cont-sec"> 
-          
-          <!--ABOUT POLITICIAN SECTION START-->
-          
-          <div class="pm-inner-cont-sec" id="pm-inner-cont-sec">
-            <h1 class="inc-title">About Event</h1>
-            <p></p>
-            <div class="read-more"><a href="#">read more</a></div>
-          </div>
-          
-          <!--ABOUT POLITICIAN SECTION END--> 
-          
-			<s:if test="customPages != null && customPages.size() > 0">
-			<s:iterator value="customPages" var="custom"> 
-				<s:if test="#custom.type == 'center_div'">
-					<div style="width:435px;">
-						<jsp:include page='${custom.name}' flush="true"/> 
-					</div>
-				</s:if>
-			</s:iterator>
-			</s:if>
-			<!--ELECTION PROFILE SECTION START--> 
-
-		 
-            <!--ELECTION PROFILE SECTION END--> 
-          
-            <!--PHOTO GALLERY SECTION START-->
-          
-            <div class="pm-inner-cont-sec">
-           
-             <div id="photoGallaryDiv"> </div>
-            
-            </div>
-          
-            <!--PHOTO GALLERY SECTION END-->
-          <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On ${specialPageVO.heading}</span>
-		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430" style="margin-top: 9px;"></div>
-		  </div>
-          <div class="clear"></div>
-          <p></p>
-          
-         </div>
-      </div>
-      
-      <!--PROFILE MIDDLE CONTENT SECTION END--> 
-      
-      <!--PROFILE RIGHT CONTENT SECTION START-->
-      
-      <div class="profile-right-sec">
-        <div class="pr-cont-sec"> 
-          
-          <!--NEWS AND EVENTS SECTION START-->
-          
-          <div class="pr-sub-fields-sec" style="margin-bottom:0px; border-bottom:0px;">
-            
-            <div class="news-events-fields">
-              <div id="newsDisplayDiv"></div>
-              <!--<div class="more"><a href="#">more</a></div>--> 
-            </div>
-          </div>
-          
-          <!--NEWS AND EVENTS SECTION END--> 
-          
-          <!--VIDEOS SECTION START-->
-          <s:if test="fileVOList != null && fileVOList.size() > 0"> 
-		<div class="pr-sub-fields-sec">
-            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span> </h1>
-		<div id="videogallery" class="fleft">
-
-	<s:iterator status="stat" value="fileVOList">
-		
-		<s:if test="#stat.index == 0">
-		<DIV>
-		<a  title='<s:property value="title"/>' onclick="getVideoDetails(<s:property value='contentId'/>)">
-		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
-		</DIV>
-		</s:if>
-	</s:iterator>
-
-	<s:if test="fileVOList.size() > 1"> 
-		<ul class="video-thumb-sec">
-			<s:iterator status="stat" value="fileVOList">
-				<s:if test="#stat.index >= 1 && #stat.index <= 3">
-				<li><a title='<s:property value="title"/>' onclick="getVideoDetails(<s:property value='contentId'/>)">
-				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
-				</s:if>
-			</s:iterator>
-		</ul>
-	</s:if>
-    </div>
-  </s:if>
-    <s:if test="fileVOList != null && fileVOList.size() > 4"> 
-	 <div class="more"><a onClick="videoGallaryPopUp(<s:property value ='fileVOList.size'/>);" href="javascript:{};" style="margin-bottom:30px;">More</a></div>
-	 </s:if>
-
-	<div id="showContentDiv">
-	<div id="contentAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>
-	<div id="showContentDivInnerDiv"></div>
-	</div>
-	<div id="videoGallaryPopUpDiv" style="width:auto;"></div>
-
-<!--<div>
-	<script type="text/javascript"><!--
-		google_ad_client = "ca-pub-0938408694174139";
-		/* CandidatePageRightBox */
-		google_ad_slot = "5426332176";
-		google_ad_width = 300;
-		google_ad_height = 250;
-		//-->
-		<!--</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-	</div> -->
-
- <!-- VIDEOS SECTION END--> 
-
-	<s:if test="customPages != null && customPages.size() > 0">
-		<s:iterator value="customPages" var="custom"> 
-			<s:if test="#custom.type == 'right_navigation'">
-				<div style="width:300px;">
-					<jsp:include page='${custom.name}' flush="true"/> 
-				</div>
-			</s:if>
-		</s:iterator>
-	</s:if>
-
-   <div id="showProfile"></div>
-      <!--PROFILE RIGHT CONTENT SECTION END--> 
-      
-    <!--CONTENT SECTION END--> 
- 
- <!--CONTENT MAIN SECTION END--> 
-<div id="loginPopupDiv"></div>
-
-<script type="text/javascript">
-  
-getTotalNews('getFirstFourNewsRecordsToDisplay');
-displayProfile();
-getFirstThreePhotoRecords();
-var loadingFirstTime = '${sessionScope.loadingFirstTime}';
-$(document).ready(function(){
-	if(loadingFirstTime  == 'true'){
-		$("#inline").fancybox();
-		$("#inline").trigger("click");
-		}
-	});
-
-<%
-	session.setAttribute("loadingFirstTime", "false");
-%>
-<s:if test="contentId != null">
-	showSelectedContentAndRelatedGalleries();
-</s:if>
-</script>
-</body>
-</html>
