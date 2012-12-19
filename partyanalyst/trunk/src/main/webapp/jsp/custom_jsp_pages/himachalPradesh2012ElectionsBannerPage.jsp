@@ -91,6 +91,10 @@
     margin-bottom: 15px;
     padding-left: 15px;
 }
+table.gujaratTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
+table.gujaratTableDiv th, table.gujaratTableDiv td {text-align:center;border:1px solid black;padding:5px;}
+table.gujaratTableDiv th {background-color:AntiqueWhite;}
+table.gujaratTableDiv td:first-child {width:50%;}
 </style>
 
 <div>
@@ -111,7 +115,7 @@
 <span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Himachal Pradesh </span> -
 
 <span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b>. <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b> Total Constituencies 68ACs Date of Poll in 4.11.2012 and Counting of Votes in 20.12.2012.</span><br /><br />
-
+<div id="electionResultDiv"></div>
 <div id="specialPageHighLight"  style="margin-left: 11px;
     width: 900px;"></div>
 
@@ -551,7 +555,11 @@ CPM</a>
 <div id="genderAnalysisDiv"></div></div>
 
 <script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
 
+$(document).ready(function() {
+  getElectionInfo();
+});
 function getGenderInfo(selectedYear,elecYearId)
 {
 	var jsObj = {
@@ -564,21 +572,37 @@ function getGenderInfo(selectedYear,elecYearId)
 	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
 	callAjax(jsObj,url);
 }
-
+function getElectionInfo()
+{
+	var jsObj = {
+				electionId:196,
+	            time:new Date().getTime(),
+				task:"getPartyElectionInfo"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getLiveResultsAction.action?"+param;
+	callAjax(jsObj,url);
+}
 function callAjax(jsObj,url){
 		var myResults;
  					
  		var callback = {			
  		               success : function( o ) {
 							try {												
-									if(o.responseText)
-										myResults = YAHOO.lang.JSON.parse(o.responseText);
-									if(jsObj.task =="getPartyGenderInfo"){
-										buildGenderCountResultsDataTable(myResults,jsObj.elecYearId);
-									}
-										else if(jsObj.task =="getHighLights")
+								if(o.responseText)
+								myResults = YAHOO.lang.JSON.parse(o.responseText);
+								if(jsObj.task =="getPartyGenderInfo")
 								{
-										buildSpecialPageHightLights(myResults);
+									buildGenderCountResultsDataTable(myResults,jsObj.elecYearId);
+								}
+								else if(jsObj.task =="getHighLights")
+								{
+									buildSpecialPageHightLights(myResults);
+								}
+								else if(jsObj.task =="getPartyElectionInfo")
+								{
+									buildGujaratElectionResult(myResults);
+										
 								}
 							}
 							catch (e) {   
@@ -724,6 +748,69 @@ var jsObj = {
 	var url = "getSpecialPageHighLights.action?"+param;						
 		
 	callAjax(jsObj,url);
+}
+function buildGujaratElectionResult(myResults)
+{
+	if(myResults!=null && myResults.electionLiveResultVOList!=null &&  myResults.electionLiveResultVOList.length>0)
+	{
+	var electionResult= '';	
+	electionResult+='<div id="gujratResultsHeader">';
+	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">';
+	electionResult+='PARTY WISE RESULTS OF HIMACHALPRADESH VIDHAN SABHA 2012</h3>';
+	electionResult+='</div></br>';
+	electionResult+='<div id="GujaratResultBody">';
+	electionResult+='<span id="gujratResultsBody1" style ="width:500px;float:left">';
+	electionResult+='<table class="table table-bordered">';
+	electionResult+='<tr>';
+	electionResult+='<th>Total Seats - <font color="#05A8E9">'+myResults.totalSeats+'</font></th>';
+	electionResult+='<th> Result Known - <font color="#05A8E9">'+myResults.totalKnownCount+'</font></th>';
+	electionResult+='</tr>';
+	electionResult+='<tr>';
+	electionResult+='<th>Total Lead - <font color="#05A8E9">'+myResults.newKnownCount+'</font></th>';
+	electionResult+='<th> Won - <font color="#05A8E9">'+myResults.retainedCount+'</font></th>';
+	electionResult+='</tr>';
+	electionResult+='<table>';
+	electionResult+='</span>';
+	electionResult+='<span id="gujratResultsBody2" style ="width:500px;float:left">';
+	electionResult+='<table class="gujaratTableDiv">';
+	electionResult+='<tr>';
+	electionResult+='<th>party</th>';
+	electionResult+='<th>TP*</th>';
+	electionResult+='<th>Lead</th>';
+	electionResult+='<th>Won</th>';
+	electionResult+='<th>Lead/Won</th>';
+	electionResult+='</tr>';
+	for(var i=0 ; i<myResults.electionLiveResultVOList.length ; i++)
+	{
+	electionResult+='<tr>';
+	electionResult+='<th>'+myResults.electionLiveResultVOList[i].partyName+'</th>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].totalSeatsParticipated+'</td>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].leadCountInNew+'</td>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].wonCountInNew+'</td>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].wonOrLeadCount+'</td>';
+	electionResult+='</tr>';
+	}
+	electionResult+='</table>';
+	electionResult+='</span>';
+	electionResult+='<span  id="GujaratResultGraph" style ="width:400px;float:right">';
+	electionResult+='<b></b>';
+	electionResult+='</span>';
+	electionResult+='</div>';
+	document.getElementById('electionResultDiv').innerHTML = electionResult;
+	
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','Area Type');
+	data.addColumn('number','Count');
+	data.addRows(myResults.electionLiveResultVOList.length-1);
+	
+	for(var j=1; j<myResults.electionLiveResultVOList.length; j++)
+	{
+		data.setValue(j-1,0,myResults.electionLiveResultVOList[j].partyName);
+		data.setValue(j-1,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
+	}
+	var chart = new google.visualization.PieChart(document.getElementById('GujaratResultGraph')); 
+	chart.draw(data,{width:400, height: 370, title:'HimachalPradesh Vidhan Sabha Election 2012 Lead/Won Chart'});
+	}
 }
 
 
