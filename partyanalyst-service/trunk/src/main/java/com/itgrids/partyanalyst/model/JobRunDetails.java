@@ -21,6 +21,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 public class JobRunDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8017716386817086943L;
+
 	private Long jobRunDetailsId;
 	
 	private Job job;

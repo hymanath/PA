@@ -25,6 +25,11 @@ import org.hibernate.annotations.NotFoundAction;
 public class Job implements Serializable{
 	
 
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8598032361520377505L;
+
 private Long jobId;
 
 private String jobUniqueId;
