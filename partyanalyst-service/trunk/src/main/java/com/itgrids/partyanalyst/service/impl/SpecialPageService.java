@@ -431,18 +431,6 @@ public class SpecialPageService implements ISpecialPageService{
 		this.userDAO = userDAO;
 	}
 	
-
-
-	public SpecialPageHighlights getSpecialPageHighlights() {
-		return specialPageHighlights;
-	}
-
-	public void setSpecialPageHighlights(SpecialPageHighlights specialPageHighlights) {
-		this.specialPageHighlights = specialPageHighlights;
-	}
-	//implementations of declaration reference variable
-	
-
 	public List<String> getSpecialPageDescription(Long specialPageId)
 	{
 		 List<String> descList = new ArrayList<String>(0); 
@@ -2137,7 +2125,7 @@ return res;
 		SpecialPage specialPage = specialPageDAO.get(specialPageId);
 		try {
 			for (SpecialPageVO params : specialPageVO) {
-				specialPageHighlights = specialPageHighlightsDAO.get(params
+				SpecialPageHighlights specialPageHighlights = specialPageHighlightsDAO.get(params
 						.getSpecialPageDescriptionId());
 				specialPageHighlights.setSpecialPage(specialPage);
 				specialPageHighlights.setOrderNo(params.getOrderNo());
