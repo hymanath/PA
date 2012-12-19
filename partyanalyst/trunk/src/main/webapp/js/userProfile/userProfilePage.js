@@ -29,7 +29,8 @@ $("document").ready(function(){
 	};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getLatestFriendsListAction.action?"+rparam;						
+		var url = "getLatestFriendsListAction.action?"+rparam;
+		$("#impdatesDiv").hide();
 		callAjax1(jsObj,url);
 		
 	});
@@ -40,9 +41,22 @@ $("document").ready(function(){
 		};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getReqMessagesForUserAction.action?"+rparam;						
+		var url = "getReqMessagesForUserAction.action?"+rparam;	
+		$("#impdatesDiv").hide();		
 		callAjax1(jsObj,url);
 		
+	});
+	$(".ImportantDates").click(function(){
+		buildCalendarControl();
+		showInitialImpEventsAndDates(impDates,'impDates',"");
+		renderStack();
+		$("#impdatesDiv").show();
+		$(".placeholderCenterDiv").children().remove();
+		var date = new Date();
+		var month = date.getMonth();
+		var nameOfMonth = monthname[month];
+		var year = date.getFullYear();	
+		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Importent Dates</b>');
 	});
 	
 	$("#settings").click(function(){
@@ -50,6 +64,7 @@ $("document").ready(function(){
 		$(".placeholderCenterDiv").children().remove();
 		$("#headerDiv").html('');
 		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload cover Image</a></li></ul>");
+		$("#impdatesDiv").hide();
 	});
 	
 	$(".messagesLink").click(function(){
@@ -57,7 +72,7 @@ $("document").ready(function(){
 				
 		if($("#headerDiv").find("#Inbox").length<1) {
 		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active'><a id='Inbox' >Inbox</a></li><li><a id='SentBox'>Sent</a></li></ul>"); }
-		
+		$("#impdatesDiv").hide();
 		$("#Inbox").trigger("click");
 				
 	});
@@ -73,13 +88,14 @@ $("document").ready(function(){
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getAllRequestMessagesForAUserAction.action?"+rparam;	
-		
+		$("#impdatesDiv").hide();
 		callAjax1(jsObj,url);
 	});
 
 	$('.linkDiv').live("click",function(){
-		alert('123');
+		//alert('123');
 		$(this).remove();
+		$("#impdatesDiv").hide();
 	});
 	
 	
@@ -94,7 +110,7 @@ $("document").ready(function(){
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getAllSentMessagesForAUserAction.action?"+rparam;	
-		
+		$("#impdatesDiv").hide();
 		callAjax1(jsObj,url);
 	});
 	
@@ -105,7 +121,7 @@ $("document").ready(function(){
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getSpecialPageAction.action?"+rparam;	
-		
+		$("#impdatesDiv").hide();
 		callAjax1(jsObj,url);
 	});
 	
@@ -118,7 +134,7 @@ $("document").ready(function(){
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getFavouriteLinksAction.action?"+rparam;	
-		
+		$("#impdatesDiv").hide();
 		callAjax1(jsObj,url);
 	});
 
@@ -133,7 +149,7 @@ $("document").ready(function(){
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getUserSubScriptionsAction.action?"+rparam;	
-		
+		$("#impdatesDiv").hide();
 		callAjax1(jsObj,url);
 
 	});
@@ -155,7 +171,8 @@ $("document").ready(function(){
 			 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
+	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";
+	$("#impdatesDiv").hide();	
 	callAjax1(jsObj,url);
 	});
 
@@ -173,7 +190,8 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 			 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
+	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";
+	$("#impdatesDiv").hide();	
 	callAjax1(jsObj,url);
 	});
 
@@ -195,6 +213,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
+	$("#impdatesDiv").hide();
 	callAjax1(jsObj,url);
 	});
 
@@ -214,6 +233,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
+	$("#impdatesDiv").hide();
 	callAjax1(jsObj,url);
 	});
 
