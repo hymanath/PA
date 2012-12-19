@@ -2834,9 +2834,7 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			
 			UserFavoriteLinks  userFavoriteLinks = null;
 			
-            queryString = queryString.replaceAll(",", "&");
 			
-			queryString = queryString.substring(0, queryString.length() - 1);
 			
 		
 			String finalURL = "";
@@ -2845,10 +2843,10 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			else
 			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString;
 			
-			List<UserFavoriteLinks> userFavouriteLinkList = userFavoriteLinksDAO.checkForAlreadyExistedOrNot(finalURL);
+			List<UserFavoriteLinks> userFavouriteLinkList = userFavoriteLinksDAO.checkForAlreadyExistedOrNot(userId,finalURL);
 			
 			if(userFavouriteLinkList != null && userFavouriteLinkList.size() >0)				
-				userFavoriteLinks = userFavouriteLinkList.get(0);				
+                return IConstants.SUCCESS;	
 			else				
 				userFavoriteLinks = new UserFavoriteLinks();
 				
@@ -2856,7 +2854,9 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			userFavoriteLinks.setUser(userDAO.getUserByUserId(userId));
 			userFavoriteLinks.setFavoriteLinkPage(favoriteLinkPage);
 			
+			queryString = queryString.replaceAll(",", "&");
 			
+			queryString = queryString.substring(0, queryString.length() - 1);
 			
 			 userFavoriteLinks.setUrl(finalURL);
 				
