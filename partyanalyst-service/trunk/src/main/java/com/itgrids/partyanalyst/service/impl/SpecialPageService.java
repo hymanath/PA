@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IKeyCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -115,9 +117,17 @@ public class SpecialPageService implements ISpecialPageService{
 	private List<SpecialPageVO> specialPageVOList;
 	private IUserDAO userDAO;
 	private ISpecialPageHighlightsDAO specialPageHighlightsDAO;
-	private SpecialPageHighlights specialPageHighlights;
-	
+	private IKeyCandidateDAO keyCandidateDAO;
 	private ISpecialPageDataDAO specialPageDataDAO;
+	
+	public IKeyCandidateDAO getKeyCandidateDAO() {
+		return keyCandidateDAO;
+	}
+
+	public void setKeyCandidateDAO(IKeyCandidateDAO keyCandidateDAO) {
+		this.keyCandidateDAO = keyCandidateDAO;
+	}
+
 	
 	public ISpecialPageDataDAO getSpecialPageDataDAO() {
 		return specialPageDataDAO;
@@ -1988,7 +1998,7 @@ return res;
  public List<SelectOptionVO> getAllSpecialPages(){
 	 
 	 if(log.isDebugEnabled())
-		 log.debug("Entered into the getAllSpecialPages method ");
+		 log.debug("Entered into the getAllSpecialPages service method ");
 	 
 		List<SelectOptionVO> spcialPageList = null;
 		
@@ -2009,12 +2019,52 @@ return res;
 			
 		}catch(Exception e){
 			
-			 log.error("Exception raised  in  getAllSpecialPages method ");
+			 log.error("Exception raised  in  getAllSpecialPages service method ");
 			e.printStackTrace();
 			return null;
 			
 		}	 
 	 return spcialPageList;
+	 
+ }
+ 
+ 
+ public List<ImportantDatesVO> getImportantCandidatesInfoByElectionId(Long electionId){	
+	 
+	 if(log.isDebugEnabled())
+		 log.debug("Entered into the getImportantCandidatesInfoByElectionId service method ");
+	 
+	 List<ImportantDatesVO> importantCandidatesList = null;	 
+	 
+	 try{
+	 
+		List<Object[]> cdidatesList =  keyCandidateDAO.getImportantCandidatesInfoByElectionId(electionId);
+		
+		
+		if(cdidatesList != null && cdidatesList.size() >0)
+			importantCandidatesList = new ArrayList<ImportantDatesVO>();
+		
+			for(Object[] obj:cdidatesList){
+				
+				ImportantDatesVO importantCandidate = new ImportantDatesVO();
+				
+				importantCandidate.setCandidateId((Long)obj[0]);
+				importantCandidate.setCandidateName(obj[1].toString().toUpperCase());
+				importantCandidate.setParty(obj[2].toString());
+				importantCandidate.setConstituency(obj[3].toString());
+				importantCandidate.setStatus(obj[4].toString());
+				
+				importantCandidatesList.add(importantCandidate);
+		  }
+			return importantCandidatesList;
+	 
+	 }catch(Exception e){
+		 
+		 log.error("Exception raised in getImportantCandidatesInfoByElectionId service method");
+		 e.printStackTrace();
+		 return null;
+		 
+	 }
 	 
  }
 	
