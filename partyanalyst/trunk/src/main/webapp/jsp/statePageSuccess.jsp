@@ -280,7 +280,7 @@ var queryString='';
 <script>
 function savefavouriteLink(){
 
-	var pageTitle = '${districtName}'+' District News,Constituencies,MLA, MP,Details,  Elections Results,Parties Performance,MPTC, ZPTC, Municipality, Corporation Election Results';
+	var pageTitle = '${statePage.stateName}'+' News,Elections, districts,Constituencies,Census, Election Results';
 
 	environment = '<%=environment%>';
 
