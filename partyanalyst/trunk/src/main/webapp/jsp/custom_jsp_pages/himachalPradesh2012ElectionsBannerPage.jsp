@@ -71,9 +71,9 @@
     background-attachment: scroll;
     background-clip: border-box;
     background-color: transparent;
-    /*background-image:url("images/icons/diamond.png");*/
+    background-image:url("images/icons/diamond.png");
     background-origin: padding-box;
-    background-position: 0 12px;
+    background-position: 0 8px;
     background-repeat: no-repeat;
     background-size: auto auto;
     color: #333333;
@@ -84,7 +84,7 @@
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
-   /* line-height: 1.5em;*/
+   line-height: 20px;
     list-style-image: none;
     list-style-position: outside;
     list-style-type: none;
@@ -605,7 +605,7 @@ function buildSpecialPageHightLights(results)
 	str +='<div class="hglgts">';
 	for(var i in results)
 	{
-	str += '<ul><li><img src="images/icons/diamond.png"/>';
+	str += '<ul><li>';
 	str += ' '+results[i].description+'</li></ul>';
 	}
 	
