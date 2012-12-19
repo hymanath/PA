@@ -8,19 +8,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Profile Page</title>
-
 <script type="text/javascript" src="js/userProfile/userProfilePage.js"> </script>
 <script type="text/javascript" src="js/opinionpoll/opinionpoll.js"> </script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
-
+<script type="text/javascript" src="js/userProfile/impDates.js"> </script>
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
 <link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
-
-
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
-
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-	
+<!-- YUI Dependency files (Start) -->
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 <!-- rating -->
 		<!-- <link href="styles/rating/jquery.rating.css" rel="stylesheet" type="text/css">
 		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
@@ -29,10 +29,19 @@
 		<script src="js/slides.min.jquery.js"></script>-->
 <!-- rating -->
     <!-- syntax highlighter -->
-    <link href="styles/rating/shCore.css" rel="stylesheet" type="text/css">
-    <link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
-	
-  <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
+<link href="styles/rating/shCore.css" rel="stylesheet" type="text/css">
+<link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
+<link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
+
+<script type="text/javascript">
+var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr; 
+var monthname = new Array("January", "February", "March", 
+		"April", "May", "June", "July", "August", "September", 
+		"October", "November", "December"); 
+		
+var requestPath = '<%=request.getContextPath()%>';
+</script>
 <style>
 .profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
 .profile-left .widget-block h4{border:none;background:#e5e5e5;display:none;}
@@ -58,13 +67,17 @@ margin-bottom:10px;
 margin-top:9px;
 }
 .removeLinkButton{
-
 float:right;
 margin:8px 9px 0px 0px;
 }
-
-
-	.politicalReasAddLink{margin-left: 200px; margin-right: 26px; margin-bottom: 10px;}
+.politicalReasAddLink{margin-left: 200px; margin-right: 26px; margin-bottom: 10px;}
+#newImpDateDiv,#eventDateDetails{
+	height: auto;
+    min-height: 26.1667px;
+    text-align: justify;
+    width: auto;
+}
+.ui-widget{font:12px "Helvetica Neue",Helvetica,Arial,sans-serif}
 .subscriptionsMain{
 display:inline-block;
     height: auto;
@@ -191,6 +204,34 @@ display:inline-block;
 							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+	<!--PRASAD-->
+		<div id="impdatesDiv" style="display:none">
+			<div id="cadreDatesYUICalDiv" class="yui-skin-sam"></div>
+			<div id="cadreEventsDetailsDivMain">
+				<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/bluebox.png"/> - Only Important Dates </span>
+			</div>	
+			<div id="cadreEventsDatesMain">
+				<table width="100%">
+					<tr>
+						<td width="50%">
+							<div id="cadreImpDatesDiv">
+								<div id="cadreImpDatesHeadDiv">
+									<span style="float: left;">Important Dates</span>
+									<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewImpDatePopup()" style="color:#669900;">Create New Date</a></span>							
+								</div>
+							<div id="cadreImpDatesBodyDiv"> </div>
+							</div>
+						</td>
+					
+					</tr>
+				</table>
+			</div>
+			<div id="cadreManagementMainDiv" class="yui-skin-sam">		
+				<div id="myDialog" class="yui-skin-sam"> 			
+				</div> 
+			</div>
+		</div>		
+	<!--PRASAD-->
 						</div>
 						<div class="FavoriteLinksDiv">
 							<div>
@@ -528,6 +569,19 @@ userType = '${UserType}';
 						};
 			connectStatus.push(obj);
 </c:forEach>
+var impDates = new Array();
+		<c:forEach var="impDate" items="${cadreManagementVO.userImpDates}" >			
+				var ob =
+					{
+						importantDateId:"${impDate.importantDateId}",
+						title:"${impDate.title}",
+						impDate:"${impDate.impDate}",
+						importance:"${impDate.importance}",
+						eventType:"${impDate.eventType}"
+					};
+					impDates.push(ob);
+		</c:forEach>
+		
 <c:forEach var="constituency" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
 			var obj =	{
 							id:'${constituency.constituencyId}',
