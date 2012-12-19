@@ -1172,6 +1172,8 @@ Tweet</a>
 </s:iterator>
 </s:if>
 
+<div style="background-color:#fff;border:1px solid #e5e5e5;padding:20px;">${specilaPageText}</div>
+
       <div class="profile-left-sec">
         <div class="pl-cont-sec">
           <div class="ptd-sec"><img src="${specialPageVO.eventImagePath}" alt=""/> <span class="tc-tf pa-fi"></span>
