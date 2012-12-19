@@ -116,7 +116,6 @@ public class SpecialPageService implements ISpecialPageService{
 	private IUserDAO userDAO;
 	private ISpecialPageHighlightsDAO specialPageHighlightsDAO;
 	
-	
 	private ISpecialPageDataDAO specialPageDataDAO;
 	
 	public ISpecialPageDataDAO getSpecialPageDataDAO() {
@@ -151,6 +150,15 @@ public class SpecialPageService implements ISpecialPageService{
 	public void setSpecialPageCustomPagesDAO(
 			ISpecialPageCustomPagesDAO specialPageCustomPagesDAO) {
 		this.specialPageCustomPagesDAO = specialPageCustomPagesDAO;
+	}
+	
+	public ISpecialPageHighlightsDAO getSpecialPageHighlightsDAO() {
+		return specialPageHighlightsDAO;
+	}
+
+	public void setSpecialPageHighlightsDAO(
+			ISpecialPageHighlightsDAO specialPageHighlightsDAO) {
+		this.specialPageHighlightsDAO = specialPageHighlightsDAO;
 	}
 	
 	//getter&setter methods for reference variables
@@ -758,6 +766,31 @@ public class SpecialPageService implements ISpecialPageService{
 		}
 	}
 
+	
+		public List<FileVO> getSpecialPageHighLights(Long specialPageId)
+		{
+			
+			FileVO filevo = null;
+			List<FileVO> result = new ArrayList<FileVO>();
+			try{
+			List<Object[]> list = specialPageHighlightsDAO.getSpecialPageHighLightsBySpecailPageId(specialPageId);
+			if(list!= null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					filevo = new FileVO();
+					filevo.setOrderNo((Long)params[0]);
+					if(params[1] != null)
+					filevo.setDescription(params[1].toString());
+					result.add(filevo);
+				}
+			}
+			}
+			catch (Exception e) {
+			e.printStackTrace();
+			}
+			return result;
+		}
 	public List<SpecialPageVO> getEventProfileInfo(Long specialPageId) {
 		log
 				.debug("Entered into getEventProfileInfo() method in  SpecialPageService");
