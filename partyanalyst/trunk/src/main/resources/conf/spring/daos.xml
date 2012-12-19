@@ -1022,4 +1022,8 @@
 	<bean id="specialPageDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageDataDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="userSocialNetworkSiteDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSocialNetworkSiteDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 </beans>		
