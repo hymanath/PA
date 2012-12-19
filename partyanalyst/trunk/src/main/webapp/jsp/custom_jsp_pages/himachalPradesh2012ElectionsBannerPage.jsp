@@ -883,6 +883,13 @@ function buildGujaratElectionResult(myResults)
 
 <script>
 function buildImportantCnadidatesData(results){
+	
+	if(results == null || results == "null"){
+		$('#importantCandidateHeadingDiv').hide();
+		  return false;		
+		
+	}
+		
 
     var str='';
 
