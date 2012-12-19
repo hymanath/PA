@@ -1,24 +1,20 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -35,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageDataDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageInfoDAO;
@@ -43,7 +40,6 @@ import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -52,8 +48,6 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
-import com.itgrids.partyanalyst.model.Cadre;
-import com.itgrids.partyanalyst.model.CadreSkills;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsVO;
 import com.itgrids.partyanalyst.model.ContentType;
@@ -62,10 +56,10 @@ import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
-import com.itgrids.partyanalyst.model.PartyCadreSkills;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
+import com.itgrids.partyanalyst.model.SpecialPageData;
 import com.itgrids.partyanalyst.model.SpecialPageDescription;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
 import com.itgrids.partyanalyst.model.SpecialPageInfo;
@@ -74,9 +68,9 @@ import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
-import com.itgrids.partyanalyst.utils.YouTubeManager;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.YouTubeManager;
 
 
 public class SpecialPageService implements ISpecialPageService{
@@ -119,6 +113,16 @@ public class SpecialPageService implements ISpecialPageService{
 	private List<SpecialPageVO> specialPageVOList;
 	private IUserDAO userDAO;
 	
+	private ISpecialPageDataDAO specialPageDataDAO;
+	
+	public ISpecialPageDataDAO getSpecialPageDataDAO() {
+		return specialPageDataDAO;
+	}
+
+	public void setSpecialPageDataDAO(ISpecialPageDataDAO specialPageDataDAO) {
+		this.specialPageDataDAO = specialPageDataDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -1871,5 +1875,99 @@ return res;
 		});		
 	return res;
 	}
+ 
+ /**
+  * This method will save the data for special pages
+  * @param specialPageId
+  * @param specialPageText
+  */
+ public String saveSpecialPageText(Long specialPageId , String specialPageText){
+	 if(log.isDebugEnabled())
+		 log.debug("Entered into the saveSpecialPageText service method");
+	 
+	 SpecialPageData specialPageData  = null;
+	try{
+		 List<SpecialPageData> specialPageDataList  = specialPageDataDAO.getSpecialPageDataObjectBySpecialPageId(specialPageId);
+		 
+		 if(specialPageDataList != null && specialPageDataList.size() >0)
+			 specialPageData = specialPageDataList.get(0);
+		 else
+			 specialPageData = new SpecialPageData();
+		 
+		 specialPageData.setSpecialPage(specialPageDAO.get(specialPageId));
+		 specialPageData.setSpecialPageData(specialPageText);		 
+		 specialPageDataDAO.save(specialPageData);
+		 
+		 return IConstants.SUCCESS;
+	 
+	 }catch(Exception e){
+		 
+		 log.error("Exception raised in  saveSpecialPageText service method");
+		 e.printStackTrace();
+		 return null;
+		 
+	 }
+ }
+ 
+ /**
+  * This method will fetch the data for special page
+  * @param specialPageId
+  */
+ 
+ public String getSpecialPageDataBySpecialPageId(Long specialPageId){
+	 
+	 try{
+	 
+		List<String> specialPageDataList =  specialPageDataDAO.getSpecialPageDataBySpecialPageId(specialPageId);
+		
+		if(specialPageDataList != null && specialPageDataList.size() >0)
+			return specialPageDataList.get(0);
+		else
+			return null;
+	 }catch(Exception e){
+		 
+		 e.printStackTrace();
+		 return null;
+		 
+	 }
+	 
+ }
+ 
+ /**
+  * This method will get all special pages details
+  * @return
+  */
+ public List<SelectOptionVO> getAllSpecialPages(){
+	 
+	 if(log.isDebugEnabled())
+		 log.debug("Entered into the getAllSpecialPages method ");
+	 
+		List<SelectOptionVO> spcialPageList = null;
+		
+		try{
+				List<Object[]> specialPageDetailsList =  specialPageDAO.getSpecialPageNames();
+				
+				if(specialPageDetailsList != null && specialPageDetailsList.size() >0)
+					spcialPageList = new ArrayList<SelectOptionVO>();
+				
+			for (Object[] specialPageDetails : specialPageDetailsList) {
+
+				SelectOptionVO slectOptionVO = new SelectOptionVO();
+				slectOptionVO.setId((Long) specialPageDetails[0]);
+				slectOptionVO.setName(specialPageDetails[1].toString());
+				spcialPageList.add(slectOptionVO);
+
+			}
+			
+		}catch(Exception e){
+			
+			 log.error("Exception raised  in  getAllSpecialPages method ");
+			e.printStackTrace();
+			return null;
+			
+		}	 
+	 return spcialPageList;
+	 
+ }
 	
 }
