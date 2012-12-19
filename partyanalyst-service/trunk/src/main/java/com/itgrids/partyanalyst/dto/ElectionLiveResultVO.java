@@ -54,7 +54,8 @@ public class ElectionLiveResultVO {
 	private Long wonOrLeadCountInOld = 0L;
 	private Long wonOrLeadCountInNew = 0L;
 	private Long wonFromOtherPartiesCount = 0L;
-		
+	private List<ElectionLiveResultVO> electionLiveResultVOList;
+	
 	public Long getWonFromOtherPartiesCount() {
 		return wonFromOtherPartiesCount;
 	}
@@ -361,4 +362,13 @@ public class ElectionLiveResultVO {
 	public void setLostCountInPrevLost(Long lostCountInPrevLost) {
 		this.lostCountInPrevLost = lostCountInPrevLost;
 	}
+	public List<ElectionLiveResultVO> getElectionLiveResultVOList() {
+		return electionLiveResultVOList;
+	}
+	public void setElectionLiveResultVOList(
+			List<ElectionLiveResultVO> electionLiveResultVOList) {
+		this.electionLiveResultVOList = electionLiveResultVOList;
+	}
+	
+	
 }

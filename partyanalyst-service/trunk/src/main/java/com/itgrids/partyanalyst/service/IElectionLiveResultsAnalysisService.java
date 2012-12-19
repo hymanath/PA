@@ -46,4 +46,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public List<PositionManagementVO> getAllPartyCountsDistrictWise(Long electionId,List<Long> partyIds,boolean includeAlliances,String type);
 	
 	public List<ElectionGoverningBodyVO> getAllCandidateDetailsForMinisterProfile(Long candidateId);
+	
+	public ElectionLiveResultVO getLiveResultsDetails(Long electionId);
 }

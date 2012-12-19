@@ -2302,4 +2302,54 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		  return resultList;
 	  }
   }
+  
+  public ElectionLiveResultVO getLiveResultsDetails(Long electionId){
+	  ElectionLiveResultVO electionLiveResultVO = new ElectionLiveResultVO();
+	 try{
+	  Long totalSeats = (Long)constituencyElectionDAO.getPCCountInAElection(electionId);
+	  Long totalKnownCount = (Long)constituencyLeadCandidateDAO.getResultKnownConstituenciesCountInAElection(electionId);
+	  Long totalWon = (Long)constituencyLeadCandidateDAO.getWonLeadConstituenciesCountInAElection(electionId,"Won");
+	  Long totalLead = (Long)constituencyLeadCandidateDAO.getWonLeadConstituenciesCountInAElection(electionId,"Lead");
+	  electionLiveResultVO.setTotalSeats(totalSeats);
+	  electionLiveResultVO.setTotalKnownCount(totalKnownCount);
+	  electionLiveResultVO.setNewKnownCount(totalLead);
+	  electionLiveResultVO.setRetainedCount(totalWon);
+	  List<Object[]> partiesResults = constituencyLeadCandidateDAO.getAllParties(electionId);
+	  Map<Long,Long> partispatedCountMap = new HashMap<Long,Long>();
+	  
+	  Map<Long,ElectionLiveResultVO> results = new HashMap<Long,ElectionLiveResultVO>();
+	  if(partiesResults != null && partiesResults.size() > 0){
+		  List<Object[]> partispatedCountList = constituencyLeadCandidateDAO.getPartiesPartispatedCount(electionId);
+		  for(Object[] partispatedCount : partispatedCountList){
+			  partispatedCountMap.put((Long)partispatedCount[1], (Long)partispatedCount[0]);
+		  }
+		  for(Object[] partiesResult : partiesResults){
+			 Long partyId = (Long)partiesResult[0];
+			 String partyName = partiesResult[1]!=null?partiesResult[1].toString():"";
+			 String status = partiesResult[2]!=null?partiesResult[2].toString():"";
+			 ElectionLiveResultVO party =  results.get(partyId);
+			 
+			  if(party == null){
+				  party = new ElectionLiveResultVO();
+				  party.setPartyId(partyId);
+				  party.setPartyName(partyName);
+				  party.setTotalSeatsParticipated(partispatedCountMap.get(partyId));
+				  results.put(partyId, party);
+			  }
+			  if(status.equalsIgnoreCase(IConstants.LEAD)){
+				  party.setLeadCountInNew(party.getLeadCountInNew()+1l);
+				  party.setWonOrLeadCount(party.getWonOrLeadCount()+1l);
+			  }
+			  if(status.equalsIgnoreCase(IConstants.WON)){
+				  party.setWonCountInNew(party.getWonCountInNew()+1l);
+				  party.setWonOrLeadCount(party.getWonOrLeadCount()+1l);
+			  }
+		  }
+		  electionLiveResultVO.setElectionLiveResultVOList(new ArrayList<ElectionLiveResultVO>(results.values()));
+	  }
+	 }catch(Exception e){
+		 log.error("Exception Encountered In getLiveResultsDetails()" +e);
+	 }
+	  return electionLiveResultVO;
+  }
 }
