@@ -883,7 +883,7 @@ function buildImportantCnadidatesData(results){
 
 			str+='<div class="alignCenter candidateNameClass"><span >'+results[i].candidateName+'</span></div>';
 
-			str+='<div class="alignCenter"><span style="color: #716F64; font-weight: bold;">'+results[i].party+'</span></div>';
+			//str+='<div class="alignCenter"><span style="color: #716F64; font-weight: bold;">'+results[i].party+'</span></div>';
 
 			str+='<div class="alignCenter"><span style="color: red; font-weight: bold; text-align: center;">'+results[i].constituency+'</span></div>';
 
@@ -1023,7 +1023,7 @@ var jsObj = {
 function getImportantCandidatesInfo()
 {
 	var jsObj = {
-	           	electionId:18,
+	           	electionId:181,
 				task:"getImportantCandidatesInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
