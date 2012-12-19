@@ -1947,7 +1947,7 @@ function showPostedReasons(jsObj,results)
 		ul.append('<span> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
 	}
 		
-	var label = $('<h4> Reasons Status Details Posted By You </h4>');
+	var label = $('<h4 style="clear:both;"> Reasons Status Details Posted By You </h4>');
 	
 	var ulinner = $('<ul class="prblmsHeader"></ul>');
 	if(approvedReasonsCount == 0)
