@@ -982,6 +982,7 @@ function callAjax1(jsObj,url){
 
 
 					}else if(jsObj.task == "allsubscriptions" || jsObj.task == "oldersubscriptions"){
+					   $("#subscriptionsStreamingAjaxImg").hide();
 					   if(results == "sessionExpired"){
 						  openDialogForLoginWindow();
 					   }
@@ -991,7 +992,8 @@ function callAjax1(jsObj,url){
 					}
 
 
-			}catch (e) {   		
+			}catch (e) {  
+                  $("#subscriptionsStreamingAjaxImg").hide();			
 			   	//alert("Invalid JSON result" + e);   
 			}  
 	    },
@@ -1202,6 +1204,7 @@ function getSubscriptionDetails(type){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllSubscriptionsAction.action?"+rparam;					
 	callAjax1(jsObj,url);
+	$("#subscriptionsStreamingAjaxImg").show();
 }
 
 function showAllRequestMessagesForUser(results,jsObj){
