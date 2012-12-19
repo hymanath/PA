@@ -1061,6 +1061,7 @@ var district = false;
 
 			for(var i in results){
 
+
 		    if(results[i].favouriteLinkType == "constituency"){
 				if(i ==0 && constituency == true)
 				{
@@ -1078,7 +1079,8 @@ var district = false;
 
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
-				templateClone.find('.titleClass').html("<b><a class='problemTitle' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle+"</a></b>");
+				//templateClone.find('.titleClass').html("<b><a class='problemTitle' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle+"</a></b>");
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn-mini' title='Remove this link'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.constituencyDiv');
@@ -1104,7 +1106,10 @@ var district = false;
 				templateClone.attr('id',results[j].userFavoriteLinksId);
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
-				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle+"</a></b>");
+				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle+"</a></b>");
+
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[j].favouriteLinkTitle+"' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
+
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.stateDiv');
@@ -1132,7 +1137,10 @@ var district = false;
 				templateClone.attr('id',results[k].userFavoriteLinksId);
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
-				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[k].favouriteLinkTitle+"</a></b>");
+				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[k].favouriteLinkTitle+"</a></b>");
+			templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[k].favouriteLinkTitle+"' href="+results[k].favouriteLink+">"+results[k].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
+
+
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.districtDiv');
@@ -1160,7 +1168,8 @@ var district = false;
 				templateClone.attr('id',results[m].userFavoriteLinksId);
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
-				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[m].favouriteLink+">"+results[m].favouriteLinkTitle+"</a></b>");
+				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[m].favouriteLink+">"+results[m].favouriteLinkTitle+"</a></b>");
+				templateClone.find('.titleClass').html("<b><a  title='"+results[m].favouriteLinkTitle+"' class='problemTitle' href="+results[i].favouriteLink+">"+results[m].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[m].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.specialPageDiv');
