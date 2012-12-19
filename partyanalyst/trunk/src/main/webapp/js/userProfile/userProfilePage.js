@@ -1039,6 +1039,12 @@ $('.constituencyDiv').children().remove();
 $('.stateDiv').children().remove();
 $('.constituencyDivheading').children().remove();
 $('.stateDivheading').children().remove();
+$('.districtDivheading').children().remove();
+$('.specialPageDivheading').children().remove();
+$('.districtDiv').children().remove();
+$('.specialPageDiv').children().remove();
+
+	
 
  $('.placeholderCenterDiv').children().remove();
  clearAllSubscriptionDivs();
