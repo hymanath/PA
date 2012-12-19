@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -61,8 +62,18 @@ public class SpecialPageAction extends ActionSupport implements
 	private ICandidateDetailsService candidateDetailsService;
 	private String delVideo;
 	private String specilaPageText;
+	private List<ImportantDatesVO> importantCandidatesList;
 	
 	
+	public List<ImportantDatesVO> getImportantCandidatesList() {
+		return importantCandidatesList;
+	}
+
+	public void setImportantCandidatesList(
+			List<ImportantDatesVO> importantCandidatesList) {
+		this.importantCandidatesList = importantCandidatesList;
+	}
+
 	public String getSpecilaPageText() {
 		return specilaPageText;
 	}
@@ -425,4 +436,22 @@ public class SpecialPageAction extends ActionSupport implements
     		  
     	   }
        
+       
+       
+       public String getImportantCandidatesInfoAction(){
+    	   
+    	   try {
+   			jObj = new JSONObject(getTask());
+   			
+   		   } catch (ParseException e) {
+   			e.printStackTrace();
+   		  }
+    	   
+    	   Long electionId = jObj.getLong("electionId");
+    	   
+    	   importantCandidatesList = specialPageService.getImportantCandidatesInfoByElectionId(electionId);
+    	   
+    	   return Action.SUCCESS;
+    	   
+       }
 }
