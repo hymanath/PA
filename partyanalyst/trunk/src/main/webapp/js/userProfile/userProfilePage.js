@@ -165,7 +165,7 @@ $("document").ready(function(){
 	$('.assessPoliticianLink').live("click",function(){
 	    $("#subscriptionsStreamingMoreDiv").hide();
 		$("#subscriptionsStreamingData").html('');
-		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
+		var type = $(this).parent().find('.politicalReasTypeVar').val();
 		var linkType = "assessPoliticianLink";
 		startIndex = 0;
 		getAllPostedReasonsForUser();
@@ -206,7 +206,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	//problems 
 
 	$(".problemsLink").live("click",function(){
-		var type = $(this).closest('li').find(".problemTypeVariable").val();
+		var type = $(this).parent().find(".problemTypeVariable").val();
 		var linkType = "problemsLink";
 		startIndex = 0;
 		getAllPostedProblemsForUser();
@@ -1922,49 +1922,49 @@ function showPostedReasons(jsObj,results)
 	}
 
 	var div = $('<div class="politicalReasonsInnerDiv"></div>');
-	var ul = $('<ul class="prblmsHeader"></ul>');
+	var ul = $('<div class="prblmsHeader"></div>');
 	if(userType != "PartyAnalyst")
 	{
 			
       if(totalPostedReasonsCount ==0)
-		ul.append('<h4>Total Political reasons posted - '+totalPostedReasonsCount+'</h4>');
+		ul.append('<span><h4>Total Political reasons posted - '+totalPostedReasonsCount+'</h4></span>');
 	   else
-		ul.append('<h4>Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></h4>');
+		ul.append('<span><h4>Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></h4></span>');
 	   if(postedReasonsByLoggedInUser ==0)
-			 ul.append('<span>By You - '+postedReasonsByLoggedInUser+'</span>');
+			 ul.append('<span class="APSpan">By You - '+postedReasonsByLoggedInUser+'</span>');
 	   else
-   		 ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+   		 ul.append('<span class="APSpan">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></span>');
 	   
 	   if(connectedUsersReasCount ==0)
-		 ul.append('<span>By Friends - '+connectedUsersReasCount+'</span>');
+		 ul.append('<span class="APSpan">By Friends - '+connectedUsersReasCount+'</span>');
 	   else
-		ul.append('<span>By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
+		ul.append('<span class="APSpan">By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
 
 	   if(postedReasonsCountByOtherUsers ==0)
-		 ul.append('<span>By Others - '+postedReasonsCountByOtherUsers+'</span>');
+		 ul.append('<span class="APSpan">By Others - '+postedReasonsCountByOtherUsers+'</span>');
 	   else
-		ul.append('<span>By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
+		ul.append('<span class="APSpan">By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
 	}
 	else
 	{
-		ul.append('<span> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></span>');
-		ul.append('<span>By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></span>');
-		ul.append('<span> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
-		ul.append('<span> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
+		ul.append('<span > Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></span>');
+		ul.append('<span class="APSpan">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></span>');
+		ul.append('<span class="APSpan"> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
+		ul.append('<span class="APSpan"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
 	}
 		
-	var label = $('<h4 style="clear:both;"> Reasons Status Details Posted By You </h4>');
+	var label = $('<span><h4> Reasons Status Details Posted By You </h4></span>');
 	
-	var ulinner = $('<ul class="prblmsHeader"></ul>');
+	var ulinner = $('<div class="prblmsHeader"></div>');
 	if(approvedReasonsCount == 0)
-	 ulinner.append('<span> Approved - '+approvedReasonsCount+'</span>');
+	 ulinner.append('<span class="APSpan"> Approved - '+approvedReasonsCount+'</span>');
 	else
-	ulinner.append('<span> Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></span>');
+	ulinner.append('<span class="APSpan"> Approved - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+approvedReasonsCount+'</a> <input type="hidden" value="Approved" class="politicalReasTypeVar" /></span>');
 	
 	if(rejectedReasonsCount ==0)
-		ulinner.append('<span>Rejected - '+rejectedReasonsCount+'</span>');
+		ulinner.append('<span class="APSpan">Rejected - '+rejectedReasonsCount+'</span>');
 	else
-		ulinner.append('<span>Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></span>');
+		ulinner.append('<span class="APSpan">Rejected - <a class="reasonsCountAnc assessPoliticianLink" href="javascript:{}">'+rejectedReasonsCount+'</a> <input type="hidden" value="rejected" class="politicalReasTypeVar" /></span>');
 
 	if(userType != "PartyAnalyst"){		
 		ulinner.append('<h5 style="clear:both;float:left;margin-right:14px;" ><a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" class="btn btn-success btn-small ">Add Reasons</a></h5>');
@@ -2217,38 +2217,38 @@ function showPostedProblems(jsObj,results)
 {
 	$('#headerDiv').html('');
 	var div = $('<div style="line-height:1.5em;"></div>');
-	var ul = $('<ul class="prblmsHeader"></ul>');
+	var ul = $('<div class="prblmsHeader"></div>');
 	if(results.totalPostedProblemsCount == 0)
 		ul.append('<li class="fontStyle"><h4>Total posted problems - '+results.totalPostedProblemsCount+'</h4></li>');
 	else
 	  ul.append('<li class="fontStyle"><h4>Total posted problems - <a  href="javascript:{}" class="problemsLink">'+results.totalPostedProblemsCount+'</a><input type="hidden" value="Total" class="problemTypeVariable"/></h4></li>');
 		
 	if(results.postedProblemsCountByLoggedInUsers == 0)
-		ul.append('<span>By You - '+results.postedProblemsCountByLoggedInUsers+'</span>'); 
+		ul.append('<span class="APSpan">By You - '+results.postedProblemsCountByLoggedInUsers+'</span>'); 
 	else
-	  ul.append('<span>By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></span>');
+	  ul.append('<span class="APSpan">By You - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByLoggedInUsers+'</a><input type="hidden" value="LOGGED_USER" class="problemTypeVariable"/></span>');
 		
 	if(results.postedProblemsCountByOtherUsers == 0)
-		ul.append('<span>By Others - '+results.postedProblemsCountByOtherUsers+'</span>');
+		ul.append('<span class="APSpan">By Others - '+results.postedProblemsCountByOtherUsers+'</span>');
 	else
-	  ul.append('<span>By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></span>');
+	  ul.append('<span class="APSpan">By Others - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="problemTypeVariable"/></span>');
 
 	if(results.postedProblemsCountByConnectedUsers == 0)
-		ul.append('<span>By Friends - '+results.postedProblemsCountByConnectedUsers+'</span>');
+		ul.append('<span class="APSpan">By Friends - '+results.postedProblemsCountByConnectedUsers+'</span>');
 	else 
-		ul.append('<span>By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></span>');
+		ul.append('<span class="APSpan">By Friends - <a href="javascript:{}" class="problemsLink">'+results.postedProblemsCountByConnectedUsers+'</a><input type="hidden" value="ConnectedUserProblems" class="problemTypeVariable"/></span>');
 	
-	var label = $('<h4 style="color:black;clear:both;">Problem Status Details Posted By You </h4>');
-	var ulInner = $('<ul class="prblmsHeader"></ul>');
+	var label = $('<span><h4 style="color:black;clear:both;">Problem Status Details Posted By You </h4></span>');
+	var ulInner = $('<div class="prblmsHeader"></div>');
 
 	if(results.approvedProblemsCount ==0)
-		ulInner.append('<span">Approved	- '+results.approvedProblemsCount+'</span>');
+		ulInner.append('<span class="APSpan">Approved	- '+results.approvedProblemsCount+'</span>');
 	else
-	 ulInner.append('<span>Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></span>');
+	 ulInner.append('<span class="APSpan">Approved - <a href="javascript:{}" class="problemsLink">'+results.approvedProblemsCount+'</a><input type="hidden" value="approved" class="problemTypeVariable"/></span>');
 	if(results.rejectedProblemsCount ==0)
-		ulInner.append('<span>Rejected - '+results.rejectedProblemsCount+'</span>');
+		ulInner.append('<span class="APSpan">Rejected - '+results.rejectedProblemsCount+'</span>');
 	else
-	 ulInner.append('<span>Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></span> ');
+	 ulInner.append('<span class="APSpan">Rejected - <a href="javascript:{}" class="problemsLink">'+results.rejectedProblemsCount+'</a><input type="hidden" value="rejected" class="problemTypeVariable"/></span> ');
 
 	if(userType != "PartyAnalyst")
 		ulInner.append('<h5 style="clear:both;"><a href="javascript:{}" class="postProblemLink btn btn-success btn-small">Post Problem</a></h5>');
