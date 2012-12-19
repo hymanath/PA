@@ -5219,3 +5219,74 @@ function clearSpecialPageInfoDiv(ele)
 var divEle = document.getElementById(ele);
 divEle.innerHTML = "";
 }
+
+function getSpecialPageHighlights()
+{
+	
+	var specialPageHighLightsDiv = document.getElementById("specialPageHighLightsDiv");
+	var str ='';
+	str += '<div id="content" style="width:650px;">';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addSpecialPageHighLights()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateSpecialPageHighLights()"></td>';
+	str += '</tr>';
+	str += '</table>'
+    str += '<fieldset class="imgFieldset" style="width:400px;">';	
+	str += '<center><b style="font-size:15px"><font color="#4B74C6">Add The SpecialPage HighLights</font> </b> </center>';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<div id="specPagehighLightsErrorMsgDivId"></div>';
+	str += '<tr>';
+	str += '<td>';
+	str += '<b><font color="#4B74C6">SpecialPage HightLights</font></b></td><td><textarea id="specialPageHighLightDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
+	str += '</table>';
+	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addSpecialPageHighLights()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '</fieldset>';
+	str+='</div>';
+		specialPageHighLightsDiv.innerHTML = str;
+	
+}
+
+function addSpecialPageHighLights()
+{
+	var specialPageId = $('#specialPageId').val();
+	var description = $.trim($("#specialPageHighLightDescId").val());
+	if(description == "")
+	{
+		$('#specPagehighLightsErrorMsgDivId').html('Description is Required.');
+		return;
+	}
+	else if(description.length > 200)
+	{
+		$('#specPagehighLightsErrorMsgDivId').html('Description should be less than 200 characters.');
+		return;
+	}
+	var jsObj =
+		{ 
+        	specialPageId : specialPageId,
+			description   : description,
+			task : "getSpecialPageHighLights"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSpecialPageHighLightsAction.action?"+rparam;						
+	callAjax(jsObj,url);
+	
+}
+
+function deleteSpecialPageHighLightsById(id){
+	
+	var r=confirm("Do you want to Delete!");
+	if(r==true)
+		var jsObj={
+
+    id:id,
+		task:"deleteSpecialPageHighLightDesc"
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "deleteSpecialPageHighLightDescAction.action?"+rparam;
+	callAjax(jsObj,url);
+	
+	}
