@@ -48,4 +48,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public List<ElectionGoverningBodyVO> getAllCandidateDetailsForMinisterProfile(Long candidateId);
 	
 	public ElectionLiveResultVO getLiveResultsDetails(Long electionId);
+	
+	public List<PartyElectionResultVO> getCandidatesInfoDistrictWise(Long electionId,Long districtId);
 }

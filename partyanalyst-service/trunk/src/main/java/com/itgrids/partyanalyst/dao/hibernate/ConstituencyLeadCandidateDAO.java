@@ -230,7 +230,7 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 	public List<Object[]> getAllParties(Long electionId)
 	{
 		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model1.status from Nomination model ,ConstituencyLeadCandidate model1 " +
-				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model1.constituencyElection.constiElecId  ");
+				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model1.constituencyElection.constiElecId and  model.candidate.candidateId = model1.candidate.candidateId  ");
 		query.setParameter(0,electionId);
 		return query.list();
 	}
@@ -240,6 +240,15 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		Query query = getSession().createQuery("select count(model.party.partyId),model.party.partyId from Nomination model " +
 				" where model.constituencyElection.election.electionId = ? group by model.party.partyId");
 		query.setParameter(0,electionId);
+		return query.list();
+	}
+	
+	public List<Object[]> getResultsKnownConstituenciesInDistrict(Long electionId,Long districtId)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId,model.candidate.candidateId,model.status from ConstituencyLeadCandidate model " +
+				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.district.districtId = ? ");
+		query.setParameter(0,electionId);
+		query.setParameter(1,districtId);
 		return query.list();
 	}
 }

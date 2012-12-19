@@ -55,6 +55,8 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	private BigDecimal assets;
 	private String gender;
 	private Boolean isAlliance = false;
+	private BigDecimal liabilities;
+
 	
 	public Boolean getIsAlliance() {
 		return isAlliance;
@@ -282,8 +284,15 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	public BigDecimal getAssets() {
 		return assets;
 	}
+	
 	public void setAssets(BigDecimal assets) {
 		this.assets = assets;
+	}
+	public BigDecimal getLiabilities() {
+		return liabilities;
+	}
+	public void setLiabilities(BigDecimal liabilities) {
+		this.liabilities = liabilities;
 	}
 	
 	
