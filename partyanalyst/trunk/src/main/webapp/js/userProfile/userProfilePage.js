@@ -2044,9 +2044,9 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 	
 	var div = $('<div class="subscriptionHeaderDiv"></div>');
 	var label = $('<span class="subscriptionType">Special Pages</span>');
-	//var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
 	div.append(label);
-	div.append(btns);
+	//div.append(btns);
 	$('#userSpecialPageSubscriptionsDiv').append(div);
 	for(var i in specialPages)
 	{
