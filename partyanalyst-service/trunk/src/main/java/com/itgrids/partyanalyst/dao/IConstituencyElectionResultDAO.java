@@ -72,5 +72,7 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	public List<Object[]> getConstituenciesOverviewInAElection(Long electionId);
 	
 	public List<Object[]> getConstituenciesAreaTypeOverviewInAElection(Long electionId);
+	
+	public List<Object[]> getTotalSeatsCastWise(Long electionId);
 
 }

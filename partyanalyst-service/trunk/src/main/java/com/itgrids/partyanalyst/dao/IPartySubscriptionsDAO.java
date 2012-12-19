@@ -14,4 +14,5 @@ public interface IPartySubscriptionsDAO extends GenericDao<PartySubscriptions, L
 	public List<Object[]> getAllSubScribedPartyPages(Long userId);
 	public List<Object[]> getAllUserSubscribedPartyPages(Long userId);
 	public List<Object[]> getAllParties();
+	public List<Long> getAllPartiesSubscribedByUser(Long userId);
 }
