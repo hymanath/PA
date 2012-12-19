@@ -13,4 +13,6 @@ public interface IKeyCandidateDAO extends GenericDao<KeyCandidate,Long>{
 	public Object getCountCandidate(Long candidateId);
 	
 	public List<KeyCandidate> getCandidateById(Long candidateId);
+	
+	public List<Object[]> getImportantCandidatesInfoByElectionId(Long electionId);
 }
