@@ -825,8 +825,6 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					candidateVO.setConstituencyId(new Long(parms[4].toString()));
 					candidateVO.setConstituencyName(parms[3].toString());
 					
-					if(result.size() > 5)
-					{
 						if(parms[6].toString() !=null)
 							candidateVO.setDistrictId(new Long(parms[6].toString()));
 						if(parms[7].toString() !=null)
@@ -835,7 +833,6 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							candidateVO.setStateId(new Long(parms[8].toString()));
 						if(parms[9].toString() !=null)	
 							candidateVO.setState(parms[9].toString());
-					}
 					
 					if(parms[5] != null){
 						if(status.equalsIgnoreCase(IConstants.PENDING)){
