@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IJobDAO;
+import com.itgrids.partyanalyst.dao.IJobRunDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dto.DailyUpdatesVO;
@@ -29,11 +32,13 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.JobRunDetails;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsTemplateService;
 import com.itgrids.partyanalyst.service.IPartyCandidateSpecialPageScheduleService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.IJobConstants;
 
 public class PartyCandidateSpecialPageScheduleService implements
 		IPartyCandidateSpecialPageScheduleService {
@@ -53,6 +58,9 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private VelocityEngine velocityEngine;
 	
+	private IJobRunDetailsDAO jobRunDetailsDAO;
+	
+	private IJobDAO jobDAO;
 	
 	public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
 		return candidateSubscriptionsDAO;
@@ -104,6 +112,50 @@ public class PartyCandidateSpecialPageScheduleService implements
 		this.velocityEngine = velocityEngine;
 	}
 	
+	public IJobRunDetailsDAO getJobRunDetailsDAO() {
+		return jobRunDetailsDAO;
+	}
+	public void setJobRunDetailsDAO(IJobRunDetailsDAO jobRunDetailsDAO) {
+		this.jobRunDetailsDAO = jobRunDetailsDAO;
+	}
+	
+	public IJobDAO getJobDAO() {
+		return jobDAO;
+	}
+	public void setJobDAO(IJobDAO jobDAO) {
+		this.jobDAO = jobDAO;
+	}
+	
+	public void sendUpdates(){
+	  if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase("server")){
+		DailyUpdatesVO dailyUpdatesVO = new DailyUpdatesVO();
+		DateUtilService dateUtilService = new DateUtilService();
+		Date startTime = null;
+		List<Date> dates = jobRunDetailsDAO.getStartTime();
+		if(!dates.isEmpty())
+			startTime = dates.get(0);
+		Date endTime = dateUtilService.getCurrentDateAndTime();
+		if(startTime == null){
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(endTime);
+			calendar.add(Calendar.DATE, -1);
+			startTime = calendar.getTime();
+		}
+		
+		dailyUpdatesVO.setAll(true);
+		dailyUpdatesVO.setFrom(startTime);
+		dailyUpdatesVO.setTo(endTime);
+		sendMailsToAllSubscriders(dailyUpdatesVO);
+		JobRunDetails jobRunDetails = new JobRunDetails();
+		jobRunDetails.setStartTime(endTime);
+		jobRunDetails.setEndTime(dateUtilService.getCurrentDateAndTime());
+		jobRunDetails.setJob(jobDAO.get(IJobConstants.PARTY_CANDIDATE_SPECIALPAGE_UPDATES));
+		jobRunDetailsDAO.save(jobRunDetails);
+	  }else{
+		  System.out.println("job will not run in local host");
+	  }
+		return;
+	}
 	public void sendMailsToAllSubscriders(DailyUpdatesVO dailyUpdatesVO)
 	{
 		Map<Long,EmailNotificationVO> allSubscribersData = new HashMap<Long,EmailNotificationVO>();
@@ -116,32 +168,70 @@ public class PartyCandidateSpecialPageScheduleService implements
 		 getDaillyUpdatesForPartyPageSubscribers(dailyUpdatesVO.getFrom(),dailyUpdatesVO.getTo(),allSubscribersData,dailyUpdatesVO.getPartyIdsList());
 		if(dailyUpdatesVO.isSpecialPageSelected() || dailyUpdatesVO.isAll()) 
 		 getDaillyUpdatesForSpecialPageSubscribers(dailyUpdatesVO.getFrom(),dailyUpdatesVO.getTo(),allSubscribersData,dailyUpdatesVO.getSpecialPageIdsList());
-		sendAllMails(allSubscribersData);
+		sendAllMails(allSubscribersData,dailyUpdatesVO);
 	
 		}
 		catch(Exception e){
 			log.error("Exception Rised in sendMailsToAllSubscriders : ", e);
 		}
 	}
-	public void sendAllMails(Map<Long,EmailNotificationVO> allSubscribersData){
+	public void sendAllMails(Map<Long,EmailNotificationVO> allSubscribersData,DailyUpdatesVO dailyUpdatesVO){
 		EmailNotificationVO emailNotificationVO = null;
+		EmailNotificationVO updatesFrom = new EmailNotificationVO();
+		Map<String,String> userDetails = new HashMap<String,String>();
 		Set<Long> keys = allSubscribersData.keySet();
 		for(Long key : keys){
 			try{
-				
-				String emailString = prepareMail(allSubscribersData.get(key));
+			   if(allSubscribersData.get(key).getSubscriberEmail() != null && allSubscribersData.get(key).getSubscriberEmail().length() > 0)
+			   {
+				String emailString = prepareMail(allSubscribersData.get(key),updatesFrom);
 				if(emailString != null && emailString.length() > 0){
 				  emailNotificationVO = new EmailNotificationVO();
 				  emailNotificationVO.setDescription(emailString);
 				  emailNotificationVO.setSubscriberEmail(allSubscribersData.get(key).getSubscriberEmail());
-				  sendMail(emailNotificationVO);
+				  String status = sendMail(emailNotificationVO);
+				  if(status.equalsIgnoreCase("success")){
+					  userDetails.put(allSubscribersData.get(key).getSubscriberEmail(), allSubscribersData.get(key).getSubscriberName());
+				  }
 				}
+			   }
 				
 			}catch(Exception e){
 				log.error("Exception rised in sendAllMails ",e);
 			}
 		}
+		sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
+		
 	}
+	
+	private void sendMailToAdmin(final EmailNotificationVO updatesFrom,final Map<String,String> userDetails,final DailyUpdatesVO dailyUpdatesVO){
+		
+       try{
+			
+			JavaMailSenderImpl javamailsender = new JavaMailSenderImpl();
+			javamailsender.setSession(mailService.getSessionObject(IConstants.DEFAULT_MAIL_SERVER));
+			MimeMessagePreparator preparator = new MimeMessagePreparator() {
+		         public void prepare(MimeMessage mimeMessage) throws Exception {
+		            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+		            message.setTo(IJobConstants.ADMIN_GROUP_MAILS);
+		            Map model = new HashMap();
+		   		    model.put("updatesFrom", updatesFrom);
+		   		    model.put("userDetails", userDetails);
+		   		    model.put("dailyUpdatesVO", dailyUpdatesVO);
+		            String text = VelocityEngineUtils.mergeTemplateIntoString(
+		 	               velocityEngine,"dailyUpdatesAdminMail.vm", model);
+		            message.setText(text, true);
+		            message.setSubject("Status for sending mails to subscribed users about profile update");
+		            message.setFrom(IConstants.FROMEMAILID);
+		         }
+		      };
+		      javamailsender.send(preparator);  
+		      
+	     }catch(Exception e){
+		log.error("Exception Rised in sendMailToAdmin : ", e);
+	}
+	}
+	
 	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{
 		Map<Long,EmailNotificationVO> candidateIdMap = new HashMap<Long,EmailNotificationVO>();
@@ -155,7 +245,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		      
 		      for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-		    	 if(ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
+		    	 if(ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
 		    	 // adding all candidates to set
 			     candidateIds.add((Long)subscriberDetail[0]);
 			     //for each candidate creating one EmailNotificationVO to set all updates related to him to this VO for ex: news , photos,videos updates
@@ -283,7 +373,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		     
 			 for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-				if(ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
+				if(ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
 		    	 // adding all parties to set
 				 partyIds.add((Long)subscriberDetail[0]);
 			     //for each party creating one EmailNotificationVO to set all updates related to party to this VO for ex: news , photos,videos updates
@@ -409,7 +499,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		
 			for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-				if(ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
+				if(ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
 		    	 // adding all special pages to set
 				 specialPageIds.add((Long)subscriberDetail[0]);
 			     //for each special page creating one EmailNotificationVO to set all updates related to special page to this VO for ex: news , photos,videos updates
@@ -713,12 +803,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 		 }
 		
 	}
-	public void sendMail(final EmailNotificationVO emailNotificationVO){
+	public String sendMail(final EmailNotificationVO emailNotificationVO){
 		
 		try{
 			
 			JavaMailSenderImpl javamailsender = new JavaMailSenderImpl();
-			javamailsender.setSession(mailService.getSessionObject("localhost"));
+			javamailsender.setSession(mailService.getSessionObject(IConstants.DEFAULT_MAIL_SERVER));
 			MimeMessagePreparator preparator = new MimeMessagePreparator() {
 		         public void prepare(MimeMessage mimeMessage) throws Exception {
 		            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
@@ -733,12 +823,15 @@ public class PartyCandidateSpecialPageScheduleService implements
 		         }
 		      };
 		      javamailsender.send(preparator);  
+		      
+		      return "success";
 	}catch(Exception e){
-		log.error("Exception Rised in sendMail : ", e);   
+		log.error("Exception Rised in sendMail : ", e);
+		return "failure";
 	}
 	}
 	
-	public String prepareMail(EmailNotificationVO emailNotificationVO){
+	public String prepareMail(EmailNotificationVO emailNotificationVO,EmailNotificationVO updatesFrom){
 		StringBuilder content = new StringBuilder();
 		try
 		 {	
@@ -747,13 +840,13 @@ public class PartyCandidateSpecialPageScheduleService implements
 					if(emailNotificationVO.isPartyPagepresent()  || emailNotificationVO.isCandidatePagepresent()  || emailNotificationVO.isSpecialPagepresent())
 					{
 						if(emailNotificationVO.isCandidatePagepresent()){
-							content.append(getIndividualMailData("candidate",emailNotificationVO.getCandidatePage()));
+							content.append(getIndividualMailData("candidate",emailNotificationVO.getCandidatePage(),updatesFrom));
 						}
 	                    if(emailNotificationVO.isPartyPagepresent()){
-	                    	content.append(getIndividualMailData("party",emailNotificationVO.getPartyPage()));
+	                    	content.append(getIndividualMailData("party",emailNotificationVO.getPartyPage(),updatesFrom));
 						}
 	                    if(emailNotificationVO.isSpecialPagepresent()){
-	                    	content.append(getIndividualMailData("specialpage",emailNotificationVO.getSpecialPage()));
+	                    	content.append(getIndividualMailData("specialpage",emailNotificationVO.getSpecialPage(),updatesFrom));
 						}
 					}else{
 						return "";
@@ -769,11 +862,18 @@ public class PartyCandidateSpecialPageScheduleService implements
 		return content.toString();
 	}
 	
-	public String getIndividualMailData(String type,List<EmailNotificationVO> dataList){
+	public String getIndividualMailData(String type,List<EmailNotificationVO> dataList,EmailNotificationVO updatesFrom){
 		StringBuilder mailString = new StringBuilder();
 		for(EmailNotificationVO emailNotificationVO:dataList){
 			
 			if(emailNotificationVO.isNewspresent() || emailNotificationVO.isPhotopresent() || emailNotificationVO.isNewspresent()){
+				if(type.equals("candidate")){
+					updatesFrom.getCandidates().add(emailNotificationVO.getName());
+				}else if(type.equals("party")){
+					updatesFrom.getParties().add(emailNotificationVO.getName());
+				}else if(type.equals("specialpage")){
+					updatesFrom.getSpecialPgs().add(emailNotificationVO.getName());
+				}
 				mailString.append("<div>");
 				mailString.append("<div style='text-align:center;padding:6px;margin-top:5px;margin-bottom:5px;font-weight:bold;background-color:#17315A;color:#FFFFFF;'>Updates for "+emailNotificationVO.getName()+"</div>");
 				if(emailNotificationVO.isNewspresent()){

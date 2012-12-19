@@ -36,7 +36,6 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultsWithGenderAnalysisDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStateRegionDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyUrbanDetailsVO;
@@ -45,6 +44,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultsInAllDistrictsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
@@ -900,7 +900,7 @@ public class ElectionReportService implements IElectionReportService {
 		PartyPositionsVO partyResults =null;
 		
 		List<Object[]> totalCount = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(electionId);
-		
+		List<Object[]> castWiseSeatsCount = constituencyElectionResultDAO.getTotalSeatsCastWise(electionId);
 		if(totalCount != null && totalCount.size() > 0)
 		{
 			partyResults = new PartyPositionsVO();
@@ -915,6 +915,17 @@ public class ElectionReportService implements IElectionReportService {
 			
 			partyResults.setTotalVotingPercentageForState(new BigDecimal((Double)params[2]*100/(Double)params[0]).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			partyResults.setTotalSeatsParticipated((Long)(Long)params[3]);
+			if(!castWiseSeatsCount.isEmpty()){
+				for(Object[] castWiseCount:castWiseSeatsCount){
+					if(castWiseCount[1].toString().trim().equalsIgnoreCase("")){
+						partyResults.setGeneralCount((Long)castWiseCount[0]);
+					}else if(castWiseCount[1].toString().trim().equalsIgnoreCase("SC")){
+						partyResults.setScCoutn((Long)castWiseCount[0]);
+					}else if(castWiseCount[1].toString().trim().equalsIgnoreCase("ST")){
+						partyResults.setStCount((Long)castWiseCount[0]);
+					}
+				}
+			}
 		}
 		
 		return partyResults;
@@ -2439,4 +2450,51 @@ public class ElectionReportService implements IElectionReportService {
 		return null;
 	}
 	
+	public List<PartyElectionResultsVO> getAllWonCandidates(Long electionId,Long electionType)
+	{
+		List<PartyElectionResultsVO> wonCandidatesList = new ArrayList<PartyElectionResultsVO>();
+		PartyElectionResultsVO partyElectionResultVO = null;
+		List<Object[]> resultList = nominationDAO.getAllWonCandidates(electionId,electionType);
+		for(Object[] data: resultList)
+		{
+		 try{
+			partyElectionResultVO = new PartyElectionResultsVO();
+			
+			partyElectionResultVO.setConstituencyId((Long)data[0]);
+			partyElectionResultVO.setConstituencyName(data[1] != null?data[1].toString():"");	
+			partyElectionResultVO.setCandidateId((Long)data[2]);
+			partyElectionResultVO.setCandidateName(data[3] != null?data[3].toString():"");
+			partyElectionResultVO.setPartyId((Long)data[4]);
+			partyElectionResultVO.setPartyName(data[5] != null?data[5].toString():"");
+			partyElectionResultVO.setTotalVotes(Math.round((Double)data[6]));
+			partyElectionResultVO.setPolledVotes(Math.round((Double)data[7]));
+			partyElectionResultVO.setVotesEarned(Math.round((Double)data[8]));
+			partyElectionResultVO.setMarginVotes(Math.round((Double)data[9]));
+			
+			if(electionType.intValue() == 2){
+				partyElectionResultVO.setDistrictId((Long)data[10]);
+			  partyElectionResultVO.setDistrictName(data[11] != null?data[11].toString():"");
+			}
+			String votesPercentage = "0";
+			String votesGainedPercentage = "0";
+			String marginPercentage = "0";
+			if(partyElectionResultVO.getTotalVotes() != null && partyElectionResultVO.getTotalVotes().longValue() > 0){
+			 votesPercentage = new BigDecimal(((partyElectionResultVO.getPolledVotes())*100.0)/partyElectionResultVO.getTotalVotes()).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			 votesGainedPercentage = new BigDecimal(((partyElectionResultVO.getVotesEarned())*100.0)/partyElectionResultVO.getTotalVotes()).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			 marginPercentage = new BigDecimal(((partyElectionResultVO.getMarginVotes())*100.0)/partyElectionResultVO.getTotalVotes()).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			}
+			if(partyElectionResultVO.getPolledVotes() != null && partyElectionResultVO.getPolledVotes().longValue() > 0){
+				 marginPercentage = new BigDecimal(((partyElectionResultVO.getMarginVotes())*100.0)/partyElectionResultVO.getPolledVotes()).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+				}
+			partyElectionResultVO.setVotesPercentage(votesPercentage);
+			partyElectionResultVO.setVotesPercentageBySecond(votesGainedPercentage);
+			partyElectionResultVO.setMarginPercent(marginPercentage);
+			wonCandidatesList.add(partyElectionResultVO);
+		 }catch(Exception e){
+			 log.error("Exception rised in getAllWonCandidates method", e);
+		 }
+			
+		}
+		return wonCandidatesList;
+	}
 }
