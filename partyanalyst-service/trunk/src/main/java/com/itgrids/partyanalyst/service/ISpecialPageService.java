@@ -90,6 +90,8 @@ public interface ISpecialPageService {
     public int[]  deleteExpiredVideosList (List<String> filePaths,List<Long> languageIds);
     public int  updateLastUpdateDateInFilePaths(List<Long> languageIds);
     
+    public List<FileVO> getSpecialPageHighLights(Long specialPageId);
+    
     public String saveSpecialPageText(Long specialPageId , String specialPageText);
     
     public String getSpecialPageDataBySpecialPageId(Long specialPageId);
