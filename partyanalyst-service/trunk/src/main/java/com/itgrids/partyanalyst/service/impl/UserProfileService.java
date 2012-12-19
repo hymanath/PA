@@ -242,7 +242,7 @@ public class UserProfileService implements IUserProfileService {
 			Calendar calendarFileGal = Calendar.getInstance();
 			calendarFile.setTime(fileDate);
 			calendarFileGal.setTime(fileGallaryDate);
-			calendarFile.add(Calendar.HOUR, calendarFileGal.get(Calendar.HOUR));
+			calendarFile.add(Calendar.HOUR, calendarFileGal.get(Calendar.HOUR_OF_DAY));
 			calendarFile.add(Calendar.MINUTE, calendarFileGal.get(Calendar.MINUTE));
 			calendarFile.add(Calendar.SECOND, calendarFileGal.get(Calendar.SECOND));
 			
