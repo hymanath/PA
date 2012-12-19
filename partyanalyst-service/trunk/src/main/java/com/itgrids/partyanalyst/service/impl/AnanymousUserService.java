@@ -2832,7 +2832,24 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			
 			FavoriteLinkPage  favoriteLinkPage = favouriteLinkList.get(0);
 			
-			UserFavoriteLinks  userFavoriteLinks = new UserFavoriteLinks();
+			UserFavoriteLinks  userFavoriteLinks = null;
+			
+			
+			
+		
+			String finalURL = "";
+			if(environment.equalsIgnoreCase("live"))
+			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString;
+			else
+			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString;
+			
+			List<UserFavoriteLinks> userFavouriteLinkList = userFavoriteLinksDAO.checkForAlreadyExistedOrNot(finalURL);
+			
+			if(userFavouriteLinkList != null && userFavouriteLinkList.size() >0)				
+				userFavoriteLinks = userFavouriteLinkList.get(0);				
+			else				
+				userFavoriteLinks = new UserFavoriteLinks();
+				
 			
 			userFavoriteLinks.setUser(userDAO.getUserByUserId(userId));
 			userFavoriteLinks.setFavoriteLinkPage(favoriteLinkPage);
@@ -2841,11 +2858,7 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			
 			queryString = queryString.substring(0, queryString.length() - 1);
 			
-		
-			if(environment.equalsIgnoreCase("live"))
-			  userFavoriteLinks.setUrl("http://partyanalyst.com/"+link+".action?"+queryString);
-			else
-				userFavoriteLinks.setUrl("http://localhost:8080/PartyAnalyst/"+link+".action?"+queryString);
+			 userFavoriteLinks.setUrl(finalURL);
 				
 			userFavoriteLinks.setPageTitle(pageTitle);
 			
