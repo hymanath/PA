@@ -1090,6 +1090,7 @@
 		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
 		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO" />
 		<property name="userDAO" ref="userDAO"/>
+		<property name="specialPageHighlightsDAO" ref="specialPageHighlightsDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="specialPageDataDAO" ref="specialPageDataDAO" />
 		<property name="specialPageHighlightsDAO" ref="specialPageHighlightsDAO" />
