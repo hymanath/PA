@@ -4100,7 +4100,7 @@ function navigateToMinisterPage(){
 </DIV>
 <c:if test="${electionType == 'Assembly' || electionType == 'Parliament'}">
  <s:if test="wonCandidateResults != null && wonCandidateResults.size() > 0">
-  <div style="width:980px;margin-left:auto;margin-right:auto;">
+  <div style="width:100%;margin-left:auto;margin-right:auto;">
  <DIV class="graphTop" style="text-align: center;"> Winning Candidates in ${year} 
    <c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;</c:if>&nbsp;${electionType}&nbsp;Elections</DIV>
   <div id="wonCandidatesTableDiv" >
