@@ -514,6 +514,71 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 	} 
 		return Action.SUCCESS;
 	}
+	
+	public String saveSpecialHighlights(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
+		specialPageVO = new SpecialPageVO();
+		specialPageVO.setSpecialPageId(jobj.getLong("specialPageId"));
+		specialPageVO.setDescription(jobj.getString("description"));
+		result = specialPageService.saveSpecialPageHighLights(specialPageVO);
+		return Action.SUCCESS;
+	}
+	
+	
+	
+	public String deleteSpecialHighlightsDescription()
+	{
+		try{
+			jobj=new JSONObject(getTask());
+		}catch(ParseException e){
+			e.printStackTrace();
+		
+		}
+		result=specialPageService.deleteSpecialPageHighLightDescription(jobj.getLong("id"));
+		return Action.SUCCESS;
+		
+	}
+	
+	public String updateSpecialPageHighLightsDescription(){
+		try{
+			jobj = new JSONObject(getTask());
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
+		List<Long> orderNo = new ArrayList<Long>(0);
+		List<String> description = new ArrayList<String>(0);
+		List<Long> profileDescriptionId = new ArrayList<Long>(0);
+		specialPageList = new ArrayList<SpecialPageVO>();
+		JSONArray jorderNo = jobj.getJSONArray("orderNoArr");
+		JSONArray jdescription = jobj.getJSONArray("descriptionArr");
+		JSONArray jprofileDescriptionId = jobj.getJSONArray("profDescIdArr");
+		Long specialPageId = jobj.getLong("specialPageId");
+		for(int j=0; j<jorderNo.length(); j++)
+		{
+		orderNo.add(new Long(jorderNo.getString(j).toString()));
+		description.add(jdescription.getString(j).toString());
+		profileDescriptionId.add(new Long(jprofileDescriptionId.getString(j).toString()));
+		}
+		for(int j=0; j<jorderNo.length(); j++)
+		{
+			specialPageVO = new SpecialPageVO();
+			specialPageVO.setOrderNo(orderNo.get(j));
+			specialPageVO.setDescription(description.get(j));
+			specialPageVO.setSpecialPageDescriptionId(profileDescriptionId.get(j));
+			specialPageList.add(specialPageVO);
+			
+		}
+		
+		result = specialPageService.updateSpecialPageHighLightsDesc(specialPageList,specialPageId);
+		return Action.SUCCESS;
+	}
+	
+	
 }
 	
 	
