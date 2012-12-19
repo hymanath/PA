@@ -42,4 +42,21 @@ public class KeyCandidateDAO extends GenericDaoHibernate<KeyCandidate, Long> imp
 		query.setParameter(0,candidateId);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getImportantCandidatesInfoByElectionId(Long electionId){
+		
+		
+		Query query = getSession().createQuery("select model1.candidate.candidateId ,model1.candidate.lastname ," +
+				" model1.description,model2.constituencyElection.constituency.name ,model2.status " +
+				"from KeyCandidate model1 , ConstituencyLeadCandidate model2 where " +
+				"model1.candidate.candidateId = model2.candidate.candidateId  " +
+				"and model2.constituencyElection.election.electionId = ?");
+		
+		
+		query.setParameter(0, electionId);
+		
+		return query.list();
+		
+	}
 }
