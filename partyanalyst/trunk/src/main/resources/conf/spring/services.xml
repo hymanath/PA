@@ -1292,5 +1292,12 @@
 
 	</bean>
 	
+	<bean name="userSocialNetworkSiteService" class="com.itgrids.partyanalyst.service.impl.UserSocialNetworkSiteService">
+		<property name="userSocialNetworkSiteDAO" ref="userSocialNetworkSiteDAO" />
+	    <property name="velocityEngine" ref="velocityEngine"></property>
+		<property name="templateVM" value="test.vm"></property>
+		<property name="mailService" ref="mailService" />	
+	</bean>
+	
 </beans>		
 	
