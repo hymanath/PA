@@ -26,6 +26,13 @@ $("document").ready(function(){
 	$('.districtDiv').slideToggle();	
 		
 	});
+
+	$(".specialPageHeadingCls").live("click",function(){
+	$('.specialPageDiv').slideToggle();	
+		
+	});
+
+	
 	
 
 	
@@ -1043,10 +1050,12 @@ var district = false;
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
 		 constituency = true;
-	 else if(results[i].favouriteLinkType == "constituency")
+	 else if(results[i].favouriteLinkType == "state")
 		 state = true;
-	 else
+	 else if(results[i].favouriteLinkType == "district")
 		 district = true;
+	 else
+		 specialpage = true;
 
  }
 
@@ -1127,6 +1136,34 @@ var district = false;
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.districtDiv');
+			}
+
+			}
+
+
+			for(var m in results){
+
+				if(m == 0 && specialpage == true)
+					$('.specialPageDivheading').html('<span class="specialPageHeadingCls">SpecialPage</span>');
+				
+		    if(results[m].favouriteLinkType == "specialPage"){
+
+
+				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls">SpecialPage</span>');
+				
+				var template = $('.favouriteLinkConstituencyClass');
+
+				var templateClone = template.clone();
+
+				templateClone.removeClass('favouriteLinkConstituencyClass');
+
+				templateClone.attr('id',results[m].userFavoriteLinksId);
+
+				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[m].favouriteLink+">"+results[m].favouriteLinkTitle+"</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[m].userFavoriteLinksId+")}'>Remove</a></b>");
+
+				templateClone.appendTo('.specialPageDiv');
 			}
 
 			}
