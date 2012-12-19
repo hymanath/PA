@@ -1,15 +1,3 @@
-var dialogOpen=false;
-$(document).ready(function(){
-
-	$('body').keypress(function(e){
-		if(e.keyCode==13 && dialogOpen==true)
-			$('#signin').click();
-		
-	});
-
-
-
-});
 
 function openDialogForLoginWindow(){
 
@@ -19,7 +7,7 @@ str+='<div id="forgot_password_window_inner" style="font-size:0.8em"></div>';
 str+='</div>';
 
 str+='<div class="span3 well" style="border: 5px solid rgb(227, 227, 227); width: 360px;align:center">';
-str+='<form name="loginForm" method="POST">';
+str+='<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">';
 str+='<div id ="getLoginErrorMessageDiv" style="color:red; margin-left: 55px;">';
 str+='</div>';
 //str+='<div id="validate"></div>';
@@ -31,7 +19,7 @@ str+='<span class="add-on"><i class="icon-lock"></i></span><input type="password
 str+='</div>';
 str+='<div class = "span3">';
 str+='<a href="javascript:{}" onclick="showForgotPasswordPanel()" style="color: rgb(1, 116, 223); font-size: small; margin-left: 50px;">Forgot Password</a>';
-str+='<input id="signin" class="submitButton btn btn btn-primary" type="button" style="margin-left: 180px; margin-top: -20px; height: 25px; width: 85px; padding-top: 2px;" value="Sign In"  onclick="ajaxCallForLoginPopup();"/>';
+str+='<input id="signin" class="submitButton btn btn btn-primary" type="submit" style="margin-left: 180px; margin-top: -20px; height: 25px; width: 85px; padding-top: 2px;" value="Sign In"/>';
 str+='</div>';
 str+='<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">';
 str+='<font  style="font-size:small;">Sending Your Request. Please wait...</font>';
@@ -58,16 +46,9 @@ $("#login_window_inner").html(str);
 				height: 'auto',
 				width:480,
 				top:250,
-				left:255,
-				modal: true,
-				open:function(){
-					dialogOpen=true;
+				left:100,
+				modal: true
 				
-				},
-				close:function(){
-					dialogOpen=false;
-				
-				}
 	});
 				
 }
@@ -98,6 +79,11 @@ task="validateUserForLogin";
 		callHomePageAjax11(jsObj,url);
 		$("#ajaxcallimage").show();
 
+}
+
+function ajaxComplete()
+{
+  document.loginForm.submit();
 }
 
 function callHomePageAjax11(jsObj,url){
@@ -175,8 +161,7 @@ function callHomePageAjax11(jsObj,url){
 		                return false;
 					}
 					return true;	
-				
-                }
+				}
 
 // ending validations for username and password
 // starting  password recovery
