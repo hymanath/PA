@@ -32,12 +32,20 @@ public class UserFavoriteLinksDAO  extends GenericDaoHibernate<UserFavoriteLinks
 		
 		Query query = getSession().createQuery("delete from UserFavoriteLinks model where model.userFavoriteLinksId = ?");
 		
-		
 		query.setParameter(0, linkId);
 		
 		return query.executeUpdate();
+	}
+	
+	
+	public List<UserFavoriteLinks> checkForAlreadyExistedOrNot(String url){
 		
+		Query query = getSession().createQuery("select model from UserFavoriteLinks model where model.url = ?");
 		
+		query.setParameter(0, url);
+
+		
+		return query.list();
 		
 	}
 
