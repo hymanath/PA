@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDataDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageHighlightsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageInfoDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageMetaInfoDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
@@ -62,6 +63,7 @@ import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageData;
 import com.itgrids.partyanalyst.model.SpecialPageDescription;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
+import com.itgrids.partyanalyst.model.SpecialPageHighlights;
 import com.itgrids.partyanalyst.model.SpecialPageInfo;
 import com.itgrids.partyanalyst.model.SpecialPageMetaInfo;
 import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
@@ -112,6 +114,8 @@ public class SpecialPageService implements ISpecialPageService{
 	private IConstituencySubscriptionsDAO constituencySubscriptionsDAO;
 	private List<SpecialPageVO> specialPageVOList;
 	private IUserDAO userDAO;
+	private ISpecialPageHighlightsDAO specialPageHighlightsDAO;
+	
 	
 	private ISpecialPageDataDAO specialPageDataDAO;
 	
@@ -408,6 +412,15 @@ public class SpecialPageService implements ISpecialPageService{
 		this.userDAO = userDAO;
 	}
 	
+
+	public ISpecialPageHighlightsDAO getSpecialPageHighlightsDAO() {
+		return specialPageHighlightsDAO;
+	}
+
+	public void setSpecialPageHighlightsDAO(
+			ISpecialPageHighlightsDAO specialPageHighlightsDAO) {
+		this.specialPageHighlightsDAO = specialPageHighlightsDAO;
+	}
 	//implementations of declaration reference variable
 	
 
@@ -1970,4 +1983,49 @@ return res;
 	 
  }
 	
+ 
+ public ResultStatus saveSpecialPageHighLights(SpecialPageVO specialPageVO) {
+		ResultStatus resultStatus = new ResultStatus();
+		SpecialPageHighlights specialPageHighlights = new SpecialPageHighlights();
+		try {
+			Long orderNo;
+
+			List<Object> results = specialPageHighlightsDAO
+					.getMaxOrderNo(specialPageVO.getSpecialPageId());
+			orderNo = results.get(0) == null ? 0l : (Long) results.get(0);
+			orderNo = orderNo + 1;
+			
+			specialPageHighlights.setOrderNo(orderNo);
+			specialPageHighlights.setDescription(specialPageVO
+					.getDescription());
+			specialPageHighlights.setSpecialPage(specialPageDAO
+					.get(specialPageVO.getSpecialPageId()));
+			specialPageHighlightsDAO.save(specialPageHighlights);
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		} catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			log.error("Exception Occured in saveSpecialPageHighLights() method - " + e);
+			return resultStatus;
+		}
+	}
+ 
+ 	public ResultStatus deleteSpecialPageHighLights(Long id) {
+		log
+				.debug("Entered into deleteEventProfileDescById() method in SpecialPageService");
+		ResultStatus resultStatus = new ResultStatus();
+		int flag = specialPageDescriptionDAO
+				.deleteEventProfileDescriptionById(id);
+		if (flag != 0) {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		} else {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+
+	}
+
 }
