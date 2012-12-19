@@ -322,9 +322,11 @@
 			    <value>com.itgrids.partyanalyst.model.JobRunDetails</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageHighlights</value>
 				<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
-				
-
-
+				<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
+				<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
+                <value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>			    			    		
+			    
+			    
 
 				
 				

@@ -96,7 +96,7 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println(object.toString());
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		
 	List<Object[]> list = constituencyLeadCandidateDAO.getGenderAnalysisElectionresults(182l);
 	System.out.println(list.size());
@@ -106,6 +106,25 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println("Gender "+params[2]);
 		System.out.println("status "+params[3] );
 	}
-	}
+	}*/
+	
+	 /* public void testgetAllParties(){
+		
+		List<Object[]> list = constituencyLeadCandidateDAO.getAllParties(202l);
+		System.out.println(list.size());
+		for(Object[] params :list){
+			System.out.println("id  "+params[0]+"  name  "+params[1].toString()+" status "+params[2].toString());
+			
+		}
+		}*/
+	 public void testgetPartiesPartispatedCount(){
+			
+			List<Object[]> list = constituencyLeadCandidateDAO.getPartiesPartispatedCount(202l);
+			System.out.println(list.size());
+			for(Object[] params :list){
+				System.out.println("count  "+params[0]+"  id  "+params[1]);
+				
+			}
+			}
 	}
 

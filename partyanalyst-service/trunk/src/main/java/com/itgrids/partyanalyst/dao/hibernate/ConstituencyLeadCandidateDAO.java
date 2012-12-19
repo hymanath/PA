@@ -218,4 +218,28 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		
 		return query.list();
 	}
+	public Object getWonLeadConstituenciesCountInAElection(Long electionId,String type)
+	{
+		Query query = getSession().createQuery("select count(model.constituencyElection.constituency.constituencyId) from ConstituencyLeadCandidate model " +
+				" where model.constituencyElection.election.electionId = ? and model.status = ? ");
+		query.setParameter(0,electionId);
+		query.setParameter(1,type);
+		return query.uniqueResult();
+	}
+	
+	public List<Object[]> getAllParties(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model1.status from Nomination model ,ConstituencyLeadCandidate model1 " +
+				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model1.constituencyElection.constiElecId  ");
+		query.setParameter(0,electionId);
+		return query.list();
+	}
+	
+	public List<Object[]> getPartiesPartispatedCount(Long electionId)
+	{
+		Query query = getSession().createQuery("select count(model.party.partyId),model.party.partyId from Nomination model " +
+				" where model.constituencyElection.election.electionId = ? group by model.party.partyId");
+		query.setParameter(0,electionId);
+		return query.list();
+	}
 }
