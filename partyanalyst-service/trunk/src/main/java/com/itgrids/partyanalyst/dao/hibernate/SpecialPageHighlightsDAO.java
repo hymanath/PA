@@ -28,4 +28,9 @@ public class SpecialPageHighlightsDAO extends GenericDaoHibernate<SpecialPageHig
 		return queryObject.executeUpdate();
 	}
 
+	
+	public List<Object[]> getSpecialPageHighLightsBySpecailPageId(Long specialPageId)
+	{
+		return getHibernateTemplate().find("select model.orderNo,model.description from SpecialPageHighlights model where model.specialPage.specialPageId = ?",specialPageId);
+	}
 }
