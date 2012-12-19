@@ -373,7 +373,7 @@ userType = '${UserType}';
 				<c:forEach var="friendsDtls" items="${registrationVOList}" >
 
 					var obj1 =	{
-							id:'${friendsDtls.registrationId}',
+							id:'${friendsDtls.registrationID}',
 							profilePic:'${friendsDtls.userProfilePic}',
 							firstName:'${friendsDtls.firstName}',
 							lastName:'${friendsDtls.lastName}',
