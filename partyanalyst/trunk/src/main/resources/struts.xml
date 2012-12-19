@@ -3982,6 +3982,16 @@
 				<param name="root">results</param>				
 			</result>		
 		</action>
-		
+				
+		<action name="getSpecialPageHighLightsAction" class="specialPageManageAction" method="saveSpecialHighlights">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="deleteSpecialPageHighLightDescAction" class="specialPageManageAction" method="deleteSpecialHighlightsDescription">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
 	</package>
 </struts>      
