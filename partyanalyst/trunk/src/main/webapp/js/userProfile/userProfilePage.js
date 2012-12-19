@@ -1504,8 +1504,7 @@ function showSpecialPages(results)
 
 function closeConnectPanel(jsObj,results)
 { 
-	$(".placeholderCenterDiv").children().remove();
-	
+		
 	var connectUserMsg = $("#connectUserMsg").val('');
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
@@ -1919,7 +1918,7 @@ function showPostedReasons(jsObj,results)
 	   if(postedReasonsByLoggedInUser ==0)
 			 ul.append('<li class="fontStyle">By You - '+postedReasonsByLoggedInUser+'</li>');
 	   else
-   		 ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
+   		 ul.append('<li class="fontStyle">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></li>');
 	   
 	   if(connectedUsersReasCount ==0)
 		 ul.append('<li class="fontStyle">By Friends - '+connectedUsersReasCount+'</li>');
