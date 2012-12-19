@@ -269,7 +269,7 @@ $(document).ready(function() {
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Meta Info" id="developmentGalleryId" onClick="buildMetaInfoDiv()"></b> </td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Special Page Info" id="specialPageInfoId"  onclick="getSpecialPageInfo()"></b> </td>
-						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Special Page Highlights" id="specialPageInfoId"  onclick="getSpecialPageHighlights()"></b> </td>
+						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Special Page Highlights" id="specialPageInfoId"  onclick="buildSpecialPageHighlightsDiv()"></b> </td>
 					 </tr>
 					</table>
 				</td>
