@@ -4009,5 +4009,10 @@
 			</result>
 		</action>
 		
+		<action name="updateSpecialPageHighLightsAction" class="specialPageManageAction" method="updateSpecialPageHighLightsDescription">
+			<result type="json" name="success">
+				<param name="root">result</param></result>
+		</action>
+		
 	</package>
 </struts>      
