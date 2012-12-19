@@ -22,6 +22,12 @@ $("document").ready(function(){
 		
 	});
 
+	$(".districtHeadingCls").live("click",function(){
+	$('.districtDiv').slideToggle();	
+		
+	});
+	
+
 	
 	 $("#friendsLink").click(function(){
 		var jsObj ={
@@ -1064,7 +1070,7 @@ var district = false;
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				templateClone.find('.titleClass').html("<b><a class='problemTitle' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle+"</a></b>");
-				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn-mini' title='Remove this link'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.constituencyDiv');
 			}
@@ -1090,7 +1096,7 @@ var district = false;
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle+"</a></b>");
-				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.stateDiv');
 			}
@@ -1101,12 +1107,12 @@ var district = false;
 			for(var k in results){
 
 				if(k==0 && district == true)
-					$('.districtDivheading').html('<span class="stateHeadingCls">District</span>');
+					$('.districtDivheading').html('<span class="districtHeadingCls">District</span>');
 				
 		    if(results[k].favouriteLinkType == "district"){
 
 
-				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">District</span>');
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info districtHeadingCls">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1118,7 +1124,7 @@ var district = false;
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[k].favouriteLinkTitle+"</a></b>");
-				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.districtDiv');
 			}
