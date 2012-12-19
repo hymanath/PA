@@ -96,6 +96,23 @@ display:inline-block;
 .subscriptionsHeaderTitleDiv .date-span{font-style:italic;font-size:11px;text-transform:Capitalize;color:#999;text-align:right;}
  .activity-name{padding-left:5px;  color: #777777;}
  .activity-title h5{font-size:13px;}
+ 
+ 
+ 
+ .ProblemImgTitleDescDiv{
+	margin: 5px;
+    padding: 5px;
+	
+ }
+ 
+ #prblmCommentShare{
+	margin-left:auto;margin-right:auto;width:168px;
+ }
+ 
+ #prblmCommentShare .commentCls a{text-decoration:none;}
+ #prblmCommentShare .shareCls a{text-decoration:none;}
+ 
+ .prblmsHeader span{width:25%;float:left;padding:15px;}
 </style>
 </head>
 <body>
@@ -399,6 +416,50 @@ display:inline-block;
 
 <!-- Templates -->
 <div class="TemplateCollection">
+
+	<div class="politicalReasonsTemplate templateholder subscriptionsMain widget-simple" style="margin:5px 0px;width:92%;">
+		<div class="politicalReasonsInnerDiv">
+			<div class="span2 postedBy">
+    				
+    		   </div>
+			<div class="span10">
+				<span class="headingCls span12">
+					<h6><span class="headingCls"></span></h6>
+				</span>
+				
+				<div class="subscriptionsImgTitleDescDiv">
+    					  <span class="candidateImg span4"></span>
+    					  
+    					 <span class="subscriptionsDescDiv span8">
+    						  <span class="activity-title">
+								<p><span class="politicalReaCls"/></p>
+							  </span>
+    						  <span>
+    						   <p><span class="politicalDescCls"/></p>
+    						  </span>
+    					  </span>
+				</div>
+				<span class="pull-right date-span">
+					<h6><span class="polReaPostedDate"></span></h6>
+				</span>
+				
+				<!--<span class="candidateImg"></span>
+				<div class="politicalReasons">
+					
+					<p class="politicalReaCls"></p>
+					<p class="politicalDescCls"></p>
+					<!--
+					<span class="postedBy"></span>
+					<p class="polReaPostedDate span3"></p>
+					<p class="polReaPostedPerName"></p>
+				</div>-->
+			</div>
+		</div>
+	</div>	
+	
+	
+
+
     
      <div class="subscriptionsMainTemplate subscriptionsMain">
     	   <div class="subscriptionsHeaderTitleDiv">
@@ -477,7 +538,7 @@ display:inline-block;
 		
 	</div>
 
-	<div class="problemTemplateDiv templateholder problemsShowDiv">
+	<!--<div class="problemTemplateDiv templateholder problemsShowDiv">
 		<div class="problemsShowDIV">
 			<div class="">
 				<span class="problemImg"></span>
@@ -498,22 +559,40 @@ display:inline-block;
 
 			<div><span class="problemRating"></span></div>
 		</div>
-	</div>
+	</div>-->
 	
-		
-	<div class="politicalReasonsTemplate templateholder politicalReasonsDiv">
-		<div class="politicalReasonsInnerDiv">
-			<p class="headingCls"></p>
-			<span class="candidateImg"></span>
-			<div class="politicalReasons">
-				<p class="politicalReaCls"></p>
-				<p class="politicalDescCls"></p>
-				<p class="polReaPostedDate"></p>
-				<p class="polReaPostedPerName"></p>
+	<div class="problemTemplateDiv templateholder" >
 
+		<div class="problemsShowDIV span12 widget-simple">
+			<div class="span2 problemImg"></div>
+			<span class="postedPersonName"></span>
+			<div class="span10" style="background:#f1f1f1;padding:7px;">
+				<div class="ProblemImgTitleDescDiv">
+    					 <span class="subscriptionsDescDiv span12">
+    						  <span class="activity-title">
+								<p><span class="problemTitle"/></p>
+							  </span>
+    						  <span>
+    						   <p><span class="problemDescription"/></p>
+    						  </span>
+    					  </span>
+				</div>
+				<span class="pull-right date-span">
+					<h6><span class="problemFromDate pull-right"></span></h6>
+					<h6><span class="location pull-left" style="margin-bottom:20px;color:#273241;"></span></h6>
+					<h6><span class="problemReportedDate pull-right"></span></h6>
+					
+				</span>
+				<div id='prblmCommentShare' >
+					<span class="commentCls pull-right btn btn-mini"></span>
+					<span class="shareCls pull-left btn btn-mini"></span>
+				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
+	
+		
+	
 
 
 <div class="favouriteLinkConstituencyClass favouriteLinkDivClass" >
