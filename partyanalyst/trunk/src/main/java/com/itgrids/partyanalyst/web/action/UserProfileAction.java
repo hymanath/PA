@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -34,7 +35,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-
+import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 public class UserProfileAction extends ActionSupport implements ServletRequestAware {
 
 	private static final long serialVersionUID = -4620729281316958397L;
@@ -71,6 +72,28 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private List<UserProfileVO> subscriptionsList;
 	private String notLogged = "sessionExpired";
 	
+	private CadreManagementVO cadreManagementVO = null;
+	private IUserCadreManagementService userCadreManagementService;
+	
+	
+	
+	public CadreManagementVO getCadreManagementVO() {
+		return cadreManagementVO;
+	}
+
+	public void setCadreManagementVO(CadreManagementVO cadreManagementVO) {
+		this.cadreManagementVO = cadreManagementVO;
+	}
+
+	public IUserCadreManagementService getUserCadreManagementService() {
+		return userCadreManagementService;
+	}
+
+	public void setUserCadreManagementService(
+			IUserCadreManagementService userCadreManagementService) {
+		this.userCadreManagementService = userCadreManagementService;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -350,7 +373,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 				constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(dataTransferVO.getDistrictId());
 			
 			specialPageVOList = specialPageService.getSpecialPageListForHomePage();
-			
+			cadreManagementVO = userCadreManagementService.getUserData(user);
+			if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
+				log.error(cadreManagementVO.getExceptionEncountered().getMessage());
 		return Action.SUCCESS;
 	}
 	
