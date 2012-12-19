@@ -201,6 +201,7 @@ font-size:18px;
 {
 	width : 230px;
 }
+.specPagehighLightsErrorMsgDivId{color: red;font-size: 12px;margin-top: 4px;}
 </style>
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
