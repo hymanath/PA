@@ -503,7 +503,7 @@ margin:-1px 0px 0px 0px ;
 			</li>
 			
 			<li style="width:307px;">
-				<textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox" Value="Comment" style="height:78px;width:287px;border:1px solid #7f7f7f;background-color:#7f7f7f"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';" >Comment</textarea>
+				<textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox" Value="Comment" style="height:78px;width:287px;border:1px solid #7f7f7f;background-color:#aaa;"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';" >Comment</textarea>
 			</li>
 			
 			<li style="width:307px;text-align:left;">
