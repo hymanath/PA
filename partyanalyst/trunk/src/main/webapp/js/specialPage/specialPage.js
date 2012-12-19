@@ -281,6 +281,23 @@ function callAjax(jsObj,url){
 			{
 				buildSpecialPageInfoDiv(myResults);
 			}
+			else if(jsObj.task == "getHighLights")
+			{
+				buildSpecialPageHighLightsForUpdate(myResults);
+			}
+			else if(jsObj.task=='deleteSpecialPageHighLightDesc')
+			{
+				showSpecialPageHighLightsDeleteStatus(myResults);
+			}
+			else if(jsObj.task=='getSpecialPageHighLights')
+			{
+				showSpecialPageHighLightsDescStatus(myResults);
+			}
+			else if(jsObj.task=='updateSpecialPageHighLights')
+			{
+				showSpecialPageHighLightsDiscUpdateStatus(myResults);
+			}
+			
 						
 	}
 	catch(e){   
@@ -699,6 +716,7 @@ function showEventDescription(myResults)
 
 
 function addProfileDiscription(){
+
 var fileDesc = document.getElementById('profileDescId').value;
 var specialPageId = document.getElementById('specialPageId').value;
 var errorDivEle = document.getElementById('galErrorMsgDivId');
@@ -5236,7 +5254,7 @@ var divEle = document.getElementById(ele);
 divEle.innerHTML = "";
 }
 
-function getSpecialPageHighlights()
+function buildSpecialPageHighlightsDiv()
 {
 	
 	if(document.getElementById('descriptionDiv').style.display = 'none')
@@ -5271,18 +5289,18 @@ function getSpecialPageHighlights()
 	str += '<div id="content" style="width:650px;">';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<tr>';
-	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addSpecialPageHighLights()"></td>';
-	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateSpecialPageHighLights()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="buildSpecialPageHighlightsDiv()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="getSpecialPageHighLights()"></td>';
 	str += '</tr>';
 	str += '</table>'
     str += '<fieldset class="imgFieldset" style="width:400px;">';	
-	str += '<center style="margin-top: 7px;"><b style="font-size:15px"><font color="#4B74C6">Add The SpecialPage HighLights</font> </b> </center>';
+	str += '<center style="margin-top: 7px;"><b style="font-size:15px"><font color="#4B74C6">Add The SpecialPage Highlights</font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<div id="specPagehighLightsErrorMsgDivId"></div>';
 	str += '<tr>';
 	str += '<td>';
-	str += '<b><font color="#4B74C6">SpecialPage HightLights</font></b></td><td><textarea id="specialPageHighLightDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
+	str += '<b><font color="#4B74C6">Description</font></b></td><td><textarea id="specialPageHighLightDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
 	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addSpecialPageHighLights()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
@@ -5318,13 +5336,13 @@ function addSpecialPageHighLights()
 	
 }
 
-function deleteSpecialPageHighLightsById(id){
-	
+function deleteSpecialPageHighLightsById(id)
+{
 	var r=confirm("Do you want to Delete!");
 	if(r==true)
 		var jsObj={
 
-    id:id,
+		id:id,
 		task:"deleteSpecialPageHighLightDesc"
 
 	};
@@ -5332,4 +5350,133 @@ function deleteSpecialPageHighLightsById(id){
 	var url = "deleteSpecialPageHighLightDescAction.action?"+rparam;
 	callAjax(jsObj,url);
 	
+}
+
+ function getSpecialPageHighLights()
+ {
+
+   var specialPageId = $('#specialPageId').val();
+
+   var jsObj = {
+         specialPageId:specialPageId,
+         task:"getHighLights"
+         };
+
+    var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+    var url = "getSpecialPageHighLights.action?"+param;
+
+    callAjax(jsObj,url);
+ }
+
+function buildSpecialPageHighLightsForUpdate(results)
+{
+	
+	sizeOfArray = myResults.length;
+	var str ='';
+	var i;
+	str += '<div id="content" style="width:650px;">';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="buildSpecialPageHighlightsDiv()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="getSpecialPageHighLights()"></td>';
+	str += '</tr>';
+	str += '</table>'
+	str += '<fieldset class="imgFieldset" style="width:400px;">';	
+	str += '<center><b style="font-size:15px"><font color="#4B74C6">Update The SpecialPage Highlights </font> </b> </center>';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<tr>';
+	str += '<td>';
+	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
+	for(i=0 ; i<results.length ; i++)
+	{
+	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNo_'+i+'" value= "'+results[i].orderNo+'" size="5"></td>';
+	str += ' <td style="padding-right: 82px"> <textarea id="descriptionId_'+i+'" cols="25" rows="4"> '+results[i].description+'</textarea> </td>';
+	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteSpecialPageHighLightsById('+results[i].ids+')"></td></tr>';
+	str += ' <input type="hidden" id="specialPageDescId_'+i+'" value="'+results[i].ids+'">';
 	}
+	str += '</table>';
+	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateSpecialPageHighLightDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '</fieldset>';
+	str+='</div>';
+	
+	document.getElementById("specialPageHighLightsDiv").innerHTML = str;
+	
+
+}
+
+function updateSpecialPageHighLightDiscription()
+{
+	var specialPageId = $('#specialPageId').val();
+	var orderNoArr = [];
+	var descriptionArr = [];
+	var profDescIdArr = [];
+	for(i=0 ; i < sizeOfArray ; i++)
+   	{
+		orderNoArr.push(document.getElementById('orderNo_'+i).value);
+		profDescIdArr.push(document.getElementById('specialPageDescId_'+i).value);
+		descriptionArr.push(removeAllUnwantedCharactersInArray(document.getElementById('descriptionId_'+i).value));		
+   	}
+  
+    var jsObj =
+	{ 
+		specialPageId :specialPageId,
+		orderNoArr : orderNoArr,
+		descriptionArr : descriptionArr,
+		profDescIdArr : profDescIdArr,
+		task : "updateSpecialPageHighLights"
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateSpecialPageHighLightsAction.action?"+rparam;
+	callAjax(jsObj,url);	
+ }
+
+ function showSpecialPageHighLightsDeleteStatus(myResults)
+ {
+	if(myResults.resultCode==0)
+	{
+	   getSpecialPageHighLights();
+	   $("#fileUploadErrorMsgDivId").html('<font color="green"><b> deleted successfully</b></font>');
+	   return;
+	}
+    else if(myResults.resultCode==1)
+	{
+      $("#fileUploadErrorMsgDivId").html('<font color="red"><b>Error Ocuured, Try Again.</b>');
+	  return;
+	}
+		
+}
+
+ function showSpecialPageHighLightsDescStatus(myResult)  
+ {
+	if(myResult.resultCode == 0)
+	{
+		$("#specialPageHighLightDescId").val('');
+		$("#specPagehighLightsErrorMsgDivId").html('<font color="green"><b>Description Saved Successfully.</b>');
+		return;
+
+	}
+	else if(myResult.resultCode == 1) 
+	{
+		$("#specPagehighLightsErrorMsgDivId").html('<font color="red"><b>Error Ocuured, Try Again.</b>');
+		return;
+	}
+	
+}
+
+function showSpecialPageHighLightsDiscUpdateStatus(myResult)  
+{
+	if(myResult.resultCode == 0)
+	{
+		$('#errorDivEle').html('<font color="green"><b>Profile Discription Updated Successfully.</b>');
+		return;
+	}
+	else if(myResult.resultCode == 1) 
+	{
+		$('#errorDivEle').html('<font color="red"><b>Error Ocuured, Try Again.</b>');
+		return;
+	}
+	
+}
