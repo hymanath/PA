@@ -43,7 +43,7 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 	private String task;
 	private List<ConstituencyElectionResultVO> candidatesList;
 	private List<PartyElectionResultVO> partyElectionResultVOList;
-	
+	private List<PartyElectionResultVO> districtWiseResults;
 	
 
 	public List<PartyElectionResultVO> getPartyElectionResultVOList() {
@@ -135,6 +135,15 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		return candidatesList;
 	}
 
+	public List<PartyElectionResultVO> getDistrictWiseResults() {
+		return districtWiseResults;
+	}
+
+	public void setDistrictWiseResults(
+			List<PartyElectionResultVO> districtWiseResults) {
+		this.districtWiseResults = districtWiseResults;
+	}
+
 	public String execute(){
 		
 		HttpSession session = request.getSession();
@@ -211,13 +220,28 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		return Action.SUCCESS;
 	}
 
-public String getLiveResults(){	
+ public String getLiveResults(){	
 		try 
 		{
 			jObj = new JSONObject(getTask());
 			
 				Long electionId = new Long(jObj.getString("electionId"));
 				electionLiveResultVO = electionLiveResultsAnalysisService.getLiveResultsDetails(electionId);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+ public String getDistrictWiseLiveResults(){	
+		try 
+		{
+			jObj = new JSONObject(getTask());
+			
+				Long electionId = new Long(jObj.getString("electionId"));
+				Long districtId = new Long(jObj.getString("districtId"));
+			    districtWiseResults = electionLiveResultsAnalysisService.getCandidatesInfoDistrictWise(electionId,districtId);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
