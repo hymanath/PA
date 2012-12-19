@@ -95,4 +95,8 @@ public interface ISpecialPageService {
     public String getSpecialPageDataBySpecialPageId(Long specialPageId);
     
     public List<SelectOptionVO> getAllSpecialPages();
+    
+    public ResultStatus saveSpecialPageHighLights(SpecialPageVO specialPageVO);
+    
+    public ResultStatus deleteSpecialPageHighLights(Long id);
 }
