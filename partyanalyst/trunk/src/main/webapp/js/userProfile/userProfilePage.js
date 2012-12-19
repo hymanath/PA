@@ -77,7 +77,7 @@ $("document").ready(function(){
 		$(".placeholderCenterDiv").children().remove();
 		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
-		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload cover Image</a></li></ul>");
+		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li></ul>");
 		$("#impdatesDiv").hide();
 	});
 	
@@ -1039,12 +1039,6 @@ $('.constituencyDiv').children().remove();
 $('.stateDiv').children().remove();
 $('.constituencyDivheading').children().remove();
 $('.stateDivheading').children().remove();
-$('.districtDivheading').children().remove();
-$('.specialPageDivheading').children().remove();
-$('.districtDiv').children().remove();
-$('.specialPageDiv').children().remove();
-
-	
 
  $('.placeholderCenterDiv').children().remove();
  clearAllSubscriptionDivs();
@@ -1087,7 +1081,7 @@ var district = false;
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a class='problemTitle' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle+"</a></b>");
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
-				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn-mini' title='Remove this link'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.constituencyDiv');
 			}
@@ -1116,7 +1110,7 @@ var district = false;
 
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[j].favouriteLinkTitle+"' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
 
-				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.stateDiv');
 			}
@@ -1127,12 +1121,12 @@ var district = false;
 			for(var k in results){
 
 				if(k==0 && district == true)
-					$('.districtDivheading').html('<span class="districtHeadingCls">District</span>');
+					$('.districtDivheading').html('<span class="stateHeadingCls">District</span>');
 				
 		    if(results[k].favouriteLinkType == "district"){
 
 
-				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info districtHeadingCls">District</span>');
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1147,7 +1141,7 @@ var district = false;
 			templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[k].favouriteLinkTitle+"' href="+results[k].favouriteLink+">"+results[k].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
 
 
-				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.districtDiv');
 			}
@@ -2050,7 +2044,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 	
 	var div = $('<div class="subscriptionHeaderDiv"></div>');
 	var label = $('<span class="subscriptionType">Special Pages</span>');
-	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	//var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
 	div.append(label);
 	div.append(btns);
 	$('#userSpecialPageSubscriptionsDiv').append(div);
