@@ -3,16 +3,19 @@ package com.itgrids.partyanalyst.web.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONSerializer;
+
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IThumbnailService;
-import com.itgrids.partyanalyst.service.impl.ThumbnailService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AdminPageAction extends ActionSupport implements ServletRequestAware{
@@ -21,7 +24,22 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	private EntitlementsHelper entitlementsHelper;
 	ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 	private IProblemManagementReportService problemManagementReportService;
-	 private  IThumbnailService thumbnailService;
+	private ISpecialPageService specialPageService;
+
+
+
+	
+	
+	 public ISpecialPageService getSpecialPageService() {
+		return specialPageService;
+	}
+
+	public void setSpecialPageService(ISpecialPageService specialPageService) {
+		this.specialPageService = specialPageService;
+	}
+
+
+	private  IThumbnailService thumbnailService;
 		
 		public IThumbnailService getThumbnailService() {
 			return thumbnailService;
@@ -92,5 +110,8 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	
 		return null;
 	}
+	
+	
+	
 	
 }

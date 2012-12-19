@@ -60,8 +60,17 @@ public class SpecialPageAction extends ActionSupport implements
 	private Boolean isSubscribed;
 	private ICandidateDetailsService candidateDetailsService;
 	private String delVideo;
+	private String specilaPageText;
 	
 	
+	public String getSpecilaPageText() {
+		return specilaPageText;
+	}
+
+	public void setSpecilaPageText(String specilaPageText) {
+		this.specilaPageText = specilaPageText;
+	}
+
 	public String getDelVideo() {
 		return delVideo;
 	}
@@ -238,6 +247,9 @@ public class SpecialPageAction extends ActionSupport implements
 		fileVOList    = specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20);
 		customPages   = specialPageService.getCustomPagesOfASpecialPage(specialPageId);
 		metaInfoVO    = specialPageService.getMetaInfoForASpecialPage(specialPageId);
+		specilaPageText = specialPageService.getSpecialPageDataBySpecialPageId(specialPageId);
+		
+		
 	return SUCCESS;
 	}
 	
