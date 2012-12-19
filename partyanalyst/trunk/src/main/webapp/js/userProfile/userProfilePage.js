@@ -10,7 +10,9 @@ var jcrop_api;
 
 $("document").ready(function(){
 	
-
+    $("#subscriptionsStreamingMore").live("click",function(){
+	  getSubscriptionDetails("old");
+	});
 	$(".constituencyHeadingCls").live("click",function(){
 		$('.constituencyDiv').slideToggle();	
 		
@@ -44,6 +46,7 @@ $("document").ready(function(){
 	});
 	
 	$("#settings").click(function(){
+	     $("#subscriptionsStreamingMoreDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
 		$("#headerDiv").html('');
 		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload cover Image</a></li></ul>");
@@ -123,7 +126,8 @@ $("document").ready(function(){
 	//subscriptions
 
 	 $(".subscriptionsLink").click(function(){
-		
+		 $("#subscriptionsStreamingMoreDiv").hide();
+		  $("#subscriptionsStreamingData").html('');
 		var jsObj ={
 			task:"getUserScriptions"
 		};
@@ -136,6 +140,8 @@ $("document").ready(function(){
 
 
 	$('.assessPoliticianLink').live("click",function(){
+	    $("#subscriptionsStreamingMoreDiv").hide();
+		$("#subscriptionsStreamingData").html('');
 		var type = $(this).closest('li').find('.politicalReasTypeVar').val();
 		var linkType = "assessPoliticianLink";
 		startIndex = 0;
@@ -955,6 +961,13 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task =="removeFavouriteLink"){
 
 
+					}else if(jsObj.task == "allsubscriptions" || jsObj.task == "oldersubscriptions"){
+					   if(results == "sessionExpired"){
+						  openDialogForLoginWindow();
+					   }
+					   else{
+					     buildAllSubscriptions(results);
+					   }
 					}
 
 
@@ -1126,6 +1139,50 @@ function getFriendsListForUser(results)
 
 }
 
+function buildAllSubscriptions(results){
+   if(results != null && results.length > 0){
+    for(var i in results)
+	{
+		var template = $(".subscriptionsMainTemplate");
+		var templateClone =  template.clone();
+		templateClone.removeClass("subscriptionsMainTemplate");
+		templateClone.find('.subscriptionsHeaderTitle').html(results[i].headerTitle+'');
+		templateClone.find('.subscriptionsDateDiff').html(''+results[i].dateDiff);
+		templateClone.find('.subscriptionsDescription').html(''+results[i].description);
+		templateClone.find('.subscriptionsFileImgDiv').html("<a href='"+results[i].fileLink+"'><img src='"+results[i].imageUrl+"' style='width:100px;height:100px;vertical-align:middle;' ></img></a>");
+		templateClone.find('.activity-title').html("<a href='"+results[i].fileLink+"'>"+results[i].title+"</a>");
+		templateClone.appendTo("#subscriptionsStreamingData");
+	}
+  }
+}
+
+function getInitialUpdates(){
+  $("#subscriptionsStreamingData").children().remove();
+  $(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+  $("#headerDiv").html('');
+  getSubscriptionDetails("main");
+}
+function getSubscriptionDetails(type){
+   $("#subscriptionsStreamingMoreDiv").show();
+   var task ="";
+   if(type == "main")
+     task = "allsubscriptions";
+   else if(type == "old")
+     task = "oldersubscriptions";
+   else if(type == "new")
+     task = "latestsubscriptions";
+   else 
+     return;
+	 
+   var jsObj ={
+				task:task,
+				type:task
+			 };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllSubscriptionsAction.action?"+rparam;					
+	callAjax1(jsObj,url);
+}
 
 function showAllRequestMessagesForUser(results,jsObj){
 
@@ -2043,12 +2100,13 @@ function showAllUserPartySubscriptions(jsObj,results)
 
 function clearAllSubscriptionDivs()
 {
+    $("#subscriptionsStreamingMoreDiv").hide();
 	$("#userSpecialPageSubscriptionsDiv").html('');
 	$("#userSpecialPageUnSubscriptionsDiv").html('');
 	$("#userCandidateSubscriptionsDiv").html('');
 	$("#userPartySubscriptionsDiv").html('');
 	$("#userConstituencySubscriptionsDiv").html('');
-
+     $("#subscriptionsStreamingData").html('');
 	$("#userSpecialPageSubscriptionsDiv").children().remove();
 	$("#userSpecialPageUnSubscriptionsDiv").children().remove();
 	$("#userCandidateSubscriptionsDiv").children().remove();
