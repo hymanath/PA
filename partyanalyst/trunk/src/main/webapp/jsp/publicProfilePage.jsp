@@ -15,6 +15,7 @@
 
 <link type="text/css" href="styles/publicProfile/publicProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 
 
 <style>
@@ -168,7 +169,7 @@ padding:5px 20px;
 
 /* profile Style */
 .imageClass{width:300px;}
-.profilerDetails{width: 300px;}
+.profilerDetails{width:300px;}
 .profileUserName{ font-size: 17px;font-weight: bold;}
 .fontStyle{font-size:14px;}
 .publicProfileInnerDiv{background:#fafafa}
@@ -176,10 +177,21 @@ padding:5px 20px;
 .problemTitle{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 .friendsImgs{border: 1px solid #CDCDCD;margin-top: 10px; margin-right: 6px; background:  #00FFFF;}
 .imgLi{clear: both;
-    display: -moz-inline-stack;
+    display: inline-block;;
     
     width: 85px;}
 	.TemplateCollection{display:none;}
+	
+	.placeholderCenterDiv{
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #CDCDCD;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    padding: 10px;
+	display:inline-block;
+	}
+	
+	.templatePersons{width:29%;height:70px;}
 </style>
 </head>
 <body>
@@ -200,13 +212,12 @@ padding:5px 20px;
 					<span class="fontStyle"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></span>&nbsp;&nbsp;&nbsp;
 					<span class="fontStyle"><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></span>&nbsp;&nbsp;&nbsp;
 					<span class="fontStyle"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
+					<!--<a class='btn btn-success btn-mini pull-right' href="/PartyAnalyst/userProfile.action">My Profile</a>-->
 				</div>
 				
-				<div id="headerDiv" class="whitegloss"></div>
-				<div class="placeholderCenterDiv"></div>
+				<div class="placeholderCenterDiv" style="display:none;"></div>
 				
 				<div id="problemsDiv">
-					
 					
 					<c:if test="${not empty problems.problemBeanVOList}">
 
@@ -323,28 +334,10 @@ padding:5px 20px;
   </div>
 	
 <div class="TemplateCollection">
-	<div class="templateDiv templateholder templatePersons">
-			
-			<div class="imgClass span3 thumbnail"></div>
-			<div class="prinfo span9">
-				<h6 class="connectedPersonName"></h6>
-				<span class="messageCls" style="display:none"></span>
-				<span class="constituencyName"></span>
-				<span class="districtName"></span>
-				<span class="stateName"></span>
-				<div class="icon-groups">
-				<span class="sendMsg"></span>
-				<span class="connectCls"></span>
-				<span class="blockPersonBtn" style="display:none;"></span>
-				</div>
-			</div>
-	</div>
- <div class="friendListTemplate templateholder">
-	<ul>
-	<li class="imgLi"></li>
-	<li class="nameLi"></li>
-	</ul>
- </div>
+<div class="friendListTemplate templateholder templatePersons">
+	<div class="frndImg thumbnail span3" ></div>
+	<span class="frndName span12"></span>
+</div>
 </div>
 <script>
 
