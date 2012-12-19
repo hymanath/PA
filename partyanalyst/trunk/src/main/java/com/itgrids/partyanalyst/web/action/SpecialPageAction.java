@@ -270,7 +270,22 @@ public class SpecialPageAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getSpecialPageHighLights()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			if(jObj.getString("task").equalsIgnoreCase("getHighLights"))
+			{
+				String specialPageId = jObj.getString("specialPageId");
+				fileVOList = specialPageService.getSpecialPageHighLights(new Long(specialPageId));	
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 	public String ajaxCallHandlerForSpecialPage(){
 		
 		try {
