@@ -2844,12 +2844,12 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			
 			queryString = queryString.substring(0, queryString.length() - 1);
 			
+		
 			if(environment.equalsIgnoreCase("live"))
-				queryString = "http://partyanalyst.com/"+queryString;
+			  userFavoriteLinks.setUrl("http://partyanalyst.com/"+link+".action?"+queryString);
 			else
-				queryString = "http://localhost:8080/"+queryString;
-			
-			userFavoriteLinks.setUrl(link+".action?"+queryString);
+				userFavoriteLinks.setUrl("http://localhost:8080/PartyAnalyst/"+link+".action?"+queryString);
+				
 			userFavoriteLinks.setPageTitle(pageTitle);
 			
 			userFavoriteLinksDAO.save(userFavoriteLinks);
