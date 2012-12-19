@@ -307,7 +307,8 @@
 			
 			<value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
 			<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
-			<value>com.itgrids.partyanalyst.model.SpecialPageHighlights</value>
+			<value>com.itgrids.partyanalyst.model.SpecialPageHighlights</value>			
+			<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
 			</list>
 		</property>
 	</bean>
