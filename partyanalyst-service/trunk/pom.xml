@@ -255,7 +255,11 @@
                 <type>jar</type> 
                 <scope>compile</scope> 
                 </dependency>
-		
+		   <dependency>
+	       <groupId>org.apache.sanselan</groupId>
+	       <artifactId>sanselan</artifactId>
+	       <version>0.97-incubator</version>
+           </dependency>
 		
 		
 	</dependencies>
