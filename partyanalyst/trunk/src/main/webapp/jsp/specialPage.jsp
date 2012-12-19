@@ -594,7 +594,7 @@ function buildContentDetails()
 			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
 			
 			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
-				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="Thumbs/Small/'+result.otherGalleries[i].filesList[0].path+'"></img>';
+				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
 				
 			else if(result.contentType == 'Video Gallary')
 				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
@@ -887,7 +887,7 @@ function showPhotosInInitialGallary(results){
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" id="photoClickId'+i+''+k+'" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="Thumbs/Medium/'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" id="photoClickId'+i+''+k+'" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
@@ -974,7 +974,7 @@ function buildCandidatePhotoGallary(results)
 			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			if(results[i].path!=null)
 			{
-			str += '<tr><td class="imgStyle"><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="Thumbs/Medium/'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'"/></a></td></tr>';
+			str += '<tr><td class="imgStyle"><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')" alt="'+results[i].title+'"/></a></td></tr>';
             }
 			else
 			{
@@ -1029,7 +1029,7 @@ function showPhotosInAGallary(results){
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="Thumbs/Medium/'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
