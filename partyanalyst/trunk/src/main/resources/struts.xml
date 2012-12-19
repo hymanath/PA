@@ -3999,5 +3999,15 @@
 		<param name="root">fileVOList</param>				
 		</result>	
 		</action>
+				
+		<action name="getAllSubscriptionsAction" class="userProfileAction" method="getSubscriptions">
+		    <result type="json" name="success">
+				 <param name="root">subscriptionsList</param> 
+			</result>
+			<result type="json" name="error">
+				 <param name="root">notLogged</param> 
+			</result>
+		</action>
+		
 	</package>
 </struts>      
