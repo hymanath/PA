@@ -4,21 +4,21 @@ var friendsInPP = [];
 $("document").ready(function(){
 	
 	$('.friendsInPP').click(function(){
-		$(".placeholderCenterDiv").children().remove();
+		$(".placeholderCenterDiv").css('display','inline-block');
 		$("#problemsDiv").children().remove();
-	
+		//$('.friendsDiv').css("display","none");
 		for(var i in friendsInPP)
 		{
- 		   var name = friendsInPP[i].firstName+" "+friendsInPP[i].lastName;
+		   var name = friendsInPP[i].firstName+" "+friendsInPP[i].lastName;
 		   var imageStr = "pictures/profiles/"+friendsInPP[i].profilePic;
 		   var template = $(".friendListTemplate");
 		   var templateClone =  template.clone();
 		   templateClone.removeClass("friendListTemplate");
-		   templateClone.find('.nameLi').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
+		   templateClone.find('.frndName').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
 		   if(friendsInPP[i].profilePic == null)
-			  templateClone.find('.imgLi').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg"/></a>');
+			  templateClone.find('.frndImg').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg"/></a>');
 		   else
-			  templateClone.find('.imgLi').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
+			  templateClone.find('.frndImg').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
 		 templateClone.appendTo(".placeholderCenterDiv");
 	    }
 	});
