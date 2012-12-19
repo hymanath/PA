@@ -7,6 +7,39 @@
 <script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
 
 <style>
+
+.importantPersonsDivClass{
+
+	height:196px;
+	width:126px;
+	float:left;
+	background:#fff;
+	padding: 11px;
+	margin:3px;
+	border:1px solid #c3c3c3;
+	border-radius:3px;
+
+}
+
+
+.alignCenter{
+	text-align:center;
+}
+
+.leadStatusClass{
+
+	color: green;
+	font-weight: bold;
+}
+
+.candidateNameClass{
+
+color: #21B2ED;
+font-weight: bold;
+font-family:arial;
+font-size:11px;
+/*width: 200px;*/
+}
  .main-mbg {
     width:962px;
 }
@@ -104,6 +137,30 @@ table.gujaratTableDiv td:first-child {width:50%;}
 <div>
 <div id="upComing" style="background:#FFF;padding-top: 12px;">
 <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Himachal Pradesh 2012 Vidhan Sabha Election</span>
+
+
+
+<div style="float:left;" id="importantCandidateHeadingDiv">
+
+	<div class="main-mbg"><span style="margin-left:42px;">Important candidates present status</span>
+
+    <div style="float:left;">
+
+	<a class="btn btn-success" id="showLink" href="javaScript:{showDetails();}" style="display:none;margin-top:3px;">Show</a>
+	<a  style="margin-top:3px;" class="btn btn-inverse" id="hideLink"  href="javaScript:{hideDetails();}" >Hide</a>
+
+	</div>
+
+
+	<span style="text-decoration:blink;float:right;margin-right:163px;"><a  style="color:#fff;" href="javaScript:{getImportantCandidatesInfo();}" title="Click here to refresh">Refresh<i class="icon-refresh"></i></a></span>
+
+	</div>
+
+	<div id="importantPersonsDiv"></div>
+
+</div>
+
+
 
 <br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">68</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">17</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">3</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">48</font></span>
 
@@ -604,6 +661,11 @@ function callAjax(jsObj,url){
 									buildGujaratElectionResult(myResults);
 										
 								}
+								else if(jsObj.task == "getImportantCandidatesInfo")
+								{
+								
+									buildImportantCnadidatesData(myResults)
+								}
 							}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -816,4 +878,90 @@ function buildGujaratElectionResult(myResults)
 
  getSpecialPageHighLights();
 
+</script>
+
+
+<script>
+function buildImportantCnadidatesData(results){
+
+    var str='';
+
+    str+='<div class="span12" style="border:1px solid #c3c3c3;">';
+
+
+	if(results.length == 0){
+	  $('#importantCandidateHeadingDiv').hide();
+	  return false;
+	}
+	for(var i in results){
+
+		 str+='<div class="importantPersonsDivClass">';
+
+             if(results[i].status == "Won")
+ 			   str+='<div style="text-align:center;margin-bottom:10px;"><span class="leadStatusClass" style="font-size:16px;">'+results[i].status+'</span><i style="float:right;" class="icon-thumbs-up"></i></div>';
+
+			 else if(results[i].status == "Lead")
+			
+				str+='<div class="alignCenter" style="margin-bottom:10px;"><span style="color: #4D6185; font-weight: bold;font-size:16px;">'+results[i].status+'</span><i  style="float:right;" class="icon-circle-arrow-up"></i></div>';
+
+			else
+
+				str+='<div class="alignCenter" style="margin-bottom:10px;"><span style="color: red; font-weight: bold;font-size:16px;">'+results[i].status+'</span><i style="float:right;" class="icon-thumbs-down"></i></div>';
+
+			str+='<div class="alignCenter"><img width="80" height="79" onerror="setImage(this)" src="images/candidates/'+results[i].candidateName+'.jpg"></div><br>';
+
+			str+='<div class="alignCenter candidateNameClass"><span >'+results[i].candidateName+'</span></div>';
+
+			//str+='<div class="alignCenter"><span style="color: #716F64; font-weight: bold;">'+results[i].party+'</span></div>';
+
+			str+='<div class="alignCenter"><span style="color: red; font-weight: bold; text-align: center;">'+results[i].constituency+'</span></div>';
+
+
+        str+='</div>';
+
+		
+	}
+
+
+	str+='</div>';
+
+
+	$('#importantPersonsDiv').html(str);
+
+setTimeout(getImportantCandidatesInfo, 120000);
+
+}
+
+function getImportantCandidatesInfo()
+{
+	var jsObj = {
+	           	electionId:18,
+				task:"getImportantCandidatesInfo"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getImportantCandidatesInfoAction.action?"+param;
+	callAjax(jsObj,url);
+}
+
+ function showDetails(){
+
+	 $('#showLink').css('display','none');
+	 $('#hideLink').css('display','block');
+	 $('#refreshDiv').css('display','block');
+
+
+	 $('.importantPersonsDivClass').show();
+
+ }
+ function hideDetails(){
+
+	$('#showLink').css('display','block');
+	$('#hideLink').css('display','none');
+	$('#refreshDiv').css('display','none');
+
+	$('.importantPersonsDivClass').hide('slow');
+
+ }
+
+ getImportantCandidatesInfo();
 </script>
