@@ -36,6 +36,9 @@ public class PartyPositionsVO implements Serializable{
 	private Long totalPolledVotesForState;
 	private Double totalVotingPercentageForState;
 	private Long totalSeatsParticipated;
+	private Long scCoutn = 0l;
+	private Long stCount = 0l;
+	private Long generalCount = 0l;
 	
 	public Long getTotalPolledVotesForState() {
 		return totalPolledVotesForState;
@@ -153,4 +156,24 @@ public class PartyPositionsVO implements Serializable{
 	public void setTotalConstiValidVotes(Long totalConstiValidVotes) {
 		this.totalConstiValidVotes = totalConstiValidVotes;
 	}
+	public Long getScCoutn() {
+		return scCoutn;
+	}
+	public void setScCoutn(Long scCoutn) {
+		this.scCoutn = scCoutn;
+	}
+	public Long getStCount() {
+		return stCount;
+	}
+	public void setStCount(Long stCount) {
+		this.stCount = stCount;
+	}
+	public Long getGeneralCount() {
+		return generalCount;
+	}
+	public void setGeneralCount(Long generalCount) {
+		this.generalCount = generalCount;
+	}
+
+	
 }

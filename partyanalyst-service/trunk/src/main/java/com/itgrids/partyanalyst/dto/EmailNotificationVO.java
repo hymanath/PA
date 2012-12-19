@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EmailNotificationVO implements Serializable {
    /**
@@ -58,6 +60,10 @@ public class EmailNotificationVO implements Serializable {
    private boolean photopresent;
        //used to check for a party or candidate or special Page etc, video updates exist or not 
    private boolean videopresent;
+   
+   private Set<String> candidates = new HashSet<String>();
+   private Set<String> parties = new HashSet<String>();
+   private Set<String>specialPgs = new HashSet<String>();
 
 	public Long getId() {
 		return id;
@@ -242,6 +248,32 @@ public class EmailNotificationVO implements Serializable {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+
+	public Set<String> getCandidates() {
+		return candidates;
+	}
+
+	public void setCandidates(Set<String> candidates) {
+		this.candidates = candidates;
+	}
+
+	public Set<String> getParties() {
+		return parties;
+	}
+
+	public void setParties(Set<String> parties) {
+		this.parties = parties;
+	}
+
+	public Set<String> getSpecialPgs() {
+		return specialPgs;
+	}
+
+	public void setSpecialPgs(Set<String> specialPgs) {
+		this.specialPgs = specialPgs;
+	}
+
+
 	 
 	   
 }

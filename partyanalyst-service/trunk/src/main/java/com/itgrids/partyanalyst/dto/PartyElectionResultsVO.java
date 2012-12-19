@@ -39,6 +39,9 @@ public class PartyElectionResultsVO  extends ResultStatus {
 	private String electorsPercentageDiff;
 	private Long marginVotes;
 	private String marginPercent;
+	private Long districtId;
+	private String districtName;
+	private Long polledVotes;
 
 	//getters and setters
 	public Long getPartyId() {
@@ -202,6 +205,24 @@ public class PartyElectionResultsVO  extends ResultStatus {
 	}
 	public void setTotalVotes(Long totalVotes) {
 		this.totalVotes = totalVotes;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getPolledVotes() {
+		return polledVotes;
+	}
+	public void setPolledVotes(Long polledVotes) {
+		this.polledVotes = polledVotes;
 	}
 	
 	
