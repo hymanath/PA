@@ -36,7 +36,7 @@
 	<s:select cssClass="selectBox" theme="simple" label="Select Your State" name="state" id="specialPage" list="specialPagesList" listKey="id" listValue="name"/>
 </div>
 
- <textarea id="description" style="width:618px;height:92px;margin:2px 0px 0px 20px;" class='jbDscrptnReq' placeholder="Enter job description here...."></textarea>
+ <textarea id="description" style="width:618px;height:92px;margin:2px 0px 0px 20px;" ></textarea>
 
  <input type="button" style="background:#c3c3c3;" value="UploadData" onClick="saveTextForSpecialPage();"/>
 
