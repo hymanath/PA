@@ -20,6 +20,43 @@ public class ImportantDatesVO extends ResultStatus implements Comparable<Importa
 	private String frequency;
 	private String isDeleted;
 	
+	
+	private Long candidateId;
+	private String candidateName;
+	private String party;
+	private String constituency;
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	public String getCandidateName() {
+		return candidateName;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+	public String getParty() {
+		return party;
+	}
+	public void setParty(String party) {
+		this.party = party;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
 	public Long getImportantDateId() {
 		return importantDateId;
 	}
