@@ -58,6 +58,41 @@
     text-align: justify;margin-top:8px;padding-bottom: 10px; display: table;}
 	.voterLinksCls span{font-family:arial;font-size:12px;line-height:1.5em;}
 	.voterLinksCls p a{float:right;}
+
+.hglgts {
+   text-align: left;
+    width: 880px;
+	float :left;
+}
+
+.hglgts li {
+    -moz-font-feature-settings: normal;
+    -moz-font-language-override: normal;
+    -x-system-font: none;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+   /* background-image: url("http://static.ibnlive.in.com/ibnlive/pix/ibnhome/blts_c.jpg");*/
+	/*background-image:url("images/icons/diamond.png");*/
+    background-origin: padding-box;
+    background-position: 0 12px;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    color: #333333;
+    font-family: verdana;
+    font-size: 14px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    /*line-height: 1.5em;*/
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    margin-bottom: 15px;
+    padding-left: 15px;
+}
 </style>
 
 <div>
@@ -72,61 +107,93 @@
 <br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">140</font></span>
 
 <div style="text-align:justify;margin:10px;padding:10px;"> 
-<!--<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">AP Bi Election Schedule</span> -
 
-<span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
--->
 <span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Gujarat </span> -
 
 <span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=7"> Gujarat</a></b> Legislative Assembly, 2012. Polls in <b><a href="statePageAction.action?stateId=7">Gujarat</a></b> will take place in two phases. First phase on December 13, 2012 and second phase on December 17, 2012. The counting will take place on December 20, 2012.
 </span><br /><br />
 
-<!--<center>
-<table border="2" cellpadding="5" >
+<div id="specialPageHighLight"  style="margin-left: 11px;
+    width: 900px;"></div>
+
+<div id="ExitPoll" style="display:table;margin-left: 11px;">
+<div style="width:450px;">
+<span style="font-weight:bold;background:#D2E888;padding:4px;-moz-border-radius: 3px;">Gujarat Exit Polls</span>
+<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;width:99%;">
 <tr>
-<th>Poll Event</th>
-<th>Dates</th>
+<th>Source</th>
+<th>BJP</th>
+<th>CONG+</th>
+<th>GPP/OTHERS</th>
 </tr>
 <tr>
-<td>Issue of Notification</td>
-<td><center>10.10.2012 <br>
-(Wednesday)</center></td>
+<td>C-VOTER</td>
+<td>119-129</td>
+<td>49-59</td>
+<td>-</td>
 </tr>
 <tr>
-<td>Last date for making Nominations</td>
-<td><center>17.10.2012 <br>
-(Wednesday)</center></td>
-</tr>
-<td>Scrutiny of Nominations</td>
-<td><center>18.10.2012 <br>
-(Thursday)</center></td>
+<td>CHANAKYA</td>
+<td>140</td>
+<td>40</td>
+<td>2</td>
+
 </tr>
 <tr>
-<td>Last date for withdrawal of
-candidature</td>
-<td><center>20.10.2012 <br>
-(Saturday)</center></td>
+<td>ABP NEWS</td>
+<td>116</td>
+<td>60</td>
+<td>6</td>
 </tr>
 <tr>
-<td>Date of Poll</td>
-<td><center>04.11.2012 <br>
-((Sunday)</center></td>
-</tr>
-<tr>
-<td>Counting of Votes</td>
-<td><center>20.12.2012 <br>
-(Thursday)</center></td>
-</tr>
-<tr>
-<td>Date before which election process
-shall be completed</td>
-<td><center>24.12.2012 <br>
-(Monday)</center></td>
+<td>HEAD LINES TODAY</td>
+<td>118-128</td>
+<td>50-56</td>
+<td>-</td>
 </tr>
 </table>
-</center><br><br>-->
-<!---
-<span style="font-family:verdana;font-size:13px;right:20px;color:#ED5B21;float:right;"> *All 68 ACs will go to poll on a single day</span><br>-->
+</div>
+<div style="width:450px;display:table-cell;">
+<span style="font-weight:bold;background:#D2E888;padding:4px;-moz-border-radius: 3px;">Himachal Pradesh Exit Polls</span>
+<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;width:100%;">
+
+<tr>
+<th>Source</th>
+<th>BJP</th>
+<th>CONG+</th>
+<th>GPP/OTHERS</th>
+</tr>
+<tr>
+<td>C-VOTER</td>
+<td>27-35</td>
+<td>30-38</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>CNN-IBN</td>
+<td>30</td>
+<td>29-35</td>
+<td>-</td>
+</tr>
+<tr>
+<td>CHANAKYA</td>
+<td>23</td>
+<td>40</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+
+</table>
+</div>
+
+</div>
+<br>
 
 <table width="100%" style="border-top: 1px solid rgb(221, 221, 221);">
 <tr>
@@ -604,64 +671,14 @@ CPM</a>
 </tr>
 
 
-<!--<tr><td colspan="7">
-<br>
-<center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3"></object></center></td>
-</tr>-->
+
 </table>
 </td></tr>
 </table>
  
   
 
-<!-- <div>
-  <table>
-     <tr>
-	   <td>INC won in Narsapuram (4,702) and Ramachandra Puram.<br><br>
-           TRS won in Parkal with only 1562 (Votes).</td>
-	   <td><div id="presidentelection"><ul><li><a title="Indian Presidential Elections 2012" href="specialPageAction.action?specialPageId=10"><span style="font-weight: bold;">Click Here To View Indian Presidential Election 2012</span></a></li>
-	   </ul></div></td>
-	 </tr>
-  </table>
-</div> -->
 
-<!--<div style="width:250px; "><span style="font-weight:bold;font-family:verdana;margin:63px;top:10px;bottom:2px;padding:5px;width:560px;color:#ED5B21;">2007 Election Result</span>
-<table class="electionresulttable" style="margin-left:35px;"> 
-<th> Party</th>
-<th>Seats</th>
-<tr>
-<td>BJP</td>
-<td>43</td>
-</tr>
-<tr>
-<td>INC</td>
-<td>23</td>
-</tr>
-<tr>
-<td>IND</td>
-<td>3</td>
-</tr>
-<tr>
-<td>BSP</td>
-<td>1</td>
-</tr>
-
-</table>
-</div>-->
-<!--<div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
-	<table>
-		<tr>
-			<td>
-				<div style="padding: 8px; font-weight: bold; margin-top: 10px; font-size: 15px; border-radius: 3px 3px 3px 3px; border: 1px solid #d3d3d3;">
-				<ul>
-				<li style="background:#D2E888; padding: 5px 0px; border-radius: 2px 2px 2px 2px; width: 402px; margin-left: 5px;">
-				<a title="Gujarat 2012 Vidhan Sabha Election" href="specialPageAction.action?specialPageId=14"><span style="font-weight: bold; color: black; margin-left: 16px;">Click Here To View Himachal Pradesh Election 2012</span></a></li>
-				</ul>
-				</div>
-			</td>
-		</tr>
-		</table>
-</div>-->
 <div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
 	<table>
 		<tr>
@@ -706,6 +723,10 @@ function callAjax(jsObj,url){
 									if(jsObj.task =="getPartyGenderInfo"){
 										buildGenderCountResultsDataTable(myResults,jsObj.elecYearId);
 									}
+									else if(jsObj.task =="getHighLights")
+								{
+										buildSpecialPageHightLights(myResults);
+								}
 							}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -719,7 +740,28 @@ function callAjax(jsObj,url){
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-
+function buildSpecialPageHightLights(results)
+{
+	
+	var str ='';
+	var specialPageHighLight = document.getElementById('specialPageHighLight');
+	
+	str +='<fieldset style="verdana,sans-serif;font-weight:bold;">';
+	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat HighLights</legend>';
+	str +='<div class="hglgts">';
+	if(results != null && results!='')
+	{
+	for(var i in results)
+	{
+	str += '<ul><li><img src="images/icons/diamond.png"/>';
+	str += ' '+results[i].description+'</li></ul>';
+	}
+	
+	str +='</div>';
+	str +='</fieldset>';
+	}
+	specialPageHighLight.innerHTML = str;
+}
 function buildGenderCountResultsDataTable(myResults,elecYearId){
 	var selectedYearEle = document.getElementById(''+elecYearId+'');
 	var year = selectedYearEle.options[selectedYearEle.selectedIndex].text;
@@ -817,5 +859,20 @@ if(myResults == null)
 	document.getElementById('genderAnalysisDiv').innerHTML = str;
 
 }
+function getSpecialPageHighLights()
+{
+var jsObj = {
+				specialPageId:"13",
+	           
+				task:"getHighLights"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSpecialPageHighLights.action?"+param;						
+		
+	callAjax(jsObj,url);
+}
+
+
+ getSpecialPageHighLights();
 
 </script>
