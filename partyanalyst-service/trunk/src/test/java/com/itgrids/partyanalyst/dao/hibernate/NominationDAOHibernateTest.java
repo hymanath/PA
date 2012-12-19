@@ -1237,7 +1237,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testfindCandidateNamePartyByConstituencyAndElectionDate()
+/*	public void testfindCandidateNamePartyByConstituencyAndElectionDate()
 	{
 	 List list=nominationDAO.getCandidatesInfoForTheGivenConstituency("32862","2008", "Assembly") ;
 	 System.out.println(list.size());
@@ -1245,6 +1245,15 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	 {
 		System.out.println(params[1]); 
 	 }
-}
+}*/
+	public void testgetAllCandidatesInADistrict()
+	{
+	 List<Object[]> list = nominationDAO.getAllCandidatesInADistrict(202l, 152l) ;
+	 System.out.println(list.size());
+	 for(Object[] params : (List<Object[]>)list)
+	 {
+		System.out.println(params[1]); 
+	 }
+	}
 }	
 	

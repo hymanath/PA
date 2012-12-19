@@ -54,4 +54,6 @@ public interface IConstituencyLeadCandidateDAO  extends GenericDao<ConstituencyL
 	public List<Object[]> getAllParties(Long electionId);
 	
 	public List<Object[]> getPartiesPartispatedCount(Long electionId);
+	
+	public List<Object[]> getResultsKnownConstituenciesInDistrict(Long electionId,Long districtId);
 }

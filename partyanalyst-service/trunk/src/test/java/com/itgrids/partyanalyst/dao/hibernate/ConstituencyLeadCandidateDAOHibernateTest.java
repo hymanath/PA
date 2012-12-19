@@ -108,7 +108,7 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 	}
 	}*/
 	
-	 /* public void testgetAllParties(){
+	  public void testgetAllParties(){
 		
 		List<Object[]> list = constituencyLeadCandidateDAO.getAllParties(202l);
 		System.out.println(list.size());
@@ -116,8 +116,8 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 			System.out.println("id  "+params[0]+"  name  "+params[1].toString()+" status "+params[2].toString());
 			
 		}
-		}*/
-	 public void testgetPartiesPartispatedCount(){
+		}
+	/* public void testgetPartiesPartispatedCount(){
 			
 			List<Object[]> list = constituencyLeadCandidateDAO.getPartiesPartispatedCount(202l);
 			System.out.println(list.size());
@@ -125,6 +125,6 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 				System.out.println("count  "+params[0]+"  id  "+params[1]);
 				
 			}
-			}
+			}*/
 	}
 

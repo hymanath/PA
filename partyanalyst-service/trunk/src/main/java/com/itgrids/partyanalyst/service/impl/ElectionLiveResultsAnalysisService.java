@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -2308,8 +2310,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	 try{
 	  Long totalSeats = (Long)constituencyElectionDAO.getPCCountInAElection(electionId);
 	  Long totalKnownCount = (Long)constituencyLeadCandidateDAO.getResultKnownConstituenciesCountInAElection(electionId);
-	  Long totalWon = (Long)constituencyLeadCandidateDAO.getWonLeadConstituenciesCountInAElection(electionId,"Won");
-	  Long totalLead = (Long)constituencyLeadCandidateDAO.getWonLeadConstituenciesCountInAElection(electionId,"Lead");
+	  Long totalWon = (Long)constituencyLeadCandidateDAO.getWonLeadConstituenciesCountInAElection(electionId,IConstants.WON);
+	  Long totalLead = (Long)constituencyLeadCandidateDAO.getWonLeadConstituenciesCountInAElection(electionId,IConstants.LEAD);
 	  electionLiveResultVO.setTotalSeats(totalSeats);
 	  electionLiveResultVO.setTotalKnownCount(totalKnownCount);
 	  electionLiveResultVO.setNewKnownCount(totalLead);
@@ -2352,4 +2354,47 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	 }
 	  return electionLiveResultVO;
   }
+  
+  public List<PartyElectionResultVO> getCandidatesInfoDistrictWise(Long electionId,Long districtId){
+	  List<PartyElectionResultVO> districtWiseCandidatesList = new ArrayList<PartyElectionResultVO>();
+	try{
+	  Map<Long,Object[]> leadWonCandidatesMap = new HashMap<Long,Object[]>();
+	  List<Object[]> candidatesList = nominationDAO.getAllCandidatesInADistrict(electionId,districtId);
+	  List<Object[]> leadWonCandidatesList = constituencyLeadCandidateDAO.getResultsKnownConstituenciesInDistrict(electionId,districtId);
+	  for(Object[] leadWonCandidate:leadWonCandidatesList){
+		  leadWonCandidatesMap.put((Long)leadWonCandidate[0], leadWonCandidate);
+	  }
+	  PartyElectionResultVO partyElectionResultVO = null;
+	  for(Object[] candidate:candidatesList){
+		  partyElectionResultVO = new PartyElectionResultVO();
+		  partyElectionResultVO.setPartyId((Long)candidate[4]);
+		  partyElectionResultVO.setPartyName(candidate[5]!=null?candidate[5].toString():"");
+		  partyElectionResultVO.setCandidateId((Long)candidate[2]);
+		  partyElectionResultVO.setCandidateName(candidate[3]!=null?candidate[3].toString():"");
+		  partyElectionResultVO.setConstiId((Long)candidate[0]);
+		  partyElectionResultVO.setConstiName(candidate[1]!=null?candidate[1].toString():"");
+		  partyElectionResultVO.setAssets(candidate[6]!=null?new BigDecimal((Double)candidate[6]):null);
+		  partyElectionResultVO.setLiabilities(candidate[7]!=null?new BigDecimal((Double)candidate[7]):null);
+		  if(leadWonCandidatesMap.get((Long)candidate[0]) != null){
+			  Object[] data = leadWonCandidatesMap.get((Long)candidate[0]);
+			  if(((Long)data[1]).longValue() == ((Long)candidate[2]).longValue())
+		        partyElectionResultVO.setStatus(data[2]!=null?data[2].toString():"");
+			  else if(data[2]!=null && data[2].toString().equalsIgnoreCase(IConstants.WON)){
+				  partyElectionResultVO.setStatus("Lost");  
+			  }else if(data[2]!=null && data[2].toString().equalsIgnoreCase(IConstants.LEAD)){
+				  partyElectionResultVO.setStatus("Trail");  
+			  }else{
+				  partyElectionResultVO.setStatus("");
+			  }
+		  }else{
+			partyElectionResultVO.setStatus("");
+		  }
+		  districtWiseCandidatesList.add(partyElectionResultVO);
+	  }
+	}catch(Exception e){
+		 log.error("Exception Encountered In getCandidatesInfoDistrictWise()" +e);
+	}
+	  return districtWiseCandidatesList;
+  }
+  
 }
