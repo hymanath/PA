@@ -43,7 +43,6 @@
 		<pattern>/ecrComparedResultsAction.action*</pattern>
 		<!--<pattern>/completeResultForAPollAction.action*</pattern>  -->
 		<!--<pattern>/getAllPollsAction.action*</pattern> -->
-		<pattern>/viewFeaturesAction.action*</pattern>
 		<pattern>/influencingPeopleAction*</pattern>
 		<pattern>/getInfluencingPersonInfoAction*</pattern>
 		<pattern>/influencingPeopleDataAction*</pattern>
@@ -161,6 +160,8 @@
 		<pattern>/publicProfile*</pattern>
 		<pattern>/adminSocialAction*</pattern>
 		<pattern>/candidateUpdateFormAction*</pattern>
+		<pattern>/footerLinksAction*</pattern>
+		<pattern>/viewFeaturesAction*</pattern>
     </decorator>
 
 </decorators>
