@@ -23,14 +23,15 @@ public class SpecialPageHighlightsDAO extends GenericDaoHibernate<SpecialPageHig
 	
 	public Integer deleteSpecialHighlightsDescription(Long id)
 	{
-		Query queryObject=getSession().createQuery("delete from specialpagehighlights model where model.specialPageHighlightsId=?");
+		Query queryObject=getSession().createQuery("delete from SpecialPageHighlights model where model.specialPageHighlightsId=?");
 		queryObject.setParameter(0,id);
 		return queryObject.executeUpdate();
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getSpecialPageHighLightsBySpecailPageId(Long specialPageId)
 	{
-		return getHibernateTemplate().find("select model.orderNo,model.description from SpecialPageHighlights model where model.specialPage.specialPageId = ? order by model.orderNo",specialPageId);
+		return getHibernateTemplate().find("select model.orderNo,model.description,model.specialPageHighlightsId from SpecialPageHighlights model where model.specialPage.specialPageId = ?",specialPageId);
 	}
 }
