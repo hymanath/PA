@@ -13,12 +13,15 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.imgscalr.Scalr;
 
+
+
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IThumbnailService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.JpegReader;
 
 import java.util.Arrays;
 
@@ -42,7 +45,7 @@ public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
 	this.filePathsDAO = filePathsDAO;
 }
 
-
+  @Override
 	public String  crateThumnailForAdmin(int[] ids1,String realContextPath)
 	
 	{ 
@@ -94,17 +97,24 @@ public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
 	        	  }
 	        	  
 	        	
-	      }if(filePaths.size()==0)flag="no records to process";
-	      if(flag.equalsIgnoreCase("sucess"))
+	      }//for
+	      
+	      if(filePaths.size()==0)
+	      {
+	    	  flag="no records to process";
+	    	return flag;  
+	      }
+	      if(paths.size()>0 )
 	      {
 	    int  res=   filePathsDAO.updateFilePathsThumbnails(paths);
 	    if(res == 0)
-		   flag="false beacause of databae updation but thumnail creation is sucess";
-	      }
+		   flag +="false beacause of databae updation but thumnail creation is sucess";
+	      }else
+	        flag +="no thumnail is processed";
 	      return flag;
 	}
 
-//@Override	
+@Override	
 public void  crateThumnailDynamically( List<String> filePaths, String realContextPath, int width ,int height   ) 
 	
 	{ 
@@ -205,7 +215,7 @@ log.debug("profiles thumnail creation");
    		}
 	
 	
-	//@Override
+	@Override
 	public  String  resizeImages(String path, String destinationSize, int width ,int height ,File f2,String realContextPath) 
 	
 	{
@@ -217,10 +227,7 @@ log.debug("profiles thumnail creation");
 		File f1=null;
 		String destPath="";
 		try{
-		        		  originalImage = ImageIO.read(f2);
-
-			
-			thumbnail =	Scalr.resize(originalImage, Scalr.Method.ULTRA_QUALITY,Scalr.Mode.FIT_EXACT, width, height);	 
+		        	//	  originalImage = ImageIO.read(f2);
 			
 			String parent = path.substring(0, path.indexOf("/"));
 			
@@ -233,6 +240,16 @@ log.debug("profiles thumnail creation");
 			String child =imgpath.substring(0, imgpath.lastIndexOf("/"));
 			  
 			String total =parent2+imgpath;
+			
+			String originalPath=realContextPath+path;
+			
+			
+			 JpegReader jr=new JpegReader();			 
+			 originalImage =  jr.readImage(new File(originalPath));
+			
+			thumbnail =	Scalr.resize(originalImage, Scalr.Method.ULTRA_QUALITY,Scalr.Mode.FIT_EXACT, width, height);	 
+			
+
 			
 			System.out.println(parent);
 			System.out.println(imgpath);
@@ -279,7 +296,10 @@ log.debug("profiles thumnail creation");
 		}
 		return destPath;
 	}
-	
+	public static void main(String[] args) {
+		
+		new ThumbnailService().resizeImages("images/candidates/HARAK SINGH RAWAT.jpg", "small", 300, 300, new File("")," D:\\anilpawarsbackup\\dec10\\PartyAnalyst\\");
+	}
 	
 	
 }
