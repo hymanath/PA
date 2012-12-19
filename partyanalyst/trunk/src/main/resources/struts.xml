@@ -3958,14 +3958,23 @@
 			</result>		
 		</action>
 		
-		
-		
-		<action name="saveUserFavouriteLink" class="userProfileAction"  method="saveUserFavouriteLink">
-		
-		<result type="json" name="success">
-					<param name="root">status</param>				
-			</result>	
-		
+		<action name="saveUserFavouriteLink" class="userProfileAction"  method="saveUserFavouriteLink">		
+			<result type="json" name="success">
+			<param name="root">status</param>				
+			</result>		
 		</action>
+		
+        
+        <action name="specialPageDataUploadAction" class="specialPageDataUploadAction">
+           <result name="success">/jsp/specialPageDataUpload.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
+        </action>
+		
+		<action name="saveSpecialPageTextAction" class="specialPageDataUploadAction" method="saveSpecialPageTextAction">
+			<result type="json" name="success">
+			 <param name="root">savedStatus</param>			
+			</result>	
+		</action>
+		
 	</package>
 </struts>      
