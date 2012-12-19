@@ -1061,14 +1061,16 @@ var district = false;
 
 			for(var i in results){
 
-
-		    if(results[i].favouriteLinkType == "constituency"){
 				if(i ==0 && constituency == true)
 				{
 					
 					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls">Constituency</a></div>');
 					$('.constituencyDivheading').append(div);
 				}
+
+
+		    if(results[i].favouriteLinkType == "constituency"){
+				
 				var template = $('.favouriteLinkConstituencyClass');
 
 				var templateClone = template.clone();
