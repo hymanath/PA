@@ -1,4 +1,15 @@
+var dialogOpen=false;
+$(document).ready(function(){
 
+	$('body').keypress(function(e){
+		if(e.keyCode==13 && dialogOpen==true)
+			$('#signin').click();
+		
+	});
+
+
+
+});
 
 function openDialogForLoginWindow(){
 
@@ -20,7 +31,7 @@ str+='<span class="add-on"><i class="icon-lock"></i></span><input type="password
 str+='</div>';
 str+='<div class = "span3">';
 str+='<a href="javascript:{}" onclick="showForgotPasswordPanel()" style="color: rgb(1, 116, 223); font-size: small; margin-left: 50px;">Forgot Password</a>';
-str+='<input id="" class="submitButton btn btn btn-primary" type="button" style="width: 70px; height: 22px; padding-top: 0px; margin-top: -18px; margin-left: 200px;" value="Sign In"  onclick="ajaxCallForLoginPopup();"/>';
+str+='<input id="signin" class="submitButton btn btn btn-primary" type="button" style="margin-left: 180px; margin-top: -20px; height: 25px; width: 85px; padding-top: 2px;" value="Sign In"  onclick="ajaxCallForLoginPopup();"/>';
 str+='</div>';
 str+='<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">';
 str+='<font  style="font-size:small;">Sending Your Request. Please wait...</font>';
@@ -29,11 +40,14 @@ str+='</div>';
 str+='</form><br><br>';
 str+='</div>';
 
+/*
+
 str+='<div class="span3 well" style="border: 5px solid rgb(227, 227, 227); width: 360px;">';
 str+='<h4 style="margin-bottom: 7px; margin-left: 55px;">New to Party Analyst?</h4>';
 str+='<a href="freeUserRegistration.action" class="btn btn-success pull-right">Create an Account</a>';
 str+='</div>';
 
+*/
 
 
 $("#login_window_inner").html(str);
@@ -43,7 +57,17 @@ $("#login_window_inner").html(str);
 				title:'Please Login',
 				height: 'auto',
 				width:480,
-				modal: true
+				top:250,
+				left:255,
+				modal: true,
+				open:function(){
+					dialogOpen=true;
+				
+				},
+				close:function(){
+					dialogOpen=false;
+				
+				}
 	});
 				
 }
