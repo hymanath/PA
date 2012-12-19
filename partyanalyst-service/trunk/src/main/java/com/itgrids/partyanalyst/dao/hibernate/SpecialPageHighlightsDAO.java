@@ -31,6 +31,6 @@ public class SpecialPageHighlightsDAO extends GenericDaoHibernate<SpecialPageHig
 	
 	public List<Object[]> getSpecialPageHighLightsBySpecailPageId(Long specialPageId)
 	{
-		return getHibernateTemplate().find("select model.orderNo,model.description from SpecialPageHighlights model where model.specialPage.specialPageId = ?",specialPageId);
+		return getHibernateTemplate().find("select model.orderNo,model.description from SpecialPageHighlights model where model.specialPage.specialPageId = ? order by model.orderNo",specialPageId);
 	}
 }
