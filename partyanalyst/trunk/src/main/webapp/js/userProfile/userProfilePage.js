@@ -985,10 +985,24 @@ $('.stateDivheading').children().remove();
  $('.placeholderCenterDiv').children().remove();
  clearAllSubscriptionDivs();
 
+var constituency = false;
+var state = false;
+var district = false;
+
+ for(var i in results){
+	 if(results[i].favouriteLinkType == "constituency")
+		 constituency = true;
+	 else if(results[i].favouriteLinkType == "constituency")
+		 state = true;
+	 else
+		 district = true;
+
+ }
+
 			for(var i in results){
 
-		    if(results[i].favouriteLinkType == "Constituency"){
-				if(i ==0)
+		    if(results[i].favouriteLinkType == "constituency"){
+				if(i ==0 && constituency == true)
 				{
 					
 					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls">Constituency</a></div>');
@@ -1014,10 +1028,10 @@ $('.stateDivheading').children().remove();
 
 			for(var j in results){
 
-				if(j==0)
+				if(j==0 && state == true)
 					$('.stateDivheading').html('<span class="stateHeadingCls">State</span>');
 				
-		    if(results[j].favouriteLinkType == "State"){
+		    if(results[j].favouriteLinkType == "state"){
 
 				$('.stateDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">State</span>');
 				
@@ -1038,6 +1052,33 @@ $('.stateDivheading').children().remove();
 
 			}
 			
+
+			for(var k in results){
+
+				if(k==0 && district == true)
+					$('.districtDivheading').html('<span class="stateHeadingCls">District</span>');
+				
+		    if(results[k].favouriteLinkType == "district"){
+
+
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">State</span>');
+				
+				var template = $('.favouriteLinkConstituencyClass');
+
+				var templateClone = template.clone();
+
+				templateClone.removeClass('favouriteLinkConstituencyClass');
+
+				templateClone.attr('id',results[k].userFavoriteLinksId);
+
+				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[k].favouriteLinkTitle+"</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
+
+				templateClone.appendTo('.districtDiv');
+			}
+
+			}
 
 }
 
