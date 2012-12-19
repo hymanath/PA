@@ -469,6 +469,16 @@
 									</span><br>
 									</fieldset>
 								</td>
+
+								<td>
+									<fieldset class="f2">
+									<legend class="l2">Upload SpecialPage Data</legend>
+									
+										<a class="alinkstyle" href="<s:url action="specialPageDataUploadAction"/>"><b>Upload</b>
+										</a>
+									</span><br>
+									</fieldset>
+								</td>
 								</tr>
 							
 							
