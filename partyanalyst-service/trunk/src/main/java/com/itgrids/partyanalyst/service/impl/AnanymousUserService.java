@@ -2834,7 +2834,9 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			
 			UserFavoriteLinks  userFavoriteLinks = null;
 			
+            queryString = queryString.replaceAll(",", "&");
 			
+			queryString = queryString.substring(0, queryString.length() - 1);
 			
 		
 			String finalURL = "";
@@ -2854,9 +2856,7 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			userFavoriteLinks.setUser(userDAO.getUserByUserId(userId));
 			userFavoriteLinks.setFavoriteLinkPage(favoriteLinkPage);
 			
-			queryString = queryString.replaceAll(",", "&");
 			
-			queryString = queryString.substring(0, queryString.length() - 1);
 			
 			 userFavoriteLinks.setUrl(finalURL);
 				
