@@ -805,7 +805,7 @@ function callAjax(jsObj,url){
 								    {
 										buildSpecialPageHightLights(myResults);
 								    }
-									 else if(jsObj.task =="getPartyElectionInfo")
+									else if(jsObj.task =="getPartyElectionInfo")
 									{
 										buildGujaratElectionResult(myResults);
 										
@@ -1103,7 +1103,7 @@ function getImportantCandidatesInfo()
 	data.addColumn('string','Area Type');
 	data.addColumn('number','Count');
 	data.addRows(myResults.electionLiveResultVOList.length-1);
-	alert(data);
+	
 	for(var j=1; j<myResults.electionLiveResultVOList.length; j++)
 	{
 		data.setValue(j-1,0,myResults.electionLiveResultVOList[j].partyName);
