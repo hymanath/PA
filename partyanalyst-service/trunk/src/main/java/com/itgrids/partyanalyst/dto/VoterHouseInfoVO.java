@@ -17,7 +17,9 @@ public class VoterHouseInfoVO {
 	private String relationship;
 	private String castCategory;
 	private Long voterId;
-	
+	private Long partyId;
+	private Long userVoterDetailsId;
+	private Long userId;
 	
 	public VoterHouseInfoVO(){
 		
@@ -30,6 +32,32 @@ public class VoterHouseInfoVO {
 		this.cast = cast;
 		this.elder = elder;
 		this.younger = younger;
+	}
+
+	
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserVoterDetailsId() {
+		return userVoterDetailsId;
+	}
+
+	public void setUserVoterDetailsId(Long userVoterDetailsId) {
+		this.userVoterDetailsId = userVoterDetailsId;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
 	}
 
 	public String getHouseNo() {
