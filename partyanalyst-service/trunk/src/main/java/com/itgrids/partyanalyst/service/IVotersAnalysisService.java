@@ -3,12 +3,15 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Voter;
 
 public interface IVotersAnalysisService {
 	
@@ -42,5 +45,7 @@ public interface IVotersAnalysisService {
 	
 	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,String caste);
 
-
+	public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user);
+	
+	public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO);
 }
