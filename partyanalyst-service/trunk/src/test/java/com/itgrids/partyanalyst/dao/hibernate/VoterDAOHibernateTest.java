@@ -141,13 +141,11 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void test()
 	{
-		List list =voterDAO.findTotalVotersCountByPollingStationAndElectionYear(201l,"2009");
+		List<Voter> list =voterDAO.getVoterPersonalDetailsByVoterId(5105l);
 		System.out.println(list.size());
 		
-		/*for (Object object : list) {
-			
-			System.out.println(object.toString());
-			
-		}*/
+		
 	}
+	
+	
 }
