@@ -55,11 +55,11 @@
 			<result>/jsp/landing.jsp</result>
 		</action> 
 		
-		<action name="newhomePage" class="homePageAction">
+		<action name="homePage" class="homePageAction">
 			<result>/jsp/homePage.jsp</result>
 		</action>
 		
-		<action name="homePage" class="homePageAction"> 
+		<action name="newhomePage" class="homePageAction">
 		    <result>/jsp/newhomePage.jsp</result>
 		</action>
 	
@@ -3774,12 +3774,48 @@
 			<result name="success">/jsp/publicProfilePage.jsp</result>
 		</action>
         
+        <action name="getFriendsListForPublicProfileAction" class="publicProfile" method="AjaxHandler">
+		  <result type="json" name="success">
+           		<param name="root">connectedUsers</param>
+			</result>
+		</action>
+		
+		<action name="getReqMessagesForPublicProfileAction" class="publicProfile" method="AjaxHandler">
+		  <result type="json" name="success">
+           		<param name="root">userDetails</param>
+			</result>
+		</action>
+		
+		<action name="getAllRequestMessagesForPublicProfileAction" class="publicProfile" method="getRequestMessagesForUser">
+			<result type="json" name="success">
+				<param name="root">dataTransferVO</param>				
+			</result> 
+		</action>
+		
         <action name="getSpecialPageForPublicProfileAction" class="publicProfile" method="getSpecialPages">
 			<result type="json" name="success">
 			  <param name="root">specialPageVOList</param>
 		    </result>
 		</action>
 		
+		 <action name="getUserSubScriptionsForPublicProfileAction" class="publicProfile" method="getUserSubScription">
+			<result type="json" name="success">
+			  <param name="root">subscriptionsMainVO</param>
+		    </result>
+		</action>
+		
+		<action name="getAllPostedReasonsForPublicProfileAction" class="publicProfile" method="getAllPostedReasonsDataForProfilePage">
+			<result type="json" name="success">
+				<param name="root">userComments</param>				
+			</result>		
+		</action>
+		
+		<action name="getAllPostedProblemsForPublicProfileAction" class="publicProfile" method="getAllPostedProblemsForProfilePage">
+			<result type="json" name="success">
+				<param name="root">problemDetailsVO</param>				
+			</result>		
+		</action>
+				
 		<action name="votersFamilyDetailsAction" class="votersAnalysisAction" method="getVotersFamilyDetails">
 			<result type="json" name="success">
 				<param name="root">votersFamilyInfo</param>				
@@ -3922,81 +3958,29 @@
 			</result>		
 		</action>
 		
-		<action name="saveUserFavouriteLink" class="userProfileAction"  method="saveUserFavouriteLink">		
-			<result type="json" name="success">
-			<param name="root">status</param>				
-			</result>		
-		</action>
 		
-        
-        <action name="specialPageDataUploadAction" class="specialPageDataUploadAction">
-           <result name="success">/jsp/specialPageDataUpload.jsp</result>
-           <result name="error">/jsp/mandalPageFail.jsp</result>
-        </action>
 		
-		<action name="saveSpecialPageTextAction" class="specialPageDataUploadAction" method="saveSpecialPageTextAction">
-			<result type="json" name="success">
-			 <param name="root">savedStatus</param>			
+		<action name="saveUserFavouriteLink" class="userProfileAction"  method="saveUserFavouriteLink">
+		
+		<result type="json" name="success">
+					<param name="root">status</param>				
 			</result>	
-		</action>
-		
-		<action name="userSocialNetworkSiteAction" class="userSocialNetworkSiteAction" method="getUserSocialNetworkSiteInfo">
-		
-			<result type="json" name="success">
-				<param name="root">results</param>				
-			</result>		
-		</action>
-				
-		<action name="getSpecialPageHighLightsAction" class="specialPageManageAction" method="saveSpecialHighlights">
-			<result type="json" name="success">
-				<param name="root">result</param>
-			</result>
-		</action>
-		<action name="deleteSpecialPageHighLightDescAction" class="specialPageManageAction" method="deleteSpecialHighlightsDescription">
-			<result type="json" name="success">
-				<param name="root">result</param>
-			</result>
-		</action>
-		<action name="getSpecialPageHighLights" class="specialPageAction"  method="getSpecialPageHighLights">
-		
-		<result type="json" name="success">
-		<param name="root">fileVOList</param>				
-		</result>	
-		</action>
-				
-		<action name="getAllSubscriptionsAction" class="userProfileAction" method="getSubscriptions">
-		    <result type="json" name="success">
-				 <param name="root">subscriptionsList</param> 
-			</result>
-			<result type="json" name="error">
-				 <param name="root">notLogged</param> 
-			</result>
-		</action>
-		
-		<action name="updateSpecialPageHighLightsAction" class="specialPageManageAction" method="updateSpecialPageHighLightsDescription">
-			<result type="json" name="success">
-				<param name="root">result</param></result>
-		</action>
-				
-		<action name="getLiveResultsAction" class="electionLiveResultsAnalysisAction"  method="getLiveResults">
-		   <result type="json" name="success">
-		    <param name="root">electionLiveResultVO</param>				
-		   </result>	
-		</action>
-		
-		
-		<action name="getImportantCandidatesInfoAction" class="specialPageAction" method="getImportantCandidatesInfoAction">
-		<result type="json" name="success">
-			 <param name="root">importantCandidatesList</param>			
-			</result>
 		
 		</action>
 		
-		<action name="getDistrictWiseLiveResultsAction" class="electionLiveResultsAnalysisAction" method="getDistrictWiseLiveResults">
-		    <result type="json" name="success">
-			 <param name="root">districtWiseResults</param>			
-			</result>
-		
+		<action name="votersEditAction" class="votersEditAction">
+			<result name="success">/jsp/votersEditPage.jsp</result>
 		</action>
-			</package>
+		
+		<action name="voterEditAction" class="votersEditAction" method="putVoterDetails">
+			<result type="redirect"  name="success">votersEditAction.action?voterId=${voterHouseInfoVO.voterId}</result>
+		</action>
+
+<action name="candidateUploadPicAction" class="connectPeopleAction" method="candidateUploadUserPic">			
+			<result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+			</result>						
+		</action>
+		
+	</package>
 </struts>      
