@@ -645,7 +645,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '</tr>';
 	str += '</table>';	
 	str += '</div>';
-	str += '<div style="width:300px;height:300px; id="Imgpreview2"><img width="300" height="300" id="Imgpreview1"  src=""></div>';
+	str += '<div style="width:300px;height:300px;" id="Imgpreview2"><img style="width:300px;height:300px;" width="300" height="300" id="Imgpreview1"  src=""></div>';
 	div.append(str);
 	elmt.append(div);
 	
