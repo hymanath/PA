@@ -281,7 +281,7 @@
 	{
 		cursor:pointer;
 		font-size:12px;
-		padding:2px;
+		padding:3px;
 		color:#44505C;
 	}
 	.selectedCadresDateEvent th
@@ -398,3 +398,4 @@
 		font-weight:bold;
 		color:red;	
 	}
+	
