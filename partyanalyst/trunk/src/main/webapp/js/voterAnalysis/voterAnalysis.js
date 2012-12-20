@@ -1079,42 +1079,80 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 		callAjax(jsObj,url);
 
 }
+function openProblemEditForm(id)
+{
+	alert(id);
+	var urlStr="votersEditAction.action?voterId="+id+" ";
+	//var urlStr = "addNewProblemAction.action?problemId="+id+"&windowTask=update_existing";
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();	
+}	
+
+
 function buildVotersInACaste(results,jsObj)
 {
+
+var result = results;
+console.log(result);
 	$("#localCastStatsVotersTitle").html(" "+jsObj.caste+" Caste voters Details In " +jsObj.typename+" in "+jsObj.publicationDate+" ");
+	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var id=oRecord.getData("voterId");
+		var name = oRecord.getData("name");
+		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+');">'+name+'</a>';
+		
+	}
 	 var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"sNo", label: "SNo", sortable: true},
-		    	           	{key:"name", label: "Name", sortable: true},
-							
+		    	           	{key:"name", label: "Name", sortable: true,
+							formatter:YAHOO.widget.DataTable.NameLink},
 							{key:"gender", label: "Gender", sortable: true},
 		    				{key:"age", label: "Age",sortable:true},
 							{key:"houseNo", label: "House No",sortable:true},
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
 							{key:"relationship", label: "Relationship",sortable:true},
-							{key:"cast", label: "Caste",sortable:true},
-							{key:"castCategory", label: " Caste Category", sortable: true}
+							{key:"cast", label: "Cast",sortable:true},
+							{key:"castCategory", label: " Cast Category", sortable: true}
 		    	        ]; 
 
-	var myConfigs = { 
+    
+		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 20
 			    }) 
 				};
+		
+		
 	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory"]
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId"]
 					};
-	var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
+
+		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
+
+
 }
 
+
 function buildVotersInFamily(results,hno){
+alert('jasj');
     $("#impFamDtlsTitle").html("<b>Voter Details in House No : "+hno+"</b>");
+	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var id=oRecord.getData("voterId");
+		var name = oRecord.getData("name");
+		
+		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+');">'+name+'</a>';
+		
+	}
      var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"sNo", label: "SNo", sortable: true},
-		    	           	{key:"name", label: "Name", sortable: true},
+		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 							
 							{key:"gender", label: "Gender", sortable: true},
 		    				{key:"age", label: "Age",sortable:true},
@@ -1131,7 +1169,7 @@ function buildVotersInFamily(results,hno){
 	var myDataSource = new YAHOO.util.DataSource(results);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory"]
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
