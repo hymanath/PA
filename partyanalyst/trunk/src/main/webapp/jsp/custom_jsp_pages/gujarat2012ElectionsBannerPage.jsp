@@ -177,7 +177,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
 <div id="upComing" class="breadcrumb">
 <h3 class="resulth3">Gujarat 2012 Vidhan Sabha Election</h3>
 
-<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">140</font></span>
+<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">142</font></span>
 
 
 <div style="text-align:justify;margin:10px;padding:10px;"> 
@@ -874,6 +874,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 $(document).ready(function() {
   getElectionInfo();
   getDistrictWiseElectionResults();
+  getWonLeadCandidates();
    
   $("#dynamicText").insertBefore($("#dynaUpload"));
   $("#dynamicText").css("margin","10px 0px");
@@ -894,7 +895,18 @@ function getDistrictWiseElectionResults(){
 	callAjax(jsObj,url);
 
 }
+function getWonLeadCandidates(){
+  
+  var jsObj = {
+				electionId:202,
+	            time:new Date().getTime(),
+				task:"getWonLeadResults"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getDistrictWiseLiveResultsAction.action?"+param;
+	callAjax(jsObj,url);
 
+}
 function getGenderInfo(selectedYear,elecYearId)
 {
 	var jsObj = {
@@ -950,6 +962,11 @@ function callAjax(jsObj,url){
 									
 										buildDistrictWiseLiveResults(myResults)
 									}
+									else if(jsObj.task == "getWonLeadResults")
+									{
+									
+										buildWonLeadResults(myResults)
+									}
 								}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -963,7 +980,81 @@ function callAjax(jsObj,url){
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function buildWonLeadResults(results){
+      if(results != null && results.length >0){
+	var str='';
+	
+	  str+='<table id="candidateWinLeadResultTableDiv" style="width:95%;margin-left:auto;margin-right:auto;">';
+	     str+='<thead>';
+		 str+=' <tr>';
+		 str+='  <th>Constituency</th>';
+		 str+='  <th>District</th>';
+		 str+='  <th>Candidate</th>';
+		 str+='  <th>Party</th> ';
+		 str+='  <th>Status</th>';
+		 str+='  <th>Assests</th>';
+		 str+='  <th>liabilities</th>';
+		 str+=' </tr>';
+		
+		 str+='</thead>';
+		 
+		 str+='<tbody>';
+		  for(var i in results){
+		  
+		  str+=' <tr> ';
+		  str+='    <td><a href="constituencyPageAction.action?constituencyId='+results[i].constiId+'">'+results[i].constiName+'</a></td>';
+		  str+='    <td><a href="districtPageAction.action?districtId='+results[i].districtId+'">'+results[i].districtName+'</a></td>';
+		  str+='	  <td><a href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+'">'+results[i].candidateName+'</a></td>';
+		  if(results[i].partyName != 'IND'){
+		    str+='	    <td class="textalignclass"><a href="partyPageAction.action?partyId='+results[i].partyId+'" >'+results[i].partyName+'</a></td>';
+		  }else{
+		    str+='	    <td class="textalignclass">'+results[i].partyName+'</td>';
+		}
+		str+='	  <td class="textalignclass">'+results[i].status+'</td>';
+		if(results[i].assets != null)
+		  str+='	  <td class="textalignright">'+results[i].assets+'</td>';
+		else
+		   str+='	  <td ></td>';
+		if(results[i].liabilities != null)
+		  str+='	  <td class="textalignright">'+results[i].liabilities+'</td>';
+		else
+		 str+='	  <td ></td>';
+		str+='   </tr>';
+		}
+		 str+='</tbody>';
+		str+=' <tfoot>';
+		str+='  <tr>';
+		str+='   <th>Constituency</th>';
+		str+='   <th>District</th>';
+		str+='   <th>Candidate</th>';
+		str+='   <th>Party</th> ';
+		str+='   <th>Status</th>';
+		str+='   <th>Assests</th>';
+		str+='   <th>liabilities</th>';
+		str+='  </tr>';
+		str+=' </tfoot>';
+	  str+='</table>';
+		$("#candidateWinLeadResultDisplayDiv").html(str);
+		
 
+		  $('#candidateWinLeadResultTableDiv').dataTable({
+		"aLengthMenu": [[10,25,50,100, -1], [10, 25,50,100,"All"]]
+	})
+		  .columnFilter({ 
+		  	
+			aoColumns: [ { type: "text"},
+			             { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "number"},
+						 { type: "number"}
+						 
+				]
+
+		});
+	}
+}
 function buildDistrictWiseLiveResults(results){
     if(results != null && results.length >0){
 	var str='';
