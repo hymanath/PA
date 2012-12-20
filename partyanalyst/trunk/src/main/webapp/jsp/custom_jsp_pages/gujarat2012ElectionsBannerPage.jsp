@@ -1133,7 +1133,7 @@ function buildSpecialPageHightLights(results)
 	var str ='';
 	var specialPageHighLight = document.getElementById('specialPageHighLight');
 	
-	str +='<fieldset style="verdana,sans-serif;font-weight:bold;">';
+	str +='<fieldset class="span6" style="verdana,sans-serif;font-weight:bold;">';
 	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat HighLights</legend>';
 	str +='<div class="hglgts">';
 	if(results != null && results!='')
@@ -1161,12 +1161,15 @@ function buildImportantCnadidatesData(results){
 var str='';
 
 
-    str+='<div class="span12" style="border:1px solid #c3c3c3;">';
+    str+='<div class="span10" style="border:1px solid #c3c3c3;">';
 
 	if(results.length == 0){
 	  $('#importantCandidateHeadingDiv').hide();
 	  return false;
 	}
+
+
+	for(var j=0;j<10;j++){
 	for(var i in results){
 
 		 str+='<div class="importantPersonsDivClass">';
@@ -1194,6 +1197,7 @@ var str='';
         str+='</div>';
 
 		
+	}
 	}
 
 
@@ -1326,7 +1330,7 @@ var jsObj = {
 function getImportantCandidatesInfo()
 {
 	var jsObj = {
-	           	electionId:202,
+	           	electionId:18,
 				task:"getImportantCandidatesInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
