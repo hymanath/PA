@@ -86,7 +86,56 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private Long candidateSocialTwitterId;
 	private Long candidateSocialFacebookId;
 	
-	
+	private String voteAge;
+	private String voteName;
+	private String guardianName;
+	private String relationship;
+	private String houseNo;
+	private String caste;
+	private String casteCategory;
+		
+	public String getVoteAge() {
+		return voteAge;
+	}
+	public void setVoteAge(String voteAge) {
+		this.voteAge = voteAge;
+	}
+	public String getVoteName() {
+		return voteName;
+	}
+	public void setVoteName(String voteName) {
+		this.voteName = voteName;
+	}
+	public String getGuardianName() {
+		return guardianName;
+	}
+	public void setGuardianName(String guardianName) {
+		this.guardianName = guardianName;
+	}
+	public String getRelationship() {
+		return relationship;
+	}
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public String getCaste() {
+		return caste;
+	}
+	public void setCaste(String caste) {
+		this.caste = caste;
+	}
+	public String getCasteCategory() {
+		return casteCategory;
+	}
+	public void setCasteCategory(String casteCategory) {
+		this.casteCategory = casteCategory;
+	}
 	public Long getCandidateSocialFacebookId() {
 		return candidateSocialFacebookId;
 	}
