@@ -512,7 +512,7 @@ Quick Links</h2>
 									<a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-info" >Post Your Problems</a>
 								</c:if>
 								<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
-									<a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-info" style="margin:5px;">Post Your Problems</a>
+									<a href="javascript:{}" onclick="openAddNewProblemWindowForFreeUser('${sessionScope.USER.constituencyId}');" class="btn btn-info" style="margin:5px;">Post Your Problems</a>
 								</c:if>
 								
 								<div id="problemErrorMsgDiv"></div>
