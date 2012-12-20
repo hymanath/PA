@@ -326,7 +326,9 @@
 				<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
                 <value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>			    			    		
 			    
-			    
+				<value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
+
+
 
 				
 				
@@ -1680,11 +1682,8 @@
 	<bean id="specialPageHighlightsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageHighlightsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userSocialNetworkSiteDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSocialNetworkSiteDAO">
+	<bean id="userVoterDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
-	
-				
 	
 </beans>
