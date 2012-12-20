@@ -4,6 +4,7 @@ var friendsInPP = [];
 $("document").ready(function(){
 	
 	$('.friendsInPP').click(function(){
+		$(".placeholderCenterDiv").children().remove();
 		$(".placeholderCenterDiv").css('display','inline-block');
 		$("#problemsDiv").children().remove();
 		//$('.friendsDiv').css("display","none");
