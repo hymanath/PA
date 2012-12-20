@@ -1157,7 +1157,7 @@ var district = false;
 				if(m == 0 && specialpage == true)
 					$('.specialPageDivheading').html('<span class="specialPageHeadingCls">SpecialPage</span>');
 				
-		    if(results[m].favouriteLinkType == "specialPage"){
+		    if(results[m].favouriteLinkType == "specialpage"){
 
 
 				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls">SpecialPage</span>');
