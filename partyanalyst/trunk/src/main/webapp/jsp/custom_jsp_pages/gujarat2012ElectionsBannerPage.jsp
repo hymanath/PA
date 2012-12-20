@@ -279,8 +279,8 @@ Analyze the present status of key candidates from Gujarat State
   <div id="districtWiseElectionResultDisplayDiv"></div>
   </div>
 </div>
-<!--<div id="specialPageHighLight"  style="margin-left: 11px;
-    width: 900px;margin-left: 10px"></div>-->
+<div id="specialPageHighLight"  style="margin-left: 11px;
+    width: 900px;margin-left: 10px"></div>
 
 <div id="ExitPoll" style="display:table;">
 <div class="span6">
