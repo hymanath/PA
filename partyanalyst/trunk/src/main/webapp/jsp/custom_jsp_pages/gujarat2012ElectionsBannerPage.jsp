@@ -1326,7 +1326,7 @@ var jsObj = {
 function getImportantCandidatesInfo()
 {
 	var jsObj = {
-	           	electionId:181,
+	           	electionId:202,
 				task:"getImportantCandidatesInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
