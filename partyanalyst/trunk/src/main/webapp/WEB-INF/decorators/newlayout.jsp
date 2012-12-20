@@ -452,7 +452,7 @@ function buildAccordion()
 									</a> 
 							</c:when>
 							<c:otherwise> 
-									<a href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+									<a href="<c:out value="${pageContext.request.contextPath}" />/userProfile.action" >												
 										<span>DASHBOARD</span>
 									</a>  
 							</c:otherwise>	
