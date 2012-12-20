@@ -98,7 +98,7 @@ font-size:11px;
 
 .hglgts {
    text-align: left;
-    width: 880px;
+    width: 700px;
 	float :left;
 }
 
@@ -273,8 +273,8 @@ Analyze the present status of key candidates from Himachal Pradesh State
   <div id="candidateWinLeadResultDisplayDiv"></div>
   </div>
 </div>
-<div id="specialPageHighLight"  style="margin-left: 11px;
-    width: 900px;"></div>
+<div id="specialPageHighLight"  style="margin-left: 20px;
+    width: 860px;"></div>
 
 <div id="ExitPoll" style="display:table;">
 
@@ -966,7 +966,7 @@ function buildSpecialPageHightLights(results)
 	if(results != null && results!='')
 	{
 	str +='<fieldset style="verdana,sans-serif;font-weight:bold;">';
-	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Himachal Pradesh HighLights</legend>';
+	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Himachal Pradesh Highlights</legend>';
 	str +='<div class="hglgts">';
 	for(var i in results)
 	{
