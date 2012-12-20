@@ -1063,7 +1063,7 @@ function buildSpecialPageHightLights(results)
 
 function buildImportantCnadidatesData(results){
 
-	if(results == null || results == "null");{
+	if(results == null || results == "null"){
 	 $('#importantCandidateHeadingDiv').hide();
 	  return false;
 	}
