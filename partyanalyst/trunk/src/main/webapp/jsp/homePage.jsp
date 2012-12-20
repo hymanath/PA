@@ -715,7 +715,7 @@ var pollStatus = [];
 			 <a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
 		   </c:if>
 			<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
-		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
+		     <a href="javascript:{}" onclick="openAddNewProblemWindowForFreeUser('${sessionScope.USER.constituencyId}');" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
 			</c:if>
 		</div>
 		<div id="logInDiv"></div>
@@ -724,7 +724,7 @@ var pollStatus = [];
 			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register">Post Your Problems</a>
 		   </c:if>
 			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}">
-		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="problem-register">Post Your Problems</a>
+		     <a href="javascript:{}" onclick="openAddNewProblemWindowForFreeUser('${sessionScope.USER.constituencyId}');" class="problem-register">Post Your Problems</a>
 			</c:if> -->
 		  <!-- <h3 class="problem-cont-h3"><b><font style="color:#F55C41">VIEW HERE</font></b> -Problems in your AREA</h3>-->
 			<div style="margin-top: 8px; margin-left: 0px; margin-bottom: 10px;">
