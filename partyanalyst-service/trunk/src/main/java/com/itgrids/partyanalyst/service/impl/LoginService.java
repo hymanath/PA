@@ -224,6 +224,7 @@ public class LoginService implements ILoginService{
 				regVO.setUserProfilePic(user.getProfileImg());
 				regVO.setUserType(IConstants.FREE_USER);
 				regVO.setUserStatus(IConstants.FREE_USER);
+				regVO.setConstituencyId(user.getConstituencyId());
 			}
 			
 			if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
