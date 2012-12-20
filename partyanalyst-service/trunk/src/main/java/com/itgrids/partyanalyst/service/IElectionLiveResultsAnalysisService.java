@@ -50,4 +50,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public ElectionLiveResultVO getLiveResultsDetails(Long electionId);
 	
 	public List<PartyElectionResultVO> getCandidatesInfoDistrictWise(Long electionId,Long districtId);
+	
+	public List<PartyElectionResultVO> getWonLeadCandidatesInfo(Long electionId);
 }

@@ -251,4 +251,13 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		query.setParameter(1,districtId);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllWonLeadCandidates(Long electionId)
+	{
+		Query query = getSession().createQuery("select  model1.constituencyElection.constituency.constituencyId,model1.constituencyElection.constituency.name,model1.candidate.candidateId,model1.candidate.lastname,model1.status," +
+				"model1.constituencyElection.constituency.district.districtId,model1.constituencyElection.constituency.district.districtName,model.party.partyId,model.party.shortName,model.assets,model.liabilities from Nomination model ,ConstituencyLeadCandidate model1 " +
+				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model1.constituencyElection.constiElecId and  model.candidate.candidateId = model1.candidate.candidateId  ");
+		query.setParameter(0,electionId);
+		return query.list();
+	}
 }

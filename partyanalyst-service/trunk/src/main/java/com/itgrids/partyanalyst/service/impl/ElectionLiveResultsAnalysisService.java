@@ -2397,4 +2397,32 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	  return districtWiseCandidatesList;
   }
   
+  public List<PartyElectionResultVO> getWonLeadCandidatesInfo(Long electionId){
+	  List<PartyElectionResultVO> districtWiseCandidatesList = new ArrayList<PartyElectionResultVO>();
+	 try{
+	  List<Object[]> leadWonCandidatesList = constituencyLeadCandidateDAO.getAllWonLeadCandidates(electionId);
+	  PartyElectionResultVO partyElectionResultVO = null;
+	  for(Object[] candidate:leadWonCandidatesList){
+		  partyElectionResultVO = new PartyElectionResultVO();
+		  partyElectionResultVO.setPartyId((Long)candidate[7]);
+		  partyElectionResultVO.setPartyName(candidate[8]!=null?candidate[8].toString():"");
+		  partyElectionResultVO.setCandidateId((Long)candidate[2]);
+		  partyElectionResultVO.setCandidateName(candidate[3]!=null?candidate[3].toString():"");
+		  partyElectionResultVO.setConstiId((Long)candidate[0]);
+		  partyElectionResultVO.setConstiName(candidate[1]!=null?candidate[1].toString():"");
+		  partyElectionResultVO.setAssets(candidate[9]!=null?new BigDecimal((Double)candidate[9]):null);
+		  partyElectionResultVO.setLiabilities(candidate[10]!=null?new BigDecimal((Double)candidate[10]):null);
+          partyElectionResultVO.setStatus(candidate[4]!=null?candidate[4].toString():"");
+          partyElectionResultVO.setDistrictId((Long)candidate[5]); 
+          partyElectionResultVO.setDistrictName(candidate[6]!=null?candidate[6].toString():""); 
+		 
+		  districtWiseCandidatesList.add(partyElectionResultVO);
+	   }
+	 }catch(Exception e){
+		   log.error("Exception Encountered In getWonLeadCandidatesInfo()" +e);
+	  }
+	  
+	  return districtWiseCandidatesList;
+	 
+  }
 }

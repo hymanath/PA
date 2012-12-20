@@ -56,7 +56,8 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	private String gender;
 	private Boolean isAlliance = false;
 	private BigDecimal liabilities;
-
+    private Long districtId;
+    private String districtName;
 	
 	public Boolean getIsAlliance() {
 		return isAlliance;
@@ -293,6 +294,18 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	}
 	public void setLiabilities(BigDecimal liabilities) {
 		this.liabilities = liabilities;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 	
 	
