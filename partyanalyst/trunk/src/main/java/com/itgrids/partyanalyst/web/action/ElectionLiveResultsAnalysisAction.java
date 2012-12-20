@@ -148,8 +148,8 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute(IConstants.USER) == null)
-			return IConstants.NOT_LOGGED_IN;		
+		/*if(session.getAttribute(IConstants.USER) == null)
+			return IConstants.NOT_LOGGED_IN;*/		
 		 return SUCCESS;
 	 }
 	 
