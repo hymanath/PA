@@ -268,7 +268,7 @@ Analyze the present status of key candidates from Himachal Pradesh State
 
 </div>
 <div id="specialPageHighLight"  style="margin-left: 20px;
-    width: 860px;"></div>
+    width: 860px;clear:both;"></div>
 
 <div id="ExitPoll" style="display:table;">
 
@@ -1168,7 +1168,7 @@ function buildImportantCnadidatesData(results){
 
     var str='';
 
-    str+='<div class="span12" style="border:1px solid #c3c3c3;">';
+    str+='<div class="span12" style="border:1px solid #c3c3c3;width:900px;">';
 
 
 	if(results.length == 0){
