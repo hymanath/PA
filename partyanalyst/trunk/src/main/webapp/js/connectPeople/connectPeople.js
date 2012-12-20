@@ -1205,6 +1205,12 @@ function openAddNewProblemWindowForDashBoard()
 	browser1.focus();
 }
 
+function openAddNewProblemWindowForFreeUser(locationId)
+{	
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=4&constituencyId="+locationId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	browser1.focus();
+}
+
 function showPostedProblems(jsObj,results)
 {	
 	var elmt = document.getElementById("postedDiv_body_countInfo");
