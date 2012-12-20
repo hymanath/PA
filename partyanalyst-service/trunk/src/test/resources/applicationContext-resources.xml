@@ -297,15 +297,11 @@
 				<value>com.itgrids.partyanalyst.model.HamletBoothPublication</value>
 				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
 				<value>com.itgrids.partyanalyst.model.BoothPublicationVoter</value>
-				
-				
 				<value>com.itgrids.partyanalyst.model.Caste</value>
 				<value>com.itgrids.partyanalyst.model.CasteCategory</value>
 				<value>com.itgrids.partyanalyst.model.CasteCategoryGroup</value>
 				<value>com.itgrids.partyanalyst.model.CasteStatewise</value>
 				<value>com.itgrids.partyanalyst.model.CandidateCaste</value>
-		
-						
 				<value>com.itgrids.partyanalyst.model.CandidatePhone</value>  
 				<value>com.itgrids.partyanalyst.model.PhoneType</value>  
 				<value>com.itgrids.partyanalyst.model.AddressType</value>
@@ -324,19 +320,17 @@
 				<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
 				<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
-                <value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>			    			    		
-			    
-				<value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
-
-
-
-				
-				
+                <value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
+                <value>com.itgrids.partyanalyst.model.UserVoterDetails</value>		    			    		
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="userVoterDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="bloodGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -1682,8 +1676,11 @@
 	<bean id="specialPageHighlightsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageHighlightsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userVoterDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO" >
+	
+	<bean id="userSocialNetworkSiteDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSocialNetworkSiteDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
+	
+				
 	
 </beans>
