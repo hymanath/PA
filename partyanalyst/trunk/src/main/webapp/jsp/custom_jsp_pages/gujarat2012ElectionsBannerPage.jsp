@@ -1082,7 +1082,7 @@ function buildImportantCnadidatesData(results){
 
 				str+='<div class="alignCenter" style="margin-bottom:10px;"><span style="color: red; font-weight: bold;font-size:16px;">'+results[i].status+'</span><i style="float:right;" class="icon-thumbs-down"></i></div>';
 
-			str+='<div class="alignCenter"><img width="80" height="79" onerror="setImage(this)" alt="'+results[i].candidateName+'image" src="images/candidates/'+results[i].candidateName+'.jpg"></div><br>';
+			str+='<div class="alignCenter"><img width="80" height="79" onerror="setImage(this)" alt="'+results[i].candidateName+' image" src="images/candidates/'+results[i].candidateName+'.jpg"></div><br>';
 
 			str+='<div class="alignCenter candidateNameClass"><span >'+results[i].candidateName+'</span></div>';
 
