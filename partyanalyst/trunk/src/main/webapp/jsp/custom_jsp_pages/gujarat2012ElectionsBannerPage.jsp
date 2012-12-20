@@ -70,7 +70,7 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 
 .hglgts {
    text-align: left;
-    width: 700px;
+    width: 880px;
 	float :left;
 }
 
@@ -170,31 +170,25 @@ table.gujaratTableDiv td:first-child {width:50%;}
 <img src="images/specialPage/gujarat_banner.jpg" style="align:center;width:975px;">
 </div>
 
+<div id='impTxt'></div>
 <!--<input type="button" class="btn btn-success" value="TestAjax" onClick="getImportantCandidatesInfo()"/>-->
 
-<div id="importantCandidateHeadingDiv">
 
-	<div class="breadcrumb"><h3>Important Candidates Present Status
+<div id="upComing" class="breadcrumb">
+<h3 class="resulth3">Gujarat 2012 Vidhan Sabha Election</h3>
 
-    
+<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">140</font></span>
 
-	<a class="btn btn-mini btn-warning" id="showLink" href="javaScript:{showDetails();}" style="display:none;">Show <i class=" icon-chevron-up icon-white" style="margin-top: -1px;"></i></a>
-	<a class="btn btn-mini btn-warning" id="hideLink"  href="javaScript:{hideDetails();}" title="Hide">Hide <i class=" icon-chevron-down icon-white" style="margin-top: -1px;"></i> </a>
 
-	<a class="btn btn-inverse pull-right" href="javaScript:{getImportantCandidatesInfo();}" style="text-transform: capitalize; margin-right: 5px;" title="Click here to Update Results" rel="tooltip"><i class="icon-refresh icon-white" style="margin-top: 1px;"></i> Refresh</a>
-	
-</h3>
-	
+<div style="text-align:justify;margin:10px;padding:10px;"> 
 
-	</div>
+<!--<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Gujarat </span> -
 
-	<div id="importantPersonsDiv"></div>
-
-</div>
-
+<span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=7"> Gujarat</a></b> Legislative Assembly, 2012. Polls in <b><a href="statePageAction.action?stateId=7">Gujarat</a></b> will take place in two phases. First phase on December 13, 2012 and second phase on December 17, 2012. The counting will take place on December 20, 2012.
+</span></br></br>-->
 
 <!-- Analysis Tools Start-->
-<div class="breadcrumb">
+<div class="breadcrumb" id="dynaUpload">
 <h3>Live Results Analysis Tools</h3>
 <div class="row-fluid">
 
@@ -229,18 +223,6 @@ Analyze the present status of key candidates from Gujarat State
 </div></div>
 <!-- Analysis Tools END-->
 
-
-<div id="upComing" class="breadcrumb">
-<h3 class="resulth3">Gujarat 2012 Vidhan Sabha Election</h3>
-
-<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">142</font></span>
-
-<div style="text-align:justify;margin:10px;padding:10px;"> 
-
-<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Gujarat </span> -
-
-<span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=7"> Gujarat</a></b> Legislative Assembly, 2012. Polls in <b><a href="statePageAction.action?stateId=7">Gujarat</a></b> will take place in two phases. First phase on December 13, 2012 and second phase on December 17, 2012. The counting will take place on December 20, 2012.
-</span></br></br>
 <div id="electionResultDivMain" style="padding-bottom:10px;">
   <div id="electionResultDiv"></div>
 </div>
@@ -279,8 +261,37 @@ Analyze the present status of key candidates from Gujarat State
   <div id="districtWiseElectionResultDisplayDiv"></div>
   </div>
 </div>
-<div id="specialPageHighLight"  style="
-    width: 860px;margin-left: 20px"></div>
+
+
+<div id="candidateWinLeadElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">WINNING/LEADING CANDIDATES INFO FOR GUJARAT VIDHAN SABHA 2012</h3></div>
+  <div style="background:#EDF9FF;width:100%;padding:4px;">
+  <div id="candidateWinLeadResultDisplayDiv"></div>
+  </div>
+</div>
+
+
+<div id="importantCandidateHeadingDiv">
+
+	<div class="breadcrumb"><h3>Important Candidates Present Status
+
+    
+
+	<a class="btn btn-mini btn-warning" id="showLink" href="javaScript:{showDetails();}" style="display:none;">Show <i class=" icon-chevron-up icon-white" style="margin-top: -1px;"></i></a>
+	<a class="btn btn-mini btn-warning" id="hideLink"  href="javaScript:{hideDetails();}" title="Hide">Hide <i class=" icon-chevron-down icon-white" style="margin-top: -1px;"></i> </a>
+
+	<a class="btn btn-inverse pull-right" href="javaScript:{getImportantCandidatesInfo();}" style="text-transform: capitalize; margin-right: 5px;" title="Click here to Update Results" rel="tooltip"><i class="icon-refresh icon-white" style="margin-top: 1px;"></i> Refresh</a>
+	
+</h3>
+	
+
+	</div>
+
+	<div id="importantPersonsDiv"></div>
+
+</div>
+<div id="specialPageHighLight"  style="margin-left: 11px;
+    width: 900px;margin-left: 10px"></div>
 
 <div id="ExitPoll" style="display:table;">
 <div class="span6">
@@ -863,6 +874,9 @@ google.load("visualization", "1", {packages:["corechart"]});
 $(document).ready(function() {
   getElectionInfo();
   getDistrictWiseElectionResults();
+   
+  $("#dynamicText").insertBefore($("#dynaUpload"));
+  $("#dynamicText").css("margin","10px 0px");
 });
 
 function getDistrictWiseElectionResults(){
@@ -1029,7 +1043,7 @@ function buildSpecialPageHightLights(results)
 	var specialPageHighLight = document.getElementById('specialPageHighLight');
 	
 	str +='<fieldset style="verdana,sans-serif;font-weight:bold;">';
-	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat Highlights</legend>';
+	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat HighLights</legend>';
 	str +='<div class="hglgts">';
 	if(results != null && results!='')
 	{
