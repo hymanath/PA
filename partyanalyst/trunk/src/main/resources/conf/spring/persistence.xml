@@ -298,6 +298,7 @@
 				<value>com.itgrids.partyanalyst.model.AddressContact</value>
 				
 			<!-- end caste -->
+			<value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
 			<value>com.itgrids.partyanalyst.model.Content</value>
 			<value>com.itgrids.partyanalyst.model.UserPrivacySettings</value>
 			<value>com.itgrids.partyanalyst.model.SettingsOption</value>

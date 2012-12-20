@@ -1306,7 +1306,12 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+		<property name="voterDAO" ref="voterDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="userDAO" ref="userDAO" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO"/>
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
