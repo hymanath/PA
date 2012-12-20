@@ -5,6 +5,9 @@
 
 <script type="text/javascript" src="js/overlib_mini.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
+<LINK rel="stylesheet" type="text/css" href="styles/jqueryDataTable/css/datatable.css"> 
+<script src="js/jqueryDataTable/jquery.dataTables.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.columnFilter.js"></script>
 
 <style>
 
@@ -128,6 +131,15 @@ table.gujaratTableDiv {background-color:transparent;border-collapse:collapse;wid
 table.gujaratTableDiv th, table.gujaratTableDiv td {text-align:center;border:1px solid black;padding:5px;}
 table.gujaratTableDiv th {background-color:AntiqueWhite;}
 table.gujaratTableDiv td:first-child {width:50%;}
+
+.textalignright{
+  text-align:right;
+}
+.textalignclass{
+  text-align:center;
+}
+
+#GujaratResultBody{display:inline-block;background:#EDF9FF;width:100%;padding:5px;}
 </style>
 
 <div>
@@ -173,6 +185,26 @@ table.gujaratTableDiv td:first-child {width:50%;}
 
 <span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b>. <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b> Total Constituencies 68ACs Date of Poll in 4.11.2012 and Counting of Votes in 20.12.2012.</span><br /><br />
 <div id="electionResultDiv"></div>
+<div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">DISTRICT WISE RESULTS ANALYSIS FOR GUJARAT VIDHAN SABHA 2012</h3></div>
+  <div style="background:#EDF9FF;width:100%;padding:4px;">
+  <select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;" onchange="getDistrictWiseElectionResults()">
+     <option value="278">Bilaspur</option>
+     <option value="271">Chamba</option>
+     <option value="276">Hamirpur</option>
+     <option value="272">Kangra</option>
+     <option value="282">Kinnaur</option>
+     <option value="274">Kullu</option>
+     <option value="273">Lahul & Spiti</option>
+     <option value="275">Mandi</option>
+     <option value="281">Shimla</option>
+     <option value="280">Sirmaur</option>
+     <option value="279">Solan</option>
+     <option value="277">Una</option> 
+  </select>
+  <div id="districtWiseElectionResultDisplayDiv"></div>
+  </div>
+</div>
 <div id="specialPageHighLight"  style="margin-left: 11px;
     width: 900px;"></div>
 
@@ -616,7 +648,23 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 $(document).ready(function() {
   getElectionInfo();
+    getDistrictWiseElectionResults();
 });
+function getDistrictWiseElectionResults(){
+  var districtId = $("#selectDistrictWise").val();
+  if(districtId == 0)
+     return;
+  var jsObj = {
+				electionId:196,
+	            time:new Date().getTime(),
+				districtId:districtId,
+				task:"getDistrictWiseLiveResults"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getDistrictWiseLiveResultsAction.action?"+param;
+	callAjax(jsObj,url);
+
+}
 function getGenderInfo(selectedYear,elecYearId)
 {
 	var jsObj = {
@@ -666,6 +714,11 @@ function callAjax(jsObj,url){
 								
 									buildImportantCnadidatesData(myResults)
 								}
+								else if(jsObj.task == "getDistrictWiseLiveResults")
+									{
+									
+										buildDistrictWiseLiveResults(myResults)
+									}
 							}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -678,6 +731,77 @@ function callAjax(jsObj,url){
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function buildDistrictWiseLiveResults(results){
+    if(results != null && results.length >0){
+	var str='';
+	
+	  str+='<table id="districtResultTableDiv" style="width:95%;margin-left:auto;margin-right:auto;">';
+	     str+='<thead>';
+		 str+=' <tr>';
+		 str+='  <th>Constituency</th>';
+		 str+='  <th>Candidate</th>';
+		 str+='  <th>Party</th> ';
+		 str+='  <th>Status</th>';
+		 str+='  <th>Assests</th>';
+		 str+='  <th>liabilities</th>';
+		 str+=' </tr>';
+		
+		 str+='</thead>';
+		 
+		 str+='<tbody>';
+		  for(var i in results){
+		  
+		  str+=' <tr> ';
+		  str+='    <td><a href="constituencyPageAction.action?constituencyId='+results[i].constiId+'">'+results[i].constiName+'</a></td>';
+		  str+='	  <td><a href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+'">'+results[i].candidateName+'</a></td>';
+		  if(results[i].partyName != 'IND'){
+		    str+='	    <td class="textalignclass"><a href="partyPageAction.action?partyId='+results[i].partyId+'" >'+results[i].partyName+'</a></td>';
+		  }else{
+		    str+='	    <td class="textalignclass">'+results[i].partyName+'</td>';
+		}
+		str+='	  <td class="textalignclass">'+results[i].status+'</td>';
+		if(results[i].assets != null)
+		  str+='	  <td class="textalignright">'+results[i].assets+'</td>';
+		else
+		   str+='	  <td ></td>';
+		if(results[i].liabilities != null)
+		  str+='	  <td class="textalignright">'+results[i].liabilities+'</td>';
+		else
+		 str+='	  <td ></td>';
+		str+='   </tr>';
+		}
+		 str+='</tbody>';
+		str+=' <tfoot>';
+		str+='  <tr>';
+		str+='   <th>Constituency</th>';
+		str+='   <th>Candidate</th>';
+		str+='   <th>Party</th> ';
+		str+='   <th>Status</th>';
+		str+='   <th>Assests</th>';
+		str+='   <th>liabilities</th>';
+		str+='  </tr>';
+		str+=' </tfoot>';
+	  str+='</table>';
+		$("#districtWiseElectionResultDisplayDiv").html(str);
+		
+
+		  $('#districtResultTableDiv').dataTable({
+		"aLengthMenu": [[10,25,50,100, -1], [10, 25,50,100,"All"]]
+	})
+		  .columnFilter({ 
+		  	
+			aoColumns: [ { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "number"},
+						 { type: "number"}
+						 
+				]
+
+		});
+	}
 }
 function buildSpecialPageHightLights(results)
 {
@@ -817,9 +941,9 @@ function buildGujaratElectionResult(myResults)
 	{
 	var electionResult= '';	
 	electionResult+='<div id="gujratResultsHeader">';
-	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">';
+	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">';
 	electionResult+='PARTY WISE RESULTS OF HIMACHALPRADESH VIDHAN SABHA 2012</h3>';
-	electionResult+='</div></br>';
+	electionResult+='</div>';
 	electionResult+='<div id="GujaratResultBody">';
 	electionResult+='<span id="gujratResultsBody1" style ="width:500px;float:left">';
 	electionResult+='<table class="table table-bordered">';
