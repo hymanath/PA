@@ -170,28 +170,20 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 <img src="images/specialPage/himachal_Pradesh_banner.jpg" style="align:center;width:974px;">
 </div>
 
-<div id="importantCandidateHeadingDiv">
-
-	<div class="breadcrumb"><h3>Important Candidates Present Status
-
-    
-
-	<a class="btn btn-mini btn-warning" id="showLink" href="javaScript:{showDetails();}" style="display:none;">Show <i class=" icon-chevron-up icon-white" style="margin-top: -1px;"></i></a>
-	<a class="btn btn-mini btn-warning" id="hideLink"  href="javaScript:{hideDetails();}" title="Hide">Hide <i class=" icon-chevron-down icon-white" style="margin-top: -1px;"></i> </a>
-
-	<a class="btn btn-inverse pull-right" href="javaScript:{getImportantCandidatesInfo();}" style="text-transform: capitalize; margin-right: 5px;" title="Click here to Update Results" rel="tooltip"><i class="icon-refresh icon-white" style="margin-top: 1px;"></i> Refresh</a>
-	
-</h3>
-	
-
-	</div>
-
-	<div id="importantPersonsDiv"></div>
-
-</div>
 
 
+<div id="upComing" class="breadcrumb">
+<h3 class="resulth3">Himachal Pradesh 2012 Vidhan Sabha Election</h3>
+<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">68</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">17</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">3</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">48</font></span>
 
+<div style="text-align:justify;margin:10px;padding:10px;"> 
+<!--<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">AP Bi Election Schedule</span> -
+
+<span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
+-->
+<!--<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Himachal Pradesh </span> -
+
+<span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b>. <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b> Total Constituencies 68ACs Date of Poll in 4.11.2012 and Counting of Votes in 20.12.2012.</span><br /><br />-->
 <!-- Analysis Tools Start-->
 <div class="breadcrumb election-analyis-tools">
 <h3>Live Results Analysis Tools</h3>
@@ -227,25 +219,6 @@ Analyze the present status of key candidates from Himachal Pradesh State
 </div>
 </div></div>
 <!-- Analysis Tools END-->
-
-
-
-<div id="upComing" class="breadcrumb">
-<h3 class="resulth3">Himachal Pradesh 2012 Vidhan Sabha Election</h3>
-
-
-
-
-<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">68</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">17</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">3</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">48</font></span>
-
-<div style="text-align:justify;margin:10px;padding:10px;"> 
-<!--<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">AP Bi Election Schedule</span> -
-
-<span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
--->
-<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">Himachal Pradesh </span> -
-
-<span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b>. <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b> Total Constituencies 68ACs Date of Poll in 4.11.2012 and Counting of Votes in 20.12.2012.</span><br /><br />
 <div id="electionResultDiv"></div>
 <div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
 <div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">DISTRICT WISE RESULTS ANALYSIS FOR HIMACHALPRADESH VIDHAN SABHA 2012</h3></div>
@@ -272,6 +245,27 @@ Analyze the present status of key candidates from Himachal Pradesh State
   <div style="background:#EDF9FF;width:100%;padding:4px;">
   <div id="candidateWinLeadResultDisplayDiv"></div>
   </div>
+</div>
+
+
+<div id="importantCandidateHeadingDiv">
+
+	<div class="breadcrumb"><h3>Important Candidates Present Status
+
+    
+
+	<a class="btn btn-mini btn-warning" id="showLink" href="javaScript:{showDetails();}" style="display:none;">Show <i class=" icon-chevron-up icon-white" style="margin-top: -1px;"></i></a>
+	<a class="btn btn-mini btn-warning" id="hideLink"  href="javaScript:{hideDetails();}" title="Hide">Hide <i class=" icon-chevron-down icon-white" style="margin-top: -1px;"></i> </a>
+
+	<a class="btn btn-inverse pull-right" href="javaScript:{getImportantCandidatesInfo();}" style="text-transform: capitalize; margin-right: 5px;" title="Click here to Update Results" rel="tooltip"><i class="icon-refresh icon-white" style="margin-top: 1px;"></i> Refresh</a>
+	
+</h3>
+	
+
+	</div>
+
+	<div id="importantPersonsDiv"></div>
+
 </div>
 <div id="specialPageHighLight"  style="margin-left: 20px;
     width: 860px;"></div>
@@ -708,7 +702,9 @@ Previous Himachal Assembly Elections Results
 google.load("visualization", "1", {packages:["corechart"]});
 
 $(document).ready(function() {
-  getElectionInfo();
+	$("#dynamicText").insertBefore($(".election-analyis-tools"));
+	$("#dynamicText").css("margin","10px 0px");
+	getElectionInfo();
     getDistrictWiseElectionResults();
 	getWonLeadCandidates();
 });
