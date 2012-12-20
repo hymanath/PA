@@ -61,6 +61,7 @@ $("document").ready(function(){
 	});
 	$(".ImportantDates").click(function(){
 		clearAllSubscriptionDivs();
+		clearAllFavoriteLinkDivs();
 		buildCalendarControl();
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
@@ -76,6 +77,7 @@ $("document").ready(function(){
 	$("#settings").click(function(){
 	     $("#subscriptionsStreamingMoreDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
+		clearAllFavoriteLinkDivs();
 		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
 		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li></ul>");
@@ -957,6 +959,7 @@ function callAjax1(jsObj,url){
 					}
 					else if(jsObj.task =="getUserScriptions")
 					{
+						clearAllFavoriteLinkDivs();
 						showAllUserSubScribedSpecialPagesPages(jsObj,results);
 						showAllUserCandidateSubscriptions(jsObj,results);
 						showAllUserConstituencySubscriptions(jsObj,results);
@@ -1043,7 +1046,6 @@ $('.stateDiv').children().remove();
 $('.constituencyDivheading').children().remove();
 $('.stateDivheading').children().remove();
 
- $('.placeholderCenterDiv').children().remove();
  clearAllSubscriptionDivs();
 
 var constituency = false;
@@ -1088,7 +1090,7 @@ var district = false;
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
-				templateClone.appendTo('.constituencyDiv');
+				templateClone.appendTo('.constituencyDivInnerFav');
 			}
 
 			}
@@ -1117,7 +1119,7 @@ var district = false;
 
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
 
-				templateClone.appendTo('.stateDiv');
+				templateClone.appendTo('.stateDivInnerFav');
 			}
 
 			}
@@ -1148,7 +1150,7 @@ var district = false;
 
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
 
-				templateClone.appendTo('.districtDiv');
+				templateClone.appendTo('.districtDivInnerFav');
 			}
 
 			}
@@ -1177,7 +1179,7 @@ var district = false;
 				templateClone.find('.titleClass').html("<b><a  title='"+results[m].favouriteLinkTitle+"' class='problemTitle' href="+results[i].favouriteLink+">"+results[m].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn btn btn-mini'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[m].userFavoriteLinksId+")}'>Remove</a></b>");
 
-				templateClone.appendTo('.specialPageDiv');
+				templateClone.appendTo('.specialPageDivInnerFav');
 			}
 
 			}
@@ -1193,6 +1195,7 @@ function getFriendsListForUser(results)
 {
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
 	{
 		$("#headerDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
@@ -1258,6 +1261,7 @@ function getInitialUpdates(){
   $("#subscriptionsStreamingData").children().remove();
   $(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
   $("#headerDiv").html('');
   getSubscriptionDetails("main");
 }
@@ -1287,6 +1291,7 @@ function showAllRequestMessagesForUser(results,jsObj){
 
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	if(results.friendRequest ==null)
 	{
 		$("#headerDiv").html('You have 0 Requests');
@@ -1318,8 +1323,8 @@ function showRequestedMessagesForAUser(results)
 	inboxCount=results.unreadMsgCount;
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
-	$(".FavoriteLinksDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	if(results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
@@ -1369,6 +1374,7 @@ function showSentBoxMessagesForAUser(results)
 	
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	if(results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
@@ -1542,6 +1548,7 @@ function showSpecialPages(results)
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	if(results.length == 0)
 	{
 		$(".templateDiv").html("Special Pages Are Not Available.");
@@ -1584,6 +1591,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();	
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
 	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
@@ -1713,6 +1721,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	var users = results.candidateVO;
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html('');
@@ -1765,7 +1774,7 @@ function showAllPostedProblems(jsObj,results)
 	$('.viewMoreDiv').html('');
 		
 	clearAllSubscriptionDivs();
-	
+	clearAllFavoriteLinkDivs();
 	var problemsData = results.problemsInfo;
 	
 	if(problemsData == null && jsObj.linkType == "problemsLink")
@@ -1877,7 +1886,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 {
 	
 	clearAllSubscriptionDivs();
-
+	clearAllFavoriteLinkDivs();
 	var data = results.candidateComments;
 	$('.viewMoreDiv').html('');
 	if(data == null && jsObj.linkType == "assessPoliticianLink")
@@ -2404,4 +2413,16 @@ else{
         }
       };
 	 
+}
+
+function clearAllFavoriteLinkDivs()
+{
+	$(".constituencyDivheading").children().remove();
+	$(".constituencyDivInnerFav").children().remove();
+	$(".stateDivheading").children().remove();
+	$(".stateDivInnerFav").children().remove();
+	$(".districtDivheading").children().remove();
+	$(".districtDivInnerFav").children().remove();
+	$(".specialPageDivheading").children().remove();
+	$(".specialPageDivInnerFav").children().remove();
 }
