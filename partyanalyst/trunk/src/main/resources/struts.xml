@@ -55,11 +55,11 @@
 			<result>/jsp/landing.jsp</result>
 		</action> 
 		
-		<action name="homePage" class="homePageAction">
+		<action name="newhomePage" class="homePageAction">
 			<result>/jsp/homePage.jsp</result>
 		</action>
 		
-		<action name="newhomePage" class="homePageAction">
+		<action name="homePage" class="homePageAction"> 
 		    <result>/jsp/newhomePage.jsp</result>
 		</action>
 	
