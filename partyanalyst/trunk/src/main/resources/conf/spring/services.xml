@@ -1311,7 +1311,6 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="staticDataService" ref="staticDataService" />
-		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO"/>
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
