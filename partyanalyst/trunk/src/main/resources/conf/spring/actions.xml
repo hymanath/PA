@@ -1007,6 +1007,12 @@
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
+	<bean id="votersEditAction"
+		class="com.itgrids.partyanalyst.web.action.VotersEditAction"
+		singleton="false">
+			<property name="votersAnalysisService" ref="votersAnalysisService" />
+			<property name="staticDataService" ref="staticDataService" />
+	</bean>
 	
 	
 	<bean id="specialPageDataUploadAction" class="com.itgrids.partyanalyst.web.action.SpecialPageDataUploadAction" singleton="false">			
@@ -1019,5 +1025,6 @@
 	<bean id="userSocialNetworkSiteAction" class="com.itgrids.partyanalyst.web.action.UserSocialNetworkSiteAction" singleton="false">
 		<property name="userSocialNetworkSiteService" ref="userSocialNetworkSiteService" />
 	</bean>	
+	
 	
 </beans>	
