@@ -25,15 +25,25 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -52,9 +62,46 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IConstituencyDAO constituencyDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ITehsilDAO tehsilDAO;
-	
+	private IVoterDAO voterDAO;
 	private IStaticDataService staticDataService;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IPartyDAO partyDAO;
+	private IUserDAO userDAO;
 	
+	
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
+
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -2033,5 +2080,108 @@ public String roundTo2DigitsFloatValue(Float number){
 	return f.format(number);
 	
 }
+
+
+public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user){
+	List<Voter> voterDetails=voterDAO.getVoterPersonalDetailsByVoterId(voterId);
+	VoterHouseInfoVO voterHouseInfoVO =null;
+	
+	for(Voter voterInfo : voterDetails)
+		{
+	voterHouseInfoVO = new VoterHouseInfoVO();
+	voterHouseInfoVO.setName(voterInfo.getFirstName()+" "+voterInfo.getLastName());
+	voterHouseInfoVO.setVoterId(voterInfo.getVoterId());
+	voterHouseInfoVO.setGender(voterInfo.getGender());
+	voterHouseInfoVO.setAge(voterInfo.getAge());
+	voterHouseInfoVO.setHouseNo(voterInfo.getHouseNo());
+	voterHouseInfoVO.setGaurdian(voterInfo.getRelativeFirstName()+" "+voterInfo.getRelativeLastName());
+	voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
+	voterHouseInfoVO.setCast(voterInfo.getCast());
+	voterHouseInfoVO.setCastCategory(voterInfo.getCastCatagery());
+	voterHouseInfoVO.setUserId(user);
+	}
+	List<UserVoterDetails> userVoterDetails=userVoterDetailsDAO.getUserVoterDetails(voterId, user);
+	
+		for(UserVoterDetails voters : userVoterDetails)
+		{ 
+			voterHouseInfoVO.setUserVoterDetailsId(voters.getUserVoterDetailsId());
+		voterHouseInfoVO.setPartyId(voters.getParty().getPartyId());
+		/*voterHouseInfoVO.setUserId(voters.getUser().getUserId());
+		voterHouseInfoVO.setVoterId(voters.getVoter().getVoterId());*/
+		}
+	
+	return voterHouseInfoVO;
+	}
+
+public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
+	
+	ResultStatus resultStatus = new ResultStatus();
+	Voter voter=null;
+	UserVoterDetails userVoterDetails=null;
+	try{
+		if(voterHouseInfoVO.getVoterId()==null)
+			voter=new Voter();
+		else			
+			voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
+		
+		if(voterHouseInfoVO.getUserVoterDetailsId()==null)
+			userVoterDetails=new UserVoterDetails();
+		else			
+			userVoterDetails =  userVoterDetailsDAO.get(voterHouseInfoVO.getUserVoterDetailsId());
+		
+		saveVoterDetails(voterHouseInfoVO,voter,userVoterDetails);
+		
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+	}
+	catch (Exception e) {
+		resultStatus.setExceptionEncountered(e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		e.printStackTrace();
+	}
+	return resultStatus;
+	
+}
+
+public VoterHouseInfoVO getVoterFullInformation(Long voterId){
+	VoterHouseInfoVO voterHouseInfoVO=new VoterHouseInfoVO();
+	
+	try{
+		
+		getVoterDetails(voterId,voterHouseInfoVO);	
+		
+	}catch (Exception e) {
+		System.out.println(e);
+	}
+	
+	return voterHouseInfoVO;
+}
+
+public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserVoterDetails userVoterDetails){
+	// userVoterDetailsDAO = null;
+	if(voterHouseInfoVO.getCast() != null && !voterHouseInfoVO.getCast().equalsIgnoreCase("")){
+		voter.setCast(voterHouseInfoVO.getCast());
+	}
+	if(voterHouseInfoVO.getPartyId() != null && !voterHouseInfoVO.getPartyId().equals(0)){
+		
+		userVoterDetails.setParty(partyDAO.get(voterHouseInfoVO.getPartyId()));
+		userVoterDetails.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
+		userVoterDetails.setVoter(voterDAO.get(voterHouseInfoVO.getVoterId()));
+		userVoterDetailsDAO.save(userVoterDetails);
+	}
+	}
+
+public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
+	
+	List<Voter> voterDetails=voterDAO.getVoterPersonalDetailsByVoterId(voterId);
+	if(voterDetails.size()>0){
+		for(Voter voterInfo:voterDetails){
+			voterHouseInfoVO.setCast(voterInfo.getCast());
+		}	
+	}	
+	
+	//userVoterDetailsDAO.getUserVoterDetails(voterId, userId);
+}
+
+
 
 }
