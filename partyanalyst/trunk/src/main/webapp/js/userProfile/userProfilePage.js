@@ -1035,7 +1035,9 @@ function callAjax1(jsObj,url){
 function buildFavouriteLinks(results){
 
 $(".placeholderCenterDiv").children().remove();
+$(".specialPageDiv").children().remove();
 $("#headerDiv").html('');
+$('.districtDiv').children().remove();
 $('.constituencyDiv').children().remove();
 $('.stateDiv').children().remove();
 $('.constituencyDivheading').children().remove();
