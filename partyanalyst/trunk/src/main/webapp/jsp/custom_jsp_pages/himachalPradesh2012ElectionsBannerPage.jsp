@@ -365,7 +365,7 @@ Analyze the present status of key candidates from Himachal Pradesh State
 		
 	
 		
-<h4 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left:9px;">Schedule for the Himachal Pradesh Legislative Assembly, 2012	</h4>
+<h6 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left:9px;">Schedule for the Himachal Pradesh Legislative Assembly, 2012	</h6>
 		
 		
 			<td>
@@ -1221,7 +1221,7 @@ setTimeout(getImportantCandidatesInfo, 120000);
 function getImportantCandidatesInfo()
 {
 	var jsObj = {
-	           	electionId:196,
+	           	electionId:18,
 				task:"getImportantCandidatesInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
