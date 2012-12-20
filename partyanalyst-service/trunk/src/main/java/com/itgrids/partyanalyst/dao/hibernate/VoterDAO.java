@@ -179,7 +179,14 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			}	
 
 			
-	
+			@SuppressWarnings("unchecked")
+			public List<Voter> getVoterPersonalDetailsByVoterId(Long voterId){
+				
+				Query queryObject = getSession().createQuery("from Voter model where model.voterId=?");
+				queryObject.setParameter(0, voterId);
+			
+				return queryObject.list();
+			}
 	
 	
 }
