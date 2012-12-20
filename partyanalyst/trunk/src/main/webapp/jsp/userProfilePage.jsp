@@ -238,6 +238,7 @@ margin:3px;
 							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+						</div>
 	<!--PRASAD-->
 		<div id="impdatesDiv" style="display:none">
 			<div id="cadreDatesYUICalDiv" class="yui-skin-sam"></div>
@@ -264,27 +265,27 @@ margin:3px;
 				<div id="myDialog" class="yui-skin-sam"> 			
 				</div> 
 			</div>
-		</div>		
+				
 	<!--PRASAD-->
 						</div>
 						<div class="FavoriteLinksDiv">
-							<div>
+							<div class="constituencyDivMain">
 								<div style="background:#2D6987;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
-								<div class="constituencyDiv"></div>
+								<div class="constituencyDivInnerFav"></div>
 							</div>
-							<div>
+							<div class="stateDivMain">
 								<div style="background:#2D6987;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
-						        <div class="stateDiv"></div>
+						        <div class="stateDivInnerFav"></div>
 							</div>
 
-							<div>
+							<div class="districtDivMain">
 								<div style="background:#2D6987;" class="favouriteLinksHeading districtDivheading districtHeadingCls" ></div>
-						        <div class="districtDiv"></div>
+						        <div class="districtDivInnerFav"></div>
 							</div>
 
-							<div>
+							<div class="specialPageDivMain">
 								<div style="background:#2D6987;" class="favouriteLinksHeading specialPageDivheading specialPageHeadingCls" ></div>
-						        <div class="specialPageDiv"></div>
+						        <div class="specialPageDivInnerFav"></div>
 							</div>
 
 						</div>
@@ -624,7 +625,7 @@ margin:3px;
 
 </div>
 
-<div class="favouriteLinkStateClass favouriteLinkDivClass" >
+<!-- <div class="favouriteLinkStateClass favouriteLinkDivClass" >
 	<span class="imageClass"></span>
 	<span class="titleClass"></span>
 	<span class="removeClass"></span>
@@ -636,7 +637,7 @@ margin:3px;
 	<span class="titleClass"></span>
 	<span class="removeClass"></span>
 
-</div>
+</div>-->
 
 </div>
 
