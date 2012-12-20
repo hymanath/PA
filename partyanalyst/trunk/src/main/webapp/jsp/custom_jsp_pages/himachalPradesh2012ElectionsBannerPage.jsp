@@ -1217,7 +1217,7 @@ setTimeout(getImportantCandidatesInfo, 120000);
 function getImportantCandidatesInfo()
 {
 	var jsObj = {
-	           	electionId:18,
+	           	electionId:181,
 				task:"getImportantCandidatesInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
