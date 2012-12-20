@@ -390,7 +390,7 @@ margin:-1px 0px 0px 0px ;
 				</c:when>
 				
 				<c:otherwise> 
-					<a href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+					<a href="<c:out value="${pageContext.request.contextPath}" />/userProfile.action" >												
 					<span>DASHBOARD</span>
 					</a>  
 				</c:otherwise>	
