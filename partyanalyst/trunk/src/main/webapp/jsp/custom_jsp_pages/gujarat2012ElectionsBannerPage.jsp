@@ -10,6 +10,7 @@
 <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.columnFilter.js"></script>
 
 <style>
+.pre-year-links a{margin:5px;}
 body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 	.main-mbg{
 		width:962px;
@@ -134,8 +135,8 @@ font-size:11px;
 /*width: 200px;*/
 }
 table.gujaratTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
-table.gujaratTableDiv th, table.gujaratTableDiv td {text-align:center;border:1px solid black;padding:5px;}
-table.gujaratTableDiv th {background-color:AntiqueWhite;}
+table.gujaratTableDiv th, table.gujaratTableDiv td {text-align:center;}
+table.gujaratTableDiv th {}
 table.gujaratTableDiv td:first-child {width:50%;}
 
 .textalignright{
@@ -145,7 +146,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
   text-align:center;
 }
 
-#GujaratResultBody{display:inline-block;background:#EDF9FF;width:100%;padding:5px;}
+#GujaratResultBody{display:inline-block;background:#EDF9FF;width:100%;padding:4px;}
 .popover {
      padding: 5px;
     position: relative;
@@ -204,7 +205,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
 Compare Present election live results with previous election results,  
 Analyze the party's performances in gaining and losing of seats from other parties 
 Party's performances in the new constituencies.
-<a class="btn btn-success pull-right" href="#">Compare Now !!</a>
+<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action">Compare Now !!</a>
 </p>
 
 </div>
@@ -213,7 +214,7 @@ Party's performances in the new constituencies.
 <h4 class="popover-title">State Ministers Trend </h4>
 <p class="popover-content">
 Analyze the present status of Gujarat state ministers for 2007-2012 duration.
-<a class="btn btn-success pull-right" href="#">Analyze Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">Analyze Now !!</a>
 </p>
 
 </div>
@@ -221,7 +222,7 @@ Analyze the present status of Gujarat state ministers for 2007-2012 duration.
 <h4 class="popover-title">Key Candidates Present Status</h4>
 <p class="popover-content">
 Analyze the present status of key candidates from Gujarat State
-<a class="btn btn-success pull-right" href="#">View Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">View Now !!</a>
 </p>
 
 </div>
@@ -232,7 +233,7 @@ Analyze the present status of key candidates from Gujarat State
 <div id="upComing" class="breadcrumb">
 <h3 class="resulth3">Gujarat 2012 Vidhan Sabha Election</h3>
 
-<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">140</font></span>
+<br><br><span>&nbsp;&nbsp;&nbsp;&nbsp;Total Assembly Constituencies - <font color="#05A8E9">182</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">13</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">27</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">142</font></span>
 
 <div style="text-align:justify;margin:10px;padding:10px;"> 
 
@@ -246,10 +247,9 @@ Analyze the present status of key candidates from Gujarat State
 
 	
 <div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
-<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">DISTRICT WISE RESULTS ANALYSIS FOR GUJARAT VIDHAN SABHA 2012</h3></div>
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">DISTRICT WISE Party Wise Results Of Gujarat Vidhan Sabha 2012</h3></div>
   <div style="background:#EDF9FF;width:100%;padding:4px;">
   <select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;" onchange="getDistrictWiseElectionResults()">
-     <option value="0">Select District</option>
      <option value="152">Ahmadabad</option>
      <option value="158">Amreli</option>
      <option value="160">Anand</option>
@@ -282,10 +282,10 @@ Analyze the present status of key candidates from Gujarat State
 <!--<div id="specialPageHighLight"  style="margin-left: 11px;
     width: 900px;margin-left: 10px"></div>-->
 
-<div id="ExitPoll" style="display:table;margin-left: 11px;">
-<div style="width:450px;">
-<span style="font-weight:bold;background:#D2E888;padding:4px;-moz-border-radius: 3px;">Gujarat Exit Polls</span>
-<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;width:99%;">
+<div id="ExitPoll" style="display:table;">
+<div class="span6">
+<h4 style="font-weight:bold;background:#F1F1F1;padding:4px;border-radius: 3px 3px 0px 0px;">Gujarat Exit Polls</h4>
+<table class="table table-bordered table-condensed table-striped">
 <tr>
 <th>Source</th>
 <th>BJP</th>
@@ -319,9 +319,9 @@ Analyze the present status of key candidates from Gujarat State
 </tr>
 </table>
 </div>
-<div style="width:450px;display:table-cell;">
-<span style="font-weight:bold;background:#D2E888;padding:4px;-moz-border-radius: 3px;">Himachal Pradesh Exit Polls</span>
-<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;width:100%;">
+<div class="span5">
+<h4 style="font-weight:bold;background:#F1F1F1;padding:4px;border-radius: 3px 3px 0px 0px;">Himachal Pradesh Exit Polls</h4>
+<table class="table table-bordered table-condensed table-striped">
 
 <tr>
 <th>Source</th>
@@ -359,17 +359,17 @@ Analyze the present status of key candidates from Gujarat State
 </div>
 
 </div>
-<br>
 
-<table width="100%" style="border-top: 1px solid rgb(221, 221, 221);">
+
+<table>
 <tr>
 
 <td  width="45%" valign="top">
-<table style="border:1px solid #d2e888;margin-left: 9px;" width="98%" valign="top">
+<table>
 		
 	
 		
-<h4 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left: 9px;">Schedule for the Gujarat Legislative Assembly, 2012	</h4>
+<h4 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left: 2px;">Schedule for the Gujarat Legislative Assembly, 2012	</h4>
 		
 		
 			<td>
@@ -442,7 +442,7 @@ shall be completed</td>
 
 	</table>
 
-	<table style="border:1px solid #D2E888; margin-top: 12px; width: 98%; margin-left: 8px;">
+	<table class="whitegloss">
 	<tr>
 	<td style="display: table;">
 		<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
@@ -469,9 +469,10 @@ shall be completed</td>
 		 Now You can drive your survey's through Party Analyst.</span><br>
 		   <a style="" href="VotersPulse.action" class="btn btn-success">View Now</a></p>
 
-		   <p >
+		   <p>
 		<span>You've come to the Right Place! The New Party Analyst.</span><br>
-		  <a alt="Explore About PartyAnalyst Image" style="margin-top: -10px;" class="btn btn-warning inline" href="viewFeaturesAction.action">Explore!</a></p>
+		  <a alt="Explore About PartyAnalyst Image"  class="btn btn-warning inline" href="viewFeaturesAction.action">Explore!</a>
+		  </p>
 		</div>
 		</td>
 		</tr></table>
@@ -482,18 +483,18 @@ shall be completed</td>
  <td width="2%"></td>
 
 	<!------------RIGHT SIDE PANEL ------------>
-	<td width="43%" valign="top">
-<table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
+<td width="43%" valign="top" class="breadcrumb">
+<table style="padding-left:20px" width="98%" valign="top">
+<h3 style="">
 Gujarat Assembly 2012 Live Election Analysis</h3>
 
 <tr>
 <td colspan="2">
 
 
-<div>
-	<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 6px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
-	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+<div class="breadcrumb">
+	<span>Party wise Male and Female Candidates Seats Allocation and their Performances</span>
+	<div style="margin:15px;margin-bottom:0px"><span style="">Select Election Year:</span>
 
 		<select id="selectedElectionYears" onchange="getGenderInfo(this.value,this.id)" style="width:120px;">
 			<option value="0">Select Year</option>
@@ -510,55 +511,53 @@ Gujarat Assembly 2012 Live Election Analysis</h3>
 	</div>
 
 
-<table>
-
-<br>
-
-<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1977 - 2012</span>
-<br><br>
+<table class="breadcrumb">
+<tr><th colspan="5">
+<h4>View Party Previous Performances From 1977 - 2012</h4>
+</th></tr>
 <tr>
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}"> 
-<a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a>
+<a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit" class="btn">BSP</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')" class="btn">
 BSP</a>
 </c:if>
 </th>
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}"> 
-<a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a>
+<a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit" class="btn">BJP</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')" class="btn">
 BJP</a>
 </c:if>
 </th>
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}"> 
-<a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a>
+<a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit" class="btn">INC</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')" class="btn">
 INC</a>
 </c:if>
 </th>
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}"> 
-<a href="partyResultsAction.action?selectedPartyShortName=SAD&selectedPartyId=794&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=794&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPI</a>
+<a href="partyResultsAction.action?selectedPartyShortName=SAD&selectedPartyId=794&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=794&alliances=true&__checkbox_alliances=true&submitButton=Submit" class="btn">CPI</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')" class="btn">
 CPI</a>
 </c:if>
 </th>
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}">
-<a href="partyResultsAction.action?selectedPartyShortName=SAD(M)&selectedPartyId=796&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=796&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPM</a>
+<a href="partyResultsAction.action?selectedPartyShortName=SAD(M)&selectedPartyId=796&selectedElectionTypeName=Assembly&selectedLocationName=Gujarat &electionType=2&reportLevel=State&stateSelectName=7&partySelectName=796&alliances=true&__checkbox_alliances=true&submitButton=Submit" class="btn">CPM</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')" class="btn">
 CPM</a>
 </c:if>
 </th></tr>
@@ -566,39 +565,46 @@ CPM</a>
 </td>
 </tr>
 
-<tr><td colspan="7"> <br />
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Gujarat Assembly Elections Results </span></b><br /><br />
+<tr><td colspan="7" class="breadcrumb pre-year-links"> 
+<span style="clear: both; display: inline-block; width: 100%;">Previous Gujarat Assembly Elections Results </span>
 
 	
-<img src="images/icons/diamond.png">
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=126&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
-&nbsp;<img src="images/icons/diamond.png">
+	<a href="electionDetailsReportAction.action?electionId=126&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2007"class="btn btn-primary btn-mini"><img src="images/icons/diamond.png"> 2007</a>
 
 
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=127&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2002"> 2002</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=128&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1997"> 1998</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=129&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1992"> 1995</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=130&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1985"> 1990</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=131&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1980"> 1985</a>
-&nbsp;<br /><br /><img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=132&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1977"> 1980</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=133&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1977"> 1975</a>
+	<a href="electionDetailsReportAction.action?electionId=127&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2002"class="btn btn-primary btn-mini"><img src="images/icons/diamond.png"> 2002</a>
 
-<br /><br /></td></tr>
+
+<a  href="electionDetailsReportAction.action?electionId=128&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1997" class="btn btn-primary btn-mini"> <img src="images/icons/diamond.png"> 1998</a>
+
+
+<a href="electionDetailsReportAction.action?electionId=129&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1992" class="btn btn-primary btn-mini"> <img src="images/icons/diamond.png"> 1995</a>
+
+
+<a  href="electionDetailsReportAction.action?electionId=130&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1985" class="btn btn-primary btn-mini"> <img src="images/icons/diamond.png"> 1990</a>
+
+
+<a  href="electionDetailsReportAction.action?electionId=131&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1980" class="btn btn-primary btn-mini"><img src="images/icons/diamond.png"> 1985</a>
+
+
+<a href="electionDetailsReportAction.action?electionId=132&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1977"class="btn btn-primary btn-mini"> <img src="images/icons/diamond.png"> 1980</a>
+
+
+<a  href="electionDetailsReportAction.action?electionId=133&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=1977"class="btn btn-primary btn-mini"><img src="images/icons/diamond.png"> 1975</a>
+
+</td></tr>
+<tr> <td>
+<table class="breadcrumb" style="margin-top:10px;">
 <tr>
-<td width="50%" colspan="2"><span style="background:#D2E888;color:#000;font-weight:bold;width:374px;margin:0px;padding:5px;-moz-border-radius:3px;">View Gujarat Districts And Constituencies Results</span>
+<td width="50%" colspan="2" >
+<span>View Gujarat Districts And Constituencies Results</span>
 <br></br></td></tr>
 <tr>
 <td >
 <div class="selectHeading">
 	<span class="selectDivStyle">Gujarat Districts</span>
-	<span style="margin-left: 5px;">Know About Your District  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	<p style="padding:5px;text-align:left;">Know About Your District </p>
 	<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district" style="margin-top:45px;">
 	<option value="0">Select District</option>
        <option value='152'>Ahmadabad</option>
@@ -641,7 +647,7 @@ CPM</a>
 <td>
 <div class="selectHeading">
 	<span class="selectDivStyle">Gujarat Constituencies </span>
-	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
+	<p style="padding:5px;">Know About Your Assembly Constituency</p>
 <select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
 <option value="0">Select Constituency</option>
 <option value='34777'>Abdasa</option>
@@ -835,7 +841,9 @@ CPM</a>
 </div>
 </td>
 </tr>
-
+</table>
+</td>
+</tr>
 
 
 </table>
@@ -843,22 +851,8 @@ CPM</a>
 </table>
  
   </div>
+<a title="Gujarat 2012 Vidhan Sabha Election" href="specialPageAction.action?specialPageId=14" class="btn btn-primary btn-large">Click Here To View Himachal Pradesh Election 2012</a>
 
-
-<div id="presidentelectionDiv" style="margin-left: 478px; margin-bottom: 0px; margin-top: -51px; clear: both;">
-	<table>
-		<tr>
-			<td>
-				<div style="padding: 8px; font-weight: bold; margin-top: 47px; font-size: 15px; border-radius: 3px 3px 3px 3px; border: 1px solid #d3d3d3;">
-				<ul>
-				<li style="background:#D2E888; padding: 5px 0px; border-radius: 2px 2px 2px 2px; width: 402px; margin-left: 5px;">
-				<a title="Gujarat 2012 Vidhan Sabha Election" href="specialPageAction.action?specialPageId=14"><span style="font-weight: bold; color: black; margin-left: 16px;">Click Here To View Himachal Pradesh Election 2012</span></a></li>
-				</ul>
-				</div>
-			</td>
-		</tr>
-		</table>
-</div>
 
 <div id="genderInfoDiv">
 <div id="genderAnalysisDiv"></div></div>
@@ -868,6 +862,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 $(document).ready(function() {
   getElectionInfo();
+  getDistrictWiseElectionResults();
 });
 
 function getDistrictWiseElectionResults(){
@@ -933,6 +928,7 @@ function callAjax(jsObj,url){
 									}
 									else if(jsObj.task == "getImportantCandidatesInfo")
 									{
+									
 										buildImportantCnadidatesData(myResults)
 									}
 									else if(jsObj.task == "getDistrictWiseLiveResults")
@@ -1053,13 +1049,12 @@ function buildSpecialPageHightLights(results)
 
 function buildImportantCnadidatesData(results){
 
-	if(results == null || results == "null"){
+	if(results == null || results == "null");{
 	 $('#importantCandidateHeadingDiv').hide();
 	  return false;
 	}
+var str='';
 
-
-     var str='';
 
     str+='<div class="span12" style="border:1px solid #c3c3c3;">';
 
@@ -1082,7 +1077,7 @@ function buildImportantCnadidatesData(results){
 
 				str+='<div class="alignCenter" style="margin-bottom:10px;"><span style="color: red; font-weight: bold;font-size:16px;">'+results[i].status+'</span><i style="float:right;" class="icon-thumbs-down"></i></div>';
 
-			str+='<div class="alignCenter"><img width="80" height="79" onerror="setImage(this)" alt="'+results[i].candidateName+' image" src="images/candidates/'+results[i].candidateName+'.jpg"></div><br>';
+			str+='<div class="alignCenter"><img width="80" height="79" onerror="setImage(this)" src="images/candidates/'+results[i].candidateName+'.jpg"></div><br>';
 
 			str+='<div class="alignCenter candidateNameClass"><span >'+results[i].candidateName+'</span></div>';
 
@@ -1226,7 +1221,7 @@ var jsObj = {
 function getImportantCandidatesInfo()
 {
 	var jsObj = {
-	           	electionId:202,
+	           	electionId:181,
 				task:"getImportantCandidatesInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1260,11 +1255,11 @@ function getImportantCandidatesInfo()
 	var electionResult= '';	
 	electionResult+='<div id="gujratResultsHeader">';
 	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">';
-	electionResult+='PARTY WISE RESULTS OF GUJARAT VIDHAN SABHA 2012</h3>';
+	electionResult+='Party Wise Results Of Gujarat Vidhan Sabha 2012</h3>';
 	electionResult+='</div>';
 	electionResult+='<div id="GujaratResultBody" >';
-	electionResult+='<span id="gujratResultsBody1" style ="width:500px;float:left">';
-	electionResult+='<table class="table table-bordered">';
+	electionResult+='<span id="gujratResultsBody1" style ="width:450px;float:left;margin:11px;">';
+	electionResult+='<table class="table table-bordered table-striped">';
 	electionResult+='<tr>';
 	electionResult+='<th>Total Seats - <font color="#05A8E9">'+myResults.totalSeats+'</font></th>';
 	electionResult+='<th> Result Known - <font color="#05A8E9">'+myResults.totalKnownCount+'</font></th>';
@@ -1275,8 +1270,8 @@ function getImportantCandidatesInfo()
 	electionResult+='</tr>';
 	electionResult+='<table>';
 	electionResult+='</span>';
-	electionResult+='<span id="gujratResultsBody2" style ="width:500px;float:left">';
-	electionResult+='<table class="gujaratTableDiv">';
+	electionResult+='<span id="gujratResultsBody2" style ="width:450px;float:left">';
+	electionResult+='<table class="gujaratTableDiv table table-bordered table-striped">';
 	electionResult+='<tr>';
 	electionResult+='<th>party</th>';
 	electionResult+='<th>TP*</th>';
@@ -1296,7 +1291,7 @@ function getImportantCandidatesInfo()
 	}
 	electionResult+='</table>';
 	electionResult+='</span>';
-	electionResult+='<span  id="GujaratResultGraph" style ="width:400px;float:right">';
+	electionResult+='<span  id="GujaratResultGraph" style ="width:400px;float:right;border-radius:5px;box-shadow:0px 1px 2px #aaa;margin-right:5px;padding:2px;">';
 	electionResult+='<b></b>';
 	electionResult+='</span>';
 	electionResult+='</div>';
