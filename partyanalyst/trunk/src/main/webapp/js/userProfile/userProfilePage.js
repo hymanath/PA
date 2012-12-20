@@ -60,6 +60,7 @@ $("document").ready(function(){
 		
 	});
 	$(".ImportantDates").click(function(){
+		clearAllSubscriptionDivs();
 		buildCalendarControl();
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
