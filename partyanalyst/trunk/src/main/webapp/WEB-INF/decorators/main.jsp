@@ -419,7 +419,7 @@ function openAddNewProblemWindow()
 									</a> 
 							</c:when>
 							<c:otherwise> 
-									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/userProfile.action" >												
 										DASH BOARD
 									</a>   
 							</c:otherwise>	
