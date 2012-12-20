@@ -70,7 +70,7 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 
 .hglgts {
    text-align: left;
-    width: 880px;
+    width: 700px;
 	float :left;
 }
 
@@ -279,8 +279,8 @@ Analyze the present status of key candidates from Gujarat State
   <div id="districtWiseElectionResultDisplayDiv"></div>
   </div>
 </div>
-<div id="specialPageHighLight"  style="margin-left: 11px;
-    width: 900px;margin-left: 10px"></div>
+<div id="specialPageHighLight"  style="
+    width: 860px;margin-left: 20px"></div>
 
 <div id="ExitPoll" style="display:table;">
 <div class="span6">
@@ -1029,7 +1029,7 @@ function buildSpecialPageHightLights(results)
 	var specialPageHighLight = document.getElementById('specialPageHighLight');
 	
 	str +='<fieldset style="verdana,sans-serif;font-weight:bold;">';
-	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat HighLights</legend>';
+	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat Highlights</legend>';
 	str +='<div class="hglgts">';
 	if(results != null && results!='')
 	{
