@@ -249,7 +249,7 @@ var emailId = '${sessionScope.USER.email}';
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
-														<td><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()" style="color:#669900;">Post Problem</a></td>
+														<td><a href="javascript:{}" onclick="openAddNewProblemWindowForFreeUser('${sessionScope.USER.constituencyId}')" style="color:#669900;">Post Problem</a></td>
 													</tr>
 												</table>												
 											</div>
