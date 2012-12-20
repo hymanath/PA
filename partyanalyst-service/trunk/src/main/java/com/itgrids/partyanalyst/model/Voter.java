@@ -25,6 +25,8 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.itgrids.partyanalyst.social.model.CandidateSocial;
+
 @Entity
 @Table(name = "voter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -51,7 +53,7 @@ public class Voter extends BaseModel implements Serializable {
 	
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
-
+	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
 	
 	public Voter(){
 		
@@ -265,6 +267,16 @@ public class Voter extends BaseModel implements Serializable {
 	public void setBoothPublicationVoters(
 			Set<BoothPublicationVoter> boothPublicationVoters) {
 		this.boothPublicationVoters = boothPublicationVoters;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserVoterDetails> getUservoterdetails() {
+		return uservoterdetails;
+	}
+
+	public void setUservoterdetails(Set<UserVoterDetails> uservoterdetails) {
+		this.uservoterdetails = uservoterdetails;
 	}
 	
 	

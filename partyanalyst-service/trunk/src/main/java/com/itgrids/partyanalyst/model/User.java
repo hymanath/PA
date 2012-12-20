@@ -102,7 +102,7 @@ public class User extends BaseModel implements Serializable{
 	
 	private Set<CadreOnlineRegistration> CadreOnlineRegistrations = new HashSet<CadreOnlineRegistration>(0);
 	private Set<UserPrivacySettings> userPrivacySettings = new HashSet<UserPrivacySettings>(0);
-	
+	private Set<UserVoterDetails> userVoterDetails = new HashSet<UserVoterDetails>(0);
 	
 	public User(){}
 	 
@@ -822,7 +822,9 @@ public class User extends BaseModel implements Serializable{
 		this.userPrivacySettings = userPrivacySettings;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+
+
+/*	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserFavoriteLinks> getUserFavoriteLinks() {
 		return userFavoriteLinks;
@@ -830,8 +832,18 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUserFavoriteLinks(Set<UserFavoriteLinks> userFavoriteLinks) {
 		this.userFavoriteLinks = userFavoriteLinks;
+	}*/
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserVoterDetails> getUserVoterDetails() {
+		return userVoterDetails;
 	}
 
+	public void setUserVoterDetails(Set<UserVoterDetails> userVoterDetails) {
+		this.userVoterDetails = userVoterDetails;
+	}
+	
 
 	
 }
