@@ -86,8 +86,8 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 		
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute(IConstants.USER) == null)
-			return IConstants.NOT_LOGGED_IN;
+		/*if(session.getAttribute(IConstants.USER) == null)
+			return IConstants.NOT_LOGGED_IN;*/
 		
 			statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
 			
