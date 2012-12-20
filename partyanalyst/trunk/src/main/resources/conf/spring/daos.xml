@@ -1018,8 +1018,13 @@
 	<bean id="specialPageHighlightsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageHighlightsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		<bean id="userVoterDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO" >
+	
+	<bean id="specialPageDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageDataDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userSocialNetworkSiteDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSocialNetworkSiteDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
 	<bean id="userVoterDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO" >
