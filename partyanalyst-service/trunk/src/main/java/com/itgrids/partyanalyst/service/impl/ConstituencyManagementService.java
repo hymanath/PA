@@ -156,14 +156,16 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		for(Object[] voter:(List<Object[]>)voters){
 			voterVO = new VoterVO();
 			voterVO.setVoterId((++count)+"");
-			voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
-			voterVO.setHouseNo(voter[2].toString());
-			voterVO.setAge(Long.parseLong(voter[3].toString()));
-			voterVO.setCast(voter[4].toString());
-			voterVO.setCastCatagery(voter[5].toString()+" "+voter[6].toString());
-			voterVO.setGender(voter[7].toString());
-			voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
-			voterVO.setRelationshipType(voter[10].toString());
+			//voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
+			voterVO.setFirstName(voter[0].toString());
+			voterVO.setHouseNo(voter[1].toString());
+			voterVO.setAge(Long.parseLong(voter[2].toString()));
+			voterVO.setCast(voter[3].toString());
+			voterVO.setCastCatagery(voter[4].toString()+" "+voter[5].toString());
+			voterVO.setGender(voter[6].toString());
+			//voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
+			voterVO.setRelativeFirstName(voter[7].toString());
+			voterVO.setRelationshipType(voter[8].toString());
 			voterVOs.add(voterVO);
 		}
 
@@ -433,12 +435,13 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		String houseNo = "";
 		if(voters != null)
 		for(Object[] voter : (List<Object[]>)voters){
-			houseNo = voter[2].toString();
+			houseNo = voter[1].toString();
 			voterVO = new VoterVO();
+			//voterVO.setFirstName(voter[0].toString());
+			//voterVO.setVoterLastName(voter[1].toString());
 			voterVO.setFirstName(voter[0].toString());
-			voterVO.setVoterLastName(voter[1].toString());
-			voterVO.setAge((Long)voter[3]);
-			voterVO.setCast(voter[4].toString());
+			voterVO.setAge((Long)voter[2]);
+			voterVO.setCast(voter[3].toString());
 			voterVOs = voterByHouseNoMap.get(houseNo);
 			if(voterVOs ==null)
 				voterVOs = new ArrayList<VoterVO>();
@@ -478,12 +481,13 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		VoterVO voterVO = null;
 		String houseNo = "";
 		for(Object[] voter : (List<Object[]>)voters){
-			houseNo = voter[2].toString();
+			houseNo = voter[1].toString();
 			voterVO = new VoterVO();
+			//voterVO.setFirstName(voter[0].toString());
+			//voterVO.setVoterLastName(voter[1].toString());
 			voterVO.setFirstName(voter[0].toString());
-			voterVO.setVoterLastName(voter[1].toString());
-			voterVO.setAge((Long)voter[3]);
-			voterVO.setCast(voter[4].toString());
+			voterVO.setAge((Long)voter[2]);
+			voterVO.setCast(voter[3].toString());
 			voterVOs = voterByHouseNoMap.get(houseNo);
 			if(voterVOs ==null)
 				voterVOs = new ArrayList<VoterVO>();
@@ -941,14 +945,16 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			for(Object[] voter:(List<Object[]>)voters){
 				voterVO = new VoterVO();
 				voterVO.setVoterId((++count)+"");
-				voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
-				voterVO.setHouseNo(voter[2].toString());
-				voterVO.setAge(Long.parseLong(voter[3].toString()));
-				voterVO.setCast(voter[4].toString());
-				voterVO.setCastCatagery(voter[5].toString()+" "+voter[6].toString());
-				voterVO.setGender(voter[7].toString());
-				voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
-				voterVO.setRelationshipType(voter[10].toString());
+				//voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
+				voterVO.setFirstName(voter[0].toString());
+				voterVO.setHouseNo(voter[1].toString());
+				voterVO.setAge(Long.parseLong(voter[2].toString()));
+				voterVO.setCast(voter[3].toString());
+				voterVO.setCastCatagery(voter[4].toString()+" "+voter[5].toString());
+				voterVO.setGender(voter[6].toString());
+				//voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
+				voterVO.setRelativeFirstName(voter[7].toString());
+				voterVO.setRelationshipType(voter[8].toString());
 				voterVOs.add(voterVO);
 			}
 

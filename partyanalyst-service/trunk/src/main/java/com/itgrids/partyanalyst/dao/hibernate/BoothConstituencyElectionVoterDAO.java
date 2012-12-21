@@ -49,9 +49,9 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	@SuppressWarnings("unchecked")
 	public List findVotersForHamletAndElectionYearByStartAndMaxResults(Long hamletId, String year, 
 			int startIndex, int maxResult, String order, String columnName){
-		Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
-				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
-				"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+		Query queryObject = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age, " +
+				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeName, " +
+				"model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
 				"model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				" order by model.voter."+columnName+" "+order);
 		queryObject.setLong(0, hamletId);
@@ -229,9 +229,9 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	public List findVotersInfoForHamletAndElectionYear(Long panchayatId,
 			String year) {
 		Object[] params = {1l, year};
-		return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
-		"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
-		"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+		return getHibernateTemplate().find("select model.voter.name,model.voter.houseNo, model.voter.age, " +
+		"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeName, " +
+		"model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
 		"model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 		" order by model.voter.voterId", params);
 	}
@@ -239,9 +239,9 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	public List findVotersInfoForPanchayatAndElectionYear(Long hamletId,
 	String year) {
 		Object[] params = {hamletId, year};
-		return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
-				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
-				"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+		return getHibernateTemplate().find("select model.voter.name,model.voter.houseNo, model.voter.age, " +
+				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeName, " +
+				"model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
 				"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				" order by model.voter.voterId", params);
 }
@@ -263,7 +263,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				String year,Long minAge,Long maxAge)
 		{
 		Object[] params = {panchayatId, year};
-		Query query = getSession().createQuery("select count(model.voter.age) from BoothConstituencyElectionVoter model where " +
+		Query query = getSession().createQuery("select count(model.voter.voterId) from BoothConstituencyElectionVoter model where " +
 				"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				" and model.voter.age BETWEEN ? AND ?");
 		
@@ -280,7 +280,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				String year)
 		{
 		Object[] params = {panchayatId, year};
-		Query query = getSession().createQuery("select count(model.voter.age) from BoothConstituencyElectionVoter model where " +
+		Query query = getSession().createQuery("select count(model.voter.voterId) from BoothConstituencyElectionVoter model where " +
 				"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				" and model.voter.age > 60");
 		
@@ -345,9 +345,9 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		public List<Object[]> findVotersForPanchayatAndElectionYearByStartAndMaxResults(Long hamletId, String year, 
 				int startIndex, int maxResult, String order, String columnName)
 		{
-			Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
-					"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
-					"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+			Query queryObject = getSession().createQuery("select model.voter.firstName,model.voter.houseNo, model.voter.age, " +
+					"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeName, " +
+					"model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
 					"model.voter.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ? ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 					" order by model.voter."+columnName+" "+order);
 			queryObject.setLong(0, hamletId);
@@ -363,9 +363,9 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				Long boothId, String year, int startIndex,int maxResult, String order, String columnName) 
 				
 			{
-				Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
-						"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
-						"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+				Query queryObject = getSession().createQuery("select model.voter.name, model.voter.houseNo, model.voter.age, " +
+						"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeName, " +
+						" model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
 						"model.voter.hamlet.hamletId in (select model1.hamlet.hamletId from HamletBoothElection model1 where model1.boothConstituencyElection.boothConstituencyElectionId in (select model2.boothConstituencyElectionId from BoothConstituencyElection model2  where model2.booth.boothId = ? )) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 						" order by model.voter."+columnName+" "+order);
 						
