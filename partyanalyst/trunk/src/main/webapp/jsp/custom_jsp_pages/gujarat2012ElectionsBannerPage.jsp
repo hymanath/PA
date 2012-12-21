@@ -199,7 +199,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
 Compare Present election live results with previous election results,  
 Analyze the party's performances in gaining and losing of seats from other parties 
 Party's performances in the new constituencies.
-<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action">Compare Now !!</a>
+<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action?electionId=202&electionType=2&stateId=7">Compare Now !!</a>
 </p>
 
 </div>
