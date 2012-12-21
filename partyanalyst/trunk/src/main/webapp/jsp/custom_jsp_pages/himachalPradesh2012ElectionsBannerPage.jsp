@@ -205,7 +205,7 @@ Party's performances in the new constituencies.
 <h4 class="popover-title">State Ministers Trend </h4>
 <p class="popover-content">
 Analyze the present status of Himachal Pradesh state ministers for 2007-2012 duration.
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">Analyze Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=196&electionType=2&stateId=9&eventType=ministers">Analyze Now !!</a>
 </p>
 
 </div>
@@ -213,7 +213,7 @@ Analyze the present status of Himachal Pradesh state ministers for 2007-2012 dur
 <h4 class="popover-title">Key Candidates Present Status</h4>
 <p class="popover-content">
 Analyze the present status of key candidates from Himachal Pradesh State
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">View Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=196&electionType=2&stateId=9&eventType=impCandidates">View Now !!</a>
 </p>
 
 </div>
