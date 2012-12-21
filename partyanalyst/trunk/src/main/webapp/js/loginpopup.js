@@ -56,7 +56,7 @@ $("#login_window_inner").html(str);
 //ajax call 
 
 function ajaxCallForLoginPopup(){
-debugger;
+
 var validInd=handleErrorMessageForpopup();
 
 if(!validInd)
@@ -134,7 +134,7 @@ function callHomePageAjax11(jsObj,url){
 
  function handleErrorMessageForpopup()
                 { 
-				 debugger;
+				
                  var emailId = document.getElementById("userName1").value;
                  var securityName = document.getElementById("passWord_Id1").value;
                  var errorDivEle = document.getElementById("LoginErrorMessageDiv");
