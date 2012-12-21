@@ -706,11 +706,6 @@ function disableNewCasteNames(){
 
 		<input type="hidden" name="candidateId" value="${candidateId}">
 
-
-       
-
-		
- 
             <fieldset>
                 <legend class="legendClass">Personal Information</legend>
  
