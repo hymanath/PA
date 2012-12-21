@@ -44,7 +44,9 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 	private List<ConstituencyElectionResultVO> candidatesList;
 	private List<PartyElectionResultVO> partyElectionResultVOList;
 	private List<PartyElectionResultVO> districtWiseResults;
-	
+	private Long electionId;
+	private Long electionType;
+	private Long stateId;
 
 	public List<PartyElectionResultVO> getPartyElectionResultVOList() {
 		return partyElectionResultVOList;
@@ -142,6 +144,30 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 	public void setDistrictWiseResults(
 			List<PartyElectionResultVO> districtWiseResults) {
 		this.districtWiseResults = districtWiseResults;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public Long getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(Long electionType) {
+		this.electionType = electionType;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 
 	public String execute(){
