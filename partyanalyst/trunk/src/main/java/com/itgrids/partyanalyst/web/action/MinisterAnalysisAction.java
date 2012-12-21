@@ -31,6 +31,11 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 	private List<PositionManagementVO> results;
 	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
 	private EntitlementsHelper entitlementsHelper;
+	private Long electionId;
+	private Long electionType;
+	private Long stateId;
+	private String eventType;
+	
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
 	}
@@ -80,7 +85,38 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 			IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService) {
 		this.electionLiveResultsAnalysisService = electionLiveResultsAnalysisService;
 	}
-	
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public Long getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(Long electionType) {
+		this.electionType = electionType;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
 
 	public String execute(){
 		
