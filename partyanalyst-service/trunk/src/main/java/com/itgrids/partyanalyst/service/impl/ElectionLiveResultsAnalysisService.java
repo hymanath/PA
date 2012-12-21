@@ -1203,7 +1203,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		    		  }
 		    		  else
 		    		  {
-		    			  currentResultData.setResult("Preceed");
+		    			  currentResultData.setResult("Trail");
 		    		  }
 		    		  
 		    	  }
@@ -1275,7 +1275,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			    		  }
 			    		  else
 			    		  {
-			    			  prevResultData.setResult("Preceed");
+			    			  prevResultData.setResult("Trail");
 			    		  }
 			    		  
 			    	  }
