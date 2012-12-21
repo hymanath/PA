@@ -129,8 +129,9 @@ margin:3px;
   vertical-align: middle;
   cursor: pointer;
   background-color: #f5f5f5;
-  
-  }
+}
+
+#profileUserName{text-transform: capitalize;}
 </style>
 </head>
 <body>
@@ -339,11 +340,11 @@ margin:3px;
 							<div class="span3">
 								<a href="publicProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
 								 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
-									<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${connectedPeoples.image}" />
+									<img height="50" width="55" src="/pictures/profiles/${connectedPeoples.image}" />
 									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
 								</c:if>
 								<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
-									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" />
+									<img height="50" width="55" src="/images/icons/indexPage/human.jpg" />
 								</c:if>
 								</a>
 							</div>
@@ -397,7 +398,7 @@ margin:3px;
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
 								
-								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/>
+								<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}"><img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image" /></a>
 								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
