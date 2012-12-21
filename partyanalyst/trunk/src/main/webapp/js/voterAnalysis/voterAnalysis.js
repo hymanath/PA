@@ -1081,9 +1081,7 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 }
 function openProblemEditForm(id)
 {
-	alert(id);
 	var urlStr="votersEditAction.action?voterId="+id+" ";
-	//var urlStr = "addNewProblemAction.action?problemId="+id+"&windowTask=update_existing";
 	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
 }	
@@ -1138,7 +1136,7 @@ console.log(result);
 
 
 function buildVotersInFamily(results,hno){
-alert('jasj');
+
     $("#impFamDtlsTitle").html("<b>Voter Details in House No : "+hno+"</b>");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
