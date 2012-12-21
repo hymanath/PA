@@ -1240,7 +1240,10 @@ Tweet</a>
 </s:iterator>
 </s:if>
 
-<div style="background-color:#fff;border:1px solid #e5e5e5;padding:20px;" id="dynamicText">${specilaPageText}</div>
+
+
+<div  id="dynamicText">${specilaPageText}</div>
+
 
       <div class="profile-left-sec">
         <div class="pl-cont-sec">
