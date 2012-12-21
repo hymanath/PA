@@ -163,11 +163,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					VoterVO voterVO = new VoterVO();
 					
 					voterVO.setVoterId((++count)+"");
-					voterVO.setFirstName(voter.getFirstName());
+					//voterVO.setFirstName(voter.getFirstName());
+					voterVO.setFirstName(voter.getName());
 					voterVO.setAge(voter.getAge());
 					voterVO.setGender(voter.getGender());
 					voterVO.setHouseNo(voter.getHouseNo());
-					voterVO.setRelativeFirstName(voter.getRelativeFirstName());
+					//voterVO.setRelativeFirstName(voter.getRelativeFirstName());
+					voterVO.setRelativeFirstName(voter.getRelativeName());
 					voterVO.setCast(voter.getCast());
 					voterVO.setCastCatagery(voter.getCastCatagery());	
 					voters.add(voterVO);
@@ -797,12 +799,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		for(Voter voter : votersInfoList){
 	    	voterHouseInfoVO = new VoterHouseInfoVO();
 	    	voterHouseInfoVO.setsNo(sno);
-	    	voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+	    	//voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+	    	voterHouseInfoVO.setName(voter.getName());
 	    	voterHouseInfoVO.setGender(voter.getGender());
 	    	voterHouseInfoVO.setAge(voter.getAge());
 	    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
-	    	voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+	    	//voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+	    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 	    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+	    	
 	    	voterHouseInfoVO.setCast(voter.getCast());
 	    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 	    	voterHouseInfoVO.setVoterId(voter.getVoterId());
@@ -825,11 +830,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterHouseInfoVO = new VoterHouseInfoVO();
 				voterHouseInfoVO.setVoterId(voter.getVoterId());
 				voterHouseInfoVO.setsNo(sno);
-				voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+				//voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+				voterHouseInfoVO.setName(voter.getName());
 				voterHouseInfoVO.setGender(voter.getGender());
 				voterHouseInfoVO.setAge(voter.getAge());
 				voterHouseInfoVO.setHouseNo(voter.getHouseNo());
-				voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+				//voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+				voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 				voterHouseInfoVO.setRelationship(voter.getRelationshipType());
 				voterHouseInfoVO.setCast(voter.getCast());
 				voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
@@ -1960,18 +1967,18 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		String houseNo = "";
 		if(voters != null)
 		for(Object[] voter : (List<Object[]>)voters){
-			houseNo = voter[2].toString();
+			houseNo = voter[1].toString();
 			voterVO = new VoterVO();
 			voterVO.setFirstName(voter[0].toString());
-			voterVO.setVoterLastName(voter[1].toString());
-			voterVO.setAge((Long)voter[3]);
-			voterVO.setCast(voter[4].toString());
-			voterVO.setBoothNo((Long)voter[5]);
-			voterVO.setVoterId(voter[6].toString());
-			voterByHouseNoMap = boothMap.get((Long)voter[5]);
+			//voterVO.setVoterLastName(voter[1].toString());
+			voterVO.setAge((Long)voter[2]);
+			voterVO.setCast(voter[3].toString());
+			voterVO.setBoothNo((Long)voter[4]);
+			voterVO.setVoterId(voter[5].toString());
+			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
 				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
-				boothMap.put((Long)voter[5], voterByHouseNoMap);
+				boothMap.put((Long)voter[4], voterByHouseNoMap);
 			}
 			voterVOs = voterByHouseNoMap.get(houseNo);
 			if(voterVOs ==null){
