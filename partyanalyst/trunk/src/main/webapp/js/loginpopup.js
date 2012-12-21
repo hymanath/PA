@@ -12,10 +12,10 @@ str+='<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 55px;">';
 str+='</div>';
 //str+='<div id="validate"></div>';
 str+='<div class="input-prepend" style="margin-left: 55px;">';
-str+='<span class="add-on"><i class="icon-envelope"></i></span><input type="text"  class="span2" class="input-small" placeholder="Email" name="userName"  id="userName" style="width: 200px; position: static;"/>';
+str+='<span class="add-on"><i class="icon-envelope"></i></span><input type="text"  class="span2" class="input-small" placeholder="Email" name="userName"  id="userName1" style="width: 200px; position: static;"/>';
 str+='</div>';
 str+='<div  class="input-prepend" style="margin-left: 55px;">';
-str+='<span class="add-on"><i class="icon-lock"></i></span><input type="password"  class="span2" class="input-small" placeholder="Password" name="password" style="width: 200px;position: static;" id="passWord_Id"/>';
+str+='<span class="add-on"><i class="icon-lock"></i></span><input type="password"  class="span2" class="input-small" placeholder="Password" name="password" style="width: 200px;position: static;" id="passWord_Id1"/>';
 str+='</div>';
 str+='<div class = "span3">';
 str+='<a href="javascript:{}" onclick="showForgotPasswordPanelForPopup()" style="color: rgb(1, 116, 223); font-size: small; margin-left: 50px;">Forgot Password</a>';
@@ -56,14 +56,14 @@ $("#login_window_inner").html(str);
 //ajax call 
 
 function ajaxCallForLoginPopup(){
-
+debugger;
 var validInd=handleErrorMessageForpopup();
 
 if(!validInd)
 	return false;
 
-var userName1=document.getElementById('userName').value;
-var password1=document.getElementById('passWord_Id').value;
+var userName1=document.getElementById('userName1').value;
+var password1=document.getElementById('passWord_Id1').value;
 
 task="validateUserForLogin";
  
@@ -134,9 +134,9 @@ function callHomePageAjax11(jsObj,url){
 
  function handleErrorMessageForpopup()
                 { 
-				 
-                 var emailId = document.getElementById("userName").value;
-                 var securityName = document.getElementById("passWord_Id").value;
+				 debugger;
+                 var emailId = document.getElementById("userName1").value;
+                 var securityName = document.getElementById("passWord_Id1").value;
                  var errorDivEle = document.getElementById("LoginErrorMessageDiv");
 	             var eFlag = false;
 
