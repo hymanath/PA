@@ -179,9 +179,39 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 </center>
 
 <script type="text/javascript">
-
+var electionId = "${electionId}";
+var electionType = "${electionType}";
+var stateId = "${stateId}";
 google.load("visualization", "1", {packages:["corechart"]});
-
+if(electionType != ""){
+    if(electionType == 1 || $.trim(electionType) == "1"){
+	    $("#parliamentId").attr("checked","checked");
+		getStates(1,stateId,electionId);
+	}else if(electionType == 2 || $.trim(electionType) == "2"){
+	    $("#assemblyId").attr("checked", "checked");
+		getStates(2,stateId,electionId);
+	}
+}
+function buildOptions(id,result,val,elecId){
+   $("#"+id).append('<option value="0">Select</option>');
+  if(result != null && result.length > 0){
+   for(var i in result)
+     $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	
+   if(val != null && val !="" && val != undefined){
+     $("#"+id).val(val);
+	 if(elecId != null && elecId !="" && elecId != undefined)
+	 getElectionYears(elecId);
+   }
+   if(id == "electionYearId" && elecId != null && elecId !="" && elecId != undefined){
+      $("#"+id).val(elecId);
+	    getOverViewCount();
+		getPartiesGainAndLossInfo();
+		getConstituencyWiseCandidatesStatus();
+		getWonOrLeadcandidates();
+   }
+  }
+}
 function callAjaxForElectionResultPage(url,jObj){
 	
 	  var callback = {
@@ -191,11 +221,13 @@ function callAjaxForElectionResultPage(url,jObj){
 			 
 			 if(jObj.task == "getElectionYears"){
 				clearOptionsListForSelectElmtId("electionYearId");
-			    createOptionsForSelectElmtIdWithSelectOption("electionYearId",myResults);
+				buildOptions("electionYearId",myResults,"",jObj.electionId);
+			    //createOptionsForSelectElmtIdWithSelectOption("electionYearId",myResults);
 			 }
 			 else if(jObj.task == "getStates"){
 				clearOptionsListForSelectElmtId("stateId");
-				createOptionsForSelectElmtIdWithSelectOption("stateId",myResults);
+				buildOptions("stateId",myResults,jObj.stateId,jObj.electionId);
+				//createOptionsForSelectElmtIdWithSelectOption("stateId",myResults);
 
 			 }
 			 else if(jObj.task =="getConstituenciesCount"){
@@ -942,19 +974,21 @@ function getConstituenciesCount()
 	var url = "getResultsAjaxAction.action?"+rparam;						
 	callAjaxForElectionResultPage(url,jObj);
 }
-function getStates(electionTypeId)
+function getStates(electionTypeId,stateId,elecId)
  {	
 	var jObj=
 		{
 			electionTypeId:electionTypeId,
-			task:"getStates"						
+			task:"getStates",
+            stateId:stateId,
+            electionId:elecId			
 		};
 			
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
 		var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
 		callAjaxForElectionResultPage(url,jObj);
 }	
-function getElectionYears(){
+function getElectionYears(elecId){
 
 	var stateId = document.getElementById("stateId").value;
     if(document.getElementById("assemblyId").checked == true)
@@ -966,7 +1000,8 @@ function getElectionYears(){
 	var jObj = {
 				electionTypeId : electionTypeId,
 				stateId :stateId,
-				task : "getElectionYears"
+				task : "getElectionYears",
+				electionId:elecId,
 			}
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url= "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;
