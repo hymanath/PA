@@ -6,12 +6,11 @@
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <!--  BootStrap Code-->
  
-
 
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
