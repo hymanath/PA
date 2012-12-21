@@ -67,7 +67,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			{
 				Object[] params = {boothId, year};
 				
-				return getHibernateTemplate().find("select model.firstName,model.lastName,model.houseNo,model.age,model.cast,model.castCatagery,model.castSubCatagery,model.gender,model.relativeFirstName,model.relativeLastName ," +
+				return getHibernateTemplate().find("select model.name,model.houseNo,model.age,model.cast,model.castCatagery,model.castSubCatagery,model.gender,model.relativeName," +
 						" model.relationshipType,model.voterId  from Voter model,HamletBoothElection model2 where  model.hamlet.hamletId = model2.hamlet.hamletId and model2.boothConstituencyElection.booth.boothId=? and  model2.boothConstituencyElection.constituencyElection.election.electionYear = ? and model2.boothConstituencyElection.constituencyElection.election.electionId=38 order by model.voterId", params);
 				
 				
