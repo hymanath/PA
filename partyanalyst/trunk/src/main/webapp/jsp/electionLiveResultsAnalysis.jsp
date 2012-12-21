@@ -10,7 +10,7 @@
 <style>
  
  .yui-skin-sam.yui-dt table th {
-		background-color: #CEEDF0;
+		background-color: #CDE6FC;
 		font-size: 13px;
 		font-weight: bold;
 		padding: 7px;
@@ -37,7 +37,10 @@ background: none repeat scroll 0 0 #F9F9F9;
 #candidatesDiv table tr:nth-child(2n) {
 background: none repeat scroll 0 0 #F9F9F9;
 }
-
+#partyWiseTable table tr:nth-child(2n),#partyGainedAnalysisDiv table tr:nth-child(2n),.resultDiv table tr:nth-child(2n){
+background: none repeat scroll 0 0 #F9F9F9;
+}
+#partyWiseTable > table * th,#partyGainedAnalysisDiv table * th,.resultDiv > table * th{background-color: #CDE6FC;}
 .SeatsFlownToOtherPartiesTable td
 {
 	valign : top;
@@ -289,7 +292,7 @@ function buildCompareResultForWonorLead(myResults)
 	{
 		str += '<span class="headingstyle">Partywise Seats Gained/Lost Analysis In Result Known Constituencies</span>';
 		str+='<div style="margin-top:10px;margin-bottom:20px;">'
-		str += '<table><tr><td width="45%"><div>';
+		str += '<table><tr><td width="45%"><div id="partyWiseTable">';
 		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;">';
 	 
 	 for(var i in myResults)
@@ -333,7 +336,7 @@ function buildCompareResultForWonorLead(myResults)
 	 if(myResults[i].isFirstElectionAfterDelimtation)
 	 {
 		str += '<span class="headingstyle">Partywise Seats Gained/Lost Analysis In Result Known New/Old Constituencies</span>';
-		str += '<div style="margin-top:10px;">';
+		str += '<div style="margin-top:10px;" class="resultDiv">';
 		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
 		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
 		
