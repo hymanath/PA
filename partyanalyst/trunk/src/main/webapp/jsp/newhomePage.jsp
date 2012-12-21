@@ -133,7 +133,7 @@ The most awaiting Gujarat 2012 Election Live Result updates through Party Analys
 <img width="200px" height="85px" src="uploaded_files/special_page_profile/14/img.jpg" class="span5" style="margin-bottom: 12px; margin-left: 0px;" alt="Gujarath 2012 Elections Image">
 
 <div class="span7"> 
-Interesting news, who will win in new constituencies in Himachal Pradesh 2012 Election?
+Interesting news, who will win in new constituencies in Himachal Pradesh 2012 Election.
 <h5 class="btn btn-mini"><a href="specialPageAction.action?specialPageId=14" title="Gujarat 2012 Election Live Result">Click Here To See Live Updates</a></h5>
 </div></div>
 
