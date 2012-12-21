@@ -80,7 +80,7 @@ $("document").ready(function(){
 		clearAllFavoriteLinkDivs();
 		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
-		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li></ul>");
+		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
 		$("#impdatesDiv").hide();
 	});
 	
@@ -507,7 +507,6 @@ $(".changePwdLink").live("click",function(){
 //edit cover Image
 
 $(".editCoverImgLink").live("click",function(){
-
 $("#allConnectedUsersDisplay_main").children().remove();
 	
 	$("#connectPeoplePopup").dialog({
@@ -549,7 +548,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '	</table>';	
 	str += '</th>';
 	str += '<td rowspan="3">';
-	str += '	<div style="border:1px solid #ADADAD;"><img width="90" height="100" id="Imgpreview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '	<div style="width:100px;height:100px;overflow:hidden;"><img width="90" height="100" id="Imgpreview" class="jcrop-preview" src="images/icons/indexPage/human.jpg"></div>';
 	str += '</td>';
 	str += '</tr>';
 
@@ -559,6 +558,10 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '</td>';
 	str += '</tr>';
 	
+	str += ' <input type="hidden" size="4" value=""  id="xcoardinate"  name="xcoardinate"   value="0" />'; 
+     str += ' <input type="hidden" size="4"  value="" id="ycoardinate"  name="ycoardinate"   value="0" />';  
+     str += ' <input type="hidden" size="4" value=""  id="width"        name="width" />';  
+     str += ' <input type="hidden" size="4"  value="" id="height"       name="height" />'; 
 	str += '</table>';	
 	str += '</form>';
 	str += '</div>';
@@ -572,9 +575,36 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '</tr>';
 	str += '</table>';	
 	str += '</div>';
+	str += '<div style="width:300px;height:300px; id="Imgpreview2"><img width="300" height="300" id="Imgpreview1"  src=""></div>';
 	div.append(str);
 	elmt.append(div);
+	
+	oPushButton1 = new YAHOO.widget.Button("uploadCoverPicButton");  
+	oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
+	
+	oPushButton1.on("click",function(){
+	   
+		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+		     str += ' Please Select a image .<br>';
+		     document.getElementById("uploadPic_window_status").innerHTML = str;
+	     }
+		 else{
+		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
+		
+		 getUploadCoverpic();
+		}
+	});
+
+	oPushButton2.on("click",function(){
+		$("#uploadPic_window").dialog("destroy");
+	});
+
 });
+
 //edit picture
 
 $(".editPictureLink").live("click",function(){
