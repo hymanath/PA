@@ -83,9 +83,9 @@ table.searchresultsTable, table.searchresultsTable * td, table.searchresultsTabl
 <script type="text/javascript">
 
 var qtype = "minis";
-function getElectionYears(electionType)
+function getElectionYears(electionType,stId,electionId)
 {
-   stateId = 1;
+   var stateId = 1;
    if(electionType == "Assembly")
    {
 	var stateEle = document.getElementById("stateListId");
@@ -103,7 +103,8 @@ function getElectionYears(electionType)
 	var jObj = {
 			stateId : stateId,
 		electionType: electionType,
-				task: 'getElectionYearsForAState'
+				task: 'getElectionYearsForAState',
+				electionId:electionId
 				};
 
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
@@ -117,32 +118,36 @@ function getElectionYears(electionType)
 	  else
 	      document.getElementById("showHideState").style.display ="none";
     }
- function getAllStates()
+ function getAllStates(stateId,electionId)
    {    
     var jsObj =
 		{ 
             time : new Date().getTime(),
 			eleType: 2,
-			task:"getStatesForAssign"
+			task:"getStatesForAssign",
+			stateId:stateId,
+			electionId:electionId
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
 	callAjax(jsObj,url);
   }
-  function getStatesForAssembly()
+  function getStatesForAssembly(stateId,electionId)
   {
     var jsObj =
 		{ 
             time : new Date().getTime(),
-			task:"getAllStatesForParliamentMinisters"
+			task:"getAllStatesForParliamentMinisters",
+			stateId:stateId,
+			electionId:electionId
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
 	callAjax(jsObj,url);
   }
-  function getYearsForAssembly()
+  function getYearsForAssembly(stId,electionId)
   {
   
     var stateEle = document.getElementById("stateListId");
@@ -155,19 +160,22 @@ function getElectionYears(electionType)
 		{ 
             time : new Date().getTime(),
 			stateId: stateId,
-			task:"getAllYearsAndElecIdsForAssembly"
+			task:"getAllYearsAndElecIdsForAssembly",
+			electionId:electionId
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
 	callAjax(jsObj,url);
   }
-  function getYearsForParliament()
+  function getYearsForParliament(stateId,electionId)
   {
     var jsObj =
 		{ 
             time : new Date().getTime(),
-			task:"getAllYearsAndElecIdsForParliament"
+			task:"getAllYearsAndElecIdsForParliament",
+			stateId:stateId,
+			electionId:electionId
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -449,31 +457,31 @@ function getElectionYears(electionType)
 									if(jsObj.task == "getElectionYearsForAState")
 									{
 									      removeData("yearSelId");
-									      buildData(myResults,"yearSelId");
+									      buildData(myResults,"yearSelId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getStatesForAssign")
-									{
+									{console.log(jsObj);
 									      removeData("stateListId");
 										  addState("stateListId");
-									      buildData(myResults,"stateListId");
+									      buildData(myResults,"stateListId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getAllStatesForParliamentMinisters")
 									{
 									      removeData("stateListId");
 										  addState("stateListId");
-									      buildData(myResults,"stateListId");
+									      buildData(myResults,"stateListId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getAllYearsAndElecIdsForAssembly")
 									{
 									      removeData("yearSelId");
 										  addData("yearSelId");										  
-									      buildData(myResults,"yearSelId");
+									      buildData(myResults,"yearSelId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getAllYearsAndElecIdsForParliament")
 									{
 									       removeData("yearSelId");
 										   addData("yearSelId");
-									      buildData(myResults,"yearSelId");
+									      buildData(myResults,"yearSelId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getMinsKeyCandAnalysisDetails")
 									{
@@ -496,7 +504,7 @@ function getElectionYears(electionType)
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
   }
- function buildData(results,id)
+ function buildData(results,id,stateId,electionId)
  {
    var elmt = document.getElementById(id);
    
@@ -517,6 +525,14 @@ function getElectionYears(electionType)
 		}
 	
 	  } 
+	  if(id == "yearSelId" && electionId != undefined && electionId != null && electionId != ""){
+	    $("#yearSelId").val(electionId);
+		getDeltailForMinisImpCand();
+	  }
+	  if(id == "stateListId" && stateId != undefined && stateId != null && stateId != ""){
+	    $("#stateListId").val(stateId);
+		  getYears("Assembly",stateId,electionId);
+	  }
  }
  function showOthers()
  {
@@ -622,17 +638,17 @@ function showImpCandPerf(id)
   document.getElementById("showHideState").style.display = "block";
   getAllStates();
 }
-function getYears(type)
+function getYears(type,stateId,electionId)
 {
   if(qtype == "minis")
    { 
     if(type == "Assembly")
-	 getYearsForAssembly();
+	 getYearsForAssembly(stateId,electionId);
 	else
-      getYearsForParliament();
+      getYearsForParliament(stateId,electionId);
    }
    else 
-    getElectionYears(type);
+    getElectionYears(type,stateId,electionId);
 }
 function getDeltailForMinisImpCand()
 {
@@ -680,10 +696,49 @@ function removeDataDIV()
   </div>
 </div>
    <script type="text/javascript">
-	 getStatesForAssembly();
-	 $("#impCandPerf").removeClass("dashBoardtabsDivSelected");
-     $("#minisPerf").addClass("dashBoardtabsDivSelected");
-	 showHidsState();
+     $(document).ready(function(){
+	    var electionId = "${electionId}";
+	    var electionType = "${electionType}";
+	    var stateId = "${stateId}";
+	    var eventType = "${eventType}";
+		if(electionType != ""){
+		  if(eventType == "impCandidates"){
+		        qtype = "impCand";
+		        $("#minisPerf").removeClass("dashBoardtabsDivSelected");
+                $("#impCandPerf").addClass("dashBoardtabsDivSelected");
+			  if(electionType == 1 || $.trim(electionType) == "1"){
+	            $("#parlSel").attr("checked", "checked");
+				showHidsState();
+				getYears('Parliament',stateId,electionId);
+				
+	          }else if(electionType == 2 || $.trim(electionType) == "2"){
+	            $("#state").attr("checked", "checked");
+				showHidsState();
+				getAllStates(stateId,electionId);
+			  }
+		  }else{
+		         qtype = "minis";
+                 $("#impCandPerf").removeClass("dashBoardtabsDivSelected");
+                 $("#minisPerf").addClass("dashBoardtabsDivSelected");  
+			  if(electionType == 1 || $.trim(electionType) == "1"){
+	              $("#parlSel").attr("checked", "checked");
+				  getYears('Parliament',electionId);
+				
+	          }else if(electionType == 2 || $.trim(electionType) == "2"){
+			    document.getElementById("showHideState").style.display = "block";
+	            $("#state").attr("checked", "checked");
+				getStatesForAssembly(stateId,electionId);
+	          }
+		  }
+          
+        }else{
+		   getStatesForAssembly();
+	       $("#impCandPerf").removeClass("dashBoardtabsDivSelected");
+           $("#minisPerf").addClass("dashBoardtabsDivSelected");
+	       showHidsState();
+		}
+	 });
+	
    </script>
 </body>
 </html>
