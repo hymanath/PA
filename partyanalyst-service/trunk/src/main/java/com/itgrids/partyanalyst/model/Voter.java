@@ -35,9 +35,13 @@ public class Voter extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long voterId;
 	private String houseNo;
+	
+	private String name;
+	
 	private String firstName;
 	private String lastName;
 	private String relationshipType;
+	private String relativeName;
 	private String relativeFirstName;
 	private String relativeLastName;
 	private String cast;
@@ -277,6 +281,22 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setUservoterdetails(Set<UserVoterDetails> uservoterdetails) {
 		this.uservoterdetails = uservoterdetails;
+	}
+	@Column(name = "name", length = 200)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Column(name = "relative_name", length = 200)
+	public String getRelativeName() {
+		return relativeName;
+	}
+
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
 	}
 	
 	
