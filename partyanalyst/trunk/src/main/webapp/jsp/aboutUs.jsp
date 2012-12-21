@@ -9,9 +9,7 @@
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.min.css" rel="stylesheet" />
 		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="js/homePage/aboutus_popup.js"> </script>
-		  <script type="text/javascript" src="js/homePage/aboutus_popup_inner.js"> </script>
-		  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+		
     
     <script>
 	function contact3(){
@@ -21,24 +19,44 @@
 								width: 670,
 								modal: true,
 								
+								position: '[170,150]',
 								
 								title:'Core Competency',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
     });
-	}
-	function contact1(){
-    $(function() {
-        $( "#Window1" ).dialog({ stack: false,
-							    height:'auto',
-								width: 670,
-								modal: true,
-				 				
-								
-								title:'Who We Are?',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-    });
+	var showDialog = function() {
+				$("#Window3").show(); 
+				//open the dialog
+				$("#Window3").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#Window3").dialog("close");
+			}
+			
+ var elmt = document.getElementById("window_inner3");
+
+  var str ='';
+
+str+='<p style="text-align:justify;">';
+str+='PartyAnalyst is first of its kind powerfully integrated and enriched Online Election Analysis and Management Platform. It is developed by our team, which contains highly skilled Software Engineers, Designers, Testers and Maintenance Engineers. And our Team has great understanding of this political domain. We provide continuous enchantments, updates and support to our customers.';
+str+='<br><br>';
+str+='We provide different services to our customers, who are in political domain to reach, serve and understand the public. They can manage their cadre as well as their constituency in a simplifier manner. They can also get different analyzed reports to understand the previous election pattern. We also provide them opinion polls and surveys to know public pulse.';
+str+='<br><br>';
+str+='We offer Election Analysis services to Media, with mammoth collection of compiled past and present election data. This is integrated into one platform for any cross analysis in a very easy and simplified manner.';
+str+='<br><br>';
+str+='We provide Political Social Networking platform, based on locality, for voters and leaders. This is a FREE service. People can register, connect, convey, engage and discuss all political issues and concern of their constituency and publish grievances or support others grievances to create an impact leading to the solution to a problem.';
+str+='<br><br>';
+str+='The greatest strength of Party Analyst is not only having vast election data but also latest voters’ data. All this is integrated into a single platform, for doing any cross analysis, in a simple and easy way.';
+str+='<br><br>';
+str+='And the last but not the least the Costing Policy, we provide quality services to our customers for a very low costing when compare to our competitors in the market.';
+str+='<p>';
+
+
+
+elmt.innerHTML = str;
 	}
 	function contact2(){
     $(function() {
@@ -46,12 +64,108 @@
 							    height:'auto',
 								width: 670,
 								modal: true,
-								
+				 				
+								position: [170,150],
 								
 								title:'What We Do?',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
+								
+								
     });
+	                 
+	var showDialog = function() {
+				$("#Window2").show(); 
+				//open the dialog
+				$("#Window2").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#Window2").dialog("close");
+			}
+			
+ var elmt = document.getElementById("contactWindowDiv_window_inner2");
+
+  var str ='';
+
+str+='<p style="text-align:justify;">';
+str+='India is the biggest democratic country in the world. We are an IT super power, from the last 10 to 15 years. Though Information technology and India are very synonymous, we are not utilizing technology in the Political Process. To overcome and breakthrough this, Party Analyst is established.';
+str+='<br><br>';
+str+='Party Analyst is a powerful, integrated and enriched online election analysis platform. The election analysis is cohesively interwoven with remarkable tools and applications that empower the pillars of the Indian Democracy. It also brings social networking to connect these pillars.Party Analyst also provides different services to the participants of Indian Elections.';
+str+='<br><br>';
+str+='Elections, Voters, Politicians, Political Parties and Media are the pillars of the Democracy. Party Analyst serves the pillars of Indian Democracy at every stage with Know-Analyse-Act tag line.';
+str+='<br><br>';
+str+='<b>Party Analyst to Political Parties & Leaders:</b>';
+str+='<br><br>';
+str+='For Political Parties and Leaders, the technology is not a core business. They always look towards “how to serve and reach the people to win the elections”. Party Analyst makes use of technology, for election analysis and other different tools, to help you, serve and reach the people in a better way.';
+str+='<br><br>';
+str+='Parties and Politicians always want the present voters’ pulse and require lot of information on their own party activities and also opposition party activities. Party Analyst provides different services to fulfill these needs.';
+str+='<br><br>';
+str+='<b>Party Analyst to Media:</b>';
+str+='<br><br>';
+str+='Election Analysis services are offered to Print & Electronic Media houses, with vast collection of compiled past and present election data. All this is integrated into a single platform, for doing any cross analysis, in a simple and easy way. Party Analyst strengthens the elections analysis reporting and presentation, with readily built comprehensive reports by dissecting every piece of information on elections.';
+str+='<br><br>';
+str+='<b>Party Analyst to Voter:</b>';
+str+='<br><br>';
+str+='Party Analyst is a unique, first of its kind, Political Social Networking platform, based on locality, for voters and leaders. This is a FREE service to all. People can Register, Connect, Convey, Engage and Discuss all political issues and concern of their constituency and publish grievances or support others grievances to create an impact leading to the solution for a problem.';
+str+='<br><br>';
+str+='Now the internet and social media is playing a major role in everyone’s life. Party Analyst is useful not only in publishing the information, but also in capturing information from all levels of people. Party Analyst makes people also involve in publishing information and their personal opinion about political parties and leaders.';
+str+='<br><br>';
+str+='<b>How Party Analyst is Useful?</b>';
+str+='<br><br>';
+str+='Party Analyst provides various analysis reports to understand the present and past Election Scenarios and also provides various Election Management Tools like Cadre Management, Constituency Management, Problem Management, Profile Management etc. It also provides lot of Services to politicians/aspirants/parties to understand the present and past political scenarios through Surveys and Opinion Polls. It also provides “News Tracking Service” to analyze the news.';
+str+='<br><br>';
+str+='The voter needs a robust social networking platform to connect, convey and engage in a meaningful political discussion about Parties, Leaders, Different Government Bills and Policies and to address his grievances. Party Analyst acts as a social networking platform and it also serves the voters as an election platform that connects them with their locality, leaders, and parties with instant updates and also help them to express their views and share the information to everyone about their party/leader updates, their grievances etc.';
+str+='<p>';
+
+elmt.innerHTML = str;
+	
+	
+	}
+	
+	function contact1(){
+    $(function() {
+        $( "#Window1" ).dialog({ stack: false,
+							    height:'auto',
+								width: 670,
+								modal: true,
+								
+								position: [170,150],
+								title:'Who We Are?',
+								
+								overlay: { opacity: 0.5, background: 'red'}
+								});
+    });
+	var showDialog = function() {
+				$("#Window1").show(); 
+				//open the dialog
+				$("#Window1").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#Window1").dialog("close");
+			}
+			
+ var elmt = document.getElementById("contactWindowDiv_window_inner1");
+
+  var str ='';
+
+str+='<p style="text-align:justify;">';
+str+='"We make sure our grey matter is at work all the time. Our thoughts are constantly at work with integrated ideas".';
+str+='<br><br>';
+str+='Party Analyst is a product owned and operated by IT GRIDS (India) Pvt. Ltd., a Global Information Technology (IT) company offering Product Development, Technology Consulting, IT Services and Independent Testing, with its Development Centre in India. IT Grids (India) Pvt. Ltd. was started in 2010 in Hyderabad. It is being run by a core group of highly qualified young entrepreneurs, with experience working in India and abroad, in wide and multiple industry verticals such as IT, Realty with professional qualification in Engineering, Business Management.';
+str+='<br><br>';
+str+='IT Grids (India) Pvt. Ltd.,  undertook its dream project to develop a centralized Online Political Analysis and Management platform, named PartyAnalyst.com, on Indian Election Analysis, to be useful to Political Parties, Politicians, as well as Voters. In April 2011, www.partyanalyst.com was launched successfully.';
+str+='<br><br>';
+str+='After this launch, IT Grids entered into Political and Election Surveys and successfully delivered results to reputed Politicians and Political Parties. Especially, 2012 Bi-Election Results reflected our survey expectations.';
+str+='<br><br>';
+str+='In 2012, IT Grids started Service oriented practices, which include News Tracking, Selling of individual Constituencies’ reports etc., to support the Political Domain clients.';
+str+='<p>';
+
+elmt.innerHTML = str;
+	
 	}
     </script>
 	
@@ -112,7 +226,7 @@ h5 {
 					 <h4 class="font">Who We Are?</h4>
 					  <img src="images/Who-We-Are.gif" alt="">
 					  <p style="text-align:justify;">
-					    “We make sure our grey matter is at work all the time. Our thoughts are constantly at work with integrated ideas”.
+					    "We make sure our grey matter is at work all the time. Our thoughts are constantly at work with integrated ideas".
 						<br>
 						<br>
 						Party Analyst is a product owned and operated by IT GRIDS (India) Pvt. Ltd., 
@@ -121,12 +235,12 @@ h5 {
 						Development Centre in India. IT Grids (India) Pvt. Ltd. was started in 2010 in Hyderabad. 
 						It is being run by a core group of highly qualified young entrepreneurs, 
 						with experience working in India and abroad, in wide and multiple industry verticals such as IT, 
-						Realty with professional qualification in Engineering, Business Management....
+						Realty with professional qualification ....
 						
 					  </p>
 					      <ul class="pager">
 								<li class="previous">
-									<a href="#" onClick="contact1()"> Read More  &rarr;</a>
+									<a href="javascript:{}" onClick="contact1()"> Read More  &rarr;</a>
 								</li>
    
 							</ul>
@@ -153,7 +267,7 @@ h5 {
 					  
 					   <ul class="pager">
 							<li class="previous">
-								<a href="#" onClick="contact2()"> Read More  &rarr;</a>
+								<a href="javascript:{}" onClick="contact2()"> Read More  &rarr;</a>
 							</li>
    
 						</ul>
@@ -179,7 +293,7 @@ h5 {
 					  
 					   <ul class="pager">
 							<li class="previous">
-								<a href="#" onClick="contact3()"  > Read More  &rarr;</a>
+								<a href="javascript:{}" onClick="contact3()"  > Read More  &rarr;</a>
 								
 								
                         
@@ -249,98 +363,16 @@ h5 {
 			</div>
 
 		
-	<div id="Window3">
-	<!--<img src="images/Core-Com.gif" alt="" style="height: 125px; width: 617px;">-->
-	<p>PartyAnalyst is first of its kind powerfully integrated and enriched Online Election Analysis and Management Platform. It is developed by our team, which contains highly skilled Software Engineers, Designers, Testers and Maintenance Engineers. And our Team has great understanding of this political domain. We provide continuous enchantments, updates and support to our customers.
-
-	<br>
-	<br>
-	We provide different services to our customers, who are in political domain to reach, serve and understand the public. They can manage their cadre as well as their constituency in a simplifier manner. They can also get different analyzed reports to understand the previous election pattern. We also provide them opinion polls and surveys to know public pulse.
-   <br>
-	<br>
-	We offer Election Analysis services to Media, with mammoth collection of compiled past and present election data. This is integrated into one platform for any cross analysis in a very easy and simplified manner.
-     <br>
-	<br>
-	We provide Political Social Networking platform, based on locality, for voters and leaders. This is a FREE service. People can register, connect, convey, engage and discuss all political issues and concern of their constituency and publish grievances or support others grievances to create an impact leading to the solution to a problem.
-<br>
-	<br>
-	The greatest strength of Party Analyst is not only having vast election data but also latest voters’ data. All this is integrated into a single platform, for doing any cross analysis, in a simple and easy way.
-<br>
-	<br>
-	And the last but not the least the Costing Policy, we provide quality services to our customers for a very low costing when compare to our competitors in the market.
-
-</p>
+	<div id="Window3"><div id="window_inner3"></div>
+	
 	</div>
-	<div id="Window2">
-	<!--<img src="images/What We Do.gif" alt="" alt="" style="height: 125px; width: 617px;">-->
-	<p>India is the biggest democratic country in the world. We are an IT super power, from the last 10 to 15 years. 
-	Though Information technology and India are very synonymous, we are not utilizing technology in the Political Process. 
-	To overcome and breakthrough this, Party Analyst is established
-	<br>
-	<br>
-	Party Analyst is a powerful, integrated and enriched online election analysis platform. 
-	The election analysis is cohesively interwoven with remarkable tools and applications 
-	that empower the pillars of the Indian Democracy. It also brings social networking to connect these pillars.
-Party Analyst also provides different services to the participants of Indian Elections
-    <br>
-	<br>
-	Elections, Voters, Politicians, Political Parties and Media are the pillars of the 
-	Democracy. Party Analyst serves the 
-	pillars of Indian Democracy at every stage with Know-Analyse-Act tag line.
-	<br>
-	<br>
-	<b>Party Analyst to Political Parties & Leaders:</b>
-<br>
-<br>
-For Political Parties and Leaders, the technology is not a core business. They always look towards “how to serve and reach the people to win the elections”. Party Analyst makes use of technology, for election analysis and other different tools, to help you, serve and reach the people in a better way.
+	<div id="Window2"><div id="contactWindowDiv_window_inner2"></div>
+	
 
-Parties and Politicians always want the present voters’ pulse and require lot of information on their own party activities and also opposition party activities. Party Analyst provides different services to fulfill these needs.
-  <br>
-  </br>
-  <b>Party Analyst to Media:</b>
-  <br>
-  <br>
-
-Election Analysis services are offered to Print & Electronic Media houses, with vast collection of compiled past and present election data. All this is integrated into a single platform, for doing any cross analysis, in a simple and easy way. Party Analyst strengthens the elections analysis reporting and presentation, with readily built comprehensive reports by dissecting every piece of information on elections.
-<br>
-<br>
-<b>Party Analyst to Voter:</b>
-<br>
-<br>
-
-Party Analyst is a unique, first of its kind, Political Social Networking platform, based on locality, for voters and leaders. This is a FREE service to all. People can Register, Connect, Convey, Engage and Discuss all political issues and concern of their constituency and publish grievances or support others grievances to create an impact leading to the solution for a problem.
-
-Now the internet and social media is playing a major role in everyone’s life. Party Analyst is useful not only in publishing the information, but also in capturing information from all levels of people. Party Analyst makes people also involve in publishing information and their personal opinion about political parties and leaders.
-<br>
-<br>
-<b>How Party Analyst is Useful?</b>
-<br>
-<br>
-Party Analyst provides various analysis reports to understand the present and past Election Scenarios and also provides various Election Management Tools like Cadre Management, Constituency Management, Problem Management, Profile Management etc. It also provides lot of Services to politicians/aspirants/parties to understand the present and past political scenarios through Surveys and Opinion Polls. It also provides “News Tracking Service” to analyze the news.
-
-The voter needs a robust social networking platform to connect, convey and engage in a meaningful political discussion about Parties, Leaders, Different Government Bills and Policies and to address his grievances. Party Analyst acts as a social networking platform and it also serves the voters as an election platform that connects them with their locality, leaders, and parties with instant updates and also help them to express their views and share the information to everyone about their party/leader updates, their grievances etc.
-
-
-	</p>
 	</div>
-	<div id="Window1">
-	<!--<img src="images/Who-We-Are.gif" alt="" style="height: 125px; width: 617px;">-->
-	<p> 
-	“We make sure our grey matter is at work all the time. Our thoughts are constantly at work with integrated ideas”.
- <br>
- <br>
-Party Analyst is a product owned and operated by IT GRIDS (India) Pvt. Ltd., a Global Information Technology (IT) company offering Product Development, Technology Consulting, IT Services and Independent Testing, with its Development Centre in India. IT Grids (India) Pvt. Ltd. was started in 2010 in Hyderabad. It is being run by a core group of highly qualified young entrepreneurs, with experience working in India and abroad, in wide and multiple industry verticals such as IT, Realty with professional qualification in Engineering, Business Management.
-<br>
-<br>
-IT Grids (India) Pvt. Ltd.,  undertook its dream project to develop a centralized Online Political Analysis and Management platform, named PartyAnalyst.com, on Indian Election Analysis, to be useful to Political Parties, Politicians, as well as Voters. In April 2011, www.partyanalyst.com was launched successfully.
-<br>
-<br>
-After this launch, IT Grids entered into Political and Election Surveys and successfully delivered results to reputed Politicians and Political Parties. Especially, 2012 Bi-Election Results reflected our survey expectations.
-<br>
-<br>
-In 2012, IT Grids started Service oriented practices, which include News Tracking, Selling of individual Constituencies’ reports etc., to support the Political Domain clients.
-
-	</p>
+	<div id="Window1"><div id="contactWindowDiv_window_inner1"></div>
+	
+	
 	</div>
 </div>
 
