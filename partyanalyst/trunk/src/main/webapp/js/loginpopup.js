@@ -8,7 +8,7 @@ str+='</div>';
 
 str+='<div class="span3 well" style="border: 5px solid rgb(227, 227, 227); width: 360px;align:center">';
 str+='<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">';
-str+='<div id ="getLoginErrorMessageDiv" style="color:red; margin-left: 55px;">';
+str+='<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 55px;">';
 str+='</div>';
 //str+='<div id="validate"></div>';
 str+='<div class="input-prepend" style="margin-left: 55px;">';
@@ -18,7 +18,7 @@ str+='<div  class="input-prepend" style="margin-left: 55px;">';
 str+='<span class="add-on"><i class="icon-lock"></i></span><input type="password"  class="span2" class="input-small" placeholder="Password" name="password" style="width: 200px;position: static;" id="passWord_Id"/>';
 str+='</div>';
 str+='<div class = "span3">';
-str+='<a href="javascript:{}" onclick="showForgotPasswordPanel()" style="color: rgb(1, 116, 223); font-size: small; margin-left: 50px;">Forgot Password</a>';
+str+='<a href="javascript:{}" onclick="showForgotPasswordPanelForPopup()" style="color: rgb(1, 116, 223); font-size: small; margin-left: 50px;">Forgot Password</a>';
 str+='<input id="signin" class="submitButton btn btn btn-primary" type="submit" style="margin-left: 180px; margin-top: -20px; height: 25px; width: 85px; padding-top: 2px;" value="Sign In"/>';
 str+='</div>';
 str+='<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">';
@@ -57,7 +57,7 @@ $("#login_window_inner").html(str);
 
 function ajaxCallForLoginPopup(){
 
-var validInd=handleErrorMessage();
+var validInd=handleErrorMessageForpopup();
 
 if(!validInd)
 	return false;
@@ -106,7 +106,7 @@ function callHomePageAjax11(jsObj,url){
 									//alert('else');
 									$("#ajaxcallimage").hide();
 
-									$("#getLoginErrorMessageDiv").html('Invalid username or password! Please try again!');
+									$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
 								}
 								
 							}	
@@ -132,12 +132,12 @@ function callHomePageAjax11(jsObj,url){
 
 // starting validations for username and password
 
- function handleErrorMessage()
+ function handleErrorMessageForpopup()
                 { 
 				 
                  var emailId = document.getElementById("userName").value;
                  var securityName = document.getElementById("passWord_Id").value;
-                 var errorDivEle = document.getElementById("getLoginErrorMessageDiv");
+                 var errorDivEle = document.getElementById("LoginErrorMessageDiv");
 	             var eFlag = false;
 
 	             var str = '<font color="red">';
@@ -165,7 +165,7 @@ function callHomePageAjax11(jsObj,url){
 
 // ending validations for username and password
 // starting  password recovery
-	function showForgotPasswordPanel()
+	function showForgotPasswordPanelForPopup()
    {
 //alert("password");
 	//document.getElementById("validate").style.display = 'none';
