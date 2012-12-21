@@ -498,7 +498,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	
 	public List findFamiliesVotersInfoForPanchayat(Long id,Long publicationDateId) {
 		Object[] params = {publicationDateId,id};
-		return getHibernateTemplate().find("select  model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age,model.voter.cast,model.booth.boothId ,model.voter.voterId " +
+		return getHibernateTemplate().find("select model.voter.name,model.voter.houseNo, model.voter.age,model.voter.cast,model.booth.boothId ,model.voter.voterId " +
 				" from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? and " +
 				" model.booth.panchayat.panchayatId = ? order by model.voter.voterId ",params) ;
 	
@@ -506,7 +506,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	
 	public List findFamiliesVotersInfoForBooth(Long id,Long publicationDateId) {
 		Object[] params = {publicationDateId,id};
-		return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+		return getHibernateTemplate().find("select model.voter.name, model.voter.houseNo, model.voter.age, " +
 				"model.voter.cast,model.booth.boothId,model.voter.voterId from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? " +
 				" and model.booth.boothId = ?",params) ;
      }
