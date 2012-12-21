@@ -1,5 +1,6 @@
 function showInitialImpEventsAndDates(eventsarr,type,task)
-	{	
+	{
+		//alert("showInitialImpEventsAndDates");
 		var divElmt;
 		if(type == "impDates")
 			var elmt = document.getElementById("cadreImpDatesBodyDiv");
@@ -45,7 +46,10 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 				
 			}
 			if(type == "impDates")
+			{
 			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
+			}
+			//alert("arrow");
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="'+requestPath+'/images/icons/arrow.png"/></td>';
 			str+='<td>'+eventsarr[i].title+'</td>';	
@@ -251,11 +255,11 @@ function buildNewImpDatePopup()
 		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();		
 		var divChild = document.createElement('div');
 		divChild.setAttribute('id','newImpDateDiv');
-		//divChild.setAttribute('class','yui-skin-sam');
+		divChild.setAttribute('class','yui-skin-sam');
 		var eventStr='';
 		eventStr+='<div class="hd"></div> ';
 		eventStr+='<div class="bd">'; 
-		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
+		eventStr+='<div id="errorMesgDIV"></div>';
 		eventStr+='<table width="200%" class="bordered-table">';
 		eventStr+='<tr>';
 		eventStr+='<th>Important Date Title</th>';
@@ -296,10 +300,11 @@ function buildNewImpDatePopup()
 		newDateDialog = $('#newImpDateDiv').dialog({
 			width: 600,
 			buttons: {
-				"Cancel": function(){
-					$(this).dialog("close");
-				},"Create New Date": function(){
+				"Create New Date": function(){
+					checkDate("impDate");
 					handleImpDateSubmit();
+				},"Cancel": function(){
+					$(this).dialog("close");
 				}
 			},
 			'title':'New Date',
@@ -309,11 +314,13 @@ function buildNewImpDatePopup()
 		$(".ui-dialog-buttonset button").attr("class", "btn btn-primary");
 		$(".ui-dialog-title-eventDateDetails").attr("class","Cambria,'Abel',sans-serif,Helvetica");
 		$("#ImpStartDateText_new" ).datepicker({
-			dateFormat: "dd/mm/yy"
+			dateFormat: "dd/mm/yy",
+			minDate:new Date()
 		});
 		$("#ImpEndDateText_new").val(date);
 		$("#ImpEndDateText_new" ).datepicker({
-			dateFormat: "dd/mm/yy"
+			dateFormat: "dd/mm/yy",
+			minDate:new Date()
 		});
 		$("#ImpStartDateText_new").val(date);
 	
@@ -349,6 +356,10 @@ function buildNewImpDatePopup()
 	
 	function handleImpDateSubmit()
 	{	
+	
+		var flag = checkDate("impDate");
+		if(flag)
+		return;
 		var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 		var ImpstartDateVal = document.getElementById("ImpStartDateText_new").value;		
 		var ImpendDateVal = document.getElementById("ImpEndDateText_new").value;		
@@ -371,7 +382,6 @@ function buildNewImpDatePopup()
 			   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
 			  return;
 			}
-
 			 if(repeatFreqVal == "No Repeat")
 			{
 				ImpendDateVal = ImpstartDateVal;
@@ -388,9 +398,11 @@ function buildNewImpDatePopup()
 		selectedDateObj.isDeleted=repeatFreqVal;
 		selectedDateObj.task="createImpDateEvent";		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(selectedDateObj);
-		var url =requestPath+'/createEventAction.action?'+rparam;		
+		var url =requestPath+'/createEventAction.action?'+rparam;
 		callAjax(selectedDateObj,url);
-		$('#newImpDateDiv').dialog("close");
+		$('#newImpDateDiv').dialog("close");		
+		
+		
 	}
 	function callAjax(jsObj,url)
 	{			
@@ -403,7 +415,8 @@ function buildNewImpDatePopup()
 								if(jsObj.task=="createImpDateEvent")
 								{
 									
-									addCreatedEvent(myResults,jsObj);			
+									addCreatedEvent(myResults,jsObj);	
+																		
 									alert("Important Date created successfully");
 								}
 																
@@ -476,7 +489,7 @@ function buildNewImpDatePopup()
 		
 		if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
 		{			
-			str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv">';	
+			str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv">';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+')"> X </span>';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(this.id,\'ImpDate_'+results[0].importantDateId+'\',\'impDate\')">';
 			str+='<img height="10" width="10" src="'+requestPath+'/images/icons/pencil.png"/> </span>';
@@ -845,12 +858,11 @@ function buildNewImpDatePopup()
 		});
 	
 	}
+	
 	function dateCheck(task)
 	{
 		fromDate = $("#ImpStartDateText").val();
 		toDate  = $("#ImpEndDateText").val();
-		/*var d1 = Date.parse(startdate);
-		var d2 = Date.parse(enddate) ;*/
 
 	if(fromDate.length > 0 && toDate.length > 0 )
 	{
@@ -874,14 +886,37 @@ function buildNewImpDatePopup()
 			
 		}
 	}
+	}
+	function checkDate(task)
+	{
+		startDate = $('#ImpStartDateText_new').val();
+		endDate = $('#ImpEndDateText_new').val();
 		
+      var dt1  = parseInt(startDate.substring(0,2),10);
+      var mon1 = parseInt(startDate.substring(3,5),10);
+      var yr1  = parseInt(startDate.substring(6,10),10);
+      var dt2  = parseInt(endDate.substring(0,2),10);
+      var mon2 = parseInt(endDate.substring(3,5),10);
+      var yr2  = parseInt(endDate.substring(6,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
+
+     if(date2 < date1)
+		{ 
+		
+		 $('#errorMesgDIV').html("<b><font color='red'>RepeteUntil Date GreterThan ImpDate</font></b>");
+		 return true;
+		}
+	
+		
+	return 	false;
 }
 function cancelButton()
 	{
 		$('#eventDateDetails').dialog("close");
 	}	
-	function showDateCal(id,val)
-	{	
+function showDateCal(id,val)
+	{
 		var date = (new Date().getMonth()+1)+"/"+new Date().getDate()+"/"+ new Date().getFullYear();
 		
 		if(dateCalendar)
