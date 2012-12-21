@@ -85,68 +85,82 @@ form div label {
 }
  
  </style>
+ 
+ <script>
+ function clearSuccessMsg(){
+	
+	var probSuccessMsg = document.getElementById("probSuccessMsgDiv");
+	if(probSuccessMsg !=null)
+	  probSuccessMsg.innerHTML='';
+}
+ </script>
 </head>
-<body align="center" style="position: relative;">
+<body style="position: relative;">
 <br><br>
 
 <form id="voterDetailsForm" name="voterDetailsForm" method="POST" action="voterEditAction.action">
 
+<c:if test="${requestScope.resultStr=='success'}">
+<div id="probSuccessMsgDiv">
+<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Updated Successfully...</DIV>
+</div>
+</c:if>
+
 <input type="hidden" name="voterId" value="${voterHouseInfoVO.voterId}"/>
 <input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
-            <fieldset style="width: 335px;">
-                <legend class="legendClass">Voter Information</legend>
- 
-            <div style="width: 380px;">
-                <span class="spanClass">Voter Name:</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/>
-            </div>
-			 
-            <div style="width: 380px;"> 
-                 <span class="spanClass">Gender:</span>
-                <input type="text" style="margin-left: 46px; width: 165px;"" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>
-				<span id="emailErrMsg" class="error" style="float:right;margin-right:18px;"></span>
-            </div>
+<div id="mainDiv" style="float: right;">
+ <fieldset style="width: 335px;">
+       <legend class="legendClass">Voter Information</legend>
+ 		<div>
+			<label for="name">Voter Name:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/>
+		</div>
 
-            <div style="width: 380px;">
-                 <span class="spanClass">Age :</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>
-            </div>
- 
-            <div style="width: 380px;">
-                <span class="spanClass">House No :</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/>
-            </div>
+		<div>
+		<label for="name">Gender:</label> 
+			<input type="text" style="width: 165px;"" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>
+		</div>
+		
+		<div>
+		<label for="name">Age:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>
+		</div>
+		
+		<div>
+		<label for="name">House No:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/>
+		</div>
+		
+		<div>
+		<label for="name">Guardian Name:</label> 
+			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/>
+		</div>
+		
+		<div>
+		<label for="name">RelationShip:</label>
+			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
+		</div>
+		
+		<div>
+		<label for="name">Caste:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/>
+		</div>
+		
+		<div>
+		<label for="name">Caste Category:</label>
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>
+		</div>
 
-			<div style="width: 380px;">
-                 <span class="spanClass">GuardianName :</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/>
-            </div>
-
-			<div style="width: 380px;">
-                 <span class="spanClass">RelationShip :</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
-            </div>
-			
-			<div style="width: 380px;">
-                 <span class="spanClass">Caste :</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/>
-            </div>
-			
-			<div style="width: 380px;">
-                 <span class="spanClass">CasteCategory :</span>
-                <input type="text" style="margin-left: 46px; width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>
-            </div>
-			
-			<div style="width: 380px;">
-                 <span class="spanClass">Party :</span>
-                <s:select theme="simple" style="margin-left: 46px; width: 165px;"
-				label="Select  party" name="voterHouseInfoVO.partyId" 
+		<div>
+		<label for="name">Party Name:</label><s:select theme="simple" style="width: 169px;"
+		label="Select  party" name="voterHouseInfoVO.partyId" 
 				id="partyId" list="partyGroupList" 
 				listKey="id" listValue="name"/>
-            </div>
-			 </fieldset>
+		</div>
+	</fieldset>
 <!--
+<input type="hidden" id="windowTaskId" name="windowTask" value="update_existing"/>
 Name:<input type="text" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/><br>
 Gender:<input type="text" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/><br>
 Age:<input type="text" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/><br>
@@ -155,10 +169,14 @@ Guardian Name:<input type="text" name="voterHouseInfoVO.gaurdian" value="${voter
 RelationShip:<input type="text" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/><br>
 Caste:<input type="text" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/><br>
 CasteCategory<input type="text" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/><br>
+onclick="clearSuccessMsg()"
 -->
- <div style="float:right;">
-<input class="btn btn-success" type="submit" value="Update">
+<div style="float:right;">
+<input class="btn btn-success" type="submit" value="Update" >
 </div>
+
+</div>
+ 
 </form>
 
 </body>
