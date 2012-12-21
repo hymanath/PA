@@ -170,6 +170,7 @@ function callHomePageAjax11(jsObj,url){
 //alert("password");
 	//document.getElementById("validate").style.display = 'none';
 	$("#forgot_password_window1").dialog({
+		autoOpen:false,
 		resizable:false,
 		width: 600,
 		minHeight:200,
@@ -226,6 +227,8 @@ function callHomePageAjax11(jsObj,url){
 		 
 		$("#forgot_password_window1").dialog("destroy");
 	});
+
+	$("#forgot_password_window1").dialog("open");
 
 }
 // ending password recovery
