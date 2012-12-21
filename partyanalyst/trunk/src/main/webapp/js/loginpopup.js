@@ -2,8 +2,8 @@
 function openDialogForLoginWindow(){
 
 var str='';
-str+='<div id="forgot_password_window" style="background-color: #C7CFD2;">';
-str+='<div id="forgot_password_window_inner" style="font-size:0.8em"></div>';
+str+='<div id="forgot_password_window1" style="background-color: #C7CFD2;">';
+str+='<div id="forgot_password_window_inner1" style="font-size:0.8em"></div>';
 str+='</div>';
 
 str+='<div class="span3 well" style="border: 5px solid rgb(227, 227, 227); width: 360px;align:center">';
@@ -169,16 +169,16 @@ function callHomePageAjax11(jsObj,url){
    {
 //alert("password");
 	//document.getElementById("validate").style.display = 'none';
-	$("#forgot_password_window").dialog({
+	$("#forgot_password_window1").dialog({
 		resizable:false,
 		width: 600,
 		minHeight:200,
 		show:'slide',
 		modal:true
 	});	
-	 $("#forgot_password_window").closest(".ui-dialog").find(".ui-dialog-titlebar").hide();
+	 $("#forgot_password_window1").closest(".ui-dialog").find(".ui-dialog-titlebar").hide();
 
-	var elmt = document.getElementById("forgot_password_window_inner");
+	var elmt = document.getElementById("forgot_password_window_inner1");
 
 	var str = '';
 	str += '<div id="feedback_window_head">Forgot Password ?</div>';
@@ -224,7 +224,7 @@ function callHomePageAjax11(jsObj,url){
 
 	oPushButton2.on("click",function(){
 		 
-		$("#forgot_password_window").dialog("destroy");
+		$("#forgot_password_window1").dialog("destroy");
 	});
 
 }
@@ -361,7 +361,7 @@ function showDetails1(results)
 		str+='<div style="color:red"><b> Username Doesnot exist </b></div>';
 	}
 	else{
-		$("#forgot_password_window").dialog("destroy");
+		$("#forgot_password_window1").dialog("destroy");
 		afterPasswordSubmit1(results.userName,results.email);
 		return;
 	}
@@ -371,7 +371,7 @@ function showDetails1(results)
 
 function afterPasswordSubmit1(username,email){
 
- $("#forgot_password_window").dialog({
+ $("#forgot_password_window1").dialog({
 			resizable:false,
 			width: 600,
 			minHeight:150,
@@ -379,10 +379,10 @@ function afterPasswordSubmit1(username,email){
 			modal:true
 		});	
 		//$(".ui-dialog-titlebar").hide();
-		 $("#forgot_password_window").closest(".ui-dialog").find(".ui-dialog-titlebar").hide();
+		 $("#forgot_password_window1").closest(".ui-dialog").find(".ui-dialog-titlebar").hide();
 
 
-		var elmt = document.getElementById("forgot_password_window_inner");
+		var elmt = document.getElementById("forgot_password_window_inner1");
 		
 		var str = '';
 		str += '<div id="feedback_window_head">ForgotPassword?</div>';
@@ -420,7 +420,7 @@ function afterPasswordSubmit1(username,email){
 		
 		oPushButton2.on("click",function(){
 			//$(".ui-dialog-titlebar").show();
-			$("#forgot_password_window").dialog("destroy");
+			$("#forgot_password_window1").dialog("destroy");
 		});
 		
 		
@@ -442,7 +442,7 @@ function afterPasswordSubmit1(username,email){
 		var oPushButton2 = new YAHOO.widget.Button("OkButton");
 
 		oPushButton2.on("click",function(){
-			$("#forgot_password_window").dialog("destroy");
+			$("#forgot_password_window1").dialog("destroy");
 		});
 		
 		}
@@ -523,7 +523,7 @@ function showPasswordStatus1(results)
 
 function afterPasswordSubmitToUser1(username,email){
 	
-		var elmt = document.getElementById("forgot_password_window_inner");
+		var elmt = document.getElementById("forgot_password_window_inner1");
 		var username = document.getElementById("");
 
 
@@ -546,7 +546,7 @@ function afterPasswordSubmitToUser1(username,email){
 		var oPushButton2 = new YAHOO.widget.Button("OkButton");
 
 		oPushButton2.on("click",function(){
-			$("#forgot_password_window").dialog("destroy");
+			$("#forgot_password_window1").dialog("destroy");
 		});
 }
 

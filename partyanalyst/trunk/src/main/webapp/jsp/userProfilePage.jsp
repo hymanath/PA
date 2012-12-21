@@ -14,6 +14,7 @@
 <script type="text/javascript" src="js/userProfile/impDates.js"> </script>
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />

@@ -17,8 +17,6 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
-
-
 <style>
 	.widget .widget-block{
 		padding-bottom: 20px;
