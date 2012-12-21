@@ -20,10 +20,10 @@
 	<title><decorator:title default="Party Analyst"/></title>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
-	<link href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	<link type="text/css" href="styles/menu.css" rel="stylesheet" />
 	<link href="styles/newhome_styles.css" rel="stylesheet" type="text/css" />
-		
+	
 
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
