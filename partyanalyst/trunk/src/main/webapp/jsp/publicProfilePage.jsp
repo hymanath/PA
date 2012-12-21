@@ -268,11 +268,11 @@ padding:5px 20px;
 					<li class="imgLi">
 						<a href="publicProfile.action?profileId=${friendsDetails.registrationID}"></a>
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
-									<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
+									<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
 									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
 								</c:if>
 						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
-								<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
+								<img height="50" width="55" src="/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
 						</c:if>
 						
 						<span>${friendsDetails.firstName} ${friendsDetails.lastName}</span>
@@ -309,7 +309,7 @@ padding:5px 20px;
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
 								
-								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/>
+								<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}"><img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image" /></a>
 								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
