@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -30,10 +31,21 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private ResultStatus result;
 	private IStaticDataService staticDataService;
 	List<SelectOptionVO> partyGroupList;
+	private String resultStr;
+	//private String windowTask = null;
+	
 	
 	
 	public List<SelectOptionVO> getPartyGroupList() {
 		return partyGroupList;
+	}
+
+	public String getResultStr() {
+		return resultStr;
+	}
+
+	public void setResultStr(String resultStr) {
+		this.resultStr = resultStr;
 	}
 
 	public void setPartyGroupList(List<SelectOptionVO> partyGroupList) {
@@ -107,6 +119,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	
 	public String execute() throws Exception{
 		
+		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 /*		HttpSession session = request.getSession();
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -129,6 +142,8 @@ public String putVoterDetails(){
 	result=votersAnalysisService.updateVoterDetails(voterHouseInfoVO);
 	request.setAttribute("voterId", voterHouseInfoVO.getVoterId());
 	System.out.println(request);
+	resultStr = SUCCESS;
+	request.setAttribute("resultStr", resultStr);
 	return Action.SUCCESS;
 
 }
@@ -141,6 +156,7 @@ public String putVoterDetails(){
 	
 	public void prepare() throws Exception {
 	String voterId = request.getParameter("voterId");
+	
 	HttpSession session = request.getSession();
 	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 	Long userId = user.getRegistrationID();
