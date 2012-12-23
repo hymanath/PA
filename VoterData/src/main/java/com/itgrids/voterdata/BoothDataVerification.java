@@ -53,7 +53,15 @@ public class BoothDataVerification {
                 	if(i == 1)
                 	{
                 		try{
-                		pdfPartNo = Integer.parseInt(m.group(1).replaceAll("\\r\\n","").trim());
+                		String partNoStr = m.group(1).replaceAll("\\r\\n","").trim();
+                		
+                		if(partNoStr.contains(" "))
+                		{
+                			pdfPartNo = Integer.parseInt(partNoStr.substring(partNoStr.indexOf(" "), partNoStr.length()).trim());
+                		}
+                		else
+                			pdfPartNo = Integer.parseInt(m.group(1).replaceAll("\\r\\n","").trim());
+                		
                 		}catch (Exception e) {
                 			System.out.println("Exception Occured while processing File - "+input.getName());
                 			sb2.append("Exception Occured while processing File - "+input.getName());
