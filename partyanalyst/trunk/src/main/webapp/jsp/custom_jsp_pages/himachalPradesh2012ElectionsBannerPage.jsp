@@ -185,14 +185,14 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 
 <span style="font-family:verdana;font-size:13px;">The Election Commission of India released Notification for General Election of <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b>. <b><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></b> Total Constituencies 68ACs Date of Poll in 4.11.2012 and Counting of Votes in 20.12.2012.</span><br /><br />-->
 <!-- Analysis Tools Start-->
-<div class="breadcrumb election-analyis-tools">
+<div class="breadcrumb election-analyis-tools" style="width: 885px; margin-left: -5px; height: 228px;">
 <h3>Live Results Analysis Tools</h3>
 <div class="row-fluid">
 
 
-<div class="span4 popover" >
-<h4 class="popover-title">Compare Live <small class="badge">vs</small> Previous Results</h4>
-<p class="popover-content">
+<div class="span4 popover" style="width: 275px; left: -9px;">
+<h4 class="popover-title" style="width: 257px;">Compare Live <small class="badge">vs</small> Previous Results</h4>
+<p class="popover-content" style="width: 262px;">
 Compare Present election live results with previous election results,  
 Analyze the party's performances in gaining and losing of seats from other parties 
 Party's performances in the new constituencies.
@@ -201,15 +201,15 @@ Party's performances in the new constituencies.
 
 </div>
 
-<div class="span4 popover">
-<h4 class="popover-title">State Ministers Trend </h4>
-<p class="popover-content">
+<div class="span4 popover" style="width: 275px;">
+<h4 class="popover-title" style="width: 262px;">State Ministers Trend </h4>
+<p class="popover-content" style="width: 264px;">
 Analyze the present status of Himachal Pradesh state ministers for 2007-2012 duration.
 <a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=196&electionType=2&stateId=9&eventType=ministers">Analyze Now !!</a>
 </p>
 
 </div>
-<div class="span4 popover">
+<div class="span4 popover" style="width: 279px; left: 13px;">
 <h4 class="popover-title">Key Candidates Present Status</h4>
 <p class="popover-content">
 Analyze the present status of key candidates from Himachal Pradesh State
