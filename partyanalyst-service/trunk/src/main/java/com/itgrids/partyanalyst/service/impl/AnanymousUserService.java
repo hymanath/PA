@@ -2823,7 +2823,9 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 	if(log.isDebugEnabled())
 		log.debug("Exception raised in saveUserFavouriteLink service method");
 	
+	String queryString1 = queryString.replaceAll(",", "&");
 	
+	queryString1 = queryString1.substring(0, queryString.length() - 1);
 	try{		
 		
 		List<FavoriteLinkPage> favouriteLinkList = favoriteLinkPageDAO.getFavoriteLinkByActionName(link);		
@@ -2839,9 +2841,9 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 		
 			String finalURL = "";
 			if(environment.equalsIgnoreCase("live"))
-			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString;
+			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString1;
 			else
-			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString;
+			  finalURL = "http://partyanalyst.com/"+link+".action?"+queryString1;
 			
 			List<UserFavoriteLinks> userFavouriteLinkList = userFavoriteLinksDAO.checkForAlreadyExistedOrNot(userId,finalURL);
 			
@@ -2854,9 +2856,7 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			userFavoriteLinks.setUser(userDAO.getUserByUserId(userId));
 			userFavoriteLinks.setFavoriteLinkPage(favoriteLinkPage);
 			
-			queryString = queryString.replaceAll(",", "&");
 			
-			queryString = queryString.substring(0, queryString.length() - 1);
 			
 			 userFavoriteLinks.setUrl(finalURL);
 				
