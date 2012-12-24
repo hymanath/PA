@@ -134,6 +134,12 @@ margin:3px;
 #profileUserName{text-transform: capitalize;}
 .subscrStreamingMoreCls{display:none;}
 .prinfo .titleCls{margin-left: 16px;margin-top: 10px;}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 1em;
+    height: 30px;
+}
 </style>
 </head>
 <body>
