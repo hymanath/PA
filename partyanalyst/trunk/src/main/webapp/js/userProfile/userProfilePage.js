@@ -71,7 +71,7 @@ $("document").ready(function(){
 		var month = date.getMonth();
 		var nameOfMonth = monthname[month];
 		var year = date.getFullYear();	
-		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Importent Dates</b>');
+		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 	});
 	
 	$("#settings").click(function(){
