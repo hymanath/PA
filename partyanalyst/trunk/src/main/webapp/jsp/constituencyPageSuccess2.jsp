@@ -4000,7 +4000,8 @@ detailedElectionResult();
  <script>
 function savefavouriteLink(){
 
-	var pageTitle = '${constituencyDetails.constituencyName}'+'${constituencyDetails.constituencyType}'+' District News,Constituencies,MLA, MP,Details,  Elections Results,Parties Performance,MPTC, ZPTC, Municipality, Corporation Election Results';
+	//var pageTitle = '${constituencyDetails.constituencyName}'+'${constituencyDetails.constituencyType}'+' District News,Constituencies,MLA, MP,Details,  Elections Results,Parties Performance,MPTC, ZPTC, Municipality, Corporation Election Results';
+	var pageTitle = '${constituencyDetails.constituencyName}'+'${constituencyDetails.constituencyType}'+' Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results';
 
 	environment = '<%=environment%>';
 
