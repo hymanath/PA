@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +67,15 @@ public class BoothDataReader {
                     sb.indexOf("Draft Photo Electoral Roll",100);
                     
                     sb.delete(sb.indexOf("Draft Photo Electoral Roll",100), sb.length()-1);
-                    sb.delete(0,sb.indexOf("Male Female Total")-1);
+                    sb.delete(0,sb.indexOf("Male Female Total"));
+                    String str = sb.toString();
+                    StringTokenizer tokenizer = new StringTokenizer(str,"\r\n");
+                    
+                    while(tokenizer.hasMoreTokens())
+                    {
+                    	System.out.println(tokenizer.nextToken());
+                    }
+                    
                     /*String ssb = sb.toString();
                     ssb.replaceAll("\n"," ");
                     sb = new StringBuilder(ssb);*/
