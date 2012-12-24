@@ -321,12 +321,17 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
 				<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
                 <value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
-                <value>com.itgrids.partyanalyst.model.UserVoterDetails</value>		    			    		
+                <value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
+                <value>com.itgrids.partyanalyst.model.VoterTemp</value>		    			    		
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="voterTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTempDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="userVoterDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
