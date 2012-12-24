@@ -804,6 +804,24 @@ $(".unreadfont").live("click",function(){
 		browser1.focus();
 	});
 
+	$(".constituencyunSubscrBtn").live("click",function(){
+	var id = $(this).closest('div').find('.hiddenVarId').val();
+	var timeST = new Date().getTime();
+	
+	var jsObj=
+	{		
+            time : timeST,	
+			id: id,
+			task: "constituencyUnsubscriptionDetails",
+			
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "constituencyEmailAlertsForUserAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+  
+		
+	});
 
 });//End ready
 
@@ -1012,15 +1030,10 @@ function callAjax1(jsObj,url){
 						showPostedReasons(jsObj,results);
 								
 					}
-					else if(jsObj.task == "unsubscriptionDetails")
+					else if(jsObj.task == "unsubscriptionDetails" || jsObj.task == "constituencyUnsubscriptionDetails"|| jsObj.task == "subscriptionDetails")
 					{
 						$(".subscriptionsLink").trigger("click");
 					}
-					else if(jsObj.task == "subscriptionDetails")
-					{
-						$(".subscriptionsLink").trigger("click");
-					}
-
 					else if(jsObj.task == "getAllPostedProblems")
 						showAllPostedProblems(jsObj,results);
 					else if(jsObj.task == "getAllPostedReasons")
@@ -2218,7 +2231,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass('specialPagSubscrTemplDiv');
 		templateClone.find('.titleCls').html(''+constituencies[i].name+'');
-		templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
+		templateClone.find('.btnClass').html('<a href="javascript:{}" class="constituencyunSubscrBtn">UNSUBSCRIBE</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
 		templateClone.appendTo('#userConstituencySubscriptionsDiv');
 	}
