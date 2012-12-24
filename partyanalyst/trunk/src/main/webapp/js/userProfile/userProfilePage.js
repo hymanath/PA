@@ -1926,7 +1926,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 
 		templateClone.find('.headingCls').html('<h5>'+data[i].commentedBy+'</h5> Posted a Political Reason for '+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
 		templateClone.find('.candidateImg').html('<img src="'+imageStr+'.jpg" onerror="setDefaultImage(this)" style="width:100px;height:100px;vertical-align:middle;"></img>');
-		templateClone.find('.politicalReaCls').html('<b>Political Reason:</b> '+data[i].commentCategory+'');
+		templateClone.find('.politicalReaCls').html('<font style="font-weight:bold;font-size:13px;">Political Reason : </font>'+data[i].commentCategory+'');
 		
 		if(data[i].imgURL == null)
 			templateClone.find('.postedBy').html('<a href="publicProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
@@ -1934,7 +1934,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 			templateClone.find('.postedBy').html('<img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img>');
 			
 		
-		templateClone.find('.politicalDescCls').html('<b>Description:</b> '+data[i].commentDesc+'');
+		templateClone.find('.politicalDescCls').html('<font style="font-weight:bold;font-size:13px;">Description : </font>'+data[i].commentDesc+'');
 		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
 		/*templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');*/
 		templateClone.appendTo('.placeholderCenterDiv');
