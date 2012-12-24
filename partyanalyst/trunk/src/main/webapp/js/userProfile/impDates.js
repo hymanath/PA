@@ -1,6 +1,6 @@
 function showInitialImpEventsAndDates(eventsarr,type,task)
 	{
-		//alert("showInitialImpEventsAndDates");
+		
 		var divElmt;
 		if(type == "impDates")
 			var elmt = document.getElementById("cadreImpDatesBodyDiv");
@@ -9,7 +9,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		
 		for(var i in eventsarr)
 		{			
-		//alert("for");
+		
 			if(type == "impDates" && eventsarr[i].impDate)
 			{	
 				var sDayobj = getDateTime(eventsarr[i].impDate);				
@@ -50,7 +50,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 			{
 			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
 			}
-			//alert("arrow");
+			
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="'+requestPath+'/images/icons/arrow.png"/></td>';
 			str+='<td>'+eventsarr[i].title+'</td>';	
@@ -221,27 +221,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
 		callAjax(jsObj,url);
 	}
-	/*function refreshPageHandler(type,args,obj)
-	{
-		alert("refreshPageHandler");
-		var current = args[1];
-		var date = new Date(current);
-		var month = date.getMonth();
-		var year = date.getFullYear();	
-		dateObj.dateVal = '1';
-		dateObj.monthVal = date.getMonth();
-		dateObj.yearVal = date.getFullYear();
-		var nameOfMonth = monthname[month];
-		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
-		var jsObj={
-					monthVal:month,
-					yearval:year,
-					task:'presentMonthEvents'
-				  };
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
-		callAjax(jsObj,url);
-	}*/
+	
 	
 var	selectedDateObj={
 							importantDateId:"",
@@ -460,13 +440,25 @@ function buildNewImpDatePopup()
 								else if(jsObj.task=="deleteEvent" || jsObj.task=="deleteImpDate")
 								{
 									removeDeletedElement(myResults,jsObj);	
+									var date = new Date();
+									
+									var jsObj1={
+									monthVal:date.getMonth(),
+									yearval:date.getFullYear(),
+									task:'nextMonthEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+									var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
+									
+									callAjax(jsObj1,url);
 								}
 								else if(jsObj.task=="showSelectedDateEvent_nonEditable")
-								{									
+								{				
 									buildUnEditableSelectedDateEventPopup(myResults,jsObj);
 								}	
 								else if(jsObj.task=="showSelectedDateEvent")
 								{
+									
 									buildSelectedDateEventPopup(myResults,jsObj);
 								}
 								else if(jsObj.task=="subscribe")
@@ -483,8 +475,19 @@ function buildNewImpDatePopup()
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","subscribe");
 								}
 								else if(jsObj.task=="updateCreateEvent" || jsObj.task=="updateImpDateEvent")
-								{		
+								{	
+									
 									addCreatedEvent(myResults,jsObj);	
+									var date = new Date();
+									
+									var jsObj1={
+									monthVal:date.getMonth(),
+									yearval:date.getFullYear(),
+									task:'nextMonthEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+									var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
+									callAjax(jsObj1,url);
 								}
 										
 							}catch (e) {   
@@ -526,7 +529,9 @@ function buildNewImpDatePopup()
 			str+='<img height="10" width="10" src="'+requestPath+'/images/icons/pencil.png"/> </span>';
 		}
 		if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
+		{
+		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';	
+		}		
 		str+='<tr>';
 		str+='<td><img height="10" width="10" src=""'+requestPath+'/images/icons/arrow.png"/></td>';
 		
@@ -626,7 +631,7 @@ function buildNewImpDatePopup()
 	
 	function showSelectedDateEvent(elmtId,eType,taskType)
 	{
-		//alert("showSelectedDateEvent");
+		
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
 		if(taskType == "impEvent"){
            var browser2 = window.open("createNewEvent.action?eventId="+eid,"cadreCreateNewEvent","scrollbars=yes,height=600,width=700,left=150,top=100");	
@@ -651,24 +656,20 @@ function buildNewImpDatePopup()
 	}
 	function deleteSelectedEvent(type,eId)
 	{	
-	alert("deleteSelectedEvent");
+	
 		var jsObj;	
 			if(type == 'impDate')
 			{
 				jsObj = selectedDateObj;
 				jsObj.importantDateId = eId;
 				jsObj.task="deleteImpDate";
-				var status=confirm("Are you sure want to delete this Important Date");
-				
+				var status=confirm("Are you sure want to delete this Important Date");	
 			}		
 			if(status==false){
  				return;
 			}
-
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		
-		var url =requestPath+'/deleteEventAction.action?'+rparam;
-			
+		var url =requestPath+'/deleteEventAction.action?'+rparam;	
 		callAjax(jsObj,url);
 			
 	}
@@ -684,8 +685,7 @@ function buildNewImpDatePopup()
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
-		//buildCalendarControl();
-		//showInitialImpEventsAndDates(impDates,'impDates',"");		
+		
 	}
 	
 	function buildUnEditableSelectedDateEventPopup(results,jsObj)
@@ -912,7 +912,7 @@ function buildNewImpDatePopup()
 
      if(date2 < date1)
 		{ 
-		 $('#errorMesgDIV').html("<b><font color='red'>RepeteUntil Date GreterThan ImpDate</font></b>");
+		 $('#errorMesgDIV').html("<b><font color='red'>Enter a Valid Date</font></b>");
 		}
 	else
 		{	
@@ -938,7 +938,7 @@ function buildNewImpDatePopup()
      if(date2 < date1)
 		{ 
 		
-		 $('#errorMesgDIV').html("<b><font color='red'>RepeteUntil Date GreterThan ImpDate</font></b>");
+		 $('#errorMesgDIV').html("<b><font color='red'>Enter a Valid Date</font></b>");
 		 return true;
 		}
 	
