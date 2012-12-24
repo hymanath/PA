@@ -311,6 +311,7 @@
 			<value>com.itgrids.partyanalyst.model.SpecialPageHighlights</value>			
 			<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
 			<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
+			<value>com.itgrids.partyanalyst.model.VoterTemp</value>
 			</list>
 		</property>
 	</bean>
