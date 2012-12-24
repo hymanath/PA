@@ -281,7 +281,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		}
 	});
 	custom_paginator.initialize();
-
+	$("#impdatesDiv").hide();
 	});
 
 
@@ -325,7 +325,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		div.append(connectBtn);
 		div.append(connectedPersonId);
 		$('#allConnectedUsersDisplay_main').append(div);
-		
+		$("#impdatesDiv").hide();
 	});
 
 
@@ -361,7 +361,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserAction.action?"+rparam;					
 	callAjax1(jsObj,url);
-		
+	$("#impdatesDiv").hide();	
 		
 	});
 
@@ -402,7 +402,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserSetAction.action?"+rparam;					
 	callAjax1(jsObj,url);			
-	
+	$("#impdatesDiv").hide();
 	});
 	
 //change Password
@@ -433,7 +433,7 @@ $(".changePwdLink").live("click",function(){
 		div.append('<input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input>');
 		div.append('<input class="btn-info btn-small" id="cancelButtonID" type="button" value="No"></input>');
 		elmt.append(div);
-		
+		$("#impdatesDiv").hide();
   });
 
    $("#cancelButtonID").live("click",function(){
