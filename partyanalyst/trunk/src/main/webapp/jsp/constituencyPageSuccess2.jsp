@@ -1150,7 +1150,7 @@ function subscriptionDetails()
 	{		
             time : timeST,	
 			id: constituencyPageMainObj.constituencyInfo.constituencyId,
-			task: "subscriptionDetails",
+			task: "constituencySubscriptionDetails",
 			
 	}
    
@@ -1167,7 +1167,7 @@ function subscriptionDetails()
 	{		
             time : timeST,	
 			id: constituencyPageMainObj.constituencyInfo.constituencyId,
-			task: "unsubscriptionDetails",
+			task: "constituencyUnsubscriptionDetails",
 			
 	}
    
@@ -1816,11 +1816,11 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 									
 										
 								}
-								else if(jsObj.task == "subscriptionDetails")
+								else if(jsObj.task == "constituencySubscriptionDetails")
 								{
 									unSubscribeBtnBuild();
 								}
-								else if(jsObj.task == "unsubscriptionDetails")
+								else if(jsObj.task == "constituencyUnsubscriptionDetails")
 								{
 									subscribeBtnBuild();
 								}
