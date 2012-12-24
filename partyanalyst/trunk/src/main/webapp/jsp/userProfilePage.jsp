@@ -320,7 +320,7 @@ margin:3px;
 			
 			
 
-				<div class="widget blue">
+				<div class="widget blue" style="padding-left:0px;">
 				<!-- <h4>People In Your Location</h4>
 				<div>
 				<p>From ${dataTransferVO.districtName} District - <a href="javascript:{}" onclick="getAllConnectedUsersByFilterView('DISTRICT')">${dataTransferVO.districtUsersCount}</a></p>
@@ -338,7 +338,7 @@ margin:3px;
 
 						<li class="connectPeopleDiv">
 							<div class="span3">
-								<a href="publicProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
+								<a href="userProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
 								 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
 									<img height="50" width="55" src="/pictures/profiles/${connectedPeoples.image}" />
 									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
@@ -349,7 +349,7 @@ margin:3px;
 								</a>
 							</div>
 							<div class="span9">
-								<a href="publicProfile.action?profileId=${connectedPeoples.id}"><h6>${connectedPeoples.candidateName}</h6></a>
+								<a href="userProfile.action?profileId=${connectedPeoples.id}"><h6>${connectedPeoples.candidateName}</h6></a>
 								<i>${fn:toLowerCase(connectedPeoples.constituencyName)}
 								</i>
 									<div class="pull-right">

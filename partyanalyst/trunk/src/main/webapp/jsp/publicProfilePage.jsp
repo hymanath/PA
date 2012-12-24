@@ -266,7 +266,7 @@ padding:5px 20px;
 				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
 
 					<li class="imgLi">
-						<a href="publicProfile.action?profileId=${friendsDetails.registrationID}"></a>
+						<a href="userProfile.action?profileId=${friendsDetails.registrationID}"></a>
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
 									<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
 									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->

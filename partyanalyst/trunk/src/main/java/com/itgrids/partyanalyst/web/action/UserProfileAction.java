@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 import com.itgrids.partyanalyst.dto.UserSettingsVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserProfileService;
@@ -57,6 +58,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private DataTransferVO dataTransferVO,connectedUsers;
 	private NavigationVO messageTypes;
 	private ConstituenciesStatusVO constituenciesStatusVO;
+	private IProblemManagementService problemManagementService;
+	private String profileUserName;
+	private List<RegistrationVO> registrationVOList;
 	
 
 	private ISpecialPageService specialPageService;
@@ -65,7 +69,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private UserCommentsInfoVO userComments;
 	private ProblemBeanVO problemDetailsVO;
 	private SubscriptionsMainVO subscriptionsMainVO;
-	private List<ProblemBeanVO> problemBeanVOList;
+	private List<ProblemBeanVO> problemBeanVOList,problemList;
 	private UserSettingsVO userSettingsList;
 	private String status;
 	private List<UserSettingsVO> userFavoutiteLinks;
@@ -345,9 +349,42 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		this.notLogged = notLogged;
 	}
 
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
+	public String getProfileUserName() {
+		return profileUserName;
+	}
+
+	public void setProfileUserName(String profileUserName) {
+		this.profileUserName = profileUserName;
+	}
+
+	public List<ProblemBeanVO> getProblemList() {
+		return problemList;
+	}
+
+	public void setProblemList(List<ProblemBeanVO> problemList) {
+		this.problemList = problemList;
+	}
+
+	public List<RegistrationVO> getRegistrationVOList() {
+		return registrationVOList;
+	}
+
+	public void setRegistrationVOList(List<RegistrationVO> registrationVOList) {
+		this.registrationVOList = registrationVOList;
+	}
+
 	public String execute()
 	{
-		
+		if(profileId == null){
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
@@ -377,6 +414,34 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 				log.error(cadreManagementVO.getExceptionEncountered().getMessage());
 		return Action.SUCCESS;
+	  }else{
+
+			 List<Long> userId = new ArrayList<Long>(0);
+			 loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(profileId);
+			 
+			 userId.add(profileId);
+			 
+			 problemBeanVOList = problemManagementService.getProblemDetailsForProfilePage(0,10);
+			 
+			 
+			 dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
+				
+				messageTypes = ananymousUserService.getAllMessageTypes();
+				
+				if(dataTransferVO.getDistrictId() != null)
+					constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(dataTransferVO.getDistrictId());
+				
+				specialPageVOList = specialPageService.getSpecialPageListForHomePage();
+				
+				profileUserName = specialPageService.getProfileUserName(profileId); 
+					
+				registrationVOList = ananymousUserService.getFriendsListForUserProfile(profileId);
+				
+				problemList = problemManagementService.getProblemDetailsByProfileId(profileId,0,10);
+				
+				
+			return "publicprofile";
+	  }
 	}
 	
 	public String getRequestMessagesForUser()
