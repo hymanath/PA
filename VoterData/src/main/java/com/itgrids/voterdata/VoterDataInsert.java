@@ -12,7 +12,7 @@ import java.util.List;
 public class VoterDataInsert {
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL_TEMP = "jdbc:mysql://localhost/itgrids";
+	static final String DB_URL_TEMP = "jdbc:mysql://localhost/dakavara_pa";
 	//static final String DB_URL_LIVE = "jdbc:mysql://199.85.212.11/dakavara_pa";
 	static final String DB_URL_LIVE = "jdbc:mysql://localhost/dakavara_pa";
 	static final String USER_TEMP = "root";
@@ -31,7 +31,7 @@ public class VoterDataInsert {
 	public static void main(String[] args)
 	{
 		VoterDataInsert voterDataInsert = new VoterDataInsert();
-		System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(299, 6, 86117, 100000));
+		System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(78, 6, 0, 5000));
 	}
 	
 	public int insertVoterData(int constituencyId, int publicationId,int startIndex,int maxResults)
@@ -46,7 +46,7 @@ public class VoterDataInsert {
     		stmtLive = connectionLive.createStatement();
     		
     		ResultSet rs = stmtTemp.executeQuery(" select voter_id,name,house_no,guardian_name,relation,sex,age, " +
-    				" booth_id from voter where constituency_id = "+constituencyId+" limit "+startIndex+","+maxResults);
+    				" booth_id from voter_temp where constituency_id = "+constituencyId+" limit "+startIndex+","+maxResults);
     		
     		String voterId = null;
     		String name = null;
@@ -57,10 +57,13 @@ public class VoterDataInsert {
     		int age = 0;
     		int index = 0;
     		int index2 = 1;
+    		Date timeBefore = new Date();
+    		Date timeafter = null;
     		
     		List<VoterInfo> voterDeials = new ArrayList<VoterInfo>(0);
     		VoterInfo voter = null;
-    		System.out.println(new Date());
+    		
+    		System.out.println(timeBefore);
     		while(rs.next())
     		{
     			try{
@@ -132,7 +135,11 @@ public class VoterDataInsert {
     		System.out.println("Voters inserted are --> "+index+"");
     		System.out.println("Voters inserted BP are --> "+index2+"");
     		System.out.println("-------------- **************** -------------------------");
-    		System.out.println(new Date());
+    		
+    		timeafter = new Date();
+    		long diff = timeafter.getTime() - timeBefore.getTime();
+    		System.out.println("Time Taken - "+diff/(1000*60));
+    		
     		
 			return index;
 		}catch (Exception e) {
