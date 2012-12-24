@@ -51,7 +51,7 @@ var requestPath = '<%=request.getContextPath()%>';
 .problemsViewMoreLink{cursor:pointer;}
 .connectPeopleDiv{display:inline-block;  border-bottom: 1px solid #EFEFEF;
     
-    padding: 5px 20px;padding-left:5px;clear:both;width:222px; margin:0px -20px;text-transform:Capitalize;}
+    padding: 5px 20px;padding-left:5px;clear:both;width:200px; margin:0px -20px;text-transform:Capitalize;}
 	
 .ajaxImg{display:none;}
 .opacityFilter-50{filter: alpha(opacity=65);
@@ -330,19 +330,23 @@ margin:3px;
 						<span><i class="icon-info-sign" id="icon_leftsec"></i><span>People You May Know</span>
 					</h4>
 					
+					<div class="peopleYouMayKnowMainDiv">
+						<ul class="peopleYouMayKnowULClass"></ul>
+					</div>
 					
-					<ul>
-					 <c:if test="${not empty dataTransferVO.peopleYouMayKnow}">
-
+					<div class="peopleYouMayKnowInnerDiv">
+					</div>
+						
+					 <!-- <c:if test="${not empty dataTransferVO.peopleYouMayKnow}">
 					<c:forEach var="connectedPeoples" items="${dataTransferVO.peopleYouMayKnow}" begin="0" end="2">
 
 						<li class="connectPeopleDiv">
 							<div class="span3">
 								<a href="userProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
 								 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
-									<img height="50" width="55" src="/pictures/profiles/${connectedPeoples.image}" />
+									<img height="50" width="55" src="/pictures/profiles/${connectedPeoples.image}" />-->
 									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
-								</c:if>
+								<!-- </c:if>
 								<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
 									<img height="50" width="55" src="/images/icons/indexPage/human.jpg" />
 								</c:if>
@@ -372,13 +376,13 @@ margin:3px;
 						
 						</c:forEach>
 						</c:if>
-						</ul>
+						</ul>-->
 
-						<c:if test="${empty dataTransferVO.peopleYouMayKnow}">
-							<div>
+						<!-- <c:if test="${empty dataTransferVO.peopleYouMayKnow}">
+							<div class="peopleYouMayKnowInnerDiv">
 							Right now there are no friend suggestion for you.	We will get back with more suggesstions as soon as possible..
 							</div>
-						</c:if>
+						</c:if>-->
 				
 						
 				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink"href="javascript:{}">See All</a></p>
@@ -641,6 +645,29 @@ margin:3px;
 
 </div>-->
 
+
+	<div class="peopleYouMayKnowTemplate">
+	  <ul>
+		<li class="connectPeopleDiv connectPeopleTemplateDiv">
+			<div class="span3 imageDIv"></div>
+				<div class="span9">
+					<h6 class="nameCls"></h6>
+						<i class="constituencyNameCls"></i>
+							<div class="pull-right">
+								<span class="connectLinkCls"></span>
+								<span class="sendMsgClass"></span>
+								<!-- <span class="hiddenVarspan"></span>-->
+								<span class="userIdhiddenVar"></span>
+								<span class="usernamehiddenVar"></span>
+								<span class="constituencyNamehiddenVar"></span>
+							</div>
+				</div>
+
+		  </li>
+		</ul>
+
+	</div>
+
 </div>
 
 
@@ -836,6 +863,8 @@ function closeDialog(){
 
 $('#userSettingsDialog').dialog('close');
 }
+
+getPeopleYouMayKnowDetails();
 </script>
 </body>
 </html>
