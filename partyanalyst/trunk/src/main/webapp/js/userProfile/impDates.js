@@ -320,12 +320,14 @@ function buildNewImpDatePopup()
 		$(".ui-dialog-title-eventDateDetails").attr("class","Cambria,'Abel',sans-serif,Helvetica");
 		$("#ImpStartDateText_new" ).datepicker({
 			dateFormat: "dd/mm/yy",
-			minDate:new Date()
+			changeMonth: true,
+            changeYear: true,
 		});
 		$("#ImpEndDateText_new").val(date);
 		$("#ImpEndDateText_new" ).datepicker({
 			dateFormat: "dd/mm/yy",
-			minDate:new Date()
+			changeMonth: true,
+            changeYear: true,
 		});
 		$("#ImpStartDateText_new").val(date);
 	
@@ -717,7 +719,7 @@ function buildNewImpDatePopup()
 		
 		if(jsObj.taskType == "impDate")
 		{
-			eventStr+='<td colspan="3"><span id="" class="fieldSpan">'+results[0].title+'</span></td>';					
+			eventStr+='<td colspan="3"><span id="" class="fieldSpan" style="height:100px;">'+results[0].title+'</span></td>';					
 		}
 		eventStr+='</tr>';
 		
@@ -885,10 +887,14 @@ function buildNewImpDatePopup()
 			'title':'Event Details...'
 		});
 		$("#ImpStartDateText" ).datepicker({
-			dateFormat: "dd/mm/yy"
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true
 		});
 		$("#ImpEndDateText" ).datepicker({
-			dateFormat: "dd/mm/yy"
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true
 		});
 	
 	}
@@ -912,7 +918,7 @@ function buildNewImpDatePopup()
 
      if(date2 < date1)
 		{ 
-		 $('#errorMesgDIV').html("<b><font color='red'>Enter a Valid Date</font></b>");
+		 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
 		}
 	else
 		{	
@@ -938,7 +944,7 @@ function buildNewImpDatePopup()
      if(date2 < date1)
 		{ 
 		
-		 $('#errorMesgDIV').html("<b><font color='red'>Enter a Valid Date</font></b>");
+		 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
 		 return true;
 		}
 	
