@@ -648,7 +648,7 @@ margin:3px;
 
 	
 
-<script>
+<script type="text/javascript">
 
 getInitialUpdates();
 
