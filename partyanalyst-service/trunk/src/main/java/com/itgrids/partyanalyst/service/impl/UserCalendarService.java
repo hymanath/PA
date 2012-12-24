@@ -171,7 +171,7 @@ public class UserCalendarService implements IUserCalendarService {
 		Long partyId = user.getParty();
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN); 
-		/*if("ALL".equals(user.getSubscribePartyImpDate())){
+		if("ALL".equals(user.getSubscribePartyImpDate())){
 			List<PartyImportantDates> partyImportantDates = partyImportantDatesDAO.findByPartyId(partyId);
 			
 			if(partyImportantDates != null){
@@ -184,7 +184,7 @@ public class UserCalendarService implements IUserCalendarService {
 				}
 			
 			}
-		}*/
+		}
 		List<UserImpDate> userImpDates = userImpDatesDAO.findByUserId(userID, inputDate);
 		log.debug("UserCalenderService.getUserImpDates() userImpDates.size()"+userImpDates.size());
 		if(userImpDates != null){
