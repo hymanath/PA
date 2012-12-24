@@ -132,6 +132,7 @@ margin:3px;
 }
 
 #profileUserName{text-transform: capitalize;}
+.subscrStreamingMoreCls{display:none;}
 </style>
 </head>
 <body>
@@ -226,7 +227,7 @@ margin:3px;
 				           <div id="subscriptionsStreamingData">
 
 				           </div>
-				           <div id="subscriptionsStreamingMoreDiv"><input type="button" value="More" id="subscriptionsStreamingMore" class="btn"/><img src="images/icons/ajaxImg.gif"  style="width:20px;padding-left:150px;display:none;" id="subscriptionsStreamingAjaxImg"></img></div>
+				           <div id="subscriptionsStreamingMoreDiv"><input type="button" value="More" id="subscriptionsStreamingMore" class="btn subscrStreamingMoreCls"/><img src="images/icons/ajaxImg.gif"  style="width:20px;padding-left:150px;display:none;" id="subscriptionsStreamingAjaxImg"></img></div>
 				        </div>
 				
 				        <div id="fLinks"></div>
