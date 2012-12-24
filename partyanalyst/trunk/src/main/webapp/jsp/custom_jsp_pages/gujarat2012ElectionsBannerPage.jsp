@@ -229,7 +229,7 @@ Analyze the present status of key candidates from Gujarat State
 
 	
 <div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
-<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">DISTRICT WISE Party Wise Results Of Gujarat Vidhan Sabha 2012</h3></div>
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">Party Wise Results in Districts Of Gujarat Vidhan sabha 2012</h3></div>
   <div style="background:#EDF9FF;width:100%;padding:4px;">
   <select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;" onchange="getDistrictWiseElectionResults()">
      <option value="152">Ahmadabad</option>
