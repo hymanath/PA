@@ -1073,19 +1073,27 @@ function callAjax1(jsObj,url){
 function buildFavouriteLinks(results){
 
 $(".placeholderCenterDiv").children().remove();
-$(".specialPageDivInnerFav").children().remove();
 $("#headerDiv").html('');
+$(".specialPageDivInnerFav").children().remove();
 $('.constituencyDivInnerFav').children().remove();
-$('.constituencyDivInnerFav').children().remove();
+$('.districtDivInnerFav').children().remove();
 $('.stateDivInnerFav').children().remove();
 $('.constituencyDivheading').children().remove();
 $('.stateDivheading').children().remove();
+$('.districtDivheading').children().remove();
+$('.specialPageDivheading').children().remove();
 
  clearAllSubscriptionDivs();
 
 var constituency = false;
 var state = false;
 var district = false;
+
+if(results == null || results.lenght == 0)
+{
+	$("#headerDiv").html('There are no Favourite Links has been added.');
+	return;
+}
 
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
