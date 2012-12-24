@@ -1247,11 +1247,11 @@ function getFriendsListForUser(results)
 		var template = $(".templateDiv");
 		var templateClone =  template.clone();
 		templateClone.removeClass("templateDiv");
-		templateClone.find('.connectedPersonName').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'">'+results.connectedPeople[i].candidateName+'</a>');
+		templateClone.find('.connectedPersonName').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'">'+results.connectedPeople[i].candidateName+'</a>');
 		if(results.connectedPeople[i].image == null)
-			templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
 		else
-			templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
+			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
@@ -1334,8 +1334,8 @@ function showAllRequestMessagesForUser(results,jsObj){
 		var template = $(".templateDiv");
 		var templateClone =  template.clone();
 		templateClone.removeClass("templateDiv");
-		templateClone.find('.connectedPersonName').html('<a href="publicProfile.action?profileId='+results.friendRequest[i].id+'">'+results.friendRequest[i].candidateName+'</a>');
-		templateClone.find('.imgClass').html('<a href="publicProfile.action?profileId='+results.friendRequest[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+		templateClone.find('.connectedPersonName').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'">'+results.friendRequest[i].candidateName+'</a>');
+		templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
 		templateClone.find('.messageCls').html(''+results.friendRequest[i].message+'').css("display","block");
 		templateClone.find('.constituencyName').html(''+results.friendRequest[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.friendRequest[i].district+'');
@@ -1953,7 +1953,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
 		
 		if(data[i].imgURL == null)
-			templateClone.find('.postedBy').html('<a href="publicProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
+			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
 		else
 			templateClone.find('.postedBy').html('<img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img>');
 			

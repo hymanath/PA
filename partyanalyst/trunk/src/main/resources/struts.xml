@@ -3683,6 +3683,7 @@
 		
 		<action name="userProfile" class="userProfileAction">
 			<result name="success">/jsp/userProfilePage.jsp</result>
+			<result name="publicprofile">/jsp/publicProfilePage.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		<action name="getAllRequestMessagesForAUserAction" class="userProfileAction" method="getRequestMessagesForUser">

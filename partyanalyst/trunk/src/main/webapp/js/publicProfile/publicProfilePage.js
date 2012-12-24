@@ -15,11 +15,11 @@ $("document").ready(function(){
 		   var template = $(".friendListTemplate");
 		   var templateClone =  template.clone();
 		   templateClone.removeClass("friendListTemplate");
-		   templateClone.find('.frndName').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
+		   templateClone.find('.frndName').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
 		   if(friendsInPP[i].profilePic == null)
-			  templateClone.find('.frndImg').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg"/></a>');
+			  templateClone.find('.frndImg').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg"/></a>');
 		   else
-			  templateClone.find('.frndImg').html('<a href="publicProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
+			  templateClone.find('.frndImg').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
 		 templateClone.appendTo(".placeholderCenterDiv");
 	    }
 	});
