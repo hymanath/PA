@@ -19,7 +19,7 @@
 								width: 670,
 								modal: true,
 								
-								position: '[170,150]',
+								position: [170,150],
 								
 								title:'Core Competency',
 								overlay: { opacity: 0.5, background: 'black'}
@@ -40,7 +40,7 @@
 
   var str ='';
 
-str+='<p style="text-align:justify;">';
+str+='<div class=" whitegloss font1" style="overflow: scroll;height:470px; ">';
 str+='PartyAnalyst is first of its kind powerfully integrated and enriched Online Election Analysis and Management Platform. It is developed by our team, which contains highly skilled Software Engineers, Designers, Testers and Maintenance Engineers. And our Team has great understanding of this political domain. We provide continuous enchantments, updates and support to our customers.';
 str+='<br><br>';
 str+='We provide different services to our customers, who are in political domain to reach, serve and understand the public. They can manage their cadre as well as their constituency in a simplifier manner. They can also get different analyzed reports to understand the previous election pattern. We also provide them opinion polls and surveys to know public pulse.';
@@ -52,7 +52,8 @@ str+='<br><br>';
 str+='The greatest strength of Party Analyst is not only having vast election data but also latest voters’ data. All this is integrated into a single platform, for doing any cross analysis, in a simple and easy way.';
 str+='<br><br>';
 str+='And the last but not the least the Costing Policy, we provide quality services to our customers for a very low costing when compare to our competitors in the market.';
-str+='<p>';
+str+='</div>';
+
 
 
 
@@ -89,7 +90,7 @@ elmt.innerHTML = str;
 
   var str ='';
 
-str+='<p style="text-align:justify;">';
+str+='<div class=" whitegloss font1" style="overflow: scroll;height:470px; ">';
 str+='India is the biggest democratic country in the world. We are an IT super power, from the last 10 to 15 years. Though Information technology and India are very synonymous, we are not utilizing technology in the Political Process. To overcome and breakthrough this, Party Analyst is established.';
 str+='<br><br>';
 str+='Party Analyst is a powerful, integrated and enriched online election analysis platform. The election analysis is cohesively interwoven with remarkable tools and applications that empower the pillars of the Indian Democracy. It also brings social networking to connect these pillars.Party Analyst also provides different services to the participants of Indian Elections.';
@@ -98,7 +99,7 @@ str+='Elections, Voters, Politicians, Political Parties and Media are the pillar
 str+='<br><br>';
 str+='<b>Party Analyst to Political Parties & Leaders:</b>';
 str+='<br><br>';
-str+='For Political Parties and Leaders, the technology is not a core business. They always look towards “how to serve and reach the people to win the elections”. Party Analyst makes use of technology, for election analysis and other different tools, to help you, serve and reach the people in a better way.';
+str+='For Political Parties and Leaders, the technology is not a core business. They always look towards "how to serve and reach the people to win the elections". Party Analyst makes use of technology, for election analysis and other different tools, to help you, serve and reach the people in a better way.';
 str+='<br><br>';
 str+='Parties and Politicians always want the present voters’ pulse and require lot of information on their own party activities and also opposition party activities. Party Analyst provides different services to fulfill these needs.';
 str+='<br><br>';
@@ -117,7 +118,7 @@ str+='<br><br>';
 str+='Party Analyst provides various analysis reports to understand the present and past Election Scenarios and also provides various Election Management Tools like Cadre Management, Constituency Management, Problem Management, Profile Management etc. It also provides lot of Services to politicians/aspirants/parties to understand the present and past political scenarios through Surveys and Opinion Polls. It also provides “News Tracking Service” to analyze the news.';
 str+='<br><br>';
 str+='The voter needs a robust social networking platform to connect, convey and engage in a meaningful political discussion about Parties, Leaders, Different Government Bills and Policies and to address his grievances. Party Analyst acts as a social networking platform and it also serves the voters as an election platform that connects them with their locality, leaders, and parties with instant updates and also help them to express their views and share the information to everyone about their party/leader updates, their grievances etc.';
-str+='<p>';
+str+='</div>';
 
 elmt.innerHTML = str;
 	
@@ -152,7 +153,7 @@ elmt.innerHTML = str;
 
   var str ='';
 
-str+='<p style="text-align:justify;">';
+str+='<div class=" whitegloss font1" style="overflow: scroll;height:470px; ">';
 str+='"We make sure our grey matter is at work all the time. Our thoughts are constantly at work with integrated ideas".';
 str+='<br><br>';
 str+='Party Analyst is a product owned and operated by IT GRIDS (India) Pvt. Ltd., a Global Information Technology (IT) company offering Product Development, Technology Consulting, IT Services and Independent Testing, with its Development Centre in India. IT Grids (India) Pvt. Ltd. was started in 2010 in Hyderabad. It is being run by a core group of highly qualified young entrepreneurs, with experience working in India and abroad, in wide and multiple industry verticals such as IT, Realty with professional qualification in Engineering, Business Management.';
@@ -162,7 +163,7 @@ str+='<br><br>';
 str+='After this launch, IT Grids entered into Political and Election Surveys and successfully delivered results to reputed Politicians and Political Parties. Especially, 2012 Bi-Election Results reflected our survey expectations.';
 str+='<br><br>';
 str+='In 2012, IT Grids started Service oriented practices, which include News Tracking, Selling of individual Constituencies’ reports etc., to support the Political Domain clients.';
-str+='<p>';
+str+='</p>';
 
 elmt.innerHTML = str;
 	
@@ -204,7 +205,25 @@ h4{font-size:13.5px;}
   font-weight: normal;
   
 }
-h5 {
+
+.font1{
+line-height: 25px;
+    list-style-type: disc;
+    margin-top: 5px;
+    padding:3px;
+    text-align: justify;
+    word-spacing: 1px;}
+h6{font-size:13.9px;}
+
+.font2{
+ font-family: Cambria,'Abel',sans-serif,Helvetica;
+  font-size: 21px;
+  font-weight: normal;
+  }
+  
+.service-links{width:912px;}
+ .service-links .span3{margin-left:12px;}
+ .service-links .span3:first-child{margin-left:15px;}
 </style>
 <script type="text/javascript">
 	
@@ -225,19 +244,20 @@ h5 {
 				   	<div class="widget1   p-m-bottom0px">
 					 <h4 class="font">Who We Are?</h4>
 					  <img src="images/Who-We-Are.gif" alt="">
-					  <p style="text-align:justify;">
+					  <div class="font1">
 					    "We make sure our grey matter is at work all the time. Our thoughts are constantly at work with integrated ideas".
 						<br>
 						<br>
 						Party Analyst is a product owned and operated by IT GRIDS (India) Pvt. Ltd., 
-						a Global Information Technology (IT) company offering Product Development, 
+						a Global Information Technology (IT) company about
+					offering Product Development, 
 						Technology Consulting, IT Services and Independent Testing, with its 
-						Development Centre in India. IT Grids (India) Pvt. Ltd. was started in 2010 in Hyderabad. 
-						It is being run by a core group of highly qualified young entrepreneurs, 
+						Development Centre in India. IT Grids (India) Pvt. Ltd. was started in 2010 in Hyderabad... 
+							<!--It is being run by a core group of highly qualified young entrepreneurs, 
 						with experience working in India and abroad, in wide and multiple industry verticals such as IT, 
-						Realty with professional qualification ....
+						Realty with professional qualification ....-->
 						
-					  </p>
+					  </div>
 					      <ul class="pager">
 								<li class="previous">
 									<a href="javascript:{}" onClick="contact1()"> Read More  &rarr;</a>
@@ -251,19 +271,20 @@ h5 {
 					 <h4 class="font">What We Do?</h4>
 					  <img src="images/What We Do.gif" alt="">
 					 
-					  <p style="text-align:justify;">
+					  <div class="font1" >
 					  India is the biggest democratic country in the world. We are an IT super power, from the last 10 to 15 years. 
 					  Though Information technology and India are very synonymous, 
 					  we are not utilizing technology in the Political Process. 
-					  To overcome and breakthrough this, Party Analyst is established.
-					  <br>
+					  To the overcome and breakthrough this, Party Analyst is established.
+					 <br>
 					  <br>
 					 Party Analyst is a powerful, integrated and enriched online election analysis platform. 
-					 The election analysis is cohesively interwoven with remarkable tools and applications that 
-					 empower the pillars of the Indian Democracy. It also brings social networking to connect these pillars....
+					The election analysis is cohesively...<!-- interwoven with remarkable tools and applications   that 
+					 empower the pillars of the Indian Democracy. It also brings social networking to connect these pillars
+					 of Indian Democracy ....-->
 					  
 
-					  </p>
+					  </div>
 					  
 					   <ul class="pager">
 							<li class="previous">
@@ -278,18 +299,20 @@ h5 {
 					 <h4 class="font">Core Competency</h4>
 					  <img src="images/Core-Com.gif" alt="">
 					 
-					  <p style="text-align:justify;">
+					  <div class="font1">
 					   PartyAnalyst is first of its kind powerfully integrated and enriched Online 
 					   Election Analysis and Management Platform. It is developed by our team, 
 					   which contains highly skilled Software Engineers, Designers, 
-					   Testers and Maintenance Engineers. And our Team has great understanding of this political domain. 
-					   We provide continuous enchantments, updates and support to our customers.
+					   Testers and Maintenance Engineers. And our Team has great understanding of this political domain.
+					We provide continuous enchantments, updates and support to our customers.
+					    <br>
 					   <br>
-					   <br>
-					   We provide different services to our customers, who are in political domain to reach, 
+					   We provide different services to our customers... 
+					    <!-- who are in political domain to reach, 
 					   serve and understand the public. 
-					   They can manage their cadre as well as their constituency in a simplifier manner.... 
-					  </p>
+					   They can manage their cadre as well as their constituency in a simplifier manner.
+					   They can also get different analyzed reports...-->
+					  </div>
 					  
 					   <ul class="pager">
 							<li class="previous">
@@ -304,8 +327,8 @@ h5 {
 				</div>
 			</div>	
 			
-			<div class="span12 breadcrumb">
-			 <h4 class="font"style="margin-top: 4px;" >Party Analyst’s Exclusive Services For Politicians / Parties and Media Election <small class="pull-right" style="margin-right: 36px; margin-top: 4px;">-We always strive to make things easy for you</small></h4>
+			<div class="span12 breadcrumb service-links">
+			 <h4 class="font2"style="margin-top: 4px;" >Party Analyst's Exclusive Services For Politicians/Parties and Media <small class="pull-right" style="margin-top:7px; margin-right: 14px;">-We always strive to make things easy for you</small></h4>
 			<div class="row ">
           
 				<div class="span3">
@@ -334,7 +357,7 @@ h5 {
 			<div class="row">
 				<div class="span12">
 						<div class="span6 breadcrumb" style="border: 1px solid #cccccc;">
-							<h4 class="font">Party Analyst on Media</h4>
+							<h4 class="font2">Party Analyst on Media</h4>
 								<div>
 									<table style="margin-left: 0px;">
 										<tr><td>
@@ -349,8 +372,8 @@ h5 {
 									</table>
 								</div>	
 						</div>
-						<div class="span5 pull-right breadcrumb"style="border: 1px solid #CCCCCC;">
-								<h4 class="font">Get Involved </h4>
+						<div class="span5 pull-right breadcrumb"style="border: 1px solid #CCCCCC;background:#fff;">
+								<h4 class="font2">Get Involved</h4>
 								<h5 style="line-height: 25px; font-size: 13px;">Our expansion process relies on passionate contributors like you to make the most of Party Analyst stay tuned.</h5>
 								<h6  style="line-height: 32px;">Email: Info@partyanalyst.com<br>
 											Mobile:9246837788</h6>
