@@ -9,37 +9,7 @@
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.min.css" rel="stylesheet" />
 		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
 <style>
-.show-grid [class*="span"] {
-    background-color: #EEEEEE;
-    border-radius: 3px 3px 3px 3px;
-    line-height: 40px;
-    min-height: 40px;
-    text-align: center;
-}
-.grid{
-background: none repeat scroll 0 0 #558BD5;
-    font-size: 17px;
-    height: 19px;
-    padding: 7px;
-    width: 59%;	
-	color:black;
-	}
-	.grid1{
-background: none repeat scroll 0 0 #FEE499;
-    font-size: 17px;
-    height: 19px;
-    padding: 7px;
-    width: 59%;	
-	color:black;
-	}
-	.grid2{
-background: none repeat scroll 0 0 #BEDA8D;
-    font-size: 17px;
-    height: 19px;
-    padding: 7px;
-    width: 59%;	
-	color:black;
-	}
+
 	.widget1{
     background: none repeat scroll 0 0 #FAFAFA;
     border-top: 5px solid #558BD5;
@@ -66,16 +36,30 @@ background: none repeat scroll 0 0 #BEDA8D;
 }
 .font{
  font-family: Cambria,'Abel',sans-serif,Helvetica;
-  font-size: 18px;
+  font-size: 28px;
   font-weight: normal;
+  }
   
-}
+  .font2{
+ font-family: Cambria,'Abel',sans-serif,Helvetica;
+  font-size: 21px;
+  font-weight: normal;
+  }
+  
+
 .tovoters{
 	list-style-type: disc !important;
 	margin-left: 30px;
     padding: 5px;
+	text-align:justify;
  }
-  .tovoters li{list-style-type: disc;display:list-item;}
+  .tovoters li{list-style-type: disc;display:list-item;line-height: 28px;}
+  h6{font-size:13.9px;}
+  
+ .service-links{width:912px;}
+ .service-links .span3{margin-left:12px;}
+ .service-links .span3:first-child{margin-left:15px;}
+ 
 </style>
 </head>
 <body>
@@ -89,45 +73,49 @@ background: none repeat scroll 0 0 #BEDA8D;
   
          
 	    	<div class="widget1   p-m-bottom0px">
-				<h4 class="font">Party Analyst for PUBLIC-Discover the Features[Free]</h4>
+				<h3 class="font">Party Analyst for PUBLIC-Discover the Features[Free]</h3>
 					 
                 <div class="row">
 		
-					<div class="span3" style="background: #558BD5; 
-					  border-radius: 100% 100% 100% 100%; width:32px; padding: 76px;margin-top: 34px;">Public</div>
+					<div class="span3">
+						<img src="images/Public.gif">
+				</div>
 					
 					<div class="span4 "style="margin-left: 36px;">
 						<ul class="tovoters" >
 								
-								<li><p>   Connect With your Locality People </p>
+								<li>   Connect With your Locality People.
 								</li>
 								
-								<li><p>Share and Raise your voice to the Nation</p></li>
+								<li>Share and Raise your voice to the Nation.</li>
 								
-								<li><p>Stay tuned with the political trends</p>  </li>
+								<li>Stay tuned with the political trends.  </li>
 								
-								<li><p>Subscribe and get the information to your emails</p>
+								<li>Subscribe and get the information to your emails.
 								</li>
 								
-								<li><p>Public Awareness</p>  </li>						
+								<li>Public Awareness.  </li>		
+								 <li> Latest Political News.  </li>	
+                             						
 						</ul>	
 					
 					
 					</div>
 					<div class="span4 ">
 						<ul class="tovoters" >
+						             
 					
-									<li><p>Post your comments / suggestions to the politicians / Parties </p>
+									<li> Post your comments / suggestions to the politicians / Parties.
 									</li>
 									
-									<li><p>Are you facing any social problems? Post your problems</p></li>
+									<li> Are you facing any social problems? Post your problems. </li>
+									 	
 									
-									<li><p>Latest Political News</p>  </li>
 									
-									<li><p>You can view political statisticsof your Constituency</p>
+									<li> You can view political statisticsof your Constituency.
 									</li>
 									
-									<h5>much more...</h5>
+									<h5  style="margin-top: 23px;">much more...</h5>
 									<a href="freeUserRegistration.action" class="btn btn btn-primary pull-right" type="button" style="margin-top: -33px;">Register Now!</a>
 										
 						</ul>	
@@ -139,47 +127,49 @@ background: none repeat scroll 0 0 #BEDA8D;
   
             </div>
 		
-			<div class="widget2   p-m-bottom0px">
-						<h4 class="font">Party Analyst for POLITICIAN / PARTY-Discover the Features</h4>
+			<div class="widget3   p-m-bottom0px">
+						<h3 class="font">Party Analyst for POLITICIAN / PARTY-Discover the Features</h3>
 					 
 				<div class="row">
 					
-  
-							<div class="span3" style="background: #FEE499; 
-									border-radius: 100% 100% 100% 100%; width:32px; padding: 76px;margin-top:99px;">Politician/<br>Party</div>
+                      <div class="span3">
+						<img src="images/pp.gif"></div>
 					
-								<div class="span4  "style="background:#f1f1f1;padding: 3px;">
-									<h4 style="text-align:center;">Politician</h4>
+								<div class="span4 widget green  whitegloss ">
+									<h2 style="text-align:center;">Politician</h2>
 									<ul class="tovoters" >
 					
-											<li><p style="line-height: 23px;"> You can manage your constituency efficiently with our Constituency Management. </p>
+											<li> You can manage your constituency efficiently with our Constituency Management.
 											</li>
 											
-											<li><p style="line-height: 23px;">You can track the problems in your constituency and assign them to 
-											related officials to solve using our Problem Management</p></li>
+											<li>You can track the problems in your constituency and assign them to 
+											related officials to solve using our Problem Management.</li>
 											
-											<li><p style="line-height: 23px;">You can monitor the news about you and your constituency from different 
+											<li>You can monitor the news about you and your constituency from different 
 											impact levels with our News Monitoring Service.
-												</p>  </li>
+												 </li>
 														
 									</ul>	
 								</div>
-					<div class="span4 "style="background:#f1f1f1;padding: 3px;">
-					            <h4 style="text-align:center;">Party</h4>
-								<ul class="tovoters"style="padding: 4px;" >
+					<div class=" widget green span4  whitegloss ">
+					   
+					            <h2 style="text-align:center;">Party</h2>
 					
-											<li><p style="line-height: 25px;">You can understand Party performance in previous Elections based on different 
-											categories with our Election Analysis </p>
+								<ul class="tovoters" >
+					
+											<li>You can understand Party performance in previous Elections based on different 
+											categories with our Election Analysis. 
 											</li>
+										
+											<li>You can manage and connect to your party cadre effectively in a 
+											simpler way and through the using  our Cadre Management.</li>
 											
-											<li><p style="line-height: 25px;">You can manage and connect to your party cadre effectively in a 
-											simpler way through our Cadre Management</p></li>
 											
-											
-											<li><p style="line-height: 25px;">You can easily identify booth level, ward level Local Leaders with our huge Analyzed Election Data.</p>  </li>
+											<li>You can easily identify booth level, ward level Local Leaders with our huge Analyzed Election Data.  </li>
 								
 									
 								</ul>
+								
 					</div>
 				</div>
 					
@@ -189,8 +179,8 @@ background: none repeat scroll 0 0 #BEDA8D;
 			</div>
 					
 					
-    <div class="span12 breadcrumb">
-	 <h4 class="font"style="margin-top: 4px;" >Party Analyst's Exclusive Services For Politicians / Parties and Media<small class="pull-right" style="margin-right: 36px; margin-top: 4px;">-We always strive to make things easy for you</small></h4>
+    <div class="span12 breadcrumb service-links">
+	 <h3 class="font2"style="margin-top: 4px;" >Party Analyst's Exclusive Services For Politicians / Parties and Media<small class="pull-right" style="margin-top: 16px; margin-right: 14px;">-We always strive to make things easy for you</small></h3>
 			<div class="row ">
   
 				<div class="span3">
@@ -220,7 +210,7 @@ background: none repeat scroll 0 0 #BEDA8D;
  <div class="row">
 				<div class="span12">
 						<div class="span6 breadcrumb" style="border: 1px solid #cccccc;">
-							<h4 class="font">Party Analyst on Media</h4>
+							<h3 class="font2">Party Analyst on Media</h3>
 								<div>
 									<table style="margin-left: 0px;">
 										<tr><td>
@@ -235,8 +225,8 @@ background: none repeat scroll 0 0 #BEDA8D;
 									</table>
 								</div>	
 						</div>
-						<div class="span5 pull-right breadcrumb"style="border: 1px solid #CCCCCC;">
-								<h4 class="font">Get Involved</h4>
+						<div class="span5 pull-right breadcrumb"style="border: 1px solid #CCCCCC; background:#fff;">
+								<h3 class="font2">Get Involved</h3>
 								<h5 style="line-height: 25px; font-size: 13px;">Our expansion process relies on passionate contributors like you to make the most of Party Analyst stay tuned.</h5>
 								<h6  style="line-height: 32px;">Email: Info@partyanalyst.com<br>
 											Mobile:9246837788</h6>
