@@ -320,7 +320,7 @@ margin:3px;
 			
 			
 
-				<div class="widget blue" style="padding-left:0px;">
+				<div class="widget blue">
 				<!-- <h4>People In Your Location</h4>
 				<div>
 				<p>From ${dataTransferVO.districtName} District - <a href="javascript:{}" onclick="getAllConnectedUsersByFilterView('DISTRICT')">${dataTransferVO.districtUsersCount}</a></p>
