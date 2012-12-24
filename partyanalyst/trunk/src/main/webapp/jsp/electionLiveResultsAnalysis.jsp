@@ -290,7 +290,7 @@ function buildCompareResultForWonorLead(myResults)
 	var str='';
 	if(myResults !=null && myResults.length >0)
 	{
-		str += '<span class="headingstyle">Partywise Seats Gained/Lost Analysis In Result Known Constituencies</span>';
+		str += '<span class="headingstyle">Party wise Seats Gained/Lost Analysis In Result Known Constituencies</span>';
 		str+='<div style="margin-top:10px;margin-bottom:20px;">'
 		str += '<table><tr><td width="45%"><div id="partyWiseTable">';
 		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;">';
@@ -335,7 +335,7 @@ function buildCompareResultForWonorLead(myResults)
 	
 	 if(myResults[i].isFirstElectionAfterDelimtation)
 	 {
-		str += '<span class="headingstyle">Partywise Seats Gained/Lost Analysis In Result Known New/Old Constituencies</span>';
+		str += '<span class="headingstyle">Party wise Seats Gained/Lost Analysis In Result Known New/Old Constituencies</span>';
 		str += '<div style="margin-top:10px;" class="resultDiv">';
 		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
 		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
@@ -452,7 +452,7 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 	}
 
 	var str = '';
-	str += '<span class="headingstyle" style="margin-bottom:10px;">Partywise Seats Win & Lost from other Parties in Previous Election to Present Election</span>';
+	str += '<span class="headingstyle" style="margin-bottom:10px;">Party wise Seats Win & Lost from other Parties in Previous Election to Present Election</span>';
 	
 	str += '<div style="margin-top:15px;margin-bottom:20px;">';
 
@@ -1121,7 +1121,7 @@ function showPartyGainedResults(myResults){
 	var str ='';
 	var headstr='';
 	if(myResults !=null && myResults.length >0)
-	headstr+='<span class="headingstyle">Partywise Seats Gained / Lost Analysis</span>';
+	headstr+='<span class="headingstyle">Party wise Seats Gained / Lost Analysis</span>';
 	document.getElementById("partyAnalysisHeading").innerHTML =headstr;
 
   if(myResults !=null && myResults.length >0)
@@ -1322,7 +1322,7 @@ function buildConstituencyWiseCandidates(myResults)
 
 	var headstr='';
 	if(myResults != null && myResults.length >0)
-	headstr+='<span class="headingstyle">Constituencywise Winning/Leading Candidates </span>';
+	headstr+='<span class="headingstyle">Constituency wise Winning/Leading Candidates </span>';
 	
 	candidatesDivHeadingElmt.innerHTML = headstr;
 
@@ -1475,7 +1475,7 @@ function showGenderAnalysisInConstituencyElection(result)
 		return;
 	}
 
-	headstr+='<span class="headingstyle">Partywise Male/Female Candidates Won/Lead Info</span>';
+	headstr+='<span class="headingstyle">Party wise Male/Female Candidates Won/Lead Info</span>';
 	document.getElementById("genderAnalysisHeading").innerHTML =headstr;
 
 	if(result !=null && result.length>0){
