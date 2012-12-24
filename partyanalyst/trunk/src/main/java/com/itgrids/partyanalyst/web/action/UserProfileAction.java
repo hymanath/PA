@@ -716,7 +716,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getPostedProblemsForProfilePage() Method,Exception is- "+e);
+			log.error("Exception Occured in removeFavouriteLinkAction() Method,Exception is- "+e);
 		}
 		
 		Long favouriteLinkId = jObj.getLong("linkId");
@@ -737,7 +737,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getPostedProblemsForProfilePage() Method,Exception is- "+e);
+			log.error("Exception Occured in saveUserFavouriteLink() Method,Exception is- "+e);
 		}
 		
 		String link = jObj.getString("link");
@@ -832,6 +832,26 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			log.error("Exception Occured in getSubscriptions() method, Exception- "+e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getFriendsList()
+	{
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);	
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getFriendsList() Method, Exception - " +e); 
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return "error" ;
+		List<Long> userId = new ArrayList<Long>(0);
+		userId.add(user.getRegistrationID());
+		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
 		return Action.SUCCESS;
 	}
 
