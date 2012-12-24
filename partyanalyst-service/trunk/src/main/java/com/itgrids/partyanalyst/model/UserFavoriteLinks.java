@@ -29,13 +29,24 @@ public class UserFavoriteLinks extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
-	
 	private Long userFavoriteLinksId;
 	private User user;
 	private FavoriteLinkPage favoriteLinkPage;
 	private String url;
 	private String pageTitle;
 	
+	public UserFavoriteLinks()
+	{
+		
+	}
+	public UserFavoriteLinks(Long userFavoriteLinksId,User user,FavoriteLinkPage favoriteLinkPage,String url,String pageTitle)
+	{
+	this.userFavoriteLinksId = userFavoriteLinksId;
+	this.favoriteLinkPage = favoriteLinkPage;
+	this.user = user;
+	this.url = url;
+	this.pageTitle = pageTitle;
+	}
 	
 	
 	@Id

@@ -1680,7 +1680,9 @@
 	<bean id="userSocialNetworkSiteDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSocialNetworkSiteDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
-	
+	<bean id="userFavoriteLinksDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFavoriteLinksDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 				
 	
 </beans>
