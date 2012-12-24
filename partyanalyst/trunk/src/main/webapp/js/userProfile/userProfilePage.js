@@ -1028,7 +1028,7 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task == "getFavouriteLinks")
 						buildFavouriteLinks(results);
 					else if(jsObj.task =="removeFavouriteLink"){
-
+					$('#FavouriteLinks').click();
 
 					}else if(jsObj.task == "allsubscriptions" || jsObj.task == "oldersubscriptions"){
 					   $("#subscriptionsStreamingAjaxImg").hide();
@@ -1073,11 +1073,11 @@ function callAjax1(jsObj,url){
 function buildFavouriteLinks(results){
 
 $(".placeholderCenterDiv").children().remove();
-$(".specialPageDiv").children().remove();
+$(".specialPageDivInnerFav").children().remove();
 $("#headerDiv").html('');
-$('.districtDiv').children().remove();
-$('.constituencyDiv').children().remove();
-$('.stateDiv').children().remove();
+$('.constituencyDivInnerFav').children().remove();
+$('.constituencyDivInnerFav').children().remove();
+$('.stateDivInnerFav').children().remove();
 $('.constituencyDivheading').children().remove();
 $('.stateDivheading').children().remove();
 
@@ -1268,6 +1268,7 @@ function getFriendsListForUser(results)
 
 function buildAllSubscriptions(results,place){
    if(results != null && results.length > 0){
+	   $(".subscrStreamingMoreCls").css("display","block");
     for(var i in results)
 	{
 		var template = $(".subscriptionsMainTemplate");
@@ -1892,7 +1893,8 @@ function connectToSelectedPerson(id,name)
 
 function showAllConnectedUsersStatus(jsObj,results)
 {
-$(".placeholderCenterDiv").children().remove();
+	$(".placeholderCenterDiv").children().remove();
+	$(".districtPeopleLink").trigger("click");
 
 
 if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
@@ -1954,7 +1956,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 
 		templateClone.find('.headingCls').html('<h5>'+data[i].commentedBy+'</h5> Posted a Political Reason for '+data[i].candidate+' '+status+' '+data[i].constituencyName+' '+data[i].electionType+' constituency');
 		templateClone.find('.candidateImg').html('<img src="'+imageStr+'.jpg" onerror="setDefaultImage(this)" style="width:100px;height:100px;vertical-align:middle;"></img>');
-		templateClone.find('.politicalReaCls').html('Political Reason: '+data[i].commentCategory+'');
+		templateClone.find('.politicalReaCls').html('<b>Political Reason:</b> '+data[i].commentCategory+'');
 		
 		if(data[i].imgURL == null)
 			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
@@ -1962,7 +1964,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 			templateClone.find('.postedBy').html('<img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img>');
 			
 		
-		templateClone.find('.politicalDescCls').html('Description: '+data[i].commentDesc+'');
+		templateClone.find('.politicalDescCls').html('<b>Description:</b> '+data[i].commentDesc+'');
 		templateClone.find('.polReaPostedDate').html('Posted On: '+data[i].commentedOn+'');
 		/*templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');*/
 		templateClone.appendTo('.placeholderCenterDiv');
