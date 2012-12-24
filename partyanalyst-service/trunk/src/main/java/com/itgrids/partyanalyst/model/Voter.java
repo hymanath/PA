@@ -25,8 +25,6 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.itgrids.partyanalyst.social.model.CandidateSocial;
-
 @Entity
 @Table(name = "voter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -54,6 +52,7 @@ public class Voter extends BaseModel implements Serializable {
 	private String insertionDate;
 	private Hamlet hamlet;
 	private Date dateOfBirth;
+	private Date insertedTime;
 	
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
@@ -297,6 +296,15 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
+	}
+
+	@Column(name = "inserted_time", length = 20)
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 	
