@@ -138,7 +138,8 @@ function getElectionYears(electionType,stId,electionId)
     var jsObj =
 		{ 
             time : new Date().getTime(),
-			task:"getAllStatesForParliamentMinisters",
+			eleType: 2,
+			task:"getStatesForAssign",
 			stateId:stateId,
 			electionId:electionId
 		};
@@ -460,7 +461,7 @@ function getElectionYears(electionType,stId,electionId)
 									      buildData(myResults,"yearSelId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getStatesForAssign")
-									{console.log(jsObj);
+									{
 									      removeData("stateListId");
 										  addState("stateListId");
 									      buildData(myResults,"stateListId",jsObj.stateId,jsObj.electionId);
@@ -623,9 +624,26 @@ function showMinisPerf(id)
   $("#minisPerf").addClass("dashBoardtabsDivSelected");
   document.getElementById("showData").innerHTML = "";
   document.getElementById("keyCandidatesData").innerHTML = "";
-  document.getElementById("state").checked = true;  
-  document.getElementById("showHideState").style.display = "block";
-  getStatesForAssembly();
+  //document.getElementById("state").checked = true;  
+  //document.getElementById("showHideState").style.display = "block";
+  //getStatesForAssembly();
+  if($("#yearSelId option").length > 0 && $("#yearSelId").val() != 0)
+  {
+     removeDataDIV();
+     if(!$('#parlSel').is(':checked')){
+	   getYears('Assembly',$("#stateListId").val(),$("#yearSelId").val());
+	 }else{
+	     getYears('Parliament',"",$("#yearSelId").val());
+	  }
+  }else if($("#yearSelId option").length == 0 || ($("#yearSelId option").length > 0 && $("#yearSelId").val() == 0)){
+    if(!$('#parlSel').is(':checked')){
+	   if($("#stateListId option").length > 0 && $("#stateListId").val() != 0){
+	     getYears('Assembly');
+	   }
+	  }else{
+	     getYears('Parliament');
+	  }
+  }
 }
 function showImpCandPerf(id)
 {
@@ -634,10 +652,29 @@ function showImpCandPerf(id)
   $("#impCandPerf").addClass("dashBoardtabsDivSelected");
   document.getElementById("showData").innerHTML = "";
   document.getElementById("keyCandidatesData").innerHTML = "";
-  document.getElementById("state").checked = true;
-  document.getElementById("showHideState").style.display = "block";
-  getAllStates();
+  //document.getElementById("state").checked = true;
+  //document.getElementById("showHideState").style.display = "block";
+  //getAllStates();
+  if($("#yearSelId option").length > 0 && $("#yearSelId").val() != 0)
+  {
+     removeDataDIV();
+     //getDeltailForMinisImpCand();
+	 if(!$('#parlSel').is(':checked')){
+	   getYears('Assembly',$("#stateListId").val(),$("#yearSelId").val());
+	 }else{
+	     getYears('Parliament',"",$("#yearSelId").val());
+	  }
+  }else if($("#yearSelId option").length == 0 || ($("#yearSelId option").length > 0 && $("#yearSelId").val() == 0)){
+    if(!$('#parlSel').is(':checked')){
+	   if($("#stateListId option").length > 0 && $("#stateListId").val() != 0){
+	     getYears('Assembly');
+	   }
+	  }else{
+	     getYears('Parliament');
+	  }
+  }
 }
+
 function getYears(type,stateId,electionId)
 {
   if(qtype == "minis")
