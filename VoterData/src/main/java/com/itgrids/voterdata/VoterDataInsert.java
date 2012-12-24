@@ -31,7 +31,7 @@ public class VoterDataInsert {
 	public static void main(String[] args)
 	{
 		VoterDataInsert voterDataInsert = new VoterDataInsert();
-		System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(78, 6, 0, 5000));
+		System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(78, 6, 5000, 10000));
 	}
 	
 	public int insertVoterData(int constituencyId, int publicationId,int startIndex,int maxResults)
