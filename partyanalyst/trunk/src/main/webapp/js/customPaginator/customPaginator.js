@@ -1,4 +1,3 @@
-
 var custom_paginator = {
 	resultsCount:"",
 	startIndex:"",
@@ -19,7 +18,10 @@ var custom_paginator = {
 		this.paginatorElmt = obj.paginatorElmt;
 		this.resultsCount = obj.resultsCount;		
 	},	
-	doAjaxCall:function(start){
+	doAjaxCall:function(start,eleIdClicked){
+
+			
+		//this.paginatorElmt.addClass(clicked);
 
 		var url = this.ajaxCallURL+"&startIndex="+start+"&resultsCount="+this.resultsCount;
 		
@@ -30,7 +32,7 @@ var custom_paginator = {
 				results = YAHOO.lang.JSON.parse(o.responseText);
 				this.totalRecords = parseInt(results.totalResultsCount);				
 				this.callBackFunction();
-				this.buildPaginator();
+				this.buildPaginator(eleIdClicked);
 			}
 			catch (e)
 			{   		
@@ -46,9 +48,9 @@ var custom_paginator = {
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	},
 	initialize:function (){		
-		this.doAjaxCall(this.startIndex);
+		this.doAjaxCall(this.startIndex,0);
 	},
-	buildPaginator:function()
+	buildPaginator:function(eleIdClicked)
 	{
 		var elements = $("."+this.paginatorElmt);
 		
@@ -66,7 +68,8 @@ var custom_paginator = {
 		{
 			for(var i=1; i<=iteration; i++)
 			{			
-				str += '<a href="javascript:{}" onclick="custom_paginator.doAjaxCall('+countIndex+')">'+i+'</a>';
+				var eleid="a"+i;
+				str += '<a href="javascript:{}" id="a'+i+'"  onclick="custom_paginator.doAjaxCall('+countIndex+',\''+eleid+'\')">'+i+'</a>';
 				countIndex+=this.resultsCount;
 			}
 		}
@@ -76,5 +79,8 @@ var custom_paginator = {
 		{
 			elements[i].appendChild(paginatorElmt);
 		}
+        
+		if(eleIdClicked==0){$(".paginatorElmtClass a:first").addClass("btn btn-success");}
+		else {$("#"+eleIdClicked).addClass("btn btn-success");}
 	}
 };
