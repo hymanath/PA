@@ -1203,7 +1203,10 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		    		  }
 		    		  else
 		    		  {
-		    			  currentResultData.setResult("Trail");
+		    			 if(result[1].toString().equalsIgnoreCase("Won"))
+		    			  currentResultData.setResult("Lost");
+		    			 else
+		    			  currentResultData.setResult("Trail"); 
 		    		  }
 		    		  
 		    	  }
@@ -1275,7 +1278,10 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			    		  }
 			    		  else
 			    		  {
-			    			  prevResultData.setResult("Trail");
+			    			  if(result[1].toString().equalsIgnoreCase("Won"))
+			    				  prevResultData.setResult("Lost");
+				    		 else
+			    			      prevResultData.setResult("Trail");
 			    		  }
 			    		  
 			    	  }
