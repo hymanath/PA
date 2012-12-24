@@ -1846,7 +1846,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			
-			 if(jObj.getString("task").equalsIgnoreCase("subscriptionDetails"))
+			 if(jObj.getString("task").equalsIgnoreCase("constituencySubscriptionDetails"))
 			 {
 				 
 				 if(regVO != null){
@@ -1855,7 +1855,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 					 result = constituencyManagementService.subscriberDetails(id,userId);
 				 }
 			 }
-			  else if  (jObj.getString("task").equalsIgnoreCase("unsubscriptionDetails"))
+			  else if  (jObj.getString("task").equalsIgnoreCase("constituencyUnsubscriptionDetails"))
 			  {
 				  if(regVO != null)
 				  {
