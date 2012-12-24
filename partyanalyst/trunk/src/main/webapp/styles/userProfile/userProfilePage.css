@@ -306,10 +306,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	
 	/* subscription Styles Start */
 	.specialPagSubscrDiv{margin-top: 10px;} 
-	.specialPagSubscrDiv .btnClass{margin-top: 35px;}
+	.specialPagSubscrDiv .btnClass{margin-top: 20px;}
 	.subscriptionType{font-size: 15px;font-weight: bold;margin-right: 133px;}
 	.unSubscriptionBtn{margin-left: 25px;}
-    .subscriptionInnerDiv{clear:both; margin-bottom: 10px;margin-top: 10px;display: table;}
+    .subscriptionInnerDiv{clear:both; margin-bottom: 10px;margin-top: 10px;
+	/* display: table;*/
+	}
 
 	
 	.problemheadClass{margin-bottom: 20px;margin-top: 10px;font-family: Verdana,Arial,sans-serif;}
@@ -420,3 +422,5 @@ body{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif;}
 #accountStngs a{text-decoration:none;}
 #accountStngs{margin-left:auto;margin-right:auto;width:180px;}
 #accountStngs li{margin:5px;}
+#subscriptionsDiv{display:table;}
+#userSpecialPageUnSubscriptionsDiv{padding-top:10px;}
