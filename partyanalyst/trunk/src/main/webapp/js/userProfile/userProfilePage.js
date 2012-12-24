@@ -286,7 +286,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 
 
-	$(".connectLink").click(function(){
+	$(".connectLink").live("click",function(){
 		
 		$("#allConnectedUsersDisplay_main").children().remove();			
 		var userId = $(this).closest("div").find(".userId").val();
@@ -982,6 +982,7 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task == "connectToUser")
 					{
 						closeConnectPanel(jsObj,results);
+						getPeopleYouMayKnowDetails();
 					}
 					else if(jsObj.task =="connectUserSet")
 					{
@@ -1046,6 +1047,10 @@ function callAjax1(jsObj,url){
 					   else{
 					     buildAllSubscriptions(results,"start");
 					   }
+					}
+					else if(jsObj.task == "getFriendsList")
+					{
+						buildPeopleYouMayKnowBlock(results);
 					}
 
 
@@ -1499,7 +1504,6 @@ function sendMessageToConnectedUser(userId,type)
 
 function showMessageSentConfirmation(results)
 {
-		$(".placeholderCenterDiv").children().remove();
 	
 	var elmt = $("#ErrorMsgDivId");
 	enableButton("sendMessageButtonId");
@@ -2455,4 +2459,52 @@ function clearAllFavoriteLinkDivs()
 	$(".districtDivInnerFav").children().remove();
 	$(".specialPageDivheading").children().remove();
 	$(".specialPageDivInnerFav").children().remove();
+}
+
+function getPeopleYouMayKnowDetails()
+{
+	var jsObj ={
+			task:"getFriendsList"
+	};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getFriendsListAction.action?"+rparam;
+		callAjax1(jsObj,url);
+		
+}
+
+function buildPeopleYouMayKnowBlock(results)
+{
+	
+	$(".peopleYouMayKnowULClass").children().remove();
+	$(".peopleYouMayKnowInnerDiv").html('');
+
+	var friendsList = results.peopleYouMayKnow;
+
+	if(friendsList == null || friendsList.length == 0)
+	{
+		$(".peopleYouMayKnowInnerDiv").html('Right now there are no friend suggestion for you.	We will get back with more suggesstions as soon as possible..');
+		return;
+	}
+
+	for(var i=0;i<3;i++)
+	{
+		var template = $(".connectPeopleTemplateDiv");
+		var templateClone = template.clone();
+		templateClone.removeClass("connectPeopleTemplateDiv");
+		if(friendsList[i].image == null || friendsList[i].image == '')
+			templateClone.find(".imageDIv").html('<a href="userProfile.action?profileId='+friendsList[i].id+'"><img height="50" width="55" src="pictures/profiles/human.jpg" /></a>');
+		else
+			templateClone.find(".imageDIv").html('<a href="userProfile.action?profileId='+friendsList[i].id+'"><img height="50" width="55" src="pictures/profiles/'+friendsList[i].image+'" /></a>');
+		
+		templateClone.find(".nameCls").html('<a href="userProfile.action?profileId='+friendsList[i].id+'">'+friendsList[i].candidateName+'</a>');
+		templateClone.find(".constituencyNameCls").html(''+friendsList[i].constituencyName.toLowerCase()+'');
+		templateClone.find(".sendMsgClass").html('<a rel="tooltip" href="javascript:{}" title="Send A Message" onclick="showMailPopup(\''+friendsList[i].id+'\',\''+friendsList[i].candidateName+'\',\'Message\')"><i class="icon-envelope opacityFilter-50"></i></a>');
+		templateClone.find(".connectLinkCls").html('<a rel="tooltip" href="javascript:{}" class="connectLink" title="Connect"><i class="icon-plus-sign opacityFilter-50"></i></a>');
+		templateClone.find(".userIdhiddenVar").html('<input type="hidden" value="'+friendsList[i].id+'" class="userId" />');
+		templateClone.find(".usernamehiddenVar").html('<input type="hidden" value="'+friendsList[i].candidateName+'" class="userName" />');
+		templateClone.find(".constituencyNamehiddenVar").html('<input type="hidden" value="'+friendsList[i].constituencyName+'" class="constituencyName" />');
+		templateClone.appendTo(".peopleYouMayKnowULClass");
+
+	}
 }
