@@ -133,6 +133,7 @@ margin:3px;
 
 #profileUserName{text-transform: capitalize;}
 .subscrStreamingMoreCls{display:none;}
+.prinfo .titleCls{margin-left: 16px;margin-top: 10px;}
 </style>
 </head>
 <body>
@@ -559,8 +560,8 @@ margin:3px;
 	
 
 	<div class="specialPagSubscrTemplDiv templateholder specialPagSubscrDiv templatePersons">
-		<div class="imgClass"></div>
-		<div class="prinfo">
+		<div class="imgClass span3"></div>
+		<div class="prinfo span7">
 			<span class="titleCls"></span>
 			<span class="btnClass"></span>
 			<span class="hiddenVar"></span>
