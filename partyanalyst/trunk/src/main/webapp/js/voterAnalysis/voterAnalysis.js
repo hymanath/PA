@@ -51,9 +51,6 @@ var publicationDateId = $('#publicationDateList').val();
 if(boothId == "0" || boothId == null || publicationDateId == null || publicationDateId == "0")
 	return false;
 
-if(boothId == "0")
-	return false;
-
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
 {key:"firstName", label: "Name", sortable: true},
@@ -81,11 +78,11 @@ totalRecords: "voterDetailsCount" // Access to value in the server response
 };
 
 var myConfigs = {
-initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=100", // Initial request for first page of data
 dynamicData: true, // Enables dynamic server-driven data
 sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
+		        rowsPerPage    : 100 
 			    })  // Enables pagination
 };
 
@@ -106,8 +103,8 @@ oDT: votersByLocBoothDataTable
 
 function buildVotersByLocPanchayatDataTable(id)
 {
-var publicationId = $('#buildVotersByLocPanchayatDataTable').val();
-var panchaytId =  $('#publicationDateList').val();
+var publicationId = $('#publicationDateList').val();
+var panchaytId =  $('#panchayatField').val();
 
 if(panchaytId == "0" || publicationId == "0")
 	return false;
@@ -125,7 +122,7 @@ var votersByLocBoothColumnDefs = [
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
 
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId=1&panchaytId=444&");
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId="+publicationId+"&panchaytId="+panchaytId+"&");
 votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
@@ -138,11 +135,11 @@ totalRecords: "voterDetailsCount" // Access to value in the server response
 };
 
 var myConfigs = {
-initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=100", // Initial request for first page of data
 dynamicData: true, // Enables dynamic server-driven data
 sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
+		        rowsPerPage    : 100 
 			    })  // Enables pagination
 };
 
@@ -266,6 +263,7 @@ function showImportantFamiliesDiv()
 		var name=mandalId.options[mandalId.selectedIndex].name;
 		var value1=mandalId.options[mandalId.selectedIndex].value;
 		var value = value1.substring(1);
+		var publicationValue = $('#publicationDateList').val();
 		var alertEl = document.getElementById("AlertMsg");
 		alertEl.innerHTML = '';
 		var selectname = mandalField.options[mandalField.selectedIndex].text;
@@ -290,6 +288,7 @@ function showImportantFamiliesDiv()
 				checkedele:checkedele,
 				selectedEle:selectedEle,
 				flag:flag,
+				publicationValue : publicationValue,
 				task:"getPanchayat"
 			}
 		
