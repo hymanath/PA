@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -43,11 +44,14 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VotersAnalysisService implements IVotersAnalysisService{
@@ -67,8 +71,18 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IPartyDAO partyDAO;
 	private IUserDAO userDAO;
+	private IVoterTempDAO voterTempDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	
+
+	public IVoterTempDAO getVoterTempDAO() {
+		return voterTempDAO;
+	}
+
+	public void setVoterTempDAO(IVoterTempDAO voterTempDAO) {
+		this.voterTempDAO = voterTempDAO;
+	}
 
 	public IPartyDAO getPartyDAO() {
 		return partyDAO;
@@ -2188,7 +2202,88 @@ public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
 	
 	//userVoterDetailsDAO.getUserVoterDetails(voterId, userId);
 }
+	
+	public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Date d3 = new Date();
+			int max = 1000;
+			Map<Long,Long> boothsMap = getBoothsMapInAConstituency(constituencyId,publicationDateId);
+			for(;;)
+			{
+				Date d1 = new Date(); 
+				List<VoterTemp> voterTempData = voterTempDAO.getVotersInAConstituency(constituencyId,startIndex,max);
+				
+				if(voterTempData != null && voterTempData.size() > 0)
+				{
+					Voter voter = null;
+					BoothPublicationVoter boothPublicationVoter = null;
 
+					for(VoterTemp voterTemp : voterTempData)
+					{
+						try{
+						voter = new Voter();
+						boothPublicationVoter = new BoothPublicationVoter();
+						voter.setVoterIDCardNo(voterTemp.getVoterId());
+						voter.setName(voterTemp.getName());
+						voter.setHouseNo(voterTemp.getHouseNo());
+						voter.setRelativeName(voterTemp.getGuardianName());
+						voter.setRelationshipType(voterTemp.getRelationShip());
+						voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
+						voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
+						voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						
+						voter = voterDAO.save(voter);
+						
+						boothPublicationVoter.setVoter(voter);
+						boothPublicationVoter.setBoothId(boothsMap.get(voterTemp.getPartNo()));
+						boothPublicationVoterDAO.save(boothPublicationVoter);
+						}catch (Exception e) {}
+					}
+					voterDAO.flushAndclearSession();
+					Date d2 = new Date();
+					System.out.println("1000 Records inserted in "+(d2.getTime()-d1.getTime())/(1000*60*60)+" Seconds");
+					maxResults = maxResults - 1000;
+					startIndex = startIndex + 1000;
+					if(maxResults <= 0)
+						break;
+					if(maxResults <= 1000)
+						max = maxResults;
+				}
+			}
+			
+			Date d4 = new Date();
+			Double d5 = (new Double(d4.getTime() - d3.getTime()))/(1000*60);
+			System.out.println("Time Taken - "+d5+" Mins");
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Occured in insertVoterData() Method, Exception is - "+e);
+			return resultStatus;
+		}
+	}
 
-
+	
+	public Map<Long,Long> getBoothsMapInAConstituency(Long constituencyId,Long publicationDateId)
+	{
+		Map<Long,Long> boothsMap = new HashMap<Long, Long>(0);
+		try{
+			List<Object[]> list = boothDAO.getBoothsInAConstituencyByPublication(constituencyId,publicationDateId);
+			
+			if(list != null && list.size() > 0)
+				for(Object[] params : list)
+				{
+					try{
+					boothsMap.put(Long.parseLong(params[1].toString().trim()),(Long)params[0]);
+					}catch (Exception e) {
+						log.error("Exception Occured - "+e);
+					}
+				}
+					
+			return boothsMap;
+		}catch (Exception e) {
+			log.error("Exception occured in getBoothsMapInAConstituency(), Exception is - "+e);
+			return boothsMap;
+		}
+	}
 }
