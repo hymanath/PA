@@ -532,5 +532,27 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
    		
    	}
 	
+	public List getPostedPoliticalReasonsByUserId(Long userId,int startIndex,int maxIndex)
+	{
+		StringBuilder queryString = new StringBuilder();
+		
+		queryString.append("select model.commentData, ");
+		queryString.append(" model.nomination.candidate.candidateId, ");
+		queryString.append(" model.nomination.candidate.lastname, ");
+		queryString.append(" model.nomination.party.shortName, ");
+		queryString.append(" model.nomination.constituencyElection.constituency.name, ");
+		queryString.append(" model.nomination.candidateResult.rank, ");
+		queryString.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
+		queryString.append(" model.nomination.constituencyElection.election.electionYear, ");
+		queryString.append(" model.user.userId,model.user.profileImg, model.commentData.commentDate ");
+		queryString.append(" from CommentCategoryCandidate model ");
+		queryString.append(" where model.user.userId = ? and model.commentData.isApproved ='"+IConstants.TRUE+"' ");
+		queryString.append(" order by model.commentData.commentDate desc ");
+		Query queryObj = getSession().createQuery(queryString.toString());
+		queryObj.setParameter(0, userId);
+		queryObj.setFirstResult(startIndex);
+		queryObj.setMaxResults(maxIndex);
+		return queryObj.list();
+	}
 		
 }
