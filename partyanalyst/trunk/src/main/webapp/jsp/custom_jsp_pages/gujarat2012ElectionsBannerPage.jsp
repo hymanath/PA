@@ -200,7 +200,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
 Compare Present election live results with previous election results,  
 Analyze the party's performances in gaining and losing of seats from other parties 
 Party's performances in the new constituencies.
-<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action">Compare Now !!</a>
+<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action?electionId=202&electionType=2&stateId=7">Compare Now !!</a>
 </p>
 
 </div>
@@ -209,7 +209,7 @@ Party's performances in the new constituencies.
 <h4 class="popover-title" style="width: 262px;">State Ministers Trend </h4>
 <p class="popover-content" style="width: 264px;">
 Analyze the present status of Gujarat state ministers for 2007-2012 duration.
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">Analyze Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=202&electionType=2&stateId=7&eventType=ministers">Analyze Now !!</a>
 </p>
 
 </div>
@@ -217,7 +217,7 @@ Analyze the present status of Gujarat state ministers for 2007-2012 duration.
 <h4 class="popover-title">Key Candidates Present Status</h4>
 <p class="popover-content">
 Analyze the present status of key candidates from Gujarat State
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">View Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=202&electionType=2&stateId=7&eventType=impCandidates">View Now !!</a>
 </p>
 
 </div>
@@ -873,7 +873,7 @@ CPM</a>
 google.load("visualization", "1", {packages:["corechart"]});
 
 $(document).ready(function() {
-	$('#selectedElectionYears').selectmenu('refresh');
+	//$('#selectedElectionYears').selectmenu('refresh');
   getElectionInfo();
   getDistrictWiseElectionResults();
   getWonLeadCandidates();
