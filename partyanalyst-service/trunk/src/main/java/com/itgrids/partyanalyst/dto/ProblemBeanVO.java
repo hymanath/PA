@@ -120,6 +120,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private List<ProblemBeanVO> problemBeanVOList;
 	private Date postDate;
 	private String userImageURL;
+	private String responseType;
 	
 	public CompleteProblemDetailsVO getAverageRating() {
 		return averageRating;
@@ -1001,6 +1002,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setUserImageURL(String userImageURL) {
 		this.userImageURL = userImageURL;
+	}
+
+	public String getResponseType() {
+		return responseType;
+	}
+
+	public void setResponseType(String responseType) {
+		this.responseType = responseType;
 	}
 
 	
