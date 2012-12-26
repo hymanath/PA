@@ -177,13 +177,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					VoterVO voterVO = new VoterVO();
 					
 					voterVO.setVoterId((++count)+"");
-					//voterVO.setFirstName(voter.getFirstName());
 					voterVO.setFirstName(voter.getName());
 					voterVO.setAge(voter.getAge());
 					voterVO.setGender(voter.getGender());
 					voterVO.setHouseNo(voter.getHouseNo());
-					//voterVO.setRelativeFirstName(voter.getRelativeFirstName());
 					voterVO.setRelativeFirstName(voter.getRelativeName());
+					voterVO.setRelationshipType(voter.getRelationshipType());
 					voterVO.setCast(voter.getCast());
 					voterVO.setCastCatagery(voter.getCastCatagery());	
 					voters.add(voterVO);
@@ -1984,9 +1983,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			houseNo = voter[1].toString();
 			voterVO = new VoterVO();
 			voterVO.setFirstName(voter[0].toString());
-			//voterVO.setVoterLastName(voter[1].toString());
 			voterVO.setAge((Long)voter[2]);
-			voterVO.setCast(voter[3].toString());
+			voterVO.setCast(voter[3] != null ? voter[3].toString() : "");
 			voterVO.setBoothNo((Long)voter[4]);
 			voterVO.setVoterId(voter[5].toString());
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
