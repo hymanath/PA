@@ -243,7 +243,7 @@ margin:3px;
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class="whitegloss"></div>
+				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;"></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
@@ -554,7 +554,7 @@ margin:3px;
 	<div class="templateDivMsg templateholder templateMessage" >
 			<div class="white-gloss readMsg popover-title" style="padding:2px;height:30px;">
 				<div class="imgClass"></div>
-				<span class="messageFrom"></span>
+				<span class="messageFrom" style="cursor: pointer;"></span>
 				<span class="dateAndTimeReceived"></span>
 				
 			</div>
