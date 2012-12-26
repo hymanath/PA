@@ -1743,6 +1743,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	 log.debug("Entered Into getGenderAnalysisInElection() in ElectionLiveResultsAnalysisService" );
 	  try{
 		  List<PartyElectionResultVO> partyResult = null;
+		  partyResult = new ArrayList<PartyElectionResultVO>(0);
 		  Election election = electionDAO.get(electionId);
 		  if(election.getIsPartial() != null && election.getIsPartial().equalsIgnoreCase("1"))
 		  {
@@ -1750,7 +1751,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		  List<Object[]> result = constituencyLeadCandidateDAO.getGenderAnalysisElectionresults(electionId);
 		  if(result !=null && result.size() >0)
 		  {
-			  partyResult = new ArrayList<PartyElectionResultVO>(0);
+			 
 			  for(Object[] params: result)
 			  {
 				  Long partyId = (Long)params[0];
@@ -1765,7 +1766,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 					  partyElectionResultVO.setTotalSeatsWon(1L);
 					  isNew = true;
 					  
-					  if(params[2].toString() != null)
+					  if(params[2] != null)
 					  {
 						  if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 							  partyElectionResultVO.setMaleWon(1L);
@@ -1776,7 +1777,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				  else
 				  {
 					  partyElectionResultVO.setTotalSeatsWon(partyElectionResultVO.getTotalSeatsWon() + 1L);
-					  if(params[2].toString() != null)
+					  if(params[2] != null)
 					  {
 						  if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 							  partyElectionResultVO.setMaleWon(partyElectionResultVO.getMaleWon() != null?
@@ -1804,7 +1805,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				 {
 					 partyElectionResultVO.setTotalParticipated(partyElectionResultVO.getTotalParticipated() != null ?
 						partyElectionResultVO.getTotalParticipated() + 1L : 1L);
-					 
+					 if(params[2] != null)
+					 {	 
 					 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 						partyElectionResultVO.setMalePerticipated(partyElectionResultVO.getMalePerticipated() != null ?
 						partyElectionResultVO.getMalePerticipated() + 1L : 1L);
@@ -1812,6 +1814,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 						partyElectionResultVO.setFemalePerticipated(partyElectionResultVO.getFemalePerticipated() != null ?
 						partyElectionResultVO.getFemalePerticipated() + 1L : 1L);
 				 }
+				}
 			 }
 		  }
 			  
