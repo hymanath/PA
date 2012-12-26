@@ -702,6 +702,7 @@ Previous Himachal Assembly Elections Results
 google.load("visualization", "1", {packages:["corechart"]});
 
 $(document).ready(function() {
+	$('#selectedElectionYears').selectmenu('refresh');
 	$("#dynamicText").insertBefore($(".election-analyis-tools"));
 	$("#dynamicText").css("margin","10px 0px");
 	getElectionInfo();
