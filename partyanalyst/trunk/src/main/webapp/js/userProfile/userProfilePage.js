@@ -1409,10 +1409,10 @@ function showRequestedMessagesForAUser(results)
 		
 		if(results.candidateVO[i].profileImg!=""){
 			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
-			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
+			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="30" width="30" src='+imageStr+'></img></a>');
 			}
 		else{
-				templateClone.find('.imgClass').html('<img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+				templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
 			}
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"><i class=" icon-repeat"></i> Reply</a>');
@@ -1697,10 +1697,10 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDiv");
 		if(image == null)
-			templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></a>');
 		else
-			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
-			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" /></a>');
+			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
@@ -1799,15 +1799,15 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 			var image = results.candidateVO[i].image;
 			var templateClone = template.clone();
 			templateClone.removeClass("templateDiv");
-			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 
 			if(image == null)
-				templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></a>');
 			else
-				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
+				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" /></a>');
 
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
 				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
@@ -1853,13 +1853,13 @@ function showAllPostedProblems(jsObj,results)
 		var template = $('.problemTemplateDiv');
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
-		templateClone.find('.problemReportedDate').html('Posted On: '+problemsData[i].identifiedDate+'');
+		templateClone.find('.problemReportedDate').html('Posted On:&nbsp;&nbsp;'+problemsData[i].identifiedDate+'');
 		templateClone.find('.problemImg').html('<a href="userProfile.action?profileId='+problemsData[i].userId+'"><img height="40" width="40"  class="thumbnail" src='+imageStr+'></img></a>');
-		templateClone.find('.postedPersonName').html('<h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5>');
+		templateClone.find('.postedPersonName').html('<a href="userProfile.action?profileId='+problemsData[i].userId+'"><h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5></a>');
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
-		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
-		templateClone.find('.location').html('Location: '+problemsData[i].location+'')
+		templateClone.find('.problemFromDate').html('<span>Existing From:&nbsp;&nbsp;</span>'+problemsData[i].existingFrom+'');
+		templateClone.find('.location').html('Location:&nbsp;&nbsp;'+problemsData[i].location+'')
 		templateClone.find('.commentCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Comment</a>');
 		templateClone.find('.shareCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Share</a>');
 		//if(problemsData[i].rating != null)
