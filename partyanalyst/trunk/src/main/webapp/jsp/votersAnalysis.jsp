@@ -367,7 +367,7 @@ locationDetails.constituencyArr.push(ob);
 	</div>
 	<div id="mandalDiv" class="selectDiv" style="display:none;">
 		
-	Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstation','pollingStationField');" style="margin-left:60px;"></select></div>
+	Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;"></select></div>
 		
 	<div id="panchayatDiv" class="selectDiv" style="display:none;">
 	Select Panchayat<font class="requiredFont">*</font> 	
