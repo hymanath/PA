@@ -1333,6 +1333,8 @@
 		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO" />
 		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO" />
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="userProblemDAO" ref="userProblemDAO" />
+		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
 	</bean>
 	
 </beans>		
