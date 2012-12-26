@@ -187,11 +187,14 @@ padding:5px 20px;
     margin-bottom: 10px;
     margin-top: 15px;
     padding: 10px;
-	display:inline-block;
+	/* display:inline-block;*/
+	margin-left: 0;
+    margin-right: 0;
 	}
 	
 	.templatePersons{width:29%;height:70px;}
 	 .opacityFilter-50{opacity: 0.65;}
+	 .politicalReasonsTemplate{display: table;}
 </style>
 </head>
 <body>
@@ -221,7 +224,7 @@ padding:5px 20px;
 			</div>
 				
 				
-				<div class="placeholderCenterDiv" style="display:none;"></div>
+				<div class="placeholderCenterDiv"></div>
 				<div class="row-fluid">
 					<div id="problemsDiv" class="">
 					
@@ -342,10 +345,87 @@ padding:5px 20px;
   </div>
 	
 <div class="TemplateCollection">
-<div class="friendListTemplate templateholder templatePersons">
-	<div class="frndImg thumbnail span3" ></div>
-	<span class="frndName span12"></span>
-</div>
+	<div class="friendListTemplate templateholder templatePersons">
+		<div class="frndImg thumbnail span3" ></div>
+		<span class="frndName span12"></span>
+	</div>
+	
+	<div class="problemTemplate templateholder" >
+
+		<div class="problemsShowDIV">
+			<div class=" problemImg"></div>
+			<span class="postedPersonName"></span>
+			<div class="" style="background:#f1f1f1;padding:7px;">
+				<div class="ProblemImgTitleDescDiv">
+    					 <span class="subscriptionsDescDiv span12">
+    						  <span class="activity-title">
+								<p><span class="problemTitle"/></p>
+							  </span>
+    						  <span>
+    						   <p><span class="problemDescription"/></p>
+    						  </span>
+    					  </span>
+				</div>
+				<span class="pull-right date-span">
+					<h6><span class="problemFromDate pull-right"></span></h6>
+					<h6><span class="location pull-left" style="margin-bottom:20px;color:#273241;"></span></h6>
+					<h6><span class="problemReportedDate pull-right"></span></h6>
+					
+				</span>
+				<!-- <div id='prblmCommentShare' >
+					<span class="commentCls pull-right btn btn-mini"></span>
+					<span class="shareCls pull-left btn btn-mini"></span>
+				</div> -->
+
+			</div>
+		</div>
+	</div>
+	
+
+
+
+<div class="politicalReasonsTemplate templateholder subscriptionsMain" style="margin:5px 0px;width:92%;">
+		<div class="politicalReasonsInnerDiv">
+			<div class="span2 postedBy">
+    				
+    		   </div>
+			<div class="">
+				<span class="headingCls ">
+					<h6><span class="headingCls"></span></h6>
+				</span>
+				
+				<div class="subscriptionsImgTitleDescDiv">
+    					  <span class="candidateImg span4"></span>
+    					  
+    					 <span class="subscriptionsDescDiv span8">
+    						  <span class="activity-title">
+								<p><span class="politicalReaCls"/></p>
+							  </span>
+    						  <span>
+    						   <p><span class="politicalDescCls"/></p>
+    						  </span>
+    					  </span>
+				</div>
+				<span class="pull-right date-span">
+					<h6><span class="polReaPostedDate"></span></h6>
+				</span>
+				
+				<!--<span class="candidateImg"></span>
+				<div class="politicalReasons">
+					
+					<p class="politicalReaCls"></p>
+					<p class="politicalDescCls"></p>
+					<!--
+					<span class="postedBy"></span>
+					<p class="polReaPostedDate span3"></p>
+					<p class="polReaPostedPerName"></p>
+				</div>-->
+			</div>
+		</div>
+	</div>	
+	
+
+
 </div>
 <script>
 
@@ -373,6 +453,9 @@ buildPolls();
 					};
 				friendsInPP.push(obj);
   </c:forEach>
+
+  //executeOnload();
+
 </script>
 </body>
 </html>
