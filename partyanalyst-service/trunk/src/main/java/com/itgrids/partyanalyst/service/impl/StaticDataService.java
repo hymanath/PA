@@ -2369,6 +2369,26 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return hamlets;
 	}
+	
+	public List<SelectOptionVO> getBoothsInAMandalIdByPublication(Long mandalId, Long publicationId)
+	{
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
+		try{
+			List<Object[]> list = boothDAO.getBoothsInAMandalByPublication(mandalId,publicationId);
+			
+			if(list != null && list.size() > 0)
+			for(Object[] params : list)
+			{
+				try{
+				result.add(new SelectOptionVO((Long)params[0],"Booth No- "+params[1].toString()));
+				}catch (Exception e){}
+			}
+			return result;
+		}catch (Exception e) {
+			log.error("Exception Occured in getBoothsInAMandalIdByPublication() Method, Exception is - "+e);
+			return result;
+		}
+	}
 	public List<SelectOptionVO> getBoothsByConstituencyId(Long constituencyId)
 	{
 		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
