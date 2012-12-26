@@ -1854,7 +1854,7 @@ function showAllPostedProblems(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
 		templateClone.find('.problemReportedDate').html('Posted On: '+problemsData[i].identifiedDate+'');
-		templateClone.find('.problemImg').html('<img height="40" width="40"  class="thumbnail" src='+imageStr+'></img>');
+		templateClone.find('.problemImg').html('<a href="userProfile.action?profileId='+problemsData[i].userId+'"><img height="40" width="40"  class="thumbnail" src='+imageStr+'></img></a>');
 		templateClone.find('.postedPersonName').html('<h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5>');
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
@@ -1982,7 +1982,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		if(data[i].imgURL == null)
 			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
 		else
-			templateClone.find('.postedBy').html('<img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img>');
+			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img></a>');
 			
 		
 		templateClone.find('.politicalDescCls').html('<b>Description:</b> '+data[i].commentDesc+'');
