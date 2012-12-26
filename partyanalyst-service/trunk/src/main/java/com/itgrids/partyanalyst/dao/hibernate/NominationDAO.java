@@ -3683,4 +3683,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryObject.setParameter("districtId",districtId);		
          return queryObject.list();
 	}
+	
+	public List<Long> getAllPartyPartispatedConstiIds(Long electionId,Long partyId)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.constituencyElection.constituency.constituencyId from Nomination model where model.party.partyId = :partyId and model.constituencyElection.election.electionId = :electionId ");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter("electionId",electionId);	
+		queryObject.setParameter("partyId",partyId);		
+         return queryObject.list();
+	}
 }
