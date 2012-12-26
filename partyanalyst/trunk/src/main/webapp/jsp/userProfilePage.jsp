@@ -140,6 +140,10 @@ margin:3px;
     font-size: 1em;
     height: 30px;
 }
+.readMsg{padding: 2px 2px 0px; height: 30px; margin-bottom: 7px;cursor:pointer;}
+.msgbox {margin-bottom: 6px;}
+.templateMessage .message{width:60%;word-wrap: break-word;}
+.templateMessage .msgBtns{margin-top: -30px;padding-bottom: 0px;}
 </style>
 </head>
 <body>
