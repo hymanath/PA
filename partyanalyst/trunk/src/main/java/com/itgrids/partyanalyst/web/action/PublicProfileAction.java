@@ -316,7 +316,17 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	
-
+	public String getProblemDetailsForPublicProfile()
+	{
+		try{
+			 String param;
+			 param = getTask();
+			 jObj = new JSONObject(param);
+			}catch (Exception e) {
+			   log.error("Exception Occured in getProblemDetailsForPublicProfile(), Exception - "+e);
+			}
+			problemBeanVOList = problemManagementService.getProblemDetailsByProfileId(profileId,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+			return Action.SUCCESS;
+	}
 }
 
