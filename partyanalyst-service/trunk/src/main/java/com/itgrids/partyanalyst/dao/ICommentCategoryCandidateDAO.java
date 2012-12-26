@@ -114,4 +114,7 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getConnectedUsersPostedReasonsCount(List<Long> connectedUserIds);
 	
 	public Long getTotalPostedReasonsCount(String reasonType, Long userId,List<Long> connectedUserIds);
+	
+	public List getPostedPoliticalReasonsByUserId(Long userId,int startIndex,int maxIndex);
+	
 }
