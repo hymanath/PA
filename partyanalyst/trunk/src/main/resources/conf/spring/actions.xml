@@ -1027,5 +1027,8 @@
 		<property name="userSocialNetworkSiteService" ref="userSocialNetworkSiteService" />
 	</bean>	
 	
+	<bean id="voterDataManageAction" class="com.itgrids.partyanalyst.web.action.VoterDataManageAction" singleton="false">
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+	</bean>	
 	
 </beans>	
