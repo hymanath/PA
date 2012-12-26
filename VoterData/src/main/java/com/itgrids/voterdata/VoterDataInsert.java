@@ -31,14 +31,17 @@ public class VoterDataInsert {
 	public static void main(String[] args)
 	{
 		VoterDataInsert voterDataInsert = new VoterDataInsert();
-		System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(78, 6, 5000, 10000));
+		//System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(78, 6, 5000, 10000));
+		voterDataInsert.getDetailsInAfamily(78,157);
+		voterDataInsert.getDetailsInAfamily(78,158);
+		//voterDataInsert.getDetailsInAfamily(78,88);
+		//voterDataInsert.getDetailsInAfamily(78,89);
 	}
 	
 	public int insertVoterData(int constituencyId, int publicationId,int startIndex,int maxResults)
 	{
 		try{
 			Class.forName(JDBC_DRIVER);
-    		System.out.println("Connecting to database...");
     		connectionTemp = DriverManager.getConnection(DB_URL_TEMP,USER_TEMP,PASSWORD_TEMP);
     		connectionLive = DriverManager.getConnection(DB_URL_LIVE,USER_LIVE,PASSWORD_LIVE);
     		
@@ -154,5 +157,158 @@ public class VoterDataInsert {
 				e.printStackTrace();
 			}
     	}
+	}
+	
+	public void getDetailsInAfamily(int constituencyId, int boothId)
+	{
+		try{
+			Class.forName(JDBC_DRIVER);
+    		
+    		connectionLive = DriverManager.getConnection(DB_URL_LIVE,USER_LIVE,PASSWORD_LIVE);
+    		
+    		stmtLive = connectionLive.createStatement();
+    		System.out.println();
+    		
+    		ResultSet rsF = stmtLive.executeQuery("select booth_id,booth_name,house_no,count(house_no) " +
+    				" from voter_temp where constituency_id = '"+constituencyId+"' and booth_id = '"+boothId+"' group by house_no ");
+    		
+    		List<VoterFamilyInfo> resultList = new ArrayList<VoterFamilyInfo>(0);
+    		
+    		while(rsF.next())
+    		{
+    			VoterFamilyInfo voterFamilyInfo = new VoterFamilyInfo();
+    			voterFamilyInfo.setBoothId(Integer.parseInt(rsF.getString("booth_id")));
+    			voterFamilyInfo.setBoothName(rsF.getString("booth_name"));
+    			voterFamilyInfo.setHouseNo(rsF.getString("house_no"));
+    			voterFamilyInfo.setNoOfVotes(rsF.getInt(4));
+    			resultList.add(voterFamilyInfo);
+    		}
+    		
+    		for(VoterFamilyInfo info : resultList)
+    		{
+    			VoterInfo elderVoter = getEldestPersonDetailsInAHouse(constituencyId,boothId,info.getHouseNo());
+    			info.setEldestVoterName(elderVoter.getVoterName());
+    			info.setEldestVoterGender(elderVoter.getSex());
+    			info.setEldestVoterAge(elderVoter.getAge());
+    		}
+    		
+    		for(VoterFamilyInfo info : resultList)
+    		{
+    			VoterInfo youngVoter = getYoungestPersonDetailsInAHouse(constituencyId,boothId,info.getHouseNo());
+    			info.setYoungestVoterName(youngVoter.getVoterName());
+    			info.setYoungestVoterAge(youngVoter.getAge());
+    			info.setYoungestVoterGender(youngVoter.getSex());
+    		}
+    		
+    		for(VoterFamilyInfo info : resultList)
+    		{
+    			System.out.println();
+    			System.out.print(info.getBoothId()+"\t");
+    			System.out.print(info.getBoothName()+"\t");
+    			System.out.print("# "+info.getHouseNo()+"\t");
+    			System.out.print(info.getNoOfVotes()+"\t");
+    			System.out.print(info.getEldestVoterName()+"\t");
+    			System.out.print(info.getEldestVoterAge()+"\t");
+    			System.out.print(info.getEldestVoterGender()+"\t");
+    			System.out.print(info.getYoungestVoterName()+"\t");
+    			System.out.print(info.getYoungestVoterGender()+"\t");
+    			System.out.print(info.getYoungestVoterAge()+"\t");
+    		}
+    		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				connectionLive.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public VoterInfo getEldestPersonDetailsInAHouse(int constituencyId,int boothId,String houseNo)
+	{
+		VoterInfo voterInfo = new VoterInfo();
+		Connection con = null;
+		try{
+			Class.forName(JDBC_DRIVER);
+    		con = DriverManager.getConnection(DB_URL_LIVE,USER_LIVE,PASSWORD_LIVE);
+    		
+    		ResultSet rsE = stmtLive.executeQuery("select name,age,sex " +
+    				" from voter_temp where constituency_id = '"+constituencyId+"' and booth_id = '"+boothId+"' and house_no = '"+houseNo+"'");
+    		int age = 0;
+    		String name = null;
+    		String gender = null;
+    		
+    		while(rsE.next())
+    		{
+    			int ageTemp = Integer.parseInt(rsE.getString("age").trim());
+    			if(ageTemp >= age)
+    			{
+    				age = ageTemp;
+    				name = rsE.getString("name").trim();
+    				gender = rsE.getString("sex").trim();
+    			}
+    		}
+    		voterInfo.setVoterName(name);
+    		voterInfo.setAge((new Integer(age)).toString());
+    		voterInfo.setSex(gender);
+    		return voterInfo;
+    		
+		}catch (Exception e) {
+			return voterInfo;
+		}
+		finally
+		{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public VoterInfo getYoungestPersonDetailsInAHouse(int constituencyId,int boothId,String houseNo)
+	{
+		VoterInfo voterInfo = new VoterInfo();
+		Connection con = null;
+		try{
+			Class.forName(JDBC_DRIVER);
+			con = DriverManager.getConnection(DB_URL_LIVE,USER_LIVE,PASSWORD_LIVE);
+    		
+    		ResultSet rsY = stmtLive.executeQuery("select name,age,sex " +
+    				" from voter_temp where constituency_id = '"+constituencyId+"' and booth_id = '"+boothId+"' and house_no = '"+houseNo+"'");
+    		int age = 200;
+    		String name = null;
+    		String gender = null;
+    		
+    		while(rsY.next())
+    		{
+    			int ageTemp = Integer.parseInt(rsY.getString("age").trim());
+    			if(ageTemp <= age)
+    			{
+    				age = ageTemp;
+    				name = rsY.getString("name").trim();
+    				gender = rsY.getString("sex").trim();
+    			}
+    		}
+    		voterInfo.setVoterName(name);
+    		voterInfo.setAge((new Integer(age)).toString());
+    		voterInfo.setSex(gender);
+    		return voterInfo;
+    		
+		}catch (Exception e) {
+			return voterInfo;
+		}
+		finally
+		{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
