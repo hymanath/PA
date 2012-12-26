@@ -1828,6 +1828,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 
 function showAllPostedProblems(jsObj,results)
 {
+	var i=0;
 	$('.viewMoreDiv').html('');
 		
 	clearAllSubscriptionDivs();
@@ -1848,7 +1849,7 @@ function showAllPostedProblems(jsObj,results)
 	if(jsObj.linkType == "problemsLink"){
 		$(".placeholderCenterDiv").children().remove();
 	  	}
-	for(var i in problemsData)
+	for(i in problemsData)
 	{
 		var imageStr = "pictures/profiles/"+problemsData[i].userImageURL;
 		var template = $('.problemTemplateDiv');
@@ -1864,11 +1865,14 @@ function showAllPostedProblems(jsObj,results)
 		templateClone.find('.commentCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Comment</a>');
 		templateClone.find('.shareCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Share</a>');
 		//if(problemsData[i].rating != null)
-			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
+		//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
+
+	if(i>=9) {
+		var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
+		}
 }
 
 
@@ -1942,7 +1946,7 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 
 function showAllPostedReasonsForUserProfile(jsObj,results)
 {
-	
+	var i=0;	
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
 	var data = results.candidateComments;
@@ -1961,7 +1965,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		$(".placeholderCenterDiv").children().remove();
 	  	}
 
-	for(var i in data)
+	for(i in data)
 	{
 		var status;
 		var imageStr = "/PartyAnalyst/images/candidates/"+data[i].candidate;
@@ -1991,9 +1995,10 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		/*templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');*/
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
+	if(i>=9) {
 	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
-
+}
 }
 function setDefaultImage(img)
 {
