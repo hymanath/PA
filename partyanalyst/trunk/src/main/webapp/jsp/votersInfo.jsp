@@ -204,6 +204,23 @@ h3{
 				 po.src = 'https://apis.google.com/js/plusone.js';
 				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 			 })();
+			 function encodeURL(urlStr)
+				{
+					var url = $.trim(urlStr);
+					if(url.length > 0)
+					{
+						url = url.replace('&','%26');
+						return url;
+					}
+					else
+						return;
+				}
+			  function shareInFacebook(urlStr)
+				{	
+					var url = encodeURL(urlStr);
+					var shareInFacebook_window = window.open("http://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
+					shareInFacebook_window.focus();
+				}
 			</script>
 		</span>
 		<span style="float: right; margin-top: -36px; margin-left: 0px; margin-right: 100px;">
