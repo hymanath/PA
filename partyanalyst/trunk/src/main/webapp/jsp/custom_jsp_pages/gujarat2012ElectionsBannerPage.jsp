@@ -873,6 +873,7 @@ CPM</a>
 google.load("visualization", "1", {packages:["corechart"]});
 
 $(document).ready(function() {
+	$('#selectedElectionYears').selectmenu('refresh');
   getElectionInfo();
   getDistrictWiseElectionResults();
   getWonLeadCandidates();
