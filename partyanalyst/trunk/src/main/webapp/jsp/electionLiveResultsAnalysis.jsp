@@ -31,7 +31,7 @@ border: 1px solid #CDCDCD;
 #partyOldResultsDiv table tr:nth-child(2n) {
 background: none repeat scroll 0 0 #F9F9F9;
 }
-#partyNewResultsDiv table tr:nth-child(2n) {
+#partyNewResultsDiv table tr:nth-child(2n),#genderAnalysis table tr:nth-child(2n){
 background: none repeat scroll 0 0 #F9F9F9;
 }
 #candidatesDiv table tr:nth-child(2n) {
