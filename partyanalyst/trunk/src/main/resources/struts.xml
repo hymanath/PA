@@ -4006,6 +4006,11 @@
 		
 		<action name="voterDataManageAction" class="voterDataManageAction">
 		</action>
+		<action name="getStreamingDataForProfileUserAction" class="userProfileAction" method="getStreamingDataForPublicProfileByProfileId">
+		  	 <result type="json" name="success">
+		    	<param name="root">streamList</param>
+		   </result>
+		</action>
 		
 	</package>
 </struts>      
