@@ -164,6 +164,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
 .popover-content{	height:115px;
 	position:relative;}
 .popover-content  a{position:absolute;bottom:5px;right:5px;}
+
 </style>
 
 <div style="margin-bottom:10px;">
@@ -188,35 +189,35 @@ table.gujaratTableDiv td:first-child {width:50%;}
 </span></br></br>-->
 
 <!-- Analysis Tools Start-->
-<div class="breadcrumb" id="dynaUpload">
+<div class="breadcrumb" id="dynaUpload"   style="width: 885px; margin-left: -5px; height: 228px;">
 <h3>Live Results Analysis Tools</h3>
 <div class="row-fluid">
 
 
-<div class="span4 popover" >
-<h4 class="popover-title">Compare Live <small class="badge">vs</small> Previous Results</h4>
-<p class="popover-content">
+<div class="span4 popover"  style="width: 275px; left: -9px;">
+<h4 class="popover-title" style="width: 257px;"><span id="live">Compare Live</span> <small class="badge">vs</small> <span id="previous">Previous Results </span></h4>
+<p class="popover-content" style="width: 262px;">
 Compare Present election live results with previous election results,  
 Analyze the party's performances in gaining and losing of seats from other parties 
 Party's performances in the new constituencies.
-<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action?electionId=202&electionType=2&stateId=7">Compare Now !!</a>
+<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action">Compare Now !!</a>
 </p>
 
 </div>
 
-<div class="span4 popover">
-<h4 class="popover-title">State Ministers Trend </h4>
-<p class="popover-content">
+<div class="span4 popover" style="width: 275px;">
+<h4 class="popover-title" style="width: 262px;">State Ministers Trend </h4>
+<p class="popover-content" style="width: 264px;">
 Analyze the present status of Gujarat state ministers for 2007-2012 duration.
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=202&electionType=2&stateId=7&eventType=ministers">Analyze Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">Analyze Now !!</a>
 </p>
 
 </div>
-<div class="span4 popover">
+<div class="span4 popover" style="width: 279px; left: 13px;">
 <h4 class="popover-title">Key Candidates Present Status</h4>
 <p class="popover-content">
 Analyze the present status of key candidates from Gujarat State
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=202&electionType=2&stateId=7&eventType=impCandidates">View Now !!</a>
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action">View Now !!</a>
 </p>
 
 </div>
@@ -229,7 +230,7 @@ Analyze the present status of key candidates from Gujarat State
 
 	
 <div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
-<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">Party Wise Results in Districts Of Gujarat Vidhan sabha 2012</h3></div>
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">DISTRICT WISE Party Wise Results Of Gujarat Vidhan Sabha 2012</h3></div>
   <div style="background:#EDF9FF;width:100%;padding:4px;">
   <select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;" onchange="getDistrictWiseElectionResults()">
      <option value="152">Ahmadabad</option>
@@ -1133,7 +1134,7 @@ function buildSpecialPageHightLights(results)
 	var str ='';
 	var specialPageHighLight = document.getElementById('specialPageHighLight');
 	
-	str +='<fieldset class="span6" style="verdana,sans-serif;font-weight:bold;margin-top:14px;">';
+	str +='<fieldset  style="verdana,sans-serif;font-weight:bold;margin-top:14px;">';
 	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Gujarat HighLights</legend>';
 	str +='<div class="hglgts">';
 	if(results != null && results!='')
