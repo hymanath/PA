@@ -181,7 +181,7 @@ padding:5px 20px;
     width: 85px;}
 	.TemplateCollection{display:none;}
 	
-	.placeholderCenterDiv{
+	 .placeholderCenterDiv{
 	background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #CDCDCD;
     margin-bottom: 10px;
@@ -224,7 +224,7 @@ padding:5px 20px;
 			</div>
 				
 				
-				<div class="placeholderCenterDiv"></div>
+				<div class="placeholderCenterDiv" style="display:none;"></div>
 				<div class="row-fluid">
 					<div id="problemsDiv" class="">
 					
