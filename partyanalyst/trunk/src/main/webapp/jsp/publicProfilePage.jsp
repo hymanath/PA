@@ -167,8 +167,8 @@ padding:5px 20px;
 
 
 /* profile Style */
-.imageClass{width:300px;}
-.profilerDetails{width:300px;}
+
+
 .profileUserName{ font-size: 17px;font-weight: bold;}
 .fontStyle{font-size:14px;}
 .publicProfileInnerDiv{background:#fafafa}
@@ -191,32 +191,39 @@ padding:5px 20px;
 	}
 	
 	.templatePersons{width:29%;height:70px;}
+	 .opacityFilter-50{opacity: 0.65;}
 </style>
 </head>
 <body>
   <div class="container m-top15">
-	<div class="row-fluid">
+	<div class="row">
 		<div class="publicProfileInnerDiv">
 			<div class="span8">
-				<div class="imageClass">
+			<div class="row-fluid">
+				<div class="span2">
 				<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
-					<img width="90" height="100" src="pictures/profiles/human.jpg" style="border:1px solid #ADADAD;" id="userProfileImg">
+					<img class="thumbnail"  src="pictures/profiles/human.jpg"  id="userProfileImg">
 				</c:if>
 				<c:if test="${loginUserProfilePic !='' && loginUserProfilePic != null}">
-				 <img width="140" height="100" src="pictures/profiles/${loginUserProfilePic}" style="border:1px solid #ADADAD;" id="userProfileImg">
+				 <img class="thumbnail"  src="pictures/profiles/${loginUserProfilePic}"  id="userProfileImg">
 				</c:if>
 				</div>
-				<div class="profilerDetails">
-					<span class="profileUserName">${profileUserName}</span><br>
-					<span class="fontStyle"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a></span>&nbsp;&nbsp;&nbsp;
-					<span class="fontStyle"><a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a></span>&nbsp;&nbsp;&nbsp;
-					<span class="fontStyle"><a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
+				<div class="span10">
+					<span class="profileUserName row">${profileUserName}</span>
+					<span class="fontStyle row"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
+					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
+					<a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
+					<span class="row pull-right"><a href=""><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a>
+					<a href=""><i class="icon-envelope opacityFilter-50 fontStyle"></i> Send Message</a></span>
+					
 					<!--<a class='btn btn-success btn-mini pull-right' href="/PartyAnalyst/userProfile.action">My Profile</a>-->
 				</div>
+			</div>
+				
 				
 				<div class="placeholderCenterDiv" style="display:none;"></div>
-				
-				<div id="problemsDiv">
+				<div class="row-fluid">
+					<div id="problemsDiv" class="">
 					
 					<c:if test="${not empty problems.problemBeanVOList}">
 
@@ -228,6 +235,7 @@ padding:5px 20px;
 								<p class="problemTitle"><a href="completeProblemDetailsAction.action?problemId=${problemData.problemId}">${problemData.problem}</a></p>
 								<p class="problemDescription">${problemData.description}</p>
 								<p><span>Existing From: </span>${problemData.existingFrom}</p>
+								
 							 </div>
 							</c:forEach>
 							</div>
@@ -252,6 +260,7 @@ padding:5px 20px;
 					  </c:forEach>
 					</c:if>
 
+					</div>
 				</div>
 			</div>
 			<div class="span4">
