@@ -31,12 +31,12 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserProfileService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 public class UserProfileAction extends ActionSupport implements ServletRequestAware {
 
 	private static final long serialVersionUID = -4620729281316958397L;
@@ -69,7 +69,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private UserCommentsInfoVO userComments;
 	private ProblemBeanVO problemDetailsVO;
 	private SubscriptionsMainVO subscriptionsMainVO;
-	private List<ProblemBeanVO> problemBeanVOList,problemList;
+	private List<ProblemBeanVO> problemBeanVOList,problemList,streamList;
 	private UserSettingsVO userSettingsList;
 	private String status;
 	private List<UserSettingsVO> userFavoutiteLinks;
@@ -380,6 +380,14 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 
 	public void setRegistrationVOList(List<RegistrationVO> registrationVOList) {
 		this.registrationVOList = registrationVOList;
+	}
+
+	public List<ProblemBeanVO> getStreamList() {
+		return streamList;
+	}
+
+	public void setStreamList(List<ProblemBeanVO> streamList) {
+		this.streamList = streamList;
 	}
 
 	public String execute()
@@ -852,6 +860,20 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		List<Long> userId = new ArrayList<Long>(0);
 		userId.add(user.getRegistrationID());
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
+		return Action.SUCCESS;
+	}
+	
+	public String getStreamingDataForPublicProfileByProfileId()
+	{
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);	
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - " +e); 
+		}
+		streamList = userProfileService.getStreamingDataForPublicProfileByProfileId(jObj.getLong("profileId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
 		return Action.SUCCESS;
 	}
 
