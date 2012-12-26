@@ -4003,5 +4003,9 @@
 				<param name="root">dataTransferVO</param>				
 			</result> 
 		</action>
-			</package>
+		
+		<action name="voterDataManageAction" class="voterDataManageAction">
+		</action>
+		
+	</package>
 </struts>      
