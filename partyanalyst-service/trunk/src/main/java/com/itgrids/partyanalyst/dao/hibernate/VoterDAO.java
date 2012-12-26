@@ -188,5 +188,9 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				return queryObject.list();
 			}
 	
+			public void flushAndclearSession(){
+				getSession().flush();
+				getSession().clear();
+			}
 	
 }
