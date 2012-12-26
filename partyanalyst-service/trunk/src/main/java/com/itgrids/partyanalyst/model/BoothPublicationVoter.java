@@ -28,18 +28,14 @@ public class BoothPublicationVoter implements Serializable{
 	 private Long BoothPublicationVoterId;	
 	 private Booth booth;	
 	 private Voter voter;
+	 private Long boothId;
 	 
-	 
-	 public BoothPublicationVoter(){
-		 
-		 
-	 }
+	 public BoothPublicationVoter()
+	 {}
 	 
 	 public BoothPublicationVoter(Booth booth ,Voter voter){
-		 
 		 this.booth = booth;
 		 this.voter = voter;
-		 
 	 }
 	 
 	 @Id
@@ -53,7 +49,7 @@ public class BoothPublicationVoter implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="booth_id")
+	@JoinColumn(name="booth_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Booth getBooth() {
@@ -73,6 +69,15 @@ public class BoothPublicationVoter implements Serializable{
 	}
 	public void setVoter(Voter voter) {
 		this.voter = voter;
+	}
+
+	@Column(name = "booth_id", length = 10)
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
 	}
 	
 	 
