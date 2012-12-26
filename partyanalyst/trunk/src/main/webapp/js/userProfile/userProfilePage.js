@@ -1510,6 +1510,7 @@ function sendMessageToConnectedUser(userId,type)
 	  return;
 	}
 		
+	$("#ErrorMsgDivId").html('<img src="images/icons/search.gif" class="searchImgCls"/>');
 	disableButton("sendMessageButtonId");
 	var jsObj ={
 				loginUserId:loginUserId,

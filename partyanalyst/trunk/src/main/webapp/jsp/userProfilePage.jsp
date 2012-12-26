@@ -144,6 +144,7 @@ margin:3px;
 .msgbox {margin-bottom: 6px;}
 .templateMessage .message{width:60%;word-wrap: break-word;}
 .templateMessage .msgBtns{margin-top: -30px;padding-bottom: 0px;}
+.searchImgCls{margin-left: 250px; margin-top: 0px; padding-top: 0px; margin-bottom: -30px;}
 </style>
 </head>
 <body>
