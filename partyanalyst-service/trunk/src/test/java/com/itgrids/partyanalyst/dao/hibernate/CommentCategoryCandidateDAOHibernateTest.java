@@ -292,10 +292,26 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetTotalPostedReasonsCount()
+	/*public void testGetTotalPostedReasonsCount()
 	{
 		List<Long> connectedUserIds = new ArrayList<Long>(0);
 		Long count = commentCategoryCandidateDAO.getTotalPostedReasonsCount(IConstants.TOTAL, 1l, connectedUserIds);
 		System.out.println(count);
+	}*/
+	
+	public void testGetPostedPoliticalReasonsByUserId()
+	{
+		List results = commentCategoryCandidateDAO.getPostedPoliticalReasonsByUserId(1971l, 0, 10);
+		if(results != null && results.size() > 0)
+		{
+			for(int i=0;i<results.size();i++)
+			{
+				Object[] params = (Object[])results.get(i);
+				for(Object list : params)
+					System.out.println("\t" +list);
+			}
+		}
 	}
+	
+	
 }

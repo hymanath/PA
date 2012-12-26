@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -15,10 +16,14 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
+import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
@@ -34,6 +39,10 @@ public class UserProfileService implements IUserProfileService {
 	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
 	
 	private IFileGallaryDAO fileGallaryDAO;
+	
+	private IUserProblemDAO userProblemDAO;
+	
+	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 	
 	private static final Logger log = Logger.getLogger(UserProfileService.class);
 			
@@ -80,7 +89,29 @@ public class UserProfileService implements IUserProfileService {
 	}
 
 
-  public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDate,Long userId){
+	
+  public IUserProblemDAO getUserProblemDAO() {
+		return userProblemDAO;
+	}
+
+
+	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
+		this.userProblemDAO = userProblemDAO;
+	}
+
+
+	public ICommentCategoryCandidateDAO getCommentCategoryCandidateDAO() {
+		return commentCategoryCandidateDAO;
+	}
+
+
+	public void setCommentCategoryCandidateDAO(
+			ICommentCategoryCandidateDAO commentCategoryCandidateDAO) {
+		this.commentCategoryCandidateDAO = commentCategoryCandidateDAO;
+	}
+
+
+public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDate,Long userId){
 	  List<UserProfileVO> userProfileVOList = new ArrayList<UserProfileVO>();
 	try{
 	  List<Long> candidateIds = candidateSubscriptionsDAO.getAllCandidatesSubscribedByUser(userId);
@@ -305,4 +336,124 @@ public class UserProfileService implements IUserProfileService {
                 return m2.getDate().compareTo(m1.getDate());
                }
 			};
+			
+			
+			
+   public List<ProblemBeanVO> getStreamingDataForPublicProfile(Long userId,int startIndex, int maxIndex)
+   {
+	  List<ProblemBeanVO> problemBeanVOList = new ArrayList<ProblemBeanVO>(0);
+		try{
+		   ProblemBeanVO problemBeanVO = null;
+			List<Object[]> problemsList = userProblemDAO.getProblemDetailsForPublicProfile(userId, startIndex, maxIndex);
+			List comments = commentCategoryCandidateDAO.getPostedPoliticalReasonsByUserId(userId, startIndex, maxIndex);
+			
+			String name = "";
+			if(problemsList != null && problemsList.size() > 0)
+			{
+				for(Object[] params: problemsList)
+				{
+					problemBeanVO = new ProblemBeanVO();
+					problemBeanVO.setResponseType("Problems");
+					problemBeanVO.setProblemId((Long)params[0]);
+					problemBeanVO.setProblem(params[1].toString());
+					problemBeanVO.setDescription(params[2].toString());
+					problemBeanVO.setReportedDate(params[3].toString());
+					problemBeanVO.setExistingFrom(params[4].toString());
+					problemBeanVO.setPostDate((Date)params[3]);
+					problemBeanVO.setPostedDate(params[3].toString());
+					problemBeanVO.setUserID((Long)params[10]);
+					problemBeanVO.setUserImageURL((params[11] != null && params[11].toString().length() > 0)?params[11].toString() : "human.jpg");
+					if(params[12] != null)
+						name = params[12].toString();
+					if(params[13] != null)
+						name += " "+params[13].toString();
+					problemBeanVO.setPostedPersonName(name);
+					
+					problemBeanVOList.add(problemBeanVO);
+				}
+			}
+			
+			if(comments != null && comments.size() > 0)
+			{
+				
+				for(int i=0; i<comments.size();i++)
+				{
+					SimpleDateFormat formatter =  new SimpleDateFormat("yy/MM/dd");
+					
+					
+					Object[] commentList = (Object[])comments.get(i);
+					CommentData commentData = (CommentData)commentList[0];
+					problemBeanVO = new ProblemBeanVO();
+					problemBeanVO.setResponseType("Comments");
+					problemBeanVO.setPostDate((Date)commentData.getCommentDate());
+					problemBeanVO.setPostedDate(formatter.format(commentData.getCommentDate()));
+					problemBeanVO.setDescription(commentData.getCommentDesc());
+					problemBeanVO.setPostedPersonName(commentData.getCommentBy());
+					problemBeanVO.setProblem(commentData.getCommentDataCategory().getCommentDataCategoryType());
+					problemBeanVO.setProblemId((Long)commentList[1]); //CandidateId
+					problemBeanVO.setName(commentList[2].toString()); //Candidate Name
+					problemBeanVO.setProblemImpactLevelId((Long)commentList[5]); //rank
+					problemBeanVO.setProblemType(commentList[6].toString()); //election type
+					problemBeanVO.setConstituency(commentList[4].toString());
+					problemBeanVO.setDepartment(commentList[3].toString()); //party name
+					problemBeanVO.setUserImageURL((commentList[9]!=null && commentList[9].toString().length() > 0 )? commentList[9].toString() : "human.jpg");
+					problemBeanVO.setUserID((Long)commentList[8]);
+					problemBeanVOList.add(problemBeanVO);
+					
+				}
+			}
+					
+			return problemBeanVOList;
+			}catch (Exception e) {
+			  e.printStackTrace();
+			  log.error("Exception Occured in getStreamingDataForPublicProfile() Method,Exception is - "+e);
+			return problemBeanVOList;
+			}
+	}	
+   
+   
+   public List<ProblemBeanVO> getStreamingDataForPublicProfileByProfileId(Long userId,int startIndex, int maxIndex)
+   {
+	   List<ProblemBeanVO> problemBeanVOList = null;
+	   List<ProblemBeanVO> list = getStreamingDataForPublicProfile(userId, startIndex, maxIndex);
+	   
+	   try{
+		   Map<String, ProblemBeanVO> mapList = new HashMap<String, ProblemBeanVO>(0);
+		   
+		   if(list != null && list.size() > 0)
+		   {
+			   for(ProblemBeanVO params : list)
+			   {
+				   String key = params.getPostedDate();
+				   if(mapList.get(key) == null)
+				   {
+					 ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+					 problemBeanVO.setPostedDate(key);
+					 problemBeanVO.setPostDate(params.getPostDate());
+					 List<ProblemBeanVO> proList = new ArrayList<ProblemBeanVO>(0);
+					 proList.add(params);
+					 problemBeanVO.setProblemBeanVOList(proList);
+					 mapList.put(key, problemBeanVO);
+				   }else{
+					   ProblemBeanVO problemBeanVO = mapList.get(key);
+					   problemBeanVO.getProblemBeanVOList().add(params); 
+				   }
+			   }
+		   }
+		   problemBeanVOList = new ArrayList<ProblemBeanVO>(mapList.values());
+
+		   Collections.sort(problemBeanVOList, new Comparator<ProblemBeanVO>() {
+			    public int compare(ProblemBeanVO m1, ProblemBeanVO m2) {
+			        return m2.getPostDate().compareTo(m1.getPostDate());
+			    }
+			});
+		   
+		   return problemBeanVOList;  
+	   }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - "+e);
+		return problemBeanVOList;
+	}
+   }
+			
 }
