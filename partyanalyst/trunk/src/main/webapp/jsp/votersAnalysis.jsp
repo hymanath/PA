@@ -69,7 +69,7 @@ table.gridtable th {
 	padding: 8px;
 	border-style: solid;
 	border-color: #666666;
-	background-color: #dedede;
+	background-color: #DBEBFF;
 }
 table.gridtable td {
 	border-width: 1px;
@@ -319,6 +319,10 @@ width: 860px;}
 .requiredFont{
 	color:red;
 	font-size:13px;
+}
+.noteDiv{
+   margin-bottom: -21px;
+   margin-top: 15px;
 }
 </style>
 
