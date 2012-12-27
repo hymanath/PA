@@ -4012,6 +4012,14 @@
 		   </result>
 		</action>
 		
+	<action name="votersEditAction" class="votersEditAction">
+			<result name="success">/jsp/votersEditPage.jsp</result>
+		</action>
+		
+		<action name="voterEditAction" class="votersEditAction" method="putVoterDetails">
+			<result type="redirect"  name="success">votersEditAction.action?voterId=${voterHouseInfoVO.voterId}&amp;boothId=${voterHouseInfoVO.boothId}</result>
+		</action>
+		
 		<action name="getVotersCategoryAction" class="votersEditAction" method="callAjaxHandler">
 		    <result type="json" name="success">
 				 <param name="root">voterCategoryValues</param>			
