@@ -27,12 +27,14 @@ import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 import com.itgrids.partyanalyst.dto.UserSettingsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserProfileService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -78,9 +80,53 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	
 	private CadreManagementVO cadreManagementVO = null;
 	private IUserCadreManagementService userCadreManagementService;
+	private boolean hasNewsMonitoring = false;
+	private EntitlementsHelper entitlementsHelper;
+	private boolean hasSubUserEntitlement = false;
+	private boolean hasCallCenterEntitlment = false;
+	private boolean hasProfileManagement = false;
 	
 	
-	
+	public boolean isHasProfileManagement() {
+		return hasProfileManagement;
+	}
+
+	public void setHasProfileManagement(boolean hasProfileManagement) {
+		this.hasProfileManagement = hasProfileManagement;
+	}
+
+	public boolean isHasSubUserEntitlement() {
+		return hasSubUserEntitlement;
+	}
+
+	public void setHasSubUserEntitlement(boolean hasSubUserEntitlement) {
+		this.hasSubUserEntitlement = hasSubUserEntitlement;
+	}
+
+	public boolean isHasCallCenterEntitlment() {
+		return hasCallCenterEntitlment;
+	}
+
+	public void setHasCallCenterEntitlment(boolean hasCallCenterEntitlment) {
+		this.hasCallCenterEntitlment = hasCallCenterEntitlment;
+	}
+
+	public boolean isHasNewsMonitoring() {
+		return hasNewsMonitoring;
+	}
+
+	public void setHasNewsMonitoring(boolean hasNewsMonitoring) {
+		this.hasNewsMonitoring = hasNewsMonitoring;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public CadreManagementVO getCadreManagementVO() {
 		return cadreManagementVO;
 	}
@@ -392,6 +438,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 
 	public String execute()
 	{
+		String userStatusType = null;
 		if(profileId == null){
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -400,6 +447,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			log.error(" No User Log In .....");			
 			return "error";
 		}
+		
+		
+		
 		 List<Long> userId = new ArrayList<Long>(0);
 		 
 		 loginUserId = user.getRegistrationID();
@@ -411,7 +461,39 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		 
 		 
 		 dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
+		//For Both roles
+	   		if(user !=null)
+	   		{
+	   	 
 			
+	   	 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+			userStatusType = IConstants.PARTY_ANALYST_USER;
+	   	dataTransferVO.setUserStatusType(userStatusType);
+	   	 if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
+			userStatusType = IConstants.FREE_USER;
+	   	dataTransferVO.setUserStatusType(userStatusType);
+		  if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+			userStatusType = IConstants.BOTH;
+		  dataTransferVO.setUserStatusType(userStatusType);
+	   		}
+	      else{
+	        userStatusType = IConstants.NOT_LOGGED_IN;
+	        dataTransferVO.setUserStatusType(userStatusType);
+			}
+	   		
+	   	 if(user!=null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.NEWS_MONITORING_ENTITLEMENT)){
+	        	hasNewsMonitoring = true;
+	        	//fileVOList = candidateDetailsService.getNewsGalleryByUserIdFromUserGallery(user.getRegistrationID());
+	        }
+	             
+	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.ADD_SUBUSER_ENTITLEMENT)){
+	    	   hasSubUserEntitlement = true;
+	       }
+	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CALL_CENTER_ENTITLEMENT)){
+	    	   hasCallCenterEntitlment = true;
+	       }
+	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
+	    	   hasProfileManagement = true;
 			messageTypes = ananymousUserService.getAllMessageTypes();
 			
 			if(dataTransferVO.getDistrictId() != null)
