@@ -234,6 +234,16 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{
+		Set<Long> usersIds = new HashSet<Long>();
+		usersIds.add(1l);
+		usersIds.add(411l);
+		usersIds.add(487l);
+		usersIds.add(754l);
+		usersIds.add(771l);
+		usersIds.add(958l);
+		usersIds.add(2032l);
+		usersIds.add(1201l);
+		usersIds.add(2032l);
 		Map<Long,EmailNotificationVO> candidateIdMap = new HashMap<Long,EmailNotificationVO>();
 		Set<Long> candidateIds = new HashSet<Long>();
 		EmailNotificationVO emailNotificationVO = null;
@@ -245,7 +255,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		      
 		      for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-		    	 if(ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
+		    	 if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) && usersIds.contains((Long)subscriberDetail[2])){
 		    	 // adding all candidates to set
 			     candidateIds.add((Long)subscriberDetail[0]);
 			     //for each candidate creating one EmailNotificationVO to set all updates related to him to this VO for ex: news , photos,videos updates
@@ -361,6 +371,14 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private void getDaillyUpdatesForPartyPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{
+		Set<Long> usersIds = new HashSet<Long>();
+		usersIds.add(1l);
+		usersIds.add(411l);
+		usersIds.add(487l);
+		usersIds.add(754l);
+		usersIds.add(771l);
+		usersIds.add(958l);
+		usersIds.add(2032l);
 		Map<Long,EmailNotificationVO> partyIdMap = new HashMap<Long,EmailNotificationVO>();
 		Set<Long> partyIds = new HashSet<Long>();
 		EmailNotificationVO emailNotificationVO = null;
@@ -373,7 +391,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		     
 			 for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-				if(ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
+				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) && usersIds.contains((Long)subscriberDetail[2])){
 		    	 // adding all parties to set
 				 partyIds.add((Long)subscriberDetail[0]);
 			     //for each party creating one EmailNotificationVO to set all updates related to party to this VO for ex: news , photos,videos updates
@@ -488,6 +506,15 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private void getDaillyUpdatesForSpecialPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{
+		Set<Long> usersIds = new HashSet<Long>();
+		usersIds.add(1l);
+		usersIds.add(411l);
+		usersIds.add(487l);
+		usersIds.add(754l);
+		usersIds.add(771l);
+		usersIds.add(958l);
+		usersIds.add(2032l);
+		usersIds.add(2032l);
 		Map<Long,EmailNotificationVO> specialPageIdMap = new HashMap<Long,EmailNotificationVO>();		
 		Set<Long> specialPageIds = new HashSet<Long>();
 		EmailNotificationVO emailNotificationVO = null;
@@ -499,7 +526,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		
 			for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-				if(ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])){
+				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0]))  && usersIds.contains((Long)subscriberDetail[2])){
 		    	 // adding all special pages to set
 				 specialPageIds.add((Long)subscriberDetail[0]);
 			     //for each special page creating one EmailNotificationVO to set all updates related to special page to this VO for ex: news , photos,videos updates
