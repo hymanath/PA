@@ -88,7 +88,7 @@ $("document").ready(function(){
 	    
 				
 		if($("#headerDiv").find("#Inbox").length<1) {
-		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active'><a id='Inbox' >Inbox</a></li><li><a id='SentBox'>Sent</a></li></ul>"); }
+		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active' ><a id='Inbox' href='' >Inbox</a></li><li><a id='SentBox' href=''>Sent</a></li></ul>"); }
 		$("#impdatesDiv").hide();
 		$("#Inbox").trigger("click");
 				
@@ -602,7 +602,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	oPushButton2.on("click",function(){
 		$("#uploadPic_window").dialog("destroy");
 	});
-
+	
 });
 
 //edit picture
@@ -1393,7 +1393,7 @@ function showRequestedMessagesForAUser(results)
 		return;
 	}
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1946,7 +1946,7 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 
 function showAllPostedReasonsForUserProfile(jsObj,results)
 {
-	var i=0;	
+	var i=0;
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
 	var data = results.candidateComments;
@@ -2134,7 +2134,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
 		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVOList[i].specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/></a>');
-		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
 		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageSubscriptionsDiv');
 		}
@@ -2145,7 +2145,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
 		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVOList[i].specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/></a>');
-		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">SUBSCRIBE</a>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink"  style="color:red; font-weight:bold;">SUBSCRIBE</a>');
 		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageUnSubscriptionsDiv');
 		
