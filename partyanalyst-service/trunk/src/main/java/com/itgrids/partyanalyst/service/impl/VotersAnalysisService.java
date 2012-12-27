@@ -1713,10 +1713,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
             VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
 			
 			getDetailsOfVotersHasAgeBetween18And25(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat");
-			getDetailsOfVotersHasAgeBetween26And35(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");			
-			getDetailsOfVotersHasAgeBetween36And45(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");		
-			getDetailsOfVotersHasAgeBetween46And60(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");       
-			getDetailsOfVotersHasAgeAbove60(null,tehsilId,null,null, publicationDateId,voterDetailsVO,"panchayat");
+			getDetailsOfVotersHasAgeBetween26And35(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat");			
+			getDetailsOfVotersHasAgeBetween36And45(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat");		
+			getDetailsOfVotersHasAgeBetween46And60(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat");       
+			getDetailsOfVotersHasAgeAbove60(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat");
 			
 			voterDetailsVO.setPanchayatname(obj[1].toString());
 			
