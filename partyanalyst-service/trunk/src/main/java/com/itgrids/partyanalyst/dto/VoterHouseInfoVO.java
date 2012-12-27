@@ -27,9 +27,11 @@ public class VoterHouseInfoVO {
 	private String panchayatName;
 	private List<SelectOptionVO> casteGroupNameList;
 	private Long userCategoryValuesId;
+	private Long userCategoryValuesId1;
 	private String userCategoryValuesName;
 	private String setValue;
 	private Long voterCategoryValuesId;
+	private Long categoryValuesId;
 	
 	public VoterHouseInfoVO(){
 		
@@ -53,6 +55,22 @@ public class VoterHouseInfoVO {
 
 	
 
+
+	public Long getUserCategoryValuesId1() {
+		return userCategoryValuesId1;
+	}
+
+	public void setUserCategoryValuesId1(Long userCategoryValuesId1) {
+		this.userCategoryValuesId1 = userCategoryValuesId1;
+	}
+
+	public Long getCategoryValuesId() {
+		return categoryValuesId;
+	}
+
+	public void setCategoryValuesId(Long categoryValuesId) {
+		this.categoryValuesId = categoryValuesId;
+	}
 
 	public Long getVoterCategoryValuesId() {
 		return voterCategoryValuesId;
