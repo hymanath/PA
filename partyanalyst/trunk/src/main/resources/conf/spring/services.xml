@@ -1298,6 +1298,7 @@
 	  <property name="resourceLoaderPath"><value>/emailTemplates</value></property>
     </bean>
     <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
+		<property name="socialService" ref="socialService" />
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
@@ -1312,6 +1313,8 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="voterTempDAO" ref="voterTempDAO" />
+		<property name="userCategoryValuesDAO" ref="userCategoryValuesDAO" />
+		<property name="categoryValuesDAO" ref="categoryValuesDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>

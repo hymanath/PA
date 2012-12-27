@@ -1025,9 +1025,14 @@
 	
 	<bean id="userSocialNetworkSiteAction" class="com.itgrids.partyanalyst.web.action.UserSocialNetworkSiteAction" singleton="false">
 		<property name="userSocialNetworkSiteService" ref="userSocialNetworkSiteService" />
-	</bean>	
-	
+	</bean>
+		
 	<bean id="voterDataManageAction" class="com.itgrids.partyanalyst.web.action.VoterDataManageAction" singleton="false">
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+	</bean>	
+		
+	<bean id="votersEditSubAction" class="com.itgrids.partyanalyst.web.action.VotersEditSubAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 	</bean>	
 	
