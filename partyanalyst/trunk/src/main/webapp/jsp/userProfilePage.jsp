@@ -242,7 +242,7 @@ margin:3px;
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class="whitegloss"></div>
+				        <div id="headerDiv" class=""></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
