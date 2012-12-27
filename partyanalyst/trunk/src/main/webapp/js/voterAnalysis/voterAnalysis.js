@@ -58,9 +58,7 @@ var votersByLocBoothColumnDefs = [
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
 {key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"cast", label: "Cast", sortable:true},
-{key:"castCatagery", label: "Caste Category", sortable:true}
+{key:"relationshipType", label: "Relationship", sortable:true}
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -71,7 +69,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -115,9 +113,7 @@ var votersByLocBoothColumnDefs = [
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
 {key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"cast", label: "Cast", sortable:true},
-{key:"castCatagery", label: "CastCategory", sortable:true}
+{key:"relationshipType", label: "Relationship", sortable:true}
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -128,7 +124,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -1174,110 +1170,6 @@ function buildVotersInFamily(results,hno){
 
 }
 
-function buildVotersBasicInfo(votersbasicinfo,to,jsObj){
-	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
-	hideAjaxImgDiv('ajaxImageDiv');
-	
-   var str = '<div id="votersBasicInfoDivSub">';
-   if(votersbasicinfo != null && votersbasicinfo.datapresent){
-    
-	 $("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
-      str+='<div>Male Voters : '+votersbasicinfo.totalMaleVoters+'  Female Voters : '+votersbasicinfo.totalFemaleVoters+'  ' ;
-	  if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
-	  str+='UnKnown Voters : '+votersbasicinfo.unKnowVoters+'  ';
-	  str+='Total Voters : '+votersbasicinfo.totVoters+'</div></div></br></br>';
-	  if(to == "")
-	   $("#votersBasicInfoDiv").html(str);
-	  else if(to == "impfamilies")
-	   $("#votersBasicInfoDivForImpFam").html(str);
-	  else if(to == "localcaststs")
-	   $("#votersBasicInfoDivForLclCastSts").html(str);
-	  else if(to == "agewise")
-	   $("#votersBasicInfoDivForAgeWiseDetls").html(str);
-	  
-	  str = '';
-     if(votersbasicinfo.subLevelExists && votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
-       buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,name,to);
-	   var reqDiv ='';
-        if(to == "")
-	     reqDiv = 'votersBasicInfoSubDiv' ;
-	    else if(to == "impfamilies")
-	     reqDiv = 'votersBasicInfoSubDivForImpFam';
-	    else if(to == "localcaststs")
-	     reqDiv = 'votersBasicInfoSubDivForLclCastSts';
-	    else if(to == "agewise")
-	     reqDiv = 'votersBasicInfoSubDivForAgeWiseDetls';
-		 
-  var votersResultColumnDefs = [ 		    	             
-		    	            
-							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true},
-		    	           	{key:"totalMaleVoters", label: "Male Voters", sortable: true},
-							
-							{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
-		    				{key:"totVoters", label: "Total Voters",sortable:true},
-							{key:"percent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
-		    	        ]; 
-
-    var myConfigs = { 
-			    
-				};
-	var myDataSource = new YAHOO.util.DataSource(votersbasicinfo.votersInfoForMandalVOList);
-					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
-					myDataSource.responseschema = {
-						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totVoters","percent"]
-					};
-
-		var impFamliesResultDataSource = new YAHOO.widget.DataTable(reqDiv, votersResultColumnDefs,myDataSource, myConfigs);
-
-     }
-   }else{
-	   $("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
-      if(to == "")
-	   $("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
-	  else if(to == "impfamilies")
-	   $("#votersBasicInfoDivForImpFam").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
-	  else if(to == "localcaststs")
-	   $("#votersBasicInfoDivForLclCastSts").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
-	  else if(to == "agewise")
-	   $("#votersBasicInfoDivForAgeWiseDetls").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");	 
-	 }
-}
-
-function buildVotersChart(chartInfo,reqTitle,to){
-
- // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'type');
-        data.addColumn('number', 'value');
-		data.addRows(chartInfo.length);
-		for(var i = 0 ; i< chartInfo.length ; i++){
-		var name = chartInfo[i].name+' '+chartInfo[i].type;
-		var val = parseFloat(chartInfo[i].percent);
-		  data.setValue(i,0,name);
-		  data.setValue(i,1,val);
-		}
-        
-        // Set chart options
-		var title = chartInfo[0].type+' wise Voters % Share in '+reqTitle; 
-        var options = {'title':title,
-                       'width':800,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-		var reqDiv = '';
-		if(to == "")
-	     reqDiv = 'votersBasicInfoSubChartDiv' ;
-	    else if(to == "impfamilies")
-	     reqDiv = 'votersBasicInfoSubChartDivForImpFam';
-	    else if(to == "localcaststs")
-	     reqDiv = 'votersBasicInfoSubChartDivForLclCastSts';
-	    else if(to == "agewise")
-	     reqDiv = 'votersBasicInfoSubChartDivForAgeWiseDetls';
-		 
-        var chart = new google.visualization.PieChart(document.getElementById(reqDiv));
-        chart.draw(data, options);
-}
-
 function buildCastInfoData(myresults,jsObj)
 	{
 	
@@ -1511,13 +1403,13 @@ str+='<div class="impFamilesMainDiv" >';
 $("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
 str+='</br>';
 
-str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;"> Total Voters : '+myresults.totalVoters+' ';
+str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;font-weight:bold;"> Total Voters : '+myresults.totalVoters+' ';
 str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'</div>';
 str+='</br>';
 str+='<div>';
 str+='<table class="impTableDiv">';
 str+='<tr>';
-str+='<th>Report</th><th>Below3</th><th>Between4-6</th><th>Between7-10</th><th>Above10</th>';
+str+='<th>Report</th><th>Voters Below 3</th><th>Voters Between 4-6</th><th>Voters Between 7-10</th><th>Above 10 Voters</th>';
 str+='</tr>';
 str+='<tr>';
 str+='<th>No of Familes</th>';
@@ -1641,6 +1533,7 @@ function getVoterDetailsForMandal(){
 	}
 	errorDivEle.innerHTML=str;
 	var startNumber = mandalId.substring(0,1);
+	mandalId = mandalId.substring(1);
 	if(flag)
 	{
 		errorDivEle.innerHTML='';
@@ -2315,4 +2208,124 @@ var options = {'title':title,
 var chart = new google.visualization.PieChart(document.getElementById('ageWiseVotersBasicInfoSubChartDiv'));
 chart.draw(data, options);
 
+}
+
+function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
+{
+	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+	hideAjaxImgDiv('ajaxImageDiv');
+	
+	var str = '<div id="votersBasicInfoDivSub">';
+	
+	if(votersbasicinfo != null && votersbasicinfo.datapresent)
+	{
+    
+		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		
+		str += '<div>';
+		str += '<b><span>Total Voters : '+votersbasicinfo.totVoters+'</span>';
+		str += '<span style="margin-left:25px;">Male Voters : '+votersbasicinfo.totalMaleVoters+'</span>';
+		str += '<span style="margin-left:25px;">Female Voters : '+votersbasicinfo.totalFemaleVoters+'</span>';
+				
+		if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
+			str += '<span>UnKnown Voters : '+votersbasicinfo.unKnowVoters+'</span>';
+		
+		str += '</b></div></div></br></br>';
+
+
+		if(to == "")
+			$("#votersBasicInfoDiv").html(str);
+		else if(to == "impfamilies")
+			$("#votersBasicInfoDivForImpFam").html(str);
+		else if(to == "localcaststs")
+			$("#votersBasicInfoDivForLclCastSts").html(str);
+		else if(to == "agewise")
+			$("#votersBasicInfoDivForAgeWiseDetls").html(str);
+	  
+		str = '';
+		if(votersbasicinfo.subLevelExists && votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
+       
+		buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,jsObj.typename,to);
+		
+		var reqDiv ='';
+        if(to == "")
+			reqDiv = 'votersBasicInfoSubDiv' ;
+	    else if(to == "impfamilies")
+			reqDiv = 'votersBasicInfoSubDivForImpFam';
+	    else if(to == "localcaststs")
+			reqDiv = 'votersBasicInfoSubDivForLclCastSts';
+	    else if(to == "agewise")
+			reqDiv = 'votersBasicInfoSubDivForAgeWiseDetls';
+		 
+		var votersResultColumnDefs = [ 		    	             
+		    	            
+							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true},
+		    	           	{key:"totalMaleVoters", label: "Male Voters", sortable: true},
+							
+							{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
+		    				{key:"totVoters", label: "Total Voters",sortable:true},
+							{key:"percent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
+		    	        ]; 
+		var myConfigs = {};
+		var myDataSource = new YAHOO.util.DataSource(votersbasicinfo.votersInfoForMandalVOList);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totVoters","percent"]
+					};
+
+		var impFamliesResultDataSource = new YAHOO.widget.DataTable(reqDiv, votersResultColumnDefs,myDataSource, myConfigs);
+
+		}
+	}
+	
+	else
+	{
+		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		
+		if(to == "")
+			$("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+		else if(to == "impfamilies")
+			$("#votersBasicInfoDivForImpFam").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+		else if(to == "localcaststs")
+			$("#votersBasicInfoDivForLclCastSts").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
+		else if(to == "agewise")
+			$("#votersBasicInfoDivForAgeWiseDetls").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");	 
+	}
+}
+
+function buildVotersChart(chartInfo,reqTitle,to)
+{
+
+ // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'type');
+        data.addColumn('number', 'value');
+		data.addRows(chartInfo.length);
+
+		for(var i = 0 ; i< chartInfo.length ; i++){
+		var name = chartInfo[i].name;
+		var val = parseFloat(chartInfo[i].percent);
+		  data.setValue(i,0,name);
+		  data.setValue(i,1,val);
+		}
+        
+        // Set chart options
+		var title = chartInfo[0].type+' wise Voters % Share in '+reqTitle; 
+        var options = {'title':title,
+                       'width':800,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+		var reqDiv = '';
+		if(to == "")
+	     reqDiv = 'votersBasicInfoSubChartDiv' ;
+	    else if(to == "impfamilies")
+	     reqDiv = 'votersBasicInfoSubChartDivForImpFam';
+	    else if(to == "localcaststs")
+	     reqDiv = 'votersBasicInfoSubChartDivForLclCastSts';
+	    else if(to == "agewise")
+	     reqDiv = 'votersBasicInfoSubChartDivForAgeWiseDetls';
+		 
+        var chart = new google.visualization.PieChart(document.getElementById(reqDiv));
+        chart.draw(data, options);
 }
