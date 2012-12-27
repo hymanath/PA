@@ -558,17 +558,28 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	}
 	
-	public void calculatePercentage(VotersInfoForMandalVO votersInfoForMandalVO){
-		if(!votersInfoForMandalVO.getVotersInfoForMandalVOList().isEmpty()){
-			votersInfoForMandalVO.setSubLevelExists(true);
-		  for(VotersInfoForMandalVO vo : votersInfoForMandalVO.getVotersInfoForMandalVOList()){ 
-			  if(!(votersInfoForMandalVO.getTotVoters().compareTo( BigDecimal.ZERO) == 0)){
-			    BigDecimal votersPerc = vo.getTotVoters().divide(votersInfoForMandalVO.getTotVoters(),2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
-			    vo.setPercent(votersPerc.toPlainString());
-			  }else{
-				  vo.setPercent("0");  
+	public void calculatePercentage(VotersInfoForMandalVO votersInfoForMandalVO)
+	{
+		try{
+			if(!votersInfoForMandalVO.getVotersInfoForMandalVOList().isEmpty())
+			{
+				votersInfoForMandalVO.setSubLevelExists(true);
+				
+				for(VotersInfoForMandalVO vo : votersInfoForMandalVO.getVotersInfoForMandalVOList())
+				{ 
+				  if(!(votersInfoForMandalVO.getTotVoters().compareTo( BigDecimal.ZERO) == 0))
+				  {
+					  Double votes = Double.valueOf(vo.getTotVoters().toString());
+					  Double totalVotes = Double.valueOf(votersInfoForMandalVO.getTotVoters().toString());
+					  vo.setPercent(new BigDecimal(votes*(100.0)/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				  }
+				  else{
+					  vo.setPercent("0");  
+				  }
 			  }
-		  }
+			}
+		}catch (Exception e) {
+			log.error("Exception Occured in calculatePercentage() Method, Exception is - "+e);
 		}
 	}
 	
