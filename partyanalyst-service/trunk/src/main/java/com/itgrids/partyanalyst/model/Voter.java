@@ -57,6 +57,7 @@ public class Voter extends BaseModel implements Serializable {
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
 	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
+	private Set<VoterCategoryValues> voterCategoryValues=new HashSet<VoterCategoryValues>();
 	
 	public Voter(){
 		
@@ -305,6 +306,16 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<VoterCategoryValues> getVoterCategoryValues() {
+		return voterCategoryValues;
+	}
+
+	public void setVoterCategoryValues(Set<VoterCategoryValues> voterCategoryValues) {
+		this.voterCategoryValues = voterCategoryValues;
 	}
 	
 	
