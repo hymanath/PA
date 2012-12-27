@@ -89,7 +89,7 @@ table.gridtable td {
 #votersBasicInfoSubDiv{
   margin-left: 0px;
   padding:10px;
- 
+  font-family : arial;
 }
 
 #votersBasicInfoSubChartDiv{
@@ -197,6 +197,13 @@ p {
 
 #votersBasicInfoSubDivForAgeWiseDetls table th a,#votersBasicInfoSubDivForLclCastSts table th a,#votersBasicInfoSubDivForImpFam table th a,#impFamDtls table th a,#impFamilesBasicSubDetails table th a,#votersBasicInfoSubDiv table th a,#localCastStatsTabContent_body table th a,#localCastStatsTabContent_subbody1 table th a,#votersByLocationTabContentDiv_body table th a,#votersByPanchayatTabContentDiv_body table th a{
 color:#333333;
+}
+
+#votersByPanchayatTabContentDiv_body,#votersByLocationTabContentDiv_body
+{
+	font-family : arial;
+	font-size: 13px;
+    margin-top: 20px;
 }
 
 #impFamPancBothDtls,#impFamDtls{
