@@ -1087,7 +1087,7 @@ function buildVotersInACaste(results,jsObj)
 {
 
 var result = results;
-console.log(result);
+//console.log(results);
 	$("#localCastStatsVotersTitle").html(" "+jsObj.caste+" Caste voters Details In " +jsObj.typename+" in "+jsObj.publicationDate+" ");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
@@ -1132,15 +1132,17 @@ console.log(result);
 
 
 function buildVotersInFamily(results,hno){
-
+console.log(results);
     $("#impFamDtlsTitle").html("<b>Voter Details in House No : "+hno+"</b>");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
 		var id=oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		alert("boothId="+boothId);
 		var name = oRecord.getData("name");
 		
-		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+');">'+name+'</a>';
+		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
 		
 	}
      var votersResultColumnDefs = [ 		    	             
@@ -1163,7 +1165,7 @@ function buildVotersInFamily(results,hno){
 	var myDataSource = new YAHOO.util.DataSource(results);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId"]
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId","boothId"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
