@@ -91,6 +91,7 @@ $("document").ready(function(){
 		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active' ><a id='Inbox' href='' >Inbox</a></li><li><a id='SentBox' href=''>Sent</a></li></ul>"); }
 		$("#impdatesDiv").hide();
 		$("#Inbox").trigger("click");
+
 				
 	});
 	 
@@ -110,7 +111,6 @@ $("document").ready(function(){
 	});
 
 	$('.linkDiv').live("click",function(){
-		//alert('123');
 		$(this).remove();
 		$("#impdatesDiv").hide();
 	});
@@ -507,6 +507,7 @@ $(".changePwdLink").live("click",function(){
 //edit cover Image
 
 $(".editCoverImgLink").live("click",function(){
+
 $("#allConnectedUsersDisplay_main").children().remove();
 	
 	$("#connectPeoplePopup").dialog({
@@ -548,7 +549,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '	</table>';	
 	str += '</th>';
 	str += '<td rowspan="3">';
-	str += '	<div style="width:100px;height:100px;overflow:hidden;"><img width="90" height="100" id="Imgpreview" class="jcrop-preview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '	<div style="border:1px solid #ADADAD;"><img width="90" height="100" id="Imgpreview" src="images/icons/indexPage/human.jpg"></div>';
 	str += '</td>';
 	str += '</tr>';
 
@@ -558,10 +559,6 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '</td>';
 	str += '</tr>';
 	
-	str += ' <input type="hidden" size="4" value=""  id="xcoardinate"  name="xcoardinate"   value="0" />'; 
-     str += ' <input type="hidden" size="4"  value="" id="ycoardinate"  name="ycoardinate"   value="0" />';  
-     str += ' <input type="hidden" size="4" value=""  id="width"        name="width" />';  
-     str += ' <input type="hidden" size="4"  value="" id="height"       name="height" />'; 
 	str += '</table>';	
 	str += '</form>';
 	str += '</div>';
@@ -575,36 +572,9 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '</tr>';
 	str += '</table>';	
 	str += '</div>';
-	str += '<div style="width:300px;height:300px; id="Imgpreview2"><img width="300" height="300" id="Imgpreview1"  src=""></div>';
 	div.append(str);
 	elmt.append(div);
-	
-	oPushButton1 = new YAHOO.widget.Button("uploadCoverPicButton");  
-	oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
-	
-	oPushButton1.on("click",function(){
-	   
-		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
-		var str = '<font color="red">';
-		if(uploadPhotoId.length == 0)
-	     {   
-		     str += ' Please Select a image .<br>';
-		     document.getElementById("uploadPic_window_status").innerHTML = str;
-	     }
-		 else{
-		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
-		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
-		
-		 getUploadCoverpic();
-		}
-	});
-
-	oPushButton2.on("click",function(){
-		$("#uploadPic_window").dialog("destroy");
-	});
-	
 });
-
 //edit picture
 
 $(".editPictureLink").live("click",function(){
@@ -1393,7 +1363,7 @@ function showRequestedMessagesForAUser(results)
 		return;
 	}
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1409,10 +1379,10 @@ function showRequestedMessagesForAUser(results)
 		
 		if(results.candidateVO[i].profileImg!=""){
 			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
-			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="30" width="30" src='+imageStr+'></img></a>');
+			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
 			}
 		else{
-				templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
 			}
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"><i class=" icon-repeat"></i> Reply</a>');
@@ -1444,7 +1414,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1510,7 +1480,6 @@ function sendMessageToConnectedUser(userId,type)
 	  return;
 	}
 		
-	$("#ErrorMsgDivId").html('<img src="images/icons/search.gif" class="searchImgCls"/>');
 	disableButton("sendMessageButtonId");
 	var jsObj ={
 				loginUserId:loginUserId,
@@ -1698,10 +1667,10 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDiv");
 		if(image == null)
-			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></a>');
+			templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
 		else
-			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" /></a>');
-			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
+			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
+			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
@@ -1800,15 +1769,15 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 			var image = results.candidateVO[i].image;
 			var templateClone = template.clone();
 			templateClone.removeClass("templateDiv");
-			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
+			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 
 			if(image == null)
-				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></a>');
+				templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
 			else
-				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" /></a>');
+				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
 
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
 				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
@@ -1830,6 +1799,7 @@ function showAllPostedProblems(jsObj,results)
 {
 	var i=0;
 	$('.viewMoreDiv').html('');
+
 		
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
@@ -1849,23 +1819,24 @@ function showAllPostedProblems(jsObj,results)
 	if(jsObj.linkType == "problemsLink"){
 		$(".placeholderCenterDiv").children().remove();
 	  	}
-	for(i in problemsData)
+	for( i in problemsData)
 	{
+	
 		var imageStr = "pictures/profiles/"+problemsData[i].userImageURL;
 		var template = $('.problemTemplateDiv');
 		var templateClone = template.clone();
 		templateClone.removeClass('problemTemplateDiv');
-		templateClone.find('.problemReportedDate').html('Posted On:&nbsp;&nbsp;'+problemsData[i].identifiedDate+'');
+		templateClone.find('.problemReportedDate').html('Posted On: '+problemsData[i].identifiedDate+'');
 		templateClone.find('.problemImg').html('<a href="userProfile.action?profileId='+problemsData[i].userId+'"><img height="40" width="40"  class="thumbnail" src='+imageStr+'></img></a>');
-		templateClone.find('.postedPersonName').html('<a href="userProfile.action?profileId='+problemsData[i].userId+'"><h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5></a>');
+		templateClone.find('.postedPersonName').html('<h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5>');
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
-		templateClone.find('.problemFromDate').html('<span>Existing From:&nbsp;&nbsp;</span>'+problemsData[i].existingFrom+'');
-		templateClone.find('.location').html('Location:&nbsp;&nbsp;'+problemsData[i].location+'')
+		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
+		templateClone.find('.location').html('Location: '+problemsData[i].location+'')
 		templateClone.find('.commentCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Comment</a>');
 		templateClone.find('.shareCls').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">Share</a>');
 		//if(problemsData[i].rating != null)
-		//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
+			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
 
@@ -1873,6 +1844,7 @@ function showAllPostedProblems(jsObj,results)
 		var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 		}
+	
 }
 
 
@@ -1965,7 +1937,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		$(".placeholderCenterDiv").children().remove();
 	  	}
 
-	for(i in data)
+	for( i in data)
 	{
 		var status;
 		var imageStr = "/PartyAnalyst/images/candidates/"+data[i].candidate;
@@ -1999,6 +1971,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 }
+
 }
 function setDefaultImage(img)
 {
@@ -2269,7 +2242,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 		var template = $(".specialPagSubscrTemplDiv");
 		var templateClone = template.clone();
 		templateClone.removeClass('specialPagSubscrTemplDiv');
-		templateClone.find('.titleCls').html(''+partySubscriptions[i].title+'');
+		templateClone.find('.titleCls').html('<br>'+partySubscriptions[i].title+'');
 		templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+results.userPartySubscriptions[i].name+'.png"/></a>');
 		templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
