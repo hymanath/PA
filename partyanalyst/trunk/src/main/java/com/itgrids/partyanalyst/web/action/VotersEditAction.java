@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -23,21 +25,66 @@ import com.opensymphony.xwork2.Preparable;
 
 public class VotersEditAction  extends ActionSupport implements ServletRequestAware,Preparable,ModelDriven<VoterHouseInfoVO>{
 	private IVotersAnalysisService votersAnalysisService;
-	
+	JSONObject jObj = null;
+	private String task = null;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private VoterHouseInfoVO voterHouseInfoVO;
+	private VoterHouseInfoVO voterHouseInfoVO1;
 	private Long voterId;
 	private ResultStatus result;
 	private IStaticDataService staticDataService;
-	List<SelectOptionVO> partyGroupList;
+	private List<SelectOptionVO> partyGroupList;
+	
+	private List<VoterHouseInfoVO> userCategorysList;
 	private String resultStr;
+	private List<SelectOptionVO> voterCategoryValues;
 	//private String windowTask = null;
 	
 	
 	
 	public List<SelectOptionVO> getPartyGroupList() {
 		return partyGroupList;
+	}
+
+	public List<SelectOptionVO> getVoterCategoryValues() {
+		return voterCategoryValues;
+	}
+
+	public void setVoterCategoryValues(List<SelectOptionVO> voterCategoryValues) {
+		this.voterCategoryValues = voterCategoryValues;
+	}
+
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public List<VoterHouseInfoVO> getUserCategorysList() {
+		return userCategorysList;
+	}
+
+	public void setUserCategorysList(List<VoterHouseInfoVO> userCategorysList) {
+		this.userCategorysList = userCategorysList;
+	}
+
+	public VoterHouseInfoVO getVoterHouseInfoVO1() {
+		return voterHouseInfoVO1;
+	}
+
+	public void setVoterHouseInfoVO1(VoterHouseInfoVO voterHouseInfoVO1) {
+		this.voterHouseInfoVO1 = voterHouseInfoVO1;
 	}
 
 	public String getResultStr() {
@@ -155,8 +202,9 @@ public String putVoterDetails(){
 	}*/
 	
 	public void prepare() throws Exception {
+		
 	String voterId = request.getParameter("voterId");
-	
+	String boothId = request.getParameter("boothId");
 	HttpSession session = request.getSession();
 	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 	Long userId = user.getRegistrationID();
@@ -165,9 +213,18 @@ public String putVoterDetails(){
 	//List<SelectOptionVO> partyGroupList=null;
 	if(voterId !=null)
 	{
+		voterHouseInfoVO1=votersAnalysisService.getBoothDetailsForVoter(new Long(boothId));
 		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(new Long(voterId),userId);
+		
+		voterHouseInfoVO.setBoothName(voterHouseInfoVO1.getBoothName());
+		voterHouseInfoVO.setVilliageCovered(voterHouseInfoVO1.getVilliageCovered());
+		voterHouseInfoVO.setPanchayatName(voterHouseInfoVO1.getPanchayatName());
+	
 		partyGroupList=staticDataService.getStaticStateParties(1l);
 		partyGroupList.add(0, new SelectOptionVO(0l,"select party"));
+		userCategorysList=votersAnalysisService.getUserCategoryValues();
+		userCategorysList.add(0, new VoterHouseInfoVO(0l,"Select Category"));
+		
 	}
 	
 	}
@@ -177,4 +234,31 @@ public String putVoterDetails(){
 			return voterHouseInfoVO;
 	}
 	
-}
+	public String callAjaxHandler(){
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getVoterCategories")){
+			System.out.println("with in the action");
+			Long voterCategoryId=new Long(jObj.getString("voterCategory"));
+			voterCategoryValues = votersAnalysisService.getVoterCategoryValues(voterCategoryId);
+			System.out.println("voterCategoryValues value is:"+voterCategoryValues);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+/*	public String voterEditClasifiedDetails(){
+		
+		
+		return Action.SUCCESS;
+		
+	}
+*/
+	}
