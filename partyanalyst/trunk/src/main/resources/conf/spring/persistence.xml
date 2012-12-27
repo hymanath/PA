@@ -312,6 +312,9 @@
 			<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
 			<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
 			<value>com.itgrids.partyanalyst.model.VoterTemp</value>
+			<value>com.itgrids.partyanalyst.model.UserCategoryValues</value>
+            <value>com.itgrids.partyanalyst.model.CategoryValues</value>
+            <value>com.itgrids.partyanalyst.model.VoterCategoryValues</value>
 			</list>
 		</property>
 	</bean>
