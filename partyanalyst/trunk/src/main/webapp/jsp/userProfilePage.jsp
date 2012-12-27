@@ -140,11 +140,6 @@ margin:3px;
     font-size: 1em;
     height: 30px;
 }
-.readMsg{padding: 2px 2px 0px; height: 30px; margin-bottom: 7px;cursor:pointer;}
-.msgbox {margin-bottom: 6px;}
-.templateMessage .message{width:60%;word-wrap: break-word;}
-.templateMessage .msgBtns{margin-top: -30px;padding-bottom: 0px;}
-.searchImgCls{margin-left: 250px; margin-top: 0px; padding-top: 0px; margin-bottom: -30px;}
 .subscribe{
  height: 90px;
  font-weight: bold;
@@ -247,7 +242,7 @@ margin:3px;
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class="whitegloss" style="cursor:pointer;"></div>
+				        <div id="headerDiv" class="whitegloss"></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
