@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class VoterHouseInfoVO {
 
 	private String houseNo;
@@ -20,6 +22,14 @@ public class VoterHouseInfoVO {
 	private Long partyId;
 	private Long userVoterDetailsId;
 	private Long userId;
+	private String boothName;
+	private String villiageCovered;
+	private String panchayatName;
+	private List<SelectOptionVO> casteGroupNameList;
+	private Long userCategoryValuesId;
+	private String userCategoryValuesName;
+	private String setValue;
+	private Long voterCategoryValuesId;
 	
 	public VoterHouseInfoVO(){
 		
@@ -34,7 +44,79 @@ public class VoterHouseInfoVO {
 		this.younger = younger;
 	}
 
+	public VoterHouseInfoVO(Long sNo, String name){
+		this.sNo = sNo;
+		this.name = name;
+	}
+
+
+
 	
+
+
+	public Long getVoterCategoryValuesId() {
+		return voterCategoryValuesId;
+	}
+
+	public void setVoterCategoryValuesId(Long voterCategoryValuesId) {
+		this.voterCategoryValuesId = voterCategoryValuesId;
+	}
+
+	public String getSetValue() {
+		return setValue;
+	}
+
+	public void setSetValue(String setValue) {
+		this.setValue = setValue;
+	}
+
+	public Long getUserCategoryValuesId() {
+		return userCategoryValuesId;
+	}
+
+	public void setUserCategoryValuesId(Long userCategoryValuesId) {
+		this.userCategoryValuesId = userCategoryValuesId;
+	}
+
+	public String getUserCategoryValuesName() {
+		return userCategoryValuesName;
+	}
+
+	public void setUserCategoryValuesName(String userCategoryValuesName) {
+		this.userCategoryValuesName = userCategoryValuesName;
+	}
+
+	public List<SelectOptionVO> getCasteGroupNameList() {
+		return casteGroupNameList;
+	}
+
+	public void setCasteGroupNameList(List<SelectOptionVO> casteGroupNameList) {
+		this.casteGroupNameList = casteGroupNameList;
+	}
+
+	public String getBoothName() {
+		return boothName;
+	}
+
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+
+	public String getVilliageCovered() {
+		return villiageCovered;
+	}
+
+	public void setVilliageCovered(String villiageCovered) {
+		this.villiageCovered = villiageCovered;
+	}
+
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
 
 	public Long getUserId() {
 		return userId;
