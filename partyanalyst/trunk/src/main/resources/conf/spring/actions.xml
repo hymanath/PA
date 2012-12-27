@@ -980,7 +980,7 @@
 		<property name="specialPageService" ref="specialPageService" />
 		<property name="userProfileService" ref="userProfileService" />	
 		<property name="userCadreManagementService" ref="userCadreManagementService" />
-		<property name="problemManagementService" ref="problemManagementService" />		
+		<property name="problemManagementService" ref="problemManagementService" />	<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
 	
 	<bean id="votersAnalysisAction" class="com.itgrids.partyanalyst.web.action.VotersAnalysisAction" singleton="false">			
