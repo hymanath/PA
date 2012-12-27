@@ -372,10 +372,7 @@ function showImportantFamiliesDiv()
 								{
 									buildVotersInACaste(myResults,jsObj)
 								}
-							}catch (e) {   
-								
-							   	alert("Invalid JSON result" + e);   
-							}  
+							}catch (e) {}  
  		               },
  		               scope : this,
  		               failure : function( o ) {
@@ -1139,7 +1136,6 @@ console.log(results);
 		
 		var id=oRecord.getData("voterId");
 		var boothId=oRecord.getData("boothId"); 
-		alert("boothId="+boothId);
 		var name = oRecord.getData("name");
 		
 		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
@@ -1355,10 +1351,8 @@ function buildCastInfoData(myresults,jsObj)
   var impFamiList = new Array();
   for(var i in impFamilesData){
      var data={};
-	 if(impFamilesData[i].type != "Booth")
-	   data["name"] = impFamilesData[i].name+" "+impFamilesData[i].type;
-	  else
-	    data["name"] = impFamilesData[i].name+" ";  
+	 
+	 data["name"] = impFamilesData[i].name;  
 	 data["below3"] = impFamilesData[i].below3;
 	 data["below3perc"] = impFamilesData[i].below3perc;
 	 data["betwn4to6"] = impFamilesData[i].betwn4to6;
@@ -1397,77 +1391,86 @@ oDT: impFamilesDataTable
 };
 
 }
+
 function impFamilesStaticTable(myresults,jsObj)
 {
-var str='';
-str+='<div class="impFamilesMainDiv" >';
+	var str='';
+	str+='<div class="impFamilesMainDiv" >';
 
-$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
-str+='</br>';
+	$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
+	str+='</br>';
 
-str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;font-weight:bold;"> Total Voters : '+myresults.totalVoters+' ';
-str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'</div>';
-str+='</br>';
-str+='<div>';
-str+='<table class="impTableDiv">';
-str+='<tr>';
-str+='<th>Report</th><th>Voters Below 3</th><th>Voters Between 4-6</th><th>Voters Between 7-10</th><th>Above 10 Voters</th>';
-str+='</tr>';
-str+='<tr>';
-str+='<th>No of Familes</th>';
-if(myresults.below3 != null)
-str+='<td>'+myresults.below3+'</td>';
-else
-str+='<td>'+0+'</td>';
-if(myresults.betwn4to6Popul != null)
-str+='<td>'+myresults.betwn4to6Popul+'</td>';
-else
-str+='<td>'+0+'</td>';
-if(myresults.betwn7to10Popul != null)
-str+='<td>'+myresults.betwn7to10Popul+'</td>';
-else
-str+='<td>'+0+'</td>';
-if(myresults.above10 != null)
-str+='<td>'+myresults.above10+'</td>';
-else
-str+='<td>'+0+'</td>';
-str+='<tr>';
-str+='<tr>';
-str+='<th>Familes %</th>';
-if(myresults.below3perc != null)
-str+='<td>'+myresults.below3perc+'%</td>';
-if(myresults.betwn4to6perc != null)
-str+='<td>'+myresults.betwn4to6perc+'%</td>';
-if(myresults.betwn7to10perc != null)
-str+='<td>'+myresults.betwn7to10perc+'%</td>';
-if(myresults.above10perc != null)
-str+='<td>'+myresults.above10perc+'%</td>';
-str+='<tr>';
-str+='</table>';
-str+='</div>';
-$("#impFamilesBasicDetails").html(str);
+	str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;font-weight:bold;"> Total Voters : '+myresults.totalVoters+' ';
+	str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'</div>';
+	str+='</br>';
+	str+='<div style="font-family:verdana;">';
+	str+='<table class="impTableDiv">';
+	str+='<tr>';
+	str+='<th>Report</th><th>Voters Below 3</th><th>Voters Between 4-6</th><th>Voters Between 7-10</th><th>Above 10 Voters</th>';
+	str+='</tr>';
+	str+='<tr>';
+	str+='<th>No of Familes</th>';
+
+	if(myresults.below3 != null)
+		str+='<td><b>'+myresults.below3+'</td></b>';
+	else
+		str+='<td><b>'+0+'</td></b>';
+
+	if(myresults.betwn4to6Popul != null)
+		str+='<td><b>'+myresults.betwn4to6Popul+'</td></b>';
+	else
+		str+='<td><b>'+0+'</td></b>';
+
+	if(myresults.betwn7to10Popul != null)
+		str+='<td><b>'+myresults.betwn7to10Popul+'</td></b>';
+	else
+		str+='<td><b>'+0+'</td></b>';
+
+	if(myresults.above10 != null)
+		str+='<td><b>'+myresults.above10+'</td></b>';
+	else
+		str+='<td><b>'+0+'</td></b>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Familes %</th>';
+
+	if(myresults.below3perc != null)
+		str+='<td><b>'+myresults.below3perc+'%</td></b>';
+	if(myresults.betwn4to6perc != null)
+		str+='<td><b>'+myresults.betwn4to6perc+'%</td></b>';
+	if(myresults.betwn7to10perc != null)
+		str+='<td><b>'+myresults.betwn7to10perc+'%</td></b>';
+	if(myresults.above10perc != null)
+		str+='<td><b>'+myresults.above10perc+'%</td></b>';
+
+	str+='<tr>';
+	str+='</table>';
+	str+='</div>';
+	$("#impFamilesBasicDetails").html(str);
 }
 
-function buildImpFamilesChart(chartInfo){
+function buildImpFamilesChart(chartInfo)
+{
 // Create the data table.
-var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
-hideAjaxImgDiv('ajaxImageDiv');
-var data = google.visualization.arrayToDataTable([
-          ['Task', 'Percentage'],
-          ['Below 3',  chartInfo.below3perc],
-          ['Between 4-6', chartInfo.betwn4to6perc],
-          ['Between 7-10',  chartInfo.betwn7to10perc],
-          ['Above 10', chartInfo.above10perc]
-        ]);
+	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+	hideAjaxImgDiv('ajaxImageDiv');
+	var data = google.visualization.arrayToDataTable([
+			  ['Task', 'Percentage'],
+			  ['Voters Below 3',  chartInfo.below3perc],
+			  ['Voters Between 4-6', chartInfo.betwn4to6perc],
+			  ['Voters Between 7-10',  chartInfo.betwn7to10perc],
+			  ['Above 10 Voters', chartInfo.above10perc]
+			]);
 
-// Set chart options
-var title = " Family wise detail chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
-var options = {'title':title,
-'width':800,
-'height':280};
-// Instantiate and draw our chart, passing in some options.
-var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDiv'));
-chart.draw(data, options);
+	// Set chart options
+	var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+	var options = {'title':title,
+	'width':800,
+	'height':280};
+	// Instantiate and draw our chart, passing in some options.
+	var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDiv'));
+	chart.draw(data, options);
 }
 
 function getVoterDetailsForConstituency(){
@@ -1719,7 +1722,7 @@ $('#ajaxImageDiv').css('display','block');
 						
 					}catch (e){   
 							
-						alert("Invalid JSON result" + e);   
+						//alert("Invalid JSON result" + e);   
 					}  
 				   },
 				   scope : this,
@@ -2278,6 +2281,7 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 		var impFamliesResultDataSource = new YAHOO.widget.DataTable(reqDiv, votersResultColumnDefs,myDataSource, myConfigs);
 
 		}
+		$('#votersByPanchayatTabContentDiv_body').css("border","1px solid black");
 	}
 	
 	else
