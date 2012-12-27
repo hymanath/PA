@@ -1078,9 +1078,10 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 		callAjax(jsObj,url);
 
 }
-function openProblemEditForm(id)
+function openProblemEditForm(id,boothId)
 {
-	var urlStr="votersEditAction.action?voterId="+id+" ";
+
+	var urlStr="votersEditAction.action?voterId="+id+"&boothId="+boothId+" ";
 	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
 }	
@@ -1094,10 +1095,10 @@ console.log(result);
 	$("#localCastStatsVotersTitle").html(" "+jsObj.caste+" Caste voters Details In " +jsObj.typename+" in "+jsObj.publicationDate+" ");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
-		
+		var boothId=oRecord.getData("boothId");
 		var id=oRecord.getData("voterId");
 		var name = oRecord.getData("name");
-		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+');">'+name+'</a>';
+		elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
 		
 	}
 	 var votersResultColumnDefs = [ 		    	             
@@ -1125,7 +1126,7 @@ console.log(result);
 	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId"]
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId","boothId"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
