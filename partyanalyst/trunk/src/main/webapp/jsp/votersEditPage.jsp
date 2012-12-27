@@ -3,11 +3,28 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
+
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title> Voters </title>
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script type="text/javascript" src="js/homePage/homePage.js"> </script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js">
+</script>
+-->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>	
+
 <style>
  h1 {
     font: 1.2em Arial, Helvetica, sans-serif;
@@ -83,16 +100,138 @@ form div label {
 	color:red;
 	font-size:12px;
 }
+
+.template {display:none;}
+
  
  </style>
  
- <script>
+ <script type="text/javascript">
+ function openProblemEditSubForm(id,name)
+{
+alert("category="+id);
+alert("category name="+id);
+
+	var urlStr="votersEditSubAction.action?id='"+id+"' name='"+name+"'";
+	var updateBrowser1 = window.open(urlStr,"subEditAnnouncement","scrollbars=yes,height=300,width=400,left=400,top=400");	
+	updateBrowser1.focus();	
+}	
+
  function clearSuccessMsg(){
 	
 	var probSuccessMsg = document.getElementById("probSuccessMsgDiv");
 	if(probSuccessMsg !=null)
 	  probSuccessMsg.innerHTML='';
 }
+
+function createSetValue(id){
+debugger;
+var jsObj=
+		{				
+				voterCategory:id,
+				task:"getVoterCategories"
+		}
+
+	
+							
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+function callAjax(jsObj,url){
+	
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+							if(jsObj.task == "getVoterCategories")
+							{
+							alert(myResults);
+								callCandidateUpdatePageAjax(myResults,jsObj.val);
+							}
+							}catch(e){   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+
+}
+
+function callCandidateUpdatePageAjax(jsObj,url){
+//alert("sdfgfdsgf");
+	var elmt = document.getElementById("UserCategoryValuesId");
+	
+	if( !elmt || optionsList == null)
+		return;
+		clearOptionsListForSelectElmtId("UserCategoryValuesId");
+	for(var i in optionsList)
+	{
+		
+		var option = document.createElement('option');
+		option.value=optionsList[i].userCategoryValuesId;
+		option.text=optionsList[i].userCategoryValuesName;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
+
+}
+
+
+function buildAgeWiseVoterAnalysisChart(chartInfo,jsObj){
+
+$("#AgeWisetitle").html("Age Wise Voters Information Of "+jsObj.name+" in "+publicationYear+" ");
+// Create the data table.
+var data = google.visualization.arrayToDataTable([
+['Task', 'Percentage'],
+[chartInfo.votersDetailsVO[0].ageRange, chartInfo.votersDetailsVO[0].totalVotersPercent],
+[chartInfo.votersDetailsVO[1].ageRange, chartInfo.votersDetailsVO[1].totalVotersPercent],
+[chartInfo.votersDetailsVO[2].ageRange, chartInfo.votersDetailsVO[2].totalVotersPercent],
+[chartInfo.votersDetailsVO[3].ageRange, chartInfo.votersDetailsVO[3].totalVotersPercent],
+[chartInfo.votersDetailsVO[4].ageRange, chartInfo.votersDetailsVO[4].totalVotersPercent]
+]);
+
+
+// Set chart options
+var title = " Age wise detail chart of in "+publicationYear+"";
+var options = {'title':title,
+'width':450,
+'height':280};
+// Instantiate and draw our chart, passing in some options.
+var chart = new google.visualization.PieChart(document.getElementById('ageWiseVotersBasicInfoSubChartDiv'));
+chart.draw(data, options);
+
+}
+$(document).ready(function(){
+$(".AddMore").click(function(){
+//addmoreforsetvalue();
+});
+});
+
+function addmoreforsetvalue(){
+var template=$(".template");
+var templateClone=$(".template").clone();
+templateClone.removeClass("template");
+templateClone.appendTo(".placeholder");
+}
+
+
  </script>
 </head>
 <body style="position: relative;">
@@ -105,7 +244,7 @@ form div label {
 <DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Updated Successfully...</DIV>
 </div>
 </c:if>
-
+<input type="hidden" name="boothId" value="${voterHouseInfoVO.boothId}"/>
 <input type="hidden" name="voterId" value="${voterHouseInfoVO.voterId}"/>
 <input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
@@ -142,6 +281,16 @@ form div label {
 			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
 		</div>
 		
+<!--		<div>
+		<label for="name">Caste List:</label>
+				<s:select theme="simple" style="width: 169px;"
+				label="Select caste" name="voterHouseInfoVO.cast" 
+				id="cast" list="voterHouseInfoVO.casteGroupNameList" 
+				listKey="id" listValue="name"/>
+				
+			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
+		</div>-->
+		
 		<div>
 		<label for="name">Caste:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/>
@@ -153,12 +302,39 @@ form div label {
 		</div>
 
 		<div>
-		<label for="name">Party Name:</label><s:select theme="simple" style="width: 169px;"
-		label="Select  party" name="voterHouseInfoVO.partyId" 
+		<label for="name">Party Name:</label>
+				<s:select theme="simple" style="width: 169px;"
+				label="Select  party" name="voterHouseInfoVO.partyId" 
 				id="partyId" list="partyGroupList" 
 				listKey="id" listValue="name"/>
 		</div>
-	</fieldset>
+		
+		<div>
+			<label for="name">Booth Name:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.boothName" value="${voterHouseInfoVO.boothName}" readonly='true'/>
+		</div>
+
+		<div>
+			<label for="name">Panchayat Name:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.panchayatName" value="${voterHouseInfoVO.panchayatName}" readonly='true'/>
+		</div>
+
+		<div>
+			<label for="name">Villiage Covered:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.villiageCovered" value="${voterHouseInfoVO.villiageCovered}" readonly='true'/>
+		</div>
+		
+		<div>
+		<label for="name">Villiage Covered:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.userCategoryValuesId" value="${voterHouseInfoVO.userCategoryValuesId}" readonly='true'/>
+		</div>
+		<div>
+		<label for="name">setValue :</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.setValue" value="${voterHouseInfoVO.setValue}" />
+		</div>
+<!--<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>-->
+	<a onclick="openProblemEditSubForm();">classifieds</a>
+		</fieldset>
 <!--
 <input type="hidden" id="windowTaskId" name="windowTask" value="update_existing"/>
 Name:<input type="text" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/><br>
