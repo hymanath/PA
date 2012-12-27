@@ -22,15 +22,19 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -45,19 +49,24 @@ import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.UserCategoryValues;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterTemp;
+import com.itgrids.partyanalyst.model.VoterCategoryValues;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.social.service.ISocialService;
+import com.itgrids.partyanalyst.social.service.impl.SocialService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VotersAnalysisService implements IVotersAnalysisService{
 	private static final Logger log = Logger.getLogger(VotersAnalysisService.class);
 
-	
+	private IVoterCategoryValuesDAO voterCategoryValuesDAO;
 	private IBoothDAO boothDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IRegionServiceData regionServiceDataImp;
@@ -73,8 +82,35 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IUserDAO userDAO;
 	private IVoterTempDAO voterTempDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private ISocialService socialService;
+	private IUserCategoryValuesDAO userCategoryValuesDAO;
+	private ICategoryValuesDAO categoryValuesDAO;
+	//private IVoterCategoryValues voterCategoryValues;
 	
-	
+	public ICategoryValuesDAO getCategoryValuesDAO() {
+		return categoryValuesDAO;
+	}
+
+	public void setCategoryValuesDAO(ICategoryValuesDAO categoryValuesDAO) {
+		this.categoryValuesDAO = categoryValuesDAO;
+	}
+
+	public IUserCategoryValuesDAO getUserCategoryValuesDAO() {
+		return userCategoryValuesDAO;
+	}
+
+	public void setUserCategoryValuesDAO(
+			IUserCategoryValuesDAO userCategoryValuesDAO) {
+		this.userCategoryValuesDAO = userCategoryValuesDAO;
+	}
+
+	public ISocialService getSocialService() {
+		return socialService;
+	}
+
+	public void setSocialService(ISocialService socialService) {
+		this.socialService = socialService;
+	}
 
 	public IVoterTempDAO getVoterTempDAO() {
 		return voterTempDAO;
@@ -139,6 +175,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
+	public IVoterCategoryValuesDAO getVoterCategoryValuesDAO() {
+		return voterCategoryValuesDAO;
+	}
+
+	public void setVoterCategoryValuesDAO(
+			IVoterCategoryValuesDAO voterCategoryValuesDAO) {
+		this.voterCategoryValuesDAO = voterCategoryValuesDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -841,6 +886,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			for(Voter voter : list)
 			{
 				voterHouseInfoVO = new VoterHouseInfoVO();
+				voterHouseInfoVO.setBoothId(id);
 				voterHouseInfoVO.setVoterId(voter.getVoterId());
 				voterHouseInfoVO.setsNo(sno);
 				//voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
@@ -2116,6 +2162,9 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user)
 	voterHouseInfoVO.setGaurdian(voterInfo.getRelativeFirstName()+" "+voterInfo.getRelativeLastName());
 	voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
 	voterHouseInfoVO.setCast(voterInfo.getCast());
+	List<SelectOptionVO> casteList = socialService.getAllCasteDetails();
+	voterHouseInfoVO.setCasteGroupNameList(casteList);
+	
 	voterHouseInfoVO.setCastCategory(voterInfo.getCastCatagery());
 	voterHouseInfoVO.setUserId(user);
 	}
@@ -2128,7 +2177,17 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user)
 		/*voterHouseInfoVO.setUserId(voters.getUser().getUserId());
 		voterHouseInfoVO.setVoterId(voters.getVoter().getVoterId());*/
 		}
+		
+		List<UserCategoryValues> userCategoryValues=userCategoryValuesDAO.getUserCategoryValues();
 	
+		for(UserCategoryValues userCategoryValue : userCategoryValues)
+		{ 
+			voterHouseInfoVO.setUserCategoryValuesId(userCategoryValue.getUserCategoryValuesId());
+		voterHouseInfoVO.setUserCategoryValuesName(userCategoryValue.getUserCategoryName());
+		}
+		
+		//List<CategoryValues> categoryValues=categoryValuesDAO.getCategoryValues();
+		
 	return voterHouseInfoVO;
 	}
 
@@ -2137,6 +2196,7 @@ public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
 	ResultStatus resultStatus = new ResultStatus();
 	Voter voter=null;
 	UserVoterDetails userVoterDetails=null;
+	VoterCategoryValues voterCategoryValues=null;
 	try{
 		if(voterHouseInfoVO.getVoterId()==null)
 			voter=new Voter();
@@ -2148,7 +2208,18 @@ public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
 		else			
 			userVoterDetails =  userVoterDetailsDAO.get(voterHouseInfoVO.getUserVoterDetailsId());
 		
-		saveVoterDetails(voterHouseInfoVO,voter,userVoterDetails);
+		if(voterHouseInfoVO.getVoterCategoryValuesId()==null)
+			voterCategoryValues=new VoterCategoryValues();
+		else			
+			voterCategoryValues =  voterCategoryValuesDAO.get(voterHouseInfoVO.getVoterCategoryValuesId());
+		
+		/*voter_category_values
+		if(voterHouseInfoVO.getVoterCategoryValuesId()==null)
+			userVoterDetails=new UserVoterDetails();
+		else			
+			userVoterDetails =  voterCategoryValuesDAO.get(voterHouseInfoVO.getVoterCategoryValuesId());
+		*/
+		saveVoterDetails(voterHouseInfoVO,voter,userVoterDetails,voterCategoryValues);
 		
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 	}
@@ -2175,7 +2246,7 @@ public VoterHouseInfoVO getVoterFullInformation(Long voterId){
 	return voterHouseInfoVO;
 }
 
-public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserVoterDetails userVoterDetails){
+public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserVoterDetails userVoterDetails,VoterCategoryValues voterCategoryValues){
 	// userVoterDetailsDAO = null;
 	if(voterHouseInfoVO.getCast() != null && !voterHouseInfoVO.getCast().equalsIgnoreCase("")){
 		voter.setCast(voterHouseInfoVO.getCast());
@@ -2187,6 +2258,11 @@ public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserV
 		userVoterDetails.setVoter(voterDAO.get(voterHouseInfoVO.getVoterId()));
 		userVoterDetailsDAO.save(userVoterDetails);
 	}
+	
+	if(voterHouseInfoVO.getSetValue() != null && !voterHouseInfoVO.getSetValue().equalsIgnoreCase("")){
+		//voterCategoryValues.setS(voterHouseInfoVO.getSetValue());
+	}
+	
 	}
 
 public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
@@ -2198,90 +2274,132 @@ public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
 		}	
 	}	
 	
-	//userVoterDetailsDAO.getUserVoterDetails(voterId, userId);
 }
-	
-	public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults)
-	{
-		ResultStatus resultStatus = new ResultStatus();
-		try{
-			Date d3 = new Date();
-			int max = 1000;
-			Map<Long,Long> boothsMap = getBoothsMapInAConstituency(constituencyId,publicationDateId);
-			for(;;)
+
+public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		Date d3 = new Date();
+		int max = 1000;
+		Map<Long,Long> boothsMap = getBoothsMapInAConstituency(constituencyId,publicationDateId);
+		for(;;)
+		{
+			Date d1 = new Date(); 
+			List<VoterTemp> voterTempData = voterTempDAO.getVotersInAConstituency(constituencyId,startIndex,max);
+			
+			if(voterTempData != null && voterTempData.size() > 0)
 			{
-				Date d1 = new Date(); 
-				List<VoterTemp> voterTempData = voterTempDAO.getVotersInAConstituency(constituencyId,startIndex,max);
-				
-				if(voterTempData != null && voterTempData.size() > 0)
-				{
-					Voter voter = null;
-					BoothPublicationVoter boothPublicationVoter = null;
+				Voter voter = null;
+				BoothPublicationVoter boothPublicationVoter = null;
 
-					for(VoterTemp voterTemp : voterTempData)
-					{
-						try{
-						voter = new Voter();
-						boothPublicationVoter = new BoothPublicationVoter();
-						voter.setVoterIDCardNo(voterTemp.getVoterId());
-						voter.setName(voterTemp.getName());
-						voter.setHouseNo(voterTemp.getHouseNo());
-						voter.setRelativeName(voterTemp.getGuardianName());
-						voter.setRelationshipType(voterTemp.getRelationShip());
-						voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
-						voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
-						voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						
-						voter = voterDAO.save(voter);
-						
-						boothPublicationVoter.setVoter(voter);
-						boothPublicationVoter.setBoothId(boothsMap.get(voterTemp.getPartNo()));
-						boothPublicationVoterDAO.save(boothPublicationVoter);
-						}catch (Exception e) {}
-					}
-					voterDAO.flushAndclearSession();
-					Date d2 = new Date();
-					System.out.println("1000 Records inserted in "+(d2.getTime()-d1.getTime())/(1000*60*60)+" Seconds");
-					maxResults = maxResults - 1000;
-					startIndex = startIndex + 1000;
-					if(maxResults <= 0)
-						break;
-					if(maxResults <= 1000)
-						max = maxResults;
-				}
-			}
-			
-			Date d4 = new Date();
-			Double d5 = (new Double(d4.getTime() - d3.getTime()))/(1000*60);
-			System.out.println("Time Taken - "+d5+" Mins");
-			return resultStatus;
-		}catch (Exception e) {
-			log.error("Exception Occured in insertVoterData() Method, Exception is - "+e);
-			return resultStatus;
-		}
-	}
-
-	
-	public Map<Long,Long> getBoothsMapInAConstituency(Long constituencyId,Long publicationDateId)
-	{
-		Map<Long,Long> boothsMap = new HashMap<Long, Long>(0);
-		try{
-			List<Object[]> list = boothDAO.getBoothsInAConstituencyByPublication(constituencyId,publicationDateId);
-			
-			if(list != null && list.size() > 0)
-				for(Object[] params : list)
+				for(VoterTemp voterTemp : voterTempData)
 				{
 					try{
-					boothsMap.put(Long.parseLong(params[1].toString().trim()),(Long)params[0]);
-					}catch (Exception e) {
-						log.error("Exception Occured - "+e);
-					}
-				}
+					voter = new Voter();
+					boothPublicationVoter = new BoothPublicationVoter();
+					voter.setVoterIDCardNo(voterTemp.getVoterId());
+					voter.setName(voterTemp.getName());
+					voter.setHouseNo(voterTemp.getHouseNo());
+					voter.setRelativeName(voterTemp.getGuardianName());
+					voter.setRelationshipType(voterTemp.getRelationShip());
+					voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
+					voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
+					voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					
-			return boothsMap;
-		}catch (Exception e) {
-			log.error("Exception occured in getBoothsMapInAConstituency(), Exception is - "+e);
-			return boothsMap;
+					voter = voterDAO.save(voter);
+					
+					boothPublicationVoter.setVoter(voter);
+					boothPublicationVoter.setBoothId(boothsMap.get(voterTemp.getPartNo()));
+					boothPublicationVoterDAO.save(boothPublicationVoter);
+					}catch (Exception e) {}
+				}
+				voterDAO.flushAndclearSession();
+				Date d2 = new Date();
+				System.out.println("1000 Records inserted in "+(d2.getTime()-d1.getTime())/(1000*60*60)+" Seconds");
+				maxResults = maxResults - 1000;
+				startIndex = startIndex + 1000;
+				if(maxResults <= 0)
+					break;
+				if(maxResults <= 1000)
+					max = maxResults;
+			}
 		}
+		
+		Date d4 = new Date();
+		Double d5 = (new Double(d4.getTime() - d3.getTime()))/(1000*60);
+		System.out.println("Time Taken - "+d5+" Mins");
+		return resultStatus;
+	}catch (Exception e) {
+		log.error("Exception Occured in insertVoterData() Method, Exception is - "+e);
+		return resultStatus;
 	}
+}
+public VoterHouseInfoVO getBoothDetailsForVoter(Long boothId){
+	List<Booth> boothDetails=boothDAO.getBoothDetailsByBoothId(boothId);
+	VoterHouseInfoVO voterHouseInfoVO = null;
+	
+		for(Booth booth : boothDetails)
+		{
+			voterHouseInfoVO = new VoterHouseInfoVO();
+			voterHouseInfoVO.setBoothName(booth.getLocation());
+			voterHouseInfoVO.setVilliageCovered(booth.getVillagesCovered());
+			voterHouseInfoVO.setPanchayatName(booth.getPanchayat().getPanchayatName());
+		}
+	
+	return voterHouseInfoVO;
+}
+
+public List<VoterHouseInfoVO> getUserCategoryValues(){
+	List<VoterHouseInfoVO> voterHouseInfoValues = new ArrayList<VoterHouseInfoVO>();
+	VoterHouseInfoVO voterHouseInfoVO = null;
+	List<UserCategoryValues> categoryValues=userCategoryValuesDAO.getUserCategoryValues();
+	if(categoryValues != null && categoryValues.size()>0)
+		for(UserCategoryValues categoryValue : categoryValues){
+			if(categoryValue.getUserCategoryValuesId() != null){
+				voterHouseInfoVO = new VoterHouseInfoVO();
+			voterHouseInfoVO.setsNo(categoryValue.getUserCategoryValuesId());
+			voterHouseInfoVO.setName(categoryValue.getUserCategoryName());
+			voterHouseInfoValues.add(voterHouseInfoVO);
+			}
+		}
+	return voterHouseInfoValues;
+	
+}
+
+public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId){
+		
+	List<SelectOptionVO> voterCategoryValues = new ArrayList<SelectOptionVO>();
+	List<Object[]> categoryValues =categoryValuesDAO.getVoterCategoryValues(voterCategoryId);
+	
+	for(Object[] categoryValue:categoryValues){
+		   if(categoryValue[0]!= null && categoryValue[1] != null)
+			   voterCategoryValues.add(new SelectOptionVO((Long)categoryValue[0], categoryValue[1].toString().trim().toUpperCase()));
+	}
+	return voterCategoryValues;	
+}
+
+
+public Map<Long,Long> getBoothsMapInAConstituency(Long constituencyId,Long publicationDateId)
+{
+	Map<Long,Long> boothsMap = new HashMap<Long, Long>(0);
+	try{
+		List<Object[]> list = boothDAO.getBoothsInAConstituencyByPublication(constituencyId,publicationDateId);
+		
+		if(list != null && list.size() > 0)
+			for(Object[] params : list)
+			{
+				try{
+				boothsMap.put(Long.parseLong(params[1].toString().trim()),(Long)params[0]);
+				}catch (Exception e) {
+					log.error("Exception Occured - "+e);
+				}
+			}
+				
+		return boothsMap;
+	}catch (Exception e) {
+		log.error("Exception occured in getBoothsMapInAConstituency(), Exception is - "+e);
+		return boothsMap;
+	}
+}
 }
