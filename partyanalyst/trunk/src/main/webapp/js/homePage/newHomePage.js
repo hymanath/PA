@@ -64,7 +64,7 @@ function getHomePageQuestions(){
 		 };
 	 var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
      var url = "homePageQuestionsAjaxAction.action?"+rparam;
-	 callHomePageAjax(jObj,url);
+	 callHomePage(jObj,url);
 
 }
 function buildQuestions(questionsObj)
@@ -603,10 +603,10 @@ function postFeedbackAjaxCall()
 		 
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
      var url = "userFeedbackSubmitAjaxAction.action?"+rparam;
-	 callHomePageAjax(jObj,url);
+	 callHomePage(jObj,url);
 }
 
-function callHomePageAjax(jsObj,url)
+function callHomePage(jObj,url)
 {			
 	
 	var callback = {			
@@ -615,61 +615,61 @@ function callHomePageAjax(jsObj,url)
 						{
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							
-								if(jsObj.task == 'getComments')
+								if(jObj.task == 'getComments')
 							{
 								showFeedBackStatusMessage(myResults);
 								$("#taskId").prepend("<option value='0'>Select feedback</option>");
 								document.getElementById("taskId").value = 0;
 							}	
-							else if(jsObj.task == 'submitRequirement')
+							else if(jObj.task == 'submitRequirement')
 							{
 								showQuickRequestStatus(myResults);
 							}
-                            else if(jsObj.task == 'submitAricle')
+                            else if(jObj.task == 'submitAricle')
 							{
 								showArticlePostStatus(myResults);
 							}
-							else if(jsObj.task == 'getQuestions')
+							else if(jObj.task == 'getQuestions')
 							{
 								buildQuestions(myResults);
 							}
 
-							else if(jsObj.task == 'getElectionsTypesInState')
+							else if(jObj.task == 'getElectionsTypesInState')
 							{
 								buildElectionTypes(myResults);
 							}
 
-							else if(jsObj.task == 'getElectionYearsForAState')
+							else if(jObj.task == 'getElectionYearsForAState')
 							{
 								buildElectionYearsSelect(myResults);
 							}
-							else if(jsObj.task == "checkAnanymousUserNameAvailability" || 
-									jsObj.task == "saveUserEmailAndsetAsUserName")
+							else if(jObj.task == "checkAnanymousUserNameAvailability" || 
+									jObj.task == "saveUserEmailAndsetAsUserName")
 							{
 								showDetails(results);
 							}
-							else if(jsObj.task == "saveUserEmailAndSendPwd")
+							else if(jObj.task == "saveUserEmailAndSendPwd")
 							{
 								showEmailStatus(results);
 							}
-							else if(jsObj.task == "getProblemDetails")
+							else if(jObj.task == "getProblemDetails")
 							{
 								showProblemDetails(results);
 							}
-							else if(jsObj.task == "getProblemDetailsBasedOnProblemRefId")
+							else if(jObj.task == "getProblemDetailsBasedOnProblemRefId")
 							{
 								showProblemDescriptionByProblemRefId(myResults);
 							}
 
-							else if(jsObj.task == "getStates")
+							else if(jObj.task == "getStates")
 							{
 								buildElectionTypes(myResults);
 							}
 
-							else if(jsObj.task == "getProblemDetailsBasedOnProblemRefId")
+							/*else if(jsObj.task == "getProblemDetailsBasedOnProblemRefId")
 							{
 								showProblemDescriptionByProblemRefId(myResults);
-							}
+							}*/
 						}
 						catch(e)
 						{   
@@ -1763,7 +1763,7 @@ function validatePostArticle(){
 		};
 		var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 		var url = "sendMailToAdminAction.action?"+rparam;
-		callHomePageAjax(jObj,url);
+		callHomePage(jObj,url);
 		}
 		
 		else{
@@ -1828,7 +1828,7 @@ var elmt = document.getElementById("errorMsgDiv");
 
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "postArticleAction.action?"+rparam;
-	callHomePageAjax(jObj,url);
+	callHomePage(jObj,url);
 	
 }
 else{
@@ -2009,7 +2009,7 @@ elmt.innerHTML = str;
 
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "electionTypesAjaxAction.action?"+rparam;
-	callHomePageAjax(jObj,url);
+	callHomePage(jObj,url);
 }*/
 
 function buildElectionTypes(myResult)
@@ -2116,7 +2116,7 @@ function buildElectionTypes(myResult)
 
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
-	callHomePageAjax(jObj,url);
+	callHomePage(jObj,url);
 }
 */
 function getElectionYearsInHomePage(electionType)
@@ -2140,7 +2140,7 @@ function getElectionYearsInHomePage(electionType)
 
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
-	callHomePageAjax(jObj,url);
+	callHomePage(jObj,url);
 }
 
 function buildElectionYearsSelect(myResult)
@@ -2566,14 +2566,14 @@ function getProblemReferenceId()
 		else
 		{
 			document.getElementById("searchAjaxImgSpan").style.display = 'block';
-		var jsObj = 
+		var jObj = 
 			{
 				problemRefId : problemRefId,
 				task         : "getProblemDetailsBasedOnProblemRefId"
 			};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
 		var url = "getProblemDetailsAction.action?"+rparam;						
-		callHomePageAjax(jsObj,url);
+		callHomePage(jObj,url);
 		}
 	}	
 	function showProblemDescriptionByProblemRefId(results)
