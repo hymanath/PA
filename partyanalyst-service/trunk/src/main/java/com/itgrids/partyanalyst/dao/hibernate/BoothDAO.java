@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 
@@ -336,7 +337,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				"and model.publicationDate.publicationDateId = ?" , params);
 			
 		}*/
-		
+
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getBoothsInAConstituencyByPublication(Long constituencyId, Long publicationId)
 		{	
@@ -344,4 +345,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return getHibernateTemplate().find(" select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = ? and model.publicationDate.publicationDateId = ? ",params);
 		}
 		
+		public List<Booth> getBoothDetailsByBoothId(Long boothid)
+		{
+			Object[] params={boothid};
+		return getHibernateTemplate().find("from Booth model where model.boothId=?",params);
+		}
+
+	
 }
