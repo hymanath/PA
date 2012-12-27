@@ -1129,7 +1129,7 @@ var result = results;
 
 
 function buildVotersInFamily(results,hno){
-console.log(results);
+//console.log(results);
     $("#impFamDtlsTitle").html("<b>Voter Details in House No : "+hno+"</b>");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
@@ -1714,9 +1714,9 @@ $('#ajaxImageDiv').css('display','block');
                              buildAgeWiseVoterAnalysisChart(myResults,jsObj);
 
 							if(jsObj.type != "booth"){
-								buildAgewiseDetails(myResults,jsObj.type);
-								buildAgeAndGenderWiseDetails(myResults,jsObj.type);
-								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj.type);
+								buildAgewiseDetails(myResults,jsObj);
+								buildAgeAndGenderWiseDetails(myResults,jsObj);
+								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj);
 							}
 						 
 						
@@ -1750,11 +1750,10 @@ function buildVoterDetailsTable(result,type){
 	else 
 		noteString = $('#pollingStationField :selected').text();
 
-	$('#voterDetailsNote').html('<h4 style="color:green;margin-left:40px;">'+noteString+" "+"voters details"+'</h4>');
+	$('#voterDetailsNote').html('<h4 style="color:green;margin-left:40px;font-family: arial;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
 
 	var str='';
-	str+='<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
-	str+='<tr>'
+	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
 	str+='<tr>'
 	str+='<th rowspan="2">Age Range</th>';
 	str+='<th colspan="2">TotalVoters</th>';
@@ -1764,8 +1763,8 @@ function buildVoterDetailsTable(result,type){
 	str+='</tr>';
     
 	str+='<tr>';
-	str+='<th>TotalVoters</th>';
-	str+='<th>TotalPetcentage</th>';
+	str+='<th>Total Voters</th>';
+	str+='<th>Total Petcentage</th>';
 	str+='<th>Voters</th>';
 	str+='<th>Percentage</th>';
 	str+='<th>Voters</th>';
@@ -1817,27 +1816,27 @@ function buildVoterDetailsTable(result,type){
 
 }
 
-function buildAgewiseDetails(results , type){
+function buildAgewiseDetails(results , obj){
 
-
+   var type = obj.type;
    var innerResults;
    var noteString;
 
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voter details:Agewise";
+		noteString = "Mandal wise voters age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-			noteString = "Panchayat wise voter details:Agewise";
+			noteString = "Panchayat wise voters age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
-	  	noteString = "Booth wise voter details:Agewise";
+	  	noteString = "Booth wise voters age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter details:Agewise";
+		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
 	}
 
 
@@ -1845,13 +1844,20 @@ function buildAgewiseDetails(results , type){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
+	$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:45px;font-family: arial;">'+noteString+'</h4>');
 
 	var str='';
-	str+='<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
+	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
 
 	str+='<tr>';
-	str+='<th rowspan="2">Mandal Name</th>';
+	if(type == "constituency")
+	   str+='<th rowspan="2">Mandal Name</th>';
+	else if(type == "mandal")
+	   str+='<th rowspan="2">Panchayat Name</th>';
+	else if(type == "panchayat")
+	   str+='<th rowspan="2">Booth No</th>';
+	else if(type == "localElectionBody")
+	   str+='<th rowspan="2">Booth No</th>';
 	str+='<th  rowspan="2">Total Voters</th>';
 	str+='<th colspan="2">18-25</th>';
 	str+='<th colspan="2">26-35</th>';
@@ -1906,7 +1912,106 @@ $('#agewiseDetails').html(str);
 
 }
 
-function buildAgeAndGenderWiseDetails(results , type){
+function buildAgeAndGenderWiseDetails(results , obj){
+    var type = obj.type;
+	
+	var innerResults;
+	var noteString;
+
+
+	if(type == "constituency"){
+		innerResults = results.mandalsVotersDetails;
+		noteString = "Mandal wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+
+	}
+	else if(type == "mandal"){
+		innerResults = results.panchayatVotersDetails;
+		noteString = "Panchayat wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	}
+	else if(type == "panchayat"){
+		innerResults = results.boothVotersDetails;
+		innerResults = results.boothVotersDetails;
+	   	noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	}
+	else if(type == "localElectionBody"){
+		innerResults = results.boothVotersDetails;
+		noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	}
+
+	if(innerResults.length == 0){
+		return false;
+	}
+
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:45px;font-family: arial;">'+noteString+'</h4>');
+
+	var str='';
+
+	str+='	<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
+
+	str+='<tr>';
+	if(type == "constituency")
+	   str+='<th rowspan="2">Mandal Name</th>';
+	else if(type == "mandal")
+	   str+='<th rowspan="2">Panchayat Name</th>';
+	else if(type == "panchayat")
+	   str+='<th rowspan="2">Booth No</th>';
+	else if(type == "localElectionBody")
+	   str+='<th rowspan="2">Booth No</th>';
+	str+='<th colspan="2">18-25</th>';
+	str+='<th colspan="2">26-35</th>';
+	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">46-60</th>';
+	str+='<th colspan="2">60-Above</th>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
+	str+='</tr>';
+
+for(var i=0;i<innerResults.length;i++){
+
+	str+='<tr>';
+	if(type == "constituency")
+	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	else if(type == "mandal")
+	str+='<td>'+innerResults[i].panchayatname+'</td>';
+	else if(type == "panchayat")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+	else if(type == "localElectionBody")
+	str+='<td>'+innerResults[i].boothName+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor26To35+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor26To35+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor36To45+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor36To45+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersFor46To60+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersFor46To60+'</td>';
+
+	str+='<td>'+innerResults[i].totalMaleVotersForAbove60+'</td>';
+	str+='<td>'+innerResults[i].totalFemaleVotersForAbove60+'</td>';
+
+	str+='</tr>';
+}
+   str+='</table>';
+
+$('#ageAndgenderWiseDetails').html(str);
+}
+
+/*function buildAgeAndGenderWiseDetails(results , type){
 
 	var innerResults;
 	var noteString;
@@ -1995,136 +2100,52 @@ for(var i=0;i<innerResults.length;i++){
    str+='</table>';
 
 $('#ageAndgenderWiseDetails').html(str);
-}
+}*/
 
-function buildAgeAndGenderWiseDetails(results , type){
-
+function buildAgeAndGenderWiseDetailsForPercent(results , obj){
+     var type = obj.type;
 	var innerResults;
 	var noteString;
 
 
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise";
+		noteString = "Mandal wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Panchayat wise voter details:Age and gender wise";
+		noteString = "Panchayat wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		innerResults = results.boothVotersDetails;
-	   	noteString = "Booth wise voter details:Age and gender wise";
+	   	noteString = "Booth wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter details:Age and gender wise";
+		noteString = "Booth wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 
 	if(innerResults.length == 0){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:green;margin-left:45px;font-family: arial;">'+noteString+'</h4>');
 
 	var str='';
 
-	str+='	<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
-
-	str+='<tr>';
-	str+='<th rowspan="2">Mandal Name</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
-	str+='<th colspan="2">46-60</th>';
-	str+='<th colspan="2">60-Above</th>';
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th>Male</th>';
-	str+='<th>Female</th>';
-	str+='<th>Male</th>';
-	str+='<th>Female</th>';
-	str+='<th>Male</th>';
-	str+='<th>Female</th>';
-	str+='<th>Male</th>';
-	str+='<th>Female</th>';
-	str+='<th>Male</th>';
-	str+='<th>Female</th>';
-	str+='</tr>';
-
-for(var i=0;i<innerResults.length;i++){
+	str+='	<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
 
 	str+='<tr>';
 	if(type == "constituency")
-	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	   str+='<th rowspan="2">Mandal Name</th>';
 	else if(type == "mandal")
-	str+='<td>'+innerResults[i].panchayatname+'</td>';
+	   str+='<th rowspan="2">Panchayat Name</th>';
 	else if(type == "panchayat")
-	str+='<td>'+innerResults[i].boothName+'</td>';
+	   str+='<th rowspan="2">Booth No</th>';
 	else if(type == "localElectionBody")
-	str+='<td>'+innerResults[i].boothName+'</td>';
-
-	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
-	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
-
-	str+='<td>'+innerResults[i].totalMaleVotersFor26To35+'</td>';
-	str+='<td>'+innerResults[i].totalFemaleVotersFor26To35+'</td>';
-
-	str+='<td>'+innerResults[i].totalMaleVotersFor36To45+'</td>';
-	str+='<td>'+innerResults[i].totalFemaleVotersFor36To45+'</td>';
-
-	str+='<td>'+innerResults[i].totalMaleVotersFor46To60+'</td>';
-	str+='<td>'+innerResults[i].totalFemaleVotersFor46To60+'</td>';
-
-	str+='<td>'+innerResults[i].totalMaleVotersForAbove60+'</td>';
-	str+='<td>'+innerResults[i].totalFemaleVotersForAbove60+'</td>';
-
-	str+='</tr>';
-}
-   str+='</table>';
-
-$('#ageAndgenderWiseDetails').html(str);
-}
-
-function buildAgeAndGenderWiseDetailsForPercent(results , type){
-
-	var innerResults;
-	var noteString;
-
-
-	if(type == "constituency"){
-		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voter details:Age and gender wise(Percentage)";
-
-	}
-	else if(type == "mandal"){
-		innerResults = results.panchayatVotersDetails;
-		noteString = "Panchayat wise voter details:Age and gender wise(Percentage)";
-	}
-	else if(type == "panchayat"){
-		innerResults = results.boothVotersDetails;
-		innerResults = results.boothVotersDetails;
-	   	noteString = "Booth wise voter details:Age and gender wise(Percentage)";
-	}
-	else if(type == "localElectionBody"){
-		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter details:Age and gender wise(Percentage)";
-	}
-
-	if(innerResults.length == 0){
-		return false;
-	}
-
-	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:green;margin-left:45px;">'+noteString+'</h4>');
-
-	var str='';
-
-	str+='	<table border="1" style="margin-top:20px;text-align:center;" class="gridtable">';
-
-	str+='<tr>';
-	str+='<th rowspan="2">Mandal Name</th>';
+	   str+='<th rowspan="2">Booth No</th>';
 	str+='<th colspan="3">18-25</th>';
 	str+='<th colspan="3">26-35</th>';
 	str+='<th colspan="3">36-45</th>';
@@ -2205,10 +2226,10 @@ var data = google.visualization.arrayToDataTable([
 
 
 // Set chart options
-var title = " Age wise detail chart of in "+publicationYear+"";
+var title = " Age wise detail chart of "+jsObj.name+" in "+publicationYear+"";
 var options = {'title':title,
-'width':450,
-'height':280};
+'width':700,
+'height':300};
 // Instantiate and draw our chart, passing in some options.
 var chart = new google.visualization.PieChart(document.getElementById('ageWiseVotersBasicInfoSubChartDiv'));
 chart.draw(data, options);
