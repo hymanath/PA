@@ -4012,5 +4012,15 @@
 		   </result>
 		</action>
 		
+		<action name="getVotersCategoryAction" class="votersEditAction" method="callAjaxHandler">
+		    <result type="json" name="success">
+				 <param name="root">voterCategoryValues</param>			
+			</result>
+		</action>
+		
+		<action name="votersEditSubAction" class="votersEditSubAction">
+			<result name="success">/jsp/votersEditSubPage.jsp</result>
+		</action>
+		
 	</package>
 </struts>      
