@@ -763,8 +763,8 @@ var impDates = new Array();
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "updateUserSettingsDetailsAction.action?"+rparam;						
-		callAjax(jsObj,url);
+			//var url = //"updateUserSettingsDetailsAction.action?"+rparam;						
+		//callAjax(jsObj,url);
 
 	var url = "getTotalSettingsOptionsOfAnUser.action";
 	callAjaxForUserSettings(jsObj,url);
