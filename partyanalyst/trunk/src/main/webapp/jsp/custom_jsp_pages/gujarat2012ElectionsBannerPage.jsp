@@ -989,13 +989,13 @@ function buildWonLeadResults(results){
 	  str+='<table id="candidateWinLeadResultTableDiv" style="width:95%;margin-left:auto;margin-right:auto;">';
 	     str+='<thead>';
 		 str+=' <tr>';
-		 str+='  <th>Constituency</th>';
-		 str+='  <th>District</th>';
-		 str+='  <th>Candidate</th>';
-		 str+='  <th>Party</th> ';
-		 str+='  <th>Status</th>';
-		 str+='  <th>Assests</th>';
-		 str+='  <th>liabilities</th>';
+		 str+='  <th style="width: 153px;">Constituency</th>';
+		 str+='  <th style="width: 103px;">District</th>';
+		 str+='  <th style="width: 325px;">Candidate</th>';
+		 str+='  <th style="width: 75px;">Party</th> ';
+		 str+='  <th style="width: 75px;">Status</th>';
+		 str+='  <th style="width: 85px;">Assests</th>';
+		 str+='  <th style="width: 85px;">liabilities</th>';
 		 str+=' </tr>';
 		
 		 str+='</thead>';
@@ -1064,12 +1064,12 @@ function buildDistrictWiseLiveResults(results){
 	  str+='<table id="districtResultTableDiv" style="width:95%;margin-left:auto;margin-right:auto;">';
 	     str+='<thead>';
 		 str+=' <tr>';
-		 str+='  <th>Constituency</th>';
-		 str+='  <th>Candidate</th>';
-		 str+='  <th>Party</th> ';
-		 str+='  <th>Status</th>';
-		 str+='  <th>Assests</th>';
-		 str+='  <th>liabilities</th>';
+		 str+='  <th style="width: 135px;">Constituency</th>';
+		 str+='  <th style="width: 285px;">Candidate</th>';
+		 str+='  <th style="width: 217px;">Party</th> ';
+		 str+='  <th  style="width: 69px;">Status</th>';
+		 str+='  <th style="width: 80px;">Assests</th>';
+		 str+='  <th style="width: 85px;">liabilities</th>';
 		 str+=' </tr>';
 		
 		 str+='</thead>';
