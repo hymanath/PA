@@ -208,7 +208,10 @@ public class LoginService implements ILoginService{
 			
 			if(user == null ||  user.getUserId() <= 0)
 				return regVO;
-
+			else if(user!=null){
+				if(!(user.getUserName().equals(userName))||!(user.getPassword().equals(password)))			
+				return regVO;
+			}
 			Long userId = user.getUserId();
 			regVO.setRegistrationID(userId);
 			regVO.setFirstName(user.getFirstName());
