@@ -37,6 +37,7 @@ public interface IVotersAnalysisService {
 	
 	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo);
 	
+	public VoterHouseInfoVO getBoothDetailsForVoter(Long boothId);
 
 	public List<VotersDetailsVO>  getAgewiseVotersDetailsForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId);
 	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByPanchayatId(Long panchayatId,Long publicationDateId);
@@ -50,4 +51,8 @@ public interface IVotersAnalysisService {
 	public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO);
 	
 	public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
+	
+	public List<VoterHouseInfoVO> getUserCategoryValues();
+	
+	public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId);
 }
