@@ -80,7 +80,7 @@ $("document").ready(function(){
 		clearAllFavoriteLinkDivs();
 		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
-		$("#headerDiv").append("<ul id='accountStngs'><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
+		$("#headerDiv").append("<ul id='accountStngs'><li><span style='font-weight:bold;'>Settings</span></li><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
 		$("#impdatesDiv").hide();
 	});
 	
@@ -1414,7 +1414,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
