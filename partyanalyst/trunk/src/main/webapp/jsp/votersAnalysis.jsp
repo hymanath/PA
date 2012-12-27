@@ -84,6 +84,7 @@ table.gridtable td {
     font-size: 15px;
     margin-top: 5px;
     text-align: center;
+	height: 25px;
 }	
 
 #votersBasicInfoSubDiv{
@@ -204,6 +205,7 @@ color:#333333;
 	font-family : arial;
 	font-size: 13px;
     margin-top: 20px;
+	padding: 10px 10px 10px 15px;
 }
 
 #impFamPancBothDtls,#impFamDtls{
