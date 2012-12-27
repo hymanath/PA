@@ -145,6 +145,10 @@ margin:3px;
 .templateMessage .message{width:60%;word-wrap: break-word;}
 .templateMessage .msgBtns{margin-top: -30px;padding-bottom: 0px;}
 .searchImgCls{margin-left: 250px; margin-top: 0px; padding-top: 0px; margin-bottom: -30px;}
+.subscribe{
+ height: 90px;
+ font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -243,7 +247,7 @@ margin:3px;
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;"></div>
+				        <div id="headerDiv" class="whitegloss" style="cursor:pointer;"></div>
 						<div class="placeholderCenterDiv"></div>
 						
 						<div id="subscriptionsDiv">
@@ -570,7 +574,7 @@ margin:3px;
 	</div>
 	
 
-	<div class="specialPagSubscrTemplDiv templateholder specialPagSubscrDiv templatePersons">
+	<div class="subscribe specialPagSubscrTemplDiv templateholder specialPagSubscrDiv templatePersons">
 		<div class="imgClass span3"></div>
 		<div class="prinfo span7">
 			<span class="titleCls"></span>
