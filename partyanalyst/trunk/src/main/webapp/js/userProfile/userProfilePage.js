@@ -80,7 +80,16 @@ $("document").ready(function(){
 		clearAllFavoriteLinkDivs();
 		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
-		$("#headerDiv").append("<ul id='accountStngs'><li><span style='font-weight:bold;'>Settings</span></li><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
+		  var str='<table class="table table-hover"><thead><tr><td><b>Account Settings</b></td></tr></thead>';
+              str+='<tbody><tr><td><a href="freeUserRegistration.action"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>';
+              str+='  <tr><td><a href="javascript{}" class="changePwdLink"><span class="icon-hand-right"></span>  Change Password</a></td></tr>';
+              str+='   <tr><td><a href="javascript:{}" class="editPictureLink"><span class="icon-user"></span>  Edit Picture</a></td></tr>';
+              str+='   <tr><td><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Edit View Settings</a></td></tr>';
+              str+='   <tr><td><a href="javascript:{}" class="editCoverImgLink"><span class="icon-user"></span>  Upload CoverImage</a></td></tr>';
+			  str+='  </tbody>';
+              str+='</table>';
+		//$("#headerDiv").append("<ul id='accountStngs'><li><span style='font-weight:bold;'>Settings</span></li><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
+		$("#headerDiv").append(str);
 		$("#impdatesDiv").hide();
 	});
 	
