@@ -2722,8 +2722,11 @@ public String updateUserSettingsDetailsAction(Long selectedOptionId , Long userI
 	try{
 	UserPrivacySettings userPrivacySettings = null;
 	
-	userPrivacySettings  = userPrivacySettingsDAO.get(userId);
-	
+	List<UserPrivacySettings> userPrivacySettingsList   = userPrivacySettingsDAO.getUserSavedSettings(userId);
+	if(userPrivacySettingsList!=null && userPrivacySettingsList.size()>0){
+		userPrivacySettings = userPrivacySettingsList.get(0);
+
+	}
 	
 	if(userPrivacySettings == null)
 		userPrivacySettings = new UserPrivacySettings();
