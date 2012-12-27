@@ -200,4 +200,11 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	
+	public void testgetBoothDetailsByBoothId(){
+		List<Booth> list=boothDAO.getBoothDetailsByBoothId(207l);
+		System.out.println(list.size());
+		
+		
+	}
+	
 }
