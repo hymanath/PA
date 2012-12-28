@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.CategoryValues;
 
 public interface ICategoryValuesDAO  extends GenericDao<CategoryValues, Long>{
 
-	public List<Object[]> getVoterCategoryValues(Long voterCategoryId);
+	public List<Object[]> getVoterCategoryValues(Long voterCategoryId,String letters);
 	
 	public List<CategoryValues> getCategoryValues();
 }
