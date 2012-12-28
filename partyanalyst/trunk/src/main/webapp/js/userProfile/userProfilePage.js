@@ -2232,6 +2232,9 @@ function showAllUserPartySubscriptions(jsObj,results)
 	$(".placeholderCenterDiv").children().remove();
 	$('#userPartySubscriptionsDiv').children().remove();
 	$('#userPartySubscriptionsDiv').html('');
+	$('#userPartyUnSubscriptionsDiv').children().remove();
+	$('#userPartyUnSubscriptionsDiv').html('');
+
 	var partySubscriptions = results.userPartySubscriptions;
 
 	if(partySubscriptions == null || partySubscriptions.length == 0)
@@ -2248,14 +2251,32 @@ function showAllUserPartySubscriptions(jsObj,results)
 	$('#userPartySubscriptionsDiv').append(div);
 	for(var i in partySubscriptions)
 	{
-		var template = $(".specialPagSubscrTemplDiv");
-		var templateClone = template.clone();
-		templateClone.removeClass('specialPagSubscrTemplDiv');
-		templateClone.find('.titleCls').html('<br>'+partySubscriptions[i].title+'');
-		templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+results.userPartySubscriptions[i].name+'.png"/></a>');
-		templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
-		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
-		templateClone.appendTo('#userPartySubscriptionsDiv');
+		
+		if(partySubscriptions[i].subscribed)
+		{
+			var template = $(".specialPagSubscrTemplDiv");
+			var templateClone = template.clone();
+			templateClone.removeClass('specialPagSubscrTemplDiv');
+			templateClone.find('.titleCls').html('<br>'+partySubscriptions[i].name+'');
+			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
+			templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
+			templateClone.appendTo('#userPartySubscriptionsDiv');
+		}
+		else
+		{
+			
+			var template = $(".specialPagSubscrTemplDiv");
+			var templateClone = template.clone();
+			templateClone.removeClass('specialPagSubscrTemplDiv');
+			templateClone.find('.titleCls').html('<br>'+partySubscriptions[i].name+'');
+			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink">SUBSCRIBE</a>');
+			templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
+			templateClone.appendTo('#userPartyUnSubscriptionsDiv');
+
+			
+		}
 	}
 }
 
@@ -2267,12 +2288,14 @@ function clearAllSubscriptionDivs()
 	$("#userCandidateSubscriptionsDiv").html('');
 	$("#userPartySubscriptionsDiv").html('');
 	$("#userConstituencySubscriptionsDiv").html('');
-     $("#subscriptionsStreamingData").html('');
+    $("#subscriptionsStreamingData").html('');
 	$("#userSpecialPageSubscriptionsDiv").children().remove();
 	$("#userSpecialPageUnSubscriptionsDiv").children().remove();
 	$("#userCandidateSubscriptionsDiv").children().remove();
 	$("#userPartySubscriptionsDiv").children().remove();
 	$("#userConstituencySubscriptionsDiv").children().remove();
+	$("#userPartyUnSubscriptionsDiv").children().remove();
+	$("#userPartyUnSubscriptionsDiv").html('');
 
 }
 

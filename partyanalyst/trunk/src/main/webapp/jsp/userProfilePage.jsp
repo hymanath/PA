@@ -144,6 +144,7 @@ margin:3px;
  height: 90px;
  font-weight: bold;
 }
+.subscribedLink{color:red;font-weight:bold;}
 </style>
 </head>
 <body>
@@ -251,6 +252,9 @@ margin:3px;
 
 							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+
+							<div id="userPartyUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
+
 							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
 						</div>
 	<!--PRASAD-->
