@@ -1708,7 +1708,8 @@ public class SpecialPageService implements ISpecialPageService{
 		SubscriptionsMainVO subscriptionsMainVO = new SubscriptionsMainVO();
 		try{
 			subscriptionsMainVO.setUserSpecialPageSubscriptions(getAllSpecialPagesForUserProfile(userId));
-			subscriptionsMainVO.setUserPartySubscriptions(getAllUserSubscribedPartyPages(userId));
+			//subscriptionsMainVO.setUserPartySubscriptions(getAllUserSubscribedPartyPages(userId));
+			subscriptionsMainVO.setUserPartySubscriptions(getAllPartyPagesForUserProfile(userId));
 			subscriptionsMainVO.setUserCandidateSubscriptions(getAllUserSubscribedCandidatePages(userId));
 			subscriptionsMainVO.setUserConstituencySubscriptions(getAllUserSubscribedConstituencyPages(userId));
 		
@@ -2143,6 +2144,58 @@ return res;
 		}
 	}
  	
- 	
+ 	public List<SelectOptionVO> getStaticPartiesForSubScriptions()
+ 	{
+ 		List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>(0);;
+ 		try{
+ 			
+ 			partiesList.add(new SelectOptionVO(362l,"Indian National Congress","INC"));
+ 			partiesList.add(new SelectOptionVO(872l,"Telugu Desam Party","TDP"));
+ 			partiesList.add(new SelectOptionVO(1117l,"Yuvajana Sramika Raithu Congress","YSRC"));
+ 			partiesList.add(new SelectOptionVO(163l,"Bharath Janathadal Party","BJP"));
+  			partiesList.add(new SelectOptionVO(886l,"Telangana Rastra Samithi","TRS"));
+ 			partiesList.add(new SelectOptionVO(839l,"Samajwadi Party","SP"));
+ 			partiesList.add(new SelectOptionVO(239l,"Bahujan Samaj Party","BSP"));
+ 			partiesList.add(new SelectOptionVO(76l,"All India Trinamool Congress"," AITC"));
+ 			partiesList.add(new SelectOptionVO(579l,"Nationalist Congress Party"," NCP"));
+ 			
+ 			return partiesList;
+ 			
+ 		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getStaticPartiesForSubScriptions() Method, Exception - "+e);
+			return partiesList;
+		}
+ 	}
+ 	public List<SubscriptionsVO> getAllPartyPagesForUserProfile(Long userId)
+	{
+		List<SubscriptionsVO> partyVOList = new ArrayList<SubscriptionsVO>(0);
+		SubscriptionsVO subscriptionsVO = null;
+		try{
+			List<SelectOptionVO> staticPartyList = getStaticPartiesForSubScriptions();
+			List<Long> partyIds = partySubscriptionsDAO.getAllPartiesSubscribedByUser(userId);
+			if(staticPartyList != null && staticPartyList.size() > 0)
+			{
+				for(SelectOptionVO staticParties : staticPartyList)
+				{
+					subscriptionsVO = new SubscriptionsVO();
+					if(partyIds.contains(staticParties.getId()))
+						subscriptionsVO.setSubscribed(true);
+					subscriptionsVO.setName(staticParties.getName());
+					subscriptionsVO.setId(staticParties.getId());
+					subscriptionsVO.setImageURL(staticParties.getUrl());
+					partyVOList.add(subscriptionsVO);
+				}
+			}
+					
+			return partyVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAllPartyPagesForUserProfile() Method, Exception - "+e);
+			return partyVOList;
+		}
+		
+	}
+	
 
 }
