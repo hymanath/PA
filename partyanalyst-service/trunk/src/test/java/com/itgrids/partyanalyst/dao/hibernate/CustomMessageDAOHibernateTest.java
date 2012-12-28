@@ -111,7 +111,7 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		}		
 	}*/
 	
-	public void testGetPendingUserIdsInSelectedLocations()
+	/*public void testGetPendingUserIdsInSelectedLocations()
 	{
 		List<Long> locationIds=new ArrayList<Long>(0);
 		locationIds.add(3L);
@@ -122,6 +122,28 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		for(Long pendingId: pendingUsers)
 		{
 			System.out.println(pendingId.toString());
+		}
+	}*/
+	
+	
+	
+	public void testgetUserStatus()
+	{
+		List<Object[]> list = customMessageDAO.getUserStatus(1l, 807l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]);
+		}
+	}
+	
+	public void testgetUserConnectStatus()
+	{
+		List<Object[]> list = customMessageDAO.getUserConnectStatus(1l, 807l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]);
 		}
 	}
 	

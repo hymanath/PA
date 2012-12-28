@@ -26,5 +26,9 @@ public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 	public List<Object> getPendingUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
 	
 	public List<Long> getPendingUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType);
+	
+	public List<Object[]> getUserStatus(Long profileId, Long userId);
+	
+	public List<Object[]> getUserConnectStatus(Long profileId, Long userId);
 
 }
