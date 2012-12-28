@@ -227,4 +227,29 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		
 		return queryObject.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserStatus(Long profileId, Long userId)
+	{
+		StringBuilder queryObj = new StringBuilder();
+		queryObj.append("select model.customMessageId, model.messageType.messageType from CustomMessage model where  ");
+		queryObj.append(" model.sender.userId = ? and model.recepient.userId = ? and model.messageType.messageType = '"+IConstants.PENDING+"')");
+		Query query = getSession().createQuery(queryObj.toString());
+		query.setParameter(0, userId);
+		query.setParameter(1, profileId);
+		return query.list();
+	}
+	 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserConnectStatus(Long profileId, Long userId)
+	{
+		StringBuilder queryObj = new StringBuilder();
+		queryObj.append("select model.customMessageId, model.messageType.messageType from CustomMessage model where  ");
+		queryObj.append(" model.sender.userId = ? and model.recepient.userId = ? )");
+		Query query = getSession().createQuery(queryObj.toString());
+		query.setParameter(0, profileId);
+		query.setParameter(1, userId);
+		return query.list();
+	}
 }
