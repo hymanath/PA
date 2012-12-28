@@ -117,6 +117,10 @@ public class VotersEditSubAction  extends ActionSupport implements ServletReques
 	
 	public void prepare() throws Exception {
 	
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+
+		
 		partyGroupList=staticDataService.getStaticStateParties(1l);
 		partyGroupList.add(0, new SelectOptionVO(0l,"select party"));
 		userCategorysList=votersAnalysisService.getUserCategoryValues();
