@@ -33,5 +33,7 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	public List<Object[]> getAllConnectedPeoplesForPublicProfile(Long recepientId);
 	
 	public List<Object[]> getAllConnectedPeopleForPublicProfile(Long userId);
+	
+	public List<Long> getUserConnectStatus(Long senderId,Long recipeintId);
 
 }
