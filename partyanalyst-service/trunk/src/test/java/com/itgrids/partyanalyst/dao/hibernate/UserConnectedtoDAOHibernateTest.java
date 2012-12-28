@@ -163,16 +163,16 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	*/
 	
 	
-	public void testgetAllConnectedPeopleForPublicProfile()
+	/*public void testgetAllConnectedPeopleForPublicProfile()
 	{
 		
 		List<Object[]> userDetailsList = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(1l);
-		/*
+		
 		System.out.println(list.size());
 		for(Object[] params : list)
 		{
 			System.out.println("second "+params[0]+"  "+params[1].toString()+"------");
-		}*/
+		}
 		
 		Map<Long, Object[]> map = new HashMap<Long, Object[]>(0);
 		
@@ -186,6 +186,14 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println(params[0]+"  "+params[1]);
 		}
+	}
+	*/
+	
+	
+	public void testgetUserConnectStatus()
+	{
+		List<Long> list = userConnectedtoDAO.getUserConnectStatus(206l, 1l);
+		System.out.println(list.size());
 	}
 	
 }

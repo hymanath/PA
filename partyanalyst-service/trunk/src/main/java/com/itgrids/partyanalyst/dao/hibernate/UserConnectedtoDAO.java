@@ -226,4 +226,22 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		
 		return queryObject.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getUserConnectStatus(Long profileId,Long userId){
+		StringBuilder query = new StringBuilder();				
+		query.append(" select model.userConnectedtoId from UserConnectedto model where ");
+		query.append(" (model.userSource.userId=? and  model.userTarget.userId =?) or");
+		query.append(" (model.userSource.userId =? and model.userTarget.userId =?) ");	
+				
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, profileId);
+		queryObject.setParameter(1, userId);
+		queryObject.setParameter(2, userId);
+		queryObject.setParameter(3, profileId);
+		return queryObject.list();
+	}
+	
+	
 }
