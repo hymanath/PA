@@ -4030,5 +4030,12 @@
 			<result name="success">/jsp/votersEditSubPage.jsp</result>
 		</action>
 		
+		<action name="connectToUserInPublicProfileAction" class="userProfileAction" method="connectToSelectedUser">
+		  	 <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
+		
+		
 	</package>
 </struts>      
