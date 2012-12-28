@@ -38,7 +38,7 @@ function showReportLevel(value)
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'none';
 			document.getElementById('pollingStationDiv').style.display = 'block';
-			getPanchayatList('pollingstation','pollingStationField');
+			getPanchayatList('pollingstationByPublication','pollingStationField');
 		}
 	}
 	
@@ -482,6 +482,9 @@ $(document).ready(function(){
 		    publicationYear =year[2];
 		    }catch(e){
 		    }
+			if($("#reportLevel").val() == 4 && $("#mandalField").val() >0){
+			  getPanchayatList('pollingstationByPublication','pollingStationField');
+			}
 		}else{
 		    publicationYear = "";
 		}
@@ -547,7 +550,9 @@ $(document).ready(function(){
 		 else if($("#reportLevel").val() == 3 && $("#panchayatField option").length > 0 && $("#panchayatField").val() != 0 )
 		   getBasicInfo();
 		 else if($("#reportLevel").val() == 4 && $("#pollingStationField option").length > 0 && $("#pollingStationField").val() != 0 )
-		   getBasicInfo();
+		  { 
+		    //getBasicInfo();
+		  }
 			
 		}
 	});
@@ -1756,7 +1761,7 @@ function buildVoterDetailsTable(result,type){
 	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
 	str+='<tr>'
 	str+='<th rowspan="2">Age Range</th>';
-	str+='<th colspan="2">TotalVoters</th>';
+	str+='<th colspan="2">Total Voters</th>';
 	str+='<th colspan="2">Male</th>';
 	str+='<th colspan="2">Female</th>';
 	//str+='<th colspan="2">UnKnown</th>';
