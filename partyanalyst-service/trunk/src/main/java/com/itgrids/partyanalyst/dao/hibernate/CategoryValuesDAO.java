@@ -16,9 +16,11 @@ public class CategoryValuesDAO extends GenericDaoHibernate<CategoryValues, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getVoterCategoryValues(Long voterCategoryId) {
-		Query queryObject = getSession().createQuery("select model.categoryValuesId,model.categoryValue from CategoryValues model where model.userCategoryValues.userCategoryValuesId=?");
+	public List<Object[]> getVoterCategoryValues(Long voterCategoryId,String letters) {
+		String cName = ""+letters+"%";
+		Query queryObject = getSession().createQuery("select model.categoryValuesId,model.categoryValue from CategoryValues model where model.userCategoryValues.userCategoryValuesId=? and model.categoryValue like ?");
 		queryObject.setLong(0,voterCategoryId);
+		queryObject.setString(1,cName);
 		return queryObject.list();		
 	}
 	

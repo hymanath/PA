@@ -2404,10 +2404,10 @@ public List<VoterHouseInfoVO> getUserCategoryValues(){
 	
 }
 
-public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId){
+public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId,String letters){
 		
 	List<SelectOptionVO> voterCategoryValues = new ArrayList<SelectOptionVO>();
-	List<Object[]> categoryValues =categoryValuesDAO.getVoterCategoryValues(voterCategoryId);
+	List<Object[]> categoryValues =categoryValuesDAO.getVoterCategoryValues(voterCategoryId,letters);
 	
 	for(Object[] categoryValue:categoryValues){
 		   if(categoryValue[0]!= null && categoryValue[1] != null)

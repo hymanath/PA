@@ -54,5 +54,5 @@ public interface IVotersAnalysisService {
 	
 	public List<VoterHouseInfoVO> getUserCategoryValues();
 	
-	public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId);
+	public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId,String letters);
 }
