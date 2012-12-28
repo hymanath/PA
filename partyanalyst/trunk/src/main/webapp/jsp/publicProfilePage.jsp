@@ -235,6 +235,14 @@ padding:5px 20px;
 					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
 
+					<c:if test='${logInStatus == false}'>
+						<span class="row pull-right">
+							<a href="javascript:{}" onclick="openDialogForLoginWindow()"><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a>
+							<a href="javascript:{}" onclick="openDialogForLoginWindow()"><i class="icon-envelope opacityFilter-50 fontStyle"></i> Send Message</a>
+						</span>
+					</c:if>
+
+
 					<c:if test='${logInStatus == true && userType == "OtherUser"}'>
 						<span class="row pull-right">
 							
