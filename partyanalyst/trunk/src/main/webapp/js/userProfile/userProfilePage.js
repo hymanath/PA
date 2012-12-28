@@ -2114,10 +2114,10 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
-		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVOList[i].specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/></a>');
+		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVO.title+'');
+		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
 		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
-		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
+		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVO.specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageSubscriptionsDiv');
 		}
 		else
@@ -2125,10 +2125,10 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVOList[i].title+'');
-		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVOList[i].specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVOList[i].eventImagePath+'"/></a>');
+		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVO.title+'');
+		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
 		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink"  style="color:red; font-weight:bold;">SUBSCRIBE</a>');
-		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVOList[i].specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
+		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVO.specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageUnSubscriptionsDiv');
 		
 		}
@@ -2225,6 +2225,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 	}
 }
 
+
 function showAllUserPartySubscriptions(jsObj,results)
 {
 	
@@ -2236,6 +2237,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 	$('#userPartyUnSubscriptionsDiv').html('');
 
 	var partySubscriptions = results.userPartySubscriptions;
+	
 
 	if(partySubscriptions == null || partySubscriptions.length == 0)
 	{
