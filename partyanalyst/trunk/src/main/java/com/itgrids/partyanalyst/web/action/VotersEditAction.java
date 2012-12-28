@@ -247,7 +247,8 @@ public String putVoterDetails(){
 		if(jObj.getString("task").equalsIgnoreCase("getVoterCategories")){
 			System.out.println("with in the action");
 			Long voterCategoryId=new Long(jObj.getString("voterCategory"));
-			voterCategoryValues = votersAnalysisService.getVoterCategoryValues(voterCategoryId);
+			String letters=jObj.getString("letters");
+			voterCategoryValues = votersAnalysisService.getVoterCategoryValues(voterCategoryId,letters);
 			System.out.println("voterCategoryValues value is:"+voterCategoryValues);
 		}
 		
