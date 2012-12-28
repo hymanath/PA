@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
@@ -85,6 +86,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private boolean hasSubUserEntitlement = false;
 	private boolean hasCallCenterEntitlment = false;
 	private boolean hasProfileManagement = false;
+	private Boolean logInStatus = false;
+	private String userType;
+	private String connectStatus;
 	
 	
 	public boolean isHasProfileManagement() {
@@ -436,11 +440,35 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		this.streamList = streamList;
 	}
 
+	public Boolean getLogInStatus() {
+		return logInStatus;
+	}
+
+	public void setLogInStatus(Boolean logInStatus) {
+		this.logInStatus = logInStatus;
+	}
+	
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	public String getConnectStatus() {
+		return connectStatus;
+	}
+
+	public void setConnectStatus(String connectStatus) {
+		this.connectStatus = connectStatus;
+	}
+
 	public String execute()
 	{
 		String userStatusType = null;
-		if(profileId == null){
 		session = request.getSession();
+		if(profileId == null){
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
@@ -506,6 +534,37 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	  }else{
 
+ 
+		  RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		  if(regVO != null)
+		  {
+			  logInStatus = true;
+			  loginUserId = regVO.getRegistrationID();
+			  List<Long> profileIdList = new ArrayList<Long>(0);
+			  profileIdList.add(profileId);
+			  List<Long> userIdList = new ArrayList<Long>(0);
+			  userIdList.add(loginUserId);
+			  
+			  if(profileId.equals(regVO.getRegistrationID()))
+			  {
+				  userType = "LoggedUser";
+				  connectStatus = "LoggedUser";
+			  }
+			  else
+			  {
+				  userType = "OtherUser";
+				  connectStatus = userProfileService.getUserConnectStatus(profileId,loginUserId);
+			  }
+			
+		  }
+		  else
+		  {
+			  logInStatus = false;
+			  userType = "OtherUser";
+			  connectStatus = "false";
+		  }
+		  
+		  
 			 List<Long> userId = new ArrayList<Long>(0);
 			 loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(profileId);
 			 
@@ -956,6 +1015,45 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			log.error("Exception occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - " +e); 
 		}
 		streamList = userProfileService.getStreamingDataForPublicProfileByProfileId(jObj.getLong("profileId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+		return Action.SUCCESS;
+	}
+	
+	
+	public String connectToSelectedUser()
+	{
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		if(regVO == null)
+		{
+			return "error";
+		}
+		String senderName = regVO.getFirstName()+" "+regVO.getLastName();
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);	
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in connectToSelectedUser() Method, Exception - " +e); 
+		}
+		
+		Long userId = new Long(jObj.getString("userId"));
+		String subject = jObj.getString("connectMessage");
+		List<Long> senderIds = new ArrayList<Long>();
+		senderIds.add(userId);
+		
+		JSONArray connectUserIds = jObj.getJSONArray("connectUserIds");
+		
+		List<Long> connectUserIdsList = new ArrayList<Long>();
+		int size = connectUserIds.length();
+		
+		for(int j=0;j<size;j++)
+		{			
+			connectUserIdsList.add(new Long(connectUserIds.getString(j)));
+		}	
+		
+		resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject, senderName);
 		return Action.SUCCESS;
 	}
 
