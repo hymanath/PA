@@ -355,6 +355,12 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				designationsList = staticDataService.getBoothsByMandalId(new Long(selectedVal));
 				designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
 				}
+				
+				if(checkedVal.equalsIgnoreCase("pollingstationByPublication"))
+				{
+					designationsList = staticDataService.getBoothsInAMandalIdByPublication(new Long(selectedVal),jObj.getLong("publicationValue"));
+					designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
+				}
 			}
 		 return SUCCESS;
 				
