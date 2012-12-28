@@ -14,7 +14,7 @@ public class SubscriptionsVO implements Serializable{
 	private boolean isSubscribed;
 	private String title;
 	private List<SpecialPageVO> specialPageVOList;
-	
+	private SpecialPageVO specialPageVO;
 	
 	public Long getUserId() {
 		return userId;
@@ -69,6 +69,12 @@ public class SubscriptionsVO implements Serializable{
 	}
 	public void setSpecialPageVOList(List<SpecialPageVO> specialPageVOList) {
 		this.specialPageVOList = specialPageVOList;
+	}
+	public SpecialPageVO getSpecialPageVO() {
+		return specialPageVO;
+	}
+	public void setSpecialPageVO(SpecialPageVO specialPageVO) {
+		this.specialPageVO = specialPageVO;
 	}
 	
 	

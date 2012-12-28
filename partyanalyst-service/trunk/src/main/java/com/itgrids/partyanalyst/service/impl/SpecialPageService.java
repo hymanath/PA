@@ -1736,7 +1736,7 @@ public class SpecialPageService implements ISpecialPageService{
 						subscriptionsVO = new SubscriptionsVO();
 						if(list.contains(specialPageVO.getSpecialPageId()))
 							subscriptionsVO.setSubscribed(true);
-						subscriptionsVO.setSpecialPageVOList(specialPageVOList);
+						subscriptionsVO.setSpecialPageVO(specialPageVO);
 						subscriptionsVOList.add(subscriptionsVO);
 					}
 						
