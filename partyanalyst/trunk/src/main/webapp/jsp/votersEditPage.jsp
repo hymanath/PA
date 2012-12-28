@@ -10,21 +10,23 @@
 <html>
 <head>
 <title> Voters </title>
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-<!--
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<script type="text/javascript" src="js/homePage/homePage.js"> </script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js">
-</script>
--->
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<!-- Then get JQuery UI -->
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+
+
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>	
-
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+   <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <style>
  h1 {
     font: 1.2em Arial, Helvetica, sans-serif;
@@ -107,12 +109,58 @@ form div label {
  </style>
  
  <script type="text/javascript">
- function openProblemEditSubForm(id,name)
+ 
+     $(function() {
+
+	
+	$( "#setValue" ).autocomplete({
+            source: function( request, response ) {
+			 //var userCategoryValuesId1 = document.getElementById("userCategoryValuesId1");
+	
+				//var userCategoryValues = userCategoryValuesId1.options[userCategoryValuesId1.selectedIndex].value;
+				var userCategoryValues =$("#userCategoryValuesId1").val();
+			    var jsobjn={
+							letters:request.term,
+							voterCategory:userCategoryValues,
+							task:"getVoterCategories"
+							};
+                $.ajax({
+                    url: "getVotersCategoryAction.action",
+                    dataType: "json",
+                    data: {
+					    task:YAHOO.lang.JSON.stringify(jsobjn)										
+                    },
+                    success: function( data ) {
+
+                        response( $.map( data, function( item ) {
+                            return {
+                                label: item.name,
+                                value: item.name
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 1,
+           open: function() {
+                $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+            },
+            close: function() {
+                $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+            }
+        });
+    });
+
+ 
+ 
+ 
+function openProblemEditSubForm(id,name)
 {
-alert("category="+id);
-alert("category name="+id);
+//alert("category="+id);
+//alert("category name="+id);
 
 	var urlStr="votersEditSubAction.action?id='"+id+"' name='"+name+"'";
+	alert(urlStr);
 	var updateBrowser1 = window.open(urlStr,"subEditAnnouncement","scrollbars=yes,height=300,width=400,left=400,top=400");	
 	updateBrowser1.focus();	
 }	
@@ -123,8 +171,10 @@ alert("category name="+id);
 	if(probSuccessMsg !=null)
 	  probSuccessMsg.innerHTML='';
 }
-
+/*
 function createSetValue(id){
+categoryId=id;
+
 debugger;
 var jsObj=
 		{				
@@ -137,8 +187,9 @@ var jsObj=
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVotersCategoryAction.action?"+rparam;						
 		callAjax(jsObj,url);
+		
 
-}
+}*/
 
 function callAjax(jsObj,url){
 	
@@ -218,6 +269,7 @@ var chart = new google.visualization.PieChart(document.getElementById('ageWiseVo
 chart.draw(data, options);
 
 }
+/*
 $(document).ready(function(){
 $(".AddMore").click(function(){
 //addmoreforsetvalue();
@@ -229,9 +281,22 @@ var template=$(".template");
 var templateClone=$(".template").clone();
 templateClone.removeClass("template");
 templateClone.appendTo(".placeholder");
+}*/
+function openPopUp(){
+alert("dialogue");
+$('#popupDiv').dialog({
+			width:450,
+			'title':'Voter Details...'
+		});
 }
+function storeUpdatedValues(){
+cType = $('#userCategoryTypeId :selected').text();
+cValue = $('#userCategoryValuesId').val();
+$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+cType+'" readonly="true" style="width: 165px;"></input></div>');
+$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'"  style="width: 165px;"></input></div>');
+$('#popupDiv').dialog("close");
 
-
+}
  </script>
 </head>
 <body style="position: relative;">
@@ -260,47 +325,30 @@ templateClone.appendTo(".placeholder");
 		<label for="name">Gender:</label> 
 			<input type="text" style="width: 165px;"" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>
 		</div>
-		
 		<div>
 		<label for="name">Age:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>
 		</div>
-		
 		<div>
 		<label for="name">House No:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/>
 		</div>
-		
 		<div>
 		<label for="name">Guardian Name:</label> 
 			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/>
 		</div>
-		
 		<div>
 		<label for="name">RelationShip:</label>
 			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
 		</div>
-		
-<!--		<div>
-		<label for="name">Caste List:</label>
-				<s:select theme="simple" style="width: 169px;"
-				label="Select caste" name="voterHouseInfoVO.cast" 
-				id="cast" list="voterHouseInfoVO.casteGroupNameList" 
-				listKey="id" listValue="name"/>
-				
-			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
-		</div>-->
-		
 		<div>
 		<label for="name">Caste:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/>
 		</div>
-		
 		<div>
 		<label for="name">Caste Category:</label>
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>
 		</div>
-
 		<div>
 		<label for="name">Party Name:</label>
 				<s:select theme="simple" style="width: 169px;"
@@ -308,52 +356,44 @@ templateClone.appendTo(".placeholder");
 				id="partyId" list="partyGroupList" 
 				listKey="id" listValue="name"/>
 		</div>
-		
 		<div>
 			<label for="name">Booth Name:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.boothName" value="${voterHouseInfoVO.boothName}" readonly='true'/>
 		</div>
-
 		<div>
 			<label for="name">Panchayat Name:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.panchayatName" value="${voterHouseInfoVO.panchayatName}" readonly='true'/>
 		</div>
-
 		<div>
 			<label for="name">Villiage Covered:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.villiageCovered" value="${voterHouseInfoVO.villiageCovered}" readonly='true'/>
 		</div>
-		
-		<div>
-		<label for="name">Villiage Covered:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.userCategoryValuesId" value="${voterHouseInfoVO.userCategoryValuesId}" readonly='true'/>
-		</div>
-		<div>
-		<label for="name">setValue :</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.setValue" value="${voterHouseInfoVO.setValue}" />
-		</div>
-<!--<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>-->
-	<a onclick="openProblemEditSubForm();">classifieds</a>
+				<div id="addFieds" style="float:left;"></div>
+		<a onClick="openPopUp();">AddMore</a>
 		</fieldset>
-<!--
-<input type="hidden" id="windowTaskId" name="windowTask" value="update_existing"/>
-Name:<input type="text" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/><br>
-Gender:<input type="text" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/><br>
-Age:<input type="text" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/><br>
-House No:<input type="text" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/><br>
-Guardian Name:<input type="text" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/><br>
-RelationShip:<input type="text" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/><br>
-Caste:<input type="text" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/><br>
-CasteCategory<input type="text" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/><br>
-onclick="clearSuccessMsg()"
--->
 <div style="float:right;">
 <input class="btn btn-success" type="submit" value="Update" >
 </div>
-
-</div>
+<!--PRASAD-->
+<div id="popupDiv" style="display:none;">
  
+ 		<div>
+		<label for="name">Category Type:</label>
+				<s:select theme="simple" style="width: 169px;"
+				label="Select Category" name="voterHouseInfoVO.userCategoryValuesId" 
+				id="userCategoryValuesId1" list="userCategorysList" 
+				listKey="sNo" listValue="name"/>
+		</div>
+		<div>
+		<label for="name">Category value:</label> 
+			<input type="text" style="width: 165px;" name="setValue" value="${voterHouseInfoVO.setValue}" id="setValue"/>
+		</div>
+		<div style="float:right;">
+			<input class="btn btn-success" type="submit" value="Add" onClick="storeUpdatedValues()"></input>
+		</div>
+</div>
+<!--PRASAD-->
+</div>
 </form>
-
 </body>
 </html>
