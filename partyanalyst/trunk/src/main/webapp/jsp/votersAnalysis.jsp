@@ -446,6 +446,8 @@ locationDetails.constituencyArr.push(ob);
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 	
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
+		<br>
+		<div id="NoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:5px;width:920px;display:none;"></div>
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsTitle"></div>
 		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
@@ -555,6 +557,8 @@ locationDetails.constituencyArr.push(ob);
 <div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
 
 <div id="voterAgeAngGenderwiseDetailsInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+<div id="AgeWiseNoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:45px;width:851px;display:none;"></div>
+
 	
 </div>
 

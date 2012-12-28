@@ -902,6 +902,8 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
    $("#impFamPancBothDtls").html("");
    $("#impFamDtlsTitle").html("");
    $("#impFamDtls").html("");
+   $("#NoteDiv").css("display","none"); 
+   $("#NoteDiv").html("");
   }
    var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
   
@@ -1370,6 +1372,7 @@ function buildCastInfoData(myresults,jsObj)
   }
   
   $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise voters family analysis of "+name+" "+type+" in "+publicationYear+"");
+  
   var impFamilesColumnDefs = [
     {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
     {key:"below3", label: "Below 3", formatter:"number", sortable: true},
@@ -1394,12 +1397,17 @@ return {
 oDS: impFamilesDataSource,
 oDT: impFamilesDataTable
 };
-
+if(type == "constituency" || type == "Mandal/Tehsil")
+	{
+	$("#NoteDiv").css("display","block"); 
+	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	}
 }
 
 function impFamilesStaticTable(myresults,jsObj)
 {
 	var str='';
+	var type = jsObj.type;
 	str+='<div class="impFamilesMainDiv" >';
 
 	$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
@@ -1453,6 +1461,11 @@ function impFamilesStaticTable(myresults,jsObj)
 	str+='</table>';
 	str+='</div>';
 	$("#impFamilesBasicDetails").html(str);
+	if(type == "constituency" || type == "mandal")
+	{
+	$("#NoteDiv").css("display","block"); 
+	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	}
 }
 
 function buildImpFamilesChart(chartInfo)
@@ -1479,7 +1492,8 @@ function buildImpFamilesChart(chartInfo)
 }
 
 function getVoterDetailsForConstituency(){
-
+	$("#AgeWiseNoteDiv").css("display","none"); 
+	$("#AgeWiseNoteDiv").html("");
 	$("#votersBasicInfoSubDiv").html("");
 	$("#votersByLocationTabContentDiv_body").html("");
 	var constituencyId = $('#constituencyList').val();
@@ -1522,6 +1536,8 @@ function getVoterDetailsForConstituency(){
 }
 
 function getVoterDetailsForMandal(){
+	$("#AgeWiseNoteDiv").css("display","none"); 
+	$("#AgeWiseNoteDiv").html("");
 	$("#votersBasicInfoSubDiv").html("");
 	$("#votersBasicInfoSubChartDiv").html("");
 	var mandalId = $('#mandalField').val();
@@ -1580,6 +1596,8 @@ function getVoterDetailsForMandal(){
 }
 
 function getVoterDetailsForPanchayat(){
+	$("#AgeWiseNoteDiv").css("display","none"); 
+	$("#AgeWiseNoteDiv").html("");
 	$("#votersBasicInfoSubDiv").html("");
 	$("#votersBasicInfoSubChartDiv").html("");
 
@@ -1643,7 +1661,8 @@ function getVoterDetailsForPanchayat(){
 
 function getVoterDetailsForBooth(){
 	//$("#votersByLocationTabContentDiv_body").html("");
-
+	$("#AgeWiseNoteDiv").css("display","none"); 
+	$("#AgeWiseNoteDiv").html("");
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
 	var boothId = $('#pollingStationField').val();
@@ -2213,6 +2232,11 @@ for(var i=0;i<innerResults.length;i++){
    str+='</table>';
 
 $('#voterAgeAngGenderwiseDetailsInPercent').html(str);
+if(type == "constituency" || type == "mandal")
+	{
+$("#AgeWiseNoteDiv").css("display","block"); 
+$("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	}
 }
 
 
