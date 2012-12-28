@@ -195,6 +195,24 @@ padding:5px 20px;
 	.templatePersons{width:29%;height:70px;}
 	 .opacityFilter-50{opacity: 0.65;}
 	 .politicalReasonsTemplate{display: table;}
+
+	 .requestsDivCls span {
+    clear: none;
+    color: #999999;
+    display: inline-block;
+    float: left;
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+.requestsDivCls {
+    clear: both;
+    color: #999999;
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+    width: auto;
+}
 </style>
 </head>
 <body>
@@ -216,8 +234,36 @@ padding:5px 20px;
 					<span class="fontStyle row"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
-					<span class="row pull-right"><a href=""><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a>
-					<a href=""><i class="icon-envelope opacityFilter-50 fontStyle"></i> Send Message</a></span>
+
+					<c:if test='${logInStatus == true && userType == "OtherUser"}'>
+						<span class="row pull-right">
+							
+							<c:if test="${connectStatus == 'NOT CONNECTED'}">
+								<span class="connectStatusSpan"><a href="javascript:{}" class="connectLinkInPP"><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a></span>
+							</c:if>
+							<c:if test="${connectStatus == 'PENDING'}">
+								<span class="connectStatusSpan"><a class="btn-mini" href="javascript:{}" rel="tooltip" title="Pending"><i class="icon-adjust opacityFilter-50"></i>Request Pending</a></span>
+
+							</c:if>
+							<c:if test="${connectStatus == 'Respond to Friend'}">
+								<div class="icon-groups requestsDivCls">
+									<span class="sendMsg">
+										<a rel="tooltip" class="acceptButton btn btn-mini acceptRequestLink" data-original-title="Confirm"><i class="icon-thumbs-up opacityFilter-50"></i></a>
+									</span>
+									<span class="connectCls">
+										<a rel="tooltip" class="rejectButton btn btn-mini rejectRequestLink" data-original-title="Reject"><i class="icon-thumbs-down opacityFilter-50"></i></a>
+									</span>
+									<span style="display: block;" class="blockPersonBtn">
+										<a title="Block This Person" rel="tooltip" class="rejectButton btn btn-mini blockButtonLink"><i class="icon-ban-circle opacityFilter-50"></i></a>
+									</span>
+							</div>
+							</c:if>
+
+							<a href="javascript:{}" class="sendMessageLinkInPP"><i class="icon-envelope opacityFilter-50 fontStyle"></i> Send Message</a>
+						</span>
+					
+					</c:if>
+					
 					
 					<!--<a class='btn btn-success btn-mini pull-right' href="/PartyAnalyst/userProfile.action">My Profile</a>-->
 				</div>
@@ -425,11 +471,15 @@ padding:5px 20px;
 	</div>	
 	
 
+<div id="connectPeoplePopup" style="display:none;">
+	<div id="allConnectedUsersDisplay_main"></div>
+	</div>
 
 </div>
 <script>
 
 var profileId = '${profileId}';
+var profileUserName = '${profileUserName}';
 
 districtId = '${dataTransferVO.districtId}';
 districtName = '${dataTransferVO.districtName}';
