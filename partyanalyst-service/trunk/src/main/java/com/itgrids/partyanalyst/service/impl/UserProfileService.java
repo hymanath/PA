@@ -17,9 +17,11 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
+import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
@@ -29,6 +31,7 @@ import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.IUserProfileService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserProfileService implements IUserProfileService {
 	
@@ -43,6 +46,9 @@ public class UserProfileService implements IUserProfileService {
 	private IUserProblemDAO userProblemDAO;
 	
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
+	
+	private IUserConnectedtoDAO userConnectedtoDAO;
+	private ICustomMessageDAO customMessageDAO;
 	
 	private static final Logger log = Logger.getLogger(UserProfileService.class);
 			
@@ -108,6 +114,19 @@ public class UserProfileService implements IUserProfileService {
 	public void setCommentCategoryCandidateDAO(
 			ICommentCategoryCandidateDAO commentCategoryCandidateDAO) {
 		this.commentCategoryCandidateDAO = commentCategoryCandidateDAO;
+	}
+
+	public IUserConnectedtoDAO getUserConnectedtoDAO() {
+		return userConnectedtoDAO;
+	}
+	public void setUserConnectedtoDAO(IUserConnectedtoDAO userConnectedtoDAO) {
+		this.userConnectedtoDAO = userConnectedtoDAO;
+	}
+	public ICustomMessageDAO getCustomMessageDAO() {
+		return customMessageDAO;
+	}
+	public void setCustomMessageDAO(ICustomMessageDAO customMessageDAO) {
+		this.customMessageDAO = customMessageDAO;
 	}
 
 
@@ -453,6 +472,35 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 		e.printStackTrace();
 		log.error("Exception Occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - "+e);
 		return problemBeanVOList;
+	}
+   }
+   
+   
+   public String getUserConnectStatus(Long profileId, Long userId)
+   {
+	   String status = IConstants.NOTCONNECTED;
+	   try{
+		   List<Long> result = userConnectedtoDAO.getUserConnectStatus(profileId, userId);
+		   if(result != null && result.size() > 0)
+			   status = IConstants.CONNECTED;
+		   else 
+		   {
+			   List<Object[]> list = customMessageDAO.getUserStatus(profileId, userId);
+			   if(list != null && list.size() > 0)
+				   status = IConstants.PENDING;
+			   else
+			   {
+				   List<Object[]> list1 = customMessageDAO.getUserConnectStatus(profileId, userId);
+				   if(list1 != null && list1.size() > 0)
+					   status = "Respond to Friend";
+			   }
+		   }
+		   
+		   return status; 
+	   }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getUserConnectStatus() Method, Exception - "+e);
+		return status;
 	}
    }
 			
