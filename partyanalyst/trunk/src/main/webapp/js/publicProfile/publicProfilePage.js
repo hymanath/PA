@@ -40,9 +40,202 @@ $("document").ready(function(){
 	});
 
 
+
+	$(".sendMessageLinkInPP").click(function(){
+		
+		var id = profileId;
+		var name = profileUserName;
+		var type="Message";
+		
+		$("#allConnectedUsersDisplay_main").children().remove();
+		$( "#connectPeoplePopup").dialog({
+			title:"Send Message to "+name,
+			autoOpen: true,
+			show: "blind",
+			width: 400,
+			minHeight:250,
+			modal: true,
+			hide: "explode"
+		});
+		
+		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
+		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
+		var label = $("<label class='messageLabel'></label>");
+		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'></textarea><br>");
+		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		div.append(errorDiv);
+		div.append(label);
+		div.append(textarea);
+		div.append(button);
+		$('#allConnectedUsersDisplay_main').append(div);
+		
+	});
+
+$(".connectLinkInPP").click(function(){
+	
+	$("#allConnectedUsersDisplay_main").children().remove();
+	
+	
+
+		var userId = profileId;
+		var userName = profileUserName;
+		var userLoginId = loginUserId;
+		
+		$( "#connectPeoplePopup" ).dialog({
+			title:"Connect To  "+userName,
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			minHeight:250,
+			modal: true,
+			hide: "explode"
+		});
+
+		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
+		var Name=$("<label>"+userName+"</label>");
+		var message = $("<label class='messageLabel'>Message</label>");
+		var textArea = $("<textarea id='connectUserMsg'></textarea>");
+		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+		var connectBtn = $('<input type="button" value="Connect" id="connectMessageLinkInPP"/>');
+		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
+		var errorDiv = $("<div id='errorMsgDiv'></div>")
+		div.append(errorDiv);
+		div.append(Name);
+		div.append(message);
+		div.append(textArea);
+		div.append(image);
+		div.append(connectBtn);
+		div.append(connectedPersonId);
+		$('#allConnectedUsersDisplay_main').append(div);
+
+});
+
+
+$("#connectMessageLinkInPP").live("click",function(){
+
+		var connectUserId = $('#connectedPersonId').val();
+		var connectMsg = $.trim($("#connectUserMsg").val());
+		var errorMsgDiv = $("#errorMsgDiv");
+		$("#errorMsgDiv").html('');
+		var connectUserLoginId = loginUserId;
+		var users = new Array();
+		users.push(connectUserId);
+		if(connectUserMsg.length > 200)
+		{
+			$("#errorMsgDiv").html('<font style="color:red">Message Should be lessthan 200 characters.</font>');
+			return;
+		}
+		
+		disableButton("connectMessageLinkInPP");
+		$("#connectPeoplePopup").dialog('close');
+		
+		var jsObj ={
+											
+				connectUserIds:users,
+				connectMessage:connectMsg,
+				userId:connectUserLoginId,
+				task:"connectToUserInPP"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "connectToUserInPublicProfileAction.action?"+rparam;					
+	callAjaxForProfilePage(jsObj,url);
+	
+});
+
+
+
+	$(".acceptRequestLink").click(function(){
+		
+		var jsObj=
+	{		
+			type:"accept",
+			recepientId:profileId,
+			task:"acceptRequest"								
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateUserStatusAction.action?"+rparam;					
+	callAjaxForProfilePage(jsObj,url);
+	});
+
+	$(".rejectRequestLink").click(function(){
+		
+		var jsObj=
+	{		
+			type:"reject",
+			recepientId:profileId,
+			task:"rejectRequest"			
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateUserStatusAction.action?"+rparam;					
+	callAjaxForProfilePage(jsObj,url);
+	});
+
+	$(".blockButtonLink").click(function(){
+		
+		var jsObj=
+	{		
+			type:"block",
+			recepientId:profileId,
+			task:"blockRequest"								
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateUserStatusAction.action?"+rparam;						
+	callAjaxForProfilePage(jsObj,url);
+	});
+
+
 });//End ready
 
 
+function sendMessageToConnectedUser(userId,type)
+{	
+	var connectMsg = $.trim($("#connectMessageText").val());
+	if(connectMsg == "")	
+	{
+	  $("#ErrorMsgDivId").html('<font style="color:red">Please Enter Message.</font>');
+	  return;
+	}
+	
+	else if(connectMsg.length > 300)
+	{
+	  $("#ErrorMsgDivId").html('<font style="color:red">Message Should be lessthan 300 characters.</font>');
+	  return;
+	}
+		
+	$("#ErrorMsgDivId").html('<img src="images/icons/search.gif" class="searchImgCls"/>');
+	disableButton("sendMessageButtonId");
+	var jsObj ={
+				loginUserId:loginUserId,
+				message:connectMsg,				
+				recipientId:userId,
+				type:type,
+				task:"sendMessageToConnectUser"
+			 };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "messageToConnectedUser.action?"+rparam;					
+	callAjaxForProfilePage(jsObj,url);
+}
+
+function showMessageSentConfirmation(results)
+{
+	
+	var elmt = $("#ErrorMsgDivId");
+	enableButton("sendMessageButtonId");
+    if(results.resultCode == 0)
+	{
+		$("#connectMessageText").val('');
+		$("#ErrorMsgDivId").html('<font color="green">Message Sent Successfully..</font>');
+		setTimeout('self.close();',2000);
+		
+	}
+	else
+	  $("#ErrorMsgDivId").html('<font color="red">Message Cannot Be sent Due To Some Technical Difficulties<font>');
+	
+}
 
 function callAjaxForProfilePage(jsObj,url){
 	var results;	
@@ -58,8 +251,24 @@ function callAjaxForProfilePage(jsObj,url){
 					else if(jsObj.task == "getProblemDetails")
 						showProblemDetails(results,jsObj);
 					 
-
-
+					 else if(jsObj.task == "sendMessageToConnectUser")
+					{
+						if(jsObj.type=="Connect"){
+							location.reload(true);//For refreshing the page...
+						}else{
+							showMessageSentConfirmation(results);
+						}
+					}
+					else if(jsObj.task == "connectToUserInPP")
+					{
+						showConnectStatus(results);
+					}
+					
+					else if(jsObj.task == "acceptRequest" || jsObj.task == "rejectRequest" || jsObj.task == "blockRequest")
+					{
+						$(".requestsDivCls").children().remove();
+						$(".requestsDivCls").html('');
+					}
 			}catch (e) {  
                   $("#subscriptionsStreamingAjaxImg").hide();			
 			   	//alert("Invalid JSON result" + e);   
@@ -171,4 +380,16 @@ function showStreamingData(results,jsObj)
 function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
+}
+
+function showConnectStatus(results)
+{
+	if(results.resultCode == 0)
+	{
+		$(".connectStatusSpan").html('<span class="connectStatusSpan"><a class="btn-mini" href="javascript:{}" rel="tooltip" title="Pending"><i class="icon-adjust opacityFilter-50"></i>Request Pending</a></span>');
+		return;
+		
+	}
+	
+
 }
