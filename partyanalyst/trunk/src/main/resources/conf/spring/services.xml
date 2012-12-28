@@ -1338,6 +1338,8 @@
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 		<property name="userProblemDAO" ref="userProblemDAO" />
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
+		<property name="customMessageDAO" ref="customMessageDAO" />	
 	</bean>
 	
 </beans>		
