@@ -32,8 +32,8 @@ public class VoterDataInsert {
 	{
 		VoterDataInsert voterDataInsert = new VoterDataInsert();
 		//System.out.println("----- Total Voters Inserted ----->"+voterDataInsert.insertVoterData(78, 6, 5000, 10000));
-		voterDataInsert.getDetailsInAfamily(78,157);
-		voterDataInsert.getDetailsInAfamily(78,158);
+		voterDataInsert.getDetailsInAfamily(90,183);
+		//voterDataInsert.getDetailsInAfamily(90,237);
 		//voterDataInsert.getDetailsInAfamily(78,88);
 		//voterDataInsert.getDetailsInAfamily(78,89);
 	}
