@@ -16,8 +16,8 @@ public class CategoryValuesDAOHibernateTest  extends BaseDaoTestCase{
 	
 	public void testgetVoterCategoryValues(){
 		
-		List list=categoryValuesDAO.getVoterCategoryValues(1l);
-		System.out.println(list);
+		//List list=categoryValuesDAO.getVoterCategoryValues(1l);
+		//System.out.println(list);
 	}
 
 }
