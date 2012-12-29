@@ -115,9 +115,7 @@ form div label {
 	
 	$( "#setValue" ).autocomplete({
             source: function( request, response ) {
-			 //var userCategoryValuesId1 = document.getElementById("userCategoryValuesId1");
-	
-				//var userCategoryValues = userCategoryValuesId1.options[userCategoryValuesId1.selectedIndex].value;
+			
 				var userCategoryValues =$("#userCategoryValuesId1").val();
 			    var jsobjn={
 							letters:request.term,
@@ -257,8 +255,6 @@ var data = google.visualization.arrayToDataTable([
 [chartInfo.votersDetailsVO[3].ageRange, chartInfo.votersDetailsVO[3].totalVotersPercent],
 [chartInfo.votersDetailsVO[4].ageRange, chartInfo.votersDetailsVO[4].totalVotersPercent]
 ]);
-
-
 // Set chart options
 var title = " Age wise detail chart of in "+publicationYear+"";
 var options = {'title':title,
@@ -269,33 +265,57 @@ var chart = new google.visualization.PieChart(document.getElementById('ageWiseVo
 chart.draw(data, options);
 
 }
-/*
-$(document).ready(function(){
-$(".AddMore").click(function(){
-//addmoreforsetvalue();
-});
-});
-
-function addmoreforsetvalue(){
-var template=$(".template");
-var templateClone=$(".template").clone();
-templateClone.removeClass("template");
-templateClone.appendTo(".placeholder");
-}*/
 function openPopUp(){
-alert("dialogue");
 $('#popupDiv').dialog({
 			width:450,
 			'title':'Voter Details...'
 		});
+		clearFields();
 }
 function storeUpdatedValues(){
-cType = $('#userCategoryTypeId :selected').text();
-cValue = $('#userCategoryValuesId').val();
-$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+cType+'" readonly="true" style="width: 165px;"></input></div>');
-$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'"  style="width: 165px;"></input></div>');
-$('#popupDiv').dialog("close");
+cType = $('#userCategoryValuesId1 :selected').text();
+cValue = $('#setValue').val();
+typeValue = $('#userCategoryValuesId1').val();
+if($('#userCategoryValuesId1 :selected').text() == "Others")
+{
+	$('#otherDiv').append('<input type="text" id="otherTextBox" onChange="storeValue()"/>');
+	
+}
+}
 
+function addFieldsToMainFileds(){
+
+if($('#userCategoryValuesId1 :selected').text() == "Others"){
+	value = $('#otherTextBox').val();
+	cValue = $('#setValue').val();
+	cType = $('#userCategoryValuesId1 :selected').text();
+	cValue = $('#setValue').val();
+	$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+value+'" id="0" readonly="true" style="width: 165px; margin-left:131px;"></input></div>');
+	$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'"  style="width: 165px; margin-left:131px;"></input></div>');
+	$('#popupDiv').dialog("close");
+}
+else
+{
+	cType = $('#userCategoryValuesId1 :selected').text();
+	value = $('#userCategoryValuesId1 :selected').val();
+	cValue = $('#setValue').val();
+	$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+cType+'" id="'+value+'" readonly="true" style="width: 165px; margin-left:131px;"></input></div>');
+	$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'"  style="width: 165px; margin-left:131px;"></input></div>');
+	$('#popupDiv').dialog("close");
+}
+
+}
+
+function clearFields()
+{
+	$('#userCategoryValuesId1').val("Select Category");
+	$('#setValue').val("");
+	$('#otherTextBox').hide();
+}
+function storeValue()
+{
+	value = $('#otherTextBox').val();
+	
 }
  </script>
 </head>
@@ -306,6 +326,7 @@ $('#popupDiv').dialog("close");
 
 <c:if test="${requestScope.resultStr=='success'}">
 <div id="probSuccessMsgDiv">
+
 <DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Updated Successfully...</DIV>
 </div>
 </c:if>
@@ -314,6 +335,7 @@ $('#popupDiv').dialog("close");
 <input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
 <div id="mainDiv" style="float: right;">
+<a style="color:red;float:right;" onClick="openPopUp();"><b>CreateNewCategory</b></a>
  <fieldset style="width: 335px;">
        <legend class="legendClass">Voter Information</legend>
  		<div>
@@ -369,29 +391,33 @@ $('#popupDiv').dialog("close");
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.villiageCovered" value="${voterHouseInfoVO.villiageCovered}" readonly='true'/>
 		</div>
 				<div id="addFieds" style="float:left;"></div>
-		<a onClick="openPopUp();">AddMore</a>
+		
 		</fieldset>
 <div style="float:right;">
-<input class="btn btn-success" type="submit" value="Update" >
+<input class="btn btn-success" type="submit" value="Update">
 </div>
 <!--PRASAD-->
 <div id="popupDiv" style="display:none;">
  
  		<div>
-		<label for="name">Category Type:</label>
-				<s:select theme="simple" style="width: 169px;"
-				label="Select Category" name="voterHouseInfoVO.userCategoryValuesId" 
+		<label for="name">Select Type:</label>
+				<s:select theme="simple" style="width: 169px;margin-left:131px;"
+				label="Select Category" 
 				id="userCategoryValuesId1" list="userCategorysList" 
-				listKey="sNo" listValue="name"/>
+				listKey="sNo" listValue="name" onChange="storeUpdatedValues()"/>
+				
 		</div>
+		<div id="otherDiv"></div>
 		<div>
-		<label for="name">Category value:</label> 
-			<input type="text" style="width: 165px;" name="setValue" value="${voterHouseInfoVO.setValue}" id="setValue"/>
+		<label for="name">Select value:</label> 
+			<input type="text" style="width: 165px; margin-left:131px;"  value="${voterHouseInfoVO.setValue}" id="setValue"/>
 		</div>
+		
 		<div style="float:right;">
-			<input class="btn btn-success" type="submit" value="Add" onClick="storeUpdatedValues()"></input>
+			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds()"></input>
 		</div>
 </div>
+
 <!--PRASAD-->
 </div>
 </form>
