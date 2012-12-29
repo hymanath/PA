@@ -32,6 +32,10 @@ public class VoterHouseInfoVO {
 	private String setValue;
 	private Long voterCategoryValuesId;
 	private Long categoryValuesId;
+	private String youngerGender;
+	private Long youngerAge;
+	private String elderGender;
+	private Long elderAge;
 	
 	public VoterHouseInfoVO(){
 		
@@ -278,6 +282,38 @@ public class VoterHouseInfoVO {
 
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
+	}
+
+	public String getYoungerGender() {
+		return youngerGender;
+	}
+
+	public void setYoungerGender(String youngerGender) {
+		this.youngerGender = youngerGender;
+	}
+
+	public Long getYoungerAge() {
+		return youngerAge;
+	}
+
+	public void setYoungerAge(Long youngerAge) {
+		this.youngerAge = youngerAge;
+	}
+
+	public String getElderGender() {
+		return elderGender;
+	}
+
+	public void setElderGender(String elderGender) {
+		this.elderGender = elderGender;
+	}
+
+	public Long getElderAge() {
+		return elderAge;
+	}
+
+	public void setElderAge(Long elderAge) {
+		this.elderAge = elderAge;
 	}
 
 	
