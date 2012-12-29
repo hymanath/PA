@@ -115,11 +115,12 @@
 .election-resulthome img{margin-bottom: 12px; margin-left: 0px;vertical-align:middle;}
 .election-resulthome .btn-mini a{text-decoration:none;}
 .election-resulthome .btn-mini a:hover{text-decoration:none;}
+.widget-padding{padding-bottom: 5px; padding-top: 5px;}
 			</style>
 <div class="container m-top15">
 
 <!-- 2012 Election Results -->
-<div style="margin-bottom: 6px;" class="row-fluid election-resulthome">
+<!--<div style="margin-bottom: 6px;" class="row-fluid election-resulthome">
 <div class="span6  btn" style="margin-left: 0px;">
 <h1 style="font-size:20px;text-align:center;">Gujarat Elections - Live Results</h1>
 <img width="300px" height="125px" src="uploaded_files/special_page_profile/13/img.jpg" class="span5" style="margin-bottom: 12px; margin-left: 0px;vertical-align:middle" alt="Gujarath 2012 Elections Image">
@@ -138,7 +139,7 @@ Interesting news, who will win in new constituencies in Himachal Pradesh 2012 El
 </div></div>
 
 
-</div>
+</div>-->
 <!-- 2012 Election Results -->
 
 		<div class="row-fluid">
@@ -155,7 +156,12 @@ Interesting news, who will win in new constituencies in Himachal Pradesh 2012 El
 			
 		<div class="widget blue quicklinks"><h2><span><i class="icon-random "id="icon_leftsec"></i></span>
 Quick Links</h2>
-				
+				<div class="widget-padding">
+				<a title="Gujarath 2012 Elections" href="specialPageAction.action?specialPageId=13" class="btn btn-success" style="padding-bottom:10px;">Gujarat Elections Results</a>
+				</div>
+				<div class="widget-padding white-gloss">
+				<a title="Himachal Pradesh 2012 Elections" href="specialPageAction.action?specialPageId=14" class="btn btn-success" style="padding-bottom:10px;">Himachal Pradesh Elections Results</a>
+				</div>
 				<!---- View Election Results------->
 							<div class="widget-block" contentindex="4c">
 								<h5> View Election Results</h5>
