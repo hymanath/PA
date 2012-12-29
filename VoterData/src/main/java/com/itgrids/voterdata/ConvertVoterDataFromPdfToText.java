@@ -26,7 +26,7 @@ import org.apache.pdfbox.util.PDFTextStripper;
 public class ConvertVoterDataFromPdfToText {
 	
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		static final String DB_URL = "jdbc:mysql://localhost/itgrids";
+		static final String DB_URL = "jdbc:mysql://localhost/dakavara_pa";
 		static final String USER = "root";
 		static final String PASS = "root";
 		
@@ -66,7 +66,7 @@ public class ConvertVoterDataFromPdfToText {
     		
     		for(VoterInfo info : votersInfoList)
     		{
-    			String insertQuery = "INSERT INTO voter(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
+    			String insertQuery = "INSERT INTO voter_temp(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
     				" constituency_name, booth_id, booth_name) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
     				"','"+info.getAge()+"','"+info.getHouseNumber()+"','"+info.getGuardianName()+"','"+info.getGuardianRelation()+
     				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"')";
@@ -97,7 +97,7 @@ public class ConvertVoterDataFromPdfToText {
         //  Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n(KLQ\\d*|AJP\\d*|AP\\d*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:)\\nHouse No:\\n([A-Z\\s\\n]*)\\n([A-Z\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n[\\s0-9]*\\n");
         //Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n([A-Z\\d]*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\nHouse No:\\n([A-Za-z\\.\\s\\n]*)\\n([A-Za-z\\.\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n([\\s0-9a-zA-Z]*)\\n");
        /* This Pattern will use full for 2013 */
-        Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)\\r\\n([0-9\\-_/A-Za-z]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
+        Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
        // Pattern newp = Pattern.compile("([\\s0-9a-zA-Z\\s]*)\\r\\nAge:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\s]*)\\r\\n([\\s0-9]*)\\r\\n");
         //Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)Father's Name:\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\s([a-zA-Z]*)\\r\\n");
         
@@ -127,6 +127,15 @@ public class ConvertVoterDataFromPdfToText {
                     PDFTextStripper stripper = new PDFTextStripper();
                     // Add text to the StringBuilder from the PDF
                     sb.append(stripper.getText(pd));
+                    
+                  /*  String str = sb.toString();
+                    sb = new StringBuilder(str.replace(" .","-"));
+                    sb = new StringBuilder(sb.toString().replace("N.A.", "-"));
+                    sb = new StringBuilder(sb.toString().replace("?", ""));
+                    sb = new StringBuilder(sb.toString().replace("+", ""));
+                    sb = new StringBuilder(sb.toString().replace("11.", "11-"));
+                    sb = new StringBuilder(sb.toString().replace("u ", ""));*/
+                   
                     /*String ssb = sb.toString();
                     ssb.replaceAll("\n"," ");
                     sb = new StringBuilder(ssb);*/
