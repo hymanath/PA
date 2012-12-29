@@ -398,7 +398,7 @@ locationDetails.constituencyArr.push(ob);
 		
           <tr>
 			<td class="statusData_table_data" width="100%" style="padding-top:23px">
-				<table>
+				<table style="font-family:verdana;">
 				  <tr>
 			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Caste Statistics" 

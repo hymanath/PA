@@ -1163,15 +1163,12 @@ function buildVotersInFamily(results,hno){
 		    	            
 							{key:"sNo", label: "SNo", sortable: true},
 		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
-							
 							{key:"gender", label: "Gender", sortable: true},
 		    				{key:"age", label: "Age",sortable:true},
 							{key:"houseNo", label: "House No",sortable:true},
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
-							{key:"relationship", label: "Relationship",sortable:true},
-							{key:"cast", label: "Cast",sortable:true},
-							{key:"castCategory", label: " Cast Category", sortable: true}
-		    	        ]; 
+							{key:"relationship", label: "Relationship",sortable:true}
+						]; 
 
     var myConfigs = { 
 			    
@@ -1179,7 +1176,7 @@ function buildVotersInFamily(results,hno){
 	var myDataSource = new YAHOO.util.DataSource(results);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId","boothId"]
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","voterId","boothId"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
@@ -1329,21 +1326,27 @@ function buildCastInfoData(myresults,jsObj)
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
           str+='	 <th>Eldest Person</th>';
+		  str+='	 <th>Gender</th>';
+		  str+='	 <th>Age</th>';
           str+='     <th>Youngest Person</th>';
-          str+='     <th>Cast</th>';
+		  str+='	 <th>Gender</th>';
+		  str+='	 <th>Age</th>';
           str+='   </tr>';
           str+='  </thead>';
           str+='  <tbody>';
 	 for(var i in result){
 	   var sno = parseInt(i)+1;
-	      str+='   <tr>';
-          str+='     <td>'+sno+'</td>';
-		  str +='<td>'+result[i].boothId+'</td>';
-          str+='     <td><a href="javascript:{}" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
-          str+='     <td>'+result[i].numberOfPeople+'</td>';
-          str+='	 <td>'+result[i].elder+'</td>';
-          str+='     <td>'+result[i].younger+'</td>';
-          str+='     <td>'+result[i].cast+'</td>';
+	      str +='   <tr>';
+          str +='		<td>'+sno+'</td>';
+		  str +='		<td>'+result[i].boothName+'</td>';
+          str +='		<td><a href="javascript:{}" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
+          str +='		<td>'+result[i].numberOfPeople+'</td>';
+          str +='		<td>'+result[i].elder+'</td>';
+		  str +='		<td>'+result[i].elderGender+'</td>';
+		  str +='		<td>'+result[i].elderAge+'</td>';
+          str +='		<td>'+result[i].younger+'</td>';
+		  str +='		<td>'+result[i].youngerGender+'</td>';
+		  str +='		<td>'+result[i].youngerAge+'</td>';
           str+='   </tr>';
 	 }
           str+='  </tbody>';
@@ -1382,7 +1385,7 @@ function buildCastInfoData(myresults,jsObj)
 	 impFamiList.push(data);
   }
   
-  $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise voters family analysis of "+name+" "+type+" in "+publicationYear+"");
+  $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
@@ -1486,10 +1489,10 @@ function buildImpFamilesChart(chartInfo)
 	hideAjaxImgDiv('ajaxImageDiv');
 	var data = google.visualization.arrayToDataTable([
 			  ['Task', 'Percentage'],
-			  ['Voters Below 3',  chartInfo.below3perc],
-			  ['Voters Between 4-6', chartInfo.betwn4to6perc],
-			  ['Voters Between 7-10',  chartInfo.betwn7to10perc],
-			  ['Above 10 Voters', chartInfo.above10perc]
+			  ['Families Below 3 Voters',  chartInfo.below3perc],
+			  ['Families Between 4-6 Voters', chartInfo.betwn4to6perc],
+			  ['Families Between 7-10 Voters',  chartInfo.betwn7to10perc],
+			  ['Families Above 10 Voters', chartInfo.above10perc]
 			]);
 
 	// Set chart options
