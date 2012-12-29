@@ -1359,7 +1359,7 @@ function buildCastInfoData(myresults,jsObj)
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null,null,null,null,null
      
 	  
     ] 
