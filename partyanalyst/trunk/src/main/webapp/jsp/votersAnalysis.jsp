@@ -512,7 +512,7 @@ locationDetails.constituencyArr.push(ob);
 	
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	
-	<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
 	
 <!-- for  body 3 end    result  -->
 </div>
