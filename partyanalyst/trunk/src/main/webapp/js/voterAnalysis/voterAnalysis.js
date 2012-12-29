@@ -139,7 +139,7 @@ sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI ini
 			    })  // Enables pagination
 };
 
-var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByPanchayatTabContentDiv_body",
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
 votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
@@ -340,7 +340,12 @@ function showImportantFamiliesDiv()
 								else if(jsObj.task == "votersbasicinfo")
 								{
 								    if(myResults != null)
-									buildVotersBasicInfo(myResults,jsObj.to,jsObj);
+									  buildVotersBasicInfo(myResults,jsObj.to,jsObj);
+									else if( jsObj.to == ""){
+									  $("#votersBasicInfoSubChartDiv").removeAttr('style');
+									  $("#votersBasicInfoSubDiv").removeAttr('style');
+									}
+									 
 								}
 							    else if(jsObj.task == "getCastInfo")
 								{
@@ -609,9 +614,13 @@ function callCorrespondingAjaxCall(){
 function getVotersData(){
   var level = $("#reportLevel").val();
     if(level == 3){
+	  $("#votersByLocationTabContentDiv_body").css("border","1px solid black");
 	  buildVotersByLocPanchayatDataTable("panchayatField");
 	}else if(level == 4){
+	  $("#votersByLocationTabContentDiv_body").css("border","1px solid black");
 	  buildVotersByLocBoothDataTable("pollingStationField");
+	}else{
+	  $("#votersByLocationTabContentDiv_body").removeAttr('style'); 
 	}
 }
 
@@ -893,6 +902,8 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
      $("#votersBasicInfoDiv").html("");
      $("#votersBasicInfoSubChartDiv").html("");
      $("#votersBasicInfoSubDiv").html("");
+	 $("#votersByLocationTabContentDiv_body").html("");
+	 //$("#votersByPanchayatTabContentDiv_body").html("");
    }
   if(buttonType == "impFamilies"){
    $("#impFamilesBasicDetails").html("");
@@ -2269,9 +2280,11 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 {
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
-	
+	if(to == ""){
+	  $("#votersBasicInfoSubChartDiv").removeAttr('style');
+	  $("#votersBasicInfoSubDiv").removeAttr('style');
+	}
 	var str = '<div id="votersBasicInfoDivSub">';
-	
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
     
@@ -2288,8 +2301,13 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 		str += '</b></div></div></br></br>';
 
 
-		if(to == "")
+		if(to == ""){
 			$("#votersBasicInfoDiv").html(str);
+			if(jsObj.type != "booth"){
+			  $("#votersBasicInfoSubChartDiv").css("border","1px solid black"); 
+	          $("#votersBasicInfoSubDiv").css("border","1px solid black");
+			 }
+		}
 		else if(to == "impfamilies")
 			$("#votersBasicInfoDivForImpFam").html(str);
 		else if(to == "localcaststs")
@@ -2331,7 +2349,7 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 		var impFamliesResultDataSource = new YAHOO.widget.DataTable(reqDiv, votersResultColumnDefs,myDataSource, myConfigs);
 
 		}
-		$('#votersByPanchayatTabContentDiv_body').css("border","1px solid black");
+		//$('#votersByLocationTabContentDiv_body').css("border","1px solid black");
 	}
 	
 	else
