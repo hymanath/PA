@@ -324,6 +324,9 @@ width: 860px;}
    margin-bottom: -21px;
    margin-top: 15px;
 }
+#impfamilydatatable th{
+  padding:5px;
+}
 </style>
 
 <script type="text/javascript">
