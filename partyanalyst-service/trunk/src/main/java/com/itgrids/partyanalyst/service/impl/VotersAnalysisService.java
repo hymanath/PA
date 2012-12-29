@@ -2046,6 +2046,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterVO.setCast(voter[3] != null ? voter[3].toString() : "");
 			voterVO.setBoothNo((Long)voter[4]);
 			voterVO.setVoterId(voter[5].toString());
+			voterVO.setGender(voter[6].toString());
+			voterVO.setAge(voter[7] != null ? (Long)voter[7]:18l);
+			voterVO.setBoothName(voter[8].toString());
+			
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
 				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
@@ -2069,12 +2073,29 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			if(voterVOs.size() == 0)
 				continue;
 			Collections.sort(voterVOs,sortData);
-			voterHouseInfoVO.setHouseNo(entry.getKey());
-			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
-			voterHouseInfoVO.setYounger(voterVOs.get(0).getFirstName());
-			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
-			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
 			voterHouseInfoVO.setBoothId(voterVOs.get(0).getBoothNo());
+			voterHouseInfoVO.setBoothName("Booth - "+voterVOs.get(0).getBoothName());
+			voterHouseInfoVO.setHouseNo(entry.getKey());
+			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
+			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
+			voterHouseInfoVO.setElderGender(voterVOs.get(voterVOs.size()-1).getGender());
+			voterHouseInfoVO.setElderAge(voterVOs.get(voterVOs.size()-1).getAge());
+			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
+			
+			VoterVO younger = null;
+			
+			younger = voterVOs.get(0);
+			
+			if(!younger.getGender().equalsIgnoreCase(IConstants.MALE))
+			{
+				for(int i=1;i<(voterVOs.size()-1);i++)
+					if(voterVOs.get(i).getGender().equalsIgnoreCase(IConstants.MALE))
+							younger = voterVOs.get(i);
+			}
+			voterHouseInfoVO.setYounger(younger.getFirstName());
+			voterHouseInfoVO.setYoungerAge(younger.getAge());
+			voterHouseInfoVO.setYoungerGender(younger.getGender());
+			
 			voterHouseInfoVOs.add(voterHouseInfoVO);
 		}
 		}
