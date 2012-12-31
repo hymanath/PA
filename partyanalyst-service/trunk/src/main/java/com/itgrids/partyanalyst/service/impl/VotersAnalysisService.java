@@ -2239,8 +2239,19 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user)
 		{ 
 		voterHouseInfoVO.setCategoryValuesId(categoryValue.getCategoryValuesId());
 		voterHouseInfoVO.setUserCategoryValuesId1(categoryValue.getUserCategoryValues().getUserCategoryValuesId());
+		voterHouseInfoVO.setCategoryValue(categoryValue.getCategoryValue());
 		}
 		
+		List<VoterCategoryValues> voterCategoryValues= voterCategoryValuesDAO.getVoterCategoryValues1();
+		
+		if(voterCategoryValues!=null)
+		for(VoterCategoryValues voterCategoryValue : voterCategoryValues)
+		{ 
+		voterHouseInfoVO.setVoterCategoryValuesId(voterCategoryValue.getVoterCategoryValuesId());
+		voterHouseInfoVO.setCategoryValuesId(voterCategoryValue.getCategoryValues().getCategoryValuesId());
+		voterHouseInfoVO.setVoterCategoryValuesName(voterCategoryValue.getCategoryValues().getUserCategoryValues().getUserCategoryName());
+		}
+			
 	return voterHouseInfoVO;
 	}
 
@@ -2320,21 +2331,44 @@ public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserV
 		userVoterDetailsDAO.save(userVoterDetails);
 	}
 	
+	if(voterHouseInfoVO.getCategory() != null){
+		for(int i=0;i<voterHouseInfoVO.getCategory().size();i++){
+			
+			if(voterHouseInfoVO.getCategoryValuesId() !=null && !voterHouseInfoVO.getCategoryValuesId().equals(0)){
+				
+				categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(voterHouseInfoVO.getUserCategoryValuesId()));
+				categoryValues.setCategoryValue(voterHouseInfoVO.getCategory().get(i).getValue());
+				//categoryValues.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
+				categoryValuesDAO.save(categoryValues);
+			}
+			if(voterHouseInfoVO.getCategory().get(i).getValue() != null && !voterHouseInfoVO.getCategory().get(i).getValue().equalsIgnoreCase("")){
+				voterCategoryValues.setCategoryValues(categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId()));
+				voterCategoryValues.setVoter(voterDAO.get(voterHouseInfoVO.getVoterId()));
+				voterCategoryValuesDAO.save(voterCategoryValues);
+			}
+	}
+	}
+	//if(voterHouseInfoVO.getCategory() != null)
+	//for(int i=0;i<voterHouseInfoVO.getCategory().size();i++){
+		/*
 	if(voterHouseInfoVO.getCategoryValuesId() !=null && !voterHouseInfoVO.getCategoryValuesId().equals(0)){
 		
 		categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(voterHouseInfoVO.getUserCategoryValuesId()));
-		categoryValues.setCategoryValue(voterHouseInfoVO.getSetValue());
+		categoryValues.setCategoryValue(voterHouseInfoVO.getCategory().get(i).getValue());
 		categoryValuesDAO.save(categoryValues);
-	}
+	}*/
 	
-	if(voterHouseInfoVO.getSetValue() != null && !voterHouseInfoVO.getSetValue().equalsIgnoreCase("")){
-		
-		voterCategoryValues.setCategoryValues(categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId()));
-		voterCategoryValues.setVoter(voterDAO.get(voterHouseInfoVO.getVoterId()));
-		voterCategoryValuesDAO.save(voterCategoryValues);
-	}
-	
-	}
+	//if(voterHouseInfoVO.getCategory() != null)
+	//if(voterHouseInfoVO.getCategory().get(i).getValue() != null && !voterHouseInfoVO.getCategory().get(i).getValue().equalsIgnoreCase("")){
+		//categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId())
+		//		voterDAO.get(voterHouseInfoVO.getVoterId())
+		//voterCategoryValues.setCategoryValues(categoryValuesDAO.get(1l));
+		//voterCategoryValues.setVoter(voterDAO.get(1l));
+		//voterCategoryValuesDAO.save(voterCategoryValues);
+		//voterCategoryValuesDAO.flushAndclearSession();
+		//}
+	//}
+}
 
 public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
 	
