@@ -39,6 +39,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private List<VoterHouseInfoVO> userCategorysList;
 	private String resultStr;
 	private List<SelectOptionVO> voterCategoryValues;
+	private SelectOptionVO selectOptionVO;
 	//private String windowTask = null;
 	
 	
@@ -164,6 +165,14 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	}
 	
 	
+	public SelectOptionVO getSelectOptionVO() {
+		return selectOptionVO;
+	}
+
+	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
+		this.selectOptionVO = selectOptionVO;
+	}
+
 	public String execute() throws Exception{
 		
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
@@ -224,6 +233,9 @@ public String putVoterDetails(){
 		partyGroupList.add(0, new SelectOptionVO(0l,"select party"));
 		userCategorysList=votersAnalysisService.getUserCategoryValues();
 		userCategorysList.add(0, new VoterHouseInfoVO(0l,"Select Category"));
+		Long size= (long) userCategorysList.size();
+		System.out.println(size);
+		userCategorysList.add((int) userCategorysList.size(), new VoterHouseInfoVO(size,"Others"));
 		
 	}
 	
@@ -251,6 +263,42 @@ public String putVoterDetails(){
 			voterCategoryValues = votersAnalysisService.getVoterCategoryValues(voterCategoryId,letters);
 			System.out.println("voterCategoryValues value is:"+voterCategoryValues);
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("storeValues"))
+		{
+				String groupName = jObj.getString("name");
+				HttpSession session = request.getSession();
+				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null)
+					return ERROR;
+				
+				
+				selectOptionVO = votersAnalysisService.storeGroupName(user.getRegistrationID(),groupName);
+				
+				return  "category";
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getCategoryValues"))
+		{
+				HttpSession session = request.getSession();
+				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null)
+				return ERROR;
+				voterCategoryValues = votersAnalysisService.findVoterCategoryValues(user.getRegistrationID());
+				voterCategoryValues.add(0, new SelectOptionVO(0l,"Select Group"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("storeCategoeryValues"))
+		{
+				String name =  jObj.getString("categoryValue");
+				Long id = jObj.getLong("categoryId");
+				HttpSession session = request.getSession();
+				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null)
+				return ERROR;
+				
+				selectOptionVO = votersAnalysisService.storeCategoryVakues(user.getRegistrationID(),name,id);
+				return  "category";
+		}
+		
+		
 		
 		return Action.SUCCESS;
 	}
@@ -262,4 +310,5 @@ public String putVoterDetails(){
 		
 	}
 */
+	
 	}
