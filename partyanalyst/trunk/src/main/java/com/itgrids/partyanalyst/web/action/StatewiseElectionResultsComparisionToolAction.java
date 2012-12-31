@@ -181,8 +181,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			Long stateId = new Long(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
-			
-			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN,null);
+			Long electionId = jObj.getLong("electionId");
+			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN,null,electionId);
 			
 			try{
 			//charts for alliance parties state level

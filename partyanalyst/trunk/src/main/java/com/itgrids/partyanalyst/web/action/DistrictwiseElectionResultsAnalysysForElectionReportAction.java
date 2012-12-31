@@ -205,8 +205,9 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 			Long stateId = new Long(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
+			Long electionId = jObj.getLong("electionId");
 			
-			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN,null);
+			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN,null,electionId);
 			//district level results chart with alliance parties grouped
 			String title1 = "";
 			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))

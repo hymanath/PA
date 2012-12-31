@@ -989,7 +989,7 @@ function buildConstituencyAreaTypeWiseOverviewTable(result)
 	}
 	str +='</table>';
 	divEle.innerHTML = str;
-
+  if(result.length > 1){
 	var data = new google.visualization.DataTable();
 	data.addColumn('string','Area Type');
 	data.addColumn('number','Count');
@@ -1002,6 +1002,7 @@ function buildConstituencyAreaTypeWiseOverviewTable(result)
 	}
 	var chart = new google.visualization.PieChart(document.getElementById('constituencyTypeWiseOverviewGraph')); 
 	chart.draw(data,{width:300, height: 170, title:'Constituency Area Type wise % Graph'});
+   }
 }
 
 
@@ -1014,6 +1015,7 @@ function buildConstituecyAreaTypeSelectOptionsDiv(selectOption)
 
 	if(myResults == null || myResults.length == 0)
 	{
+	    document.getElementById('ConstituecyAreaTypeSelectOptionsDiv').style.display = 'none';
 		divEle.innerHTML = '';
 		return;
 	}
@@ -1169,6 +1171,7 @@ function buildUbanPercentageWisePartyDetailsGraph()
 	  document.getElementById("partyperformance").style.display = "none";
 
 	 document.getElementById("UbanPercentageWiseGraphSelectionDiv").innerHTML = '';
+	 document.getElementById("UbanPercentageWiseGraphSelectionDiv").style.display = "none";
   }  
 }
 
@@ -2914,9 +2917,10 @@ function openPreYearDistAnalysisWindow()
 		var currentElectionyear=${year};	
 		var selectYearEl = document.getElementById("selectYearDistrictwise");
 		var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+		var selectedElectionId =  selectYearEl.options[selectYearEl.selectedIndex].value;
 		var yearAlertEl = document.getElementById("yearAlert");
 		var browser1;
-		var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"";
+		var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"&electionId="+selectedElectionId+"";
 		if(selectedElectionYear == 'Select Year') 
 		{
 			yearAlertEl.style.display ='block';
@@ -2947,9 +2951,10 @@ function openPreYearStatewiseAnalysisWindow()
 	var currentElectionyear=${year};	
 	var selectYearEl = document.getElementById("selectYearStateWise");
 	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var selectedElectionId =  selectYearEl.options[selectYearEl.selectedIndex].value;
 	var yearAlertSEl = document.getElementById("yearAlertS");
 	var browser1;
-	var urlStr = "<%=request.getContextPath()%>/statewiseElectionResultsComparisionToolAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"";
+	var urlStr = "<%=request.getContextPath()%>/statewiseElectionResultsComparisionToolAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"&electionId="+selectedElectionId+"";
 	if(selectedElectionYear == 'Select Year') 
 	{
 		yearAlertSEl.style.display ='block';
@@ -4200,7 +4205,7 @@ function navigateToMinisterPage(){
 							<TD align="left"><SELECT id="selectYearStateWise" name="selectYearStateWise" style="width: 100px; margin-top: 3px;">
 								<c:forEach var="years"  items="${electionYears}">
 								<c:if test="${year != years.name}">
-									<OPTION value="years.id">${years.name}</OPTION>
+									<OPTION value="${years.id}">${years.name}</OPTION>
 								</c:if>
 							</c:forEach>
 							</SELECT>	
@@ -4231,7 +4236,7 @@ function navigateToMinisterPage(){
 							<TD align="left"><SELECT id="selectYearDistrictwise" name="selectYearDistrictwise" style="width: 100px; margin-top: 3px;">
 								<c:forEach var="years"  items="${electionYears}">
 									<c:if test="${year != years.name}">
-										<OPTION value="years.id">${years.name}</OPTION>
+										<OPTION value="${years.id}">${years.name}</OPTION>
 									</c:if>
 								</c:forEach>
 							</SELECT>
@@ -4262,7 +4267,7 @@ function navigateToMinisterPage(){
 								<TD align="left">Year:</TD>
 								<TD align="left"><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
 									<c:forEach var="years"  items="${electionYears}">
-										<OPTION value="years.id">${years.name}</OPTION>								
+										<OPTION value="${years.id}">${years.name}</OPTION>								
 									</c:forEach>
 								</SELECT>
 								</TD>
@@ -4297,7 +4302,7 @@ function navigateToMinisterPage(){
 								<TD align="left"><SELECT id="selectYearECR" name="selectYearECR" style="width: 100px; margin-top: 3px;">
 									<c:forEach var="years"  items="${electionYears}">
 										<c:if test="${year != years.name}">
-											<OPTION value="years.id">${years.name}</OPTION>
+											<OPTION value="${years.id}">${years.name}</OPTION>
 										</c:if>									
 								</c:forEach>
 								</SELECT>

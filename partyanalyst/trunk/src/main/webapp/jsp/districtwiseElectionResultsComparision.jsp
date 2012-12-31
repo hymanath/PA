@@ -37,6 +37,7 @@
 var stateId = '${stateID}';
 var electionType = '${electionType}';
 var selectedYear = '${selectedElectionYear}';
+var electionId =   '${electionId}';
 google.load("visualization", "1", {packages:["corechart"]});
 var electionResultsObj = {
 		partyWiseResultsArr:[],
@@ -83,7 +84,8 @@ function getSelectedYearElectionResults(stateId,electionType,selectedYear)
 	{
 		stateID: stateId,
 		electionType: electionType,
-		year: selectedYear,		
+		year: selectedYear,	
+		electionId:electionId,
 		task: "getSelectedYearElectionResults"		
 	}
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);

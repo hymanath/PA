@@ -482,8 +482,8 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	}	
 	
 	//myCode end raghav
-	getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId);
-	getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId);
+	getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId,jsObj.stateId);
+	getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId,jsObj.stateId);
 }
 function buildGraphsCarousel(divId)
 {
