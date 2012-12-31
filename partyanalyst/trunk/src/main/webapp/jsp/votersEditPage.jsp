@@ -115,7 +115,7 @@ form div label {
 	
 	$( "#setValue" ).autocomplete({
             source: function( request, response ) {
-			
+			var value = $('#setValue').val();
 				var userCategoryValues =$("#userCategoryValuesId1").val();
 			    var jsobjn={
 							letters:request.term,
@@ -126,16 +126,18 @@ form div label {
                     url: "getVotersCategoryAction.action",
                     dataType: "json",
                     data: {
-					    task:YAHOO.lang.JSON.stringify(jsobjn)										
+					    task:YAHOO.lang.JSON.stringify(jsobjn)									
                     },
                     success: function( data ) {
 
                         response( $.map( data, function( item ) {
                             return {
                                 label: item.name,
-                                value: item.name
+                                value: item.name,
+								id:item.id
                             }
                         }));
+						
                     }
                 });
             },
@@ -154,44 +156,18 @@ form div label {
  
 function openProblemEditSubForm(id,name)
 {
-//alert("category="+id);
-//alert("category name="+id);
-
 	var urlStr="votersEditSubAction.action?id='"+id+"' name='"+name+"'";
-	alert(urlStr);
 	var updateBrowser1 = window.open(urlStr,"subEditAnnouncement","scrollbars=yes,height=300,width=400,left=400,top=400");	
 	updateBrowser1.focus();	
 }	
 
  function clearSuccessMsg(){
-	
 	var probSuccessMsg = document.getElementById("probSuccessMsgDiv");
 	if(probSuccessMsg !=null)
 	  probSuccessMsg.innerHTML='';
 }
-/*
-function createSetValue(id){
-categoryId=id;
-
-debugger;
-var jsObj=
-		{				
-				voterCategory:id,
-				task:"getVoterCategories"
-		}
-
-	
-							
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getVotersCategoryAction.action?"+rparam;						
-		callAjax(jsObj,url);
-		
-
-}*/
-
 function callAjax(jsObj,url){
-	
-	var callback = {			
+		var callback = {			
 				   success : function( o ) {
 						try
 						{
@@ -199,9 +175,23 @@ function callAjax(jsObj,url){
 							
 							if(jsObj.task == "getVoterCategories")
 							{
-							alert(myResults);
+							
 								callCandidateUpdatePageAjax(myResults,jsObj.val);
 							}
+							else if(jsObj.task == "storeValues")
+							{
+								buildCategoryValues(myResults);
+							}
+							else if(jsObj.task == "getCategoryValues")
+							{
+								getCategoryValues(myResults);
+							}
+							else if(jsObj.task == "storeCategoeryValues")
+							{
+							
+							}
+							
+							
 							}catch(e){   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -211,13 +201,10 @@ function callAjax(jsObj,url){
 								//alert( "Failed to load result" + o.status + " " + o.statusText);
 							 }
 				   };
-
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-
 }
 
 function callCandidateUpdatePageAjax(jsObj,url){
-//alert("sdfgfdsgf");
 	var elmt = document.getElementById("UserCategoryValuesId");
 	
 	if( !elmt || optionsList == null)
@@ -241,36 +228,13 @@ function callCandidateUpdatePageAjax(jsObj,url){
 
 
 }
-
-
-function buildAgeWiseVoterAnalysisChart(chartInfo,jsObj){
-
-$("#AgeWisetitle").html("Age Wise Voters Information Of "+jsObj.name+" in "+publicationYear+" ");
-// Create the data table.
-var data = google.visualization.arrayToDataTable([
-['Task', 'Percentage'],
-[chartInfo.votersDetailsVO[0].ageRange, chartInfo.votersDetailsVO[0].totalVotersPercent],
-[chartInfo.votersDetailsVO[1].ageRange, chartInfo.votersDetailsVO[1].totalVotersPercent],
-[chartInfo.votersDetailsVO[2].ageRange, chartInfo.votersDetailsVO[2].totalVotersPercent],
-[chartInfo.votersDetailsVO[3].ageRange, chartInfo.votersDetailsVO[3].totalVotersPercent],
-[chartInfo.votersDetailsVO[4].ageRange, chartInfo.votersDetailsVO[4].totalVotersPercent]
-]);
-// Set chart options
-var title = " Age wise detail chart of in "+publicationYear+"";
-var options = {'title':title,
-'width':450,
-'height':280};
-// Instantiate and draw our chart, passing in some options.
-var chart = new google.visualization.PieChart(document.getElementById('ageWiseVotersBasicInfoSubChartDiv'));
-chart.draw(data, options);
-
-}
 function openPopUp(){
 $('#popupDiv').dialog({
-			width:450,
-			'title':'Voter Details...'
+			width:600,
+			'title':'Voter Groups...'
 		});
 		clearFields();
+	
 }
 function storeUpdatedValues(){
 cType = $('#userCategoryValuesId1 :selected').text();
@@ -278,32 +242,21 @@ cValue = $('#setValue').val();
 typeValue = $('#userCategoryValuesId1').val();
 if($('#userCategoryValuesId1 :selected').text() == "Others")
 {
-	$('#otherDiv').append('<input type="text" id="otherTextBox" onChange="storeValue()"/>');
+	$('#otherDiv').append('<input type="text" id="otherTextBox" style="margin-left:129px;" onChange="storeValue()"/>');
 	
 }
 }
 
 function addFieldsToMainFileds(){
 
-if($('#userCategoryValuesId1 :selected').text() == "Others"){
-	value = $('#otherTextBox').val();
-	cValue = $('#setValue').val();
-	cType = $('#userCategoryValuesId1 :selected').text();
-	cValue = $('#setValue').val();
-	$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+value+'" id="0" readonly="true" style="width: 165px; margin-left:131px;"></input></div>');
-	$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'"  style="width: 165px; margin-left:131px;"></input></div>');
-	$('#popupDiv').dialog("close");
-}
-else
-{
-	cType = $('#userCategoryValuesId1 :selected').text();
-	value = $('#userCategoryValuesId1 :selected').val();
-	cValue = $('#setValue').val();
-	$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+cType+'" id="'+value+'" readonly="true" style="width: 165px; margin-left:131px;"></input></div>');
-	$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'"  style="width: 165px; margin-left:131px;"></input></div>');
-	$('#popupDiv').dialog("close");
-}
-
+	var jsObj=
+	{
+		
+		task:"getCategoryValues"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
 }
 
 function clearFields()
@@ -317,6 +270,59 @@ function storeValue()
 	value = $('#otherTextBox').val();
 	
 }
+function storeGroupValue()
+{
+	var groupName = $('#CreateNewGroupText').val();
+	var jsObj=
+	{
+		name:groupName,
+		task:"storeValues"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
+}
+function buildCategoryValues(myResults)
+{
+
+	if(myResults.id != null && myResults.name != null)
+	{
+		$('#selectType').append('<option value='+myResults.id+'>'+myResults.name+'</option>');
+	}
+}
+function getCategoryValues(myResults)
+{
+	$('#selectType option').remove();
+	for(var i in myResults){
+	
+	$('#selectType').append('<option value='+myResults[i].id+'>'+myResults[i].name+'</option>');
+	
+	}
+}
+
+function storeCategoryValues(){
+	var categoryId = $('#selectType').val();
+	var categoryValue = $('#catrgoeryValue').val();
+	var jsObj =
+	{
+		categoryId:categoryId,
+		categoryValue:categoryValue,
+		task:"storeCategoeryValues"
+	};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
+}
+
+function addFieldsToMainDiv()
+{
+	name = $('#selectType :selected').text();
+	value = $('#catrgoeryValue').val();
+	
+	$('#addFieds').append('<div><lable>'+name+':</lable><select value="'+value+'" id="0"  style="width: 165px; margin-left:131px;"></select></div>');
+	$('#popupDiv').dialog("close");
+}
+
  </script>
 </head>
 <body style="position: relative;">
@@ -335,7 +341,7 @@ function storeValue()
 <input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
 <div id="mainDiv" style="float: right;">
-<a style="color:red;float:right;" onClick="openPopUp();"><b>CreateNewCategory</b></a>
+<a style="color:red;float:right;" onClick="openPopUp();addFieldsToMainFileds();"><b>CreateNewCategory</b></a>
  <fieldset style="width: 335px;">
        <legend class="legendClass">Voter Information</legend>
  		<div>
@@ -398,24 +404,28 @@ function storeValue()
 </div>
 <!--PRASAD-->
 <div id="popupDiv" style="display:none;">
- 
+	 <div id="groupCreation" >
+	 <lable name="CreateNewGroup">CreateNewGroup : </lable>
+	 <input type="text" id="CreateNewGroupText"style="width: 278px;"></input>
+	 <input type="button" value="create" style="float:right;margin-top:4px;"onClick="storeGroupValue()"></input>
+	 </div>
+	 <div name="valuesDisplayDiv" style="border:1px solid;">
  		<div>
 		<label for="name">Select Type:</label>
-				<s:select theme="simple" style="width: 169px;margin-left:131px;"
-				label="Select Category" 
-				id="userCategoryValuesId1" list="userCategorysList" 
-				listKey="sNo" listValue="name" onChange="storeUpdatedValues()"/>
+				<select id="selectType"></select>
 				
 		</div>
 		<div id="otherDiv"></div>
 		<div>
 		<label for="name">Select value:</label> 
-			<input type="text" style="width: 165px; margin-left:131px;"  value="${voterHouseInfoVO.setValue}" id="setValue"/>
+			<input type = "text" id="catrgoeryValue"></input>
+			
 		</div>
 		
-		<div style="float:right;">
-			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds()"></input>
+		<div style="">
+			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds();storeCategoryValues();addFieldsToMainDiv()";></input>
 		</div>
+	</div>
 </div>
 
 <!--PRASAD-->
