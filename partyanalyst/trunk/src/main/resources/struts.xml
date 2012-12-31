@@ -4014,27 +4014,31 @@
 		
 	<action name="votersEditAction" class="votersEditAction">
 			<result name="success">/jsp/votersEditPage.jsp</result>
+			<result name="error">"notLogged"</result>
 		</action>
-		
+			
 		<action name="voterEditAction" class="votersEditAction" method="putVoterDetails">
 			<result type="redirect"  name="success">votersEditAction.action?voterId=${voterHouseInfoVO.voterId}&amp;boothId=${voterHouseInfoVO.boothId}</result>
 		</action>
-		
 		<action name="getVotersCategoryAction" class="votersEditAction" method="callAjaxHandler">
 		    <result type="json" name="success">
-				 <param name="root">voterCategoryValues</param>			
+				 <param name="root">voterCategoryValues</param>
 			</result>
+			<result type="json" name="category">
+				<param name="root">selectOptionVO</param>
+			</result>
+			
 		</action>
+			
 		
-		<action name="votersEditSubAction" class="votersEditSubAction">
-			<result name="success">/jsp/votersEditSubPage.jsp</result>
-		</action>
+
 		
 		<action name="connectToUserInPublicProfileAction" class="userProfileAction" method="connectToSelectedUser">
 		  	 <result type="json" name="success">
 		    	<param name="root">resultStatus</param>
 		   </result>
 		</action>
+		
 		
 		
 	</package>
