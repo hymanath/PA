@@ -11,4 +11,8 @@ public interface ICategoryValuesDAO  extends GenericDao<CategoryValues, Long>{
 	public List<Object[]> getVoterCategoryValues(Long voterCategoryId,String letters);
 	
 	public List<CategoryValues> getCategoryValues();
+	
+	public List<Long> checkCategoryExist(Long userId,String name, Long id);
+	
+	
 }
