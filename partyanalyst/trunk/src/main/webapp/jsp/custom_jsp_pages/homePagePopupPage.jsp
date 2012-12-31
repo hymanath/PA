@@ -90,13 +90,16 @@ text-shadow:0px 1px 1px #fff;
 .ElectionInfo-new div a{margin-top:0px !important;}
 .ElectionInfo-new div:hover{background:#ddd;}
 #fancybox-wrap{z-index:9999999;}
+.services-block div{margin:10px 6px; box-shadow:3px 3px 3px #fff;opacity:0.8;}
+.services-block div:hover{box-shadow:0px 2px 2px #000;opacity:1;}
+.free-user .alert-info{text-align:center;}
 </style>
-<div class="promos">
+<div class="whitegloss">
 <div class="promoheader">
 <div class="pheaderleft">
 <img src="images/icons/logoPA.png" alt="logo"/></div>
 <div class="pheaderright">
-<h1><img src="images/diwali.png"></h1>
+<h1><img src="images/hpy_new_year2.png"></h1>
 <span style="font:bold 16px Arial;text-shadow:0px 0px 2px #d3d3d3;">CONNECT WITH PARTY ANALYST AND GET FREQUENT UPDATES.</span>
 </div>
 </div>
@@ -115,62 +118,59 @@ text-shadow:0px 1px 1px #fff;
 Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <font style="font-weight:bold;color:Crimson;">Constituency Profile Report</font>.</p>
 
 </div>-->
-<div class="ElectionInfo boxdiv ElectionInfo-new" style="width: 400px; padding-right: 0px; margin-right: -15px; margin-left: 5px; height: auto;">
-<h3>2012 Election's</h3>
-<div>
-<img src="images/Gujarath.png">
-<a href="specialPageAction.action?specialPageId=13">Gujarat<br> Elections 2012</a>
-</div>
 
-<div>
-<img src="images/Himachal.png"> 
-<a href="specialPageAction.action?specialPageId=14"> Himachal Pradesh Elections 2012</a>
-</div>
+<div class="breadcrumb span11 free-user" style="width:830px;">
+<h3>The New Party Analyst - Modified, Enhanced and Focused with the abilities to share, connect and spread the updates across the network.</h3>
+<div class="whitegloss">
+<a class="alert alert-info span3 btn" title="You can find your constituency, district people and connect with them to share your views." rel="tooltip"><h4>Connect and Share</h4></a>
 
-</div>
-<div class="ElectionInfo boxdiv padhayatra" style="height:auto; width: 433px; padding-left: 0px; padding-right: 0px; margin-left: 21px;" >
-<h3>Andhra Pradesh Political Movements</h3>
-<!-- <p style="margin:1px;"><a style="margin-left: 50px; font-weight: bold;" href="specialPageAction.action?specialPageId=12">Vastunna Meekosam</a></p>-->
-<table style="width:100%;" class="tdhref"><tr>
-<td style="width:33%">
-<img src="images/tdp.png">
-<a href="specialPageAction.action?specialPageId=12">Vastunna Meekosam</a></td>
-<td style="width:33%">
-<img src="images/congress.png">
-<a href="specialPageAction.action?specialPageId=15" >Indiramma<br>Bata</a></td>
-<td style="width:33%">
-<img src="images/ysr.png">
-<a href="specialPageAction.action?specialPageId=16">Maro Praja Prasthanam</a></td></tr></table>
+<a class="alert alert-info span3 btn" title="Are you facing any social problems? Post your problems" rel="tooltip"><h4>Post Problems</h4></a>
 
+<a class="alert alert-info span3 btn" title="Get frequent updates of your favorite party or politicians and latest hot topics" rel="tooltip"><h4>Subscriptions</h4></a>
+
+<a class="alert alert-info span3 btn" title=" Stay tuned with the political trends" rel="tooltip"><h4>Stay Tuned</h4></a>
+
+<a class="alert alert-info span3 btn" title="Know public schemes, current affairs and important facts" rel="tooltip"><h4>Awareness</h4></a>
+
+<a class="alert alert-info span3 btn" title="you may like different pages in Party Analyst, just add and view them in a single click" rel="tooltip"><h4>Ease of Access</h4></a>
+
+<div class="alert alert-info">
+Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.action" class="btn btn-primary">Register Now</a> Already Registered, <a href="loginInputAction.action" class="btn btn-primary">Login</a> and Explore Now.
 </div>
-<table>
+ </div>
+ 
+ </div>
+<table style="background:#fff;width:100%">
 <tr><td><h2 style="color: #12A3EB;margin-left: 11px;">Our Services</h2></td>
 <td colspan=4 class="breadcrumb"><h3 style="float:left;display:inline-block;">Are you Aspirant Candidate for 2014 Elections?</h3><a class="btn btn-primary" style="margin-left:10px;" href="images/PartyAnalyst_V1.0.pdf" target="_blank">Click Here To Know More</a></td>
 </tr>
 <tr>
-<td>
-<div class="service-box">
-<a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span style="padding: 16px 15px;">Election Analysis and Management Tool</span></a>
-<img src="images/new_homepage/sp-pa.jpg"/>
-<span>Analyze your constituency,   track your constituency problems,manage your cadres,  share your updates to <font size="2px"><strong>Cadre, Influencing people and Voters</strong></font>.</span>
-</div></td><td>
-<div class="service-box">
-<a href="VotersPulse.action?src=homePageAd"><span>Voters Pulse</span></a>
-<img src="images/new_homepage/checklist.jpg"/>
-Now, you can drive your survey's through Party Analyst...
-Ask, Analyze, Improve.
-</div></td><td>
-<div class="service-box">
-<a href="newsMonitoringService.action?src=homePageAd"><span>News Monitoring Service</span></a>
-<img src="images/new_homepage/NewsTracker.png"/>
-As a Politician or Political Party, News Monitoring and analyzing is very important &nbsp;          to keep upper hand in the political arena.
-</div></td>
-<td><div class="service-box">
-<a href="constituencyProfileReport.action?src=homePageAd"><span>Constituency Profile Report</span></a>
-<img src="images/site/imgpartyperf.jpg">
-Are you aspirant candidate for<br/>
-2014 elections in Andhra Pradesh get the complete picture of your constituency profile report.
-</div></td></tr></table>
+<td></td></tr></table>
+<div class="services-block">
+  
+				<div class="pull-left">
+				    <a title="Election-Political Surveys" href="VotersPulse.action" >
+					<img src="images/voters_pluse_New.gif" style="  border:1px solid #ccc;" width="200px">
+					</a>
+				</div>
+				<div class="pull-left">
+				    <a  title="Reports" href="constituencyProfileReport.action">
+					<img src="images/Constituency_A.gif" style=" border:1px solid #ccc;" width="200px">
+					</a>
+				</div>
+				<div class="pull-left">
+				    <a title="Our unique tool designed for Politicians" href="electionAnalysisAndManagementTool.action">
+					<img src="images/Election-Analysis-and-Management-Tool_A_1.gif" style="border:1px solid #ccc;" width="200px">
+					</a>
+				</div>
+				<div class="pull-left">
+				    <a title="News tracking service" href="newsMonitoringService.action">
+					<img src="images/News-Monitoring-dervices.gif" style="border:1px solid #ccc;" width="200px">
+					</a>
+				</div>
+			</div>
+			
+
 <!--<div id="contactDiv"><span style="font-weight:bold;margin-top:5px;">
 To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>-->
 <!-- <div class="ElectionInfo boxdiv" style="height: 92px; padding-left: 10px; width: 425px; padding-right: 10px; margin-right: -15px; margin-left: 70px;">
