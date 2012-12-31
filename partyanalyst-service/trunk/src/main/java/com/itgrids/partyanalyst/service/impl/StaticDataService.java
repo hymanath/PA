@@ -801,14 +801,14 @@ public class StaticDataService implements IStaticDataService {
 	{
 		try{
 			List<SelectOptionVO> electionYears = null;
-			List<Object> list = nominationDAO.getElectionYearsBasedOnParty(stateId, partyId, electionTypeId);
+			List<Object[]> list = nominationDAO.getElectionYearsBasedOnParty(stateId, partyId, electionTypeId);
 			
 			if(list != null && list.size() > 0)
 			{
 				long i = 0l;
 				electionYears = new ArrayList<SelectOptionVO>(0);
-				for(Object obj : list)
-					electionYears.add(new SelectOptionVO(++i,obj.toString()));
+				for(Object[] obj : list)
+					electionYears.add(new SelectOptionVO((Long)obj[1],obj[0].toString()));
 			}
 			return electionYears;			
 		}

@@ -146,7 +146,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public PartyAnalysisReportVO getAnalysisReportForAPartyInAnElection(
-			String electionType, String electionYear, Long stateId, Long partyId) {
+			String electionType, String electionYear, Long stateId, Long partyId,Long elecId) {
 		
 		log.debug("Inside getAnalysisReportForAPartyInAnElection Method....... ");
 		
@@ -170,6 +170,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				Object params = (Object)election.get(0);
 				electionId = (Long)params;
 			}
+			electionId = elecId;
 			if(electionId != null)
 				electionMain = electionDAO.get(electionId);
 			

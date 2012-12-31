@@ -19,7 +19,7 @@ import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 
 public interface IAnalysisReportService {
 	
-    public PartyAnalysisReportVO getAnalysisReportForAPartyInAnElection(String electionType,String electionYear,Long stateId,Long partyId);
+    public PartyAnalysisReportVO getAnalysisReportForAPartyInAnElection(String electionType,String electionYear,Long stateId,Long partyId,Long electionId);
     
     public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId);
     
