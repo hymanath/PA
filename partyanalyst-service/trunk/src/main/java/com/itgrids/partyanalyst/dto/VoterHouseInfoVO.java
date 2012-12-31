@@ -31,12 +31,17 @@ public class VoterHouseInfoVO {
 	private String userCategoryValuesName;
 	private String setValue;
 	private Long voterCategoryValuesId;
+	private String voterCategoryValuesName;
 	private Long categoryValuesId;
+	private String categoryValue;
+	private List<SelectOptionVO> category;
+	private List categoryValues;
 	private String youngerGender;
 	private Long youngerAge;
 	private String elderGender;
 	private Long elderAge;
 	private String voterGroupName;
+	
 	
 	public VoterHouseInfoVO(){
 		
@@ -57,9 +62,37 @@ public class VoterHouseInfoVO {
 	}
 
 
+	public String getVoterCategoryValuesName() {
+		return voterCategoryValuesName;
+	}
 
-	
+	public void setVoterCategoryValuesName(String voterCategoryValuesName) {
+		this.voterCategoryValuesName = voterCategoryValuesName;
+	}
 
+	public List getCategoryValues() {
+		return categoryValues;
+	}
+
+	public void setCategoryValues(List categoryValues) {
+		this.categoryValues = categoryValues;
+	}
+
+	public List<SelectOptionVO> getCategory() {
+		return category;
+	}
+
+	public void setCategory(List<SelectOptionVO> category) {
+		this.category = category;
+	}
+
+	public String getCategoryValue() {
+		return categoryValue;
+	}
+
+	public void setCategoryValue(String categoryValue) {
+		this.categoryValue = categoryValue;
+	}
 
 	public Long getUserCategoryValuesId1() {
 		return userCategoryValuesId1;
