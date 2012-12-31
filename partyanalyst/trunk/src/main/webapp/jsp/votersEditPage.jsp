@@ -115,7 +115,9 @@ form div label {
 	
 	$( "#setValue" ).autocomplete({
             source: function( request, response ) {
-			var value = $('#setValue').val();
+			 //var userCategoryValuesId1 = document.getElementById("userCategoryValuesId1");
+	
+				//var userCategoryValues = userCategoryValuesId1.options[userCategoryValuesId1.selectedIndex].value;
 				var userCategoryValues =$("#userCategoryValuesId1").val();
 			    var jsobjn={
 							letters:request.term,
@@ -228,48 +230,87 @@ function callCandidateUpdatePageAjax(jsObj,url){
 
 
 }
+
+
+function buildAgeWiseVoterAnalysisChart(chartInfo,jsObj){
+
+$("#AgeWisetitle").html("Age Wise Voters Information Of "+jsObj.name+" in "+publicationYear+" ");
+// Create the data table.
+var data = google.visualization.arrayToDataTable([
+['Task', 'Percentage'],
+[chartInfo.votersDetailsVO[0].ageRange, chartInfo.votersDetailsVO[0].totalVotersPercent],
+[chartInfo.votersDetailsVO[1].ageRange, chartInfo.votersDetailsVO[1].totalVotersPercent],
+[chartInfo.votersDetailsVO[2].ageRange, chartInfo.votersDetailsVO[2].totalVotersPercent],
+[chartInfo.votersDetailsVO[3].ageRange, chartInfo.votersDetailsVO[3].totalVotersPercent],
+[chartInfo.votersDetailsVO[4].ageRange, chartInfo.votersDetailsVO[4].totalVotersPercent]
+]);
+
+
+// Set chart options
+var title = " Age wise detail chart of in "+publicationYear+"";
+var options = {'title':title,
+'width':450,
+'height':280};
+// Instantiate and draw our chart, passing in some options.
+var chart = new google.visualization.PieChart(document.getElementById('ageWiseVotersBasicInfoSubChartDiv'));
+chart.draw(data, options);
+
+}
+var i=-1;
 function openPopUp(){
+alert("dialogue");
+i++;
 $('#popupDiv').dialog({
 			width:600,
 			'title':'Voter Groups...'
 		});
 		clearFields();
 	
-}
-function storeUpdatedValues(){
-cType = $('#userCategoryValuesId1 :selected').text();
-cValue = $('#setValue').val();
-typeValue = $('#userCategoryValuesId1').val();
-if($('#userCategoryValuesId1 :selected').text() == "Others")
-{
-	$('#otherDiv').append('<input type="text" id="otherTextBox" style="margin-left:129px;" onChange="storeValue()"/>');
 	
-}
+	
+	
 }
 
 function addFieldsToMainFileds(){
 
-	var jsObj=
-	{
-		
-		task:"getCategoryValues"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getVotersCategoryAction.action?"+rparam;						
-		callAjax(jsObj,url);
+if($('#userCategoryValuesId1 :selected').text() == "other"){
+	value = $('#otherTextBox').val();
+	cValue = $('#setValue').val();
+	cType = $('#userCategoryValuesId1 :selected').text();
+	cValue = $('#setValue').val();
+$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+cType+'" name="voterHouseInfoVO.category['+i+'].type" readonly="true" style="width: 165px; margin-left: 31px;" ></input></div>');
+$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'" name="voterHouseInfoVO.category['+i+'].value" style="width: 165px; margin-left: 28px;" ></input></div>');
+	$('#popupDiv').dialog("close");
+}
+else
+{
+	cType = $('#userCategoryValuesId1 :selected').text();
+	value = $('#userCategoryValuesId1 :selected').val();
+	cValue = $('#setValue').val();
+$('#addFieds').append('<div><lable><strong>Category Type:</strong></lable><input type="text" value="'+cType+'" name="voterHouseInfoVO.category['+i+'].type" readonly="true" style="width: 165px; margin-left: 31px;" ></input></div>');
+$('#addFieds').append('<div><lable><strong>Category Value:</strong></lable><input type="text" value="'+cValue+'" name="voterHouseInfoVO.category['+i+'].value" style="width: 165px; margin-left: 28px;" ></input></div>');
+	$('#popupDiv').dialog("close");
 }
 
-function clearFields()
-{
-	$('#userCategoryValuesId1').val("Select Category");
-	$('#setValue').val("");
-	$('#otherTextBox').hide();
 }
-function storeValue()
+
+
+function storeUpdatedValues(){
+cType = $('#userCategoryValuesId1 :selected').text();
+cValue = $('#setValue').val();
+typeValue = $('#userCategoryValuesId1').val();
+if($('#userCategoryValuesId1 :selected').text() == "other")
 {
-	value = $('#otherTextBox').val();
+alert("yes");
+	$('#otherDiv').append('<input type="text" id="otherTextBox" onChange="storeValue()"/>');
 	
 }
+}
+function clearFields(){
+	$('#userCategoryValuesId1').val("Select Category");
+	$('#setValue').val("");
+}
+
 function storeGroupValue()
 {
 	var groupName = $('#CreateNewGroupText').val();
@@ -332,7 +373,6 @@ function addFieldsToMainDiv()
 
 <c:if test="${requestScope.resultStr=='success'}">
 <div id="probSuccessMsgDiv">
-
 <DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Updated Successfully...</DIV>
 </div>
 </c:if>
@@ -340,42 +380,56 @@ function addFieldsToMainDiv()
 <input type="hidden" name="voterId" value="${voterHouseInfoVO.voterId}"/>
 <input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
+<input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>
 <div id="mainDiv" style="float: right;">
-<a style="color:red;float:right;" onClick="openPopUp();addFieldsToMainFileds();"><b>CreateNewCategory</b></a>
  <fieldset style="width: 335px;">
        <legend class="legendClass">Voter Information</legend>
  		<div>
-			<label for="name">Voter Name:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/>
+			<label for="name">Voter Name:</label> ${voterHouseInfoVO.name}
+		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/>-->
 		</div>
-
+		<div>
+		<label for="name">Age:</label> ${voterHouseInfoVO.age}
+			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>-->
+		</div>
 		<div>
 		<label for="name">Gender:</label> 
-			<input type="text" style="width: 165px;"" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>
+			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>-->
+		</div>
+		
+		<div>
+		<label for="name">House No:</label> ${voterHouseInfoVO.houseNo}
+			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/>-->
 		</div>
 		<div>
-		<label for="name">Age:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>
+		<label for="name">Guardian Name:</label> ${voterHouseInfoVO.gaurdian}
+			<!--<input type="text" style=" width: 165px;" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/>-->
 		</div>
 		<div>
-		<label for="name">House No:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/>
+		<label for="name">RelationShip:</label>${voterHouseInfoVO.relationship}
+		<!--	<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>-->
+		</div>
+		
+		<div>
+		<label for="name">Caste Category:</label>${voterHouseInfoVO.castCategory}
+		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>-->
+		</div>
+			<div>
+			<label for="name">Booth Name:</label> ${voterHouseInfoVO.boothName}
+		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.boothName" value="${voterHouseInfoVO.boothName}" readonly='true'/>-->
 		</div>
 		<div>
-		<label for="name">Guardian Name:</label> 
-			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/>
+			<label for="name">Panchayat Name:</label> ${voterHouseInfoVO.panchayatName}
+		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.panchayatName" value="${voterHouseInfoVO.panchayatName}" readonly='true'/>-->
 		</div>
 		<div>
-		<label for="name">RelationShip:</label>
-			<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>
+			<label for="name">Villiage Covered:</label> ${voterHouseInfoVO.villiageCovered}
+		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.villiageCovered" value="${voterHouseInfoVO.villiageCovered}" readonly='true'/>-->
 		</div>
+	
 		<div>
 		<label for="name">Caste:</label> 
 			<input type="text" style="width: 165px;" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/>
-		</div>
-		<div>
-		<label for="name">Caste Category:</label>
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>
 		</div>
 		<div>
 		<label for="name">Party Name:</label>
@@ -384,23 +438,11 @@ function addFieldsToMainDiv()
 				id="partyId" list="partyGroupList" 
 				listKey="id" listValue="name"/>
 		</div>
-		<div>
-			<label for="name">Booth Name:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.boothName" value="${voterHouseInfoVO.boothName}" readonly='true'/>
-		</div>
-		<div>
-			<label for="name">Panchayat Name:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.panchayatName" value="${voterHouseInfoVO.panchayatName}" readonly='true'/>
-		</div>
-		<div>
-			<label for="name">Villiage Covered:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.villiageCovered" value="${voterHouseInfoVO.villiageCovered}" readonly='true'/>
-		</div>
 				<div id="addFieds" style="float:left;"></div>
-		
+		<a onClick="openPopUp();">AddMore</a>
 		</fieldset>
 <div style="float:right;">
-<input class="btn btn-success" type="submit" value="Update">
+<input class="btn btn-success" type="submit" value="Update" >
 </div>
 <!--PRASAD-->
 <div id="popupDiv" style="display:none;">
@@ -411,23 +453,26 @@ function addFieldsToMainDiv()
 	 </div>
 	 <div name="valuesDisplayDiv" style="border:1px solid;">
  		<div>
-		<label for="name">Select Type:</label>
-				<select id="selectType"></select>
-				
+		<label for="name">Category Type:</label>
+				<s:select theme="simple" style="width: 169px;"
+				label="Select Category" name="voterHouseInfoVO.userCategoryValuesId" 
+				id="userCategoryValuesId1" list="userCategorysList" 
+				listKey="sNo" listValue="name" onChange="storeUpdatedValues()"/>
 		</div>
 		<div id="otherDiv"></div>
 		<div>
-		<label for="name">Select value:</label> 
-			<input type = "text" id="catrgoeryValue"></input>
-			
+		<label for="name">Category value:</label> 
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.setValue" value="${voterHouseInfoVO.setValue}" id="setValue"/>
 		</div>
-		
+	
 		<div style="">
 			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds();storeCategoryValues();addFieldsToMainDiv()";></input>
 		</div>
+		
+		
+		
 	</div>
 </div>
-
 <!--PRASAD-->
 </div>
 </form>
