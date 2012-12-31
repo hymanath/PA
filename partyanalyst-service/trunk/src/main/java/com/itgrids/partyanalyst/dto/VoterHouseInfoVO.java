@@ -36,6 +36,7 @@ public class VoterHouseInfoVO {
 	private Long youngerAge;
 	private String elderGender;
 	private Long elderAge;
+	private String voterGroupName;
 	
 	public VoterHouseInfoVO(){
 		
@@ -283,7 +284,6 @@ public class VoterHouseInfoVO {
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
 	}
-
 	public String getYoungerGender() {
 		return youngerGender;
 	}
@@ -314,6 +314,14 @@ public class VoterHouseInfoVO {
 
 	public void setElderAge(Long elderAge) {
 		this.elderAge = elderAge;
+	}
+
+	public String getVoterGroupName() {
+		return voterGroupName;
+	}
+
+	public void setVoterGroupName(String voterGroupName) {
+		this.voterGroupName = voterGroupName;
 	}
 
 	
