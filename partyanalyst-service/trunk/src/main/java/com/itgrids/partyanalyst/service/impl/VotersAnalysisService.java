@@ -1224,7 +1224,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 			if(type.equalsIgnoreCase("constituency"))
 			   votersListOf46To60 = boothPublicationVoterDAO
-						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
+						.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(
 								constituencyId, publicationDateId,46L, 60L);
 			else if(type.equalsIgnoreCase("mandal"))
 				votersListOf46To60 = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
