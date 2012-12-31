@@ -18,6 +18,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -35,6 +38,8 @@ import com.itgrids.partyanalyst.dao.IVoterCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CategoryValuesDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserCategoryValuesDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -51,6 +56,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CategoryValues;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserCategoryValues;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -86,6 +92,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private ISocialService socialService;
 	private IUserCategoryValuesDAO userCategoryValuesDAO;
 	private ICategoryValuesDAO categoryValuesDAO;
+	private TransactionTemplate transactionTemplate = null;
 	//private IVoterCategoryValues voterCategoryValues;
 	
 	public ICategoryValuesDAO getCategoryValuesDAO() {
@@ -186,7 +193,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			IVoterCategoryValuesDAO voterCategoryValuesDAO) {
 		this.voterCategoryValuesDAO = voterCategoryValuesDAO;
 	}
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
 
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
 			String columnName) {
@@ -2459,5 +2472,75 @@ public Map<Long,Long> getBoothsMapInAConstituency(Long constituencyId,Long publi
 		log.error("Exception occured in getBoothsMapInAConstituency(), Exception is - "+e);
 		return boothsMap;
 	}
+}
+public SelectOptionVO storeGroupName(final Long userId ,final String name)
+{
+	
+	SelectOptionVO selectOptionVO = new SelectOptionVO();
+	
+	UserCategoryValues userCategoryValues = (UserCategoryValues)transactionTemplate.execute(new TransactionCallback() {
+		
+	public Object doInTransaction(TransactionStatus status) {
+	List<Long> count = userCategoryValuesDAO.checkCategoryExist(userId, name);
+	if(count != null && count.size()> 0 && ((Long)count.get(0))==0){
+	UserCategoryValues userCategoryValues = new UserCategoryValues();
+	userCategoryValues.setUserCategoryName(name);
+	userCategoryValues.setUser(userDAO.get(userId));
+	userCategoryValues = userCategoryValuesDAO.save(userCategoryValues);
+	return userCategoryValues;
+	}
+	else
+	 return null;	
+		}
+		});
+	if(userCategoryValues != null){
+	selectOptionVO.setId(userCategoryValues.getUserCategoryValuesId());
+	selectOptionVO.setName(userCategoryValues.getUserCategoryName());
+	}
+	return  selectOptionVO;
+	
+}
+
+@SuppressWarnings("null")
+public List<SelectOptionVO> findVoterCategoryValues(Long UserId)
+{
+	List<SelectOptionVO> voterCategoryValues = new ArrayList<SelectOptionVO>();
+	try{
+		log.debug("enter into the voterCategoryValues method of VoterAnalysisService");
+	SelectOptionVO selectOptionVO = null;
+	List<Object[]> categoryValues = userCategoryValuesDAO.getCategoryValuesList(UserId);
+	if(categoryValues !=null && categoryValues.size()> 0)
+	{
+		for (Object[] categoryValue : categoryValues)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId((Long) categoryValue[0]);
+			selectOptionVO.setName((String)categoryValue[1]);
+			voterCategoryValues.add(selectOptionVO);
+		}
+	}
+	}catch (Exception e) {
+		log.error("exception raised in voterCategoryValues method of VoterAnalysisService" +e );
+	}
+	return voterCategoryValues;
+	
+}
+
+public SelectOptionVO storeCategoryVakues(final Long userId, final String name, final Long id)
+{
+	SelectOptionVO selectOptionVO = new SelectOptionVO();
+	
+				List<Long> count = categoryValuesDAO.checkCategoryExist(userId, name,id);
+				if(count != null && count.size()> 0 && ((Long)count.get(0))==0){
+				CategoryValues categoryValues = new CategoryValues();
+				UserCategoryValues userCategoryValues = new UserCategoryValues();
+				categoryValues.setUser(userDAO.get(userId));
+				categoryValues.setCategoryValue(name);
+				categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(id));
+				categoryValues = categoryValuesDAO.save(categoryValues);
+				
+				}
+				
+				return selectOptionVO;
 }
 }
