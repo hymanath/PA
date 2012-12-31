@@ -229,7 +229,7 @@ public class ElectionReportService implements IElectionReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public ElectionResultsReportVO getBasicResultsForAnElection(
-			String electionType, String electionYear, Long stateId,String votesPercentMargin,String alliancesRequired) {
+			String electionType, String electionYear, Long stateId,String votesPercentMargin,String alliancesRequired,Long electionId) {
 		
 		if(log.isDebugEnabled())
 		    log.debug("Successfully Entered Into getBasicResultsForAnElection() Method ....");
@@ -256,7 +256,7 @@ public class ElectionReportService implements IElectionReportService {
 		try{
 			allPartiesResults = new ArrayList<PartyPositionsVO>();
 			allPartiesResultsInDistricts = new ArrayList<DistrictWisePartyPositionsVO>();
-			electionID = getElectionIdForAElectionTypeAndYear(electionType,electionYear,stateId);
+			electionID = electionId; //getElectionIdForAElectionTypeAndYear(electionType,electionYear,stateId);
 			
 			//get Participated Parties in an election
 			if(electionID != null)
