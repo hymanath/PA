@@ -51,6 +51,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 	private String task = null;
 	JSONObject jObj = null;
 	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
+	private Long electionId;
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -189,6 +190,14 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		return stateName;
 	}
 
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
 	public String execute () throws Exception 
 	{
 		return Action.SUCCESS;
@@ -217,7 +226,8 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
 			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
-			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId);
+			Long electionId = jObj.getLong("electionId");
+			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId,electionId);
 			if(partyAnalysisReportVO != null)
 				createChartForAnalysisResults(partyAnalysisReportVO);
 			

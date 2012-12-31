@@ -59,6 +59,7 @@
 	var stateName = '${stateName}';
 	var partyId = '${partyId}';
 	var electionTypeId = '${electionTypeId}';
+	var electionId = '${electionId}';
 	
 	function callAjax(param,jsObj,url){
 		var myResults;
@@ -112,7 +113,8 @@
 			stateId: stateId,
 			electionType: electionType,
 			electionTypeId: electionTypeId,
-			partyId: partyId,		
+			partyId: partyId,
+			electionId:electionId,
 			task:"getBasicAnalysisDetails"		
 		}
 		

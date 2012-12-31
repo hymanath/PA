@@ -265,10 +265,11 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			Long stateId = new Long(jObj.getString("stateId"));
 			Long partyId = new Long(jObj.getString("partyId"));
 			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+			Long electionId = jObj.getLong("electionId");
 			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> electionYearsOfParty = new ArrayList<SelectOptionVO>();
-			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId);
+			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId,electionId);
 			parties = staticDataService.getStaticPartiesListForAState(stateId);
 			parties.add(0, new SelectOptionVO(0l,"Select Party"));
 			

@@ -295,17 +295,19 @@ function getBasicAnalysisDetails()
 
 	var electionType = electionTypesEl.options[electionTypesEl.selectedIndex].text;
 	var electionYear = electionYearsEl.options[electionYearsEl.selectedIndex].text;	
+	var electionId = electionYearsEl.options[electionYearsEl.selectedIndex].value;	
 	var electionTypeId = electionTypesEl.options[electionTypesEl.selectedIndex].value;	
 	
-	ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,partyId);
+	ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,partyId,electionId);
 }
 
-function ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,id)
+function ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,id,electionId)
 {
 	var jsObj= 
 	{
 	 	electionYear: electionYear,
 		stateId: stateId,
+		electionId:electionId,
 		electionType: electionType,
 		electionTypeId: electionTypeId,
 		partyId: id,		
@@ -375,12 +377,12 @@ function openMainPartyMultipleReasonsAnalysisWindow(electionId, partyId,status,p
 	browser2.focus();*/
 }
 
-function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId){
+function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId,stateId){
 
 	var jsObj= 
 	{
 	 	electionYear: electionYear,
-		stateId: '1',
+		stateId: stateId,
 		electionType: electionType,
 		partyId: partyId,
 		electionId: electionId,		
@@ -458,11 +460,11 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 	browser2.focus();	
 }
 
-function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId){
+function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId,stateId){
 	var jsObj= 
 	{
 	 	electionYear: electionYear,
-		stateId: '1',
+		stateId: stateId,
 		electionType: electionType,
 		partyId: partyId,
 		electionId: electionId,		
@@ -482,8 +484,10 @@ function openPreYearStatewiseAnalysisWindow(electionType,electionTypeId,election
 	var stateName = stateSelectEl.options[stateSelectEl.selectedIndex].text;
 	var selectYearEl = document.getElementById("selectYearAnalysisTool");
 	var electionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var selectedElectionId =  selectYearEl.options[selectYearEl.selectedIndex].value;
+	
 	var yearAlertEl = document.getElementById("yearAlertAnalysisReport");//stateName
-	var urlStr = "<%=request.getContextPath()%>/electionResultsAnalysisReportPopupAction.action?stateId="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&partyId="+partyId+"";
+	var urlStr = "<%=request.getContextPath()%>/electionResultsAnalysisReportPopupAction.action?stateId="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&partyId="+partyId+"&electionId="+selectedElectionId+"";
 	if(electionYear == 'Select Year') 
 	{
 		yearAlertEl.style.display ='block';
@@ -501,11 +505,12 @@ function openStatewiseElectionResultsWindow(currentYear,stateName,electionType)
 {	
 	var selectYearEl = document.getElementById("selectYearERR");
 	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var selectedElecId = selectYearEl.options[selectYearEl.selectedIndex].value;
 	var yearAlertSEl = document.getElementById("yearAlertERR");
 	var browser1;
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;
-	var urlStr = "<%=request.getContextPath()%>/statewiseElectionResultsComparisionToolAction.action?stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&currentElectionyear="+currentYear+"&selectedElectionYear="+selectedElectionYear+"";
+	var urlStr = "<%=request.getContextPath()%>/statewiseElectionResultsComparisionToolAction.action?stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&currentElectionyear="+currentYear+"&selectedElectionYear="+selectedElectionYear+"&electionId="+selectedElecId+"";
 	if(selectedElectionYear == 'Select Year') 
 	{
 		yearAlertSEl.style.display ='block';
@@ -520,11 +525,12 @@ function openDistwiseElectionResultsWindow(currentYear,stateName,electionType)
 {
 	var selectYearEl = document.getElementById("selectYearERR1");
 	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var selectedElecId = selectYearEl.options[selectYearEl.selectedIndex].value;
 	var yearAlertEl = document.getElementById("yearAlertERR1");
 	var browser1;
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;
-	var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&currentElectionyear="+currentYear+"&selectedElectionYear="+selectedElectionYear+"";
+	var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&currentElectionyear="+currentYear+"&selectedElectionYear="+selectedElectionYear+"&electionId="+selectedElecId+"";
 	if(selectedElectionYear == 'Select Year') 
 	{
 		yearAlertEl.style.display ='block';
