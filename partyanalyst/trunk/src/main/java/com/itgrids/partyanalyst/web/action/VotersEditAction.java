@@ -237,6 +237,9 @@ public String putVoterDetails(){
 		System.out.println(size);
 		userCategorysList.add((int) userCategorysList.size(), new VoterHouseInfoVO(size,"Others"));
 		
+		userCategorysList.add(userCategorysList.size(),new VoterHouseInfoVO((long)userCategorysList.size(),"other"));
+		//userCategorysList.add(e)
+		
 	}
 	
 	}
