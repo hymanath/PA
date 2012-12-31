@@ -21,4 +21,21 @@ public class UserCategoryValuesDAO extends GenericDaoHibernate<UserCategoryValue
 		return getHibernateTemplate().find("from UserCategoryValues model");
 		
 	}
+
+
+	public List<Long> checkCategoryExist(Long userId,String name) {
+		Object[] values = {userId,name};
+		return getHibernateTemplate().find("select count(*) from UserCategoryValues model where model.user.userId = ? and model.userCategoryName = ?",values);
+		
+	}
+	
+public List<Object[]> getCategoryValuesList(Long userId) {
+		
+		return getHibernateTemplate().find("select model.userCategoryValuesId ,model.userCategoryName from UserCategoryValues model where model.user.userId = ?",userId);
+		
+	}
+
+
+
+	
 }
