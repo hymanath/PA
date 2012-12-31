@@ -16,14 +16,8 @@ public class CategoryValuesDAOHibernateTest  extends BaseDaoTestCase{
 	
 	/*public void testgetVoterCategoryValues(){
 		
-		List list=categoryValuesDAO.getVoterCategoryValues(1l,"");
-		System.out.println(list);
-	}*/
-	
-public void testcheckCategoryExist(){
-		
 		List list=categoryValuesDAO.checkCategoryExist(1l,"inc",1l);
 		System.out.println(list);
-	}
+	}*/
 
 }
