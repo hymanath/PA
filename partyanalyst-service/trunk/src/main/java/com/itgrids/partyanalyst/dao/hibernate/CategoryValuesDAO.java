@@ -29,4 +29,10 @@ public class CategoryValuesDAO extends GenericDaoHibernate<CategoryValues, Long>
 		
 		return getHibernateTemplate().find("from CategoryValues model");
 	}
+	
+	public List<Long> checkCategoryExist(Long userId,String name, Long id) {
+		Object[] values = {userId,name};
+		return getHibernateTemplate().find("select count(*) from CategoryValues model where model.user.userId = ? and model.categoryValue = ?",values);
+		
+	}
 }
