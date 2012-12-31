@@ -15,12 +15,26 @@ public class UserCategoryValuesDAOHibernateTest  extends BaseDaoTestCase{
 			IUserCategoryValuesDAO userCategoryValuesDAO) {
 		this.userCategoryValuesDAO = userCategoryValuesDAO;
 	}
-	
+	/*
 	public void testgetUserCategoryValues(){
 		
 		List<UserCategoryValues> categoryValues=userCategoryValuesDAO.getUserCategoryValues();
 		System.out.println(categoryValues.size());
 		
-	}
+	}*/
+/*public void testgetUserValues(){
+		
+		List<UserCategoryValues> categoryValues=userCategoryValuesDAO.checkCategoryExist(1l,"party");
+		System.out.println(categoryValues.size());
+		
+	}*/
 	
+public void testgetCategoryValuesList(){
+		
+		List<Object[]> categoryValues=userCategoryValuesDAO.getCategoryValuesList(1l);
+		System.out.println(categoryValues.size());
+		
+	}
+
+
 }
