@@ -86,19 +86,6 @@ var rowCountForCabinetResigned = $('#cabinetResigned tr').length;
 		if($(this).find("td:eq(2) > table tr").length == 0)
 			$(this).remove();
 	});
-	
-	if($('#ministersTable tr').length)
-	{
-		$('#ministersOfStateResignedDiv').hide();
-		$('#ministersTable').hide();
-	}
-	
-	if($('#cabinetResigned tr').length == 2)
-	{
-		$('#cabinetResigned').hide();
-		$('#cabinetResignedDiv').hide();
-	}
-
 
 
 /*
@@ -1282,7 +1269,7 @@ function redirectToResultsPage(){
 
 		
 		<div id="ministersofStateDiv" style="margin-bottom:10px;" class="ministerOfStateDiv">
-			<table id="ministersofStateTable" border="1" style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
+			<table border="1" style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="10%">Party</th>
@@ -1300,7 +1287,6 @@ function redirectToResultsPage(){
 			</th>
                
 			</tr>
-			</table>
 					
 		<c:forEach var="ministerOfStateData" varStatus="stat" items="${candidateMinistriesVO}">
 
@@ -1310,7 +1296,6 @@ function redirectToResultsPage(){
 			<c:forEach var="ministersOfState" items="${ministerOfStateData.ministryTypes}" varStatus="loop">
 				
 			<c:if test="${ministersOfState == 'Ministers of State'}">
-			<table  border="1" style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
 			<tr>
 
 				<td  width="20%"><b>
@@ -1567,8 +1552,8 @@ function redirectToResultsPage(){
 		</div>
 
 		
-		<div id="ministersDiv" style="margin-bottom:10px;" class="ministersOfStateResigned">
-			<table id="ministersTable" border="1"  style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
+		<div id="ministersofStateDiv" style="margin-bottom:10px;" class="ministersOfStateResigned">
+			<table border="1"  style="border-collapse: collapse; margin-top: 9px; width: 95%;text-align:center;">
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="10%">Party</th>
@@ -1586,9 +1571,7 @@ function redirectToResultsPage(){
 			   </th>
 				
 			</tr>
-				</table>
-		</div>
-<div id="ministersofStateDiv" style="margin-bottom:10px;" class="ministersOfStateResigned">		
+					
 		<c:forEach var="ministerOfStateData" varStatus="stat" items="${candidateMinistriesVO}">
 
 		 <c:if test="${ministerOfStateData.expireOneMinistry == 'true'}">	
@@ -1642,13 +1625,13 @@ function redirectToResultsPage(){
 				
 				</table>
 				</td>
-			</table>
+		
 			</c:if>
 		</c:forEach>
 		</c:if>
 		</c:if>
 		</c:forEach>
-		
+		</table>
 	</div>
 </c:if>
 <!-- Ministers of State Div End Resigned -->
