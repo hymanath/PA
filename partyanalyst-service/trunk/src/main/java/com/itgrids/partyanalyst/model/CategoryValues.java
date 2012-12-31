@@ -31,6 +31,7 @@ public class CategoryValues extends BaseModel implements Serializable{
 	private Long categoryValuesId;
 	private UserCategoryValues userCategoryValues;
 	private String categoryValue;
+	private User user;
 	
 	private Set<VoterCategoryValues> voterCategoryValues=new HashSet<VoterCategoryValues>();
 	
@@ -79,6 +80,16 @@ public class CategoryValues extends BaseModel implements Serializable{
 	}
 	public void setVoterCategoryValues(Set<VoterCategoryValues> voterCategoryValues) {
 		this.voterCategoryValues = voterCategoryValues;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	
