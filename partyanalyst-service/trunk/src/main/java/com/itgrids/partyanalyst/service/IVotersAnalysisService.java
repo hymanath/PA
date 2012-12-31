@@ -55,4 +55,10 @@ public interface IVotersAnalysisService {
 	public List<VoterHouseInfoVO> getUserCategoryValues();
 	
 	public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId,String letters);
+	
+	public SelectOptionVO storeGroupName(Long userId ,String name);
+	
+	public List<SelectOptionVO> findVoterCategoryValues(Long userId);
+	
+	public SelectOptionVO storeCategoryVakues(Long userId,String name, Long id);
 }
