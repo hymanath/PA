@@ -104,6 +104,10 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserPrivacySettings> userPrivacySettings = new HashSet<UserPrivacySettings>(0);
 	private Set<UserVoterDetails> userVoterDetails = new HashSet<UserVoterDetails>(0);
 	
+	private Set<VoterCategoryValues> voterCategoryValues = new HashSet<VoterCategoryValues>(0);
+	private Set<UserCategoryValues> userCategoryValues = new HashSet<UserCategoryValues>(0);
+	private Set<CategoryValues> categoryValues = new HashSet<CategoryValues>(0);
+	
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -842,6 +846,37 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUserVoterDetails(Set<UserVoterDetails> userVoterDetails) {
 		this.userVoterDetails = userVoterDetails;
+	}
+
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<VoterCategoryValues> getVoterCategoryValues() {
+		return voterCategoryValues;
+	}
+
+	public void setVoterCategoryValues(Set<VoterCategoryValues> voterCategoryValues) {
+		this.voterCategoryValues = voterCategoryValues;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserCategoryValues> getUserCategoryValues() {
+		return userCategoryValues;
+	}
+
+	public void setUserCategoryValues(Set<UserCategoryValues> userCategoryValues) {
+		this.userCategoryValues = userCategoryValues;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CategoryValues> getCategoryValues() {
+		return categoryValues;
+	}
+
+	public void setCategoryValues(Set<CategoryValues> categoryValues) {
+		this.categoryValues = categoryValues;
 	}
 	
 
