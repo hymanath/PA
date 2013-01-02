@@ -61,4 +61,8 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> findVoterCategoryValues(Long userId);
 	
 	public SelectOptionVO storeCategoryVakues(Long userId,String name, Long id);
+	
+	public List<SelectOptionVO> getAllPublicationDates();
+	
+	public List<SelectOptionVO> getConstituenciesList();
 }
