@@ -276,45 +276,35 @@
 				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
 				<value>com.itgrids.partyanalyst.model.BoothPublicationVoter</value>
 				<value>com.itgrids.partyanalyst.model.HamletBoothPublication</value>
-				
 				<value>com.itgrids.partyanalyst.model.CandidatePhone</value>  
 				<value>com.itgrids.partyanalyst.model.PhoneType</value>  
 				<value>com.itgrids.partyanalyst.model.AddressType</value>
 				<value>com.itgrids.partyanalyst.model.Address</value>
 				<value>com.itgrids.partyanalyst.model.CandidateAddress</value>
-				
 				<value>com.itgrids.partyanalyst.model.PhoneNumber</value>
 				<value>com.itgrids.partyanalyst.model.PhoneCategory</value>  
-				
 				<value>com.itgrids.partyanalyst.model.CandidateWebsite</value>
-				 
-			<!-- start caste -->
-			
 				<value>com.itgrids.partyanalyst.model.Caste</value>
 				<value>com.itgrids.partyanalyst.model.CasteCategory</value>
-				<value> com.itgrids.partyanalyst.model.CasteCategoryGroup</value>
-				<value>com.itgrids.partyanalyst.model.CasteStatewise</value>
+				<value>com.itgrids.partyanalyst.model.CasteCategoryGroup</value>
+				<value>com.itgrids.partyanalyst.model.CasteState</value>
 				<value>com.itgrids.partyanalyst.model.CandidateCaste</value>
 				<value>com.itgrids.partyanalyst.model.AddressContact</value>
-				
-			<!-- end caste -->
-			<value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
-			<value>com.itgrids.partyanalyst.model.Content</value>
-			<value>com.itgrids.partyanalyst.model.UserPrivacySettings</value>
-			<value>com.itgrids.partyanalyst.model.SettingsOption</value>
-			
-			<value>com.itgrids.partyanalyst.model.Job</value>
-			<value>com.itgrids.partyanalyst.model.JobRunDetails</value>
-			
-			<value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
-			<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
-			<value>com.itgrids.partyanalyst.model.SpecialPageHighlights</value>			
-			<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
-			<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
-			<value>com.itgrids.partyanalyst.model.VoterTemp</value>
-			<value>com.itgrids.partyanalyst.model.UserCategoryValues</value>
-            <value>com.itgrids.partyanalyst.model.CategoryValues</value>
-            <value>com.itgrids.partyanalyst.model.VoterCategoryValues</value>
+				<value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
+				<value>com.itgrids.partyanalyst.model.Content</value>
+				<value>com.itgrids.partyanalyst.model.UserPrivacySettings</value>
+				<value>com.itgrids.partyanalyst.model.SettingsOption</value>
+				<value>com.itgrids.partyanalyst.model.Job</value>
+				<value>com.itgrids.partyanalyst.model.JobRunDetails</value>
+				<value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
+				<value>com.itgrids.partyanalyst.model.UserFavoriteLinks</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageHighlights</value>			
+				<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
+				<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
+				<value>com.itgrids.partyanalyst.model.VoterTemp</value>
+				<value>com.itgrids.partyanalyst.model.UserCategoryValues</value>
+	            <value>com.itgrids.partyanalyst.model.CategoryValues</value>
+	            <value>com.itgrids.partyanalyst.model.VoterCategoryValues</value>
 			</list>
 		</property>
 	</bean>
