@@ -220,8 +220,9 @@ width: 500px;
 /** Favorite Link Start**/
 
 
-.favouritelink{position:fixed;bottom:15px;right:7px;height:37px;cursor:pointer;text-decoration:none; opacity:0.30; filter: alpha(opacity = 30);
+.favouritelink{position:fixed;bottom:15px;right:7px;height:37px;cursor:pointer;text-decoration:none; opacity:0.84; filter: alpha(opacity = 30);
  transition: opacity .25s ease-in-out;
+ z-index:999999;
 }
 .favouritelink:hover {text-decoration:none;opacity:1; filter: alpha(opacity = 100);}
 .favouritelink .favouritelink-title{display:none;}
@@ -239,6 +240,8 @@ background: -ms-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8
 background: linear-gradient(to bottom,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
 }
+.favouritelink .favouritelink-close {position:absolute;top:-12px;right:5px;}
+.favouritelink:hover .favouritelink-close {display:block}
 /** Favorite Link End**/
 </style>
 <script type="text/javascript">
@@ -1219,14 +1222,19 @@ Tweet</a>
 	<input type="button" style="position:fixed;z-index:2;" class="btn btn-success" value="Add to favourite links" onClick="savefavouriteLink();" title="Click here to add this link to favourite links"/>
 	</div>
 	-->
-<a class="favouritelink" href=# onClick="savefavouriteLink();" title="Click here to add this link to favourite links" >
-<div class="favouritelink-title">
-<h6 class="bluegrad"> Add To Favourite </h6>
+<div class="favouritelink">
+   <a href="javaScript:{savefavouriteLink()}"   title="Click here to add this link to favourite links">
+	<span class="favouritelink-title">
+	<h6 class="bluegrad"> Add To Favourite </h6>
+	</span>
+	<span class="favouritelink-image">
+	<img src="images/add2fav.png">
+	</span>
+	</a>
+	<span class="favouritelink-close" onClick="hideFavouriteLink();" title="hide">
+    <i class="icon-remove-sign"></i>
+	</span>
 </div>
-<div class="favouritelink-image">
-<img src="images/add2fav.png">
-</div>
-</a>
 </c:if>
 
 
@@ -1510,8 +1518,10 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 									if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
 									
-									if(jObj.task == "saveFavouriteLink")
-										alert("Link added successfully");																	
+									if(jObj.task == "saveFavouriteLink"){
+										$('.favouritelink').hide();
+										alert("Link added successfully");
+									}
 								}
 							catch (e) {   
 						}  
@@ -1523,6 +1533,10 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 
+}
+
+function hideFavouriteLink(){
+$('.favouritelink').hide();
 }
 </script>
 </body>
