@@ -235,10 +235,10 @@ public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 public ICasteDAO getCasteDAO() {
 	return casteDAO;
 }
-public ICasteStateDAO getCasteStatewiseDAO() {
+public ICasteStateDAO getCasteStateDAO() {
 	return casteStateDAO;
 }
-public void setCasteStatewiseDAO(ICasteStateDAO casteStateDAO) {
+public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 	this.casteStateDAO = casteStateDAO;
 }
 public void setCasteDAO(ICasteDAO casteDAO) {
@@ -382,8 +382,8 @@ public List<SocialNetworkVO> getParliamentInfo(String electionType, Long stateId
 		List<CandidateCaste> casteDetails=candidateCasteDAO.getCandidateCasteDetails1(socialNetworkVO.getCandId());
 		if(casteDetails!=null && casteDetails.size()>0){
 			for(CandidateCaste paramValue:casteDetails){
-				if(paramValue.getCasteStatewise() != null && paramValue.getCasteStatewise().getCaste() != null && paramValue.getCasteStatewise().getCaste().getCasteName() != null)
-				socialNetworkVO.setCasteName(paramValue.getCasteStatewise().getCaste().getCasteName().toString());
+				if(paramValue.getCasteState() != null && paramValue.getCasteState().getCaste() != null && paramValue.getCasteState().getCaste().getCasteName() != null)
+				socialNetworkVO.setCasteName(paramValue.getCasteState().getCaste().getCasteName().toString());
 			}
 		}
 		List<CandidateAddress> addressDetails=candidateAddressDAO.getCandidateAddressDetails(socialNetworkVO.getCandId());
@@ -708,7 +708,7 @@ public void saveAddressContactDetails(CandidateDetailsVO candidateDetailsVO,Addr
 public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 	ResultStatus resultStatus = new ResultStatus();
 	CandidateCaste candidateCaste=null;
-	CasteState casteStatewise=null;
+	CasteState casteState=null;
 	Caste caste=null;
 	
 	try{
@@ -720,9 +720,9 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 		
 		
 		if(candidateDetailsVO.getCasteStateId()==null)
-			casteStatewise=new CasteState();
+			casteState=new CasteState();
 		else
-			casteStatewise = casteStateDAO.get(candidateDetailsVO.getCasteStateId());
+			casteState = casteStateDAO.get(candidateDetailsVO.getCasteStateId());
 		
 		
 		if(candidateDetailsVO.getCasteId()==null ||candidateDetailsVO.getCasteId()==0 )
@@ -732,9 +732,9 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 		
 		
 		if(candidateDetailsVO.getCasteId()!=null && candidateDetailsVO.getCasteId() > 0)			
-		   casteStatewise.setCaste(casteDAO.get(candidateDetailsVO.getCasteId()));
+		   casteState.setCaste(casteDAO.get(candidateDetailsVO.getCasteId()));
 		
-		casteStatewise.setState(stateDAO.get(candidateDetailsVO.getAddressList().get(0).getStateId()));
+		casteState.setState(stateDAO.get(candidateDetailsVO.getAddressList().get(0).getStateId()));
 
 		
 			if(candidateDetailsVO.getNewCaste()!=null && !candidateDetailsVO.getNewCaste().equalsIgnoreCase("")){
@@ -745,11 +745,11 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 							if(!candidateDetailsVO.getNewCaste().equals("")){
 								
 								if(cast[1].equals(candidateDetailsVO.getNewCaste()))					
-									casteStatewise.setCaste(casteDAO.get((Long)cast[0]));							
+									casteState.setCaste(casteDAO.get((Long)cast[0]));							
 								else{									
 									caste.setCasteName(candidateDetailsVO.getNewCaste());
 									caste=casteDAO.save(caste);
-									casteStatewise.setCaste(caste);						
+									casteState.setCaste(caste);						
 								}
 						    }
 						
@@ -759,15 +759,15 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 		
 		if(candidateDetailsVO.getCasteCategoryId()==3 || candidateDetailsVO.getCasteCategoryId()==4){
 			casteGroupId=casteCategoryGroupDAO.getCasteNamesOfCategories(candidateDetailsVO.getCasteCategoryId());
-			casteStatewise.setCasteCategoryGroup(casteCategoryGroupDAO.get(casteGroupId));
+			casteState.setCasteCategoryGroup(casteCategoryGroupDAO.get(casteGroupId));
 		}else{
 			if(candidateDetailsVO.getCasteGroupId() != null && candidateDetailsVO.getCasteGroupId()!=0)
-			casteStatewise.setCasteCategoryGroup(casteCategoryGroupDAO.get(candidateDetailsVO.getCasteGroupId()));
+			casteState.setCasteCategoryGroup(casteCategoryGroupDAO.get(candidateDetailsVO.getCasteGroupId()));
 		}
-	   casteStatewise=casteStateDAO.save(casteStatewise);
+	   casteState=casteStateDAO.save(casteState);
 	
 	candidateCaste.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
-	candidateCaste.setCasteStatewise(casteStatewise);
+	candidateCaste.setCasteState(casteState);
 		
 	candidateCasteDAO.save(candidateCaste);
 	
@@ -1081,34 +1081,34 @@ public void getCandidateCasteDetails(Long candidateId ,CandidateDetailsVO candid
 	if(casteDetails.size()>0){
 		for(CandidateCaste param1:casteDetails){
 			
-			candidateDetailsVO.setCasteStateId(param1.getCasteStatewise().getCasteStateId());
+			candidateDetailsVO.setCasteStateId(param1.getCasteState().getCasteStateId());
 			
 			candidateDetailsVO.setCandidatecasteId(param1.getCandidateCasteId());
-			if(param1.getCasteStatewise() != null && param1.getCasteStatewise().getCaste()!=null && param1.getCasteStatewise().getCaste().getCasteId() != null)
-				candidateDetailsVO.setCasteId(new Long(param1.getCasteStatewise().getCaste().getCasteId()));
-			if(param1.getCasteStatewise().getCaste()!=null)
-			candidateDetailsVO.setCasteName(param1.getCasteStatewise().getCaste().getCasteName());
-			if(param1.getCasteStatewise().getCasteCategoryGroup()!=null && param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId() != null)
-				candidateDetailsVO.setCasteGroupId(new Long(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId()));
+			if(param1.getCasteState() != null && param1.getCasteState().getCaste()!=null && param1.getCasteState().getCaste().getCasteId() != null)
+				candidateDetailsVO.setCasteId(new Long(param1.getCasteState().getCaste().getCasteId()));
+			if(param1.getCasteState().getCaste()!=null)
+			candidateDetailsVO.setCasteName(param1.getCasteState().getCaste().getCasteName());
+			if(param1.getCasteState().getCasteCategoryGroup()!=null && param1.getCasteState().getCasteCategoryGroup().getCasteCategoryGroupId() != null)
+				candidateDetailsVO.setCasteGroupId(new Long(param1.getCasteState().getCasteCategoryGroup().getCasteCategoryGroupId()));
 			
-			if(param1.getCasteStatewise() != null && param1.getCasteStatewise().getCasteCategoryGroup() != null && param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory()!=null)
-				candidateDetailsVO.setCasteCategory1(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory().getCategoryName());
+			if(param1.getCasteState() != null && param1.getCasteState().getCasteCategoryGroup() != null && param1.getCasteState().getCasteCategoryGroup().getCasteCategory()!=null)
+				candidateDetailsVO.setCasteCategory1(param1.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName());
 			
-			if(param1.getCasteStatewise() != null && param1.getCasteStatewise().getCasteCategoryGroup() != null && param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory()!=null)
-				candidateDetailsVO.setCasteCategoryId(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId());
+			if(param1.getCasteState() != null && param1.getCasteState().getCasteCategoryGroup() != null && param1.getCasteState().getCasteCategoryGroup().getCasteCategory()!=null)
+				candidateDetailsVO.setCasteCategoryId(param1.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId());
 		
 			List<SelectOptionVO> casteGroupList = getAllCasteCategoryGroupDetails(candidateDetailsVO.getCasteCategoryId());
 			candidateDetailsVO.setCasteGroupList(casteGroupList);
 			
-			if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
-				candidateDetailsVO.setCasteGroupId(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupId());
+			if(param1.getCasteState().getCasteCategoryGroup()!=null)
+				candidateDetailsVO.setCasteGroupId(param1.getCasteState().getCasteCategoryGroup().getCasteCategoryGroupId());
 			
 			List<SelectOptionVO> casteList = getAllCasteDetails();
 			casteList.add(0, new SelectOptionVO(0l,"others"));
 			candidateDetailsVO.setCasteGroupNameList(casteList);
 			
-			if(param1.getCasteStatewise().getCasteCategoryGroup()!=null)
-				candidateDetailsVO.setCasteGroupName(param1.getCasteStatewise().getCasteCategoryGroup().getCasteCategoryGroupName());
+			if(param1.getCasteState().getCasteCategoryGroup()!=null)
+				candidateDetailsVO.setCasteGroupName(param1.getCasteState().getCasteCategoryGroup().getCasteCategoryGroupName());
 		}
 	}
 	
