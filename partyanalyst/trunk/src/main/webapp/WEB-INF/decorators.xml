@@ -164,6 +164,7 @@
 		<pattern>/candidateUpdateFormAction*</pattern>
 		<pattern>/footerLinksAction*</pattern>
 		<pattern>/viewFeaturesAction*</pattern>
+		<pattern>/voterDataManageAction*</pattern>
     </decorator>
 
 </decorators>
