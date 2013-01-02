@@ -133,7 +133,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetVotersBasicInfoByUrbanId()
+	/*public void testgetVotersBasicInfoByUrbanId()
 	{
 		List list = voterDAO.findVotersCastInfoByMandalAndElectionYear(83l,"2009");
 		System.out.println(list.size());
@@ -143,9 +143,11 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List<Voter> list =voterDAO.getVoterPersonalDetailsByVoterId(5105l);
 		System.out.println(list.size());
-		
-		
+	}*/
+	
+	public void testUpdateCasteByVoterCardId()
+	{
+		System.out.println(voterDAO.updateCasteByVoterCardId("RYT0097071", "Kamma"));
 	}
-	
-	
+		
 }
