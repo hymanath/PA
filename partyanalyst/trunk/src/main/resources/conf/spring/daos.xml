@@ -947,7 +947,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-		<bean id="casteStatewiseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteStatewiseDAO">
+		<bean id="casteStateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteStateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
