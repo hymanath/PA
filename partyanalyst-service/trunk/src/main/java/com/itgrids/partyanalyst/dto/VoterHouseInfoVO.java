@@ -26,14 +26,14 @@ public class VoterHouseInfoVO {
 	private String villiageCovered;
 	private String panchayatName;
 	private List<SelectOptionVO> casteGroupNameList;
-	private Long userCategoryValuesId;
+	//private Long userCategoryValuesId;
 	private Long userCategoryValuesId1;
-	private String userCategoryValuesName;
+	//private String userCategoryValuesName;
 	private String setValue;
 	private Long voterCategoryValuesId;
 	private String voterCategoryValuesName;
 	private Long categoryValuesId;
-	private String categoryValue;
+	//private String categoryValue;
 	private List<SelectOptionVO> category;
 	private List categoryValues;
 	private String youngerGender;
@@ -42,6 +42,7 @@ public class VoterHouseInfoVO {
 	private Long elderAge;
 	private String voterGroupName;
 	
+	private List<AddressVO> categories;
 	
 	public VoterHouseInfoVO(){
 		
@@ -61,6 +62,14 @@ public class VoterHouseInfoVO {
 		this.name = name;
 	}
 
+
+	public List<AddressVO> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<AddressVO> categories) {
+		this.categories = categories;
+	}
 
 	public String getVoterCategoryValuesName() {
 		return voterCategoryValuesName;
@@ -86,13 +95,13 @@ public class VoterHouseInfoVO {
 		this.category = category;
 	}
 
-	public String getCategoryValue() {
+	/*public String getCategoryValue() {
 		return categoryValue;
 	}
 
 	public void setCategoryValue(String categoryValue) {
 		this.categoryValue = categoryValue;
-	}
+	}*/
 
 	public Long getUserCategoryValuesId1() {
 		return userCategoryValuesId1;
@@ -126,7 +135,7 @@ public class VoterHouseInfoVO {
 		this.setValue = setValue;
 	}
 
-	public Long getUserCategoryValuesId() {
+	/*public Long getUserCategoryValuesId() {
 		return userCategoryValuesId;
 	}
 
@@ -140,7 +149,7 @@ public class VoterHouseInfoVO {
 
 	public void setUserCategoryValuesName(String userCategoryValuesName) {
 		this.userCategoryValuesName = userCategoryValuesName;
-	}
+	}*/
 
 	public List<SelectOptionVO> getCasteGroupNameList() {
 		return casteGroupNameList;
