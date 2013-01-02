@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.ICasteStatewiseDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 
-public class CasteStatewiseDAOHibernateTest extends BaseDaoTestCase {
-	private ICasteStatewiseDAO casteStatewiseDAO;
+public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
+	private ICasteStateDAO casteStateDAO;
 
 	
-	public void setCasteStatewiseDAO(ICasteStatewiseDAO casteStatewiseDAO) {
-		this.casteStatewiseDAO = casteStatewiseDAO;
+	public void setCasteStatewiseDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
 	}
 	
 	/*public void test()
