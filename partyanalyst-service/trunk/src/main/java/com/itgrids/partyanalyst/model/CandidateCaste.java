@@ -28,7 +28,7 @@ public class CandidateCaste extends BaseModel implements Serializable {
 
 	private Long candidateCasteId;
 	private Candidate candidate;
-	private CasteStatewise casteStatewise;
+	private CasteState casteStatewise;
 	
 	
 	
@@ -58,10 +58,10 @@ public class CandidateCaste extends BaseModel implements Serializable {
 	@JoinColumn(name="caste_state_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public CasteStatewise getCasteStatewise() {
+	public CasteState getCasteStatewise() {
 		return casteStatewise;
 	}
-	public void setCasteStatewise(CasteStatewise casteStatewise) {
+	public void setCasteStatewise(CasteState casteStatewise) {
 		this.casteStatewise = casteStatewise;
 	}
 
