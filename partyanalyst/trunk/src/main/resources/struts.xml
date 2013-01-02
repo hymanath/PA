@@ -4014,7 +4014,7 @@
 		
 	<action name="votersEditAction" class="votersEditAction">
 			<result name="success">/jsp/votersEditPage.jsp</result>
-			<result name="error">"notLogged"</result>
+			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 			
 		<action name="voterEditAction" class="votersEditAction" method="putVoterDetails">
@@ -4030,6 +4030,10 @@
 			
 		</action>
 			
+	<action name="votersCategoeryAction" class="votersEditAction">
+			<result name="success">/jsp/votersCategoery.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+	</action>
 		
 
 		
