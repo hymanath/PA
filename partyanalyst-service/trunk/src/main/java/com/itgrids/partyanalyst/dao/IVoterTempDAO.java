@@ -9,5 +9,7 @@ import com.itgrids.partyanalyst.model.VoterTemp;
 public interface IVoterTempDAO extends GenericDao<VoterTemp,Long>{
 	
 	public List<VoterTemp> getVotersInAConstituency(Long constituencyId,Integer startIndex, Integer maxResults);
+	
+	public List<Object[]> getConstituencyList();
 
 }
