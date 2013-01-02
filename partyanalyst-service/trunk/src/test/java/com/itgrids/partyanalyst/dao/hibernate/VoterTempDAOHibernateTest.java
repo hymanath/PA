@@ -20,9 +20,22 @@ public class VoterTempDAOHibernateTest extends BaseDaoTestCase{
 		voterTempDAO.get(9l);
 	}*/
 	
-	public void testGetVotersInAConstituency()
+	/*public void testGetVotersInAConstituency()
 	{
 		List<VoterTemp> list = voterTempDAO.getVotersInAConstituency(78l,0,10);
 		System.out.println(list.size());
+	}*/
+	
+	public void testgetConstituencyList()
+	{
+		List<Object[]> constituencyList = voterTempDAO.getConstituencyList();
+		System.out.println(constituencyList.size());
+		if(constituencyList != null && constituencyList.size() > 0)
+		{
+			for(Object[] params : constituencyList)
+			{
+				System.out.println(params[0]+" "+params[1]);
+			}
+		}
 	}
 }
