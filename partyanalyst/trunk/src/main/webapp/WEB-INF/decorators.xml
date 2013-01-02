@@ -71,6 +71,8 @@
 	    <pattern>/createNewEvent.action*</pattern>
 	    <pattern>/votersEditAction.action*</pattern>
 	    <pattern>/votersEditSubAction.action*</pattern>
+	    <pattern>/votersCategoeryAction.action*</pattern>
+	    
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
