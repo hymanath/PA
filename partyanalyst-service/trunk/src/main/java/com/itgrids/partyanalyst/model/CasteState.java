@@ -25,7 +25,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name="caste_state")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class CasteStatewise extends BaseModel implements Serializable{
+public class CasteState extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -51,11 +51,11 @@ public class CasteStatewise extends BaseModel implements Serializable{
 	
 
 	
-	public CasteStatewise(){
+	public CasteState(){
 		
 	}
 	
-	public CasteStatewise(Long casteStateId,State state,Caste caste){
+	public CasteState(Long casteStateId,State state,Caste caste){
 		this.casteStateId=casteStateId;
 		this.state=state;
 		this.caste=caste;
