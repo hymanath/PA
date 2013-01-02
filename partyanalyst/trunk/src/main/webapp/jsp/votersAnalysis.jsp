@@ -327,6 +327,7 @@ width: 860px;}
 #impfamilydatatable th{
   padding:5px;
 }
+
 </style>
 
 <script type="text/javascript">
@@ -373,6 +374,7 @@ locationDetails.constituencyArr.push(ob);
 		</select>
 		
 </div>
+
 	<div id="ConstituencyDiv" class="selectDiv">
 	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
 
@@ -381,6 +383,7 @@ locationDetails.constituencyArr.push(ob);
 		</select>
 		
 	</div>
+	
 	<div id="mandalDiv" class="selectDiv" style="display:none;">
 		
 	Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;"></select></div>
@@ -408,6 +411,9 @@ locationDetails.constituencyArr.push(ob);
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters Info" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Age Wise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
+					<td style="padding-left:50px"><div id="categoeryCreationDiv" style="float:right;">
+					<input type="button" class="buttonStyle" onClick="openNewWindow();" style="font:bold;font-size: 131%;" value="CreateNewGroup"></input>
+					</div></td>
 					
 				  </tr>
 				</table>
@@ -656,6 +662,12 @@ function getCastInfoForsubLevel()
 		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
 		callAjax(jsObj,url);
 		}
+}
+
+function openNewWindow(){
+	var urlStr="votersCategoeryAction.action";
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();
 }
 </script>
 </body>
