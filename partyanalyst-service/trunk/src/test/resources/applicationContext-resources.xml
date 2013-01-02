@@ -300,7 +300,7 @@
 				<value>com.itgrids.partyanalyst.model.Caste</value>
 				<value>com.itgrids.partyanalyst.model.CasteCategory</value>
 				<value>com.itgrids.partyanalyst.model.CasteCategoryGroup</value>
-				<value>com.itgrids.partyanalyst.model.CasteStatewise</value>
+				<value>com.itgrids.partyanalyst.model.CasteState</value>
 				<value>com.itgrids.partyanalyst.model.CandidateCaste</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePhone</value>  
 				<value>com.itgrids.partyanalyst.model.PhoneType</value>  
@@ -1619,7 +1619,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="casteStatewiseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteStatewiseDAO">
+	<bean id="casteStateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteStateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
