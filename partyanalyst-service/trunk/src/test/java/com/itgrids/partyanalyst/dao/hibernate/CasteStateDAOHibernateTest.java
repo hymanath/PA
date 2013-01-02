@@ -10,20 +10,20 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 	private ICasteStateDAO casteStateDAO;
 
 	
-	public void setCasteStatewiseDAO(ICasteStateDAO casteStateDAO) {
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 		this.casteStateDAO = casteStateDAO;
 	}
 	
 	/*public void test()
 	{
-		casteStatewiseDAO.getAll();
+		casteStateDAO.getAll();
 	}*/
 
 
-/*	public void testCasteStatewiseDAO(){
+/*	public void testCasteStateDAO(){
 		
 	
-		List<Object[]> list=casteStatewiseDAO.getStatewiseCastNames(1l);
+		List<Object[]> list=casteStateDAO.getStatewiseCastNames(1l);
 	
 		System.out.println(list.size()); 
 		//Object list1[]=list.toArray();
@@ -40,7 +40,7 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testgetCasteNamesByAutoPopulate(){
 		
-		List list=casteStatewiseDAO.getCasteNamesByAutoPopulate(1l,"ka");
+		List list=casteStateDAO.getCasteNamesByAutoPopulate(1l,"ka");
 		System.out.println(list);
 		
 	}*/
@@ -48,7 +48,7 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 	/*
 	public void testgetAllCasteDetails(){
 		
-		List<Object[]> list=casteStatewiseDAO.getAllCasteDetails();
+		List<Object[]> list=casteStateDAO.getAllCasteDetails();
 		for(Object[] params : list)
 		{
 			System.out.println(params[0]);
