@@ -81,4 +81,16 @@ public class UserVoterDetails implements java.io.Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="caste_state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
+	}
+
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
+	}
 }
