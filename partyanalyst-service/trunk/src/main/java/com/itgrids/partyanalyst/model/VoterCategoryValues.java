@@ -28,6 +28,7 @@ public class VoterCategoryValues extends BaseModel implements Serializable{
 	private Long voterCategoryValuesId;
 	private CategoryValues categoryValues;
 	private Voter voter;
+	private User user;
 	
 	public VoterCategoryValues(){
 		
@@ -69,6 +70,18 @@ public class VoterCategoryValues extends BaseModel implements Serializable{
 	public void setVoter(Voter voter) {
 		this.voter = voter;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	
 	
 }
