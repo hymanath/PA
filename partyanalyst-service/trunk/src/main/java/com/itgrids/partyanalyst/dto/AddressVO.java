@@ -48,8 +48,29 @@ public class AddressVO implements Serializable {
 	private Long candidateAddressId;
 	private Long addressContactId;
 
+	private Long voterCategoryValuesId;
+	private String voterCategoryValuesName;
+	private String categoryValue;
 	
-
+	
+	public Long getVoterCategoryValuesId() {
+		return voterCategoryValuesId;
+	}
+	public void setVoterCategoryValuesId(Long voterCategoryValuesId) {
+		this.voterCategoryValuesId = voterCategoryValuesId;
+	}
+	public String getVoterCategoryValuesName() {
+		return voterCategoryValuesName;
+	}
+	public void setVoterCategoryValuesName(String voterCategoryValuesName) {
+		this.voterCategoryValuesName = voterCategoryValuesName;
+	}
+	public String getCategoryValue() {
+		return categoryValue;
+	}
+	public void setCategoryValue(String categoryValue) {
+		this.categoryValue = categoryValue;
+	}
 	public Long getAddressContactId() {
 		return addressContactId;
 	}
