@@ -25,4 +25,15 @@ public class VoterTempDAO extends GenericDaoHibernate<VoterTemp,Long> implements
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyList()
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" Select DISTINCT  model.constituencyId , model.name from Constituency model, ");
+		stringBuilder.append(" VoterTemp model1 where model1.constituencyName = model.name and model.electionScope.electionType.electionType = 'Assembly'");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		return queryObj.list();
+	}
+	
 }

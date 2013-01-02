@@ -15,7 +15,13 @@ public class PublicationDateDAO extends
 		super(PublicationDate.class);
 		
 	}
+	@SuppressWarnings("unchecked")
 	public List<PublicationDate> getPublicationDates(){
 		return getHibernateTemplate().find("from PublicationDate model order by model.date desc " );
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllPublicationDates(){
+		return getHibernateTemplate().find("Select model.publicationDateId, model.date from PublicationDate model order by model.date desc ");
 	}
 }
