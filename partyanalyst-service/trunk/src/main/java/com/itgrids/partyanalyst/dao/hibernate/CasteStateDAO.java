@@ -5,13 +5,13 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.ICasteStatewiseDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class CasteStatewiseDAO extends GenericDaoHibernate<CasteState, Long> implements 
-ICasteStatewiseDAO {
-	public CasteStatewiseDAO(){
+public class CasteStateDAO extends GenericDaoHibernate<CasteState, Long> implements 
+ICasteStateDAO {
+	public CasteStateDAO(){
 		super(CasteState.class);
 	}
 	
