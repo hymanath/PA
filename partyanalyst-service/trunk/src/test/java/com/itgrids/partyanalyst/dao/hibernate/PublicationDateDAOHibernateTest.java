@@ -9,8 +9,26 @@ import com.itgrids.partyanalyst.model.PublicationDate;
 
 public class PublicationDateDAOHibernateTest extends BaseDaoTestCase  {
 	private IPublicationDateDAO publicationDateDAO;
-	public void testGetAllData(){
+	
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
+	}
+
+	/*public void testGetAllData(){
 		List<PublicationDate> result =  publicationDateDAO.getAll();
 		System.out.println(result.size());
+	}
+	*/
+	public void testgetAllPublicationDates()
+	{
+		List<Object[]> list = publicationDateDAO.getAllPublicationDates();
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]+" "+params[1]);
+			}
+		}
 	}
 }
