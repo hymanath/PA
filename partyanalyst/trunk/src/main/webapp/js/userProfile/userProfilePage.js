@@ -154,8 +154,8 @@ $("document").ready(function(){
 
 
    $("#FavouriteLinks").click(function(){
-
-		var jsObj ={
+	
+	 var jsObj ={
 			task:"getFavouriteLinks"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -164,7 +164,7 @@ $("document").ready(function(){
 		callAjax1(jsObj,url);
 	});
 
-	
+
 	//subscriptions
 
 	 $(".subscriptionsLink").click(function(){
@@ -516,7 +516,6 @@ $(".changePwdLink").live("click",function(){
 //edit cover Image
 
 $(".editCoverImgLink").live("click",function(){
-
 $("#allConnectedUsersDisplay_main").children().remove();
 	
 	$("#connectPeoplePopup").dialog({
@@ -1423,7 +1422,7 @@ function showSentBoxMessagesForAUser(results)
 	}
 		
 		
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
 		for(var i in results.candidateVO)
 		{
 		var template = $(".templateDivMsg");
@@ -1489,6 +1488,7 @@ function sendMessageToConnectedUser(userId,type)
 	  return;
 	}
 		
+	/*$("#ErrorMsgDivId").html('<img src="images/icons/search.gif" class="searchImgCls"/>');*/
 	disableButton("sendMessageButtonId");
 	var jsObj ={
 				loginUserId:loginUserId,
@@ -1808,7 +1808,6 @@ function showAllPostedProblems(jsObj,results)
 {
 	var i=0;
 	$('.viewMoreDiv').html('');
-
 		
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
@@ -1927,7 +1926,7 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 
 function showAllPostedReasonsForUserProfile(jsObj,results)
 {
-	var i=0;
+	var i=0;	
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
 	var data = results.candidateComments;
@@ -1946,7 +1945,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		$(".placeholderCenterDiv").children().remove();
 	  	}
 
-	for( i in data)
+	for(i in data)
 	{
 		var status;
 		var imageStr = "/PartyAnalyst/images/candidates/"+data[i].candidate;
@@ -1980,7 +1979,6 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
 }
-
 }
 function setDefaultImage(img)
 {
