@@ -192,5 +192,13 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				getSession().flush();
 				getSession().clear();
 			}
+			
+			public Integer updateCasteByVoterCardId(String voterCardId, String caste)
+			{
+				Query query = getSession().createQuery("update Voter model set model.cast = :caste where model.voterIDCardNo = :voterCardId");
+				query.setParameter("voterCardId", voterCardId);
+				query.setParameter("caste", caste);
+				return query.executeUpdate();
+			}
 	
 }
