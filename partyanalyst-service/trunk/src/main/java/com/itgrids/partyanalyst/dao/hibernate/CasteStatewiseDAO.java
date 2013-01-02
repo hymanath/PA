@@ -6,13 +6,13 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICasteStatewiseDAO;
-import com.itgrids.partyanalyst.model.CasteStatewise;
+import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class CasteStatewiseDAO extends GenericDaoHibernate<CasteStatewise, Long> implements 
+public class CasteStatewiseDAO extends GenericDaoHibernate<CasteState, Long> implements 
 ICasteStatewiseDAO {
 	public CasteStatewiseDAO(){
-		super(CasteStatewise.class);
+		super(CasteState.class);
 	}
 	
 	@SuppressWarnings("unchecked")
