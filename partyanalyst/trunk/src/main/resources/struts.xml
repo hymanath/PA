@@ -4006,6 +4006,8 @@
 		</action>
 		
 		<action name="voterDataManageAction" class="voterDataManageAction">
+			<result name="success">/jsp/voterDataManage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		<action name="getStreamingDataForProfileUserAction" class="userProfileAction" method="getStreamingDataForPublicProfileByProfileId">
 		  	 <result type="json" name="success">
@@ -4043,8 +4045,10 @@
 		    	<param name="root">resultStatus</param>
 		   </result>
 		</action>
-		
-		
-		
+		<action name="insertVoterDataAction" class="voterDataManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
 	</package>
 </struts>      
