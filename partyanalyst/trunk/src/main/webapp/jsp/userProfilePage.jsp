@@ -42,6 +42,11 @@ var monthname = new Array("January", "February", "March",
 		"October", "November", "December"); 
 		
 var requestPath = '<%=request.getContextPath()%>';
+
+var userStatusType = "${dataTransferVO.userStatusType}";
+
+var hasNewsMonitoring = "${hasNewsMonitoring == true}";
+
 </script>
 <style>
 .profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
@@ -144,6 +149,60 @@ margin:3px;
  height: 90px;
  font-weight: bold;
 }
+.readMsg{padding: 2px 2px 0px; height: 30px; margin-bottom: 7px;cursor:pointer;}
+.msgbox {margin-bottom: 6px;}
+.templateMessage .message{width:60%;word-wrap: break-word;}
+.templateMessage .msgBtns{margin-top: -30px;padding-bottom: 0px;}
+.searchImgCls{margin-left: 250px; margin-top: 0px; padding-top: 0px; margin-bottom: -30px;}
+#showNewsCountTable th{
+
+	height:20px;text-align:left;background-color:#cdcdcd; padding:10px;font-weight:bold;border:1px solid #d3d3d3;
+	
+	
+}
+#showNewsCountTable{
+border-collapse:collapse;border:1px solid #d3d3d3;width:98%;font-size:12px;margin-top:100px;padding:5px;
+}
+#showNewsCountTable td{
+padding:3px;padding-left:10px;font-weight:normal;
+}
+div#newsAnalyse {
+    
+    float: right;
+	margin-top: 10px;
+    padding: 15px;
+    width: 274px;
+}
+#newsAnalyse {
+    background-color: #CADEF4;
+    border: 1px solid #CCCCCC;
+    direction: ltr;
+    line-height: 1.2;
+    max-width: 795px;
+    overflow: visible;
+    padding: 10px;
+    text-align: center;
+    width: 20em;
+}
+.tempstyle {
+    color: #666666;
+    display: inline-block;
+    font-family: verdana;
+    font-size: 11px;
+    font-weight: bold;
+    padding-bottom: 12px;
+    padding-top: 15px;
+}
+.grad{background: #0f4b93; border-radius:5px;/* Old browsers */
+background: -moz-linear-gradient(top,  #5189c6 0%, #0f4b93 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5189c6), color-stop(100%,#0f4b93)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* IE10+ */
+background: linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', endColorstr='#0f4b93',GradientType=0 ); /* IE6-9 */
+-moz-border-radius:5px;
+}
 .subscribedLink{color:red;font-weight:bold;}
 </style>
 </head>
@@ -192,7 +251,16 @@ margin:3px;
 								
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
 					<li><a href="javascript:{}" id="settings"><i class="icon-wrench"></i><i class="icon-chevron-right"></i>Settings</a></li>
+					<c:if test="${dataTransferVO.userStatusType == 'FREE_USER'}">
 					<li class="active"><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
+					</c:if>
+					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER' && hasNewsMonitoring == true) || (dataTransferVO.userStatusType == 'BOTH' && hasNewsMonitoring == true)}">
+					<li><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
+					</c:if>
+					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER' && hasNewsMonitoring == false) || (dataTransferVO.userStatusType == 'BOTH' && hasNewsMonitoring == false)}">
+					<li class="active"><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
+					</c:if>
+					
 					<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
 					<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
 					<li><a href="javascript:{}" id="requestLink"><i class="icon-retweet"></i><i class="icon-chevron-right"></i> Requests</a></li>
@@ -224,6 +292,10 @@ margin:3px;
 					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
 					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
+					<c:if test="${hasNewsMonitoring == true}">
+					<li class="active"><a href="javascript:{}" class="active" onclick="getNews('byTodayDate','getCount','','','','','','','')" id="customerNews"><i class="icon-file"></i><i class="icon-chevron-right"></i> News</a></li>
+					
+					</c:if>
 					
 					</ul>
 				</div>
@@ -243,8 +315,13 @@ margin:3px;
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class=""></div>
-						<div class="placeholderCenterDiv"></div>
+				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;"></div>
+						<div class="placeholderCenterDiv" id="placeholderCenterDivId">
+						
+						
+						</div>
+		
+						
 						
 						<div id="subscriptionsDiv">
 							<div id="userSpecialPageSubscriptionsDiv" class="subscriptionInnerDiv"></div>
@@ -646,7 +723,11 @@ margin:3px;
 	<span class="removeClass"></span>
 
 </div>
+<div class="NewsTemplate">
 
+		
+  
+</div>
 <!-- <div class="favouriteLinkStateClass favouriteLinkDivClass" >
 	<span class="imageClass"></span>
 	<span class="titleClass"></span>
@@ -692,8 +773,13 @@ margin:3px;
 	
 
 <script type="text/javascript">
-
+<c:if test="${hasNewsMonitoring == false}">
 getInitialUpdates();
+</c:if>
+<c:if test="${hasNewsMonitoring == true}">
+getNews('byTodayDate','getCount','','','','','','','');
+</c:if>
+
 
 districtId = '${dataTransferVO.districtId}';
 districtName = '${dataTransferVO.districtName}';
@@ -752,10 +838,290 @@ var impDates = new Array();
 			});
 	
 	});	
+var newsDetails = null;	
+var newsajaxCalled = false;
+function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location)
+	{
+
 	
+    var jsObj=
+	      { 
+		    queryType:queryType,
+			fileType:fileType,
+			sourceId :sourceId,
+            languegeId :languegeId,
+            categoryId :categoryId,
+            newsImportanceId :newsImportanceId,
+            locationScope :locationScope,
+            location :location,
+			task:task
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "getNewsToDisplayAction.action?"+rparam;						
+      callAjaxForDashBoard(jsObj,url);
+
+}
+function openShowNews()
+{
+	var showNewsBrowser = window.open("newsDisplayAction.action","shoeNews","scrollbars=yes,height=950,width=1050");
+	showNewsBrowser.focus();
+}
+	/*function showNewsDetails(result){
 	
+		//$('.placeholderCenterDivId').children().remove();
+	var i = 0;
+	//document.getElementById("newsCount").innerHTML='<font color="navy"><b>Total //News Count : </b></font>'+result.length;
+	$("#headerDiv").html('');
+	$("#headerDiv").html('<font color="navy"><b>Total News Count : </b></font>'+result.length+'');
+  document.getElementById("placeholderCenterDivId").innerHTML='';
+  YAHOO.widget.DataTable.news = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
 	
+	var source = oRecord.getData("source");
+	var title = oRecord.getData("fileTitle1");
+	var path = oRecord.getData("path");
+	var description = oRecord.getData("description");
+	var fileDate = oRecord.getData("fileDate");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews("+i+")'>"+title+"</a>";
+	i++;
+		
+  };
+  var newsResultColumnDefs = [ 		    	             
+		    	            
+							{key:"categoryType", label: "CATEGORY", sortable: true},
+							{key:"importance", label: "IMPORTANCE", sortable: true},
+		    	           	{key:"source", label: "SOURCE", sortable: true},
+							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
+							{key:"description", label: "DESCRIPTIONS", sortable: true},
+		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
+							{key:"locationValue", label: "AREA NAME", sortable: true},
+							{key:"fileDate", label: "NEWS DATE", sortable: true}
+							
+		    	        ]; 
+	var newsResultDataSource = new YAHOO.util.DataSource(result); 
 	
+	if(result.length>0){
+	    var myConfigs = { 
+				    paginator : new YAHOO.widget.Paginator({ 
+			        rowsPerPage    : 5,
+					template : "{PageLinks} Show {RowsPerPageDropdown} Per Page",
+	                pageLinks : 5, 
+	                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+				    }) 
+					};
+	}
+	var myDataSource = new YAHOO.util.DataSource(result);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate"]
+					};
+
+		var newsResultDataSource = new YAHOO.widget.DataTable("placeholderCenterDivId", newsResultColumnDefs,myDataSource, myConfigs);
+}
+*/
+
+function getMaxCount(result)
+{
+  var count = 0;
+  for(var i in result){
+   if(result[i].fileVOList !=null && result[i].fileVOList.length > 0)
+      if(result[i].fileVOList.length > count)
+         count+= result[i].fileVOList.length;
+	}
+   return count;
+}
+
+function showNewsCountDetails(result,jsObj)
+{
+$(".placeholderCenterDiv").children().remove();
+$("#headerDiv").html('');
+ $("#subscriptionsStreamingData").children().remove();
+ $("#impdatesDiv").hide();
+ clearAllFavoriteLinkDivs();
+ clearAllSubscriptionDivs();
+
+$("#headerDiv").html('<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'');
+
+
+var div = $('<div id="newsAnalyse"></div>');
+var div1 =$('<div id="showNewsCountTable"></div>');
+
+if(hasNewsMonitoring)
+{
+	
+	div.append('<a href="javascript:{};" onclick="openShowNews();" class="grad" style="text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News Articles</a>');
+	div.append('<span class="tempstyle">View and Analyze News Articels</span>');
+$("#headerDiv").append(div);
+}
+
+var maxCount = getMaxCount(result);
+
+if(maxCount >0)
+	{
+		
+		div1.append('<strong>Today\' s  Total News Overview :</strong> ');
+		div1.append('<table id="NewsTable">');
+		div1.append('<tr style="text-align:center">');
+		div1.append('<th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>');
+ 		div1.append('</tr>');
+		for(i=0 ; i < maxCount ; i++)
+		{
+		
+			if(result[0].fileVOList[i] != null || result[1].fileVOList[i] != null || 
+				result[2].fileVOList[i] != null || result[3].fileVOList[i] != null ||
+				result[4].fileVOList[i] != null)
+			{
+				div1.append('<tr style="text-align:center">');
+				
+				if(result[0].fileVOList[i] != null)
+					div1.append('<td>'+result[0].fileVOList[i].categoryType+' -   '+result[0].fileVOList[i].sizeOfGallary+'</td>');
+				else
+					div1.append('<td style="text-align:center">--</td>');
+				
+				if(result[1].fileVOList[i] != null)
+					div1.append('<td>'+ result[1].fileVOList[i].source+' -   '+result[1].fileVOList[i].sizeOfGallary+'</td>');
+				else
+					div1.append('<td style="text-align:center">--</td>');
+
+				if(result[2].fileVOList[i] != null)
+					div1.append('<td>'+  result[2].fileVOList[i].language+' -   '+ result[2].fileVOList[i].sizeOfGallary+'</td>');
+				else
+					div1.append('<td style="text-align:center">--</td>');
+				
+				if(result[3].fileVOList[i] != null)
+				{
+					if(result[3].fileVOList[i].importance == 'High')
+						div1.append('<td><b><span style="color:red">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>');
+					if(result[3].fileVOList[i].importance == 'Medium')
+						div1.append('<td><b><span style="color:green">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>');
+					if(result[3].fileVOList[i].importance == 'Low')
+						div1.append('<td><b><span style="color:ActiveCaption">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>');
+				}
+				else
+					div1.append('<td style="text-align:center">--</td>');
+				
+				if(result[4].fileVOList[i] != null)	
+					div1.append('<td>'+ result[4].fileVOList[i].locationScopeValue+' -   '+ result[4].fileVOList[i].sizeOfGallary+'</td>');
+				else
+					div1.append('<td style="text-align:center">--</td>');
+			
+				div1.append('</tr>');
+			}
+		}
+		div1.append('</table>');
+		$(".placeholderCenterDiv").append(div1);
+	}
+
+
+}
+
+/*
+function showNewsCountDetails(result,jsObj)
+{
+ $("#subscriptionsStreamingMoreDiv").hide();
+		$(".placeholderCenterDiv").children().remove();
+		clearAllFavoriteLinkDivs();
+		clearAllSubscriptionDivs();
+	if(document.getElementById("showNewsCountTable"))
+		document.getElementById("showNewsCountTable").innerHTML='';
+	
+	$('#subscriptionsStreamingData').children().remove();
+	$("#headerDiv").html('');
+	$("#impdatesDiv").hide();
+	$("#headerDiv").html('<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'');
+	var maxCount = getMaxCount(result);
+
+	var str = "";
+	if(maxCount >0)
+	{
+		str+= '<strong>Today\' s  Total News Overview :</strong> <table cellspacing="2px" cellpadding="6px" width="100%" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
+		str+= '    <tr style="text-align:center">';
+		str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>';
+ 		str+= '     </tr>';
+		
+		for(i=0 ; i < maxCount ; i++)
+		{
+			if(result[0].fileVOList[i] != null || result[1].fileVOList[i] != null || 
+				result[2].fileVOList[i] != null || result[3].fileVOList[i] != null ||
+				result[4].fileVOList[i] != null)
+			{
+				str+= '<tr style="text-align:center">';
+				
+				if(result[0].fileVOList[i] != null)
+					str+= '<td>'+result[0].fileVOList[i].categoryType+' -   '+result[0].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+				
+				if(result[1].fileVOList[i] != null)
+					str+= '<td>'+ result[1].fileVOList[i].source+' -   '+result[1].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+
+				if(result[2].fileVOList[i] != null)
+					str+= '<td>'+  result[2].fileVOList[i].language+' -   '+ result[2].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+				
+				if(result[3].fileVOList[i] != null)
+				{
+					if(result[3].fileVOList[i].importance == 'High')
+						str+= '<td><b><span style="color:red">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+					if(result[3].fileVOList[i].importance == 'Medium')
+						str+= '<td><b><span style="color:green">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+					if(result[3].fileVOList[i].importance == 'Low')
+						str+= '<td><b><span style="color:ActiveCaption">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+				}
+				else
+					str+= '<td style="text-align:center">--</td>';
+				
+				if(result[4].fileVOList[i] != null)	
+					str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   '+ result[4].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+			
+				str+= '	  </tr>';
+			}
+		}
+  
+		str+= '<table>';
+		document.getElementById("showNewsCountTable").innerHTML = str;
+	}
+}
+*/
+function callAjaxForDashBoard(jsObj,url){
+
+var myResults;	
+var callback = {			
+    success : function( o ) {
+		try {												
+			myResults = YAHOO.lang.JSON.parse(o.responseText);	
+			   
+			 if(jsObj.queryType == "getCount")
+			 {
+			   showNewsCountDetails(myResults,jsObj);
+			   //hideScrolling();
+			 }
+			 else if(jsObj.queryType == "getNews")
+			 {	
+				newsDetails = myResults;
+				showNewsDetails(myResults);
+				//document.getElementById("ajaxImg").style.display="none";
+			 }
+			
+			
+		}catch (e) {   		
+		   	//alert("Invalid JSON result" + e);   
+		}  
+    },
+    scope : this,
+    failure : function( o ) {
+     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+              }
+    };
+
+YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}	
 	
 
 
@@ -767,7 +1133,7 @@ var impDates = new Array();
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			//var url = //"updateUserSettingsDetailsAction.action?"+rparam;						
+			//var url = "updateUserSettingsDetailsAction.action?"+rparam;						
 		//callAjax(jsObj,url);
 
 	var url = "getTotalSettingsOptionsOfAnUser.action";
