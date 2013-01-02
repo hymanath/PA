@@ -16,7 +16,7 @@ import com.itgrids.partyanalyst.dao.ICandidateWebsiteDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
-import com.itgrids.partyanalyst.dao.ICasteStatewiseDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
@@ -42,7 +42,7 @@ import com.itgrids.partyanalyst.model.CandidateCaste;
 import com.itgrids.partyanalyst.model.CandidatePhone;
 import com.itgrids.partyanalyst.model.CandidateWebsite;
 import com.itgrids.partyanalyst.model.Caste;
-import com.itgrids.partyanalyst.model.CasteStatewise;
+import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.PhoneNumber;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.social.dao.ICandidateSocialDAO;
@@ -64,7 +64,7 @@ private INominationDAO nominationDAO;
 private ICasteCategoryDAO casteCategoryDAO;
 private ICasteCategoryGroupDAO casteCategoryGroupDAO;
 private ICasteDAO casteDAO;
-private ICasteStatewiseDAO casteStatewiseDAO;
+private ICasteStateDAO casteStateDAO;
 private ITehsilDAO tehsilDAO;
 private SocialNetworkVO socialNetworkVO; 
 private CandidateDetailsVO candidateDetailsVO;
@@ -235,11 +235,11 @@ public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 public ICasteDAO getCasteDAO() {
 	return casteDAO;
 }
-public ICasteStatewiseDAO getCasteStatewiseDAO() {
-	return casteStatewiseDAO;
+public ICasteStateDAO getCasteStatewiseDAO() {
+	return casteStateDAO;
 }
-public void setCasteStatewiseDAO(ICasteStatewiseDAO casteStatewiseDAO) {
-	this.casteStatewiseDAO = casteStatewiseDAO;
+public void setCasteStatewiseDAO(ICasteStateDAO casteStateDAO) {
+	this.casteStateDAO = casteStateDAO;
 }
 public void setCasteDAO(ICasteDAO casteDAO) {
 	this.casteDAO = casteDAO;
@@ -509,7 +509,7 @@ public List<SocialNetworkVO> getCasteName(Long casteStateId) {
 	try
 	{
 	
-		List<Object[]> obj = casteStatewiseDAO.getStatewiseCastNames(1l);
+		List<Object[]> obj = casteStateDAO.getStatewiseCastNames(1l);
 	if(obj!=null)
 		for(Object[] params:obj){
 			socialNetworkVO = new SocialNetworkVO();
@@ -708,7 +708,7 @@ public void saveAddressContactDetails(CandidateDetailsVO candidateDetailsVO,Addr
 public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 	ResultStatus resultStatus = new ResultStatus();
 	CandidateCaste candidateCaste=null;
-	CasteStatewise casteStatewise=null;
+	CasteState casteStatewise=null;
 	Caste caste=null;
 	
 	try{
@@ -720,9 +720,9 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 		
 		
 		if(candidateDetailsVO.getCasteStateId()==null)
-			casteStatewise=new CasteStatewise();
+			casteStatewise=new CasteState();
 		else
-			casteStatewise = casteStatewiseDAO.get(candidateDetailsVO.getCasteStateId());
+			casteStatewise = casteStateDAO.get(candidateDetailsVO.getCasteStateId());
 		
 		
 		if(candidateDetailsVO.getCasteId()==null ||candidateDetailsVO.getCasteId()==0 )
@@ -764,7 +764,7 @@ public ResultStatus insertCasteDetails(CandidateDetailsVO candidateDetailsVO){
 			if(candidateDetailsVO.getCasteGroupId() != null && candidateDetailsVO.getCasteGroupId()!=0)
 			casteStatewise.setCasteCategoryGroup(casteCategoryGroupDAO.get(candidateDetailsVO.getCasteGroupId()));
 		}
-	   casteStatewise=casteStatewiseDAO.save(casteStatewise);
+	   casteStatewise=casteStateDAO.save(casteStatewise);
 	
 	candidateCaste.setCandidate(candidateDAO.get(candidateDetailsVO.getCandidateId()));
 	candidateCaste.setCasteStatewise(casteStatewise);
@@ -890,7 +890,7 @@ public void saveWebsiteAddressDetails(CandidateDetailsVO candidateDetailsVO){
 public List<SelectOptionVO> getCasteNamesByAutoPopulate(Long stateId,String letters){
 	
 	List<SelectOptionVO> casteNamesAndIds = new ArrayList<SelectOptionVO>();
-	List<Object[]> castNames =casteStatewiseDAO.getCasteNamesByAutoPopulate(stateId,letters);
+	List<Object[]> castNames =casteStateDAO.getCasteNamesByAutoPopulate(stateId,letters);
 	
 	for(Object[] cast:castNames){
 	   if(cast[0]!= null && cast[1] != null)
