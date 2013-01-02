@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -95,6 +96,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private ICategoryValuesDAO categoryValuesDAO;
 	private TransactionTemplate transactionTemplate = null;
 	//private IVoterCategoryValues voterCategoryValues;
+	private IPublicationDateDAO publicationDateDAO;
 	
 	public ICategoryValuesDAO getCategoryValuesDAO() {
 		return categoryValuesDAO;
@@ -408,8 +410,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
 	}
-
-	
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
+	}
 	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId){
 		try{
 		if(type.equalsIgnoreCase("constituency")){
@@ -2591,4 +2597,57 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				
 				return selectOptionVO;
 }
+
+
+	public List<SelectOptionVO> getAllPublicationDates()
+	{
+		List<SelectOptionVO> publicationDateslist =  new ArrayList<SelectOptionVO>(0);
+		SelectOptionVO selectOptionVO = null;
+		try{
+			
+			List<Object[]> list = publicationDateDAO.getAllPublicationDates();
+			if(list != null && list.size() > 0)
+			{
+				
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					publicationDateslist.add(selectOptionVO);
+				}
+			}
+			return publicationDateslist;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAllPublicationDates() Method, Exception - "+e);
+			return publicationDateslist;
+		}
+	}
+	
+	public List<SelectOptionVO> getConstituenciesList()
+	{
+		List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);;
+		SelectOptionVO selectOptionVO = null;
+		try{
+			
+			List<Object[]> list = voterTempDAO.getConstituencyList();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					constituencyList.add(selectOptionVO);
+				}
+			}
+			return constituencyList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error(" Exception Occured in getConstituenciesList() Method, Exception - "+e);
+			return constituencyList;
+		}
+	}
+
 }
