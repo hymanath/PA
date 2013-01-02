@@ -355,14 +355,6 @@ function storeCategoryValues(){
 		callAjax(jsObj,url);
 }
 
-function addFieldsToMainDiv()
-{
-	name = $('#selectType :selected').text();
-	value = $('#catrgoeryValue').val();
-	
-	$('#addFieds').append('<div><lable>'+name+':</lable><select value="'+value+'" id="0"  style="width: 165px; margin-left:131px;"></select></div>');
-	$('#popupDiv').dialog("close");
-}
 
  </script>
 </head>
@@ -438,19 +430,22 @@ function addFieldsToMainDiv()
 				id="partyId" list="partyGroupList" 
 				listKey="id" listValue="name"/>
 		</div>
-				<div id="addFieds" style="float:left;"></div>
+		
+		<div id="addFieds" style="float:left;">
+		
+		</div>
 		<a onClick="openPopUp();">AddMore</a>
 		</fieldset>
 <div style="float:right;">
-<input class="btn btn-success" type="submit" value="Update" >
+<input class="btn btn-success" type="submit" value="Update">
 </div>
 <!--PRASAD-->
 <div id="popupDiv" style="display:none;">
-	 <div id="groupCreation" >
+	
 	 <lable name="CreateNewGroup">CreateNewGroup : </lable>
 	 <input type="text" id="CreateNewGroupText"style="width: 278px;"></input>
 	 <input type="button" value="create" style="float:right;margin-top:4px;"onClick="storeGroupValue()"></input>
-	 </div>
+	
 	 <div name="valuesDisplayDiv" style="border:1px solid;">
  		<div>
 		<label for="name">Category Type:</label>
@@ -466,10 +461,8 @@ function addFieldsToMainDiv()
 		</div>
 	
 		<div style="">
-			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds();storeCategoryValues();addFieldsToMainDiv()";></input>
+			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds();storeCategoryValues();";></input>
 		</div>
-		
-		
 		
 	</div>
 </div>
