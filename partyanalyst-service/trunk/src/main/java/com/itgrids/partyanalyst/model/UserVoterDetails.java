@@ -28,6 +28,7 @@ public class UserVoterDetails implements java.io.Serializable{
 	private User user;
 	private Voter voter;
 	private Party party;
+	private CasteState casteState;
 	
 	public UserVoterDetails(){
 	}
