@@ -51,9 +51,9 @@ public class CasteDAO extends GenericDaoHibernate<Caste, Long> implements ICaste
 	
 
 /*	public Object casteNames(String searchText,Long stateId){
-		StringBuffer queryBuffer = new StringBuffer("select model.caste.casteName from casteStatewise where state.stateId=? ");
+		StringBuffer queryBuffer = new StringBuffer("select model.caste.casteName from casteState where state.stateId=? ");
 	}*/
-//select model.castestatewise.caste.casteName from candidateCaste model where model.castestatewise.state.stateId=? and model.castestatewise.caste.
+//select model.castestate.caste.casteName from candidateCaste model where model.castestatewise.state.stateId=? and model.castestatewise.caste.
 	/*
 	"select lastname from candidate where candidate_id in (select candidate_id from nomination 
 	where nomination_id in (select
