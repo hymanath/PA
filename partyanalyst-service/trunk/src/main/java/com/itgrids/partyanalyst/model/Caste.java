@@ -28,7 +28,7 @@ public class Caste extends BaseModel implements Serializable{
 	private Long casteId;
 	private String casteName;
 	
-	private Set<CasteState> casteStatewise=new HashSet<CasteState>(0);
+	private Set<CasteState> casteState = new HashSet<CasteState>(0);
 	
 	public Caste(){
 	
@@ -59,12 +59,12 @@ public class Caste extends BaseModel implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "caste")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<CasteState> getCasteStatewise() {
-		return casteStatewise;
+	public Set<CasteState> getCasteState() {
+		return casteState;
 	}
 
-	public void setCasteStatewise(Set<CasteState> casteStatewise) {
-		this.casteStatewise = casteStatewise;
+	public void setCasteState(Set<CasteState> casteState) {
+		this.casteState = casteState;
 	}
 	
 

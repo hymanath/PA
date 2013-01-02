@@ -35,16 +35,16 @@ public class CasteCategoryGroup extends BaseModel implements Serializable{
 	private String casteCategoryGroupName;
 	
 	
-	private Set<CasteState> casteStatewise=new HashSet<CasteState>();
+	private Set<CasteState> casteState = new HashSet<CasteState>();
 	
 		
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "casteCategoryGroup")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<CasteState> getCasteStatewise() {
-		return casteStatewise;
+	public Set<CasteState> getCasteState() {
+		return casteState;
 	}
-	public void setCasteStatewise(Set<CasteState> casteStatewise) {
-		this.casteStatewise = casteStatewise;
+	public void setCasteState(Set<CasteState> casteState) {
+		this.casteState = casteState;
 	}
 
 	

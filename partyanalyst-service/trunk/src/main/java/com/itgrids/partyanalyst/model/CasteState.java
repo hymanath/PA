@@ -96,7 +96,7 @@ public class CasteState extends BaseModel implements Serializable{
 		this.caste = caste;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "casteStatewise")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "casteState")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
 	public Set<CandidateCaste> getCandidateCaste() {
 		return candidateCaste;
