@@ -1267,7 +1267,6 @@
 		<property name="candidateDAO" ref="candidateDAO"/>
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="casteDAO" ref="casteDAO" />
-		<property name="casteStatewiseDAO" ref="casteStatewiseDAO" />
 		<property name="casteCategoryDAO" ref="casteCategoryDAO"></property>
 		<property name="casteCategoryGroupDAO" ref="casteCategoryGroupDAO"></property>
 		<property name="tehsilDAO" ref="tehsilDAO"></property>
@@ -1317,6 +1316,7 @@
 		<property name="categoryValuesDAO" ref="categoryValuesDAO" />
 		<property name="voterCategoryValuesDAO" ref="voterCategoryValuesDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
