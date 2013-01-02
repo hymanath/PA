@@ -149,7 +149,29 @@
 google.load("visualization", "1", {packages:["corechart"]});
 </script>
 <script type="text/javascript"> 
+$(document).ready(function(){
 
+	var userId = '${sessionScope.USER.registrationID}';
+
+  if(userId != null && userId.length > 0)
+  {
+  var firstName = '${sessionScope.USER.firstName}';
+  var lastName = '${sessionScope.USER.lastName}';
+  
+  $("#lasttNmId").val(lastName);
+  $("#fisrtNmId").val(firstName);
+  
+  $("#lasttNmId").attr("disabled", "disabled"); 
+  $("#fisrtNmId").attr("disabled", "disabled"); 
+	
+  }
+  else{
+  
+	placeDefaultValueForFirstName("fisrtNmId");
+	placeDefaultValueForLarstName("lasttNmId");
+	
+  }
+});
 
 
 var constituencies = [];
@@ -363,10 +385,10 @@ function initializeResultsTable() {
 		 </div>	
 	
 			  <div class="pull-left abs">
-			<input type="text" value="First Name" id="fisrtNmId" onClick="clearDefaultFirstname(this.id);" onBlur="placeDefaultValueForFirstName(this.id);" /><div id="firstNmErrMsg" class="emsg"></div></div>
+			<input type="text" value='${sessionScope.USER.firstName}' id="fisrtNmId" onClick="clearDefaultFirstname(this.id);" onBlur="placeDefaultValueForFirstName(this.id);" /><div id="firstNmErrMsg" class="emsg"></div></div>
 			
 			<div class="pull-left abs">
-			<input  style="margin-left:5px;" type="text" value="Last Name" id="lasttNmId" onClick="clearDefaultLastname(this.id);" onBlur="placeDefaultValueForLarstName(this.id);"/><div id="lastNmErrMsg" class="emsg"></div></div>
+			<input  style="margin-left:5px;" type="text" value='${sessionScope.USER.firstName}' id="lasttNmId" onClick="clearDefaultLastname(this.id);" onBlur="placeDefaultValueForLarstName(this.id);"/><div id="lastNmErrMsg" class="emsg"></div></div>
 		
 		
 		<div class="pull-right">
@@ -382,7 +404,7 @@ function initializeResultsTable() {
 	<div class='span9 commentsec'>
 
 		 <div style="margin-bottom:8px;">${comment.comment}</div>
-		 <span class="label label-info">Posted By: ${comment.firstName}&nbsp; ${comment.lastName}  </span>	
+		 <span class="label label-info">Posted By: ${comment.firstName} ${comment.lastName}  </span>	
 		 <span id="abuseSuccess${comment.commentId}"></span>	 
 		
 			
@@ -570,9 +592,10 @@ opinionPollChart();
 
 
 function saveComment(){
+
 var jsObj =
 			{   
-			pollId:${questionsOptionsVO.questionId},
+			pollId:'${questionsOptionsVO.questionId}',
 			comment:$('#userComment').val(),
 			firstName:$('#fisrtNmId').val(),
 			lastName:$('#lasttNmId').val(),
@@ -627,9 +650,19 @@ function callAjaxForComment(jsObj,url,commentId)
 				$('#successDiv').css('display','block');
 
 			$('#successDiv').text("Your Comment Posted Successfully").css(cssObj).show().delay(2000).fadeOut(400);
+			
+			var userId = '${sessionScope.USER.registrationID}';
 
-			paceDefaultValuesForFields();
-				
+			if(userId != null && userId.length > 0)
+			{
+			$('#userComment').val("Post your comment here ....");
+			}
+			else
+			{
+			 $('#userComment').val("Post your comment here ....");
+			 $('#fisrtNmId').val("First Name");
+			 $('#lasttNmId').val("Last Name");
+			}
 				
 			}else if(jsObj.task == "abuseComment"){
 				
@@ -664,7 +697,7 @@ function addDynamicDiv(jsObj,myResults){
 
 	str+='<div class="span9 commentsec">';
 	str+='<div style="margin-bottom:8px;">'+jsObj.comment+'</div>';
-	str+='<span class="label label-info">Posted By:'+jsObj.firstName+' &nbsp;&nbsp; '+jsObj.lastName+'  </span>';	
+	str+='<span class="label label-info">Posted By:'+jsObj.firstName+' '+jsObj.lastName+'  </span>';	
 	str+='<span id="abuseSuccess'+myResults+'"></span>';	
 	str+='<a class="label label-important pull-right" style="margin-top:3px;margin-left:280px;" title="Click Here To Abuse This Comment" onClick="callAjaxToAbuse('+myResults+');" id="${comment.commentId}">Report Abuse</a>';
    str+='</div>';
@@ -825,14 +858,7 @@ $('#resultsDiv').html(str);
 
 }
 
-function paceDefaultValuesForFields(){
 
-	   $('#userComment').val("Post your comment here ....");
-	   $('#fisrtNmId').val("First Name");
-	   $('#lasttNmId').val("Last Name");
-		
-		
-}
 </script>
 
 </body>
