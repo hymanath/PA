@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.hibernate.UserCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -2197,7 +2198,8 @@ public String roundTo2DigitsFloatValue(Float number){
 public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user){
 	List<Voter> voterDetails=voterDAO.getVoterPersonalDetailsByVoterId(voterId);
 	VoterHouseInfoVO voterHouseInfoVO =null;
-	
+	AddressVO addressVO=null;
+	List<AddressVO> categories = new ArrayList<AddressVO>();
 	for(Voter voterInfo : voterDetails)
 		{
 	voterHouseInfoVO = new VoterHouseInfoVO();
@@ -2229,17 +2231,28 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user)
 	
 		for(UserCategoryValues userCategoryValue : userCategoryValues)
 		{ 
-			voterHouseInfoVO.setUserCategoryValuesId(userCategoryValue.getUserCategoryValuesId());
+		/*	voterHouseInfoVO.setUserCategoryValuesId(userCategoryValue.getUserCategoryValuesId());
 		voterHouseInfoVO.setUserCategoryValuesName(userCategoryValue.getUserCategoryName());
+		*/
+						addressVO = new AddressVO();
+						addressVO.setVoterCategoryValuesId(userCategoryValue.getUserCategoryValuesId());
+						addressVO.setVoterCategoryValuesName(userCategoryValue.getUserCategoryName());
+						categories.add(addressVO);
+						voterHouseInfoVO.setCategories(categories);
 		}
 		
 		List<CategoryValues> categoryValues=categoryValuesDAO.getCategoryValues();
 		
 		for(CategoryValues categoryValue : categoryValues)
 		{ 
+			addressVO = new AddressVO();
 		voterHouseInfoVO.setCategoryValuesId(categoryValue.getCategoryValuesId());
 		voterHouseInfoVO.setUserCategoryValuesId1(categoryValue.getUserCategoryValues().getUserCategoryValuesId());
-		voterHouseInfoVO.setCategoryValue(categoryValue.getCategoryValue());
+		
+		addressVO.setCategoryValue(categoryValue.getCategoryValue());
+		categories.add(addressVO);
+		voterHouseInfoVO.setCategories(categories);
+		//voterHouseInfoVO.setCategoryValue(categoryValue.getCategoryValue());
 		}
 		
 		List<VoterCategoryValues> voterCategoryValues= voterCategoryValuesDAO.getVoterCategoryValues1();
@@ -2336,14 +2349,15 @@ public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserV
 			
 			if(voterHouseInfoVO.getCategoryValuesId() !=null && !voterHouseInfoVO.getCategoryValuesId().equals(0)){
 				
-				categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(voterHouseInfoVO.getUserCategoryValuesId()));
+				categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(voterHouseInfoVO.getUserCategoryValuesId1()));
 				categoryValues.setCategoryValue(voterHouseInfoVO.getCategory().get(i).getValue());
-				//categoryValues.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
+				categoryValues.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
 				categoryValuesDAO.save(categoryValues);
 			}
 			if(voterHouseInfoVO.getCategory().get(i).getValue() != null && !voterHouseInfoVO.getCategory().get(i).getValue().equalsIgnoreCase("")){
 				voterCategoryValues.setCategoryValues(categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId()));
 				voterCategoryValues.setVoter(voterDAO.get(voterHouseInfoVO.getVoterId()));
+				voterCategoryValues.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
 				voterCategoryValuesDAO.save(voterCategoryValues);
 			}
 	}
