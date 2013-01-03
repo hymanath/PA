@@ -9,23 +9,69 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst</title>
-
-	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+	<style type="text/css">
+	#voterManagementMainDiv{
+		float: none;margin: 35px auto 20px;padding-top: 10px;
+		text-align: center;
+	}
+	fieldset {
+		border: 1px solid #D3D3D3;
+	}
+	.headingDiv{
+		background: none repeat scroll 0 0 #06ABEA;border-radius: 4px;color: #FFFFFF;
+		font-family: arial;font-size: 17px;font-weight: bold;padding: 3px;text-align: center;
+		width: 440px; margin-bottom: 15px;
+	}
+	.voterManagementInnerDiv p{font-size: 13px;}
+	#voterDataInsertId{font-weight:bold;}
+	.errorMsgDiv{color: red;
+    font-size: 13px;
+    padding-bottom: 20px; padding-top: 15px;}
+	table{font-size:13px;}
+	</style>
 </head>
 <body>
 
-<div id="voterManagementMainDiv">
+<div id="voterManagementMainDiv" class="span8">
+ <div class="headingDiv">Copy voter data from temporary table to voter table</div>
+
+  <fieldset>
+	<div class="errorMsgDiv"></div>
 	<div class="voterManagementInnerDiv">
 		
-
-		<p>Constituency :<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="constituenciesList" id="constituencies_List" list="constituenciesList" listKey="id" listValue="name"></s:select></p>
-		 <p>Publication Date :<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="publicationDateList" id="publicationDate_List" list="publicationDateList" listKey="id" listValue="name"></s:select></p>
-		<p>Min Result:<input type="text" id="minResults"/></p>
-		<p>Max Result :<input type="text" id="maxResults"/></p>
-		<p><input type="button" value="submit" id="voterDataInsertId"/></p>
-		
+		<!-- <p>Constituency : &nbsp;&nbsp;&nbsp;&nbsp;<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="constituenciesList" id="constituencies_List" list="constituenciesList" listKey="id" listValue="name"></s:select></p>
+		 <p>Publication Date : <s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="publicationDateList" id="publicationDate_List" list="publicationDateList" listKey="id" listValue="name"></s:select></p>
+		<p>Starting From :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="minResults"/></p>
+		<p>Max Result :&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="maxResults"/></p>
+		<p><input type="button" value="submit" id="voterDataInsertId" class="btn btn-info"/></p>-->
+	<center>
+		<table cellpadding="4">
+			<tr>
+				<td>Constituency </td>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="constituenciesList" id="constituencies_List" list="constituenciesList" listKey="id" listValue="name"></s:select></td>
+			</tr>
+			<tr>
+				<td>Publication Date</td>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="publicationDateList" id="publicationDate_List" list="publicationDateList" listKey="id" listValue="name"></s:select></td>
+			</tr>
+			<tr>
+				<td>Starting From</td>
+				<td>:</td>
+				<td><input type="text" id="minResults"/></td>
+			</tr>
+			<tr>
+				<td>Max Result</td>
+				<td>:</td>
+				<td><input type="text" id="maxResults"/></td>
+			</tr>
+		</table>
+		<p><input type="button" value="submit" id="voterDataInsertId" class="btn btn-info"/></p>
+	</center>		
 	</div>
-
+	</fieldset>
 </div>
 
 
@@ -33,7 +79,6 @@
 
 <script type="text/javascript">
 
-/*
 function callAjax(jsObj, url){
 
 
@@ -44,11 +89,9 @@ function callAjax(jsObj, url){
 							
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							
-							if(jsObj.task == "getConstituencies")
+							if(jsObj.task == "insertVoterData")
 							{
-								clearOptionsListForSelectElmtId(jsObj.elmtId);
-								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
-								hideBusyImgWithId(jsObj.elmtId);
+								showVoterinsertDataStatus(myResults);
 							}
 							
 						}
@@ -65,7 +108,6 @@ function callAjax(jsObj, url){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-*/
 	
 	$(document).ready(function() {
 		$("#voterDataInsertId").click(function(){
@@ -73,15 +115,73 @@ function callAjax(jsObj, url){
 			var publicationDateId = $("#publicationDate_List").val();
 			var minResults = $.trim($("#minResults").val());
 			var maxResults = $.trim($("#maxResults").val());
-
+			var str = '';
+			var errorEle = $(".errorMsgDiv");
+			errorEle.html('');
+			if(constituencyId == 0 || constituencyId == '')
+			{
+				errorEle.html('Please Select Constituency');
+				return;
+			}
+			else if(publicationDateId == 0 || publicationDateId== '')
+			{
+				errorEle.html('Please Select Publication Date');
+				return;
+			}
+			else if(minResults == '' && maxResults == '')
+			{
+				errorEle.html('Starting From and Max Result is mandatory fields.');
+				return;
+			}
+			else if(minResults == '')
+			{
+				errorEle.html('Starting From is mandatory field.');
+				return;
+			}
+			else if(maxResults == '')
+			{
+				errorEle.html('Max Result is mandatory field.');
+				return;
+			}
+			else if(isNaN(minResults) && isNaN(maxResults))
+			{
+				errorEle.html('Starting From and Max Result Must be integer.');
+				return;
+			}
+			else if(isNaN(minResults))
+			{
+				errorEle.html('Starting From Must be integer.');
+				return;
+			}
+			else if(isNaN(maxResults))
+			{
+				errorEle.html('Max Result Must be integer.');
+				return;
+			}
+			else if(minResults < 0)
+			{
+				errorEle.html('Starting From Must be positive number.');
+				return;
+			}
+			else if(maxResults < 0)
+			{
+				errorEle.html('Max Result Must be positive number.');
+				return;
+			}
+			else if(minResults > maxResults)
+			{
+				errorEle.html('Max Result must be greaterthan Starting From.');
+				return;
+			}
+			errorEle.html('');
 			var jsObj=
 			{				
-			constituencyId: constituencyId,
-			publicationDateId: publicationDateId,
-			startIndex : minResults,
-			maxResults : maxResults,
-			task: "insertVoterData",
-			elmtId: element 	
+				constituencyId: constituencyId,
+				publicationDateId: publicationDateId,
+				startIndex : minResults,
+				maxResults : maxResults,
+				task: "insertVoterData"
+				
 			}
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -91,6 +191,10 @@ function callAjax(jsObj, url){
 		});
 
 	});
+
+	function showVoterinsertDataStatus(results)
+	{
+	}
 
 </script>
 </body>
