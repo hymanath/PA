@@ -2631,10 +2631,16 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		SelectOptionVO selectOptionVO = null;
 		try{
 			
-			List<Object[]> list = voterTempDAO.getConstituencyList();
+			List<Object> list = voterTempDAO.getconstituencyNames();
+			
 			if(list != null && list.size() > 0)
 			{
-				for(Object[] params : list)
+				List<String> constituencyNamesList = new ArrayList<String>(0);
+				for(Object param : list)
+					constituencyNamesList.add(param.toString());
+				
+				List<Object[]> list2 = voterTempDAO.getConstituencies(constituencyNamesList);
+				for(Object[] params : list2)
 				{
 					selectOptionVO = new SelectOptionVO();
 					selectOptionVO.setId((Long)params[0]);
