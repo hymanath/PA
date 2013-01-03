@@ -1184,54 +1184,104 @@ function buildVotersInFamily(results,hno){
 }
 
 function buildCastInfoData(myresults,jsObj)
-	{
-	
+{
+	var result = myresults.voterCastInfodetails;
 	var ajaxImageDiv = document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
-	var totalVoters = myresults.voterCastInfodetails.totalVoters;
-	var totalCasts = myresults.voterCastInfodetails.totalCasts;
-	var localCastStatsTabContent = '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;"> Total Voters : '+totalVoters+' ';
-	localCastStatsTabContent+='&nbsp;&nbsp;&nbsp; Total Casts : '+totalCasts+'</div>';
-	localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
-	var typeName =jsObj.typename;	
+	var totalVoters = result.totalVoters;
+	var totalCasts = result.totalCasts;
+	
+	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"> Total Voters : '+totalVoters+'&nbsp;&nbsp;&nbsp;';
+	localCastStatsTabContent += 'Total Casts : '+totalCasts+'<br><br>';
+	localCastStatsTabContent += '<span>Caste Assigned Voters : '+result.maleVoters+'</span>';
+	localCastStatsTabContent += '<span style="padding-left:40px;">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
+	localCastStatsTabContent += '<br><br>';
+
+	for(var i=0;i<result.castCategoryWiseVotersList.length;i++)
+		localCastStatsTabContent += '<span style="padding-left:25px;">'+result.castCategoryWiseVotersList[i].name+' Voters : '+result.castCategoryWiseVotersList[i].id+'</span>';
+
+	localCastStatsTabContent += '</div>';
+	localCastStatsTabContent_headerEl.innerHTML = localCastStatsTabContent;
+
+	var typeName = jsObj.typename;	
 	var publicationDateId=jsObj.publicationDateId;
 	var boothId=jsObj.id;
 	var type =jsObj.type;
 	var	castIno = new Array();
-	var cast = myresults.voterCastInfodetails.castVOs;
+	
+	var cast = result.voterCastInfoVOList;
 		for(var i in cast)
 		{
 		var castStats = 
 			{
 			caste : cast[i].castName,
-			castePopulation : cast[i].castCount,
-			malePopulation : cast[i].malevoters,
-			femalePopulation : cast[i].femalevoters,
-			castePercentage:cast[i].castPercentage,
+			castePopulation : cast[i].totalVoters,
+			malePopulation : cast[i].maleVoters,
+			femalePopulation : cast[i].femaleVoters,
+			castePercentage:cast[i].votesPercent,
 			};
 		castIno.push(castStats);
 		constMgmtMainObj.castStatsArray =castIno; 
 		}
-		if(cast != ''&& type =='booth')
+
+		if(cast != '' && type =='booth')
 		{
 		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId);	
 		}
-		else if(cast != ''&& type!='booth')
+		else if(cast != '' && type!='booth')
 		{
-		buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId);	
+		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId);	
 		}
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		$("#localCastStatsTabContent_body").html("No Data Found");
 		}
    
-	}
+}
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId)
 	{
 	
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
-	
+	 var castArray = constMgmtMainObj.castStatsArray;
+	 
+         var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
+          str+='  <thead>';
+          str+='   <tr>';
+          str+='     <th>Caste</th>';
+		  str+='     <th>Caste Population</th>';
+          str+='     <th>Male Population</th>';
+          str+='     <th>Female Population</th>';
+          str+='	 <th>Caste Percentage</th>';
+          str+='   </tr>';
+          str+='  </thead>';
+          str+='  <tbody>';
+	   for(var i in castArray){
+	      str +='   <tr>';
+		  str +='		<td>'+castArray[i].caste+'</td>';
+          str +='		<td>'+castArray[i].castePopulation+'</td>';
+          str +='		<td>'+castArray[i].malePopulation+'</td>';
+		  str +='		<td>'+castArray[i].femalePopulation+'</td>';
+		  str +='		<td>'+castArray[i].castePercentage+'</td>';
+          str+='   </tr>';
+	   }
+          str+='  </tbody>';
+          str+=' </table>';
+	  
+	  $("#localCastStatsTabContent_body").html(str);
+	  
+	  	$('#localCastStatsJqTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null
+     
+	  
+    ] 
+		});
+
+/*
 	YAHOO.widget.DataTable.casteLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var caste = oData;
@@ -1267,7 +1317,7 @@ function buildCastInfoData(myresults,jsObj)
 		return {
 				oDS: localCastStatsDataSource,
 				oDT: localCastStatsDataTable
-			};
+			};*/
 	}
 
 	function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
@@ -1303,7 +1353,7 @@ function buildCastInfoData(myresults,jsObj)
 		return {
 				oDS: localCastStatsDataSource,
 				oDT: localCastStatsDataTable
-			};
+			};  
 
 		}
   function  buildFamilyMembers(result,publicationDateId,type){

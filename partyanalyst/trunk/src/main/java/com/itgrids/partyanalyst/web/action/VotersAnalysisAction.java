@@ -289,18 +289,23 @@ public String getVotersCastInfoByConstituency()
 		e.printStackTrace();
 	}
 	
+	session = request.getSession();
+	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+	Long userId =  regVO.getRegistrationID();
+	
 	if(jObj.getString("task").equalsIgnoreCase("getCastInfo"))
 	{
 		constituencyManagementVO = new ConstituencyManagementVO();
-		String id = jObj.getString("id");
+		Long id = jObj.getLong("id");
 		String type = jObj.getString("type");
-		String publicationId = jObj.getString("publicationDateId");
+		Long publicationId = jObj.getLong("publicationDateId");
 		
-		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetails(new Long(id), new Long(publicationId),type);
+		//VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetails(new Long(id), new Long(publicationId),type);
+		
+		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastWiseDetailsInALocation(userId,type,id,publicationId);
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
-	
-		
 	}
+	
 	else if(jObj.getString("task").equalsIgnoreCase("getCastInfoForsubLevels"))
 	{
 		constituencyManagementVO = new ConstituencyManagementVO();
