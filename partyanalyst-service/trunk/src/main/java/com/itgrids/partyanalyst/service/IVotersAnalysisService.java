@@ -65,4 +65,6 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getAllPublicationDates();
 	
 	public List<SelectOptionVO> getConstituenciesList();
+	
+	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
 }

@@ -88,7 +88,7 @@ public void setBoothPublicationVoterDAO(
 	 }
 }*/
 
-public void testgetVoterDetailsByCaste()
+/*public void testgetVoterDetailsByCaste()
 {
 	List<Voter> list =boothPublicationVoterDAO.getVoterDetailsByCaste(206l,2l,"YERUKULA");
 	for(Voter params :list)
@@ -96,6 +96,42 @@ public void testgetVoterDetailsByCaste()
 		System.out.println(params.getFirstName());
 	}
 	
-}
+}*/
+
+	/*public void testGetVotersCountByPublicationId()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getVotersCountByPublicationId("constituency",232l,6l);;
+		System.out.println(list.size());
+		System.out.println(list.get(0)[0]+" -- "+list.get(0)[1]);
+		System.out.println(list.get(1)[0]+" -- "+list.get(1)[1]);
+	}*/
 	
+	/*public void testFindVotersCountByPublicationIdInALocation()
+	{
+		Long count = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody",83l,6l);
+		System.out.println(count);
+	}*/
+
+	/*public void testGetCastCategoryWiseVotersCountByPublicationIdInALocation()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getCastCategoryWiseVotersCountByPublicationIdInALocation(1l,"constituency",232l,6l);
+		System.out.println(list.size());
+		
+		for(Object[] params :list)
+		{
+			System.out.println(params[0]+"  --  "+params[1]);
+		}
+	}*/
+	
+	public void testGetCastAndGenderWiseVotersCountByPublicationIdInALocation()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(1l,"constituency",232l,6l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params :list)
+		{
+			System.out.println(params[0]+"  --  "+params[1]+"  --  "+params[2]);
+		}
+	}
 }

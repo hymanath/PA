@@ -80,4 +80,10 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Voter> findFamiliesInfo(Long boothId,Long publicationDateId,String houseNo);
 	
 	public List<Voter> getVoterDetailsByCaste(Long boothid,Long publicationDateId,String caste);
+	
+	public Long findVotersCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
+	
+	public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
 }
