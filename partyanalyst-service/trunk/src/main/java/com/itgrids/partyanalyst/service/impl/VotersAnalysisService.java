@@ -38,15 +38,9 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CategoryValuesDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserCategoryValuesDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -55,21 +49,19 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.CategoryValues;
-import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserCategoryValues;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.model.VoterCategoryValues;
+import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.social.service.ISocialService;
-import com.itgrids.partyanalyst.social.service.impl.SocialService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VotersAnalysisService implements IVotersAnalysisService{
@@ -605,6 +597,125 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
+	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	{
+		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		try{
+			Long totalVoters = getVotersCountByPublicationIdInALocation(locationType,locationId,publicationDateId);
+			Long votesConsidered = 0L;
+			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
+			voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
+			voterCastInfoVO.setTotalCasts(voterCastInfoVO.getVoterCastInfoVOList().size());
+			voterCastInfoVO.setTotalVoters(totalVoters);
+			
+			for(VoterCastInfoVO castInfoVO : voterCastInfoVO.getVoterCastInfoVOList())
+				votesConsidered = votesConsidered + castInfoVO.getTotalVoters();
+			
+			voterCastInfoVO.setMaleVoters(votesConsidered);
+			voterCastInfoVO.setFemaleVoters(totalVoters - votesConsidered);
+			return voterCastInfoVO;
+		}catch (Exception e) {
+			log.error("Exception Occured in getVotersCastWiseDetailsInALocation() Method, Exception is - "+e);
+			return voterCastInfoVO;
+		}
+	}
+	
+	public Long getVotersCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
+	{
+		try{
+			return boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation(locationType, locationId, publicationDateId);
+		}catch (Exception e) {
+			log.error("Exception Occured in getVotersCountByPublicationIdInALocation() method, Exception is - "+e);
+			return 0L;
+		}
+	}
+	
+	public List<SelectOptionVO> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	{
+		List<SelectOptionVO> castCategoryWiseList = new ArrayList<SelectOptionVO>(0);
+		try{
+			List<Object[]> list = boothPublicationVoterDAO.getCastCategoryWiseVotersCountByPublicationIdInALocation(userId, locationType, locationId, publicationDateId);
+			
+			if(list != null && list.size() > 0)
+				for(Object[] params : list)
+					castCategoryWiseList.add(new SelectOptionVO((Long)params[1],params[0].toString()));
+			
+			return castCategoryWiseList;
+		}catch (Exception e) {
+			log.error("Exception Ocuured in getCastCategoryWiseVotersCountByPublicationIdInALocation() Method, Exception is - "+e);
+			return castCategoryWiseList;
+		}
+	}
+	
+	
+	public List<VoterCastInfoVO> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	{
+		List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
+		try{
+			List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId);
+			
+			if(list != null && list.size() > 0)
+			{
+				VoterCastInfoVO voterCastInfoVO = null;
+				Long totalVotes = 0L;
+				
+				for(Object[] params : list)
+				{
+					voterCastInfoVO = getVoterCastInfoVOBasedOnCastName(params[0].toString(),resultList);
+					
+					if(voterCastInfoVO == null)
+					{
+						voterCastInfoVO = new VoterCastInfoVO();
+						voterCastInfoVO.setCastName(params[0].toString());
+					}
+					
+					String gender = params[1].toString();
+					if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						voterCastInfoVO.setMaleVoters((Long)params[2]);
+					else
+						voterCastInfoVO.setFemaleVoters((Long)params[2]);
+					
+					voterCastInfoVO.setTotalVoters(voterCastInfoVO.getMaleVoters() + voterCastInfoVO.getFemaleVoters());
+					totalVotes = totalVotes + (Long)params[2];
+					resultList.add(voterCastInfoVO);
+				}
+				
+				for(VoterCastInfoVO castInfoVO : resultList)
+				{
+					String percentage = "0.00";
+					try{
+						percentage = (new BigDecimal(castInfoVO.getTotalVoters()*(100.0)/totalVotes.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					}catch (Exception e) {}
+					finally{
+						castInfoVO.setVotesPercent(percentage);
+					}
+				}
+			}
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCastAndGenderWiseVotersCountByPublicationIdInALocation() Method, Exception is - "+e);
+			return resultList;
+		}
+	}
+	
+	public VoterCastInfoVO getVoterCastInfoVOBasedOnCastName(String casteName,List<VoterCastInfoVO> list)
+	{
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(VoterCastInfoVO voterCastInfoVO : list)
+					if(voterCastInfoVO.getCastName().equalsIgnoreCase(casteName))
+						return voterCastInfoVO;
+				return null;
+			}
+			
+			else 
+				return null;
+		}catch (Exception e) {
+			log.error("Exception Occured in getVoterCastInfoVOBasedOnCastName(), Exception is - "+e);
+			return null;
+		}
+	}
 	
 	//get CastInfo For Constituency/Mandal/Panchayat/Booth
 	

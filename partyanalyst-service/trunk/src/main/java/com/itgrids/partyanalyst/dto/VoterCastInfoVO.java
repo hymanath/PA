@@ -1,22 +1,20 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VoterCastInfoVO {
 
-	private Long totalVoters;
-	private Long maleVoters;
-	private Long femaleVoters;
+	private Long totalVoters = 0L;
+	private Long maleVoters = 0L;
+	private Long femaleVoters = 0L;
 	private List<CastVO> castVOs;
 	private List<VoterCastInfoVO> voterCastInfoVOList;
 	private VoterCastInfoVO voterCastInfoVO;
 	private String mandalName;
-	
-	private int totalCasts;
-		
-	
-
+	private String castName;
+	private int totalCasts = 0;
+	private List<SelectOptionVO> castCategoryWiseVotersList;
+	private String votesPercent;
 
 	public VoterCastInfoVO(){
 		
@@ -96,6 +94,31 @@ public class VoterCastInfoVO {
 
 	public void setVoterCastInfoVO(VoterCastInfoVO voterCastInfoVO) {
 		this.voterCastInfoVO = voterCastInfoVO;
+	}
+
+	public String getCastName() {
+		return castName;
+	}
+
+	public void setCastName(String castName) {
+		this.castName = castName;
+	}
+
+	public List<SelectOptionVO> getCastCategoryWiseVotersList() {
+		return castCategoryWiseVotersList;
+	}
+
+	public void setCastCategoryWiseVotersList(
+			List<SelectOptionVO> castCategoryWiseVotersList) {
+		this.castCategoryWiseVotersList = castCategoryWiseVotersList;
+	}
+
+	public String getVotesPercent() {
+		return votesPercent;
+	}
+
+	public void setVotesPercent(String votesPercent) {
+		this.votesPercent = votesPercent;
 	}
 	
 	
