@@ -232,7 +232,8 @@ td.tdStyle{
     
 	margin-left:auto;
 	margin-right:auto;
-	width:97%;
+	width:990px;
+	float:none;
     
 		
  }
