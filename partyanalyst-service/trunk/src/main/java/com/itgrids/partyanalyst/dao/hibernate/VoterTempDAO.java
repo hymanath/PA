@@ -31,9 +31,28 @@ public class VoterTempDAO extends GenericDaoHibernate<VoterTemp,Long> implements
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(" Select DISTINCT  model.constituencyId , model.name from Constituency model, ");
-		stringBuilder.append(" VoterTemp model1 where model1.constituencyName = model.name and model.electionScope.electionType.electionType = 'Assembly'");
+		stringBuilder.append(" VoterTemp model1 where model.name  = model1.constituencyName and model.electionScope.electionType.electionType = 'Assembly'");
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
 		return queryObj.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object> getconstituencyNames()
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select DISTINCT model.constituencyName from VoterTemp model ");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencies(List<String> constituencyNames)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select  model.constituencyId , model.name from Constituency model ");
+		stringBuilder.append(" where model.name in(:constituencyNames) and model.electionScope.electionType.electionType = 'Assembly' order by model.name desc");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		queryObj.setParameterList("constituencyNames", constituencyNames);
+		return queryObj.list();
+	}
 }
