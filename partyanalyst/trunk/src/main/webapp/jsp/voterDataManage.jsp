@@ -27,8 +27,9 @@
 	#voterDataInsertId{font-weight:bold;}
 	.errorMsgDiv{color: red;
     font-size: 13px;
-    padding-bottom: 20px; padding-top: 15px;}
+    padding-bottom: 12px; padding-top: 12px;}
 	table{font-size:13px;}
+	#minResults,#maxResults{width:186px;}
 	</style>
 </head>
 <body>
@@ -40,22 +41,17 @@
 	<div class="errorMsgDiv"></div>
 	<div class="voterManagementInnerDiv">
 		
-		<!-- <p>Constituency : &nbsp;&nbsp;&nbsp;&nbsp;<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="constituenciesList" id="constituencies_List" list="constituenciesList" listKey="id" listValue="name"></s:select></p>
-		 <p>Publication Date : <s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="publicationDateList" id="publicationDate_List" list="publicationDateList" listKey="id" listValue="name"></s:select></p>
-		<p>Starting From :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="minResults"/></p>
-		<p>Max Result :&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="maxResults"/></p>
-		<p><input type="button" value="submit" id="voterDataInsertId" class="btn btn-info"/></p>-->
 	<center>
 		<table cellpadding="4">
 			<tr>
 				<td>Constituency </td>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="constituenciesList" id="constituencies_List" list="constituenciesList" listKey="id" listValue="name"></s:select></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="constituencies_List" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
 			</tr>
 			<tr>
 				<td>Publication Date</td>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="publicationDateList" id="publicationDate_List" list="publicationDateList" listKey="id" listValue="name"></s:select></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="publicationDate_List" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
 			</tr>
 			<tr>
 				<td>Starting From</td>
@@ -194,6 +190,19 @@ function callAjax(jsObj, url){
 
 	function showVoterinsertDataStatus(results)
 	{
+		$(".errorMsgDiv").html('');
+		if(results.resultCode == 0)
+		{
+			$('#minResults').val('');
+			$('#maxResults').val('');
+			$(".errorMsgDiv").html('Voter Data inserted successfully.').css("color","green");
+			return;
+		}
+		else
+		{
+			$(".errorMsgDiv").html('Data is not inserted.');
+			return;
+		}
 	}
 
 </script>
