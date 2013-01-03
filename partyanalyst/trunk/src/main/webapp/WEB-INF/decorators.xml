@@ -165,6 +165,7 @@
 		<pattern>/footerLinksAction*</pattern>
 		<pattern>/viewFeaturesAction*</pattern>
 		<pattern>/voterDataManageAction*</pattern>
+		<pattern>/callCenterAction*</pattern>
     </decorator>
 
 </decorators>
