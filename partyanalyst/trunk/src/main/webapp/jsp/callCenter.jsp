@@ -42,7 +42,8 @@ td.tdStyle{
     font-weight: bold;
 }
  #callTrackingCurrentDiv
-        {          
+        {  
+         margin: 0 auto;
           font-size: 12px;
            width: 800px;
         }
@@ -76,6 +77,7 @@ td.tdStyle{
 
 }
  #headerDiv{
+  margin: 0 auto;
   background-image:url("images/icons/CallCenterHeader.jpg");
    border-width:1px 1px 0;
   color:Navy;
@@ -211,6 +213,11 @@ border:1px solid #dddddd;
 width:210px;
 height:30px;
 }
+
+#yui-pg0-0-rpp,#yui-pg0-1-rpp{
+width: 42px;
+}
+#basicInfo td{padding:5px;}
 
 </style>
 </head>
@@ -775,7 +782,7 @@ if(result!=null && result.length!=0){
 resultsCountEl.innerHTML = '<div id="showCount" style=" margin-right: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span>'+result[0].count+'</span> Calls Received Today</div>';
   }
  else{
-  resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span> 0 </span> Calls Received Today</div>';
+  resultsCountEl.innerHTML = '<div id="showCount" style="margin-right: -35px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px;"><span> 0 </span> Calls Received Today</div>';
   }
 }  
 function showSearchCount(result){
@@ -827,7 +834,7 @@ function showSearchDetails(result){
  
 }
 function showCurrentDayProblems(result){
- 
+
        document.getElementById("name1").value='';
 	   document.getElementById("mobile").value='';
 	   document.getElementById("referenceNo").value='';
@@ -977,11 +984,11 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
 
 </script>
-<body>
+<body align="center">
   <table width="100%" cellpadding="0" cellspacing="0" border="0" align="left">
   <tr>
   <td valign="left">
-<div style="float:left;margin-left:350px;">
+<div style="margin-left: auto; margin-right: auto;">
 <div id="headerDiv">Call Center</div>
 </div>
 </td>
@@ -1013,8 +1020,8 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
   </table>
 
 
-<div id="callTrackingMainDiv" style="padding-top:20px;">
-   <table>
+<div id="callTrackingMainDiv" style="padding-top:20px;" align="center">
+   <table id="basicInfo">
      <tr>
       <th>Name</th>
 	  <th>Mobile No</th>
@@ -1023,10 +1030,10 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 	  <th>Action Taken</th>
      </tr>
 	 <tr>
-	   <td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name1"/></td>
-	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile" onBlur="validatePhoneNo(this.id)"/></td>
+	   <td><input type="text" size="15" class="textFieldStyle"  style="height: 23px; width: 150px;" id="name1"/></td>
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px; width: 150px;" id="mobile" onBlur="validatePhoneNo(this.id)"/></td>
 	   <td>
-	       <select style="width:190px;" class="textFieldStyle" style="height:23px;" id="problemPurpose" >
+	       <select style="width:190px; margin-top: -10px; height: 31px;" class="textFieldStyle" id="problemPurpose" >
 	         <option>All</option>
 			 <option>Appointment Cancellation</option>
 			 <option>Appointment Fixing</option>
@@ -1036,8 +1043,8 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 			 <option>Others</option>
 		   </select>
 	   </td>	   
-	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="referenceNo" /></td>
-	   <td><input type="textarea" maxlength="50"  class="textFieldStyle" style="height:23px;" id="villageTown"/></td>
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px; width: 150px;" id="referenceNo" /></td>
+	   <td><input type="textarea" maxlength="50"  class="textFieldStyle" style="height: 30px; width: 150px; margin-top: -10px;" id="villageTown"/></td>
 	   
      </tr>
 	 <tr>
@@ -1059,10 +1066,10 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    </table>
 </div>
 <div id="callTrackingTotalCountDiv" style="padding-top:20px;"></div>
-<div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt">
+<div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt" align="center">
 </div>
 <div id="editCallTrackingProblem"> </div>
-<div id="mainDiv">
+<div id="mainDiv" style="margin-left: auto; margin-right: auto;">
 <table>
 <tr>
 <td>
@@ -1070,8 +1077,8 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 </td>
 </tr>
 </table>
-<table>
-<tr><td> 
+<table style="margin-left: auto; margin-right: auto;">
+<tr><td align="center"> 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
