@@ -1267,6 +1267,7 @@
 		<property name="candidateDAO" ref="candidateDAO"/>
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="casteDAO" ref="casteDAO" />
+		<property name="casteStateDAO" ref="casteStateDAO" />
 		<property name="casteCategoryDAO" ref="casteCategoryDAO"></property>
 		<property name="casteCategoryGroupDAO" ref="casteCategoryGroupDAO"></property>
 		<property name="tehsilDAO" ref="tehsilDAO"></property>
