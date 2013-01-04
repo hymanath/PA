@@ -40,6 +40,8 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private String resultStr;
 	private List<SelectOptionVO> voterCategoryValues;
 	private SelectOptionVO selectOptionVO;
+	private String save;
+	
 	//private String windowTask = null;
 	
 	
@@ -173,6 +175,14 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 		this.selectOptionVO = selectOptionVO;
 	}
 
+	public String getSave() {
+		return save;
+	}
+
+	public void setSave(String save) {
+		this.save = save;
+	}
+
 	public String execute() throws Exception{
 		
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
@@ -193,25 +203,32 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	}
 	
 
-public String putVoterDetails(){
-	//voterHouseInfoVO.setUserId(userId);
-	result=votersAnalysisService.updateVoterDetails(voterHouseInfoVO);
+public String saveVoterDetails(){
+	
+	HttpSession session = request.getSession();
+	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+	Long userId = null;
+	if(user != null && user.getRegistrationID() != null)
+	    userId = user.getRegistrationID();
+	else 
+	  return "error";
+	voterHouseInfoVO.setUserId(userId);
+	String voterId = request.getParameter("voterId");
+	String boothId = request.getParameter("boothId");
+	if(voterId != null && voterId.trim().length() > 0)
+	 voterHouseInfoVO.setVoterId(new Long(voterId));
+	if(boothId != null && boothId.trim().length() > 0)
+		 voterHouseInfoVO.setBoothId(new Long(boothId));
+	 votersAnalysisService.updateVoterDetails(voterHouseInfoVO);
 	request.setAttribute("voterId", voterHouseInfoVO.getVoterId());
-	System.out.println(request);
 	resultStr = SUCCESS;
 	request.setAttribute("resultStr", resultStr);
 	return Action.SUCCESS;
 
 }
-	/*public String getVoterPersonalDetailsByVoterId(Long voterId){
-	
-		votersAnalysisService.getVoterPersonalDetailsByVoterId(voterId);
-		return null;
-		
-	}*/
 	
 	public void prepare() throws Exception {
-		
+   if(request.getParameter("save") == null){
 	String voterId = request.getParameter("voterId");
 	String boothId = request.getParameter("boothId");
 	HttpSession session = request.getSession();
@@ -228,25 +245,14 @@ public String putVoterDetails(){
 		voterHouseInfoVO.setBoothName(voterHouseInfoVO1.getBoothName());
 		voterHouseInfoVO.setVilliageCovered(voterHouseInfoVO1.getVilliageCovered());
 		voterHouseInfoVO.setPanchayatName(voterHouseInfoVO1.getPanchayatName());
-	
-		partyGroupList=staticDataService.getStaticStateParties(1l);
-		partyGroupList.add(0, new SelectOptionVO(0l,"select party"));
-		userCategorysList=votersAnalysisService.getUserCategoryValues();
-		userCategorysList.add(0, new VoterHouseInfoVO(0l,"Select Category"));
-		Long size= (long) userCategorysList.size();
-		System.out.println(size);
-		userCategorysList.add((int) userCategorysList.size(), new VoterHouseInfoVO(size,"Others"));
-		
-		userCategorysList.add(userCategorysList.size(),new VoterHouseInfoVO((long)userCategorysList.size(),"other"));
-		//userCategorysList.add(e)
 		
 	}
-	
-	}
+   }
+  }
 	
 	public VoterHouseInfoVO getModel() {
 		// TODO Auto-generated method stub
-			return voterHouseInfoVO;
+			return getVoterHouseInfoVO();
 	}
 	
 	public String callAjaxHandler(){
@@ -305,13 +311,5 @@ public String putVoterDetails(){
 		
 		return Action.SUCCESS;
 	}
-	
-/*	public String voterEditClasifiedDetails(){
-		
-		
-		return Action.SUCCESS;
-		
-	}
-*/
 	
 	}
