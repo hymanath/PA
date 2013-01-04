@@ -104,9 +104,9 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserPrivacySettings> userPrivacySettings = new HashSet<UserPrivacySettings>(0);
 	private Set<UserVoterDetails> userVoterDetails = new HashSet<UserVoterDetails>(0);
 	
-	private Set<VoterCategoryValues> voterCategoryValues = new HashSet<VoterCategoryValues>(0);
-	private Set<UserCategoryValues> userCategoryValues = new HashSet<UserCategoryValues>(0);
-	private Set<CategoryValues> categoryValues = new HashSet<CategoryValues>(0);
+	private Set<VoterCategoryValue> voterCategoryValue = new HashSet<VoterCategoryValue>(0);
+	private Set<UserVoterCategory> userVoterCategory = new HashSet<UserVoterCategory>(0);
+	private Set<UserVoterCategoryValue> userVoterCategoryValue = new HashSet<UserVoterCategoryValue>(0);
 	
 	public User(){}
 	 
@@ -851,34 +851,34 @@ public class User extends BaseModel implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<VoterCategoryValues> getVoterCategoryValues() {
-		return voterCategoryValues;
+	public Set<VoterCategoryValue> getVoterCategoryValues() {
+		return voterCategoryValue;
 	}
 
-	public void setVoterCategoryValues(Set<VoterCategoryValues> voterCategoryValues) {
-		this.voterCategoryValues = voterCategoryValues;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserCategoryValues> getUserCategoryValues() {
-		return userCategoryValues;
-	}
-
-	public void setUserCategoryValues(Set<UserCategoryValues> userCategoryValues) {
-		this.userCategoryValues = userCategoryValues;
+	public void setVoterCategoryValues(Set<VoterCategoryValue> voterCategoryValue) {
+		this.voterCategoryValue = voterCategoryValue;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<CategoryValues> getCategoryValues() {
-		return categoryValues;
+	public Set<UserVoterCategory> getUserVoterCategory() {
+		return userVoterCategory;
 	}
 
-	public void setCategoryValues(Set<CategoryValues> categoryValues) {
-		this.categoryValues = categoryValues;
+	public void setUserVoterCategory(Set<UserVoterCategory> userVoterCategory) {
+		this.userVoterCategory = userVoterCategory;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserVoterCategoryValue> getUserVoterCategoryValue() {
+		return userVoterCategoryValue;
+	}
+
+	public void setUserVoterCategoryValue(
+			Set<UserVoterCategoryValue> userVoterCategoryValue) {
+		this.userVoterCategoryValue = userVoterCategoryValue;
 	}
 	
-
 	
 }

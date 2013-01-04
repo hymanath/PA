@@ -23,47 +23,49 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name="category_values")
+@Table(name="user_voter_category_value")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class CategoryValues extends BaseModel implements Serializable{
+public class UserVoterCategoryValue extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private Long categoryValuesId;
-	private UserCategoryValues userCategoryValues;
+	private Long userVoterCategoryValueId ;
+	private UserVoterCategory userVoterCategory;
 	private String categoryValue;
 	private User user;
 	
-	private Set<VoterCategoryValues> voterCategoryValues=new HashSet<VoterCategoryValues>();
+	private Set<VoterCategoryValue> voterCategoryValue = new HashSet<VoterCategoryValue>();
 	
-	public CategoryValues(){
+	public UserVoterCategoryValue(){
 		
 	}
-	public CategoryValues(Long categoryValuesId,UserCategoryValues userCategoryValues,String categoryValue){
-		this.categoryValuesId=categoryValuesId;
-		this.userCategoryValues=userCategoryValues;
-		this.categoryValue=categoryValue;
+	public UserVoterCategoryValue(Long userVoterCategoryValueId,UserVoterCategory userVoterCategory,String categoryValue){
+		this.userVoterCategoryValueId = userVoterCategoryValueId;
+		this.userVoterCategory = userVoterCategory;
+		this.categoryValue = categoryValue;
 	}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "category_values_id", unique = true, nullable = false)
-	public Long getCategoryValuesId() {
-		return categoryValuesId;
+	@Column(name = "user_voter_category_value_id ", unique = true, nullable = false)
+	public Long getUserVoterCategoryValueId() {
+		return userVoterCategoryValueId;
 	}
-	public void setCategoryValuesId(Long categoryValuesId) {
-		this.categoryValuesId = categoryValuesId;
+	
+	public void setUserVoterCategoryValueId(Long userVoterCategoryValueId) {
+		this.userVoterCategoryValueId = userVoterCategoryValueId;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_category_value_id")
+	@JoinColumn(name="user_voter_category_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserCategoryValues getUserCategoryValues() {
-		return userCategoryValues;
+	public UserVoterCategory getUserVoterCategory() {
+		return userVoterCategory;
 	}
-	public void setUserCategoryValues(UserCategoryValues userCategoryValues) {
-		this.userCategoryValues = userCategoryValues;
+	
+	public void setUserVoterCategory(UserVoterCategory userVoterCategory) {
+		this.userVoterCategory = userVoterCategory;
 	}
+
 	
 	@Column(name="category_value")
 	public String getCategoryValue() {
@@ -73,13 +75,13 @@ public class CategoryValues extends BaseModel implements Serializable{
 		this.categoryValue = categoryValue;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryValues")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userVoterCategoryValue")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Set<VoterCategoryValues> getVoterCategoryValues() {
-		return voterCategoryValues;
+	public Set<VoterCategoryValue> getVoterCategoryValue() {
+		return voterCategoryValue;
 	}
-	public void setVoterCategoryValues(Set<VoterCategoryValues> voterCategoryValues) {
-		this.voterCategoryValues = voterCategoryValues;
+	public void setVoterCategoryValue(Set<VoterCategoryValue> voterCategoryValue) {
+		this.voterCategoryValue = voterCategoryValue;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")

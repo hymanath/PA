@@ -57,7 +57,7 @@ public class Voter extends BaseModel implements Serializable {
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
 	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
-	private Set<VoterCategoryValues> voterCategoryValues=new HashSet<VoterCategoryValues>();
+	private Set<VoterCategoryValue> voterCategoryValue = new HashSet<VoterCategoryValue>();
 	
 	public Voter(){
 		
@@ -310,12 +310,12 @@ public class Voter extends BaseModel implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<VoterCategoryValues> getVoterCategoryValues() {
-		return voterCategoryValues;
+	public Set<VoterCategoryValue> getVoterCategoryValue() {
+		return voterCategoryValue;
 	}
 
-	public void setVoterCategoryValues(Set<VoterCategoryValues> voterCategoryValues) {
-		this.voterCategoryValues = voterCategoryValues;
+	public void setVoterCategoryValue(Set<VoterCategoryValue> voterCategoryValue) {
+		this.voterCategoryValue = voterCategoryValue;
 	}
 	
 	
