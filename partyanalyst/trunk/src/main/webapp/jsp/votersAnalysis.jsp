@@ -327,7 +327,31 @@ width: 860px;}
 #impfamilydatatable th{
   padding:5px;
 }
-
+.localCastDetailsHeadingDiv{ 
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-family: verdana;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 14px;
+    margin-top: 5px;
+    padding: 4px;width:400px;}
+	#localCastDetailsDiv{clear: both;
+    margin-bottom: -138px;
+    margin-top: 0;
+    padding-top: 0;
+    width: 400px;padding-left: 29px;
+    padding-top: 20px;}
+	#localCastChatDiv{clear: both;
+    float: right;
+     width: 500px;}
+	 .castDetailsMainDiv{ border: 1px solid #CCCCCC;
+    clear: both;
+    display: table;
+     margin-left: 10px;
+    
+    width: 926px;}
+	#localCastDetailsDiv p{font-size:13px;}
 </style>
 
 <script type="text/javascript">
@@ -488,7 +512,13 @@ locationDetails.constituencyArr.push(ob);
 	<div id='LocalCastDiv' class="divInfo">
 	
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
-	<div id='localCastStatsTabContent_header'></div><br>
+	
+		<div id='localCastStatsTabContent_header'></div>
+		<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv"></div>
+	<div class="castDetailsMainDiv">
+		<div id="localCastDetailsDiv"></div>
+		<div id="localCastChatDiv"></div>
+	</div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
 	<div id='localCastStatsTabContent_subbody'></div><br>
 	<div id ="localCastStatsVotersTitle" ></div>
