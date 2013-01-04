@@ -673,7 +673,7 @@ Tweet</a>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
  <script type="text/javascript">
- var loadingFirstTime = '${sessionScope.loadingFirstTime}';
+ var loadingFirstTime = '${sessionScope.candidatePageLoadingFirstTime}';
  $(document).ready(function(){
 if(loadingFirstTime == 'true'){
 		$("#inline").fancybox();

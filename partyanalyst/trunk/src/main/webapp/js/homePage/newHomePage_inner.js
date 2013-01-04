@@ -320,7 +320,7 @@ function showNotLogIn()
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
 var changedUserName='${sessionScope.changedUserName}';
-var loadingFirstTime = '${sessionScope.loadingFirstTime}';
+var loadingFirstTime = '${sessionScope.homePageLoadingFirstTime}';
 
 
 function viewParty(value){

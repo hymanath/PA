@@ -390,6 +390,14 @@ google_ad_height = 90;
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div> -->
+
+<a id="inline" href="#fancydivbox" style="display:none"></a>
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox">
+	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	</div>
+</div>
+
 <div class="main-title-sec">
  <div class="main-mbg">${partyVO.partyLongName} 
  
@@ -735,7 +743,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  </td>
  </tr>
 </table>
-<script>
+<script type="text/javascript">
   $(document).ready(function() {
     $("#tabs").tabs();
 
@@ -755,6 +763,18 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		var loadingFirstTime = '${sessionScope.partyPageLoadingFirstTime}';
+
+$(document).ready(function(){
+	if(loadingFirstTime  == 'true'){
+		
+		$("#inline").fancybox();
+		$("#inline").trigger("click");
+		}
+	});
+
+
  });
 		 
     var descriptions = '${descriptions}'; 
