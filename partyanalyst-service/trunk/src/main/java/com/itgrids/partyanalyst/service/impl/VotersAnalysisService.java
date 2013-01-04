@@ -26,22 +26,21 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
-import com.itgrids.partyanalyst.dao.ICategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.IUserCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
-import com.itgrids.partyanalyst.dao.IVoterCategoryValuesDAO;
+import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -51,12 +50,12 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
-import com.itgrids.partyanalyst.model.CategoryValues;
 import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.model.UserCategoryValues;
+import com.itgrids.partyanalyst.model.UserVoterCategory;
+import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.model.VoterCategoryValues;
+import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -68,7 +67,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class VotersAnalysisService implements IVotersAnalysisService{
 	private static final Logger log = Logger.getLogger(VotersAnalysisService.class);
 
-	private IVoterCategoryValuesDAO voterCategoryValuesDAO;
+	private IVoterCategoryValueDAO voterCategoryValueDAO;
 	private IBoothDAO boothDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IRegionServiceData regionServiceDataImp;
@@ -85,28 +84,39 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IVoterTempDAO voterTempDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ISocialService socialService;
-	private IUserCategoryValuesDAO userCategoryValuesDAO;
-	private ICategoryValuesDAO categoryValuesDAO;
+	private IUserVoterCategoryDAO userVoterCategoryDAO;
+	private IUserVoterCategoryValueDAO userVoterCategoryValueDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private ICasteStateDAO casteStateDAO;
 	//private IVoterCategoryValues voterCategoryValues;
 	private IPublicationDateDAO publicationDateDAO;
 	
-	public ICategoryValuesDAO getCategoryValuesDAO() {
-		return categoryValuesDAO;
+	
+
+	public IVoterCategoryValueDAO getVoterCategoryValueDAO() {
+		return voterCategoryValueDAO;
 	}
 
-	public void setCategoryValuesDAO(ICategoryValuesDAO categoryValuesDAO) {
-		this.categoryValuesDAO = categoryValuesDAO;
+	public void setVoterCategoryValueDAO(
+			IVoterCategoryValueDAO voterCategoryValueDAO) {
+		this.voterCategoryValueDAO = voterCategoryValueDAO;
 	}
 
-	public IUserCategoryValuesDAO getUserCategoryValuesDAO() {
-		return userCategoryValuesDAO;
+	public IUserVoterCategoryDAO getUserVoterCategoryDAO() {
+		return userVoterCategoryDAO;
 	}
 
-	public void setUserCategoryValuesDAO(
-			IUserCategoryValuesDAO userCategoryValuesDAO) {
-		this.userCategoryValuesDAO = userCategoryValuesDAO;
+	public void setUserVoterCategoryDAO(IUserVoterCategoryDAO userVoterCategoryDAO) {
+		this.userVoterCategoryDAO = userVoterCategoryDAO;
+	}
+
+	public IUserVoterCategoryValueDAO getUserVoterCategoryValueDAO() {
+		return userVoterCategoryValueDAO;
+	}
+
+	public void setUserVoterCategoryValueDAO(
+			IUserVoterCategoryValueDAO userVoterCategoryValueDAO) {
+		this.userVoterCategoryValueDAO = userVoterCategoryValueDAO;
 	}
 
 	public ISocialService getSocialService() {
@@ -182,14 +192,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 
-	public IVoterCategoryValuesDAO getVoterCategoryValuesDAO() {
-		return voterCategoryValuesDAO;
-	}
-
-	public void setVoterCategoryValuesDAO(
-			IVoterCategoryValuesDAO voterCategoryValuesDAO) {
-		this.voterCategoryValuesDAO = voterCategoryValuesDAO;
-	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -2407,7 +2409,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		voterHouseInfoVO.setCasteStateId(0l);
 	}
 	
-    List<Object[]> userCategoryValuesList = userCategoryValuesDAO.getCategoryValuesList(userId);
+    List<Object[]> userCategoryValuesList = userVoterCategoryDAO.getCategoryValuesList(userId);
 	//List<UserVoterDetails> userVoterDetails=userVoterDetailsDAO.getUserVoterDetails(voterId, userId);
 	List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();
 	VoterHouseInfoVO category = null;
@@ -2417,7 +2419,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 				
 		 category.setUserCategoryValueId((Long)userCategoryValue[0]);
 		 category.setUserCategoryValueName(userCategoryValue[1]!=null?userCategoryValue[1].toString():"");
-		 List<Object[]> categoryValuesList =  categoryValuesDAO.getCategoryValuesByUserIdCategId(userId,(Long)userCategoryValue[0]);
+		 List<Object[]> categoryValuesList =  userVoterCategoryValueDAO.getCategoryValuesByUserIdCategId(userId,(Long)userCategoryValue[0]);
 		 List<SelectOptionVO> categoryOptionsList = new ArrayList<SelectOptionVO>();
 		 categoryOptionsList.add(defaultSelectOptionVO);
 		 SelectOptionVO categoryOption = null;
@@ -2428,7 +2430,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 			 categoryOptionsList.add(categoryOption);
 	     }
 		 category.setCategory(categoryOptionsList);
-		 List<Long> idsList = voterCategoryValuesDAO.getVoterCategoryValue(userId,voterId,(Long)userCategoryValue[0]);
+		 List<Long> idsList = voterCategoryValueDAO.getVoterCategoryValue(userId,voterId,(Long)userCategoryValue[0]);
 		 if(idsList != null && idsList.size() > 0 && idsList.get(0) != null){
 			 category.setCategoryValuesId(idsList.get(0));
 		 }
@@ -2450,7 +2452,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		
 	
 		
-		List<CategoryValues> categoryValues=categoryValuesDAO.getCategoryValues();
+		List<CategoryValues> categoryValues=userVoterCategoryValueDAO.getCategoryValues();
 		
 		for(CategoryValues categoryValue : categoryValues)
 		{ 
@@ -2464,7 +2466,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		//voterHouseInfoVO.setCategoryValue(categoryValue.getCategoryValue());
 		}
 		
-		List<VoterCategoryValues> voterCategoryValues= voterCategoryValuesDAO.getVoterCategoryValues1();
+		List<VoterCategoryValues> voterCategoryValues= voterCategoryValueDAO.getVoterCategoryValues1();
 		
 		if(voterCategoryValues!=null)
 		for(VoterCategoryValues voterCategoryValue : voterCategoryValues)
@@ -2489,20 +2491,28 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
 		User user =  userDAO.get(voterHouseInfoVO.getUserId());
 		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
 			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
-				if(category.getCategoryValuesId() != null && category.getCategoryValuesId() >0){
+				
 				  Long userCategoryValueId = category.getUserCategoryValueId();
-				   List<VoterCategoryValues> categoryValuesIds = voterCategoryValuesDAO.getVoterCategoryValues(voterHouseInfoVO.getUserId(),voterHouseInfoVO.getVoterId(),userCategoryValueId);
-				   VoterCategoryValues voterCategoryVal = null;
+				  UserVoterCategoryValue userVoterCategoryValue = null;
+				    if(category.getCategoryValuesId() != null && category.getCategoryValuesId().longValue() >0l)
+				   userVoterCategoryValue = userVoterCategoryValueDAO.get(category.getCategoryValuesId());
+				   List<VoterCategoryValue> categoryValuesIds = voterCategoryValueDAO.getVoterCategoryValues(voterHouseInfoVO.getUserId(),voterHouseInfoVO.getVoterId(),userCategoryValueId);
+				   VoterCategoryValue voterCategoryVal = null;
 				   if(categoryValuesIds != null && categoryValuesIds.size() > 0 && categoryValuesIds.get(0) != null){
 					   voterCategoryVal = categoryValuesIds.get(0);
-				  }else{
-					  voterCategoryVal = new VoterCategoryValues();
-				  }
-				      voterCategoryVal.setUser(user);
+					   voterCategoryVal.setUser(user);
+						  voterCategoryVal.setVoter(voter);
+						  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValue);
+						  voterCategoryValueDAO.save(voterCategoryVal);
+				  }else if(userVoterCategoryValue != null){
+					  voterCategoryVal = new VoterCategoryValue();
+					  voterCategoryVal.setUser(user);
 					  voterCategoryVal.setVoter(voter);
-					  voterCategoryVal.setCategoryValues(categoryValuesDAO.get(category.getCategoryValuesId()));
-					  voterCategoryValuesDAO.save(voterCategoryVal);
-				}
+					  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValue);
+					  voterCategoryValueDAO.save(voterCategoryVal);
+				  }
+				      
+				
 			}
 		}
 		List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId());
@@ -2549,7 +2559,7 @@ public VoterHouseInfoVO getVoterFullInformation(Long voterId){
 	return voterHouseInfoVO;
 }
 
-public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserVoterDetails userVoterDetails,VoterCategoryValues voterCategoryValues,CategoryValues categoryValues){
+public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserVoterDetails userVoterDetails,VoterCategoryValue voterCategoryValues,UserVoterCategoryValue categoryValues){
 	// userVoterDetailsDAO = null;
 	if(voterHouseInfoVO.getCast() != null && !voterHouseInfoVO.getCast().equalsIgnoreCase("")){
 		voter.setCast(voterHouseInfoVO.getCast());
@@ -2567,16 +2577,16 @@ public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserV
 			
 			if(voterHouseInfoVO.getCategoryValuesId() !=null && !voterHouseInfoVO.getCategoryValuesId().equals(0)){
 				
-				categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(voterHouseInfoVO.getUserCategoryValuesId1()));
+				categoryValues.setUserVoterCategory(userVoterCategoryDAO.get(voterHouseInfoVO.getUserCategoryValuesId1()));
 				categoryValues.setCategoryValue(voterHouseInfoVO.getCategory().get(i).getValue());
 				categoryValues.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
-				categoryValuesDAO.save(categoryValues);
+				userVoterCategoryValueDAO.save(categoryValues);
 			}
 			if(voterHouseInfoVO.getCategory().get(i).getValue() != null && !voterHouseInfoVO.getCategory().get(i).getValue().equalsIgnoreCase("")){
-				voterCategoryValues.setCategoryValues(categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId()));
+				voterCategoryValues.setUserVoterCategoryValue(userVoterCategoryValueDAO.get(voterHouseInfoVO.getCategoryValuesId()));
 				voterCategoryValues.setVoter(voterDAO.get(voterHouseInfoVO.getVoterId()));
 				voterCategoryValues.setUser(userDAO.get(voterHouseInfoVO.getUserId()));
-				voterCategoryValuesDAO.save(voterCategoryValues);
+				voterCategoryValueDAO.save(voterCategoryValues);
 			}
 	}
 	}
@@ -2585,19 +2595,19 @@ public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserV
 		/*
 	if(voterHouseInfoVO.getCategoryValuesId() !=null && !voterHouseInfoVO.getCategoryValuesId().equals(0)){
 		
-		categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(voterHouseInfoVO.getUserCategoryValuesId()));
+		categoryValues.setUserCategoryValues(userVoterCategoryDAO.get(voterHouseInfoVO.getUserCategoryValuesId()));
 		categoryValues.setCategoryValue(voterHouseInfoVO.getCategory().get(i).getValue());
-		categoryValuesDAO.save(categoryValues);
+		userVoterCategoryValueDAO.save(categoryValues);
 	}*/
 	
 	//if(voterHouseInfoVO.getCategory() != null)
 	//if(voterHouseInfoVO.getCategory().get(i).getValue() != null && !voterHouseInfoVO.getCategory().get(i).getValue().equalsIgnoreCase("")){
-		//categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId())
+		//userVoterCategoryValueDAO.get(voterHouseInfoVO.getCategoryValuesId())
 		//		voterDAO.get(voterHouseInfoVO.getVoterId())
-		//voterCategoryValues.setCategoryValues(categoryValuesDAO.get(1l));
+		//voterCategoryValues.setCategoryValues(userVoterCategoryValueDAO.get(1l));
 		//voterCategoryValues.setVoter(voterDAO.get(1l));
-		//voterCategoryValuesDAO.save(voterCategoryValues);
-		//voterCategoryValuesDAO.flushAndclearSession();
+		//voterCategoryValueDAO.save(voterCategoryValues);
+		//voterCategoryValueDAO.flushAndclearSession();
 		//}
 	//}
 }
@@ -2690,13 +2700,13 @@ public VoterHouseInfoVO getBoothDetailsForVoter(Long boothId){
 public List<VoterHouseInfoVO> getUserCategoryValues(){
 	List<VoterHouseInfoVO> voterHouseInfoValues = new ArrayList<VoterHouseInfoVO>();
 	VoterHouseInfoVO voterHouseInfoVO = null;
-	List<UserCategoryValues> categoryValues=userCategoryValuesDAO.getUserCategoryValues();
+	List<UserVoterCategory> categoryValues=userVoterCategoryDAO.getUserCategoryValues();
 	if(categoryValues != null && categoryValues.size()>0)
-		for(UserCategoryValues categoryValue : categoryValues){
-			if(categoryValue.getUserCategoryValuesId() != null){
+		for(UserVoterCategory categoryValue : categoryValues){
+			if(categoryValue.getUserVoterCategoryId() != null){
 				voterHouseInfoVO = new VoterHouseInfoVO();
-			voterHouseInfoVO.setsNo(categoryValue.getUserCategoryValuesId());
-			voterHouseInfoVO.setName(categoryValue.getUserCategoryName());
+			voterHouseInfoVO.setsNo(categoryValue.getUserVoterCategoryId());
+			voterHouseInfoVO.setName(categoryValue.getCategoryName());
 			voterHouseInfoValues.add(voterHouseInfoVO);
 			}
 		}
@@ -2707,7 +2717,7 @@ public List<VoterHouseInfoVO> getUserCategoryValues(){
 public List<SelectOptionVO> getVoterCategoryValues(Long voterCategoryId,String letters){
 		
 	List<SelectOptionVO> voterCategoryValues = new ArrayList<SelectOptionVO>();
-	List<Object[]> categoryValues =categoryValuesDAO.getVoterCategoryValues(voterCategoryId,letters);
+	List<Object[]> categoryValues =userVoterCategoryValueDAO.getVoterCategoryValues(voterCategoryId,letters);
 	
 	for(Object[] categoryValue:categoryValues){
 		   if(categoryValue[0]!= null && categoryValue[1] != null)
@@ -2744,15 +2754,15 @@ public SelectOptionVO storeGroupName(final Long userId ,final String name)
 	
 	SelectOptionVO selectOptionVO = new SelectOptionVO();
 	
-	UserCategoryValues userCategoryValues = (UserCategoryValues)transactionTemplate.execute(new TransactionCallback() {
+	UserVoterCategory userCategoryValues = (UserVoterCategory)transactionTemplate.execute(new TransactionCallback() {
 		
 	public Object doInTransaction(TransactionStatus status) {
-	List<Long> count = userCategoryValuesDAO.checkCategoryExist(userId, name);
+	List<Long> count = userVoterCategoryDAO.checkCategoryExist(userId, name);
 	if(count != null && count.size()> 0 && ((Long)count.get(0))==0){
-	UserCategoryValues userCategoryValues = new UserCategoryValues();
-	userCategoryValues.setUserCategoryName(name);
+		UserVoterCategory userCategoryValues = new UserVoterCategory();
+	userCategoryValues.setCategoryName(name);
 	userCategoryValues.setUser(userDAO.get(userId));
-	userCategoryValues = userCategoryValuesDAO.save(userCategoryValues);
+	userCategoryValues = userVoterCategoryDAO.save(userCategoryValues);
 	return userCategoryValues;
 	}
 	else
@@ -2760,8 +2770,8 @@ public SelectOptionVO storeGroupName(final Long userId ,final String name)
 		}
 		});
 	if(userCategoryValues != null){
-	selectOptionVO.setId(userCategoryValues.getUserCategoryValuesId());
-	selectOptionVO.setName(userCategoryValues.getUserCategoryName());
+	selectOptionVO.setId(userCategoryValues.getUserVoterCategoryId());
+	selectOptionVO.setName(userCategoryValues.getCategoryName());
 	}
 	return  selectOptionVO;
 	
@@ -2774,7 +2784,7 @@ public List<SelectOptionVO> findVoterCategoryValues(Long UserId)
 	try{
 		log.debug("enter into the voterCategoryValues method of VoterAnalysisService");
 	SelectOptionVO selectOptionVO = null;
-	List<Object[]> categoryValues = userCategoryValuesDAO.getCategoryValuesList(UserId);
+	List<Object[]> categoryValues = userVoterCategoryDAO.getCategoryValuesList(UserId);
 	if(categoryValues !=null && categoryValues.size()> 0)
 	{
 		for (Object[] categoryValue : categoryValues)
@@ -2796,14 +2806,14 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 {
 	SelectOptionVO selectOptionVO = new SelectOptionVO();
 	
-				List<Long> count = categoryValuesDAO.checkCategoryExist(userId, name,id);
+				List<Long> count = userVoterCategoryValueDAO.checkCategoryExist(userId, name,id);
 				if(count != null && count.size()> 0 && ((Long)count.get(0))==0){
-				CategoryValues categoryValues = new CategoryValues();
-				UserCategoryValues userCategoryValues = new UserCategoryValues();
+				 UserVoterCategoryValue categoryValues = new UserVoterCategoryValue();
+				 UserVoterCategory userCategoryValues = new UserVoterCategory();
 				categoryValues.setUser(userDAO.get(userId));
 				categoryValues.setCategoryValue(name);
-				categoryValues.setUserCategoryValues(userCategoryValuesDAO.get(id));
-				categoryValues = categoryValuesDAO.save(categoryValues);
+				categoryValues.setUserVoterCategory(userVoterCategoryDAO.get(id));
+				categoryValues = userVoterCategoryValueDAO.save(categoryValues);
 				
 				}
 				
