@@ -79,7 +79,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private IOpinionPollService opinionPollService;
 	private IAnanymousUserService ananymousUserService;
 	private QuestionsOptionsVO questionsOptionsVO;
-		
+	
 
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
@@ -87,6 +87,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<SelectOptionVO> states;
 	private List<SpecialPageVO> specialPageVOList;
 	private ISpecialPageService specialPageService;
+	private String homePageLoadingFirstTime;
 	
 	public List<SelectOptionVO> getStates() {
 		return states;
@@ -348,10 +349,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(session.getAttribute("loadingFirstTime")== null)
-			   session.setAttribute("loadingFirstTime", "true");
+		if(session.getAttribute("homePageLoadingFirstTime")== null)
+			   session.setAttribute("homePageLoadingFirstTime", "true");
 		else 
-			session.setAttribute("loadingFirstTime", "false");
+			session.setAttribute("homePageLoadingFirstTime", "false");
 		
 		if(user==null){
 			loginStatus = "false";

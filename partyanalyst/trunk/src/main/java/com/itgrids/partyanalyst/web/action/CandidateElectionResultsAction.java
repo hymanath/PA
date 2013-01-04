@@ -125,6 +125,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Boolean isSubscribed = false;
 	private Long regId;
 	private String status;
+	private String candidatePageLoadingFirstTime;
 	
 
 	private File imageForDisplay;
@@ -661,12 +662,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		session = request.getSession();
 		
-		if(session.getAttribute("loadingFirstTime")== null){
+		if(session.getAttribute("candidatePageLoadingFirstTime")== null){
 			if(contentId == null){
-			   session.setAttribute("loadingFirstTime", "true");
+			   session.setAttribute("candidatePageLoadingFirstTime", "true");
 			}
 		}else{ 
-			session.setAttribute("loadingFirstTime", "false");
+			session.setAttribute("candidatePageLoadingFirstTime", "false");
 		}
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		

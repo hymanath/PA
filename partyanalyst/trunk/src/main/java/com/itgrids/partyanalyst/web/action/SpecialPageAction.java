@@ -63,7 +63,7 @@ public class SpecialPageAction extends ActionSupport implements
 	private String delVideo;
 	private String specilaPageText;
 	private List<ImportantDatesVO> importantCandidatesList;
-	
+	private String specialPageLoadingFirstTime;
 	
 	public List<ImportantDatesVO> getImportantCandidatesList() {
 		return importantCandidatesList;
@@ -236,12 +236,12 @@ public class SpecialPageAction extends ActionSupport implements
 		
 		session = request.getSession();
 		
-		if(session.getAttribute("loadingFirstTime")== null){
+		if(session.getAttribute("specialPageLoadingFirstTime")== null){
 			if(contentId == null){
-			   session.setAttribute("loadingFirstTime", "true");
+			   session.setAttribute("specialPageLoadingFirstTime", "true");
 			}
 		}else{ 
-			session.setAttribute("loadingFirstTime", "false");
+			session.setAttribute("specialPageLoadingFirstTime", "false");
 		}
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
