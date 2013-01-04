@@ -617,5 +617,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	
 	}
 
-	
+	  public List<Long> getVoterStateId(Long voterId){
+		  return getHibernateTemplate().find("select distinct model.booth.tehsil.district.state.stateId from BoothPublicationVoter model where model.voter.voterId =? ",voterId);
+	  }
 	}

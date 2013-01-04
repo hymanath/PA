@@ -86,4 +86,6 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
 	
 	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	 
+	public List<Long> getVoterStateId(Long voterId);
 }
