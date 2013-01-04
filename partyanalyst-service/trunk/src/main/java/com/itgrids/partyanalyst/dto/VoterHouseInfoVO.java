@@ -26,11 +26,11 @@ public class VoterHouseInfoVO {
 	private String villiageCovered;
 	private String panchayatName;
 	private List<SelectOptionVO> casteGroupNameList;
-	//private Long userCategoryValuesId;
+	private Long userCategoryValueId;
 	private Long userCategoryValuesId1;
-	//private String userCategoryValuesName;
+	private String userCategoryValueName;
 	private String setValue;
-	private Long voterCategoryValuesId;
+	private Long voterCategoryValuesId = 0l;
 	private String voterCategoryValuesName;
 	private Long categoryValuesId;
 	//private String categoryValue;
@@ -41,8 +41,10 @@ public class VoterHouseInfoVO {
 	private String elderGender;
 	private Long elderAge;
 	private String voterGroupName;
-	
+	private List<VoterHouseInfoVO> categoriesList;
 	private List<AddressVO> categories;
+	private List<SelectOptionVO> parties;
+	private Long casteStateId;
 	
 	public VoterHouseInfoVO(){
 		
@@ -364,6 +366,46 @@ public class VoterHouseInfoVO {
 
 	public void setVoterGroupName(String voterGroupName) {
 		this.voterGroupName = voterGroupName;
+	}
+
+	public Long getUserCategoryValueId() {
+		return userCategoryValueId;
+	}
+
+	public void setUserCategoryValueId(Long userCategoryValueId) {
+		this.userCategoryValueId = userCategoryValueId;
+	}
+
+	public String getUserCategoryValueName() {
+		return userCategoryValueName;
+	}
+
+	public void setUserCategoryValueName(String userCategoryValueName) {
+		this.userCategoryValueName = userCategoryValueName;
+	}
+
+	public List<VoterHouseInfoVO> getCategoriesList() {
+		return categoriesList;
+	}
+
+	public void setCategoriesList(List<VoterHouseInfoVO> categoriesList) {
+		this.categoriesList = categoriesList;
+	}
+
+	public List<SelectOptionVO> getParties() {
+		return parties;
+	}
+
+	public void setParties(List<SelectOptionVO> parties) {
+		this.parties = parties;
+	}
+
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
 	}
 
 	
