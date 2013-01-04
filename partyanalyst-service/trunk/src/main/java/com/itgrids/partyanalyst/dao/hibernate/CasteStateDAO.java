@@ -18,7 +18,7 @@ ICasteStateDAO {
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getStatewiseCastNames(Long casteCategoryGroupId){
 		
-		Query query = getSession().createQuery("select model.caste.casteId,model.caste.casteName from CasteState model where model.casteCategoryGroup.casteCategoryGroupId = ?");
+		Query query = getSession().createQuery("select distinct model.caste.casteId,model.caste.casteName from CasteState model where model.casteCategoryGroup.casteCategoryGroupId = ?");
 		query.setParameter(0,casteCategoryGroupId);
 			
 		return query.list();
@@ -54,6 +54,17 @@ public List<Object[]> getAllCasteInfoDetails(){
 		
 		Query query = getSession().createQuery("select model.casteStateId , model.caste.casteName from CasteState model where model.state.stateId = :stateId");
 		query.setParameter("stateId", stateId);
+		return query.list();
+		
+		
+	}
+    @SuppressWarnings("unchecked")
+	public List<Object[]> getAllCastesForVoters(Long stateId,Long userId){
+		
+		Query query = getSession().createQuery("select distinct(model.casteStateId) , model.caste.casteName from CasteState model where model.state.stateId = :stateId and ( model.isGlobal = :isGlobal or model.user.userId = :userId) ");
+		query.setParameter("stateId", stateId);
+		query.setParameter("userId", userId);
+		query.setParameter("isGlobal", IConstants.TRUE);
 		return query.list();
 		
 		
