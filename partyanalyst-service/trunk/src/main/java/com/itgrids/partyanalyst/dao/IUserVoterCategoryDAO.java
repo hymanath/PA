@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.model.UserCategoryValues;
+import com.itgrids.partyanalyst.model.UserVoterCategory;
 
-public interface IUserCategoryValuesDAO extends GenericDao<UserCategoryValues, Long>{
+public interface IUserVoterCategoryDAO extends GenericDao<UserVoterCategory, Long>{
 
-	public List<UserCategoryValues> getUserCategoryValues();
+	public List<UserVoterCategory> getUserCategoryValues();
 	public List<Long> checkCategoryExist(Long userId,String name);
 	public List<Object[]> getCategoryValuesList(Long userId);
 }
