@@ -34,6 +34,8 @@ public class CasteState extends BaseModel implements Serializable{
 	private Caste caste;
 	private CasteCategoryGroup casteCategoryGroup;
 	private Set<CandidateCaste> candidateCaste=new HashSet<CandidateCaste>();
+	private String isGlobal;
+	private User user;
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="caste_category_group_id")
@@ -105,5 +107,31 @@ public class CasteState extends BaseModel implements Serializable{
 	public void setCandidateCaste(Set<CandidateCaste> candidateCaste) {
 		this.candidateCaste = candidateCaste;
 	}
+
+	@Column(name = "is_global")
+	public String getIsGlobal() {
+		return isGlobal;
+	}
+
+	public void setIsGlobal(String isGlobal) {
+		this.isGlobal = isGlobal;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
+	
+	
+	
 	
 }
