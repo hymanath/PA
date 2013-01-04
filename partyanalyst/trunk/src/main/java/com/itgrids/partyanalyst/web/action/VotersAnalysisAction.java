@@ -202,7 +202,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 public String getVoterDetails(){
 	
 	if(log.isDebugEnabled())	
-	log.debug("Executing getVoterDetails() Method,Exception is- ");	
+	log.debug("Executing getVoterDetails() Method");	
 	try{
 		
 	
