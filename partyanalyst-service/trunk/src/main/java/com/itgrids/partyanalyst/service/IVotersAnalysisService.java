@@ -48,7 +48,7 @@ public interface IVotersAnalysisService {
 
 	public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user);
 	
-	public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO);
+	public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO);
 	
 	public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
 	

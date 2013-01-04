@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
@@ -38,7 +39,6 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValuesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
-import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.CategoryValues;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserCategoryValues;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -87,6 +88,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IUserCategoryValuesDAO userCategoryValuesDAO;
 	private ICategoryValuesDAO categoryValuesDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private ICasteStateDAO casteStateDAO;
 	//private IVoterCategoryValues voterCategoryValues;
 	private IPublicationDateDAO publicationDateDAO;
 	
@@ -195,6 +197,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
+	
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
 			String columnName) {
@@ -2315,51 +2326,128 @@ public String roundTo2DigitsFloatValue(Float number){
 }
 
 
-public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user){
-	List<Voter> voterDetails=voterDAO.getVoterPersonalDetailsByVoterId(voterId);
-	VoterHouseInfoVO voterHouseInfoVO =null;
-	AddressVO addressVO=null;
-	List<AddressVO> categories = new ArrayList<AddressVO>();
-	for(Voter voterInfo : voterDetails)
-		{
-	voterHouseInfoVO = new VoterHouseInfoVO();
-	voterHouseInfoVO.setName(voterInfo.getName());
-	voterHouseInfoVO.setVoterId(voterInfo.getVoterId());
-	voterHouseInfoVO.setGender(voterInfo.getGender());
-	voterHouseInfoVO.setAge(voterInfo.getAge());
-	voterHouseInfoVO.setHouseNo(voterInfo.getHouseNo());
-	voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
-	voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
-	voterHouseInfoVO.setCast(voterInfo.getCast());
-	List<SelectOptionVO> casteList = socialService.getAllCasteDetails();
-	voterHouseInfoVO.setCasteGroupNameList(casteList);
+public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userId){
 	
-	voterHouseInfoVO.setCastCategory(voterInfo.getCastCatagery());
-	voterHouseInfoVO.setUserId(user);
+ VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
+ try{
+	   SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
+	   defaultSelectOptionVO.setId(0l);
+	   defaultSelectOptionVO.setName("Select");
+	List<Voter> voterDetails = voterDAO.getVoterPersonalDetailsByVoterId(voterId);
+	if(voterDetails != null && voterDetails.size() >0)
+	{
+		Voter voterInfo = voterDetails.get(0);
+	 voterHouseInfoVO.setName(voterInfo.getName());
+	 voterHouseInfoVO.setVoterId(voterInfo.getVoterId());
+	 voterHouseInfoVO.setGender(voterInfo.getGender());
+	 voterHouseInfoVO.setAge(voterInfo.getAge());
+	 voterHouseInfoVO.setHouseNo(voterInfo.getHouseNo());
+	 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
+	 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
+	 
+	 voterHouseInfoVO.setCast(voterInfo.getCast());
+	 
+	 //List<SelectOptionVO> casteList = socialService.getAllCasteDetails();
+	 
+	
+	 voterHouseInfoVO.setCastCategory(voterInfo.getCastCatagery());
+	 voterHouseInfoVO.setUserId(userId);
 	}
-	List<UserVoterDetails> userVoterDetails=userVoterDetailsDAO.getUserVoterDetails(voterId, user);
+	List<Long> stateIdsList = boothPublicationVoterDAO.getVoterStateId(voterId);
+    if(stateIdsList != null && stateIdsList.size() > 0 ){
+	  List<SelectOptionVO> partiesList = staticDataService.getStaticPartiesListForAState(stateIdsList.get(0));
+	  if(partiesList != null){
+		  partiesList.add(0, defaultSelectOptionVO);
+	     voterHouseInfoVO.setParties(partiesList);
+	  }else{
+		  List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		  parties.add(defaultSelectOptionVO);
+		  voterHouseInfoVO.setParties(parties); ;
+	  }
+	   List<SelectOptionVO> castsVo = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	     
+	     castsVo.add(defaultSelectOptionVO);
+	   List<Object[]> castsList = casteStateDAO.getAllCasteDetailsForVoters(stateIdsList.get(0));
+	   for(Object[] casts:castsList){
+		   selectOptionVO = new SelectOptionVO();
+		   selectOptionVO.setId((Long)casts[0]);
+		   selectOptionVO.setName(casts[1]!=null?casts[1].toString():"");
+		   castsVo.add(selectOptionVO);
+	   }
+	   voterHouseInfoVO.setCasteGroupNameList(castsVo);
+    }else{
+    	
+    	List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+    	SelectOptionVO  party = new SelectOptionVO();
+    	party.setId(0l);
+    	party.setName("Select");
+    	partiesList.add(party);
+    	voterHouseInfoVO.setParties(partiesList);
+    	voterHouseInfoVO.setCasteGroupNameList(partiesList);
+    }
+    List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterId,userId);
+	if(userVoterDetailsList != null && userVoterDetailsList.size() >0){
+		UserVoterDetails userVoterDetails = userVoterDetailsList.get(0);
+		if(userVoterDetails.getParty() != null){
+			voterHouseInfoVO.setPartyId(userVoterDetails.getParty().getPartyId());
+		}else{
+			voterHouseInfoVO.setPartyId(0l);
+		}
+		if(userVoterDetails.getCasteState() != null){
+			voterHouseInfoVO.setCasteStateId(userVoterDetails.getCasteState().getCasteStateId());
+		}else{
+			voterHouseInfoVO.setCasteStateId(0l);
+		}
+		
+	}else{
+		
+		voterHouseInfoVO.setPartyId(0l);
+		voterHouseInfoVO.setCasteStateId(0l);
+	}
 	
-		for(UserVoterDetails voters : userVoterDetails)
+    List<Object[]> userCategoryValuesList = userCategoryValuesDAO.getCategoryValuesList(userId);
+	//List<UserVoterDetails> userVoterDetails=userVoterDetailsDAO.getUserVoterDetails(voterId, userId);
+	List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();
+	VoterHouseInfoVO category = null;
+	for(Object[] userCategoryValue : userCategoryValuesList)
+	{ 
+		 category = new VoterHouseInfoVO();
+				
+		 category.setUserCategoryValueId((Long)userCategoryValue[0]);
+		 category.setUserCategoryValueName(userCategoryValue[1]!=null?userCategoryValue[1].toString():"");
+		 List<Object[]> categoryValuesList =  categoryValuesDAO.getCategoryValuesByUserIdCategId(userId,(Long)userCategoryValue[0]);
+		 List<SelectOptionVO> categoryOptionsList = new ArrayList<SelectOptionVO>();
+		 categoryOptionsList.add(defaultSelectOptionVO);
+		 SelectOptionVO categoryOption = null;
+		 for(Object[] categoryValue : categoryValuesList){
+			 categoryOption = new SelectOptionVO();
+			 categoryOption.setId((Long)categoryValue[0]);
+			 categoryOption.setName(categoryValue[1]!=null?categoryValue[1].toString():"");
+			 categoryOptionsList.add(categoryOption);
+	     }
+		 category.setCategory(categoryOptionsList);
+		 List<Long> idsList = voterCategoryValuesDAO.getVoterCategoryValue(userId,voterId,(Long)userCategoryValue[0]);
+		 if(idsList != null && idsList.size() > 0 && idsList.get(0) != null){
+			 category.setCategoryValuesId(idsList.get(0));
+		 }
+		 
+		 categoriesList.add(category);	 
+	}
+	voterHouseInfoVO.setCategoriesList(categoriesList);
+  }catch(Exception e){
+	  log.error("Exception rised in getVoterPersonalDetailsByVoterId",e);
+  }
+		/*for(UserVoterDetails voters : userVoterDetails)
 		{ 
 			voterHouseInfoVO.setUserVoterDetailsId(voters.getUserVoterDetailsId());
 		voterHouseInfoVO.setPartyId(voters.getParty().getPartyId());
-		/*voterHouseInfoVO.setUserId(voters.getUser().getUserId());
-		voterHouseInfoVO.setVoterId(voters.getVoter().getVoterId());*/
+		voterHouseInfoVO.setUserId(voters.getUser().getUserId());
+		voterHouseInfoVO.setVoterId(voters.getVoter().getVoterId());
 		}
 		
-		List<UserCategoryValues> userCategoryValues=userCategoryValuesDAO.getUserCategoryValues();
+		
 	
-		for(UserCategoryValues userCategoryValue : userCategoryValues)
-		{ 
-		/*	voterHouseInfoVO.setUserCategoryValuesId(userCategoryValue.getUserCategoryValuesId());
-		voterHouseInfoVO.setUserCategoryValuesName(userCategoryValue.getUserCategoryName());
-		*/
-						addressVO = new AddressVO();
-						addressVO.setVoterCategoryValuesId(userCategoryValue.getUserCategoryValuesId());
-						addressVO.setVoterCategoryValuesName(userCategoryValue.getUserCategoryName());
-						categories.add(addressVO);
-						voterHouseInfoVO.setCategories(categories);
-		}
 		
 		List<CategoryValues> categoryValues=categoryValuesDAO.getCategoryValues();
 		
@@ -2384,56 +2472,65 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user)
 		voterHouseInfoVO.setCategoryValuesId(voterCategoryValue.getCategoryValues().getCategoryValuesId());
 		voterHouseInfoVO.setVoterCategoryValuesName(voterCategoryValue.getCategoryValues().getUserCategoryValues().getUserCategoryName());
 		}
-			
+			*/
 	return voterHouseInfoVO;
 	}
 
-public ResultStatus updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
+public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
 	
 	ResultStatus resultStatus = new ResultStatus();
-	Voter voter=null;
-	UserVoterDetails userVoterDetails=null;
-	CategoryValues categoryValues=null;
-	VoterCategoryValues voterCategoryValues=null;
+   if(voterHouseInfoVO != null){
 	try{
-		if(voterHouseInfoVO.getVoterId()==null)
-			voter=new Voter();
-		else			
-			voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
-		
-		if(voterHouseInfoVO.getUserVoterDetailsId()==null)
-			userVoterDetails=new UserVoterDetails();
-		else			
-			userVoterDetails =  userVoterDetailsDAO.get(voterHouseInfoVO.getUserVoterDetailsId());
-	
-		
-		if(voterHouseInfoVO.getCategoryValuesId()==null)
-			categoryValues=new CategoryValues();
-		else			
-			categoryValues =  categoryValuesDAO.get(voterHouseInfoVO.getCategoryValuesId());
-			
-		
-		if(voterHouseInfoVO.getVoterCategoryValuesId()==null)
-			voterCategoryValues=new VoterCategoryValues();
-		else			
-			voterCategoryValues =  voterCategoryValuesDAO.get(voterHouseInfoVO.getVoterCategoryValuesId());
-		
-		/*voter_category_values
-		if(voterHouseInfoVO.getVoterCategoryValuesId()==null)
-			userVoterDetails=new UserVoterDetails();
-		else			
-			userVoterDetails =  voterCategoryValuesDAO.get(voterHouseInfoVO.getVoterCategoryValuesId());
-		*/
-		saveVoterDetails(voterHouseInfoVO,voter,userVoterDetails,voterCategoryValues,categoryValues);
-		
-		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		if(voterHouseInfoVO.getVoterId() == null || voterHouseInfoVO.getUserId() == null )
+			return ;
+					
+		Voter voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
+		User user =  userDAO.get(voterHouseInfoVO.getUserId());
+		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
+			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
+				if(category.getCategoryValuesId() != null && category.getCategoryValuesId() >0){
+				  Long userCategoryValueId = category.getUserCategoryValueId();
+				   List<VoterCategoryValues> categoryValuesIds = voterCategoryValuesDAO.getVoterCategoryValues(voterHouseInfoVO.getUserId(),voterHouseInfoVO.getVoterId(),userCategoryValueId);
+				   VoterCategoryValues voterCategoryVal = null;
+				   if(categoryValuesIds != null && categoryValuesIds.size() > 0 && categoryValuesIds.get(0) != null){
+					   voterCategoryVal = categoryValuesIds.get(0);
+				  }else{
+					  voterCategoryVal = new VoterCategoryValues();
+				  }
+				      voterCategoryVal.setUser(user);
+					  voterCategoryVal.setVoter(voter);
+					  voterCategoryVal.setCategoryValues(categoryValuesDAO.get(category.getCategoryValuesId()));
+					  voterCategoryValuesDAO.save(voterCategoryVal);
+				}
+			}
+		}
+		List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId());
+		Long partyId = voterHouseInfoVO.getPartyId();
+		Long casteStateId = voterHouseInfoVO.getCasteStateId();
+		if(partyId != null &&  partyId.longValue() == 0l)
+			partyId = null;
+		if(casteStateId != null &&  casteStateId.longValue() == 0l)
+			casteStateId = null;
+		if(userVoterDetailsList != null && userVoterDetailsList.size() > 0){
+			userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
+		}else{
+			if(casteStateId != null || partyId != null){
+			 UserVoterDetails userVoterDtls = new UserVoterDetails();
+			 userVoterDtls.setUser(user);
+			 userVoterDtls.setVoter(voter);
+			 if(casteStateId != null)
+				 userVoterDtls.setCasteState(casteStateDAO.get(casteStateId));
+			 if(partyId != null)
+				 userVoterDtls.setParty(partyDAO.get(partyId));
+			 userVoterDetailsDAO.save(userVoterDtls);
+			}
+		}
+	 
 	}
 	catch (Exception e) {
-		resultStatus.setExceptionEncountered(e);
-		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-		e.printStackTrace();
+		log.error("Exception rised in updateVoterDetails : ",e);
 	}
-	return resultStatus;
+   }
 	
 }
 
