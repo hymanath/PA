@@ -1313,9 +1313,9 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="voterTempDAO" ref="voterTempDAO" />
-		<property name="userCategoryValuesDAO" ref="userCategoryValuesDAO" />
-		<property name="categoryValuesDAO" ref="categoryValuesDAO" />
-		<property name="voterCategoryValuesDAO" ref="voterCategoryValuesDAO" />
+		<property name="userVoterCategoryDAO" ref="userVoterCategoryDAO" />
+		<property name="userVoterCategoryValueDAO" ref="userVoterCategoryValueDAO" />
+		<property name="voterCategoryValueDAO" ref="voterCategoryValueDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 		<property name="casteStateDAO" ref="casteStateDAO" />
