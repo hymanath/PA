@@ -67,6 +67,7 @@ public class PartyPageAction extends ActionSupport implements
     private Long constituencyId;
     private ICandidateDetailsService candidateDetailsService;
     private Boolean isSubscribed;
+    private String partyPageLoadingFirstTime;
     
     
     
@@ -244,6 +245,13 @@ public class PartyPageAction extends ActionSupport implements
 		return task;
 	}
 	public String execute() throws Exception {
+		if(session.getAttribute("partyPageLoadingFirstTime") == null)
+		{
+			session.setAttribute("partyPageLoadingFirstTime", "true");
+		}
+		else
+			session.setAttribute("partyPageLoadingFirstTime", "false");
+		
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
