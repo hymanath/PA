@@ -2368,7 +2368,8 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	   SelectOptionVO selectOptionVO = null;
 	     
 	     castsVo.add(defaultSelectOptionVO);
-	   List<Object[]> castsList = casteStateDAO.getAllCasteDetailsForVoters(stateIdsList.get(0));
+	   //List<Object[]> castsList = casteStateDAO.getAllCasteDetailsForVoters(stateIdsList.get(0));
+	     List<Object[]> castsList = casteStateDAO.getAllCastesForVoters(stateIdsList.get(0), userId);
 	   for(Object[] casts:castsList){
 		   selectOptionVO = new SelectOptionVO();
 		   selectOptionVO.setId((Long)casts[0]);

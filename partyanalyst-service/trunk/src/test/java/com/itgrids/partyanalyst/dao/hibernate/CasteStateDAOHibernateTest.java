@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 	private ICasteStateDAO casteStateDAO;
@@ -56,4 +57,15 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}*/
+	
+	public void testgetAllCasteDetailsForVoters1()
+	{
+		List<Object[]> list = casteStateDAO.getAllCastesForVoters(1l, 1l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
+	}
+	
 }
