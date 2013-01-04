@@ -1183,7 +1183,7 @@ google_ad_height = 90;
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div> -->
-<a id="inline" href="#fancydivbox" style="displaynone"></a>
+<a id="inline" href="#fancydivbox" style="display:none"></a>
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox">
 	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
@@ -1469,7 +1469,7 @@ Tweet</a>
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 displayProfile();
 getFirstThreePhotoRecords();
-var loadingFirstTime = '${sessionScope.loadingFirstTime}';
+var loadingFirstTime = '${sessionScope.specialPageLoadingFirstTime}';
 $(document).ready(function(){
 	if(loadingFirstTime  == 'true'){
 		$("#inline").fancybox();
@@ -1477,9 +1477,7 @@ $(document).ready(function(){
 		}
 	});
 
-<%
-	session.setAttribute("loadingFirstTime", "false");
-%>
+
 <s:if test="contentId != null">
 	showSelectedContentAndRelatedGalleries();
 </s:if>
