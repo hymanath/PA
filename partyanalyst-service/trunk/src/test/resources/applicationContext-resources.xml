@@ -323,9 +323,9 @@
                 <value>com.itgrids.partyanalyst.model.FavoriteLinkPage</value>
                 <value>com.itgrids.partyanalyst.model.UserVoterDetails</value>
                 <value>com.itgrids.partyanalyst.model.VoterTemp</value>		    			    		
-                <value>com.itgrids.partyanalyst.model.UserCategoryValues</value>
-                <value>com.itgrids.partyanalyst.model.CategoryValues</value>
-                <value>com.itgrids.partyanalyst.model.VoterCategoryValues</value>    			    		
+                <value>com.itgrids.partyanalyst.model.UserVoterCategory</value>
+                <value>com.itgrids.partyanalyst.model.UserVoterCategoryValue</value>
+                <value>com.itgrids.partyanalyst.model.VoterCategoryValue</value>    			    		
 			</list>
 		</property>
 	</bean>
@@ -1691,15 +1691,15 @@
 	<bean id="userFavoriteLinksDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFavoriteLinksDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userCategoryValuesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCategoryValuesDAO" >
+	<bean id="userVoterCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterCategoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="categoryValuesDAO" class="com.itgrids.partyanalyst.dao.hibernate.CategoryValuesDAO" >
+	<bean id="userVoterCategoryValueDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserVoterCategoryValueDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="voterCategoryValuesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCategoryValuesDAO" >
+	<bean id="voterCategoryValueDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCategoryValueDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 				
