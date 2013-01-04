@@ -302,9 +302,9 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageData</value>
 				<value>com.itgrids.partyanalyst.model.UserSocialNetworkSite</value>
 				<value>com.itgrids.partyanalyst.model.VoterTemp</value>
-				<value>com.itgrids.partyanalyst.model.UserCategoryValues</value>
-	            <value>com.itgrids.partyanalyst.model.CategoryValues</value>
-	            <value>com.itgrids.partyanalyst.model.VoterCategoryValues</value>
+				<value>com.itgrids.partyanalyst.model.UserVoterCategory</value>
+	            <value>com.itgrids.partyanalyst.model.UserVoterCategoryValue</value>
+	            <value>com.itgrids.partyanalyst.model.VoterCategoryValue</value>
 			</list>
 		</property>
 	</bean>
