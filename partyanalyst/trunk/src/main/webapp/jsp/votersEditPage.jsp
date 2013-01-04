@@ -370,9 +370,10 @@ function storeCategoryValues(){
 </c:if>
 <input type="hidden" name="boothId" value="${voterHouseInfoVO.boothId}"/>
 <input type="hidden" name="voterId" value="${voterHouseInfoVO.voterId}"/>
-<input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
+<input type="hidden" name="save" value="save"/>
+<!--<input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
-<input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>
+<input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>-->
 <div id="mainDiv" style="float: right;">
  <fieldset style="width: 335px;">
        <legend class="legendClass">Voter Information</legend>
@@ -385,7 +386,7 @@ function storeCategoryValues(){
 			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>-->
 		</div>
 		<div>
-		<label for="name">Gender:</label> 
+		<label for="name">Gender:</label> ${voterHouseInfoVO.gender}
 			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>-->
 		</div>
 		
@@ -402,10 +403,10 @@ function storeCategoryValues(){
 		<!--	<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>-->
 		</div>
 		
-		<div>
+		<!--<div>
 		<label for="name">Caste Category:</label>${voterHouseInfoVO.castCategory}
-		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>-->
-		</div>
+			<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>
+		</div>-->
 			<div>
 			<label for="name">Booth Name:</label> ${voterHouseInfoVO.boothName}
 		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.boothName" value="${voterHouseInfoVO.boothName}" readonly='true'/>-->
@@ -421,52 +422,36 @@ function storeCategoryValues(){
 	
 		<div>
 		<label for="name">Caste:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.cast" value="${voterHouseInfoVO.cast}"/>
+			<s:select theme="simple" style="width: 169px;"
+				 name="voterHouseInfoVO.casteStateId" 
+				id="voterHouseInfoVO.casteStateId" list="voterHouseInfoVO.casteGroupNameList" 
+				listKey="id" listValue="name"/>
 		</div>
 		<div>
 		<label for="name">Party Name:</label>
 				<s:select theme="simple" style="width: 169px;"
-				label="Select  party" name="voterHouseInfoVO.partyId" 
-				id="partyId" list="partyGroupList" 
+				 name="voterHouseInfoVO.partyId" 
+				id="partyId" list="voterHouseInfoVO.parties" 
 				listKey="id" listValue="name"/>
 		</div>
+		<s:if test="voterHouseInfoVO.categoriesList != null && voterHouseInfoVO.categoriesList.size() > 0">
+ 		  <s:iterator value="voterHouseInfoVO.categoriesList" var="category" status="stat">
+		 <div>
+		   <label for="name"><s:property value="userCategoryValueName"/>:</label>
+		        <s:hidden name="voterHouseInfoVO.categoriesList[%{#stat.index}].userCategoryValueId" value="%{#category.userCategoryValueId}" />
+				<s:select theme="simple" style="width: 169px;"
+				 name="voterHouseInfoVO.categoriesList[%{#stat.index}].categoryValuesId"
+				 list="#category.category" 
+				listKey="id" listValue="name"/>
+		 </div>
+		  </s:iterator>
+	   </s:if>
 		
-		<div id="addFieds" style="float:left;">
-		
-		</div>
-		<a onClick="openPopUp();">AddMore</a>
 		</fieldset>
 <div style="float:right;">
 <input class="btn btn-success" type="submit" value="Update">
 </div>
-<!--PRASAD-->
-<div id="popupDiv" style="display:none;">
-	
-	 <lable name="CreateNewGroup">CreateNewGroup : </lable>
-	 <input type="text" id="CreateNewGroupText"style="width: 278px;"></input>
-	 <input type="button" value="create" style="float:right;margin-top:4px;"onClick="storeGroupValue()"></input>
-	
-	 <div name="valuesDisplayDiv" style="border:1px solid;">
- 		<div>
-		<label for="name">Category Type:</label>
-				<s:select theme="simple" style="width: 169px;"
-				label="Select Category" name="voterHouseInfoVO.userCategoryValuesId" 
-				id="userCategoryValuesId1" list="userCategorysList" 
-				listKey="sNo" listValue="name" onChange="storeUpdatedValues()"/>
-		</div>
-		<div id="otherDiv"></div>
-		<div>
-		<label for="name">Category value:</label> 
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.setValue" value="${voterHouseInfoVO.setValue}" id="setValue"/>
-		</div>
-	
-		<div style="">
-			<input class="btn btn-success" type="submit" value="Add" onClick="addFieldsToMainFileds();storeCategoryValues();";></input>
-		</div>
-		
-	</div>
-</div>
-<!--PRASAD-->
+
 </div>
 </form>
 </body>

@@ -1318,6 +1318,7 @@
 		<property name="voterCategoryValuesDAO" ref="voterCategoryValuesDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
+		<property name="casteStateDAO" ref="casteStateDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
