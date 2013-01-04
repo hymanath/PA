@@ -662,11 +662,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				for(Object[] params : list)
 				{
 					voterCastInfoVO = getVoterCastInfoVOBasedOnCastName(params[0].toString(),resultList);
-					
+					boolean isNew = false;
 					if(voterCastInfoVO == null)
 					{
 						voterCastInfoVO = new VoterCastInfoVO();
 						voterCastInfoVO.setCastName(params[0].toString());
+						isNew = true;
 					}
 					
 					String gender = params[1].toString();
@@ -677,7 +678,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					
 					voterCastInfoVO.setTotalVoters(voterCastInfoVO.getMaleVoters() + voterCastInfoVO.getFemaleVoters());
 					totalVotes = totalVotes + (Long)params[2];
-					resultList.add(voterCastInfoVO);
+					
+					if(isNew)
+						resultList.add(voterCastInfoVO);
 				}
 				
 				for(VoterCastInfoVO castInfoVO : resultList)
