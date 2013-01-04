@@ -35,7 +35,7 @@ border-radius:25px;
 {
 border:1px solid #a1a1a1;
 padding:10px 40px;
-height:100px; 
+height:116px; 
 border-radius:25px;
 -moz-border-radius:25px;
 }
@@ -72,6 +72,7 @@ function callAjax(jsObj,url)
 							else if(jsObj.task == "storeValues")
 							{
 								buildCategoryValues(myResults);
+								$("#groupCreationMsg").html("Group created successfully");
 							}
 							else if(jsObj.task == "getCategoryValues")
 							{
@@ -79,7 +80,8 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
-							
+								$("#catrgoeryValue").val(""); 
+                                $("#groupValueCreationMsg").html("Group value added successfully");								
 							}
 							else if(jsObj.task == "storeVoterDate")
 							{
@@ -154,7 +156,18 @@ function storeValue()
 }
 function storeGroupValue()
 {
+    $("#groupCreationErr").html("");
+	$("#groupCreationMsg").html("");
 	var groupName = $('#CreateNewGroupText').val();
+	 if($.trim(groupName).length == 0){
+	    $("#groupCreationErr").html("Group Name is required");
+		return;
+	 }
+	  groupName = removeAllUnwantedCharacters(groupName);
+	  if($.trim(groupName).length == 0){
+	    $("#groupCreationErr").html("Group Name should not contain any special characters");
+		return;
+	 }
 	var jsObj=
 	{
 		name:groupName,
@@ -186,6 +199,24 @@ function storeCategoryValues()
 {
 	var categoryId = $('#selectType').val();
 	var categoryValue = $('#catrgoeryValue').val();
+	
+	
+	$("#groupValueCreationErr").html("");
+	$("#groupValueCreationMsg").html("");
+	if(categoryId == 0){
+	  $("#groupValueCreationErr").html("Please select Group");
+	   return;
+	}
+	 if($.trim(categoryValue).length == 0){
+	    $("#groupValueCreationErr").html("Group Value is required");
+		return;
+	 }
+	  categoryValue = removeAllUnwantedCharacters(categoryValue);
+	  if($.trim(categoryValue).length == 0){
+	    $("#groupValueCreationErr").html("Group Value should not contain any special characters");
+		return;
+	 }
+	
 	var jsObj =
 	{
 		categoryId:categoryId,
@@ -196,18 +227,18 @@ function storeCategoryValues()
 		var url = "getVotersCategoryAction.action?"+rparam;						
 		callAjax(jsObj,url);
 }
-function closeWindow()
-{
-	window.close();
-}
+
 </script>
 </head>
 <body style="position: relative;">
 <br><br>
-	<div id="popupDiv" style="float: left;">
+	<div id="popupDiv" style="float: left;margin-left:6px;">
 		 <div id="groupCreation" style="border:" >
 		 <h4>Cerate New Group</h4>
-		 <lable name="CreateNewGroup">CreateNewGroup : 
+		   <div style="margin-bottom:5px;"><b>NOTE :</b> Group Name should not contain any special characters</div>
+		  <div style="color:red" id="groupCreationErr"></div>
+		  <div style="color:green" id="groupCreationMsg"></div>
+		 <lable name="CreateNewGroup"><b>Group Name<span style="color:red">*</span> :</b> 
 		 <input type="text" id="CreateNewGroupText" style="width: 175px;margin-left:30px;"></input></lable>
 		 <input type="button" value="create" class="btn btn-success" style="float:right;margin-top:4px;"onClick="storeGroupValue();clearFields();"></input>
 	 </div>
@@ -215,11 +246,14 @@ function closeWindow()
 	 
 		<div id="valuesDisplayDiv" >
 		   <h4>Add Values To Group</h4>
-			Select Type:<select id="selectType" style="width:187px;margin-left:78px;"></select>
+		   <div style="margin-bottom:5px;"><b>NOTE :</b> Group Value should not contain any special characters</div>
+		   <div style="color:red" id="groupValueCreationErr"></div>
+		   <div style="color:green" id="groupValueCreationMsg"></div>
+			<b>Select Group<span style="color:red">*</span> :</b><select id="selectType" style="width:187px;margin-left:32px;"></select>
 			</br>
-			Group value: <input type = "text" id="catrgoeryValue" style="width: 175px;margin-left:69px;"></input>
+			<b>Group value<span style="color:red">*</span> :</b> <input type = "text" id="catrgoeryValue" style="width: 175px;margin-left:33px;"></input>
 			</br>
-			<input class="btn btn-success" type="submit" value="Add" onClick="storeCategoryValues();closeWindow();"; style ="float:right;margin-top:-30px"></input>
+			<input class="btn btn-success" type="submit" value="Add" onClick="storeCategoryValues();" style ="float:right;margin-top:-30px"></input>
 		</div>
 	</div>
 <script type="text/javascript">
