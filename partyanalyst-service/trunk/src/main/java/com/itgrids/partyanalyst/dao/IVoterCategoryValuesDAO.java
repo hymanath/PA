@@ -10,4 +10,8 @@ public interface IVoterCategoryValuesDAO extends GenericDao<VoterCategoryValues,
 	
 	//public void flushAndclearSession();
 	public List<VoterCategoryValues> getVoterCategoryValues1();
+	
+	public List<Long> getVoterCategoryValue(Long userId,Long voterId,Long categoryId);
+	
+	public List<VoterCategoryValues> getVoterCategoryValues(Long userId,Long voterId,Long categoryId);
 }

@@ -11,6 +11,7 @@ public interface ICasteStateDAO extends GenericDao<CasteState, Long>{
 	public List<Object[]> getStatewiseCastNames(Long casteCategoryGroupId);
 	 public List<Object[]> getCasteNamesByAutoPopulate(Long stateId,String letters) ;
 	 public List<Object[]> getAllCasteDetails();
+	 public List<Object[]> getAllCasteDetailsForVoters(Long stateId);
 	 
 	 //public List<Object[]> getAllCasteInfoDetails();
 }

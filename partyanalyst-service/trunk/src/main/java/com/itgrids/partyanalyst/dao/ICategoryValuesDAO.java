@@ -14,5 +14,7 @@ public interface ICategoryValuesDAO  extends GenericDao<CategoryValues, Long>{
 	
 	public List<Long> checkCategoryExist(Long userId,String name, Long id);
 	
+	public List<Object[]> getCategoryValuesByUserIdCategId(Long userId,Long userCategoryValueId);
+	
 	
 }

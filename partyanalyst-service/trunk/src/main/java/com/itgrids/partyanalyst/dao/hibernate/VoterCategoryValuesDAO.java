@@ -27,5 +27,16 @@ public class VoterCategoryValuesDAO extends GenericDaoHibernate<VoterCategoryVal
 		return queryObject.list();*/
 		return getHibernateTemplate().find("from VoterCategoryValues model");
 	}
-
+	
+	public List<Long> getVoterCategoryValue(Long userId,Long voterId,Long categoryId){
+		Object[] values = {userId,voterId,categoryId};
+		return getHibernateTemplate().find("select model.categoryValues.categoryValuesId from VoterCategoryValues model " +
+				" where model.user.userId =? and model.voter.voterId = ? and model.categoryValues.userCategoryValues.userCategoryValuesId = ?",values);
+	}
+    
+	public List<VoterCategoryValues> getVoterCategoryValues(Long userId,Long voterId,Long categoryId){
+		Object[] values = {userId,voterId,categoryId};
+		return getHibernateTemplate().find("select model from VoterCategoryValues model " +
+				" where model.user.userId =? and model.voter.voterId = ? and model.categoryValues.userCategoryValues.userCategoryValuesId = ?",values);
+	}
 }

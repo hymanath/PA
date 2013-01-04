@@ -18,7 +18,6 @@ IUserVoterDetailsDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<UserVoterDetails> getUserVoterDetails(Long voterId,Long userId){
-		UserVoterDetails userVoterDetails=null;
 		//List<UserVoterDetails> list = getHibernateTemplate().find("from UserVoterDetails as model where model.voter.voterId = ? and model.user.userId=?",voterId,userId);
 		Query query = getSession().createQuery("from UserVoterDetails model where model.voter.voterId = ? and model.user.userId=?");
 		query.setParameter(0,voterId);
@@ -36,4 +35,15 @@ IUserVoterDetailsDAO{
 		}
 		return candidate;
 	}*/
+	
+	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId,model.casteState.casteStateId = :castStateId where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("partyId",partyId);
+		query.setParameter("castStateId",castStateId);
+		
+		query.executeUpdate();
+		
+	}
 }
