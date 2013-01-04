@@ -1185,23 +1185,29 @@ function buildVotersInFamily(results,hno){
 
 function buildCastInfoData(myresults,jsObj)
 {
+	$('#localCastDetailsHeadingDiv').html('');
 	var result = myresults.voterCastInfodetails;
 	var ajaxImageDiv = document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = result.totalVoters;
 	var totalCasts = result.totalCasts;
+	var voters = '';
 	
 	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"> Total Voters : '+totalVoters+'&nbsp;&nbsp;&nbsp;';
 	localCastStatsTabContent += 'Total Casts : '+totalCasts+'<br><br>';
 	localCastStatsTabContent += '<span>Caste Assigned Voters : '+result.maleVoters+'</span>';
 	localCastStatsTabContent += '<span style="padding-left:40px;">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
 	localCastStatsTabContent += '<br><br>';
-
+	
+	$('#localCastDetailsHeadingDiv').html('Cast category wise voters details').css("background","#06ABEA");
 	for(var i=0;i<result.castCategoryWiseVotersList.length;i++)
-		localCastStatsTabContent += '<span style="padding-left:25px;">'+result.castCategoryWiseVotersList[i].name+' Voters : '+result.castCategoryWiseVotersList[i].id+'</span>';
+		voters +='<p>'+result.castCategoryWiseVotersList[i].name+' Voters : '+result.castCategoryWiseVotersList[i].id+'</p>';
+		voters +='</div>';
+		
 
 	localCastStatsTabContent += '</div>';
+	$('#localCastDetailsDiv').html(voters);
 	localCastStatsTabContent_headerEl.innerHTML = localCastStatsTabContent;
 
 	var typeName = jsObj.typename;	
@@ -1237,7 +1243,40 @@ function buildCastInfoData(myresults,jsObj)
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		$("#localCastStatsTabContent_body").html("No Data Found");
 		}
-   
+
+		buildCastPiechart(myresults,jsObj);   
+}
+
+function buildCastPiechart(myResults,jsObj)
+{
+
+	
+	$('#localCastChatDiv').html('');
+	var results = myResults.voterCastInfodetails;
+	if(results.castCategoryWiseVotersList.length == 0)
+	{
+		$("#localCastDetailsHeadingDiv").html('').css("background","#FFF");
+		$(".castDetailsMainDiv").css("border","none")
+		return;
+	}
+	$(".castDetailsMainDiv").css("border","1px solid #CCC")
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','cast');
+	data.addColumn('number','percentage');
+	data.addRows(results.castCategoryWiseVotersList.length);
+
+	for(var j=0; j<results.castCategoryWiseVotersList.length; j++)
+	{
+		data.setValue(j,0,results.castCategoryWiseVotersList[j].name);
+		data.setValue(j,1,results.castCategoryWiseVotersList[j].id);
+	} 
+
+	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
+		chart.draw(data, {width: 400, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'Cast category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+	});
+
+
+	
 }
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId)
 	{
