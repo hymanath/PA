@@ -414,7 +414,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			if(!hasDeatiledAnalysis)
 				alliancesRequired ="notRequired";
 			electionCompleteDetailsVO = electionReportService
-					.getBasicResultsForAnElection(electionType, year, stateId,"1.8",alliancesRequired,electionId);
+					.getBasicResultsForAnElection(electionType, year, stateId,"0.6",alliancesRequired,electionId);
 			
 			electionCompleteDetailsVO.setElectionBasicVotersData(electionReportService.getVotersDataOfTwoElections(electionId));
 			if (electionCompleteDetailsVO != null) {
