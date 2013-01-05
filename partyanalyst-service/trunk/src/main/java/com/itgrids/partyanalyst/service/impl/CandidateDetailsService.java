@@ -4631,4 +4631,67 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}
 		return null;
 	}
+	
+	
+	public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType){
+		try{
+			log.debug("Entered into getCandidateGallarySelectList() Method");
+			
+			List<SelectOptionVO> gallarySelectList = null;
+			
+			List<Long> candidateIds = new ArrayList<Long>();
+			
+			List<Object[]> candidateDetails = userCandidateRelationDAO.getCandidatesOfAUser(registrationId);
+			
+			
+			for(Object[] obj:candidateDetails)
+				candidateIds.add((Long)obj[0]);
+			
+			List<Object[]> list = gallaryDAO.getGallariesByCandidateIds(candidateIds,contentType);
+			
+			if(list != null && list.size() > 0)
+			{
+				gallarySelectList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					gallarySelectList.add(selectOptionVO);
+				}
+			}
+			return gallarySelectList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
+			return null;
+		}
+	}
+
+	
+	
+	/**
+	 * This method will save comment for a file
+	 */
+	public String saveFileComment(Long fileId , String comment){
+		
+		try{
+		
+		File file = fileDAO.get(fileId);
+		
+		file.setComment(comment);
+		
+		fileDAO.save(file);
+		
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			return null;
+			
+		}
+		
+		return IConstants.SUCCESS;	
+	
+		
+	}
 }
