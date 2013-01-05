@@ -74,8 +74,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String existingDateFrom;
 	private String identifiedDateOn;
 	private Date reqFileDate;
-	
-	
+	private Long regionValue;
 	private FileVO fileVOForDiaplyImage;
 	
 
@@ -84,9 +83,28 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String displayImagePath;
 	private String imagePathInUpperCase;
 	
+	private String fileDateAsString;
+	private String comments;
+	
 	
 
 	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public String getFileDateAsString() {
+		return fileDateAsString;
+	}
+
+	public void setFileDateAsString(String fileDateAsString) {
+		this.fileDateAsString = fileDateAsString;
+	}
+
 	public String getImagePathInUpperCase() {
 		return imagePathInUpperCase;
 	}
@@ -726,4 +744,13 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setFileVOForDiaplyImage(FileVO fileVOForDiaplyImage) {
 		this.fileVOForDiaplyImage = fileVOForDiaplyImage;
 	}
+	
+	public Long getRegionValue() {
+		return regionValue;
+	}
+
+	public void setRegionValue(Long regionValue) {
+		this.regionValue = regionValue;
+	}
+
 }
