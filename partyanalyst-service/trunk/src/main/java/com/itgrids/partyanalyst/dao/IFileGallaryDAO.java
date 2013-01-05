@@ -44,6 +44,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<Object[]> getNewsByGalleryId(List galleryIds);	
 	
+	 public void updateVisibility(Long fileId,String visibility);
+	
 	public List<File> getNewsForRegisterUsers(FileVO fileVO);
 	
     public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
@@ -118,4 +120,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Integer maxResults , String queryStr);
     
     public List<FileGallary> getCandidateGallaryDetailsForProfilePageStreaming(Date fromDate,Date toDate,Set<Long> candidateIds);
+    
+    public List<Object[]> getNewsForRegisterUsers1(FileVO fileVO);
+    
+    public List<FileGallary> getFilesOfInGallariesForCustomer(List<Long> gallaryIdsList);
 }
+

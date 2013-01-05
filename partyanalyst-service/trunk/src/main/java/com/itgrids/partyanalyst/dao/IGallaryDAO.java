@@ -21,4 +21,9 @@ public interface IGallaryDAO extends GenericDao<Gallary, Long>{
 	
 	public List<Object> getOtherGalleries(Long candidateId,List<Long> gallaryIds,String contentType);
 	
+	public List<Object[]> getGallariesByCandidateIds(List<Long> candidateIds,String contentType);
+	
+	public List<Object> getOtherGalleriesForCandidate(Long candidateId,List<Long> gallaryIds,String contentType);
+
+	
 }
