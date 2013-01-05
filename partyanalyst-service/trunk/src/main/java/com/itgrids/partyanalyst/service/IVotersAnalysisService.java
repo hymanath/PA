@@ -44,7 +44,8 @@ public interface IVotersAnalysisService {
 	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(Long localElectionBodyId,Long publicationDateId);
 	public List<VotersDetailsVO> getAgewiseVotersDetailsForTehsilsByConstituencyId(Long constituencyId,Long publicationDateId);
 	
-	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,String caste);
+    //public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,String caste);
+	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type);
 
 	public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user);
 	
