@@ -2287,7 +2287,7 @@ function buildContentDetails()
 
 			str+='<input type="button" style="margin:3px 8px 0px 410px" class="btn btn-mini" value="Save" onClick="saveFileComment('+fileId1+');"/>';
 
-			str+='<input type="button" class="btn" value="Cancel" onClick="cancelPostComment('+fileId1+');"/></div>';
+			str+='<input type="button" class="btn btn-mini" value="Cancel" onClick="cancelPostComment('+fileId1+');"/></div>';
 		}
 		else{
 		str+='<div style="width:700px;height:104px;margin:11px;"><b style="float:left;">Enter NOtes:</b><textarea style="width:650px;height:50px;margin-right:49px;" id="commentId'+fileId1+'"></textarea>';
