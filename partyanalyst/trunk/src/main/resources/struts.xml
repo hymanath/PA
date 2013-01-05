@@ -2759,6 +2759,14 @@
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
+		
+		<action name="getCandidateGallaries" class="candidateElectionResultsAction"  method="getCandidateGallaries">
+		<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
+		</action>
+		
+		
 		<action name="getCandidatesAjaxAction" class="candidateElectionResultsAction" method="AjaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
@@ -3243,6 +3251,13 @@
 				<param name="root">contentDetailsVO</param>
 			</result>
 		</action>
+		
+		<action name="getSelectedContentAndRelatedGalleriesAForCustomer" class="contentManagementAction" method="getCandidateGallaries">
+			<result type="json" name="success">
+				<param name="root">contentDetailsVO</param>
+			</result>
+		</action>
+		
 		
 		<action name="saveUserEmailAction" class="anonymousUserAction" method="AjaxHandler">
 			<result type="json" name="success">
@@ -4050,6 +4065,13 @@
 			<result type="json" name="success">
 		    	<param name="root">resultStatus</param>
 		   </result>
+		</action>
+		
+		<action name="saveFileCommentAction" class="candidateElectionResultsAction" method="saveFileCommentAction">
+		<result type="json" name="success">
+		    	<param name="root">status</param>
+		   </result>
+		
 		</action>
 	</package>
 </struts>      
