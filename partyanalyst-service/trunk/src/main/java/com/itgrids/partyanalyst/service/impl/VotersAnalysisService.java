@@ -25,22 +25,27 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
+import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
+import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -50,6 +55,8 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Caste;
+import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterCategory;
 import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
@@ -90,8 +97,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private ICasteStateDAO casteStateDAO;
 	//private IVoterCategoryValues voterCategoryValues;
 	private IPublicationDateDAO publicationDateDAO;
-	
-	
+	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
+	private ICasteCategoryGroupDAO casteCategoryGroupDAO;
+	private ICasteDAO casteDAO;
+	private IStateDAO stateDAO;
 
 	public IVoterCategoryValueDAO getVoterCategoryValueDAO() {
 		return voterCategoryValueDAO;
@@ -206,6 +215,36 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 		this.casteStateDAO = casteStateDAO;
+	}
+	
+	public IUserStateAccessInfoDAO getUserStateAccessInfoDAO() {
+		return userStateAccessInfoDAO;
+	}
+	public void setUserStateAccessInfoDAO(
+			IUserStateAccessInfoDAO userStateAccessInfoDAO) {
+		this.userStateAccessInfoDAO = userStateAccessInfoDAO;
+	}
+	public ICasteCategoryGroupDAO getCasteCategoryGroupDAO() {
+		return casteCategoryGroupDAO;
+	}
+	public void setCasteCategoryGroupDAO(
+			ICasteCategoryGroupDAO casteCategoryGroupDAO) {
+		this.casteCategoryGroupDAO = casteCategoryGroupDAO;
+	}
+	
+	public ICasteDAO getCasteDAO() {
+		return casteDAO;
+	}
+
+	public void setCasteDAO(ICasteDAO casteDAO) {
+		this.casteDAO = casteDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -2992,6 +3031,62 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			e.printStackTrace();
 			log.error(" Exception Occured in getConstituenciesList() Method, Exception - "+e);
 			return constituencyList;
+		}
+	}
+	
+		
+	public ResultStatus saveCasteName(Long userId, Long stateId, Long casteCategoryGroupId, String casteName)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			CasteState casteState = null;
+			Caste caste = casteDAO.getCasteByCastName(casteName);
+			
+			if(caste == null)
+			{
+				caste = new Caste();
+				caste.setCasteName(casteName);
+				caste = casteDAO.save(caste);
+			}
+			CasteState casteState2 = casteStateDAO.getCasteStateByCasteId(userId, stateId, caste.getCasteId(), casteCategoryGroupId);
+			if(casteState2 == null)
+			{
+				casteState = new CasteState();
+				casteState.setUser(userDAO.get(userId));
+				casteState.setCasteCategoryGroup(casteCategoryGroupDAO.get(casteCategoryGroupId));
+				casteState.setIsGlobal(IConstants.FALSE);
+				casteState.setState(stateDAO.get(stateId));
+				casteState.setCaste(caste);
+				casteStateDAO.save(casteState);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in saveCasteName() Method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
+	}
+	
+		
+	public List<SelectOptionVO> getcastCategoryGroups()
+	{
+		List<SelectOptionVO> castCategoryList = new ArrayList<SelectOptionVO>(0);
+		try{
+			List<Object[]> list = casteCategoryGroupDAO.getAllCasteCategoryGroupInfoDetails();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					castCategoryList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+				}
+			}
+			return castCategoryList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getcastCategoryGroups() Method, Exception - "+e);
+			return castCategoryList;
 		}
 	}
 

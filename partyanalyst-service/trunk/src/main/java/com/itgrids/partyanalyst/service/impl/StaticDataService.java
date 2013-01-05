@@ -63,7 +63,11 @@ import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
@@ -195,7 +199,10 @@ public class StaticDataService implements IStaticDataService {
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private IPanchayatDAO panchayatDAO;
 	private IBoothDAO boothDAO;
-
+	private IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
+	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	
 
 	public IBoothDAO getBoothDAO() {
@@ -401,6 +408,33 @@ public class StaticDataService implements IStaticDataService {
 		this.electionTypeDAO = electionTypeDAO;
 	}
 
+	public IUserStateAccessInfoDAO getUserStateAccessInfoDAO() {
+		return userStateAccessInfoDAO;
+	}
+
+	public void setUserStateAccessInfoDAO(
+			IUserStateAccessInfoDAO userStateAccessInfoDAO) {
+		this.userStateAccessInfoDAO = userStateAccessInfoDAO;
+	}
+
+	public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+		return userDistrictAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
 	public IElectionTypeDAO getElectionTypeDAO() {
 		return electionTypeDAO;
 	}
@@ -456,6 +490,15 @@ public class StaticDataService implements IStaticDataService {
 
 	public ICommentCategoryCandidateDAO getCommentCategoryCandidateDAO() {
 		return commentCategoryCandidateDAO;
+	}
+
+	public IUserCountryAccessInfoDAO getUserCountryAccessInfoDAO() {
+		return userCountryAccessInfoDAO;
+	}
+
+	public void setUserCountryAccessInfoDAO(
+			IUserCountryAccessInfoDAO userCountryAccessInfoDAO) {
+		this.userCountryAccessInfoDAO = userCountryAccessInfoDAO;
 	}
 
 	public void setCommentCategoryCandidateDAO(
@@ -7609,6 +7652,66 @@ public class StaticDataService implements IStaticDataService {
 			return districtDAO.getDistrictNameById(districtId).toString();
 		}catch (Exception e) {
 			log.error("Exception occured in getDistrictNameByDistrictId() method, Exception is - "+e);
+			return null;
+		}
+	}
+	
+	public List<SelectOptionVO> getUserAccessStates(Long userId)
+	{
+		try{
+			List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>(0);
+			List<SelectOptionVO> finalStateList = new ArrayList<SelectOptionVO>(0);
+						
+			List<Object[]> countries = userCountryAccessInfoDAO.findByUser(userId);
+			if(countries != null && countries.size() > 0)
+			{
+				for(Object[] params : countries)
+				{
+					List<Object[]> list = stateDAO.getAllStatesByCountryIdOrderByStateId((Long)params[0]);
+					if(list != null && list.size() > 0)
+						for(Object[] obj: list)
+							statesList.add(new SelectOptionVO((Long)obj[0],obj[1].toString()));
+				}
+			}
+			
+			List<Object[]> states = userStateAccessInfoDAO.findByUser(userId);
+			if(states != null && states.size() > 0)
+			{
+				for(Object[] params : states)
+					statesList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+			
+			//from constituency
+			List<Object[]> stateListFromCons = userConstituencyAccessInfoDAO.getAllUserAccessConstituencies(userId);
+			if(stateListFromCons != null && stateListFromCons.size() > 0)
+			{
+				for(Object[] params : stateListFromCons)
+					statesList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+			
+			//from district
+			
+			List<Object[]> stateListFromDist = userDistrictAccessInfoDAO.getAllUserAccessStateList(userId);
+			if(stateListFromDist != null && stateListFromDist.size() > 0)
+			{
+				for(Object[] params : stateListFromDist)
+				statesList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+			
+			List state = new ArrayList(new HashSet(statesList)); 
+			
+			List<SelectOptionVO> stateList = (List<SelectOptionVO>) state;
+			if(stateList != null && stateList.size() > 0)
+			{
+				for(SelectOptionVO params : (List<SelectOptionVO>)stateList)
+				{
+					finalStateList.add(new SelectOptionVO(params.getId(),params.getName()));	
+				}
+			}
+			
+			return finalStateList;
+		}catch (Exception e) {
+			log.error("Exception occured in getUserAccessStates() Method, Exception is - "+e);
 			return null;
 		}
 	}

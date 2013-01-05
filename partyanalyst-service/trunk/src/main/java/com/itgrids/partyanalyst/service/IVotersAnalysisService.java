@@ -67,4 +67,8 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getConstituenciesList();
 	
 	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	
+	public List<SelectOptionVO> getcastCategoryGroups();
+	
+	public ResultStatus saveCasteName(Long userId, Long stateId, Long casteCategoryGroupId, String casteName);
 }
