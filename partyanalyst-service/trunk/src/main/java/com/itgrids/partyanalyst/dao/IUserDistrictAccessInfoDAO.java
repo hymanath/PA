@@ -18,5 +18,7 @@ public interface IUserDistrictAccessInfoDAO extends GenericDao<UserDistrictAcces
 	
 	public void deleteAllDistrictAccess(Long userId);
 	
+	public List<Object[]> getAllUserAccessStateList(Long userId);
+	
 	
 }
