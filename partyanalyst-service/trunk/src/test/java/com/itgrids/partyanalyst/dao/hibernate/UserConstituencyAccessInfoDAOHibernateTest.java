@@ -32,12 +32,12 @@ public class UserConstituencyAccessInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 	}*/
-	public void testFindByElectionTypeUserState(){
+	/*public void testFindByElectionTypeUserState(){
 		 
 	 
 		List<Object[]> result =  userConstituencyAccessInfoDAO.findByElectionTypeUserState(2L,7L,1L);
 		System.out.println(result.size());
-	 }
+	 }*/
 	/*
 	public void testFindByElectionScopeUserState(){
 		List list = userConstituencyAccessInfoDAO.findByElectionScopeUserState(1L, 308L, 1L);
@@ -48,4 +48,14 @@ public class UserConstituencyAccessInfoDAOHibernateTest extends BaseDaoTestCase{
 		List list = userConstituencyAccessInfoDAO.findByElectionScopeUser(2L, 7L);
 		System.out.println(list.size());
 	}*/
+	
+	public void testGetAllUserAccessConstituencies()
+	{
+		List<Object[]> states = userConstituencyAccessInfoDAO.getAllUserAccessConstituencies(2l);
+		if(states != null && states.size() > 0)
+		{
+			for(Object[] params : states)
+				System.out.println(params[0]+" "+params[1]);
+		}
+	}
 }

@@ -33,4 +33,14 @@ public class UserDistrictAccessInfoDAOHibernateTest extends BaseDaoTestCase{
 		 System.out.println(list.size());
 	}*/
 	
+	public void testGetAllUserAccessStateList()
+	{
+		List<Object[]> list = userDistrictAccessInfoDAO.getAllUserAccessStateList(9l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
+	}
+	
 }

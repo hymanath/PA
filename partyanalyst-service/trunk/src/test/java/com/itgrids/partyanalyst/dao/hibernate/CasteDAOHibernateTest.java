@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICasteDAO;
+import com.itgrids.partyanalyst.model.Caste;
 
 public class CasteDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -30,20 +31,29 @@ public class CasteDAOHibernateTest extends BaseDaoTestCase{
 		 // System.out.println(list.size());
 	*/
 	
-	public void testgetCasteNamesByCasteId() {
+	/*public void testgetCasteNamesByCasteId() {
 		
 		List<Object[]> list=casteDAO.getCasteNamesByCasteId("assembly",1l,5l,47l,"winner");
 			for(int i=1;i<=list.size();i++){	
 				System.out.println(list.get(i));
 			}
 			
-	}
+	}*/
 	
 	/*public void test()
 	{
 		casteDAO.getAll();
 	}*/
 	
+	
+	
+	public void testgetCasteByCastName()
+	{
+		Caste caste = casteDAO.getCasteByCastName("OC");
+		System.out.println(caste);
+		if(caste != null)
+			System.out.println(caste.getCasteName());
+	}
 
 }
 

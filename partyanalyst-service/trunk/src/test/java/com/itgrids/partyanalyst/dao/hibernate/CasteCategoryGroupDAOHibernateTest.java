@@ -17,7 +17,7 @@ public class CasteCategoryGroupDAOHibernateTest extends BaseDaoTestCase {
 		this.casteCategoryGroupDAO = casteCategoryGroupDAO;
 	}
 	
-public void testGetCasteCategoryGroupDAO() {
+/*public void testGetCasteCategoryGroupDAO() {
 	
 List<Object[]> obj=	casteCategoryGroupDAO.getCasteCategoryGroupNames((long)1);
 		
@@ -26,5 +26,15 @@ List<Object[]> obj=	casteCategoryGroupDAO.getCasteCategoryGroupNames((long)1);
 		System.out.println(params[0]+"-----"+params[1].toString());
 		
 		}
-
+*/
+	
+	public void testGetAllCasteCategoryGroupInfoDetails()
+	{
+		List<Object[]> list = casteCategoryGroupDAO.getAllCasteCategoryGroupInfoDetails();
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
+	}
 }
