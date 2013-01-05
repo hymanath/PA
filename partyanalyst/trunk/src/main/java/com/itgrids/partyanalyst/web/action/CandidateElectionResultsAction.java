@@ -859,6 +859,26 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return SUCCESS;
 	}
 	
+	public String getCandidateGallaries(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");		
+		
+		String contentType = jObj.getString("contentType");
+		
+		selectOptionList = candidateDetailsService.getCandidateGallaries(regVO.getRegistrationID() , contentType);
+
+		
+		return Action.SUCCESS;
+		
+	}
+	
 	public String AjaxHandler()
 	{
 		try {
@@ -1467,6 +1487,25 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 		
 		return Action.SUCCESS;
+	}
+	
+	
+	public String saveFileCommentAction(){
+		 try{	 
+			 jObj = new JSONObject(getTask());  
+			 }catch(Exception e){
+				 e.printStackTrace(); 
+			 }
+		 
+		 
+		 Long fileId = jObj.getLong("fileId");
+		 String comment = jObj.getString("comment");
+		 
+		 status = candidateDetailsService.saveFileComment(fileId,comment);
+		 
+		return Action.SUCCESS;
+		
+		
 	}
 
 }
