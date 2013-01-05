@@ -158,8 +158,11 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 		<property name="panchayatDAO" ref="panchayatDAO"></property>
-		<property name="boothDAO" ref="boothDAO"></property>
-		
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="userCountryAccessInfoDAO" ref="userCountryAccessInfoDAO" />
+		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
+		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
+		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -1320,6 +1323,10 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 		<property name="casteStateDAO" ref="casteStateDAO" />
+		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
+		<property name="casteCategoryGroupDAO" ref="casteCategoryGroupDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="casteDAO" ref="casteDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
