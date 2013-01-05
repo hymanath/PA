@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -34,15 +35,16 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private Long voterId;
 	private ResultStatus result;
 	private IStaticDataService staticDataService;
-	private List<SelectOptionVO> partyGroupList;
+	private List<SelectOptionVO> partyGroupList, castCategoryGroupList,userAccessStates;
 	
 	private List<VoterHouseInfoVO> userCategorysList;
 	private String resultStr;
 	private List<SelectOptionVO> voterCategoryValues;
-	private SelectOptionVO selectOptionVO;
+	private SelectOptionVO selectOptionVO,casteVO;
 	private String save;
-	
+	private Long userId;
 	//private String windowTask = null;
+	private ResultStatus resultStatus;
 	
 	
 	
@@ -182,8 +184,60 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	public void setSave(String save) {
 		this.save = save;
 	}
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	public SelectOptionVO getCasteVO() {
+		return casteVO;
+	}
+
+	public void setCasteVO(SelectOptionVO casteVO) {
+		this.casteVO = casteVO;
+	}
+
+	public List<SelectOptionVO> getCastCategoryGroupList() {
+		return castCategoryGroupList;
+	}
+
+	public void setCastCategoryGroupList(List<SelectOptionVO> castCategoryGroupList) {
+		this.castCategoryGroupList = castCategoryGroupList;
+	}
+
+	public List<SelectOptionVO> getUserAccessStates() {
+		return userAccessStates;
+	}
+
+	public void setUserAccessStates(List<SelectOptionVO> userAccessStates) {
+		this.userAccessStates = userAccessStates;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 
 	public String execute() throws Exception{
+		
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return "error";
+		
+		userId = user.getRegistrationID();
+		
+				
+		castCategoryGroupList = votersAnalysisService.getcastCategoryGroups();
+		userAccessStates = staticDataService.getUserAccessStates(userId);
 		
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 /*		HttpSession session = request.getSession();
@@ -307,9 +361,29 @@ public String saveVoterDetails(){
 				return  "category";
 		}
 		
-		
+			
+		return Action.SUCCESS;
+	}
+	
+	public String saveCasteName()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return "error";
+		userId = user.getRegistrationID();
+		try{
+			jObj = new JSONObject(getTask());
+			String casteName = jObj.getString("casteName");
+			Long stateId = jObj.getLong("stateId");
+			Long casteCateGroupId = jObj.getLong("casteCateGroupId");
+			resultStatus = votersAnalysisService.saveCasteName(userId,stateId,casteCateGroupId,casteName);
+		}catch (Exception e) {
+			Log.error("Exception Occured in saveCasteName() Method, Exception - "+e);
+		}
 		
 		return Action.SUCCESS;
+				
 	}
 	
 	}
