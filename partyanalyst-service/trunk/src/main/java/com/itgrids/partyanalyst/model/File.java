@@ -60,6 +60,8 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	private Set<FileSourceLanguage> fileSourceLanguage = new HashSet<FileSourceLanguage>(0);
 	private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
+	
+	private String comment;
 
 	/** default constructor */
 	public File() {
@@ -273,5 +275,17 @@ public class File extends BaseModel implements java.io.Serializable {
 	public void setProblemFiles(Set<ProblemFiles> problemFiles) {
 		this.problemFiles = problemFiles;
 	}
+	
+	
+	
+	@Column(name="comments" , length = 500)
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
   
 }
