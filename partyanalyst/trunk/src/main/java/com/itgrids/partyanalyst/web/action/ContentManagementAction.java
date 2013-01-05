@@ -13,6 +13,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.service.IContentManagementService;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
@@ -89,8 +90,32 @@ ServletRequestAware, ServletResponseAware, ServletContextAware{
 		if(jObj.getString("task").equalsIgnoreCase("getSelectedContent"))
 		{
 			contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleries(
-					jObj.getLong("contentId"),jObj.getString("requestFrom"),jObj.getLong("requestPageId"));
+					jObj.getLong("contentId"),jObj.getString("requestFrom"),jObj.getLong("requestPageId"),"false");
 			 
+		}
+		
+		return SUCCESS;
+	}
+	
+	
+	public String getCandidateGallaries(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+	
+		
+		if(jObj.getString("task").equalsIgnoreCase("getSelectedContent"))
+        {
+			contentDetailsVO = contentManagementService
+					.getSelectedContentAndRelatedGalleries(
+							jObj.getLong("contentId"),
+							jObj.getString("requestFrom"),
+							jObj.getLong("requestPageId"),
+							jObj.getString("isCustomer"));
+
 		}
 		
 		return SUCCESS;

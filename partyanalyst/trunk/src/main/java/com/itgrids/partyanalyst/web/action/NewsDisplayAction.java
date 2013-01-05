@@ -127,8 +127,11 @@ public class NewsDisplayAction implements ServletRequestAware{
 			    fileVO.setLocation(jObj.getLong("location"));
 			
 			
-			returnVal = newsMonitoringService.getNewsForRegisterUsers(fileVO);
+			//returnVal = newsMonitoringService.getNewsForRegisterUsers(fileVO);
+		    returnVal = newsMonitoringService.getNewsForRegisterUsers1(fileVO);
 		}
+		
+		
 		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getCount"))
 		{
 			FileVO fileVO = new FileVO();
@@ -319,6 +322,16 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    fileVO.setLanguegeId(jObj.getLong("languegeId"));
 		    fileVO.setCategoryId(jObj.getLong("categoryId"));
 		    fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
+		    
+		    
+		    fileVO.setGallaryId(jObj.getLong("gallaryId"));
+		    fileVO.setKeywords(jObj.getString("keywords"));
+		    fileVO.setFileDate(jObj.getString("fileDate"));
+		    fileVO.setLocationScope(jObj.getLong("locationScopeId"));
+		    fileVO.setRegionValue(jObj.getLong("locationScopeValue"));
+		    fileVO.setVisibility(jObj.getString("visibility"));
+		   
+		    
 		   } 
 		   List<FileVO> sourceFilesList = new ArrayList<FileVO>();
 		   List<FileVO> languageFilesList = new ArrayList<FileVO>();
