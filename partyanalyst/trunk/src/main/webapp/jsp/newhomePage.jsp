@@ -116,6 +116,12 @@
 .election-resulthome .btn-mini a{text-decoration:none;}
 .election-resulthome .btn-mini a:hover{text-decoration:none;}
 .widget-padding{padding-bottom: 5px; padding-top: 5px;}
+
+
+#contenttable  .container .row-fluid  .span4 {
+    margin-left: 10px;
+    width: 245px;
+}
 			</style>
 <div class="container m-top15">
 
