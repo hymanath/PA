@@ -11,9 +11,200 @@
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+
+<script type="text/javascript" src="js/specialPage/specialPage.js"></script>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <title></title>
+
+
+<style>
+.pr-cont-sec
+{
+	margin-left: 10px;
+}
+
+.pft-sec {
+    color: #777777;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 32px 0 16px 21px;
+    width: 244px;
+}
+.popupcontainer {		
+    	background-color: #FFFFFF;
+    	margin: 9px auto 10px;
+    	max-width: 780px;
+    	padding: 10px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
+	.main-mbg {
+    -moz-border-radius: 6px 6px 6px 6px;
+	border-radius :6px;
+    background-color: #06ABEA;
+    clear: both;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    margin-bottom: 5px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 974px;
+}
+.profile-left-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    float: left;
+    margin-right: 2px;
+    padding-top: 5px;
+    width: 204px;
+}
+.profile-mid-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -211px top transparent;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    position: relative;
+    width: 441px;
+}
+.profile-right-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -683px top transparent;
+    float: left;
+    margin-left: 2px;
+    padding-top: 5px;
+    width: 300px;
+}
+#contenttable {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    width: 975px;
+}
+.imageButton{
+	
+	-moz-border-radius: 4px 4px 4px 4px;
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.view-results a {
+    background: url("images/icons/homePage_new/b3.jpg") no-repeat scroll 0 0 transparent;
+    border: medium none;
+    cursor: pointer;
+    display: block;
+    height: 27px;
+    margin: 11px 0 15px 113px;
+    text-indent: -9999px;
+    width: 94px;
+}
+.selectBoxWidth{
+	margin-left: 4px;
+    margin-top: 26px;
+    padding-left: 3px;
+    width: 179px;
+}
+.selectDivStyle {
+   
+    background-color: #21B2ED;
+    color: #FFFFFF;
+    float: left;
+    padding: 4px;
+    width: 179px;
+	 font-weight: bold;
+	 margin-bottom:10px;
+}
+.flagStyle  
+{
+	background:#f0f0f0;float: left;
+	width: 60px;
+	text-align: center;
+	left: 0px;
+	clear:both;
+	bottom: 0px;
+	height: 21px;
+	color: #2A4F97;
+	font-size: 12px;
+    font-weight: bold;
+	font-size: 11px;
+	line-height: 21px;
+
+}
+.selectHeading{
+font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); border-left: 1px solid rgb(205, 205, 205); border-bottom: 1px solid rgb(205, 205, 205); margin-bottom: 16px;
+
+
+}
+
+  .gallaryImg
+{
+	width  : 150px;
+	height : 130px;
+}
+.pagenationStyle{
+  background-color:#F5371C;color:#fff;
+}
+.paginatorElmtClass a {
+    border: 1px solid #ADADAD;
+    font-size: 11px;
+    margin: 0 3px;
+    padding: 3px;
+}
+#buildSources,#buildNewSources{
+border:1px solid #d3d3d3;
+margin-left: auto;
+margin-right: auto;
+margin-top: 10px;
+margin-bottom: 20px;
+width: 618px;
+}
+#buildVideoNewSources{
+border:1px solid #d3d3d3;
+margin-left: auto;
+margin-right: auto;
+margin-top: 10px;
+margin-bottom: 20px;
+width: 500px;
+}
+.newssources{
+ background-color:#97DFEB;
+ padding:8px 8px 8px 8px;
+ margin-left:5px;
+ border-radius: 5px 5px 5px 5px;
+
+}
+.newsParts{
+  
+  color:#FF4500;
+}
+ #contentAjaxCallImg{ 
+	padding-left: 369px;
+    padding-top: 110px;
+	display:none;
+  }
+
+
+#videoGallaryPopUpDiv {
+    height: 526px;
+    min-height: 0;
+    width: auto;
+}
+.titleStyle{color:black;}
+.close{opacity:1.5;}
+  .close:hover{opacity:1.5;}
+#videogallery a{width:120px}
+
+</style>
 <style>
 #showNews #showNewsCount table{
 border:1px solid #dddddd;
@@ -184,6 +375,8 @@ width: 618px;
   
   color:#FF4500;
 }
+
+
 </style>
 <script type="text/javascript">
 
@@ -535,7 +728,16 @@ function showNewsDetails(jsObj,result){
 	var user = oData;
 	var title = oRecord.getData("fileTitle1");
 	var fileId = oRecord.getData("fileId");
-	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+fileId+"\")'>"+title+"</a>";
+
+
+	//BY SAMBA START
+	var gallaryId = oRecord.getData("contentId");
+	//elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+fileId+"\")'>"+title+"</a>";
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='getVideoDetails(\""+gallaryId+"\")'>"+title+"</a>";
+
+	//elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+fileId+"\")'>"+title+"</a>";
+
+		//BY SAMBA END
   };
   YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
   {
@@ -604,6 +806,8 @@ function showNews(fileId)
 
 function displayNews(fileId)
 {
+
+
 	for(var i=0;i<newsDetails.length;i++)
 	{
 	if(newsDetails[i].fileId == fileId)
@@ -841,7 +1045,7 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 function editNewsDetails(fileId){
 
   $("#editNewsOuter").dialog({ stack: false,
-							    height: 380,
+							    height: 'auto',
 								width: 700,
 								position:[150,120],								
 								modal: true,
@@ -858,20 +1062,46 @@ function editNewsDetails(fileId){
 		
 	  }
 	}
+
+
 	var str ='';
 	str+='<div>';
 	str += '<fieldset>';
 	
 	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"  style="padding-left:40px;" /></td></tr></table>';
 	str += '<table>';
+	str+='<tr>';
+	str+='<td class="tdWidth">Select News Gallery<font class="requiredFont">*</font></td>';
+	str+='<td class="selectWidthPadd"><select style="width:222px;" onchange="buildNewsVisibility()" id="gallaryId" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
+	str+='</tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
 	str += '       <td><input type="text" id="fileTitle" size="25" maxlength="100"></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
+    
 	str += '       <td class="tdWidth">News Description<font class="requiredFont">*</font></td>';
 	str += '       <td><textarea id="fileDescription" cols="20" rows="3"></textarea></td>';
 	str += '   </tr>';
+
+    str += '   <tr>';
+	str += '       <td class="tdWidth">Keywords</td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" style="margin-top:8px;"></text></td></tr>';
+
+	str += '   <TR>';
+	
+	
+	str += ' <td class="tdWidth"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	
+	str += '   </TR>';
+
+
 	for(var i in reqFile.fileVOList)
 	{
 	   str += '   <tr>';
@@ -893,25 +1123,527 @@ function editNewsDetails(fileId){
 	str += '       <td class="tdWidth">News Importance<font class="requiredFont">*</font></td>';
 	str += '       <td><select id="newsimportance" style="width:222px;"></select></td>';
 	str += '   </tr>';
+
+	/*
+		str += '   <tr>';
+		str += '       <td class="tdWidth">File Path<font class="requiredFont">*</font></td>';
+		str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" style="margin-top:8px;"/></td>';
+		str += '       <td class="selectWidthPadd" style="padding-left:24px;"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
+		str += '   </tr>';
+	*/
+
+	str += '   <tr>';
+	str += '      <td colspan="2"> <div id="addMoreFilesDiv" style="margin-left:107px;"></div></td>';
+	str += '   </tr>';
+
+	/*
+		str +='<tr><td class="tdWidth" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="newsfileId" size="25" style="margin-top:8px;"/></td></tr>';
+	*/
+	//str += '   <tr>';
+	
+
+	str += '   <tr>';
+	str += '       <td></td>';
+	if(reqFile.visibility == "false")
+
+		str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+	else
+
+		str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+
+    str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td></td>';
+
+	if(reqFile.visibility == "true")
+
+	  str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+   else
+	   str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+
+	str += '   </tr>';
+
+	str +='    <tr>';
+    str +='	   <td class="tdWidth">Location Scope</td>';
+    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+    str +='  </tr>';
+ 
+   if(reqFile.locationScope != null && reqFile.locationScope != "null"){
+
+
+		str +='  <tr>';
+		str +='    <td>';
+
+       str+='<input type="hidden" id="locationValueId" value='+reqFile.location+'></input>';
+
+		str +='       <div style="font-weight:bold;flost:right;">'+reqFile.locationValue+'</div>'; 
+		str +='    </td>';
+		str +='    <td>';
+		str +='<input type="button" class="btn" value="Edit" onClick="getLocationDiv();"/>'; 
+		str +='    </td>';
+		str +='  </tr>';
+
+   }
+
+
+	str +='  <tr>';
+	str +='    <td colspan="2">';
+	str +='       <div id="showScopeSubs" />'; 
+	str +='    </td>';
+	str +='  </tr>';
+
+
+
 	str += '</table>';
 	str += '<div style="padding-left:223px;padding-top:10px;"> <input type="button" value="Update" class="imageButton" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
 	str += '</fieldset>';
 	str+='</div>';
-	document.getElementById("editNewsInner").innerHTML = str;
+	    document.getElementById("editNewsInner").innerHTML = str;
 		
 	
-	
-	
+	   
+		//document.getElementById("existingFromText").value = reqFile.fileDate;
 	    document.getElementById("fileTitle").value = reqFile.fileTitle1;
+	    document.getElementById("keywords").value = reqFile.keywords;
 		document.getElementById("fileDescription").value = reqFile.description;
+		document.getElementById("existingFromText").value = reqFile.fileDateAsString;
+
 		getNews("sourceEdit","getAllSourceDetails","","","","","","","","","","");
         getNews("categoryEdit","getAllCategoryDetails",reqFile.categoryId,"","","","","","","","","");
         getNews("languageEdit","getAllSourceLanguageDetails","","","","","","","","","","");
         getNews("newsimportance","getAllNewsImportanceDetails",reqFile.newsImportanceId,"","","","","","","","","");
+	
 		
-	  
+		//CHANGE BY SAMBA
+	getCandidateGallariesForUplaod("News Gallary",reqFile.fileId);  
+	getScopes();
+//alert(reqFile.contentId);
+
 
  }
+
+function getLocationDiv(){
+var id =  $('#scopeDiv').val();
+
+ getLocations(id);
+}
+ function getLocations(id){
+
+   if(id==0)
+  {
+   var val ='';
+  val +='<table>';
+  val +='  <tr><td></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+    
+  }
+  else if(id==1)
+  {
+    var str ='';
+  str +='<table>';
+  str +='  <tr><td></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+  }
+  else if(id==2)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" name="locationValue" class="selectWidth"/></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==3)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" name="locationValue" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==4)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==5 || id==7)
+  {
+   if(id==5)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==7)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+   
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==6 || id==8)
+  {
+   if(id==6)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==8)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Village/Ward/Division :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==9)
+  {
+     var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Village/Ward/Division :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+}
+
+function getStatesForLocationScope()
+{
+  var jsObj =
+		{ 
+            time : timeST,
+			task:"getStates"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callnewAjax(jsObj,url);
+}
+
+
+
+function getCandidateGallariesForUplaod(contentType , fileId)
+{
+//var candidateId=document.getElementById("candidateId").value;
+	var jsObj =
+		{ 
+			contentType : contentType,
+		   	task : "candidateGallariesForUplaod"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidateGallaries.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+
+function getScopes(){
+  
+ var jsObj =
+		{ 
+            time : timeST,
+			task:"getScopesForNewSearch"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callnewAjax(jsObj,url);
+ 
+}
+
+function getDistricts1(stateId){
+  var jsObj =
+		{ 
+            time : timeST,
+			stateId : stateId,
+			task:"getDistrictsByStateId"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callnewAjax(jsObj,url);
+ 
+}
+
+ function getAllDetails(id,task,areaType,constId)
+{
+	var jsObj =
+	{ 
+		time : timeST,
+		id:id,
+		task:task,
+		taskType:"",
+		selectElementId:"",
+		address:"",
+		areaType:areaType,
+		constId:constId
+	};
+ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+ var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+ callnewAjax(jsObj,url);
+}
+
+
+function callnewAjax(jsObj,url){
+var callback = {			
+	 success : function( o ) {
+		try
+		{ 
+		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
+         	 
+         if(jsObj.task == "getCandidatePhotoGallaryDetail")
+			{
+               buildCandidatePhotoGallary(myResults);
+			}
+			else if(jsObj.task == "candidateGallariesForUplaod")
+			{ 
+			   if(jsObj.contentType=="News Gallary")
+				{
+					//clearOptionsListForSelectElmtId('gallaryId');
+					//createOptionsForSelectElmtId('gallaryId',myResults);
+
+					//$("#gallaryId").prepend("<option value='0'>Select Gallery</option>");
+					//document.getElementById("gallaryId").value = 0;
+						//$('#gallaryId').val(reqFile.contentId);
+
+						appendResults(myResults,"gallaryId");
+				
+				}
+				else if(jsObj.contentType=="Video Gallary")
+				{
+					clearOptionsListForSelectElmtId('gallarySelectId');
+					createOptionsForSelectElmtId('gallarySelectId',myResults);
+
+					$("#gallarySelectId").prepend("<option value ='0'>Select Gallery</option>");
+					document.getElementById("gallarySelectId").value = 0;
+				}
+				else if(jsObj.contentType=="Photo Gallary")
+				{
+					clearOptionsListForSelectElmtId('gallaryphotoselectId');
+					createOptionsForSelectElmtId('gallaryphotoselectId',myResults);
+					$("#gallaryphotoselectId").prepend("<option value='0'>Select Gallery</option>");
+                    document.getElementById("gallaryphotoselectId").value = 0;
+				}
+			}
+			else if(jsObj.task == "getScopesForNewSearch")
+			{ 
+			   //clearOptionsListForSelectElmtId("scopeDiv");
+              // buildResults(myResults,"scopeDiv");
+
+			  appendResults(myResults,"scopeDiv");
+			}
+			else if(jsObj.task == "getStates"){
+
+              appendResults(myResults,"stateDiv");
+			}
+			else if(jsObj.task == "getDistrictsByStateId"){
+				appendResults(myResults,"districtDiv");
+			}else if(jsObj.task == "constituenciesInDistrict"){
+				appendResults(myResults,"constituencyDiv");
+			}else if(jsObj.task == "getConstNotInGivenAreaType"){
+                appendResults(myResults,"constituencyDiv");
+			}else if(jsObj.task == "subRegionsInConstituency"){ 
+               appendResults(myResults,"mandalDiv");
+			}else if(jsObj.task == "hamletsOrWardsInRegion"){ 
+               appendResults(myResults,"villageDiv");
+			}else if(jsObj.task == "boothsInTehsilOrMunicipality"){ 
+               appendResults(myResults,"villageDiv");
+			}else if(jsObj.task == "saveFileComment"){
+
+				alert("Your comment is saved successfully.");
+			}
+		
+}
+		catch(e)
+		{   
+		}  
+	 },
+	scope : this,
+	failure : function( o )
+	{
+							
+	}
+  };
+
+ YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+
+function appendResults(results , divId){
+
+	$('#'+divId).find('option').remove();
+
+    if(divId == "scopeDiv"){
+		//$('#'+divId).append(new Option("Select Scope", "0"));
+
+		for(var i in results){			
+
+			$('#'+divId).append('<option value='+results[i].locationScope+'>'+results[i].locationScopeValue+'</option>');
+		}
+
+		if(reqFile.locationScope != null && reqFile.locationScope != "null")
+		$('#scopeDiv').val(reqFile.locationScope);
+		//getLocations(reqFile.locationScope);
+
+	}
+
+
+	if(divId == "stateDiv"){
+		//$('#'+divId).append(new Option("Select State", "0"));
+
+		for(var i in results){
+
+		$('#'+divId).append('<option value='+results[i].ids+'>'+results[i].names+'</option>');
+	    }
+	}
+
+	if(divId == "districtDiv"){
+
+		//$('#'+divId).append(new Option("Select District", "0"));
+
+		for(var i in results){
+
+		$('#'+divId).append('<option value='+results[i].ids+'>'+results[i].names+'</option>');
+	    }
+	}
+   
+    if(divId == "constituencyDiv"){
+
+		//$('#'+divId).append(new Option("Select Constituency", "0"));
+
+		for(var i in results){
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+	    }
+
+	} 
+
+	if(divId == "mandalDiv"){
+
+		//$('#'+divId).append(new Option("Select Mandal", "0"));
+
+		for(var i in results){
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+	    }
+
+	}
+
+	if(divId == "villageDiv"){
+
+		//$('#'+divId).append(new Option("Select Village", "0"));
+
+		for(var i in results){
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+	    }
+
+	}
+
+	if(divId == "gallaryId"){
+
+		//$("#gallaryId").append("<option value='0'>Select Gallery</option>");	
+
+		for(var i in results){
+
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+
+	    }
+
+	$('#gallaryId').val(reqFile.contentId);
+
+	}
+    
+}
+
  function bildDateForSource(results)
  {
    for(var j in reqFile.fileVOList)
@@ -958,8 +1690,33 @@ function editNewsDetails(fileId){
  }
  
  function updateDeleteNews(task,fileId){
- document.getElementById("newsDeleteMessage").innerHTML = "";	
+
+var fileTitle = $('#fileTitle').val();
+var fileDescription = $('#fileDescription').val();
+
+var errorMessage = "";
+var validate = false;
+
+if(fileTitle == ""){
+ errorMessage+="File title is required<br>";
+ validate = true;
+}
+
+if(fileDescription == ""){
+	errorMessage+="File description is required";
+	validate = true;
+}
+
+if(validate == true) {
+$('#uploadNewsFileErrorDiv').html('<span style="color:red;">'+errorMessage+'</span>');
+validate = false;
+return false;
+}
+
+
+document.getElementById("newsDeleteMessage").innerHTML = "";	
  var timeST = new Date().getTime();	
+
    var title ="";
    var description ="" ;
    var sourceId =""  ;
@@ -968,14 +1725,50 @@ function editNewsDetails(fileId){
    var newsImportanceId ="" ;
    var sourceString ='';
    var languageString = '';
+
+   //CHANGE BY SAMBA START
+
+   var gallaryId = "";
+   var keywords = "";
+   var fileDate = "";
+   var locationScopeId = "0";
+   var locationScopeValue = "";
+   var visibility = "";
+   //CHANGE BY SAMBA END
+
   if(task == "Update")
   {
    title  = document.getElementById("fileTitle").value;
    description  = document.getElementById("fileDescription").value;
+
+    //CHANGE BY SAMBA START
+
+	visibility = $('input:radio[name=visibility]:checked').val();
+
+	gallaryId = document.getElementById("gallaryId").value;
+   keywords = document.getElementById("keywords").value;
+   fileDate = document.getElementById("existingFromText").value;
+   locationScopeId = document.getElementById("scopeDiv").value;
+
+   try
+  {
+  	 locationScopeValue = document.getElementsByName('locationValue')[0].value; 
+
+  }
+catch(err)
+  {
+  	 locationScopeValue = document.getElementById('locationValueId').value; 
+
+  }
+
+   keywords = removeAllUnwantedCharacters(keywords); 
    
-   title = removeAllUnwantedCharacters(title);
+
+    //CHANGE BY SAMBA END
    
+   title = removeAllUnwantedCharacters(title);   
    description = removeAllUnwantedCharacters(description);
+  
    for(var i in reqFile.fileVOList)
    {
       var sourceEle  = document.getElementById("sourceEdit"+i);
@@ -1016,7 +1809,13 @@ function editNewsDetails(fileId){
 		  timeST           :    timeST,
 		  newsImportanceId :    newsImportanceId,
 		  sourceData       :    sourceString.slice(0, -1),
-		  languageData     :    languageString.slice(0, -1)
+		  languageData     :    languageString.slice(0, -1),
+		  gallaryId        :    gallaryId,
+          keywords         :    keywords,
+          fileDate         :    fileDate,
+          locationScopeId  :    locationScopeId,
+          locationScopeValue:   locationScopeValue,
+		  visibility        :visibility
      }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "updateDeleteNewsAction.action?"+rparam;						
@@ -1040,11 +1839,12 @@ function editNewsDetails(fileId){
 		</table>
 	</div>
 </center>
+
 <div id="newsSearch_head">
     <table align="center" style="padding-top:15px;padding-bottom:10px;">
 	   <tr>
-	      <td><input type="radio" name="dates" checked="true" value="today" id="today" onclick=" showDates();"><font color="navy"><b>&nbsp;Today</b></font></input></td>
-		  <td style="padding-left:10px;"><input type="radio" name="dates" id="thisweek" value="thisweek" onclick="showDates();"><font color="navy"><b>&nbsp;This Week</b></font></input></td>
+	      <td><input type="radio" name="dates"  value="today" id="today" onclick=" showDates();"><font color="navy"><b>&nbsp;Today</b></font></input></td>
+		  <td style="padding-left:10px;"><input type="radio" checked="true" name="dates" id="thisweek" value="thisweek" onclick="showDates();"><font color="navy"><b>&nbsp;This Week</b></font></input></td>
 		  <td style="padding-left:10px;"><input type="radio" name="dates" id="thismonth" value="thismonth" onclick="showDates();"><font color="navy"><b>&nbsp;This Month</b></font></input></td>
 		  <td style="padding-left:10px;"><input type="radio" name="dates" id="betweendates" value="betweendates" onclick="showDates();"><font color="navy"><b>&nbsp;Between Dates</b></font></input></td>
 	   </tr>
@@ -1134,17 +1934,612 @@ function editNewsDetails(fileId){
 </table>
 </fieldset>
 </div>
+
+<!--DISPLAY NEWS GALLARIES START-->
+ <div id="showContentDiv">
+	<div id="showContentDivInnerDiv"></div>
+	<div id="showContentDivInnerDiv"></div>
+ </div>
+	<div id="videoGallaryPopUpDiv"></div>
+	<div id="emailAlertDiv"></div>
+	<div id="sendMessageDiv">
+    <div id="constituencySelectDiv"/>
+	</div>
+	<div id="logInDiv"></div>
+<!--DISPLAY NEWS GALLARIES END-->
+
+
+
 <div id="editNewsOuter">
   <div id="editNewsInner"></div>
 </div>
 <script type="text/javascript">
-getNews("byTodayDate","getCount","All","","","","","","","","","");
-getNews("byTodayDate","getNews","All","","","","","","","Today","","");
-getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv","","","","");
+
+getNews("byThisWeek","getCount","All","","","","","","","","","");
+getNews("byThisWeek","getNews","All","","","","","","","Today","","");
+getGraphDetails("byThisWeek","categoryDetailsForGraph","","","categoryGraphDiv","","","","");
+
+//getNews("byTodayDate","getCount","All","","","","","","","","","");
+//getNews("byTodayDate","getNews","All","","","","","","","Today","","");
+//getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv","","","","");
 getNews("source","getAllSourceDetails","","","","","","","","","","");
 getNews("category","getAllCategoryDetails","","","","","","","","","","");
 getNews("language","getAllSourceLanguageDetails","","","","","","","","","","");
 getNews("importance","getAllNewsImportanceDetails","","","","","","","","","","");
 </script>
+
+
+
+<!--DISPLAY NEWS GALLARIES START-->
+
+<script>
+function getVideoDetails(contentId)
+{
+
+
+	$.fx.speeds._default = 1000;
+	  $("#showContentDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								overlay: { opacity: 0.5, background: 'black'},
+								close: function(event, ui) {
+								document.getElementById("showContentDivInnerDiv").innerHTML ='';
+							 }
+		  
+								});
+		$("#showContentDiv").dialog();
+		getContentDetails(contentId);
+}
+
+function getContentDetails(contentId)
+{
+	//document.getElementById("contentAjaxCallImg").style.display="block";
+	var jsObj =
+		{   
+		    contentId : contentId,
+			requestFrom : 'Candidate Page',
+			requestPageId :'0',
+			isCustomer:'true',
+			task:"getSelectedContent"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSelectedContentAndRelatedGalleriesAForCustomer.action?"+rparam;					callAjaxForSpecialPage(jsObj,url); 
+}
+var showContentResultList;
+function callAjaxForSpecialPage(jsObj,url)
+{
+
+	var callback = {			
+	 success : function( o ) {
+		try
+		{ 
+		 myResults = YAHOO.lang.JSON.parse(o.responseText);
+
+
+
+
+		  if(jsObj.task == "getSelectedContent")
+			{
+				showContentResultList = myResults;
+				buildContentDetails();
+			}
+		}
+		catch(e)
+		{   
+		 //alert("Invalid JSON result" + e);   
+		}  
+	 },
+	scope : this,
+	failure : function( o )
+	{
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+	}
+  };
+
+ YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+var commentsObject = new Object();
+var result;
+function buildContentDetails()
+{
+//console.log(111);
+	//document.getElementById("contentAjaxCallImg").style.display="none";
+	result = showContentResultList;
+
+//console.log(result);
+	if(result == null)
+		return;
+
+	var divEle = document.getElementById('showContentDivInnerDiv');
+	var str = '';
+	var titleStr = null;
+	var pathStr = null;
+	var descriptionStr = null;
+	var preContentId = null;
+	var curPos = null;
+	var totSize = null;
+	var commentText="" ;
+    var fileId1  = null;
+	
+	//document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${specialPageVO.heading} - '+result.contentType;
+
+	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>'+result.contentType;
+
+	str += '<Div><center>';
+	str += '<div class="main-title-sec" style="clear:both;">';
+	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
+
+	
+	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+	{
+
+		
+	    selectedContentFile = result.relatedGalleries[0].filesList[i];
+		titleStr = result.relatedGalleries[0].filesList[i].title;
+		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
+		descriptionStr = result.relatedGalleries[0].filesList[i].description;
+		preContentId = result.relatedGalleries[0].filesList[i].contentId;
+		curPos = i+1;
+		totSize = result.relatedGalleries[0].filesList.length;
+
+
+
+		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
+		{
+
+
+			str+='<table>';
+			str+='<tr>';
+			str+='<td>';
+			
+			if(result.relatedGalleries[0].filesList[i].categoryType != null)
+				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+
+			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
+				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
+
+
+			 str+='</td>';
+
+			 str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
+				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+
+			if(result.relatedGalleries[0].filesList[i].fileDate != null)
+				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+
+
+			 str+='</td>';
+
+
+			 str+='</tr>';
+			 str+='</table>';
+
+		}
+	}
+	
+
+	if(result.contentType == 'Video Gallary')
+	{
+		if(result.relatedGalleries[0].filesList.length < 2)
+			str += '<table width="530px">';
+		else
+			str += '<table width="880px">';
+		str += '<tr>';
+
+		if(result.relatedGalleries[0].filesList.length >= 2){
+		str += '<td valign="top">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
+		str += '<b><font color="blue">Other Videos</font></b>';
+		str += '<Table>';
+		
+		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
+		{
+			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
+		}
+		str += '</Table>';
+		str += '</div>';
+		str += '</td>';
+		}
+		
+		str += '<td valign="top" style="horizontal-align:center;">';
+		str += '<div class="popupcontainer" id="nextPartImage" style="width:500px;text-align:center;">';
+		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></div>';
+		str += '<table><tr>';
+		str += '<td>';
+		str += ''+descriptionStr+'';
+		str += '</td>';
+		str += '</tr>';
+		str += '</table>';
+		
+
+
+		
+		str +='<div id="buildNewSourceParts">';
+	       str += '<center><table><tr>';
+
+	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
+	         {
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[0].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	         }
+		 
+	       str += '  </tr></table>';
+	       str +='</center></div>';
+		   
+		   if(selectedContentFile.multipleSource >1 )
+	          {
+	             str +='<div id="buildVideoNewSources">';
+	             str += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';
+	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	           
+			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
+	              {
+	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
+	              }
+	            str += '  </tr></table>';
+	            str +='</center></div>';
+	          }
+		   
+		
+		str += '</div>';
+		str += '</td>';
+		
+		if(result.relatedGalleries[0].filesList.length >= 2){
+		str += '<td valign="top">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
+		str += '<b><font color="blue">Other Videos</font></b>';
+		str += '<Table>';
+
+		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
+		{
+			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
+		}
+		str += '</Table>';
+		str += '</div>';
+		str += '</td>';
+		}
+		
+	str += '</tr>';
+	str += '</table>';
+	}
+
+	else if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+	{
+		str += '<table>';
+
+		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+		{
+			descriptionStr = result.relatedGalleries[0].filesList[i].description;
+
+			
+			 if(result.relatedGalleries[0].filesList.length == 1){
+					
+			  }else{
+			    if(i > 0)
+				{
+					str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+				}else{
+				   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+				}
+			  }
+			str += '<td><div class="popupcontainer" id="nextPartImage" style="width:700px;text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+
+
+          // commentsObject[result.relatedGalleries[0].filesList[i].fileId] = result.relatedGalleries[0].filesList[i].comments;
+
+
+		   fileId1 = result.relatedGalleries[0].filesList[i].fileId;
+
+		   var id = result.relatedGalleries[0].filesList[i].fileId;
+
+			 if(commentsObject[id] == undefined){
+
+				 commentText = result.relatedGalleries[0].filesList[i].comments;
+
+				 commentsObject[result.relatedGalleries[0].filesList[i].fileId] = result.relatedGalleries[0].filesList[i].comments
+
+			 }else{
+               commentText = commentsObject[result.relatedGalleries[0].filesList[i].fileId];
+			 }
+			
+			if(result.relatedGalleries[0].filesList.length == 1){
+				
+			  }else{
+				if(i != result.relatedGalleries[0].filesList.length-1)
+				{
+					str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i+1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i+1].contentId+')"><img src="images/icons/jQuery/next.png" class="newsImage" /></a></td>';
+				}else{
+				   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[0].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[0].contentId+')"><img src="images/icons/jQuery/next.png" class="newsImage" /></a></td>';
+				}
+			  }
+
+		}
+
+		str += '</table>';
+
+		
+		str += '<div>';
+		str += '<table>';
+		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
+		str += '</table>';
+		str += '</div>';
+			
+
+		//FOR COMMNET START
+
+
+		if(commentText != null && commentText !=""){
+		str+='<div class="popupcontainer" style="width:800px;margin:4px;text-align:left;" id="commentDefault'+fileId1+'"><b>Comment is :</b>'+commentText;
+			str+='<a hrfe="#" class="btn btn-mini btn-info" style="margin-left:8px;" onClick="editComment('+fileId1+');" >Edit</a></div>';
+            str+='<div class="commentClass'+fileId1+'" style="width: 700px;height:104px;display:none;margin:11px;"><b style="float:left;">Enter Comment:</b><textarea style="width:650px;height:50px;margin-right:49px;" id="commentId'+fileId1+'">'+commentText+'</textarea>';
+
+			str+='<input type="button" style="margin:3px 8px 0px 410px" class="btn" value="Save" onClick="saveFileComment('+fileId1+');"/>';
+
+			str+='<input type="button" class="btn" value="Cancel" onClick="cancelPostComment('+fileId1+');"/></div>';
+		}
+		else{
+		str+='<div style="width:700px;height:104px;margin:11px;"><b style="float:left;">Enter Comment:</b><textarea style="width:650px;height:50px;margin-right:49px;" id="commentId'+fileId1+'"></textarea>';
+
+	     str+='<input type="button" style="float:right;margin:3px 49px;" class="btn" value="Save" onClick="saveFileComment('+fileId1+');"/></div>';
+		}
+
+
+   		   //FOR COMMNET END
+
+
+
+		
+	   for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		  
+		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+		{
+		   selectedContentFile = result.relatedGalleries[0].filesList[i];
+		   str +='<div id="buildNewSourceParts">';
+	       str += '<center><table><tr>';
+
+	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
+	         {
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	         }
+		 
+	       str += '  </tr></table>';
+	       str +='</center></div>';
+		   
+		   if(selectedContentFile.multipleSource >1 )
+	          {
+	             str +='<div id="buildNewSources">';
+	             str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	           
+			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
+	              {
+	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
+	              }
+	            str += '  </tr></table>';
+	            str +='</center></div>';
+	          }
+		}
+
+		
+	}
+
+	
+
+	//str+='<div><b>Enter Comment:</b><textarea style="width:650px;height:50px;" id="commentId'+fileId+'"></textarea></div>';
+
+	//str+='<input type="button" style="float:right;margin:3px 133px;" class="btn" value="Save" onClick="saveFileComment('+fileId+');"/>';
+
+
+	if(result.otherGalleries != null && result.otherGalleries.length > 0)
+	{
+		var galType = null;
+		
+		if(result.contentType == 'Photo Gallary')
+			galType = ' Photo ';
+		else if(result.contentType == 'News Gallary')
+			galType = ' News ';
+		else if(result.contentType == 'Video Gallary')
+			galType = ' Video ';
+
+		str += '<div>';
+
+		str += '<Div><center>';
+		str += '<div class="main-title-sec" style="clear:left;">';
+		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${specialPageVO.heading}</div><div class="main-bbg"/></div>';
+		
+		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
+		str += '<Table>';
+		
+		for(var i=0;i<result.otherGalleries.length;i++)
+		{
+			if(i%5 == 0)
+				str += '<tr>';
+			
+			str += '<td width="20%" valign="top">';
+
+			str += '<table>';
+			str += '<tr><td class="videoGalTitleStyle"><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
+			
+			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
+				
+			else if(result.contentType == 'Video Gallary')
+				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
+			
+			str += '</a></td></tr>';
+			str += '<tr><td class="videoGallDescStyle">Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
+			str += '<tr><td class="videoGallDescStyle">'+result.otherGalleries[i].description+'</td></tr>';
+			str += '</table>';
+
+			str += '</td>';
+
+			if(i%5 == 4)
+				str += '</tr>';
+		}
+		str += '</Table>';
+		str += '</div>';
+
+		str += '</div>';
+	}
+	
+	str += '</center></Div>';
+
+	divEle.innerHTML = str;
+
+	var str = '';
+	str += ''+titleStr+' ('+curPos+' of '+totSize+')<span style="margin-top:10px;margin-right:18px;float:right">';
+	//str +='<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}&contentId='+preContentId+'\')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>';
+	str += '</span>';
+	
+	document.getElementById("showContentHeaderDiv").innerHTML=str;
+	
+}
+
+function editComment(fileId){
+
+	$('.commentClass'+fileId).css('display','block');
+	$('#commentDefault'+fileId).css('display','none');
+}
+
+
+function cancelPostComment(fileId){
+
+	$('.commentClass'+fileId).css('display','none');
+	$('#commentDefault'+fileId).css('display','block');
+
+}
+
+function saveFileComment(fileId){
+
+
+	 var comment = $('#commentId'+fileId).val();
+
+	 commentsObject[fileId] = comment;
+
+	  var jsObj =
+		{ 
+		    comment:comment,
+            fileId : fileId,
+			task:"saveFileComment"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveFileCommentAction.action?"+rparam;						
+	callnewAjax(jsObj,url);
+
+ }
+
+function buildContentDetailsOfSelected(preId,selId)
+{
+	for(var i=0;i<showContentResultList.relatedGalleries[0].filesList.length;i++)
+	{
+		if(showContentResultList.relatedGalleries[0].filesList[i].contentId == preId)
+			showContentResultList.relatedGalleries[0].filesList[i].isSelectedContent = false;
+		if(showContentResultList.relatedGalleries[0].filesList[i].contentId == selId)
+			showContentResultList.relatedGalleries[0].filesList[i].isSelectedContent = true;
+	}
+
+	buildContentDetails();
+}
+
+function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
+{
+  for(var i in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(type != 'video')
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+path+'" />';
+	  else
+	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	  document.getElementById("nextPartImage").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=0;j<selectedContentFile.fileVOList[i].fileVOList.length;j++)
+	     {
+		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
+		    {
+			  if(type != 'video')
+	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	          else
+			     str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[i].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+		    }
+		 }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+  
+  }
+
+}
+
+function showNewAnotherSource(fileSourceLanguageId,type)
+{
+     var str1 ='';
+	   if(type != 'video')
+	     str1 += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	   else 
+         str1 += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';	   
+		 str1 += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+  for(var m in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[m].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(document.getElementById("sourceChangeSpan") != null)
+	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
+	  if(type != 'video')
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle"  style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
+	  else
+	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	  document.getElementById("nextPartImage").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
+	     {
+		    if(type != 'video')
+	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+			else 
+			 str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[m].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+	     }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+    else
+	{
+	   if(type != 'video')
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';	             	          	
+	   else
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';
+	}
+  }
+     	str1 += '  </tr></table>';
+	    str1 +='</center>';
+     if(document.getElementById("buildNewSources") != null)
+       document.getElementById("buildNewSources").innerHTML = str1;
+	 else
+	   document.getElementById("buildVideoNewSources").innerHTML = str1;
+}
+</script>
+
+<!--DISPLAY NEWS GALLARIES END-->
 </body>
 </html>
