@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface INewsMonitoringService {
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs);
+	public List<FileVO> getNewsForRegisterUsers1(FileVO inputs);
 	public List<FileVO> getAllCountDetails(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
 	public List<FileVO> getAllSourceDetails();
 	public List<FileVO> getAllCategoryDetails();
