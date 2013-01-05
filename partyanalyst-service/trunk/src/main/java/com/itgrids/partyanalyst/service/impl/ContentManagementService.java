@@ -73,8 +73,9 @@ public class ContentManagementService implements IContentManagementService{
 	 * @return {@link ContentDetailsVO}
 	 * @author Kamalakar Dandu
 	 */
-	public ContentDetailsVO getSelectedContentAndRelatedGalleries(Long contentId, String requestFrom, Long requestPageId)
-	{
+	public ContentDetailsVO getSelectedContentAndRelatedGalleries(
+			Long contentId, String requestFrom, Long requestPageId,
+			String isCustomer)	{
 		log.debug("Entered into getSelectedContentAndRelatedGalleries() Method");
 		try{
 			ContentDetailsVO contentDetailsVO = new ContentDetailsVO();
@@ -97,7 +98,15 @@ public class ContentManagementService implements IContentManagementService{
 				List<FileGallary> files = new ArrayList<FileGallary>(0);
 				files.add(fileGallaryDAO.get(contentId));
 				
-				List<FileGallary> filesObjList = fileGallaryDAO.getFilesOfInGallaries(gallaryIds);
+				List<FileGallary> filesObjList = new ArrayList<FileGallary>();
+				
+				if(isCustomer.equalsIgnoreCase("true")){
+					filesObjList = fileGallaryDAO.getFilesOfInGallariesForCustomer(gallaryIds);
+					requestPageId = fileGallaryDAO.get(contentId).getGallary().getCandidate().getCandidateId();
+				}
+				
+				else
+				 filesObjList = fileGallaryDAO.getFilesOfInGallaries(gallaryIds);
 				
 				for(FileGallary fileGallary : filesObjList)
 					if(!checkForFileExistance(files,fileGallary))
@@ -144,6 +153,8 @@ public class ContentManagementService implements IContentManagementService{
 										fileVO.setIsSelectedContent(true);
 										contentReq = false;
 									}
+								 
+								   
 								    fileVO.setTitle(fileGallary.getFile().getFileTitle());
 									fileVO.setDescription(fileGallary.getFile().getFileDescription());
 									fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
@@ -168,6 +179,17 @@ public class ContentManagementService implements IContentManagementService{
 					}
 					else
 					{
+					fileVO.setFileId(fileGallary.getFile().getFileId());
+					
+					if(fileGallary.getFile().getCategory() != null){
+						fileVO.setCategoryType(fileGallary.getFile().getCategory().getCategoryType());
+						fileVO.setCandidateId(fileGallary.getFile().getCategory().getCategoryId());
+					}
+					fileVO.setComments(fileGallary.getFile().getComment());
+					
+					if(fileGallary.getFile().getRegionScopes() != null)
+					  fileVO.setLocationScopeValue(fileGallary.getFile().getRegionScopes().getScope());
+					
 					fileVO.setTitle(fileGallary.getFile().getFileTitle());
 					fileVO.setDescription(fileGallary.getFile().getFileDescription());
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
@@ -226,7 +248,11 @@ public class ContentManagementService implements IContentManagementService{
 				}
 				else if(requestFrom.equalsIgnoreCase(IConstants.CANDIDATE_PAGE))
 				{
-					otherGalIdsResult = gallaryDAO.getOtherGalleries(requestPageId,gallaryIds,contentType);
+					if(isCustomer.equalsIgnoreCase("true"))
+					 otherGalIdsResult = gallaryDAO.getOtherGalleries(requestPageId,gallaryIds,contentType);
+					else
+					 otherGalIdsResult = gallaryDAO.getOtherGalleriesForCandidate(requestPageId,gallaryIds,contentType);
+						
 				}
 				else if(requestFrom.equalsIgnoreCase(IConstants.PARTY_PAGE))
 				{

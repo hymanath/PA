@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -15,6 +16,7 @@ import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
@@ -43,8 +45,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private INewsImportanceDAO newsImportanceDAO;
     private FileDAO fileDAO;
     private IFileSourceLanguageDAO fileSourceLanguageDAO;
+    private IRegionScopesDAO regionScopesDAO;
     
-    public IFileGallaryDAO getFileGallaryDAO() {
+    public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+
+	public IFileGallaryDAO getFileGallaryDAO() {
 	          return fileGallaryDAO;
       }
 
@@ -193,6 +204,109 @@ public class NewsMonitoringService implements INewsMonitoringService {
     	}
     	  return fileVOList;
       }
+	
+	public List<FileVO> getNewsForRegisterUsers1(FileVO inputs){
+	      log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
+	       List<FileVO> fileVOList = new ArrayList<FileVO>();
+	    	try{  
+	    	  List<Object[]> fileList = fileGallaryDAO.getNewsForRegisterUsers1(inputs);
+	    	  for(Object[] obj:fileList){
+	    		  
+	    		  File file = (File)obj[1];
+	    		  FileVO  fileVO = new FileVO();
+	    		  
+	    		  fileVO.setContentId((Long)obj[0]);
+	    		  fileVO.setKeywords(file.getKeywords());
+	    		  fileVO.setFileDate(file.getFileDate().toString());
+	    		  
+	    		  String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
+	    		  fileVO.setFileDateAsString(dateString);
+	    		  fileVO.setComments(file.getComment());
+	    		  
+	    		  fileVO.setDisplayImagePath(file.getFilePath());
+	    		  fileVO.setVisibility(obj[2].toString());
+	    		  
+	    		  if(file.getRegionScopes() != null)
+	    		    fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
+	    		  
+	    		  if(file.getLocationValue() != null)
+	    		    fileVO.setLocationValue(file.getLocationValue().toString());
+	    		  
+	    		  fileVO.setFileId(file.getFileId());
+	    		  fileVO.setName(file.getFileName());
+	    		  fileVO.setPath(file.getFilePath());
+	    		  fileVO.setFileTitle1(file.getFileTitle());
+	    		  fileVO.setDescription(file.getFileDescription());
+	    		  fileVO.setFileDate(file.getFileDate()!=null?file.getFileDate().toString():"");
+	    		  
+	    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+	    		  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
+	    		  Set<String> sourceSet = new HashSet<String>();
+	 			  Set<String> languageSet = new HashSet<String>();
+	 			 StringBuilder sourceVal =new StringBuilder();
+				 StringBuilder languageVal =new StringBuilder();
+					 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+						 if(inputs.getSourceId() == null && inputs.getLanguegeId() == null)
+						 {
+							  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							  sourceSet.add(fileSourceLanguage.getSource().getSource());
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+						 else if(inputs.getLanguegeId() != null){
+							 if(inputs.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
+							 {
+								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+								 sourceSet.add(fileSourceLanguage.getSource().getSource());
+								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+							 }
+						 }
+						 else if(inputs.getSourceId() != null){
+							 if(inputs.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
+							 { 
+								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+								 sourceSet.add(fileSourceLanguage.getSource().getSource());
+								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+							 }
+						 }
+						 
+					 }
+					 for(String source:sourceSet){
+						 sourceVal.append(source);
+						 sourceVal.append("-");
+					 }
+		             for(String language:languageSet){
+		            	 languageVal.append(language);
+		            	 languageVal.append("-");
+					 }
+		             sourceVal.deleteCharAt(sourceVal.length() - 1);
+		             languageVal.deleteCharAt(languageVal.length() - 1);
+				fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+				Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+				fileVO.setFileVOList(fileVOSourceLanguageList);
+				
+				
+	    		  fileVO.setSource(sourceVal!=null?sourceVal.toString():"");
+	    		  fileVO.setLanguage(languageVal!=null?languageVal.toString():"");
+	    		  fileVO.setCategoryId(file.getCategory()!=null?file.getCategory().getCategoryId():null);
+	    		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"");
+	    		  fileVO.setNewsImportanceId(file.getNewsImportance()!=null?file.getNewsImportance().getNewsImportanceId():null);
+	    		  fileVO.setImportance(file.getNewsImportance()!=null?file.getNewsImportance().getImportance():"");
+	    		  fileVO.setLocationScope(file.getRegionScopes()!=null?file.getRegionScopes().getRegionScopesId():null);
+	    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
+	    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
+	    		  if(file.getRegionScopes()!=null)
+	    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
+	    		  
+	    		  fileVOList.add(fileVO);
+	    	  }
+	    	}
+	    	catch(Exception e){
+	    		log.error("Exception rised in  getNewsForRegisterUsers Method of NewsMonitoringService", e);
+	    		e.printStackTrace();
+	    	}
+	    	  return fileVOList;
+	      }
+	
 	public List<FileVO> getAllCountDetails(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO){
 		log.debug("Enter into getAllCountDetails Method of NewsMonitoringService ");
 	       List<FileVO> returnFileVOList = new ArrayList<FileVO>();
@@ -593,6 +707,29 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);
 			 
+			 file.setKeywords(fileVO.getKeywords());
+			 
+			// SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd");
+				//Date fileDate = (Date)formatter.parse(fileVO.getFileDate());
+			// file.setFileDate(fileDate);	
+			 
+			 String[] dateArray = fileVO.getFileDate().split("/");
+			 
+			 Integer date = Integer.parseInt(dateArray[0]);
+			 Integer month = Integer.parseInt(dateArray[1]) - 1;
+			 Integer year = Integer.parseInt(dateArray[2]) - 1900;
+			 
+			 Date fileDate = new Date();
+			 
+			 fileDate.setDate(date);
+			 fileDate.setMonth(month);
+			 fileDate.setYear(year);
+			 
+			 file.setFileDate(fileDate);
+			 
+			 file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
+			 file.setLocationValue(fileVO.getRegionValue());
+			 
 			 fileDAO.save(file);
 			 
 			 for(FileVO languageFile:languageIds){
@@ -610,6 +747,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 
 			 DateUtilService dateUtilService = new DateUtilService();
 			 fileGallaryDAO.updateFileDate(dateUtilService.getCurrentDateAndTime(),fileVO.getFileId());
+			 
+			 
+			 if(fileVO.getVisibility().equalsIgnoreCase("public")){
+				 
+				 fileGallaryDAO.updateVisibility(fileVO.getFileId(),"false");
+				 
+			 }else{
+				 
+				 fileGallaryDAO.updateVisibility(fileVO.getFileId(),"true");
+				 
+			 }
 			 
 		 }
 		 else if(task.equalsIgnoreCase("Delete")){
