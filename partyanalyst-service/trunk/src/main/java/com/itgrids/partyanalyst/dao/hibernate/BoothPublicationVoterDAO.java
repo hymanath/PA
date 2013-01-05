@@ -261,7 +261,7 @@ public class BoothPublicationVoterDAO extends
 	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId) from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))

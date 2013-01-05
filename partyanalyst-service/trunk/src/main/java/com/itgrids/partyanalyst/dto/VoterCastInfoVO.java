@@ -15,6 +15,7 @@ public class VoterCastInfoVO {
 	private int totalCasts = 0;
 	private List<SelectOptionVO> castCategoryWiseVotersList;
 	private String votesPercent;
+	private Long totalCastKnownVoters;
 
 	public VoterCastInfoVO(){
 		
@@ -119,6 +120,14 @@ public class VoterCastInfoVO {
 
 	public void setVotesPercent(String votesPercent) {
 		this.votesPercent = votesPercent;
+	}
+
+	public Long getTotalCastKnownVoters() {
+		return totalCastKnownVoters;
+	}
+
+	public void setTotalCastKnownVoters(Long totalCastKnownVoters) {
+		this.totalCastKnownVoters = totalCastKnownVoters;
 	}
 	
 	
