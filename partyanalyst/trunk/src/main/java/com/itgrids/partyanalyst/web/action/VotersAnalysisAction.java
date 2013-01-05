@@ -323,8 +323,9 @@ public String getVotersCastInfoByConstituency()
 		constituencyManagementVO = new ConstituencyManagementVO();
 		String id=jObj.getString("id");
 		String publicationDateId = jObj.getString("publicationDateId");
-		String caste=jObj.getString("caste");
-		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),caste);
+		String casteStateId=jObj.getString("caste");
+		String type = jObj.getString("type");
+		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),new Long(casteStateId),type);
 		constituencyManagementVO.setVotersByHouseNos(votersByHouseNos);
 		
 		
