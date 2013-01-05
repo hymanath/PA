@@ -941,7 +941,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			String gender = (String)voterInfo[1];
 			cast = (String) voterInfo[2];
-			
+			if(cast != null)
+			{
 			if(cast.equals(""))
 			{
 				
@@ -979,7 +980,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			   }
 			 }
 			
-			
+	}
 		}
 		
 		List<CastVO> castVOs = new ArrayList<CastVO>(castsMap.values());
@@ -1126,6 +1127,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				Long panchayatId = pancahyats.getId();
 				String panchayatName = pancahyats.getName();
 				voterCastInfo.setMandalName(panchayatName);
+				voterCastInfo.setLocationId(panchayatId);
 				List<Object[]> panchayatCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"panchayat",panchayatId,publicationDateId);
 				Long totalVoters = getVotersCountByPublicationIdInALocation("panchayat",panchayatId,publicationDateId);
 				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(panchayatCastDetails,totalVoters));
@@ -1156,6 +1158,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 				//voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByBoothIdAndPublicationDate(new Long(boothId),publicationDateId)));
 				voterCastInfo.setMandalName(booths.getName());
+				voterCastInfo.setLocationId(boothId);
 				boothInfo.add(voterCastInfo);
 			}
 		}
@@ -1190,11 +1193,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    }
 		return voterHouseInfoVOList;
 	} 
-	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,String caste)
+	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type)
 	{
 		
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
-		List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
+		List<Voter> list = null;
+		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
+		if(type.equalsIgnoreCase("booth"))
+		{
+		list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
+		}
+		else
+		{
+		list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId);
+		}
 		VoterHouseInfoVO voterHouseInfoVO = null;
 		long sno = 1;
 		if(list != null && list.size() > 0)
