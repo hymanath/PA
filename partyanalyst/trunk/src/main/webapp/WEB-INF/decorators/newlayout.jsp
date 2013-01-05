@@ -97,6 +97,7 @@ margin:-1px 0px 0px 0px ;
     padding: 0px 7px 0 0;
     width: 992px;
 }
+#l2s_trk img{max-width:100%;width:130px;}
 </style>
 <decorator:head/>
 </head>
@@ -254,8 +255,13 @@ function buildAccordion()
   								</div>
    	 							<!-- End of LoginPoppWindow-->
 		</div>
-        
-        
+<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+%>
+        <!-- live2support.com tracking codes starts --><div id="l2s_trk" style="z-index:99;float: right; position: fixed; right: 10px;bottom:4px;"><a href="http://live2support.com" style="font-size:1px;">Live Support Software</a></div><script type="text/javascript"><!--
+ var l2s_pht=escape(location.protocol); if(l2s_pht.indexOf("http")==-1) l2s_pht='http:'; var dept="0"; function l2s_load() { document.write('<scr'+'ipt type="text/javaScr'+'ipt" src="'+unescape(l2s_pht)+'//sa.live2support.com/js/lsjs1.php?stid=22424"  defer=true>'+'</scr'+'ipt>');  }
+l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //--></script><!-- live2support.com tracking codes closed -->
+  <% }
+%>      
         <!--MENU SECTION START-->
         
         
