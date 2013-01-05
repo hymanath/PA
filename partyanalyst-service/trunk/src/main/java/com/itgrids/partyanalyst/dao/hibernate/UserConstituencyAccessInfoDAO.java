@@ -139,4 +139,10 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 			
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUserAccessConstituencies(Long userId)
+	{
+		return getHibernateTemplate().find("select model.constituency.state.stateId,model.constituency.state.stateName from UserConstituencyAccessInfo model where model.user.userId = ? ",userId);
+	}
 }

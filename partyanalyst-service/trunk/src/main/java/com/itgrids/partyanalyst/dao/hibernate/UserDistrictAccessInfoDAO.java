@@ -73,4 +73,11 @@ public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictA
 			}
 		 
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getAllUserAccessStateList(Long userId)
+		{
+			return getHibernateTemplate().find("select model.district.state.stateId, model.district.state.stateName from UserDistrictAccessInfo model where model.user.userId = ?",userId);
+					
+		}
 }
