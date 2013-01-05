@@ -197,4 +197,8 @@ public interface ICandidateDetailsService {
 	 public Long getLocationScopeValue(Long scope,String locationValue);
 	 
 	 public String checkForMinisterData(String electionType , Long electionId);
+	 
+	 public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType);
+	 
+	 public String saveFileComment(Long fileId , String comment);
 }
