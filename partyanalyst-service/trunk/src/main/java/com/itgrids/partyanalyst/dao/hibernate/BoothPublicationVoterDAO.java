@@ -617,6 +617,25 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	
 	}
 
+	
+	//get voter details By caste_state ID
+	public List<Voter> getVoterDetailsByCasteStateForBooth(Long boothid,Long publicationDateId,Long casteStateId)
+	{
+		Object[] params={boothid,publicationDateId,casteStateId};
+	return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.boothId=? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? ",params);
+	
+	}
+	
+	//get voter details By caste_state ID
+		public List<Voter> getVoterDetailsByCasteStateForPanchayat(Long panchayatId,Long publicationDateId,Long casteStateId)
+		{
+			Object[] params={panchayatId,publicationDateId,casteStateId};
+		return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId=? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? ",params);
+		
+		}
+	
+	
+	
 	  public List<Long> getVoterStateId(Long voterId){
 		  return getHibernateTemplate().find("select distinct model.booth.tehsil.district.state.stateId from BoothPublicationVoter model where model.voter.voterId =? ",voterId);
 	  }
