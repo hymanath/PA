@@ -23,11 +23,11 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <style>
-#valuesDisplayDiv{
+#valuesDisplayDiv , #casteCreation{
 border:1px solid #a1a1a1;
 padding:10px 40px; 
-width:590px;
-height:170px;
+width:580px;
+height:auto;
 border-radius:25px;
 -moz-border-radius:25px;
 }
@@ -39,6 +39,7 @@ height:116px;
 border-radius:25px;
 -moz-border-radius:25px;
 }
+#casteCreation{height:250px !important;}
 </style>
 <script type="text/javascript">
 function openProblemEditSubForm(id,name)
@@ -87,7 +88,11 @@ function callAjax(jsObj,url)
 							{
 								
 							}
-							
+							else if(jsObj.task == "saveCasteName")
+							{
+								showCasteStatus(myResults);
+							}
+
 							}catch(e){   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -228,13 +233,31 @@ function storeCategoryValues()
 		callAjax(jsObj,url);
 }
 
+function showCasteStatus(result)
+{
+	
+	$("#casteId").val('');
+	document.getElementById("userAccessStates_List").selectedIndex = 0;
+	document.getElementById("castCategoryGroup_List").selectedIndex = 0;
+	if(result.resultCode == 0)
+	{
+		$("#casteCreationMsg").html("Caste Saved Successfully.").css("color","green");
+		return;
+	}
+	else
+	{
+		$("#casteCreationMsg").addClass('casteCreationMsg').html('Data could not be Saved due to some technical difficulties').css('color','red');
+		return;
+	}
+}
+
 </script>
 </head>
 <body style="position: relative;">
 <br><br>
 	<div id="popupDiv" style="float: left;margin-left:6px;">
 		 <div id="groupCreation" style="border:" >
-		 <h4>Cerate New Group</h4>
+		 <h4>Create New Group</h4>
 		   <div style="margin-bottom:5px;"><b>NOTE :</b> Group Name should not contain any special characters</div>
 		  <div style="color:red" id="groupCreationErr"></div>
 		  <div style="color:green" id="groupCreationMsg"></div>
@@ -255,10 +278,95 @@ function storeCategoryValues()
 			</br>
 			<input class="btn btn-success" type="submit" value="Add" onClick="storeCategoryValues();" style ="float:right;margin-top:-30px"></input>
 		</div>
+
+		<br><br>
+		<div id="popupDiv" style="float: left;margin-left:6px;">
+		 <div id="casteCreation" style="border:" >
+		 <h4>Create Caste</h4>
+		   <div style="margin-bottom:5px;"><b>NOTE :</b> Caste Name should not contain any special characters</div>
+		  <div style="color:red" id="casteCreationErr"></div>
+		  <div style="color:green" id="casteCreationMsg"></div>
+		<table cellpadding="3">
+			<tr>
+				<td><b>States <span style="color:red">*</span></b></td>
+				<td><b>:</b></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select " name="userAccessStates" id="userAccessStates_List" list="userAccessStates" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+			<tr>
+				<td><b>Cast Category Group <span style="color:red">*</span></b></td>
+				<td><b>:</b></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select " name="castCategoryGroupList" id="castCategoryGroup_List" list="castCategoryGroupList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+			<tr>
+				<td><b>Caste Name<span style="color:red">*</span></b></td>
+				<td><b>:</b></td>
+				<td><input type="text" id="casteId" style="width: 175px;"></input></td>
+			</tr>
+		</table>
+
+		 <!-- <b>States <span style="color:red">*</span> :</b> <s:select cssClass="selectBoxWidth" theme="simple" label="Select " name="userAccessStates" id="userAccessStates_List" list="userAccessStates" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select>
+		 <br>
+		 <b>Cast Category Group <span style="color:red">*</span> :</b><s:select cssClass="selectBoxWidth" theme="simple" label="Select " name="castCategoryGroupList" id="castCategoryGroup_List" list="castCategoryGroupList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select>
+		 <br>
+		  <lable name="Caste Name"><b>Caste Name<span style="color:red">*</span> :</b> 
+		 <input type="text" id="casteId" style="width: 175px;margin-left:30px;"></input></lable> -->
+		
+		 <input type="button" value="create" class="btn btn-success" style="float:right;margin-top:4px;" id="createCaste"></input>
+	 </div>
+
 	</div>
 <script type="text/javascript">
 $(document).ready(function() {
  addFieldsToMainFileds();
+
+ $("#createCaste").click(function(){
+
+	var casteName = $.trim($("#casteId").val());
+	var stateId = $("#userAccessStates_List").val();
+	var categoryId = $("#castCategoryGroup_List").val();
+	var validCharacters = /[a-zA-Z]/;
+
+	if(casteName == '' || casteName.length == 0)
+	 {
+		$("#casteCreationErr").addClass('casteCreationErr').html('Caste Name is Required.');
+		return;
+	 }
+
+		casteName = removeAllUnwantedCharacters(casteName);
+	 if($.trim(casteName).length == 0)
+	 {
+	    $("#casteCreationErr").html("Caste Name should not contain any special characters");
+		return;
+	 }
+	 else if(!validCharacters.test(casteName))
+	 {
+		$("#casteCreationErr").html("Caste Name should not contain any special characters.");
+		return;
+	}
+
+	 else if(stateId == 0)
+	 {
+		$("#casteCreationErr").addClass('casteCreationErr').html('Please Select State.');
+		return;
+	 }
+	 else if(categoryId == 0)
+	 {
+		$("#casteCreationErr").addClass('casteCreationErr').html('Please Select Caste Category Group.');
+		return;
+	 }
+	 $("#casteCreationErr").html('');
+	 var jsObj=
+	{
+		casteName        : casteName,
+		stateId          : stateId,
+		casteCateGroupId : categoryId,
+		task:"saveCasteName"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveCasteNameAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	 
+ });
 });
 </script>
 </body>
