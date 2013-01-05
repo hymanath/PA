@@ -359,6 +359,11 @@
 										<a class="alinkstyle" href="<s:url action="boothResultUpload"/>"> Upload
 										</a>
 									</span><br>
+									<span class="fontStyle">
+										Voter Data Insert:&nbsp;
+										<a class="alinkstyle" href="<s:url action="voterDataManageAction"/>"> Voter Data Insert
+										</a>
+									</span><br>
 									</fieldset>
 								</td>
 								<td width="33%">
