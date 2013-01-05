@@ -257,6 +257,7 @@ margin:-1px 0px 0px 0px ;
 					</li>
 					<li><a href="userGroupAction.action"><span>User Groups</span></a></li>
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
+					<li><a href="votersAnalysisAction.action"><span>Voter Analysis</span></a></li>
 				</ul>
 			</div>
 		</li>
