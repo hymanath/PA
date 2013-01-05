@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -38,6 +39,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	private CadreManagementService cadreManagementService;
 	private RegionServiceDataImp regionServiceDataImp;
 	private IConstituencyManagementService constituencyManagementService;
+	private IVotersAnalysisService votersAnalysisService;
 	private IStaticDataService staticDataService;
 	private HttpSession session;
 	private static final Logger log = Logger.getLogger(CadreRegisterAjaxAction.class);
@@ -102,6 +104,15 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	public void setDesignationsList(List<SelectOptionVO> designationsList) {
 		this.designationsList = designationsList;
 	}	
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
 
 	public String execute() throws Exception
 	{
@@ -358,7 +369,10 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				
 				if(checkedVal.equalsIgnoreCase("pollingstationByPublication"))
 				{
-					designationsList = staticDataService.getBoothsInAMandalIdByPublication(new Long(selectedVal),jObj.getLong("publicationValue"));
+					if(jObj.getString("type").equalsIgnoreCase("mandal"))
+					   designationsList = staticDataService.getBoothsInAMandalIdByPublication(new Long(selectedVal),jObj.getLong("publicationValue"));
+					else
+					   designationsList = votersAnalysisService.getBoothsInMunicipality(new Long(selectedVal),jObj.getLong("publicationValue"));
 					designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
 				}
 			}

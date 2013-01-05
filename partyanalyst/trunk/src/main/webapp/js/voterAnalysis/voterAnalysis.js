@@ -258,6 +258,10 @@ function showImportantFamiliesDiv()
 		var mandalId=document.getElementById("mandalField");
 		var name=mandalId.options[mandalId.selectedIndex].name;
 		var value1=mandalId.options[mandalId.selectedIndex].value;
+		var type = "mandal";
+		if(value1.charAt(0) =="1"){
+		 type = "muncipality";
+		}
 		var value = value1.substring(1);
 		var publicationValue = $('#publicationDateList').val();
 		var alertEl = document.getElementById("AlertMsg");
@@ -269,10 +273,12 @@ function showImportantFamiliesDiv()
 			alertEl.innerHTML ='<P>Please Select Mandal</P>';
 			return;
 		}
-		if(flag != -1)
+		if(flag != -1 && checkedele == "panchayat")
 		{
 		document.getElementById('panchayatDiv').style.display='none';
-		document.getElementById('pollingStationDiv').style.display='none';
+		//document.getElementById('pollingStationDiv').style.display='none';
+		}else{
+		 flag = -1;
 		}
 		
 		if(flag == -1)
@@ -284,6 +290,7 @@ function showImportantFamiliesDiv()
 				checkedele:checkedele,
 				selectedEle:selectedEle,
 				flag:flag,
+				type:type,
 				publicationValue : publicationValue,
 				task:"getPanchayat"
 			}
@@ -694,7 +701,7 @@ function getVotersCastInfo()
 		var constituencyValue =$("#constituencyList").val(); 
 		var mandalValue = $("#mandalField").val();
 		var mandalText = $('#mandalField :selected').text();
-		var validflag= mandalText.search("MUNCIPALITY");
+		var validflag=  -1;
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 typename = $('#pollingStationField :selected').text();
@@ -994,7 +1001,8 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	var constituencyValue =$("#constituencyList").val(); 
 	var mandalValue = $("#mandalField").val();
 	var mandalText = $('#mandalField :selected').text();
-	var validflag= mandalText.search("MUNCIPALITY");
+	var validflag = -1;
+	//var validflag= mandalText.search("MUNCIPALITY");
 
 	  type = 'booth';
 	  id = $("#pollingStationField").val();
@@ -1808,12 +1816,7 @@ function getVoterDetailsForBooth(){
 				str +='Please Select Constituency';
 				flag =false;
 		}
-	else if(validflag != -1)
-		{
-				str +='There are No Booths In Muncipality,Select Other Report Level to view Report';
-				flag =false;
-				
-		}
+	
 	else if(mandalValue == 0 || mandalValue == null)
 		{
 				str +='Please Select Mandal';
