@@ -69,4 +69,17 @@ public List<Object[]> getAllCasteInfoDetails(){
 		
 		
 	}
+	
+	public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("from CasteState model where model.user.userId = :userId and model.caste.casteId =:casteId ");
+		stringBuilder.append(" and model.state.stateId =:stateId and model.casteCategoryGroup.casteCategoryGroupId =:casteCategoryId ");
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("stateId", stateId);
+		query.setParameter("casteId", casteId);
+		query.setParameter("casteCategoryId", casteCategoryId);
+		return (CasteState)query.uniqueResult();
+	}
 }

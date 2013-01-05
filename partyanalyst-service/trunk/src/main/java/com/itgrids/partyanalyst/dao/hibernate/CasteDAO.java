@@ -96,4 +96,10 @@ public class CasteDAO extends GenericDaoHibernate<Caste, Long> implements ICaste
 	}*/
 	
 	
-}
+	public Caste getCasteByCastName(String casteName)
+	{
+		Query query = getSession().createQuery("select model from Caste model where model.casteName = :casteName");
+		query.setParameter("casteName",casteName);
+		return (Caste) query.uniqueResult();
+	}
+} 
