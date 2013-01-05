@@ -1,6 +1,13 @@
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
+
+<link rel="stylesheet" type="text/css" href="styles/colortip-1.0/colortip-1.0-jquery.css"/>
+
+ 
+<script type="text/javascript" src="js/colortip-1.0/colortip-1.0-jquery.js"></script>
+<script type="text/javascript" src="js/colortip-1.0/script.js"></script>
+
 <style>
 .imgStyle{
 	border: medium none;
@@ -93,6 +100,9 @@ text-shadow:0px 1px 1px #fff;
 .services-block div{margin:10px 6px; box-shadow:3px 3px 3px #fff;opacity:0.8;}
 .services-block div:hover{box-shadow:0px 2px 2px #000;opacity:1;}
 .free-user .alert-info{text-align:center;}
+<!------------------>
+
+<!------------------------>
 </style>
 <div class="whitegloss">
 <div class="promoheader">
@@ -119,20 +129,25 @@ Get the complete picture of your constituency to strategize or to understand the
 
 </div>-->
 
-<div class="breadcrumb span11 free-user" style="width:830px;">
+
+
+<div class="breadcrumb span11 free-user"  style="width:830px;">
 <h3>The New Party Analyst - Modified, Enhanced and Focused with the abilities to share, connect and spread the updates across the network.</h3>
-<div class="whitegloss">
-<a class="alert alert-info span3 btn" title="You can find your constituency, district people and connect with them to share your views." rel="tooltip"><h4>Connect and Share</h4></a>
+<div class="whitegloss" >
+  
 
-<a class="alert alert-info span3 btn" title="Are you facing any social problems? Post your problems" rel="tooltip"><h4>Post Problems</h4></a>
+<a class=" alert alert-info span3 btn   green "    title="You can find your constituency, district people and connect with them to share your views." ><h4 >Connect and Share</h4></a> 
 
-<a class="alert alert-info span3 btn" title="Get frequent updates of your favorite party or politicians and latest hot topics" rel="tooltip"><h4>Subscriptions</h4></a>
 
-<a class="alert alert-info span3 btn" title=" Stay tuned with the political trends" rel="tooltip"><h4>Stay Tuned</h4></a>
+<a class="alert alert-info span3 btn green"  title="Are you facing any social problems? Post your problems." ><h4>Post Problems</h4></a>
 
-<a class="alert alert-info span3 btn" title="Know public schemes, current affairs and important facts" rel="tooltip"><h4>Awareness</h4></a>
+<a class="alert alert-info span3 btn green"  title="Get frequent updates of your favorite party or politicians and latest hot topics." ><h4>Subscriptions</h4></a>
 
-<a class="alert alert-info span3 btn" title="you may like different pages in Party Analyst, just add and view them in a single click" rel="tooltip"><h4>Ease of Access</h4></a>
+<a class="alert alert-info span3 btn green"  title=" Stay tuned with the political trends." ><h4>Stay Tuned</h4></a>
+
+<a class="alert alert-info span3 btn green"  title="Know public schemes, current affairs and important facts." ><h4>Awareness</h4></a>
+
+<a  class="alert alert-info span3 btn green"  title="you may like different pages in Party Analyst, just add and view them in a single click." ><h4>Ease of Access</h4></a>
 
 <div class="alert alert-info">
 Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.action" class="btn btn-primary">Register Now</a> Already Registered, <a href="loginInputAction.action" class="btn btn-primary">Login</a> and Explore Now.
@@ -140,6 +155,10 @@ Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.ac
  </div>
  
  </div>
+
+
+
+ 
 <table style="background:#fff;width:100%">
 <tr><td><h2 style="color: #12A3EB;margin-left: 11px;">Our Services</h2></td>
 <td colspan=4 class="breadcrumb"><h3 style="float:left;display:inline-block;">Are you Aspirant Candidate for 2014 Elections?</h3><a class="btn btn-primary" style="margin-left:10px;" href="images/PartyAnalyst_V1.0.pdf" target="_blank">Click Here To Know More</a></td>
@@ -149,22 +168,22 @@ Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.ac
 <div class="services-block">
   
 				<div class="pull-left">
-				    <a title="Election-Political Surveys" href="VotersPulse.action" >
+				    <a  href="VotersPulse.action" >
 					<img src="images/voters_pluse_New.gif" style="  border:1px solid #ccc;" width="200px">
 					</a>
 				</div>
 				<div class="pull-left">
-				    <a  title="Reports" href="constituencyProfileReport.action">
+				    <a   href="constituencyProfileReport.action">
 					<img src="images/Constituency_A.gif" style=" border:1px solid #ccc;" width="200px">
 					</a>
 				</div>
 				<div class="pull-left">
-				    <a title="Our unique tool designed for Politicians" href="electionAnalysisAndManagementTool.action">
+				    <a  href="electionAnalysisAndManagementTool.action">
 					<img src="images/Election-Analysis-and-Management-Tool_A_1.gif" style="border:1px solid #ccc;" width="200px">
 					</a>
 				</div>
 				<div class="pull-left">
-				    <a title="News tracking service" href="newsMonitoringService.action">
+				    <a  href="newsMonitoringService.action">
 					<img src="images/News-Monitoring-dervices.gif" style="border:1px solid #ccc;" width="200px">
 					</a>
 				</div>
@@ -191,6 +210,11 @@ $(".ElectionInfo a").parent().click(function(){
 $(location).attr('href',$(this).find("a").attr("href"));
 
  });
+setTimeout(function(){
+$("#fancybox-wrap").css({"width":"880px","margin-left":"auto","margin-right":"auto"});
+$("#fancybox-wrap").addClass("centerdiv");
+$("#fancybox-content").css({"width":"860px"});
+},0);
 
 });
 </script>
