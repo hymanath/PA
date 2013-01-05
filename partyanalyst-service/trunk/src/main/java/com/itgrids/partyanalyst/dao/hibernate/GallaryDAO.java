@@ -41,6 +41,19 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		return getHibernateTemplate().find("select model.gallaryId,model.name from Gallary model where model.candidate.candidateId = ? and model.contentType.contentType = ? and model.isDelete = 'false' order by model.name asc",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGallariesByCandidateIds(List<Long> candidateIds,String contentType)
+	{
+		
+		
+		Query query = getSession().createQuery("select model.gallaryId,model.name from Gallary model where model.candidate.candidateId in(:candidateIds) and model.contentType.contentType = :contentType and model.isDelete = 'false' order by model.name asc");
+		
+		query.setParameterList("candidateIds", candidateIds);
+		query.setParameter("contentType", contentType);
+		
+		return query.list();
+	}
+	
 	public Integer deleteGallary(Long gallaryId)
 	{
 		StringBuilder query = new StringBuilder();
@@ -81,6 +94,17 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 	{
 		Query query = getSession().createQuery("select model.gallaryId from Gallary model where model.contentType.contentType = ? and "+
 				" model.candidate.candidateId = ? and model.gallaryId not in(:gallaryIds) and model.isPrivate = 'false' and model.isDelete = 'false'");
+		query.setParameter(0, contentType);
+		query.setParameter(1, candidateId);
+		query.setParameterList("gallaryIds", gallaryIds);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getOtherGalleriesForCandidate(Long candidateId,List<Long> gallaryIds,String contentType)
+	{
+		Query query = getSession().createQuery("select model.gallaryId from Gallary model where model.contentType.contentType = ? and "+
+				" model.candidate.candidateId = ? and model.gallaryId not in(:gallaryIds) and model.isDelete = 'false'");
 		query.setParameter(0, contentType);
 		query.setParameter(1, candidateId);
 		query.setParameterList("gallaryIds", gallaryIds);

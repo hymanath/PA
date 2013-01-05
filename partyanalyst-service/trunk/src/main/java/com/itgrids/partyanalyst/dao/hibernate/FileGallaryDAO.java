@@ -574,6 +574,80 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		 
 		return queryObject.list();
 	}
+     
+     @SuppressWarnings("unchecked")
+ 	public List<Object[]> getNewsForRegisterUsers1(FileVO fileVO){
+ 		
+     	 StringBuilder query = new StringBuilder();
+  		query.append("select model.fileGallaryId ,model.file,model.isPrivate from FileGallary model  where model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0 " );
+  		if(fileVO.getSourceId() != null)
+  			query.append(" and model1.source.sourceId = :sourceId");
+  		
+  		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model1.language.languageId = :languageId");
+  		
+  		query.append(") and model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  		
+  		if(fileVO.getExistingFrom() != null)
+  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			
+  		if(fileVO.getIdentifiedOn() != null)
+  			query.append(" and date(model.file.fileDate) <= :toDate");
+  		
+  		if(fileVO.getCategoryId() != null)
+  			query.append(" and model.file.category.categoryId = :categoryId");
+  			
+  		if(fileVO.getNewsImportanceId() != null)
+  			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId");
+  			
+  		if(fileVO.getLocationScope() != null)
+  			query.append(" and model.file.regionScopes.regionScopesId = :locScop");	
+  			
+  		if(fileVO.getLocation() != null)
+ 			query.append(" and model.file.locationValue =:locScopVal");		
+ 		
+ 		if(fileVO.getFileType().trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileVO.getFileType().trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+ 		query.append(" order by model.file.fileDate desc   ");
+  		
+ 		Query queryObject = getSession().createQuery(query.toString());
+ 		
+ 		queryObject.setLong("userId", fileVO.getCandidateId());
+ 		
+ 		queryObject.setString("type", IConstants.NEWS_GALLARY);
+ 		
+ 		if(fileVO.getExistingFrom() != null)
+ 		    queryObject.setDate("fromDate", fileVO.getExistingFrom());
+ 		
+ 		if(fileVO.getIdentifiedOn() != null)
+ 			queryObject.setDate("toDate",fileVO.getIdentifiedOn());
+  			
+  		if(fileVO.getSourceId() != null)
+  			queryObject.setLong("sourceId",fileVO.getSourceId());
+  		
+  		if(fileVO.getLanguegeId() != null)
+  			queryObject.setLong("languageId",fileVO.getLanguegeId());
+  		
+  		if(fileVO.getCategoryId() != null)
+  			queryObject.setLong("categoryId",fileVO.getCategoryId());
+  			
+  		if(fileVO.getNewsImportanceId() != null)
+  			queryObject.setLong("newsImportanceId",fileVO.getNewsImportanceId());
+  			
+  		if(fileVO.getLocationScope() != null)
+  			queryObject.setLong("locScop",fileVO.getLocationScope());	
+  			
+  		if(fileVO.getLocation() != null)
+  			queryObject.setLong("locScopVal",fileVO.getLocation());		
+ 		 
+ 		return queryObject.list();
+ 	}
+     
      @SuppressWarnings("unchecked")
 	public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
     	 
@@ -1184,6 +1258,15 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
      }
      
      @SuppressWarnings("unchecked")
+     public List<FileGallary> getFilesOfInGallariesForCustomer(List<Long> gallaryIdsList)
+     {
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList)  and model.isDelete = 'false' and model.gallary.isDelete = 'false' " +
+    	 		" group by model.file.fileId");
+    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
+    	 return query.list();
+     }
+     
+     @SuppressWarnings("unchecked")
      public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId,String queryString)
      {
     	 Query query = getSession().createQuery("select model.gallary.name,model.gallary.description,"+queryString+", " +
@@ -1328,5 +1411,22 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
             
             return (FileGallary)query.uniqueResult();
    }
+   
+   
+   public void updateVisibility(Long fileId,String visibility){
+	   
+		Query queryObject = getSession()
+				.createQuery(
+						"update FileGallary model set model.isPrivate = :visibility where model.file.fileId =:fileId ");
+		  queryObject.setString("visibility", visibility);
+		  queryObject.setLong("fileId", fileId);
+		
+		queryObject.executeUpdate();
+	   
+	   
+   }
+   
+   
+   
      
 }
