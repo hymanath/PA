@@ -137,8 +137,8 @@ public void setBoothPublicationVoterDAO(
 
 public void testgetVoterDetailsByCasteState()
 {
-	 List<Voter> voter = boothPublicationVoterDAO.getVoterDetailsByCasteState(204l,2l,1l);
-	 System.out.println(voter.size());
+	 //List<Voter> voter = boothPublicationVoterDAO.getVoterDetailsByCasteState(204l,2l,1l);
+	 //System.out.println(voter.size());
 }
 
 }

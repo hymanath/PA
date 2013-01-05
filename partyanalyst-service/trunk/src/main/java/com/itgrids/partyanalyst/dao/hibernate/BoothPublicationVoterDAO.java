@@ -502,11 +502,11 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		return (Long)queryObj.uniqueResult();
 	}
 	
-	public Long getVotersCountForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId){
+	public Long getVotersCountForLocalElectionBody(Long lclElecBodyId,Long publicationDateId){
 		Query query = getSession().createQuery("select count(*) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
-				" model.booth.localBody.localElectionBodyId in(select distinct model1.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model1 where model1.assemblyLocalElectionBodyId = :assemblyLclElecBodyId ) ") ;
+				" model.booth.localBody.localElectionBodyId =:lclElecBodyId ") ;
 		  query.setParameter("publicationDateId", publicationDateId);
-		  query.setParameter("assemblyLclElecBodyId", assemblyLclElecBodyId);
+		  query.setParameter("lclElecBodyId", lclElecBodyId);
 		  return (Long)query.uniqueResult();
 	}
 	public List<Object[]> findAllImpFamiles(Long id,Long publicationDateId,String type,String queryString){
@@ -528,17 +528,17 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	  return queryObj.list();
 	}
 	
-	public List<Object[]> getVotersImpFamilesForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId,String queryString){
+	public List<Object[]> getVotersImpFamilesForLocalElectionBody(Long lclElecBodyId,Long publicationDateId,String queryString){
 		StringBuilder query = new StringBuilder();
 		query.append("select count(model.voter.voterId) ,model.voter.houseNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
-				" model.booth.localBody.localElectionBodyId in(select distinct model1.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model1 where model1.assemblyLocalElectionBodyId = :assemblyLclElecBodyId ) ") ;
+				" model.booth.localBody.localElectionBodyId  = :lclElecBodyId  ") ;
 		query.append(" group by model.booth.boothId,model.voter.houseNo ");
 		if(queryString != null)
 			query.append(queryString);
 		
 		Query queryObj = getSession().createQuery(query.toString()) ;
 		queryObj.setParameter("publicationDateId", publicationDateId);
-		queryObj.setParameter("assemblyLclElecBodyId", assemblyLclElecBodyId);
+		queryObj.setParameter("lclElecBodyId", lclElecBodyId);
 		  return queryObj.list();
 	}
 	
@@ -599,12 +599,12 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
      }
 	
 	//caste Info For Municipality
-	public List getVotersCastInfoFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId)
+	public List getVotersCastInfoFromLocalElectionBody(Long lclElecBodyId,Long publicationDateId)
 	{
 		Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
-				" model.booth.localBody.localElectionBodyId in(select distinct model1.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model1 where model1.assemblyLocalElectionBodyId = :assemblyLclElecBodyId ) group by model.voter.cast,model.voter.gender order by model.voter.cast");
+				" model.booth.localBody.localElectionBodyId =:lclElecBodyId group by model.voter.cast,model.voter.gender order by model.voter.cast");
 		 query.setParameter("publicationDateId", publicationDateId);
-		 query.setParameter("assemblyLclElecBodyId", assemblyLclElecBodyId);
+		 query.setParameter("lclElecBodyId", lclElecBodyId);
 		  return query.list();
 	}
 	
