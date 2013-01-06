@@ -21,13 +21,13 @@
 			var elem = $(this);
 			
 			// If the title attribute is empty, continue with the next element
-			if(!elem.attr('title')) return true;
+			if(!elem.attr('title3')) return true;
 			
 			// Creating new eventScheduler and Tip objects for this element.
 			// (See the class definition at the bottom).
 			
 			var scheduleEvent = new eventScheduler();
-			var tip = new Tip(elem.attr('title'));
+			var tip = new Tip(elem.attr('title3'));
 
 			// Adding the tooltip markup to the element and
 			// applying a special class:
@@ -78,7 +78,7 @@
 			// Removing the title attribute, so the regular OS titles are
 			// not shown along with the tooltips.
 			
-			elem.removeAttr('title');
+			elem.removeAttr('title3');
 		});
 		
 	}
