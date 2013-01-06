@@ -136,18 +136,18 @@ Get the complete picture of your constituency to strategize or to understand the
 <div class="whitegloss" >
   
 
-<a class=" alert alert-info span3 btn   green "    title="You can find your constituency, district people and connect with them to share your views." ><h4 >Connect and Share</h4></a> 
+<a class=" alert alert-info span3 btn   green "   title3="You can find your constituency, district people and connect with them to share your views." ><h4 >Connect and Share</h4></a> 
 
 
-<a class="alert alert-info span3 btn green"  title="Are you facing any social problems? Post your problems." ><h4>Post Problems</h4></a>
+<a class="alert alert-info span3 btn green"  title3="Are you facing any social problems? Post your problems." ><h4>Post Problems</h4></a>
 
-<a class="alert alert-info span3 btn green"  title="Get frequent updates of your favorite party or politicians and latest hot topics." ><h4>Subscriptions</h4></a>
+<a class="alert alert-info span3 btn green"  title3="Get frequent updates of your favorite party or politicians and latest hot topics." ><h4>Subscriptions</h4></a>
 
-<a class="alert alert-info span3 btn green"  title=" Stay tuned with the political trends." ><h4>Stay Tuned</h4></a>
+<a class="alert alert-info span3 btn green"  title3=" Stay tuned with the political trends." ><h4>Stay Tuned</h4></a>
 
-<a class="alert alert-info span3 btn green"  title="Know public schemes, current affairs and important facts." ><h4>Awareness</h4></a>
+<a class="alert alert-info span3 btn green"  title3="Know public schemes, current affairs and important facts." ><h4>Awareness</h4></a>
 
-<a  class="alert alert-info span3 btn green"  title="you may like different pages in Party Analyst, just add and view them in a single click." ><h4>Ease of Access</h4></a>
+<a  class="alert alert-info span3 btn green"  title3="you may like different pages in Party Analyst, just add and view them in a single click." ><h4>Ease of Access</h4></a>
 
 <div class="alert alert-info">
 Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.action" class="btn btn-primary">Register Now</a> Already Registered, <a href="loginInputAction.action" class="btn btn-primary">Login</a> and Explore Now.
