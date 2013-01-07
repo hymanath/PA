@@ -94,7 +94,7 @@
 	width :100%;
 	margin-bottom:5px;
 }
-
+#boothResultsMarkup table{border: 1px solid #C4DEFF;margin-right: 15px;}
 </style>
 </head>
 <body>
@@ -142,7 +142,7 @@
 			<display:table id="boothResultsTableId"
 				 name="${boothResult.perWiseboothResults}"
 				defaultorder="ascending" defaultsort="4"
-				style="width:auto;margin-left:1px;border:1px;">
+				style="width:auto;margin-left:1px;border:1px solid #C4DEFF;">
 
 			<display:column style="text-align:center;" title="Polling % Range"
 					property="location" />
@@ -159,7 +159,7 @@
 			<display:table id="boothResultsTableId"
 				 name="${boothResult.partyPerWiseboothResults}"
 				defaultorder="ascending" defaultsort="4"
-				style="width:auto;margin-left:10px;border:1px;">
+				style="width:auto;margin-left:10px;border:1px solid #C4DEFF;">
 
 			<display:column style="text-align:center;" title="Party Votes % Range"
 					property="location" />
