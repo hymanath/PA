@@ -1552,7 +1552,12 @@ function viewElectionResults()
 	}
 }
 
-
+function openAddNewProblemWindow()
+{	
+	var browser_addNewProblem = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+	
+	browser_addNewProblem.focus();
+}
 <!--Facebook like code Start-->
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
