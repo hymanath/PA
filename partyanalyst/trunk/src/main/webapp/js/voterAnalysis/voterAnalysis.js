@@ -53,7 +53,7 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
+{key:"firstName", label: "Name", sortable: true},
 {key:"gender", label: "Gender", sortable: true},
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
@@ -61,13 +61,6 @@ var votersByLocBoothColumnDefs = [
 {key:"relationshipType", label: "Relationship", sortable:true}
 ];
 
-YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
-	{
-	var id = oRecord.getData("voterIds");
-	var name = oRecord.getData("firstName");
-	elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
-		
-	}
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
 
 var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&publicationId="+publicationDateId+"&");
@@ -76,7 +69,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIds"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -799,6 +792,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 			mandal : name,
 			locationId:locationId,
 			caste : cast1[k].castName,
+			casteCategory:cast1[k].casteCategoryName,
 			castePopulation : cast1[k].castCount,
 			malePopulation : cast1[k].malevoters,
 			femalePopulation : cast1[k].femalevoters,
@@ -830,6 +824,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>Booth</th>';
 
 		str +='<th>Caste</th>';
+		str+='<th>Caste Category</th>';
 		str +='<th>Total Voters</th>';
 		str +='<th>Caste Population</th>';
 		str +='<th>Male Population</th>';
@@ -857,6 +852,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		{
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
 		}
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].casteCategory+'</td>';
 		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePopulation+'</td>';
 		if(constMgmtMainObj.castStatssubArray[i].malePopulation ==null)
@@ -887,7 +883,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null,null,null
 		] 
 		});
 	$('#subLevelTable tr').removeClass("odd");
@@ -1251,10 +1247,12 @@ function buildCastInfoData(myresults,jsObj)
 		var castStats = 
 			{
 			caste : cast[i].castName,
+			casteCategory:cast[i].casteCategoryName,
 			castePopulation : cast[i].totalVoters,
 			malePopulation : cast[i].maleVoters,
 			femalePopulation : cast[i].femaleVoters,
 			castePercentage:cast[i].votesPercent,
+			
 			};
 		castIno.push(castStats);
 		constMgmtMainObj.castStatsArray =castIno; 
@@ -1320,6 +1318,7 @@ function buildCastPiechart(myResults,jsObj)
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>Caste</th>';
+		     str+='	 <th>Caste category</th>';
 		  str+='     <th>Caste Population</th>';
           str+='     <th>Male Population</th>';
           str+='     <th>Female Population</th>';
@@ -1340,6 +1339,7 @@ function buildCastPiechart(myResults,jsObj)
 		   }
 		   else
 		  str +='		<td>'+castArray[i].caste+'</td>';
+		  str+='        <td>'+castArray[i].casteCategory+'</td>';
           str +='		<td>'+castArray[i].castePopulation+'</td>';
           str +='		<td>'+castArray[i].malePopulation+'</td>';
 		  str +='		<td>'+castArray[i].femalePopulation+'</td>';
@@ -1356,7 +1356,7 @@ function buildCastPiechart(myResults,jsObj)
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null
      
 	  
     ] 
