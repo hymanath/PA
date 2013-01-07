@@ -166,6 +166,7 @@
 		<pattern>/viewFeaturesAction*</pattern>
 		<pattern>/voterDataManageAction*</pattern>
 		<pattern>/callCenterAction*</pattern>
+		<pattern>/partyBoothResult2Action*</pattern>
     </decorator>
 
 </decorators>
