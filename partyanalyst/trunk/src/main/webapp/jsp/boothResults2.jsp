@@ -46,6 +46,8 @@
    color:#23318B;
    text-decoration: underline;
    font-weight: bold;
+   font-size:13px;
+   font-family:verdana;
 }
 .yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 {
@@ -57,12 +59,7 @@
 	background-color:#C4DEFF;
 	color:#3F546F;
 }
-.searchresultsTable td {
-	background-color:#F8FBFF;
-}
-.searchresultsTable th {
-	background-color:#C4DEFF;
-}
+
 .yui-skin-sam .yui-dt-liner {
 	padding:4px 8px;
 }
@@ -72,38 +69,100 @@
 	text-align:center;
 	font-weight:bold;
 	color:#1031B6;
+	height:30px;
 }
 
 #boothResultsTableId td{
-	background-color:#F8FBFF;
-	color:#180206;
+
+	/*color:#180206;
 	font-weight:bold;
 	width:140px;
+	border: 1px solid #b0bec7;
+	padding: 0 0 0 10px;*/
+
+color:#5B5B5B;
+width: 660px;
+height: 25px;
+font-family: tahoma, arial, helvetica, verdana, sans-serif;
+font-size: 13px;
+font-weight: bold;
+text-decoration: none;
+background: transparent;
+border: 1px solid #b0bec7;
+padding: 0 0 0 10px;
 }
+#boothResultsTableId{width:95%;}
+#boothResultsTableId tr:nth-child(even){background:#F8FBFF;}
+#boothResultsTableId tr:nth-child(odd){background:#F8FBFF;}
+
 
 #titleDiv
 {
-	color: #23318B;
+	color: #ffffff;
     font-size: 15px;
     font-weight: bold;
     margin-top: 20px;
-    text-decoration: underline;
+	margin-left:auto;
+	margin-right:auto;
+	background:#06ABEA;
+	padding:5px;
+	border-radius:5px;
+	padding-left: 30px;
+    width: 470px;
+}
 
 }
 .resultTableDiv{
 	width :100%;
 	margin-bottom:5px;
 }
-#boothResultsMarkup table{border: 1px solid #C4DEFF;margin-right: 15px;}
+#mainDiv
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:980px;
+}
+
+table#searchresultsTable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+	margin-top:10px;
+}
+table#searchresultsTable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table#searchresultsTable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #5B5B5B;
+	background-color: #ffffff;
+}
+
+#boothResultsMarkup table{border: 1px solid #C4DEFF;margin-right: 15px;
+	font-family:arial;
+	margin-bottom:20px;
+	
+}
+
 </style>
 </head>
 <body>
+<div id="mainDiv">
 <div id="titleDiv"><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" /> <s:property value="boothResult.electionType" /></div>
 <div id="boothResultsDiv">
 
 <div class="resultTableDiv">
-<div class="boothResultHeadingDiv">Candidate Details : </div>
-<table class="searchresultsTable" style="width: auto; float: left;">
+<div class="boothResultHeadingDiv" style="margin-eft:15px;">Candidate Details : </div>
+<table class="searchresultsTable" id="searchresultsTable" style="width: auto; float: left;">
 	<tr>
 		<th style="background-color:#C4DEFF;">Candidate Name</th>
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.candidateName" /><br></td>
@@ -133,7 +192,7 @@
 </div>
 <BR><BR><BR><BR><BR><BR>
 
-<div>
+<div style="float:left;width:auto;">
 <table>
 	<tr>
 		<td>
@@ -173,7 +232,8 @@
 	</tr>
 </table>
 </div>
-<div class="boothResultHeadingDiv">Booth Wise Performance : </div>
+
+<div class="boothResultHeadingDiv" style="margin-left:15px;;margin-bottom:15px;clear:both;padding-top:20px;">Booth Wise Performance : </div>
 <div id="boothResultsMarkup" class="yui-skin-sam">
 <display:table id="boothResultsTable"
 	 name="${boothResult.boothResults}"
@@ -196,6 +256,7 @@
 	<display:column style="text-align: center;" title="Percentage"
 		property="percentage" />
 </display:table>
+</div>
 </div>
 </div>
 <script language="javascript">
