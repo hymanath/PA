@@ -53,7 +53,7 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true},
+{key:"firstName", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 {key:"gender", label: "Gender", sortable: true},
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
@@ -61,6 +61,13 @@ var votersByLocBoothColumnDefs = [
 {key:"relationshipType", label: "Relationship", sortable:true}
 ];
 
+YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+	var id = oRecord.getData("voterIds");
+	var name = oRecord.getData("firstName");
+	elLiner.innerHTML ='<a onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
+		
+	}
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
 
 var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId="+boothId+"&publicationId="+publicationDateId+"&");
@@ -69,7 +76,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIds"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
