@@ -4036,7 +4036,7 @@
 		</action>
 			
 		<action name="voterEditAction" class="votersEditAction" method="saveVoterDetails">
-			<result type="redirect"  name="success">votersEditAction.action?voterId=${voterHouseInfoVO.voterId}&amp;boothId=${voterHouseInfoVO.boothId}</result>
+			<result type="redirect"  name="success">votersEditAction.action?voterId=${voterHouseInfoVO.voterId}&amp;boothId=${voterHouseInfoVO.boothId}&amp;resultStr=${resultStr}</result>
 		    <result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		<action name="getVotersCategoryAction" class="votersEditAction" method="callAjaxHandler">

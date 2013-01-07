@@ -352,6 +352,8 @@ width: 860px;}
     
     width: 926px;}
 	#localCastDetailsDiv p{font-size:13px;font-weight:bold;}
+	#createNewGroupId:hover{background:#F61D50;color:#FFF;}
+	#openProblemEditFormId{cursor:pointer;}
 </style>
 
 <script type="text/javascript">
@@ -387,6 +389,12 @@ locationDetails.constituencyArr.push(ob);
 
 <fieldset>
 <div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
+
+<div id="categoeryCreationDiv" style="float:right;">
+	
+	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create New Group</a>
+</div>
+
 <div id="AlertMsg" style="font-family: verdana;
     font-size: 13px;"></div>
 
@@ -435,9 +443,9 @@ locationDetails.constituencyArr.push(ob);
 					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters Info" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Age Wise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
-					<td style="padding-left:50px"><div id="categoeryCreationDiv" style="float:right;">
+					<!-- <td style="padding-left:50px"><div id="categoeryCreationDiv" style="float:right;">
 					<input type="button" class="buttonStyle" onClick="openNewWindow();" style="font:bold;font-size: 131%;" value="CreateNewGroup"></input>
-					</div></td>
+					</div></td>-->
 					
 				  </tr>
 				</table>

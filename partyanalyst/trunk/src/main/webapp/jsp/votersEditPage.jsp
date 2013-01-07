@@ -57,8 +57,9 @@ input.btn {
 }
  
 form {
-    width: 40%;
-	margin-left:250px;
+    /* width: 40%;
+	margin-left:250px;*/
+	
 }
  
 form div {
@@ -84,7 +85,10 @@ form div label {
     border: 1px dotted #61B5CF;
     margin-top: 1.4em;
     padding: 0.6em;
-	width: 130%;
+	/* width: 130%;*/
+	margin-bottom: 9px;
+    width: 500px;
+
 }
  
 .legendClass {
@@ -93,7 +97,7 @@ form div label {
     background-color: #FFFFFF;
 	border-style:none ;
 	margin-bottom:0px;
-	width:42%;
+	width:30%;
 	font-weight:bold;
 	font-size:16px;
 	text-align:center;
@@ -104,8 +108,14 @@ form div label {
 }
 
 .template {display:none;}
-
+.fontStyle{ margin-right: 6px;}
  
+ #votersEditMainDiv{float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;}
+	#voterInfoTable th{text-align:left;}
+
  </style>
  
  <script type="text/javascript">
@@ -359,8 +369,8 @@ function storeCategoryValues(){
  </script>
 </head>
 <body style="position: relative;">
-<br><br>
 
+<div id="votersEditMainDiv">
 <form id="voterDetailsForm" name="voterDetailsForm" method="POST" action="voterEditAction.action">
 
 <c:if test="${requestScope.resultStr=='success'}">
@@ -374,52 +384,49 @@ function storeCategoryValues(){
 <!--<input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
 <input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>-->
-<div id="mainDiv" style="float: right;">
- <fieldset style="width: 335px;">
+<div id="mainDiv" >
+
+<div>
+  <span class="fontStyle"><b>Panchayat Name: </b></span> ${voterHouseInfoVO.panchayatName}
+  <span class="fontStyle" style="margin-left: 25px;"><b>Booth Name:</b></span> ${voterHouseInfoVO.boothName}
+</div>
+<div>
+	<span class="fontStyle"><b>Villiage Covered:</b></span> ${voterHouseInfoVO.villiageCovered}
+</div>
+
+<fieldset >
        <legend class="legendClass">Voter Information</legend>
- 		<div>
-			<label for="name">Voter Name:</label> ${voterHouseInfoVO.name}
-		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.name" value="${voterHouseInfoVO.name}" readonly='true'/>-->
-		</div>
-		<div>
-		<label for="name">Age:</label> ${voterHouseInfoVO.age}
-			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.age" value="${voterHouseInfoVO.age}" readonly='true'/>-->
-		</div>
-		<div>
-		<label for="name">Gender:</label> ${voterHouseInfoVO.gender}
-			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.gender" value="${voterHouseInfoVO.gender}" readonly='true'/>-->
-		</div>
-		
-		<div>
-		<label for="name">House No:</label> ${voterHouseInfoVO.houseNo}
-			<!--<input type="text" style="width: 165px;" name="voterHouseInfoVO.houseNo" value="${voterHouseInfoVO.houseNo}" readonly='true'/>-->
-		</div>
-		<div>
-		<label for="name">Guardian Name:</label> ${voterHouseInfoVO.gaurdian}
-			<!--<input type="text" style=" width: 165px;" name="voterHouseInfoVO.gaurdian" value="${voterHouseInfoVO.gaurdian}" readonly='true'/>-->
-		</div>
-		<div>
-		<label for="name">RelationShip:</label>${voterHouseInfoVO.relationship}
-		<!--	<input type="text" style=" width: 165px;" name="voterHouseInfoVO.relationship" value="${voterHouseInfoVO.relationship}" readonly='true'/>-->
-		</div>
-		
-		<!--<div>
-		<label for="name">Caste Category:</label>${voterHouseInfoVO.castCategory}
-			<input type="text" style="width: 165px;" name="voterHouseInfoVO.castCategory" value="${voterHouseInfoVO.castCategory}" readonly='true'/>
-		</div>-->
-			<div>
-			<label for="name">Booth Name:</label> ${voterHouseInfoVO.boothName}
-		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.boothName" value="${voterHouseInfoVO.boothName}" readonly='true'/>-->
-		</div>
-		<div>
-			<label for="name">Panchayat Name:</label> ${voterHouseInfoVO.panchayatName}
-		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.panchayatName" value="${voterHouseInfoVO.panchayatName}" readonly='true'/>-->
-		</div>
-		<div>
-			<label for="name">Villiage Covered:</label> ${voterHouseInfoVO.villiageCovered}
-		<!--	<input type="text" style="width: 165px;" name="voterHouseInfoVO.villiageCovered" value="${voterHouseInfoVO.villiageCovered}" readonly='true'/>-->
-		</div>
-	
+<table id="voterInfoTable" style="width: 100%; height: 90px;">
+	<tr>
+		<th style="width: 23%;">Voter Name</th>
+		<td style="width: 3%;"><b>:</b></td>
+		<td style="width: 50%;">${voterHouseInfoVO.name}</td>
+		<th style="width: 14%;">Age</th>
+		<td style="width: 3%;"><b>:</b></td>
+		<td style="width: 9%;">${voterHouseInfoVO.age}</td>
+	</tr>
+	<tr>
+		<th>Guardian Name</th>
+		<td><b>:</b></td>
+		<td>${voterHouseInfoVO.gaurdian}</td>
+		<th>Gender</th>
+		<td><b>:</b></td>
+		<td>${voterHouseInfoVO.gender}</td>
+	</tr>
+	<tr>
+		<th>RelationShip</th>
+		<td><b>:</b></td>
+		<td>${voterHouseInfoVO.relationship}</td>
+		<th>House No</th>
+		<td><b>:</b></td>
+		<td>${voterHouseInfoVO.houseNo}</td>
+	</tr>
+
+</table>
+</fieldset>
+
+ 
+ 	<fieldset>
 		<div>
 		<label for="name">Caste:</label> 
 			<s:select theme="simple" style="width: 169px;"
@@ -447,12 +454,14 @@ function storeCategoryValues(){
 		  </s:iterator>
 	   </s:if>
 		
-		</fieldset>
-<div style="float:right;">
+	</fieldset>	
+<div style="margin-bottom: 50px; width: 79px; float: right; margin-right: 70px;">
 <input class="btn btn-success" type="submit" value="Update">
 </div>
 
 </div>
 </form>
+
+</div>
 </body>
 </html>

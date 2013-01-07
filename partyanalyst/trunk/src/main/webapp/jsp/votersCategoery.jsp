@@ -26,20 +26,21 @@
 #valuesDisplayDiv , #casteCreation{
 border:1px solid #a1a1a1;
 padding:10px 40px; 
-width:580px;
-height:auto;
-border-radius:25px;
+width:540px;
+border-radius:10px;
 -moz-border-radius:25px;
+margin-left:15px;
 }
 #groupCreation
 {
 border:1px solid #a1a1a1;
 padding:10px 40px;
 height:116px; 
-border-radius:25px;
+border-radius:10px;
 -moz-border-radius:25px;
+margin-left:15px;
 }
-#casteCreation{height:250px !important;}
+#casteCreation{margin-bottom:30px;}
 </style>
 <script type="text/javascript">
 function openProblemEditSubForm(id,name)
@@ -311,7 +312,7 @@ function showCasteStatus(result)
 		  <lable name="Caste Name"><b>Caste Name<span style="color:red">*</span> :</b> 
 		 <input type="text" id="casteId" style="width: 175px;margin-left:30px;"></input></lable> -->
 		
-		 <input type="button" value="create" class="btn btn-success" style="float:right;margin-top:4px;" id="createCaste"></input>
+		 <input type="button" value="create" class="btn btn-success" style="clear: both; float: right; margin-top: -30px;" id="createCaste"></input>
 	 </div>
 
 	</div>
