@@ -59,17 +59,16 @@ public class ConvertVoterDataFromPdfToText {
     {
     	try{
     		Class.forName("com.mysql.jdbc.Driver");
-    		System.out.println("Connecting to database...");
+    		//System.out.println("Connecting to database...");
     		conn = DriverManager.getConnection(DB_URL,USER,PASS);
-    		System.out.println("Inserting records into the table...");
     		stmt = conn.createStatement();
     		
     		for(VoterInfo info : votersInfoList)
     		{
     			String insertQuery = "INSERT INTO voter_temp(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
-    				" constituency_name, booth_id, booth_name) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
+    				" constituency_name, booth_id, booth_name,sno) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
     				"','"+info.getAge()+"','"+info.getHouseNumber()+"','"+info.getGuardianName()+"','"+info.getGuardianRelation()+
-    				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"')";
+    				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"',"+info.getsNo()+")";
     			stmt.executeUpdate(insertQuery);
     		}
     		
@@ -97,7 +96,7 @@ public class ConvertVoterDataFromPdfToText {
         //  Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n(KLQ\\d*|AJP\\d*|AP\\d*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:)\\nHouse No:\\n([A-Z\\s\\n]*)\\n([A-Z\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n[\\s0-9]*\\n");
         //Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n([A-Z\\d]*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\nHouse No:\\n([A-Za-z\\.\\s\\n]*)\\n([A-Za-z\\.\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n([\\s0-9a-zA-Z]*)\\n");
        /* This Pattern will use full for 2013 */
-        Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
+        Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
        // Pattern newp = Pattern.compile("([\\s0-9a-zA-Z\\s]*)\\r\\nAge:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\s]*)\\r\\n([\\s0-9]*)\\r\\n");
         //Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)Father's Name:\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\s([a-zA-Z]*)\\r\\n");
         
@@ -128,24 +127,13 @@ public class ConvertVoterDataFromPdfToText {
                     // Add text to the StringBuilder from the PDF
                     sb.append(stripper.getText(pd));
                     
-                  /*  String str = sb.toString();
-                    sb = new StringBuilder(str.replace(" .","-"));
-                    sb = new StringBuilder(sb.toString().replace("N.A.", "-"));
-                    sb = new StringBuilder(sb.toString().replace("?", ""));
-                    sb = new StringBuilder(sb.toString().replace("+", ""));
-                    sb = new StringBuilder(sb.toString().replace("11.", "11-"));
-                    sb = new StringBuilder(sb.toString().replace("u ", ""));*/
-                   
-                    /*String ssb = sb.toString();
-                    ssb.replaceAll("\n"," ");
-                    sb = new StringBuilder(ssb);*/
-                    System.out.println("File text:"+stripper.getText(pd));
+                    //System.out.println("File text:"+stripper.getText(pd));
                                        
                     String [] fileName = input.getName().split("-");
                     // Matcher refers to the actual text where the pattern will be found
                     Matcher m = p.matcher(sb);
                     VoterInfo voter = null;
-                    
+                    long lastSno = 0L;
                     List<VoterInfo> voterInfoList = new ArrayList<VoterInfo>(10);
                     
                     while (m.find()) 
@@ -163,11 +151,13 @@ public class ConvertVoterDataFromPdfToText {
                         String sNo = m.group(8).replaceAll("\\r\\n","").trim(); 
                         try{
                         if(sNo != null && sNo.length() > 0)
-                        	voter.setsNo(new Long(sNo).longValue());
-                            System.out.println(voter.getsNo());
+                        	voter.setsNo((new Long(sNo).longValue())-1);
+                        else
+                        	voter.setsNo(lastSno+1);
                         }catch(Exception e){
                         	
                         }
+                        lastSno = voter.getsNo();
                         voter.setConstituency(fileName[1]);
                         voter.setBoothNo(fileName[2]);
                         voter.setBoothName(fileName[3]);
