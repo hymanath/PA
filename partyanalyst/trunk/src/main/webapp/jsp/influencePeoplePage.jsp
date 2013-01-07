@@ -37,6 +37,8 @@
 
 	<!-- YUI Skin Sam -->
 
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -560,6 +562,17 @@
 				buildYUIDTTable("allPeopleDataTable","influencePeopleMainDataDiv");
 			}
 
+			function tabHighLightForViewResults(){
+				$("#viewResultsId").css({"background":"none repeat scroll 0 0 red"});
+				$("#showResultsId").css({"background":"none repeat scroll 0 0 #483D8B"});
+		
+			}
+			
+			function tabHighLightForShowResults(){
+				$("#viewResultsId").css({"background":"none repeat scroll 0 0 #483D8B"});
+				$("#showResultsId").css({"background":"none repeat scroll 0 0 red"});
+		
+			}
 	</script>
 </head>
 <body>
@@ -573,8 +586,8 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							<input type="button" class="elbutton" value="View Results By Regions" onclick="javascript:{window.location.reload();}"></input> </div>
-							<input type="button" class="elbutton" value="Show All Results" onclick="showAllPeopleRecords()"></input>
+							<input type="button" class="elbutton" id="viewResultsId" value="View Results By Regions" onclick="javascript:{window.location.reload();};tabHighLightForViewResults();"></input> </div>
+							<input type="button" id="showResultsId" class="elbutton" value="Show All Results" onclick="showAllPeopleRecords();tabHighLightForShowResults();"></input>
 						</td>
 						<td align="right">
 							<input type="button" class="elbutton" value="select All" onclick="selectAllPeople()"></input>
@@ -634,7 +647,7 @@
 	</div>
 		
 	<script type="text/javascript">
-		
+		tabHighLightForViewResults();
 		buildDataTable();
 	</script>
 </body>
