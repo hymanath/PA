@@ -351,7 +351,7 @@ width: 860px;}
      margin-left: 10px;
     
     width: 926px;}
-	#localCastDetailsDiv p{font-size:13px;}
+	#localCastDetailsDiv p{font-size:13px;font-weight:bold;}
 </style>
 
 <script type="text/javascript">
