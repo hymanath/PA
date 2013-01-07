@@ -167,6 +167,10 @@
 		<pattern>/voterDataManageAction*</pattern>
 		<pattern>/callCenterAction*</pattern>
 		<pattern>/partyBoothResult2Action*</pattern>
+		<pattern>/cadreManagementAction*</pattern>
+		<pattern>/constituencyManagementAction*</pattern>
+		<pattern>/problemManagementReportAction*</pattern>
+		
     </decorator>
 
 </decorators>
