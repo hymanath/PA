@@ -576,7 +576,7 @@ Hot Topics</h2>
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
 								
-								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/>
+								<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}"> <img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/></a>
 								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
