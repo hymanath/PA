@@ -3590,14 +3590,17 @@
 </script>
 </head>
 <body>
+<style>
+.paginatorElmtClass a{padding:5px;}
+</style>
 <div id="problemManagementDiv_main">
 	<div id="activities"></div>
 	<div id="problemManagementDiv_head">
 		<c:if test="${reportResult == 'PROBLEMS_MANAGEMENT'}">
-		<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">PROBLEM MANAGEMENT</div>
+		<h3 id="constituencyMgmtHeaderDiv" style="margin-top:15px;text-align:center;">PROBLEM MANAGEMENT</h3>
 		</c:if>
 		<c:if test="${reportResult == 'CONSTITUENCY_MANAGEMENT'}">
-		<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">CONSTITUENCY MANAGEMENT</div>
+		<h3 id="constituencyMgmtHeaderDiv" style="margin-top:15px;text-align:center;">CONSTITUENCY MANAGEMENT</h3>
 		</c:if>
 	</div>
 	<div id="problemManagementDiv_body">
