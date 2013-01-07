@@ -737,6 +737,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					}
 					
 					String gender = params[1].toString();
+					if(params[4] != null)
+					voterCastInfoVO.setCasteCategoryName(params[4].toString());
 					if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
 						voterCastInfoVO.setMaleVoters((Long)params[2]);
 					else
@@ -864,6 +866,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		if(castsMap.get(cast) == null){
 			castvo = new CastVO();
+			if(voterInfo[4]!= null)
+			castvo.setCasteCategoryName(voterInfo[4].toString());
 			castvo.setCastName(cast);
 			castvo.setCastStateId((Long) voterInfo[3]);
 			castvo.setCastCount((Long) voterInfo[2]);
@@ -881,6 +885,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		else{
 		   castvo = castsMap.get(cast);
+		   if(voterInfo[4]!= null)
+		   castvo.setCasteCategoryName(voterInfo[4].toString());
 		   castvo.setCastName(cast);
 		   castvo.setCastCount(castvo.getCastCount()+(Long) voterInfo[2]);
 		   //castvo.setGender(voterInfo[1].toString());

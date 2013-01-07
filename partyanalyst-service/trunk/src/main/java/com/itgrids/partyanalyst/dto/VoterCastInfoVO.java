@@ -17,7 +17,10 @@ public class VoterCastInfoVO {
 	private String votesPercent;
 	private Long totalCastKnownVoters;
 	private Long locationId;
+	
+	private String casteCategoryName;
 
+	
 	public VoterCastInfoVO(){
 		
 	}
@@ -136,5 +139,14 @@ public class VoterCastInfoVO {
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
+	
+	public String getCasteCategoryName() {
+		return casteCategoryName;
+	}
+
+	public void setCasteCategoryName(String casteCategoryName) {
+		this.casteCategoryName = casteCategoryName;
+	}
+
 	
 }
