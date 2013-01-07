@@ -18,7 +18,10 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	private Long malevoters;
 	
 	private Long castStateId;
+	
+	private String casteCategoryName;
 
+	
 	
 	public CastVO(){
 		
@@ -108,6 +111,13 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	public void setCastStateId(Long castStateId) {
 		this.castStateId = castStateId;
 	}
-	
+	public String getCasteCategoryName() {
+		return casteCategoryName;
+	}
+
+	public void setCasteCategoryName(String casteCategoryName) {
+		this.casteCategoryName = casteCategoryName;
+	}
+
 
 }
