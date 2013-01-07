@@ -15,6 +15,7 @@
 <script type="text/javascript" src="js/specialPage/specialPage.js"></script>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 <title></title>
 
 
@@ -385,6 +386,18 @@ var newsDetails = null;
  var reqFile;
 $(document).ready(function(){
   $("#newsSearch").slideUp("fast");
+        $( "#fromDate" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: new Date()
+        });
+		$( "#toDate" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: new Date()
+        });
 });
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location,title,fromDate,toDate){
     document.getElementById("newsDeleteMessage").innerHTML = "";
@@ -1854,20 +1867,16 @@ catch(err)
 	   <tr>	<td style="padding-left:240px;color:#4B74C6;"><b>From Date</b></td>														
 					<td>											
 						<input type="text" value=""  READONLY="READONLY" name ="fromDate" id="fromDate" size="15"/>										
-						<div class="yui-skin-sam"><div id="fromDate_Div" class="tinyDateCal"></div></div>										
+																
 					</td>										
-					<td valign="top">										
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('fromDate_Div','fromDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
-					</td>														
+																			
 															
 					<td style="padding-left:50px;color:#4B74C6;"><b>To Date</b></td>									
 					<td>										
 						<input type="text" READONLY="READONLY" name ="toDate" id="toDate" size="15"/>										
-						<div class="yui-skin-sam"><div id="toDate_Div" class="tinyDateCal"></div></div>										
+	
 					</td>														
-					<td valign="top">										
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('toDate_Div','toDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
-					</td>
+					
        </tr>					
     </table>
     </div>
