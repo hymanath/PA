@@ -224,7 +224,9 @@
 		-moz-border-radius-topright:6px;
 		background-color:#B2BDC4;
 		border:1px solid #B2BDC4;		
-		width:96%;
+		width:97%;
+		margin-left:auto;
+		margin-right:auto;
 		}
 		th {
 		color:#113D5B;
@@ -352,7 +354,11 @@
 			text-shadow:0 1px 1px #FFFFFF;
 			margin-bottom : 10px;
 		}
-		
+		input[type="radio"]{
+    cursor: pointer;
+    line-height: normal;
+    margin: 4px;
+}
 	</style>   	
 
 </head>
@@ -2426,7 +2432,7 @@ function buildResultDataTable(result)
 </center>
 <div id="mainDIV">
 <div id="problemHeading"></div>
-<div>
+<div style="text-align:center;">
 
 <table border="0" width="98%" cellpadding="2"  style="margin:15px;">
 <tr>
