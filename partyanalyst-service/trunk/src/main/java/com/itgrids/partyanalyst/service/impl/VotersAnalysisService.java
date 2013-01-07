@@ -281,7 +281,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				for (Voter voter : votersList) {
 	
 					VoterVO voterVO = new VoterVO();
-					
+					voterVO.setVoterIds(voter.getVoterId());
 					voterVO.setVoterId((++count)+"");
 					voterVO.setFirstName(voter.getName());
 					voterVO.setAge(voter.getAge());
