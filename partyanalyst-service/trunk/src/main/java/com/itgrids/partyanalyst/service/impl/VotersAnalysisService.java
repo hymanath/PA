@@ -2850,7 +2850,8 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				}
 				voterDAO.flushAndclearSession();
 				Date d2 = new Date();
-				System.out.println("1000 Records inserted in "+(d2.getTime()-d1.getTime())/(1000*60*60)+" Seconds");
+				Double diff = (double)(d2.getTime()-d1.getTime());
+				System.out.println("1000 Records inserted in "+(diff)/(1000*60*60)+" Seconds");
 				maxResults = maxResults - 1000;
 				startIndex = startIndex + 1000;
 				if(maxResults <= 0)
@@ -2866,6 +2867,61 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 		return resultStatus;
 	}catch (Exception e) {
 		log.error("Exception Occured in insertVoterData() Method, Exception is - "+e);
+		return resultStatus;
+	}
+}
+
+public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Integer maxResults)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		Date d3 = new Date();
+		int max = 1000;
+		for(;;)
+		{
+			Date d1 = new Date(); 
+			List<VoterTemp> voterTempData = voterTempDAO.getVotersInAConstituency(constituencyId,startIndex,max);
+			
+			if(voterTempData != null && voterTempData.size() > 0)
+			{
+				List<String> voterIdsList = new ArrayList<String>(0);
+				
+				for(VoterTemp voterTemp : voterTempData)
+					voterIdsList.add(voterTemp.getVoterId());
+				
+				List<Object[]> voterIds = voterDAO.getVoterIdsByVoterIdCardNos(voterIdsList);
+				
+				for(Object[] voterId : voterIds)
+				{
+				try{
+					VoterTemp voterTemp = getVoterTemp(voterTempData,voterId[1].toString());
+					if(voterTemp != null)
+					{
+						int result = voterDAO.updateVoterNameAndRelativeName(voterTemp.getName(),voterTemp.getGuardianName(),(Long)voterId[0]);
+						System.out.println(result +" Records Updated");
+					}
+				    }catch (Exception e) {}
+				}
+				
+				voterDAO.flushAndclearSession();
+				Date d2 = new Date();
+				Double diff = (double)(d2.getTime()-d1.getTime());
+				System.out.println("1000 Records updated in "+(diff)/(1000*60*60)+" Seconds");
+				maxResults = maxResults - 1000;
+				startIndex = startIndex + 1000;
+				if(maxResults <= 0)
+					break;
+				if(maxResults <= 1000)
+					max = maxResults;
+			}
+		}
+		
+		Date d4 = new Date();
+		Double d5 = (new Double(d4.getTime() - d3.getTime()))/(1000*60);
+		System.out.println("Time Taken - "+d5+" Mins");
+		return resultStatus;
+	}catch (Exception e) {
+		log.error("Exception Occured in updateVoterData() Method, Exception is - "+e);
 		return resultStatus;
 	}
 }
@@ -3143,5 +3199,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		 return list;
 		 
+	 }
+	 
+	 public VoterTemp getVoterTemp(List<VoterTemp> list,String voterID)
+	 {
+		 for(VoterTemp voterTemp : list)
+			 if(voterID.equalsIgnoreCase(voterTemp.getVoterId()))
+				 return voterTemp;
+		 return null;
 	 }
 }
