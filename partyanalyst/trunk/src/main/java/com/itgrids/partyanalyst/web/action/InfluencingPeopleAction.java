@@ -299,6 +299,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		Long accessValue= new Long(regVO.getAccessValue());
 		
 		positionsList = influencingPeopleService.getAllInfluencePeoplePositions();
+		positionsList.add(0, new SelectOptionVO(0l,"Select Position"));
 		positionSize =  positionsList.size();
 		//staticParties = staticDataService.getStaticParties();
 		Long userStateId = influencingPeopleService.getStateIdOfAUser(accessType,accessValue);
