@@ -502,7 +502,7 @@ h3{
 <div class="span4">
 <!--<h3 >Our Services</h3>-->
 
-<div class="image_styles">
+<!--<div class="image_styles">
 
 <div id="videogallery">
 <h3>Video's</h3>
@@ -528,7 +528,7 @@ h3{
 
 </div>	
 	
-	</div>	
+	</div>	-->
 	</div>
 </div>
 
