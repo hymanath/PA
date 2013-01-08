@@ -48,10 +48,18 @@ function initializeHomePage()
 }
 function initializeNewHomePage()
 {
-	var statelocalEl = document.getElementById("stateList_l");
+	var statelocalEl = document.getElementById("stateList_d");
 	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
-	getDistrictsComboBoxForAState(1, 'districtList_d');
+	getDistrictsComboBoxForAState(statelocalEl.value, 'districtList_d');
+	
+	var assemblyRadio = document.getElementById('assembly_radio');
+	var ParliamentRadio = document.getElementById('p_radio');
+	
+	if(assemblyRadio.checked == true)
 	hideUnhideSelectBox('assembly_radio', 'constituency');
+	if(ParliamentRadio.checked == true)
+	hideUnhideSelectBox('p_radio', 'constituency');
+	
 	getLocalBodiesForState(stateSelectlocalElVal);
 }
 
@@ -1223,7 +1231,7 @@ function navigateToConstituencyPage()
 	alertEl.innerHTML = '';
 	if(constSelectElVal == 0)
 	{
-		alertEl.innerHTML = errotMsg;
+		alertEl.innerHTML = 'Please Select constituency';
 		return;
 	}
 	window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
