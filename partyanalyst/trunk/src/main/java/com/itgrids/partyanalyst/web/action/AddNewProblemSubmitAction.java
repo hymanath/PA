@@ -433,6 +433,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblemImpactLevelId();
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem Scope field is mandatory",shortCircuit=true)
 	public void setProblemScope(Long problemScope) {
 		this.problemBeanVO.setProblemImpactLevelId(problemScope);
 	}
