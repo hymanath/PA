@@ -947,13 +947,13 @@ $("#headerDiv").html('<font color="navy"><strong>Today\'s Total News Count : </s
 var div = $('<div id="newsAnalyse"></div>');
 var div1 =$('<div id="showNewsCountTable"></div>');
 
-if(hasNewsMonitoring)
+/* if(hasNewsMonitoring)
 {
 	
 	div.append('<a href="javascript:{};" onclick="openShowNews();" class="grad" style="text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News Articles</a>');
 	div.append('<span class="tempstyle">View and Analyze News Articels</span>');
 $("#headerDiv").append(div);
-}
+} */
 
 var maxCount = getMaxCount(result);
 
