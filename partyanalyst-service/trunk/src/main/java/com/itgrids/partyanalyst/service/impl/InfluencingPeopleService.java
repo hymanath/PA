@@ -407,24 +407,27 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	
 	public List<SelectOptionVO> getAllInfluencePeoplePositions(){
 		try{
-			List<SelectOptionVO> selectOptionVO = new ArrayList<SelectOptionVO>();
+			List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(0);
 			List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getAll();
-			SelectOptionVO selectOptionVo = new SelectOptionVO();
-			selectOptionVo.setId(0l);
-			selectOptionVo.setName("Select Position");
-			selectOptionVO.add(selectOptionVo);
+			
 			for(InfluencingPeoplePosition influencingPeoplePosition : result){
 				SelectOptionVO selectOption = new SelectOptionVO();
+				if(influencingPeoplePosition != null && influencingPeoplePosition.getInfluencingPeoplePositionId()!= null)
 				selectOption.setId(influencingPeoplePosition.getInfluencingPeoplePositionId());
+				if(influencingPeoplePosition != null && influencingPeoplePosition.getPosition()!= null)
 				selectOption.setName(WordUtils.capitalize(influencingPeoplePosition.getPosition().toLowerCase()));
-				selectOptionVO.add(selectOption);
+				selectOptionList.add(selectOption);
 			}
-			Collections.sort(selectOptionVO);
-			return selectOptionVO;
+			
+			Collections.sort(selectOptionList);
+			return selectOptionList;
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
 		}
+		
+		
 	}
 	
 	public List<SelectOptionVO> getInfluenceRange(){
