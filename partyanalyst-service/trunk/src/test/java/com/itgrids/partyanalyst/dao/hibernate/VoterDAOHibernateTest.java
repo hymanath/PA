@@ -1,11 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.model.Voter;
 
 public class VoterDAOHibernateTest extends BaseDaoTestCase{
 
@@ -145,9 +145,28 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testUpdateCasteByVoterCardId()
+	/*public void testUpdateCasteByVoterCardId()
 	{
 		System.out.println(voterDAO.updateCasteByVoterCardId("RYT0097071", "Kamma"));
+	}*/
+	
+	/*public void testUpdateVoterNameAndRelativeName()
+	{
+		int records = voterDAO.updateVoterNameAndRelativeName("Kamalakar Dandu", "Kamalakar Dandu", 1L);
+		System.out.println(records);
+	}*/
+	
+	public void testGetVoterIdsByVoterIdCardNos()
+	{
+		List<String> vidLiist = new ArrayList<String>(0);
+		vidLiist.add("RYT0605790");
+		vidLiist.add("RYT0981613");
+		vidLiist.add("RYT0981621");
+		vidLiist.add("RYT0981639");
+		vidLiist.add("RYT0981647");
+		
+		List<Object[]> list = voterDAO.getVoterIdsByVoterIdCardNos(vidLiist);
+		System.out.println(list.size());
 	}
 		
 }
