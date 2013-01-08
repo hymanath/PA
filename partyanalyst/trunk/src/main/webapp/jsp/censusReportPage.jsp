@@ -300,7 +300,8 @@ select
 			for(var i=0; i<resultByRanges.length; i++)
 			{
 				data.setValue(i, 0, resultByRanges[i].range);
-				data.setValue(i, 1, parseInt((resultByRanges[i].seatsWon)*(100)/resultByRanges[i].count));
+				/*data.setValue(i, 1, parseInt((resultByRanges[i].seatsWon)*(100)/resultByRanges[i].count));*/
+				data.setValue(i, 1, resultByRanges[i].seatsWon);
 			}			
 		}
 		else if(value == "percentage")
@@ -366,10 +367,12 @@ select
 			ctitle = 'All Parties Results based on Seats Won Percentage';
 			for(var i=0; i<results.length; i++)
 			{			
+				
 				data.setValue(i, 0, results[i].range);
 				
 				for(var j=0; j<results[i].partiesResults.length; j++)
-					data.setValue(i, j+1, parseInt((results[i].partiesResults[j].totalSeatsWon)*(100)/(results[i].count)));
+					/*data.setValue(i, j+1, parseInt((results[i].partiesResults[j].totalSeatsWon)*(100)/(results[i].count)));*/
+					data.setValue(i, j+1,results[i].partiesResults[j].totalSeatsWon);
 			}			
 		}
 		else if(value == "percentage")
