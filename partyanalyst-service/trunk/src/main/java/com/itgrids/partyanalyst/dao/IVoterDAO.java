@@ -58,4 +58,10 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public void flushAndclearSession();
 	
 	public Integer updateCasteByVoterCardId(String voterCardId, String caste);
+	
+	public Voter getVoterByVoterIDCardNo(String voterID);
+	
+	public Integer updateVoterNameAndRelativeName(String name, String relativeName,Long voterId);
+	
+	public List<Object[]>getVoterIdsByVoterIdCardNos(List<String> voterIdCardNosList);
 }
