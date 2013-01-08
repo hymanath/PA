@@ -706,7 +706,7 @@ function hideText(){
 
 <div id="saveDiv" align="center">
 	<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-	<input type="button" value="Exit" class="button" onClick="refreshParent()"/>
+	<input type="button" value="Exit" class="button" onClick="refreshParentWindow()"/>
 </div>
 <!--<div id="exitDiv" align="center">
 	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 

@@ -407,7 +407,7 @@ h2
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
-		timedRefresh();		
+		//timedRefresh();		
 	}
 	
 	function timedRefresh()
@@ -1521,7 +1521,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div class="bd">'; 
 		eventStr+='<table class="selectedDateEvent">';
 		eventStr+='<tr>';
-		eventStr+='<th>Title</th>';		
+		eventStr+='<th>Title<font color="red"> *</font></th>';		
 		if(jsObj.taskType == "impEvent")
 		{
 			eventStr+='<td colspan="3"><span id="" class="fieldSpan">'+results.title+'</span></td>';
@@ -1569,7 +1569,7 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description</th>';
+		eventStr+='<th>Description<font style="color:red">*</font></th>';
 		if(jsObj.taskType == "impEvent")
 		{
 			if(results.description != '')
@@ -1601,6 +1601,7 @@ function fillDataForCadreLevel(results,jsObj)
 				eventStr+='<td colspan="3"><span class="fieldSpan"> - </span></td>';
 			eventStr+='</tr>';
 		}
+		if(results.actionPlans)
 		if(results.actionPlans)
 		{
 			eventStr+='<tr>';
@@ -1708,7 +1709,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div class="bd">'; 
 		eventStr+='<table class="selectedDateEvent">';
 		eventStr+='<tr>';
-		eventStr+='<th>Title</th>';		
+		eventStr+='<th>Title<font color="red"> *</font></th>';		
 		if(jsObj.taskType == "impEvent")
 		{
 			eventStr+='<td colspan="3">';
@@ -1800,7 +1801,7 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description</th>';
+		eventStr+='<th>Description<font style="color:red"> *</font></th>';
 		if(jsObj.taskType == "impEvent")
 		{
 				eventStr+='<td colspan="3">';
@@ -1812,7 +1813,7 @@ function fillDataForCadreLevel(results,jsObj)
 		else if(jsObj.taskType == "impDate")
 		{
 				eventStr+='<td colspan="3">';
-				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea1" name="ImpdescTextArea">'+results[0].importance+'</textarea>';
+				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea1" name="ImpdescTextArea">'+results[0].importance+' </textarea>';
 				eventStr+='</td>';				
 		}
 		eventStr+='</tr>';
@@ -2584,7 +2585,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description</th>';
+		eventStr+='<th>Description<font style="color:red"> *</font></th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea" style="background:#ffffff;"></textarea></td>';
 		eventStr+='</tr>';
 		eventStr+='</table>';
@@ -3519,7 +3520,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
 		eventStr+='<table width="100%">';
 		eventStr+='<tr>';
-		eventStr+='<th><div style="width:142px;">Important Date Title</div></th>';
+		eventStr+='<th>Important Date Title<font color="red"> *</font></th>';
 		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 
@@ -3532,7 +3533,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='</tr>';
 	
 		eventStr+='<tr>';
-		eventStr+='<th>Description</th>';
+		eventStr+='<th>Description<font color="red"> *</font></th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea"></textarea></td>';
 		eventStr+='</tr></table>';		
 
