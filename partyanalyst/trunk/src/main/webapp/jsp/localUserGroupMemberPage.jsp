@@ -221,6 +221,10 @@
 		</c:if>		
 	}
 
+	function refreshParentWindow(){
+		window.close();
+		}
+
 </script>
 
 <style type="text/css">
@@ -328,7 +332,7 @@
 
 				<tr>
 					<th> <font color="red"> * </font> Select Category</th>
-					<td colspan="2"> <s:select id="groupCategory" name="groupCategory" onchange="getGroupNamesByCategory(this)" cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name">
+					<td colspan="2"> <s:select id="groupCategory" name="groupCategory" onchange="getGroupNamesByCategory(this)" cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name" headerValue="Select Category" headerKey="">
 					</s:select>
 					</td>
 				</tr>
@@ -349,9 +353,9 @@
 					<td colspan="3" style="padding:0px;"><div id="designationDiv" style="display:none;padding:10px;"></div></td>
 				</tr>	
 				<tr>
-					<td align="center" style="margin-top:22px">
+					<th></th><td align="center" style="margin-top:22px">
 					<s:submit cssClass="button" value="Save Group Member" name="Save"></s:submit></td>
-					<td><input type="button" class="button"  value="Exit" onClick="refreshParent()"></td>
+					<td><input type="button" class="button"  value="Exit" onClick="refreshParentWindow()"></td>
 				</tr>
 			</table>
 			</center>

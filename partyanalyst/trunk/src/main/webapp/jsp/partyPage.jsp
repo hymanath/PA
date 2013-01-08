@@ -85,6 +85,8 @@ padding: 4px 2px 4px 10px;
 #parliamentElecProfileDiv{margin-top:12px;}
 #assemblyElecProfileDiv > table * tr:nth-child(even){background:#f9f9f9;}
 
+.yui-dt-liner a:hover{ color: blue}		
+
 .ui-widget-header {
 	border:0px;
 	color:none;

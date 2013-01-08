@@ -367,7 +367,7 @@ function getElectionYears(electionType)
 		str+='      </td>';
 		}
 		str+='      <td>&nbsp;&nbsp;<b>Select Party :</b></td>';
-		str+='      <td>&nbsp;&nbsp;<select id="partiesSelIdDiv" style="width:100px;" multiple="multiple" ><option value="0">Select Party</option></select></td>';
+		str+='      <td>&nbsp;&nbsp;<select id="partiesSelIdDiv" style="width:100px;"><option value="0">Select Party</option></select></td>';
 		str+='      <td>';
 		str+='         <input type="checkbox" id="allianceChk"  name="allianceChk">&nbsp;&nbsp;<b>Include Alliances</b>';
 		str+='      </td>';
@@ -1031,7 +1031,7 @@ function getElectionYears(electionType)
 		  <td><div id="showHideState"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
 		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getAllParties('main');" ><option value="0">Select State</option></select></td>
 		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Party :</b></td>
-		  <td>&nbsp;&nbsp;<select id="partiesIdDiv" style="width:100px;" multiple="multiple" ><option value="0">Select Party</option></select></td>
+		  <td>&nbsp;&nbsp;<select id="partiesIdDiv" style="width:100px;"><option value="0">Select Party</option></select></td>
 		  <td><input type="button" class="buttonStyle" onclick="getDetails();" value="Search" ></td>
 		  <td><span id="select_ImgSpan" style="padding-left:10px;padding-top:5px;display:none;"><img src="images/icons/partypositions.gif"></span></td>
       </tr>
@@ -1060,7 +1060,7 @@ function getElectionYears(electionType)
 		    <table>
 			   <tr>
 			     <td><b>Select Parties : </b>&nbsp;&nbsp;</td>
-			     <td><select multiple="multiple" id="parties" style="width:100px;" ></select></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			     <td><select id="parties" style="width:100px;" ></select></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				 <td><input type="button" class="buttonClass" value="View" onclick="getDataForChart();" /></td>&nbsp;&nbsp;&nbsp;
 				 <td><div id="searchImage" style="display:none;"><img src="images/icons/search.gif"></img width="18px" height="18px;"></div></td>
 			   </tr>

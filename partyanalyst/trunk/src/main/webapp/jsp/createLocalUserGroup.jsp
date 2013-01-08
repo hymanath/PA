@@ -431,6 +431,10 @@ function ajaxCall(param,jsObj,url){
 
   YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function refreshParentWindow(){
+	window.close();
+
+	}
 </script>
 </head>
 <body class="bodyStyles">
@@ -597,11 +601,11 @@ function ajaxCall(param,jsObj,url){
 			<td><s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'userGroupReg','mandalField','currentAdd')"></s:select></td>
 	    </tr>
 		 <tr id="row4" style="display:none;" >
-			<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="Tehsil/Muncipality"/><font class="required"> * </font></td>
+			<td class="tdstyle" width="140px"><s:label for="mandalField" id="mandalLabel"  value="Tehsil/Muncipality"/><font class="required"> * </font></td>
 			<td><s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'userGroupReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select></td>
 	    </tr>
 		 <tr id="row5" style="display:none;" >
-			<td class="tdstyle" width="105px"><s:label for="hamletField_s" id="villageLabel"  value="Village/Ward/Division"/><font class="required"> * </font></td>
+			<td class="tdstyle" width="140px"><s:label for="hamletField_s" id="villageLabel"  value="Village/Ward/Division"/><font class="required"> * </font></td>
 			<td><s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'userGroupReg','mandalField')"></s:select></td>
 	     </tr>
 		 <tr id="row6" style="display:none;">
@@ -615,7 +619,7 @@ function ajaxCall(param,jsObj,url){
 		<td width="300"></td>
 		 <td><div align="right">
 			<s:submit cssClass="button" cssStyle="width:130px;" value="Save Group" name="Save"></s:submit>
-			<input type="button" value="Exit" class="button" onClick="refreshParent()"/>
+			<input type="button" value="Exit" class="button" onClick="refreshParentWindow()"/>
 			</div>
 		</td>
 		</tr>
