@@ -186,8 +186,8 @@ public class ElectionService implements IElectionService{
 		
 		if(level.equalsIgnoreCase(IConstants.DISTRICT_STR))
 		{
-			List<Long>constituencyIds = delimitationConstituencyDAO.getLatestConstituenciesForDistrictBasedOnYear(districtId,year);
-			
+			List<Long> constituencyIds = delimitationConstituencyDAO.getLatestConstituenciesForDistrictBasedOnYear(districtId,year);
+			if(constituencyIds.size()>0 )
 			list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(censusStr,constituencyIds);
 		}
 		
@@ -508,6 +508,7 @@ public class ElectionService implements IElectionService{
 		partyIds.add(partyId);
 		ElectionDataVO electionDataVO = null;
 		
+		if(censusByPercent.size()>0)
 		for(CensusVO census:censusByPercent){
 			census.setPartyName(partyDAO.get(partyId).getShortName());
 			if(census.getLocationIds().size() == 0)
