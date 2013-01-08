@@ -2828,7 +2828,7 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 	
 	String queryString1 = queryString.replaceAll(",", "&");
 	
-	queryString1 = queryString1.substring(0, queryString.length() - 1);
+	queryString1 = queryString1.substring(0, queryString1.length() - 1);
 	try{		
 		
 		List<FavoriteLinkPage> favouriteLinkList = favoriteLinkPageDAO.getFavoriteLinkByActionName(link);		
