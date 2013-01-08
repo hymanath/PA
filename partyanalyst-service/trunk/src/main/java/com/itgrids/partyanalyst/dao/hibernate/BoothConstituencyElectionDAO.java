@@ -392,7 +392,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 				" where  model.constituencyElection.election.electionScope.electionType.electionTypeId = :electionType ");
 		if(electionType.longValue() == 2l)
 			query.append(" and model.constituencyElection.constituency.state.stateId = :stateId ");
-		query.append(" order by model.constituencyElection.election.electionYear ");
+		query.append(" order by model.constituencyElection.election.electionYear desc");
     	Query queryObj  = getSession().createQuery(query.toString());
     	queryObj.setParameter("electionType", electionType);
     	
