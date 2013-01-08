@@ -74,4 +74,6 @@ public interface IVotersAnalysisService {
 	public ResultStatus saveCasteName(Long userId, Long stateId, Long casteCategoryGroupId, String casteName);
 	
 	public List<SelectOptionVO> getBoothsInMunicipality(Long lclElecBodyId,Long publicationDateId);
+	
+	public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Integer maxResults);
 }
