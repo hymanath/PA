@@ -132,7 +132,7 @@ public class BoothPublicationVoterDAO extends
 	{
 		return getHibernateTemplate().find("select distinct model.publicationDate.publicationDateId, " +
 				"model.publicationDate.date from Booth model where " +
-				"model.constituency.constituencyId = ? order by model.publicationDate.date)",constituencyId);
+				"model.constituency.constituencyId = ? order by model.publicationDate.year desc)",constituencyId);
 	}
 	/**
 	 * @return object[]
