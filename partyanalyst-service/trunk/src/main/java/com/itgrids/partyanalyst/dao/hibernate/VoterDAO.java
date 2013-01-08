@@ -200,5 +200,29 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				query.setParameter("caste", caste);
 				return query.executeUpdate();
 			}
+			
+			public Voter getVoterByVoterIDCardNo(String voterID)
+			{
+				Query query = getSession().createQuery("select model from Voter model where model.voterIDCardNo = :voterID");
+				query.setParameter("voterID", voterID);
+				return (Voter)query.uniqueResult();
+			}
+			
+			public Integer updateVoterNameAndRelativeName(String name, String relativeName,Long voterId)
+			{
+				Query query = getSession().createQuery(" update Voter model set model.name = :name, model.relativeName = :relativeName where model.voterId = :voterId");
+				query.setParameter("name",name);
+				query.setParameter("relativeName",relativeName);
+				query.setParameter("voterId",voterId);
+				return query.executeUpdate();
+			}
+			
+			@SuppressWarnings("unchecked")
+			public List<Object[]>getVoterIdsByVoterIdCardNos(List<String> voterIdCardNosList)
+			{
+				Query query = getSession().createQuery(" select model.voterId,model.voterIDCardNo from Voter model where model.voterIDCardNo in (:voterIdCardNosList)");
+				query.setParameterList("voterIdCardNosList",voterIdCardNosList);
+				return query.list();
+			}
 	
 }
