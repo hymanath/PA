@@ -541,7 +541,7 @@ public class ElectionService implements IElectionService{
 			List<Object[]> validVotesAndVoters = constituencyElectionResultDAO.findTotalVotersAndValidVotesByYearAndConstituencyIds(constituenciesIds, year);
 			Double totalVotes = (Double)validVotesAndVoters.get(0)[0];
 			Double validVotes = (Double)validVotesAndVoters.get(0)[1];
-			if(totalVotes > 0)
+			if(totalVotes != null && totalVotes > 0)
 				return new BigDecimal(validVotes*100/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 
 		}catch (Exception e) {
