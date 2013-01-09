@@ -127,7 +127,7 @@ function openConstituencyResultsWindow(constituencyId)
 }
 
 function getPartyPositionDetails(pos,partyId)
-{		
+{	
 	var searchElmt=document.getElementById("partyPosImg");
     searchElmt.style.display="block"
 	var position = pos;
@@ -1544,8 +1544,13 @@ function callMarginVotes(partyId)
 			<tr>
 				<td colspan="2" >
 					<%=votesMarginOptionText%> : 
-					<input type="radio" name="alliance" value="${party}" onclick="callMarginVotes(this.value)" checked="checked"><font style="color:red">${partyNameHidden}	</font>							
+					<c:if test="${not empty stateData.allianceParties}">
+						<input type="radio" name="alliance" value="${party}" onclick="callMarginVotes(this.value)" checked="checked">
+					</c:if>
+					<font style="color:red">${partyNameHidden}	</font>						
+					
 					<c:forEach var="alliance" items="${stateData.allianceParties}">
+			
 						<input type="radio" name="alliance" onclick="callMarginVotes(this.value)" value="${alliance.partyId}"><font style="color:#B77643">${alliance.shortName}	</font>							
 					</c:forEach>					
 				</td>
