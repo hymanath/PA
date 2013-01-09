@@ -164,12 +164,8 @@ function callAjax(jsObj, url){
 				errorEle.html('Max Result Must be positive number.');
 				return;
 			}
-			else if(minResults > maxResults)
-			{
-				errorEle.html('Max Result must be greaterthan Starting From.');
-				return;
-			}
-			errorEle.html('');
+			
+			$(".errorMsgDiv").html('');
 			var jsObj=
 			{				
 				constituencyId: constituencyId,
@@ -193,6 +189,9 @@ function callAjax(jsObj, url){
 		$(".errorMsgDiv").html('');
 		if(results.resultCode == 0)
 		{
+			document.getElementById('constituencies_List').selectedIndex = 0;
+			document.getElementById('publicationDate_List').selectedIndex = 0;
+			
 			$('#minResults').val('');
 			$('#maxResults').val('');
 			$(".errorMsgDiv").html('Voter Data inserted successfully.').css("color","green");
