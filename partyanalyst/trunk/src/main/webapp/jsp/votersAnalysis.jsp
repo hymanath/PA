@@ -354,6 +354,8 @@ width: 860px;}
 	#localCastDetailsDiv p{font-size:13px;font-weight:bold;}
 	#createNewGroupId:hover{background:#F61D50;color:#FFF;}
 	#openProblemEditFormId{cursor:pointer;}
+	.descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
+	.descriptionInnerDiv span{margin-right: 5px;}
 </style>
 
 <script type="text/javascript">
@@ -487,6 +489,8 @@ locationDetails.constituencyArr.push(ob);
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 	
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
+		<br>
+		<div id="descriptionDiv" style="display:none;"></div>
 		<br>
 		<div id="NoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:5px;width:920px;display:none;"></div>
 		<div id="impFamPancBothDtls"></div>

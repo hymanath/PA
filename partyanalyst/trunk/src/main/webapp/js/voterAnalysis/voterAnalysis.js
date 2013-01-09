@@ -376,7 +376,10 @@ function showImportantFamiliesDiv()
 								    impFamilesStaticTable(myResults,jsObj);
 									buildImpFamilesChart(myResults);
 								    if(myResults.subList != null && myResults.subList.length > 0)
-								      buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
+									  {
+										buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
+										impFamilesVariableDescription();
+									  }
 								   }
 								}
 								else if(jsObj.task == "gettotalimpfamlies")
@@ -948,6 +951,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
    $("#impFamDtls").html("");
    $("#NoteDiv").css("display","none"); 
    $("#NoteDiv").html("");
+   $("#descriptionDiv").html('');
   }
    var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
   
@@ -1226,10 +1230,14 @@ function buildCastInfoData(myresults,jsObj)
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = result.totalVoters;
 	var totalCasts = result.totalCasts;
+	var totalMale = result.maleVoters;
+	var totalFemale = result.femaleVoters;
 	var voters = '';
 	
 	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"> Total Voters : '+totalVoters+'&nbsp;&nbsp;&nbsp;';
-	localCastStatsTabContent += 'Total Casts : '+totalCasts+'<br><br>';
+	localCastStatsTabContent += 'Total Casts : '+totalCasts+'&nbsp;&nbsp;&nbsp;';
+	localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
+	localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
 	localCastStatsTabContent += '<span>Caste Assigned Voters : '+result.maleVoters+'</span>';
 	localCastStatsTabContent += '<span style="padding-left:40px;">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
 	localCastStatsTabContent += '<br><br>';
@@ -1522,6 +1530,9 @@ function buildCastPiechart(myResults,jsObj)
 	 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
 	 data["above10"] = impFamilesData[i].above10;
 	 data["above10perc"] = impFamilesData[i].above10perc;
+	 data["totalVoters"] =  impFamilesData[i].totalVoters;
+	 data["totalFemaleVoters"] = impFamilesData[i].totalFemaleVoters;
+	 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
 	 impFamiList.push(data);
   }
   
@@ -1529,19 +1540,22 @@ function buildCastPiechart(myResults,jsObj)
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
-    {key:"below3", label: "Below 3", formatter:"number", sortable: true},
-    {key:"below3perc", label: "Below 3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"betwn4to6", label: "Between 4-6", formatter:"number", sortable: true},
-    {key:"betwn4to6perc", label: "Between 4-6 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"betwn7to10", label: "Between 7-10", formatter:"number", sortable: true},
-    {key:"betwn7to10perc", label: "Between 7-10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"above10", label: "Above10", formatter:"number",sortable:true},
-    {key:"above10perc", label: "Above10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
+	{key:"totalVoters", label:"Total",sortable: true},
+	{key:"totalMaleVoters", label:"Male Voters",sortable: true},
+	{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
+    {key:"below3", label: "<3", formatter:"number", sortable: true},
+    {key:"below3perc", label: "<3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"betwn4to6", label: "4 to 6", formatter:"number", sortable: true},
+    {key:"betwn4to6perc", label: "4 to 6%", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"betwn7to10", label: "7 to 10", formatter:"number", sortable: true},
+    {key:"betwn7to10perc", label: "7 to 10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"above10", label: ">10", formatter:"number",sortable:true},
+    {key:"above10perc", label: ">10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
   ];
 var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
 impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 impFamilesDataSource.responseSchema = {
-fields: [{key:"name"},{key:"below3", parser:"number"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
+fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
 };
 var myConfigs = {
 };
@@ -1568,7 +1582,10 @@ function impFamilesStaticTable(myresults,jsObj)
 	str+='</br>';
 
 	str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;font-weight:bold;"> Total Voters : '+myresults.totalVoters+' ';
-	str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'</div>';
+	str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'';
+	str +='&nbsp;&nbsp;&nbsp; Total Male Voters : '+myresults.totalMaleVoters+'';
+	str +='&nbsp;&nbsp;&nbsp; Total Female Voters : '+myresults.totalFemaleVoters+'';
+	str +='</div>';
 	str+='</br>';
 	str+='<div style="font-family:verdana;">';
 	str+='<table class="impTableDiv">';
@@ -2540,4 +2557,20 @@ function buildVotersChart(chartInfo,reqTitle,to)
 		 
         var chart = new google.visualization.PieChart(document.getElementById(reqDiv));
         chart.draw(data, options);
+}
+
+function impFamilesVariableDescription()
+{
+ $('#descriptionDiv').html('');
+  var div = $('<div class="descriptionInnerDiv"></div>');
+  div.append('<span> <b>3 -</b> Families Below 3 Voters</span>');
+  div.append('<span> <b>3% -</b> Families Below 3% Voters</span>');
+  div.append('<span> <b>4 to 6 -</b> Families Between 4 to 6 Voters</span>');
+  div.append('<span> <b>4 to 6 % -</b> Families Between 4-6 % Voters</span>');
+  div.append('<span> <b>7 to 10 -</b> Families Between 7 to 10 Voters</span>');
+  div.append('<span> <b>7 to 10 % -</b> Families Between 7-10 % Voters</span>');
+  div.append('<span> <b>10 - </b> Families Above 10 Voters</span>');
+  div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
+  $("#descriptionDiv").append(div).css("display","block");
+
 }
