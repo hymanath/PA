@@ -796,7 +796,9 @@ getProblemDetails();
         }
  
     });  
-	
+	$('#assembly_radio').attr('checked','checked');
+	$('#stateList_d').val(1);
+	$('#electionTypeId').val(0);
 	});
 $(document).ready(function(){
 	$(".ws_images li").each(function(i){

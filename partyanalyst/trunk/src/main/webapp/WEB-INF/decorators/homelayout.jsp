@@ -1278,7 +1278,7 @@ function navigateToDistrictPage()
 	var distSelectElText =  distSelectEl.options[distSelectEl.selectedIndex].text;
 	if(distSelectElVal == 0)
 	{
-		alertEl.innerHTML = 'Please Select District';
+		alertEl.innerHTML = 'Please Select Your District';
 		return;
 	}
 	else
@@ -1290,11 +1290,11 @@ function navigateToConstituencyPage()
 {
 	var constSelectEl = document.getElementById("constituency");
 	var alertEl = document.getElementById("alertMessage");
-	var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value
+	var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value;
 	alertEl.innerHTML = '';
 	if(constSelectElVal == 0)
 	{
-		alertEl.innerHTML = errotMsg;
+		alertEl.innerHTML = 'Please Select Your Constituency';
 		return;
 	}
 	window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
@@ -1323,7 +1323,7 @@ function navigateToLocalBodyPage()
 	
 	if(localBodySelectElmtValue == 0 && errorElmt)
 	{
-		errorElmt.innerHTML = '<font color="red" style="font-size:10px;"> Please Select Location.. </font>';
+		errorElmt.innerHTML = '<font color="red" style="font-size:12px;"> Please Select Location.. </font>';
 		return;
 	}
 	else

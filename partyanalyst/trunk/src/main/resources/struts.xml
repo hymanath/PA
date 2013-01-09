@@ -4066,7 +4066,7 @@
 		    	<param name="root">resultStatus</param>
 		   </result>
 		</action>
-		
+			
 		<action name="saveFileCommentAction" class="candidateElectionResultsAction" method="saveFileCommentAction">
 		<result type="json" name="success">
 		    	<param name="root">status</param>
@@ -4079,8 +4079,24 @@
 			</result>
 			
 		</action>
-		
-		
+		<action name="editLocalGroupAction" class="createLocalGroupAction" method="editLocalGriupDetails">
+			<result>/jsp/editLocalGroupPeople.jsp</result>
+		</action>
+		<action name="editGropLocalAction" class="createLocalGroupAction" method="editUserGroups">
+			<result type="json" name="success">
+		    	<param name="root">userGroupMembers</param>
+		   </result>
+		   <result type="json" name="designationList">
+		    	<param name="root">selectOptionVO</param>
+		   </result>
+		   <result type="json" name="updateSuccess">
+		    	<param name="root">flag</param>
+		   </result>
+		  <!--  <result type="json" name="deleteSuccess">
+		    	<param name="root">deleteRecord</param>
+		   </result>--> 
+		   
+		</action>
 		
 	</package>
 </struts>      

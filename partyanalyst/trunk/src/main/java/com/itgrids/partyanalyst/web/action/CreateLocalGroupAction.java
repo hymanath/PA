@@ -86,11 +86,14 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private String groupCategory;
 	private String groupName;
 	private String designation;	
-	
+	private String userGroupId;
 	private String localUserGroupId;
 	private String windowTask;
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO;
-	
+	UserGroupMembersVO userGroupMembers ;
+	private List<SelectOptionVO> selectOptionVO;
+	private Boolean flag;;
+	private Integer deleteRecord;
 	String accessType = "";
 	Long accessValue = 0L;
 	Long defaultGroupScope = 0L;
@@ -281,6 +284,47 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	}
 	public void setPConstituencyList(List<SelectOptionVO> constituencyList) {
 		pConstituencyList = constituencyList;
+	}
+	
+	
+	public UserGroupMembersVO getUserGroupMembers() {
+		return userGroupMembers;
+	}
+	public void setUserGroupMembers(UserGroupMembersVO userGroupMembers) {
+		this.userGroupMembers = userGroupMembers;
+	}
+	
+	
+	public String getUserGroupId() {
+		return userGroupId;
+	}
+	public void setUserGroupId(String userGroupId) {
+		this.userGroupId = userGroupId;
+	}
+	
+	
+	
+	public List<SelectOptionVO> getSelectOptionVO() {
+		return selectOptionVO;
+	}
+	public void setSelectOptionVO(List<SelectOptionVO> selectOptionVO) {
+		this.selectOptionVO = selectOptionVO;
+	}
+	
+	
+	public Boolean getFlag() {
+		return flag;
+	}
+	public void setFlag(Boolean flag) {
+		this.flag = flag;
+	}
+	
+	
+	public Integer getDeleteRecord() {
+		return deleteRecord;
+	}
+	public void setDeleteRecord(Integer deleteRecord) {
+		this.deleteRecord = deleteRecord;
 	}
 	public String execute(){
 		
@@ -591,6 +635,69 @@ public class CreateLocalGroupAction extends ActionSupport implements
         	        	
         }
 		
+	}
+	
+	public String editUserGroups() {
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		try {
+			jObj = new JSONObject(getTask());
+			
+			if(jObj.getString("task").equalsIgnoreCase("editLocalUserGroup"))
+			{
+			Long Id = jObj.getLong("userGroupId");
+			userGroupMembers = influencingPeopleService.getUserGroupMemberList(Id);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getDesignationList"))
+			{
+			selectOptionVO = influencingPeopleService.getDesignationList();
+			selectOptionVO.add(0,new SelectOptionVO(0l,"Select Designation"));
+			return "designationList";
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("updateGroupDate"))
+			{
+				Long userGroupId = jObj.getLong("userGroupId");
+				String name = jObj.getString("name");
+				String mobileNo = jObj.getString("mobileNo");
+				String emailId = jObj.getString("emailId");
+				String address = jObj.getString("address");
+				String location = jObj.getString("location");
+				//String designation = jObj.getString("designation");
+				String phoneNo = jObj.getString("phoneNo");
+				Long designationId = jObj.getLong("designationId");
+				
+				UserGroupMembersVO userGroupMembersVO = new UserGroupMembersVO();
+				userGroupMembersVO.setName(name);
+				userGroupMembersVO.setMobileNumber(mobileNo);
+				userGroupMembersVO.setEmailId(emailId);
+				userGroupMembersVO.setAddress(address);
+				userGroupMembersVO.setLocation(location);
+				//userGroupMembersVO.setDesignation(designation);
+				userGroupMembersVO.setGroupMemberId(userGroupId);
+				userGroupMembersVO.setDesignationId(designationId);
+				userGroupMembersVO.setPhoneNumber(phoneNo);
+				flag = influencingPeopleService.updateGroupDate(userGroupMembersVO);
+				 return "updateSuccess";
+				}
+			else if(jObj.getString("task").equalsIgnoreCase("deleteLocalUserMember"))
+			{
+				Long localUserMemberId = jObj.getLong("localUserMemberId");
+				deleteRecord = influencingPeopleService.deleteGroupData(localUserMemberId);
+				 return "deleteSuccess";
+			}
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		return SUCCESS;
+		
+	}
+	public String editLocalGriupDetails()
+	{
+		
+		return SUCCESS;
 	}
 	
 }

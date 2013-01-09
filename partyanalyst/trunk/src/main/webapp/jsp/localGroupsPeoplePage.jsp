@@ -415,10 +415,10 @@
 					   success : function( o ) 
 						  {
 							try {												
-									if(o.responseText)
+								if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
 										
-									if(jsObj.task == "sendSMSToLocalGroupPeople")
+								if(jsObj.task == "sendSMSToLocalGroupPeople")
 									{
 										var statusElmt = document.getElementById("smsStatus");
 
@@ -431,6 +431,7 @@
 											alert("Succesfully Deleted");
 											windwRefresh();	
 									}
+									
 								}
 							catch (e)
 								{   
@@ -471,17 +472,36 @@
 	
 	function editPersonDetails(id)
 	{
-		
-	}
+			var browser2 = window.open("<s:url action="editLocalGroupAction.action"/>?userGroupId="+id,"editLocalGroupAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+	y}
 
 	function deletePersonDetails(id)
 	{
+		var ask = confirm("Do You want to delete");
+			if (ask ==  true)
+		 {
+			var jsObj= 
+			{		
+				localUserMemberId :id,		  			
+				task: "deleteLocalUserMember"		
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "editGropLocalAction.action?"+param;
+			callAjax(jsObj,url);
+			alert("Succesfully Deleted");
+			windwRefresh();
+		}	
 		
+		else
+		  {
+		  		return;	
+		  }	
 	}
 
 	function windwRefresh()
 	{
-		window.location.reload();
+			window.location.reload();
 	}
 	
 function redirectToNewLocalGroupCreation(windowTask,categoryId,localUserGroupId)

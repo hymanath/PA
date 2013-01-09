@@ -481,6 +481,11 @@ function hideText(){
 	}
 
 }
+function refreshParent()
+{
+alert("refreshParent");
+	window.opener.location.reload(true);
+}
 </script>
 
 <body onLoad="executeOnload()" class="bodyStyle">
@@ -705,7 +710,7 @@ function hideText(){
 <s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /> 
 
 <div id="saveDiv" align="center">
-	<s:submit cssClass="button" value="Save" name="Save"></s:submit>
+	<s:submit cssClass="button" value="Save" name="Save" onClick="refreshParent()"></s:submit>
 	<input type="button" value="Exit" class="button" onClick="refreshParentWindow()"/>
 </div>
 <!--<div id="exitDiv" align="center">

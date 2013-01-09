@@ -249,8 +249,13 @@ body
 		  var elmt = document.getElementById("mainHeadingDiv");
 		  elmt.innerHTML = 'Assess ${constituencyName} Parliament Constituency Elections Results';
 		  document.getElementById("hideForParl").style.display='none';
-       }	   
+		  
+       }
+	    var userName = '${sessionScope.UserName}';
+		
+		 
 	});
+	
 	var constituencyId = "${constituencyId}";
 	var parliamentConstiId = "${parliamentConstiId}";
 	var parliamentConstiName = "${parliamentConstiName}";
@@ -263,7 +268,7 @@ body
 	var hidden=1;
 	var displayBody;
 	var userName = '${sessionScope.UserName}';
-	
+	//$('#commentPostedByText').val(userName);
 	var previousScore;
 	
     function incrementHidden()
@@ -368,6 +373,7 @@ body
 	{
 		var commentVal = document.getElementById("commentText").value; 
 		var postedByVal = document.getElementById("commentPostedByText").value;
+		//alert(postedByVal);
 		var partyId;
 		var candidateId;
 		var constituencyId;
@@ -379,6 +385,7 @@ body
 		var newPercentValue = '';
 		var postConfirmElmt = document.getElementById("commentsDialogDiv_content");
 		var decimalValue = '';
+		//$('#commentPostedByText').val(postedByVal);
 
 //Trim javascript function begining and ending spaces trimed
 		function trim(postedByVal){
@@ -494,7 +501,8 @@ if(category == "candidate")
 								partyName:party,
 								rank:rank,
 								task:"addNewComment"				
-							  }	 						
+							  }	 	
+  
 						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 						var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;								
 						callAjax(jsObj,url);	
@@ -508,6 +516,7 @@ if(category == "candidate")
 		});
 		
 		postConfirmElmt.innerHTML = str;
+		
 		
 	}
 	 function getCandidatesResults(constElecId)
@@ -721,13 +730,13 @@ if(category == "candidate")
 		str+='</TR>';
 		str+='<TR>';
 		str+='<TD align="left" class="commentsInputTd" valign="top">Posted By*</TD>';	
-		str+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText"/></TD>';
+		str+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText" readonly ="readonly" value="${sessionScope.UserName}"/></TD>';
 		str+='</TR>';
 		str+='</TABLE>';
 		str+='</DIV>';
 		//str+='</FIELDSET>';
 		
-		str+='<DIV style="text-align:right;margin-top:10px;margin-bottom:10px;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+',\''+candidateName+'\',\''+constituencyName+'\',\''+partyName+'\',\''+rank+'\')" value="Post"/>';
+		str+='<DIV style="text-align:right;margin-top:10px;margin-bottom:10px;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+',\''+candidateName+'\',\''+constituencyName+'\',\''+partyName+'\',\''+rank+'\');" value="Post"/>';
 		str+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="closeCurrentWindow()" value="Exit"/></DIV>';
 		str+='</div>';
 		str+='</div>';
@@ -740,6 +749,7 @@ if(category == "candidate")
 		if(commentTextEl)
 			commentTextEl.focus();
 		var commentPostedByTextEl = document.getElementById("commentPostedByText");
+		
 		if(commentPostedByTextEl)
 			commentPostedByTextEl.value = userName;	
 		
@@ -809,7 +819,7 @@ if(category == "candidate")
 			showExistingComments(jsObj.candidateId,jsObj.candidateName,jsObj.category,jsObj.constituencyId,jsObj.constituencyName,jsObj.partyName,jsObj.rank);
 		}
 		commentVal.value='';
-		postedByVal.value='';
+		//postedByVal.value='';
 		commentCategoryEl.selectedIndex='0';		
 	}
 

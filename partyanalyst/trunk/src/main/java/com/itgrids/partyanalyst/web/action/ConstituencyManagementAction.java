@@ -732,7 +732,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		regionTitle = request.getParameter("regionTitle");
 		
 		localGroupsPeople = influencingPeopleService.getLocalUserGroupDetails(userId,regionId,regionType,regionTitleId,regionTitle);
-				
+		//localGroupMembers= influencingPeopleService.getUserGroupMemberDetailsForAGroup();
 		return Action.SUCCESS;
 		
 	}
