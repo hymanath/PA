@@ -21,4 +21,6 @@ public interface IStaticUserDesignationDAO extends GenericDao<StaticUserDesignat
 
 	@SuppressWarnings("unchecked")
 	public List getDesignationsByStaticLocalGroupId(Long staticLocalGroupId);
+	
+	public List<Object[]> getDesignations();
 }

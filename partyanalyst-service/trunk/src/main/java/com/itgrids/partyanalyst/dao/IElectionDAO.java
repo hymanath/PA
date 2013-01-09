@@ -183,5 +183,6 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List<Election> getElectionDetails(Long electionId);
 	
+	public List<Object[]> getPartianValue();
 		
 }

@@ -48,5 +48,23 @@ public class StaticUsersDAO extends GenericDaoHibernate<StaticUsers, Long> imple
 		return queryObject.executeUpdate();
 	}
 
+	public List<Long> checkForUserGroupMembers(Long id)
+	{
+		return getHibernateTemplate().find("select count(*) from StaticUsers model where model.staticUserId = ?",id);
+		
+	}
+	
+	public Integer deleteUserMembers(Long id){
+		
+		Query query = getSession().createQuery("delete from StaticUserGroup model where model.staticUser.staticUserId =:staticUserIds");
+		query.setParameter("staticUserIds", id);
+		query.executeUpdate();
+		Query queryObject = getSession().createQuery("delete from StaticUsers model where model.staticUserId = :id");
+		queryObject.setParameter("id", id);
+		return queryObject.executeUpdate();
+		
+		
+		
+	}
 
 }

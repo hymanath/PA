@@ -31,5 +31,11 @@ public class StaticUserDesignationDAO extends GenericDaoHibernate<StaticUserDesi
 		return getHibernateTemplate().find("select model.staticUserDesignationId,model.designationType from "+
 				"StaticUserDesignation model where model.staticLocalGroup.staticLocalGroupId = ?",staticLocalGroupId);
 	}
+	
+	public List<Object[]> getDesignations()
+	{
+		return getHibernateTemplate().find("select model.staticUserDesignationId , model.designationType from StaticUserDesignation model");
+		
+	}
 
 }

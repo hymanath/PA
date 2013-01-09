@@ -30,5 +30,9 @@ public interface IStaticUsersDAO extends GenericDao<StaticUsers, Long> {
 	public List findGroupMembersNameAndMobileNosByMemberIds(String memberIds);
 	
 	public Integer deleteStaticUsersByStaticUserIds(List<Long> staticUserIds);
+	
+	public List<Long> checkForUserGroupMembers(Long id);
+	
+	public Integer deleteUserMembers(Long id);
 
 }

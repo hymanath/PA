@@ -82,5 +82,13 @@ public interface IInfluencingPeopleService {
     public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition);
    
     public List<SelectOptionVO> saveNewGroupCatagory(final String group ,final Long userId);
+    
+    public UserGroupMembersVO getUserGroupMemberList(Long id);
+    
+    public List<SelectOptionVO> getDesignationList();
+    
+    public boolean updateGroupDate(UserGroupMembersVO userGroupMembersVO);
+    
+    public Integer deleteGroupData(Long id);
 	
 }
