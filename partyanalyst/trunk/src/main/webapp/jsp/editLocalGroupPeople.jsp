@@ -91,7 +91,8 @@ function callAjax(jsObj,url)
 									}
 								else if(jsObj.task == "updateGroupDate")
 									{
-										alert("UpdateSuccessfully");
+									alert("UpdateSuccessfully");
+									window.location.reload();
 									}
 									
 								}
