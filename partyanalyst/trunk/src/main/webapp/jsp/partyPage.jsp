@@ -4358,7 +4358,7 @@ function openAnalyzeConstituencyWindow(result,type)
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Assess Party Leaders.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Assess Party Leaders.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" onclick="openDialogForLoginWindow()" href="javascript:{}">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
 		document.getElementById("logInDiv").innerHTML = str;
 
 		//alert("Please Login To Post Comment");
