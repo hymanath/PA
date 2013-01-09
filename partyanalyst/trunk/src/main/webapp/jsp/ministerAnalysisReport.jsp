@@ -139,7 +139,7 @@ function getElectionYears(electionType,stId,electionId)
 		{ 
             time : new Date().getTime(),
 			eleType: 2,
-			task:"getStatesForAssign",
+			task:"getStatesForAssembly",
 			stateId:stateId,
 			electionId:electionId
 		};
@@ -461,6 +461,12 @@ function getElectionYears(electionType,stId,electionId)
 									      buildData(myResults,"yearSelId",jsObj.stateId,jsObj.electionId);
 									}
 									else if(jsObj.task == "getStatesForAssign")
+									{
+									      removeData("stateListId");
+										  addState("stateListId");
+									      buildData(myResults,"stateListId",jsObj.stateId,jsObj.electionId);
+									}
+									else if(jsObj.task == "getStatesForAssembly")
 									{
 									      removeData("stateListId");
 										  addState("stateListId");

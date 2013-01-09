@@ -185,6 +185,10 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 			{
 				optionVOList = electionResultsUpdationService.getAllElectionYears(jObj.getLong("stateId"),jObj.getString("eleType").trim());
 			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getStatesForAssembly"))
+			{
+				optionVOList = staticDataService.getParticipatedStatesForMinisters(jObj.getLong("eleType"));
+			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getStatesForAssign"))
 			{
 				optionVOList = staticDataService.getParticipatedStatesForAnElectionType(jObj.getLong("eleType"));

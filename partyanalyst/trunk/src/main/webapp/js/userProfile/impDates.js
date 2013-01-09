@@ -288,7 +288,7 @@ function buildNewImpDatePopup()
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th>Repeat Until</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly"  name="ImpEndDateText" disabled="true"/></div>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" name="ImpEndDateText" disabled="true" readonly="readonly"  /></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
 		eventStr+='</td>';
 		eventStr+='</table>';
@@ -300,7 +300,15 @@ function buildNewImpDatePopup()
 		{
 		 newDateDialog.remove();
 		}
-		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();	
+		var newDate = new Date();
+		var day = newDate.getDate();
+		var month = newDate.getMonth()+1;
+		var year = newDate.getFullYear();
+		if(day < 9) 
+		day = 0+''+day;
+		if(month < 9)
+		month = 0+''+month;
+		var date = day+"/"+month+"/"+year;	
 		newDateDialog = $('#newImpDateDiv').dialog({
 			width: 600,
 			buttons: {
@@ -322,14 +330,21 @@ function buildNewImpDatePopup()
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,
             changeYear: true,
+			minDate: new Date()
+			
 		});
-		$("#ImpEndDateText_new").val(date);
+		
 		$("#ImpEndDateText_new" ).datepicker({
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,
             changeYear: true,
+			minDate: new Date(),
+			
+			
 		});
+		
 		$("#ImpStartDateText_new").val(date);
+		$("#ImpEndDateText_new").val(date);
 	
 	}
 	function updateSelectedEvent(type)
@@ -363,7 +378,7 @@ function buildNewImpDatePopup()
 	
 	function handleImpDateSubmit()
 	{	
-	
+	alert("handleImpDateSubmit");
 		var flag = checkDate("impDate");
 		if(flag)
 		return;
@@ -854,8 +869,7 @@ function buildNewImpDatePopup()
 			
 			if(results[0].endDate)
 			{
-
-				eventStr+='<th>Repeat Until</th>';
+			eventStr+='<th>Repeat Until</th>';
 				eventStr+='<td>';
 				eventStr+='<div><input type="text" id="ImpEndDateText"  name="ImpEndDateText"  readonly="readonly" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" /></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"  ></div>';
@@ -880,8 +894,15 @@ function buildNewImpDatePopup()
 		{
 		 newDateDialog.remove();
 		}
-		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();	
-		
+		var newDate = new Date();
+		var day = newDate.getDate();
+		var month = newDate.getMonth()+1;
+		var year = newDate.getFullYear();
+		if(day < 9) 
+		day = 0+''+day;
+		if(month < 9)
+		month = 0+''+month;
+		var date = day+"/"+month+"/"+year;
 		newDateDialog = $('#eventDateDetails').dialog({
 			width:650,
 			'title':'Event Details...'
@@ -889,12 +910,16 @@ function buildNewImpDatePopup()
 		$("#ImpStartDateText" ).datepicker({
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,
-            changeYear: true
+            changeYear: true,
+			minDate: new Date()
+			
 		});
 		$("#ImpEndDateText" ).datepicker({
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,
-            changeYear: true
+            changeYear: true,
+			minDate: new Date()
+			
 		});
 	
 	}
@@ -929,10 +954,9 @@ function buildNewImpDatePopup()
 	}
 	function checkDate(task)
 	{
-		startDate = $('#ImpStartDateText_new').val();
-		endDate = $('#ImpEndDateText_new').val();
-		
-      var dt1  = parseInt(startDate.substring(0,2),10);
+	startDate = $('#ImpStartDateText_new').val();
+	endDate = $('#ImpEndDateText_new').val();
+	  var dt1  = parseInt(startDate.substring(0,2),10);
       var mon1 = parseInt(startDate.substring(3,5),10);
       var yr1  = parseInt(startDate.substring(6,10),10);
       var dt2  = parseInt(endDate.substring(0,2),10);
@@ -940,15 +964,12 @@ function buildNewImpDatePopup()
       var yr2  = parseInt(endDate.substring(6,10),10);
       var date1 = new Date(yr1, mon1, dt1);
       var date2 = new Date(yr2, mon2, dt2);
-
-     if(date2 < date1)
+	
+	 if(date2 < date1)
 		{ 
-		
 		 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
 		 return true;
 		}
-	
-		
 	return 	false;
 }
 function cancelButton()
@@ -1009,7 +1030,6 @@ function displayDateText(type,args,obj)
 			if(IendElmt)
 				IendElmt.value = calDateResult;
 		}
-
 		divElmt.style.display='none';
 	}
 	function dateToLocaleString(dt, cal)

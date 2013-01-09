@@ -67,7 +67,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>	
     <link rel="stylesheet" type="text/css" href="styles/jQuery/jquery.datepick.css">
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
-
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jQuery/jquery.datepick.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery.datepick-en-GB.js"></script>
 <style type="text/css">
@@ -340,8 +340,19 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 }
 
 .background{background: url("./images/new_homepage/js-banner-bg1.jpg")}
-body {
-background: none repeat scroll 0 0 #5B5B5B !important;
+.datepick-ctrl {
+    background-color: #000000;
+    color: #FFFFFF;
+    float: left;
+    font-size: 90%;
+    font-weight: bold;
+    width: 100%;
+}
+.datepick-month {
+    border: 1px solid #444444;
+    float: left;
+    text-align: center;
+    width: 31em;
 }
 </style>
 

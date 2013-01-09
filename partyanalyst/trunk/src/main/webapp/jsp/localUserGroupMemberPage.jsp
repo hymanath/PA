@@ -72,6 +72,10 @@
 		str += '<td><input id="newDesigName" type="text" name="newDesigName"></input> </td>';
 		str += '</tr>';
 		str += '<tr>';
+		str += '<th> <font color="red"><div id="showErrMsgDiv" style="display:none">Designation Already Exist Please Enter A New One</div></font></th></td>';
+		 
+		str += '</tr>';
+		str += '<tr>';
 		str += '<th>Description </th>';
 		str += '<td><textarea id="newDesigDesc"></textarea> </td>';
 		str += '</tr>';
@@ -88,12 +92,26 @@
 		str += '</table>';
 
 		elmt.innerHTML = str;
-
+		
 		$("#designationDiv").slideToggle();
 	}
 
 	function addDesigantionAjaxCall()
 	{
+		
+		var designation = $.trim($('#newDesigName').val().toUpperCase());
+		var flag = false;
+		$('#designations option').each(function(){
+			var disgList = $(this).text();
+			var disgList = $.trim($(this).text().toUpperCase());
+			if(designation==disgList)
+			{
+				$('#showErrMsgDiv').show();
+				flag = true;
+			}
+			});
+			if(flag)
+			return
 		var errorDiv = document.getElementById("addDesignationErrorDiv");
 
 		var categoryElmt = document.getElementById("groupCategory");

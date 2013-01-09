@@ -8,7 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Political Changes Registration</title>
-
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 
 	<!-- YUI Dependency files (Start) -->
 
@@ -227,9 +228,39 @@
 				YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}														
 
-
+function validateFunction()
+{
+	var title = $('#titleTextField').val();
+	var partyNameId = $('#selectedPartyBox :selected').val();
+	var scopeId = $('#effectedRange :selected').val();
+	var infoScopeId = $('#userTypeSelectBox :selected').val();
+	if(scopeId == 0)
+	{
+		$('#errMsgDiv').append("Please Enter Effective Scope");
+		return false;
+	}
+	if($.trim(title).length == 0)
+	{
+		$('#errMsgDiv').append("Please Enter Title");
+		return false;
+	}
+	if(partyNameId == 0)
+	{
+		$('#errMsgDiv').append("Please Enter Party Name");
+		return false;
+	}
+	
+	if(infoScopeId == 0)
+	{
+		$('#errMsgDiv').append("Please Enter Information Source");
+		return false;
+	}
+	
+}
 function populateLocations(val,source)
 {	
+
+	
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
@@ -387,10 +418,12 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 <c:if  test="${resultStatus == '1'}">
 	<div id="successMsg" style="color:red;">Error occurred while saving data.. please check the logs for details</div>
 </c:if>
-<s:form action="politicalChangesRegistrationAction" method="GET" theme="simple" name="form">			
+<s:form action="politicalChangesRegistrationAction" method="GET" theme="simple" name="form" onSubmit=" return validateFunction();">	
+	
 	<div id="mainPoliticalDiv" align="left">
 		<fieldset>
 			<legend style="font-family:arial,helvetica,clean,sans-serif;">Political Change Info</legend>
+			<div id="errMsgDiv" style="color: red;"></div>
 			<div>
 				<font class="requiredFont"> *  <%=mandatoryFields%></font>
 			</div>

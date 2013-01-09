@@ -497,6 +497,7 @@
 				var type='edit';
 				var browser2 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 			    browser2.focus();
+				window.opener.location.reload(true);
 			}
 
 			function deletePersonDetails(id)
@@ -573,6 +574,7 @@
 				$("#showResultsId").css({"background":"none repeat scroll 0 0 red"});
 		
 			}
+			window.opener.location.reload(true);
 	</script>
 </head>
 <body>
