@@ -76,6 +76,7 @@ public class MissedVotersFinder {
                     
                     constituencyId = fileName[0];
                     BoothVO boothVO = new BoothVO();
+                    boothVO.setFileName(args[0]+"\\"+input.getName());
                     boothVO.setTotalVoters(new Integer(voters[8]));
                     boothVO.setMaleVoters(new Integer(voters[4]));
                     boothVO.setFemaleVoters(new Integer(voters[6]));
@@ -133,7 +134,7 @@ public class MissedVotersFinder {
             for(int j=0;j<boothsInfoList.size();j++)
             {
             	BoothVO boothVO = boothsInfoList.get(j);
-        		sb2.append(j+") Booth Part No - "+boothVO.getPartNo()+"\tName - "+boothVO.getName()+"\n");
+        		sb2.append(j+1+") Booth Part No - "+boothVO.getPartNo()+"\tName - "+boothVO.getName()+"\n");
         		sb2.append("\tTotal Voters   : "+boothVO.getTotalVoters()+"\n");
         		sb2.append("\tInserted Votes : "+boothVO.getInsertedVotes()+"\n");
         		sb2.append("\tMissed Votes   : "+boothVO.getMissedVotes()+"\n");
@@ -146,9 +147,58 @@ public class MissedVotersFinder {
             outwriter.write(sb2.toString());
             outwriter.close();
             System.out.println(sb2.toString());
+            
+            readMissedVoters(boothsInfoList);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static int readMissedVoters(List<BoothVO> boothsInfoList)
+    {
+    	try{
+    		StringBuilder sb = null;
+    		PDDocument pd = null;
+    		 File resultFile  = new File("E:/Voters/VotesMissed2.txt");
+             BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+    		for(BoothVO boothVO : boothsInfoList)
+    		{
+    			if(boothVO.getMissedVotesList() != null && boothVO.getMissedVotesList().size() > 0){
+    			try{
+    				sb = new StringBuilder();
+    				pd = PDDocument.load(new File(boothVO.getFileName()));
+                    PDFTextStripper stripper = new PDFTextStripper();
+                    sb.append(stripper.getText(pd));
+                    System.out.println(sb.toString());
+                    outwriter.write(sb.toString());
+                    outwriter.close();
+                    for(Integer sno : boothVO.getMissedVotesList())
+                    {
+                    	int startIndex = sb.indexOf(sno.toString()+" \r\nAge:");
+                    	int endIndex = sb.indexOf(new Integer(sno.intValue()+1).toString()+" \r\nAge:");
+                    	if(endIndex == -1)
+                    		endIndex = sb.indexOf("Age As On");
+                    	String reqStr = sb.substring(startIndex,endIndex);
+                    	System.out.println(reqStr);
+                    	String arr[] = reqStr.split("\\r\\n");
+                    	for(int k=0;k<arr.length;k++)
+                    		System.out.println(+k+" -- "+arr[k]);
+                    }
+                    if (pd != null) {
+                        pd.close();
+                    }
+    				
+    			}catch(Exception e)
+    			{
+    				e.printStackTrace();
+    			}
+    		}
+    		}
+    		return 1;
+    	}catch (Exception e) {
+    		System.out.println(e);
+    		return 0;
+    	}
     }
 
 }
