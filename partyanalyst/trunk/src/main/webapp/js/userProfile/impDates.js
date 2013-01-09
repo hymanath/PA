@@ -378,7 +378,7 @@ function buildNewImpDatePopup()
 	
 	function handleImpDateSubmit()
 	{	
-	alert("handleImpDateSubmit");
+	//alert("handleImpDateSubmit");
 		var flag = checkDate("impDate");
 		if(flag)
 		return;
