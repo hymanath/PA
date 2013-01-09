@@ -122,6 +122,11 @@
     margin-left: 10px;
     width: 245px;
 }
+
+
+#localBodiesRadioDiv_data > .radio:first-child{
+   width:70px;
+}
 			</style>
 <div class="container m-top15">
 
@@ -234,12 +239,12 @@ Quick Links</h2>
 							<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 								<h5>View Your Constituency</h5>
 								<p>Select Constituency Type<br>
-								<label class="radio">
-										<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
+								<label class="radio" style="width:68px;">
+										<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked"/>
 											Assembly
 											</label>
-											<label class="radio">
-										<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
+											<label class="radio" style="width:68px;">
+										<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" />
 											Parliament
 								      </label>
 								</p>
@@ -281,8 +286,10 @@ Quick Links</h2>
 											<tr>
 												<td>
 													<div id="localBodiesRadioDiv_data">
-														<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality
-														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation
+													
+														<input id="muncipality" type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality
+														
+														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio" id="corporation" />Corporation
 														<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp
 													</div>
 												</td>									
@@ -704,12 +711,12 @@ Opinion Poll</h2>
 
 		<s:if test="%{#stat.index == 0}">         
 
-			str +='<label><input type="radio" class="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true">';
-	        str +="<s:property value='option'/></label>"; 
+			str +='<label></label><input type="radio" class="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true">';
+	        str +="<s:property value='option'/>"; 
 		</s:if>
 		<s:else>
-			str +='<label><input type="radio" class="radio"  name="pollradio" value="<s:property value="optionId"/>">';
-	        str+="<s:property value='option'/></label>";
+			str +='<label></label><input type="radio" class="radio"  name="pollradio" value="<s:property value="optionId"/>">';
+	        str+="<s:property value='option'/>";
 		</s:else></s:iterator>
 		
 		str+='</p><a href="javaScript:saveCurrentPollResult(${opinionPollVO.quesitons[0].questionId});" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
