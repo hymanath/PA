@@ -127,7 +127,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	
 	public void sendUpdates(){
-	  if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase("server")){
+	  if(IConstants.DEFAULT_SCHEDULER_UPDATES_SEVER.equalsIgnoreCase("server")){
 		DailyUpdatesVO dailyUpdatesVO = new DailyUpdatesVO();
 		DateUtilService dateUtilService = new DateUtilService();
 		Date startTime = null;

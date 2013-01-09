@@ -513,6 +513,7 @@ public interface IConstants {
 	
 	public static final String DEFAULT_MAIL_SERVER = "server";
 	public static final String DEFAULT_SCHEDULER_SEVER = "localhost";
+	public static final String DEFAULT_SCHEDULER_UPDATES_SEVER = "localhost";
 	
 	public static final String Ex_MLA="Ex MLA";
 	public static final String Ex_MP="Ex MP";
