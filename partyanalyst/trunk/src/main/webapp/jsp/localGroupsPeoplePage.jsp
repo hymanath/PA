@@ -133,7 +133,8 @@
 </style>
 
 <script type="text/javascript">
-	
+	<c:forEach var="group" items="${localGroupsPeople}" varStatus ="status">
+	</c:forEach>
 	function buildLocalGroupsPeopleDataTable()
 	{
 
