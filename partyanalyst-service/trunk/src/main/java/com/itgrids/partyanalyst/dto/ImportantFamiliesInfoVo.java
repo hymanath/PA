@@ -29,7 +29,10 @@ public class ImportantFamiliesInfoVo implements Serializable{
 	private String type;
 	private boolean dataPresent = true;
 	private List<ImportantFamiliesInfoVo> subList = new ArrayList<ImportantFamiliesInfoVo>();
-
+	private String totalMaleVoters;
+	private String totalFemaleVoters;
+	private String unKnowVoters;
+	
 	public Long getTotalVoters() {
 		return totalVoters;
 	}
@@ -172,6 +175,30 @@ public class ImportantFamiliesInfoVo implements Serializable{
 
 	public void setDataPresent(boolean dataPresent) {
 		this.dataPresent = dataPresent;
+	}
+
+	public String getTotalMaleVoters() {
+		return totalMaleVoters;
+	}
+
+	public void setTotalMaleVoters(String totalMaleVoters) {
+		this.totalMaleVoters = totalMaleVoters;
+	}
+
+	public String getTotalFemaleVoters() {
+		return totalFemaleVoters;
+	}
+
+	public void setTotalFemaleVoters(String totalFemaleVoters) {
+		this.totalFemaleVoters = totalFemaleVoters;
+	}
+
+	public String getUnKnowVoters() {
+		return unKnowVoters;
+	}
+
+	public void setUnKnowVoters(String unKnowVoters) {
+		this.unKnowVoters = unKnowVoters;
 	}
 	
 	
