@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -2891,14 +2892,24 @@ public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Inte
 				
 				List<Object[]> voterIds = voterDAO.getVoterIdsByVoterIdCardNos(voterIdsList);
 				
+				int index = 1;
 				for(Object[] voterId : voterIds)
 				{
 				try{
 					VoterTemp voterTemp = getVoterTemp(voterTempData,voterId[1].toString());
 					if(voterTemp != null)
-					{
-						int result = voterDAO.updateVoterNameAndRelativeName(voterTemp.getName(),voterTemp.getGuardianName(),(Long)voterId[0]);
-						System.out.println(result +" Records Updated");
+					{   
+						index++;
+						final String name = voterTemp.getName();
+						final String relativeName = voterTemp.getGuardianName();
+						final Long votetId = (Long)voterId[0];
+						final int j = index; 
+						transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+							public void doInTransactionWithoutResult(TransactionStatus status) {
+						int result = voterDAO.updateVoterNameAndRelativeName(name,relativeName,votetId);
+						System.out.println(j+") "+result +" Records Updated");
+						log.warn(j+") "+result +" Records Updated");
+						}});
 					}
 				    }catch (Exception e) {}
 				}
@@ -2906,7 +2917,8 @@ public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Inte
 				voterDAO.flushAndclearSession();
 				Date d2 = new Date();
 				Double diff = (double)(d2.getTime()-d1.getTime());
-				System.out.println("1000 Records updated in "+(diff)/(1000*60*60)+" Seconds");
+				System.out.println("1000 Records updated in "+(diff)/(1000)+" Seconds");
+				log.warn("1000 Records updated in "+(diff)/(1000)+" Seconds");
 				maxResults = maxResults - 1000;
 				startIndex = startIndex + 1000;
 				if(maxResults <= 0)
@@ -2919,6 +2931,7 @@ public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Inte
 		Date d4 = new Date();
 		Double d5 = (new Double(d4.getTime() - d3.getTime()))/(1000*60);
 		System.out.println("Time Taken - "+d5+" Mins");
+		log.warn("Time Taken - "+d5+" Mins");
 		return resultStatus;
 	}catch (Exception e) {
 		log.error("Exception Occured in updateVoterData() Method, Exception is - "+e);
