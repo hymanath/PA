@@ -483,7 +483,7 @@ function hideText(){
 }
 function refreshParent()
 {
-alert("refreshParent");
+//alert("refreshParent");
 	window.opener.location.reload(true);
 }
 </script>
