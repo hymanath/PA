@@ -1369,7 +1369,7 @@ function buildCastPiechart(myResults,jsObj)
 	  $("#localCastStatsTabContent_body").html(str);
 	  
 	  	$('#localCastStatsJqTable').dataTable({
-		"aaSorting": [[ 1, "desc" ]],
+		"aaSorting": [[ 1, "asc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
