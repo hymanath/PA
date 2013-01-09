@@ -3673,5 +3673,99 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	}
 	
 	}
+	/**
+	 * @author prasad
+	 * @return UserGroupMembersVO
+	 * @param id
+	 */
+	public UserGroupMembersVO getUserGroupMemberList(Long id) {
+		
+		StaticUsers staticUsers = null;
+		UserGroupMembersVO userGroupMembers = new UserGroupMembersVO();
+		
+		List<Long> count = staticUsersDAO.checkForUserGroupMembers(id);
+		
+		if(count.get(0).longValue() > 0l )
+		{
+			staticUsers =staticUsersDAO.get(id);
+		}
+		if(staticUsers != null){
+			userGroupMembers.setName(staticUsers.getName());
+			userGroupMembers.setMobileNumber(staticUsers.getMobileNumber());
+			userGroupMembers.setEmailId(staticUsers.getEmailId());
+			userGroupMembers.setAddress(staticUsers.getAddress());
+			userGroupMembers.setLocation(staticUsers.getLocation());
+			userGroupMembers.setDesignation(staticUsers.getDesignation());
+			userGroupMembers.setPhoneNumber(staticUsers.getPhoneNumber());
+			userGroupMembers.setDesignationId(staticUsers.getStaticUserDesignation().getStaticUserDesignationId());
+		}
+		
+ 		return userGroupMembers;
+		
+	}
+	/**
+	 * @author prasad
+	 * @return List<SelectOptionVO>
+	 * 
+	 */
+	public List<SelectOptionVO> getDesignationList()
+	{
+		ArrayList<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> designationList = staticUserDesignationDAO.getDesignations();
+		SelectOptionVO selectOptionVO = null;
+		for (Object[] designationLists : designationList) {
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId((Long)designationLists[0]);
+			selectOptionVO.setName(designationLists[1] != null ? designationLists[1].toString():"");
+			selectOptionList.add(selectOptionVO);
+		}
+		
+		
+		return selectOptionList;
+		
+	}
+	/**
+	 * @author prasad
+	 * @return boolean
+	 * @param UserGroupMembersVO userGroupMembersVO
+	 */
+	public boolean updateGroupDate(UserGroupMembersVO userGroupMembersVO)
+	{
+		Boolean flag = false;
+		try {
+			StaticUserDesignation staticUserDesignation = null;
+			if(userGroupMembersVO.getDesignationId() != null && userGroupMembersVO.getDesignationId().longValue()> 0l )
+				staticUserDesignation = staticUserDesignationDAO.get(userGroupMembersVO.getDesignationId());
+				StaticUsers staticUsers = staticUsersDAO.get(userGroupMembersVO.getGroupMemberId());
+				staticUsers.setName(userGroupMembersVO.getName());
+				staticUsers.setStaticUserDesignation(staticUserDesignation);
+				staticUsers.setMobileNumber(userGroupMembersVO.getMobileNumber());
+				staticUsers.setEmailId(userGroupMembersVO.getEmailId());
+				staticUsers.setAddress(userGroupMembersVO.getAddress());
+				staticUsers.setLocation(userGroupMembersVO.getLocation());
+				//staticUsers.setDesignation(userGroupMembersVO.getDesignation());
+				staticUsers.setPhoneNumber(userGroupMembersVO.getPhoneNumber());
+				staticUsersDAO.save(staticUsers);
+				flag = true;
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+		
+	}
+	 public Integer deleteGroupData(Long id) {
+		 Integer deleteRecordNo = null;
+		if(id != null && !id.equals(0L))
+		{
+			StaticUsers staticUsers = staticUsersDAO.get(id);
+			Long staticUserId = staticUsers.getStaticUserId();
+			deleteRecordNo = staticUsersDAO.deleteUserMembers(staticUserId);
+		}
+		
+		
+		return deleteRecordNo;
+		 
+	}
 }
 

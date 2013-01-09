@@ -305,7 +305,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testgetElectionDetails()
+	/*public void testgetElectionDetails()
 	{
 		List<Election> result = electionDAO.getElectionDetails(158l);
 		for(Election params: result)
@@ -316,6 +316,17 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			
 			//System.out.println(params.getElectionScope().getPositionScope().toString());
 		}
+	}*/
+	public void testgetPartianValue()
+	{
+		List<Object[]> result = electionDAO.getPartianValue();
+		
+		for (Object[] objects : result) {
+			
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);
+		}
 	}
+	
 }
 

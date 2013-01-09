@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -922,6 +923,24 @@ public class StaticDataService implements IStaticDataService {
 			}
 		}
 
+		return stateList;
+	}
+	
+	/**
+	 * @author Prasad
+	 * @return
+	 */
+	
+	public List<SelectOptionVO> getParticipatedStatesForMinisters(
+			Long electionType) {
+		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
+		List<Object[]> stateDetailsList = electionDAO.getPartianValue();
+		for (Object[] stateDetailsLists : stateDetailsList) {
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId((Long)stateDetailsLists[0]);
+			selectOptionVO.setName(stateDetailsLists[1]!=null ? stateDetailsLists[1].toString():"");
+			stateList.add(selectOptionVO);
+		}
 		return stateList;
 	}
 

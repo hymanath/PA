@@ -33,9 +33,18 @@ public class StaticUserDesignationDAOHibernatTest extends BaseDaoTestCase {
 	}
 	
 	@Test
-	public void testGetAllStaticUserDesignations(){
+	/*public void testGetAllStaticUserDesignations(){
 		List<StaticUserDesignation> list = staticUserDesignationDAO.getAll();
 		if(list != null)
 			System.out.println(" Results List Size :" + list.size());
+	}*/
+	public void testgetDesignations(){
+		List<Object[]> list = staticUserDesignationDAO.getDesignations();
+		for (Object[] objects : list) {
+			System.out.println(objects[1]);
+			
+		}
+		
 	}
+	
 }
