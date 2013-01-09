@@ -1230,9 +1230,10 @@ function clearNewsUploadFileFields()
 	document.getElementById('keywords').value = '';
 	document.getElementById('existingFromText').value = '';
 	document.getElementById('source').value = '';
-	document.getElementById('newsfileId').value = '';	
+	document.getElementById('newsfileId').value = '';
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('existingFromText').value = '';
+	document.getElementById('ImagenewsfileId').value = '';
 	getScopes();
 }
 	
@@ -1955,7 +1956,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   </tr>';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="newsfileId" size="25" style="margin-top:8px;"/></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" style="margin-top:8px;"/></td></tr>';
 
 	str += '   <tr>';
 	str += '       <td></td>';
