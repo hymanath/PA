@@ -1036,8 +1036,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
 			return localBodyName;
 		}else if(infScope.equalsIgnoreCase(IConstants.MANDAL) || infScope.equalsIgnoreCase(IConstants.TEHSIL)){
-			Tehsil tehsil = tehsilDAO.get(new Long(regionId));
-			return tehsil.getTehsilName();
+			if(regionId.length() !=0 && regionId != null)
+			{
+				Tehsil tehsil = tehsilDAO.get(new Long(regionId));
+				return tehsil.getTehsilName();
+			}
 		}else if(infScope.equalsIgnoreCase(IConstants.VILLAGE) || infScope.equalsIgnoreCase(IConstants.HAMLET)){
 			Hamlet hamlet = hamletDAO.get(new Long(regionId));
 			return hamlet.getHamletName();
