@@ -26,7 +26,7 @@ public class BoothDataVerification {
         
         try {
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(args[0] + "/" + "result.txt")));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(args[0] + "/" + "BoothDataVerificationResult.txt")));
             File inputDir = new File(args[0]);
             
             
