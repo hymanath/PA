@@ -13,7 +13,14 @@ public class BoothVO {
 	private int femaleVoters = 0;
 	private List<Integer> missedVotesList;
 	private boolean isVotesMissed = false;
+	private String fileName;
 	
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public boolean isVotesMissed() {
 		return isVotesMissed;
 	}
