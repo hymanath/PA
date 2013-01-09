@@ -2209,11 +2209,21 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"constituency"));
 		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"","main");
 		 
+		 VotersInfoForMandalVO votersInfoForMandalVO = getVotersCountForConstituency(type, id, publicationDateId);
+		 importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForMandalVO.getTotalMaleVoters());
+		 importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForMandalVO.getTotalFemaleVoters());
+		 importantFamiliesInfoVo.setUnKnowVoters(votersInfoForMandalVO.getUnKnowVoters());
+
 		 if(importantFamiliesInfoVo.isDataPresent()){
 		    List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
 		    for(SelectOptionVO mandal : mandalsList){
 				
-			 importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForMandal("mandal",mandal.getId(),publicationDateId,"sub"));
+		    	ImportantFamiliesInfoVo mandalList = getImportantFamiliesForMandal("mandal",mandal.getId(),publicationDateId,"sub");
+		    	VotersInfoForMandalVO votersInfoForMandal = getVotersCountForMandal("mandal", mandal.getId(), publicationDateId);
+		    	mandalList.setTotalMaleVoters(votersInfoForMandal.getTotalMaleVoters());
+		    	mandalList.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
+		    	mandalList.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
+		    	importantFamiliesInfoVo.getSubList().add(mandalList);
 		    }
 		 }
 		 return  importantFamiliesInfoVo;
@@ -2290,6 +2300,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			importantFamiliesInfoVo.setType("Mandal/Tehsil");
 			importantFamiliesInfoVo.setName(tehsilDAO.get(new Long(id.toString().substring(1))).getTehsilName());
 			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(new Long(id.toString().substring(1).trim()),publicationDateId,"mandal"));
+			
+			VotersInfoForMandalVO votersInfoForMandal = getVotersCountForMandal("mandal", id, publicationDateId);
+			importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForMandal.getTotalMaleVoters());
+			importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
+			importantFamiliesInfoVo.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
+			
 			 getImpFamilesInfo(type,new Long(id.toString().substring(1).trim()),publicationDateId,importantFamiliesInfoVo,"",exeType);
 			 if(exeType.equalsIgnoreCase("main") && importantFamiliesInfoVo.isDataPresent()){
 			 List<Object[]> panchayaties = panchayatDAO.getPanchayatsBymandalId(new Long(id.toString().substring(1).trim()));
@@ -2308,6 +2324,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			importantFamiliesInfoVo.setName(name);
 			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getVotersCountForLocalElectionBody((Long) list.get(0),publicationDateId));
 			 getImpFamilesInfo(type,(Long) list.get(0),publicationDateId,importantFamiliesInfoVo,"local",exeType);
+			 
+			 VotersInfoForMandalVO votersInfoForMandal = getVotersCountForMandal("mandal", id, publicationDateId);
+			 importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForMandal.getTotalMaleVoters());
+			 importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
+			 importantFamiliesInfoVo.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
+			 
 			 return importantFamiliesInfoVo;
 		}
 		
@@ -2318,7 +2340,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		importantFamiliesInfoVo.setType("Booth");
 		importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"booth"));
-	
+		
+		VotersInfoForMandalVO votersInfoForBooth = getVotersCountForBooth(type, id, publicationDateId, exeType);
+		importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForBooth.getTotalMaleVoters());
+		importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForBooth.getTotalFemaleVoters());
+		importantFamiliesInfoVo.setUnKnowVoters(votersInfoForBooth.getUnKnowVoters());
+		
 		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"",exeType);
 		 return importantFamiliesInfoVo;
 	}
@@ -2328,6 +2355,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		importantFamiliesInfoVo.setType("Panchayat");
 		importantFamiliesInfoVo.setName(panchayatDAO.get(id).getPanchayatName());
 		importantFamiliesInfoVo.setTotalVoters((Long)boothPublicationVoterDAO.getVotersCountForPanchayat(id,publicationDateId).get(0));
+		
+		VotersInfoForMandalVO VotersInfoForPanchayat = getVotersCountForPanchayat(id, publicationDateId, "Panchayat");
+		importantFamiliesInfoVo.setTotalMaleVoters(VotersInfoForPanchayat.getTotalMaleVoters());
+		importantFamiliesInfoVo.setTotalFemaleVoters(VotersInfoForPanchayat.getTotalFemaleVoters());
+		importantFamiliesInfoVo.setUnKnowVoters(VotersInfoForPanchayat.getUnKnowVoters());
+		
 		 //getImpFamilesInfo("",id,publicationDateId,importantFamiliesInfoVo,"panchayat",exeType);
 		getImpFamilesForPanchayat(id,publicationDateId,importantFamiliesInfoVo);
 		 if(exeType.equalsIgnoreCase("main")  && importantFamiliesInfoVo.isDataPresent()){
