@@ -849,11 +849,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
 		if(type == "mandal")
 		{
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\''+constMgmtMainObj.castStatssubArray[i].mandal+' Panchayat\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else if(type =="panchayat")
 		{
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'booth\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'booth\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
 		{
@@ -898,9 +899,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	$('#subLevelTable td').removeClass("sorting_1"); 
 	}	
 	}
-function getVotersInACaste(id,publicationDateId,caste,type)
+function getVotersInACaste(id,publicationDateId,caste,type,Name)
 {
-
 $("#localCastStatsVotersTitle").html("");
 $("#localCastStatsTabContent_subbody1").html("");
 var level = $("#reportLevel").val();
@@ -916,9 +916,11 @@ var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
 			caste:"32",
+			casteName:caste,
 			typename:typename,
 			type:type,
 			publicationDate:year,
+			Name:Name,
 			task:"getVotersInACaste"
 
 		}
@@ -1134,8 +1136,8 @@ function buildVotersInACaste(results,jsObj)
 {
 
 var result = results;
-//console.log(results);
-	//$("#localCastStatsVotersTitle").html(" "+jsObj.typename+" Caste voters Details In " +jsObj.typename+" in "+jsObj.publicationDate+" ");
+
+	$("#localCastStatsVotersTitle").html(" "+jsObj.casteName+" Caste voters Details In " +jsObj.Name+" in "+jsObj.publicationDate+" ");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var boothId=oRecord.getData("boothId");
@@ -1338,11 +1340,11 @@ function buildCastPiechart(myResults,jsObj)
 		  //str +='		<td>'+castArray[i].caste+'</td>';
 		  if(type =='booth')
 		   {	  
-		  str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'booth\')">'+castArray[i].caste+'</a></td>';
+		  str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'booth\',\''+typeName+'\')">'+castArray[i].caste+'</a></td>';
 		   }
 		   else if(type =='panchayat')
 		   {
-			   str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'panchayat\')">'+castArray[i].caste+'</a></td>';
+			   str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'panchayat\',\''+typeName+'\')">'+castArray[i].caste+'</a></td>';
 		   }
 		   else
 		  str +='		<td>'+castArray[i].caste+'</td>';
