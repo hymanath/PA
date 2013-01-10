@@ -3341,6 +3341,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 for(VoterHouseInfoVO family : familiesList){
 			 votersInfo.addAll(getFamilyInfo(family.getBoothId(),family.getPublicationId(),family.getHouseNo()));
 		 }
+		 for(int i =0; i<votersInfo.size();i++){
+			 VoterHouseInfoVO voter = votersInfo.get(i);
+			 voter.setsNo(new Long(i+1));
+		 }
 		 return votersInfo;
 	 }
 }
