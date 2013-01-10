@@ -808,6 +808,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 			femalePopulation : cast1[k].femalevoters,
 			castePercentage:cast1[k].castPercentage,
 			totalVoters:totalVoters,
+			castStateId:cast1[k].castStateId,
 			};
 		subLevelcastInfo.push(castStats1);
 			}
@@ -852,12 +853,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
 		if(type == "mandal")
 		{
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\''+constMgmtMainObj.castStatssubArray[i].mandal+' Panchayat\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\''+constMgmtMainObj.castStatssubArray[i].mandal+' Panchayat\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else if(type =="panchayat")
 		{
 		
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'booth\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'booth\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
 		{
@@ -902,7 +903,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	$('#subLevelTable td').removeClass("sorting_1"); 
 	}	
 	}
-function getVotersInACaste(id,publicationDateId,caste,type,Name)
+function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId)
 {
 $("#localCastStatsVotersTitle").html("");
 $("#localCastStatsTabContent_subbody1").html("");
@@ -918,7 +919,8 @@ var year=publicationDateVal.substr(publicationDateVal.length - 4)
 var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
-			caste:"32",
+			//caste:"32",
+			caste:casteStateId,
 			casteName:caste,
 			typename:typename,
 			type:type,
@@ -1162,6 +1164,7 @@ var result = results;
 							{key:"relationship", label: "Relationship",sortable:true},
 							{key:"cast", label: "Cast",sortable:true},
 							{key:"castCategory", label: " Cast Category", sortable: true}
+							//{key:"voterIdCardNo",label:"Voter Id",sortable: true}
 		    	        ]; 
 
     
@@ -1175,7 +1178,7 @@ var result = results;
 	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId","boothId"]
+						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","cast","castCategory","voterId","boothId","voterIdCardNo"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
@@ -1269,6 +1272,7 @@ function buildCastInfoData(myresults,jsObj)
 			malePopulation : cast[i].maleVoters,
 			femalePopulation : cast[i].femaleVoters,
 			castePercentage:cast[i].votesPercent,
+			casteStateId : cast[i].casteStateId,
 			
 			};
 		castIno.push(castStats);
@@ -1348,11 +1352,11 @@ function buildCastPiechart(myResults,jsObj)
 		  //str +='		<td>'+castArray[i].caste+'</td>';
 		  if(type =='booth')
 		   {	  
-		  str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'booth\',\''+typeName+'\')">'+castArray[i].caste+'</a></td>';
+		  str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'booth\',\''+typeName+'\',\''+castArray[i].casteStateId+'\')">'+castArray[i].caste+'</a></td>';
 		   }
 		   else if(type =='panchayat')
 		   {
-			   str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'panchayat\',\''+typeName+'\')">'+castArray[i].caste+'</a></td>';
+			   str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'panchayat\',\''+typeName+'\',\''+castArray[i].casteStateId+'\')">'+castArray[i].caste+'</a></td>';
 		   }
 		   else
 		  str +='		<td>'+castArray[i].caste+'</td>';
