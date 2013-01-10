@@ -80,8 +80,10 @@ public class MissedVotersFinder {
                     boothVO.setTotalVoters(new Integer(voters[8]));
                     boothVO.setMaleVoters(new Integer(voters[4]));
                     boothVO.setFemaleVoters(new Integer(voters[6]));
-                    boothVO.setName(fileName[3].substring(0,fileName[3].length()-4));
-                    boothVO.setPartNo(fileName[2]);
+                    boothVO.setName(fileName[3].substring(0,fileName[3].length()-4).trim());
+                    boothVO.setPartNo(fileName[2].trim());
+                    boothVO.setConstituencyId(constituencyId);
+                    boothVO.setConstituencyName(fileName[1].trim());
                     
                     ResultSet rs = stmt.executeQuery("select sno from voter_temp where constituency_id = '"+constituencyId+"'" +
                     		" and booth_id = '"+boothVO.getPartNo()+"'");
@@ -148,19 +150,45 @@ public class MissedVotersFinder {
             outwriter.close();
             System.out.println(sb2.toString());
             
-            readMissedVoters(boothsInfoList);
+            List<VoterInfo> missedVotersList = getMissedVoters(boothsInfoList);
+            if(missedVotersList != null && missedVotersList.size() > 0)
+            {
+            	int missedIndex = 0;
+            	StringBuilder sb3 = new StringBuilder();
+                BufferedWriter outwriter2 = new BufferedWriter(new FileWriter(new File(args[0]+"/MissedVoterDetails.txt")));
+            	
+            	for(VoterInfo info : missedVotersList)
+            	{
+            		sb3.append(++missedIndex+")\tBooth Id - "+info.getBoothNo()+"\t"
+            				+"Booth - "+info.getBoothName()+"\t\t"+
+            				"SNO - "+info.getsNo()+"\t"+
+            				"Name - "+info.getVoterName()+"\t\t"+
+            				"Voter ID - "+info.getVoterId()+"\t"+
+            				"Age - "+info.getAge()+"\t"+
+            				"House No - "+info.getHouseNumber()+"\t\t"+
+            				"Gender - "+info.getSex()+"\t"+
+            				"Relation name - "+info.getGuardianName()+"\t"+
+            				"Relation - "+info.getGuardianRelation()+"\n");
+            	}
+            	System.out.println(sb3.toString());
+            	outwriter2.write(sb3.toString());
+            	outwriter2.close();
+            	ConvertVoterDataFromPdfToText.saveVotersData(missedVotersList);
+            }
+            	
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static int readMissedVoters(List<BoothVO> boothsInfoList)
+    public static List<VoterInfo> getMissedVoters(List<BoothVO> boothsInfoList)
     {
+    	List<VoterInfo> missedList = new ArrayList<VoterInfo>(0);
     	try{
     		StringBuilder sb = null;
     		PDDocument pd = null;
-    		 File resultFile  = new File("E:/Voters/VotesMissed2.txt");
-             BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+    		File resultFile  = new File("E:/Voters/VotesMissed2.txt");
+            BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
     		for(BoothVO boothVO : boothsInfoList)
     		{
     			if(boothVO.getMissedVotesList() != null && boothVO.getMissedVotesList().size() > 0){
@@ -170,34 +198,65 @@ public class MissedVotersFinder {
                     PDFTextStripper stripper = new PDFTextStripper();
                     sb.append(stripper.getText(pd));
                     System.out.println(sb.toString());
-                    outwriter.write(sb.toString());
-                    outwriter.close();
+                    
                     for(Integer sno : boothVO.getMissedVotesList())
                     {
                     	int startIndex = sb.indexOf(sno.toString()+" \r\nAge:");
                     	int endIndex = sb.indexOf(new Integer(sno.intValue()+1).toString()+" \r\nAge:");
                     	if(endIndex == -1)
-                    		endIndex = sb.indexOf("Age As On");
-                    	String reqStr = sb.substring(startIndex,endIndex);
+                    		endIndex = sb.indexOf("Age As On",startIndex);
+                    	String reqStr = sb.substring(startIndex,endIndex).trim();
                     	System.out.println(reqStr);
                     	String arr[] = reqStr.split("\\r\\n");
                     	for(int k=0;k<arr.length;k++)
                     		System.out.println(+k+" -- "+arr[k]);
+                    	
+                    	VoterInfo voterInfo = new VoterInfo();
+                    	voterInfo.setsNo(new Long(arr[0].trim()));
+                    	voterInfo.setSex(arr[1].split(" ")[2]);
+                    	voterInfo.setVoterId(arr[2].trim());
+                    	voterInfo.setGuardianRelation(arr[4].replaceAll("'s Name:",""));
+                    	voterInfo.setAge(arr[arr.length-1].trim());
+                    	voterInfo.setHouseNumber(arr[arr.length-2].trim());
+                    	voterInfo.setBoothNo(boothVO.getPartNo());
+                    	voterInfo.setBoothName(boothVO.getName());
+                    	voterInfo.setConstituencyId(boothVO.getConstituencyId());
+                    	voterInfo.setConstituency(boothVO.getConstituencyName());
+                    	
+                    	if(arr[6].endsWith(" "))
+                    	{
+                    		voterInfo.setVoterName(arr[6].trim()+" "+arr[7].trim());
+                    		if(arr[8].endsWith(" ") && !arr[9].trim().equalsIgnoreCase(voterInfo.getHouseNumber()))
+                    			voterInfo.setGuardianName(arr[8].trim()+" "+arr[9].trim());
+                    		else
+                    			voterInfo.setGuardianName(arr[8].trim());
+                    	}
+                    	else
+                    	{
+                    		voterInfo.setVoterName(arr[6].trim());
+                    		if(arr[7].endsWith(" ") && !arr[8].trim().equalsIgnoreCase(voterInfo.getHouseNumber()))
+                    			voterInfo.setGuardianName(arr[7].trim()+" "+arr[8].trim());
+                    		else
+                    			voterInfo.setGuardianName(arr[7].trim());
+                    	}
+                    	
+                    	if(voterInfo.getHouseNumber().equalsIgnoreCase(voterInfo.getGuardianName()))
+                    		voterInfo.setHouseNumber("0-00");
+                    	missedList.add(voterInfo);
+                    	//outwriter.write(sb.toString());
+                        //outwriter.close();
                     }
-                    if (pd != null) {
-                        pd.close();
-                    }
+                    
+                    pd.close();
     				
     			}catch(Exception e)
-    			{
-    				e.printStackTrace();
-    			}
+    			{}
     		}
     		}
-    		return 1;
+    		return missedList;
     	}catch (Exception e) {
     		System.out.println(e);
-    		return 0;
+    		return missedList;
     	}
     }
 
