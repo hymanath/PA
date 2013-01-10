@@ -4,6 +4,199 @@ var constMgmtMainObj={
 							castStatssubArray:[],
 					 };
 var publicationYear = "";
+var impFamiliesEditArray = new Array();
+var totalCategories = 0;
+function populate(id,boothId,publicationId,houseNo){
+     if($('#'+id).is(':checked')){
+	   var obj={
+	     boothId:boothId,
+		 publicationId:publicationId,
+		 houseNo:houseNo
+	   }
+	   impFamiliesEditArray.push(obj);
+	 }else{
+	     for(var i in impFamiliesEditArray){
+	       if(impFamiliesEditArray[i].boothId == boothId && impFamiliesEditArray[i].publicationId == publicationId && impFamiliesEditArray[i].houseNo == houseNo){
+		      impFamiliesEditArray.splice(i, 1);
+		   }
+	   }
+	 
+	 }
+
+}
+
+function editSelectedFamilies(){
+  if(impFamiliesEditArray.length > 0){
+   totalCategories = 0;
+     var jsObj=
+	{
+		selectedFamilies:impFamiliesEditArray,
+		task:"editAllFamilies"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getMultipleFamilesInfoAction.action?"+rparam+"&save=";	
+	callAjax(jsObj,url);
+  }
+}
+
+function getAllVoterFamiliesForEdit(){
+  var impFamiliesEditInfo = new Array();
+	 $('.familyMemberCheck').each(function() {
+           if($(this).is(':checked')){
+		      var voterId = $(this).val();
+			  var boothId = $(this).closest("tr").find(".selectedBoothId").val();
+		       var obj={
+				 boothId:boothId,
+				 voterId:voterId
+			   }
+			   impFamiliesEditInfo.push(obj);
+		   }
+        });
+    if(impFamiliesEditInfo.length > 0){
+	     $("#multipleVoterFamiliesEditDiv").html("");
+		 totalCategories = 0;
+		  var jsObj=
+		  {
+			selectedVoters:impFamiliesEditInfo,
+			task:"allFamiliesEditInfo"
+		  };
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getMultipleFamilesInfoForEditAction.action?"+rparam+"&save=";	
+		callAjax(jsObj,url);
+	}
+}
+
+function buildVotersInFamilyForEdit(results){
+ var localid = 0;
+   var str = "";
+   if(results != null){
+      for(var i in results.boothsList){
+	    str+= '<div style="margin-top:10px;"><span><b>Panchayat Name: </b>'+results.boothsList[i].panchayatName+'</span> ';
+        str+= '&nbsp;&nbsp;<span><b>Booth Name: </b></span>'+results.boothsList[i].boothName+'</div><div style="margin-top:5px;">';
+	    str+= '<span ><b>Villiage Covered: </b></span>'+results.boothsList[i].villiageCovered+'</div>';
+		var family = results.boothsList[i].familiesList;
+		for(var j in family){
+		   str+="<div class='votersEditTitle'>Voters in House No : "+family[j].houseNo+"</div>";
+		   var voters = family[j].votersList;
+		   str+="<fieldset>";
+		   str+="<table style='width:900px;'>";
+           var k = 0;		   
+		   for(k in voters){
+		       if(voters[k].categoriesList != null){
+			      totalCategories = voters[k].categoriesList.length;
+			   }
+		       localid = localid+1;
+		      if(k == 0)
+			  str+="<tr>";	
+		      str+="<td  style='width:300px;padding-top:20px;'>";
+              str+="<table>";
+			  str+="   <tr><td><b>Voter Name:</b></td><td>"+voters[k].name+"<input type='hidden' class='familyVoterEditId' value='"+voters[k].voterId+"' /></td></tr>";
+			  str+="   <tr><td><b>Guardian Name:  </b></td><td>"+voters[k].gaurdian+"</td></tr>";
+			  str+="   <tr><td><b>RelationShip:</b></td><td>"+voters[k].relationship+"</td></tr>";
+			  str+="   <tr><td><b>Age:</b></td><td>"+voters[k].age+"</td></tr>";
+			  str+="   <tr><td><b>Gender:</b></td><td>"+voters[k].gender+"</td></tr>";
+			  str+="   <tr>";	
+		      str+="    <td><b>Caste:</b></td>";		  
+			  str+="    <td><select id='castvalid"+localid+"' class='castallfamily castallfamily"+j+"' >";
+				     for(var l in results.casteGroupNameList){
+					   if(voters[k].casteStateId != results.casteGroupNameList[l].id)
+						str+="<option value="+results.casteGroupNameList[l].id+">"+results.casteGroupNameList[l].name+"</option>";
+					   else
+						str+="<option value="+results.casteGroupNameList[l].id+" selected='selected'>"+results.casteGroupNameList[l].name+"</option>";			
+					 }
+			  str+="    <select></td>";
+			  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"castvalid"+localid+"\",\"castallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
+			  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"castvalid"+localid+"\",\"castallfamily\")'><i class='icon-ok-sign'></i></a></td>";
+			  str+="   </tr>";
+		      str+="   <tr>";
+		      str+="   <td><b>Party Name:</b></td>";
+			  str+="    <td><select id='partyvalid"+localid+"' class='partyallfamily partyallfamily"+j+"' >";
+				     for(var l in results.parties){
+					   if(voters[k].partyId != results.parties[l].id)
+						str+="<option value="+results.parties[l].id+">"+results.parties[l].name+"</option>";
+					   else
+						str+="<option value="+results.parties[l].id+" selected='selected'>"+results.parties[l].name+"</option>";			
+					 }
+			  str+="    <select></td>";
+			  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"partyvalid"+localid+"\",\"partyallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
+			  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"partyvalid"+localid+"\",\"partyallfamily\")'><i class='icon-ok-sign'></i></a></td>";
+		       str+="   </tr>";
+			    
+			  for(var m in voters[k].categoriesList){
+		         str+="   <tr>";
+		          str+=" <td><b>"+voters[k].categoriesList[m].userCategoryValueName+":</b><input type='hidden' class='categ"+m+"main' value='"+voters[k].categoriesList[m].userCategoryValueId+"' /></td>";
+				  str+="    <td><select id='categ"+m+"val"+localid+"' class='categ"+m+"ori categ"+m+"ori"+j+"' >";	
+						for(var l in voters[k].categoriesList[m].category){
+						   if(voters[k].categoriesList[m].categoryValuesId != voters[k].categoriesList[m].category[l].id)
+							str+="<option value="+voters[k].categoriesList[m].category[l].id+">"+voters[k].categoriesList[m].category[l].name+"</option>";
+						   else
+							str+="<option value="+voters[k].categoriesList[m].category[l].id+" selected='selected'>"+voters[k].categoriesList[m].category[l].name+"</option>";			
+						 }
+				   str+="   </select></td>";
+				   str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"categ"+m+"val"+localid+"\",\"categ"+m+"ori"+j+"\")'><i class='icon-ok'></i></a></td>";
+			       str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"categ"+m+"val"+localid+"\",\"categ"+m+"ori\")'><i class='icon-ok-sign'></i></a></td>";
+				   str+="   </tr>";
+		         
+
+			 }
+			   str+="</table>";
+			  str+="</td>";
+			   if(k != 0 && k%3 == 2)
+			    str+="</tr>";	
+           }
+		      if(k != 0 && k%2 != 2)
+			     str+="</tr>";	
+		   str+="</table>";	
+           str+="</fieldset>";		   
+		}
+	 
+	}
+	 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 400px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVoters();' value='Update All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+	 $("#multipleVoterFamiliesEditDiv").html(str);
+   }
+}
+
+function applyValueToAllVoters(id,classId){
+       var value = $("#"+id).val();
+       $('.'+classId).each(function() {
+            $(this).val(value);
+        });
+}
+
+function updateAllSelectedVoters(){
+      var votersEditInfo = new Array();
+     $('.familyVoterEditId').each(function() {
+	        var obj={
+	    
+	        };
+			  obj["voterId"] = $(this).val();
+			  obj["castId"] = $(this).closest("table").find(".castallfamily").val();
+			  obj["partyId"] = $(this).closest("table").find(".partyallfamily").val();
+			  if(totalCategories > 0){
+			    for(var i=0; i<totalCategories ; i++){
+				  var val1= $(this).closest("table").find(".categ"+i+"main").val();
+				  var val2= $(this).closest("table").find(".categ"+i+"ori").val();
+				  obj["categ"+i] = val1+","+val2;
+				}
+			  }
+			  votersEditInfo.push(obj);
+			
+        });
+		if(votersEditInfo.length > 0){
+		    $("#votersEditSaveAjaxImg").show();
+			$("#votersEditSaveButtnImg").attr("disabled", "disabled");	
+		     var jsObj=
+		  {
+		    total:totalCategories,
+			selectedVoters:votersEditInfo,
+			task:"allFamiliesEditInfoSave"
+		  };
+		  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		  var url = "getMultipleFamilesInfoForEditAction.action?"+rparam+"&save=";		  
+		  callAjax(jsObj,url);
+		}
+}
+
 function showReportLevel(value)
 	{
 		if(value == 1)
@@ -394,7 +587,35 @@ function showImportantFamiliesDiv()
 								{
 									buildVotersInACaste(myResults,jsObj)
 								}
-							}catch (e) {}  
+								else if(jsObj.task =="editAllFamilies"){
+								    if(myResults == "notLogged"){
+									 openDialogForLoginWindow();
+									}else{
+								     buildVotersInFamily(myResults);
+									}
+								}
+								else if(jsObj.task =="allFamiliesEditInfo"){
+								    if(myResults == "notLogged"){
+									 openDialogForLoginWindow();
+									}else{
+								     buildVotersInFamilyForEdit(myResults);
+									}
+								}
+								else if(jsObj.task =="allFamiliesEditInfoSave"){
+								    $("#votersEditSaveAjaxImg").hide();
+									$("#votersEditSaveButtnImg").removeAttr("disabled");
+									if(myResults == true){
+									  alert("Voters Information Updated SuccessFully");
+									}else if(myResults == "notLogged"){
+									  openDialogForLoginWindow();
+									}else if(myResults == "exception"){
+									  alert("Unable To Updated Voters Information Please Try Again");
+									}
+								}
+							}catch (e) {
+							     $("#votersEditSaveAjaxImg").hide();
+							     $("#votersEditSaveButtnImg").removeAttr("disabled");
+								}  
  		               },
  		               scope : this,
  		               failure : function( o ) {
@@ -402,7 +623,7 @@ function showImportantFamiliesDiv()
  		                         }
  		               };
 
- 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
 
 	
@@ -1186,9 +1407,10 @@ var result = results;
 }
 
 
-function buildVotersInFamily(results,hno){
+function buildVotersInFamily(results){
 //console.log(results);
-    $("#impFamDtlsTitle").html("<b>Voter Details in House No : "+hno+"</b>");
+    $("#multipleVoterFamiliesEditDiv").html("");
+    $("#impFamDtlsTitle").html("<b>Voter Details</b>");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
@@ -1199,8 +1421,16 @@ function buildVotersInFamily(results,hno){
 		elLiner.innerHTML ='<a id="openProblemEditFormId" onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
 		
 	}
+	  YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var name = oData;
+		var id= oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+id+"'/><input type='hidden' class='selectedBoothId' value='"+boothId+"'/>";
+					
+	  };
      var votersResultColumnDefs = [ 		    	             
-		    	            
+		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
 							{key:"sNo", label: "SNo", sortable: true},
 		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 							{key:"gender", label: "Gender", sortable: true},
@@ -1220,7 +1450,13 @@ function buildVotersInFamily(results,hno){
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
-
+    $("#impFamDtlsOuterPopUp").dialog({
+            modal: true,
+            title: "<b>Voters Details</b>",
+			width: 970,
+            height: 600
+           
+        });
 }
 
 function buildCastInfoData(myresults,jsObj)
@@ -1458,7 +1694,7 @@ function buildCastPiechart(myResults,jsObj)
 
 		}
   function  buildFamilyMembers(result,publicationDateId,type){
-
+    impFamiliesEditArray = new Array();
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
     var name = "";
@@ -1469,17 +1705,19 @@ function buildCastPiechart(myResults,jsObj)
 	   name = $("#pollingStationField option:selected").text();
 	 }
       var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
-          str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
+          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/></div>';
+		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
+		  str+='     <th>Select</th>';
           str+='     <th>SNo</th>';
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
-          str+='	 <th>Eldest Person</th>';
+          str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
-          str+='     <th>Youngest Person</th>';
+          str+='     <th class="widthStyle">Youngest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
           str+='   </tr>';
@@ -1488,21 +1726,22 @@ function buildCastPiechart(myResults,jsObj)
 	 for(var i in result){
 	   var sno = parseInt(i)+1;
 	      str +='   <tr>';
+		  str +='		<td><input id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
           str +='		<td>'+sno+'</td>';
 		  str +='		<td>'+result[i].boothName+'</td>';
-          str +='		<td><a href="javascript:{}" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
+          str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
-          str +='		<td>'+result[i].elder+'</td>';
+          str +='		<td class="widthStyle">'+result[i].elder+'</td>';
 		  str +='		<td>'+result[i].elderGender+'</td>';
 		  str +='		<td>'+result[i].elderAge+'</td>';
-          str +='		<td>'+result[i].younger+'</td>';
+          str +='		<td class="widthStyle">'+result[i].younger+'</td>';
 		  str +='		<td>'+result[i].youngerGender+'</td>';
 		  str +='		<td>'+result[i].youngerAge+'</td>';
           str+='   </tr>';
 	 }
           str+='  </tbody>';
           str+=' </table>';
-	  
+	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/></div>';
 	  $("#impFamPancBothDtls").html(str);
 	  
 	  	$('#impfamilydatatable').dataTable({
@@ -1510,7 +1749,7 @@ function buildCastPiechart(myResults,jsObj)
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null
      
 	  
     ] 
@@ -2576,4 +2815,16 @@ function impFamilesVariableDescription()
   div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
   $("#descriptionDiv").append(div).css("display","block");
 
+}
+
+function selectAll(id){
+       $('.'+id).each(function() {
+            $(this).attr('checked','checked');
+        });
+}
+
+function deSelectAll(id){
+    $('.'+id).each(function() {
+     $(this).removeAttr('checked');
+	});
 }
