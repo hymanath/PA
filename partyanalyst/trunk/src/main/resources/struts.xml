@@ -4096,6 +4096,29 @@
 		    	<param name="root">deleteRecord</param>
 		   </result>--> 
 		   
+		</action>		
+		<action name="getMultipleFamilesInfoAction" class="votersEditAction" method="getMultipleFamilesInfo">
+		    <result type="json" name="success">
+				 <param name="root">votersFamilyInfo</param>
+			</result>
+			<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+			
+		</action>
+		<action name="getMultipleFamilesInfoForEditAction" class="votersEditAction" method="getMultipleFamilesInfoForEdit">
+		    <result type="json" name="data">
+				 <param name="root">voterHouseInfoVO1</param>
+			</result>
+			<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+			<result type="json" name="update">
+				 <param name="root">status</param>
+			</result>
+			<result type="json" name="exception">
+				 <param name="root">"exception"</param>
+			</result>		
 		</action>
 		
 	</package>
