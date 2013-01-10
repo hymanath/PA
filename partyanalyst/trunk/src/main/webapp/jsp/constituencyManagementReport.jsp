@@ -689,7 +689,9 @@
 										}
 										if(jsObj.task == "getSubLevelInfluencePeople")
 										{
+											
 											buildSubLevelInfluencePeople(jsObj,myResults);
+											buildConstituencyData(myResults);
 										}
 										if(jsObj.task == "getSubLevelLocalUserGroupsPeople")
 										{
@@ -1022,7 +1024,38 @@
 	
 
 	<script type="text/javascript">
-		
+	function buildConstituencyData(data)
+	{
+		var results = data.regionWiseOverview;
+		var selected = document.getElementById('InfluenceConsituencyId');
+		removeSelectElements(selected);
+		for(var val in results)
+			{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].regionId;
+			opElmt.text=results[val].regionName;
+
+			try
+			{
+				selected.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selected.add(opElmt); // IE only
+			}	
+		}
+	}
+	function removeSelectElements(elmt)
+	{
+		if(!elmt)
+			return;
+
+		var len=elmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			elmt.remove(i);
+		}	
+	}
 		<c:forEach var="probStatus"  items="${statusList}" >
 		var ob={
 					id:'${probStatus.id}',
