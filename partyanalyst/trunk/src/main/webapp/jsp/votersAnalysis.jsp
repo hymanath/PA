@@ -388,6 +388,25 @@ width: 860px;}
 		font-weight: bold;
 		margin-bottom: 10px;
 	}
+
+	#votersByLocationTabContentDiv_body table th {padding:5px !important;}
+	#votersByLocationTabContentDiv_body {padding-left: 2px !important; }
+	#votersByLocationTabContentDiv_body table td {padding-right:3px !important;}
+	.localCastStatsVotersTitle{border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF !important;
+    font-family: verdana;
+    font-size: 15px !important;
+    font-weight: bold;
+    padding: 5px;
+    width: 650px;}
+	#sublevelHeading{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 4px;
+    width: 465px;}
+	.localCastStatsVotersTitle{background:#06ABEA;}
 </style>
 
 <script type="text/javascript">

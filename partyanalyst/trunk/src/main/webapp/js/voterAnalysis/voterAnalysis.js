@@ -251,6 +251,7 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
 {key:"firstName", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
+{key:"voterIDCardNo",label: "voter Id",sortable: true},
 {key:"gender", label: "Gender", sortable: true},
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
@@ -273,7 +274,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIds"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIds"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -313,6 +314,7 @@ if(panchaytId == "0" || publicationId == "0")
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
 {key:"firstName", label: "Name", sortable: true},
+{key:"voterIDCardNo", label: "voter ID",sortable: true},
 {key:"gender", label: "Gender", sortable: true},
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
@@ -328,7 +330,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIDCardNo"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -393,6 +395,8 @@ function showImportantFamiliesDiv()
 		  $("#votersBasicInfoSubChartDivForLclCastSts").html("");
 		  $("#votersBasicInfoSubDivForLclCastSts").html("");
 		  $("#lclCastStsShowBasicInfo").val("View Basic Voter Details");
+		 $("#localCastStatsVotersTitle").css({"background":"none repeat scroll 0 0 #FFF;"});
+
 	}
 
 	function showVotersDiv()
@@ -1369,7 +1373,11 @@ function buildVotersInACaste(results,jsObj)
 
 var result = results;
 
-	$("#localCastStatsVotersTitle").html(" "+jsObj.casteName+"("+jsObj.casteCategory+") Caste voters Details In " +jsObj.Name+" in "+jsObj.publicationDate+" ");
+	if(results.votersByHouseNos != null)
+		$("#localCastStatsVotersTitle").addClass("localCastStatsVotersTitle").html(" "+jsObj.casteName+"("+jsObj.casteCategory+") Caste voters Details In " +jsObj.Name+" in "+jsObj.publicationDate+" ");
+	else
+		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
+
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var boothId=oRecord.getData("boothId");
@@ -1466,6 +1474,8 @@ function buildVotersInFamily(results){
 function buildCastInfoData(myresults,jsObj)
 {
 	$('#localCastDetailsHeadingDiv').html('');
+	$('.localCastStatsVotersTitle').html('');
+	
 	var result = myresults.voterCastInfodetails;
 	var ajaxImageDiv = document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
@@ -1532,6 +1542,7 @@ function buildCastInfoData(myresults,jsObj)
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		$("#localCastStatsTabContent_body").html("No Data Found");
+		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
 		}
 
 		buildCastPiechart(myresults,jsObj);   

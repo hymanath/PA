@@ -105,7 +105,6 @@
 		<pattern>/searchPartyAnalystAction*</pattern>
 		<pattern>/districtWisePartyPerformanceAction*</pattern>
 		<pattern>/partyPerformanceMain*</pattern>
-		<pattern>/electionComparisonAction*</pattern>
 		<pattern>/partyResultsCriteriaAction*</pattern>
 		<pattern>/partyResultsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
@@ -170,6 +169,7 @@
 		<pattern>/cadreManagementAction*</pattern>
 		<pattern>/constituencyManagementAction*</pattern>
 		<pattern>/problemManagementReportAction*</pattern>
+		<pattern>/electionComparisonAction*</pattern>
 		
     </decorator>
 
