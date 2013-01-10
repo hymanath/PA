@@ -747,6 +747,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					
 					voterCastInfoVO.setTotalVoters(voterCastInfoVO.getMaleVoters() + voterCastInfoVO.getFemaleVoters());
 					totalVotes = totalVotes + (Long)params[2];
+					voterCastInfoVO.setCasteStateId((Long)params[3]);
 					
 					if(isNew)
 						resultList.add(voterCastInfoVO);
@@ -1242,6 +1243,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterHouseInfoVO.setRelationship(voter.getRelationshipType());
 				voterHouseInfoVO.setCast(voter.getCast());
 				voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
+				voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
 				votersList.add(voterHouseInfoVO);
 				sno = sno + 1;
 			}

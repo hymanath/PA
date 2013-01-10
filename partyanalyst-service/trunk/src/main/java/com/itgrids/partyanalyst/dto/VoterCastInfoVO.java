@@ -19,7 +19,7 @@ public class VoterCastInfoVO {
 	private Long locationId;
 	
 	private String casteCategoryName;
-
+	private Long casteStateId;
 	
 	public VoterCastInfoVO(){
 		
@@ -146,6 +146,14 @@ public class VoterCastInfoVO {
 
 	public void setCasteCategoryName(String casteCategoryName) {
 		this.casteCategoryName = casteCategoryName;
+	}
+
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
 	}
 
 	
