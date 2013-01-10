@@ -76,4 +76,10 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getBoothsInMunicipality(Long lclElecBodyId,Long publicationDateId);
 	
 	public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Integer maxResults);
+	
+	public List<VoterHouseInfoVO> getMultipleFamiliesInfo(List<VoterHouseInfoVO> familiesList);
+	
+	public VoterHouseInfoVO getVoterPersonalDetailsList(List<VoterHouseInfoVO> voterIds,Long userId);
+	
+	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs);
 }
