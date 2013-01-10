@@ -27,6 +27,10 @@ function populate(id,boothId,publicationId,houseNo){
 
 function editSelectedFamilies(){
   if(impFamiliesEditArray.length > 0){
+   if(impFamiliesEditArray.length > 5){
+      alert("Please select atmost 5 families to edit");
+      return;
+   }
    totalCategories = 0;
      var jsObj=
 	{
@@ -1705,6 +1709,7 @@ function buildCastPiechart(myResults,jsObj)
 	   name = $("#pollingStationField option:selected").text();
 	 }
       var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
+	      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
           str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/></div>';
 		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
@@ -1741,6 +1746,7 @@ function buildCastPiechart(myResults,jsObj)
 	 }
           str+='  </tbody>';
           str+=' </table>';
+		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/></div>';
 	  $("#impFamPancBothDtls").html(str);
 	  
