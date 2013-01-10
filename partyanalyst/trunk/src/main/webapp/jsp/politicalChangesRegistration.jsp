@@ -259,8 +259,6 @@ function validateFunction()
 }
 function populateLocations(val,source)
 {	
-
-	
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
@@ -274,45 +272,45 @@ function populateLocations(val,source)
 	row4El.style.display = 'none';
 	row5El.style.display = 'none';
 	row6El.style.display = 'none';
-	var value = val
+	var value = val;
 	if(val == 'null')
 		value = hiddenEl.value;
-	if( (value>1) || (value==1) ){
+	if( (value>2) || (value==2) ){
 		if(row1El.style.display == 'none')
 		{	
 			row1El.style.display = '';
 		}		
 		range = localizationObj.STATE;
 	}
-	if( (value>2) || (value==2) ){
+	if( (value>3) || (value==3) ){
 		if(row2El.style.display == 'none')
 		{	
 			row2El.style.display = '';
 		}
 		range = localizationObj.DISTRICT;
 	}
-	if( (value>3) || (value==3) ){
+	if( (value>4) || (value==4) ){
 		if(row3El.style.display == 'none')
 		{	
 			row3El.style.display = '';
 		}		
 		range = localizationObj.CONSTITUENCY;
 	}
-	if( (value>4) || (value==4) ){
+	if( (value>5) || (value==5) ){
 		if(row4El.style.display == 'none')
 		{	
 			row4El.style.display = '';
 		}		
 		range = localizationObj.MANDAL;
 	}
-	if( (value>5) || (value==5) ){
+	if( (value>6) || (value==6) ){
 		if(row5El.style.display == 'none')
 		{	
 			row5El.style.display = '';
 		}
 		range = localizationObj.VILLAGE;
 	}
-	if( (value>6) || (value==6) ){
+	if( (value>7) || (value==7) ){
 		if(row6El.style.display == 'none')
 		{	
 			row6El.style.display = '';
