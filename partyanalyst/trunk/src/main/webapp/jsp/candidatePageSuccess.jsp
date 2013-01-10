@@ -1423,7 +1423,10 @@ function createGallary(contentType)
 
 	if(isPublic)
 		makeThis = 'false';
-	
+
+	galName = removeAllUnwantedCharacters(galName);
+	galDesc = removeAllUnwantedCharacters(galDesc);
+
 	var jsObj =
 		{ 
             name : galName,
@@ -1557,6 +1560,11 @@ function validateFileUpload()
 	var fileVal = document.getElementById("fileId").value;
 	var galId = document.getElementById("gallarySelectId").value;
 	var flag = true;
+
+	fileTitle = removeAllUnwantedCharacters(fileTitle);
+	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	document.getElementById('fileTitleId').value = fileTitle;
+	document.getElementById('fileDescId').value = fileDesc;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';

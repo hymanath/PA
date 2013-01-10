@@ -799,6 +799,9 @@ function buildUploadPhotosDiv()
 	if(isPublic)
 		makeThis = 'false';
 	
+	galName = removeAllUnwantedCharacters(galName);
+	galDesc = removeAllUnwantedCharacters(galDesc);
+
 	var jsObj =
 		{ 
             name : galName,
@@ -1030,6 +1033,11 @@ function validateFileUpload()
 	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
 
+	fileTitle = removeAllUnwantedCharacters(fileTitle);
+	fileDesc =  removeAllUnwantedCharacters(fileDesc);
+	document.getElementById('photofileTitleId').value = fileTitle;
+	document.getElementById('photofileDescId').value = fileDesc;
+
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';
 	if(fileDate.length == 0)
@@ -1112,6 +1120,11 @@ function validateNewsFileUpload()
 	var galEle = document.getElementById("gallaryId").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
+
+	fileTitle = removeAllUnwantedCharacters(fileTitle);	
+	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	document.getElementById('newsfileTitle').value = fileTitle;
+	document.getElementById('newsfileDescription').value = fileDesc;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
@@ -1390,6 +1403,9 @@ function getDistricts1(stateId){
 	if(isPublic)
 		makeThis = 'false';
 	
+	newsCatrgoryName = removeAllUnwantedCharacters(newsCatrgoryName);
+	newsCatrgoryDesc = removeAllUnwantedCharacters(newsCatrgoryDesc);
+
 	var jsObj =
 		{ 
             name : newsCatrgoryName,
@@ -2171,6 +2187,9 @@ function createVideoGallary(contentType)
 	if(isPublic)
 		makeThis = 'false';
 	
+	galName = removeAllUnwantedCharacters(galName);
+	galDesc = removeAllUnwantedCharacters(galDesc);
+
 	var jsObj =
 		{ 
             name : galName,

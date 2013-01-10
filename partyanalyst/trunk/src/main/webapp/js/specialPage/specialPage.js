@@ -566,6 +566,9 @@ function createPopupGallery(selectedId,contentType,userOption,galleryOptionId)
 	if(isPublic)
 		makeThis = 'false';
 
+	galName = removeAllUnwantedCharacters(galName);
+	galDesc = removeAllUnwantedCharacters(galDesc);
+
 	if(userOption == 'SpecialPage')
 	{
 		var jsObj =
@@ -948,6 +951,9 @@ var makeThis = 'true';
 
 	if(isPublic)
 		makeThis = 'false';
+	
+	galName = removeAllUnwantedCharacters(galName);
+	galDesc = removeAllUnwantedCharacters(galDesc);
 	
 	var jsObj =
 		{ 
@@ -1341,6 +1347,10 @@ function uploadVideoGallary(){
 	if(isPublic)
 		makeThis = 'public';
 	disableButton('uploadVideoBtnId');
+
+	fileTitle = removeAllUnwantedCharacters(fileTitle);
+	fileDesc =  removeAllUnwantedCharacters(fileDesc);
+
 	var jsObj =
 		{ 
 			canGalleryId :canGalIdArray,
@@ -1605,6 +1615,9 @@ if(eFlag)
 	if(isPublic)
 		makeThis = 'false';
 
+	newsCatrgoryName = removeAllUnwantedCharacters(newsCatrgoryName);
+	newsCatrgoryDesc = removeAllUnwantedCharacters(newsCatrgoryDesc);
+
 	var jsObj = {
 	name : newsCatrgoryName,
 	desc : newsCatrgoryDesc,
@@ -1812,6 +1825,11 @@ function validateNewsFileUpload()
     var keywords = document.getElementById("keywords").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
+
+	fileTitle = removeAllUnwantedCharacters(fileTitle);
+	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	document.getElementById('fileTitle').value = fileTitle;
+	document.getElementById('fileDescription').value = fileDesc;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
@@ -3342,13 +3360,16 @@ function createNewSpecialPage()
 		eFlag = true;
 	}
 	
-	
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 	
 	if(eFlag)
 		return;
 	
+	name = removeAllUnwantedCharacters(name);
+	title = removeAllUnwantedCharacters(title);
+	heading = removeAllUnwantedCharacters(heading);
+
 	var jsObj =
 		{ 
             name	: name,
@@ -4330,6 +4351,11 @@ function validateFileUpload()
 	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
 	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
+	
+	fileTitle = removeAllUnwantedCharacters(fileTitle);
+	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	document.getElementById('fileTitleId').value = fileTitle;
+	document.getElementById('fileDescId').value = fileDesc;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';
@@ -4655,6 +4681,13 @@ function updateGallary(gallaryId)
     var gallaryId ='';
 	var errorDivEle = document.getElementById('galErrorMsgDiv');
 	var eFlag = false;
+
+	galName = removeAllUnwantedCharacters(galName);
+	galDesc = removeAllUnwantedCharacters(galDesc);
+
+	document.getElementById('pGallaryNameId').value = galName;
+	document.getElementById('pGallaryDescId').value = galDesc;
+		
      if(createOrUpdate=='Update')
 	{
 	  gallaryId = document.getElementById("gallaryId").value;
