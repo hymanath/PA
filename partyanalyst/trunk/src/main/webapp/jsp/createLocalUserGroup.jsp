@@ -431,6 +431,11 @@ function ajaxCall(param,jsObj,url){
 
   YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function refreshParent(){
+	
+	window.opener.location.reload();
+
+	}
 function refreshParentWindow(){
 	window.close();
 
@@ -634,6 +639,9 @@ function refreshParentWindow(){
  
 </body>
 <script type="text/javascript">
+<c:if  test="${resultStatus == 'success'}">
+refreshParent();
+</c:if>
 populateLocations(${defaultGroupScope},'onLoad');
 </script>
 </html>
