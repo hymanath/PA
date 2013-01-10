@@ -48,7 +48,10 @@
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<title>Voters analysis</title>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+
+  <title>Voters analysis</title>
 
 <style type="text/css">
 #MainDiv{
@@ -356,6 +359,35 @@ width: 860px;}
 	#openProblemEditFormId{cursor:pointer;}
 	.descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
 	.descriptionInnerDiv span{margin-right: 5px;}
+	.buttonsTop{
+	  margin-top:20px;
+	  width:880px;
+	  text-align: center;
+	}
+	.buttonLeft{
+	  margin-left:10px;
+	}
+	.ui-widget-header{
+	background: none repeat scroll 0 0 #4285F4;
+	color:#fff;
+	}
+	.ui-widget-overlay{
+	  opacity: 0.8;
+	}
+	#ImportantFamiliesDiv{
+	  margin-bottom: 20px;
+	}
+	.widthStyle{
+	  width:100px !important;
+	}
+	.votersEditTitle{
+	    margin-top:5px;
+	    color: steelblue;
+		font-family: verdana;
+		font-size: 13px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -494,9 +526,12 @@ locationDetails.constituencyArr.push(ob);
 		<br>
 		<div id="NoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:5px;width:920px;display:none;"></div>
 		<div id="impFamPancBothDtls"></div>
-		<div id="impFamDtlsTitle"></div>
-		<div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
-	
+		<div id="impFamDtlsOuterPopUp" style="display:none;">
+		   <div id="impFamDtlsTitle"></div>
+		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
+	       <div class="buttonsTop"><span class="buttonLeft"><input class="btn" onclick="selectAll('familyMemberCheck')" type="button" value="Select All" /></span><span class="buttonLeft"><input onclick="deSelectAll('familyMemberCheck')" class="btn" type="button" value="De Select All" /></span><span class="buttonLeft"><input class="btn" type="button" value="Edit" onclick="getAllVoterFamiliesForEdit();"/></span></div>
+		   <div id="multipleVoterFamiliesEditDiv"></div>
+		</div>
 
 	</div>
 
