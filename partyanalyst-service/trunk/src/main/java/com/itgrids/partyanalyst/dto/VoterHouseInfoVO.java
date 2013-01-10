@@ -45,7 +45,11 @@ public class VoterHouseInfoVO {
 	private List<AddressVO> categories;
 	private List<SelectOptionVO> parties;
 	private Long casteStateId;
-	private String voterIdCardNo;
+	private String voterIdCardNo;	
+	private List<VoterHouseInfoVO> votersList;
+	private List<VoterHouseInfoVO> boothsList;
+	private List<VoterHouseInfoVO> familiesList;
+	private Long publicationId;
 	
 	public VoterHouseInfoVO(){
 		
@@ -417,6 +421,37 @@ public class VoterHouseInfoVO {
 		this.voterIdCardNo = voterIdCardNo;
 	}
 
-	
+	public List<VoterHouseInfoVO> getVotersList() {
+		return votersList;
+	}
+
+	public void setVotersList(List<VoterHouseInfoVO> votersList) {
+		this.votersList = votersList;
+	}
+
+	public Long getPublicationId() {
+		return publicationId;
+	}
+
+	public void setPublicationId(Long publicationId) {
+		this.publicationId = publicationId;
+	}
+
+	public List<VoterHouseInfoVO> getBoothsList() {
+		return boothsList;
+	}
+
+	public void setBoothsList(List<VoterHouseInfoVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+
+	public List<VoterHouseInfoVO> getFamiliesList() {
+		return familiesList;
+	}
+
+	public void setFamiliesList(List<VoterHouseInfoVO> familiesList) {
+		this.familiesList = familiesList;
+	}
+
 	
 }
