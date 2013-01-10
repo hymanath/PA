@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,21 +11,22 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
-import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 public class VotersEditAction  extends ActionSupport implements ServletRequestAware,Preparable,ModelDriven<VoterHouseInfoVO>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8900996662457488196L;
 	private IVotersAnalysisService votersAnalysisService;
 	JSONObject jObj = null;
 	private String task = null;
@@ -45,8 +47,8 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private Long userId;
 	//private String windowTask = null;
 	private ResultStatus resultStatus;
-	
-	
+	private List<VoterHouseInfoVO> votersFamilyInfo;
+	private boolean status;
 	
 	public List<SelectOptionVO> getPartyGroupList() {
 		return partyGroupList;
@@ -225,6 +227,22 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 		this.resultStatus = resultStatus;
 	}
 
+	public List<VoterHouseInfoVO> getVotersFamilyInfo() {
+		return votersFamilyInfo;
+	}
+
+	public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
+		this.votersFamilyInfo = votersFamilyInfo;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	public String execute() throws Exception{
 		
 		
@@ -379,11 +397,98 @@ public String saveVoterDetails(){
 			Long casteCateGroupId = jObj.getLong("casteCateGroupId");
 			resultStatus = votersAnalysisService.saveCasteName(userId,stateId,casteCateGroupId,casteName);
 		}catch (Exception e) {
-			Log.error("Exception Occured in saveCasteName() Method, Exception - "+e);
+			Log.error("Exception Occured in saveCasteName() Method, Exception - ",e);
 		}
 		
 		return Action.SUCCESS;
 				
 	}
 	
+	public String getMultipleFamilesInfo(){
+		try{
+			    jObj = new JSONObject(getTask());
+			    HttpSession session = request.getSession();
+				RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+				Long userId = null;
+				if(user != null && user.getRegistrationID() != null)
+				    userId = user.getRegistrationID();
+				else 
+				  return "error";
+				org.json.JSONArray jSONArray = jObj.getJSONArray("selectedFamilies");
+				List<VoterHouseInfoVO> familiesList = new ArrayList<VoterHouseInfoVO>();
+				VoterHouseInfoVO voterHouseInfoVO = null;
+				for(int i = 0;i<jSONArray.length();i++){
+					JSONObject jSONObject= jSONArray.getJSONObject(i);
+					voterHouseInfoVO = new VoterHouseInfoVO();
+					voterHouseInfoVO.setHouseNo(jSONObject.getString("houseNo"));
+					voterHouseInfoVO.setPublicationId(jSONObject.getLong("publicationId"));
+					voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
+					familiesList.add(voterHouseInfoVO);
+				}
+				votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInfo(familiesList);
+			
+		}catch (Exception e) {
+			Log.error("Exception Occured in getMultipleFamilesInfo() Method, Exception - ",e);
+		}
+		return Action.SUCCESS;
 	}
+	
+	public String getMultipleFamilesInfoForEdit(){
+		try{
+			    jObj = new JSONObject(getTask());
+			    HttpSession session = request.getSession();
+				RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+				Long userId = null;
+				if(user != null && user.getRegistrationID() != null)
+				    userId = user.getRegistrationID();
+				else 
+				  return "error";
+				org.json.JSONArray jSONArray = jObj.getJSONArray("selectedVoters");
+			   if(jObj.getString("task").equalsIgnoreCase("allFamiliesEditInfo")){
+					List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+					VoterHouseInfoVO voterHouseInfoVO = null;
+					for(int i = 0;i<jSONArray.length();i++){
+						JSONObject jSONObject= jSONArray.getJSONObject(i);
+						voterHouseInfoVO = new VoterHouseInfoVO();
+						voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+						voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
+						votersList.add(voterHouseInfoVO);
+					}
+					voterHouseInfoVO1 = votersAnalysisService.getVoterPersonalDetailsList(votersList,userId);
+					return "data";
+			  }else{
+				    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+					VoterHouseInfoVO voterHouseInfoVO = null;
+					List<VoterHouseInfoVO> categoriesList = null;
+					int totalCategCount =  jObj.getInt("total");
+					for(int i = 0;i<jSONArray.length();i++){
+						JSONObject jSONObject= jSONArray.getJSONObject(i);
+						voterHouseInfoVO = new VoterHouseInfoVO();
+						voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+						voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
+						voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+						voterHouseInfoVO.setUserId(userId);
+						categoriesList = new ArrayList<VoterHouseInfoVO>();
+						VoterHouseInfoVO category = null;
+						if(totalCategCount > 0){
+							for(int j=0;j<totalCategCount;j++){
+								category = new VoterHouseInfoVO();
+								String[] categVal = jSONObject.getString("categ"+j).split(",");
+								category.setUserCategoryValueId(new Long(categVal[0]));
+								category.setCategoryValuesId(new Long(categVal[1]));
+								categoriesList.add(category);
+							}
+							
+						}
+						voterHouseInfoVO.setCategoriesList(categoriesList);
+						votersList.add(voterHouseInfoVO);
+					}
+				  status = votersAnalysisService.updateMultipleVoterDetails(votersList);
+				  return "update";
+			  }
+		}catch (Exception e) {
+			Log.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
+			return "exception";
+		}
+	}
+   }
