@@ -838,10 +838,19 @@ function buildInfluencePeopleScopeSelectBox(jsObj,results)
 			dstr += '<td>';
 
 			if(jsObj.taskType == "influence people")
+			{
+				if(results[i].label == 'DISTRICT')
 				dstr += '<select style="width:auto;height:auto;" onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+				else if(results[i].label == 'CONSTITUENCY')
+				dstr += '<select style="width:auto;height:auto;" id="InfluenceConsituencyId" onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+			}
 			else if(jsObj.taskType == "local groups")
+			{
+				if(results[i].label == 'DISTRICT')
 				dstr += '<select style="width:auto;height:auto;" onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
-
+				if(results[i].label == 'CONSTITUENCY')
+				dstr += '<select style="width:auto;height:auto;" id="constituencyId" onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+			}
 			for(var j=0; j<results[i].optionsList.length; j++)
 			{
 				dstr += '<option value="'+results[i].optionsList[j].id+'">'+results[i].optionsList[j].name+'</option>';
