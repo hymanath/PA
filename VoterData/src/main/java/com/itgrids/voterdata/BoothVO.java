@@ -14,7 +14,21 @@ public class BoothVO {
 	private List<Integer> missedVotesList;
 	private boolean isVotesMissed = false;
 	private String fileName;
+	private String constituencyId;
+	private String constituencyName;
 	
+	public String getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(String constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
 	public String getFileName() {
 		return fileName;
 	}
