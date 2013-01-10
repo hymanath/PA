@@ -678,25 +678,25 @@ function refreshParent()
 		<tr id="row3" style="display:none;">
 		<td width="120px" class="tdstyle"><%=ACONSTITUENCY%><font class="required"> * </font></td>
 		<td>
-			<s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList_c" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd')"></s:select>
+			<s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList_c" listKey="id" listValue="name" value="defaultConstituency" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd')"></s:select>
 		</td>
 	</tr>								
 	<tr id="row4" style="display:none;">
 		<td width="120px" class="tdstyle"><%=MANDAL%><font class="required"> * </font></td>
 		<td>
-			<s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
+			<s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList_c" listKey="id" listValue="name" value="defaultMandal" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
 		</td>
 	</tr>					
 	<tr id="row5" style="display:none;">
 		<td width="120px" class="tdstyle"><%=wardOrHamlet%><font class="required"> * </font></td>
 		<td>
-			<s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{#session.villagesList_c}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>
+			<s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="#session.villagesList_c" listKey="id" listValue="name" value="defaultWardOrHamlet" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>
 		</td>
 	</tr>	
 	<tr id="row6" style="display:none;">
 			<td width="120px" class="tdstyle">Booth No</td>
 			<td>
-				<s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth"list="{#session.boothsList_c}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange=""></s:select>
+				<s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth"list="#session.boothsList_c" value="defaultBooth" listKey="id" listValue="name" onchange=""></s:select>
 			</td>
 			<td>
 				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField')"/>
