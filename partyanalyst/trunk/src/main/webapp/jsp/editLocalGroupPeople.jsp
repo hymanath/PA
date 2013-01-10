@@ -92,7 +92,8 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "updateGroupDate")
 									{
 									alert("UpdateSuccessfully");
-									window.location.reload();
+									//window.location.reload();
+									window.opener.location.reload();
 									}
 									
 								}
@@ -260,7 +261,7 @@ function updateGroupDetails()
 	callAjax(jsObj,url);
 	$('#successDiv').show();
 	$('#errorDiv').hide();
-	window.opener.location.reload();
+	//window.opener.location.reload();
 	}
 	
 }
