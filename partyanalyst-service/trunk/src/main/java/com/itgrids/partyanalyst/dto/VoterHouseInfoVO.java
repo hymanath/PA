@@ -45,6 +45,7 @@ public class VoterHouseInfoVO {
 	private List<AddressVO> categories;
 	private List<SelectOptionVO> parties;
 	private Long casteStateId;
+	private String voterIdCardNo;
 	
 	public VoterHouseInfoVO(){
 		
@@ -406,6 +407,14 @@ public class VoterHouseInfoVO {
 
 	public void setCasteStateId(Long casteStateId) {
 		this.casteStateId = casteStateId;
+	}
+
+	public String getVoterIdCardNo() {
+		return voterIdCardNo;
+	}
+
+	public void setVoterIdCardNo(String voterIdCardNo) {
+		this.voterIdCardNo = voterIdCardNo;
 	}
 
 	
