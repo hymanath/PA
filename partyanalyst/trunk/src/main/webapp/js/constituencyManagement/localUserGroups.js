@@ -208,11 +208,11 @@ function getRegionWiseOverviewString(data,type)
 function buildSubLevelLocalGroupPeople(jsObj,data)
 {
 	var results = data.regionWiseOverview;
-
 	var lelmt = document.getElementById("localGroupsLabelSpan");
 	var relmt = document.getElementById("localGroupsRegionsList");
 	var radioelmt = document.getElementById("localGroupsRegionsTypeRadio");
 	var elmt = document.getElementById("localGroupsRegionsData_main");
+	var selectedEle = document.getElementById('constituencyId');
 	
 	if(!lelmt || !relmt || !elmt || !radioelmt)
 		return;
@@ -270,7 +270,22 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 		
 		relmt.innerHTML = rStr;
 	}*/
-	
+	removeSelectElements(selectedEle);
+	for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].regionId;
+			opElmt.text=results[val].regionName;
+
+			try
+			{
+				selectedEle.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedEle.add(opElmt); // IE only
+			}	
+		}
 	var display = true;
 
 	var str = '';
@@ -370,6 +385,17 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 	buildSubRegionsPieChart(results,"localGroups");
 }
 
+function removeSelectElements(elmt)
+	{
+		if(!elmt)
+			return;
+
+		var len=elmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			elmt.remove(i);
+		}	
+	}
 function showLocalGroupPeopleByArea(value,regionTitle,regionTitleId)
 {
 	var regionId = localGroupsLoginUserRegionId;
