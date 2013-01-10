@@ -64,9 +64,31 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private Long defaultState = 0l;
 	private Long defaultDistrict = 0l;
 	private Long defaultConstituency = 0l;
+	private Long defaultWardOrHamlet = 0l;
+	private Long defaultMandal = 0l;
+	private Long defaultBooth = 0l;
 	private Long pConstituencyId;
 	private String position;
 	
+	
+	public Long getDefaultBooth() {
+		return defaultBooth;
+	}
+	public void setDefaultBooth(Long defaultBooth) {
+		this.defaultBooth = defaultBooth;
+	}
+	public Long getDefaultWardOrHamlet() {
+		return defaultWardOrHamlet;
+	}
+	public void setDefaultWardOrHamlet(Long defaultWardOrHamlet) {
+		this.defaultWardOrHamlet = defaultWardOrHamlet;
+	}
+	public Long getDefaultMandal() {
+		return defaultMandal;
+	}
+	public void setDefaultMandal(Long defaultMandal) {
+		this.defaultMandal = defaultMandal;
+	}
 	public String getPosition() {
 		return position;
 	}
@@ -402,6 +424,11 @@ public class InfluencingPeopleAction extends ActionSupport implements
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));
+				setDefaultConstituency(new Long(influencingPeopleBeanVO.getConstituency()));
+				setDefaultMandal(new Long(influencingPeopleBeanVO.getMandal()));
+				setDefaultDistrict(new Long(influencingPeopleBeanVO.getDistrict()));
+				setDefaultWardOrHamlet(new Long(influencingPeopleBeanVO.getWardOrHamlet()));
+				setDefaultBooth(new Long(influencingPeopleBeanVO.getBooth()));
 			}
 			
 		}
