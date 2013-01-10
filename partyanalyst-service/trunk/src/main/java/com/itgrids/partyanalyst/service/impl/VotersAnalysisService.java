@@ -291,7 +291,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setRelativeFirstName(voter.getRelativeName());
 					voterVO.setRelationshipType(voter.getRelationshipType());
 					voterVO.setCast(voter.getCast());
-					voterVO.setCastCatagery(voter.getCastCatagery());	
+					voterVO.setCastCatagery(voter.getCastCatagery());
+					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 					voters.add(voterVO);
 	
 				}
