@@ -99,7 +99,7 @@ padding: 0 0 0 10px;
 #titleDiv
 {
 	color: #ffffff;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     margin-top: 20px;
 	margin-left:auto;
