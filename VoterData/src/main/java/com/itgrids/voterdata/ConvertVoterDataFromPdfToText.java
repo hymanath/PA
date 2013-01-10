@@ -65,11 +65,17 @@ public class ConvertVoterDataFromPdfToText {
     		
     		for(VoterInfo info : votersInfoList)
     		{
+    			try{
     			String insertQuery = "INSERT INTO voter_temp(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
     				" constituency_name, booth_id, booth_name,sno) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
     				"','"+info.getAge()+"','"+info.getHouseNumber()+"','"+info.getGuardianName()+"','"+info.getGuardianRelation()+
     				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"',"+info.getsNo()+")";
     			stmt.executeUpdate(insertQuery);
+    			}catch(Exception e)
+    			{
+    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+")");
+    				System.out.println("Exception is -"+e);
+    			}
     		}
     		
     		return null;
