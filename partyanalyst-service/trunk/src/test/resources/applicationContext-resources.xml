@@ -325,7 +325,10 @@
                 <value>com.itgrids.partyanalyst.model.VoterTemp</value>		    			    		
                 <value>com.itgrids.partyanalyst.model.UserVoterCategory</value>
                 <value>com.itgrids.partyanalyst.model.UserVoterCategoryValue</value>
-                <value>com.itgrids.partyanalyst.model.VoterCategoryValue</value>    			    		
+                <value>com.itgrids.partyanalyst.model.VoterCategoryValue</value>
+                <value>com.itgrids.partyanalyst.model.VoterAgeRange</value>
+	            <value>com.itgrids.partyanalyst.model.VoterFamilyRange</value>
+	            <value>com.itgrids.partyanalyst.model.VoterReportLevel</value>    			    		
 			</list>
 		</property>
 	</bean>
@@ -1702,6 +1705,17 @@
 	<bean id="voterCategoryValueDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCategoryValueDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-				
+		
+	<bean id="voterReportLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterReportLevelDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterAgeRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterAgeRangeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterFamilyRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFamilyRangeDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	</bean>			
 	
 </beans>
