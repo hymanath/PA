@@ -1238,6 +1238,9 @@
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="userDAO" ref="userDAO"/>
 		<property name="userRolesDAO" ref="userRolesDAO"/>
+		<property name="velocityEngine" ref="velocityEngine"></property>
+		<property name="templateVM" value="mailFromAdmin.vm"></property>
+		<property name="mailService" ref="mailService" />
 	</bean>
 	
 	<bean name="completeProblemDetailsService" class="com.itgrids.partyanalyst.service.impl.CompleteProblemDetailsService">
