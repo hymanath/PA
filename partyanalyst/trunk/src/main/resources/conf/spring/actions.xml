@@ -1037,4 +1037,10 @@
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 	</bean>	
 	
+	<bean id="sendUpdatesByemailAction" class="com.itgrids.partyanalyst.web.action.SendUpdatesByemailAction" singleton="false">
+	<property name="socialService" ref="socialService" />
+	<property name="sendUpdatesService" ref="sendUpdatesService"/>
+	<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	</bean>
+	
 </beans>	
