@@ -147,7 +147,7 @@
 		<pattern>/specialPageInfoAction*</pattern>
 		<pattern>/removeVideosAction*</pattern>
 		<pattern>/createThumbNailsAction*</pattern>
-		
+		<pattern>/sendUpdatesByemailAction*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
