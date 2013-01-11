@@ -305,6 +305,9 @@
 				<value>com.itgrids.partyanalyst.model.UserVoterCategory</value>
 	            <value>com.itgrids.partyanalyst.model.UserVoterCategoryValue</value>
 	            <value>com.itgrids.partyanalyst.model.VoterCategoryValue</value>
+	            <value>com.itgrids.partyanalyst.model.VoterAgeRange</value>
+	            <value>com.itgrids.partyanalyst.model.VoterFamilyRange</value>
+	            <value>com.itgrids.partyanalyst.model.VoterReportLevel</value>
 			</list>
 		</property>
 	</bean>
