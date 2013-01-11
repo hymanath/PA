@@ -581,7 +581,7 @@
 	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
 	<div id="influencePeopleData_main">		
 		<div id="influencePeopleData_head">
-			<center> Influencing People in ${regionName}</center>
+			<center style="text-transform:uppercase;"> Influencing People in ${regionName}</center>
 		</div>
 		<div id="influencePeopleData_body" class="yui-skin-sam">		
 			<div id="selectButtonsDiv" class="selectButtonsDiv">
