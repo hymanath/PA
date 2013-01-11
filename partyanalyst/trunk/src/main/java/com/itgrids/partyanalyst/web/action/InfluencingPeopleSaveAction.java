@@ -134,6 +134,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection")
+	
 	public void setState(String state) {
 		this.influencingPeopleBeanVO.setState(state);
 	}
@@ -143,7 +144,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return influencingPeopleBeanVO.getDistrict();
 	}
 
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please Select District")
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select District")
 	public void setDistrict(String district) {
 		this.influencingPeopleBeanVO.setDistrict(district);
 	}
@@ -153,7 +155,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return influencingPeopleBeanVO.getConstituency();
 	}
 
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please Select Constituency")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Constituency")
 	public void setConstituency(String constituency) {
 		this.influencingPeopleBeanVO.setConstituency(constituency);
 	}
@@ -163,7 +166,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return influencingPeopleBeanVO.getMandal();
 	}
 
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Tehsil/Muncipality Selection")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please Select Tehsil/Muncipality")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Tehsil/Muncipality")
 	public void setMandal(String mandal) {
 		this.influencingPeopleBeanVO.setMandal(mandal);
 	}
@@ -180,7 +184,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	public String getVillage() {
 		return influencingPeopleBeanVO.getVillage();
 	}
-
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please Select Village/Ward")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Village")
 	public void setVillage(String village) {
 		this.influencingPeopleBeanVO.setVillage(village);
 	}
@@ -188,7 +193,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	public String getHamlet() {
 		return influencingPeopleBeanVO.getHamlet();
 	}
-
+	
 	public void setHamlet(String hamlet) {
 		this.influencingPeopleBeanVO.setHamlet(hamlet);
 	}
