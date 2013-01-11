@@ -73,6 +73,9 @@ public interface IRegionServiceData {
 	
 	public List<SelectOptionVO> getConstituenciesByDistrictDForUser(Long districtID);
 	
+	public List<SelectOptionVO> getConstituenciesByDistrictIDs(Long districtID);
+
+	
 	
 	
 }
