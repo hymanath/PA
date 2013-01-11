@@ -697,7 +697,7 @@ function buildAllianceDistrictResultsDataTable(results)
 	var innerObj = results.alliancePartiesList;
 	for(var i in innerObj)
 	{	
-		var header = innerObj[i].allianceGroupName + "Alliance Graph";	
+		var header = innerObj[i].allianceGroupName + " Alliance Graph";	
 		var childElmt = document.createElement("div");
 		childElmt.setAttribute('id','allianceChildDiv'+i);
 		
