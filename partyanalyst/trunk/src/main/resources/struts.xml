@@ -4066,7 +4066,7 @@
 		    	<param name="root">resultStatus</param>
 		   </result>
 		</action>
-			
+		
 		<action name="saveFileCommentAction" class="candidateElectionResultsAction" method="saveFileCommentAction">
 		<result type="json" name="success">
 		    	<param name="root">status</param>
@@ -4077,7 +4077,6 @@
 		    <result type="json" name="success">
 				 <param name="root">resultStatus</param>
 			</result>
-			
 		</action>
 		<action name="editLocalGroupAction" class="createLocalGroupAction" method="editLocalGriupDetails">
 			<result>/jsp/editLocalGroupPeople.jsp</result>
@@ -4120,6 +4119,28 @@
 				 <param name="root">"exception"</param>
 			</result>		
 		</action>
+		<action name="sendUpdatesByemailAction" class="sendUpdatesByemailAction">
+			<result name="success">/jsp/sendUpdatesByemail.jsp</result>
+		</action>
+
+		<action name="sendUpdatesByemailsAction" class="sendUpdatesByemailAction" method="callAjaxforSendemails">
+			<result type="json" name="success">
+			<param name="root">list</param>
+			</result>
+		</action>
+
+		<action name="sendUpdatesByemailsForgettingUsers" class="sendUpdatesByemailAction" method="callAjaxforSendemails">
+			<result type="json" name="success">
+			<param name="root">regVoForEmail</param>
+			</result>
+		</action>
+		
+		<action name="sendEmailForSelectedUsersAction" class="sendUpdatesByemailAction" method="callAjaxforSendemails">
+			<result type="json" name="success">
+			<param name="root">result</param>
+			</result>
+		</action>
+		
 		
 	</package>
 </struts>      
