@@ -28,13 +28,13 @@ public class StaticUserDesignationDAO extends GenericDaoHibernate<StaticUserDesi
 	@SuppressWarnings("unchecked")
 	public List getDesignationsByStaticLocalGroupId(Long staticLocalGroupId) {
 		
-		return getHibernateTemplate().find("select model.staticUserDesignationId,model.designationType from "+
+		return getHibernateTemplate().find("select distinct(model.designationType),model.staticUserDesignationId from "+
 				"StaticUserDesignation model where model.staticLocalGroup.staticLocalGroupId = ?",staticLocalGroupId);
 	}
 	
 	public List<Object[]> getDesignations()
 	{
-		return getHibernateTemplate().find("select model.staticUserDesignationId , model.designationType from StaticUserDesignation model");
+		return getHibernateTemplate().find("select distinct(model.designationType),model.staticUserDesignationId  from StaticUserDesignation model");
 		
 	}
 
