@@ -39,13 +39,13 @@
 		var hamletFieldEl = document.getElementById("hamletField_s");
 		var boothFieldEl = document.getElementById("boothField_s");
 
-		var selectedState = 0;
+		var selectedState =0;
 		var selectedDistrict = 0;
 		var selectedConstituency = 0;
 		var selectedMandal = 0;
 		var selectedHamlet = 0;
 		var selectedBooth = 0;
-
+		
 		if(stateFieldEl.options.length > 0)
 			selectedState = stateFieldEl.options[stateFieldEl.selectedIndex].value;
 		if(districtFieldEl.options.length > 0)
@@ -125,6 +125,7 @@
 	
 	function showPartyCommittee(value)
 	{
+		
 		var cadreLevelTableEl = document.getElementById("cadreLevelTable");
 		var cadreLevelFieldEl = document.getElementById("scopeLevel");
 		var cadreLevelDistrictEl = document.getElementById("cadreLevelDistrict");
@@ -153,9 +154,11 @@
 			
 		} else if (value == "Normal")
 		{
+			
 			cadreLevelTableEl.style.display ='none';
 			cadreLevelFieldEl.selectedIndex = '1';
 			setCadreValue('1','onChange');
+
 		}
 				
 	}
@@ -620,7 +623,13 @@
 	}
 	function validationMethod()
     {
+		
 	   //alert("Please Select Valid Location");
+		var memberTypeNormal = document.getElementById('memberTypeNormal');
+		if(memberTypeNormal.checked)
+		{
+			selectedState = 1;
+		}
 	  if(selectedState == 0 && currentTask == 'new'){
 	   alert("Please Select Valid Location");
          return false;
