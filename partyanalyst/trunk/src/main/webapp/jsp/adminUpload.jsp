@@ -313,7 +313,8 @@
                                 </td>
 								<td> <fieldset class="f3" style="height:88px;">
                                     <legend class="l2" style="width:65px;">Send Sms</legend>
-                                   <a class="alinkstyle" href='<s:url action="sendUpdatesAction"/>'><b>Send SMS To Free User</b></a>
+                                   <a class="alinkstyle" href='<s:url action="sendUpdatesAction"/>'><b>Send SMS To Free User</b></a><br><br>
+								   <a class="alinkstyle" href='<s:url action="sendUpdatesByemailAction"/>'><b>Send Emails To  User</b></a>
 									
                                     </fieldset>
                                 </td>
