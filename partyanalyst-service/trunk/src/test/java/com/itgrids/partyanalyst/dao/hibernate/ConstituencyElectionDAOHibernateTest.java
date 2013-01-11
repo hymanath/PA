@@ -209,7 +209,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(params[0] + " \t" + params[1]);	
 			}
 		}
-	}
+	}*/
 	public void testGetConstituenciesHavingMaxSpan()
 	{
 		List<Long> elecIds = new ArrayList<Long>(0);
@@ -221,7 +221,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		elecIds.add(28l);
 		elecIds.add(29l);
 	//4, 5, 23, 24, 25, 28, 29
-		segregateAllConstituencies(7L,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l,elecIds,IConstants.OTHERS);
+		segregateAllConstituencies(1L,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l,elecIds,IConstants.OTHERS);
 		//segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l,elecIds);
 	}
 	
@@ -229,12 +229,14 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId,List<Long> elecIds,String type){
 		try{
 			List result = constituencyElectionDAO.getConstituenciesHavingMaxSpan(electionSubType,electionType,stateId,elecIds,type);	
-			System.out.println(result.size());			
+			//System.out.println(result.size());	
+			for(int i=0;i<result.size();i++)
+			System.out.println(result.get(i).toString());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	
+/*	
 	@Test
 	public void testGetLatestElectionHappenedInConstituency(){
 		
@@ -273,7 +275,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(object.toString());
 	}*/
 	
-	public void testGetOldAndNewConstituenciesCountInAElection()
+	/*public void testGetOldAndNewConstituenciesCountInAElection()
 	{
 		List<Object[]> list = constituencyElectionDAO.getOldAndNewConstituenciesInAElection(38l);
 		
@@ -283,5 +285,5 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println(params[0]+"---"+params[1]);
 		}
-	}
+	}*/
 }
