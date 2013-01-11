@@ -61,6 +61,11 @@
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+
+<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+
 <script type = "text/javascript">
 var accessValue = '${sessionScope.USER.accessValue}';
 var accessType = '${sessionScope.USER.accessType}';
@@ -445,7 +450,7 @@ function setCadreIdToProblem()
 				</table>
 			</div>
 
-			<div id="filterOptionsCadresSearch">
+			<div id="filterOptionsCadresSearch" class="fullSaintDesc" style="display:none">
 				<table width="100%" class="cadreSearchInputTable">
 				<tr>
 					<th valign="top" align="left"><font color="#FF0000"> * </font> Social Status</th>
@@ -564,7 +569,8 @@ function setCadreIdToProblem()
 						
 					</td>
 					<td align="center">
-						<a href="javascript:{}" onclick="expandFilterOptions()"/>Add filter to ${windowTask}
+						<a class="toggleDiv" href="javascript:{}" />Add filter to ${windowTask}
+						<a class="toggleDiv1" style="display:none" href="javascript:{}" />Remove filter to ${windowTask}
 					</td>
 				</tr>
 			</table>	
@@ -584,8 +590,25 @@ function setCadreIdToProblem()
 		<div id="cadreProblemSelectDiv" style="text-align:center;"></div>
 	</div>
 
-	<script type="text/javascript">		
-		
+	<script type="text/javascript">	
+		expandFilterOptions();
+
+		$('document').ready(function(){
+				$(".toggleDiv").click(function(){
+					$(".toggleDiv").hide();
+					$(".toggleDiv1").show();
+				$(".fullSaintDesc").toggle();
+				return false;
+			 });  
+
+			 $(".toggleDiv1").click(function(){
+					$(".toggleDiv1").hide();
+					$(".toggleDiv").show();
+				$(".fullSaintDesc").toggle();
+				return false;
+			 });  
+		});
+
 		 <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
