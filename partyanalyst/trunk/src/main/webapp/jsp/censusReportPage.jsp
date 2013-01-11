@@ -1272,6 +1272,7 @@ select
 
 	function hideDistrictSelect()
 	{
+		$("#stateList").val(0);
 		document.getElementById("districtList").disabled= true; 
 	}
 	
