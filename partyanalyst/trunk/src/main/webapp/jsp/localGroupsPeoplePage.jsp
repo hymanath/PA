@@ -526,7 +526,7 @@ function redirectToNewLocalGroupCreation(windowTask,categoryId,localUserGroupId)
 	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
 	<div id="localGroupsPeopleData_main">
 		<div id="localGroupsPeopleData_head">
-			<center>${regionTitle} Details In ${regionName} ${regionType}</center>
+			<center style="text-transform: uppercase;">${regionTitle} Details In ${regionName} ${regionType}</center>
 		</div>
 		<div id="localGroupsPeopleData_body" class="yui-skin-sam">	
 		
