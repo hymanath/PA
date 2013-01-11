@@ -1313,6 +1313,18 @@ public class RegionServiceDataImp implements IRegionServiceData {
  		}
 		return constsList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesByDistrictIDs(Long districtID){
+		List<Constituency> constituencies = constituencyDAO.findConstituenciesByDistrictId(districtID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Constituency constituency : constituencies){
+			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+		}
+		Collections.sort(result);
+		return result;
+	}
+	
 }
 	
  
