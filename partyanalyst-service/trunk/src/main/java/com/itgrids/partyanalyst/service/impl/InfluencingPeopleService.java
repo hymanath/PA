@@ -3269,7 +3269,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			Iterator lstItr = designationsList.listIterator();
 			while(lstItr.hasNext()){
 				Object[] values = (Object[])lstItr.next();
-				designations.add(new SelectOptionVO((Long)values[0],(String)values[1]));
+				designations.add(new SelectOptionVO((Long)values[1],(String)values[0]));
 			}
 		}
 		
@@ -3719,8 +3719,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		SelectOptionVO selectOptionVO = null;
 		for (Object[] designationLists : designationList) {
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId((Long)designationLists[0]);
-			selectOptionVO.setName(designationLists[1] != null ? designationLists[1].toString():"");
+			selectOptionVO.setId((Long)designationLists[1]);
+			selectOptionVO.setName(designationLists[0] != null ? designationLists[0].toString():"");
 			selectOptionList.add(selectOptionVO);
 		}
 		
