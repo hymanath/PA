@@ -189,6 +189,7 @@
 		<property name="partyDetailsService" ref="partyDetailsService" />
 		<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 	     <property name="thumbnailService" ref="thumbnailService"></property>
+	     <property name="newsMonitoringService" ref="newsMonitoringService"></property>
 	</bean>
 	<!--  <bean id="candidateProfileAction" class="com.itgrids.partyanalyst.web.action.CandidateProfileAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />

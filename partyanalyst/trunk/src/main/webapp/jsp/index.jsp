@@ -340,8 +340,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 			<a href="javascript:{};" onclick="openShowNews();" class="grad" style="text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News Articles</a>
 			<span class="tempstyle">View and Analyze News Articels</span>
 		</div>
+
+		<div style="float:right;margin:10px 50px 0px 0px;"><a href="generatePdfForGallaryAction.action" class="btn btn-success">Generate Pdf For Gallry</a></div>
 		<div id="showNewsCountTable" style="padding-top:50px"></div>
 		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
+
+		
    </c:if>
  </div>
 </div>
