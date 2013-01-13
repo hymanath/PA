@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
+import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -201,4 +202,11 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType);
 	 
 	 public String saveFileComment(Long fileId , String comment);
+	 
+	 public List<SelectOptionVO> getFilesOfAGallary(Long gallaryId);
+	 
+	 public PdfGenerationVO generatePdfForAGallary(PdfGenerationVO pdfGenerationVO);
+	 
+	 
+	 public List<SelectOptionVO> getCandidateGallariesByCategory(Long categoryId , Long registrationId);
 }
