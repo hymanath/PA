@@ -563,5 +563,8 @@ public interface IConstants {
 	public static final int LARGE_HEIGHT  = 240;
 	
 	
+	public static final String GALLARY_PDF_FILES= "gallary_pdf_files";
+	
+	
 	
 }
