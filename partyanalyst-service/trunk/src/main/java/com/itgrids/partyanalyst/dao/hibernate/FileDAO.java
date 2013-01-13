@@ -29,4 +29,16 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	{
 		return getHibernateTemplate().find("select model.category.categoryId,model.category.categoryType from File model where model.fileId = ?",fileId);
 	}
+	
+	
+	public List<File> getAllFilesByFileIds(List<Long> fileIds){
+		
+		Query query = getSession().createQuery("select model from File model where model.fileId in(:fileIds)");
+		
+		query.setParameterList("fileIds", fileIds);
+		
+		return query.list();
+		
+		
+	}
 }

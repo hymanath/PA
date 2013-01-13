@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1427,6 +1428,77 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
    }
    
    
+   public List<File> getAllFilesInAGallry(String queryString,PdfGenerationVO pdfGenerationVO){
+	   
+	   
+	   Query query = getSession().createQuery("select model.file from FileGallary model " +
+	   		"where "+queryString+ " model.gallary.gallaryId = :gallaryId ");	   
+	   
+	   
+	   //if( pdfGenerationVO.getSourceId() != 0L)
+		//   query.setParameter("sourceId",pdfGenerationVO.getSourceId());
+	   
+	   
+	   if(!pdfGenerationVO.getAllFiles().equalsIgnoreCase("true")){
+		   
+	 
+		   if(pdfGenerationVO.getLanguageId() != 0L)
+			   query.setParameter("languageId", pdfGenerationVO.getLanguageId());
+		   
+		  // if(pdfGenerationVO.getCategoryId() != 0L) 
+			  // query.setParameter("categoryId", pdfGenerationVO.getCategoryId());
+		   
+		   if(pdfGenerationVO.getImportanceId() != 0L)
+			   query.setParameter("newsImportanceId", pdfGenerationVO.getImportanceId());
+		   
+		   if(pdfGenerationVO.getImpactLevelId() != 0L)
+			   query.setParameter("regionScopesId", pdfGenerationVO.getImpactLevelId());
+		   
+		   
+		   if(pdfGenerationVO.getBetweenDates().equalsIgnoreCase("true")){
+			   
+			   if(!pdfGenerationVO.getStartDate().equalsIgnoreCase(""))
+				   query.setParameter("startDate", pdfGenerationVO.getStartDateInDateFormat());
+			   
+			   if(!pdfGenerationVO.getEndDate().equalsIgnoreCase(""))
+				   query.setParameter("endDate", pdfGenerationVO.getEndDateInDateFormat());
+			   
+		   }
+	   }
+	   query.setParameter("gallaryId", pdfGenerationVO.getGallaryId());	   
+	   query.setParameter("deleteInd", "false");
+	   query.setParameter("categoryId", pdfGenerationVO.getCategoryId());
+	   
+	   return query.list();
+	   
+   }
    
-     
+   
+   public List<Object[]> getCandidateGallariesByCategory(List<Long> candidateds , Long categoryId){	   
+	   
+	   String queryString = "select distinct model.gallary.gallaryId , model.gallary.name from FileGallary model" +
+	   		" where model.gallary.candidate.candidateId in (:candidateds) and model.isDelete = :delInd " +
+	   		" and model.file.category.categoryId = :categoryId";
+	   
+	   Query query = null;
+	   try{
+	   
+	    query = getSession().createQuery(queryString);
+	   
+	   query.setParameterList("candidateds",candidateds);
+	   query.setParameter("delInd", "false");
+	   query.setParameter("categoryId", categoryId);
+	   
+	  
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   
+	   }
+	   
+	   return query.list();
+	   
+	   
+   }
+   
+   
 }
