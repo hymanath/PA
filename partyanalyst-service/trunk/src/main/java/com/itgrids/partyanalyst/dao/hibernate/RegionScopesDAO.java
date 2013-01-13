@@ -18,4 +18,11 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 	{
 		return getHibernateTemplate().find("select model.scope from RegionScopes model where model.regionScopesId = ? ",regionScopesId);
 	}
+	
+	
+	public List<Object[]> getAllRegionScopes(){
+		
+		   return getHibernateTemplate().find("select model.regionScopesId,model.scope from RegionScopes  model order by model.scope ");
+		
+	}
 }
