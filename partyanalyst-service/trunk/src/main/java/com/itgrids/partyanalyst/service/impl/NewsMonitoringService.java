@@ -804,4 +804,27 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 fileVOSourceLanguageList.add(fileVOSourceLanguage);
 			 
 		}
+	 
+	 public List<FileVO> getAllRegionScopes(){
+			log.debug("Enter into getAllRegionScopes Method of NewsMonitoringService ");
+		    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
+		    FileVO fileVO = null;
+		 try{ 
+			List<Object[]>  regionScopesList = regionScopesDAO.getAllRegionScopes();
+			for(Object[] regionScope: regionScopesList){
+				 fileVO = new FileVO();
+				 fileVO.setIds((Long)regionScope[0]);
+				 fileVO.setNames(regionScope[1].toString());
+				 
+				 returnFileVOList.add(fileVO);
+			}
+		  }
+		 catch(Exception e){
+		   log.error("Exception rised in  getAllRegionScopes Method of NewsMonitoringService", e);
+		   e.printStackTrace();
+		 }
+		return returnFileVOList;
+	  }
+		
+	
 }
