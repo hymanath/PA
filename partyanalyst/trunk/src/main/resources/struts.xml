@@ -4141,6 +4141,45 @@
 			</result>
 		</action>
 		
+						
+		<action name="generatePdfForGallaryAction" class="candidateElectionResultsAction" method="getAllGallariesForUser">
+           <result name="success">/jsp/generatePdfForGallary.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
+        </action>
+        
+        
+        
+        <action name="getFilesInAGallary" class="candidateElectionResultsAction" method="getFilesInAGallary">
+        <result type="json" name="success">
+		    	<param name="root">fileDetails</param>
+		   </result>        
+        </action>
+        
+        
+        <action name="callAjaxToGeneratePdfFileForAgallary" class="candidateElectionResultsAction" method="callAjaxToGeneratePdfFileForAgallary">
+        <result type="json" name="success">
+		    	<param name="root">pdfGenerationVO</param>
+		   </result>  
+        </action>
+        
+       <action name="generatePdfForAGallary" class="candidateElectionResultsAction" method="generatePdfForAGallary">
+        
+	         <result name="success" type="stream">	         
+	           <param name="contentType">application/octet-stream</param>
+		       <param name="inputName">fileInputStream</param>
+		       <param name="contentDisposition">attachment;filename=${pdfName}</param>
+		       <param name="bufferSize">1024</param>
+	         </result>
+        
+       </action>
+       
+       
+       <action name="getGallariesByCategory" class="candidateElectionResultsAction" method="getGallariesByCategory">
+       <result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>
+       </action>
+		
 		
 	</package>
 </struts>      
