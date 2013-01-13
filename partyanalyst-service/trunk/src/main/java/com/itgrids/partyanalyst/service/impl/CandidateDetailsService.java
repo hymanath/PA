@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
@@ -29,6 +32,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -93,6 +103,7 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -4669,6 +4680,38 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	}
 
 	
+	public List<SelectOptionVO> getCandidateGallariesByCategory(Long categoryId , Long registrationId){
+		
+		
+		List<Long> candidateIds = new ArrayList<Long>();
+		
+		List<SelectOptionVO> gallaries = new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> candidateDetails = userCandidateRelationDAO.getCandidatesOfAUser(registrationId);
+		
+		
+		for(Object[] obj:candidateDetails)
+			candidateIds.add((Long)obj[0]);
+		
+		
+		List<Object[]> gallaryList = fileGallaryDAO.getCandidateGallariesByCategory(candidateIds , categoryId);
+		
+		
+		for(Object[] obj:gallaryList){
+			
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			
+			selectOptionVO.setId((Long)obj[0]);
+			selectOptionVO.setName(obj[1].toString());
+			
+			gallaries.add(selectOptionVO);
+			
+			
+		}
+		return gallaries;
+		
+	}
+	
 	
 	/**
 	 * This method will save comment for a file
@@ -4691,7 +4734,317 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}
 		
 		return IConstants.SUCCESS;	
+	}
 	
+	
+	public List<SelectOptionVO> getFilesOfAGallary(Long gallaryId){
+		
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		
+		List<Long> gallaryIdsList = new ArrayList<Long>();
+		gallaryIdsList.add(gallaryId);
+		
+		List<FileGallary> fileGallaryList = fileGallaryDAO
+				.getFilesOfInGallaries(gallaryIdsList);
+		
+		for(FileGallary fileGallary : fileGallaryList){			
+			
+			SelectOptionVO option = new SelectOptionVO();
+			
+			option.setId(fileGallary.getFileGallaryId());
+			option.setName(fileGallary.getFile().getFileDescription());
+			
+			returnList.add(option);
+		}
+		
+		return returnList;		
+	}
+
+/**
+ * This method will prepare query to get files in a gallery based on given criteria
+ * @param pdfGenerationVO
+ * @return fileName
+ */
+public PdfGenerationVO generatePdfForAGallary(PdfGenerationVO pdfGenerationVO){
+	
+	log.debug("Entered into the generatePdfForAGallary service method");
+	
+	 String fileName="";
+	
+	try{
+		
+		String queryString ="";
+		
+		if(!pdfGenerationVO.getAllFiles().equalsIgnoreCase("true")){
+			
+			//if(pdfGenerationVO.getCategoryId() != 0L) 
+			//	queryString += " model.file.category.categoryId = :categoryId and ";
+			
+			if(pdfGenerationVO.getImportanceId() != 0L)
+				queryString += " model.file.newsImportance.newsImportanceId = :newsImportanceId and ";			
+			
+			if(pdfGenerationVO.getLanguageId() != 0L)
+				queryString += " model.file.language.languageId = :languageId and ";			
+			
+			if(pdfGenerationVO.getImpactLevelId() != 0L)
+				queryString += " model.file.regionScopes.regionScopesId = :regionScopesId and ";
+				
+		
+			
+			DateFormat formatter = new SimpleDateFormat("MM/DD/yyyy");
+			
+			if(pdfGenerationVO.getBetweenDates().equalsIgnoreCase("true")){
+				
+				Date startDate = null;
+				Date endDate = null;
+				
+				if(!pdfGenerationVO.getStartDate().equalsIgnoreCase("")){
+					
+					String[] strtDt = pdfGenerationVO.getStartDate().split("/");
+					 //startDate = formatter.parse(pdfGenerationVO.getStartDate());
+					
+					int startingMonth = Integer.parseInt(strtDt[0]);
+					int startingDate = Integer.parseInt(strtDt[1]);
+					int startingYear = Integer.parseInt(strtDt[2]);
+					
+					
+					startDate = new Date();
+					startDate.setDate(startingDate);
+					startDate.setMonth(startingMonth - 1);
+					startDate.setYear(startingYear - 1900);
+					
+					 pdfGenerationVO.setStartDateInDateFormat(startDate);
+					
+					// pdfGenerationVO.setStartDateInDateFormat(startDate);
+				}
+				if(!pdfGenerationVO.getEndDate().equalsIgnoreCase("")){				
+					 endDate = formatter.parse(pdfGenerationVO.getEndDate());
+					 
+					 String[] endeDt = pdfGenerationVO.getEndDate().split("/");
+					 
+					    int endingMonth = Integer.parseInt(endeDt[0]);
+						int endingDate = Integer.parseInt(endeDt[1]);
+						int endingYear = Integer.parseInt(endeDt[2]);
+						
+						
+						 endDate = new Date();
+						 endDate.setDate(endingDate);
+						 endDate.setMonth(endingMonth - 1);
+						 endDate.setYear(endingYear - 1900);
+						
+					 //pdfGenerationVO.setEndDateInDateFormat(endDate);
+						pdfGenerationVO.setEndDateInDateFormat(endDate);
+						
+				}
+				
+				if(startDate != null && endDate != null)				
+					queryString += "  model.file.fileDate >= :startDate and model.file.fileDate <= :endDate and ";
+				else if(startDate == null && endDate != null)
+					queryString += "  model.file.fileDate <= :endDate and ";
+				else if(endDate == null && startDate != null)
+					queryString += "  model.file.fileDate >= :startDate and ";
+				
+				
+			}
+		}
+			
+		    queryString += " model.file.category.categoryId = :categoryId and ";
+			queryString += " model.isDelete = :deleteInd and ";
+			
+		
+		
+		
+			pdfGenerationVO = preparePdfWithMatchedFilesContentReturnFilePath(queryString , pdfGenerationVO);
+		
+	}catch(Exception e){
+		log.error("Exception raised in  generatePdfForAGallary service method");
+		e.printStackTrace();
+		return null;
+	}
+	
+	return pdfGenerationVO;
+}
+
+
+/**
+ * This method will get the file details for a gallery based on given criteria
+ * @return
+ */
+private PdfGenerationVO preparePdfWithMatchedFilesContentReturnFilePath(String queryString,PdfGenerationVO pdfGenerationVO ) throws Exception{
+	
+	
+	String noFiles = "false";
+	List<FileVO> filesList = new ArrayList<FileVO>();	
+	List<Long> fileIds = new ArrayList<Long>();	
+	
+	log.debug("Entered into the preparePdfWithMatchedFilesContentReturnFilePath service method");
+	
+	try{
+	
+	
+	List<File> filesInGallary = fileGallaryDAO.getAllFilesInAGallry(queryString,pdfGenerationVO);
+	
+	for(File file:filesInGallary)			
+		fileIds.add(file.getFileId());
+	
+	
+	if(filesInGallary != null && filesInGallary.size() >0){
+		
+	
+	  List<File> fileList = fileDAO.getAllFilesByFileIds(fileIds);		
+			
+		for(File file :fileList){
+					
+			FileVO fileCompleteDetails = new FileVO();
+					
+			fileCompleteDetails.setDescription(file.getFileDescription());
+					
+			List<FileVO> fileSourceLanguageList = new ArrayList<FileVO>();
+					 
+				 for(FileSourceLanguage fileSource :file.getFileSourceLanguage()){
+							 
+					FileVO fileSourceLanguage = new FileVO();
+							 
+					fileSourceLanguage.setSource(fileSource.getSource().getSource());
+					fileSourceLanguage.setSourceId(fileSource.getSource().getSourceId());
+						   
+					List<FileVO> filePathList = new ArrayList<FileVO>();	
+						       
+						for(FilePaths filePath :fileSource.getFilePaths()){					   
+							FileVO filePath1 = new FileVO();
+							filePath1.setFilePath1(filePath.getFilePath());
+							filePathList.add(filePath1);
+						}
+							   
+					fileSourceLanguage.setFileVOList(filePathList);				 
+					fileSourceLanguageList.add(fileSourceLanguage);
+						 
+				 }				 
+				    fileCompleteDetails.setFileVOList(fileSourceLanguageList); 				 
+				    filesList.add(fileCompleteDetails);
+		  }	
+		
+		Random random = new Random();
+		
+		pdfGenerationVO.setPdfName(pdfGenerationVO.getGallaryName().replaceAll(" ","_")+"_"+random.nextInt(1000000000));
+			
+		pdfGenerationVO =  generatePdf(filesList , pdfGenerationVO);
+			  
+			  
+	}else
+		noFiles = "true";	
+	
+	pdfGenerationVO.setNoFilesExist(noFiles);
+	
+	}catch(Exception e){
+		
+		log.error("Exception raised in preparePdfWithMatchedFilesContentReturnFilePath service method :"+e);
+		e.printStackTrace();
+		return null;
 		
 	}
+   return pdfGenerationVO;	
+}
+
+
+/**
+ * This method will generate pdf for files in a gallery
+ * @param filesList
+ * @throws Exception
+ */
+public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfGenerationVO) throws Exception{
+	log.debug("Entered into the generatePdf service method");	
+	String pathToSave = pdfGenerationVO.getFilePathToSave()+"\\"+pdfGenerationVO.getGallaryName().trim()+".pdf";
+	
+	pdfGenerationVO.setPdfPath(pathToSave);
+	try {
+		
+		Document document = new Document();
+		//PdfWriter.getInstance(document , new FileOutputStream("D:/Samba/ItextExamples/"+pdfGenerationVO.getGallaryName()+".pdf"));
+		PdfWriter.getInstance(document , new FileOutputStream(pathToSave));
+		document.open();
+		
+		Paragraph preface = new Paragraph();
+		
+		preface.add(new Paragraph(pdfGenerationVO.getGallaryName()+" Gallary   Files", new Font(Font.FontFamily.TIMES_ROMAN, 22,
+			      Font.BOLD , BaseColor.DARK_GRAY)));
+		
+		for(int i=0;i<2;i++)
+			preface.add(new Paragraph(" "));
+		
+		preface.add(new Paragraph("Report generated  On" + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new Font(Font.FontFamily.TIMES_ROMAN, 12,
+					      Font.BOLD ,BaseColor.RED)));
+		
+		document.add(preface);
+		
+		document.newPage();
+		
+		for(FileVO mainFile:filesList){	
+			
+			 Chunk underline = new Chunk(mainFile.getDescription());
+			 underline.setUnderline(0.1f, -2f);
+			 int j=0;
+			
+			for(FileVO fileSource:mainFile.getFileVOList()){
+				
+				
+				 document.newPage();
+				
+			      if(pdfGenerationVO.getSourceId() != 0)
+			    	  if(fileSource.getSourceId().longValue() != pdfGenerationVO.getSourceId().longValue())
+			    		  continue;
+			      
+			      if( j == 0)
+			    	  document.add(underline);
+			      
+			    
+				
+				Paragraph sourcePage = new Paragraph();				
+				
+				sourcePage.add("SOURCE:"+fileSource.getSource());
+				
+				 for(int i=0;i<2;i++)
+					 sourcePage.add(new Paragraph(" "));
+				 
+				 for(FileVO filePath:fileSource.getFileVOList()){
+					 String path = filePath.getFilePath1();
+					 
+					// path  = "C:/Program Files/Apache Software Foundation/Tomcat 6.0/webapps/PartyAnalyst/"+path;
+					 
+					 path  = pdfGenerationVO.getImagePath()+"//"+path;
+					 
+					 
+					Image image = Image.getInstance(path);
+					// Image image = Image.getInstance(pathToSave);
+					 image.scaleToFit(400, 400);	
+					 //image.scaleToFit(500, 500);
+					// image.scaleToFit(450, 450);
+					 sourcePage.add(image);
+					 
+					 sourcePage.add(new Paragraph(" "));					 
+				 }				 
+				 document.add(sourcePage);
+				 
+				  j++;
+			}
+			
+			
+			
+			document.newPage();
+			
+		}
+		document.close();
+		
+	} catch (Exception e) {
+		
+		log.error("Exception raised in  generatePdf service method :" +e);
+		e.printStackTrace();
+		return null;
+	}
+	
+	
+	return pdfGenerationVO;
+	
+}
 }
