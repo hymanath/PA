@@ -12,4 +12,6 @@ public interface IFileDAO extends GenericDao<File, Long> {
 	public List<Object[]> getFileByFileId(Long fileId);
 	
 	public List<Object[]> getCategoryDetailsOfAFile(Long fileId);
+	
+	public List<File> getAllFilesByFileIds(List<Long> fileIds);
 }
