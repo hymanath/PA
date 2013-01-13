@@ -1066,10 +1066,10 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>Caste</th>';
 		str+='<th>Caste Category</th>';
 		str +='<th>Total Voters</th>';
-		str +='<th>Caste Population</th>';
-		str +='<th>Male Population</th>';
-		str +='<th>Female Population</th>';
-		str +='<th>CastePercentage</th>';
+		str +='<th>Caste Voters</th>';
+		str +='<th>Male Voters</th>';
+		str +='<th>Female Voters</th>';
+		str +='<th>Caste Percentage</th>';
 		
 		str+='</tr>';
 		str+='</thead>';
@@ -1590,9 +1590,9 @@ function buildCastPiechart(myResults,jsObj)
           str+='   <tr>';
           str+='     <th>Caste</th>';
 		     str+='	 <th>Caste category</th>';
-		  str+='     <th>Caste Population</th>';
-          str+='     <th>Male Population</th>';
-          str+='     <th>Female Population</th>';
+		  str+='     <th>Voters</th>';
+          str+='     <th>Male Voters</th>';
+          str+='     <th>Female Voters</th>';
           str+='	 <th>Caste Percentage</th>';
           str+='   </tr>';
           str+='  </thead>';
@@ -1680,9 +1680,9 @@ function buildCastPiechart(myResults,jsObj)
 	var localCastStatsColumnDefs = [ 
 		    	            
 		    	            {key:"caste", label: "Caste", sortable: true},
-							{key:"castePopulation", label: "Caste Population", formatter:"number", sortable: true},
-		    				{key:"malePopulation", label: "Male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"femalePopulation", label: "Female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"castePopulation", label: "Caste Voters", formatter:"number", sortable: true},
+		    				{key:"malePopulation", label: "Male Voters", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
+							{key:"femalePopulation", label: "Female Voters", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
 							{key:"castePercentage", label: "Caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
 		    	        ]; 
