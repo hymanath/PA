@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.ParseException;
@@ -36,15 +37,16 @@ import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
+import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IThumbnailService;
-import com.itgrids.partyanalyst.service.impl.ThumbnailService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -126,12 +128,112 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long regId;
 	private String status;
 	private String candidatePageLoadingFirstTime;
+	FileVO  fileDetails;
 	
+	private INewsMonitoringService  newsMonitoringService;
+	
+	
+	private List<FileVO> sourceList;
+	private List<FileVO> newsImportanceList ;
+	private List<FileVO> regionsScopesList ;
+	private List<FileVO> categoryList ;
+	private PdfGenerationVO  pdfGenerationVO ;
+	
+	
+	public PdfGenerationVO getPdfGenerationVO() {
+		return pdfGenerationVO;
+	}
+
+
+	public void setPdfGenerationVO(PdfGenerationVO pdfGenerationVO) {
+		this.pdfGenerationVO = pdfGenerationVO;
+	}
+
+
+	public List<FileVO> getSourceList() {
+		return sourceList;
+	}
+
+
+	public void setSourceList(List<FileVO> sourceList) {
+		this.sourceList = sourceList;
+	}
+
+
+	public List<FileVO> getNewsImportanceList() {
+		return newsImportanceList;
+	}
+
+
+	public void setNewsImportanceList(List<FileVO> newsImportanceList) {
+		this.newsImportanceList = newsImportanceList;
+	}
+
+
+	public List<FileVO> getRegionsScopesList() {
+		return regionsScopesList;
+	}
+
+
+	public void setRegionsScopesList(List<FileVO> regionsScopesList) {
+		this.regionsScopesList = regionsScopesList;
+	}
+
+
+	public List<FileVO> getCategoryList() {
+		return categoryList;
+	}
+
+
+	public void setCategoryList(List<FileVO> categoryList) {
+		this.categoryList = categoryList;
+	}
+
+
+	public INewsMonitoringService getNewsMonitoringService() {
+		return newsMonitoringService;
+	}
+
+
+	public void setNewsMonitoringService(
+			INewsMonitoringService newsMonitoringService) {
+		this.newsMonitoringService = newsMonitoringService;
+	}
+
 
 	private File imageForDisplay;
 	private String imageForDisplayContentType;
 	private String imageForDisplayFileName;
     private  IThumbnailService thumbnailService;
+    private String pdfPath;
+   private String pdfName;
+
+	public String getPdfName() {
+	return pdfName;
+	}
+	
+	
+	public void setPdfName(String pdfName) {
+		this.pdfName = pdfName;
+	}
+
+
+	public String getPdfPath() {
+		return pdfPath;
+	}
+
+
+	public void setPdfPath(String pdfPath) {
+		this.pdfPath = pdfPath;
+	}
+
+
+	private InputStream fileInputStream;
+    
+    public InputStream getFileInputStream() {
+		return fileInputStream;
+	}
+ 
 	
 	public IThumbnailService getThumbnailService() {
 		return thumbnailService;
@@ -147,6 +249,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+
+	public FileVO getFileDetails() {
+		return fileDetails;
+	}
+
+	public void setFileDetails(FileVO fileDetails) {
+		this.fileDetails = fileDetails;
 	}
 	public File getImageForDisplay() {
 		return imageForDisplay;
@@ -1504,6 +1615,175 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 status = candidateDetailsService.saveFileComment(fileId,comment);
 		 
 		return Action.SUCCESS;
+		
+		
+	}
+	
+	
+	public String getGallariesByCategory(){
+		
+		try{	 
+			 jObj = new JSONObject(getTask());  
+			 }catch(Exception e){
+				 e.printStackTrace(); 
+			 }
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		
+		Long categoryId = jObj.getLong("categoryId");
+		Long registrationId = regVO.getRegistrationID();
+		
+		selectOptionList = candidateDetailsService.getCandidateGallariesByCategory(categoryId ,registrationId );
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String getAllGallariesForUser(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");		
+		
+		
+		selectOptionList = candidateDetailsService.getCandidateGallaries(regVO.getRegistrationID() , "News Gallary");
+		sourceList = newsMonitoringService.getAllSourceDetails();
+		newsImportanceList = newsMonitoringService.getAllNewsImportanceDetails();
+		regionsScopesList = newsMonitoringService.getAllRegionScopes();
+		categoryList = newsMonitoringService.getAllCategoryDetails();
+		
+		return Action.SUCCESS;
+		
+	}	
+	
+	public String getFilesInAGallary(){
+		
+		try{	 
+			 jObj = new JSONObject(getTask());  
+			 }catch(Exception e){
+				 e.printStackTrace(); 
+			 }
+		
+		Long  gallaryId = jObj.getLong("gallaryId");
+		
+		selectOptionList = candidateDetailsService.getFilesOfAGallary(gallaryId);
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String callAjaxToGeneratePdfFileForAgallary(){
+		
+		log.debug("Entered into the callAjaxToGeneratePdfFileForAgallary method");
+		
+		try{	 
+			 jObj = new JSONObject(getTask());  
+			
+		
+		
+		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		String filePath = null;
+		
+		pdfGenerationVO = new PdfGenerationVO();
+		
+		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE)){
+			//filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.GALLARY_PDF_FILES + pathSeperator;
+			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.GALLARY_PDF_FILES ;
+			pdfGenerationVO.setImagePath(IWebConstants.STATIC_CONTENT_FOLDER_URL );
+		}
+		else{
+			//filePath = context.getRealPath("/")+IConstants.GALLARY_PDF_FILES + pathSeperator;
+			filePath = context.getRealPath("/")+IConstants.GALLARY_PDF_FILES ;
+			pdfGenerationVO.setImagePath(context.getRealPath("/"));
+		}
+		
+		
+		
+		File file = new File(filePath);
+		if (!file.exists())
+			file.mkdir();
+		
+		
+		
+		pdfGenerationVO.setGallaryId(jObj.getLong("gallaryId"));
+		pdfGenerationVO.setGallaryName(jObj.getString("gallaryName"));
+		pdfGenerationVO.setSourceId(jObj.getLong("sourceId"));
+		pdfGenerationVO.setCategoryId(jObj.getLong("categoryId"));
+		pdfGenerationVO.setImpactLevelId(jObj.getLong("impactLevelId"));
+		pdfGenerationVO.setImportanceId(jObj.getLong("importanceId"));
+		pdfGenerationVO.setLanguageId(jObj.getLong("languageId"));
+		pdfGenerationVO.setBetweenDates(jObj.getString("betweenDates"));
+		pdfGenerationVO.setStartDate(jObj.getString("startDate"));
+		pdfGenerationVO.setEndDate(jObj.getString("endDate"));
+		pdfGenerationVO.setAllFiles(jObj.getString("allFiles"));
+		
+		
+		pdfGenerationVO.setFilePathToSave(filePath);
+		
+		pdfGenerationVO  = candidateDetailsService.generatePdfForAGallary(pdfGenerationVO);
+		
+		session = request.getSession();
+		
+		//String fileName = pdfGenerationVO.getPdfName().replaceAll("", "_");
+		
+		session.setAttribute("pdfPath", pdfGenerationVO.getPdfPath());
+		//session.setAttribute("pdfName", pdfGenerationVO.getPdfName());
+		
+		session.setAttribute("pdfName", pdfGenerationVO.getPdfName());
+		
+		
+		
+		 }catch(Exception e){
+			 log.error("Exception raised in callAjaxToGeneratePdfFileForAgallary method :"+e);
+			 e.printStackTrace(); 
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String generatePdfForAGallary() throws Exception{
+		
+		log.debug("Entered into thegeneratePdfForAGallary method ");
+		
+		try{	 
+		
+	/*	try{	 
+			 jObj = new JSONObject(getTask());  
+			 }catch(Exception e){
+				 e.printStackTrace(); 
+			 }
+		*/
+		//Long  fileId = jObj.getLong("gallaryId");
+		
+	//String filePath = candidateDetailsService.generatePdfForAGallary(fileId);
+		
+		// pdfPath = request.getParameter("pdfPath");
+		// pdfName = request.getParameter("pdfName");
+		
+		session = request.getSession();
+		pdfPath = session.getAttribute("pdfPath").toString();
+		pdfName = session.getAttribute("pdfName").toString()+".pdf";
+		
+		
+		session.removeAttribute("pdfPath");
+		session.removeAttribute("pdfName");
+	
+	fileInputStream = new FileInputStream(new File(pdfPath));
+	
+		}catch(Exception e){
+			
+			log.error("Exception raised in generatePdfForAGallary method :"+e);
+			e.printStackTrace();
+			
+		}
+	
+	
+      return SUCCESS;
 		
 		
 	}
