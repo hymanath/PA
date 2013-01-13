@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.RegionScopes;
 public interface IRegionScopesDAO extends GenericDao<RegionScopes, Long> {
 
 	public List<String> getScopeById(Long regionScopesId);
+	public List<Object[]> getAllRegionScopes();
 }

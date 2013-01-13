@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 
@@ -124,5 +125,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Object[]> getNewsForRegisterUsers1(FileVO fileVO);
     
     public List<FileGallary> getFilesOfInGallariesForCustomer(List<Long> gallaryIdsList);
+    
+    public List<File> getAllFilesInAGallry(String queryString,PdfGenerationVO pdfGenerationVO);
+    
+    public List<Object[]> getCandidateGallariesByCategory(List<Long> candidateds , Long categoryId);
 }
 
