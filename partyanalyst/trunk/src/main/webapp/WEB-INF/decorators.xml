@@ -147,6 +147,7 @@
 		<pattern>/specialPageInfoAction*</pattern>
 		<pattern>/removeVideosAction*</pattern>
 		<pattern>/createThumbNailsAction*</pattern>
+		<pattern>/generatePdfForGallaryAction*</pattern>
 		<pattern>/sendUpdatesByemailAction*</pattern>
     </decorator>
     
