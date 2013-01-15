@@ -35,12 +35,13 @@ public class VoterAgeInfo extends BaseModel implements Serializable{
 	private Double femaleVotersPercentage;
 	private Double maleVotersPercentage;
 	private Double totalVotersPercentage;
+	private PublicationDate publicationDate;
 	
 	public VoterAgeInfo(){}
 	
 	public VoterAgeInfo(VoterReportLevel voterReportLevel,VoterAgeRange voterAgeRange,
 			Long reportLevelValue,Long totalVoters,Long maleVoters, Long femaleVoters,
-			Double femaleVotersPercentage, Double maleVotersPercentage,Double totalVotersPercentage)
+			Double femaleVotersPercentage, Double maleVotersPercentage,Double totalVotersPercentage, PublicationDate publicationDate)
 	{
 		this.voterReportLevel = voterReportLevel;
 		this.voterAgeRange = voterAgeRange;
@@ -51,6 +52,7 @@ public class VoterAgeInfo extends BaseModel implements Serializable{
 		this.femaleVotersPercentage = femaleVotersPercentage;
 		this.maleVotersPercentage = maleVotersPercentage;
 		this.totalVotersPercentage = totalVotersPercentage;
+		this.publicationDate = publicationDate;
 	}
 
 	@Id
@@ -149,6 +151,18 @@ public class VoterAgeInfo extends BaseModel implements Serializable{
 
 	public void setTotalVotersPercentage(Double totalVotersPercentage) {
 		this.totalVotersPercentage = totalVotersPercentage;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "publication_date_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PublicationDate getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(PublicationDate publicationDate) {
+		this.publicationDate = publicationDate;
 	}
 	
 	

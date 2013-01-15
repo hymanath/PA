@@ -37,12 +37,12 @@ public class VoterInfo extends BaseModel implements Serializable{
 	private Double maleVotersPercentage;
 	private Double familiesPercentage;
 	private Double totalVotersPercentage;
-	
+	private PublicationDate publicationDate;
 	
 	public VoterInfo(){}
 	public VoterInfo(VoterReportLevel voterReportLevel,Long reportLevelValue,
 	 Long totalVoters, Long maleVoters, Long femaleVoters, Long totalFamilies,
-	 Double femaleVotersPercentage, Double maleVotersPercentage, Double familiesPercentage, Double totalVotersPercentage)
+	 Double femaleVotersPercentage, Double maleVotersPercentage, Double familiesPercentage, Double totalVotersPercentage, PublicationDate publicationDate)
 	{
 		this.voterReportLevel = voterReportLevel;
 		this.reportLevelValue = reportLevelValue;
@@ -54,6 +54,7 @@ public class VoterInfo extends BaseModel implements Serializable{
 		this.maleVotersPercentage = maleVotersPercentage;
 		this.familiesPercentage = familiesPercentage;
 		this.totalVotersPercentage = totalVotersPercentage;
+		this.publicationDate = publicationDate;
 	}
 	
 	@Id
@@ -148,6 +149,18 @@ public class VoterInfo extends BaseModel implements Serializable{
 	public void setTotalVotersPercentage(Double totalVotersPercentage) {
 		this.totalVotersPercentage = totalVotersPercentage;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "publication_date_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PublicationDate getPublicationDate() {
+		return publicationDate;
+	}
+	public void setPublicationDate(PublicationDate publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+	
 	
 	
 }
