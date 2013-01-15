@@ -1443,7 +1443,7 @@ function buildVotersInFamily(results){
 	  };
      var votersResultColumnDefs = [ 		    	             
 		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
-							{key:"sNo", label: "SNo", sortable: true},
+							//{key:"sNo", label: "SNo", sortable: true},
 		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 							{key:"gender", label: "Gender", sortable: true},
 		    				{key:"age", label: "Age",sortable:true},
@@ -1458,7 +1458,7 @@ function buildVotersInFamily(results){
 	var myDataSource = new YAHOO.util.DataSource(results);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","voterId","boothId"]
+						 fields : ["name","gender","age","houseNo","gaurdian","relationship","voterId","boothId"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
@@ -1709,7 +1709,7 @@ function buildCastPiechart(myResults,jsObj)
 
 		}
   function  buildFamilyMembers(result,publicationDateId,type){
-    impFamiliesEditArray = new Array();
+	impFamiliesEditArray = new Array();
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
     var name = "";
@@ -1726,7 +1726,7 @@ function buildCastPiechart(myResults,jsObj)
           str+='  <thead>';
           str+='   <tr>';
 		  str+='     <th>Select</th>';
-          str+='     <th>SNo</th>';
+         // str+='     <th>SNo</th>';
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
@@ -1743,7 +1743,7 @@ function buildCastPiechart(myResults,jsObj)
 	   var sno = parseInt(i)+1;
 	      str +='   <tr>';
 		  str +='		<td><input id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
-          str +='		<td>'+sno+'</td>';
+         // str +='		<td>'+sno+'</td>';
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
@@ -1776,6 +1776,7 @@ function buildCastPiechart(myResults,jsObj)
 
  function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
+	
   var impFamiList = new Array();
   for(var i in impFamilesData){
      var data={};
