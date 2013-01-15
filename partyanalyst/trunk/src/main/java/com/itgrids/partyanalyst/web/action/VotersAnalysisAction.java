@@ -436,8 +436,12 @@ public String getVotersFamilyDetails(){
 		String param;
 		param = getTask();
 		jObj = new JSONObject(param);
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
+		
 		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
-		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"));
+		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"));
 		else
 			votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
 	}catch(Exception e){
