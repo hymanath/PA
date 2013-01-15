@@ -857,7 +857,11 @@ function showNewsGallaryCreateMsg(result)
 	if(result.resultCode == 0)
 	{
 		hideAjaxImg('ajaxImgId');
-		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		if(result.exceptionMsg == null)
+			str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else
+			str += '<font color="red"><b>Gallery Name is already exist.</b>';
+
 		enableButton('createNewsgalId');
 	}
 	else
@@ -877,7 +881,13 @@ function showPhotosGallaryCreateMsg(myResults,createOrUpdate)
 	{
 		hideAjaxImg('ajaxImgId');
 		if(createOrUpdate=='Create')
-		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		{
+			if(myResults.exceptionMsg == null)
+			 str += '<font color="green"><b>Gallery Created Successfully.</b>';
+			else
+			 str += '<font color="red"><b>Gallery Name is already exist.</b>';
+		}
+
 		else
 		str += '<font color="green"><b>Gallery Updated Successfully.</b>';
 		enableButton('createPhotoGalId');
@@ -2406,12 +2416,16 @@ function showVideoGallaryCreateMsg(result)
 	var createVedioGalId = document.getElementById('createVedioGalId');
 	var ajaxImgId = document.getElementById('ajaxImgId');
 	var str = '';
-	
+	hideAjaxImg('ajaxImgId');
 	if(result.resultCode == 0)
 	{
 		clearVideoGallaryFields();
-		hideAjaxImg('ajaxImgId');
-		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		
+		if(result.exceptionMsg == null)
+			str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else 
+		  str += '<font color="red"><b>Gallery Name is already exist.</b>';
+
 		enableButton('createVedioGalId');
 
 	}
