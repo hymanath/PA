@@ -114,10 +114,20 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetNewsCountByScope()
+	/*public void testgetNewsCountByScope()
 	{
 		List<Long> count = partyGalleryDAO.getNewsCountByScope(872l,2l,"Public");
 		System.out.println(count);
 		
+	}*/
+	
+	public void testGetPartyGallaryByPartyId()
+	{
+		List<Object[]> list = partyGalleryDAO.getPartyGallaryByPartyId(362l, IConstants.PHOTO_GALLARY,"AICC PLENARY 2010");
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
 	}
 }

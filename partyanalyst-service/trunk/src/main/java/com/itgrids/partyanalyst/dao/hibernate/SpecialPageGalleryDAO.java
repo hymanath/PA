@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGallery,Long> implements ISpecialPageGalleryDAO{
 
@@ -280,7 +281,21 @@ public List<Object[]> getExpiredVideosList( Date from, Date to ,String contentTy
   }
   
   
-  
+  @SuppressWarnings("unchecked")
+public List<Object[]> checkGalleryExistForASpecialPage(Long specialPageId, String gallaryName, String contentType)
+  {
+	  StringBuilder stringBuilder = new StringBuilder();
+	  stringBuilder.append(" select model.gallary.gallaryId, model.gallary.name from SpecialPageGallery model where model.specialPage.specialPageId = :specialPageId ");
+	  stringBuilder.append(" and model.gallary.name = :gallaryName and model.gallary.contentType.contentType = :contentType and model.isDelect = :isDelete");
+	  
+	  Query queryObj = getSession().createQuery(stringBuilder.toString());
+	  queryObj.setParameter("specialPageId", specialPageId);
+	  queryObj.setParameter("gallaryName", gallaryName);
+	  queryObj.setParameter("contentType", contentType);
+	  queryObj.setParameter("isDelete", IConstants.FALSE);
+	  
+	  return queryObj.list();
+  }
   
   
 

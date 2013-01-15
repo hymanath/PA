@@ -255,4 +255,22 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		queryObject.setParameter(0, gallaryId);
 		return queryObject.executeUpdate();
 	}
+	
+		
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyGallaryByPartyId(Long partyId, String contentType, String gallaryName)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select model.gallery.gallaryId, model.gallery.name from PartyGallery model ");
+		stringBuilder.append(" where model.party.partyId =:partyId and model.gallery.contentType.contentType = :contentType ");
+		stringBuilder.append(" and model.gallery.name = :gallaryName ");
+		stringBuilder.append("and model.isDelete = :isDelete ");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		queryObj.setParameter("partyId", partyId);
+		queryObj.setParameter("contentType", contentType);
+		queryObj.setParameter("gallaryName", gallaryName);
+		queryObj.setParameter("isDelete", IConstants.FALSE);
+		
+		return queryObj.list();
+	}
 }
