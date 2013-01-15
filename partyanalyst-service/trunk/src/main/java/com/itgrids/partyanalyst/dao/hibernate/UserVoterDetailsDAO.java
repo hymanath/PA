@@ -46,4 +46,14 @@ IUserVoterDetailsDAO{
 		query.executeUpdate();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteByVoterId(Long userId,List<Long> voterId)
+	{
+		Query query =getSession().createQuery("select model.voter.voterId,model.casteState.caste.casteName from UserVoterDetails model where model.user.userId = :userId and model.voter.voterId in (:voterId)");
+		query.setParameter("userId", userId);
+		query.setParameterList("voterId", voterId);
+		return query.list();
+	
+	}
 }
