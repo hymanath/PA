@@ -2391,9 +2391,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		 }
 	}
 	
-	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long id, Long publicationDateId,String checkedEle)
+	@SuppressWarnings("unchecked")
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle)
 	{
 		List voters = null;
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		List<SelectOptionVO> casteList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO caste = null;
 		if(checkedEle.equalsIgnoreCase("panchayat"))
 		{
 			voters = boothPublicationVoterDAO.findFamiliesVotersInfoForPanchayat(id,publicationDateId);
@@ -2409,6 +2413,24 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<VoterVO> voterVOs = null;
 		VoterVO voterVO = null;
 		String houseNo = "";
+		
+		/*if(voters != null && voters.size() > 0)
+		for(Object[] voter : (List<Object[]>)voters)
+		voterIdsList.add((Long)voter[5]);
+		
+		if(voterIdsList.size() > 0)
+		{
+			
+		    List<Object[]> votercastList = userVoterDetailsDAO.getCasteByVoterId(userId,voterIdsList);
+		    if(votercastList!=null)
+	        for(Object[] params : votercastList)
+			{
+	        	if(params[1].toString() != null && params[1].toString()!="")
+				caste = new SelectOptionVO((Long)params[0],params[1].toString());	
+				casteList.add(caste);
+			}
+			
+		}*/
 		if(voters != null)
 		for(Object[] voter : (List<Object[]>)voters){
 			houseNo = voter[1].toString();
@@ -2421,7 +2443,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterVO.setGender(voter[6].toString());
 			voterVO.setAge(voter[7] != null ? (Long)voter[7]:18l);
 			voterVO.setBoothName(voter[8].toString());
-			
+			//voterVO.setCasteNameByVoterId(getCasteNameByVoterID(casteList,(Long)voter[5]));
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
 				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
@@ -2478,6 +2500,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		return voterHouseInfoVOs;
 	}
 	
+	public String getCasteNameByVoterID(List<SelectOptionVO> casteList,Long voterId)
+	{
+		String casteName = null;
+		try{
+			if(casteList != null && casteList.size() > 0)
+			for(SelectOptionVO params : casteList)
+				if(params.getId().equals(voterId))
+					casteName = params.getName().toString();
+			return casteName;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCasteNameByVoterID() Method, Exception is - "+e);
+			return casteName;
+		}
+	}
 	
 	public static Comparator<VoterVO> sortData = new Comparator<VoterVO>()
 		    {
