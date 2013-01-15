@@ -892,6 +892,19 @@ public class SpecialPageService implements ISpecialPageService{
 		specialPageGallery = new SpecialPageGallery();
 		ResultStatus resultStatus = new ResultStatus();
 		try {
+			
+			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
+			
+				List<Object[]> list = specialPageGalleryDAO.checkGalleryExistForASpecialPage(gallaryVO.getCandidateId(),
+						   gallaryVO.getGallaryName(), gallaryVO.getContentType());
+				if(list != null && list.size() > 0)
+				{
+					resultStatus.setExceptionMsg("Gallary Name is already Exists.");
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					return resultStatus;
+				}
+				
+			}
 			if (createOrUpdate.trim().equalsIgnoreCase("Update")
 					&& gallaryVO.getGallaryId() != null)
 				gallary = gallaryDAO.get(gallaryVO.getGallaryId());

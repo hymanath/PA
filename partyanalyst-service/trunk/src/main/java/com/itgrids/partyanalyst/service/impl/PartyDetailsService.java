@@ -971,6 +971,17 @@ public class PartyDetailsService implements IPartyDetailsService {
 			gallary.setName(gallaryVO.getGallaryName());
 			gallary.setDescription(gallaryVO.getDescription());
 			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
+				
+				List<Object[]> list = partyGalleryDAO.getPartyGallaryByPartyId(gallaryVO.getCandidateId(), gallaryVO.getContentType(), gallaryVO.getGallaryName());
+				
+				if(list != null && list.size() > 0)
+				{
+					resultStatus.setExceptionMsg("Gallary Name is Already Exists for selected Party.");
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					return resultStatus;
+					
+				}
+				
 				gallary.setContentType((ContentType) contentTypeDAO
 						.getContentTypeByType(gallaryVO.getContentType()));
 				gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());

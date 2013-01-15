@@ -1335,6 +1335,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			gallary.setDescription(gallaryVO.getDescription());
 			if(createOrUpdate.trim().equalsIgnoreCase("Create"))
 			{
+				List<Object[]> list = gallaryDAO.checkGallaryNameExistenceForSelectedCandidate(gallaryVO.getCandidateId(), gallaryVO.getGallaryName(), gallaryVO.getContentType());
+				if(list != null && list.size() >0)
+				{
+					resultStatus.setExceptionMsg("Gallery Name is already Exist for selected Candidate.");
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					return resultStatus;
+				}
+				
 				gallary.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
 			    gallary.setContentType((ContentType)contentTypeDAO.getContentTypeByType(gallaryVO.getContentType()));
 			    gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
