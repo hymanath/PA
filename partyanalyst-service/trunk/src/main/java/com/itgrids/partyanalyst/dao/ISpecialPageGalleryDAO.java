@@ -43,5 +43,7 @@ public interface ISpecialPageGalleryDAO extends GenericDao<SpecialPageGallery, L
 	 public int  deleteRecordsFromFileSourceLanguage(List<Object> fileSourceLanguageIds);
 	 public int  deleteRecordsFromFilePath(List<String> filePaths);
 	 public int  updateLastUpdateDateInFilePaths(List<Long> languageIds);
+	 
+	 public List<Object[]> checkGalleryExistForASpecialPage(Long specialPageId, String gallaryName, String contentType);
 
 }

@@ -111,4 +111,20 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> checkGallaryNameExistenceForSelectedCandidate(Long candidateId, String gallaryName, String contentType)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select model.gallaryId, model.name from Gallary model where model.candidate.candidateId = :candidateId ");
+		stringBuilder.append(" and model.name = :gallaryName and model.contentType.contentType = :contentType ");
+		stringBuilder.append(" and model.isDelete = :isDelete ");
+		
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		queryObj.setParameter("candidateId", candidateId);
+		queryObj.setParameter("gallaryName", gallaryName);
+		queryObj.setParameter("contentType", contentType);
+		queryObj.setParameter("isDelete", IConstants.FALSE);
+		return queryObj.list();
+	}
+	
 }

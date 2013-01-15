@@ -67,13 +67,19 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 	   
    }*/
 	
-	public void testGetOtherGalleries()
+	/*public void testGetOtherGalleries()
 	{
 		List<Long> gallaryIds = new ArrayList<Long>(0);
 		gallaryIds.add(300l);
 		List<Object> result = gallaryDAO.getOtherGalleries(3424l, gallaryIds,IConstants.PHOTO_GALLARY);
 		
 		System.out.println(result.size());
+	}*/
+	
+	public void testCheckGallaryNameExistenceForSelectedCandidate()
+	{
+		List<Object[]> list = gallaryDAO.checkGallaryNameExistenceForSelectedCandidate(3424l, "p", IConstants.PHOTO_GALLARY);
+		System.out.println(list.size());
 	}
    
 }
