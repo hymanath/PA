@@ -308,6 +308,10 @@
 	            <value>com.itgrids.partyanalyst.model.VoterAgeRange</value>
 	            <value>com.itgrids.partyanalyst.model.VoterFamilyRange</value>
 	            <value>com.itgrids.partyanalyst.model.VoterReportLevel</value>
+	            <value>com.itgrids.partyanalyst.model.VoterInfo</value>
+	            <value>com.itgrids.partyanalyst.model.VoterAgeInfo</value>
+	            <value>com.itgrids.partyanalyst.model.VoterFamilyInfo</value>
+	            
 			</list>
 		</property>
 	</bean>

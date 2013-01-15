@@ -1058,4 +1058,16 @@
 	<bean id="voterFamilyRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFamilyRangeDAO">
 	    <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="voterInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterInfoDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterFamilyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFamilyInfoDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterAgeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterAgeInfoDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
