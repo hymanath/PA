@@ -980,7 +980,10 @@ function showVideoGallaryCreateMsg(result)
 	if(result.resultCode == 0)
 	{
 		clearVideoGallaryFields();
-		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		if(result.exceptionMsg == null)
+		 str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else
+		 str += '<font color="red"><b>Gallery Name is already exist.</b>';
 	}
 	else
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
@@ -1640,7 +1643,10 @@ function showNewsGallaryCreateMsg(result)
 	
 	if(result.resultCode == 0)
 	{
-		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		if(result.exceptionMsg == null)
+		  str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else
+		 str += '<font color="red"><b>Gallery Name is already exist.</b>';
 	}
 	else
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
@@ -4435,12 +4441,16 @@ function showGallaryCreateMsg(result,createOrUpdate)
 {
 	var errorDivEle = document.getElementById('galErrorMsgDiv');
 	var str = '';
-	
 	if(result.resultCode == 0)
 	{
 		clearGallaryFields();
 		if(createOrUpdate=='Create')
-		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		{
+			if(result.exceptionMsg == null)
+			  str += '<font color="green"><b>Gallery Created Successfully.</b>';
+			else
+			  str += '<font color="red"><b>Gallery Name is already exist.</b>';
+		}
 		else
 		str += '<font color="green"><b>Gallery Updated Successfully.</b>';
 	}
