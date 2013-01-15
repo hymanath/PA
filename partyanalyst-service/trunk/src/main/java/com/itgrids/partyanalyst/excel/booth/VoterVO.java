@@ -30,6 +30,9 @@ public class VoterVO {
 	private List<VoterVO> votersList = new ArrayList<VoterVO>();
 	private Long voterIds;
 	
+	private String casteNameByVoterId;
+	
+
 	public List<VoterVO> getVotersList() {
 		return votersList;
 	}
@@ -243,6 +246,13 @@ public class VoterVO {
 	public void setVoterIds(Long voterIds) {
 		this.voterIds = voterIds;
 	}
-	
+	public String getCasteNameByVoterId() {
+		return casteNameByVoterId;
+	}
+
+	public void setCasteNameByVoterId(String casteNameByVoterId) {
+		this.casteNameByVoterId = casteNameByVoterId;
+	}
+
 	
 }
