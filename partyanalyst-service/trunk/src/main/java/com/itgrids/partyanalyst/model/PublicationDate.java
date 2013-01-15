@@ -34,8 +34,10 @@ public class PublicationDate implements Serializable{
 	 private Integer year;
 	 private String comments;
 	 private Set<Booth> booths = new HashSet<Booth>(0);
-
-	
+	 private Set<VoterInfo> voterInfos = new HashSet<VoterInfo>(0);
+	 private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
+	 private Set<VoterFamilyInfo> voterFamilyInfos = new HashSet<VoterFamilyInfo>(0);
+	 
 	 
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -91,5 +93,31 @@ public class PublicationDate implements Serializable{
 	public void setBooths(Set<Booth> booths) {
 		this.booths = booths;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publicationDate")
+	public Set<VoterInfo> getVoterInfos() {
+		return voterInfos;
+	}
+	public void setVoterInfos(Set<VoterInfo> voterInfos) {
+		this.voterInfos = voterInfos;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publicationDate")
+	public Set<VoterAgeInfo> getVoterAgeInfos() {
+		return voterAgeInfos;
+	}
+	public void setVoterAgeInfos(Set<VoterAgeInfo> voterAgeInfos) {
+		this.voterAgeInfos = voterAgeInfos;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publicationDate")
+	public Set<VoterFamilyInfo> getVoterFamilyInfos() {
+		return voterFamilyInfos;
+	}
+	public void setVoterFamilyInfos(Set<VoterFamilyInfo> voterFamilyInfos) {
+		this.voterFamilyInfos = voterFamilyInfos;
+	}
+	
+	
 	
 }
