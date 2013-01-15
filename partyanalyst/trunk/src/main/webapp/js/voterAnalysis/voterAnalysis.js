@@ -1388,7 +1388,7 @@ var result = results;
 	}
 	 var votersResultColumnDefs = [ 		    	             
 		    	            
-							{key:"sNo", label: "SNo", sortable: true},
+							//{key:"sNo", label: "SNo", sortable: true},
 		    	           	{key:"name", label: "Name", sortable: true,
 							formatter:YAHOO.widget.DataTable.NameLink},
 							{key:"gender", label: "Gender", sortable: true},
@@ -1410,7 +1410,7 @@ var result = results;
 	var myDataSource = new YAHOO.util.DataSource(results.votersByHouseNos);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "sNo","name","gender","age","houseNo","gaurdian","relationship","voterId","boothId","voterIdCardNo"]
+						 fields : ["name","gender","age","houseNo","gaurdian","relationship","voterId","boothId","voterIdCardNo"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
@@ -1709,7 +1709,7 @@ function buildCastPiechart(myResults,jsObj)
 
 		}
   function  buildFamilyMembers(result,publicationDateId,type){
-	impFamiliesEditArray = new Array();
+	 impFamiliesEditArray = new Array();
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
     var name = "";
@@ -1730,7 +1730,7 @@ function buildCastPiechart(myResults,jsObj)
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
-          str+='	 <th class="widthStyle">Eldest Person</th>';
+		  str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
           str+='     <th class="widthStyle">Youngest Person</th>';
