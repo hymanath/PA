@@ -2341,7 +2341,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public ImportantFamiliesInfoVo getImportantFamiliesForBooth(String type,Long id,Long publicationDateId,String exeType){
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
 		importantFamiliesInfoVo.setType("Booth");
-		importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
+		//importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
+		importantFamiliesInfoVo.setName(boothDAO.get(id).getPartNo());
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"booth"));
 		
 		VotersInfoForMandalVO votersInfoForBooth = getVotersCountForBooth(type, id, publicationDateId, exeType);
@@ -2445,7 +2446,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				continue;
 			Collections.sort(voterVOs,sortData);
 			voterHouseInfoVO.setBoothId(voterVOs.get(0).getBoothNo());
-			voterHouseInfoVO.setBoothName("Booth - "+voterVOs.get(0).getBoothName());
+			//voterHouseInfoVO.setBoothName("Booth - "+voterVOs.get(0).getBoothName());
+			voterHouseInfoVO.setBoothName(voterVOs.get(0).getBoothName());
 			voterHouseInfoVO.setHouseNo(entry.getKey());
 			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
 			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
