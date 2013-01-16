@@ -1,3 +1,4 @@
+
 function getElectionYears(electionType)
 {
    document.getElementById("errorMessage").innerHTML = "";
@@ -135,7 +136,7 @@ function callAjax(jsObj,url)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 function showPartyPerf(results,type)
-{  
+   {  
      var str='';
 	 if(results != null && results.length>0 )
 	 {
@@ -178,8 +179,13 @@ function showPartyPerf(results,type)
 		if(results[i].positionManagementVOList[k].partyPrevCount != null && results[i].positionManagementVOList[k].partyCount != null)
 		 {
 	     str+='       <td>'+results[i].positionManagementVOList[k].partyPrevCount+'</td>';
-		 if(results[i].positionManagementVOList[k].status == "increased")
-		  str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'('+results[i].positionManagementVOList[k].totalCount+'<font color="green">&uarr;</font>)</td>';
+		 if(results[i].positionManagementVOList[k].status == "increased"){
+			if(results[i].positionManagementVOList[k].totalCount !='0')
+					str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'('+results[i].positionManagementVOList[k].totalCount+'<font color="green">&uarr;</font>)</td>';
+				else
+					str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'('+results[i].positionManagementVOList[k].totalCount+')</td>';
+
+		 }
 		 else
 		  str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'('+results[i].positionManagementVOList[k].totalCount+'<font color="red">&darr;</font>)</td>';
 		 }
@@ -229,7 +235,8 @@ function showPartyPerf(results,type)
 	    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
 	 }
 	  document.getElementById("analysisTableDisplay").innerHTML=str;
-}
+   }
+
 
 function buildPartyComparision(value)
 {
@@ -460,13 +467,11 @@ function build(arr,prevYear,presentYear,result)
 					{
 						label : ""+prevYear,
 						key : "prevTotalCount",
-						width:22,
 						sortable : true
 					},
 					{
 						label : ""+presentYear,
 						key : "totalCount",
-						width:21,
 						sortable : true
 					}				
 				]
@@ -477,13 +482,11 @@ function build(arr,prevYear,presentYear,result)
 					{
 						label : ""+prevYear,
 						key : "prevCount",
-						width:22,
 						sortable : true
 					},
 					{
 						label : ""+presentYear,
 						key : "presentCount",
-						width:21,
 						sortable : true
 					}				
 				]
@@ -500,13 +503,11 @@ function build(arr,prevYear,presentYear,result)
 					{
 						label : ""+prevYear,
 						key : "notPresent",
-						width:22,
 						sortable : true
 					},
 					{
 						label : ""+presentYear,
 						key : "partyCount"+i,
-						width:21,
 						sortable : true
 					}				
 				]
@@ -520,13 +521,11 @@ function build(arr,prevYear,presentYear,result)
 					{
 						label : ""+prevYear,
 						key : "partyPrevCount"+i,
-						width:22,
 						sortable : true
 					},
 					{
 						label : ""+presentYear,
 						key : "partyCount"+i,
-						width:21,
 						sortable : true
 					}				
 				]
@@ -703,6 +702,7 @@ function showDistrictWiseAnalysis(result)
  }
  function getDetails()
  {
+
     document.getElementById("analysisTable").innerHTML= '';
     document.getElementById("analysisTableDisplay").innerHTML= '';
       validate = false;
