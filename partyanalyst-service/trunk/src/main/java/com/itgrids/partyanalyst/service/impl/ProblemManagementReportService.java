@@ -1648,6 +1648,7 @@ public class ProblemManagementReportService implements
 		public List<ProblemBeanVO> getProblemsInfoByStatusInALocationForUser(Long accessValue,String accessType,Long userId,Long status)
 		{
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
+			SimpleDateFormat dateFormater = new SimpleDateFormat("dd-MM-yyyy");
 			try{
 				
 				if(status != null && status != 0)
@@ -1656,12 +1657,14 @@ public class ProblemManagementReportService implements
 					if(result != null)
 					{
 					for(int i=0;i<result.size();i++)
-					{
+					{	
 						ProblemBeanVO problemBean = new ProblemBeanVO();
 						Object[] params = (Object[])result.get(i);
+						
 						problemBean.setProblem(params[3].toString());
 						problemBean.setDescription(params[7].toString());
-						problemBean.setExistingFrom(params[4].toString());
+						//problemBean.setExistingFrom(params[4].toString());
+						problemBean.setExistingFrom(dateFormater.format((Date)params[4]).toString());
 						problemBean.setStatus(params[0].toString());
 						problemBean.setProblemLocation(getProblemLocation(Long.parseLong(params[1].toString()),Long.parseLong(params[11].toString())));
 						
