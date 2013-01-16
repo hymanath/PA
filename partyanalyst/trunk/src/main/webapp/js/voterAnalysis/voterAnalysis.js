@@ -1019,6 +1019,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	{
 		
 		var str ='';
+		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
 		var publicationDateId = jsObj.publicationDateId;
 		var type=jsObj.type;
@@ -1600,7 +1601,7 @@ function buildCastPiechart(myResults,jsObj)
 	
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 	 var castArray = constMgmtMainObj.castStatsArray;
-	
+	$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
          var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
