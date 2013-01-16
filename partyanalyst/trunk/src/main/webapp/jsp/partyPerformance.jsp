@@ -505,7 +505,7 @@
 </head> 
 <body>
   
-   <div id="partyPerformanceMainDiv" style="margin-left: auto; margin-right: auto; float: none; height: 500px; clear: both; width: 360px;">
+   <div id="partyPerformanceMainDiv" style="margin-left: auto; margin-right: auto; float: none; height: 500px; clear: both; width: 360px;margin-top:50px;">
 		<div id="errorsDiv" style="font-weight:bold;color:red;font-size:12px;margin:10px;">
 		</div>
 		<s:form name="performanceReport" action="partyPerformanceReport" onsubmit="return validateClientSide()" method="post">
