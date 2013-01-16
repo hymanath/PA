@@ -414,6 +414,20 @@ function showImportantFamiliesDiv()
 		 getvotersBasicInfo("voters","");
 		 getVotersData();
 	}
+	function DefaultHighLight()
+	{
+		var VotersDiv = document.getElementById('votersDiv');
+		document.getElementById('votersDiv1').style.display='none';
+		document.getElementById('votersDiv2').style.display='none';
+		document.getElementById('votersDiv3').style.display='block';
+		document.getElementById('votersDiv4').style.display='none';
+		$("#importantFamiliesId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#localCaststatId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		$("#votersId").css({"background":"none repeat scroll 0 0 #F61D50"});
+		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
+		
+		 
+	}
 
 	function showAgeDiv()
 	{
@@ -838,7 +852,9 @@ function getBasicInfo(){
 		   $("#votersBasicInfoSubDivForAgeWiseDetls").html("");
 		   $("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
 		 }else{
+		   DefaultHighLight();
 		   getvotersBasicInfo("voters","");
+			
 		   getVotersData();
 		 }
 }
@@ -1730,6 +1746,7 @@ function buildCastPiechart(myResults,jsObj)
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
+		 // str +='	 <th>Caste</th>';
 		  str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
@@ -1747,6 +1764,8 @@ function buildCastPiechart(myResults,jsObj)
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
+
+		  //str +='       <td>'+result[i].cast+'</td>';
           str +='		<td class="widthStyle">'+result[i].elder+'</td>';
 		  str +='		<td>'+result[i].elderGender+'</td>';
 		  str +='		<td>'+result[i].elderAge+'</td>';
