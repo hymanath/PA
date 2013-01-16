@@ -50,6 +50,7 @@ public class VoterHouseInfoVO {
 	private List<VoterHouseInfoVO> boothsList;
 	private List<VoterHouseInfoVO> familiesList;
 	private Long publicationId;
+	private Long toAge;
 	
 	public VoterHouseInfoVO(){
 		
@@ -451,6 +452,14 @@ public class VoterHouseInfoVO {
 
 	public void setFamiliesList(List<VoterHouseInfoVO> familiesList) {
 		this.familiesList = familiesList;
+	}
+
+	public Long getToAge() {
+		return toAge;
+	}
+
+	public void setToAge(Long toAge) {
+		this.toAge = toAge;
 	}
 
 	

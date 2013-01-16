@@ -96,5 +96,5 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<Object[]> getUserBasicDetailsForProfile(List<Long> userId);
 	
-	
+	public List<Long> getTotalUsersCount();
 }
