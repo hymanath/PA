@@ -1332,6 +1332,7 @@
 		<property name="casteCategoryGroupDAO" ref="casteCategoryGroupDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="casteDAO" ref="casteDAO" />
+		<property name="electionDAO" ref="electionDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
