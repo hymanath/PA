@@ -4180,6 +4180,19 @@
         	</result>
        </action>
 		
+		<action name="votersSearchAction" class="votersAnalysisAction">
+			<result name="success">/jsp/votersSearch.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>	
+		</action>
+		
+		<action name="getVotersInfoBySearchAction" class="votersEditAction" method="getVotersInfoBySearchCriteria">
+			<result type="json" name="success">
+           		<param name="root">votersFamilyInfo</param>
+        	</result>
+        	<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>	
+		</action>
 		
 	</package>
 </struts>      
