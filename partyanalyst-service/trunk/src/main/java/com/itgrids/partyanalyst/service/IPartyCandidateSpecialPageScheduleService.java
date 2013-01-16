@@ -12,5 +12,6 @@ public interface IPartyCandidateSpecialPageScheduleService {
 	public List<SelectOptionVO> getAllCandidates();
 	public List<SelectOptionVO> getAllParties();
 	public List<SelectOptionVO> getAllSpecialPages();
+	public void sendUpdates();
 	
 }

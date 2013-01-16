@@ -424,4 +424,8 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return queryObject.list(); 
 	}
 	
+	public List<Long> getTotalUsersCount(){
+		return getHibernateTemplate().find("select count(*) from User model");
+	}
+	
 }

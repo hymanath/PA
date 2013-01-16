@@ -201,6 +201,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			}
 		}
 		sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
+		sendMailToMeForTesting(updatesFrom,userDetails,dailyUpdatesVO);
 		
 	}
 	
@@ -231,6 +232,34 @@ public class PartyCandidateSpecialPageScheduleService implements
 		log.error("Exception Rised in sendMailToAdmin : ", e);
 	}
 	}
+	
+	private void sendMailToMeForTesting(final EmailNotificationVO updatesFrom,final Map<String,String> userDetails,final DailyUpdatesVO dailyUpdatesVO){
+		
+	       try{
+				
+				JavaMailSenderImpl javamailsender = new JavaMailSenderImpl();
+				javamailsender.setSession(mailService.getSessionObject(IConstants.DEFAULT_MAIL_SERVER));
+				MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			         public void prepare(MimeMessage mimeMessage) throws Exception {
+			            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+			            message.setTo("k.mahesh@itgrids.com");
+			            Map model = new HashMap();
+			   		    model.put("updatesFrom", updatesFrom);
+			   		    model.put("userDetails", userDetails);
+			   		    model.put("dailyUpdatesVO", dailyUpdatesVO);
+			            String text = VelocityEngineUtils.mergeTemplateIntoString(
+			 	               velocityEngine,"dailyUpdatesAdminMail.vm", model);
+			            message.setText(text, true);
+			            message.setSubject("Status for sending mails to subscribed users about profile update");
+			            message.setFrom(IConstants.FROMEMAILID);
+			         }
+			      };
+			      javamailsender.send(preparator);  
+			      
+		     }catch(Exception e){
+			log.error("Exception Rised in sendMailToAdmin : ", e);
+		}
+		}
 	
 	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{

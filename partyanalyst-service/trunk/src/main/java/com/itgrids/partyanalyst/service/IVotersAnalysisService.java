@@ -83,4 +83,6 @@ public interface IVotersAnalysisService {
 	public VoterHouseInfoVO getVoterPersonalDetailsList(List<VoterHouseInfoVO> voterIds,Long userId);
 	
 	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs);
+	
+	public List<VoterHouseInfoVO> getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id);
 }
