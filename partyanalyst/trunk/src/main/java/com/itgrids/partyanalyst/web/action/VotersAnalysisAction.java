@@ -163,7 +163,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		if(user == null)
 		return ERROR;
 		Long userID = user.getRegistrationID();
-		Long electionYear = 2009l;
+		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = 2l;
 		constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
