@@ -63,12 +63,13 @@
 	
 	#partyStrenghtsTable 
 	{
-	 	background: none repeat scroll 0 0 #FFFFFF;
+	 background: none repeat scroll 0 0 #FFFFFF;
     border: 2px solid #D3D3D3;
-    margin-left: 4px;
+    margin-left: auto;
+	margin-right:auto;
     margin-top: -13px;
     padding: 25px;
-    width: 998px;
+    width: 996px;
 		
 	}
 	
@@ -1532,7 +1533,7 @@
 </head>
 <body>
 		<div id="main_div">
-			<div id="header_div" style="margin-top: 24px;">
+			<div id="header_div" style="margin-top: 24px;margin-left:auto;margin-right:auto;width:990px;">
 				<table>
 					<tr>
 						<td colspan="2" id="headingDiv">
@@ -1559,6 +1560,7 @@
 						</td>
 					</tr>
 				</table>
+				</div>
 				<form name="partyStrengthResultsAction" action="partyStrengthResultsAction" method="POST">
 				<table id="partyStrenghtsTable" width="97%;" >		
 					
@@ -1618,7 +1620,7 @@
 			<div style="border: 2px solid #d3d3d3;
     margin:auto;
    padding: 21px;
-    width: 960px;
+    width: 950px;
 		
 		background: none repeat scroll 0 0 #ffffff;">
 			<table >
