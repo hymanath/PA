@@ -92,7 +92,7 @@
 		<pattern>/specialPageAction*</pattern>
 		<pattern>/index*</pattern>
 		<pattern>/newsDisplayAction*</pattern>
-		<!--<pattern>/districtPageAction*</pattern>-->
+		<pattern>/districtPageAction*</pattern>
 		<pattern>/electionDetailsReportAction*</pattern>
 		<pattern>/ministerAnalysisAction*</pattern>
 		<pattern>/constituencyPageAction*</pattern>
@@ -104,7 +104,7 @@
 		<pattern>/cncSearchResultsAction*</pattern>
 		<pattern>/searchPartyAnalystAction*</pattern>
 		<pattern>/districtWisePartyPerformanceAction*</pattern>
-		<pattern>/partyPerformanceMain*</pattern>
+		<!--<pattern>/partyPerformanceMain*</pattern>-->
 		<pattern>/partyResultsCriteriaAction*</pattern>
 		<pattern>/partyResultsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
@@ -171,6 +171,8 @@
 		<pattern>/constituencyManagementAction*</pattern>
 		<pattern>/problemManagementReportAction*</pattern>
 		<pattern>/electionComparisonAction*</pattern>
+		<pattern>/partyResultsCriteriaAction*</pattern>
+		<pattern>/partyPerformanceMain*</pattern>
 		
     </decorator>
 
