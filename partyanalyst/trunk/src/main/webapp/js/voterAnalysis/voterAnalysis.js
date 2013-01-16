@@ -1504,7 +1504,7 @@ function buildCastInfoData(myresults,jsObj)
 	var voters = '';
 	
 	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"> Total Voters : '+totalVoters+'&nbsp;&nbsp;&nbsp;';
-	localCastStatsTabContent += 'Total Casts : '+totalCasts+'&nbsp;&nbsp;&nbsp;';
+	localCastStatsTabContent += '&nbsp;&nbsp;&nbsp;Total Casts : '+totalCasts+'&nbsp;&nbsp;&nbsp;<br><br>';
 	//localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
 	//localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
 	localCastStatsTabContent += '<span>Caste Assigned Voters : '+result.maleVoters+'</span>';
