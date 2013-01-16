@@ -1180,6 +1180,8 @@
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
 		<property name="schedulerService" ref="schedulerService"/>
 		<property name="mailsSendingService" ref="mailsSendingService"/>
+		<property name="userDAO" ref="userDAO"/>
+		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService"/>
 	</bean>
 	
 	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1193,8 +1195,8 @@
 	</bean>
 	
 	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="partyCandidateSpecialPageScheduleService" />
-	  	<property name="targetMethod" value="sendUpdates" />
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="sendDailyUpdates" />
 	</bean>
 	
 	<bean name="cronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -1203,8 +1205,8 @@
 	</bean>
 	
 	<bean name="everyDaySecondBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="partyCandidateSpecialPageScheduleService" />
-	  	<property name="targetMethod" value="sendUpdates" />
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="sendDailyUpdates" />
 	</bean>
 	
 	<bean name="secondCronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
