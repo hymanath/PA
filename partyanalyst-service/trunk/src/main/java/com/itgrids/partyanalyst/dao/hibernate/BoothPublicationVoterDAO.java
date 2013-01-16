@@ -193,7 +193,7 @@ public class BoothPublicationVoterDAO extends
 		if(type.equalsIgnoreCase("constituency"))
 			query.append(" model.booth.constituency.constituencyId = :id ");
 		else if(type.equalsIgnoreCase("mandal"))
-			query.append(" model.booth.tehsil.tehsilId = :id ");
+			query.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 		else if(type.equalsIgnoreCase("booth"))
 			query.append(" model.booth.boothId = :id ");
 		query.append(" group by model.voter.gender ");
@@ -213,7 +213,7 @@ public class BoothPublicationVoterDAO extends
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" model.booth.constituency.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("mandal"))
-			str.append(" model.booth.tehsil.tehsilId = :locationId ");
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
@@ -238,7 +238,7 @@ public class BoothPublicationVoterDAO extends
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" model.booth.constituency.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("mandal"))
-			str.append(" model.booth.tehsil.tehsilId = :locationId ");
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
@@ -267,7 +267,7 @@ public class BoothPublicationVoterDAO extends
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" model.booth.constituency.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("mandal"))
-			str.append(" model.booth.tehsil.tehsilId = :locationId ");
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
@@ -327,7 +327,7 @@ public class BoothPublicationVoterDAO extends
 
 	public List findVotersCastInfoByMandalAndPublicationDate(Long mandalId, Long publicationDate){
 	Object[] params = {mandalId, publicationDate};
-	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.tehsil.tehsilId = ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast ", params);
+	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.tehsil.tehsilId = ? and model.booth.localBody is null and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast ", params);
 	}		
 	
 	
@@ -410,7 +410,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			
 			String queryString = "select count(*),model.voter.gender from BoothPublicationVoter " +
 					"model where model.booth.publicationDate.publicationDateId = ? " +
-					"and model.booth.tehsil.tehsilId = ? " +
+					"and model.booth.tehsil.tehsilId = ? and model.booth.localBody is null " +
 					"and model.voter.age >= "+startAge+" and model.voter.age<= "+endAge+" group by model.voter.gender";
 			
 			Query query = getSession().createQuery(queryString);
@@ -491,7 +491,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		if(type.equalsIgnoreCase("constituency"))
 			query.append(" model.booth.constituency.constituencyId = :id ");
 		else if(type.equalsIgnoreCase("mandal"))
-			query.append(" model.booth.tehsil.tehsilId = :id ");
+			query.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 		else if(type.equalsIgnoreCase("booth"))
 			query.append(" model.booth.boothId = :id ");
 		
@@ -515,7 +515,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		if(type.equalsIgnoreCase("constituency"))
 			query.append(" model.booth.constituency.constituencyId = :id ");
 		else if(type.equalsIgnoreCase("mandal"))
-			query.append(" model.booth.tehsil.tehsilId = :id ");
+			query.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 		else if(type.equalsIgnoreCase("booth"))
 			query.append(" model.booth.boothId = :id ");
 		query.append(" group by model.booth.boothId,model.voter.houseNo");
