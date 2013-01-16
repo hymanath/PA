@@ -1747,7 +1747,7 @@ function buildCastPiechart(myResults,jsObj)
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
-		 // str +='	 <th>Caste</th>';
+		  str +='	 <th>Caste</th>';
 		  str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
@@ -1766,7 +1766,7 @@ function buildCastPiechart(myResults,jsObj)
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
 
-		  //str +='       <td>'+result[i].cast+'</td>';
+		  str +='       <td>'+result[i].cast+'</td>';
           str +='		<td class="widthStyle">'+result[i].elder+'</td>';
 		  str +='		<td>'+result[i].elderGender+'</td>';
 		  str +='		<td>'+result[i].elderAge+'</td>';
@@ -2856,7 +2856,7 @@ function impFamilesVariableDescription()
 }
 
 function selectAll(id){
-       $('.'+id).each(function() {
+	 $('.'+id).each(function() {
             $(this).attr('checked','checked');
         });
 }
