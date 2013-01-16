@@ -2414,23 +2414,40 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		VoterVO voterVO = null;
 		String houseNo = "";
 		
-		/*if(voters != null && voters.size() > 0)
+		if(voters != null && voters.size() > 0)
 		for(Object[] voter : (List<Object[]>)voters)
 		voterIdsList.add((Long)voter[5]);
 		
 		if(voterIdsList.size() > 0)
 		{
-			
-		    List<Object[]> votercastList = userVoterDetailsDAO.getCasteByVoterId(userId,voterIdsList);
-		    if(votercastList!=null)
-	        for(Object[] params : votercastList)
+			List<Long> subList = null;
+			int startIndex = 0;
+			int nextIndex = 1000;
+			for(;;)
 			{
-	        	if(params[1].toString() != null && params[1].toString()!="")
-				caste = new SelectOptionVO((Long)params[0],params[1].toString());	
-				casteList.add(caste);
+				try{
+				if(startIndex >= voterIdsList.size()-1)
+					break;
+				if(nextIndex >= voterIdsList.size())
+					nextIndex = voterIdsList.size() - 1;
+				
+				subList = voterIdsList.subList(startIndex,nextIndex);
+				
+			    List<Object[]> votercastList = userVoterDetailsDAO.getCasteByVoterId(userId,subList);
+			    if(votercastList!= null)
+		        for(Object[] params : votercastList)
+				{
+		        	if(params[1].toString() != null && params[1].toString()!= "")
+					caste = new SelectOptionVO((Long)params[0],params[1].toString());	
+					casteList.add(caste);
+				}
+			    startIndex = nextIndex;
+			    nextIndex = nextIndex + 1000;
+				}catch (Exception e) {
+					log.error(e);
+				}
 			}
-			
-		}*/
+		}
 		if(voters != null)
 		for(Object[] voter : (List<Object[]>)voters){
 			houseNo = voter[1].toString();
@@ -2443,7 +2460,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterVO.setGender(voter[6].toString());
 			voterVO.setAge(voter[7] != null ? (Long)voter[7]:18l);
 			voterVO.setBoothName(voter[8].toString());
-			//voterVO.setCasteNameByVoterId(getCasteNameByVoterID(casteList,(Long)voter[5]));
+			voterVO.setCasteNameByVoterId(getCasteNameByVoterID(casteList,(Long)voter[5]));
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
 				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
@@ -3385,5 +3402,16 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			 voter.setsNo(new Long(i+1));
 		 }
 		 return votersInfo;
+	 }
+	 
+	 public ResultStatus insertVotersInfoOfAConstituency()
+	 {
+		 try{
+			 
+		 }catch(Exception e)
+		 {
+			 
+		 }
+		 return null;
 	 }
 }
