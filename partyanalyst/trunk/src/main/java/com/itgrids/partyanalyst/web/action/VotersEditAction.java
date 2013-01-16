@@ -491,4 +491,38 @@ public String saveVoterDetails(){
 			return "exception";
 		}
 	}
+	
+	 public String getVotersInfoBySearchCriteria(){
+		 try{
+		    jObj = new JSONObject(getTask());
+		    HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			Long userId = null;
+			if(user != null && user.getRegistrationID() != null)
+			    userId = user.getRegistrationID();
+			else 
+			  return "error";
+			VoterHouseInfoVO searchInfo = new VoterHouseInfoVO();
+			if(jObj.getString("voterCardId").trim().length() >0)
+				searchInfo.setVoterIdCardNo(jObj.getString("voterCardId").trim());
+			if(jObj.getString("voterName").trim().length() >0)
+				searchInfo.setName(jObj.getString("voterName").trim());
+			if(jObj.getString("voterNameType").trim().length() >0)
+				searchInfo.setSetValue(jObj.getString("voterNameType").trim());
+			if(jObj.getString("guardianName").trim().length() >0)
+				searchInfo.setGaurdian(jObj.getString("guardianName").trim());
+			if(jObj.getString("gender").trim().length() >0)
+				searchInfo.setGender(jObj.getString("gender").trim());
+			if(jObj.getLong("startAge") > 0)
+				searchInfo.setAge(jObj.getLong("startAge"));
+			if(jObj.getLong("endAge") > 0)
+				searchInfo.setToAge(jObj.getLong("endAge"));
+			searchInfo.setPublicationId(jObj.getLong("publicationDateId"));
+			
+			votersFamilyInfo = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,jObj.getString("locationLvl"),jObj.getLong("id"));
+		 }catch(Exception e){
+			 Log.error("Exception Occured in getVotersInfoBySearchCriteria() Method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
    }
