@@ -360,4 +360,8 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    	Object[] params={lclElecBodyId,publicationDateId};
 	    	return getHibernateTemplate().find("select model.boothId,model.partNo from Booth model where model.localBody.localElectionBodyId = ? and model.publicationDate.publicationDateId = ? order by model.partNo",params);
 	    }
+	    
+	    public List<Long> getStateIdByPublicationId(Long publicationDateId){
+	    	return getHibernateTemplate().find("select distinct model.constituency.state.stateId from Booth model where model.publicationDate.publicationDateId = ? ",publicationDateId);
+	    }
 }

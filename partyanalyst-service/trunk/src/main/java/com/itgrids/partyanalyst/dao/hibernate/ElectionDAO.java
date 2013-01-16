@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -689,6 +690,24 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.isPartial = 1 and model.electionScope.electionType.electionTypeId = 2");
 	}
 	
+	public List<Long> getPreviousMainElectionByStateIdYear(Long stateId,String year){
+		Object params[] = {stateId,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.ELECTION_SUBTYPE_MAIN,stateId};
+		return getHibernateTemplate().find(" select model.electionId from Election model where model.isPartial is null and model.electionScope.electionType.electionTypeId = 2 and model.electionScope.state.stateId = ? and model.elecSubtype = ? " +
+				"and model.electionYear = (select max(model1.electionYear) from Election model1 where model1.isPartial is null and  model1.elecSubtype = ?  " +
+				"  and model1.electionScope.electionType.electionTypeId = 2 and model1.electionScope.state.stateId = ? and model1.electionYear < "+year+" ) order by model.electionDate desc",params);
+	}
 	
+	public List<Object[]> getPreviousElectionsByStateIdYearAndDate(Long stateId,String year,Date date){
+
+		Query query = getSession().createQuery(" select model.electionId,model.elecSubtype from Election model where model.isPartial is null and model.electionScope.electionType.electionTypeId = 2 and model.electionScope.state.stateId = :stateId  " +
+				"and model.electionYear >= (select max(model1.electionYear) from Election model1 where model1.isPartial is null and  model1.elecSubtype = :elecType  " +
+				"  and model1.electionScope.electionType.electionTypeId = 2 and model1.electionScope.state.stateId = :stateId and model1.electionYear < "+year+" ) " +
+				" and model.electionYear <= (select max(model2.electionYear) from Election model2 where model2.isPartial is null  and model2.electionScope.electionType.electionTypeId = 2 and " +
+				"  model2.electionScope.state.stateId = :stateId and model2.electionYear < "+year+" ) and model.electionYear < :date order by model.electionDate desc");
+		query.setParameter("stateId", stateId);
+		query.setParameter("elecType", IConstants.ELECTION_SUBTYPE_MAIN);
+		query.setDate("date", date);
+		return query.list();
+	}
 	
 }
