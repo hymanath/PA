@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -37,9 +38,9 @@ import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
-import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -58,6 +59,7 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
+import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterCategory;
 import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
@@ -102,6 +104,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private ICasteCategoryGroupDAO casteCategoryGroupDAO;
 	private ICasteDAO casteDAO;
 	private IStateDAO stateDAO;
+	private IElectionDAO electionDAO;
 
 	public IVoterCategoryValueDAO getVoterCategoryValueDAO() {
 		return voterCategoryValueDAO;
@@ -246,6 +249,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
+	}
+
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -3515,5 +3526,19 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		    	votersList.add(voterHouseInfoVO);
 		    	
 		    }
+	 }
+	 
+	 public List<Object[]> getElectionIdAndTypeByPublicationId(Long publicationDateId){
+		   try{
+		    PublicationDate publicationDate = publicationDateDAO.get(publicationDateId);
+			List<Long> stateIds = boothDAO.getStateIdByPublicationId(publicationDateId);
+			if(stateIds != null && stateIds.size() >0)
+			  return electionDAO.getPreviousElectionsByStateIdYearAndDate(stateIds.get(0),publicationDate.getYear().toString(),publicationDate.getDate());
+			else
+				return new ArrayList<Object[]>();
+			}catch(Exception e){
+			   log.error("Exception rised in getElectionIdAndTypeByPublicationId ",e);
+		   }
+		   return new ArrayList<Object[]>();
 	 }
 }

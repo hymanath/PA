@@ -1,16 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Assert;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -317,7 +313,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			//System.out.println(params.getElectionScope().getPositionScope().toString());
 		}
 	}*/
-	public void testgetPartianValue()
+	/*public void testgetPartianValue()
 	{
 		List<Object[]> result = electionDAO.getPartianValue();
 		
@@ -326,7 +322,28 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(objects[0]);
 			System.out.println(objects[1]);
 		}
-	}
+	}*/
 	
+	/*public void testgetPreviousMainElectionByStateIdYear()
+	{
+		List<Long> result = electionDAO.getPreviousMainElectionByStateIdYear(1l,"2013");
+		System.out.println(result.size());
+		for (Long electionId : result) {
+			
+			System.out.println(electionId);
+			
+		}
+	}*/
+	public void testgetPreviousElectionsByStateIdYearAndDate()
+	{
+		List<Object[]> result = electionDAO.getPreviousElectionsByStateIdYearAndDate(1l,"2013",new Date());
+		System.out.println(result.size());
+		for (Object[] election : result) {
+			
+			System.out.println(election[0].toString()+"  "+election[1].toString());
+			
+		}
+	}
+
 }
 
