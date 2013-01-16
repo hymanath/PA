@@ -291,7 +291,7 @@ table.dataTable tr.even td.sorting_1 {
 	#constituencyList,#mandalField,
 	#panchayatField,#reportLevel,
 	#pollingStationField{width:160px;height:25px;}
-	#sublevelHeading,#localCastStatsVotersTitle,#impFamilesBasicSubDetailsTitle,#impFamPancBothDtlstitle,#impFamDtlsTitle{
+	#sublevelHeading,#impFamilesBasicSubDetailsTitle,#impFamPancBothDtlstitle,#impFamDtlsTitle{
 		color:steelblue;
 		font-size:13px;
 		font-family:verdana;
@@ -676,7 +676,6 @@ locationDetails.constituencyArr.push(ob);
 <script type="text/javascript">
 function getCastInfoForsubLevel()
 	{
-
 	document.getElementById('localCastStatsVotersTitle').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody1').innerHTML='';
