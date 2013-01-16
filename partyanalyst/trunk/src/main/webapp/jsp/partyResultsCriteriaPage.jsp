@@ -563,7 +563,7 @@ table.PartyResultsReportInputSelection {
 <body>
 <center>
 <div id="partyResultCriteriaMainDiv" style="height: 500px;">
-<H3 style="margin-top: 50px; font-weight: bold; color: #FFFFFF; width: 300px; border-radius: 5px 5px 5px 5px; background:#9966CC; padding: 3px 0px; text-align: center;">Party Results Report</H3>
+<H3 style="margin-top: 50px; font-weight: bold; color: #FFFFFF; width: 300px; border-radius: 5px 5px 5px 5px; background:#9966CC;text-align:center;font-size:20px;height:40px;">Party Results Report</H3>
 <div id="resultsPageErrorDiv"></div>
 <div id="partyResultsMainDiv" style="margin-top: 30px;">
 		<table class="errorDIV">
