@@ -2866,3 +2866,8 @@ function deSelectAll(id){
      $(this).removeAttr('checked');
 	});
 }
+function openNewSearchWindow(){
+	var urlStr="votersSearchAction.action";
+	var updateBrowser = window.open(urlStr,"votersSearch","scrollbars=yes,height=700,width=980,left=10,top=0");	
+	updateBrowser.focus();
+}
