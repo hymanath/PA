@@ -25,7 +25,7 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 		{
 			List<Long> voterIDs = new ArrayList<Long>();
 			voterIDs.add(459028l);
-			//voterIDs.add(459029l);
+			voterIDs.add(459029l);
 			//voterIDs.add(459030l);
 			
 			List<Object[]> list = userVoterDetailsDAO.getCasteByVoterId(1l, voterIDs);

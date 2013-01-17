@@ -123,7 +123,7 @@ public void setBoothPublicationVoterDAO(
 		}
 	}*/
 	
-	public void testGetCastAndGenderWiseVotersCountByPublicationIdInALocation()
+	/*public void testGetCastAndGenderWiseVotersCountByPublicationIdInALocation()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(1l,"constituency",232l,6l);
 		
@@ -135,11 +135,23 @@ public void setBoothPublicationVoterDAO(
 			System.out.println(params[4]);
 		}
 	}
-
+*/
 /*public void testgetVoterDetailsByCasteState()
 {
 	 //List<Voter> voter = boothPublicationVoterDAO.getVoterDetailsByCasteState(204l,2l,1l);
 	 //System.out.println(voter.size());
 }*/
+
+/*public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation()
+{
+List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(1l,"constituency",232l,6l);
+System.out.println(list.size());
+}*/
+
+public void testgetPartyWiseCastCategoryVotersCount()
+{
+	List<Object[]> list = boothPublicationVoterDAO.getCastCategoryWiseVotersCountByPublicationIdInALocation(1l, "constituency", 232l, 6l);
+	System.out.println(list.size());
+}
 
 }
