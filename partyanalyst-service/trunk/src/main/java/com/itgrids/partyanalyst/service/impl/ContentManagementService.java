@@ -264,8 +264,13 @@ public class ContentManagementService implements IContentManagementService{
 					List<Object[]> galInfoList = null;
 					if(contentType !=null && contentType.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
 						galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfo((Long)galId," count(model.fileGallaryId) ");
-					else
-					   galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfo((Long)galId," count(distinct model.fileGallaryId) ");
+					else{
+						
+						if(!isCustomer.equalsIgnoreCase("true"))
+					      galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfo((Long)galId," count(distinct model.fileGallaryId) ");
+						else
+							galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfoForCustomer((Long)galId," count(distinct model.fileGallaryId) ");
+					}
 					if(galInfoList != null && galInfoList.size() > 0)
 					{
 						Object[] galAndFileInfo = galInfoList.get(0);
