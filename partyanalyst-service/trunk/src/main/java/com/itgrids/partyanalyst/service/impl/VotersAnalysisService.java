@@ -682,16 +682,21 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			}
 			Long totalVoters = getVotersCountByPublicationIdInALocation(locationType,locationId,publicationDateId);
 			Long votesConsidered = 0L;
+			Long partyWisevotesConsidered = 0L;
 			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
 			voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
 			voterCastInfoVO.setTotalCasts(voterCastInfoVO.getVoterCastInfoVOList().size());
 			voterCastInfoVO.setTotalVoters(totalVoters);
-			
+			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
 			for(VoterCastInfoVO castInfoVO : voterCastInfoVO.getVoterCastInfoVOList())
 				votesConsidered = votesConsidered + castInfoVO.getTotalVoters();
 			
 			voterCastInfoVO.setMaleVoters(votesConsidered);
 			voterCastInfoVO.setFemaleVoters(totalVoters - votesConsidered);
+			for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
+			partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
+			voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
+			voterCastInfoVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
 			return voterCastInfoVO;
 		}catch (Exception e) {
 			log.error("Exception Occured in getVotersCastWiseDetailsInALocation() Method, Exception is - "+e);
@@ -783,6 +788,64 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	}
 	
+	
+	public List<VoterCastInfoVO> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	{
+		List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
+		try{
+			List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId);
+			
+			if(list != null && list.size() > 0)
+			{
+				VoterCastInfoVO voterCastInfoVO = null;
+				Long totalVotes = 0L;
+				
+				for(Object[] params : list)
+				{
+					voterCastInfoVO = getPartyWiseCastInfoVOBasedOnPartyName(params[0].toString(),resultList);
+					boolean isNew = false;
+					if(voterCastInfoVO == null)
+					{
+						voterCastInfoVO = new VoterCastInfoVO();
+						
+						if(params[0] != null)
+						voterCastInfoVO.setPartyName(params[0].toString());
+						isNew = true;
+					}
+					
+					String gender = params[1].toString();
+					
+					if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						voterCastInfoVO.setMaleVoters((Long)params[2]);
+					else
+						voterCastInfoVO.setFemaleVoters((Long)params[2]);
+					
+					voterCastInfoVO.setTotalVoters(voterCastInfoVO.getMaleVoters() + voterCastInfoVO.getFemaleVoters());
+					totalVotes = totalVotes + (Long)params[2];
+					voterCastInfoVO.setPartyId((Long)params[3]);
+					
+					if(isNew)
+						resultList.add(voterCastInfoVO);
+				}
+				
+				for(VoterCastInfoVO castInfoVO : resultList)
+				{
+					String percentage = "0.00";
+					try{
+						percentage = (new BigDecimal(castInfoVO.getTotalVoters()*(100.0)/totalVotes.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					}catch (Exception e) {}
+					finally{
+						castInfoVO.setVotesPercent(percentage);
+					}
+				}
+			}
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCastAndGenderWiseVotersCountByPublicationIdInALocation() Method, Exception is - "+e);
+			return resultList;
+		}
+	}
+	
 	public VoterCastInfoVO getVoterCastInfoVOBasedOnCastName(String casteName,List<VoterCastInfoVO> list)
 	{
 		try{
@@ -801,7 +864,24 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			return null;
 		}
 	}
-	
+	public VoterCastInfoVO getPartyWiseCastInfoVOBasedOnPartyName(String partyName,List<VoterCastInfoVO> list)
+	{
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(VoterCastInfoVO voterCastInfoVO : list)
+					if(voterCastInfoVO.getPartyName().equalsIgnoreCase(partyName))
+						return voterCastInfoVO;
+				return null;
+			}
+			
+			else 
+				return null;
+		}catch (Exception e) {
+			log.error("Exception Occured in getVoterCastInfoVOBasedOnCastName(), Exception is - "+e);
+			return null;
+		}
+	}
 	//get CastInfo For Constituency/Mandal/Panchayat/Booth
 	
 	public VoterCastInfoVO getVotersCastDetails(Long id,Long publicationDateId,String type)
