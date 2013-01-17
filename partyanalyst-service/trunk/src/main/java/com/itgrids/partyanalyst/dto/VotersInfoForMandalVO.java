@@ -21,7 +21,13 @@ public class VotersInfoForMandalVO {
 	private Long id;
 	private String name;
 	private String type;
+	private String electionYear;
 	private boolean datapresent = true;
+	private List<VotersInfoForMandalVO> previousElectInfoList;
+	private Long maleVotersDiff = 0l;
+	private Long femaleVotersDiff = 0l;
+	private Long totalVotersDiff = 0l;
+	private String status;
 	
 	public String getMandalId() {
 		return mandalId;
@@ -119,6 +125,43 @@ public class VotersInfoForMandalVO {
 	}
 	public void setDatapresent(boolean datapresent) {
 		this.datapresent = datapresent;
+	}
+	public List<VotersInfoForMandalVO> getPreviousElectInfoList() {
+		return previousElectInfoList;
+	}
+	public void setPreviousElectInfoList(
+			List<VotersInfoForMandalVO> previousElectInfoList) {
+		this.previousElectInfoList = previousElectInfoList;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+	public Long getMaleVotersDiff() {
+		return maleVotersDiff;
+	}
+	public void setMaleVotersDiff(Long maleVotersDiff) {
+		this.maleVotersDiff = maleVotersDiff;
+	}
+	public Long getFemaleVotersDiff() {
+		return femaleVotersDiff;
+	}
+	public void setFemaleVotersDiff(Long femaleVotersDiff) {
+		this.femaleVotersDiff = femaleVotersDiff;
+	}
+	public Long getTotalVotersDiff() {
+		return totalVotersDiff;
+	}
+	public void setTotalVotersDiff(Long totalVotersDiff) {
+		this.totalVotersDiff = totalVotersDiff;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

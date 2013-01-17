@@ -710,4 +710,17 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return query.list();
 	}
 	
+	public List<Election> getPreviousElections(Long stateId,String year,Date date){
+
+		Query query = getSession().createQuery(" select model from Election model where model.isPartial is null and model.electionScope.electionType.electionTypeId = 2 and model.electionScope.state.stateId = :stateId  " +
+				"and model.electionYear >= (select max(model1.electionYear) from Election model1 where model1.isPartial is null and  model1.elecSubtype = :elecType  " +
+				"  and model1.electionScope.electionType.electionTypeId = 2 and model1.electionScope.state.stateId = :stateId and model1.electionYear < "+year+" ) " +
+				" and model.electionYear <= (select max(model2.electionYear) from Election model2 where model2.isPartial is null  and model2.electionScope.electionType.electionTypeId = 2 and " +
+				"  model2.electionScope.state.stateId = :stateId and model2.electionYear < "+year+" ) and model.electionYear < :date order by model.electionDate desc");
+		query.setParameter("stateId", stateId);
+		query.setParameter("elecType", IConstants.ELECTION_SUBTYPE_MAIN);
+		query.setDate("date", date);
+		return query.list();
+	}
+	
 }

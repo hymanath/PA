@@ -21,6 +21,7 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private String casteCategoryName;
 
+	private Long partyCount;
 	
 	
 	public CastVO(){
@@ -117,6 +118,14 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 
 	public void setCasteCategoryName(String casteCategoryName) {
 		this.casteCategoryName = casteCategoryName;
+	}
+
+	public Long getPartyCount() {
+		return partyCount;
+	}
+
+	public void setPartyCount(Long partyCount) {
+		this.partyCount = partyCount;
 	}
 
 
