@@ -182,12 +182,12 @@ p {
  padding:5px;
 
 }
-#subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#votersByLocationTabContentDiv_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#subLevelTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even){background:#EdF5FF;}
+#partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#votersByLocationTabContentDiv_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#partyWiseJqTable tr:nth-child(even),#subLevelTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even){background:#EdF5FF;}
 
-#subLevelTable td,#impfamilydatatable td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#partyWiseJqTable td,#subLevelTable td,#impfamilydatatable td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
-#subLevelTable th,#impfamilydatatable th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th{
+#partyWiseJqTable th,#subLevelTable th,#impfamilydatatable th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -313,7 +313,7 @@ float: none;
 margin: 13px auto 12px;
 padding: 7px;
 width: 860px;}
-#subLevelTable_info,#subLevelTable_paginate,#impfamilydatatable_info,#impfamilydatatable_paginate{
+#partyWiseJqTable_info,#partyWiseJqTable_paginate,#subLevelTable_info,#subLevelTable_paginate,#impfamilydatatable_info,#impfamilydatatable_paginate{
 	font-family: verdana;
     font-size: 12px;
     margin-top: 12px;
@@ -330,7 +330,7 @@ width: 860px;}
 #impfamilydatatable th{
   padding:5px;
 }
-.localCastDetailsHeadingDiv{ 
+.localCastDetailsHeadingDiv,#partyWiseTitle{ 
     border-radius: 3px;
     color: #FFFFFF;
     font-family: verdana;
@@ -339,22 +339,22 @@ width: 860px;}
     margin-bottom: 14px;
     margin-top: 5px;
     padding: 4px;width:400px;}
-	#localCastDetailsDiv{clear: both;
+    #localCastDetailsDiv,#partyWiseDetailsDiv{clear: both;
     margin-bottom: -138px;
     margin-top: 0;
     padding-top: 0;
     width: 400px;padding-left: 29px;
     padding-top: 20px;}
-	#localCastChatDiv{clear: both;
+	#localCastChatDiv,#partyWiseChatDiv{clear: both;
     float: right;
      width: 500px;}
-	 .castDetailsMainDiv{ border: 1px solid #CCCCCC;
+	 .castDetailsMainDiv,.partyWiseDetailsMainDiv{ border: 1px solid #CCCCCC;
     clear: both;
     display: table;
      margin-left: 10px;
     
     width: 926px;}
-	#localCastDetailsDiv p{font-size:13px;font-weight:bold;}
+	#localCastDetailsDiv p,#partyWiseDetailsDiv p{font-size:13px;font-weight:bold;}
 	#createNewGroupId:hover{background:#F61D50;color:#FFF;}
 	#openProblemEditFormId{cursor:pointer;}
 	.descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
@@ -589,6 +589,16 @@ locationDetails.constituencyArr.push(ob);
 	<div id='localCastStatsTabContent_subbody'></div><br><br>
 	<div id ="localCastStatsVotersTitle" ></div>
 	<div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
+	<div id="partyWiseDetailsHeadingDiv" class="localCastDetailsHeadingDiv"></div>
+	<div id='partyWise_header'></div>
+		
+	<div class="partyWiseDetailsMainDiv">
+		<div id="partyWiseDetailsDiv"></div>
+		<div id="partyWiseChatDiv"></div></div><br>
+		<div id="partyWiselocalcastDiv"></div><br><br>
+	
+
+	
 
 
 </div>
