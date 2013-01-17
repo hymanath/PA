@@ -222,6 +222,10 @@ table.impTableDiv th, table.impTableDiv td {text-align:center;border:1px solid b
 table.impTableDiv th {background-color:AntiqueWhite;}
 table.impTableDiv td:first-child {width:50%;}
 
+table.votersPrevCountTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
+table.votersPrevCountTableDiv th, table.votersPrevCountTableDiv td {text-align:center;border:1px solid black;padding:5px;}
+table.votersPrevCountTableDiv th {background-color:#CDE6FC;}
+
 table.dataTable tr.odd {
     background-color: #ffffff;
 }
@@ -407,6 +411,10 @@ width: 860px;}
     padding: 4px;
     width: 465px;}
 	.localCastStatsVotersTitle{background:#06ABEA;}
+	.imageSize{
+	   height:11px;
+	   width:11px;
+	}
 </style>
 
 <script type="text/javascript">
