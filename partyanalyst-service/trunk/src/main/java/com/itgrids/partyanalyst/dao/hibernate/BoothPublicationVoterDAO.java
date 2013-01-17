@@ -285,7 +285,33 @@ public class BoothPublicationVoterDAO extends
 		
 		return query.list();
 	}
+	//Party Wise getCastAndGenderWiseVotersCountByPublicationIdInALocation
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model2.party.shortName,model.voter.gender,count(model.voter.voterId),model2.party.partyId from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append("where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		if(locationType.equalsIgnoreCase("constituency"))
+			str.append(" model.booth.constituency.constituencyId = :locationId ");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("booth"))
+			str.append(" model.booth.boothId = :locationId ");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
+		else if(locationType.equalsIgnoreCase("localElectionBody"))
+			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
+		str.append("group by model2.party.partyId,model.voter.gender order by model2.party.shortName ");
+		Query query =getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("locationId", locationId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+	}
 	/*public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
 		Query query = getSession().createQuery("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				" model.booth.boothId in(select distinct model1.booth.boothId from HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
