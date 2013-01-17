@@ -1547,22 +1547,61 @@ function buildCastInfoData(myresults,jsObj)
 		if(cast != '')
 	{
 		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type);	
+
 	}
-		/*if(cast != '' && type =='booth')
-		{
-		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId);	
-		}
-		else if(cast != '' && type!='booth')
-		{
-		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId);	
-		}*/
+		
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		$("#localCastStatsTabContent_body").html("No Data Found");
 		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
 		}
 
-		buildCastPiechart(myresults,jsObj);   
+		buildCastPiechart(myresults,jsObj);  
+		buildPartyWisePiechart(myresults,jsObj);
+		buildPartyWiseCastData(myresults,typeName,publicationDateId,boothId,type);	
+}
+function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
+{
+	
+		  var result = results.voterCastInfodetails;
+		  var Data = result.partyWisevoterCastInfoVOList;
+		  var str =' <table id="partyWiseJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
+          str+='  <thead>';
+          str+='   <tr>';
+          str+='     <th>Party</th>';
+		 
+		  str+='     <th>Voters</th>';
+          str+='     <th>Male Voters</th>';
+          str+='     <th>Female Voters</th>';
+          str+='	 <th>Party Percentage</th>';
+          str+='   </tr>';
+          str+='  </thead>';
+          str+='  <tbody>';
+
+		  for(var i in Data){
+	      str +='   <tr>';
+		  str +='		<td><a href="partyPageAction.action?partyId='+Data[i].partyId+' ">'+Data[i].partyName+'</td>';
+		  str +='		<td>'+Data[i].totalVoters+'</td>';
+          str +='		<td>'+Data[i].maleVoters+'</td>';
+		  str +='		<td>'+Data[i].femaleVoters+'</td>';
+		  str +='		<td>'+Data[i].votesPercent+'</td>';
+          str+='   </tr>';
+	   }
+          str+='  </tbody>';
+          str+=' </table>';
+	  
+	  $("#partyWiselocalcastDiv").html(str);
+	  
+	  	$('#partyWiseJqTable').dataTable({
+		"aaSorting": [[ 1, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null
+     
+	  
+    ] 
+		});
 }
 
 function buildCastPiechart(myResults,jsObj)
@@ -1592,9 +1631,41 @@ function buildCastPiechart(myResults,jsObj)
 	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
 		chart.draw(data, {width: 400, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'Cast category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
 	});
-
+}
+function buildPartyWisePiechart(myResults,jsObj)
+{
+	$("#partyWiseDetailsHeadingDiv").html("Party Wise Voters Details").css("background","#06ABEA");
+	
+	var partyWise_header=document.getElementById('partyWise_header');
+	var results = myResults.voterCastInfodetails;
+	var voters= '';
+	var str = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
+	
+	str += '<span>Party Assigned Voters : '+results.partyWiseAssignedVoters+'</span>';
+	str += '<span style="padding-left:40px;">Party Not Assigned Voters : '+results.partyWiseNotAssignedVoters+'</span>';
+	str += '<br><br>';
+	for(var i=0;i<results.partyWisevoterCastInfoVOList.length;i++)
+		voters +='<p>'+results.partyWisevoterCastInfoVOList[i].partyName+' Voters : '+results.partyWisevoterCastInfoVOList[i].totalVoters+'</p>';
+		voters +='</div>';
+	$('#partyWiseDetailsDiv').html(voters);
+	partyWise_header.innerHTML = str;
 
 	
+	
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','party');
+	data.addColumn('number','percentage');
+	data.addRows(results.partyWisevoterCastInfoVOList.length);
+
+	for(var j=0; j<results.partyWisevoterCastInfoVOList.length; j++)
+	{
+		data.setValue(j,0,results.partyWisevoterCastInfoVOList[j].partyName);
+		data.setValue(j,1,results.partyWisevoterCastInfoVOList[j].totalVoters);
+	} 
+
+	var chart = new google.visualization.PieChart(document.getElementById('partyWiseChatDiv'));
+		chart.draw(data, {width: 400, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'Party wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+	});
 }
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type)
 	{
@@ -1606,7 +1677,7 @@ function buildCastPiechart(myResults,jsObj)
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>Caste</th>';
-		     str+='	 <th>Caste category</th>';
+		  str+='	 <th>Caste category</th>';
 		  str+='     <th>Voters</th>';
           str+='     <th>Male Voters</th>';
           str+='     <th>Female Voters</th>';
