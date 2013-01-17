@@ -101,12 +101,20 @@ h2
 	font-size:12px;
 	font-family:arial;
 }
-
+.eventSummaryDiv {
+    color: #44505C;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px;
+}
 </style>
 	
 
 <script type="text/javascript">
-
+$(document).ready(function() {
+	$("#cadreId").css("background-position","left -54px");
+	$("#cadreSpanId").css("background-position","right -81px")
+  });
 	var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
 	var selectedEventObj={
 							userEventsId:"",
@@ -3604,7 +3612,26 @@ function fillDataForCadreLevel(results,jsObj)
 	{
 		newDateDialog.show();
 	}
-
+	function checkDate()
+	{
+	startDate = $('#ImpStartDateText_new').val();
+	endDate = $('#ImpEndDateText_new').val();
+	  var dt1  = parseInt(startDate.substring(0,2),10);
+      var mon1 = parseInt(startDate.substring(3,5),10);
+      var yr1  = parseInt(startDate.substring(6,10),10);
+      var dt2  = parseInt(endDate.substring(0,2),10);
+      var mon2 = parseInt(endDate.substring(3,5),10);
+      var yr2  = parseInt(endDate.substring(6,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
+	
+	 if(date2 < date1)
+		{ 
+		 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
+		 return true;
+		}
+	return 	false;
+}
 	function handleImpDateSubmit()
 	{	
 		
@@ -3638,7 +3665,7 @@ function fillDataForCadreLevel(results,jsObj)
 			{
 				ImpendDateVal = ImpstartDateVal;
 			}
-		
+		checkDate();
 		selectedDateObj.importantDateId="";
 		selectedDateObj.eventId="";
 		selectedDateObj.eventType="";
@@ -3908,8 +3935,8 @@ function fillDataForCadreLevel(results,jsObj)
 			</div>
 		</div>
 		<div id="cadreSMSMainDiv">
-			<div id="cadreSMSHeadDiv" style="font-size:12px;">Cadre SMS</div>
-			<div id="cadreSMSBodyDiv" style="font-size:12px;font-family:verdana;">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
+			<div id="cadreSMSHeadDiv" style="font-size:12px;">Cadre Info</div>
+			<div id="cadreSMSBodyDiv" style="font-size:12px;font-family:verdana;margin-bottom: 15px;">Cadre Info feature enables the user to add new people into the Cadre, Searching existing Cadres And send SMS to the cadres, based on the location and cadre level.</div>
 			<div id="cadreSMSFooterDiv" style="font-size:12px;">
 				<span><a href="cadreRegisterPageAction.action?cadreId=0&windowTask=new" id="sendSMSAnc">Add Cadre</a></span>
 				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Search')">Cadre Search</a></span>

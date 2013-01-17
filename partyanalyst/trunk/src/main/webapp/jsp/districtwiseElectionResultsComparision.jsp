@@ -575,7 +575,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 23			        
 			    }),
-			    caption:"Districts Wise Election Results"
+			    caption:"<div style='color: red;'>Districts Wise Election 		Results</div>"
 				};
 		
 		var allDistrictResultsDataTable = new YAHOO.widget.DataTable(divID, allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
@@ -775,7 +775,7 @@ function buildAllianceDistrictResultsDataTable(results)
         		};
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({rowsPerPage    : 10}) ,
-				caption:innerObj[i].allianceGroupName+" Alliance Details"
+				caption:"<div style='color:red;'>"+innerObj[i].allianceGroupName+" Alliance Details </div>"
 				};
 		
 		var allianceDistrictResultsDataTable = new YAHOO.widget.DataTable('allianceResults_district_'+i+'_datatable', allianceDistrictResultsColumnDefs, allianceDistrictResultsDataSource,myConfigs);

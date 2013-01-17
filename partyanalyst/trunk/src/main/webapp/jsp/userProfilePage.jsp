@@ -316,7 +316,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				
 				        <div id="fLinks"></div>
 				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;"></div>
-						<div class="placeholderCenterDiv" id="placeholderCenterDivId">
+						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;">
 						
 						
 						</div>

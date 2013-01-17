@@ -140,6 +140,10 @@
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 	<script type="text/javascript">
+	$(document).ready(function() {
+	$("#constituencyId").css("background-position","left -54px");
+	$("#constituencySpanId").css("background-position","right -81px")
+	});
 		google.load("visualization", "1", {packages:["corechart"]});
 		 <%			
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");

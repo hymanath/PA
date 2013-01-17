@@ -422,9 +422,9 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 		<fieldset>
 			<legend style="font-family:arial,helvetica,clean,sans-serif;">Political Change Info</legend>
 			<div id="errMsgDiv" style="color: red;"></div>
-			<div>
+			<!--<div>
 				<font class="requiredFont"> *  <%=mandatoryFields%></font>
-			</div>
+			</div>-->
 			<table>
 				<tr>
 					<td style="width:140px;"><%=title%><font class="requiredFont"> * </font></td>
