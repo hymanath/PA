@@ -185,7 +185,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return influencingPeopleBeanVO.getVillage();
 	}
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please Select Village/Ward")
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Village")
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Village")
 	public void setVillage(String village) {
 		this.influencingPeopleBeanVO.setVillage(village);
 	}
