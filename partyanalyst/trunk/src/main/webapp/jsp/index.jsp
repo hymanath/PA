@@ -355,7 +355,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <div id="showImpDateSucessMsg"></div>
 <div id="showImpEventSucessMsg"></div>
 <script type="text/javascript">
-	
+$(document).ready(function() {
+	$("#dashBoardId").css("background-position","left -54px");
+	$("#dashBoardSpanId").css("background-position","right -81px")
+  });	
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
 function showDetailsForAvailability(myresults){

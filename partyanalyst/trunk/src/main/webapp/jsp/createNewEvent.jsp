@@ -96,6 +96,7 @@ span{float:left;}
     color: red;
 	font-size: 17px;
 }
+
 </style>
 <script type="text/javascript">
 var allOrgnisers = new Array();
@@ -651,21 +652,24 @@ function handleSubmit(type)
 		var startDateValArry = startDateVal.split("/");
 		var endDateValArry = endDateVal.split("/");
 		var startdate = new Date(startDateValArry[2], parseInt(startDateValArry[1])-1, startDateValArry[0]);
+		var startNewDate = startdate.getTime();
 		var enddate = new Date(endDateValArry[2], parseInt(endDateValArry[1])-1, endDateValArry[0]);
+		var endNewDate = enddate.getTime();
 		var startTimeHrs = document.getElementById("startTimeHrs");
 		var startTimeHrsVal = startTimeHrs.options[startTimeHrs.selectedIndex].text;
+		//alert(startTimeHrsVal);
+		var startNewTimeHrsVal = parseInt(startTimeHrsVal);
+		//alert(startNewTimeHrsVal)
 		var startTimeMin = document.getElementById("startTimeMin");
 		var startTimeMinVal = startTimeMin.options[startTimeMin.selectedIndex].text;
-		
-		var endTimeHrs = document.getElementById("endTimeHrs");		
+		var endTimeHrs = document.getElementById("endTimeHrs");	
 		var endTimeHrsVal = endTimeHrs.options[endTimeHrs.selectedIndex].text;
+		var endNewTimeHrsVal = parseInt(endTimeHrsVal);
 		var endTimeMin = document.getElementById("endTimeMin");
 		var endTimeMinVal = endTimeMin.options[endTimeMin.selectedIndex].text;
-
 		var descVal = document.getElementById("descTextArea").value;
 		descVal = removeEnterStrokeForString(descVal);
         var errorMsg = document.getElementById("errorMsgDiv");
-    
 		var scopeId = $('#locationLvl :selected').val();
 		var locationLevelFieldval = $('#locationLvl :selected').text();
         var stateValue = $('#stateSel :selected').val();
@@ -675,7 +679,9 @@ function handleSubmit(type)
         var villageValue = $('#vilWrdDivSel :selected').val();
         var boothVal = $('#boothNoSel :selected').val();
 		var locationValue;
-
+		var targetDateVal = document.getElementById("actionPlanDate").value;
+		var targetDateValArry = targetDateVal.split("/");
+		var targetdate = new Date(targetDateValArry[2], parseInt(targetDateValArry[1])-1, targetDateValArry[0]);
 		 
 		//validation code
 		if(eventNameVal == '' ){
@@ -691,7 +697,32 @@ function handleSubmit(type)
 		  str+= "Please select A valid date for End date.<br/>";
 		   errorReq = true;
 		}
-		
+		if(startNewDate == endNewDate)
+		{
+			if(startNewTimeHrsVal > endNewTimeHrsVal)
+			{
+				str+= "Please Select A Valid End Time<br/>";
+				errorReq = true;
+		    }
+			else if(startTimeHrsVal == endTimeHrsVal)
+			{
+				if(startTimeMinVal >= endTimeMinVal)
+				{
+					str+= "Please Select A Valid End Time<br/>";
+					errorReq = true;
+				}
+			}
+		}
+		if(targetdate < startdate)
+		{
+			str+= "Please Select A Valid Target Date.<br/>";
+			errorReq = true;
+		}
+		if(targetdate > enddate)
+		{
+			str+= "Please Select A Valid Target Date.<br/>";
+			errorReq = true;
+		}
 		if(scopeId == 0 ){
 			str+= "Please select Location Level.<br/>";
 			errorReq = true;
@@ -834,11 +865,13 @@ function handleSubmit(type)
 	  $("#pop_header").html("Update Event");
 	  $("#eventNameText").val(result.title);
 	   $("#descTextArea").val(result.description);
-	  var sDayobj = getDateTime(result.startDate);					
+	  var sDayobj = getDateTime(result.startDate); 	  
 	  var eDayobj = getDateTime(result.endDate);
-	$("#startDateText_new").val(sDayobj.day+"/"+sDayobj.month+"/"+sDayobj.year);
+	  $("#startDateText_new").val(sDayobj.day+"/"+sDayobj.month+"/"+sDayobj.year);
 	$("#endDateText_new").val(eDayobj.day+"/"+eDayobj.month+"/"+eDayobj.year);
-	$("#startTimeHrs").val(parseInt(sDayobj.hours));
+	//alert(sDayobj.hours);
+	$("#startTimeHrs").val(sDayobj.hours);
+	//alert(parseInt(sDayobj.hours));
 	$("#startTimeMin").val(parseInt(sDayobj.minutes));
 	$("#endTimeHrs").val(parseInt(eDayobj.hours));
 	$("#endTimeMin").val(parseInt(eDayobj.minutes));
@@ -891,7 +924,8 @@ function handleSubmit(type)
 		var startMonStr = date.substring(5,7);
 		var startYearStr = date.substring(0,4);	
 
-		var startTimeHrs = date.substring(11,13);	
+		var startTimeHrs = date.substring(11,13);
+			//alert(startTimeHrs);
 		var startTimeMin = date.substring(14,16);	
 
 		var dateTimeObj={
@@ -1107,9 +1141,18 @@ function handleSubmit(type)
 <script>
  for(var i=0;i<=23;i++)
   {
+	if(i<=9)
+	{
+	$("#startTimeHrs").append('<option value=0'+i+'>0'+i+'</option>');
+    $("#endTimeHrs").append('<option value=0'+i+'>0'+i+'</option>');
+	}
+	else
+	{
     $("#startTimeHrs").append('<option value='+i+'>'+i+'</option>');
     $("#endTimeHrs").append('<option value='+i+'>'+i+'</option>');
+	}
   }
+  
 <c:if test="${updateEvent}">
  showSelectedDateEvent();
 </c:if>

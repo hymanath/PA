@@ -19,6 +19,15 @@
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
 
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+
+<!-- JQuery files (End) -->
 <% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 %>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
@@ -183,7 +192,7 @@ select
 	var allPartyResultsByRanges;
 	var jobjP;
 	var resultsP;
-
+	var checkedRadioName;
     google.load("visualization", "1", {packages:["corechart"]});
 	
 	function showAjaxImage()
@@ -925,6 +934,7 @@ select
 				}
 					
 			}	
+			$('#partyCheckId').attr('checked',true);
 		}
 
 		var jsObj = {
@@ -943,25 +953,31 @@ select
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getPartiesPerformanceInCensusReportByDistrictOrPartiesAction.action?"+rparam;						
 		censusAjaxCall(jsObj,url);
+		checkedRadioName = checkedValue;
+		
 	}
 	
 	function showSelectOptions(value)
 	{
+	//alert(value);
 		var districtSpanElmt = document.getElementById("district_select");
 		var partiesSpanElmt = document.getElementById("parties_select");
 
 		if(value == "all")
 		{
+		//alert("1");
 			districtSpanElmt.style.display = 'none';
 			partiesSpanElmt.style.display = 'none';
 		}
 		else if(value == "district")
 		{
+		//alert("2");
 			districtSpanElmt.style.display = 'block';
 			partiesSpanElmt.style.display = 'none';
 		}
 		else if(value == "parties")
 		{
+		//alert("3");
 			districtSpanElmt.style.display = 'none';
 			partiesSpanElmt.style.display = 'block';
 		}
@@ -969,6 +985,8 @@ select
 
 	function buildPerformanceTable(jsObj,results)
 	{
+	//alert("buildPerformanceTable");
+	//alert(checkedRadioName)
 		constiIds = jsObj.idsList;
 		partyResultsList = results.partyResultsList;
 
@@ -988,13 +1006,13 @@ select
 		optionStr += '<table width="100%">';
 		optionStr += '<tr>';
 		optionStr += '<th valign="top">Select options to change view </th>';
-		optionStr += '<td ><input name="partyResultsRadio" onclick="showSelectOptions(this.value)" type="radio" checked="checked" value="all"/> All </td>';
-		optionStr += '<td><input name="partyResultsRadio" type="radio" value="district" onclick="showSelectOptions(this.value)"/> District </td>';
+		optionStr += '<td ><input name="partyResultsRadio" onclick="showSelectOptions(this.value)" type="radio"  value="all" checked="checked" id="allCheckId"/> All </td>';
+		optionStr += '<td><input name="partyResultsRadio" type="radio" value="district" id="districtCheckId" onclick="showSelectOptions(this.value)"/> District </td>';
 		optionStr += '<td valign="top"><div id="district_select" style="display:none;"><select id="district_selectElmt" multiple="multiple" size="3">';
 		for(var i=0; i<results.districts.length; i++)
 			optionStr += '<option value="'+results.districts[i].id+'">'+results.districts[i].name+'</option>';
 		optionStr += '</select></div></td>';
-		optionStr += '<td ><input name="partyResultsRadio" type="radio" value="parties" onclick="showSelectOptions(this.value)"/> Parties </td>';
+		optionStr += '<td ><input name="partyResultsRadio" type="radio" value="parties" id="partyCheckId" onclick="showSelectOptions(this.value)"/> Parties </td>';
 		optionStr += '<td valign="top"><div id="parties_select" style="display:none;"><select id="parties_selectElmt" multiple="multiple" size="3">';
 		for(var i=0; i<results.parties.length; i++)
 			optionStr += '<option value="'+results.parties[i].id+'">'+results.parties[i].name+'</option>';
@@ -1131,6 +1149,21 @@ select
 			graphDivElmt.innerHTML = gStr;
 
 			buildGraph("seats");
+			if(checkedRadioName == 'all')
+			{
+				$('#allCheckId').attr('checked',true);
+				showSelectOptions(checkedRadioName);
+			}
+			else if(checkedRadioName == 'district')
+			{
+				$('#districtCheckId').attr('checked',true);
+				showSelectOptions(checkedRadioName);
+			}
+			else if(checkedRadioName == 'parties')
+			{
+				$('#partyCheckId').attr('checked',true);
+				showSelectOptions(checkedRadioName);
+			}
 	}
 	
 	function buildGraph(graphType)
@@ -1280,7 +1313,10 @@ select
 	{
 		document.getElementById("districtList").disabled= false; 
 	}
-
+	function changeCensusType()
+	{
+		 $('#censusSelect').val(0);
+	}
 </script>
 </head>
 <body>
@@ -1309,7 +1345,7 @@ select
 			<tr>
 				<th>State</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLatestElectionYears();getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLatestElectionYears();changeCensusType();getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
 				</td>
 
 				<th>District</th>
@@ -1394,7 +1430,9 @@ select
 								<td><div id="partyResultsGraphDiv"></div></td>
 							</tr>
 						</table>
+						<h5 style="color:red";>PC : Participated Constituencies</h5>
 					</div>
+					
 				</div>			
 				<div id="performanceGraphDiv_main" class="mainWidgetsDiv">
 					<div id="performanceGraphDiv_head">
