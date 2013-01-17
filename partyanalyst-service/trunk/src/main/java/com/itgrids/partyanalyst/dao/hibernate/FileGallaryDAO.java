@@ -1279,6 +1279,20 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 return query.list();
      }
      
+     
+     public List<Object[]> getFirstFileAndGallaryInfoForCustomer(Long gallaryId,String queryString){
+    	 
+    	 Query query = getSession().createQuery("select model.gallary.name,model.gallary.description,"+queryString+", " +
+     	 		"model.fileGallaryId,model1.filePath from FileGallary model,FilePaths model1 where model.gallary.gallaryId = ? and " +
+     	 		"model.file.fileId = model1.fileSourceLanguage.file.fileId and model.gallary.isDelete = 'false' and  model.isDelete = 'false'  " +
+     	 		"group by model.gallary.gallaryId order by model.updateddate desc,model1.fileSourceLanguage.fileSourceLanguageId,model1.orderNo");
+     	 query.setMaxResults(1);
+     	 query.setParameter(0,gallaryId);
+     	 return query.list();
+    	 
+    	 
+     }
+     
      public List<FileGallary> getCandidateGallaryDetailsForSubscribers(Date fromDate,Date toDate,Set<Long> candidateIds,String type)
      {
     	 StringBuilder query = new StringBuilder();
