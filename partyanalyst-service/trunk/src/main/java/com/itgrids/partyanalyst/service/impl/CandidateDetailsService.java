@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.awt.Color;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -4906,6 +4907,7 @@ private PdfGenerationVO preparePdfWithMatchedFilesContentReturnFilePath(String q
 			FileVO fileCompleteDetails = new FileVO();
 					
 			fileCompleteDetails.setDescription(file.getFileDescription());
+			fileCompleteDetails.setFileDateAsString(file.getFileDate().toString());
 					
 			List<FileVO> fileSourceLanguageList = new ArrayList<FileVO>();
 					 
@@ -4973,16 +4975,50 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
 		document.open();
 		
 		Paragraph preface = new Paragraph();
+
 		
-		preface.add(new Paragraph(pdfGenerationVO.getGallaryName()+" Gallary   Files", new Font(Font.FontFamily.TIMES_ROMAN, 22,
-			      Font.BOLD , BaseColor.DARK_GRAY)));
+		for(int i=0;i<6;i++)
+			document.add(new Paragraph(" "));
+		
+		//preface.add(new Paragraph(pdfGenerationVO.getGallaryName()+" Gallary   Files", new Font(Font.FontFamily.TIMES_ROMAN, 22,
+			  //    Font.BOLD , BaseColor.DARK_GRAY)));
+		Date date = new Date();
+		
+		Paragraph gallery = new Paragraph("Gallery Name\u00a0\u00a0\u00a0\u00a0\u00a0: "+pdfGenerationVO.getGallaryName(), new Font(
+				Font.FontFamily.TIMES_ROMAN, 13, Font.BOLD,
+				BaseColor.GRAY));		
+		gallery.setAlignment(Paragraph.ALIGN_CENTER);		
+		document.add(gallery);
+		
+		Paragraph category = new Paragraph("Catogery Name\u00a0\u00a0\u00a0\u00a0: "+categoryDAO.get(pdfGenerationVO.getCategoryId()).getCategoryType(), new Font(
+				Font.FontFamily.TIMES_ROMAN, 13, Font.BOLD,
+				BaseColor.GRAY));		
+		category.setAlignment(Paragraph.ALIGN_CENTER);		
+		document.add(category);
+		
+		//Paragraph newsCount = new Paragraph("Total News Count\u00a0\u00a0\u00a0: "+filesList.size(), new Font(
+		//		Font.FontFamily.TIMES_ROMAN, 13, Font.BOLD,
+		//		BaseColor.GRAY));		
+		//newsCount.setAlignment(Paragraph.ALIGN_CENTER);			
+		//document.add(newsCount);
+		
+		Paragraph generatedDate = new Paragraph("Pdf Generate Date: "+date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900), new Font(
+				Font.FontFamily.TIMES_ROMAN, 13, Font.BOLD,
+				BaseColor.GRAY));
+		generatedDate.setAlignment(Paragraph.ALIGN_CENTER);			
+		document.add(generatedDate);
+		
+		
+		
+		
 		
 		for(int i=0;i<2;i++)
 			preface.add(new Paragraph(" "));
 		
-		preface.add(new Paragraph("Report generated  On" + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				new Font(Font.FontFamily.TIMES_ROMAN, 12,
-					      Font.BOLD ,BaseColor.RED)));
+		
+		//preface.add(new Paragraph("Report generated  On" + date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				//new Font(Font.FontFamily.TIMES_ROMAN, 12,
+				//	      Font.BOLD ,BaseColor.DARK_GRAY)));
 		
 		document.add(preface);
 		
@@ -4990,8 +5026,16 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
 		
 		for(FileVO mainFile:filesList){	
 			
-			 Chunk underline = new Chunk(mainFile.getDescription());
-			 underline.setUnderline(0.1f, -2f);
+			/* Chunk underline = new Chunk(mainFile.getDescription());
+			 underline.setUnderline(0.1f, -2f);*/
+			
+			Paragraph description = new Paragraph(mainFile.getDescription(), new Font(
+					Font.FontFamily.TIMES_ROMAN, 13, Font.NORMAL,
+					BaseColor.RED));
+			description.setAlignment(Paragraph.ALIGN_CENTER);	
+			
+			description.add(new Paragraph(""));
+		
 			 int j=0;
 			
 			for(FileVO fileSource:mainFile.getFileVOList()){
@@ -5004,13 +5048,22 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
 			    		  continue;
 			      
 			      if( j == 0)
-			    	  document.add(underline);
+			    	  document.add(description);
 			      
 			    
 				
-				Paragraph sourcePage = new Paragraph();				
+				Paragraph sourcePage = new Paragraph();
 				
-				sourcePage.add("SOURCE:"+fileSource.getSource());
+					sourcePage.add(new Paragraph("DATE - "
+							+ mainFile.getFileDateAsString()
+							+ "                              " + "                                  \t\t\tSOURCE - "
+							+ fileSource.getSource(), new Font(
+							Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL,
+							BaseColor.DARK_GRAY)));
+				
+				//sourcePage.add("DATE:"+mainFile.getFileDateAsString());
+				//sourcePage.add("                              ");
+				//sourcePage.add("SOURCE:"+fileSource.getSource());
 				
 				 for(int i=0;i<2;i++)
 					 sourcePage.add(new Paragraph(" "));
@@ -5024,8 +5077,13 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
 					 
 					 
 					Image image = Image.getInstance(path);
+					
+					image.setAlignment(Image.ALIGN_MIDDLE);
+
 					// Image image = Image.getInstance(pathToSave);
-					 image.scaleToFit(400, 400);	
+					 image.scaleToFit(400, 400);
+					 image.setBorder(2);
+					 image.setBorderColor(new BaseColor(Color.RED));
 					 //image.scaleToFit(500, 500);
 					// image.scaleToFit(450, 450);
 					 sourcePage.add(image);
