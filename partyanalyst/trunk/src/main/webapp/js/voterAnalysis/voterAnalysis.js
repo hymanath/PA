@@ -2805,8 +2805,54 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 			str += '<span>UnKnown Voters : '+votersbasicinfo.unKnowVoters+'</span>';
 		
 		str += '</b></div></div></br></br>';
-
-
+        if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
+		    var prevElecInfo = votersbasicinfo.previousElectInfoList;
+			str += '<table class="votersPrevCountTableDiv" style="margin-bottom:5px;font-family:verdana;">';
+			str += '  <tr>';
+			str += '    <th rowspan="2">Year</th>';
+			str += '    <th rowspan="2">Total Voters</th>';
+			str += '    <th rowspan="2">Male Voters</th>';
+			str += '    <th rowspan="2">Female Voters</th>';
+			str += '    <th colspan="3">Voters Comparision From '+prevElecInfo[prevElecInfo.length-1].electionYear+' To '+jsObj.year+'</th>';
+			str += '  </tr>';
+			str += '  <tr>';
+			str += '    <th>Total Voters Comparision</th>';
+			str += '    <th>Male Voters Comparision</th>';
+			str += '    <th>Female Voters Comparision</th>';
+			str += '  </tr>';
+			for(var i in prevElecInfo){
+			    str += '  <tr>';
+				str += '    <td>'+prevElecInfo[i].electionYear+'</td>';
+				str += '    <td>'+prevElecInfo[i].totalVoters+'</td>';
+				str += '    <td>'+prevElecInfo[i].totalMaleVoters+'</td>';
+				str += '    <td>'+prevElecInfo[i].totalFemaleVoters+'</td>';
+			   if(prevElecInfo[i].totalVotersDiff < 0){
+			     var count = prevElecInfo[i].totalVotersDiff+"";
+				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
+			   }else if(prevElecInfo[i].totalVotersDiff > 0)
+			    str += '    <td>'+prevElecInfo[i].totalVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+			   else
+			    str += '    <td>'+prevElecInfo[i].totalVotersDiff+'</td>';
+				
+			   if(prevElecInfo[i].maleVotersDiff < 0){
+			    var count = prevElecInfo[i].maleVotersDiff+"";
+				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
+			   }else if(prevElecInfo[i].maleVotersDiff > 0)
+			    str += '    <td>'+prevElecInfo[i].maleVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+			   else
+				str += '    <td>'+prevElecInfo[i].maleVotersDiff+'</td>';
+				
+			   if(prevElecInfo[i].femaleVotersDiff < 0){
+			   var count = prevElecInfo[i].femaleVotersDiff+"";
+				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
+			   }else if(prevElecInfo[i].femaleVotersDiff > 0)
+			    str += '    <td>'+prevElecInfo[i].femaleVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+			   else
+				str += '    <td>'+prevElecInfo[i].femaleVotersDiff+'</td>';
+				str += '  </tr>';
+			}
+			str += '</table>';
+		}
 		if(to == ""){
 			$("#votersBasicInfoDiv").html(str);
 			if(jsObj.type != "booth"){

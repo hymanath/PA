@@ -1333,6 +1333,8 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="casteDAO" ref="casteDAO" />
 		<property name="electionDAO" ref="electionDAO" />
+		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
