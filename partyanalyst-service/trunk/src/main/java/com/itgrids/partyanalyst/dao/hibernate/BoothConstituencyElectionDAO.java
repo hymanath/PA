@@ -408,5 +408,31 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	query.setParameter("electionId", electionId);
     	return query.list();
    	}
-     
+    
+    public List<Object[]> getVotersCountInAConstituency(Long electionId,Long constituencyId){
+    	Query query = getSession().createQuery("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothConstituencyElection model " +
+				" where model.constituencyElection.election.electionId = :electionId and model.constituencyElection.constituency.constituencyId = :constituencyId");
+    	query.setParameter("electionId", electionId);
+    	query.setParameter("constituencyId", constituencyId);
+    	return query.list();
+   	}
+    
+    public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothConstituencyElection model " +
+				" where model.constituencyElection.election.electionId = :electionId ");
+    	if(type.equalsIgnoreCase("mandal")){
+    		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.localBody is null");
+    	}else if(type.equalsIgnoreCase("localElec")){
+    		queryStr.append(" and model.booth.localBody.localElectionBodyId = :id ");
+    	}else if(type.equalsIgnoreCase("booth")){
+    		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.partNo = :partNo ");
+    	}
+    	Query query = getSession().createQuery(queryStr.toString());
+    	query.setParameter("electionId", electionId);
+    	query.setParameter("id", id);
+    	if(type.equalsIgnoreCase("booth"))
+    		query.setParameter("partNo", partNo);
+    	return query.list();
+   	}
 }

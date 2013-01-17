@@ -148,10 +148,28 @@ List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVote
 System.out.println(list.size());
 }*/
 
-public void testgetPartyWiseCastCategoryVotersCount()
+/*public void testgetPartyWiseCastCategoryVotersCount()
 {
 	List<Object[]> list = boothPublicationVoterDAO.getCastCategoryWiseVotersCountByPublicationIdInALocation(1l, "constituency", 232l, 6l);
 	System.out.println(list.size());
+}*/
+
+public void testGetCastWiseCount()
+{
+	List<Object[]> list = boothPublicationVoterDAO.getCastWiseCount(1l, "panchayat", 12085l, 7l);
+	System.out.println(list.size());
+	for(Object[] data:list){
+		System.out.println(data[0]+" "+data[1]);
+	}
+}
+
+public void testGetPartyWiseCount()
+{
+	List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCount(1l, "panchayat", 12085l, 7l);
+	System.out.println(list.size());
+	for(Object[] data:list){
+		System.out.println(data[0]+" "+data[1]+" "+data[2]+" "+data[3]);
+	}
 }
 
 }
