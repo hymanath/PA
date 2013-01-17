@@ -2584,7 +2584,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterVO.setGender(voter[6].toString());
 			voterVO.setAge(voter[7] != null ? (Long)voter[7]:18l);
 			voterVO.setBoothName(voter[8].toString());
-			voterVO.setCasteNameByVoterId(getCasteNameByVoterID(casteList,(Long)voter[5]));
+			voterVO.setCast(getCasteNameByVoterID(casteList,(Long)voter[5]));
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
 				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
@@ -2613,7 +2613,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			voterHouseInfoVO.setBoothName(voterVOs.get(0).getBoothName());
 			voterHouseInfoVO.setHouseNo(entry.getKey());
 			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
-			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
+			voterHouseInfoVO.setCast(voterVOs.get(voterVOs.size()-1).getCast() != null ? 
+					voterVOs.get(voterVOs.size()-1).getCast() : "N/A");
 			voterHouseInfoVO.setElderGender(voterVOs.get(voterVOs.size()-1).getGender());
 			voterHouseInfoVO.setElderAge(voterVOs.get(voterVOs.size()-1).getAge());
 			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
