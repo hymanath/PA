@@ -20,7 +20,20 @@ public class VoterCastInfoVO {
 	
 	private String casteCategoryName;
 	private Long casteStateId;
+	private List<SelectOptionVO> partyWiseCastCategoryList;
 	
+	private List<VoterCastInfoVO> partyWisevoterCastInfoVOList;
+	private int partyWiseTotalCasts = 0;
+	
+	private Long partyWiseAssignedVoters = 0L;
+	private Long partyWiseNotAssignedVoters = 0L;
+	
+	private String partyName;
+	
+	private Long partyId;
+
+	
+
 	public VoterCastInfoVO(){
 		
 	}
@@ -154,6 +167,71 @@ public class VoterCastInfoVO {
 
 	public void setCasteStateId(Long casteStateId) {
 		this.casteStateId = casteStateId;
+	}
+	
+	public List<SelectOptionVO> getPartyWiseCastCategoryList() {
+		return partyWiseCastCategoryList;
+	}
+
+	public void setPartyWiseCastCategoryList(
+			List<SelectOptionVO> partyWiseCastCategoryList) {
+		this.partyWiseCastCategoryList = partyWiseCastCategoryList;
+	}
+
+	
+
+
+	
+	public List<VoterCastInfoVO> getPartyWisevoterCastInfoVOList() {
+		return partyWisevoterCastInfoVOList;
+	}
+
+	public void setPartyWisevoterCastInfoVOList(
+			List<VoterCastInfoVO> partyWisevoterCastInfoVOList) {
+		this.partyWisevoterCastInfoVOList = partyWisevoterCastInfoVOList;
+	}
+	
+	public int getPartyWiseTotalCasts() {
+		return partyWiseTotalCasts;
+	}
+
+	public void setPartyWiseTotalCasts(int partyWiseTotalCasts) {
+		this.partyWiseTotalCasts = partyWiseTotalCasts;
+	}
+	
+	public Long getPartyWiseAssignedVoters() {
+		return partyWiseAssignedVoters;
+	}
+
+	public void setPartyWiseAssignedVoters(Long partyWiseAssignedVoters) {
+		this.partyWiseAssignedVoters = partyWiseAssignedVoters;
+	}
+
+	public Long getPartyWiseNotAssignedVoters() {
+		return partyWiseNotAssignedVoters;
+	}
+
+	public void setPartyWiseNotAssignedVoters(Long partyWiseNotAssignedVoters) {
+		this.partyWiseNotAssignedVoters = partyWiseNotAssignedVoters;
+	}
+
+
+
+	
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
 	}
 
 	
