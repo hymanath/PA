@@ -280,7 +280,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
         </li>
 		</c:if>
        	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}"> 
-         <li><a href="#" class="parent"><span>ANALYSIS</span></a>
+         <li><a id="analysisId" href="#" class="parent"><span id="analysisSpanId">ANALYSIS</span></a>
             <div  style="z-index:1;text-align:left;"><ul>
                 <li><a href="#" class="parent"><span>Election Analysis</span></a>
                     <div  style="z-index:1;text-align:left;"><ul>
@@ -311,7 +311,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 					</ul></div>
 				</li>
              </ul></div>
-         <li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
+         <li><a id="constituencyId" href="initailConstituencyManagementAction.action" class="parent"><span id="constituencySpanId">CONSTITUENCY</span></a>
             <div  style="z-index:1;text-align:left;"><ul>
                 <li><a href="#" class="parent"><span>Problem Management</span></a>
                     <div><ul>
@@ -377,12 +377,13 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 	</ul>
   </div>
 	</li>
-	<li><a href="cadreManagementAction.action"><span>CADRE</span></a>
+	<li><a id="cadreId" href="cadreManagementAction.action"><span id="cadreSpanId">CADRE</span></a>
 	</li> 
 	</c:if>
 
 <c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
-       <li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
+       <li><a  href="statePageAction.action?stateId=1">
+		<span>STATES</span></a>
 	 <div  style="z-index:8;text-align:left;" >
 		<ul>
 		    <li><a href="#" class="parent"><span>South India</span></a>
@@ -454,8 +455,8 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 							<li> 
 						<c:choose>
 							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
-								<a href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
-										<span>DASHBOARD</span>
+								<a id="dashBoardId" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+										<span id="dashBoardSpanId" >DASHBOARD</span>
 									</a> 
 							</c:when>
 							<c:otherwise> 

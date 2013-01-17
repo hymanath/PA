@@ -316,7 +316,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 			</ul>
 			</div>
 		</li>
-		<li><a href="cadreManagementAction.action"><span>CADRE</span></a></li> 
+		<li><a id="cadreId" href="cadreManagementAction.action"><span id="cadreSpanId">CADRE</span></a></li> 
 	</c:if>
 
 	<c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
