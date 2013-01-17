@@ -129,5 +129,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<File> getAllFilesInAGallry(String queryString,PdfGenerationVO pdfGenerationVO);
     
     public List<Object[]> getCandidateGallariesByCategory(List<Long> candidateds , Long categoryId);
+    
+    public List<Object[]> getFirstFileAndGallaryInfoForCustomer(Long gallaryId,String queryString);
 }
 
