@@ -1082,7 +1082,7 @@ var district = false;
 
 if(results == null || results.lenght == 0)
 {
-	$("#headerDiv").html('There are no Favourite Links has been added.');
+	$("#headerDiv").html('No Favourite Links has been added.');
 	return;
 }
 
@@ -1847,11 +1847,16 @@ function showAllPostedProblems(jsObj,results)
 			//templateClone.find('.problemRating').html('<div class="star pull-right"></div><input type="hidden" style="display:none;" value="'+problemsData[i].rating +'" >');
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-
-	if(i>=9) {
+	var totalCount = results.totalResultsCount;
+	var startIndex = jsObj.startIndex;
+	var maxIndex   = jsObj.maxIndex;
+	var count      = startIndex + maxIndex;
+	var value      = totalCount - count;
+	if(value > 0)
+	{
 		var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
-	viewMore.appendTo('.placeholderCenterDiv');
-		}
+		viewMore.appendTo('.placeholderCenterDiv');
+	}
 	
 }
 
@@ -1975,10 +1980,16 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		/*templateClone.find('.polReaPostedPerName').html('Posted By: '+data[i].commentedBy+'');*/
 		templateClone.appendTo('.placeholderCenterDiv');
 	}
-	if(i>=9) {
+	var totalCount = results.totalResultsCount;
+	var startIndex = jsObj.startIndex ;
+	var maxIndex = jsObj.maxIndex;
+	var count = startIndex + maxIndex;
+	var value = totalCount - count;
+	if(value > 0)
+	{
 	var viewMore = $('<div class="viewMoreDiv"><span class="PoliticalReaViewMoreLink btn">View More</span><input type="hidden" value="'+jsObj.type+'" class="politicalReasonViewMoreTypeVar"/></div>');
 	viewMore.appendTo('.placeholderCenterDiv');
-}
+	}
 }
 function setDefaultImage(img)
 {
@@ -2395,9 +2406,11 @@ function openAddReasonWindow(taskType)
 
 function removeFavouriteLink(id){
 
-	$('#'+id).hide();
-
-	var jsObj ={
+ var r=confirm("Are you sure to remove the Favourite link");
+ if (r==true)
+  {
+  $('#'+id).hide();
+  var jsObj ={
 		    linkId:id,
 			task:"removeFavouriteLink"
 	};
@@ -2406,6 +2419,15 @@ function removeFavouriteLink(id){
 		var url = "removeFavouriteLinkAction.action?"+rparam;						
 		callAjax1(jsObj,url);
 
+  }
+ else
+  {
+  $('#'+id).show();
+  }
+
+ 
+
+	
 }
 
 
