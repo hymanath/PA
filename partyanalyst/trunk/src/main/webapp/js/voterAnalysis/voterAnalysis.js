@@ -1560,7 +1560,8 @@ function buildCastInfoData(myresults,jsObj)
 	   $("#partyWiseLocalCastStatsTab").html("");
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
-		   var str ='<div id="partyWiseLocalCastStatsTabTitle">Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</div>';
+		   var str ='<div style="overflow-x:scroll;">';
+		      str+='<div id="partyWiseLocalCastStatsTabTitle">Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</div>';
 		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black;">';
 			  str+='  <thead>';
 			  str+='   <tr>';
@@ -1589,6 +1590,7 @@ function buildCastInfoData(myresults,jsObj)
 			   }
 			  str+='  </tbody>';
 			  str+=' </table>';
+			  str+='</div>';
 			  $("#partyWiseLocalCastStatsTab").html(str);
 	  
 				$('#partyWiseCastJqTable').dataTable({
