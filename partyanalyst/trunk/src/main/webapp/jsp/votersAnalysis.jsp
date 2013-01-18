@@ -30,6 +30,7 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -447,6 +448,64 @@ width: 860px;}
     font: small-caption;
     padding: 8px 8px 8px 10px;
 }
+.selectedLink{
+	  background-color:#5e5e5e;
+	  color:#fff;
+	  padding:2px;
+
+  }
+.pr-cont-sec
+{
+	margin-left: 10px;
+}
+
+.pft-sec {
+    color: #777777;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 32px 0 16px 21px;
+    width: 244px;
+}
+.popupcontainer {		
+    	background-color: #FFFFFF;
+    	margin: 9px auto 10px;
+    	max-width: 780px;
+    	padding: 10px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
+.main-mbg {
+    -moz-border-radius: 6px 6px 6px 6px;
+	border-radius :6px;
+    background-color: #06ABEA;
+    clear: both;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    margin-bottom: 5px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 974px;
+}
+.profile-left-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    float: left;
+    margin-right: 2px;
+    padding-top: 5px;
+    width: 204px;
+}
+.profile-mid-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -211px top transparent;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    position: relative;
+    width: 441px;
+}
+
 body {
     color: #000000;
 }
@@ -477,6 +536,18 @@ locationDetails.constituencyArr.push(ob);
 </script>
 </head>
 <body>
+<!--DISPLAY NEWS GALLARIES START-->
+ <div id="showContentDiv">
+	<div id="showContentDivInnerDiv"></div>
+	<div id="showContentDivInnerDiv"></div>
+ </div>
+	<div id="videoGallaryPopUpDiv"></div>
+	<div id="emailAlertDiv"></div>
+	<div id="sendMessageDiv">
+    <div id="constituencySelectDiv"/>
+	</div>
+	<div id="logInDiv"></div>
+<!--DISPLAY NEWS GALLARIES END-->
 <br><br>
 <div id="MainDiv">
 <div id="votersouterDiv" >
@@ -664,6 +735,11 @@ locationDetails.constituencyArr.push(ob);
     
 <div id='votersMainOuterDiv3'>
 	<div id="previousEleVotingTrendsDiv"></div>
+	<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>
+ 	<div id="newsDiv">
+    	<div id="newsCountDiv"></div>
+		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
+  	</div>
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
@@ -818,6 +894,9 @@ function openNewWindow(){
 	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
+function showHideDiv(){
+  $('#newsDiv').toggle('slow');
+ }
 </script>
 </body>
 </html>
