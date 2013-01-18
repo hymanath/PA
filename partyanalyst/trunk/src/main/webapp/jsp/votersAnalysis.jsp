@@ -447,6 +447,9 @@ width: 860px;}
     font: small-caption;
     padding: 8px 8px 8px 10px;
 }
+body {
+    color: #000000;
+}
 </style>
 
 <script type="text/javascript">
