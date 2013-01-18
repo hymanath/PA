@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -52,6 +53,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
 	
 	private List<VoterHouseInfoVO> votersFamilyInfo;
+	private PartyVotesEarnedVO partyVotesEarnedVO;
+	private List<PartyVotesEarnedVO> partyVotesEarnedVOList;
 	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
@@ -154,6 +157,21 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setVotersAnalysisService(
 			IVotersAnalysisService votersAnalysisService) {
 		this.votersAnalysisService = votersAnalysisService;
+	}
+	
+	public PartyVotesEarnedVO getPartyVotesEarnedVO() {
+		return partyVotesEarnedVO;
+	}
+	public void setPartyVotesEarnedVO(PartyVotesEarnedVO partyVotesEarnedVO) {
+		this.partyVotesEarnedVO = partyVotesEarnedVO;
+	}
+	
+	public List<PartyVotesEarnedVO> getPartyVotesEarnedVOList() {
+		return partyVotesEarnedVOList;
+	}
+	public void setPartyVotesEarnedVOList(
+			List<PartyVotesEarnedVO> partyVotesEarnedVOList) {
+		this.partyVotesEarnedVOList = partyVotesEarnedVOList;
 	}
 
 	public String execute() throws Exception
@@ -468,5 +486,26 @@ public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
 	this.votersFamilyInfo = votersFamilyInfo;
 }
 
-
+public String getPreviousEleVotingTrends()
+{
+	try{
+		String param;
+		param = getTask();
+		jObj = new JSONObject(param);
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		Long id = jObj.getLong("id");
+		Long publicationDateId = jObj.getLong("publicationDateId");
+		Long constituencyId = jObj.getLong("constituencyId");
+		String type = jObj.getString("type");
+		partyVotesEarnedVOList = votersAnalysisService.getPreviousElectionVotingTrends(id,publicationDateId,constituencyId,type);
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getPreviousEleVotingTrends() Method, Exception - "+e);
+	}
+return Action.SUCCESS;
+}
 }

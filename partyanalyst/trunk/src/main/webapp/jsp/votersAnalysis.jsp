@@ -425,7 +425,28 @@ width: 860px;}
    #partyWiseLocalCastStatsTab table td {
     color: #676A67;
     font: small-caption;
-  }
+  }	
+	#previousEleVotingTrendsDiv p span {display: table-cell;}
+	#prevVotTrendHeadingSpan{background:#06ABEA;color:#FFF;
+	font-weight:bold;font-size:15px;
+	border-radius: 3px;
+    padding: 3px 10px;}
+	#previousEleVotingTrendsDiv {margin-top: 10px;margin-bottom:25px;}
+	#previousEleVotingTrendsDiv p{height:25px;}
+	#previousEleVotingTrendsDiv table{border:1px solid #cdcdcd;}
+	#previousEleVotingTrendsDiv table th {
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+#previousEleVotingTrendsDiv table td {
+    color: #676A67;
+    font: small-caption;
+    padding: 8px 8px 8px 10px;
+}
 </style>
 
 <script type="text/javascript">
@@ -639,7 +660,7 @@ locationDetails.constituencyArr.push(ob);
 	</div>
     
 <div id='votersMainOuterDiv3'>
-	
+	<div id="previousEleVotingTrendsDiv"></div>
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>

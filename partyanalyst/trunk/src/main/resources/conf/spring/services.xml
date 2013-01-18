@@ -1335,6 +1335,10 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="voterInfoDAO" ref="voterInfoDAO" />
+		<property name="voterReportLevelDAO" ref="voterReportLevelDAO" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>

@@ -633,6 +633,11 @@ function showImportantFamiliesDiv()
 									  alert("Unable To Updated Voters Information Please Try Again");
 									}
 								}
+
+								else if(jsObj.task =="getPreviousEleVotingTrends")
+								{
+									showPreviousEleVotingTrends(myResults,jsObj);	
+								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -738,6 +743,11 @@ function showImportantFamiliesDiv()
 	}
 }
 $(document).ready(function(){
+
+	$("#votersId").click(function(){
+		getPreviousElectionVotingTrends();
+		
+	});
     $("#publicationDateList").change(function(){
 	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
 		   var str = $('#publicationDateList :selected').text();
@@ -795,12 +805,14 @@ $(document).ready(function(){
 	$("#panchayatField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
+	   getPreviousElectionVotingTrends();
 	});
 	$("#pollingStationField").live("change",function(){
 	  $('.voterDetails').html('');
 	   $('.noteDiv').html('');
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
+		getPreviousElectionVotingTrends();
 	});
     $("#publicationDateList").live("change",function(){
     
@@ -3029,3 +3041,82 @@ function openNewSearchWindow(){
 	var updateBrowser = window.open(urlStr,"votersSearch","scrollbars=yes,height=700,width=980,left=10,top=0");	
 	updateBrowser.focus();
 }
+ 
+ function getPreviousElectionVotingTrends()
+	{
+	
+		var publicationDateId = $("#publicationDateList").val();
+		var level = $("#reportLevel").val();
+		var constituencyId = $("#constituencyList").val(); 
+		var type = '';
+		var id='';
+		
+		if(level == 3)
+		{
+			id = $("#panchayatField").val();
+			type = "panchayat";
+			name = $("#panchayatField option:selected").text()+" "+"Panchayat";
+		}
+		if(level == 4)
+		{
+			id = $("#pollingStationField").val();
+			type = "booth";
+			name = $("#pollingStationField option:selected").text()
+		}
+
+		if(id == 0 || id == null || id == '')
+			return false;
+		var jsObj=
+		{
+			id                :id,
+			publicationDateId :publicationDateId,
+			constituencyId    :constituencyId,
+			name              :name,
+			type              :type,
+			task:"getPreviousEleVotingTrends"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPreviousEleVotingTrendsAction.action?"+rparam;	
+		callAjax(jsObj,url);
+
+	}
+
+ function showPreviousEleVotingTrends(results,jsObj)
+ {
+	 var flag = false;
+	 $("#previousEleVotingTrendsDiv").html('');
+       for(var i in results)
+		 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
+		   flag = true;
+
+		if(flag)
+		{
+		  var str = '';
+			$("#previousEleVotingTrendsDiv").append('<div style="margin-bottom: 20px;"><span id="prevVotTrendHeadingSpan">Previous Election Voting Trends in '+jsObj.name+' </span></div>');
+				str +='<table style="width:95%">';
+				str +='<tr>';
+				str +='<th><b>Year</b></th>';
+			   for(var i in results[0].partiesList)
+			     str +='<th>'+results[0].partiesList[i]+'</th>';
+			     str +='</tr>';
+				
+				for(var j in results)
+				{
+				  str +='<tr>';
+				  str += '<td>'+results[j].electionYear+'</td>';
+					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
+					  for(var k in partyVotesEarnedVOs)
+				         str +='<td><b>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+					     str +='</tr>';
+		 			
+				}
+			 
+			 str +='</table>';
+			 $("#previousEleVotingTrendsDiv").append(str);
+			 
+			}
+		
+	}
+
+
+	
