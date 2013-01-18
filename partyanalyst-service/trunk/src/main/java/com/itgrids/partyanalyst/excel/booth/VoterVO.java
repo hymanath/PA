@@ -32,7 +32,8 @@ public class VoterVO {
 	
 	private String casteNameByVoterId;
 	
-
+	private String mobileNo;
+	
 	public List<VoterVO> getVotersList() {
 		return votersList;
 	}
@@ -253,6 +254,15 @@ public class VoterVO {
 	public void setCasteNameByVoterId(String casteNameByVoterId) {
 		this.casteNameByVoterId = casteNameByVoterId;
 	}
+	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
 
 	
 }
