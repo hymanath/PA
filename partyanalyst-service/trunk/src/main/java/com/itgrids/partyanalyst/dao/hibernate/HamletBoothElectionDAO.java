@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
@@ -68,5 +69,18 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		return getHibernateTemplate().find("select sum(model2.maleVoters),sum(model2.femaleVoters),sum(model2.totalVoters) from Booth model2 where model2.boothId in (select distinct model.boothConstituencyElection.booth.boothId from HamletBoothElection model " +
 		" ,PanchayatHamlet model1 where model.boothConstituencyElection.constituencyElection.election.electionId = ? and model.hamlet.hamletId = model1.hamlet.hamletId and model1.panchayat.panchayatId = ? ) ",params);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByPanchayatId(Long PanchayatId, Long electionId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select distinct(model.boothConstituencyElection.booth.boothId) from HamletBoothElection model , ");
+		stringBuilder.append(" PanchayatHamlet model2 where model.hamlet.hamletId = model2.hamlet.hamletId ");
+		stringBuilder.append(" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId ");
+		stringBuilder.append("and model2.panchayat.panchayatId =:panchayatId ");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		queryObj.setParameter("electionId", electionId);
+		queryObj.setParameter("panchayatId", PanchayatId);
+		return queryObj.list();
+	}
 }

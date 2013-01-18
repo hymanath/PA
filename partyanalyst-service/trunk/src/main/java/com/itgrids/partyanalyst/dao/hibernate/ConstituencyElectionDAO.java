@@ -11,6 +11,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 *@author <a href="mailto:sriharigopalnalam@gmail.com">Srihari</a>
 */
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -492,7 +493,31 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	public List<Object[]> getConstituenciesForAnElec(Long electionId)
 	{
 		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from ConstituencyElection model where model.election.electionId = ? order by model.constituency.name ",electionId);
-	   
+		   
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getNearestPreviousMainElectionIdFromADateInAConstituency(Long constituencyId, Date date)
+	{
+		Query query = getSession().createQuery("select model.election.electionId from ConstituencyElection model where date(model.election.electionDate) < date(:date) and model.election.elecSubtype = :type and " +
+				" model.constituency.constituencyId = :constituencyId order by date(model.election.electionDate) desc ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("type",IConstants.ELECTION_SUBTYPE_MAIN);
+		query.setParameter("date",date);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionIdAndSubTypeByConstituencyIdAndDate(Long constituencyId, Date fromDate,Date toDate)
+	{
+		Query query = getSession().createQuery("select model.election.electionId, model.election.elecSubtype from ConstituencyElection model where date(model.election.electionDate) >= date(:fromDate) and " +
+				" date(model.election.electionDate) <= date(:toDate) and model.constituency.constituencyId = :constituencyId order by date(model.election.electionDate)");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("fromDate",fromDate);
+		query.setParameter("toDate", toDate);
+		
+		return query.list();
 	}
 }
 
