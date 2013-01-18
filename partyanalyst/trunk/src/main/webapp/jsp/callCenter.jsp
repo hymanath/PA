@@ -224,6 +224,55 @@ width: 42px;
 
 <script type="text/javascript">	
 var timeST = new Date().getTime();
+
+//dummy code by sasi
+function sendSMS()
+{
+	$("#allConnectedUsersDisplay_main").children().remove();
+	$( "#connectPeoplePopup").dialog({
+			title:"Send Sms ",
+			autoOpen: true,
+			show: "blind",
+			width: 400,
+			minHeight:150,
+			modal: true,
+			hide: "explode"
+		});
+		
+		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
+		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
+		var label = $("<label class='messageLabel'></label>");
+		var textarea = $("<textarea id='connectMessageText' style='background:white;' placeholder='Enter Your Message Here..'></textarea><br>");
+		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser()'/>");
+		
+		div.append(errorDiv);
+		div.append(label);
+		div.append(textarea);
+		div.append(button);
+		$('#allConnectedUsersDisplay_main').append(div);
+}
+
+function sendMessageToConnectedUser(){
+	//ajax call and processing logic to be written
+	setTimeout(function(){showMessageSentConfirmation()},1000);
+}
+
+function showMessageSentConfirmation()
+{
+	
+	var elmt = $("#ErrorMsgDivId");
+	enableButton("sendMessageButtonId");
+   
+	$("#connectMessageText").val('');
+	$("#ErrorMsgDivId").html('<font color="green">Message Sent Successfully..</font>');
+	setTimeout('self.close();',2000);
+		
+	
+	
+}
+//end of dummy code by sasi
+	
+
   function clearAll(){
       document.getElementById("name1").value='';
 	  document.getElementById("mobile").value='';
@@ -378,6 +427,7 @@ function setReferenceNo(refNo){
   document.getElementById("referenceNo").value = refNo;
 }
 function searchCallTrackingProblem(){
+		$("#smssending").css("display","block");
        document.getElementById("errorNameDiv").innerHTML='';
 	   document.getElementById("errorMobileDiv").innerHTML='';
 	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
@@ -800,8 +850,20 @@ resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color:
 function showSearchDetails(result){
 
   document.getElementById("callTrackingTotalCountDiv").innerHTML='';
-  var CallTrackingResultColumnDefs = [ 		    	             
-		    	            
+  
+  //dummy code by sasi below line
+  YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		//var name = oData;
+		//var id= oRecord.getData("voterId");
+		//var boothId=oRecord.getData("boothId"); 
+		elLiner.innerHTML="<input type='checkbox'/>";
+					
+	  };
+  
+  var CallTrackingResultColumnDefs = [ 	
+							//dummy code by sasi below line  
+		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
 							{key:"name", label: "Name", sortable: true},
 		    	           	{key:"mobile", label: "Mobile", sortable: true},
 							{key:"referenceNo", label: "Reference No", sortable: true},
@@ -830,8 +892,6 @@ function showSearchDetails(result){
 
 		var CallTrackingResultDataTable = new YAHOO.widget.DataTable("callTrackingCurrentDiv", CallTrackingResultColumnDefs,myDataSource, myConfigs);
 
-		
- 
 }
 function showCurrentDayProblems(result){
 
@@ -985,6 +1045,9 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
 </script>
 <body align="center">
+	<div id="connectPeoplePopup">
+		<div id="allConnectedUsersDisplay_main"></div>
+	</div>
   <table width="100%" cellpadding="0" cellspacing="0" border="0" align="left">
   <tr>
   <td valign="left">
@@ -1066,8 +1129,17 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    </table>
 </div>
 <div id="callTrackingTotalCountDiv" style="padding-top:20px;"></div>
+
 <div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt" align="center">
+
 </div>
+
+<!--dummy sms code by sasi-->
+<div id="smssending" style="margin-left:auto;margin-right:auto;width:50px;display:none;">
+	<input class="btnClass btn btn-inverse" type="button" value="Send SMS" onclick="sendSMS()">
+</div>
+<!--dummy sms code by sasi end-->
+
 <div id="editCallTrackingProblem"> </div>
 <div id="mainDiv" style="margin-left: auto; margin-right: auto;">
 <table>
