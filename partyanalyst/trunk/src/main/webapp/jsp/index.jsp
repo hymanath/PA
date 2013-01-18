@@ -341,7 +341,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 			<span class="tempstyle">View and Analyze News Articels</span>
 		</div>
 
-		<div style="float:right;margin:10px 50px 0px 0px;"><a href="generatePdfForGallaryAction.action" class="btn btn-success">Generate Pdf For Gallry</a></div>
+		<div style="float:right;margin:10px 50px 0px 0px;"><a href="generatePdfForGallaryAction.action" class="btn btn-success">Generate Pdf For Gallery</a></div>
 		<div id="showNewsCountTable" style="padding-top:50px"></div>
 		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
 
