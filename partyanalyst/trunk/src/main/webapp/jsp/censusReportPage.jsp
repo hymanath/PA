@@ -83,7 +83,7 @@ select
 
 #censusPopulationRange
 {
-	margin-top:20px;
+	//margin-top:20px;
 }
 #censusPopulationRange_body_head
 	{
@@ -101,7 +101,8 @@ select
 	}
 	.censusPopulationRange_body_table_inner_head th
 	{
-		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		//background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		background: #d9d9d9;
 		padding:5px;
 		color:#64420F;
 	}
@@ -131,11 +132,15 @@ select
 	#censusPopulationRange_body_table_outer td
 	{
 		padding:10px;
+		text-align:center;
+		font-family:arial;
+		color:#444444;
 	}
 
 	#censusPopulationRange_body_table_inner th
 	{
 		padding:5px;
+
 	}
 	.censusWidgetHeader
 	{
@@ -145,20 +150,23 @@ select
 
 	.censusWidgetMainHeader
 	{
-		background-image:url("images/icons/districtPage/header_body.png");
+		//background-image:url("images/icons/districtPage/header_body.png");
 		height:36px;
+		background:#4263A3;
+		font-family:verdana;
 	}
 	.censusWidgetHeader_span
 	{
 		position:relative;
 		top:8px;
 		left:10px;
-		color:#4B74C6;
+		//color:#4B74C6;
+		color:white;
 		font-weight:bold;
 	}
 .censusPopulationRange_body_table_inner th
 {
-	background:#EEF0F2;
+	//background:#EEF0F2;
 	padding:5px;
 }
 .censusPopulationRange_body_table_inner td
@@ -178,8 +186,20 @@ select
 	{
 		background:#FFF;
 	}
-	
-
+	#censusPopulationRange_body1 {
+		background: none repeat scroll 0 0 #FFFFFF;
+	}
+	#censusPopulationRange_selectParty{ 
+	//background-image: url("images/icons/districtPage/header_body.png");
+	background:#eaeaea;
+    height: 36px;
+	text-align:center;
+	color:#563E6D;
+	font-weight:bold;
+	margin-top:10px;
+	padding:10px;
+	font-size:15px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -250,6 +270,8 @@ select
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
+		var stateName = stateElmt.options[stateElmt.selectedIndex].text;
+		var districtName = districtElmt.options[districtElmt.selectedIndex].text;
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		var partyResultsPerformance_mainEl =  document.getElementById("partyResultsPerformance_main");
@@ -271,6 +293,8 @@ select
 		{
 				stateId		: stateId,
 				districtId	: districtId,
+				stateName 	: stateName,
+				districtName :districtName,
 				censusText	: censusText,
 				censusValue	: censusValue,
 				yearValue	: yearValue,
@@ -305,12 +329,15 @@ select
 			ctitle = partyName+' Party Result Based On Seats Won Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Seats Won');
+			data.addColumn('number', 'Total Seats');
 				
 			for(var i=0; i<resultByRanges.length; i++)
 			{
+			
 				data.setValue(i, 0, resultByRanges[i].range);
 				/*data.setValue(i, 1, parseInt((resultByRanges[i].seatsWon)*(100)/resultByRanges[i].count));*/
 				data.setValue(i, 1, resultByRanges[i].seatsWon);
+				data.setValue(i, 2, resultByRanges[i].count);
 			}			
 		}
 		else if(value == "percentage")
@@ -318,23 +345,30 @@ select
 			ctitle = partyName+' Party Result Based On Votes Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Percentage');
-			
+			data.addColumn('number', 'Avg Voting Percent');
 			for(var i=0; i<resultByRanges.length; i++)
 			{
+				var totalVotingPercent=parseFloat(resultByRanges[i].votingPercent);
+				//console.log(resultByRanges[i]);
 				data.setValue(i, 0, resultByRanges[i].range);
 				data.setValue(i, 1, resultByRanges[i].avgPercent);
+				data.setValue(i, 2, totalVotingPercent);
 			}
 		}
 		else if(value == "cpAvg")
 		{
+			
 			ctitle = partyName+' Party Result Based On CP-AVG Votes Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'CP*-Avg');
+			data.addColumn('number', 'Avg Voting Percentage');
 		
 			for(var i=0; i<resultByRanges.length; i++)
 			{
+				var totalVotingPercentcp=parseFloat(resultByRanges[i].votingPercent);
 				data.setValue(i, 0, resultByRanges[i].range);
 				data.setValue(i, 1, resultByRanges[i].PConstavgPercent);
+				data.setValue(i, 2, totalVotingPercentcp);
 			}
 		}
 
@@ -382,6 +416,7 @@ select
 				for(var j=0; j<results[i].partiesResults.length; j++)
 					/*data.setValue(i, j+1, parseInt((results[i].partiesResults[j].totalSeatsWon)*(100)/(results[i].count)));*/
 					data.setValue(i, j+1,results[i].partiesResults[j].totalSeatsWon);
+					
 			}			
 		}
 		else if(value == "percentage")
@@ -469,11 +504,29 @@ select
 	function buildPartyResultsByRanges(jsObj,resultByRanges)
 	{
 		partyResultsByRanges = resultByRanges;
+		var rangeElmt = document.getElementById("censusPopulationRange");
 		var elmt = document.getElementById("censusPopulationRangeData");
+		var spanElmt = document.getElementById("censusPopulationRange_head_span");
 		var gElmt = document.getElementById("censusPopulationRangeGraph_body");
 		var partyEle = document.getElementById("partySelectElmt");
 		var partyName = partyEle.options[partyEle.selectedIndex].text;
+		if(rangeElmt && rangeElmt.style.display == "none")
+			rangeElmt.style.display = "block";
+		
+		var hStr = '';
 
+		if(jsObj.districtId==0){
+		hStr += jsObj.partyName+' Party Performance in '+jsObj.stateName+' in the year '+jsObj.yearValue+' Vs '+jsObj.censusText+' % range In Total Population ';
+		if(spanElmt)
+			spanElmt.innerHTML = hStr;
+
+		}
+		else{
+				hStr += jsObj.partyName+' Party Performance in '+jsObj.districtName+'      District in the year '+jsObj.yearValue+' Vs '+jsObj.censusText+' % range In Total Population ';
+		if(spanElmt)
+			spanElmt.innerHTML = hStr;
+
+		}
 		gElmt.innerHTML = '';
 		
 		var str = '';
@@ -527,20 +580,19 @@ select
 		str += '<td>';
 		str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';								
 		str += '<tr>';				
-		str += '<th colspan="2">Range(%)</th>';
-		str += '<th>Count</th>';
+		str += '<th>'+jsObj.censusText+' % Range</th>';
+		str += '<th>Total Seats</th>';
 		str += '<th>CP*</th>';
 		str += '<th>Seats Won*</th>';
 		str += '<th>Avg %</th>';
 		str += '<th>CP*-Avg%</th>';
-		str += '<th>Voting %</th>';
+		str += '<th>Avg Voting %</th>';
 		str += '</tr>';	
 		//str += '</table>';		
 		for(var i=0; i<resultByRanges.length; i++)
 		{
 			str += '<tr>';
-			str += '<td class="newTh" align="center"><img src="images/icons/districtPage/listIcon.png"></th>';
-			str += '<td class="newTh" align="center">'+resultByRanges[i].range+'</th>';
+			str += '<td class="newTh" align="center" style="font-weight:bold;">'+resultByRanges[i].range+'</th>';
 			if(resultByRanges[i].count != 0)
 				str += '<td align="center"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')" title="Click Here To View Election Results of All Parties in '+resultByRanges[i].count+' Constituencies Having '+jsObj.censusText+' Between '+resultByRanges[i].range+'">'+resultByRanges[i].count+'</a></td>';
 			else
@@ -584,6 +636,7 @@ select
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
         data.addColumn('number', 'Percentage');
+		data.addColumn('number', 'Avg Voting Percentage');
 		var ctitle = partyName+' Party Result Based On Votes Percentage';
 		
 		var resultByRangesVar = new Array();
@@ -597,8 +650,11 @@ select
 
 		for(var i=0; i<resultByRangesVar.length; i++)
 		{			
+				var totalVotingPercentcp=parseFloat(resultByRangesVar[i].votingPercent);
+				
 				data.setValue(i, 0, resultByRangesVar[i].range);
-				data.setValue(i, 1, resultByRangesVar[i].avgPercent);		
+				data.setValue(i, 1, resultByRangesVar[i].avgPercent);
+				data.setValue(i, 2, totalVotingPercentcp);
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('onePartyCensusResults_body'));
@@ -629,29 +685,41 @@ select
 
 	function buildPopulationRange(jsObj,results)
 	{
-		var elmt = document.getElementById("censusPopulationRangeData");
-		var spanElmt = document.getElementById("censusPopulationRange_head_span");
-		var rangeElmt = document.getElementById("censusPopulationRange");
-		var censusPopulationRange_footerEl = document.getElementById("censusPopulationRange_footer");
-		var censusPopulationHead = document.getElementById("censusPopulationRange_body_head");		
-		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head");
+		var rangeElmt = document.getElementById("censusPopulationRange1");
+		var selectPartyElmt = document.getElementById("censusPopulationRange_selectParty");
+		var elmt = document.getElementById("censusPopulationRangeData1");
+		var spanElmt = document.getElementById("censusPopulationRange_head_span1");
+		var censusPopulationRange_footerEl = document.getElementById("censusPopulationRange_footer1");
+		var censusPopulationHead = document.getElementById("censusPopulationRange_body_head1");		
+		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head1");
 		graphHeadElmt.innerHTML = '';
 
-		var cpStr = '<div><a href="javascript:{}" title="Click Here To View Party wise Results By Census Percentage Range" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body_head\')">Click Here To View Party wise Results By Census Percentage Range</a></div>';
+		var cpStr = '';
+
 		censusPopulationHead.innerHTML = cpStr;
 
 		if(rangeElmt && rangeElmt.style.display == "none")
-			rangeElmt.style.display = "block"
-
+			rangeElmt.style.display = "block";
+		if(selectPartyElmt && selectPartyElmt.style.display == "none")
+			selectPartyElmt.style.display = "block";
+			
 		rangeResults = results;
 		if(!elmt)
 			return;
 		
-		var hStr = '';
-		hStr += 'Assembly Constituencies Results in '+jsObj.yearValue+' Vs '+jsObj.censusText+' % range In Total Population';;
-		if(spanElmt)
-			spanElmt.innerHTML = hStr;
-
+		if(jsObj.districtId==0){
+			var hStr = '';
+			hStr += jsObj.stateName+' Assembly Constituencies Results in '+jsObj.yearValue+' Vs '+jsObj.censusText+' % range In Total Population';;
+			if(spanElmt)
+				spanElmt.innerHTML = hStr;
+		}
+		else{
+				var hStr = '';
+			hStr += jsObj.districtName+' District Assembly Constituencies Results in '+jsObj.yearValue+' Vs '+jsObj.censusText+' % range In Total Population';;
+			if(spanElmt)
+				spanElmt.innerHTML = hStr;
+		}
+		
 		var str = '';
 		//str += '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body\')">View Party wise Results By Census Percentage Range</a></div>';
 		str += '<div id="censusPopulationRange_body">';
@@ -681,17 +749,16 @@ select
 			}
 			str += '<table class="censusPopulationRange_body_table_inner" border="0">';
 			str += '<tr>';
-			str += '<th width="10px"><img src="images/icons/districtPage/listIcon.png"></th>';
-			str += '<th width="50px">'+results[i].range+'</th>';
+			str += '<th width="80px">'+results[i].range+'</th>';
 			if(results[i].count != 0)
-				str += '<td width="30px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')" title="Click Here To View Election Results of All Parties in '+results[i].count+' Constituencies Having '+jsObj.censusText+' Between '+results[i].range+'">'+results[i].count+'</a></td>';
+				str += '<td width="50px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')" title="Click Here To View Election Results of All Parties in '+results[i].count+' Constituencies Having '+jsObj.censusText+' Between '+results[i].range+'">'+results[i].count+'</a></td>';
 			else
-				str += '<td width="30px">'+results[i].count+'</td>';
+				str += '<td width="50px">'+results[i].count+'</td>';
 
 			if(results[i].votingPercent != null)
-				str += '<td width="50px">'+results[i].votingPercent+'</td>';
+				str += '<td width="60px">'+results[i].votingPercent+'</td>';
 			else
-				str += '<td width="50px"> -- </td>';
+				str += '<td width="60px"> -- </td>';
 			str += '</tr>';	
 			str += '</table>';			
 		}
@@ -717,8 +784,10 @@ select
 	        data.setValue(i, 1, parseInt(results[i].count));
 		}
 
-        var chart = new google.visualization.PieChart(document.getElementById('censusPopulationRangeGraph_body'));
+        var chart = new google.visualization.PieChart(document.getElementById('censusPopulationRangeGraph_body1'));
         chart.draw(data, {width: 360, height: 250, title: 'Constituencies Count Based On Range'});
+		
+		callAjaxForPartiesSelectBox('censusPopulationRange_selectParty');
 
 	}
 
@@ -745,7 +814,8 @@ select
 		str += '<table>';
 		str += '<tr>';
 		str += '<td>Select Party To View Results By Census Percentage Range:</td>';
-		str += '<td><select id="partySelectElmt" style="margin-left:10px;" onchange="getAjaxResultForPartyResultsByRanges(this.options[this.selectedIndex].value)">';
+		str += '<td><select id="partySelectElmt" style="margin-left:10px;" onchange="getAjaxResultForPartyResultsByRanges(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
+		str += '<option value="0">Select Party</option>';
 		for(var i=0; i<partiesList.length; i++)
 			str += '<option value="'+partiesList[i].id+'">'+partiesList[i].name+'</option>';
 		str += '</select></td>';
@@ -759,7 +829,7 @@ select
 		
 		var elmt = document.getElementById("partySelectElmt");
 		getAllPartiesCensusResults();
-		getAjaxResultForPartyResultsByRanges(elmt.options[0].value);
+		//getAjaxResultForPartyResultsByRanges(elmt.options[0].value);
 	}
 
 	function getAllPartiesCensusResults()
@@ -801,7 +871,11 @@ select
 		censusAjaxCall(jsObj,url);
 	}
 
-	function getAjaxResultForPartyResultsByRanges(partyId){
+	function getAjaxResultForPartyResultsByRanges(partyId,partyName){
+		if(partyId==0){
+			alert("Please Select Party");
+			return;
+		}
 		var censusElmt = document.getElementById("censusSelect");
 		var yearElmt = document.getElementById("yearSelect");
 		var stateElmt = document.getElementById("stateList");
@@ -811,7 +885,9 @@ select
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+		var stateName = stateElmt.options[stateElmt.selectedIndex].text; 
 		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
+		var districtName = districtElmt.options[districtElmt.selectedIndex].text;
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		
@@ -828,8 +904,11 @@ select
 		var jsObj=
 		{
 				partyId		: partyId,
+				partyName   : partyName,
 				stateId		: stateId,
+				stateName	: stateName,
 				districtId	: districtId,
+				districtName : districtName,
 				censusText	: censusText,
 				censusValue	: censusValue,
 				yearValue	: yearValue,
@@ -883,7 +962,7 @@ select
 		censusAjaxCall(jsObj,url);
 	}
 	
-	function showPartyResultsByFilter(censusType,range)
+	function showPartyResultsByFilter(censusType,censusTypeId,range)
 	{
 		var elmts = document.getElementsByName("partyResultsRadio");
 		var districtSpanElmt = document.getElementById("district_selectElmt");
@@ -939,6 +1018,7 @@ select
 
 		var jsObj = {
 						censusType:censusType,
+						censusTypeId:censusTypeId,
 						range:range,
 						idsList:constiIds,
 						checkedValue:checkedValue,
@@ -1017,7 +1097,7 @@ select
 		for(var i=0; i<results.parties.length; i++)
 			optionStr += '<option value="'+results.parties[i].id+'">'+results.parties[i].name+'</option>';
 		optionStr += '</select></div></td>';
-		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.range+'\')" style="color:#FFF; font-weight: bold; padding-left: 10px; padding-right: 10px; border-radius: 5px 5px 5px 5px; background:#4B74C6"></td>';
+		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.censusTypeId+'\',\''+jsObj.range+'\')" style="color:#FFF; font-weight: bold; padding-left: 10px; padding-right: 10px; border-radius: 5px 5px 5px 5px; background:#4B74C6"></td>';
 		optionStr += '</tr>';
 		optionStr += '</table>';
 		optionStr += '<div id="partyResultsTable_errorDiv" style="color:red;font-size:11px;"></div>';
@@ -1372,18 +1452,51 @@ select
 		</div>
 		<div id="ajaxImageDiv" style="display:none;"></div>
 		</div>
+		
+		
+		<div id="censusPopulationRange1" style="display:none;">
+			<div id="censusPopulationRange_head1">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+					<!--<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>-->
+					<td><div class="censusWidgetMainHeader"><span id="censusPopulationRange_head_span1" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
+				</table>
+			</div>
+			<div id="censusPopulationRange_body1" class="mainWidgetsBody ">
+				<div id="censusPopulationRange_body_head1" ></div>
+				<div id="censusPopulationRange_body_body1" >
+					<table width="100%">					
+						<tr>
+							<td valign="top" width="50%"><div id="censusPopulationRangeData1"></div></td>
+							<td valign="top" width="50%">
+								<div id="censusPopulationRangeGraph_head1"></div>
+								<div id="censusPopulationRangeGraph_body1" class="yui-skin-sam"></div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="censusPopulationRange_footer1" style="margin-left:15px;"></div>
+				
+			</div>
+			
+		</div>
+		
+		
+		<div id="censusPopulationRange_selectParty" style="display:none;"></div> 
+		
 		<div id="censusPopulationRange" style="display:none;">
 			<div id="censusPopulationRange_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
-					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 					<td><div class="censusWidgetMainHeader"><span id="censusPopulationRange_head_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
 			</div>
 			<div id="censusPopulationRange_body" class="mainWidgetsBody ">
-				<div id="censusPopulationRange_body_head" ></div>
+				<!--<div id="censusPopulationRange_body_head" ></div>-->
 				<div id="censusPopulationRange_body_body" >
 					<table width="100%">					
 						<tr>
@@ -1399,11 +1512,12 @@ select
 			</div>
 			
 		</div>
+		
+		
 		<div id="partyResultsPerformance_main" class="yui-skin-sam" style="display:none;margin-top:10px;">
 			<div id="partyResultsPerformance_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 						<td><div class="censusWidgetMainHeader"><span id="censusWidgetMainHeader_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
 						<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
@@ -1451,6 +1565,13 @@ select
 				</div>
 			</div>
 		</div>
+		
+		
+		
+		
+		
+		
+		
 	 </div>
   </div>
 	<script>
