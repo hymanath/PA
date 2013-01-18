@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -154,5 +155,9 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List<Object[]> getOldAndNewConstituenciesInAElection(Long electionId);
 		
 	public List<Object[]> getConstituenciesForAnElec(Long electionId);
+	
+	public List<Long> getNearestPreviousMainElectionIdFromADateInAConstituency(Long constituencyId, Date date);
+	
+	public List<Object[]> getElectionIdAndSubTypeByConstituencyIdAndDate(Long constituencyId, Date fromDate,Date toDate);
 	
 }

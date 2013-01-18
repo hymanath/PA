@@ -6,4 +6,6 @@ import com.itgrids.partyanalyst.model.VoterReportLevel;
 
 public interface IVoterReportLevelDAO extends GenericDao<VoterReportLevel, Long>{
 
+	public Long getReportLevelIdByType(String type);
+	
 }
