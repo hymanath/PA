@@ -605,7 +605,7 @@ locationDetails.constituencyArr.push(ob);
 		<div id="localCastChatDiv"></div>
 	</div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
-	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="margin-top:25px;overflow-x:scroll;">	</div>
+	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="margin-top:25px;">	</div>
 	<div id='localCastStatsTabContent_subbody'></div><br><br>
 	<div id ="localCastStatsVotersTitle" ></div>
 	<div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
