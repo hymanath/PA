@@ -65,7 +65,7 @@
 	
 		<action name="loginInputAction" class="loginInputAction">
 		<result name="success">/jsp/loginForm.jsp</result>
-		<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
+		<result name="dashBoard" type="redirect" >connectPeopleAction.action</result>
 		</action>
 		
 		<action name="newAnnouncementAction" class="announcementPageAction">
@@ -4200,6 +4200,23 @@
 		 </result>
 		</action>
 		
+		<action name="getNewsCountForALocationByCategory" class="candidateElectionResultsAction"
+			method="getNewsCountForALocationByCategory">
+			<result type="json" name="success">
+           		<param name="root">newsCountByCategoryList</param>
+        </result>
+       	<result type="json" name="error">
+			 <param name="root">"notLogged"</param>
+		</result>
+			
+		</action>
+		
+		
+		<action name="getNewsByLocation" class="candidateElectionResultsAction" method="getNewsByLocationAndCategory">
+		<result type="json" name="success">
+           		<param name="root">allNewsList</param>
+        </result>
+		</action>
 		
 	</package>
 </struts>      

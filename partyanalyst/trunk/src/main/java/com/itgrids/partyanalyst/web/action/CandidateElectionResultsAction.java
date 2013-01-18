@@ -138,8 +138,30 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<FileVO> regionsScopesList ;
 	private List<FileVO> categoryList ;
 	private PdfGenerationVO  pdfGenerationVO ;
+	private List<FileVO> allNewsList ;
+	private List<FileVO> newsCountByCategoryList;
 	
 	
+	public List<FileVO> getNewsCountByCategoryList() {
+		return newsCountByCategoryList;
+	}
+
+
+	public void setNewsCountByCategoryList(List<FileVO> newsCountByCategoryList) {
+		this.newsCountByCategoryList = newsCountByCategoryList;
+	}
+
+
+	public List<FileVO> getAllNewsList() {
+		return allNewsList;
+	}
+
+
+	public void setAllNewsList(List<FileVO> allNewsList) {
+		this.allNewsList = allNewsList;
+	}
+
+
 	public PdfGenerationVO getPdfGenerationVO() {
 		return pdfGenerationVO;
 	}
@@ -1781,11 +1803,83 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			e.printStackTrace();
 			
 		}
-	
-	
-      return SUCCESS;
 		
+      return SUCCESS;		
 		
 	}
+	
+
+	
+	public String getNewsCountForALocationByCategory(){
+		
+		
+		 try{	 
+			 jObj = new JSONObject(getTask());
+			 
+		   }catch(Exception e){
+				 e.printStackTrace(); 
+		   }
+		 
+		 Long locationValue = jObj.getLong("locationValue");
+		 Long locationId = jObj.getLong("locationId");
+		 Long publicationId = jObj.getLong("publicationId");
+		
+		 session = request.getSession();
+		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		 
+		
+		 
+		newsCountByCategoryList = newsMonitoringService
+				.getNewsCountForALocationByCategory(regVO.getRegistrationID(),
+						locationValue, locationId, publicationId);
+
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String getNewsByLocationAndCategory(){
+		
+		try{	 
+			 jObj = new JSONObject(getTask());
+			 
+		   }catch(Exception e){
+				 e.printStackTrace(); 
+		   }
+		
+		 session = request.getSession();
+		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		 
+		 
+		 FileVO fileVO = new FileVO();
+		
+		
+		Long locationValue = jObj.getLong("locationValue");
+		Long locationId = jObj.getLong("locationId");
+		Long publicationId = jObj.getLong("publicationId");
+		Long importanceId = jObj.getLong("importanceId");
+		Long categoryId = jObj.getLong("categoryId");
+		Integer startIndex = jObj.getInt("startIndex");
+		Integer lastIndex = jObj.getInt("lastIndex");
+		
+		
+		fileVO.setUserId(regVO.getRegistrationID());
+		fileVO.setLocationVal(locationValue);
+		fileVO.setLocationId(locationId);
+		fileVO.setPublicationId(publicationId);
+		fileVO.setImportanceId(importanceId);
+		fileVO.setCategoryId(categoryId);
+		fileVO.setStartIndex(startIndex);
+		fileVO.setMaxResult(lastIndex);
+		
+		
+		allNewsList = newsMonitoringService.getNewsByLocationAndCategory(fileVO);
+		
+
+		
+		return Action.SUCCESS;
+		
+	}
+	
 
 }
