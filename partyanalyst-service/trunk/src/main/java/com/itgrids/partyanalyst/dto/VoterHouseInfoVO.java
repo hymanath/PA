@@ -51,6 +51,7 @@ public class VoterHouseInfoVO {
 	private List<VoterHouseInfoVO> familiesList;
 	private Long publicationId;
 	private Long toAge;
+	private String mobileNo;
 	
 	public VoterHouseInfoVO(){
 		
@@ -461,6 +462,16 @@ public class VoterHouseInfoVO {
 	public void setToAge(Long toAge) {
 		this.toAge = toAge;
 	}
+	
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
 
 	
 }
