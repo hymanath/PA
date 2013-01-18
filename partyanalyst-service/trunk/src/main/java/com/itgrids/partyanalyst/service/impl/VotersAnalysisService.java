@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterCategory;
@@ -565,6 +566,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			else if(type.equalsIgnoreCase("panchayat")){
 				VotersInfoForMandalVO votersInfoForMandalVO = getVotersCountForPanchayat(id,publicationDateId,"main");
 				getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"panchayat");
+				getBoothsComparisionInfo(electionIds,id,publicationDateId,votersInfoForMandalVO);
 				return votersInfoForMandalVO;
 			}
 		}catch(Exception e){
@@ -3996,10 +3998,88 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							return null;
 						}
 						
-					}
+					}				
+	 public void getBoothsComparisionInfo(List<Election> electionIds,Long panchayatId,Long publicationDateId,VotersInfoForMandalVO votersInfoForMandalVO){
+		try{ 
+		 List<Object[]> presentBoothsList = boothDAO.getBoothsInAPanchayat(panchayatId,publicationDateId);
+		 Panchayat panchayat = panchayatDAO.get(panchayatId);
+		 PublicationDate publicationDate = publicationDateDAO.get(publicationDateId);
+		 
+		 List<Object[]> previousBoothsList = null;
+		 Election electionObj = null;
+		 Map<Long,String> boothsAdded = new HashMap<Long,String>();
+		 Map<Long,String> boothsRemoved = new HashMap<Long,String>();
+		 List<String> newlyAdded = new ArrayList<String>();
+		 List<String> completelyRemoved = new ArrayList<String>();
+		 List<String> otherComment = new ArrayList<String>();
+		 Integer presentBoothsCount = presentBoothsList.size();
+		 Integer prevBoothsCount = null;
+		 String presentBooths = "";
+		 String prevBooths = "";
+		 String prevElecYear = null;
 
-					
+		 for(Election election:electionIds){
+			 if("MAIN".equalsIgnoreCase(election.getElecSubtype())){
+				 electionObj = election;
+				 prevElecYear = election.getElectionYear();
+				 previousBoothsList = hamletBoothElectionDAO.getBoothsInAPanchayat(election.getElectionId(),panchayatId);
+			 }
+			 
+		 }
+		 if(previousBoothsList == null || previousBoothsList.size() == 0)
+			 return;
+		 votersInfoForMandalVO.setPanchayatInfoPresent(true);
+		  prevBoothsCount = previousBoothsList.size();
+		  
+		  for(Object[] previousBooth:previousBoothsList){
+			   boolean boothRemoved = true;
+			  for(Object[] presentBooth:presentBoothsList){
+				  if(presentBooth[1].toString().trim().equalsIgnoreCase(previousBooth[1].toString().trim()))
+					  boothRemoved = false;
+			  }
+			  if(boothRemoved)
+				  boothsRemoved.put((Long)previousBooth[0], previousBooth[1].toString().trim());
+			  prevBooths = prevBooths+" "+previousBooth[1].toString();
+		  }
+		  
+		  for(Object[] presentBooth:presentBoothsList){
+			   boolean boothAdded = true;
+			  for(Object[] previousBooth:previousBoothsList){
+				  if(presentBooth[1].toString().trim().equalsIgnoreCase(previousBooth[1].toString().trim()))
+					  boothAdded = false;
+			  }
+			  if(boothAdded)
+				  boothsAdded.put((Long)presentBooth[0], presentBooth[1].toString().trim());
+			  presentBooths = presentBooths+" "+presentBooth[1].toString();
+		  }
+		  for(Long key:boothsRemoved.keySet()){
+			  String partNo = boothsRemoved.get(key);
+			  Booth booth = boothDAO.get(key);
+			   List<Object[]> boothInfo = boothDAO.getBoothInfo(publicationDateId,booth.getConstituency().getConstituencyId(),partNo);
+			   if(boothInfo != null && boothInfo.size() >0)
+				   otherComment.add("In "+publicationDate.getYear()+" booth-"+partNo+" is moved from "+panchayat.getPanchayatName()+" Panchayat to "+boothInfo.get(0)[1].toString()+" Panchayat");
+			   else
+				   completelyRemoved.add(partNo); 
+		  }
+		  for(Long key:boothsAdded.keySet()){
+			  String partNo = boothsAdded.get(key);
+			  Booth booth = boothDAO.get(key);
+			   List<Object[]> boothInfo = hamletBoothElectionDAO.getPanchayatByBoothElec(electionObj.getElectionId(),partNo,booth.getConstituency().getConstituencyId());
+			   if(boothInfo != null && boothInfo.size() >0)
+				   otherComment.add("In "+publicationDate.getYear()+" booth-"+partNo+" is moved from "+boothInfo.get(0)[1].toString()+" Panchayat to "+panchayat.getPanchayatName()+" Panchayat");
+			   else
+				   newlyAdded.add(partNo); 
+		  }
+		  votersInfoForMandalVO.setNewlyAdded(newlyAdded);
+		  votersInfoForMandalVO.setCompletelyRemoved(completelyRemoved);
+		  votersInfoForMandalVO.setOtherComment(otherComment);
+		  votersInfoForMandalVO.setPresentBoothsCount(presentBoothsCount);
+		  votersInfoForMandalVO.setPrevBoothsCount(prevBoothsCount);
+		  votersInfoForMandalVO.setPresentBooths(presentBooths);
+		  votersInfoForMandalVO.setPrevBooths(prevBooths);
+		  votersInfoForMandalVO.setElectionYear(electionObj.getElectionYear());
+		}catch(Exception e){
+			log.error("Exception Occured in getBoothsComparisionInfo Method, Exception is - ",e);
 		}
-				
-	 
-
+	 }
+}
