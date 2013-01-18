@@ -256,7 +256,8 @@ var votersByLocBoothColumnDefs = [
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
 {key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true}
+//{key:"relationshipType", label: "Relationship", sortable:true},
+	{key:"mobileNo",label:"mobileNo",sortable:true}
 ];
 
 YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
@@ -274,7 +275,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIds"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -319,7 +320,8 @@ var votersByLocBoothColumnDefs = [
 {key:"age", label: "Age", sortable:true},
 {key:"houseNo", label: "House No", sortable:true},
 {key:"relativeFirstName", label: "GuardName", sortable:true},
-{key:"relationshipType", label: "Relationship", sortable:true}
+//{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"mobileNo",label:"mobileNo",sortable:true}
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -330,7 +332,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","voterIDCardNo"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -477,6 +479,8 @@ function showImportantFamiliesDiv()
 
 	function getPanchayatList(checkedele,selectedEle)
 	{
+		
+		var reportLevel = $("#reportLevel").val();
 		var mandalId=document.getElementById("mandalField");
 		var name=mandalId.options[mandalId.selectedIndex].name;
 		var value1=mandalId.options[mandalId.selectedIndex].value;
@@ -495,12 +499,14 @@ function showImportantFamiliesDiv()
 			alertEl.innerHTML ='<P>Please Select Mandal</P>';
 			return;
 		}
-		if(flag != -1 && (checkedele == "panchayat" || checkedele == "pollingstationByPublication"))
+		if(flag != -1 && checkedele == "panchayat")
 		{
 		document.getElementById('panchayatDiv').style.display='none';
 		}
-		else{
+		else if(flag != -1 && checkedele == "pollingstationByPublication" && reportLevel == 4)
+		{
 		 flag = -1;
+		 document.getElementById('panchayatDiv').style.display='none';
 		}
 		if(flag == -1)
 		{
@@ -633,11 +639,6 @@ function showImportantFamiliesDiv()
 									  alert("Unable To Updated Voters Information Please Try Again");
 									}
 								}
-
-								else if(jsObj.task =="getPreviousEleVotingTrends")
-								{
-									showPreviousEleVotingTrends(myResults,jsObj);	
-								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -743,11 +744,6 @@ function showImportantFamiliesDiv()
 	}
 }
 $(document).ready(function(){
-
-	$("#votersId").click(function(){
-		getPreviousElectionVotingTrends();
-		
-	});
     $("#publicationDateList").change(function(){
 	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
 		   var str = $('#publicationDateList :selected').text();
@@ -805,14 +801,12 @@ $(document).ready(function(){
 	$("#panchayatField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
-	   getPreviousElectionVotingTrends();
 	});
 	$("#pollingStationField").live("change",function(){
 	  $('.voterDetails').html('');
 	   $('.noteDiv').html('');
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
-		getPreviousElectionVotingTrends();
 	});
     $("#publicationDateList").live("change",function(){
     
@@ -902,7 +896,6 @@ function getVotersCastInfo()
   $("#localCastStatsTabContent_header").html("");
   $("#localCastStatsTabContentTitle").html("");
   $("#localCastStatsTabContent_body").html("");
-  $("#partyWiseLocalCastStatsTab").html("");
   var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
   var errorDivEle = document.getElementById('AlertMsg');
   var publicationDateId = $("#publicationDateList").val();
@@ -1419,7 +1412,8 @@ var result = results;
 							{key:"houseNo", label: "House No",sortable:true},
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
 							{key:"relationship", label: "Relationship",sortable:true},
-							{key:"voterIdCardNo",label:"Voter Id",sortable: true}
+							{key:"voterIdCardNo",label:"Voter Id",sortable: true},
+	                        {key:"mobileNo",label:"mobileNo",sortable:true}
 		    	        ]; 
 
     
@@ -1472,7 +1466,8 @@ function buildVotersInFamily(results){
 		    				{key:"age", label: "Age",sortable:true},
 							{key:"houseNo", label: "House No",sortable:true},
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
-							{key:"relationship", label: "Relationship",sortable:true}
+							{key:"relationship", label: "Relationship",sortable:true},
+							{key:"mobileNo",label:"mobileNo",sortable:true}
 						]; 
 
     var myConfigs = { 
@@ -1565,54 +1560,7 @@ function buildCastInfoData(myresults,jsObj)
 		buildCastPiechart(myresults,jsObj);  
 		buildPartyWisePiechart(myresults,jsObj);
 		buildPartyWiseCastData(myresults,typeName,publicationDateId,boothId,type);	
-		buildPartyWiseCastDetailsTable(myresults,jsObj); 
 }
-
-	function buildPartyWiseCastDetailsTable(myresults,jsObj){
-	   $("#partyWiseLocalCastStatsTab").html("");
-	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
-	       var result = myresults.voterCastInfodetails.castVOs;
-		   var str ='<div style="overflow-x:scroll;">';
-		      str+='<div id="partyWiseLocalCastStatsTabTitle">Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</div>';
-		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black;">';
-			  str+='  <thead>';
-			  str+='   <tr>';
-			  str+='     <th>Caste</th>';
-			  str+='     <th>Voters</th>';
-			  str+='     <th>Party not assigned voters</th>';
-			  str+='     <th>Party assigned voters</th>';
-			 if(result[0].partiesList != null && result[0].partiesList.length > 0){
-			   for(var p in result[0].partiesList)
-			     str+='     <th>'+result[0].partiesList[p].partyName+'</th>';
-			 }
-			  str+='   </tr>';
-			  str+='  </thead>';
-			  str+='  <tbody>';
-			   for(var i in result){
-				  str +='   <tr>';
-				  str +='		<td>'+result[i].castName+'</td>';
-				  str +='		<td>'+result[i].castCount+'</td>';
-				  str +='		<td>'+result[i].partyNotAssigCount+'</td>';
-				  str +='		<td>'+result[i].partyCount+'</td>';
-				  if(result[i].partiesList != null && result[i].partiesList.length > 0){
-					for(var k in result[i].partiesList) 
-					  str +=' <td>'+result[i].partiesList[k].partyCount+'</td>';
-                  }
-				  str+='   </tr>';
-			   }
-			  str+='  </tbody>';
-			  str+=' </table>';
-			  str+='</div>';
-			  $("#partyWiseLocalCastStatsTab").html(str);
-	  
-				$('#partyWiseCastJqTable').dataTable({
-				"aaSorting": [[ 1, "asc" ]],
-				"iDisplayLength": 15,
-				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
-				});
-	   }
-	}
-
 function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
 {
 	
@@ -2857,7 +2805,7 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 		if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
 			str += '<span>UnKnown Voters : '+votersbasicinfo.unKnowVoters+'</span>';
 		
-		str += '</b></div></div></br>';
+		str += '</b></div></div></br></br>';
         if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
 		    var prevElecInfo = votersbasicinfo.previousElectInfoList;
 			str += '<table class="votersPrevCountTableDiv" style="margin-bottom:5px;font-family:verdana;">';
@@ -3041,82 +2989,3 @@ function openNewSearchWindow(){
 	var updateBrowser = window.open(urlStr,"votersSearch","scrollbars=yes,height=700,width=980,left=10,top=0");	
 	updateBrowser.focus();
 }
- 
- function getPreviousElectionVotingTrends()
-	{
-	
-		var publicationDateId = $("#publicationDateList").val();
-		var level = $("#reportLevel").val();
-		var constituencyId = $("#constituencyList").val(); 
-		var type = '';
-		var id='';
-		
-		if(level == 3)
-		{
-			id = $("#panchayatField").val();
-			type = "panchayat";
-			name = $("#panchayatField option:selected").text()+" "+"Panchayat";
-		}
-		if(level == 4)
-		{
-			id = $("#pollingStationField").val();
-			type = "booth";
-			name = $("#pollingStationField option:selected").text()
-		}
-
-		if(id == 0 || id == null || id == '')
-			return false;
-		var jsObj=
-		{
-			id                :id,
-			publicationDateId :publicationDateId,
-			constituencyId    :constituencyId,
-			name              :name,
-			type              :type,
-			task:"getPreviousEleVotingTrends"
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getPreviousEleVotingTrendsAction.action?"+rparam;	
-		callAjax(jsObj,url);
-
-	}
-
- function showPreviousEleVotingTrends(results,jsObj)
- {
-	 var flag = false;
-	 $("#previousEleVotingTrendsDiv").html('');
-       for(var i in results)
-		 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
-		   flag = true;
-
-		if(flag)
-		{
-		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<div style="margin-bottom: 20px;"><span id="prevVotTrendHeadingSpan">Previous Election Voting Trends in '+jsObj.name+' </span></div>');
-				str +='<table style="width:95%">';
-				str +='<tr>';
-				str +='<th><b>Year</b></th>';
-			   for(var i in results[0].partiesList)
-			     str +='<th>'+results[0].partiesList[i]+'</th>';
-			     str +='</tr>';
-				
-				for(var j in results)
-				{
-				  str +='<tr>';
-				  str += '<td>'+results[j].electionYear+'</td>';
-					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
-					  for(var k in partyVotesEarnedVOs)
-				         str +='<td><b>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
-					     str +='</tr>';
-		 			
-				}
-			 
-			 str +='</table>';
-			 $("#previousEleVotingTrendsDiv").append(str);
-			 
-			}
-		
-	}
-
-
-	
