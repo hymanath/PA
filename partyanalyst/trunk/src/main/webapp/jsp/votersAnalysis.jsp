@@ -295,7 +295,7 @@ table.dataTable tr.even td.sorting_1 {
 	#constituencyList,#mandalField,
 	#panchayatField,#reportLevel,
 	#pollingStationField{width:160px;height:25px;}
-	#sublevelHeading,#impFamilesBasicSubDetailsTitle,#impFamPancBothDtlstitle,#impFamDtlsTitle{
+	#sublevelHeading,#impFamilesBasicSubDetailsTitle,#partyWiseLocalCastStatsTabTitle,#impFamPancBothDtlstitle,#impFamDtlsTitle{
 		color:steelblue;
 		font-size:13px;
 		font-family:verdana;
@@ -415,6 +415,17 @@ width: 860px;}
 	   height:11px;
 	   width:11px;
 	}
+	#partyWiseLocalCastStatsTab table th {
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+   }
+   #partyWiseLocalCastStatsTab table td {
+    color: #676A67;
+    font: small-caption;
+  }
 </style>
 
 <script type="text/javascript">
@@ -594,6 +605,7 @@ locationDetails.constituencyArr.push(ob);
 		<div id="localCastChatDiv"></div>
 	</div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
+	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="margin-top:25px;overflow-x:scroll;">	</div>
 	<div id='localCastStatsTabContent_subbody'></div><br><br>
 	<div id ="localCastStatsVotersTitle" ></div>
 	<div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
