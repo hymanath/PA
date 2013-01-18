@@ -890,6 +890,7 @@ function getVotersCastInfo()
   $("#localCastStatsTabContent_header").html("");
   $("#localCastStatsTabContentTitle").html("");
   $("#localCastStatsTabContent_body").html("");
+  $("#partyWiseLocalCastStatsTab").html("");
   var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
   var errorDivEle = document.getElementById('AlertMsg');
   var publicationDateId = $("#publicationDateList").val();
@@ -1552,7 +1553,52 @@ function buildCastInfoData(myresults,jsObj)
 		buildCastPiechart(myresults,jsObj);  
 		buildPartyWisePiechart(myresults,jsObj);
 		buildPartyWiseCastData(myresults,typeName,publicationDateId,boothId,type);	
+		buildPartyWiseCastDetailsTable(myresults,jsObj); 
 }
+
+	function buildPartyWiseCastDetailsTable(myresults,jsObj){
+	   $("#partyWiseLocalCastStatsTab").html("");
+	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
+	       var result = myresults.voterCastInfodetails.castVOs;
+		   var str ='<div id="partyWiseLocalCastStatsTabTitle">Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</div>';
+		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black;">';
+			  str+='  <thead>';
+			  str+='   <tr>';
+			  str+='     <th>Caste</th>';
+			  str+='     <th>Voters</th>';
+			  str+='     <th>Party not assigned voters</th>';
+			  str+='     <th>Party assigned voters</th>';
+			 if(result[0].partiesList != null && result[0].partiesList.length > 0){
+			   for(var p in result[0].partiesList)
+			     str+='     <th>'+result[0].partiesList[p].partyName+'</th>';
+			 }
+			  str+='   </tr>';
+			  str+='  </thead>';
+			  str+='  <tbody>';
+			   for(var i in result){
+				  str +='   <tr>';
+				  str +='		<td>'+result[i].castName+'</td>';
+				  str +='		<td>'+result[i].castCount+'</td>';
+				  str +='		<td>'+result[i].partyNotAssigCount+'</td>';
+				  str +='		<td>'+result[i].partyCount+'</td>';
+				  if(result[i].partiesList != null && result[i].partiesList.length > 0){
+					for(var k in result[i].partiesList) 
+					  str +=' <td>'+result[i].partiesList[k].partyCount+'</td>';
+                  }
+				  str+='   </tr>';
+			   }
+			  str+='  </tbody>';
+			  str+=' </table>';
+			  $("#partyWiseLocalCastStatsTab").html(str);
+	  
+				$('#partyWiseCastJqTable').dataTable({
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});
+	   }
+	}
+
 function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
 {
 	
@@ -2797,7 +2843,7 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 		if(votersbasicinfo.unKnowVoters != null && votersbasicinfo.unKnowVoters != 0 && votersbasicinfo.unKnowVoters != "0")
 			str += '<span>UnKnown Voters : '+votersbasicinfo.unKnowVoters+'</span>';
 		
-		str += '</b></div></div></br></br>';
+		str += '</b></div></div></br>';
         if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
 		    var prevElecInfo = votersbasicinfo.previousElectInfoList;
 			str += '<table class="votersPrevCountTableDiv" style="margin-bottom:5px;font-family:verdana;">';
