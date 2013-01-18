@@ -372,6 +372,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setCast(voter.getCast());
 					voterVO.setCastCatagery(voter.getCastCatagery());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
+					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :"N/A");
 					voters.add(voterVO);
 	
 				}
@@ -1375,6 +1376,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 	    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 	    	voterHouseInfoVO.setBoothId(boothId);
+	    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : "N/A");
 	    	voterHouseInfoVOList.add(voterHouseInfoVO);
 	    	sno = sno+1;
 	    }
@@ -1415,6 +1417,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterHouseInfoVO.setCast(voter.getCast());
 				voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 				voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
+				voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : "N/A");
 				votersList.add(voterHouseInfoVO);
 				sno = sno + 1;
 			}
