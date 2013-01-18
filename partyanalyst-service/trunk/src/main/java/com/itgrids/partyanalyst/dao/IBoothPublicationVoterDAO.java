@@ -100,4 +100,6 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getCastWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId);
 	 
 	public List<Object[]> getPartyWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId); 
+	
+	public List<Object[]> getParties(Long userId,String locationType,Long locationId,Long publicationDateId);
 }

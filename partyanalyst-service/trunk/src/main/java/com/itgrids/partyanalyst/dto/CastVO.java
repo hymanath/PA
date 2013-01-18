@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 public class CastVO implements Serializable, Comparable<CastVO>{
 
@@ -21,8 +23,17 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private String casteCategoryName;
 
-	private Long partyCount;
+	private Long partyCount = 0l;
 	
+	private String partyName;
+	
+	private Long partyId;
+	
+	private List<CastVO> partiesList;
+	
+	private Map<String,CastVO> partiesMap;
+	
+	private Long partyNotAssigCount = 0l;
 	
 	public CastVO(){
 		
@@ -126,6 +137,46 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 
 	public void setPartyCount(Long partyCount) {
 		this.partyCount = partyCount;
+	}
+
+	public List<CastVO> getPartiesList() {
+		return partiesList;
+	}
+
+	public void setPartiesList(List<CastVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+
+	public Map<String, CastVO> getPartiesMap() {
+		return partiesMap;
+	}
+
+	public void setPartiesMap(Map<String, CastVO> partiesMap) {
+		this.partiesMap = partiesMap;
+	}
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public Long getPartyNotAssigCount() {
+		return partyNotAssigCount;
+	}
+
+	public void setPartyNotAssigCount(Long partyNotAssigCount) {
+		this.partyNotAssigCount = partyNotAssigCount;
 	}
 
 
