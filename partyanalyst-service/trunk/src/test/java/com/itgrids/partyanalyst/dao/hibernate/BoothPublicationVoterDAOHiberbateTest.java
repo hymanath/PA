@@ -156,7 +156,7 @@ System.out.println(list.size());
 
 public void testGetCastWiseCount()
 {
-	List<Object[]> list = boothPublicationVoterDAO.getCastWiseCount(1l, "panchayat", 12085l, 7l);
+	List<Object[]> list = boothPublicationVoterDAO.getCastWiseCount(1l, "panchayat", 1l, 7l);
 	System.out.println(list.size());
 	for(Object[] data:list){
 		System.out.println(data[0]+" "+data[1]);
@@ -165,7 +165,7 @@ public void testGetCastWiseCount()
 
 public void testGetPartyWiseCount()
 {
-	List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCount(1l, "panchayat", 12085l, 7l);
+	List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCount(1l, "panchayat", 1l, 7l);
 	System.out.println(list.size());
 	for(Object[] data:list){
 		System.out.println(data[0]+" "+data[1]+" "+data[2]+" "+data[3]);

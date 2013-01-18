@@ -730,6 +730,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
 			voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
 			voterCastInfoVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
+			voterCastInfoVO.setCastVOs(getCastWisePartyCount(userId,locationType,locationId,publicationDateId));
 			return voterCastInfoVO;
 		}catch (Exception e) {
 			log.error("Exception Occured in getVotersCastWiseDetailsInALocation() Method, Exception is - "+e);
@@ -3727,32 +3728,67 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		
 	 }
 	 
-	 /*public List<VoterCastInfoVO> getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId)
+	 public List<CastVO> getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId)
 		{
-			List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
+			List<CastVO> resultList = null;
 			try{
 				List<Object[]> castList = boothPublicationVoterDAO.getCastWiseCount(userId,locationType,locationId,publicationDateId);
+				List<Object[]> partiesList = boothPublicationVoterDAO.getPartyWiseCount(userId,locationType,locationId,publicationDateId);
+				List<Object[]> parties = boothPublicationVoterDAO.getParties(userId,locationType,locationId,publicationDateId);
 				Map<String,CastVO> castsMap = new HashMap<String,CastVO>();
 				CastVO castVO = null;
+				CastVO partyVO = null;
 				for(Object[] castInfo : castList){
 					if(castsMap.get(castInfo[0].toString()) != null){
 						castVO = castsMap.get(castInfo[0].toString());
 					}else{
 						castVO = new CastVO();
+						Map<String,CastVO> partiesMap = new HashMap<String,CastVO>();
+						for(Object[] party:parties){
+							partyVO = new CastVO();
+							partyVO.setPartyId((Long)party[1]);
+							partyVO.setPartyName(party[0].toString());
+							partiesMap.put(party[0].toString(),partyVO);
+						}
+						castVO.setPartiesMap(partiesMap);
 						castsMap.put(castInfo[0].toString(), castVO);
 					}
 					castVO.setCastName(castInfo[0].toString());
 					castVO.setCastCount((Long)castInfo[1]);
+					castVO.setPartyNotAssigCount((Long)castInfo[1]);
 				}
-				List<Object[]> partiesList = boothPublicationVoterDAO.getPartyWiseCount(userId,locationType,locationId,publicationDateId);
+				
 				for(Object[] party : partiesList){
-					
+					CastVO cast = castsMap.get(party[0].toString());
+					if(cast != null){
+						CastVO partyVo = cast.getPartiesMap().get(party[1].toString());
+						if(partyVo != null){
+							partyVo.setPartyCount((Long)party[2]);
+							cast.setPartyCount(cast.getPartyCount()+(Long)party[2]);
+							cast.setPartyNotAssigCount(cast.getPartyNotAssigCount()-(Long)party[2]);
+						}
+					}
+				}
+				resultList = new ArrayList<CastVO>(castsMap.values());
+				if(resultList != null && resultList.size() >0){
+					for(CastVO result:resultList){
+						result.setPartiesList(new ArrayList<CastVO>(result.getPartiesMap().values()));
+						Collections.sort(result.getPartiesList(),castVOSort);
+					}
 				}
 				return resultList;
 			}catch (Exception e) {
-				log.error("Exception Occured in getCastAndGenderWiseVotersCountByPublicationIdInALocation() Method, Exception is - "+e);
+				log.error("Exception Occured in getCastWisePartyCount() Method, Exception is - ",e);
 				return resultList;
 			}
-		}*/
+		     
+		 }
+	     public static Comparator<CastVO> castVOSort = new Comparator<CastVO>()
+				{
+							  
+			      public int compare (CastVO m1, CastVO m2){
+	                return m1.getPartyName().compareTo(m2.getPartyName());
+	               }
+				};
 	 
 }
