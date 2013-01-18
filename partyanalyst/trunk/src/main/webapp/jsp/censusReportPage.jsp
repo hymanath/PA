@@ -381,9 +381,10 @@ select
 		var resultsVar = allPartyResultsByRanges;
 		var results = new Array();
 		var ctitle = '';
-
+		
 		for(var i=0;i<resultsVar.length; i++)
 		{
+		//	console.log(resultsVar);
 			var flag = null;
 			for(var j=0;j<resultsVar[i].partiesResults.length;j++)
 				if(resultsVar[i].partiesResults[j].votesPercent != null && resultsVar[i].partiesResults[j].votesPercent > 0)
@@ -395,10 +396,10 @@ select
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
 		for(var i=0; i<results[0].partiesResults.length; i++)
-	        data.addColumn('number', results[0].partiesResults[i].partyName);
-    
-		data.addRows(results.length);
-
+			data.addColumn('number', results[0].partiesResults[i].partyName);
+		
+		
+		
 		var partiesArray = new Array();
 		for(var i=0; i<results[0].partiesResults.length; i++)
 			partiesArray.push(results[0].partiesResults[i].partyName);
@@ -407,20 +408,23 @@ select
 	
 		if(value == "seats")
 		{	
+			data.addColumn('number', 'Total Seats');	
+			data.addRows(results.length+1);
 			ctitle = 'All Parties Results based on Seats Won Percentage';
+
 			for(var i=0; i<results.length; i++)
 			{			
-				
 				data.setValue(i, 0, results[i].range);
-				
 				for(var j=0; j<results[i].partiesResults.length; j++)
 					/*data.setValue(i, j+1, parseInt((results[i].partiesResults[j].totalSeatsWon)*(100)/(results[i].count)));*/
 					data.setValue(i, j+1,results[i].partiesResults[j].totalSeatsWon);
+					data.setValue(i,results[i].partiesResults.length+1,results[i].count);
+			}
 					
-			}			
 		}
 		else if(value == "percentage")
 		{	
+			data.addRows(results.length);
 			ctitle = 'All Parties Results based on Votes Percentage';
 			for(var i=0; i<results.length; i++)
 			{			
@@ -432,6 +436,7 @@ select
 		}
 		else if(value == "cpAvg")
 		{	
+			data.addRows(results.length);
 			ctitle = 'All Parties Results based on Votes Percentage in CP* ';
 			for(var i=0; i<results.length; i++)
 			{			
