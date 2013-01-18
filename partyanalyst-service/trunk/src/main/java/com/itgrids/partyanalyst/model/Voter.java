@@ -53,6 +53,7 @@ public class Voter extends BaseModel implements Serializable {
 	private Hamlet hamlet;
 	private Date dateOfBirth;
 	private Date insertedTime;
+	private String mobileNo;
 	
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
@@ -317,6 +318,14 @@ public class Voter extends BaseModel implements Serializable {
 	public void setVoterCategoryValue(Set<VoterCategoryValue> voterCategoryValue) {
 		this.voterCategoryValue = voterCategoryValue;
 	}
-	
+	@Column(name="mobile_no",length = 15)
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
 	
 }
