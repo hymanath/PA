@@ -56,7 +56,28 @@
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">	
 <title>Influence People Details</title>
+<script>
 
+ $(document).ready(function() {
+$('th input:checkbox').click(function(e) {
+var table = $(e.target).closest('table');
+$('td input:checkbox', table).attr('checked', e.target.checked);
+});
+
+$('td input:checkbox').click(function(){
+	var unCheck = false;
+	$(this).closest('table').find('input:checkbox').not(':first').each(function(){
+	if(!$(this).is(':checked'))
+         unCheck = true;
+});
+if(unCheck)
+	$(this).closest('table').find('input:checkbox:first').attr('checked',false);
+else
+	$(this).closest('table').find('input:checkbox:first').attr('checked',true);
+
+})
+});
+</script>
 	<style type="text/css">
 
 		body
@@ -256,6 +277,7 @@
 
 			var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs); 
 		}
+
 
 		function selectAllPeopleInRegion(id)
 		{
