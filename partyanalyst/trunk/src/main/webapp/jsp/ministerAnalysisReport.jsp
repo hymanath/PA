@@ -76,6 +76,7 @@ table.searchresultsTable, table.searchresultsTable * td, table.searchresultsTabl
     cursor: pointer;
     font-family: verdana;
     font-weight: bold;
+	font-size:13px;
     padding: 5px 16px 5px;
     text-decoration: none;
 }
@@ -305,7 +306,7 @@ function getElectionYears(electionType,stId,electionId)
 	     {
 	      str+='             <tr style="width:100%;">';
 	      str+='                  <td style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
-	      str+='                  <td style="width:33%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td style="width:33%;border:0px;text-align:center;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	      str+='                  <td style="width:33%;border:0px;text-align:left;">'+result[i].currentResult.positionManagementVOList[j].result+'</td>';
 	      str+='             </tr>';
 		 }
@@ -320,7 +321,7 @@ function getElectionYears(electionType,stId,electionId)
 	    {
 	     str+='             <tr style="width:100%;">';
 	     str+='                  <td  style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
-	     str+='                  <td  style="width:25%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;text-align:center;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesEarned+'</td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesPercengate+'</td>';
 		 if(result[i].currentResult.positionManagementVOList[j].rank == 1)
@@ -352,7 +353,7 @@ function getElectionYears(electionType,stId,electionId)
 	   str+='      <td  style="width:45%;">';
 	   str+='         <table  style="width:100%;">';
 	   str+='             <tr  style="width:100%;">';
-	   str+='                  <td  style="width:25%;border:0px;">--</td>';
+	   str+='                  <td  style="width:10%;border:0px;">--</td>';
 	   str+='                  <td style="width:25%;border:0px;">--</td>';
 	   str+='                  <td style="width:15%;border:0px;">--</td>';
 	   str+='                  <td style="width:15%;border:0px;">--</td>';
@@ -374,7 +375,7 @@ function getElectionYears(electionType,stId,electionId)
 	     {
 	      str+='             <tr  style="width:100%;">';
 	      str+='                  <td  style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
-	      str+='                  <td  style="width:33%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td  style="width:33%;border:0px;text-align:center;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	      str+='                  <td  style="width:33%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].result+'</td>';
 	      str+='             </tr>';
 		 }
@@ -389,7 +390,7 @@ function getElectionYears(electionType,stId,electionId)
 	    {
 	     str+='             <tr  style="width:100%;">';
 	     str+='                  <td  style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
-	     str+='                  <td  style="width:25%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;text-align:center;font-weight:bold;"><a style="margin-left: 8px;" href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesEarned+'</td>';
 	     str+='                  <td style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesPercengate+'</td>';
 		 if(result[i].previousResult.positionManagementVOList[j].rank == 1)
@@ -421,7 +422,7 @@ function getElectionYears(electionType,stId,electionId)
 	   str+='      <td  style="width:45%;">';
 	   str+='         <table  style="width:100%;">';
 	   str+='             <tr style="width:100%;">';
-	   str+='                  <td style="width:25%;border:0px;">--</td>';
+	   str+='                  <td style="width:10%;border:0px;">--</td>';
 	   str+='                  <td style="width:25%;border:0px;">--</td>';
 	   str+='                  <td style="width:15%;border:0px;">--</td>';
 	   str+='                  <td style="width:15%;border:0px;">--</td>';
@@ -709,13 +710,13 @@ function removeDataDIV()
 </head>
 <body>
 <div style="width:998px;padding-left:5px;margin-left:auto;margin-right:auto;float:none;">
-   <div style="padding-left:5px;"><div class="main-mbg">Results Analysis For Ministers</div></div>
+   <div style="padding-left:5px;"><div class="main-mbg" style="margin-top:20px">Results Analysis For Ministers</div></div>
    <div style="background-color:#F5F5F5;min-height:360px;">
          <div class="dashBoardtabsDiv" style="align:left;">
 	           <a  id="minisPerf" onclick="showMinisPerf(this.id);">Ministers Performance</a>
 	           <a  id="impCandPerf" onclick="showImpCandPerf(this.id);">Important Candidates Performance</a>
          </div>
-   <div style="padding-top:10px;padding-left:250px;width:70%;text-align:center;">
+   <div style="width: 80%; font-family: verdana; font-size: 13px; margin-left: auto; margin-top: 5px; margin-right: auto;">
      <table>  
 	  <tr>
 	      <td><input type="radio" id="state" checked="true" name="selectScope" onclick="removeDataDIV();showHidsState();showOthers();" />&nbsp;&nbsp;<b>Assembly</b></td>
