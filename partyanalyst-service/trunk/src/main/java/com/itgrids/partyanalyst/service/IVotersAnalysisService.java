@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -85,4 +86,8 @@ public interface IVotersAnalysisService {
 	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs);
 	
 	public List<VoterHouseInfoVO> getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id);
+	
+	public List<SelectOptionVO> getElectionIdAndTypeByPublicationId(Long publicationDateId);
+	
+	public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type);
 }

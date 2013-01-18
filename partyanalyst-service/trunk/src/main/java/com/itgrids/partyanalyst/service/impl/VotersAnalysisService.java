@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
@@ -46,9 +47,12 @@ import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -69,7 +73,9 @@ import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
+import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterTemp;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -110,6 +116,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	private IElectionDAO electionDAO;
     private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IHamletBoothElectionDAO hamletBoothElectionDAO;
+	private IVoterInfoDAO voterInfoDAO;
+	private IVoterReportLevelDAO voterReportLevelDAO;
+	private IConstituencyPageService constituencyPageService;
+	private IConstituencyElectionDAO constituencyElectionDAO;
     
 	public IVoterCategoryValueDAO getVoterCategoryValueDAO() {
 		return voterCategoryValueDAO;
@@ -280,6 +290,41 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setHamletBoothElectionDAO(
 			IHamletBoothElectionDAO hamletBoothElectionDAO) {
 		this.hamletBoothElectionDAO = hamletBoothElectionDAO;
+	}
+
+	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
+	public IVoterReportLevelDAO getVoterReportLevelDAO() {
+		return voterReportLevelDAO;
+	}
+
+	public void setVoterReportLevelDAO(IVoterReportLevelDAO voterReportLevelDAO) {
+		this.voterReportLevelDAO = voterReportLevelDAO;
+	}
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
+	}
+
+	public IConstituencyElectionDAO getConstituencyElectionDAO() {
+		return constituencyElectionDAO;
+	}
+
+	public void setConstituencyElectionDAO(
+			IConstituencyElectionDAO constituencyElectionDAO) {
+		this.constituencyElectionDAO = constituencyElectionDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -3643,18 +3688,32 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		    }
 	 }
 	 
-	 public List<Object[]> getElectionIdAndTypeByPublicationId(Long publicationDateId){
-		   try{
+	 public List<SelectOptionVO> getElectionIdAndTypeByPublicationId(Long publicationDateId){
+		 
+		 List<SelectOptionVO> selectOptionVOs = null;  
+		 try{
+			   
 		    PublicationDate publicationDate = publicationDateDAO.get(publicationDateId);
 			List<Long> stateIds = boothDAO.getStateIdByPublicationId(publicationDateId);
 			if(stateIds != null && stateIds.size() >0)
-			  return electionDAO.getPreviousElectionsByStateIdYearAndDate(stateIds.get(0),publicationDate.getYear().toString(),publicationDate.getDate());
+			{
+				List<Object[]> list = electionDAO.getPreviousElectionsByStateIdYearAndDate(stateIds.get(0),publicationDate.getYear().toString(),publicationDate.getDate());
+				if(list != null && list.size() > 0)
+				{
+					selectOptionVOs = new ArrayList<SelectOptionVO>(0);
+					for(Object[] params : list)
+						selectOptionVOs.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+					
+				}
+				return selectOptionVOs;
+			}
+			  
 			else
-				return new ArrayList<Object[]>();
+				return selectOptionVOs;
 			}catch(Exception e){
 			   log.error("Exception rised in getElectionIdAndTypeByPublicationId ",e);
 		   }
-		   return new ArrayList<Object[]>();
+		   return selectOptionVOs;
 	 }
 	 
 	 public List<Election> getPrevElections(Long publicationDateId){
@@ -3666,7 +3725,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			}else
 				return new ArrayList<Election>();
 			}catch(Exception e){
-			   log.error("Exception rised in getElectionIdAndTypeByPublicationId ",e);
+			   log.error("Exception rised in getPrevElections ",e);
 		   }
 		   return new ArrayList<Election>();
 	 }
@@ -3790,5 +3849,154 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	                return m1.getPartyName().compareTo(m2.getPartyName());
 	               }
 				};
+				
+				 public List<SelectOptionVO> getElectionIdAndTypeInAConstituencyByPublicationId(Long publicationDateId, Long constituencyId)
+				 {
+					 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(0);
+					 try{
+						 PublicationDate publicationDate = publicationDateDAO.get(publicationDateId);
+						 List<Long> mainElectionId = constituencyElectionDAO.getNearestPreviousMainElectionIdFromADateInAConstituency(constituencyId, publicationDate.getDate());
+						 
+						 List<Object[]> list = constituencyElectionDAO.getElectionIdAndSubTypeByConstituencyIdAndDate(constituencyId, electionDAO.get(mainElectionId.get(0)).getElectionDate(), publicationDate.getDate());
+						 if(list != null && list.size() > 0)
+						 {
+							 for(Object[] params : list)
+								 resultList.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+							 
+						 }
+						 
+						 return resultList;
+					 }catch (Exception e) {
+						 log.error("Exception Occured in getElectionIdAndTypeInAConstituencyByPublicationId() Method - "+e);
+						 return resultList;
+					}
+				 }
+				 
+				 public VotersInfoForMandalVO getVotersDetailsByVoterReportLevelId(Long reportLevelId, Long reportLevelValue, Long publicationDateId, String name, String type, Long id)
+				 {
+					VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+					try{
+						List<VoterInfo> list = voterInfoDAO.getVotersCount(reportLevelId, reportLevelValue, publicationDateId);
+						if(list != null && list.size() > 0)
+						{
+							for(VoterInfo voterDetails : list)
+							{
+								BigDecimal unknowCount = new BigDecimal(voterDetails.getTotalVoters().longValue()-(voterDetails.getMaleVoters().longValue() + voterDetails.getFemaleVoters().longValue()));
+								
+								if(voterDetails.getTotalVoters() != null)
+									votersInfoForMandalVO.setTotVoters(new BigDecimal(voterDetails.getTotalVoters()));
+								if(voterDetails.getMaleVoters() != null)
+								    votersInfoForMandalVO.setTotalMaleVoters(voterDetails.getMaleVoters().toString());
+								if(voterDetails.getFemaleVoters() != null)
+									votersInfoForMandalVO.setTotalFemaleVoters(voterDetails.getFemaleVoters().toString());
+								if(voterDetails.getTotalVotersPercentage() != null)
+								    votersInfoForMandalVO.setTotalVotersPercentage(voterDetails.getTotalVotersPercentage().toString());
+								if(voterDetails.getFemaleVotersPercentage() != null)
+								  votersInfoForMandalVO.setTotalFemalePercentage(voterDetails.getFemaleVotersPercentage().toString());
+								if(voterDetails.getMaleVotersPercentage() != null)
+								votersInfoForMandalVO.setTotalMalePercentage(voterDetails.getMaleVotersPercentage().toString());
+								votersInfoForMandalVO.setId(id);
+								votersInfoForMandalVO.setUnKnowVoters(unknowCount.toString());
+								votersInfoForMandalVO.setType(type);
+								votersInfoForMandalVO.setName(name);
+							}
+						}
+						return votersInfoForMandalVO;
+					}catch (Exception e) {
+						e.printStackTrace();
+						log.error("Exception Occured in getVotersCount() Method, Exception - "+e);
+						return null;
+					}
+				 } 
+				 
+				 public Long getReportLevelId(String type)
+				 {
+					 Long reportLevelId = 0l;
+					 try{
+						 reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+						 return reportLevelId;
+					 }catch (Exception e) {
+						e.printStackTrace();
+						log.error("Exception Occured in getReportLevelId() Method, Exception - "+e);
+						return reportLevelId;
+					}
+				 }
+				 
+				 
+				public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type)
+					{
+						List<PartyVotesEarnedVO> partyVotesEarnedVOList = new ArrayList<PartyVotesEarnedVO>(0);
+						try{
+							List<SelectOptionVO> selectOptionVOList = getElectionIdAndTypeInAConstituencyByPublicationId(publicationDateId, constituencyId);
+							
+							if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+							{
+								PartyVotesEarnedVO partyVotesEarnedVO = null;
+								List<String> partiesList = new ArrayList<String>(0);
+								for(SelectOptionVO params : selectOptionVOList)
+								{
+									partyVotesEarnedVO = new PartyVotesEarnedVO();
+									partyVotesEarnedVO.setElectionYear(electionDAO.get(params.getId()).getElectionYear());
+									partyVotesEarnedVO.setElectionType(params.getName());
+									
+									String boothIdStr = "";
+									if(type.equalsIgnoreCase("panchayat"))
+									{
+										List<Long> boothIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(id, params.getId());
+										if(boothIdsList != null && boothIdsList.size() > 0)
+										{
+											for(Long boothId :boothIdsList)
+												boothIdStr = boothIdStr + boothId.toString()+",";
+											boothIdStr = boothIdStr.substring(0,boothIdStr.length()-1);
+										}
+									}
+									else if(type.equalsIgnoreCase("booth"))
+										boothIdStr = id.toString();
+									
+									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsil(boothIdStr,params.getId());
+									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
+									{
+										if(!partiesList.contains(partyVoters.getPartyName()))
+											partiesList.add(partyVoters.getPartyName());
+									}
+									partyVotesEarnedVO.setPartyVotesEarnedVOs(votesEarnedVOs);
+									partyVotesEarnedVOList.add(partyVotesEarnedVO);
+								}
+								
+								Collections.sort(partiesList);
+								for(PartyVotesEarnedVO  votesEarnedVO : partyVotesEarnedVOList)
+									votesEarnedVO.setPartiesList(partiesList);
+								
+								for(PartyVotesEarnedVO  votesEarnedVO : partyVotesEarnedVOList)
+								{
+									List<PartyVotesEarnedVO> resultList = new ArrayList<PartyVotesEarnedVO>(0);
+									for(String partyInList :partiesList)
+									{
+										PartyVotesEarnedVO partyResult = new PartyVotesEarnedVO();
+										partyResult.setPartyName(partyInList);
+										partyResult.setVotesEarned(0L);
+										for(PartyVotesEarnedVO  partiesResult : votesEarnedVO.getPartyVotesEarnedVOs())
+										{
+											if(partiesResult.getPartyName().equalsIgnoreCase(partyInList))
+												partyResult.setVotesEarned(partiesResult.getVotesEarned()); 
+										}
+										resultList.add(partyResult);
+									}
+									votesEarnedVO.setPartyVotesEarnedVOs(resultList);
+								}
+							}
+							
+							return partyVotesEarnedVOList;
+						}catch (Exception e) {
+							e.printStackTrace();
+							log.error("Exception Occured in getPreviousElectionVotingTrends() Method, Exception - "+e);
+							return null;
+						}
+						
+					}
+
+					
+		}
+				
 	 
-}
+
