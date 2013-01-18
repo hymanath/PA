@@ -193,7 +193,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(params.size());
 	}*/
 	
-	public void testGetBoothsInAConstituencyByPublication()
+	/*public void testGetBoothsInAConstituencyByPublication()
 	{
 		List<Object[]> list = boothDAO.getBoothsInAConstituencyByPublication(78l,6l);
 		System.out.println(list.size());
@@ -202,6 +202,13 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetBoothDetailsByBoothId(){
 		List<Booth> list=boothDAO.getBoothDetailsByBoothId(207l);
+		System.out.println(list.size());
+		
+		
+	}*/
+	
+	public void testGetBoothInfo(){
+		List<Object[]> list=boothDAO.getBoothInfo(7l,78l,"86");
 		System.out.println(list.size());
 		
 		

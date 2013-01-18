@@ -33,6 +33,15 @@ public class VotersInfoForMandalVO {
 	private String totalFemalePercentage;
 	
 	
+	private boolean panchayatInfoPresent; 
+	List<String> newlyAdded;
+	List<String> completelyRemoved;
+	List<String> otherComment;
+	Integer presentBoothsCount;
+	Integer prevBoothsCount;
+	String presentBooths;
+	String prevBooths;
+	
 	public String getMandalId() {
 		return mandalId;
 	}
@@ -184,6 +193,54 @@ public class VotersInfoForMandalVO {
 	}
 	public void setTotalFemalePercentage(String totalFemalePercentage) {
 		this.totalFemalePercentage = totalFemalePercentage;
+	}
+	public boolean isPanchayatInfoPresent() {
+		return panchayatInfoPresent;
+	}
+	public void setPanchayatInfoPresent(boolean panchayatInfoPresent) {
+		this.panchayatInfoPresent = panchayatInfoPresent;
+	}
+	public List<String> getNewlyAdded() {
+		return newlyAdded;
+	}
+	public void setNewlyAdded(List<String> newlyAdded) {
+		this.newlyAdded = newlyAdded;
+	}
+	public List<String> getCompletelyRemoved() {
+		return completelyRemoved;
+	}
+	public void setCompletelyRemoved(List<String> completelyRemoved) {
+		this.completelyRemoved = completelyRemoved;
+	}
+	public List<String> getOtherComment() {
+		return otherComment;
+	}
+	public void setOtherComment(List<String> otherComment) {
+		this.otherComment = otherComment;
+	}
+	public Integer getPresentBoothsCount() {
+		return presentBoothsCount;
+	}
+	public void setPresentBoothsCount(Integer presentBoothsCount) {
+		this.presentBoothsCount = presentBoothsCount;
+	}
+	public Integer getPrevBoothsCount() {
+		return prevBoothsCount;
+	}
+	public void setPrevBoothsCount(Integer prevBoothsCount) {
+		this.prevBoothsCount = prevBoothsCount;
+	}
+	public String getPresentBooths() {
+		return presentBooths;
+	}
+	public void setPresentBooths(String presentBooths) {
+		this.presentBooths = presentBooths;
+	}
+	public String getPrevBooths() {
+		return prevBooths;
+	}
+	public void setPrevBooths(String prevBooths) {
+		this.prevBooths = prevBooths;
 	}
 	
 }
