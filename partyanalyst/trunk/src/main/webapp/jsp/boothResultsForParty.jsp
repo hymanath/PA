@@ -11,7 +11,7 @@
 {
 	color:red;
 	font-weight:bold;
-	padding-top:5px;
+	font-size:12px;
 }
 #partyboothresultsheading{
 	background-color:#0B3861;
@@ -21,13 +21,13 @@
     font-family: times New Roman;
     font-size: 24px;
     font-weight: bold;
-    margin-top: 6px;
+    margin-top: 10px;
 	margin-left:auto;
 	margin-right:auto;
-}
+	 margin-bottom: -5px;
+    }
 #tableDiv{
 	margin-left: 75px;
-	 margin-top: 18px;
 }
 th.thstyle{
 	 color: #724400;
@@ -358,7 +358,7 @@ var Localization = { <%
 	</table>
 	 <s:form name="BoothPerformanceReport">
 	 <div id="tableDiv">
-	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 2px solid #0B3861;background-color: #F2F0EE;margin-left:auto;margin-right:auto;">
+	   <table cellpadding="10px" cellspacing="0px" style="border: 2px solid #0B3861;background-color: #F2F0EE;margin-left:auto;margin-right:auto;width:40%;text-align:left;">
 		 <tr id="ElectionTyperow">
 			<th class="thstyle">Election type</th>
 		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="getStatesOrYears();removeErrorMessage()" theme="simple"/>
@@ -411,7 +411,7 @@ var Localization = { <%
 			</tr>
 		</table>
 		</div>
-		<div style="background:#ffffff;text-align:center;padding-top:8px;">
+		<div style="background:#ffffff;text-align:center;padding-top:8px;margin-bottom: 10px;">
 		
 					<input id="btnStyle" type="button" id="subbutton" value="View Report" onclick="validateAndForwardToAction()" />
 				

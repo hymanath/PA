@@ -92,7 +92,7 @@
 		<pattern>/specialPageAction*</pattern>
 		<pattern>/index*</pattern>
 		<pattern>/newsDisplayAction*</pattern>
-		<pattern>/districtPageAction*</pattern>
+		<!--<pattern>/districtPageAction*</pattern>-->
 		<pattern>/electionDetailsReportAction*</pattern>
 		<pattern>/ministerAnalysisAction*</pattern>
 		<pattern>/constituencyPageAction*</pattern>
@@ -109,8 +109,6 @@
 		<pattern>/partyResultsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
 		<pattern>/ministersPageAction*</pattern>
-		<pattern>/mandalPageSDetailAction*</pattern>
-		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/statePageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
 		<pattern>/newsMonitoringService*</pattern>
@@ -141,7 +139,7 @@
 		<pattern>/cadreReportAction*</pattern>
 		<pattern>/completeProblemDetailsSearchAction*</pattern>
 		 <pattern>/partyStrengthAction*</pattern>
-		<pattern>/crossVotingReportInputAction*</pattern>
+		<!-- <pattern>/crossVotingReportInputAction*</pattern> -->
 		<pattern>/biElectionAction*</pattern>
 		<pattern>/mandalPageElectionInfoAction*</pattern>
 		<pattern>/specialPageInfoAction*</pattern>
@@ -173,7 +171,9 @@
 		<pattern>/electionComparisonAction*</pattern>
 		<pattern>/partyResultsCriteriaAction*</pattern>
 		<pattern>/partyPerformanceMain*</pattern>
-		
+		<pattern>/crossVotingReportInputAction*</pattern>
+		<pattern>/mandalPageSDetailAction*</pattern>
+		<pattern>/partyBoothResultAction*</pattern>
     </decorator>
 
 </decorators>

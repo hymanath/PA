@@ -90,6 +90,7 @@ function buildMandalVoting(myResult)
 	
 	if(result == "")
 	{
+		$("#mandalVotingResultsDivBody").html('');
 		alert("Result empty or not found");
 		return;
 	}
@@ -339,6 +340,8 @@ function getMandalVotingReport()
 		{
 			padding:5px;
 			text-align:left;
+			margin-bottom: 20px;
+			margin-top: 5px;
 		}
 		#mandalVotingTable
 		{
@@ -389,12 +392,13 @@ function getMandalVotingReport()
 		{
 			border-left:1px solid #8E9AAE;			
 		}
+		#mandalVotingResultsDivBody table{border:1px solid #cdcdcd;width:95%;}
 	</style>
 
 </head>
 
 <body>
-<div style="margin-left:auto;margin-right:auto;width:900px;">
+<div style="margin-left:auto;margin-right:auto;width:900px;font-size:14px;">
 <div style="background:#ffffff;">
 	<s:form action="mandalPageDetailAction" method="POST" theme="simple" name="mandalVotingTrends">
 
