@@ -361,7 +361,7 @@ select
 			ctitle = partyName+' Party Result Based On CP-AVG Votes Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'CP*-Avg');
-			data.addColumn('number', 'Avg Voting Percentage');
+			data.addColumn('number', 'Avg Polling Percentage');
 		
 			for(var i=0; i<resultByRanges.length; i++)
 			{
@@ -586,7 +586,7 @@ select
 		str += '<th>Seats Won*</th>';
 		str += '<th>Avg %</th>';
 		str += '<th>CP*-Avg%</th>';
-		str += '<th>Avg Voting %</th>';
+		str += '<th>Avg Polling %</th>';
 		str += '</tr>';	
 		//str += '</table>';		
 		for(var i=0; i<resultByRanges.length; i++)
@@ -636,7 +636,7 @@ select
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
         data.addColumn('number', 'Percentage');
-		data.addColumn('number', 'Avg Voting Percentage');
+		data.addColumn('number', 'Avg Polling Percentage');
 		var ctitle = partyName+' Party Result Based On Votes Percentage';
 		
 		var resultByRangesVar = new Array();
@@ -728,9 +728,9 @@ select
 		str += '<td>';
 		str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';
 		str += '<tr>';		
-		str += '<th width="72px">Range(%)</th>';
-		str += '<th width="40px">Count</th>';
-		str += '<th width="60px">Voting %</th>';
+		str += '<th width="72px">'+jsObj.censusText+'<br> % Range</th>';
+		str += '<th width="40px">Total Seats</th>';
+		str += '<th width="60px">Polling %</th>';
 		str += '</tr>';	
 		str += '</table>';		
 		for(var i=0; i<results.length; i++)
@@ -741,9 +741,9 @@ select
 				str += '<td>';
 				str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';
 				str += '<tr>';				
-				str += '<th width="72px">Range(%)</th>';
-				str += '<th width="40px">Count</th>';
-				str += '<th width="60px">Voting %</th>';
+				str += '<th width="72px">'+jsObj.censusText+'<br> % Range</th>';
+				str += '<th width="40px">Total Seats</th>';
+				str += '<th width="60px">Polling %</th>';
 				str += '</tr>';	
 				str += '</table>';
 			}
