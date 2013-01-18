@@ -534,6 +534,9 @@ function build(arr,prevYear,presentYear,result)
     		resultsColumnDefs.push(obj);
 	}
 	var myConfigs = { 
+				initialRequest: "sort=prevTotalCount&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+				//dynamicData: true, // Enables dynamic server-driven data
+				sortedBy : {key:"prevTotalCount", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 10,
 				template : "{PageLinks} {RowsPerPageDropdown}",
