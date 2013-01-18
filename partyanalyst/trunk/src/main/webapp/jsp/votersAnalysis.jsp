@@ -481,7 +481,7 @@ locationDetails.constituencyArr.push(ob);
 
 
 <fieldset>
-<div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assmbly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
+<div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
 
 <div id="categoeryCreationDiv" style="float:right;">
 	
