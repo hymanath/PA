@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
  public class VoterReportLevelDAOHibernateTest extends BaseDaoTestCase{
 
@@ -12,8 +13,15 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 		this.voterReportLevelDAO = voterReportLevelDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		voterReportLevelDAO.getAll();
+	}*/
+	
+	
+	public void testGetReportLevelIdByType()
+	{
+		Long id = voterReportLevelDAO.getReportLevelIdByType(IConstants.CONSTITUENCY);
+		System.out.println(id);
 	}
 }

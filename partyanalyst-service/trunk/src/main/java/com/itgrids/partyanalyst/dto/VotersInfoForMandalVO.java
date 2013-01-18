@@ -28,6 +28,10 @@ public class VotersInfoForMandalVO {
 	private Long femaleVotersDiff = 0l;
 	private Long totalVotersDiff = 0l;
 	private String status;
+	private String  totalVotersPercentage;
+	private String totalMalePercentage;
+	private String totalFemalePercentage;
+	
 	
 	public String getMandalId() {
 		return mandalId;
@@ -162,6 +166,24 @@ public class VotersInfoForMandalVO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}	
+	public String getTotalVotersPercentage() {
+		return totalVotersPercentage;
+	}
+	public void setTotalVotersPercentage(String totalVotersPercentage) {
+		this.totalVotersPercentage = totalVotersPercentage;
+	}
+	public String getTotalMalePercentage() {
+		return totalMalePercentage;
+	}
+	public void setTotalMalePercentage(String totalMalePercentage) {
+		this.totalMalePercentage = totalMalePercentage;
+	}
+	public String getTotalFemalePercentage() {
+		return totalFemalePercentage;
+	}
+	public void setTotalFemalePercentage(String totalFemalePercentage) {
+		this.totalFemalePercentage = totalFemalePercentage;
 	}
 	
 }
