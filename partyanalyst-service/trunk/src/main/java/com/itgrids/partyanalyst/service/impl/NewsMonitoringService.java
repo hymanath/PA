@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -12,6 +11,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -34,6 +35,10 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
+/**
+ * @author ITGRIDS
+ *
+ */
 public class NewsMonitoringService implements INewsMonitoringService {
 	
 	private static final Logger log = Logger.getLogger(NewsMonitoringService.class);
@@ -44,10 +49,32 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private ISourceLanguageDAO sourceLanguageDAO;
     private INewsImportanceDAO newsImportanceDAO;
     private FileDAO fileDAO;
-    private IFileSourceLanguageDAO fileSourceLanguageDAO;
+   
+
+	private IFileSourceLanguageDAO fileSourceLanguageDAO;
     private IRegionScopesDAO regionScopesDAO;
+    private IBoothDAO boothDAO;
+    private IUserCandidateRelationDAO userCandidateRelationDAO;
     
-    public IRegionScopesDAO getRegionScopesDAO() {
+    public IUserCandidateRelationDAO getUserCandidateRelationDAO() {
+		return userCandidateRelationDAO;
+	}
+
+	public void setUserCandidateRelationDAO(
+			IUserCandidateRelationDAO userCandidateRelationDAO) {
+		this.userCandidateRelationDAO = userCandidateRelationDAO;
+	}
+
+    
+    public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IRegionScopesDAO getRegionScopesDAO() {
 		return regionScopesDAO;
 	}
 
@@ -825,6 +852,183 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		 }
 		return returnFileVOList;
 	  }
+	 
+	 
+	
+	
+	public List<FileVO> getNewsCountForALocationByCategory(Long registrationId,
+			Long locationValue, Long locationId, Long publicationId) {
 		
+		log.debug("Enterd into the getNewsCountForALocationByCategory service method");
+		 
+		 try{			 
+			List<Long> candidateIds = getCandidateDetailsByRegistrationId(registrationId);
+
+            List<Long> locationValuesList = new ArrayList<Long>();			
+            locationValuesList.add(locationValue);
+			
+			
+           if(locationId == 3)	
+				locationValuesList = getAllBoothsInPanchayat(locationValue,
+						publicationId, locationValuesList);         
+			
+			List<Object[]> countByCategoryList = fileGallaryDAO
+					.getNewsCountForALocationByCategoryForACandidate(
+							candidateIds,locationId,
+							locationValuesList);	
+				
+			List<FileVO> filesList = setCountNewsCountValuesToVO(
+					countByCategoryList, candidateIds, locationId,
+					locationValuesList);
+				
+		
+			return filesList;
+			
+		 }catch(Exception e){
+			 
+		    log.error("Exception raised in getNewsCountForALocationByCategory service method:"+e);
+			 e.printStackTrace();
+			 return null;			 
+		 }
+	}
+	
+	
+	public List<Long> getCandidateDetailsByRegistrationId(Long registrationId){		
+		
+		log.debug("Entered into the getCandidateDetailsByRegistrationId service method");
+		
+		 List<Long> candidateIds = new ArrayList<Long>();
+		 
+		 try{
+		 
+		 List<Object[]> candidateDetails = userCandidateRelationDAO
+				.getCandidatesOfAUser(registrationId);
+			
+			for(Object[] obj:candidateDetails)
+				candidateIds.add((Long)obj[0]);
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 log.debug("Exception raised in  getCandidateDetailsByRegistrationId service method:"+e);			 
+		 }		
+		return candidateIds;
+		
+	}
+	
+	public List<Long> getAllBoothsInPanchayat(Long panchayatId,
+			Long publicationId, List<Long> locationValuesList) {
+		
+		log.debug("Entered into the getAllBoothsInPanchayat service method");
+
+		try
+		{
+			List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(
+					panchayatId, publicationId);
+			
+			for(Object[] boothDtls:boothsList)					
+				locationValuesList.add((Long)boothDtls[0]);
+		}catch(Exception e){
+			log.debug("Exception raised in getAllBoothsInPanchayat service method:"+e);
+			e.printStackTrace();
+			
+		}
+		return locationValuesList;
+		
+	}
+	
+	
+	public List<FileVO> setCountNewsCountValuesToVO(List<Object[]> countByCategoryList,
+			List<Long> candidateIds, Long locationId,
+			List<Long> locationValuesList) {
+		log.debug("Entered into the setCountNewsCountValuesToVO service method");
+		
+		List<FileVO> filesList = new ArrayList<FileVO>();
+		
+		try{		
+			for(Object[] obj:countByCategoryList){				
+			
+			FileVO file = new FileVO();				
+			Long categoryId = (Long)obj[2];				
+			file.setCategoryName(obj[0].toString());	
+			file.setCategoryId(categoryId);
+			
+			List<Object[]> importanceCountList = fileGallaryDAO
+					.getNewsCountForALocationByCategoryAndImportanceForACandidate(
+							candidateIds, categoryId , locationId , locationValuesList );
+	
+				for(Object[] importanceNews:importanceCountList){					
+					Long importanceId = (Long)importanceNews[0];
+					Long newsCount = (Long)importanceNews[2];
+					
+					if(importanceId == 1)							
+						file.setLowImpactCount(newsCount);
+					else if(importanceId == 2)
+						file.setMediumImpactCount(newsCount);
+					else if(importanceId == 3)
+						file.setHighImpactCount(newsCount);
+					
+				}				
+				filesList.add(file);
+				
+			}
+		}catch(Exception e){
+			log.error("Exception raised in setCountNewsCountValuesToVO service method");
+			e.printStackTrace();
+			return null;			
+		}
+		
+		return filesList;	
+		
+	}
+	
+	
+	public List<FileVO> getNewsByLocationAndCategory(FileVO fileVO){
+		
+		log.debug("Entered into the getNewsByLocationAndCategory service method");
+		
+		
+		List<FileVO> fileList = new ArrayList<FileVO>();
+		
+		try{
+		
+			List<Long> candidateIds = getCandidateDetailsByRegistrationId(fileVO.getUserId());
+	
+	        List<Long> locationValuesList = new ArrayList<Long>();			
+	        locationValuesList.add(fileVO.getLocationVal());
+			
+			
+	       if(fileVO.getLocationId() == 3)	
+				locationValuesList = getAllBoothsInPanchayat(fileVO.getLocationVal(),
+						fileVO.getPublicationId(), locationValuesList); 
+	       
+	       
+	       List<Object[]> filesList = fileGallaryDAO
+					.getNewsByLocationAndCategory(
+							candidateIds,fileVO,locationValuesList);
+	       
+	       
+	       for(Object[] obj:filesList){
+	    	   
+	    	   File fileDetails = (File)obj[0];
+	    	   
+	    	   FileVO file = new FileVO();
+	    	   
+	    	   file.setTitle(fileDetails.getFileTitle());
+	    	   file.setDescription(fileDetails.getFileDescription());
+	    	   file.setContentId((Long)obj[1]);
+	    	   
+	    	   fileList.add(file);
+	    	   
+	       }
+			
+			return fileList;
+		}catch(Exception e){
+			
+			log.error("Exception raised in  the getNewsByLocationAndCategory service method");
+			e.printStackTrace();
+			return null;
+			
+		}
+		
+	}
 	
 }

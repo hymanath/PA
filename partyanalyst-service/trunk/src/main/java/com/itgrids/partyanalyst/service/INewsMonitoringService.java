@@ -19,5 +19,11 @@ public interface INewsMonitoringService {
 	public List<FileVO> getLanguageCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO);
 	public List<FileVO> getNewsImpCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO);
 	public ResultStatus updateDeleteNews(FileVO fileVO,String task,List<FileVO> sourceIds,List<FileVO> languageIds);
-	 public List<FileVO> getAllRegionScopes();
+    public List<FileVO> getAllRegionScopes();
+	
+	public List<FileVO> getNewsCountForALocationByCategory(Long registrationId,
+			Long locationValue, Long locationId, Long publicationId);
+	
+	public List<FileVO> getNewsByLocationAndCategory(FileVO fileVO);
+		
 }
