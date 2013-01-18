@@ -345,7 +345,7 @@ select
 			ctitle = partyName+' Party Result Based On Votes Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Percentage');
-			data.addColumn('number', 'Avg Voting Percent');
+			data.addColumn('number', 'Avg Polling Percent');
 			for(var i=0; i<resultByRanges.length; i++)
 			{
 				var totalVotingPercent=parseFloat(resultByRanges[i].votingPercent);
