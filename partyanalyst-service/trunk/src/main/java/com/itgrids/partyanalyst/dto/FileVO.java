@@ -86,9 +86,92 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String fileDateAsString;
 	private String comments;
 	
+	private String categoryName;
+	private Long highImpactCount;
+	private Long mediumImpactCount;
+	private Long lowImpactCount;
+	
+	private Long userId;
+	private Long locationVal;
+	private Long locationId;
+	private Long publicationId;
+	private Long importanceId;
+	
 	
 
 	
+	public Long getImportanceId() {
+		return importanceId;
+	}
+
+	public void setImportanceId(Long importanceId) {
+		this.importanceId = importanceId;
+	}
+
+	public Long getPublicationId() {
+		return publicationId;
+	}
+
+	public void setPublicationId(Long publicationId) {
+		this.publicationId = publicationId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getLocationVal() {
+		return locationVal;
+	}
+
+	public void setLocationVal(Long locationVal) {
+		this.locationVal = locationVal;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public Long getHighImpactCount() {
+		return highImpactCount;
+	}
+
+	public void setHighImpactCount(Long highImpactCount) {
+		this.highImpactCount = highImpactCount;
+	}
+
+	public Long getMediumImpactCount() {
+		return mediumImpactCount;
+	}
+
+	public void setMediumImpactCount(Long mediumImpactCount) {
+		this.mediumImpactCount = mediumImpactCount;
+	}
+
+	public Long getLowImpactCount() {
+		return lowImpactCount;
+	}
+
+	public void setLowImpactCount(Long lowImpactCount) {
+		this.lowImpactCount = lowImpactCount;
+	}
+
 	public String getComments() {
 		return comments;
 	}

@@ -1495,24 +1495,89 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 	   		" and model.file.category.categoryId = :categoryId";
 	   
 	   Query query = null;
-	   try{
 	   
 	    query = getSession().createQuery(queryString);
 	   
 	   query.setParameterList("candidateds",candidateds);
 	   query.setParameter("delInd", "false");
-	   query.setParameter("categoryId", categoryId);
+	   query.setParameter("categoryId", categoryId);	   
+	 
 	   
-	  
-	   }catch(Exception e){
-		   e.printStackTrace();
-		   
-	   }
-	   
-	   return query.list();
-	   
+	   return query.list();	   
 	   
    }
+   
+   
+	
+	
+	public List<Object[]> getNewsCountForALocationByCategoryForACandidate(List<Long> candidateIds,
+			Long locationScopeId,List<Long> locationValuesList){
+		
+		Query query = getSession()
+				.createQuery(
+						"select model.file.category.categoryType,count(*),model.file.category.categoryId" +
+						" from FileGallary model where model.gallary.candidate.candidateId in(:candidateIds) " +						
+					    " and model.file.regionScopes.regionScopesId = :locationScopeId and " +
+					    " model.file.locationValue in( :locationValuesList)" +
+					    " group by model.file.category.categoryId");
+		
+		query.setParameterList("candidateIds", candidateIds);
+		query.setParameter("locationScopeId", locationScopeId);
+		query.setParameterList("locationValuesList", locationValuesList);
+		
+		return query.list();
+		
+	}
+	
+	
+	public List<Object[]> getNewsByLocationAndCategory(List<Long> candidateIds,
+			FileVO fileVO, List<Long> locationValuesList) {
+		
+		
+		Query query = getSession()
+				.createQuery(
+						"select model.file,model.fileGallaryId" +
+						" from FileGallary model where model.gallary.candidate.candidateId in(:candidateIds) " +						
+					    " and model.file.regionScopes.regionScopesId = :locationScopeId and " +
+					    " model.file.locationValue in( :locationValuesList) "+
+					    " and model.file.category.categoryId = :categoryId " +
+					    "and model.file.newsImportance.newsImportanceId = :newsImportanceId");
+					   
+		
+		query.setParameterList("candidateIds", candidateIds);
+		query.setParameter("locationScopeId", fileVO.getLocationId());
+		query.setParameterList("locationValuesList", locationValuesList);
+		query.setParameter("categoryId", fileVO.getCategoryId());
+		query.setParameter("newsImportanceId", fileVO.getImportanceId());
+		
+		query.setFirstResult(fileVO.getStartIndex());
+		query.setMaxResults(fileVO.getMaxResult());
+		
+		return query.list();
+		
+	}
+	
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForACandidate(
+			List<Long> candidateIds, Long categoryId, Long locationId,
+			List<Long> locationValuesList) {
+
+		Query query = getSession()
+				.createQuery(
+						" select model.file.newsImportance.newsImportanceId,model.file.newsImportance.importance," +
+						" count(*) from FileGallary model where model.gallary.candidate.candidateId in(:candidateIds)" +
+						" and model.file.regionScopes.regionScopesId = :locationScopeId and " +
+					    " model.file.locationValue in( :locationValuesList)" +								
+					    " and model.file.category.categoryId = :categoryId group by model.file.newsImportance.newsImportanceId");
+		
+		query.setParameterList("candidateIds", candidateIds);
+		query.setParameter("categoryId", categoryId);
+		query.setParameter("locationScopeId", locationId);
+		query.setParameterList("locationValuesList", locationValuesList);
+		
+		return query.list();
+		
+	}
    
    
 }
