@@ -117,16 +117,19 @@
 	</div>
 	<div align="center">
 	<div id="errorDiv1" style="color:red"></div>
-	<div id="subjectDiv"><span style="font-weight:bold;">Subject:</span><input type="text" id="subject" style="width: 545px;"/></div><br>
+	<div id="subjectDiv" style="margin-left: -50px; margin-top: 15px;"><span style="font-weight: bold;">Subject:</span><input type="text" id="subject" style="width: 617px;"/></div><br>
 	
 	<textarea id="descriptionForEmail" style="width:618px;height:92px;margin:2px 0px 0px 20px;" ></textarea>
 	</div>
 	<div id="buttonDiv" align="center" style="margin-top: 10px; margin-bottom: 10px;">
 		 <input type="button" value="Send" onClick="sendEmailsForSelectedUser();" style="width: 80px; height: 25px;"/>
-		 <input type="button" value="Preview" onClick="showPreview();" style="width: 80px; height: 25px;"/>
+		<!--
+		<input type="button" value="Preview" onClick="showPreview();" style="width: 80px; height: 25px;"/> -->
 </div>
+<!--
 	<div id="previewDiv" style="background-color:#fff;border:1px solid #e5e5e5;padding:20px;">${specilaPageText}
-	</div>
+	</div> 
+	-->
 	<div id="errorDiv" style="margin-left:372px;">
 	</div>
 	</s:if>
