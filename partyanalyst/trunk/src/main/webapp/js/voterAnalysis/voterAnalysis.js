@@ -415,6 +415,7 @@ function showImportantFamiliesDiv()
 		$("#ageWiseId").css({"background":"none repeat scroll 0 0 #0063DC"});
 		 getvotersBasicInfo("voters","");
 		 getVotersData();
+		 showNewsDetails();
 	}
 	function DefaultHighLight()
 	{
@@ -474,6 +475,7 @@ function showImportantFamiliesDiv()
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "voterAnalysisAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
+		showNewsDetails();
 	}
 
 
@@ -525,6 +527,7 @@ function showImportantFamiliesDiv()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getPanchayatByConstituencyAction.action?"+rparam;						
 		callAjax(jsObj,url);
+		showNewsDetails();
 	}
 	}
 	
@@ -812,6 +815,7 @@ $(document).ready(function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
 	   getPreviousElectionVotingTrends();
+
 	});
 	$("#pollingStationField").live("change",function(){
 	  $('.voterDetails').html('');
@@ -838,6 +842,12 @@ $(document).ready(function(){
 			
 		}
 	});
+
+	$('.linkClass').live('click',function(){
+
+		$('.linkClass').removeClass('selectedLink');
+		$(this).addClass('selectedLink');
+	});
 });
 
 function getBasicInfo(){
@@ -859,6 +869,7 @@ function getBasicInfo(){
 		 }else if($('#votersDiv3').css('display') == 'block'){
 		   getvotersBasicInfo("voters","");
 		   getVotersData();
+		   showNewsDetails();
 		 }else if($('#votersDiv4').css('display') == 'block'){
 			
              callCorrespondingAjaxCall();
@@ -3120,5 +3131,3 @@ function showPreviousEleVotingTrends(results,jsObj)
 			}
 		
 	}
-
-
