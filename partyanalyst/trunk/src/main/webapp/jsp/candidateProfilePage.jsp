@@ -306,6 +306,24 @@ var userName = '${sessionScope.UserName}';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+$(document).ready(function(){
+$('#development').click(function(){
+$("#developmentspop").html('<font style="margin: 10px;color:ActiveCaption;">Page is Under Construction</font>');
+$("#developmentspop").dialog({
+									height: 100,
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+	
+	});
+
+});
+});
+
+
 </script>
 
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -397,8 +415,11 @@ Tweet</a>
               <li><a onclick="getTotalNews('totalNews');" href="javascript:{}">News and events</a><span></span></li>
               <li><a onclick="videoGallaryPopUp();" href="javascript:{}">Video Gallery</a><span></span></li>
               <li><a onclick="photoGallaryPopUp();" href="javascript:{}">Photo Gallery</a><span></span></li>
-              <li><a onclick="" href="javascript:{}">Developments</a><span></span></li>
+              <li><a  id= "development"  href="javascript:{}">Developments</a><span></span></li>
             </ul>
+			<div id="developmentspop">
+			</div>
+
           </div>
 	
 	  <div class="clear"></div>
