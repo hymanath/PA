@@ -495,14 +495,13 @@ function showImportantFamiliesDiv()
 			alertEl.innerHTML ='<P>Please Select Mandal</P>';
 			return;
 		}
-		if(flag != -1 && checkedele == "panchayat")
+		if(flag != -1 && (checkedele == "panchayat" || checkedele == "pollingstationByPublication"))
 		{
 		document.getElementById('panchayatDiv').style.display='none';
-		//document.getElementById('pollingStationDiv').style.display='none';
-		}else{
+		}
+		else{
 		 flag = -1;
 		}
-		
 		if(flag == -1)
 		{
 		var jsObj=
@@ -956,18 +955,12 @@ function getVotersCastInfo()
 		var constituencyValue =$("#constituencyList").val(); 
 		var mandalValue = $("#mandalField").val();
 		var mandalText = $('#mandalField :selected').text();
-		var validflag=  -1;
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 typename = $('#pollingStationField :selected').text();
 		 if(constituencyValue == 0 || constituencyValue == null)
 			{
 				str +='Please Select Constituency';
-				flag =false;
-			}
-			else if(validflag != -1)
-			{
-				str +='There are No Booths,Select Other Report Level to view Report';
 				flag =false;
 			}
 			else if(mandalValue == 0 || mandalValue == null)
