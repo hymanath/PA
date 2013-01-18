@@ -138,6 +138,8 @@
 {
 	font-weight:bold;
 	margin-left:100px;
+	 margin-bottom: 15px;
+	 font-size:14px;
 }
 
 #constDetails
@@ -237,6 +239,14 @@ td.tdStyle{
     
 		
  }
+
+#allianceCheck{
+	margin-left: 5px;
+    margin-right: 3px;
+    margin-top: 0;
+	}
+.crossVotingInputTable{margin-left: 5px; margin-top: 5px;}
+#electionYearLabel,#parliamentLabel{font-weight:bold;}
 </style>
 <script type="text/javascript">
 
@@ -748,13 +758,13 @@ function getAssembly()
 					<td colspan="2"><h4 class="headStyle"><b><span id="labelspan">Select All Mandatory Fields :</span></b></h4></td>
 				</tr>
 				<tr>
-					<td align="left" class="tdStyle"><s:label theme="simple" for="electionYearField" id="electionYearLabel" value="Election Year"></s:label><font color="red">*</font></td>
+					<td align="left" class="tdStyle"><label for="electionYearField" id="electionYearLabel">Election Year<font color="red">*</font></label></td>
 					<td align="left">
 						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
 					</td>
 					<td><img id="ajaxImg1" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				
-					<td align="left" class="tdStyle" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label><font color="red">*</font></td>
+					<td align="left" class="tdStyle" style="padding-left:10px;"><label theme="simple" for="parliamentField" id="parliamentLabel">Parliament Constituency<font color="red">*</font></label></td>
 					<td align="left"> 
 						<select class="selectstyle" id="parliamentField" onchange="getAssembly()">
 							<option value="-1">Select</option>
@@ -784,7 +794,7 @@ function getAssembly()
 				<tr>
 					<td colspan="4">
 							<br><b>
-							Note: <b><font color="red">*</font></b>Indicates mandatory field
+							Note: <b><font color="red">*</font></b>&nbsp;Indicates mandatory field
 					</b></td>
 				</tr>
 				<tr>
