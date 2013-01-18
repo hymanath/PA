@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -210,7 +211,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	}*/
-	public void testGetConstituenciesHavingMaxSpan()
+	/*public void testGetConstituenciesHavingMaxSpan()
 	{
 		List<Long> elecIds = new ArrayList<Long>(0);
 		elecIds.add(4l);
@@ -223,7 +224,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	//4, 5, 23, 24, 25, 28, 29
 		segregateAllConstituencies(1L,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l,elecIds,IConstants.OTHERS);
 		//segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l,elecIds);
-	}
+	}*/
 	
 	
 	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId,List<Long> elecIds,String type){
@@ -286,4 +287,34 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(params[0]+"---"+params[1]);
 		}
 	}*/
+	
+	/*public void testGetNearestPreviousMainElectionIdFromADateInAConstituency()
+	{
+		System.out.println(constituencyElectionDAO.getNearestPreviousMainElectionIdFromADateInAConstituency(232l,new Date()));
+	}*/
+	
+	/*public void testGetElectionIdAndEleTypeByConstituencyIdAndDate()
+	{
+		List<Object[]> list = constituencyElectionDAO.getElectionIdAndEleTypeByConstituencyIdAndDate(232l, new Date());
+		if(list != null && list.size() >0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]+" "+params[1]); 
+			}
+		}
+	}*/
+	
+	public void testgetElectionIdAndEleTypeByConstituencyIdAndDate1()
+	{
+		List<Object[]> list = constituencyElectionDAO.getElectionIdAndSubTypeByConstituencyIdAndDate(323l,constituencyElectionDAO.get(10507l).getElection().getElectionDate(),new Date());
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]+" "+params[1]);
+			}
+		}
+	}
 }
