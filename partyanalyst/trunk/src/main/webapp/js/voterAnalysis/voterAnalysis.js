@@ -1926,17 +1926,37 @@ if(type == "constituency" || type == "Mandal/Tehsil")
 
 function impFamilesStaticTable(myresults,jsObj)
 {
+	var value=0;
 	var str='';
-	var type = jsObj.type;
+	var type = jsObj.type;	
 	str+='<div class="impFamilesMainDiv" >';
-
+	
 	$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
 	str+='</br>';
-
+	
 	str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;font-weight:bold;"> Total Voters : '+myresults.totalVoters+' ';
+	
+	if(myresults.totalFamalies==null){
+		str+='&nbsp;&nbsp;&nbsp; Total Families : '+value+'';
+	}
+	else{
 	str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'';
+	}
+
+	if(myresults.totalMaleVoters==null){
+		str +='&nbsp;&nbsp;&nbsp; Total Male Voters : '+value+'';
+	}
+	else{
 	str +='&nbsp;&nbsp;&nbsp; Total Male Voters : '+myresults.totalMaleVoters+'';
+	}
+
+	if(myresults.totalFemaleVoters==null){
+		str +='&nbsp;&nbsp;&nbsp; Total Female Voters : '+value+'';
+	}
+	else{
 	str +='&nbsp;&nbsp;&nbsp; Total Female Voters : '+myresults.totalFemaleVoters+'';
+	}
+	
 	str +='</div>';
 	str+='</br>';
 	str+='<div style="font-family:verdana;">';
