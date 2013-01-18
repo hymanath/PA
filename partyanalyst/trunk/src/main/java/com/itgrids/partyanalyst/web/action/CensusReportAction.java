@@ -275,6 +275,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		StringBuilder sb = new StringBuilder();
 		String electionYear = jObj.getString("yearValue");
 		Boolean isAll = jObj.getBoolean("isAll");
+		int cnsusTypId=jObj.getInt("censusTypeId");
 		JSONArray jArray = jObj.getJSONArray("idsList");
 		JSONArray jDistrictIds = jObj.getJSONArray("districtIds");
 		JSONArray jPartyIds = jObj.getJSONArray("partyIds");
@@ -291,7 +292,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			partyIds.add(new Long(jPartyIds.get(i).toString()));
 			
 		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, 
-				0, isAll, true);
+				cnsusTypId, isAll, true);
 		
 		return Action.SUCCESS;
 
