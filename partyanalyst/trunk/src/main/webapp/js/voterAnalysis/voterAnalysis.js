@@ -488,7 +488,7 @@ function showImportantFamiliesDiv()
 		var publicationValue = $('#publicationDateList').val();
 		var alertEl = document.getElementById("AlertMsg");
 		alertEl.innerHTML = '';
-		var selectname = mandalField.options[mandalField.selectedIndex].text;
+		var selectname = mandalId.options[mandalId.selectedIndex].text;
 		var flag= selectname.search("MUNCIPALITY");
 		 if(value1 == 0)
 		{
