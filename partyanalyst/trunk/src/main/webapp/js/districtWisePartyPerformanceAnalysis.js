@@ -117,7 +117,11 @@ function callAjax(jsObj,url)
 									  removeData("parties");
 									  buildParties(myResults,"parties");
 									}
-									else if(jsObj.task == "getPartiesPerfResultsWise")
+									else if(jsObj.task == "getPartiesPerfResultsWise" && jsObj.name == 'main')
+									{
+									  showPartyPerf(myResults,jsObj.type);
+									}
+									else if(jsObj.task == "getPartiesPerfResultsWise" && jsObj.name == 'sub')
 									{
 									  document.getElementById("select_ImgAnalysisSpan").style.display="none";
 									  showPartyPerf(myResults,jsObj.type);
@@ -258,7 +262,7 @@ function buildPartyComparision(value)
 		str+='      </td>';
 		}
 		str+='      <td>&nbsp;&nbsp;<b>Select Party :</b></td>';
-		str+='      <td>&nbsp;&nbsp;<select id="partiesSelIdDiv" style="width:100px;"><option value="0">Select Party</option></select></td>';
+		str+='      <td>&nbsp;&nbsp;<select name "partiesSelIdDiv" id="partiesSelIdDiv" style="width:100px;" multiple="multiple"><option value="0">Select Party</option></select></td>';
 		str+='      <td>';
 		str+='         <input type="checkbox" id="allianceChk"  name="allianceChk">&nbsp;&nbsp;<b>Include Alliances</b>';
 		str+='      </td>';
@@ -275,7 +279,7 @@ function buildPartyComparision(value)
 function getAnalysisDetails(name)
 {
   	if(name == "main")
-		{
+	{
 		 document.getElementById("analysisTableDisplay").innerHTML= '';
          var yearEle =  document.getElementById("yearSelId");
 		 var eleId = yearEle.options[yearEle.selectedIndex].value;
@@ -292,11 +296,13 @@ function getAnalysisDetails(name)
 			partyIds:result,
 			includeAlliances:includeAlliances,
 			type:'seats',
+			name:'main',
 			task:"getPartiesPerfResultsWise"
 		  };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getministersDetailsAction.action?"+rparam;						
+	var url = "getministersDetailsAction.action?"+rparam;			
 	callAjax(jsObj,url);
+	
 	}
 	else
 	{
@@ -329,14 +335,15 @@ function getAnalysisDetails(name)
 			partyIds:partyIds,
 			includeAlliances:includeAlliances,
 			type:type,
+			name:'sub',
 			task:"getPartiesPerfResultsWise"
 		  };
 
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getministersDetailsAction.action?"+rparam;						
-	callAjax(jsObj,url);
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getministersDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
 	}
-   }
+}
 function getAllParties()
 {   
          document.getElementById("analysisTable").innerHTML= '';
