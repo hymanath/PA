@@ -432,7 +432,7 @@ width: 860px;}
 	font-weight:bold;font-size:15px;
 	border-radius: 3px;
     padding: 3px 10px;}
-	#previousEleVotingTrendsDiv {margin-top: 10px;margin-bottom:25px;}
+	#previousEleVotingTrendsDiv {margin-top: 30px;margin-bottom:25px;}
 	#previousEleVotingTrendsDiv p{height:25px;}
 	#previousEleVotingTrendsDiv table{border:1px solid #cdcdcd;}
 	#previousEleVotingTrendsDiv table th {
@@ -508,6 +508,10 @@ width: 860px;}
 
 body {
     color: #000000;
+}
+#previousEleVotingTrendsDiv tabel tr th{color:#000;}
+#previousEleVotingTrendsDiv table tr:nth-child(2n-1) {
+    background: none repeat scroll 0 0 #EDF5FF;
 }
 </style>
 
@@ -734,13 +738,14 @@ locationDetails.constituencyArr.push(ob);
 	</div>
     
 <div id='votersMainOuterDiv3'>
-	<div id="previousEleVotingTrendsDiv"></div>
+	
 	<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>
  	<div id="newsDiv">
     	<div id="newsCountDiv"></div>
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
   	</div>
 	<div id="votersBasicInfoDiv"></div>
+	<div id="previousEleVotingTrendsDiv"></div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
