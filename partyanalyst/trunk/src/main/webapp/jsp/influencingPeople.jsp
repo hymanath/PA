@@ -483,8 +483,90 @@ function hideText(){
 }
 function refreshParent()
 {
-//alert("refreshParent");
 	window.opener.location.reload(true);
+}
+function validationCheck()
+{
+	var firstName           = $('#firstNameField').val();
+	var lastName            = $('#lastNameField').val();
+	var fatherName          = $('#father_spouseName').val();
+	//var genderMale        = $('#genderMale').attr('checked')?true:false;
+	//var genderFemale      = $('#genderFemale').attr('checked')?true:false;
+	var mobileNo            = $('#mobileField').val();
+	//var state             = $('#stateField_add').val();
+	var district            = $('#districtField_add').val();
+	var constituency        = $('#constituencyField_add').val();
+	var thesil              = $('#mandalField_add').val();
+	var village             = $('#villageField_add').val();
+	var occupation          = $('#occupationField').val();
+	var casteCategory       = $('input[name=cast]:checked');
+	var casteCategoryLength = $(casteCategory).size();
+	var postion             = $('#position').val();
+	var influencingLevel    = $('#scopeLevel').val();
+	if(firstName == '')
+	{
+		$('#errorDiv').html('<div>Please enter the first name</div>')
+		return false;
+	}
+	if(lastName == '')
+	{
+		$('#errorDiv').html('<div>Please enter the last name</div>')
+		return false;
+	}
+	if(fatherName == '')
+	{
+		$('#errorDiv').html('<div>Please enter the father or spouse name</div>')
+		return false;
+	}
+	/*if(genderMale == false && genderFemale == false)
+	{
+		return false;
+	}*/
+	if(mobileNo == '')
+	{
+		$('#errorDiv').html('<div>Please enter the mobile no</div>')
+		return false;
+	}
+	if(district == 0 || district == null)
+	{
+		$('#errorDiv').html('<div>Please select the district name</div>')
+		return false;
+	}
+	if(constituency == 0 || constituency == null)
+	{
+		$('#errorDiv').html('<div>Please select the constituency </div>')
+		return false;
+	}
+	if(thesil == 0 || thesil == null)
+	{
+		$('#errorDiv').html('<div>Please select the tehsil </div>')
+		return false;
+	}
+	if(village == 0 || village == null)
+	{
+		$('#errorDiv').html('<div>Please select the village </div>')
+		return false;
+	}
+	if(occupation == 0 || occupation == null)
+	{
+		$('#errorDiv').html('<div>Please select the occupation </div>')
+		return false;
+	}
+	if(casteCategoryLength == 0)
+	{
+		$('#errorDiv').html('<div>Please select the caste category</div>')
+		return false;
+	}
+	if(postion == 0 || postion == null)
+	{
+		$('#errorDiv').html('<div>Please select the postion</div>')
+		return false;
+	}
+	if(influencingLevel == 0 || influencingLevel == null)
+	{
+		$('#errorDiv').html('<div>Please select the influencing level</div>')
+		return false;
+	}
 }
 </script>
 
@@ -507,6 +589,7 @@ function refreshParent()
 			</TR>
 	</TABLE>
 	</center>
+	<div id="errorDiv" style="color:red"></div>
  	<div id="loginDetailsDivBody" align="center" class="accessDivBody">
 		
 	<div id="errorMsgDiv">
@@ -529,7 +612,7 @@ function refreshParent()
 	<div id="successMsg" style="color:red;" style="color:green;">Error occurred while saving data.. please check the logs for details</div>
 	</c:if>
 	
-	<s:form action="influencingPeopleSaveAction" method="post" theme="simple" name="form">
+	<s:form action="influencingPeopleSaveAction" method="post" theme="simple" name="form" onsubmit="return validationCheck();">
 	<FIELDSET>
 	<LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
 
