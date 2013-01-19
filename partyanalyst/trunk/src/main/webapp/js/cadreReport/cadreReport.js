@@ -154,7 +154,7 @@ function getCadrePopup(myColumnDefs,myDataSource,configs, title)
 function dialogClose()
 {
   //alert('close dialogBox');
-  window.location.reload(true);
+  //window.location.reload(true);
 }
 
 function buildZeroCadreTable(myResults, cadreData)
