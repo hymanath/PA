@@ -524,26 +524,34 @@ else
 
 			function deletePersonDetails(id)
 			{
-			 var ask = confirm("Do You want to delete");
-			  if (ask ==  true)
-			  {
-				var jsObj= 
-				{		
-					influencingPeopleId :id,		  			
-					task: "deleteInfluencingPerson"		
-				};
-				
-				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "<%=request.getContextPath()%>/deleteInfluencingPeopleAjaxAction.action?"+param;
-				callAjax(jsObj,url);
-				//window.opener.document.location.reload(true);
-				//window.location.reload(true);
-			  }	
-			
-			  else
-			  {
-				return;	
-			  }	
+				var isChecked = $('#checkBoxId').attr('checked')?true:false;
+					if(isChecked == false)
+					{
+						alert("Please select the Candidate to Delete");
+					}
+					else
+					{
+					 var ask = confirm("Do You want to delete");
+						  if (ask ==  true)
+						  {
+							var jsObj= 
+							{		
+								influencingPeopleId :id,		  			
+								task: "deleteInfluencingPerson"		
+							};
+							
+							var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+							var url = "<%=request.getContextPath()%>/deleteInfluencingPeopleAjaxAction.action?"+param;
+							callAjax(jsObj,url);
+							//window.opener.document.location.reload(true);
+							//window.location.reload(true);
+						  }	
+						
+						  else
+						  {
+							return;	
+						  }	
+					 }
 			}
 			
 			function showAllPeopleRecords()
@@ -554,7 +562,7 @@ else
 				<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
 					<c:forEach var="people" items="${region.influencingPeopleDetails}" varStatus ="status">
 						str += '<tr>';
-						str += '	<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}"></input></td>';
+						str += '	<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}" id="checkBoxId"></input></td>';
 						str += '	<td>${people.firstName}</td>';
 						str += '	<td>${people.lastName}</td>';
 						str += '	<td>${people.email}</td>';
