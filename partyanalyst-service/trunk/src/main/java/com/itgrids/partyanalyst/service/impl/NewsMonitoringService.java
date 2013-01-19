@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
@@ -34,6 +35,7 @@ import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
  * @author ITGRIDS
@@ -49,12 +51,25 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private ISourceLanguageDAO sourceLanguageDAO;
     private INewsImportanceDAO newsImportanceDAO;
     private FileDAO fileDAO;
+    private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
    
+
+	
 
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
     private IRegionScopesDAO regionScopesDAO;
     private IBoothDAO boothDAO;
     private IUserCandidateRelationDAO userCandidateRelationDAO;
+    
+    public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
     
     public IUserCandidateRelationDAO getUserCandidateRelationDAO() {
 		return userCandidateRelationDAO;
@@ -870,8 +885,26 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			
            if(locationId == 3)	
 				locationValuesList = getAllBoothsInPanchayat(locationValue,
-						publicationId, locationValuesList);         
-			
+						publicationId, locationValuesList);  
+           
+           
+           if(locationId == 7){
+	    	   
+ 	    	  List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
+ 	    	  
+ 	    	  if(localElectionBodyList != null && localElectionBodyList.size() >0){
+ 	    		  
+ 	    		 locationValuesList = new ArrayList<Long>();	    		  
+ 	    		  locationValuesList.add((Long)localElectionBodyList.get(0));
+ 	    		  
+ 	    	  }
+ 	    		  
+ 	       
+        	   
+        	   
+        	   
+           }
+        	   
 			List<Object[]> countByCategoryList = fileGallaryDAO
 					.getNewsCountForALocationByCategoryForACandidate(
 							candidateIds,locationId,
@@ -921,8 +954,11 @@ public class NewsMonitoringService implements INewsMonitoringService {
 
 		try
 		{
-			List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(
-					panchayatId, publicationId);
+			//List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(
+					//panchayatId, publicationId);
+					
+					List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(
+							panchayatId, new Long(IConstants.PRESENT_ELECTION_YEAR));
 			
 			for(Object[] boothDtls:boothsList)					
 				locationValuesList.add((Long)boothDtls[0]);
@@ -996,9 +1032,28 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	        locationValuesList.add(fileVO.getLocationVal());
 			
 			
-	       if(fileVO.getLocationId() == 3)	
+	       if(fileVO.getLocationId() == 3){
+	    	   
+	       
 				locationValuesList = getAllBoothsInPanchayat(fileVO.getLocationVal(),
-						fileVO.getPublicationId(), locationValuesList); 
+						fileVO.getPublicationId(), locationValuesList);
+				
+				fileVO.setLocationId(9L);
+	       }
+	       
+	       if(fileVO.getLocationId() == 7){
+	    	   
+	    	  List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(fileVO.getLocationVal());
+	    	  
+	    	  if(localElectionBodyList != null && localElectionBodyList.size() >0){
+	    		  
+	    		  
+	    		  locationValuesList = new ArrayList<Long>();	    		  
+	    		  locationValuesList.add((Long)localElectionBodyList.get(0));
+	    		  
+	    	  }
+	    		  
+	       }
 	       
 	       
 	       List<Object[]> filesList = fileGallaryDAO
