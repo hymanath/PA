@@ -1,7 +1,8 @@
 
 
 function populateInfluencingPeople(jsObj,results)
-{		
+{	
+	
 	if(jsObj.task != "reGetInfluencingPeopleInAConstituency")
 		buildDifferentViewsRadio(results,"differentViewsRadioDiv_influencingPeople","influence people");
 
@@ -36,8 +37,8 @@ function createCoulmnChart(regionData,divId)
 	}
 
 	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
-		chart.draw(data, {width: 850, height: 280,legend:'right',legendTextStyle:{fontSize:10}, title: 'Influence People',
-				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+		chart.draw(data, {width: 850, height: 420,legend:'right',legendTextStyle:{fontSize:10}, title: 'Influence People',
+				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:85, titleTextStyle: {color: 'red'}}
 				 });
 
 }
