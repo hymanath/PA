@@ -576,6 +576,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
  var newsString ;
 function showNewsDetails(){
 
+
 $('#newsCountDiv').html('');
 $('#newsDisplayDiv').html('');
 	newsString = "";
@@ -601,10 +602,10 @@ $('#newsDisplayDiv').html('');
 		newsString += $('#panchayatField :selected').text()+" "+"Panchayat News Details By Category";
 	}
 
-	 publicationId = $('#publicationDateList').val();
+	// publicationId = $('#publicationDateList').val();
 
-	if($('#reportLevel').val() == 3 && $('#publicationDateList').val() == 0)
-		return false;
+	//if($('#reportLevel').val() == 3 && $('#publicationDateList').val() == 0)
+	//	return false;
 
 	var locationType = $('#reportLevel :selected').text();
 
@@ -615,6 +616,7 @@ $('#newsDisplayDiv').html('');
 		locationId = 3;
 	else if(locationType == "Mandal")
 		locationId = 5;
+
 
   if(locationValue == 0 || locationId == 0 || locationValue == null || locationValue == "null" || locationId == null || locationId == "null")
  	return false;
@@ -634,7 +636,7 @@ $('#newsDisplayDiv').html('');
 	{
 		locationValue:locationValue,
 		locationId:locationId,
-		publicationId:publicationId,
+		publicationId:0,
 		//locationValue:locationValue,
 		//locationId:locationId,
 		//publicationId:publicationId
@@ -734,18 +736,19 @@ function callAjaxToShowNewsDetails(jObj,url){
 function  buildProblemsCount(results){
 
 
-	$('#newsCountDiv').html('');
-	$('#newsDisplayDiv').html('');
-
+	//$('#newsCountDiv').html('');
+	//$('#newsDisplayDiv').html('');
 
 	var str='';
 
-	if(results.length == 0){
+	/*if(results.length == 0){
 		newsString = "";
 		$('#newsDiv').html("<h5>No news Avialable</h5>");
 		$('#showHideLink').hide();
 		return false;
-	}
+	}*/
+
+
 
 	//str+='<div>';
 	//str+='<div class="span3" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 5px;background-color:#f5f5f5;">';
