@@ -618,6 +618,18 @@ $('#newsDisplayDiv').html('');
 
   if(locationValue == 0 || locationId == 0 || locationValue == null || locationValue == "null" || locationId == null || locationId == "null")
  	return false;
+
+  if(reportLevel =="2"){
+
+	  if(locationValue.charAt(0) == "2")
+        locationValue = locationValue.substring(1);
+	  else  if(locationValue.charAt(0) == "1"){
+         locationId = 7;
+		 locationValue = locationValue.substring(1);
+	  }
+  }
+
+	  
    var jObj=
 	{
 		locationValue:locationValue,
