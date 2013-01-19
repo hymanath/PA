@@ -2366,7 +2366,7 @@ function buildContentDetails()
 
 		str += '<Div><center>';
 		str += '<div class="main-title-sec" style="clear:left;">';
-		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${specialPageVO.heading}</div><div class="main-bbg"/></div>';
+		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries</div><div class="main-bbg"/></div>';
 		
 		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
