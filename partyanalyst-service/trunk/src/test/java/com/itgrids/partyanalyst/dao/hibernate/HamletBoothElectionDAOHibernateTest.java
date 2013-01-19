@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.model.HamletBoothElection;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 
@@ -71,12 +72,23 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(data[0]+" - "+data[1]+" - "+data[2]);
 		}
 	}*/	
-	public void testGetBoothIdsByPanchayatId()
+	/*public void testGetBoothIdsByPanchayatId()
 	{
 		List<Long> list = hamletBoothElectionDAO.getBoothIdsByPanchayatId(1l, 116l);
 		System.out.println(list.size());
 		if(list != null && list.size() > 0)
 			System.out.println(list);
+	}*/
+	
+	public void testFindElectionsHappendInAPanchayat()
+	{
+		List<Object[]> list = hamletBoothElectionDAO.findElectionsHappendInAPanchayat(1l, IConstants.ASSEMBLY_ELECTION_TYPE);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"  "+params[1]);
+		}
 	}
 		
 }
