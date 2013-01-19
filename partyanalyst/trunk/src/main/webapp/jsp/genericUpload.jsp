@@ -1,7 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-      
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>    
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -24,11 +24,25 @@
 	text-align:left;	
 }
 </style>
+<script type="text/javascript">
+
+	function checkValidation()
+	{
+		var val = $('#genericUploadAction_filePath').val();
+		if(val == '')
+		{
+			$('#errorMsgDiv').show();
+			return false;
+		}
+	}
+</script>
 </head>
 	<body>
 
-	<s:form name="cadreDataUpload" action="genericUploadAction" method="post" enctype="multipart/form-data" >
+	<s:form name="cadreDataUpload" action="genericUploadAction" method="post" onsubmit="return checkValidation()" enctype="multipart/form-data" >
     <h3>Cadre Data Upload</h3>
+	<div id="errorMsgDiv" style="color:red;width:190px;font-size: 14px;display:none;margin-left:-168px;margin-bottom:10px;">please select the file location</div>
+
 	<table style="border-collapse:collapse" border="2">
 	     <tr>
 				<td align="center"><b>Country</b></td>
@@ -50,7 +64,7 @@
 			<td> <s:file name="filePath" label="Upload  File Path" /></td>
 		 </tr>			
 		 <tr>
-			<td colspan="2" align="center"><s:submit name="upload" value="Upload" align="center"/></td>
+			<td colspan="2" align="center"><s:submit name="upload" value="Upload" align="center" /></td>
 		 </tr>
 	</table>
 	</s:form>
