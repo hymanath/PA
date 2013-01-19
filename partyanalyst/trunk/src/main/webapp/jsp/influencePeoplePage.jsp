@@ -240,7 +240,7 @@ else
 					sortable : true
 				}, {
 					key : "cast",
-					label : "Cast",
+					label : "Caste",
 					sortable : true
 				}, {
 					key : "constituencyName",
