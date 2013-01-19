@@ -3112,6 +3112,8 @@ function showPreviousEleVotingTrends(results,jsObj)
 				str +='<th><b>Year</b></th>';
 			   for(var i in results[0].partiesList)
 			     str +='<th>'+results[0].partiesList[i]+'</th>';
+				 str +='<th>Total Votes</th>';
+				  str +='<th>Polled Votes</th>';
 			     str +='</tr>';
 				
 				for(var j in results)
@@ -3121,6 +3123,8 @@ function showPreviousEleVotingTrends(results,jsObj)
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
 					  for(var k in partyVotesEarnedVOs)
 				         str +='<td><b>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+					str +='<td>'+results[j].totalVotes+'</td>';
+					str +='<td>'+results[j].polledVotes+'</td>';	
 					     str +='</tr>';
 		 			
 				}
