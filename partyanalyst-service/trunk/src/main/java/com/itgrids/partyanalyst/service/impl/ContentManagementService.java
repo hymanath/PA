@@ -248,7 +248,7 @@ public class ContentManagementService implements IContentManagementService{
 				}
 				else if(requestFrom.equalsIgnoreCase(IConstants.CANDIDATE_PAGE))
 				{
-					if(isCustomer.equalsIgnoreCase("true"))
+					if(!isCustomer.equalsIgnoreCase("true"))
 					 otherGalIdsResult = gallaryDAO.getOtherGalleries(requestPageId,gallaryIds,contentType);
 					else
 					 otherGalIdsResult = gallaryDAO.getOtherGalleriesForCandidate(requestPageId,gallaryIds,contentType);
