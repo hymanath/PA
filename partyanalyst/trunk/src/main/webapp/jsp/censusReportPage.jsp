@@ -37,6 +37,10 @@
 <title>Census Report</title>
 
 <style type="text/css">
+
+input[type="radio"], input[type="checkbox"] {
+    margin:0px;
+}
 #censusReport_main
 {
 	margin-left: auto;
