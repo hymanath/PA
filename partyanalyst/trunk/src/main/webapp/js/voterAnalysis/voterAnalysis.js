@@ -1383,6 +1383,55 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
 	}
 }
 
+function getvotersFamileyInfo(buttonType,voterBasicInfoFor)
+ { 
+  $('#imgDiv').show();
+  $('#impfamilydatatable_wrapper').hide();
+  var level = $("#reportLevel").val();
+  var publicationDateId = $("#publicationDateList").val();
+  var type = '';
+  var id = '';
+  var typename = '';
+  if(level == 3)
+  {
+	type='panchayat';
+	id = $('#panchayatField').val();
+	typename =$("#panchayatField :selected").text()+' Panchayat';
+  }
+  if(level == 4)
+  {
+	
+	type = 'booth';
+    id = $("#pollingStationField").val();
+	typename =$("#pollingStationField :selected").text();
+  }
+	if(buttonType == "impFamilies"){
+	if(type == 'panchayat' || type == 'booth' ){
+	 var reqtype = type;
+	 if(type == 'booth'){
+	    reqtype = 'pollingstation';
+	 }
+	 
+	 
+	 showAjaxImgDiv('ajaxImageDiv');
+	    var jsObj2=
+			{
+					
+				type:reqtype,
+				id:id,
+				publicationDateId:publicationDateId,
+				typename:typename,
+				task:"gettotalimpfamlies"
+	
+			}
+	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+		callAjax(jsObj2,url2);
+	
+   }
+	}
+}
+
 function getVotersInAFamily(id,publicationDateId,hNo){
     var jsObj=
 			{
@@ -1833,7 +1882,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	 }
       var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
 	      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
-          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/></div>';
+          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
 		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
@@ -1855,7 +1904,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	 for(var i in result){
 	   var sno = parseInt(i)+1;
 	      str +='   <tr>';
-		  str +='		<td><input id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
+		  str +='		<td><input class="impFamilMulSel" id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
          // str +='		<td>'+sno+'</td>';
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
@@ -1873,7 +1922,7 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+='  </tbody>';
           str+=' </table>';
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
-	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/></div>';
+	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
 	  $("#impFamPancBothDtls").html(str);
 	  
 	  	$('#impfamilydatatable').dataTable({
@@ -1888,8 +1937,15 @@ function buildPartyWisePiechart(myResults,jsObj)
 		});
   }
   
-
- function buildTableForImpFamilesMandal(impFamilesData,name,type)
+function clearAllCheckBoxes()
+{
+	impFamiliesEditArray = new Array();
+	$('.impFamilMulSel').each(function(){
+		$(this).attr("checked",false);
+	});
+	
+}
+function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
 	
   var impFamiList = new Array();
