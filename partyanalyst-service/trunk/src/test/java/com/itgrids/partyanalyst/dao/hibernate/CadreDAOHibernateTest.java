@@ -350,10 +350,10 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}			
 	}*/
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void testFindCadreForSMS()
 	{
-		String s = "and model.currentAddress.state.stateId = 1";
+		/*String s = "and model.currentAddress.state.stateId = 1";
 		//String s = "and model.currentAddress.district.districtId = 19";
 		//String s = "and model.currentAddress.constituency.constituencyId = 231";
 		//String s = "and model.currentAddress.tehsil.tehsilId = 861";
@@ -410,25 +410,25 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 		System.out.println(cadreNameStr);
-	//	cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%')";
+		cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%')";
 		
-		//String roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
-		String roleStr = "";
-		
-		List<Long> x = cadreDAO.findCadreForSMS(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr,sortOption,order,0,20);
+		String roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
+		//String roleStr = "";
+		*/
+		List<Long> x = cadreDAO.findCadreForSMS(1l,"","and model.currentAddress.state.stateId = 1","","","","and (  model.firstName like 'a%' or model.middleName like 'a%' or model.lastName like 'a%' )","","",""," model.firstName ","asc",0,20);
 		
 		for(Long y:x)
 		{
-			System.out.println(cadreDAO.get(y).getCadreId());
+			//System.out.println(cadreDAO.get(y).getCadreId());
 			System.out.println(cadreDAO.get(y).getFirstName());
 			System.out.println(cadreDAO.get(y).getLastName());
 			System.out.println(cadreDAO.get(y).getMiddleName());
 		}
 		
-		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr);
-		System.out.println(y.get(0).toString());
+	//	List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr);
+		//System.out.println(y.get(0).toString());
 		
-	}*/
+	}
  /*	@SuppressWarnings("unchecked")
 	public void testFindNormalCadre()
 	{
@@ -474,7 +474,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(x);
 	}*/
 	
-	public void testGetMobileNosOfCadre()
+	/*public void testGetMobileNosOfCadre()
 	{
 		List<Long> idList = new ArrayList<Long>(0);
 		idList.add(7l);idList.add(14l);idList.add(15l);idList.add(16l);
@@ -485,7 +485,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println(object.toString());
 		}
-	}
+	}*/
 }
 	
 
