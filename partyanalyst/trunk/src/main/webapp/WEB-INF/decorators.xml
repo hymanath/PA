@@ -129,7 +129,6 @@
 		<pattern>/adminUpload*</pattern>
 		<pattern>/profileManagePageAction*</pattern>
 		<pattern>/initailConstituencyManagementAction*</pattern>
-		<pattern>/censusReportAction*</pattern>
 		<pattern>/electionComparisonReportAction*</pattern>
 		<pattern>/partyPerformanceReport*</pattern>
 		<pattern>/abuseCommentaction*</pattern>
@@ -175,6 +174,7 @@
 		<pattern>/mandalPageSDetailAction*</pattern>
 		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/ministerAnalysisAction*</pattern>
+		<pattern>/censusReportAction*</pattern>
     </decorator>
 
 </decorators>
