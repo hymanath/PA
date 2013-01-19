@@ -3166,21 +3166,22 @@ function showPreviousEleVotingTrends(results,jsObj)
 				str +='<table style="width:95%">';
 				str +='<tr>';
 				str +='<th><b>Year</b></th>';
+				str +='<th>Total Voters</th>';
+				  str +='<th>Votes Polled</th>';
 			   for(var i in results[0].partiesList)
 			     str +='<th>'+results[0].partiesList[i]+'</th>';
-				 str +='<th>Total Voters</th>';
-				  str +='<th>Votes Polled</th>';
 			     str +='</tr>';
 				
 				for(var j in results)
 				{
 				  str +='<tr>';
 				  str += '<td>'+results[j].electionYear+'</td>';
+				  str +='<td>'+results[j].totalVotes+'</td>';
+					str +='<td>'+results[j].polledVotes+'</td>';
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
 					  for(var k in partyVotesEarnedVOs)
 				         str +='<td><b>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
-					str +='<td>'+results[j].totalVotes+'</td>';
-					str +='<td>'+results[j].polledVotes+'</td>';	
+						
 					     str +='</tr>';
 		 			
 				}
