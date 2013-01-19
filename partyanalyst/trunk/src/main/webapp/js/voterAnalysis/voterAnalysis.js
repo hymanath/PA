@@ -481,7 +481,7 @@ function showImportantFamiliesDiv()
 
 	function getPanchayatList(checkedele,selectedEle)
 	{
-		
+		showNewsDetails();
 		var reportLevel = $("#reportLevel").val();
 		var mandalId=document.getElementById("mandalField");
 		var name=mandalId.options[mandalId.selectedIndex].name;
@@ -527,7 +527,7 @@ function showImportantFamiliesDiv()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getPanchayatByConstituencyAction.action?"+rparam;						
 		callAjax(jsObj,url);
-		showNewsDetails();
+		
 	}
 	}
 	
