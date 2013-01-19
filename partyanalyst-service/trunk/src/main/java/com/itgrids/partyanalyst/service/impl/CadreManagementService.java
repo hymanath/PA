@@ -4511,7 +4511,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					    cadreNameStr += " model.firstName like '%"+names+"%' or model.middleName like '%"+names+"%' or model.lastName like '%"+names+"%' ";
 					
 					else if(radioButtonValue.equalsIgnoreCase(IConstants.STARTING_WITH_NAME))
-						cadreNameStr += " model.firstName like '"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
+						cadreNameStr += " model.firstName like '"+names+"%' or model.lastName like '"+names+"%' ";
+					//cadreNameStr += " model.firstName like '"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
 					
 					else if(radioButtonValue.equalsIgnoreCase(IConstants.EXACT_MATCH_NAME))
 						cadreNameStr += " model.firstName like '"+names+"' or model.middleName like '"+names+"' or model.lastName like '"+names+"' ";	
@@ -4560,6 +4561,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				
 				cadreInfo.setCadreId(cadre.getCadreId().toString());
 				cadreInfo.setFirstName(cadre.getFirstName());
+				cadreInfo.setMiddleName(cadre.getMiddleName());
 				cadreInfo.setLastName(cadre.getLastName());
 				cadreInfo.setMemberType(cadre.getMemberType());
 				cadreInfo.setEducationStr(cadre.getEducation().getQualification());
