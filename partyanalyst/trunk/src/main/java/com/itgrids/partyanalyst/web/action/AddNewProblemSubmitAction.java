@@ -429,21 +429,15 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.problemBeanVO.setProblemStatusId(status);
 	}	
 
+	
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem Scope field is mandatory",shortCircuit=true)
 	public Long getProblemScope() {
-		return problemBeanVO.getProblemImpactLevelId();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem Scope field is mandatory",shortCircuit=true)
-	public void setProblemScope(Long problemScope) {
-		this.problemBeanVO.setProblemImpactLevelId(problemScope);
-	}
-	/*public Long getProblemScope() {
 		return problemBeanVO.getProblemImpactLevelId();
 	}
 
 	public void setProblemScope(Long problemScopeId) {
 		this.problemBeanVO.setProblemImpactLevelId(problemScopeId);
-	}*/
+	}
 	
 	public void setProblemTypeId(Long problemTypeId) {
 		this.problemBeanVO.setProblemTypeId(problemTypeId);
