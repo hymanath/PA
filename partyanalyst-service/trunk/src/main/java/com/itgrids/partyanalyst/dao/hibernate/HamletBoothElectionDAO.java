@@ -97,4 +97,14 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 				"  where model.boothConstituencyElection.constituencyElection.election.electionId = ? and model.boothConstituencyElection.booth.partNo = ? " +
 				"  and model2.hamlet.hamletId = model.hamlet.hamletId and model.boothConstituencyElection.constituencyElection.constituency.constituencyId =?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findElectionsHappendInAPanchayat(Long panchayatId, String electionType)
+	{
+		Query query = getSession().createQuery("select distinct(HBE.boothConstituencyElection.constituencyElection.election.electionId),HBE.boothConstituencyElection.constituencyElection.election.elecSubtype from HamletBoothElection HBE, PanchayatHamlet PH where " +
+				" HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.panchayatId = :panchayatId and HBE.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = :electionType order by HBE.boothConstituencyElection.constituencyElection.election.electionDate desc ");
+		query.setParameter("electionType", electionType);
+		query.setParameter("panchayatId",panchayatId);
+		return query.list();
+	}
 }

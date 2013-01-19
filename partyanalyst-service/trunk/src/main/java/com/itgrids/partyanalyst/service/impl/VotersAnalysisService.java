@@ -3928,28 +3928,28 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				 }
 				 
 				 
-				public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type)
+					public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type)
 					{
 						List<PartyVotesEarnedVO> partyVotesEarnedVOList = new ArrayList<PartyVotesEarnedVO>(0);
 						try{
-							List<SelectOptionVO> selectOptionVOList = getElectionIdAndTypeInAConstituencyByPublicationId(publicationDateId, constituencyId);
+							List<Object[]> list = hamletBoothElectionDAO.findElectionsHappendInAPanchayat(id, IConstants.ASSEMBLY_ELECTION_TYPE);
 							
-							if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+							if(list != null && list.size() > 0)
 							{
 								PartyVotesEarnedVO partyVotesEarnedVO = null;
 								List<String> partiesList = new ArrayList<String>(0);
 								List<Long> totalVoters = new ArrayList<Long>(0); 
-								for(SelectOptionVO params : selectOptionVOList)
+								for(Object[] params : list)
 								{
 									Long polledVotes = 0l;
 									partyVotesEarnedVO = new PartyVotesEarnedVO();
-									partyVotesEarnedVO.setElectionYear(electionDAO.get(params.getId()).getElectionYear());
-									partyVotesEarnedVO.setElectionType(params.getName());
+									partyVotesEarnedVO.setElectionYear(electionDAO.get((Long)params[0]).getElectionYear());
+									partyVotesEarnedVO.setElectionType(params[1].toString());
 									
 									String boothIdStr = "";
 									if(type.equalsIgnoreCase("panchayat"))
 									{
-										List<Long> boothIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(id, params.getId());
+										List<Long> boothIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(id, (Long)params[0]);
 										if(boothIdsList != null && boothIdsList.size() > 0)
 										{
 											for(Long boothId :boothIdsList)
@@ -3968,7 +3968,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									if(totalVoters != null && totalVoters.size() > 0 && !totalVoters.isEmpty())
 										partyVotesEarnedVO.setTotalVotes(totalVoters.get(0));
 											
-									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsil(boothIdStr,params.getId());
+									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsil(boothIdStr,(Long)params[0]);
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 									{
 										if(!partiesList.contains(partyVoters.getPartyName()))
