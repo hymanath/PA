@@ -623,8 +623,12 @@ $('#newsDisplayDiv').html('');
 
   if(reportLevel =="2"){
 
-	  if(locationValue.charAt(0) == "2")
+	  
+
+	  if(locationValue.charAt(0) == "2"){
         locationValue = locationValue.substring(1);
+		locationId =5;
+	  }
 	  else  if(locationValue.charAt(0) == "1"){
          locationId = 7;
 		 locationValue = locationValue.substring(1);
@@ -813,7 +817,7 @@ function getNews(importanceId , categoryId){
 	{
 		locationValue:locationValue,
 		locationId:locationId,
-		publicationId:publicationId,
+		publicationId:0,
 		importanceId:importanceId,
 		categoryId:categoryId,
 		startIndex:startIndex,
