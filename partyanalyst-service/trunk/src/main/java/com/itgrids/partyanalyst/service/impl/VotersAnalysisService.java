@@ -3938,8 +3938,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							{
 								PartyVotesEarnedVO partyVotesEarnedVO = null;
 								List<String> partiesList = new ArrayList<String>(0);
+								List<Long> totalVoters = new ArrayList<Long>(0); 
 								for(SelectOptionVO params : selectOptionVOList)
 								{
+									Long polledVotes = 0l;
 									partyVotesEarnedVO = new PartyVotesEarnedVO();
 									partyVotesEarnedVO.setElectionYear(electionDAO.get(params.getId()).getElectionYear());
 									partyVotesEarnedVO.setElectionType(params.getName());
@@ -3954,10 +3956,18 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 												boothIdStr = boothIdStr + boothId.toString()+",";
 											boothIdStr = boothIdStr.substring(0,boothIdStr.length()-1);
 										}
+										totalVoters = boothDAO.getTotalaVotesByBoothIds(boothIdsList);
 									}
 									else if(type.equalsIgnoreCase("booth"))
+									{
 										boothIdStr = id.toString();
-									
+										List<Long> boothId = new ArrayList<Long>(0);
+										boothId.add(id);
+										totalVoters = boothDAO.getTotalaVotesByBoothIds(boothId);
+									}
+									if(totalVoters != null && totalVoters.size() > 0 && !totalVoters.isEmpty())
+										partyVotesEarnedVO.setTotalVotes(totalVoters.get(0));
+											
 									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsil(boothIdStr,params.getId());
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 									{
@@ -3966,8 +3976,12 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									}
 									partyVotesEarnedVO.setPartyVotesEarnedVOs(votesEarnedVOs);
 									partyVotesEarnedVOList.add(partyVotesEarnedVO);
+									
+									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
+										polledVotes += partyVoters.getVotesEarned();
+									
+									partyVotesEarnedVO.setPolledVotes(polledVotes);
 								}
-								
 								Collections.sort(partiesList);
 								for(PartyVotesEarnedVO  votesEarnedVO : partyVotesEarnedVOList)
 									votesEarnedVO.setPartiesList(partiesList);

@@ -13,6 +13,8 @@ public class PartyVotesEarnedVO {
 	private List<PartyVotesEarnedVO> partyVotesEarnedVOs;
 	private PartyVotesEarnedVO votesEarnedVO;
 	private List<String> partiesList;
+	private Long totalVotes;
+	private Long polledVotes;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -83,6 +85,24 @@ public class PartyVotesEarnedVO {
 	public void setPartiesList(List<String> partiesList) {
 		this.partiesList = partiesList;
 	}
+
+	public Long getTotalVotes() {
+		return totalVotes;
+	}
+
+	public void setTotalVotes(Long totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+
+	public Long getPolledVotes() {
+		return polledVotes;
+	}
+
+	public void setPolledVotes(Long polledVotes) {
+		this.polledVotes = polledVotes;
+	}
+
+	
 	
 	
 }
