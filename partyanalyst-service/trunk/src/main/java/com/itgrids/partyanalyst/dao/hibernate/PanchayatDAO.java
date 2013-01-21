@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.model.Panchayat;
@@ -30,4 +31,21 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	{
 		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId =?",mandalId);	
 	}
+	
+	
+	public Long getPanchayatiesCount(Long id,String type)
+	  {
+		  StringBuilder str = new StringBuilder();
+		  str.append("select distinct count(model.panchayatId) from Panchayat model where");
+
+		  if(type.equalsIgnoreCase("constituency"))
+			  str.append(" model.tehsil.tehsilId in(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where model1.delimitationConstituency.year =2009 and model1.delimitationConstituency.constituency.constituencyId = :id)");
+		  else if(type.equalsIgnoreCase("mandal"))
+		 str.append(" model.tehsil.tehsilId = :id ");
+		  Query query =getSession().createQuery(str.toString());
+		  query.setParameter("id",id);
+		  
+		  return (Long)query.uniqueResult();
+		  
+	  }
 }
