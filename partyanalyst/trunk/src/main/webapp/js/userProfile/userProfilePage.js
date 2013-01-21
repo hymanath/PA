@@ -321,7 +321,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var constituencyName = $(constituencyName);
 		var message = $("<label class='messageLabel'></label>");
 		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'></textarea>");
-		var image = $('<img height="80" width="80" src="/PartyAnalyst/images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
+		var image = $('<img height="80" width="80" src="images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
 		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:12px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
@@ -1253,7 +1253,7 @@ function getFriendsListForUser(results)
 		templateClone.removeClass("templateDiv");
 		templateClone.find('.connectedPersonName').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'">'+results.connectedPeople[i].candidateName+'</a>');
 		if(results.connectedPeople[i].image == null)
-			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
 		else
 			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
@@ -1340,7 +1340,7 @@ function showAllRequestMessagesForUser(results,jsObj){
 		var templateClone =  template.clone();
 		templateClone.removeClass("templateDiv");
 		templateClone.find('.connectedPersonName').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'">'+results.friendRequest[i].candidateName+'</a>');
-		templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></a>');
+		templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
 		templateClone.find('.messageCls').html(''+results.friendRequest[i].message+'').css("display","block");
 		templateClone.find('.constituencyName').html(''+results.friendRequest[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.friendRequest[i].district+'');
@@ -1390,7 +1390,7 @@ function showRequestedMessagesForAUser(results)
 			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
 			}
 		else{
-				templateClone.find('.imgClass').html('<img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="images/icons/indexPage/human.jpg"/>');
 			}
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"><i class=" icon-repeat"></i> Reply</a>');
@@ -1438,7 +1438,7 @@ function showSentBoxMessagesForAUser(results)
 			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
 			}
 			else{
-				templateClone.find('.imgClass').html('<img height="30" width="30" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="images/icons/indexPage/human.jpg"/>');
 			}
 			
 		templateClone.appendTo(".placeholderCenterDiv");
@@ -1676,7 +1676,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDiv");
 		if(image == null)
-			templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+			templateClone.find(".imgClass").html('<img width="50" height="45" src="images/icons/indexPage/human.jpg">');
 		else
 			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
 			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
@@ -1784,7 +1784,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 
 			if(image == null)
-				templateClone.find(".imgClass").html('<img width="50" height="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+				templateClone.find(".imgClass").html('<img width="50" height="45" src="images/icons/indexPage/human.jpg">');
 			else
 				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
 
@@ -1886,7 +1886,7 @@ function connectToSelectedPerson(id,name)
 		var Name=$("<label>"+userName+"</label>");
 		var message = $("<label class='messageLabel'>Message</label>");
 		var textArea = $("<textarea id='connectUserMsg'></textarea>");
-		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
 		var connectBtn = $('<input type="button" value="Connect" id="connectDistrictPeopleLink"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
