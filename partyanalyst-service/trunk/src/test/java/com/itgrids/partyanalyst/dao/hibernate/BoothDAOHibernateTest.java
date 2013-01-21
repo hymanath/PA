@@ -214,7 +214,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}
 	*/
-	public void testGetTotalaVotesByBoothIds()
+	/*public void testGetTotalaVotesByBoothIds()
 	{
 		List<Long> boothIds = new ArrayList<Long>(0);
 		
@@ -238,5 +238,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> data = boothDAO.getTotalaVotesByBoothIds(boothIds);
 		if(!data.isEmpty())
 		System.out.println(data.get(0));
+	}*/
+	
+	public void testgetPanchayatiesCount()
+	{
+	List<Object[]> list = boothDAO.getBoothsInAMunicipality(20l,7l);
+	System.out.println(list.size());
 	}
+	
 }

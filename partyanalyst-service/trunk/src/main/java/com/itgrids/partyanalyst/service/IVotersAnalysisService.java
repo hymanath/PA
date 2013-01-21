@@ -91,5 +91,5 @@ public interface IVotersAnalysisService {
 	
 	public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type);
 
-	//public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type);
+	public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type);
 }
