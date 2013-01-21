@@ -3220,7 +3220,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 		{
 		  var str = '';
 			$("#previousEleVotingTrendsDiv").append('<div style="margin-bottom: 20px;"><span id="prevVotTrendHeadingSpan">Previous Election Voting Trends in '+jsObj.name+' </span></div>');
-				str +='<table style="width:95%">';
+				str +='<table style="width:95%;font-family: arial;">';
 				str +='<tr>';
 				str +='<th><b>Year</b></th>';
 				str +='<th>Total Voters</th>';
