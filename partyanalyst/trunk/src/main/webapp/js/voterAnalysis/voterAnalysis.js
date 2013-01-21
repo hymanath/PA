@@ -1216,6 +1216,7 @@ function getvotersBasicInfo(buttonType,voterBasicInfoFor){
      $("#votersBasicInfoSubChartDiv").html("");
      $("#votersBasicInfoSubDiv").html("");
 	 $("#votersByLocationTabContentDiv_body").html("");
+	 $("#previousEleVotingTrendsDiv").html('');
 	 //$("#votersByPanchayatTabContentDiv_body").html("");
    }
   if(buttonType == "impFamilies"){
@@ -3172,7 +3173,11 @@ function getPreviousElectionVotingTrends()
 		var constituencyId = $("#constituencyList").val(); 
 		var type = '';
 		var id='';
-		
+		if(level == 1 || level == 2)
+		{
+			 $("#previousEleVotingTrendsDiv").html('');
+			 return;
+		}
 		if(level == 3)
 		{
 			id = $("#panchayatField").val();
