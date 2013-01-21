@@ -505,6 +505,8 @@ width: 860px;}
     position: relative;
     width: 441px;
 }
+.f2{font-family:verdana;font-size:15px;}
+.badge-add{padding:10px;border-radius:50%;background:#ABCFF3;color:#222222;}
 
 body {
     color: #000000;
@@ -513,6 +515,7 @@ body {
 #previousEleVotingTrendsDiv table tr:nth-child(2n-1) {
     background: none repeat scroll 0 0 #EDF5FF;
 }
+h5{font-family : verdana;}
 </style>
 
 <script type="text/javascript">
@@ -727,7 +730,8 @@ locationDetails.constituencyArr.push(ob);
 
 <!-- for  body3 start    result  -->
 <div id="votersDiv3" style="display:none">
-<div id='votersHeaderDiv3'>
+
+<div id='votersHeaderDiv3' style="clear:both;">
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
@@ -738,9 +742,11 @@ locationDetails.constituencyArr.push(ob);
 	</div>
     
 <div id='votersMainOuterDiv3'>
-	
+ <h5 id="reportLevelheading" style="margin-left:15px;"></h5>
+<div id="reportLevelCountDiv" style="clear:both;"></div><br>
+	<div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
 	<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>
- 	<div id="newsDiv">
+ 	<div id="newsDiv" style="clear:both;">
     	<div id="newsCountDiv"></div>
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
   	</div>
