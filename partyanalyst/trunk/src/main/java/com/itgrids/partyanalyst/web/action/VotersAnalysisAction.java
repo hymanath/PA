@@ -56,6 +56,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private PartyVotesEarnedVO partyVotesEarnedVO;
 	private List<PartyVotesEarnedVO> partyVotesEarnedVOList;
 	
+	public List<VotersDetailsVO> countList;
+	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
 	}
@@ -173,7 +175,13 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			List<PartyVotesEarnedVO> partyVotesEarnedVOList) {
 		this.partyVotesEarnedVOList = partyVotesEarnedVOList;
 	}
+	public List<VotersDetailsVO> getCountList() {
+		return countList;
+	}
 
+	public void setCountList(List<VotersDetailsVO> countList) {
+		this.countList = countList;
+	}
 	public String execute() throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -486,6 +494,29 @@ public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
 	this.votersFamilyInfo = votersFamilyInfo;
 }
 
+
+public String getCountsForLevel()
+{
+	try{
+	String param ;
+	param = getTask();
+	jObj = new JSONObject(param);
+	
+	if(jObj.getString("task").equalsIgnoreCase("getCountForLevel"))
+	{
+		Long publicationDateId= jObj.getLong("publicationDateId");
+		Long id = jObj.getLong("id");
+		String type = jObj.getString("type");
+		countList = votersAnalysisService.getCountList(publicationDateId,id,type);
+		}
+	}
+	
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return SUCCESS;
+}
 public String getPreviousEleVotingTrends()
 {
 	try{
