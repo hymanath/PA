@@ -86,6 +86,14 @@ public class VotersDetailsVO implements Serializable{
 	private String femaleVotersPercentFor46To60;
 	private String femaleVotersPercentForAbove60;
 	
+	private Long Totalmandals;
+	
+	private Long TotalPanchayats;
+	
+	private Long TotalBooths;
+	
+	private Long noOfLocalBodies;
+	
 	
 	
 	public Long getMaleVotersCountBetween18To25() {
@@ -470,5 +478,32 @@ public class VotersDetailsVO implements Serializable{
 			String femaleVotersPercentForAbove60) {
 		this.femaleVotersPercentForAbove60 = femaleVotersPercentForAbove60;
 	}
+	
+	public Long getTotalmandals() {
+		return Totalmandals;
+	}
+	public void setTotalmandals(Long totalmandals) {
+		Totalmandals = totalmandals;
+	}
 
+
+	public Long getTotalPanchayats() {
+		return TotalPanchayats;
+	}
+	public void setTotalPanchayats(Long totalPanchayats) {
+		TotalPanchayats = totalPanchayats;
+	}
+	public Long getTotalBooths() {
+		return TotalBooths;
+	}
+	public void setTotalBooths(Long totalBooths) {
+		TotalBooths = totalBooths;
+	}
+	
+	public Long getNoOfLocalBodies() {
+		return noOfLocalBodies;
+	}
+	public void setNoOfLocalBodies(Long noOfLocalBodies) {
+		this.noOfLocalBodies = noOfLocalBodies;
+	}
 }
