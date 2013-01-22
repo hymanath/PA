@@ -3952,52 +3952,67 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				 
 				public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type)
 				 {
-					
-					
 					 List<SelectOptionVO> namesList = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> mandalList = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> muncipalityList = new ArrayList<SelectOptionVO>();
+					 List<SelectOptionVO> panchayatiesList = new ArrayList<SelectOptionVO>();
+					 SelectOptionVO panchayat;
 					 VotersDetailsVO votersDetailsVO = new VotersDetailsVO();
 					 List<VotersDetailsVO> resultlist = new ArrayList<VotersDetailsVO>();
 					 Long noOfPanchayats = 0l;
 					 Long noOfBooths = 0l;
-					
 					 String subtype =null;
 					 try
 					 {
 					 if(type.equalsIgnoreCase("mandal"))
-						{
-						if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
-						{
-						type = "mandal";	
-						id = new Long(id.toString().substring(1));
-						}
-						else if(id.toString().substring(0,1).trim().equalsIgnoreCase("1"))
-						{
-							
-						List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
-						id =(Long)listId.get(0); 
-						type = "localElectionBody";
-						}
+					 	{
+							if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+							{
+								type = "mandal";	
+								id = new Long(id.toString().substring(1));
+							}
+							else if(id.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+							{
+								
+								List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
+								id =(Long)listId.get(0); 
+								type = "localElectionBody";
+							}
 						}
 					 if(type.equalsIgnoreCase("constituency"))
 					 {
-					 namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
-					 mandalList = getMandals(namesList);
-					 muncipalityList = getMuncipalities(namesList);
+								namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
+								mandalList = getMandals(namesList);
+								muncipalityList = getMuncipalities(namesList);
+							 	if(mandalList != null && mandalList.size() > 0)
+								{
+									 votersDetailsVO.setMandalList(mandalList);
+									 votersDetailsVO.setTotalmandals(new Long(mandalList.size()));
+								}
+					 
 					 }
 					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody"))
-						 noOfPanchayats = panchayatDAO.getPanchayatiesCount(id,type);
-						 noOfBooths = boothDAO.getBoothsCount(id,publicationDateId,type);
-					if(mandalList != null && mandalList.size() > 0)
-					 votersDetailsVO.setTotalmandals(new Long(mandalList.size()));
+					 {
+							List<Object[]> panchayatiesList1 = panchayatDAO.getPanchayatiesCount(id,type);
+							if(panchayatiesList1 !=null && panchayatiesList1.size() > 0)
+							{
+							 for(Object[] params :panchayatiesList1)
+							 {
+							 panchayat = new SelectOptionVO((Long)params[0],params[1].toString()+" Panchayat");
+							 panchayatiesList.add(panchayat);
+							 }
+							 votersDetailsVO.setPanchayatList(panchayatiesList);
+							 votersDetailsVO.setTotalPanchayats(new Long(panchayatiesList.size()));
+							}
+						
+					 }
+					noOfBooths = boothDAO.getBoothsCount(id,publicationDateId,type);
 					if(muncipalityList != null && muncipalityList.size() > 0)
 						votersDetailsVO.setNoOfLocalBodies(new Long(muncipalityList.size()));
-					if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody"))
-					 votersDetailsVO.setTotalPanchayats(noOfPanchayats);
-					 votersDetailsVO.setTotalBooths(noOfBooths);
-					 resultlist.add(votersDetailsVO);
-					 return resultlist;
+						//if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody"))
+						votersDetailsVO.setTotalBooths(noOfBooths);
+						resultlist.add(votersDetailsVO);
+						return resultlist;
 					}
 					
 					catch(Exception e)
@@ -4007,7 +4022,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						return resultlist;
 					}
 					
-				}
+			}
 					public List<SelectOptionVO> getMandals(List<SelectOptionVO> list)
 					{
 					List<SelectOptionVO> resultlist = new ArrayList<SelectOptionVO>();
@@ -4047,7 +4062,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					catch(Exception e)
 					{
 						e.printStackTrace();
-						log.error("Exception Occured in getMandals() - "+e);
+						log.error("Exception Occured in getMuncipalities() - "+e);
 						return resultlist;
 					}
 					

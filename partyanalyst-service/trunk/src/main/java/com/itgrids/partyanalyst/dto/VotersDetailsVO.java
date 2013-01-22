@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class VotersDetailsVO implements Serializable{
 	
@@ -94,6 +95,8 @@ public class VotersDetailsVO implements Serializable{
 	
 	private Long noOfLocalBodies;
 	
+	private List<SelectOptionVO> mandalList;
+	private List<SelectOptionVO> panchayatList;
 	
 	
 	public Long getMaleVotersCountBetween18To25() {
@@ -505,5 +508,20 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setNoOfLocalBodies(Long noOfLocalBodies) {
 		this.noOfLocalBodies = noOfLocalBodies;
+	}
+
+	
+	public List<SelectOptionVO> getMandalList() {
+		return mandalList;
+	}
+	public void setMandalList(List<SelectOptionVO> mandalList) {
+		this.mandalList = mandalList;
+	}
+	
+	public List<SelectOptionVO> getPanchayatList() {
+		return panchayatList;
+	}
+	public void setPanchayatList(List<SelectOptionVO> panchayatList) {
+		this.panchayatList = panchayatList;
 	}
 }
