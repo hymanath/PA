@@ -580,7 +580,8 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
  	public List<Object[]> getNewsForRegisterUsers1(FileVO fileVO){
  		
      	 StringBuilder query = new StringBuilder();
-  		query.append("select model.fileGallaryId ,model.file,model.isPrivate from FileGallary model  where model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0 " );
+  		query.append("select model.fileGallaryId ,model.file,model.isPrivate,model.gallary.gallaryId,model.gallary.name " +
+  				"from FileGallary model  where model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0 " );
   		if(fileVO.getSourceId() != null)
   			query.append(" and model1.source.sourceId = :sourceId");
   		
