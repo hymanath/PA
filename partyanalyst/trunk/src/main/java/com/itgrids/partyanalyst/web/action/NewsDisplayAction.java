@@ -330,6 +330,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    fileVO.setLocationScope(jObj.getLong("locationScopeId"));
 		    fileVO.setRegionValue(jObj.getLong("locationScopeValue"));
 		    fileVO.setVisibility(jObj.getString("visibility"));
+		    fileVO.setFileGallaryId(jObj.getLong("fileGallaryId"));
 		   
 		    
 		   } 
