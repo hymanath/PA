@@ -266,7 +266,7 @@ function buildNewImpDatePopup()
 		eventStr+='<div id="errorMesgDIV"></div>';
 		eventStr+='<table width="200%" class="bordered-table">';
 		eventStr+='<tr>';
-		eventStr+='<th>Important Date Title <font style="color:red; font-size: 18px;"> * </font></th>';
+		eventStr+='<th>Important Date Title <font style="color:red; font-size: 18px;">  * </font></th>';
 		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 		eventStr+='<tr>';
@@ -277,7 +277,7 @@ function buildNewImpDatePopup()
 		eventStr+='</td>';		
 		eventStr+='</tr>';
 		eventStr+='<tr>';
-		eventStr+='<th>Description <font style="color:red; font-size: 18px;"> * </font></th>';
+		eventStr+='<th>Description <font style="color:red; font-size: 18px;">  * </font></th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea" style="background-color: rgb(255, 255, 255);"></textarea></td>';
 		eventStr+='</tr></table>';		
 		eventStr+='<table width="100%">';
