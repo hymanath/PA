@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -140,8 +141,29 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private PdfGenerationVO  pdfGenerationVO ;
 	private List<FileVO> allNewsList ;
 	private List<FileVO> newsCountByCategoryList;
+	private List<CommentVO> commentsList;
+	private Long savedCommentId;
 	
-	
+	public Long getSavedCommentId() {
+		return savedCommentId;
+	}
+
+
+	public void setSavedCommentId(Long savedCommentId) {
+		this.savedCommentId = savedCommentId;
+	}
+
+
+	public List<CommentVO> getCommentsList() {
+		return commentsList;
+	}
+
+
+	public void setCommentsList(List<CommentVO> commentsList) {
+		this.commentsList = commentsList;
+	}
+
+
 	public List<FileVO> getNewsCountByCategoryList() {
 		return newsCountByCategoryList;
 	}
@@ -1870,16 +1892,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setImportanceId(importanceId);
 		fileVO.setCategoryId(categoryId);
 		fileVO.setStartIndex(startIndex);
-		fileVO.setMaxResult(lastIndex);
-		
+		fileVO.setMaxResult(lastIndex);		
 		
 		allNewsList = newsMonitoringService.getNewsByLocationAndCategory(fileVO);
-		
-
-		
 		return Action.SUCCESS;
 		
 	}
-	
 
 }
