@@ -49,8 +49,8 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 */
 	public void testgetPanchayatiesCount()
 	{
-	Long value = panchayatDAO.getPanchayatiesCount(844l,"constituency");
-	System.out.println(value);
+	 //Long value = panchayatDAO.getPanchayatiesCount(844l,"constituency");
+	 //System.out.println(value);
 	}
 	
 	
