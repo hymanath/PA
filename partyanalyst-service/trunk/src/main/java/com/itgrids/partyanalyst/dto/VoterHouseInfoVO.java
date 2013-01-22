@@ -52,6 +52,10 @@ public class VoterHouseInfoVO {
 	private Long publicationId;
 	private Long toAge;
 	private String mobileNo;
+	private int startIndex;
+	private int maxIndex;
+	private String sortBy;
+	private String sortByColum;
 	
 	public VoterHouseInfoVO(){
 		
@@ -470,6 +474,38 @@ public class VoterHouseInfoVO {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public int getMaxIndex() {
+		return maxIndex;
+	}
+
+	public void setMaxIndex(int maxIndex) {
+		this.maxIndex = maxIndex;
+	}
+
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+
+	public String getSortByColum() {
+		return sortByColum;
+	}
+
+	public void setSortByColum(String sortByColum) {
+		this.sortByColum = sortByColum;
 	}
 
 
