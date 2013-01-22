@@ -99,8 +99,18 @@ public class FileVO extends ResultStatus implements Serializable {
 	
 	private Long fileGallaryId;
 	
+	private ResultStatus resultStatus;
+	
 
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public Long getFileGallaryId() {
 		return fileGallaryId;
 	}
