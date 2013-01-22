@@ -388,6 +388,10 @@ var noOfRowsPerPage = 10;
 var modifiedRecord = 0;
 var returnedResults;
 $(document).ready(function(){
+
+	$('.yui-pg-rpp-options').live('change',function(){
+		noOfRowsPerPage = $(this).val();
+	});
   $("#newsSearch").slideUp("fast");
         $( "#fromDate" ).datepicker({
             changeMonth: true,
