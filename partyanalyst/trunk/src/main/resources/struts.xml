@@ -3085,7 +3085,8 @@
 		
         <action name="updateDeleteNewsAction" class="newsDisplayAction" method="updateDeleteNews">
         	<result type="json" name="success">
-				<param name="root">resultStatus</param>		
+			<!-- 	<param name="root">resultStatus</param>-->	
+			<param name="root">savedDetails</param>
 			</result>
         </action>
 			<action name="assignCandidateToElectionAction" class="assignCandidateToElectionAction">
