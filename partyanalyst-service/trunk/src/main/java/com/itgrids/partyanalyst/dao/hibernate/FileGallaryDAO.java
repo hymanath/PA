@@ -615,7 +615,9 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
  		if(fileVO.getFileType().trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
- 		query.append(" order by model.file.fileDate desc   ");
+ 		//query.append(" order by model.file.fileDate desc ,model.updateddate");
+ 		
+ 		query.append(" order by model.file.fileDate desc ,model.createdDate desc");
   		
  		Query queryObject = getSession().createQuery(query.toString());
  		
@@ -1219,6 +1221,17 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
  		  queryObject.setLong("fileId", fileId);
  		
  		queryObject.executeUpdate();
+     }
+     
+     public List<FileGallary> getFileGallariesByFileId(Long fileId){
+    	
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.file.fileId = :fileId and model.isDelete = :delInd");
+    	 
+    	 query.setParameter("fileId", fileId);
+    	 query.setParameter("delInd", "false");
+    	 
+    	 return query.list();
+    	 
      }
      
      public void deleteFile(Long fileId){
