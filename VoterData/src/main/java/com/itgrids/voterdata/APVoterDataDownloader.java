@@ -1,5 +1,6 @@
 package com.itgrids.voterdata;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,6 +12,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class APVoterDataDownloader {
 
@@ -39,19 +42,19 @@ public class APVoterDataDownloader {
         
         int numOfDistricts = district.getOptions().size();
         
-        int d = 19;
+        int d = 3;
         //for (; d<=numOfDistricts; d++) {
             district.selectByValue(String.valueOf(d));
             Select constituency = new Select(driver.findElement(By.name("ddlAC")));
             int numOfconstituencies = constituency.getOptions().size();
             System.out.println("numOfconstituencies:"+numOfconstituencies);
-            int i =0;
+            int i = 28;
             if (d == 1) {
                 i = 3;
             } else {
                 i = 1;
             }
-            i= 233;
+            i= 28;
             //for(; i<=numOfconstituencies; i++){
                 constituency.selectByValue(String.valueOf(i));
                 String constituencyName = constituency.getFirstSelectedOption().getText();
@@ -62,6 +65,30 @@ public class APVoterDataDownloader {
                 int boothCount = boothTable.findElements(By.tagName("tr")).size() - 1;
                 System.out.println("boothCount:"+boothCount);
                 WebElement downloadLink = null;
+                List<Integer> missedList = null;
+                
+                if(IConstants.IS_MISSED_FILES_DOWNLOAD)
+                {
+                	File downloadedDirecetoty = new File(IConstants.DOWNLOAD_DIRECTORY);
+                	String filesNameList[] = downloadedDirecetoty.list();
+                	if(filesNameList != null && filesNameList.length > 0)
+                	{
+                		List<Integer> fileExistanceList = new ArrayList<Integer>(0);
+                		missedList = new ArrayList<Integer>(0);
+                		for(String fileName : filesNameList)
+                		{
+                			File file = new File(IConstants.DOWNLOAD_DIRECTORY+"\\"+fileName);
+                			if(file.isFile() && fileName.endsWith(".pdf"))
+                				fileExistanceList.add(new Integer(fileName.split("-")[2]));
+                			else
+                				file.deleteOnExit();
+                		}
+                		for(int k=1;k<=boothCount;k++)
+                			if(!fileExistanceList.contains(k))
+                				missedList.add(k);
+                	}
+                }
+                
                 int j = 0;
                 if (i == 274) {
                   j = 133;
@@ -70,7 +97,11 @@ public class APVoterDataDownloader {
                 {
                 
                  try{
-                    int no = j + 2;
+                	
+                	if(IConstants.IS_MISSED_FILES_DOWNLOAD && !missedList.contains(j+1))
+                		continue;
+                	Thread.sleep(3000);
+                	int no = j + 2;
                    
                     if (no < 10) {
                         downloadLink =  driver.findElement(By.id("GridView1_ctl0"+no+"_lnkEnglish"));
@@ -92,7 +123,7 @@ public class APVoterDataDownloader {
                         }
                     });
                     if (downloadedFile.exists()) {
-                        downloadedFile.renameTo(new File(IConstants.DOWNLOAD_DIRECTORY+"/"+boothFileName));
+                        FileUtils.moveFile(downloadedFile, new File(IConstants.DOWNLOAD_DIRECTORY+"\\"+boothFileName.replaceAll("/", "")));
                         downloadedFile.delete();
                     }
                     
