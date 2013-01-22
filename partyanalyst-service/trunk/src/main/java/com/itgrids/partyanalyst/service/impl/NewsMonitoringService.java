@@ -803,7 +803,20 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 }
 			 
 			 DateUtilService dateUtilService = new DateUtilService();
-			 fileGallaryDAO.updateFileDate(dateUtilService.getCurrentDateAndTime(),fileVO.getFileId());
+			 
+			List<FileGallary> fileGallaries = fileGallaryDAO.getFileGallariesByFileId(fileVO.getFileId());
+			
+			
+			for(FileGallary fileGallary:fileGallaries){
+				
+				fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+				fileGallaryDAO.save(fileGallary);
+				
+				
+			}
+			 
+			 
+			// fileGallaryDAO.updateFileDate(dateUtilService.getCurrentDateAndTime(),fileVO.getFileId());
 			 
 			 
           if(fileVO.getFileGallaryId() !=0 && fileVO.getGallaryId() != 0){
