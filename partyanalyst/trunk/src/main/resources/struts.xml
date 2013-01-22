@@ -4187,7 +4187,7 @@
 		
 		<action name="getVotersInfoBySearchAction" class="votersEditAction" method="getVotersInfoBySearchCriteria">
 			<result type="json" name="success">
-           		<param name="root">votersFamilyInfo</param>
+           		<param name="root">voterHouseInfoVO1</param>
         	</result>
         	<result type="json" name="error">
 				 <param name="root">"notLogged"</param>

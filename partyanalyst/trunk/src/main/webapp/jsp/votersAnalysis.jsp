@@ -520,7 +520,7 @@ h5{font-family : verdana;}
 
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
-	
+	var votersLimitExist = false;
 var Localization = { <%
 			
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -668,7 +668,7 @@ locationDetails.constituencyArr.push(ob);
 		<div id="impFamPancBothDtls"></div>
 		<div id="impFamDtlsOuterPopUp" style="display:none;">
 		   <div id="impFamDtlsTitle"></div>
-		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
+		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;margin-top:10px;"></div>
 	       <div class="buttonsTop"><span class="buttonLeft"><input class="btn" onclick="selectAll('familyMemberCheck')" type="button" value="Select All" /></span><span class="buttonLeft"><input onclick="deSelectAll('familyMemberCheck')" class="btn" type="button" value="De Select All" /></span><span class="buttonLeft"><input class="btn" type="button" value="Edit" onclick="getAllVoterFamiliesForEdit();"/></span></div>
 		   <div id="multipleVoterFamiliesEditDiv"></div>
 		</div>
