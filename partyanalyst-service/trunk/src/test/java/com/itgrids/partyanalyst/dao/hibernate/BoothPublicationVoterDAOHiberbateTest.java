@@ -1,3 +1,4 @@
+
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
@@ -154,16 +155,17 @@ System.out.println(list.size());
 	System.out.println(list.size());
 }*/
 
-public void testGetCastWiseCount()
+/*public void testGetCastWiseCount()
+
 {
 	List<Object[]> list = boothPublicationVoterDAO.getCastWiseCount(1l, "panchayat", 1l, 7l);
 	System.out.println(list.size());
 	for(Object[] data:list){
 		System.out.println(data[0]+" "+data[1]);
 	}
-}
+}*/
 
-public void testGetPartyWiseCount()
+/*public void testGetPartyWiseCount()
 {
 	List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCount(1l, "panchayat", 1l, 7l);
 	System.out.println(list.size());
@@ -171,5 +173,16 @@ public void testGetPartyWiseCount()
 		System.out.println(data[0]+" "+data[1]+" "+data[2]+" "+data[3]);
 	}
 }
+*/
 
+public void testgetConstituencies()
+{
+	 List<Object[]> list = boothPublicationVoterDAO.getConstituencies();
+	 System.out.println(list.size());
+	 for(Object[] params:list)
+	 {
+		System.out.println(params[0]);
+		System.out.println(params[1]);
+	 }
+}
 }

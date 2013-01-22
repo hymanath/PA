@@ -4236,4 +4236,30 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			log.error("Exception Occured in getBoothsComparisionInfo Method, Exception is - ",e);
 		}
 	 }
+	 
+	 
+	 public List<SelectOptionVO> getConstituenciesFromBoothPublicationVoter()
+	 {
+		 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(0);
+		 
+		 SelectOptionVO list = null;
+		 try{
+			List<Object[]> constituencies = boothPublicationVoterDAO.getConstituencies();
+			if(constituencies!=null && constituencies.size() > 0)
+			{
+				for(Object[] params : constituencies)
+				{
+					list = new SelectOptionVO((Long)params[0],params[1].toString());
+					resultList.add(list);
+				}
+			}
+			return resultList;
+		 }
+		 catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getConstituenciesFromBoothPublicationVoter() method -"+e);
+			return resultList;
+		}
+		
+	 }
 }
