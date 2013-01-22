@@ -142,5 +142,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<Object[]> getNewsByLocationAndCategory(List<Long> candidateIds,
 			FileVO fileVO, List<Long> locationValuesList);
+	
+	 public List<FileGallary> getFileGallariesByFileId(Long fileId);
+	
+	
 }
 
