@@ -34,7 +34,16 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private List<FileVO> returnVal;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ResultStatus resultStatus;
+	private FileVO savedDetails;
 	
+	public FileVO getSavedDetails() {
+		return savedDetails;
+	}
+
+	public void setSavedDetails(FileVO savedDetails) {
+		this.savedDetails = savedDetails;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
@@ -360,6 +369,10 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   } 
 		    fileVO.setFileId(jObj.getLong("fileId"));
 		    resultStatus = newsMonitoringService.updateDeleteNews(fileVO,jObj.getString("task").trim(),sourceFilesList,languageFilesList);
+		    
+		    fileVO.setResultStatus(resultStatus);
+		    
+		    savedDetails =  fileVO;
 	    }
 	   catch(Exception e){
 		   log.error("Exception rised in updateDeleteNews Method of NewsDisplayAction ",e); 
