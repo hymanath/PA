@@ -94,7 +94,7 @@ public class ReadVoterDataFromPdf {
 
     public static void main(String args[]) throws IOException {
         PDDocument pd = null;
-        List<VoterInfo> voterList = new ArrayList<VoterInfo>();
+        int totalVotersCount = 0;
         int i = 0;
         // Regex. For those who do not know. The Pattern refers to the format you are looking for.
         // In our example, we are looking for voter data
@@ -102,7 +102,8 @@ public class ReadVoterDataFromPdf {
         //  Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n(KLQ\\d*|AJP\\d*|AP\\d*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:)\\nHouse No:\\n([A-Z\\s\\n]*)\\n([A-Z\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n[\\s0-9]*\\n");
         //Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n([A-Z\\d]*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\nHouse No:\\n([A-Za-z\\.\\s\\n]*)\\n([A-Za-z\\.\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n([\\s0-9a-zA-Z]*)\\n");
        /* This Pattern will use full for 2013 */
-        Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
+       // Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
+        Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([a-zA-Z]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
        // Pattern newp = Pattern.compile("([\\s0-9a-zA-Z\\s]*)\\r\\nAge:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\s]*)\\r\\n([\\s0-9]*)\\r\\n");
         //Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)Father's Name:\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\s([a-zA-Z]*)\\r\\n");
         
@@ -149,26 +150,27 @@ public class ReadVoterDataFromPdf {
                         i++;
                         voter = new VoterInfo();
                         // group() method refers to the next number that follows the pattern we have specified.
-                        voter.setAge(m.group(7).replaceAll("\\r\\n","").trim());
-                        voter.setSex(m.group(1).replaceAll("\\r\\n","").trim());
-                        voter.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
+                        voter.setAge(m.group(6).replaceAll("\\r\\n","").trim());
+                        voter.setSex(m.group(7).replaceAll("\\r\\n","").trim());
+                        voter.setVoterId(m.group(1).replaceAll("\\r\\n","").trim());
+                        voter.setGuardianRelation(m.group(4).substring(0, m.group(4).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+                        voter.setHouseNumber(m.group(5).replaceAll("\\r\\n","").trim());
                         
-                        if(m.group(4).endsWith(" ") && m.group(4).split("\\r\\n").length > 1)
+                        if(m.group(2).endsWith(" ") && m.group(2).split("\\r\\n").length > 1)
                         {
-                        	String names[] = m.group(4).split("\\r\\n");
+                        	String names[] = m.group(2).split("\\r\\n");
                         	String voterName = "";
-                        	voter.setGuardianName(names[names.length-1]+m.group(5).replaceAll("\\r\\n","").trim());
+                        	voter.setGuardianName(names[names.length-1]+m.group(3).replaceAll("\\r\\n","").trim());
                         	for(int arrInd=0;arrInd<names.length-1;arrInd++)
                         		voterName = voterName + names[arrInd];
                         	voter.setVoterName(voterName.replaceAll("\\r\\n","").trim());
                         }
                         else
                         {
-	                        voter.setVoterName(m.group(4).replaceAll("\\r\\n","").trim());
-	                        voter.setGuardianName(m.group(5).replaceAll("\\r\\n","").trim());
+	                        voter.setVoterName(m.group(2).replaceAll("\\r\\n","").trim());
+	                        voter.setGuardianName(m.group(3).replaceAll("\\r\\n","").trim());
                         }
-                        voter.setGuardianRelation(m.group(3).substring(0, m.group(3).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
-                        voter.setHouseNumber(m.group(6).replaceAll("\\r\\n","").trim());
+                        
                         String sNo = m.group(8).replaceAll("\\r\\n","").trim(); 
                         try{
                         if(sNo != null && sNo.length() > 0 && sNo.trim().length() < 5)
@@ -183,7 +185,7 @@ public class ReadVoterDataFromPdf {
                         voter.setBoothNo(fileName[2]);
                         voter.setBoothName(fileName[3]);
                         voter.setConstituencyId(fileName[0]);
-                        voterList.add(voter);
+                        totalVotersCount++;
                         voterInfoList.add(voter);
                         voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
                         System.out.println(voterInfo);
@@ -196,7 +198,7 @@ public class ReadVoterDataFromPdf {
                     saveVotersData(voterInfoList);  
             }
             outwriter.write(sb2.toString());
-            System.out.println("Total No of Voters:" + voterList.size());
+            System.out.println("Total No of Voters:" + totalVotersCount);
             writer.close();
             outwriter.close();
         } catch (Exception e) {
@@ -217,6 +219,9 @@ public class ReadVoterDataFromPdf {
     		str = str.replaceAll("\\r\\n\\r\\nHusband's Name:", "\r\nHusband's Name:");
     		str = str.replaceAll("\\r\\n\\r\\nMother's Name:", "\r\nMother's Name:");
     		str = str.replaceAll("\\r\\n\\r\\nOther's Name:", "\r\nOther's Name:");
+    		
+    		str = str.replaceAll(" Male", "\r\nMale");
+    		str = str.replaceAll(" Female", "\r\nFemale");
     		
     		return new StringBuilder(str);
     	}catch (Exception e) {
