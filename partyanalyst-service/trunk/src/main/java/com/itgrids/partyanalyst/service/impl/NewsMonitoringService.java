@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.NewsImportance;
@@ -52,9 +54,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private INewsImportanceDAO newsImportanceDAO;
     private FileDAO fileDAO;
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-   
-
-	
+    private IGallaryDAO gallaryDAO;
 
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
     private IRegionScopesDAO regionScopesDAO;
@@ -79,6 +79,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			IUserCandidateRelationDAO userCandidateRelationDAO) {
 		this.userCandidateRelationDAO = userCandidateRelationDAO;
 	}
+	
+
+
+	public IGallaryDAO getGallaryDAO() {
+		return gallaryDAO;
+	}
+
+	public void setGallaryDAO(IGallaryDAO gallaryDAO) {
+		this.gallaryDAO = gallaryDAO;
+	}
+
 
     
     public IBoothDAO getBoothDAO() {
@@ -280,6 +291,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		  fileVO.setFileTitle1(file.getFileTitle());
 	    		  fileVO.setDescription(file.getFileDescription());
 	    		  fileVO.setFileDate(file.getFileDate()!=null?file.getFileDate().toString():"");
+	    		  fileVO.setFileGallaryId((Long)obj[3]);
+	    		  fileVO.setGallaryName(obj[4].toString());
 	    		  
 	    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 	    		  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
@@ -336,6 +349,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		  fileVO.setLocationScope(file.getRegionScopes()!=null?file.getRegionScopes().getRegionScopesId():null);
 	    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
 	    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
+	    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
 	    		  if(file.getRegionScopes()!=null)
 	    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
 	    		  
@@ -769,6 +783,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 
 			 file.setFileDate(fileDate);
 			 
+			 if(fileVO.getLocationScope() != 0)
 			 file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
 			 file.setLocationValue(fileVO.getRegionValue());
 			 
@@ -791,7 +806,22 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 fileGallaryDAO.updateFileDate(dateUtilService.getCurrentDateAndTime(),fileVO.getFileId());
 			 
 			 
-			 if(fileVO.getVisibility().equalsIgnoreCase("public")){
+          if(fileVO.getFileGallaryId() !=0 && fileVO.getGallaryId() != 0){
+				 
+				 FileGallary fileGallary = fileGallaryDAO.get(fileVO.getFileGallaryId());
+				 fileGallary.setGallary(gallaryDAO.get(fileVO.getGallaryId()));
+				 
+				 if(fileVO.getVisibility().equalsIgnoreCase("public"))
+				    fileGallary.setIsPrivate("false");
+				 else
+				    fileGallary.setIsPrivate("true");
+				 
+				 fileGallaryDAO.save(fileGallary);
+				 
+				 
+			 }
+			 
+			/* if(fileVO.getVisibility().equalsIgnoreCase("public")){
 				 
 				 fileGallaryDAO.updateVisibility(fileVO.getFileId(),"false");
 				 
@@ -800,7 +830,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 				 fileGallaryDAO.updateVisibility(fileVO.getFileId(),"true");
 				 
 			 }
-			 
+			 */
 		 }
 		 else if(task.equalsIgnoreCase("Delete")){
 			 fileGallaryDAO.deleteFile(fileVO.getFileId());
