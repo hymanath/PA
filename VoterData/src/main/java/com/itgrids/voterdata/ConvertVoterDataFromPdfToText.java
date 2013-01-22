@@ -133,7 +133,7 @@ public class ConvertVoterDataFromPdfToText {
                     // Add text to the StringBuilder from the PDF
                     sb.append(stripper.getText(pd));
                     
-                    //System.out.println("File text:"+stripper.getText(pd));
+                    System.out.println("File text:"+stripper.getText(pd));
                                        
                     String [] fileName = input.getName().split("-");
                     // Matcher refers to the actual text where the pattern will be found
