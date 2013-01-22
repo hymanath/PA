@@ -160,7 +160,8 @@
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
-
+			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
+			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
 			 <result name="statePageRedirect" type="chain">statePageAction</result>
@@ -4224,6 +4225,11 @@
            		<param name="root">countList</param>
         	</result>
 		</action>
+		<action name="populateVoterDataAction" class="populateVoterDataAction">
+		<result name="success">/jsp/populateVoterData.jsp</result>
+		<result name="error">/jsp/loginForm.jsp?src=populateVoterDataAction</result>	
+		</action>
+		
 		
 		
 	</package>

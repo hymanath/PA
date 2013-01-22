@@ -175,6 +175,7 @@
 		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/ministerAnalysisAction*</pattern>
 		<pattern>/censusReportAction*</pattern>
+		<pattern>/populateVoterDataAction*</pattern>
     </decorator>
 
 </decorators>
