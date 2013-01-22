@@ -789,7 +789,7 @@ function showNewsDetails(jsObj,result){
   var newsResultColumnDefs = [ 		    	             
 		    	            
 							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
-							{key:"gallaryName", label: "GALLERY NAME", sortable: true},
+							{key:"gallaryName", label: "GALLERY", sortable: true},
 		    	           	{key:"source", label: "SOURCE", sortable: true},
 							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
 							{key:"description", label: "DESCRIPTIONS", sortable: true},
