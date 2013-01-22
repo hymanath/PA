@@ -676,10 +676,18 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	 			return query.list();
 		}
 	  
+	  public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString) {
+			
+			 Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
+	 			  query.setParameter("publicationDateId", publicationDateId);
+	 			  query.setParameter("id", id);
+	 			return query.list();
+		}
+	  
 	  public List<Object[]> getCastWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append("select model2.casteState.caste.casteName,count(model2.casteState.caste.casteName) from BoothPublicationVoter model,UserVoterDetails model2 ");
+			str.append("select model2.casteState.caste.casteName,count(model2.casteState.caste.casteName),model2.casteState.casteStateId from BoothPublicationVoter model,UserVoterDetails model2 ");
 			str.append("where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 			if(locationType.equalsIgnoreCase("constituency"))
 				str.append(" model.booth.constituency.constituencyId = :locationId ");

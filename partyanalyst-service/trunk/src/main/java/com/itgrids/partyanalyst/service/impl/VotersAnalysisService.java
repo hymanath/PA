@@ -3591,8 +3591,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 return null;
 	 }
 	 
-	 public List<VoterHouseInfoVO> getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id){
+	 public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id){
+		 VoterHouseInfoVO returnValue = new VoterHouseInfoVO();
 		 List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+		 returnValue.setVotersList(votersList);
 		 try{
 			  StringBuilder query = new StringBuilder();
 			  
@@ -3613,23 +3615,23 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					query.append(" and model.booth.boothId = :id ");
 				}
 				else if(type.equalsIgnoreCase("panchayat")){
-					query.append(" and model.panchayat.panchayatId = :id ");
+					query.append(" and model.booth.panchayat.panchayatId = :id ");
 				}
 			    
 			    if(searchInfo.getSetValue() != null && searchInfo.getSetValue().equalsIgnoreCase("or")){
 			    	if(searchInfo.getVoterIdCardNo() != null)
-			    		query.append(" or model.voter.voterIDCardNo = "+searchInfo.getVoterIdCardNo());
+			    		query.append(" or model.voter.voterIDCardNo = '"+searchInfo.getVoterIdCardNo()+"'");
 			    	if(searchInfo.getName() != null){
-			    	  if(searchInfo.getVoterCategoryValuesName() != null && searchInfo.getVoterCategoryValuesName().equalsIgnoreCase("start"))
-			    		query.append(" or model.voter.name like '"+searchInfo.getSetValue()+"%'");
+			    	  if(searchInfo.getSetValue() != null && searchInfo.getSetValue().equalsIgnoreCase("start"))
+			    		query.append(" or model.voter.name like '"+searchInfo.getName()+"%'");
 			    	  else
-			    		query.append(" or model.voter.name like '%"+searchInfo.getSetValue()+"%'");
+			    		query.append(" or model.voter.name like '%"+searchInfo.getName()+"%'");
 			    	}
 			    	if(searchInfo.getGaurdian() != null){
 			    		query.append(" or model.voter.relativeName like '%"+searchInfo.getGaurdian()+"%'");
 			    	}
 			    	if(searchInfo.getGender() != null){
-			    		 query.append(" or model.voter.gender = "+searchInfo.getGender());
+			    		 query.append(" or model.voter.gender = '"+searchInfo.getGender()+"'");
 			    	}
 			    	if(searchInfo.getAge() != null){
 			    		 query.append(" or model.voter.age >= "+searchInfo.getAge());
@@ -3639,18 +3641,18 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			    	}
 			    }else{
 			    	if(searchInfo.getVoterIdCardNo() != null)
-			    		query.append(" and model.voter.voterIDCardNo = "+searchInfo.getVoterIdCardNo());
+			    		query.append(" and model.voter.voterIDCardNo = '"+searchInfo.getVoterIdCardNo()+"'");
 			    	if(searchInfo.getName() != null){
-			    	  if(searchInfo.getVoterCategoryValuesName() != null && searchInfo.getVoterCategoryValuesName().equalsIgnoreCase("start"))
-			    		query.append(" and model.voter.name like '"+searchInfo.getSetValue()+"%'");
+			    	  if(searchInfo.getSetValue() != null && searchInfo.getSetValue().equalsIgnoreCase("start"))
+			    		query.append(" and model.voter.name like '"+searchInfo.getName()+"%'");
 			    	  else
-			    		query.append(" and model.voter.name like '%"+searchInfo.getSetValue()+"%'");
+			    		query.append(" and model.voter.name like '%"+searchInfo.getName()+"%'");
 			    	}
 			    	if(searchInfo.getGaurdian() != null){
-			    		query.append(" and model.voter.relativeName like '%"+searchInfo.getSetValue()+"%'");
+			    		query.append(" and model.voter.relativeName like '%"+searchInfo.getGaurdian()+"%'");
 			    	}
 			    	if(searchInfo.getGender() != null){
-			    		 query.append(" and model.voter.gender = "+searchInfo.getGender());
+			    		 query.append(" and model.voter.gender = '"+searchInfo.getGender()+"'");
 			    	}
 			    	if(searchInfo.getAge() != null){
 			    		 query.append(" and model.voter.age >= "+searchInfo.getAge());
@@ -3660,14 +3662,34 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			    	}
 			    	
 			    }
+			    if(searchInfo.getSortByColum().equalsIgnoreCase("name"))
+			          query.append(" order by model.voter.name "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("voterIdCardNo"))
+				      query.append(" order by model.voter.voterIDCardNo "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("houseNo"))
+				      query.append(" order by model.voter.houseNo "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("boothName"))
+				      query.append(" order by model.booth.partNo "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("gender"))
+				      query.append(" order by model.voter.gender "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("age"))
+				      query.append(" order by model.voter.age "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("gaurdian"))
+				      query.append(" order by model.voter.relativeName "+searchInfo.getSortBy());
+			    else if(searchInfo.getSortByColum().equalsIgnoreCase("relationship"))
+				      query.append(" order by model.voter.relationshipType "+searchInfo.getSortBy());
 			    
-			    List<Object[]> votersData = boothPublicationVoterDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,0,100,query.toString());
-			 populateVotersDataToVo(votersData,votersList);
+			    List<Long> countList = boothPublicationVoterDAO.getVotersCountBySearchCriteria(searchInfo.getPublicationId(),id,query.toString());
+			     if(countList != null && countList.get(0) != null && ((Long)countList.get(0)).longValue() > 0l){
+			    	 returnValue.setTotalHousesCount((Long)countList.get(0));
+			    	  List<Object[]> votersData = boothPublicationVoterDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,searchInfo.getStartIndex(),searchInfo.getMaxIndex(),query.toString());
+				      populateVotersDataToVo(votersData,votersList);
+			     }
 		 }catch(Exception e){
 			 log.error("Exception rised in getVotersInfoBySearchCriteria ",e);
 		 }
 		 
-		 return votersList;
+		 return returnValue;
 	 }
 	 
 	 public void populateVotersDataToVo(List<Object[]> votersData,List<VoterHouseInfoVO> votersList){
@@ -3820,6 +3842,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					castVO.setCastName(castInfo[0].toString());
 					castVO.setCastCount((Long)castInfo[1]);
 					castVO.setPartyNotAssigCount((Long)castInfo[1]);
+					castVO.setCastStateId((Long)castInfo[2]);
 				}
 				
 				for(Object[] party : partiesList){
