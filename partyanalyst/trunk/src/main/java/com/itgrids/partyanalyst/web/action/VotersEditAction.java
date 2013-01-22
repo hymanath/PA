@@ -494,7 +494,6 @@ public String saveVoterDetails(){
 	
 	 public String getVotersInfoBySearchCriteria(){
 		 try{
-		    jObj = new JSONObject(getTask());
 		    HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			Long userId = null;
@@ -503,23 +502,26 @@ public String saveVoterDetails(){
 			else 
 			  return "error";
 			VoterHouseInfoVO searchInfo = new VoterHouseInfoVO();
-			if(jObj.getString("voterCardId").trim().length() >0)
-				searchInfo.setVoterIdCardNo(jObj.getString("voterCardId").trim());
-			if(jObj.getString("voterName").trim().length() >0)
-				searchInfo.setName(jObj.getString("voterName").trim());
-			if(jObj.getString("voterNameType").trim().length() >0)
-				searchInfo.setSetValue(jObj.getString("voterNameType").trim());
-			if(jObj.getString("guardianName").trim().length() >0)
-				searchInfo.setGaurdian(jObj.getString("guardianName").trim());
-			if(jObj.getString("gender").trim().length() >0)
-				searchInfo.setGender(jObj.getString("gender").trim());
-			if(jObj.getLong("startAge") > 0)
-				searchInfo.setAge(jObj.getLong("startAge"));
-			if(jObj.getLong("endAge") > 0)
-				searchInfo.setToAge(jObj.getLong("endAge"));
-			searchInfo.setPublicationId(jObj.getLong("publicationDateId"));
-			
-			votersFamilyInfo = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,jObj.getString("locationLvl"),jObj.getLong("id"));
+			if(request.getParameter("voterCardId").trim().length() >0)
+				searchInfo.setVoterIdCardNo(request.getParameter("voterCardId").trim());
+			if(request.getParameter("voterName").trim().length() >0)
+				searchInfo.setName(request.getParameter("voterName").trim());
+			if(request.getParameter("voterNameType").trim().length() >0)
+				searchInfo.setSetValue(request.getParameter("voterNameType").trim());
+			if(request.getParameter("guardianName").trim().length() >0)
+				searchInfo.setGaurdian(request.getParameter("guardianName").trim());
+			if(request.getParameter("gender").trim().length() >0)
+				searchInfo.setGender(request.getParameter("gender").trim());
+			if(Long.parseLong(request.getParameter("startAge")) > 0)
+				searchInfo.setAge(Long.parseLong(request.getParameter("startAge")));
+			if(Long.parseLong(request.getParameter("endAge")) > 0)
+				searchInfo.setToAge(Long.parseLong(request.getParameter("endAge")));
+			searchInfo.setPublicationId(Long.parseLong(request.getParameter("publicationDateId")));
+			searchInfo.setStartIndex(Integer.parseInt(request.getParameter("startIndex")));
+			searchInfo.setMaxIndex(Integer.parseInt(request.getParameter("results")));
+			searchInfo.setSortBy(request.getParameter("dir").trim());
+			searchInfo.setSortByColum(request.getParameter("sort").trim());
+			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,request.getParameter("locationLvl"),Long.parseLong(request.getParameter("id")));
 		 }catch(Exception e){
 			 Log.error("Exception Occured in getVotersInfoBySearchCriteria() Method, Exception - ",e);
 		 }

@@ -58,6 +58,13 @@ function getAllVoterFamiliesForEdit(){
         });
     if(impFamiliesEditInfo.length > 0){
 	     $("#multipleVoterFamiliesEditDiv").html("");
+		 if(votersLimitExist){
+		    if(impFamiliesEditInfo.length > 30)
+			{
+			  alert("Please select atomst 30 voters to edit");
+			   return;
+			}
+		  }
 		 totalCategories = 0;
 		  var jsObj=
 		  {
@@ -155,9 +162,13 @@ function buildVotersInFamilyForEdit(results){
 		}
 	 
 	}
-	 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 400px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVoters();' value='Update All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+	 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVoters();' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 	 $("#multipleVoterFamiliesEditDiv").html(str);
    }
+}
+
+function ClearAllSelectedVoters(){
+ $("#multipleVoterFamiliesEditDiv").html("");
 }
 
 function applyValueToAllVoters(id,classId){
@@ -187,6 +198,13 @@ function updateAllSelectedVoters(){
 			
         });
 		if(votersEditInfo.length > 0){
+		 if(votersLimitExist){
+		    if(votersEditInfo.length > 30)
+			{
+			  alert("Please select atomst 30 voters to edit");
+			   return;
+			}
+		  }
 		    $("#votersEditSaveAjaxImg").show();
 			$("#votersEditSaveButtnImg").attr("disabled", "disabled");	
 		     var jsObj=
@@ -650,7 +668,11 @@ function showImportantFamiliesDiv()
 								else if(jsObj.task =="getPreviousEleVotingTrends")
 								{
 									showPreviousEleVotingTrends(myResults,jsObj);	
-								}									
+								}
+                                else if(jsObj.task == "getVotersInAFamilySearch")
+								{
+								    buildVotersInFamilySearch(myResults,jsObj.hno);
+								}								
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
