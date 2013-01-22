@@ -756,26 +756,49 @@ function showNewsDetails(jsObj,result){
   {
 	var user = oData;
 	var fileId= oRecord.getData("fileId");
-	elLiner.innerHTML ="<a href='javascript:{}' onclick='editNewsDetails("+fileId+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+
+	var str='';
+	str+="<a style='float:left;' title='edit this news' href='javascript:{}' onclick='editNewsDetails("+fileId+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+
+	str+="<a style='float:right;' title='delete this news'  href='javascript:{}' onclick='updateDeleteNews(\"Delete\","+fileId+");'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>"
+
+
+	elLiner.innerHTML =str;
 		
   };
-  YAHOO.widget.DataTable.delet = function(elLiner, oRecord, oColumn, oData) 
+  /*YAHOO.widget.DataTable.delet = function(elLiner, oRecord, oColumn, oData) 
   {
 	var fileId= oRecord.getData("fileId");
 	elLiner.innerHTML ="<a href='javascript:{}' onclick='updateDeleteNews(\"Delete\","+fileId+");'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
 		
+  };*/
+
+   YAHOO.widget.DataTable.visibilty = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var visibility= oRecord.getData("visibility");
+
+	if(visibility == "false")
+	   elLiner.innerHTML ="<div style='text-align:center;'><img style='text-decoration: none; border: 0px none;' src='images/icons/public.png' title='this is public news'></div>";
+	else
+	   elLiner.innerHTML ="<div style='text-align:center;'><img style='text-decoration: none; border: 0px none;' src='images/icons/private.png' title='this is private news'></div>";
+
+		
   };
+
+
   var newsResultColumnDefs = [ 		    	             
 		    	            
 							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
+							{key:"gallaryName", label: "GALLERY NAME", sortable: true},
 		    	           	{key:"source", label: "SOURCE", sortable: true},
 							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
 							{key:"description", label: "DESCRIPTIONS", sortable: true},
 		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
 							{key:"locationValue", label: "AREA NAME", sortable: true},
 							{key:"fileDate", label: "NEWS DATE", sortable: true},
-							{key:"edit", label: "EDIT",formatter:YAHOO.widget.DataTable.edit},
-							{key:"delete", label: "DELETE",formatter:YAHOO.widget.DataTable.delet}
+							{key:"update", label: "UPDATE",formatter:YAHOO.widget.DataTable.edit},
+							//{key:"delete", label: "DELETE",formatter:YAHOO.widget.DataTable.delet},
+							{key:"visibility", label: "VISIBILITY",formatter:YAHOO.widget.DataTable.visibilty}
 		    	        ]; 
 	var newsResultDataSource = new YAHOO.util.DataSource(result); 
 	
@@ -792,7 +815,7 @@ function showNewsDetails(jsObj,result){
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate","fileId","edit","delete"]
+						 fields : [ "categoryType","gallaryName","source","fileTitle1","description","locationScopeValue","locationValue","fileDate","fileId","edit","delete"]
 					};
 
 		var newsResultDataSource = new YAHOO.widget.DataTable("showNews", newsResultColumnDefs,myDataSource, myConfigs);
@@ -1085,7 +1108,7 @@ function editNewsDetails(fileId){
 	str += '<table>';
 	str+='<tr>';
 	str+='<td class="tdWidth">Select News Gallery<font class="requiredFont">*</font></td>';
-	str+='<td class="selectWidthPadd"><select style="width:222px;" onchange="buildNewsVisibility()" id="gallaryId" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
+	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryId" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
 	str+='</tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
@@ -1211,6 +1234,8 @@ function editNewsDetails(fileId){
 	str += '<div style="padding-left:223px;padding-top:10px;"> <input type="button" value="Update" class="imageButton" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
 	str += '</fieldset>';
 	str+='</div>';
+
+	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId" value='+reqFile.contentId+'></input>';
 	    document.getElementById("editNewsInner").innerHTML = str;
 		
 	
@@ -1651,7 +1676,7 @@ function appendResults(results , divId){
 
 	    }
 
-	$('#gallaryId').val(reqFile.contentId);
+	$('#gallaryId').val(reqFile.fileGallaryId);
 
 	}
     
@@ -1728,7 +1753,8 @@ return false;
 
 
 document.getElementById("newsDeleteMessage").innerHTML = "";	
- var timeST = new Date().getTime();	
+ var timeST = new Date().getTime();
+ 
 
    var title ="";
    var description ="" ;
@@ -1747,6 +1773,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
    var locationScopeId = "0";
    var locationScopeValue = "";
    var visibility = "";
+   var fileGallaryId  = 0;
    //CHANGE BY SAMBA END
 
   if(task == "Update")
@@ -1762,17 +1789,21 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
    keywords = document.getElementById("keywords").value;
    fileDate = document.getElementById("existingFromText").value;
    locationScopeId = document.getElementById("scopeDiv").value;
+   fileGallaryId = $('#fileGallaryId').val();
 
    try
   {
   	 locationScopeValue = document.getElementsByName('locationValue')[0].value; 
-
   }
-catch(err)
-  {
-  	 locationScopeValue = document.getElementById('locationValueId').value; 
-
+   catch(err)
+  { 
+	locationScopeValue = reqFile.locationVal;
   }
+
+  if(locationScopeValue == null || locationScopeValue == "null")
+	  locationScopeValue = 0;
+
+
 
    keywords = removeAllUnwantedCharacters(keywords); 
    
@@ -1828,10 +1859,11 @@ catch(err)
           fileDate         :    fileDate,
           locationScopeId  :    locationScopeId,
           locationScopeValue:   locationScopeValue,
-		  visibility        :visibility
+		  visibility        :visibility,
+		  fileGallaryId:fileGallaryId
      }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-      var url = "updateDeleteNewsAction.action?"+rparam;						
+      var url = "updateDeleteNewsAction.action?"+rparam;	
   callAjax(jsObj,url);
  
  }
