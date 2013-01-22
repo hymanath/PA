@@ -654,6 +654,32 @@ $('#newsDisplayDiv').html('');
 
 }
 
+
+function showSubNewsDetails(locationValue,locationId){
+
+
+$('#newsCountDiv').html('');
+$('#newsDisplayDiv').html('');
+	newsString = "";
+locationValue = locationValue.substring(1);
+	 var jObj=
+	{
+		locationValue:locationValue,
+		locationId:locationId,
+		publicationId:0,
+		//locationValue:locationValue,
+		//locationId:locationId,
+		//publicationId:publicationId
+
+		task:"newsForALocation"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getNewsCountForALocationByCategory.action?"+rparam;	
+
+	callAjaxToShowNewsDetails(jObj,url);
+
+}
+
 function callAjaxToShowNewsDetails(jObj,url){
 		
 			 var myResults;

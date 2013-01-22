@@ -609,7 +609,10 @@ function showImportantFamiliesDiv()
 								}
 								else if(jsObj.task == "getCountForLevel")
 								{
+									if(jsObj.type == "constituency")
 									buildCountData(myResults,jsObj);
+									else
+									buildCountData1(myResults,jsObj);
 								}
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{
@@ -830,7 +833,11 @@ $(document).ready(function(){
 	});
     $("#constituencyList").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
+		{
 	      getBasicInfo();
+		 
+		}
+
 	  
 	});
 	$("#mandalField").live("change",function(){
@@ -855,12 +862,21 @@ $(document).ready(function(){
        $('.voterDetails').html('');
 	   $('.noteDiv').html('');
 	   if($(this).val() != 0 ){
+
 	     if($("#reportLevel").val() == 1 && $("#constituencyList option").length > 0 && $("#constituencyList").val() != 0)
+		   
 	       getBasicInfo();
+		else if($("#constituencyList option").length > 0 && $("#constituencyList").val() != 0)
+			getCountsForConstituency();
+		   
 		 else if($("#reportLevel").val() == 2 && $("#mandalField option").length > 0 && $("#mandalField").val() != 0 )
+		  
 		   getBasicInfo();
+		 
 		 else if($("#reportLevel").val() == 3 && $("#panchayatField option").length > 0 && $("#panchayatField").val() != 0 )
+		  
 		   getBasicInfo();
+		  
 		 else if($("#reportLevel").val() == 4 && $("#pollingStationField option").length > 0 && $("#pollingStationField").val() != 0 )
 		  { 
 		    //getBasicInfo();
@@ -2959,6 +2975,7 @@ chart.draw(data, options);
 
 function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 {
+
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
 	if(to == ""){
@@ -3271,10 +3288,41 @@ function showPreviousEleVotingTrends(results,jsObj)
 			}
 		
 	}
+
+function getCountsForConstituency()
+{
+
+$("#reportLevelheading").html("");
+
+document.getElementById('reportLevelCountDiv').style.display = 'none';
+
+var level =  $("#reportLevel").val();
+var publicationDateId = $("#publicationDateList").val();
+var typeName = '';
+
+type = 'constituency';
+id = $("#constituencyList").val();
+typeName = $('#constituencyList :selected').text() + ' Constituency ';
+
+var jsObj=
+		{
+			type:type,	
+			id:id,
+			typeName:typeName,
+			publicationDateId:publicationDateId,
+			task:"getCountForLevel"
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCountForLevelAction.action?"+rparam;						
+		callAjax(jsObj,url);
+}
+
 function getCounts()
 {
-$("#reportLevelheading").html("");
-document.getElementById('reportLevelCountDiv').style.display = 'none';
+
+$("#reportLevelheading1").html("");
+document.getElementById('reportLevelCountDiv1').style.display = 'none';
 var level =  $("#reportLevel").val();
 var publicationDateId = $("#publicationDateList").val();
 var typeName = '';
@@ -3286,11 +3334,8 @@ typeName = $('#constituencyList :selected').text() + ' Constituency ';
 else if(level == 2){
 type = 'mandal';
 id = $("#mandalField").val();
-//if(id.charAt(0) =="2")
-typeName = $('#mandalField :selected').text();
-/*if(id.charAt(0) =="1")
-typename = $('#mandalField :selected').text();*/
 
+typeName = $('#mandalField :selected').text();
 }
 else if(level == 3){
 type = 'panchayat';
@@ -3320,47 +3365,111 @@ var jsObj=
 function buildCountData(results,jsObj)
 {
 
-//$("#reportLevelCountDiv").html("");
-document.getElementById('reportLevelCountDiv').style.display = 'block';
-var value = $('#mandalField').val();
-if(value.charAt(0) =="1"){
-type = "muncipality";
-	}
+
 var str = '';
 
-$("#reportLevelheading").html(" "+jsObj.typeName+" Information");
-$("#reportLevelCountDiv").css({ 'border': '1px solid #5e5e5e', 'float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+var result = results[0].mandalList;
 var divEle = document.getElementById('reportLevelCountDiv');
-str+='<div>';
+
+/*if(jsObj.type != "constituency")
+	{
+	$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
+	document.getElementById('reportLevelCountDiv1').style.display = 'block';
+	$("#reportLevelCountDiv1").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+	
+	}*/
+
+
 if(jsObj.type == "constituency")
 {
+$("#reportLevelheading").html(" "+jsObj.typeName+" Information");
+document.getElementById('reportLevelCountDiv').style.display = 'block';
+$("#reportLevelCountDiv").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+	str+='<div style="margin:10px;">';
 	if(results[0].totalmandals == null)
 		results[0].totalmandals = 0;
 	if(results[0].noOfLocalBodies == null)
 	results[0].noOfLocalBodies = 0;
-str +='<span class="badge badge-info badge-add">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>&nbsp;&nbsp;';
-str +='<span class="badge badge-info badge-add">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>&nbsp;&nbsp;';
-str +='<span class="badge badge-info badge-add">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>&nbsp;&nbsp;';
-str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	if(results[0].totalPanchayats == null)
+		results[0].totalPanchayats = 0;
+	
+	/*str+='<ul>';
 
+	str +='<li><a class="parent" href="#"><span class="badge badge-info badge-add">'+results[0].totalmandals+'</span></a><span class="help-inline f2">Mandals</span>&nbsp;&nbsp;';
+	for(var i in result)
+	{
+	str+='<li><a onclick="getvotersSubBasicInfo('+result[i].id+',\''+result[i].name+'\');showSubNewsDetails(\''+result[i].id+'\',5);"><span>'+result[i].name+'</span></a></li>';
+	}
+	str+='</ul>';*/
 
-}
-if(jsObj.type == "mandal" && type != "muncipality")
+	str +='<span class="badge badge-info badge-add">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>&nbsp;&nbsp;';
+	str +='<span class="badge badge-info badge-add">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>&nbsp;&nbsp;';
+	str +='<span class="badge badge-info badge-add">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>&nbsp;&nbsp;';
+	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
 
-{
-str +='<span class="badge badge-info badge-add">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>&nbsp;&nbsp;';
-str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
-}
-if( jsObj.type == "mandal" && type == "muncipality")
-
-{
-str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
-}
-if(jsObj.type == "panchayat")
-
-{
-str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
-}
 str+='</div>';
 divEle.innerHTML = str;
-}	
+}
+
+}
+
+function getvotersSubBasicInfo(id,typename)
+{
+var publicationDateText =$("#publicationDateList option:selected").text();
+var year=publicationDateText.substr(publicationDateText.length - 4);
+
+ 
+var publicationDateId = $("#publicationDateList").val();
+var jsObj=
+			{
+				
+				type:"mandal",
+				id:id,
+				to:"",
+				year:year,
+				typename:typename,
+				publicationDateId:publicationDateId,
+				task:"votersbasicinfo"
+	
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountInfoAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+	function buildCountData1(results,jsObj)
+	{
+	var value = $('#mandalField').val();
+	var str = '';
+	var divEle1 = document.getElementById('reportLevelCountDiv1');
+	$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
+	document.getElementById('reportLevelCountDiv1').style.display = 'block';
+	$("#reportLevelCountDiv1").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+	
+		if(value.charAt(0) =="1"){
+		type = "muncipality";
+	}
+
+	str +='<div>';
+	if(jsObj.type == "mandal" && type != "muncipality")
+
+	{
+	str +='<span class="badge badge-info badge-add">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>&nbsp;&nbsp;';
+	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	}
+	if( jsObj.type == "mandal" && type == "muncipality")
+
+	{
+	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	}
+	if(jsObj.type == "panchayat")
+
+	{
+	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	}
+	str+='</div>';
+
+	divEle1.innerHTML = str;
+
+	}

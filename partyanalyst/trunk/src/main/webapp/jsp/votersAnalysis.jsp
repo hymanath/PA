@@ -167,6 +167,15 @@ table.gridtable td {
     padding-right: 10px;
     padding-top: 10px;
 }
+#votersMainOutertopDiv3{
+-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border: 3px solid #CFD6DF;
+	margin-bottom: 10px;
+	height:100px;
+}
 p {
     color: #333333;
     font-size: 11px;
@@ -517,7 +526,11 @@ body {
 }
 h5{font-family : verdana;}
 </style>
-
+<style>
+.bs-docs-sidenav li {position:relative;}
+.bs-docs-sidenav li .popover-cust{display:none;position:absolute;left:165px;top:-26px;}
+.bs-docs-sidenav li:hover .popover-cust{display:block;}
+</style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
 	var votersLimitExist = false;
@@ -731,6 +744,23 @@ locationDetails.constituencyArr.push(ob);
 <!-- for  body3 start    result  -->
 <div id="votersDiv3" style="display:none">
 
+
+<div id='votersHeaderTopDiv3' style="clear:both;">
+		<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="votersWidgetMainHeader"><span id="reportLevelheading" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
+				</table>
+
+	</div>
+	<div id="votersMainOutertopDiv3">
+ 
+ <div id="reportLevelCountDiv"></div>
+ </div>
+
+ <!--<h5 id="reportTopLevelheading" style="margin-left:15px;"></h5>-->
 <div id='votersHeaderDiv3' style="clear:both;">
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -742,8 +772,8 @@ locationDetails.constituencyArr.push(ob);
 	</div>
     
 <div id='votersMainOuterDiv3'>
- <h5 id="reportLevelheading" style="margin-left:15px;"></h5>
-<div id="reportLevelCountDiv" style="clear:both;"></div><br>
+ <h5 id="reportLevelheading1" style="margin-left:15px;"></h5>
+<div id="reportLevelCountDiv1" style="clear:both;"></div><br>
 	<div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
 	<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>
  	<div id="newsDiv" style="clear:both;">
