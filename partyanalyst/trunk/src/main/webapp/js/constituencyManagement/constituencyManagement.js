@@ -849,7 +849,7 @@ function buildInfluencePeopleScopeSelectBox(jsObj,results)
 				if(results[i].label == 'DISTRICT')
 				dstr += '<select style="width:auto;height:auto;" onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
 				if(results[i].label == 'CONSTITUENCY')
-				dstr += '<select style="width:auto;height:auto;" id="constituencyId" onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+				dstr += '<select style="width:auto;height:auto;" id="localGroupConstituencyId" onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
 			}
 			for(var j=0; j<results[i].optionsList.length; j++)
 			{
