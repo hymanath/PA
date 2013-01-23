@@ -1,10 +1,12 @@
 
 
 function buildLocalUserGroupsCriteria(jsObj,results)
-{	
+{
+	
 	if(jsObj.task != "reGetLocalGroupsInAConstituency")
+	{
 		buildDifferentViewsRadio(results,"differentViewsRadioDiv_localGroups","local groups");
-
+	}
 	createCoulmnChartForLocalUserGroups(results,"localGroupsChartDiv_main");
 	buildRegionWiseOverViewDataForLocalUserGroups(results,"localGroupsRegionWiseOverView_main");	
 
@@ -20,6 +22,7 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 
 function createCoulmnChartForLocalUserGroups(data,divId)
 {
+
 	var categories = data.categoryListOverview;
 	var regionData = data.regionWiseOverview;
 	
@@ -60,8 +63,8 @@ function createCoulmnChartForLocalUserGroups(data,divId)
 	}
 
 	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
-		chart.draw(data, {width: 850, height: 400,legend:'right',legendTextStyle:{fontSize:10}, title: 'Local Groups',
-				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:80, titleTextStyle: {color: 'red'}}
+		chart.draw(data, {width: 850, height: 420,legend:'right',legendTextStyle:{fontSize:10}, title: 'Local Groups',
+				  hAxis: {textStyle:{fontSize:'8'},slantedText:true, slantedTextAngle:85, titleTextStyle: {color: 'red'}}
 				 });
 	
 
@@ -69,6 +72,7 @@ function createCoulmnChartForLocalUserGroups(data,divId)
 
 function buildRegionWiseOverViewDataForLocalUserGroups(info,divId)
 {
+
 	var elmt = document.getElementById(divId);
 	
 	if(!elmt)
@@ -212,11 +216,9 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 	var relmt = document.getElementById("localGroupsRegionsList");
 	var radioelmt = document.getElementById("localGroupsRegionsTypeRadio");
 	var elmt = document.getElementById("localGroupsRegionsData_main");
-	var selectedEle = document.getElementById('constituencyId');
-	
+	var selectedEle = document.getElementById('localGroupConstituencyId');
 	if(!lelmt || !relmt || !elmt || !radioelmt)
 		return;
-
 	lelmt.innerHTML = jsObj.regionTitle+' Detail Info';
 	
 	var img = document.getElementById("influenceBusyCursor");
@@ -270,8 +272,8 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 		
 		relmt.innerHTML = rStr;
 	}*/
-	removeSelectElements(selectedEle);
-	for(var val in results)
+	//removeSelectElements(selectedEle);
+	/*for(var val in results)
 		{
 			var opElmt = document.createElement('option');
 			opElmt.value=results[val].regionId;
@@ -285,9 +287,9 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 			{
 				selectedEle.add(opElmt); // IE only
 			}	
-		}
+		}*/
 	var display = true;
-
+   
 	var str = '';
 	for(var i=0; i<results.length; i++)
 	{
@@ -305,7 +307,6 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 			else 
 				availableRegions.push(results[i].subRegionWiseOverview[k]);
 		}
-
 		str += '<div id="localGroupsDetailData_'+i+'_main" class="influenceDetailData_main">';
 		str += '<div id="localGroupsDetailData_'+i+'_head" class="influenceDetailData_head" onclick="showLocalGroupDetailDataBody(this.id)" style="cursor:pointer">';	
 		str += '<div class="scopeWise_head" style="font-size:11px;">';
