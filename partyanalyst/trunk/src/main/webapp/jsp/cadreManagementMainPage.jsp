@@ -113,7 +113,8 @@ h2
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#cadreId").css("background-position","left -54px");
-	$("#cadreSpanId").css("background-position","right -81px")
+	$("#cadreSpanId").css("background-position","right -81px");
+	 $("#cadreSpanId").closest("li").addClass("active");
   });
 	var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
 	var selectedEventObj={
