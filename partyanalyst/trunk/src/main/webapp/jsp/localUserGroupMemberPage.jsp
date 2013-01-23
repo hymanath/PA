@@ -350,7 +350,7 @@
 
 				<tr>
 					<th> <font color="red"> * </font> Select Category</th>
-					<td colspan="2"> <s:select id="groupCategory" name="groupCategory" onchange="getGroupNamesByCategory(this)" cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name" headerValue="Select Category" headerKey="">
+					<td colspan="2"> <s:select id="groupCategory" name="groupCategory"  cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name" headerKey="">
 					</s:select>
 					</td>
 				</tr>
