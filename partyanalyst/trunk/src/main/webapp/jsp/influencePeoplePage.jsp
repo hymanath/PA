@@ -59,12 +59,12 @@
 <script>
 
  $(document).ready(function() {
-$('th input:checkbox').click(function(e) {
+$('th input:checkbox').live("click",function(e) {
 var table = $(e.target).closest('table');
 $('td input:checkbox', table).attr('checked', e.target.checked);
 });
 
-$('td input:checkbox').click(function(){
+$('td input:checkbox').live("click",function(){
 	var unCheck = false;
 	$(this).closest('table').find('input:checkbox').not(':first').each(function(){
 	if(!$(this).is(':checked'))
@@ -524,13 +524,14 @@ else
 
 			function deletePersonDetails(id)
 			{
-				var isChecked = $('#checkBoxId').attr('checked')?true:false;
+				/*var isChecked = $('#checkBoxId').is(":checked");
+				alert(isChecked);
 					if(isChecked == false)
 					{
 						alert("Please select the Candidate to Delete");
 					}
 					else
-					{
+					{*/
 					 var ask = confirm("Do You want to delete");
 						  if (ask ==  true)
 						  {
@@ -551,7 +552,7 @@ else
 						  {
 							return;	
 						  }	
-					 }
+					 
 			}
 			
 			function showAllPeopleRecords()
