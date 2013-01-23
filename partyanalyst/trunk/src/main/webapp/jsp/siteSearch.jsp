@@ -58,7 +58,8 @@ background-position :right -81px;
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#searchId").css("background-position","left -54px");
-	$("#searchSpanId").css("background-position","right -81px")
+	$("#searchSpanId").css("background-position","right -81px");
+	$("#searchSpanId").closest("li").addClass("active");
   }); 
   google.load('search', '1', {language : 'en', style : google.loader.themes.V2_DEFAULT});
   google.setOnLoadCallback(function() {
