@@ -142,7 +142,8 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 	$("#constituencyId").css("background-position","left -54px");
-	$("#constituencySpanId").css("background-position","right -81px")
+	$("#constituencySpanId").css("background-position","right -81px");
+	  $("#constituencySpanId").closest("li").addClass("active");
 	});
 		google.load("visualization", "1", {packages:["corechart"]});
 		 <%			
@@ -692,14 +693,13 @@
 											buildUserGroupsBasedOnCriteria(jsObj,myResults);
 										}
 										if(jsObj.task == "getSubLevelInfluencePeople")
-										{
-											
+										{	
 											buildSubLevelInfluencePeople(jsObj,myResults);
 											buildConstituencyData(myResults);
 										}
 										if(jsObj.task == "getSubLevelLocalUserGroupsPeople")
-										{
-											buildSubLevelLocalGroupPeople(jsObj,myResults);
+										{	buildSubLevelLocalGroupPeople(jsObj,myResults);
+										buildConstituencyDataForLocalGroups(myResults);
 										}
 										if(jsObj.task == "getInfluencePeopleScopeSelectBox")
 										{
@@ -1032,23 +1032,53 @@
 	{
 		var results = data.regionWiseOverview;
 		var selected = document.getElementById('InfluenceConsituencyId');
-		removeSelectElements(selected);
-		for(var val in results)
+		var type = data.regionsList[0].subRegionType;
+		if(type == 'CONSTITUENCY' || type == 'DISTRICT')
+		{
+			removeSelectElements(selected);
+			for(var val in results)
 			{
-			var opElmt = document.createElement('option');
-			opElmt.value=results[val].regionId;
-			opElmt.text=results[val].regionName;
+					var opElmt = document.createElement('option');
+					opElmt.value=results[val].regionId;
+					opElmt.text=results[val].regionName;
 
-			try
-			{
-				selected.add(opElmt,null); // standards compliant
+					try
+					{
+						selected.add(opElmt,null); // standards compliant
+					}
+					catch(ex)
+					{
+						selected.add(opElmt); // IE only
+					}	
 			}
-			catch(ex)
-			{
-				selected.add(opElmt); // IE only
-			}	
 		}
 	}
+	function buildConstituencyDataForLocalGroups(data)
+	{
+		var results = data.regionWiseOverview;
+		var selected = document.getElementById('localGroupConstituencyId');
+		var type = data.regionsList[0].subRegionType;
+		if(type == 'CONSTITUENCY' || type == 'DISTRICT')
+		{
+			removeSelectElements(selected);
+			for(var val in results)
+			{
+				var opElmt = document.createElement('option');
+				opElmt.value=results[val].regionId;
+				opElmt.text=results[val].regionName;
+
+				try
+				{
+					selected.add(opElmt,null); // standards compliant
+				}
+				catch(ex)
+				{
+					selected.add(opElmt); // IE only
+				}	
+			}
+		}
+	}
+	
 	function removeSelectElements(elmt)
 	{
 		if(!elmt)
