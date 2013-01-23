@@ -7,7 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title> Voters </title>
+<title> Local User Group Members  </title>
 <!-- Then get JQuery UI -->
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
@@ -69,6 +69,17 @@ input, textarea, .uneditable-input {
     width: 200px;
 	
 }
+#localGroupMember_head
+	{
+		color:#8E320A;
+		font-size:17px;
+		font-weight:bold;
+		text-align:center;
+		text-decoration:underline;
+		padding:5px;
+		margin-top:20px;
+		margin-bottom:20px;
+	}
 </style>
 <script type="text/javascript">
 
@@ -238,7 +249,16 @@ function updateGroupDetails()
 	var designationId = $('#selectId').val();
 	if(designationId == 0)
 	{
-		$('#errorDiv').show();
+		$('#errorDiv').html('Please select Designation');
+	}
+	else if(name == '')
+	{
+		$('#errorDiv').html('Pleae Enter Name');
+	}
+	else if(mobileNo == '')
+	{
+	
+		$('#errorDiv').html('Please Enter MobileNo');
 	}
 	else
 	{
@@ -261,9 +281,9 @@ function updateGroupDetails()
 	callAjax(jsObj,url);
 	$('#successDiv').show();
 	$('#errorDiv').hide();
-	//window.opener.location.reload();
+	window.opener.location.reload();
 	}
-	
+	$('#mandateryDiv').hide();
 }
 /*function prevWindowRefrsh()
 {
@@ -277,7 +297,9 @@ getDesignationValues();
 <body style="position: relative;">
 </br></br>
 <!--<div id="successDiv" style="float:left;color:red;display:none;margin-left: 115px;margin-top: 6px;">updated successfully</div>-->
-<div id="errorDiv" style="float:left;color:red;display:none; margin-top: 27px;margin-left: 117px;">Please select Designation</div>
+<div id="localGroupMember_head">Update Local Group Member</div>
+<div id="errorDiv" style="float:left;color:red;margin-top: 9px;margin-left: 117px;"></div>
+<div id="mandateryDiv" style="float:left;color:red;margin-top: 10px;margin-left:0px;">Fields marked with * are complusory</div>
 <div id="mainDiv" style="float:center;">
 <div id="selectDiv"></div>
 <div id="buttonDiv"></div>
