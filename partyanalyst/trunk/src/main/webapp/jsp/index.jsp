@@ -357,7 +357,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#dashBoardId").css("background-position","left -54px");
-	$("#dashBoardSpanId").css("background-position","right -81px")
+	$("#dashBoardSpanId").css("background-position","right -81px");
+	$("#dashBoardSpanId").closest("li").addClass("active");
   });	
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
