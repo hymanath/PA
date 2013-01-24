@@ -1044,10 +1044,12 @@ function buildDataTableForLocalPoliticalChanges(results)
 	var resultsColumnDefsForPoliticalChanges = [ {
 		key : "title",
 		label : "Title",
+		width:50,
 		sortable : true
 	}, {
 		key : "description",
 		label : "Description",
+		width:150,
 		sortable : true
 	}, {
 		key : "occuredDate",
