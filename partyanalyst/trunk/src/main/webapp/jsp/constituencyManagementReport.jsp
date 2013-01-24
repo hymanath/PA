@@ -72,6 +72,9 @@
 
 	
 	<style type="text/css">
+	.yui-dt-liner{
+		word-wrap:break-word;
+	}
 	#contenttable
 	{
 		margin-left:auto;
