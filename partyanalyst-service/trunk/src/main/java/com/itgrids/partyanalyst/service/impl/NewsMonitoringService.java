@@ -533,7 +533,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
 	    FileVO fileVO = null;
 	 try{ 
-		List<Object[]>  newsImportanceList = newsImportanceDAO.getNewsImportanceDetails();
+		List<Object[]>  newsImportanceList = newsImportanceDAO.getNewsImportanceDetailsWithOutOrderBy();
 		for(Object[] newsImportance: newsImportanceList){
 			 fileVO = new FileVO();
 			 fileVO.setIds((Long)newsImportance[0]);
@@ -895,7 +895,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
 		    FileVO fileVO = null;
 		 try{ 
-			List<Object[]>  regionScopesList = regionScopesDAO.getAllRegionScopes();
+			List<Object[]>  regionScopesList = regionScopesDAO.getAllRegionScopesWithOutOrderBy();
 			for(Object[] regionScope: regionScopesList){
 				 fileVO = new FileVO();
 				 fileVO.setIds((Long)regionScope[0]);
