@@ -14,4 +14,9 @@ public class NewsImportanceDAO extends GenericDaoHibernate<NewsImportance, Long>
 	public List<Object[]> getNewsImportanceDetails(){
 		   return getHibernateTemplate().find("select model.newsImportanceId,model.importance from NewsImportance  model order by model.importance ");
 	   }
+	
+	
+	public List<Object[]> getNewsImportanceDetailsWithOutOrderBy(){
+		   return getHibernateTemplate().find("select model.newsImportanceId,model.importance from NewsImportance model");
+	   }
 }
