@@ -36,8 +36,10 @@ var errorMsglabel = '';
 
 function addSocialStatusValue(elmt)
 {	
-	var value = elmt.value;	
+	
+	var value = elmt.value;
 	var selectElmt = document.getElementById("socialStatus_"+value);
+	//alert('selectElmt:'+selectElmt);
 	if(!selectElmt)
 		return;
 	
@@ -432,16 +434,12 @@ function callYUIAnim(height,elmtId)
 
 }
 
-
-
-
-
-
 function showSocialStatus(elmt)
-{	
+{		
 	var checkElmts = document.getElementsByName("socialStatus");
 	var status;
-		
+	var  selectvalue;
+	var  socialStatusvalue;
 	if(elmt.checked == true)
 	{
 		SOCIALSTATUS = true;
@@ -457,13 +455,20 @@ function showSocialStatus(elmt)
 	if(checkElmts.length == 0)
 		return;
 
-	for(var i=0; i<checkElmts.length; i++)
-	{		
-
-		checkElmts[i].disabled = status;		
+    for(var i=0; i<checkElmts.length; i++)
+	{	
+		checkElmts[i].disabled = status;
+		checkElmts[i].checked = false;
+		selectvalue=checkElmts[i].value;
+		socialStatusvalue =  document.getElementById("socialStatus_"+selectvalue);
+		if(checkElmts[i].disabled){
+		socialStatusvalue.disabled = status;
+		socialStatusvalue.value = '0';
+		
+		}
+		
 	}
 
-	
 }
 
 
