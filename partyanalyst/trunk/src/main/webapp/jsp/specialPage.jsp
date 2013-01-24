@@ -944,9 +944,27 @@ function photoGallaryPopUp(){
 	var str='';
 	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
 	$("#buildPhotoGallaryDiv").html(str);
-
+	
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
-		return;
+		{
+			
+			 str='';
+			str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+			$("#buildPhotoGallaryDiv_dup").html(str);
+	
+			$("#buildPhotoGallaryDiv_dup").dialog({ stack: false,
+							    height: 570,
+								width: 720,
+								position:[130,130],								
+								modal: true,
+								title:'<font color="Navy">Photo Galleries</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#buildPhotoGallaryDiv_dup").dialog();
+	
+	}
+
+
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
 							    height: 570,
 								width: 720,
@@ -959,8 +977,7 @@ function photoGallaryPopUp(){
 	showPhotoGallary();
 }
 function showPhotoGallary(){
-
-	var str='';
+		var str='';
 	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Galleries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
 	$("#buildPhotoGallaryDiv").html(str);
 	var jsObj =
@@ -986,7 +1003,7 @@ function buildCandidatePhotoGallary(results)
 		
 	if(results.length<=0)
 	{
-		str+='<b>&nbsp;No Photo Galleries Found </b>';
+		$('#buildPhotoGallaryDiv_dup').html('<b>&nbsp;No Photo Galleries Found </b>');
 	}
 		for(var i in results)
 		{
@@ -1360,6 +1377,7 @@ Tweet</a>
             <div class="pm-inner-cont-sec">
            
              <div id="photoGallaryDiv"> </div>
+			<div id="buildPhotoGallaryDiv_dup"></div>
             
             </div>
           
