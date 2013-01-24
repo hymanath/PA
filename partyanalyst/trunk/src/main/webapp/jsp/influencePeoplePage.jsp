@@ -59,10 +59,10 @@
 <script>
 
  $(document).ready(function() {
-$('th input:checkbox').live("click",function(e) {
-var table = $(e.target).closest('table');
-$('td input:checkbox', table).attr('checked', e.target.checked);
-});
+	 $('th input:checkbox').live("click",function(e) {
+	var table = $(e.target).closest('table');
+	$('td input:checkbox', table).attr('checked', e.target.checked);
+	});
 
 $('td input:checkbox').live("click",function(){
 	var unCheck = false;
