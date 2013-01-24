@@ -633,7 +633,7 @@ function showMinisPerf(id)
   document.getElementById("keyCandidatesData").innerHTML = "";
   //document.getElementById("state").checked = true;  
   //document.getElementById("showHideState").style.display = "block";
-  //getStatesForAssembly();
+  getStatesForAssembly();
   if($("#yearSelId option").length > 0 && $("#yearSelId").val() != 0)
   {
      removeDataDIV();
@@ -654,6 +654,7 @@ function showMinisPerf(id)
 }
 function showImpCandPerf(id)
 {
+
    qtype = "impCand";
   $("#minisPerf").removeClass("dashBoardtabsDivSelected");
   $("#impCandPerf").addClass("dashBoardtabsDivSelected");
@@ -661,7 +662,7 @@ function showImpCandPerf(id)
   document.getElementById("keyCandidatesData").innerHTML = "";
   //document.getElementById("state").checked = true;
   //document.getElementById("showHideState").style.display = "block";
-  //getAllStates();
+  getAllStates();
   if($("#yearSelId option").length > 0 && $("#yearSelId").val() != 0)
   {
      removeDataDIV();
