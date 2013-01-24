@@ -99,7 +99,10 @@ function callAjax(jsObj,url)
 									    if(myResults.length <=35)
 									     buildGraph(myResults);
 										else
+										{
 										 divideArray(myResults);
+										 }
+										 selectPartiesForGraph();
 									}
 									else if(jsObj.task == "getAllPartiesForResults" && jsObj.type == "main")
 									{
@@ -239,6 +242,8 @@ function showPartyPerf(results,type)
 	    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
 	 }
 	  document.getElementById("analysisTableDisplay").innerHTML=str;
+	  
+	  selectParties();
    }
 
 
@@ -276,18 +281,35 @@ function buildPartyComparision(value)
 	   document.getElementById("analysisTable").innerHTML= str;
      getAllPartiesSub();
 }
+function selectParties(){
+ setTimeout(function(){
+    $("#partiesIdDiv :selected").each(function(){
+		var objValue=$(this).val();
+       $('#partiesSelIdDiv option[value=' + objValue + ']').attr("selected",true);
+    });},2000);
+ }
+ function selectPartiesForGraph(){
+ setTimeout(function(){
+    $("#partiesIdDiv :selected").each(function(){
+		var objValue=$(this).val();
+       $('#parties option[value=' + objValue + ']').attr("selected",true);
+    });},2000);
+ }
 function getAnalysisDetails(name)
 {
   	if(name == "main")
 	{
+		//select();
 		 document.getElementById("analysisTableDisplay").innerHTML= '';
          var yearEle =  document.getElementById("yearSelId");
 		 var eleId = yearEle.options[yearEle.selectedIndex].value;
 		  	var partyIds = [];
 			$('#partiesIdDiv option:selected').each(function(){ partyIds.push($(this).val()); });
 			var result = partyIds.join(',');
-			 var includeAlliances = 'false';
-		  var partyEle =  document.getElementById("partiesSelIdDiv");
+			var includeAlliances = 'false';
+			/*alert(partyIds);
+			$("#partiesSelIdDiv").val(partyIds);
+			$("#partiesSelIdDiv").multiselect("refresh");*/
 	      var type;
 		  var jsObj =
 		  { 
@@ -821,6 +843,7 @@ function showDistrictWiseAnalysis(result)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getministersDetailsAction.action?"+rparam;						
 	callAjax(jsObj,url);
+	
 	}
 	else
 	{
