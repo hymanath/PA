@@ -43,7 +43,7 @@ connectDivId = divId;
 
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
-	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
+	bodyStr+='<span><img height="20" width="25" src="/images/icons/constituencyPage/groups.png"></img></span>';
 	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from '+locationName+' Constituency</span>';
 	bodyStr+='</div>';
 	bodyStr+='<div id="connectedPersonsDiv">';
