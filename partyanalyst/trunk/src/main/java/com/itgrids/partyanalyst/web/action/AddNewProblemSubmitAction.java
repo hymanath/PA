@@ -274,7 +274,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblem();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem field is mandatory",shortCircuit=true)
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem field is mandatory",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Problem field should not contain special characters and numbers", shortCircuit = true)
 	public void setProblem(String problem) {
 		this.problemBeanVO.setProblem(problem);
@@ -284,7 +284,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getDescription();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Description field is mandatory",shortCircuit=true)
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Description field is mandatory",shortCircuit=true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Description Should be below 500 characters ", maxLength = "500")	
 	public void setDescription(String description) {
 		this.problemBeanVO.setDescription(description);
@@ -353,7 +353,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public void setReportedDate(String reportedDate) {
 		this.problemBeanVO.setReportedDate(reportedDate);
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Existing From Date",shortCircuit=true)
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Existing From Date",shortCircuit=true)
 	public String getExistingFrom() {
 		return problemBeanVO.getExistingFrom();
 	}
@@ -494,7 +494,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblemImpactLevelValue();
 	}
 	
-	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Problem Location is Mandatory",shortCircuit=true)
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Problem Location is Mandatory",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select valid Problem Location")	
 	public void setProblemLocationId(Long problemLocationId) {
 		this.problemBeanVO.setProblemImpactLevelValue(problemLocationId);
