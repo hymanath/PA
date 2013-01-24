@@ -2227,7 +2227,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 		var template = $(".specialPagSubscrTemplDiv");
 		var templateClone = template.clone();
 		templateClone.removeClass('specialPagSubscrTemplDiv');
-		templateClone.find('.titleCls').html(''+constituencies[i].name+'');
+		templateClone.find('.titleCls').html('<a href="constituencyPageAction.action?constituencyId='+constituencies[i].id+'">'+constituencies[i].name+'</a>');
 		templateClone.find('.btnClass').html('<a href="javascript:{}" class="constituencyunSubscrBtn">UNSUBSCRIBE</a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
 		templateClone.appendTo('#userConstituencySubscriptionsDiv');
