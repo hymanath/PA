@@ -21,7 +21,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script>
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
  
 <script type="text/javascript">
 	var currentTask = '${windowTask}';
@@ -640,6 +640,9 @@
     }
 </script>
 <style type="text/css">
+	#noOfFamilyMembersId{width:40px;margin-top:10px;}
+	
+	#noOfVotersId{width:40px;margin-top:10px;}
 	
 	#registrationMainDiv
 	{
@@ -677,13 +680,18 @@
 		border: 4px solid #CFD6DF;
 		margin-bottom: 10px;
 		padding: 10px;
-		width: 820px;
+		width: 920px;
+		margin-left:auto;
+		margin-right:auto;
 	}
 	legend {
 		background-color: #567AAF;
 		color: #FFFFFF;
 		font-size: 12px;
 		padding: 5px;
+		line-height: 10px;
+		margin-bottom: 0px;
+		width: 100px;
 	}	
 	.button {
 		background-color: #0000AA;
@@ -743,8 +751,17 @@
 	.regionSelect
 	{
 		padding:2px;
-		width:175px;
+		width:165px;
 	}
+	
+	label{display:inline;}
+	
+	.requiredFont {	color: red;}
+	input[type="radio"], input[type="checkbox"] { cursor: pointer; line-height: normal;margin: 4px;}
+
+	input, textarea, .uneditable-input { width: 150px;}
+	
+	#cadreRegistrationTable{width:920px;margin-left:auto;margin-right:auto;}
 
 </style>
 </head>
@@ -789,6 +806,8 @@
 	</table>
 	<input type="hidden" id="hiddenVal" name="cadreId" value="${cadreId}"/>
 	<input type="hidden" id="hiddenValue" name="windowTask" value="${windowTask}"/>
+	
+	
 	<FIELDSET>
 		<LEGEND><strong>Personal Details</strong></LEGEND>
 		<table class="cadreDetailsTable" width="100%" border="0">		
@@ -814,11 +833,11 @@
 				<td colspan="4" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
 			</tr>
 			<tr>
-				<td>Birth Details<font class="requiredFont"> * </font></td>
+				<td><label>Birth Details</label><font class="requiredFont"> * </font></td>
 				<td colspan ="3">
 					<table cellpadding="0">
 						<tr>
-							<td width="162"><s:radio id="dopOptionRadio" name="dobOption" list="#session.dob_Options" onclick="manageDOBOptions('radio')"/></td>
+							<td width="180"><s:radio id="dopOptionRadio" name="dobOption" list="#session.dob_Options" onclick="manageDOBOptions('radio')"/></td>
 							<td align="left">
 								<span id="dobSpan" style="display:none;">
 									<table>
@@ -827,7 +846,7 @@
 											<s:textfield id="dobText" readonly="true" name="dateOfBirth" size="25"/>
 											<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 										</td>
-										<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
+										<td><input id="calBtnEl" type="button" style="width:27px;" class="calBtn" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
 									</tr>
 									</table>	
 								</span>
@@ -848,7 +867,7 @@
 		</tr>
 		
 		<tr>
-			<td width="162"><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
+			<td width="172"><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
 			<td align="left"><s:textfield id="noOfFamilyMembersId" name="noOfFamilyMembers" size="1" maxlength="2"/></td>
 
 			<td><s:label for="noOfVotersId" id="noOfVotersLableId"  value="No of Voters In Family" /></td>
@@ -882,7 +901,7 @@
 							<s:textfield id="firstFamilyMemberDOBId" readonly="true" name="firstFamilyMemberDOB" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="firstFamilyMemberDOB_div" style="position:absolute;"></DIV></DIV>
 						</td>
-						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('firstFamilyMemberDOB_div','firstFamilyMemberDOBId','1/1970')"/></td>
+						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" style="width:27px;" onclick="showDateCal('firstFamilyMemberDOB_div','firstFamilyMemberDOBId','1/1970')"/></td>
 					</tr>
 					</table>	
 				</span>
@@ -905,7 +924,7 @@
 							<s:textfield id="secondFamilyMemberDOBId" readonly="true" name="secondFamilyMemberDOB" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="secondFamilyMemberDOB_div" style="position:absolute;"></DIV></DIV>
 						</td>
-						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('secondFamilyMemberDOB_div','secondFamilyMemberDOBId','1/1970')"/></td>
+						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" style="width:27px;" onclick="showDateCal('secondFamilyMemberDOB_div','secondFamilyMemberDOBId','1/1970')"/></td>
 					</tr>
 					</table>	
 				</span>
@@ -928,14 +947,14 @@
 							<s:textfield id="thirdFamilyMemberDOBId" readonly="true" name="thirdFamilyMemberDOB" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="thirdFamilyMemberDOB_div" style="position:absolute;"></DIV></DIV>
 						</td>
-						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('thirdFamilyMemberDOB_div','thirdFamilyMemberDOBId','1/1970')"/></td>
+						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" style="width:27px;" onclick="showDateCal('thirdFamilyMemberDOB_div','thirdFamilyMemberDOBId','1/1970')"/></td>
 					</tr>
 					</table>	
 				</span>
 			</td>		
 		  </tr>
 	   </table>
-    </table>	
+    
 	</FIELDSET>
 	<FIELDSET>
 		<LEGEND><strong>Contact Details</strong></LEGEND>
@@ -1092,29 +1111,29 @@
 			<th colspan="4"><s:label for="languageField" id="languageLabel"  value="%{getText('languageEff')}" /></th>
 		</tr>	
 		<tr>
-			<td>English</td>
+			<td><label>English</label></td>
 			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_English"/></td>			
 		</tr>
 		<tr>
-			<td>Hindi</td>
+			<td><label>Hindi</label></td>
 			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_Hindi"/></td>			
 		</tr>
 		<tr>
 			<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
 			<td align="left"><s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select></td>
-			<td align="left" width="165"><s:label for="professionField" id="professionLabel"  value="%{getText('profession')}" /><font class="requiredFont"> * </font></td>
+			<td align="left" width="180"><s:label for="professionField" id="professionLabel"  value="%{getText('profession')}" /><font class="requiredFont"> * </font></td>
 			<td align="left"><s:select id="professionField" cssClass="regionSelect" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
 		</tr>				
 		<tr>
-			<td width="135"><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
+			<td width="150"><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
 			<td align="left"><s:textfield id="incomeField" name="income" size="25" maxlength="8"/></td>
 			<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="requiredFont"> * </font></td>
-			<td style="padding-left: 2px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
+			<td style="padding-left: 2px;width:210px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
 		</tr>
 		</table>
 	</fieldset>		
 	<fieldset>
-		<legend><strong>Cadre Level Details</strong></legend>
+		<legend style="width:110px;"><strong>Cadre Level Details</strong></legend>
 		<table class="cadreDetailsTable">
 		<tr>
 			<th><u>Cadre Roles</u></th>
@@ -1262,16 +1281,16 @@
 		</fieldset>
 		<c:if test="${windowTask == 'new'}">
 			<div style="text-align: center;">			
-				<s:submit  value="Register" cssClass="button" style="background:#0066cc;"></s:submit>
-				<a href="cadreManagementAction.action" class="anchor" style="background:#0066cc;">Go To Cadre Management Home Page</a>
-				<a href="cadreReportAction.action" class="anchor" style="background:#0066cc;">Go To Cadre Details Page</a>			
+				<s:submit  value="Register" cssClass="btn btn-primary" ></s:submit>
+				<a href="cadreManagementAction.action" class="btn btn-primary">Go To Cadre Management Home Page</a>
+				<a href="cadreReportAction.action" class="btn btn-primary">Go To Cadre Details Page</a>			
 			</div>
 		</c:if>
 		<c:if test="${windowTask == 'update_existing'}">
 			<div style="text-align: center;">
-				<s:submit  value="Update" cssClass="button"></s:submit>
-				<a href="cadreManagementAction.action" class="anchor" style="background:#0066cc;">Go To Cadre Management Home Page</a>
-				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
+				<s:submit  value="Update" cssClass="btn btn-primary"></s:submit>
+				<a href="cadreManagementAction.action" class="btn btn-primary" >Go To Cadre Management Home Page</a>
+				<a href="cadreReportAction.action" class="btn btn-primary">Go To Cadre Management Report</a>
 			</div>
 		</c:if>	
 		<input type="hidden" name="defaultState" value="${defaultStateId}">
@@ -1283,6 +1302,7 @@
 		<input type="hidden" name="childrenFlag" id="childrenFlag" value="${childrenFlag}">	
 		<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>	 		
 	</div>
+	</table>	
 	</s:form>
 <script type="text/javascript">
 	executeOnload();
