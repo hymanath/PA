@@ -267,6 +267,7 @@ function addAnotherProblem(divName){
       
 		var newdiv = document.createElement('div');
 		var str	= "";
+		str+="<hr>";
 		str += "<table>"
 		str += "<tr>"
 		str += '<td width="100px;">Title</td>';
@@ -281,7 +282,8 @@ function addAnotherProblem(divName){
 		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" id="userImage"/></td></tr>'
 		str += "<tr>";
 		
-		str += "</table>"
+		str += "</table>";
+		str +="<hr>";
         newdiv.innerHTML = str;
 		document.getElementById(divName).appendChild(newdiv);
 
@@ -539,7 +541,7 @@ function checkValidations(){
 			$('#warningMsgs').append('<br><span>Please Provide Uploaded document Description</span>');
 			flag=false;
 		}
-		if($('#userImage').val().trim().length>=0){
+		if($('#userImage').val().trim().length<=0){
 			$('#warningMsgs').append('<br><span>Please Uploaded document</span>');
 			flag=false;
 		}
