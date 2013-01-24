@@ -163,7 +163,7 @@ margin:-1px 0px 0px 0px ;
 			
 			<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 				<!--<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> -->
-				<a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a>
+				<a href="javascript:{}" onClick="openDialogForLoginWindow()" id="login">Login</a>
 				<span>|</span>
 				
 				<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
@@ -478,8 +478,8 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 			<li><a href="viewFeaturesAction.action">Explore</a><span>|</span></li>
 			<li><a href="javascript:{}" onClick="contactForDemoLinkInHomePage()">Ask for DEMO/TEST</a><span>|</span></li>
 			<li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a><span>|</span></li>
-			<li><a href="javascript:{}">Articles</a><span>|</span></li>
-			<li><a href="javascript:{}" target="">Blogs</a></li>
+			<li><a href="javascript:{}" onClick="showArticles()">Articles</a><span>|</span></li>
+			<li><a href="javascript:{}" onClick="showBlogs()">Blogs</a></li>
 		</ul>
 		
 		<ul>
@@ -1567,6 +1567,115 @@ function openAddNewProblemWindow()
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 <!--Facebook like code End-->
+
+
+function showArticles(){
+
+			jQuery(document).ready( function(){       
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
+						//instantiate the dialog
+						$("#contactWindowDiv").dialog({ stack: false,
+							    height: 230,
+								width: 800,
+								modal: true,
+								position: [170,150],
+								title:'Articles',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+						
+
+			});	
+			//function to show dialog   
+			var showDialog = function() {
+				$("#contactWindowDiv").show(); 
+				//open the dialog
+				$("#contactWindowDiv").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#contactWindowDiv").dialog("close");
+			}
+			
+ var elmt = document.getElementById("contactWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/UnderConstruction.jpg" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><h6 style="color:red;">SORRY PAGE UNDER CONSTRUCTION</h6><br></td></tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Enquires: customer.servies@partyanalyst.com<br></td></tr>';
+str+='<tr><td>Demo: sales@partyanalyst.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='</tr>';
+str+='</table>';
+
+
+elmt.innerHTML = str;
+}
+
+function showBlogs(){
+
+			jQuery(document).ready( function(){       
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
+						//instantiate the dialog
+						$("#contactWindowDiv").dialog({ stack: false,
+							    height: 230,
+								width: 800,
+								modal: true,
+								position: [170,150],
+								title:'Blogs',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+						
+
+			});	
+			//function to show dialog   
+			var showDialog = function() {
+				$("#contactWindowDiv").show(); 
+				//open the dialog
+				$("#contactWindowDiv").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#contactWindowDiv").dialog("close");
+			}
+			
+ var elmt = document.getElementById("contactWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/UnderConstruction.jpg" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><h6 style="color:red;">SORRY PAGE UNDER CONSTRUCTION</h6><br></td></tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Enquires: customer.servies@partyanalyst.com<br></td></tr>';
+str+='<tr><td>Demo: sales@partyanalyst.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='</tr>';
+str+='</table>';
+
+
+elmt.innerHTML = str;
+}
 </script>
 </body>
 </html>
