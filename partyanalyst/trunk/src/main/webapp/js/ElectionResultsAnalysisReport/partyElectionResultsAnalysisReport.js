@@ -36,10 +36,10 @@ function showAnalysisDetails(jsObj,results)
 		contentStr += '	<div id="'+results[i].constituencyName+'_head" class="constituencyAnalysisHeadDiv" onclick="showBodyDiv(this.id,\''+results[i].candidateComments[0].nominationId+'\')">';
 		contentStr += '		<table width="100%"><tr>';
 		contentStr += '		<td width="3%"><img style="cursor:default;" height="30" width="15" id="'+results[i].constituencyName+'_img" onclick="showBodyDiv(this.id,nominationId)" src="images/icons/jQuery/next.png"/></td>';
-		contentStr += '		<td style="vertical-align:center;">'+results[i].constituencyName+' Constituency Analysis Details</td>';
+		contentStr += '		<td style="vertical-align:center;">'+results[i].constituencyName+' - Constituency Analysis Details</td>';
 		//contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
 		contentStr += '		<td width="20%" align="right"><a href="javascript:{}" class="analysisLink" onclick="getMoreDetails('+results[i].constituencyId+')">View Complete Results<a/></td>';
-		contentStr += '		<td width="12%" align="right"><a href="javascript:{}" class="analysisLink" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\',\''+jsObj.task+'\',\''+jsObj.status+'\')" >Add Reason</a></td>';
+		contentStr += '		<td width="12%" align="right"><a href="javascript:{}" class="analysisLink" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\',\''+jsObj.task+'\',\''+jsObj.status+'\')" >AddReason</a></td>';
 		contentStr += '		</tr></table>';
 		contentStr += '</div>';
 
