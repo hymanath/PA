@@ -80,8 +80,8 @@
 		color:#5F3F08;
 		font-size:12px;
 		font-weight:bold;
-		/*padding:5px;*/
-		word-spacing:6px;
+		/*padding:5px;
+		word-spacing:6px;*/
 		cursor:pointer;
 		/*background-image:url("images/icons/indexPage/swasthic_body.png");*/
 		background-image:url("images/icons/districtPage/header_body.png");
