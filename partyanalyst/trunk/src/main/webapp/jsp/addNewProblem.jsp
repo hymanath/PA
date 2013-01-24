@@ -10,7 +10,7 @@
 <title>Add New Problem</title>
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <!--<SCRIPT type="text/javascript" src="js/AddNewProblem/addFileInput.js"></SCRIPT>-->
 
 <LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
@@ -38,7 +38,16 @@
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	
+	<style>
+		#warningMsgs{
+			margin-left:auto;
+			margin-right:auto;
+			width:500px;
+			color:red;
+			font-family:arial 16px;
+			padding:10px;
+		}
+	</style>
 <script type="text/javascript">
 
 
@@ -278,27 +287,26 @@ function addAnotherProblem(divName){
 
 
   }
+var validateProb=false;
 function showOrHideProblemFilesDiv()
 {
-	
 var problemDetailDivEle = document.getElementById("problemDetailDiv");
-if(problemDetailDivEle.style.display =='none')
+if(problemDetailDivEle.style.display =='none'){
 	problemDetailDivEle.style.display = 'block';
-else
+	validateProb=true;
+	$('#warningMsgs').html("");
+	}
+else{
     problemDetailDivEle.style.display = 'none';
-
+	validateProb=false;
+	$('#warningMsgs').html("");
+	}
 }
 
-
-
-
-
-
-
-
-
+var validatePerson=false;
 function getComplainedPersonDetails(name)
 {	
+
 	var personDetailsDivEle = document.getElementById("personDetailsDiv");
 	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
 	
@@ -307,18 +315,26 @@ function getComplainedPersonDetails(name)
 	if(isSaved == 'true')
 	{
 	  document.getElementById("personNameField").value = '';
-	  document.getElementById("mobileField").value = '';	document.getElementById("telephoneNoField").value = '';	document.getElementById("emailField").value = '';
+	  document.getElementById("mobileField").value = '';
+	  document.getElementById("telephoneNoField").value = '';
+	  document.getElementById("emailField").value = '';
 	  document.getElementById("addressField").value = '';	
 
 	  isSaved = false;
 	}
-		
+	
 	if(name =='External Person' || name=='Call Center')
 	{			
 		personDetailsDivEle.style.display = 'block';
+		validatePerson=true;
+		$('#warningMsgs').html("");
+		
 	}else
 	{	
+		
 		personDetailsDivEle.style.display = 'none';
+		validatePerson=false;
+		$('#warningMsgs').html("");
 	}
 
 	if(name == 'Cadre')
@@ -355,6 +371,7 @@ function getCadreDetails(type)
 function hideProblemSourceRow()
 {
 	var userTypeSelectBoxEle = document.getElementById("userTypeSelectBox");
+	
 	if(userType == 'FreeUser')
 	{
 		var problemSourceRowEle = document.getElementById("problemSourceRowId");
@@ -383,6 +400,156 @@ function clearSuccessMsg(){
 	if(probSuccessMsg !=null)
 	  probSuccessMsg.innerHTML='';
 }
+
+
+function checkValidations(){
+	var flag=true;	
+
+	$('#warningMsgs').html("");
+	
+	if($('#nameText').val() == ""){
+		$('#warningMsgs').append('<span>Please Provide Problem title</span>');
+		flag=false;
+	}
+	
+	if($('#descTextArea').val() == ""){
+		$('#warningMsgs').append('<br><span>Please Provide Problem Description</span>');
+		flag=false;
+	}
+	
+	
+	
+	
+	if($('#scopeLevel').val()==0){
+		$('#warningMsgs').append('<br><span>Please Select Problem Scope </span>');
+		flag=false;
+	}
+	else{
+		if($('#scopeLevel').val()==2){
+			if($('#stateField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select State</span>');
+				flag=false;
+			}
+		}
+		if($('#scopeLevel').val()==3){
+			if($('#stateField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select State</span>');
+				flag=false;
+			}
+			if($('#districtField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select District</span>');
+				flag=false;
+			}
+		}
+		if($('#scopeLevel').val()==4){
+			if($('#stateField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select State</span>');
+				flag=false;
+			}
+			if($('#districtField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select District</span>');
+				flag=false;
+			}
+			if($('#constituencyField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select Constituency</span>');
+				flag=false;
+			}
+		}
+		
+		if($('#existingFromText').val() == ""){
+			$('#warningMsgs').append('<br><span>Please Provide Existing From Date</span>');
+			flag=false;
+		}
+		
+		if($('#scopeLevel').val()==5 || $('#scopeLevel').val()==7 || $('#scopeLevel').val()==9){
+			if($('#stateField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select State</span>');
+				flag=false;
+			}
+			if($('#districtField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select District</span>');
+				flag=false;
+			}
+			if($('#constituencyField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select Constituency</span>');
+				flag=false;
+			}
+			if($('#mandalField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select Mandal/Muncipality/GMC</span>');
+				flag=false;
+			}
+			
+		}
+		if($('#scopeLevel').val()==6 || $('#scopeLevel').val()==8 ){
+			if($('#stateField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select State</span>');
+				flag=false;
+			}
+			if($('#districtField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select District</span>');
+				flag=false;
+			}
+			if($('#constituencyField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select Constituency</span>');
+				flag=false;
+			}
+			if($('#mandalField_s').val()==0){
+				$('#warningMsgs').append('<br><span>Please Select Mandal/Muncipality/GMC</span>');
+				flag=false;
+			}
+			if($('#hamletField_s').val()==0 || $('#hamletField_s').val()=='null'){
+				$('#warningMsgs').append('<br><span>Please Select village/Ward/Division</span>');
+				flag=false;
+			}
+		}
+		
+	}
+	
+	if(validatePerson){
+		if($('#personNameField').val()==""){
+			$('#warningMsgs').append('<br><span>Please Provide Name in complained Person Details</span>');
+			flag=false;
+		}
+		if($('#mobileField').val()==""){
+			$('#warningMsgs').append('<br><span>Please Provide Mobile Number in complained Person Details</span>');
+			flag=false;
+		}
+		
+		var mobile=$('#mobileField').val();
+		if(mobile.length != 0){
+			if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+			$('#warningMsgs').append('<br><span>Please enter valid Mobile Number</span>');
+			flag=false;
+			}
+		}
+		
+		if($('#addressField').val()==""){
+			$('#warningMsgs').append('<br><span>Please Provide Address in complained Person Details</span>');
+			flag=false;
+		}
+		
+	}
+	
+	if(validateProb){
+		if($('#titleField').val()==""){
+			$('#warningMsgs').append('<br><span>Please Provide Uploaded document Title</span>');
+			flag=false;
+		}
+		if($('#addNewProblemSubmitAction_fileDescription').val()==""){
+			$('#warningMsgs').append('<br><span>Please Provide Uploaded document Description</span>');
+			flag=false;
+		}
+		if($('#userImage').val().trim().length>=0){
+			$('#warningMsgs').append('<br><span>Please Uploaded document</span>');
+			flag=false;
+		}
+		
+		
+	}
+	
+	return flag;
+	
+}
 </script>
 </head>
 <body onload="executeOnload()" class="bodyStyle">
@@ -405,7 +572,7 @@ function clearSuccessMsg(){
 </TABLE>
 </CENTER>
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
-<s:form action="addNewProblemSubmitAction" enctype="multipart/form-data" method="POST" theme="simple" name="form" >
+<s:form action="addNewProblemSubmitAction" enctype="multipart/form-data" method="POST" theme="simple" name="form" onSubmit="return checkValidations()" >
 
  
 <div id = "addNewProblemMainDiv">
@@ -443,6 +610,10 @@ function clearSuccessMsg(){
 				<font color="maroon"><c:out value="${problemBeanFromDB.problemRefNum}">
 				</c:out></font> used for further details</span>
 			</c:if>
+			
+			<div id="">
+				<div id="warningMsgs"></div>
+			</div>
 			<DIV style="width:500px;">
 				<FIELDSET>
 					<LEGEND>Problem Details</LEGEND>
@@ -631,13 +802,13 @@ function clearSuccessMsg(){
 					<s:iterator value="fileTitle" status="stat">
 					<tr>
 					
-						<td width="100px;"><s:label value="Title"/></td>
+						<td width="100px;"><s:label value="Title"/><span style="color:red;">*</span></td>
 						<td style="padding-left: 15px;"><s:textfield id="titleField" name="fileTitle[%{#stat.index}]" size="33"/></td>
 						
 					</tr>
 					<tr>
 					
-						<td width="100px;"><s:label value="Description"/></td>
+						<td width="100px;"><s:label value="Description"/><span style="color:red;">*</span></td>
 						<td style="padding-left: 15px;"><s:textarea  name="fileDescription[%{#stat.index}]" cols="25" rows="3" /></td>
 					</tr>
 					
@@ -650,16 +821,16 @@ function clearSuccessMsg(){
 					</s:if>
 					<s:else>
 					<tr>
-     					<td width="100px;"><s:label value="Title"/></td>
+     					<td width="100px;"><s:label value="Title"/><span style="color:red;">*</span></td>
 						<td style="padding-left: 15px;"><s:textfield id="titleField" name="fileTitle" size="33"/></td>
 					</tr>
 					
 					<tr>
-						<td width="100px;"><s:label value="Description"/></td>
+						<td width="100px;"><s:label value="Description"/><span style="color:red;">*</span></td>
 						<td style="padding-left: 15px;"><s:textarea  name="fileDescription" cols="25" rows="3" /></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /></td>
+						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /><span style="color:red;">*</span></td>
 						<td style="padding-left:15px;"> <s:file name="userImage" id="userImage"/></td>
 						
 						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
