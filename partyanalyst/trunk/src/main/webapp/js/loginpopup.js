@@ -1,6 +1,10 @@
 
-function openDialogForLoginWindow(){
+function openDialogForLoginWindowForPostProblem(){
+	$('#logInDiv').prev().find('a').trigger('click');
+	$('#login').trigger('click');
+}
 
+function openDialogForLoginWindow(){
 var str='';
 str+='<div id="forgot_password_window1" style="background-color: #C7CFD2;">';
 str+='<div id="forgot_password_window_inner1" style="font-size:0.8em"></div>';
