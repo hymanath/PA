@@ -44,7 +44,7 @@ $( "#toDate" ).datepicker();
 		<div class="span2">Select Gallery</div>
 		<div class="selectDiv">
 						 
-		<select id="gallariesId"><option value="0">Select Gallery</option></select>
+		<select id="gallariesId" Class="selectBoxWidth" name="importance" ><option value="0">Select Gallery </option></select>
 		 </div>
    </div>
 
@@ -84,7 +84,7 @@ $( "#toDate" ).datepicker();
 	       </div>-->
 
 		   <div class="span8 marginClass">
-				<div class="span2">Select ImpactLevel</div>
+				<div class="span2">Select Impact Level</div>
 				<div class="selectDiv">
 				
 
@@ -93,7 +93,7 @@ $( "#toDate" ).datepicker();
 	     </div>
 
 		 <div class="span8 marginClass">
-				<div class="span2">Select NewsImportance</div>
+				<div class="span2">Select News Importance</div>
 				<div class="selectDiv">
 					
 					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="importance" id="importanceId" list="newsImportanceList" listKey="ids" listValue="names" headerKey="0" headerValue="All"/>
