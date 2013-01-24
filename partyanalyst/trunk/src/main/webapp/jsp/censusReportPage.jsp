@@ -694,6 +694,8 @@ select
 
 	function buildPopulationRange(jsObj,results)
 	{
+		$('#censusPopulationRange1').css('display','none');
+		$('#censusPopulationRange').css('display','none');
 		var rangeElmt = document.getElementById("censusPopulationRange1");
 		var selectPartyElmt = document.getElementById("censusPopulationRange_selectParty");
 		var elmt = document.getElementById("censusPopulationRangeData1");
@@ -1404,7 +1406,10 @@ select
 	}
 	function changeCensusType()
 	{
-		 $('#censusSelect').val(0);
+		$('#censusPopulationRange1').css('display','none');
+		$('#censusPopulationRange').css('display','none');
+		$('#censusPopulationRange_selectParty').css('display','none');
+		$('#censusSelect').val(0);
 	}
 </script>
 </head>
