@@ -4245,5 +4245,57 @@
 			</result>		
 		</action>
 		
+		<action name="saveContentNotesByContentId" class="candidateElectionResultsAction" method="saveContentNotesByContentId">
+		 <result type="json" name="success">
+           		<param name="root">savedCommentId</param>
+         </result>
+		</action>
+		
+		<action name="removeContentNotes" class="candidateElectionResultsAction" method="removeContentNotes">
+		 <result type="json" name="success">
+           		<param name="root">status</param>
+         </result>
+		</action>
+		
+		<action name="getContentNotesByContentId" class="candidateElectionResultsAction" method="getContentNotesByContentId">
+		 <result type="json" name="success">
+           		<param name="root">commentsList</param>
+         </result>
+		</action>
+		
+		
+		<action name="addFlagToANews" class="candidateElectionResultsAction" method="addFlagToNews">
+		 <result type="json" name="success">
+           		<param name="root">status</param>
+         </result>
+		</action>
+		
+		
+		<action name="checkForFlag" class="candidateElectionResultsAction" method="checkForFlag">
+		<result type="json" name="success">
+           		<param name="root">status</param>
+         </result>
+		</action>
+		
+		
+		<action name="removeFlagForNews" class="candidateElectionResultsAction" method="removeFlagForNews">
+			<result type="json" name="success">
+           		<param name="root">status</param>
+         </result>
+		</action>
+		
+		<action name="updateVisibility" class="candidateElectionResultsAction" method="updateVisibility">
+		<result type="json" name="success">
+           		<param name="root">status</param>
+         </result>		
+		</action>
+		
+		
+		<action name="checkForVisibilityStatus" class="candidateElectionResultsAction" method="checkForVisibilityStatus">
+		<result type="json" name="success">
+           		<param name="root">status</param>
+         </result>		
+		</action>
+		
 	</package>
 </struts>      
