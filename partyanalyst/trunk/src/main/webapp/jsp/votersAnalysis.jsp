@@ -573,7 +573,7 @@ locationDetails.constituencyArr.push(ob);
 <div id="votersouterDiv" >
 
 
-
+<!--<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>-->
 <fieldset>
 <div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
 
@@ -774,11 +774,13 @@ locationDetails.constituencyArr.push(ob);
 <div id='votersMainOuterDiv3'>
  <h5 id="reportLevelheading1" style="margin-left:15px;"></h5>
 <div id="reportLevelCountDiv1" style="clear:both;"></div><br>
-	<div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
-	<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>
- 	<div id="newsDiv" style="clear:both;">
-    	<div id="newsCountDiv"></div>
+	<div id="newsCountDiv"></div>
+	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
+	   </div>
+	<div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
+	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
+ 	<div id="newsDiv" style="clear:both;">
   	</div>
 	<div id="votersBasicInfoDiv"></div>
 	<div id="previousEleVotingTrendsDiv"></div>
