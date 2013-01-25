@@ -1593,5 +1593,17 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		
 	}
    
+	
+	public List<String> checkForVisibilityStatus(Long contentId){
+		
+		Query query = getSession().createQuery("select model.isPrivate from FileGallary model where" +
+				" model.fileGallaryId = ?");
+		
+		query.setParameter(0, contentId);
+		
+		return query.list();
+		
+	}
+	
    
 }
