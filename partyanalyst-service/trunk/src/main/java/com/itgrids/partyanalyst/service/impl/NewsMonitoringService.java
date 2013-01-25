@@ -200,22 +200,28 @@ public class NewsMonitoringService implements INewsMonitoringService {
 					 if(inputs.getSourceId() == null && inputs.getLanguegeId() == null)
 					 {
 						  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+						  if(fileSourceLanguage.getSource() != null)
 						  sourceSet.add(fileSourceLanguage.getSource().getSource());
+						  if(fileSourceLanguage.getLanguage() != null)
 						  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
 					 }
 					 else if(inputs.getLanguegeId() != null){
 						 if(inputs.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
 						 {
 							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							 if(fileSourceLanguage.getSource() != null)
 							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							 if(fileSourceLanguage.getLanguage() != null)
 							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
 						 }
 					 }
 					 else if(inputs.getSourceId() != null){
 						 if(inputs.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
 						 { 
-							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							 if(fileSourceLanguage.getSource() != null)
 							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							 if(fileSourceLanguage.getLanguage() != null)
 							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
 						 }
 					 }
@@ -229,7 +235,9 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	            	 languageVal.append(language);
 	            	 languageVal.append("-");
 				 }
+	             if(sourceVal != null && sourceVal.length() > 0)
 	             sourceVal.deleteCharAt(sourceVal.length() - 1);
+	             if(languageVal != null && languageVal.length() > 0)
 	             languageVal.deleteCharAt(languageVal.length() - 1);
 			fileVO.setMultipleSource(fileVOSourceLanguageList.size());
 			Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
@@ -304,22 +312,28 @@ public class NewsMonitoringService implements INewsMonitoringService {
 						 if(inputs.getSourceId() == null && inputs.getLanguegeId() == null)
 						 {
 							  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							  if(fileSourceLanguage.getSource() != null)
 							  sourceSet.add(fileSourceLanguage.getSource().getSource());
+							  if(fileSourceLanguage.getLanguage() != null)
 							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
 						 }
 						 else if(inputs.getLanguegeId() != null){
 							 if(inputs.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
 							 {
 								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+								 if(fileSourceLanguage.getSource() != null)
 								 sourceSet.add(fileSourceLanguage.getSource().getSource());
-								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+								 if(fileSourceLanguage.getLanguage() != null)
+								 languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
 							 }
 						 }
 						 else if(inputs.getSourceId() != null){
 							 if(inputs.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
 							 { 
 								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+								 if(fileSourceLanguage.getSource() != null)
 								 sourceSet.add(fileSourceLanguage.getSource().getSource());
+								 if(fileSourceLanguage.getLanguage() != null)
 								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
 							 }
 						 }
@@ -333,7 +347,9 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		            	 languageVal.append(language);
 		            	 languageVal.append("-");
 					 }
+		             if(sourceVal != null && sourceVal.length() > 0)
 		             sourceVal.deleteCharAt(sourceVal.length() - 1);
+		             if(languageVal != null && languageVal.length() > 0)
 		             languageVal.deleteCharAt(languageVal.length() - 1);
 				fileVO.setMultipleSource(fileVOSourceLanguageList.size());
 				Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
