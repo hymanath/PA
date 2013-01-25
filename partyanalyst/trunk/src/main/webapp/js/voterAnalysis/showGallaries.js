@@ -574,12 +574,14 @@ function showNewAnotherSource(fileSourceLanguageId,type)
  var locationId;
  var  publicationId;
  var newsString ;
+ var titleString;
 function showNewsDetails(){
 
 
 $('#newsCountDiv').html('');
 $('#newsDisplayDiv').html('');
 	newsString = "";
+	titleString = "";
 
   var reportLevel = $('#reportLevel').val();
 
@@ -588,18 +590,21 @@ $('#newsDisplayDiv').html('');
 
 		if($('#constituencyList').val() != 0)
 		 newsString += $('#constituencyList :selected').text()+" "+"Constituency News Details By Category";
+		 titleString += "Constituency :<font style=;color:red;'>" + $('#constituencyList :selected').text()+"</font>  ";
 	}
 	else if(reportLevel == 2){
         locationValue = $('#mandalField').val();
 
 		if($('#mandalField').val() != 0)
 		 newsString += $('#mandalField :selected').text()+" "+"Mandal News Details By Category";
+ 		 titleString += "Mandal :<font style=;color:red;'>"+ $('#mandalField :selected').text()+" "+"</font> ";
 	}
 	else if(reportLevel == 3){
         locationValue =$('#panchayatField').val();
 
 		if($('#panchayatField').val() != 0)
 		newsString += $('#panchayatField :selected').text()+" "+"Panchayat News Details By Category";
+		titleString += "Panchayat :<font style=;color:red;'>"+$('#panchayatField :selected').text()+" "+"</font> ";;
 	}
 
 	// publicationId = $('#publicationDateList').val();
@@ -813,9 +818,9 @@ function  buildProblemsCount(results){
 			str+='<span class="badge badge-info" style="margin-left: 22px;">0</span>';
 		str+='</div>';
 		str+='<div style="margin-top:3px;">';
-			str+='<a href="javaScript:{getNews1(3,'+categoryId+');}" class="linkClass" style="margin-left:34px">High</a>';
-			str+='<a href="javaScript:{getNews1(2,'+categoryId+');}" class="linkClass" style="margin-left:25px" >Medium</a>';
-			str+='<a href="javaScript:{getNews1(1,'+categoryId+');}" class="linkClass" style="margin-left: 26px;">Low</a>';
+			str+='<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" class="linkClass" style="margin-left:34px">High</a>';
+			str+='<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" class="linkClass" style="margin-left:25px" >Medium</a>';
+			str+='<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" class="linkClass" style="margin-left: 26px;">Low</a>';
 		str+='</div>';
 
 		str+='</div>';
@@ -826,7 +831,39 @@ function  buildProblemsCount(results){
 
 	 $('#newsCountDiv').html(str);
 }
-function getNews1(importanceId , categoryId){
+var displayStr;
+var categoryStr;
+function getNews1(importanceId , categoryId , count){
+	 categoryStr='';
+	 categoryStr+=' Category :';
+	 categoryStr+='<font style="color:red;">';
+	if(categoryId == 1) 
+		categoryStr+="Problems";
+	else if(categoryId == 2)
+		categoryStr+="Development Activity";
+	else if(categoryId == 3)
+		categoryStr+="Political Movements ";
+	else if(categoryId == 4)
+		categoryStr+="Political Movements - Opp Parties";
+	else if(categoryId == 5)
+		categoryStr+="Candidate Positive News";
+	else if(categoryId == 6)
+		categoryStr+="Candidate Negative News";
+	else if(categoryId == 7)
+		categoryStr+="Events";
+	 categoryStr+='</font>';
+	
+
+    displayStr='';
+	if(importanceId == 3){
+		displayStr+='High level impacted News :<font style="color:red;">'+count+'</font>';
+	}
+	else if (importanceId == 2){
+		displayStr+='Medium level impacted News :<font style="color:red;">'+count+'</font>';;
+	}
+	else if (importanceId == 1){
+		displayStr+='low level impacted News :<font style="color:red;">'+count+'</font>';;
+	}
 
 		startIndex = 0;
 	    lastIndex = 10;
@@ -863,7 +900,11 @@ function displayNewsByImportance(jObj,results){
      var importanceId = jObj.importanceId;
 	 var  categoryId = jObj.categoryId;
 
+
   var str='';
+
+ // str+='<div style="margin:13px;"><b>'++'</b></div>';
+str+='<div style="margin:13px;"><b>'+titleString+"  "+categoryStr+" "+displayStr+'</b></div>';
 
 	for(var i=0;i<results.length;i++){
 
@@ -871,7 +912,7 @@ function displayNewsByImportance(jObj,results){
 	}
 
 	if(results.length >=10)
-		str+='<h6 style="margin:5px;text-align:center;"><a style="font-family:Georgia,Times New Roman,Times,serif;color:#3E78FD;color:red;" href="javaScript:{incrementStartEndIndexes('+importanceId+','+categoryId+');}">Next .....</a></h6>';
+		str+='<h6 style="margin:5px;text-align:center;"><a class="btn btn-mini btn-info" style="color:#fff;float:right;" href="javaScript:{incrementStartEndIndexes('+importanceId+','+categoryId+');}">Next .....</a></h6>';
 
   $('#newsDisplayDiv').html(str);
 
