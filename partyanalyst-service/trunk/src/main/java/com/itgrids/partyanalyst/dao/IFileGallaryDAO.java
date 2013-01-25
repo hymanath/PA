@@ -144,6 +144,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 			FileVO fileVO, List<Long> locationValuesList);
 	
 	 public List<FileGallary> getFileGallariesByFileId(Long fileId);
+	 
+	 
+	 public List<String> checkForVisibilityStatus(Long contentId);
 	
 	
 }
