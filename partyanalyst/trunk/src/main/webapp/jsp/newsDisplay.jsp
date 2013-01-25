@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 
 <script type="text/javascript" src="js/specialPage/specialPage.js"></script>
+<script type="text/javascript" src="js/newsDisplay/newsDisplay.js"></script>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
@@ -377,7 +378,9 @@ width: 618px;
   color:#FF4500;
 }
 
-
+.unflagClass{
+	opacity:0.35;
+}
 </style>
 <script type="text/javascript">
 
@@ -563,7 +566,8 @@ var myResults;
 var callback = {			
     success : function( o ) {
 		try {												
-			myResults = YAHOO.lang.JSON.parse(o.responseText);	
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
+			
 			 if(jsObj.queryType == "categoryDetailsForGraph" || jsObj.queryType == "sourceDetailsForGraph" || jsObj.queryType == "languageDetailsForGraph" || jsObj.queryType == "newsImpDetailsForGraph")
 			 {
 			   drawChart(myResults,jsObj);
@@ -746,8 +750,24 @@ function showNewsCountDetails(result,jsObj)
 }
 function showNewsDetails(jsObj,result){
 
+if(result.length == 0)
+	$('#flagCountDiv').html('');
+
    var pageNumber = 0;
 	for(var i in result){
+		if(i==0){
+			var unflaggedNews = result.length - result[i].totalFlaggedNews;
+			var noNotesNewsCount = result.length - result[i].totalNotesNews;
+			var str='';
+
+			//str+='<div><span><b>Flagged News Count:</b></span>'+result[i].totalFlaggedNews+'<span><b>News with notes Count:</b></span>'+result[i].totalNotesNews+'</div>';
+
+			str+='<div style="margin:12px 0px 0px 125px;"><span><b>Flagged News Count:</b></span><input style="width:16px;margin-right:80px;" type="text" readonly value='+result[i].totalFlaggedNews+' id="totalFlagNewsCount"></input><span><b>News with notes Count:</b></span><input readonly style="width:16px;" type="text" id="totalNotesNewsCount" value='+result[i].totalNotesNews+'></input></div>';
+
+			
+			$('#flagCountDiv').html(str);
+		}
+
 
 
 		if(result[i].contentId == modifiedRecord){
@@ -785,9 +805,13 @@ function showNewsDetails(jsObj,result){
 	var fileId= oRecord.getData("fileId");
 
 	var str='';
-	str+="<a style='float:left;' title='edit this news' href='javascript:{}' onclick='editNewsDetails("+fileId+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+	//str+="<a style='float:left;' title='edit this news' href='javascript:{}' onclick='editNewsDetails("+fileId+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
 
-	str+="<a style='float:right;' title='delete this news'  href='javascript:{}' onclick='updateDeleteNews(\"Delete\","+fileId+");'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>"
+	str+="<a style='float:left;' title='edit this news' href='javascript:{}' onclick='editNewsDetails("+fileId+")'><i class='icon-pencil'></i></a>";
+
+	//str+="<a style='float:right;' title='delete this news'  href='javascript:{}' onclick='updateDeleteNews(\"Delete\","+fileId+");'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
+
+   str+="<a style='float:right;' title='delete this news'  href='javascript:{}' onclick='updateDeleteNews(\"Delete\","+fileId+");'><i class='icon-remove-sign'></i></a>";
 
 
 	elLiner.innerHTML =str;
@@ -803,29 +827,102 @@ function showNewsDetails(jsObj,result){
    YAHOO.widget.DataTable.visibilty = function(elLiner, oRecord, oColumn, oData) 
   {
 	var visibility= oRecord.getData("visibility");
+	var contentId= oRecord.getData("contentId");
+    var str='';
+	if(visibility == "false"){
+	  str+="<div id='visibilityDiv"+contentId+"'><a href='javaScript:{updateVisibilityToPrivate("+contentId+")}' title='make this news as private'><i class='icon-bullhorn'></i></a><input type='hidden' name='visibility' id=visibility"+contentId+"/ value='public'></input></div>";
 
-	if(visibility == "false")
-	   elLiner.innerHTML ="<div style='text-align:center;'><img style='text-decoration: none; border: 0px none;' src='images/icons/public.png' title='this is public news'></div>";
-	else
-	   elLiner.innerHTML ="<div style='text-align:center;'><img style='text-decoration: none; border: 0px none;' src='images/icons/private.png' title='this is private news'></div>";
+	  str+="<div id='nonVisibilityDiv"+contentId+"' style='display:none;'><a href='javaScript:{updateVisibilityToPublic("+contentId+")}' title='make this news as public'><i class='icon-lock'></i></a><input type='hidden' name='visibility' id=visibility"+contentId+" value='private'></input></div>";
+	}
+	   
+	//elLiner.innerHTML ="";
+	else{
+
+		 str+="<div id='visibilityDiv"+contentId+"'  style='display:none;'><a href='javaScript:{updateVisibilityToPrivate("+contentId+")}' title='make this news as private'><i class='icon-bullhorn'></i></a><input type='hidden' name='visibility' id=visibility"+contentId+"/ value='public'></input></div>";
+
+	     str+="<div id='nonVisibilityDiv"+contentId+"'><a href='javaScript:{updateVisibilityToPublic("+contentId+")}' title='make this news as public'><i class='icon-lock'></i></a><input type='hidden' name='visibility' id=visibility"+contentId+" value='private'></input></div>";
+	
+	}
+
+	elLiner.innerHTML = str;
+	  
 
 		
   };
 
+  YAHOO.widget.DataTable.flagSet = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var flagSet= oRecord.getData("flagSet");
+	var contentId= oRecord.getData("contentId");
+    var str='';
+	if(flagSet == "true"){
+
+		str+="<div id='flagSetDiv"+contentId+"'><a href='javaScript:{removeFlagInTable("+contentId+")}' title='unflag this news'><i class='icon-flag'></i></a><input type='hidden' id='flag"+contentId+"' value='flagged'></input></div>";
+
+		str+="<div id='unFlagSetDiv"+contentId+"' style='display:none;'><a href='javaScript:{saveFlagInTable("+contentId+")}' title='flag this news' class='unflagClass'><i class='icon-flag'></i></a><input type='hidden' id='flag"+contentId+"' value='flagged'></input></div>";
+	
+	
+	}
+	  
+	// elLiner.innerHTML ="";
+	else if(flagSet == "false"){
+
+		str+="<div id='flagSetDiv"+contentId+"'  style='display:none;'><a href='javaScript:{removeFlagInTable("+contentId+")}' title='unflag this news'><i class='icon-flag'></i></a><input type='hidden' id='flag"+contentId+"' value='flagged'></input></div>";
+
+		str+="<div id='unFlagSetDiv"+contentId+"'><a href='javaScript:{saveFlagInTable("+contentId+")}' title='flag this news' class='unflagClass'><i class='icon-flag'></i></a><input type='hidden' id='flag"+contentId+"' value='flagged'></input></div>";
+	
+	
+	}
+
+	 elLiner.innerHTML = str;
+		
+  };
+
+  YAHOO.widget.DataTable.notes = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var notesExist= oRecord.getData("notesExist");
+
+	if(notesExist == "true")
+	  elLiner.innerHTML ="<div style='text-align:center;'><a href='javaScript:{}' ><i class='icon-edit'></i></a></div>";
+	else
+	  elLiner.innerHTML ="<div style='text-align:center;'><a href='javaScript:{}' class='unflagClass'><i class='icon-edit'></i></a></div>";
+
+		
+  };
+
+   YAHOO.widget.DataTable.description = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var description= oRecord.getData("description");
+
+	
+	  elLiner.innerHTML ='<div style="width:70px;">'+description+'</div>';
+
+		
+  };
 
   var newsResultColumnDefs = [ 		    	             
 		    	            
 							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
-							{key:"gallaryName", label: "GALLERY NAME", sortable: true},
+							{key:"gallaryName", label: "GALLERY", sortable: true},
 		    	           	{key:"source", label: "SOURCE", sortable: true},
 							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
-							{key:"description", label: "DESCRIPTIONS", sortable: true},
+							//YAHOO.widget.DataTable.description
+								{key:"description", label: "DESCRIPTIONS",
+								formatter:YAHOO.widget.DataTable.description, sortable: true},
+							//{key:"description", label: "DESCRIPTIONS", sortable: true},
 		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
 							{key:"locationValue", label: "AREA NAME", sortable: true},
 							{key:"fileDate", label: "NEWS DATE", sortable: true},
-							{key:"update", label: "UPDATE",formatter:YAHOO.widget.DataTable.edit},
+							
+
 							//{key:"delete", label: "DELETE",formatter:YAHOO.widget.DataTable.delet},
-							{key:"visibility", label: "VISIBILITY",formatter:YAHOO.widget.DataTable.visibilty}
+							//{key:"visibility", label: "VISIBILITY",formatter:YAHOO.widget.DataTable.visibilty},
+					        {key:"visibility", label: "<i class=' icon-eye-open'></i>",formatter:YAHOO.widget.DataTable.visibilty, sortable: true},
+							{key:"flagSet", label: "<a href='javaScript:{}' ><i class='icon-flag'></i></a>", sortable: true,formatter:YAHOO.widget.DataTable.flagSet},
+							{key:"notesExist", label: "<i class='icon-edit'></i>",formatter:YAHOO.widget.DataTable.notes, sortable: true},
+							{key:"update", label: "",formatter:YAHOO.widget.DataTable.edit}
 		    	        ]; 
 	var newsResultDataSource = new YAHOO.util.DataSource(result); 
 
@@ -1134,6 +1231,21 @@ function editNewsDetails(fileId){
 
 
 	var str ='';
+
+	str+='<div style="float:right;"><b>Flag Status:</b><input type="hidden" name="flagValue" id="flagInd" value="'+reqFile.flagSet+'"></input>';
+      if(reqFile.flagSet == "true"){
+		  str+='<div id="flagSet"><a href=javaScript:{setFlagVariable(\'false\');}   ><i class="icon-flag"></i></a></div>';
+
+		  str+='<div id="flagUnSet" style="display:none;"><a href=javaScript:{setFlagVariable(\'true\');}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
+	  }
+	  else{
+		    str+='<div id="flagSet" style="display:none;"><a href=javaScript:{setFlagVariable(\'false\');}><i class="icon-flag"></i></a></div>';
+
+		   str+='<div id="flagUnSet"><a href=javaScript:{setFlagVariable(\'true\')}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
+		 // str+='';
+	  }
+	  str+='</div>';
+
 	str+='<div>';
 	str += '<fieldset>';
 	
@@ -1213,12 +1325,18 @@ function editNewsDetails(fileId){
 
 	str += '   <tr>';
 	str += '       <td></td>';
+
+	//Here visibility means isPrivate
 	if(reqFile.visibility == "false")
 
-		str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+		//str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+
+		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><i  class="icon-bullhorn" ></i></input></label></td>';
 	else
 
-		str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+		//str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+
+		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><i  class="icon-bullhorn" ></i></input></label></td>';
 
     str += '   </tr>';
 	str += '   <tr>';
@@ -1226,9 +1344,12 @@ function editNewsDetails(fileId){
 
 	if(reqFile.visibility == "true")
 
-	  str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+	 // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+	  str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"></input><i  class="icon-lock" ></i></label></td>';
    else
-	   str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+	  // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+
+    str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"></input><i  class="icon-lock" ></label></td>';
 
 	str += '   </tr>';
 
@@ -1253,8 +1374,7 @@ function editNewsDetails(fileId){
 		str +='  </tr>';
 
    }
-
-
+   
 	str +='  <tr>';
 	str +='    <td colspan="2">';
 	str +='       <div id="showScopeSubs" />'; 
@@ -1268,6 +1388,8 @@ function editNewsDetails(fileId){
 	str += '</fieldset>';
 	str+='</div>';
 
+	
+    
 	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId" value='+reqFile.contentId+'></input>';
 	    document.getElementById("editNewsInner").innerHTML = str;
 		
@@ -1764,6 +1886,7 @@ function appendResults(results , divId){
 
 var fileTitle = $('#fileTitle').val();
 var fileDescription = $('#fileDescription').val();
+var flagInd = $('#flagInd').val();
 
 var errorMessage = "";
 var validate = false;
@@ -1893,6 +2016,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
           locationScopeId  :    locationScopeId,
           locationScopeValue:   locationScopeValue,
 		  visibility        :visibility,
+		  flagInd          :flagInd,
 		  fileGallaryId:fileGallaryId
      }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1986,6 +2110,9 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
   <tr><td>
   <div id="newsDeleteMessage"></div>
   </td></tr>
+
+    <tr><td><div id="flagCountDiv"></div></td></tr>
+
  <tr> 
    <td>
 	<table width="90%" style="padding-top:15px;" cellpadding="0" cellspacing="0">
@@ -1998,7 +2125,6 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
    </td>
  </tr> 
   
-  
   <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;" ></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
@@ -2008,6 +2134,8 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
 </table>
 </fieldset>
 </div>
+
+
 
 <!--DISPLAY NEWS GALLARIES START-->
  <div id="showContentDiv">
@@ -2174,7 +2302,9 @@ function buildContentDetails()
 			str+='<table>';
 			str+='<tr>';
 			str+='<td>';
+
 			
+
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
 				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
 
@@ -2193,6 +2323,27 @@ function buildContentDetails()
 
 
 			 str+='</td>';
+			 str+='<td>';
+           
+				//str+='<a href="javaScript:{}"><i class="icon-tag"></i></a>';
+				//str+='<div  style="display:none;" id="flagDiv'+result.relatedGalleries[0].filesList[i].contentId+'"><a class="btn btn-mini btn-primary" href="javaScript:{saveFlag('+result.relatedGalleries[0].filesList[i].contentId+')}">This news flagged</a><i class="icon-tag"></i></div>';
+
+				str+='<div  style="display:none;border:1px solid red;" id="flagDiv'+result.relatedGalleries[0].filesList[i].contentId+'"><a  href="javaScript:{removeFlag('+result.relatedGalleries[0].filesList[i].contentId+');}" title="unflag this news"><i class="icon-flag"></i></a></div>';
+			
+				//str+='<div  style="display:none;" id="unFlagDiv'+result.relatedGalleries[0].filesList[i].contentId+'"><a class="btn btn-mini" href="javaScript:{saveFlag('+result.relatedGalleries[0].filesList[i].contentId+')}">Flag this news</a></div>';
+
+				str+='<div  style="display:none;border:1px solid red;" id="unFlagDiv'+result.relatedGalleries[0].filesList[i].contentId+'"><a class="unflagClass" href="javaScript:{saveFlag('+result.relatedGalleries[0].filesList[i].contentId+')}" title="flag this news"><i class="icon-flag"></i></a></div>';
+				
+
+			 str+='</td>';
+
+             str+='<td>';
+
+  		     str+='<div id="public'+result.relatedGalleries[0].filesList[i].contentId+'" style="display:none;border:1px solid red;"><a  title="make this news as private" href="javaScript:{updateVisibilityToPrivate1('+result.relatedGalleries[0].filesList[i].contentId+')}"><i class="icon-bullhorn"></i></a></div>';
+
+ 			 str+='<div  style="display:none;border:1px solid red;" id="private'+result.relatedGalleries[0].filesList[i].contentId+'"><a  title="make this news as public"  href="javaScript:{updateVisibilityToPublic1('+result.relatedGalleries[0].filesList[i].contentId+');}"><i class="icon-lock"></i></a></div>';
+
+             str+='</td>';
 
 
 			 str+='</tr>';
@@ -2200,6 +2351,7 @@ function buildContentDetails()
 
 		}
 	}
+
 	
 
 	if(result.contentType == 'Video Gallary')
@@ -2290,12 +2442,19 @@ function buildContentDetails()
 
 	else if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
 	{
+
 		str += '<table>';
 
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 		{
+
+			var contentIdForNotes =  result.relatedGalleries[0].filesList[i].contentId;
 			descriptionStr = result.relatedGalleries[0].filesList[i].description;
+
+	        getNotes(contentIdForNotes);
+			getFlagStatus(contentIdForNotes);
+			getVisibilityStatus(contentIdForNotes);
 
 			
 			 if(result.relatedGalleries[0].filesList.length == 1){
@@ -2303,12 +2462,15 @@ function buildContentDetails()
 			  }else{
 			    if(i > 0)
 				{
+
+
 					str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 				}else{
 				   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 				}
 			  }
 			str += '<td><div class="popupcontainer" id="nextPartImage" style="width:700px;text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+
 
 
           // commentsObject[result.relatedGalleries[0].filesList[i].fileId] = result.relatedGalleries[0].filesList[i].comments;
@@ -2349,8 +2511,10 @@ function buildContentDetails()
 		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
 		str += '</table>';
 		str += '</div>';
-			
 
+		str+='<div id="contentNotesDiv'+contentIdForNotes+'"></div>';
+			
+/*
 		//FOR COMMNET START
 
 
@@ -2369,10 +2533,12 @@ function buildContentDetails()
 	     str+='<input type="button" style="float:right;margin:3px 49px;" class="btn btn-mini" value="Save" onClick="saveFileComment('+fileId1+');"/></div>';
 		}
 
-
    		   //FOR COMMNET END
 
 
+*/
+
+     // str+='<div id="contentNotesDiv'+result.relatedGalleries[0].filesList[i].contentId+'"></div>';
 
 		
 	   for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
@@ -2615,5 +2781,10 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 </script>
 
 <!--DISPLAY NEWS GALLARIES END-->
+
+
+<script>
+
+</script>
 </body>
 </html>
