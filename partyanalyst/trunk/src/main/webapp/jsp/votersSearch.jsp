@@ -911,7 +911,7 @@ function callAjaxForCandSearch(jsObj,url)
 			$("#votersEditSaveButtnImg").attr("disabled", "disabled");	
 		     var jsObj=
 		        {
-					total:totalCategories,
+					total:count,
 					partyPresent:partyPresent,
 					castPresent:castPresent,
 					selectedVoters:votersEditInfo,
