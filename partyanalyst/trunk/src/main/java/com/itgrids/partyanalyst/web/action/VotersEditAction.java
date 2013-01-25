@@ -291,7 +291,7 @@ public String saveVoterDetails(){
 	 voterHouseInfoVO.setVoterId(new Long(voterId));
 	if(boothId != null && boothId.trim().length() > 0)
 		 voterHouseInfoVO.setBoothId(new Long(boothId));
-	 votersAnalysisService.updateVoterDetails(voterHouseInfoVO);
+	 votersAnalysisService.updateVoterDetails(voterHouseInfoVO,"all");
 	request.setAttribute("voterId", voterHouseInfoVO.getVoterId());
 	resultStr = SUCCESS;
 	request.setAttribute("resultStr", resultStr);
@@ -483,7 +483,7 @@ public String saveVoterDetails(){
 						voterHouseInfoVO.setCategoriesList(categoriesList);
 						votersList.add(voterHouseInfoVO);
 					}
-				  status = votersAnalysisService.updateMultipleVoterDetails(votersList);
+				  status = votersAnalysisService.updateMultipleVoterDetails(votersList,"all");
 				  return "update";
 			  }
 		}catch (Exception e) {
@@ -501,7 +501,9 @@ public String saveVoterDetails(){
 			    userId = user.getRegistrationID();
 			else 
 			  return "error";
+		  if(request.getParameter("task").equalsIgnoreCase("votersData")){
 			VoterHouseInfoVO searchInfo = new VoterHouseInfoVO();
+			searchInfo.setUserId(userId);
 			if(request.getParameter("voterCardId").trim().length() >0)
 				searchInfo.setVoterIdCardNo(request.getParameter("voterCardId").trim());
 			if(request.getParameter("voterName").trim().length() >0)
@@ -521,10 +523,162 @@ public String saveVoterDetails(){
 			searchInfo.setMaxIndex(Integer.parseInt(request.getParameter("results")));
 			searchInfo.setSortBy(request.getParameter("dir").trim());
 			searchInfo.setSortByColum(request.getParameter("sort").trim());
-			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,request.getParameter("locationLvl"),Long.parseLong(request.getParameter("id")));
-		 }catch(Exception e){
+			List<Long> categories = new ArrayList<Long>();
+			if(request.getParameter("selIds").trim().length() >0){
+				String[] idsArray = request.getParameter("selIds").trim().split(",");
+			    for(String id : idsArray){
+                   if(id.equalsIgnoreCase("party")){
+                	   searchInfo.setPartyPresent(true);
+			    	}else if(id.equalsIgnoreCase("cast")){
+			    		searchInfo.setCastPresent(true);
+			    	}else{
+			    		categories.add(new Long(id));
+			    	}
+			    }
+			}
+			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,request.getParameter("locationLvl"),Long.parseLong(request.getParameter("id")),categories);
+		  }else{
+			  voterHouseInfoVO1 = votersAnalysisService.getUserVoterCategories(userId);
+		  }
+		  }catch(Exception e){
 			 Log.error("Exception Occured in getVotersInfoBySearchCriteria() Method, Exception - ",e);
 		 }
 		 return Action.SUCCESS;
 	 }
+	 
+	 public String getMultipleFamilesInfoForEditWithSelection(){
+			try{
+				    jObj = new JSONObject(getTask());
+				    VoterHouseInfoVO parameters = new VoterHouseInfoVO();
+				    HttpSession session = request.getSession();
+					RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+					Long userId = null;
+					if(user != null && user.getRegistrationID() != null)
+					    userId = user.getRegistrationID();
+					else 
+					  return "error";
+					org.json.JSONArray jSONArray = jObj.getJSONArray("selectedVoters");
+				   if(jObj.getString("task").equalsIgnoreCase("getAllVoters")){
+					    List<Long> categories = new ArrayList<Long>();
+					    parameters.setIds(categories);
+					    parameters.setUserId(userId);
+					    String[] idsArray = jObj.getString("ids").split(",");
+					    for(String id : idsArray){
+					    	if(id.equalsIgnoreCase("all")){
+					    		parameters.setAll(true);
+					    		parameters.setPartyPresent(true);
+					    		parameters.setCastPresent(true);
+					    	}else if(id.equalsIgnoreCase("party")){
+					    		parameters.setPartyPresent(true);
+					    	}else if(id.equalsIgnoreCase("cast")){
+					    		parameters.setCastPresent(true);
+					    	}else{
+					    		categories.add(new Long(id));
+					    	}
+					    }
+					    
+					    if(jObj.getString("type").equalsIgnoreCase("getAllVoters")){
+					    	org.json.JSONArray votersJSONArray = jObj.getJSONArray("votersIds");
+						    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+							VoterHouseInfoVO voterHouseInfoVO = null;
+							for(int i = 0;i<votersJSONArray.length();i++){
+								JSONObject jSONObject= votersJSONArray.getJSONObject(i);
+								voterHouseInfoVO = new VoterHouseInfoVO();
+								voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+								voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
+								votersList.add(voterHouseInfoVO);
+							}
+							voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters);
+					    }else{   
+					    	parameters.setVoterId(jObj.getLong("voterId"));
+						  voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptions(parameters);
+					    }
+						return "data";
+				  }else if(jObj.getString("task").equalsIgnoreCase("updateAllVoters")){
+						VoterHouseInfoVO voterHouseInfoVO  = new VoterHouseInfoVO();
+						List<VoterHouseInfoVO> categoriesList = null;
+						int totalCategCount =  jObj.getInt("total");
+						boolean partyPresent = jObj.getBoolean("partyPresent");
+						boolean castPresent = jObj.getBoolean("castPresent");
+						for(int i = 0;i<jSONArray.length();i++){
+							JSONObject jSONObject= jSONArray.getJSONObject(i);
+							//voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+							if(castPresent)
+							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
+							if(partyPresent)
+							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							voterHouseInfoVO.setUserId(userId);
+							categoriesList = new ArrayList<VoterHouseInfoVO>();
+							VoterHouseInfoVO category = null;
+							if(totalCategCount > 0){
+								for(int j=0;j<totalCategCount;j++){
+									category = new VoterHouseInfoVO();
+									String[] categVal = jSONObject.getString("categ"+j).split(",");
+									category.setUserCategoryValueId(new Long(categVal[0]));
+									category.setCategoryValuesId(new Long(categVal[1]));
+									categoriesList.add(category);
+								}
+								
+							}
+							voterHouseInfoVO.setCategoriesList(categoriesList);
+						}
+						String type = null;
+						if(castPresent && partyPresent){
+							type ="all";
+						}else if(castPresent){
+							type ="cast";
+						}else if(partyPresent){
+							type ="party";
+						}
+						String[] voters = jObj.getString("voterIds").split(",");
+						 votersAnalysisService.updateSelectedFieldsForAllVoters(voterHouseInfoVO,voters,type);
+						return "update";
+				  }else if(jObj.getString("task").equalsIgnoreCase("updateIndividuls")){
+					    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+						VoterHouseInfoVO voterHouseInfoVO = null;
+						List<VoterHouseInfoVO> categoriesList = null;
+						int totalCategCount =  jObj.getInt("total");
+						boolean partyPresent = jObj.getBoolean("partyPresent");
+						boolean castPresent = jObj.getBoolean("castPresent");
+						for(int i = 0;i<jSONArray.length();i++){
+							JSONObject jSONObject= jSONArray.getJSONObject(i);
+							voterHouseInfoVO = new VoterHouseInfoVO();
+							voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+							if(castPresent)
+							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
+							if(partyPresent)
+							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							voterHouseInfoVO.setUserId(userId);
+							categoriesList = new ArrayList<VoterHouseInfoVO>();
+							VoterHouseInfoVO category = null;
+							if(totalCategCount > 0){
+								for(int j=0;j<totalCategCount;j++){
+									category = new VoterHouseInfoVO();
+									String[] categVal = jSONObject.getString("categ"+j).split(",");
+									category.setUserCategoryValueId(new Long(categVal[0]));
+									category.setCategoryValuesId(new Long(categVal[1]));
+									categoriesList.add(category);
+								}
+								
+							}
+							voterHouseInfoVO.setCategoriesList(categoriesList);
+							votersList.add(voterHouseInfoVO);
+						}
+						String type = null;
+						if(castPresent && partyPresent){
+							type ="all";
+						}else if(castPresent){
+							type ="cast";
+						}else if(partyPresent){
+							type ="party";
+						}
+					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type);
+					  return "update";
+				  }
+			}catch (Exception e) {
+				Log.error("Exception Occured in getMultipleFamilesInfoForEditWithSelection() Method, Exception - ",e);
+				return "exception";
+			}
+			return Action.SUCCESS;
+		}
    }

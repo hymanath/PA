@@ -4230,7 +4230,20 @@
 		<result name="error">/jsp/loginForm.jsp?src=populateVoterDataAction</result>	
 		</action>
 		
-		
+		<action name="getVotersInfoForEditBySearchAction" class="votersEditAction" method="getMultipleFamilesInfoForEditWithSelection">
+			<result type="json" name="data">
+				 <param name="root">voterHouseInfoVO1</param>
+			</result>
+			<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+			<result type="json" name="update">
+				 <param name="root">status</param>
+			</result>
+			<result type="json" name="exception">
+				 <param name="root">"exception"</param>
+			</result>		
+		</action>
 		
 	</package>
 </struts>      

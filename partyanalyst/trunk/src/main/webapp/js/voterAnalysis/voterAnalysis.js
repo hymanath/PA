@@ -115,7 +115,7 @@ function buildVotersInFamilyForEdit(results){
 					   else
 						str+="<option value="+results.casteGroupNameList[l].id+" selected='selected'>"+results.casteGroupNameList[l].name+"</option>";			
 					 }
-			  str+="    <select></td>";
+			  str+="    </select></td>";
 			  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"castvalid"+localid+"\",\"castallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
 			  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"castvalid"+localid+"\",\"castallfamily\")'><i class='icon-ok-sign'></i></a></td>";
 			  str+="   </tr>";
@@ -128,7 +128,7 @@ function buildVotersInFamilyForEdit(results){
 					   else
 						str+="<option value="+results.parties[l].id+" selected='selected'>"+results.parties[l].name+"</option>";			
 					 }
-			  str+="    <select></td>";
+			  str+="    </select></td>";
 			  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"partyvalid"+localid+"\",\"partyallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
 			  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"partyvalid"+localid+"\",\"partyallfamily\")'><i class='icon-ok-sign'></i></a></td>";
 		       str+="   </tr>";
