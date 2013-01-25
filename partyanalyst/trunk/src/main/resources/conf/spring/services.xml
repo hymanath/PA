@@ -1114,6 +1114,10 @@
 		<property name="boothDAO" ref="boothDAO" />	
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 		<property name="gallaryDAO" ref="gallaryDAO"></property>
+		<property name="contentNotesDAO" ref="contentNotesDAO"></property>
+		<property name="newsFlagDAO" ref="newsFlagDAO"></property>
+		<property name="userDAO" ref="userDAO"></property>
+		<property name="transactionTemplate" ref="transactionTemplate" />
 		
 	</bean>
 	
@@ -1122,6 +1126,7 @@
 		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
+		<property name="newsFlagDAO" ref="newsFlagDAO"/>
 	</bean>
 	
 	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">
