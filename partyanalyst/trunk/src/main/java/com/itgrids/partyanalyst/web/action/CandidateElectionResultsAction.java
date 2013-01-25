@@ -1898,5 +1898,214 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return Action.SUCCESS;
 		
 	}
+	
+	public String saveContentNotesByContentId(){
+		
+		log.debug("Entered into the saveCommentBYContentId method");
+		
+		try{
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			  Long contentId = jObj.getLong("contentId");
+			  String comment = jObj.getString("comment");
+			  session = request.getSession();
+			  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			savedCommentId = newsMonitoringService.saveContentNotesByContentId(contentId , comment);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception raised in saveCommentByContentId method :"+e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String removeContentNotes(){
+		
+		log.debug("Entered into the removeCommentByContentId method");
+		try{
+			
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			
+			Long conentNotesId = jObj.getLong("conentNotesId");
+			
+			status = newsMonitoringService.removeContentNotes(conentNotesId);
+			
+		}catch(Exception e){
+			log.debug("Exception raised in removeCommentByContentId method :"+e);
+			e.printStackTrace();			
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String getContentNotesByContentId(){
+		
+		log.debug("Entered into the getCommnetsByContentId method");
+		
+		try{		
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			  Long contentId = jObj.getLong("contentId");
+			  session = request.getSession();
+			  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			 
+			 commentsList = newsMonitoringService.getContentNotesByContentId(contentId,regVO.getRegistrationID());
+		}catch(Exception e){
+			log.error("Exception raised in getCommnetsByContentId method :"+e);
+			e.printStackTrace();			
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String addFlagToNews(){
+		
+		log.debug("Entered into the addFlagToNews method");
+		try{
+			
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			session = request.getSession();
+			
+			Long contentId = jObj.getLong("contentId");
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			status = newsMonitoringService.addFlagToNews(contentId ,regVO.getRegistrationID());
+			
+			
+		}catch(Exception e){
+			log.error("Exception raised in addFlagToNews method");
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String checkForFlag(){
+		log.debug("Entered into the checkForFlag method");
+		
+		try{
+			
+
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			
+			
+			Long contentId = jObj.getLong("contentId");
+			
+			status = newsMonitoringService.checkForFlag(contentId);
+			
+		}catch(Exception e){
+		log.error("Exception raised in checkForFlag method");
+			e.printStackTrace();
+			
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String removeFlagForNews(){
+		log.debug("Entered into the removeFlagForNews method");
+		
+		try{
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			
+			Long contentId = jObj.getLong("contentId");
+			
+			status = newsMonitoringService.removeFlagForNews(contentId);
+			
+		}catch(Exception e){
+		log.error("Exception raised in removeFlagForNews method");
+			e.printStackTrace();
+			
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateVisibility(){
+		log.debug("Entered into the updateVisibility method");
+		
+		try{
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			
+			Long contentId = jObj.getLong("contentId");
+			String visibility = jObj.getString("visibility");
+			
+			status = newsMonitoringService.updateVisibility(contentId , visibility);
+			
+		}catch(Exception e){
+		log.error("Exception raised in updateVisibility method");
+			e.printStackTrace();
+			
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	public String checkForVisibilityStatus(){
+		log.debug("Entered into the checkForVisibilityStatus method");
+		
+		try{
+			try{	 
+				 jObj = new JSONObject(getTask());
+				 
+			   }catch(Exception e){
+					 e.printStackTrace(); 
+			   }
+			
+			Long contentId = jObj.getLong("contentId");
+			
+			status = newsMonitoringService.checkForVisibilityStatus(contentId);
+			
+		}catch(Exception e){
+		log.error("Exception raised in checkForVisibilityStatus method");
+			e.printStackTrace();
+			
+		}
+		
+		return Action.SUCCESS;
+	}
+
+
 
 }
