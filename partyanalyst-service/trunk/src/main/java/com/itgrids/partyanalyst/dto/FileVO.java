@@ -100,9 +100,48 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long fileGallaryId;
 	
 	private ResultStatus resultStatus;
+	private String flagSet;
+	private String notesExist;
+	
+	public int totalFlaggedNews;
+	private int totalNotesNews;
 	
 
 	
+
+
+	public int getTotalFlaggedNews() {
+		return totalFlaggedNews;
+	}
+
+	public void setTotalFlaggedNews(int totalFlaggedNews) {
+		this.totalFlaggedNews = totalFlaggedNews;
+	}
+
+	public int getTotalNotesNews() {
+		return totalNotesNews;
+	}
+
+	public void setTotalNotesNews(int totalNotesNews) {
+		this.totalNotesNews = totalNotesNews;
+	}
+
+	public String getNotesExist() {
+		return notesExist;
+	}
+
+	public void setNotesExist(String notesExist) {
+		this.notesExist = notesExist;
+	}
+
+	public String getFlagSet() {
+		return flagSet;
+	}
+
+	public void setFlagSet(String flagSet) {
+		this.flagSet = flagSet;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
