@@ -875,6 +875,19 @@ function displayNewsByImportance(jObj,results){
 
   $('#newsDisplayDiv').html(str);
 
+  $('#newsDisplayOuterDiv').dialog({    title:'News Details',
+	                            height: 'auto',
+								width: 950,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								overlay: { opacity: 0.5, background: 'black'}
+
+  });
+
 }
 
 
