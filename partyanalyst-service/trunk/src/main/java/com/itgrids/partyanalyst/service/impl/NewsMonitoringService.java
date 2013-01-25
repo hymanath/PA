@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,27 +11,37 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
+import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
+import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Category;
+import com.itgrids.partyanalyst.model.ContentNotes;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
@@ -55,11 +66,51 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private FileDAO fileDAO;
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     private IGallaryDAO gallaryDAO;
+    private IContentNotesDAO contentNotesDAO;
 
+	
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
     private IRegionScopesDAO regionScopesDAO;
     private IBoothDAO boothDAO;
     private IUserCandidateRelationDAO userCandidateRelationDAO;
+    private INewsFlagDAO newsFlagDAO;
+    private IUserDAO userDAO;
+	private TransactionTemplate transactionTemplate;
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+    
+    public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public INewsFlagDAO getNewsFlagDAO() {
+		return newsFlagDAO;
+	}
+
+	public void setNewsFlagDAO(INewsFlagDAO newsFlagDAO) {
+		this.newsFlagDAO = newsFlagDAO;
+	}
+
+	public IContentNotesDAO getContentNotesDAO() {
+		return contentNotesDAO;
+	}
+
+	public void setContentNotesDAO(IContentNotesDAO contentNotesDAO) {
+		this.contentNotesDAO = contentNotesDAO;
+	}
+
+
     
     public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
@@ -269,12 +320,60 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	public List<FileVO> getNewsForRegisterUsers1(FileVO inputs){
 	      log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
 	       List<FileVO> fileVOList = new ArrayList<FileVO>();
-	    	try{  
+	    	try{
+	    		
+	    		List<Long> contentIds = new ArrayList<Long>();
+	    		Map<Long , Long> countMap = new HashMap<Long, Long>();
+	    		Map<Long , Long> notesCountMap = new HashMap<Long, Long>();
+	    		List<Object[]> countList = new ArrayList<Object[]>();
+	    		List<Object[]> notesCountList = new ArrayList<Object[]>();
+	    		
 	    	  List<Object[]> fileList = fileGallaryDAO.getNewsForRegisterUsers1(inputs);
+	    	  
+	    	  for(Object[] obj:fileList)	    		  
+	    		  contentIds.add((Long)obj[0]);
+	    	  
+	    	  if(contentIds.size() >0)	    	  
+	    	      countList= newsFlagDAO.getCountForFlagByFileGallaryId(contentIds);
+	    	  
+	    	  
+	    	  //if(inputs.getCandidateId() != null){
+	    	  
+	    	  if(contentIds.size() > 0)
+	    	        notesCountList =  contentNotesDAO.getContentNotesCountByContentIds(contentIds);
+	    	    
+	    	    for(Object[] obj:notesCountList)	    	    	
+	    	    	notesCountMap.put((Long)obj[0], (Long)obj[1]);
+	    	    	
+	    	 // }
+	    	  
+	    	  
+	    	  for(Object[] obj:countList)
+	    		  countMap.put((Long)obj[0],(Long)obj[1]);	
+	    		  
 	    	  for(Object[] obj:fileList){
 	    		  
 	    		  File file = (File)obj[1];
 	    		  FileVO  fileVO = new FileVO();
+	    		  
+                  if(fileVOList.size() == 0){
+                	  fileVO.setTotalFlaggedNews(countList.size());
+                	  fileVO.setTotalNotesNews(notesCountMap.size());
+                  }
+	    		  
+	    		  if(countMap.get((Long)obj[0]) == null)
+	    			  fileVO.setFlagSet("false");
+	    		  else
+	    			  fileVO.setFlagSet("true");
+	    		  
+	    		  if(notesCountMap.get((Long)obj[0]) != null){
+	    			  
+	    			  if(notesCountMap.get((Long)obj[0]).longValue() >0)
+	    				  fileVO.setNotesExist("true");
+	    			  else
+	    				  fileVO.setNotesExist("false");
+	    			  
+	    		  }
 	    		  
 	    		  fileVO.setContentId((Long)obj[0]);
 	    		  fileVO.setKeywords(file.getKeywords());
@@ -769,8 +868,12 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		 ResultStatus resultStatus = new ResultStatus();
 	  try{ 
 		 if(task.equalsIgnoreCase("Update")){
+			 
+			 Category category  = null;
 			 File file = fileDAO.get(fileVO.getFileId());
-			 Category category = categoryDAO.get(fileVO.getCategoryId());
+			 
+			 if(fileVO.getCategoryId() != 0)
+			  category = categoryDAO.get(fileVO.getCategoryId());
 			 
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
 			 
@@ -849,6 +952,11 @@ public class NewsMonitoringService implements INewsMonitoringService {
 				 
 				 
 			 }
+          
+          if(fileVO.getFlagSet().equalsIgnoreCase("false"))        	  
+        	  newsFlagDAO.removeFlagForNews(fileVO.getFileGallaryId());          
+          else
+        	  addFlagToNews(fileVO.getFileGallaryId(),fileVO.getUserId());
 			 
 			/* if(fileVO.getVisibility().equalsIgnoreCase("public")){
 				 
@@ -1141,6 +1249,215 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			e.printStackTrace();
 			return null;
 			
+		}		
+	}
+	
+	
+public Long saveContentNotesByContentId(final Long contentId ,final  String commentText){
+		
+		log.debug("Entered into the saveCommentByContentId service method");
+		 Long savedId = null;
+		
+		try{
+			 savedId = (Long)transactionTemplate.execute(new TransactionCallback() {
+				public Long doInTransaction(TransactionStatus status) {
+			ContentNotes contentNotes = new ContentNotes();
+			//contentNotes.setContentId(contentId);
+			contentNotes.setFileGallary(fileGallaryDAO.get(contentId));
+			contentNotes.setIsDelete("false");
+			contentNotes.setNotes(commentText);
+			contentNotes.setInsertedTime(new Date());
+			contentNotes.setUpdatedTime(new Date());
+			
+			contentNotes = contentNotesDAO.save(contentNotes);
+			
+			return contentNotes.getContentNotesId();
+				}
+			});
+			
+		}catch(Exception e){
+			log.error("Exception raised in saveCommentByContentId method :"+e);
+			e.printStackTrace();
+		}
+		
+		return savedId;
+		
+	}
+	
+	
+	public List<CommentVO> getContentNotesByContentId(Long contentId,
+			Long registrationId) {
+		
+		log.debug("Entered into the getCommnetsByContentId service method");
+		List<CommentVO> commentsList = new ArrayList<CommentVO>();
+		
+		try{			
+			List<Object[]> comments = contentNotesDAO
+					.getContentNotesByContentId(contentId);		
+			
+			for(Object[] obj:comments){				
+				CommentVO commentVO = new CommentVO();				
+				commentVO.setCommentId((Long)obj[0]);
+				commentVO.setComment(obj[1].toString());
+				commentsList.add(commentVO);			
+			}
+			
+		}catch(Exception e){
+			log.error("Exception raised in getCommnetsByContentId method :"+e);
+			e.printStackTrace();	
+			return null;
+		}
+		return commentsList;
+	}
+	
+	
+	public String removeContentNotes(Long contentNotesId){
+		log.debug("Entered into the removeContentNotes method");
+		
+		try{
+			//contentNotesDAO.remove(contentNotesId);
+			
+			ContentNotes contentNews = contentNotesDAO.get(contentNotesId);
+			
+			contentNews.setIsDelete(IConstants.TRUE);
+			
+			contentNews = contentNotesDAO.save(contentNews);
+			
+		}catch(Exception e){
+			log.error("Exception raised in the removeContentNotes method :" +e);
+		 e.printStackTrace();			
+		}
+		return IConstants.SUCCESS;		
+	}
+	
+	public String addFlagToNews(Long contentId , Long userId){
+		
+		log.debug("Entered into the addFlagToNews service method");
+		
+		try{
+			Long count = 0L;
+			
+			List<Long> flagCountList = newsFlagDAO.getCountForFlagByContentId(contentId);
+			
+			if(flagCountList != null && flagCountList.size() >0)
+				count = flagCountList.get(0);
+			
+			if(count.longValue() == 0 ){
+				
+				NewsFlag newsFlag = new NewsFlag();
+				
+				newsFlag.setFileGallary(fileGallaryDAO.get(contentId));
+				newsFlag.setUser(userDAO.get(userId));			
+				newsFlagDAO.save(newsFlag);
+			}
+						
+		}catch(Exception e){			
+			log.debug("Exception raised in addFlagToNews service method");			
+			e.printStackTrace();
+		}
+		return IConstants.SUCCESS;
+		
+	}
+	
+	public String checkForFlag(Long contentId){
+		
+		log.debug("Entered into the checkForFlag service method");
+		
+		try{
+		
+		List<Long> contentIds = new ArrayList<Long>();		
+		
+		contentIds.add(contentId);
+		
+		List<Object[]> countList= newsFlagDAO.getCountForFlagByFileGallaryId(contentIds);
+		
+		if(countList != null && countList.size() >0){
+		 Object[] obj = countList.get(0);
+		 
+		 Long count =(Long) obj[1];
+		 
+		 if( count.longValue() == 0)
+			 return "false";
+		 else
+			 return "true";
+		 
+		}else
+			return "false";
+		}catch(Exception e){
+			log.error("Exception raised in checkForFlag service method");
+			e.printStackTrace();
+			return null;
+			
+		}
+	}
+	
+	
+	public String removeFlagForNews(Long contentId){
+		
+		log.debug("Entered into the removeFlagForNews service method");
+		
+		try{
+			
+			newsFlagDAO.removeFlagForNews(contentId);
+			return IConstants.SUCCESS;
+			
+		}catch(Exception e){
+			log.error("Exception raised in removeFlagForNews service method");
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public String updateVisibility(Long contentId , String visibility){
+		
+		log.debug("Entered into the updateVisibility service method");
+		
+		try{
+			
+			FileGallary fileGallary = fileGallaryDAO.get(contentId);
+			fileGallary.setIsPrivate(visibility);
+			
+			fileGallaryDAO.save(fileGallary);
+			
+			return IConstants.SUCCESS;
+			
+		}catch(Exception e){
+			log.error("Exception raised in updateVisibility service method");
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public String checkForVisibilityStatus(Long contentId){
+		
+		log.debug("Entered into the checkForVisibilityStatus service method");
+		
+		try{
+			
+			List<String> visibilityList = fileGallaryDAO.checkForVisibilityStatus(contentId);
+			
+			if(visibilityList != null && visibilityList.size() >0){
+				
+				String visibility = visibilityList.get(0);
+				
+				if(visibility.equalsIgnoreCase("false"))
+					return IConstants.PUBLIC;
+				else
+					return IConstants.PRIVATE;				
+				
+			}
+				
+		
+			
+			return IConstants.SUCCESS;
+			
+		}catch(Exception e){
+			log.error("Exception raised in checkForVisibilityStatus service method");
+			e.printStackTrace();
+			return null;
 		}
 		
 	}
