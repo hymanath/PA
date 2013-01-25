@@ -75,6 +75,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateCaste> candidateCaste = new HashSet<CandidateCaste>(0);
 	private Set<CandidateAddress> candidateAddress = new HashSet<CandidateAddress>(0);
 	private Set<CandidateWebsite> candidateWebsite = new HashSet<CandidateWebsite>(0);
+	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
  
 	// Constructors
@@ -370,6 +371,15 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	public void setCandidateWebsite(Set<CandidateWebsite> candidateWebsite) {
 		this.candidateWebsite = candidateWebsite;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	public Set<NewsFlag> getNewsFlags() {
+		return newsFlags;
+	}
+
+	public void setNewsFlags(Set<NewsFlag> newsFlags) {
+		this.newsFlags = newsFlags;
 	}
 	
 	
