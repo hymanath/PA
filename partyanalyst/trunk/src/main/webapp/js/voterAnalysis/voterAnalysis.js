@@ -2142,13 +2142,13 @@ function impFamilesStaticTable(myresults,jsObj)
 	else
 		str+='<td><b>'+0+'</td></b>';
 
-	if(myresults.betwn4to6Popul != null)
-		str+='<td><b>'+myresults.betwn4to6Popul+'</td></b>';
+	if(myresults.betwn4to6 != null)
+		str+='<td><b>'+myresults.betwn4to6+'</td></b>';
 	else
 		str+='<td><b>'+0+'</td></b>';
 
-	if(myresults.betwn7to10Popul != null)
-		str+='<td><b>'+myresults.betwn7to10Popul+'</td></b>';
+	if(myresults.betwn7to10 != null)
+		str+='<td><b>'+myresults.betwn7to10+'</td></b>';
 	else
 		str+='<td><b>'+0+'</td></b>';
 
@@ -3043,6 +3043,15 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 				str += '    <td>'+prevElecInfo[i].femaleVotersDiff+'</td>';
 				str += '  </tr>';
 			}
+			    str += '  <tr>';
+				str += '    <td>'+jsObj.year+'</td>';
+				str += '    <td>'+votersbasicinfo.totVoters+'</td>';
+				str += '    <td>'+votersbasicinfo.totalMaleVoters+'</td>';
+				str += '    <td>'+votersbasicinfo.totalFemaleVoters+'</td>';
+				str += '    <td>--</td>';
+				str += '    <td>--</td>';
+				str += '    <td>--</td>';
+				str += '  </tr>';
 			str += '</table>';
 			if(jsObj.type == "panchayat" && votersbasicinfo.panchayatInfoPresent){
 			  str +='<div style="font-family:arial;margin-top:10px;margin-bottom:10px;font-size: 13px;">';
