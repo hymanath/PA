@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -25,5 +26,19 @@ public interface INewsMonitoringService {
 			Long locationValue, Long locationId, Long publicationId);
 	
 	public List<FileVO> getNewsByLocationAndCategory(FileVO fileVO);
+	
+	public Long saveContentNotesByContentId(Long contentId , String commentText);
+	public List<CommentVO> getContentNotesByContentId(Long contentId,Long registrationId);
+	public String removeContentNotes(Long contentNotesId);
+	
+	public String addFlagToNews(Long contentId , Long userId);
+	
+	public String checkForFlag(Long contentId);
+	public String removeFlagForNews(Long contentId);
+	
+	public String updateVisibility(Long contentId , String visibility);
+	
+	public String checkForVisibilityStatus(Long contentId);
+	
 		
 }

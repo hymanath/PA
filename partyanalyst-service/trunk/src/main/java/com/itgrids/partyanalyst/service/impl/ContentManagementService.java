@@ -3,14 +3,17 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
@@ -29,7 +32,16 @@ public class ContentManagementService implements IContentManagementService{
 	private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	private IGallaryDAO gallaryDAO;
 	private IPartyGalleryDAO partyGalleryDAO;
+	private INewsFlagDAO newsFlagDAO;
 	
+	public INewsFlagDAO getNewsFlagDAO() {
+		return newsFlagDAO;
+	}
+
+	public void setNewsFlagDAO(INewsFlagDAO newsFlagDAO) {
+		this.newsFlagDAO = newsFlagDAO;
+	}
+
 	public IGallaryDAO getGallaryDAO() {
 		return gallaryDAO;
 	}
@@ -112,6 +124,19 @@ public class ContentManagementService implements IContentManagementService{
 					if(!checkForFileExistance(files,fileGallary))
 						files.add(fileGallary);
 				
+				Map<Long,Long> flagCount = new HashMap<Long, Long>();
+				List<Long> contentIds = new ArrayList<Long>();
+				for(FileGallary fileGallary:files)					
+					contentIds.add(fileGallary.getFileGallaryId());
+				
+				List<Object[]> flagCountList = newsFlagDAO.getCountForFlagByFileGallaryId(contentIds);
+				
+				
+				for(Object[] count:flagCountList)					
+					flagCount.put((Long)count[0],(Long)count[1]);
+				
+					
+				
 				List<GallaryVO> relatedGalleries = new ArrayList<GallaryVO>(0);
 				List<GallaryVO> otherGalleries = new ArrayList<GallaryVO>(0);
 				GallaryVO relatedGallary = new GallaryVO();
@@ -179,6 +204,16 @@ public class ContentManagementService implements IContentManagementService{
 					}
 					else
 					{
+					if(flagCount.get(fileGallary.getFileGallaryId())!= null)						
+						fileVO.setFlagSet("true");
+					else
+						fileVO.setFlagSet("false");
+					
+					if(fileGallary.getIsPrivate().equalsIgnoreCase("false"))
+						fileVO.setVisibility("public");
+					else
+						fileVO.setVisibility("private");
+						
 					fileVO.setFileId(fileGallary.getFile().getFileId());
 					
 					if(fileGallary.getFile().getCategory() != null){
