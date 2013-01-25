@@ -331,7 +331,9 @@
 	            <value>com.itgrids.partyanalyst.model.VoterReportLevel</value> 
 	            <value>com.itgrids.partyanalyst.model.VoterInfo</value> 
 	            <value>com.itgrids.partyanalyst.model.VoterAgeInfo</value>  
-	            <value>com.itgrids.partyanalyst.model.VoterFamilyInfo</value>			    		
+	            <value>com.itgrids.partyanalyst.model.VoterFamilyInfo</value>
+	            <value>com.itgrids.partyanalyst.model.ContentNotes</value>
+	            <value>com.itgrids.partyanalyst.model.NewsFlag</value>			    		
 			</list>
 		</property>
 	</bean>
