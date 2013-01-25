@@ -2980,20 +2980,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		for(Object[] userCategoryValue : userCategoryValuesList)
 		{ 
 			 category = new VoterHouseInfoVO();
-					
-			 category.setUserCategoryValueId((Long)userCategoryValue[0]);
-			 category.setUserCategoryValueName(userCategoryValue[1]!=null?userCategoryValue[1].toString():"");
-			 List<Object[]> categoryValuesList =  userVoterCategoryValueDAO.getCategoryValuesByUserIdCategId(userId,(Long)userCategoryValue[0]);
-			 List<SelectOptionVO> categoryOptionsList = new ArrayList<SelectOptionVO>();
-			 categoryOptionsList.add(defaultSelectOptionVO);
-			 SelectOptionVO categoryOption = null;
-			 for(Object[] categoryValue : categoryValuesList){
-				 categoryOption = new SelectOptionVO();
-				 categoryOption.setId((Long)categoryValue[0]);
-				 categoryOption.setName(categoryValue[1]!=null?categoryValue[1].toString():"");
-				 categoryOptionsList.add(categoryOption);
-		     }
-			 category.setCategory(categoryOptionsList);
+			 getAllCategoryOptions(userCategoryValue,category,defaultSelectOptionVO,userId);
 			 List<Long> idsList = voterCategoryValueDAO.getVoterCategoryValue(userId,voterId,(Long)userCategoryValue[0]);
 			 if(idsList != null && idsList.size() > 0 && idsList.get(0) != null){
 				 category.setCategoryValuesId(idsList.get(0));
@@ -3002,7 +2989,25 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 			 categoriesList.add(category);	 
 		}	  
   }
-public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
+  
+  public void getAllCategoryOptions(Object[] userCategoryValue,VoterHouseInfoVO category,SelectOptionVO defaultSelectOptionVO,Long userId){
+	  
+	     category.setUserCategoryValueId((Long)userCategoryValue[0]);
+		 category.setUserCategoryValueName(userCategoryValue[1]!=null?userCategoryValue[1].toString():"");
+		 List<Object[]> categoryValuesList =  userVoterCategoryValueDAO.getCategoryValuesByUserIdCategId(userId,(Long)userCategoryValue[0]);
+		 List<SelectOptionVO> categoryOptionsList = new ArrayList<SelectOptionVO>();
+		 categoryOptionsList.add(defaultSelectOptionVO);
+		 SelectOptionVO categoryOption = null;
+		 for(Object[] categoryValue : categoryValuesList){
+			 categoryOption = new SelectOptionVO();
+			 categoryOption.setId((Long)categoryValue[0]);
+			 categoryOption.setName(categoryValue[1]!=null?categoryValue[1].toString():"");
+			 categoryOptionsList.add(categoryOption);
+	     }
+		 category.setCategory(categoryOptionsList);
+	  
+  }
+public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast){
 	
    if(voterHouseInfoVO != null){
 	try{
@@ -3037,28 +3042,35 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
 				
 			}
 		}
-		List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId());
-		Long partyId = voterHouseInfoVO.getPartyId();
-		Long casteStateId = voterHouseInfoVO.getCasteStateId();
-		if(partyId != null &&  partyId.longValue() == 0l)
-			partyId = null;
-		if(casteStateId != null &&  casteStateId.longValue() == 0l)
-			casteStateId = null;
-		if(userVoterDetailsList != null && userVoterDetailsList.size() > 0){
-			userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
-		}else{
-			if(casteStateId != null || partyId != null){
-			 UserVoterDetails userVoterDtls = new UserVoterDetails();
-			 userVoterDtls.setUser(user);
-			 userVoterDtls.setVoter(voter);
-			 if(casteStateId != null)
-				 userVoterDtls.setCasteState(casteStateDAO.get(casteStateId));
-			 if(partyId != null)
-				 userVoterDtls.setParty(partyDAO.get(partyId));
-			 userVoterDetailsDAO.save(userVoterDtls);
+		if(partyCast != null){
+			List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId());
+			Long partyId = voterHouseInfoVO.getPartyId();
+			Long casteStateId = voterHouseInfoVO.getCasteStateId();
+			if(partyId != null &&  partyId.longValue() == 0l)
+				partyId = null;
+			if(casteStateId != null &&  casteStateId.longValue() == 0l)
+				casteStateId = null;
+			if(userVoterDetailsList != null && userVoterDetailsList.size() > 0){
+			   if(partyCast.equalsIgnoreCase("all"))
+				   userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
+			   else if(partyCast.equalsIgnoreCase("party")){
+				   userVoterDetailsDAO.updateUserVoterPartyDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);  
+			   }else if(partyCast.equalsIgnoreCase("cast")){
+				   userVoterDetailsDAO.updateUserVoterCastDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
+			   }
+			}else{
+				if(casteStateId != null || partyId != null){
+				 UserVoterDetails userVoterDtls = new UserVoterDetails();
+				 userVoterDtls.setUser(user);
+				 userVoterDtls.setVoter(voter);
+				 if(casteStateId != null)
+					 userVoterDtls.setCasteState(casteStateDAO.get(casteStateId));
+				 if(partyId != null)
+					 userVoterDtls.setParty(partyDAO.get(partyId));
+				 userVoterDetailsDAO.save(userVoterDtls);
+				}
 			}
 		}
-	 
 	}
 	catch (Exception e) {
 		log.error("Exception rised in updateVoterDetails : ",e);
@@ -3067,10 +3079,10 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO){
 	
 }
 
- public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs){
+ public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs,String partyCast){
    try{
 	for(VoterHouseInfoVO voterHouseInfoVO : voterHouseInfoVOs){
-		updateVoterDetails(voterHouseInfoVO);
+		updateVoterDetails(voterHouseInfoVO,partyCast);
 	}
    }catch(Exception e){
 	   log.error("Exception rised in updateMultipleVoterDetails : ",e);
@@ -3591,7 +3603,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 return null;
 	 }
 	 
-	 public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id){
+	 public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id,List<Long> categories){
 		 VoterHouseInfoVO returnValue = new VoterHouseInfoVO();
 		 List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		 returnValue.setVotersList(votersList);
@@ -3678,12 +3690,19 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				      query.append(" order by model.voter.relativeName "+searchInfo.getSortBy());
 			    else if(searchInfo.getSortByColum().equalsIgnoreCase("relationship"))
 				      query.append(" order by model.voter.relationshipType "+searchInfo.getSortBy());
-			    
+			   /* else if(searchInfo.getSortByColum().trim().length() >1 && searchInfo.getSortIds() != null &&  searchInfo.getSortIds().length >0){			    	
+			    	String arrayId = searchInfo.getSortByColum().substring(searchInfo.getSortByColum().length() - 1); 
+			        String sortEle = searchInfo.getSortIds()[new Integer(arrayId)];
+			        if(sortEle != null){
+			        	searchInfo.setSortReq(true);
+			        	searchInfo.setSortEle(sortEle);
+			        }
+			    }*/
 			    List<Long> countList = boothPublicationVoterDAO.getVotersCountBySearchCriteria(searchInfo.getPublicationId(),id,query.toString());
 			     if(countList != null && countList.get(0) != null && ((Long)countList.get(0)).longValue() > 0l){
 			    	 returnValue.setTotalHousesCount((Long)countList.get(0));
 			    	  List<Object[]> votersData = boothPublicationVoterDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,searchInfo.getStartIndex(),searchInfo.getMaxIndex(),query.toString());
-				      populateVotersDataToVo(votersData,votersList);
+			    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo);
 			     }
 		 }catch(Exception e){
 			 log.error("Exception rised in getVotersInfoBySearchCriteria ",e);
@@ -3692,6 +3711,83 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 return returnValue;
 	 }
 	 
+	 public void populateVotersDataToVoForSearch(List<Object[]> votersData,List<VoterHouseInfoVO> votersList,List<Long> categories,VoterHouseInfoVO searchInfo){
+		 VoterHouseInfoVO voterHouseInfoVO = null;
+		 Map<Long,VoterHouseInfoVO> votersMap = new HashMap<Long,VoterHouseInfoVO>();
+		 List<Long> voterIds = new ArrayList<Long>();
+		 for(Object[] voters : votersData){
+			    Voter voter = (Voter)voters[0];
+		    	voterHouseInfoVO = new VoterHouseInfoVO();
+		    	//voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
+		    	voterHouseInfoVO.setName(voter.getName());
+		    	voterHouseInfoVO.setGender(voter.getGender());
+		    	voterHouseInfoVO.setAge(voter.getAge());
+		    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
+		    	//voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
+		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
+		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+		    	
+		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
+		    	voterIds.add(voter.getVoterId());
+		    	voterHouseInfoVO.setBoothId((Long)voters[1]);
+		    	voterHouseInfoVO.setBoothName(voters[2]!=null?voters[2].toString():"");
+		    	voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
+		    	votersMap.put(voter.getVoterId(),voterHouseInfoVO);
+		    	votersList.add(voterHouseInfoVO);
+		    	
+		    }
+			 if((searchInfo.isPartyPresent() || searchInfo.isCastPresent() || (categories != null && categories.size() > 0)) && voterIds.size() >0){
+				 if(searchInfo.isPartyPresent() || searchInfo.isCastPresent()){
+					 List<UserVoterDetails> votersPartyCastList = userVoterDetailsDAO.getAllUserVoterDetails(voterIds,searchInfo.getUserId());
+				     for(UserVoterDetails voterDetails:votersPartyCastList){
+				    	 VoterHouseInfoVO voterObj = votersMap.get(voterDetails.getVoter().getVoterId());
+				    	 if(voterObj != null){
+				    		 if(voterDetails.getCasteState()!= null && voterDetails.getCasteState().getCaste()!= null){
+				    			 voterObj.setCast(voterDetails.getCasteState().getCaste().getCasteName());
+				    		 }
+				    		 if(voterDetails.getParty() != null){
+				    			 voterObj.setParty(voterDetails.getParty().getShortName());
+				    		 }
+				    	 }
+				     }
+				 }
+				 if(categories != null && categories.size() > 0){
+					 VoterHouseInfoVO category = null;
+					 List<Object[]> votersPartyCastList = voterCategoryValueDAO.getVoterCategoryValuesForVoters(searchInfo.getUserId(),voterIds);
+				     for(Object[] voterDetails:votersPartyCastList){
+				    	 VoterHouseInfoVO voterObj = votersMap.get((Long)voterDetails[0]);
+				    	 if(voterObj != null){
+				    		 List<VoterHouseInfoVO> categoriesList = voterObj.getCategoriesList();
+				    		 if(categoriesList == null){
+				    			 categoriesList = new ArrayList<VoterHouseInfoVO>();
+				    			 voterObj.setCategoriesList(categoriesList);
+				    		 }
+				    		  category = new VoterHouseInfoVO();
+				    		  categoriesList.add(category);
+				    		  category.setCategoryValuesId((Long)voterDetails[1]);
+				    		  category.setName(voterDetails[2]!=null?voterDetails[2].toString():"");
+				    	 }
+				     }
+				 }
+			 }
+			/* if(searchInfo.isSortReq()){
+				 if(searchInfo.getSortEle().equalsIgnoreCase("party")){
+					 if(searchInfo.getSortBy().equalsIgnoreCase("asc"))
+						Collections.sort(votersList,sortByPartyAsc);
+					 else
+						Collections.sort(votersList,sortByPartyDesc);
+				 }
+				 else if(searchInfo.getSortEle().equalsIgnoreCase("cast")){
+					 if(searchInfo.getSortBy().equalsIgnoreCase("asc"))
+						Collections.sort(votersList,sortByCastAsc);
+					 else
+						Collections.sort(votersList,sortByCastDesc);
+				 }else{
+					 
+				 }
+			 }*/
+	 }
+	  
 	 public void populateVotersDataToVo(List<Object[]> votersData,List<VoterHouseInfoVO> votersList){
 		 VoterHouseInfoVO voterHouseInfoVO = null;
 		 for(Object[] voters : votersData){
@@ -4262,4 +4358,158 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		
 	 }
+	 
+	 public VoterHouseInfoVO getUserVoterCategories(Long userId){
+		 VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
+		  try{
+			 List<SelectOptionVO> categoriesList = new ArrayList<SelectOptionVO>();
+			 voterHouseInfoVO.setCategory(categoriesList);
+			 List<Object[]> userCategoryValuesList = userVoterCategoryDAO.getCategoryValuesList(userId);
+			 SelectOptionVO selectOptionVO = null;
+			 for(Object[] category:userCategoryValuesList){
+				 selectOptionVO = new SelectOptionVO();
+				 selectOptionVO.setId((Long)category[0]);
+				 selectOptionVO.setName(category[1]!=null?category[1].toString():"");
+				 categoriesList.add(selectOptionVO);
+			 }
+		  }catch(Exception e){
+			  log.error("Exception Occured in getUserVoterCategories Method, Exception is - ",e);
+		  }
+		 return voterHouseInfoVO;
+	 }
+	 
+	 public VoterHouseInfoVO getSelectedCategoryOptions(VoterHouseInfoVO parameters){
+		  VoterHouseInfoVO votersHouseInfoVO = parameters;
+		  try{
+		 	    SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
+		 	    defaultSelectOptionVO.setId(0l);
+		 	    defaultSelectOptionVO.setName("Select");
+		 	     if(parameters.isPartyPresent() || parameters.isCastPresent() || parameters.isAll())
+		 	       getPartiesAndCastsInVotersState(votersHouseInfoVO,parameters.getVoterId(),parameters.getUserId(),defaultSelectOptionVO);
+		 	     if(parameters.isAll() || parameters.getIds().size() > 0){
+		 	       List<Object[]> userCategoryValuesList = userVoterCategoryDAO.getCategoryValuesList(parameters.getUserId());
+		 	       VoterHouseInfoVO category = null;
+		 	       List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();
+		 	       for(Object[] userCategoryValue : userCategoryValuesList)
+		 			{ 
+		 	    	     if(parameters.isAll() || parameters.getIds().contains((Long)userCategoryValue[0])){
+			 				 category = new VoterHouseInfoVO();
+			 				 getAllCategoryOptions(userCategoryValue,category,defaultSelectOptionVO,parameters.getUserId());
+			 				 categoriesList.add(category);	
+		 	    	     }
+		 			}	
+		 	      votersHouseInfoVO.setCategoriesList(categoriesList);
+		 	     }
+		   }catch(Exception e){
+		 	  log.error("Exception rised in getSelectedCategoryOptions ",e);
+		   }
+		 	return votersHouseInfoVO;
+		  
+	  }
+	 
+	
+	  public VoterHouseInfoVO getSelectedCategoryOptionsForIndividual(List<VoterHouseInfoVO> voterIds,VoterHouseInfoVO parameters){
+		  VoterHouseInfoVO votersHouseInfoVO = parameters;
+		 
+		  
+		  Map<Long,Map<String, List<VoterHouseInfoVO>>> boothMap = new HashMap<Long,Map<String, List<VoterHouseInfoVO>>>();
+			Map<String, List<VoterHouseInfoVO>> voterByHouseNoMap = null;
+			
+			List<VoterHouseInfoVO> voterVOs = null;
+			
+		  try{
+			  if(voterIds != null && voterIds.size() >0){
+
+		 	    SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
+		 	    defaultSelectOptionVO.setId(0l);
+		 	    defaultSelectOptionVO.setName("Select");
+		 	   if(parameters.isPartyPresent() || parameters.isCastPresent() || parameters.isAll())
+		 	    getPartiesAndCastsInVotersState(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO);
+		 	    List<Object[]> userCategoryValuesList = null;
+		 	   List<Object[]> selectedUserCategoryValuesList = new ArrayList<Object[]>();
+		 	   if(parameters.isAll() || parameters.getIds().size() > 0){
+		 	     userCategoryValuesList = userVoterCategoryDAO.getCategoryValuesList(parameters.getUserId());
+			 	   if(parameters.isAll()){
+			 		  selectedUserCategoryValuesList = userCategoryValuesList;
+			 	   }else{
+		 	        for(Long catId : parameters.getIds()){
+			 	    	 for(Object[] userCategoryValue:userCategoryValuesList){
+			 	    		 if(catId.longValue() == ((Long)userCategoryValue[0]).longValue()){
+			 	    			selectedUserCategoryValuesList.add(userCategoryValue);
+			 	    		 }
+			 	    	 }
+			 	     }
+			 	   }
+		 	   }
+		 	   VoterHouseInfoVO voterHouseInfoVO = null;
+		 	   
+		 	    for(VoterHouseInfoVO voter : voterIds){
+		 	    	
+		 	     voterHouseInfoVO = new VoterHouseInfoVO();
+		 	     
+		 	     getVoterBasicInfo(voterHouseInfoVO,voter.getVoterId());
+		 	   
+		 	     
+		 	    voterByHouseNoMap = boothMap.get(voter.getBoothId());
+				if( voterByHouseNoMap == null){
+					voterByHouseNoMap = new HashMap<String, List<VoterHouseInfoVO>>();
+					boothMap.put(voter.getBoothId(), voterByHouseNoMap);
+				}
+				voterVOs = voterByHouseNoMap.get(voterHouseInfoVO.getHouseNo());
+				if(voterVOs ==null){
+					voterVOs = new ArrayList<VoterHouseInfoVO>();
+					voterByHouseNoMap.put(voterHouseInfoVO.getHouseNo(), voterVOs);
+				}
+				voterVOs.add(voterHouseInfoVO);
+				if(parameters.isPartyPresent() || parameters.isCastPresent() || parameters.isAll())
+		 	       voterSelectedCastAndPartyDetails(voterHouseInfoVO,voter.getVoterId(),parameters.getUserId());
+				if(parameters.isAll() || selectedUserCategoryValuesList.size() > 0){    
+			 	     List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();
+			 	   
+			 	     getVoterSelectedCategoryValues(selectedUserCategoryValuesList,defaultSelectOptionVO,parameters.getUserId(),voter.getVoterId(),categoriesList);
+			 	   
+			 	     voterHouseInfoVO.setCategoriesList(categoriesList);
+				}
+		 	     
+		 	   }
+		 	   List<VoterHouseInfoVO> boothsList = new ArrayList<VoterHouseInfoVO>();
+		 	  List<VoterHouseInfoVO> familiesList = null;
+		 	    for(Long key:boothMap.keySet()){
+		 	    	VoterHouseInfoVO booth = new VoterHouseInfoVO();
+		 	    	boothsList.add(booth);
+		 	    	booth.setBoothId(key);
+		 	    	VoterHouseInfoVO boothInfo = getBoothDetailsForVoter(key);
+		 	    	booth.setBoothName(boothInfo.getBoothName());
+		 	    	booth.setVilliageCovered(boothInfo.getVilliageCovered());
+		 	    	booth.setPanchayatName(boothInfo.getPanchayatName());
+		 	    	Map<String, List<VoterHouseInfoVO>> families = boothMap.get(key);
+		 	    	familiesList = new ArrayList<VoterHouseInfoVO>();
+		 	    	for(String familyKey:families.keySet()){
+		 	    		VoterHouseInfoVO family = new VoterHouseInfoVO();
+		 	    		familiesList.add(family);
+		 	    		family.setHouseNo(familyKey);
+		 	    		family.setVotersList(families.get(familyKey));
+		 	    	}
+		 	    	booth.setFamiliesList(familiesList);
+		 	    }
+		 	    
+		 	   votersHouseInfoVO.setBoothsList(boothsList);
+			  }
+		   }catch(Exception e){
+		 	  log.error("Exception rised in getSelectedCategoryOptionsForIndividual ",e);
+		   }
+		 	return votersHouseInfoVO;
+		  
+	  }
+	  
+	  public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast){
+		try{ 
+		  for(String voterId:voterIds){ 
+			 voterHouseInfoVO.setVoterId(new Long(voterId));
+		    updateVoterDetails(voterHouseInfoVO,partyCast);
+		  }
+		}catch(Exception e){
+			log.error("Exception rised in updateSelectedFieldsForAllVoters ",e);
+		}
+	  }
 }

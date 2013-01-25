@@ -51,7 +51,7 @@ public interface IVotersAnalysisService {
 
 	public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user);
 	
-	public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO);
+	public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast);
 	
 	public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
 	
@@ -83,9 +83,9 @@ public interface IVotersAnalysisService {
 	
 	public VoterHouseInfoVO getVoterPersonalDetailsList(List<VoterHouseInfoVO> voterIds,Long userId);
 	
-	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs);
+	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs,String partyCast);
 	
-	public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id);
+	public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id,List<Long> categories);
 	
 	public List<SelectOptionVO> getElectionIdAndTypeByPublicationId(Long publicationDateId);
 	
@@ -94,4 +94,12 @@ public interface IVotersAnalysisService {
 	public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type);
 	
 	public List<SelectOptionVO> getConstituenciesFromBoothPublicationVoter();
+	
+	public VoterHouseInfoVO getUserVoterCategories(Long userId);
+	
+	public VoterHouseInfoVO getSelectedCategoryOptions(VoterHouseInfoVO parameters);
+	
+	public VoterHouseInfoVO getSelectedCategoryOptionsForIndividual(List<VoterHouseInfoVO> voterIds,VoterHouseInfoVO parameters);
+	
+	public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast);
 }

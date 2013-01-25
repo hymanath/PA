@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
@@ -36,5 +37,13 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
 		Object[] values = {userId,voterId,categoryId};
 		return getHibernateTemplate().find("select model from VoterCategoryValue model " +
 				" where model.user.userId =? and model.voter.voterId = ? and model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId = ?",values);
+	}
+	
+	public List<Object[]> getVoterCategoryValuesForVoters(Long userId,List<Long> voterIds){
+		Query query = getSession().createQuery("select model.voter.voterId,model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId,model.userVoterCategoryValue.categoryValue " +
+				" from VoterCategoryValue model where model.user.userId = :userId and model.voter.voterId in(:voterIds) ");
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("userId",userId);
+		return query.list();
 	}
 }

@@ -56,6 +56,15 @@ public class VoterHouseInfoVO {
 	private int maxIndex;
 	private String sortBy;
 	private String sortByColum;
+	private boolean partyPresent;
+	private boolean castPresent;
+	private boolean all;
+	private boolean categoriesPresent;
+	private List<Long> ids;
+	private String party;
+	private String[] sortIds;
+	private boolean sortReq;
+	private String sortEle;
 	
 	public VoterHouseInfoVO(){
 		
@@ -506,6 +515,78 @@ public class VoterHouseInfoVO {
 
 	public void setSortByColum(String sortByColum) {
 		this.sortByColum = sortByColum;
+	}
+
+	public boolean isPartyPresent() {
+		return partyPresent;
+	}
+
+	public void setPartyPresent(boolean partyPresent) {
+		this.partyPresent = partyPresent;
+	}
+
+	public boolean isCastPresent() {
+		return castPresent;
+	}
+
+	public void setCastPresent(boolean castPresent) {
+		this.castPresent = castPresent;
+	}
+
+	public boolean isAll() {
+		return all;
+	}
+
+	public void setAll(boolean all) {
+		this.all = all;
+	}
+
+	public boolean isCategoriesPresent() {
+		return categoriesPresent;
+	}
+
+	public void setCategoriesPresent(boolean categoriesPresent) {
+		this.categoriesPresent = categoriesPresent;
+	}
+
+	public List<Long> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
+	}
+
+	public String getParty() {
+		return party;
+	}
+
+	public void setParty(String party) {
+		this.party = party;
+	}
+
+	public String[] getSortIds() {
+		return sortIds;
+	}
+
+	public void setSortIds(String[] sortIds) {
+		this.sortIds = sortIds;
+	}
+
+	public boolean isSortReq() {
+		return sortReq;
+	}
+
+	public void setSortReq(boolean sortReq) {
+		this.sortReq = sortReq;
+	}
+
+	public String getSortEle() {
+		return sortEle;
+	}
+
+	public void setSortEle(String sortEle) {
+		this.sortEle = sortEle;
 	}
 
 

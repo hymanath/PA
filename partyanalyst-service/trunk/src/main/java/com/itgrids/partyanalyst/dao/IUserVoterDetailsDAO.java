@@ -22,5 +22,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId);
 	
 	public List<Object[]> getCasteByVoterId(Long userId,List<Long> voterId);
+	
+	public void updateUserVoterPartyDetails(Long voterId,Long userId,Long partyId,Long castStateId);
+	
+	public void updateUserVoterCastDetails(Long voterId,Long userId,Long partyId,Long castStateId);
 
+	public List<UserVoterDetails> getAllUserVoterDetails(List<Long> voterIds,Long userId);
 }
