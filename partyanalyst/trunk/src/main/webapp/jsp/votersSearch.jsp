@@ -122,6 +122,9 @@ body {
     font-weight: bold;
     margin-left: 10px;
 }
+#votersBySearchTabContentDiv_body table{
+  width: 100%;
+}
 </style>
 <script type="text/javascript">
 var votersLimitExist = false;
