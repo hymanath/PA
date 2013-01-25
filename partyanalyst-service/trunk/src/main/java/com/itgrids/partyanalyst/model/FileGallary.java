@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -33,12 +37,16 @@ public class FileGallary implements Serializable{
 
 	private static final long serialVersionUID = -4139954488062501310L;
 	private Long fileGallaryId;
+	
 	private Gallary gallary;
 	private File file;
 	private Date createdDate;
 	private Date updateddate;
 	private String isPrivate;
 	private String isDelete;
+	
+	private Set<ContentNotes> contentNotes = new HashSet<ContentNotes>(0);
+	private NewsFlag newsFlags;
 	
 	public FileGallary(){
 	}
@@ -82,7 +90,7 @@ public class FileGallary implements Serializable{
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public File getFile() {
 		return file;
-	}
+	}	
 
 	public void setFile(File file) {
 		this.file = file;
@@ -123,5 +131,30 @@ public class FileGallary implements Serializable{
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileGallary")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ContentNotes> getContentNotes() {
+		return contentNotes;
+	}
+
+	public void setContentNotes(Set<ContentNotes> contentNotes) {
+		this.contentNotes = contentNotes;
+	}
+
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileGallary")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NewsFlag getNewsFlags() {
+		return newsFlags;
+	}
+
+	public void setNewsFlags(NewsFlag newsFlags) {
+		this.newsFlags = newsFlags;
+	}
+
+	
+	
+	
 			
 }

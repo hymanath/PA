@@ -108,6 +108,8 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserVoterCategory> userVoterCategory = new HashSet<UserVoterCategory>(0);
 	private Set<UserVoterCategoryValue> userVoterCategoryValue = new HashSet<UserVoterCategoryValue>(0);
 	
+	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
+	
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -878,6 +880,16 @@ public class User extends BaseModel implements Serializable{
 	public void setUserVoterCategoryValue(
 			Set<UserVoterCategoryValue> userVoterCategoryValue) {
 		this.userVoterCategoryValue = userVoterCategoryValue;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<NewsFlag> getNewsFlags() {
+		return newsFlags;
+	}
+
+	public void setNewsFlags(Set<NewsFlag> newsFlags) {
+		this.newsFlags = newsFlags;
 	}
 	
 	
