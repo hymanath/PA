@@ -322,6 +322,10 @@ public class NewsDisplayAction implements ServletRequestAware{
 			log.debug("Enter into updateDeleteNews Method of NewsDisplayAction ");
 	   try{ 
 		    jObj = new JSONObject(getTask()); 
+		    
+		     session = request.getSession();
+			 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			 
 		   FileVO fileVO = new FileVO();
 		   if(jObj.getString("task").trim().equalsIgnoreCase("Update"))
 		   { 
@@ -340,6 +344,8 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    fileVO.setRegionValue(jObj.getLong("locationScopeValue"));
 		    fileVO.setVisibility(jObj.getString("visibility"));
 		    fileVO.setFileGallaryId(jObj.getLong("fileGallaryId"));
+		    fileVO.setFlagSet(jObj.getString("flagInd"));
+		    fileVO.setUserId(regVO.getRegistrationID());
 		   
 		    
 		   } 
