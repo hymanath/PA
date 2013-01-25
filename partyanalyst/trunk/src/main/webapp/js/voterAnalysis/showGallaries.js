@@ -893,7 +893,7 @@ function displayNewsByImportance(jObj,results){
 
 function incrementStartEndIndexes(importanceId,categoryId){
 	startIndex = startIndex + 10;
-	lastIndex = lastIndex  + 10 ; 
+	lastIndex =  10 ; 
 
 	getNews(importanceId , categoryId);
 
