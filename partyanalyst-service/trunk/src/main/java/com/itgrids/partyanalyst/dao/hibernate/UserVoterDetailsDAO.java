@@ -47,6 +47,26 @@ IUserVoterDetailsDAO{
 		
 	}
 	
+	public void updateUserVoterPartyDetails(Long voterId,Long userId,Long partyId,Long castStateId){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("partyId",partyId);
+		
+		query.executeUpdate();
+		
+	}
+	
+	public void updateUserVoterCastDetails(Long voterId,Long userId,Long partyId,Long castStateId){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.casteState.casteStateId = :castStateId where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("castStateId",castStateId);
+		
+		query.executeUpdate();
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCasteByVoterId(Long userId,List<Long> voterId)
 	{
@@ -55,5 +75,15 @@ IUserVoterDetailsDAO{
 		query.setParameterList("voterId", voterId);
 		return query.list();
 	
+	}
+	
+	public List<UserVoterDetails> getAllUserVoterDetails(List<Long> voterIds,Long userId){
+		//List<UserVoterDetails> list = getHibernateTemplate().find("from UserVoterDetails as model where model.voter.voterId = ? and model.user.userId=?",voterId,userId);
+		Query query = getSession().createQuery("from UserVoterDetails model where model.voter.voterId in (:voterIds) and model.user.userId= :userId");
+		query.setParameterList("voterIds",voterIds);
+		query.setParameter("userId",userId);
+		
+		return query.list();
+		
 	}
 }
