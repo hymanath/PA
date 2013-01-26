@@ -49,12 +49,45 @@
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+   
   <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
-
+  <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
+<script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
   <title>Voters analysis</title>
 
 <style type="text/css">
+.radio {
+	height: 25px;
+	width: 19px;
+	clear:left;
+	float:left;
+	margin: 0 0 3px;
+	padding: 0 0 0 26px;
+	background: url("js/jtransform/radio.png");
+	background-repeat:no-repeat;
+	cursor: default;
+}
+.checkbox {
+	height: 25px;
+	width: 19px;
+	clear:left;
+	float:left;
+	margin: 0 0 3px;
+	padding: 0 0 0 26px;
+	background: url("js/jtransform/checkbox.png") no-repeat;
+	cursor: default;
+	text-align:left;
+}
+.checkbox input,.radio input {
+	display: none;
+}
+.checkbox input.show,.radio input.show {
+	display: inline;
+}
+.selected {
+	background-position: 0 -52px;
+}
 #MainDiv{
 margin-left:auto;
 margin-right:auto;
@@ -514,7 +547,7 @@ width: 860px;}
     position: relative;
     width: 441px;
 }
-.f2{font-family:verdana;font-size:15px;}
+.f2{margin-right:15px;}
 .badge-add{padding:10px;border-radius:50%;background:#ABCFF3;color:#222222;}
 
 body {
@@ -524,12 +557,30 @@ body {
 #previousEleVotingTrendsDiv table tr:nth-child(2n-1) {
     background: none repeat scroll 0 0 #EDF5FF;
 }
-h5{font-family : verdana;}
+h5{font-family : Arial;}
+.customMenu {display:none;width:100%;clear:both; margin: 5px -15px;
+    padding: 5px 15px;background:#3198B6;}
+.customMenu .leftNav, .customMenu .middleNav,.customMenu .rightNav{background:#fff;border-radius:2px;box-shadow:0px 1px 2px #aaa;}
+.customMenu .rightNav{width:490px;margin-left:10px;}
+.customMenu .leftNav{margin-left:0px;}
+.bs-docs-sidenav{margin:0px;}
+.customMenu .leftNav li{display:block;}
+.customMenu .middleNav li{display:block;}
+.middleNav-Wards{display:none;}
+.customMenu .rightNav li{margin:10px;display:inline-block;float:left;}
+.nav-stacked a.hoverclass{background:#5e5e5e;}
+.leftNav-Municipalities{margin-top:25px;}
+/*
+.customMenu .leftNav ul li{display:inline-block;clear:both;width:100%;}
+.customMenu .leftNav ul li a{display:inline-block;clear:both;width:100%;padding:5px;border:1px solid #ccc;}*/
+.bs-docs-sidenav > li > a { padding: 4px 14px;padding-left:2px;cursor:pointer;cursor:hand;}
+.ShowHideLevelMenu{position:absolute;top:38px;right:10px;}
 </style>
 <style>
-.bs-docs-sidenav li {position:relative;}
+.background{background:#fff;}
+/*.bs-docs-sidenav li {position:relative;}
 .bs-docs-sidenav li .popover-cust{display:none;position:absolute;left:165px;top:-26px;}
-.bs-docs-sidenav li:hover .popover-cust{display:block;}
+.bs-docs-sidenav li:hover .popover-cust{display:block;}*/
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -650,21 +701,65 @@ locationDetails.constituencyArr.push(ob);
 <div id="votersDiv3" >
 
 
-<div id='votersHeaderTopDiv3' style="clear:both;">
-		<table width="100%" cellpadding="0" cellspacing="0">
-					<tr>
-					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="reportLevelheading" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
-					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
-					</tr>					
-				</table>
+
+
+
+<div id='votersHeaderTopDiv3' style="clear:both;position:relative;">
+		<div class="breadcrumb">
+		
+		<h4 id="reportLevelheading" class=""> </h4>
+		
+		
+ 
+ <div id="reportLevelCountDiv"> 
+ </div>
+ 
+ 
+ <div class="ShowHideLevelMenu">
+<a class="btn" href="javascript:{}" id="ShowMenu">Show Menu <i class="icon-chevron-down"></i></a>
+ </div>
+ 
+ <div class="customMenu" id="CustomMenu"><!-- Menu Start-->
+
+<!-- Left Nav -->
+<div class="span3 leftNav">
+<div class="leftNav-Mandals"> <h5 class="breadcrumb" style="margin-bottom:0px;">Mandals</h5>
+<ul id="leftNav-Mandals-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
+</div>
+<div class="leftNav-Municipalities"> <h5 class="breadcrumb" style="margin-bottom:0px;">Municipalities</h5>
+<ul id="leftNav-Municipalities-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
+</div>
+</div>
+<!-- Left Nave End-->
+ <!-- Middle Nav -->
+<div class="span3 middleNav" style="margin-left:10px;">
+	<div class="middleNav-Panchayats">
+		<h5 class="breadcrumb" style="margin-bottom:0px;">Panchayat(s)</h5>
+		<ul id="middleNav-Panchayats-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
+	</div>
+	<div class="middleNav-Wards">
+		<h5 class="breadcrumb" style="margin-bottom:0px;">Ward(s)</h5>
+		<ul id="middleNav-Wards-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
+	</div>
+</div>
+<!-- Middle End-->
+
+
+<!-- Right Nav -->
+<div class="span6 rightNav">
+	<div class="rightNav-Booths">
+			<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>
+			<ul id="rightNav-Booths-list"></ul>
+	</div>
+</div>
+<!-- RIGHT End-->
+
+</div><!-- Menu End-->
 
 	</div>
-	<div id="votersMainOutertopDiv3">
+	
+	
  
- <div id="reportLevelCountDiv"></div>
- </div>
-
  <!--<h5 id="reportTopLevelheading" style="margin-left:15px;"></h5>-->
 <div id='votersHeaderDiv3' style="clear:both;">
 		<table width="100%" cellpadding="0" cellspacing="0">
