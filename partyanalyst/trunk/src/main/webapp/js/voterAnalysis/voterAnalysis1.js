@@ -320,20 +320,41 @@ oPayload.totalRecords = oResponse.meta.totalRecords;
 return oPayload;
 }
 
+                   $("#votersOuterDiv1").dialog({ 
+	                            title:'Voters Details',
+	                            height: 'auto',
+								width: 950,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
 
 return {
 oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
 };
+
+
+
 }
 
 function buildVotersByLocPanchayatDataTable(id)
 {
+
 var publicationId = $('#publicationDateList').val();
 var panchaytId =  $('#panchayatField').val();
 
 if(panchaytId == "0" || publicationId == "0")
 	return false;
+
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
 {key:"firstName", label: "Name", sortable: true},
@@ -376,6 +397,21 @@ votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse
 oPayload.totalRecords = oResponse.meta.totalRecords;
 return oPayload;
 }
+
+
+	   $("#votersOuterDiv1").dialog({ 
+					title:'Voters Details',
+					height: 'auto',
+					width: 950,
+					show: "blind",
+					modal: true,
+					overlay: { opacity: 0.5, background: 'black'},
+					 buttons: {
+				   "Close":function() {$(this).dialog("close")}
+					   }	
+
+	   });
+
 return {
 oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
@@ -476,17 +512,17 @@ oDT: votersByLocBoothDataTable
 			//$("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
 	   
 		 getvotersBasicInfo("voters","");
-		 getVotersData();
-		 showNewsDetails();
+		// getVotersData();
+		// showNewsDetails();
 		  getCounts();
-		  getVotersCastInfo();
-          getCastInfoForsubLevel();
-         getvotersBasicInfo("impFamilies","");
+		  //getVotersCastInfo();
+         //getCastInfoForsubLevel();
+         //getvotersBasicInfo("impFamilies","");
 		
-		 callCorrespondingAjaxCall();
-		 getPreviousElectionVotingTrends();
+		// callCorrespondingAjaxCall();
+		 //getPreviousElectionVotingTrends();
 	}
-	
+
 	function ShowCastPartyPopupDiv(){
 	   $("#castPartyPopupDiv").dialog({
             modal: true,
@@ -496,7 +532,7 @@ oDT: votersByLocBoothDataTable
            
         });
 	}
-	
+		
 	function getMandalList(selectElmt)
 	{
 		var constituencyID = document.getElementById("constituencyList");
@@ -956,8 +992,22 @@ $(document).ready(function(){
 		 }
 }*/
 
-
+function showProcessingDialog(){
+	$('#processingDialogInnerDiv').html('Your request is in process....<img alt="Processing Image" src="./images/icons/search.gif">');
+	  $("#processingDialogOuterDiv").dialog({
+            modal: false,
+			closeOnEscape: false,
+            title: "Processing Request...",
+			width: 300,
+            height: 100           
+        });
+	
+}
 function callCorrespondingAjaxCall(){
+
+
+	showProcessingDialog();
+
 	var reportLevel = $('#reportLevel').val();
 
 	if(reportLevel == "1")
@@ -2502,14 +2552,14 @@ $('#ajaxImageDiv').css('display','block');
 
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);					
 							buildVoterDetailsTable(myResults,jsObj.type);
-                             buildAgeWiseVoterAnalysisChart(myResults,jsObj);
+                            // buildAgeWiseVoterAnalysisChart(myResults,jsObj);
 
 							if(jsObj.type != "booth"){
 								buildAgewiseDetails(myResults,jsObj);
 								buildAgeAndGenderWiseDetails(myResults,jsObj);
 								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj);
 							}
-						 
+						  $("#processingDialogOuterDiv").dialog('close');
 						
 					}catch (e){   
 							
@@ -2541,7 +2591,7 @@ function buildVoterDetailsTable(result,type){
 	else 
 		noteString = $('#pollingStationField :selected').text();
 
-	$('#voterDetailsNote').html('<h4 style="color:green;margin-left:40px;font-family: arial;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
+	$('#voterDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
 
 	var str='';
 	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
@@ -2604,6 +2654,25 @@ function buildVoterDetailsTable(result,type){
 
 	$('#tableDiv').html(str);
 
+	$('#ageWiseVotersDetailsOuterDiv').dialog();
+
+      $('#ageWiseVotersDetailsOuterDiv').dialog({ 
+	                            title:'Voters Details',
+	                            height: 'auto',
+								width: 950,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+
 
 }
 
@@ -2635,7 +2704,7 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<h4 style="color:green;margin-left:45px;font-family: arial;">'+noteString+'</h4>');
+	$('#voterAgewiseDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h5>');
 
 	var str='';
 	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
@@ -2733,7 +2802,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:green;margin-left:45px;font-family: arial;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -2999,6 +3068,30 @@ for(var i=0;i<innerResults.length;i++){
    str+='</table>';
 
 $('#voterAgeAngGenderwiseDetailsInPercent').html(str);
+
+
+$('#ageWiseVotersDetailsOuterDiv').dialog();
+
+      $('#ageWiseVotersDetailsOuterDiv').dialog({ 
+	                            title:'Voters Details',
+	                            height: 'auto',
+								width: 950,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+
+
+
+
 if(type == "constituency" || type == "mandal")
 	{
 $("#AgeWiseNoteDiv").css("display","block"); 
