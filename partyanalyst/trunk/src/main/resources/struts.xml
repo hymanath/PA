@@ -4301,5 +4301,10 @@
          </result>		
 		</action>
 		
+		<action name="insertVotersDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersDataToIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
 	</package>
 </struts>      

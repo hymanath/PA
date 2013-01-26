@@ -6,12 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PopulateVoterDataAction extends ActionSupport implements ServletRequestAware{
@@ -20,6 +23,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private ConstituencyManagementVO constituencyManagementVO;
 	private IVotersAnalysisService votersAnalysisService;
 	private List<SelectOptionVO> constituencyList;
+	private ResultStatus resultStatus;
+	
 	public List<SelectOptionVO> getConstituencyList() {
 		return constituencyList;
 	}
@@ -55,8 +60,12 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 		this.jObj = jObj;
 	}
 	
-	@Override
-	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 		public void setServletRequest(HttpServletRequest arg0) {
 			
 			this.request=arg0;
@@ -86,5 +95,23 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
 			constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
 			return SUCCESS;
+		}
+		
+		public String insertVotersDataToIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			
+			resultStatus = votersAnalysisService.insertVotersDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
 		}
 }
