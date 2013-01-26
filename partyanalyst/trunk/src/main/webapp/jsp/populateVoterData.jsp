@@ -57,6 +57,7 @@ margin-left:auto;
 margin-right:auto;
 width:980px;
 }
+#MainDiv{margin-bottom: 200px; margin-top: 60px;}
 fieldset{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
@@ -65,10 +66,15 @@ fieldset{
     border: 3px solid #CFD6DF;
    
     margin-bottom: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 76px;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
+	 padding-top: 30px;
+	width: 844px;
+   margin-left: auto; 
+   margin-right: auto;
+   float: none;"
 }
 .selectDiv{
 	 width:80%;
@@ -86,19 +92,48 @@ fieldset{
  color:red;
  font-size:12px;
  }
+#voterDataInsertDiv{text-align: center; margin-top: 50px;}
+#errorMsgDiv{font-size: 14px;
+        margin-left: 52px;color:red;}
+		#ajaxImage{display: block;
+    margin-left: 390px;
+    margin-top: -22px;}
+	.headingDiv {
+     background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    float: none;
+    font-family: arial;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    text-align: center;
+    width: 360px;
+}
 </style>
 </head>
 <body>
 <div id="MainDiv">
-<br><br>
 <div id="voterDataOuterDiv">
-<fieldset>
-<div id="ConstituencyDiv" class="selectDiv">
-	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+<div class="headingDiv">Populate Voters Data To Intermediate Tables</div>
+ <fieldset>
+    <div id="errorMsgDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
-</div>
+		Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="voterDataInsertBtn" />
+			<img src="./images/icons/search.gif" style="display:none;" id="ajaxImage" />
+		</div>
+	</div>
+ </fieldset>
 </div>	
-</fieldset>
 </div>
 
 <script type="text/javascript">
@@ -117,6 +152,113 @@ function populateVoterData()
 		var url = "populateVoterDataAction.action?"+rparam;						
 		callAjax(jsObj,url);
 }
+
+$(document).ready(function(){
+
+  $("#constituencyList").change(function(){
+	 var id = $("#constituencyList").val();
+	  if(id == 0)
+	  {
+	   $("#errorMsgDiv").html('Please Select Constituency.');
+		return;
+	  }
+	
+	 var jsObj=
+	 {
+		selected:id,
+		task:"getPublicationDate"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+	});
+
+	
+	$("#voterDataInsertBtn").click(function(){
+
+		var constituencyId = $("#constituencyList").val(); 
+		var publicationDateId = $("#publicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#errorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#errorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#voterDataInsertBtn").attr("disabled", "disabled");
+		$("#ajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"insertVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVotersDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+	});
+
+
+		
+
+});
+
+function callAjax(jsObj,url)
+		{
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);					
+								if(jsObj.task == "getPublicationDate")
+								{
+									buildPublicationDateList(myResults);
+								}
+
+								else if(jsObj.task == "insertVotersData")
+								{
+									showInsertVoterDataStatus(myResults);
+								}
+								}catch (e) {
+							     //$("#votersEditSaveAjaxImg").hide();
+							     $("#votersEditSaveButtnImg").removeAttr("disabled");
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+
+	function showInsertVoterDataStatus(result)
+	{
+		$("#ajaxImage").css("display","none");
+		$("#voterDataInsertBtn").removeAttr("disabled");
+		//document.getElementById('constituencyList').selectedIndex = 0;
+		//document.getElementById('publicationDateList').selectedIndex = 0;
+		if(result.resultCode == 0)
+		{
+			$("#errorMsgDiv").html("Voters Data Inserted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#errorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
+
 
 </script>
 </body>

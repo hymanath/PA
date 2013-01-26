@@ -360,11 +360,7 @@
 										<a class="alinkstyle" href="<s:url action="boothResultUpload"/>"> Upload
 										</a>
 									</span><br>
-									<span class="fontStyle">
-										Voter Data Insert:&nbsp;
-										<a class="alinkstyle" href="<s:url action="voterDataManageAction"/>"> Voter Data Insert
-										</a>
-									</span><br>
+									
 									</fieldset>
 								</td>
 								<td width="33%">
@@ -486,8 +482,24 @@
 									</fieldset>
 								</td>
 								</tr>
-							
-							
+								<tr>
+								<td><fieldset class="f2">
+									<legend class="l2">Voter Data Menu</legend>
+									<span class="fontStyle">
+										Voter Data Insert:&nbsp;
+										<a class="alinkstyle" href="<s:url action="voterDataManageAction"/>"> Voter Data Insert
+										</a>
+									</span><br>
+									<span class="fontStyle">
+										Populate Voters Data:&nbsp;
+										<a class="alinkstyle" href="<s:url action="populateVoterDataAction"/>"><b>
+										Populate Voters Data To Intermediate Tables</b>
+										</a>
+									</span><br>
+									</fieldset></td>
+								<td></td>
+								<td></td>
+								</tr>
 						</table>
 				</fieldset>
 			</td>
