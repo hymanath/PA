@@ -4051,19 +4051,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 				 }
 				 
-				public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type)
+				 public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type)
 				 {
 					 List<SelectOptionVO> namesList = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> mandalList = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> muncipalityList = new ArrayList<SelectOptionVO>();
 					 List<SelectOptionVO> panchayatiesList = new ArrayList<SelectOptionVO>();
+					 List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
+					 List<SelectOptionVO> panchayatList1 = new ArrayList<SelectOptionVO>(0);
+					 List<SelectOptionVO> boothsList1 = new ArrayList<SelectOptionVO>(0);
+					 List<SelectOptionVO> localbody1 = new ArrayList<SelectOptionVO>(0);
 					 SelectOptionVO panchayat;
+					 SelectOptionVO booth = null;
 					 VotersDetailsVO votersDetailsVO = new VotersDetailsVO();
 					 List<VotersDetailsVO> resultlist = new ArrayList<VotersDetailsVO>();
-					 Long noOfPanchayats = 0l;
-					 Long noOfBooths = 0l;
-					 String subtype =null;
-					 try
+					 SelectOptionVO panchayat1;
+					 String mandalName = "";
+					
+				 try
 					 {
 					 if(type.equalsIgnoreCase("mandal"))
 					 	{
@@ -4087,11 +4092,55 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								muncipalityList = getMuncipalities(namesList);
 							 	if(mandalList != null && mandalList.size() > 0)
 								{
-									 votersDetailsVO.setMandalList(mandalList);
-									 votersDetailsVO.setTotalmandals(new Long(mandalList.size()));
+									votersDetailsVO.setMandalList(mandalList);
+									votersDetailsVO.setTotalmandals(new Long(mandalList.size()));
+									//each Mandal PanchayatList
+								for(SelectOptionVO mandals: mandalList)
+								{
+									
+									panchayatList1= staticDataService.getPanchayatiesByMandalId(new Long(mandals.getId().toString().substring(1)));
+									if(panchayatList1 != null && panchayatList1.size() > 0)
+									{
+									mandals.setSelectOptionsList(panchayatList1);
+									mandals.setValue(new Long(panchayatList1.size()).toString());
+									}
+									else
+									{
+										mandals.setValue("0");
+									}
+									//each panchayat boothList
+									if(panchayatList1!=null && panchayatList1.size() > 0)
+									for(SelectOptionVO panchayats : panchayatList1)
+									{
+										 boothsList1 = getBoothsByPanchayatId((Long)panchayats.getId(),publicationDateId);
+										 if(boothsList1 != null && boothsList1.size() > 0)
+										 { 
+										 panchayats.setSelectOptionsList(boothsList1);	
+										 panchayats.setValue(new Long(boothsList1.size()).toString());
+										 }
+										 else
+											 panchayats.setValue("0");
+									 }
+									
+									//each Muncipality boothList
+									if(muncipalityList != null && muncipalityList.size() > 0)
+									for(SelectOptionVO localbody : muncipalityList)
+									{
+										localbody1 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId);
+										if(localbody1!= null && localbody1.size() > 0)
+										{
+										localbody.setSelectOptionsList(localbody1);	
+										localbody.setValue(new Long(localbody1.size()).toString());
+										}
+										else
+										
+											localbody.setValue("0");
+										
+									 }
 								}
-					 
-					 }
+						}
+								
+				 }
 					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody"))
 					 {
 							List<Object[]> panchayatiesList1 = panchayatDAO.getPanchayatiesCount(id,type);
@@ -4102,19 +4151,39 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							 panchayat = new SelectOptionVO((Long)params[0],params[1].toString()+" Panchayat");
 							 panchayatiesList.add(panchayat);
 							 }
+							 for(SelectOptionVO panchayats : panchayatiesList)
+								{
+									 boothsList1 = getBoothsByPanchayatId((Long)panchayats.getId(),publicationDateId);
+									
+									 panchayats.setSelectOptionsList(boothsList1);	
+								
+								 }
 							 votersDetailsVO.setPanchayatList(panchayatiesList);
 							 votersDetailsVO.setTotalPanchayats(new Long(panchayatiesList.size()));
 							}
 						
 					 }
-					noOfBooths = boothDAO.getBoothsCount(id,publicationDateId,type);
-					if(muncipalityList != null && muncipalityList.size() > 0)
-						votersDetailsVO.setNoOfLocalBodies(new Long(muncipalityList.size()));
-						//if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody"))
-						votersDetailsVO.setTotalBooths(noOfBooths);
-						resultlist.add(votersDetailsVO);
-						return resultlist;
+					List<Object[]> booths = boothDAO.getBoothsCount(id,publicationDateId,type);
+					if(booths != null && booths.size() > 0)
+					{
+						for(Object[] params :booths)
+						{
+						booth = new SelectOptionVO((Long)params[0],"Booth No - " +params[1].toString());
+						boothsList.add(booth);
+						}
+						votersDetailsVO.setTotalBooths(new Long(boothsList.size()));
+						votersDetailsVO.setBoothsList(boothsList);
 					}
+					if(muncipalityList != null && muncipalityList.size() > 0)
+					{
+						votersDetailsVO.setNoOfLocalBodies(new Long(muncipalityList.size()));
+						votersDetailsVO.setLocalbodiesList(muncipalityList);
+					}
+					resultlist.add(votersDetailsVO);
+						
+					return resultlist;
+					}
+					 
 					
 					catch(Exception e)
 					{

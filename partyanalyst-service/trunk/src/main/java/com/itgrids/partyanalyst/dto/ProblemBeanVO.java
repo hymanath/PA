@@ -121,7 +121,63 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Date postDate;
 	private String userImageURL;
 	private String responseType;
+	private List<ProblemBeanVO> privateProblemsList;
+	private Long newStatusProblems;
+	private Long progressProblems;
+	private Long pendingProblems;
+	private Long fixedProblems;
+	private Long userProblems;
+	private Long cadreProblems;
 	
+
+	public Long getUserProblems() {
+		return userProblems;
+	}
+
+	public void setUserProblems(Long userProblems) {
+		this.userProblems = userProblems;
+	}
+
+	public Long getCadreProblems() {
+		return cadreProblems;
+	}
+
+	public void setCadreProblems(Long cadreProblems) {
+		this.cadreProblems = cadreProblems;
+	}
+
+	public Long getNewStatusProblems() {
+		return newStatusProblems;
+	}
+
+	public void setNewStatusProblems(Long newStatusProblems) {
+		this.newStatusProblems = newStatusProblems;
+	}
+
+	public Long getProgressProblems() {
+		return progressProblems;
+	}
+
+	public void setProgressProblems(Long progressProblems) {
+		this.progressProblems = progressProblems;
+	}
+
+	public Long getPendingProblems() {
+		return pendingProblems;
+	}
+
+	public void setPendingProblems(Long pendingProblems) {
+		this.pendingProblems = pendingProblems;
+	}
+
+	public Long getFixedProblems() {
+		return fixedProblems;
+	}
+
+	public void setFixedProblems(Long fixedProblems) {
+		this.fixedProblems = fixedProblems;
+	}
+
 	public CompleteProblemDetailsVO getAverageRating() {
 		return averageRating;
 	}
@@ -1010,6 +1066,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setResponseType(String responseType) {
 		this.responseType = responseType;
+	}
+	
+	public List<ProblemBeanVO> getPrivateProblemsList() {
+		return privateProblemsList;
+	}
+
+	public void setPrivateProblemsList(List<ProblemBeanVO> privateProblemsList) {
+		this.privateProblemsList = privateProblemsList;
 	}
 
 	

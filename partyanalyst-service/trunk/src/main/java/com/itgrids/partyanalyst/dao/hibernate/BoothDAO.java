@@ -382,12 +382,13 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    	return getHibernateTemplate().find("select model.boothId,model.partNo from Booth model where model.panchayat.panchayatId = ? and model.year = ?",params);
 	    }
 	    
-	    public Long getBoothsCount(Long id,Long publicationDateId,String type)
+	    public List<Object[]> getBoothsCount(Long id,Long publicationDateId,String type)
 		  {
 			  
 			 
 			  StringBuilder str = new StringBuilder();
-			  str.append("select distinct count(model.boothId) from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
+			  //str.append("select distinct count(model.boothId) from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
+			  str.append("select distinct model.boothId,model.partNo from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
 
 			  if(type.equalsIgnoreCase("constituency"))
 				  str.append(" model.constituency.constituencyId = :id ");
@@ -401,7 +402,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  query.setParameter("id",id);
 			  query.setParameter("publicationDateId",publicationDateId);
 			  
-			return (Long)query.uniqueResult();
+			return query.list();
 			  
 		  }
 	    

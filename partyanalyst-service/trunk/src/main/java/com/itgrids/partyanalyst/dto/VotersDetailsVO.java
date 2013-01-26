@@ -98,7 +98,25 @@ public class VotersDetailsVO implements Serializable{
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> panchayatList;
 	
+	private List<SelectOptionVO> boothsList;
 	
+	private List<SelectOptionVO> subPanchayatList;
+	
+	private List<SelectOptionVO> localbodiesList;
+	
+	
+	public List<SelectOptionVO> getLocalbodiesList() {
+		return localbodiesList;
+	}
+	public void setLocalbodiesList(List<SelectOptionVO> localbodiesList) {
+		this.localbodiesList = localbodiesList;
+	}
+	public List<SelectOptionVO> getSubPanchayatList() {
+		return subPanchayatList;
+	}
+	public void setSubPanchayatList(List<SelectOptionVO> subPanchayatList) {
+		this.subPanchayatList = subPanchayatList;
+	}
 	public Long getMaleVotersCountBetween18To25() {
 		return maleVotersCountBetween18To25;
 	}
@@ -523,5 +541,12 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setPanchayatList(List<SelectOptionVO> panchayatList) {
 		this.panchayatList = panchayatList;
+	}
+	
+	public List<SelectOptionVO> getBoothsList() {
+		return boothsList;
+	}
+	public void setBoothsList(List<SelectOptionVO> boothsList) {
+		this.boothsList = boothsList;
 	}
 }

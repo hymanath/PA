@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> {
 	
@@ -10,7 +11,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String url;
 	private String type;
 	private String value;
-	
+	private List<SelectOptionVO> selectOptionsList;
 	
 	public String getType() {
 		return type;
@@ -87,6 +88,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		}
 		else
 			return 0;
+	}
+
+	public List<SelectOptionVO> getSelectOptionsList() {
+		return selectOptionsList;
+	}
+
+	public void setSelectOptionsList(List<SelectOptionVO> selectOptionsList) {
+		this.selectOptionsList = selectOptionsList;
 	}
 	
 }
