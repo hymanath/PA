@@ -673,7 +673,7 @@ locationDetails.constituencyArr.push(ob);
  </div>
  
  
- <div class="ShowHideLevelMenu">
+ <div class="ShowHideLevelMenu" id="showHideDiv" style="display:none;">
 <a class="btn" href="javascript:{}" id="ShowMenu">Show Menu <i class="icon-chevron-down"></i></a>
  </div>
  
