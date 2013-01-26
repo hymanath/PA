@@ -633,10 +633,8 @@ locationDetails.constituencyArr.push(ob);
 <!--DISPLAY NEWS GALLARIES END-->
 <br><br>
 <div id="MainDiv">
+<!--
 <div id="votersouterDiv" >
-
-
-<!--<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>-->
 <fieldset>
 <div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
 
@@ -681,34 +679,37 @@ locationDetails.constituencyArr.push(ob);
 
 	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 
-	<!-- <div id="profileManagementDiv">
-		<table class="statusData_table" width="100%">	
-		
-          <tr>
-			<td class="statusData_table_data" width="100%" style="padding-top:23px">
-				<table style="font-family:verdana;">
-				  <tr>
-			    	<td style="padding-left:109px"><b><input type="button" class="buttonStyle" value="Important Families" id="importantFamiliesId" style="height:24px;" onclick="showImportantFamiliesDiv()"></b></td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Local Caste Statistics" 
-					 id="localCaststatId" style="height:24px;" onclick="showLocalCastDiv();getVotersCastInfo();getCastInfoForsubLevel();"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Voters Info" id="votersId" style="height:24px;" onclick="showVotersDiv();"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Age Wise Details" id="ageWiseId" style="height:24px;" onclick="showAgeDiv();"></b> </td>
-					<td style="padding-left:50px"><div id="categoeryCreationDiv" style="float:right;">
-					<input type="button" class="buttonStyle" onClick="openNewWindow();" style="font:bold;font-size: 131%;" value="CreateNewGroup"></input>
-					</div></td>
-					
-				  </tr>
-				</table>
-			</td>
-		 </tr>
-		</table>
 	
-</div>-->
 	
 </fieldset>
 
+</div>-->
+
+
+<div id="votersouterDiv">
+<fieldset>
+<div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><div id="categoeryCreationDiv" style="float:right;">
+	
+	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create Custom Groups</a>
 </div>
 
+<div id="AlertMsg" style="font-family: verdana;
+    font-size: 13px;"></div>
+<div id="ConstituencyDiv" class="selectDiv">
+	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();"/> &nbsp;&nbsp;
+
+		
+	Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+		
+	</div>
+	
+	
+	
+	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
+	</fieldset>
+
+</div>
 <!-- for  body3 start    result  -->
 <div id="votersDiv3" >
 
