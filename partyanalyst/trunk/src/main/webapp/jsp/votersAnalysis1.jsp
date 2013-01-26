@@ -386,7 +386,7 @@ width: 860px;}
     margin-bottom: 14px;
     margin-top: 5px;
     padding: 4px;width:400px;}
-    #localCastDetailsDiv,#partyWiseDetailsDiv{clear: both;
+    #localCastDetailsDiv{clear: both;
     margin-bottom: -138px;
     margin-top: 0;
     padding-top: 0;
@@ -395,7 +395,7 @@ width: 860px;}
 	#localCastChatDiv,#partyWiseChatDiv{clear: both;
     float: right;
      width: 500px;}
-	 .castDetailsMainDiv,.partyWiseDetailsMainDiv{ border: 1px solid #CCCCCC;
+	 .partyWiseDetailsMainDiv{ border: 1px solid #CCCCCC;
     clear: both;
     display: table;
      margin-left: 10px;
@@ -581,6 +581,18 @@ h5{font-family : Arial;}
 /*.bs-docs-sidenav li {position:relative;}
 .bs-docs-sidenav li .popover-cust{display:none;position:absolute;left:165px;top:-26px;}
 .bs-docs-sidenav li:hover .popover-cust{display:block;}*/
+
+  #localCastDetailsDiv{
+		font-family: verdana;
+		font-size: 13px;
+		font-weight: bold;
+  }
+  #votersDiv1,#votersDiv2{
+    display:none;
+  }
+  #partyWiseDetailsDiv{
+     margin-left:42px;
+  }
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -870,15 +882,19 @@ locationDetails.constituencyArr.push(ob);
      	<div id="ImportantFamiliesDiv" class="divInfo">
 	<div id ="impFamilesBasicDetails"></div>
 	</br>
+	   <div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVotersToShow();" class="btn" style="float:right;"/></div>
+	   <div id="impFamilesAllInfoPopUp" style="display:none;">
         <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black"></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 	
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
+		<div id="impFamPancBothDtls"></div>
+	   </div>
 		<br>
 		<div id="descriptionDiv" ></div>
 		<br>
 		<div id="NoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:5px;width:920px;"></div>
-		<div id="impFamPancBothDtls"></div>
+		
 		<div id="impFamDtlsOuterPopUp" style="display:none;">
 		   <div id="impFamDtlsTitle"></div>
 		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;margin-top:10px;"></div>
@@ -914,23 +930,30 @@ locationDetails.constituencyArr.push(ob);
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	
 		<div id='localCastStatsTabContent_header'></div>
-		<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv"></div>
+		<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
 	<div class="castDetailsMainDiv">
-		<div id="localCastDetailsDiv"></div>
+		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
 		<div id="localCastChatDiv"></div>
 	</div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
 	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="margin-top:25px;">	</div>
 	<div id='localCastStatsTabContent_subbody'></div><br><br>
-	<div id ="localCastStatsVotersTitle" ></div>
-	<div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
-	<div id="partyWiseDetailsHeadingDiv" class="localCastDetailsHeadingDiv"></div>
-	<div id='partyWise_header'></div>
+	<div id="localCastStatsVotersPopUpDiv" style="display:none;">
+	    <div id ="localCastStatsVotersTitle" ></div>
+	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
+	</div>
+	<div id="castPartyPopupShowBtn"><input type="button" class="btn" value="View More Details" style="float:right;" onclick="ShowCastPartyPopupDiv();"/></div>
+	<div id="castPartyPopupDiv" style="display:none">   
+		<div id="partyWiseDetailsHeadingDiv" class="localCastDetailsHeadingDiv"></div>
+	    <div id='partyWise_header'></div>
 		
-	<div class="partyWiseDetailsMainDiv">
-		<div id="partyWiseDetailsDiv"></div>
-		<div id="partyWiseChatDiv"></div></div><br>
-		<div id="partyWiselocalcastDiv"></div><br><br>
+	    <div class="partyWiseDetailsMainDiv">
+		<table style="width:100%;"><tr>
+		  <td><div id="partyWiseDetailsDiv"></div></td>
+		  <td><div id="partyWiseChatDiv"></div></td></tr></table></div><br>
+		<div id="partyWiselocalcastDiv"></div>
+	</div>	
+		<br><br>
 	
 
 	
