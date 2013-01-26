@@ -453,7 +453,6 @@ oDT: votersByLocBoothDataTable
 	}*/
 	
 	function getAllTabs(){
-	 getVotersData();
 		  //$("#votersbasicinfoForImpFam").hide();
 		  //$("#votersBasicInfoDivForImpFam").html("");
 		  //$("#votersBasicInfoSubChartDivForImpFam").html("");
