@@ -175,7 +175,7 @@ System.out.println(list.size());
 }
 */
 
-public void testgetConstituencies()
+/*public void testgetConstituencies()
 {
 	 List<Object[]> list = boothPublicationVoterDAO.getConstituencies();
 	 System.out.println(list.size());
@@ -184,5 +184,13 @@ public void testgetConstituencies()
 		System.out.println(params[0]);
 		System.out.println(params[1]);
 	 }
+}*/
+
+public void testGetConstituenciesIds()
+{
+	List<Long> constituencyIds = boothPublicationVoterDAO.getConstituenciesIds();
+	System.out.println(constituencyIds.size());
+	if(constituencyIds != null && constituencyIds.size() >0)
+		System.out.println(constituencyIds.get(0));
 }
 }

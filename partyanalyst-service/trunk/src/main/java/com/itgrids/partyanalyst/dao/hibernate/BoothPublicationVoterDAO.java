@@ -758,4 +758,10 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	  {
 		return getHibernateTemplate().find("select distinct(model.booth.constituency.constituencyId), model.booth.constituency.name from BoothPublicationVoter model");  
 	  }
+	  
+	  @SuppressWarnings("unchecked")
+	public List<Long> getConstituenciesIds()
+	  {
+		return getHibernateTemplate().find("select distinct(model.booth.constituency.constituencyId) from BoothPublicationVoter model");  
+	  }
 	}

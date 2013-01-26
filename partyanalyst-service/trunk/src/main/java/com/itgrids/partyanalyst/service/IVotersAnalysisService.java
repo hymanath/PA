@@ -105,4 +105,6 @@ public interface IVotersAnalysisService {
 	
 	public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId);
 	
+	public List<SelectOptionVO> getConstituencyList(List<SelectOptionVO> userAccessConstituencyList);
+	
 }

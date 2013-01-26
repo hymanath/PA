@@ -5024,4 +5024,26 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		
 		
+		public List<SelectOptionVO> getConstituencyList(List<SelectOptionVO> userAccessConstituencyList)
+		{
+			List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);;
+			try{
+				List<Long> constituencyIds = boothPublicationVoterDAO.getConstituenciesIds(); 
+				if(userAccessConstituencyList != null && userAccessConstituencyList.size() > 0 && constituencyIds != null)
+				{
+					for(SelectOptionVO selectOptionVO : userAccessConstituencyList)
+					{
+						if(constituencyIds.contains(selectOptionVO.getId()))
+							constituencyList.add(selectOptionVO);
+					}
+				}
+				
+				return constituencyList;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getConstituencyList() Method, Exception - "+e);
+				return constituencyList;
+			}
+		}
+		
 }

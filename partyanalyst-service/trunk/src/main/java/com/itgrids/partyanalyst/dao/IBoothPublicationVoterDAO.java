@@ -106,4 +106,6 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString);
 	
 	 public List<Object[]> getConstituencies();
+	 
+	 public List<Long> getConstituenciesIds();
 }
