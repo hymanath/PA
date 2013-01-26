@@ -3014,11 +3014,16 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 			str += '  </tr>';
 			for(var i in prevElecInfo){
 			    str += '  <tr>';
-				str += '    <td>'+prevElecInfo[i].electionYear+'</td>';
+				str += '    <td><b>'+prevElecInfo[i].electionYear+'</b></td>';
 				str += '    <td>'+prevElecInfo[i].totalVoters+'</td>';
 				str += '    <td>'+prevElecInfo[i].totalMaleVoters+'</td>';
 				str += '    <td>'+prevElecInfo[i].totalFemaleVoters+'</td>';
-			   if(prevElecInfo[i].totalVotersDiff < 0){
+				str += '    <td>--</td>';
+				str += '    <td>--</td>';
+				str += '    <td>--</td>';
+				str += '  </tr>';
+			   
+			   /* if(prevElecInfo[i].totalVotersDiff < 0){
 			     var count = prevElecInfo[i].totalVotersDiff+"";
 				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
 			   }else if(prevElecInfo[i].totalVotersDiff > 0)
@@ -3041,16 +3046,42 @@ function buildVotersBasicInfo(votersbasicinfo,to,jsObj)
 			    str += '    <td>'+prevElecInfo[i].femaleVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
 			   else
 				str += '    <td>'+prevElecInfo[i].femaleVotersDiff+'</td>';
-				str += '  </tr>';
+				str += '  </tr>';*/
 			}
 			    str += '  <tr>';
-				str += '    <td>'+jsObj.year+'</td>';
+				str += '    <td><b>'+jsObj.year+'</b></td>';
 				str += '    <td>'+votersbasicinfo.totVoters+'</td>';
 				str += '    <td>'+votersbasicinfo.totalMaleVoters+'</td>';
 				str += '    <td>'+votersbasicinfo.totalFemaleVoters+'</td>';
+				
+
+				if(votersbasicinfo.totalVotersDiff < 0){
+			     var count = votersbasicinfo.totalVotersDiff+"";
+				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
+			   }else if(votersbasicinfo.totalVotersDiff > 0)
+			    str += '    <td>'+votersbasicinfo.totalVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+			   else
+			    str += '    <td>'+votersbasicinfo.totalVotersDiff+'</td>';
+				
+			   if(votersbasicinfo.maleVotersDiff < 0){
+			    var count = votersbasicinfo.maleVotersDiff+"";
+				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
+			   }else if(votersbasicinfo.maleVotersDiff > 0)
+			    str += '    <td>'+votersbasicinfo.maleVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+			   else
+				str += '    <td>'+votersbasicinfo.maleVotersDiff+'</td>';
+				
+			   if(votersbasicinfo.femaleVotersDiff < 0){
+			   var count = votersbasicinfo.femaleVotersDiff+"";
+				str += '    <td>'+count.slice(1)+' <img class="imageSize" src="images/downarrow.png" /></td>';
+			   }else if(votersbasicinfo.femaleVotersDiff > 0)
+			    str += '    <td>'+votersbasicinfo.femaleVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+			   else
+				str += '    <td>'+votersbasicinfo.femaleVotersDiff+'</td>';
+				/*str += '    <td>--</td>';
 				str += '    <td>--</td>';
-				str += '    <td>--</td>';
-				str += '    <td>--</td>';
+				str += '    <td>--</td>';*/
+
 				str += '  </tr>';
 			str += '</table>';
 			if(jsObj.type == "panchayat" && votersbasicinfo.panchayatInfoPresent){
