@@ -3433,7 +3433,7 @@ var jsObj=
 var resultDataForNav=null;
 function buildCountData(results,jsObj)
 {
-
+document.getElementById("showHideDiv").style.display = "block";
 resultDataForNav=results;
 //console.log(resultDataForNav);
 var str = '';
