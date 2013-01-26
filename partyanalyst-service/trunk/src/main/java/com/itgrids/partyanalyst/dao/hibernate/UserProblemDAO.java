@@ -1128,5 +1128,45 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
     	queryObj.setMaxResults(maxIndex);
     	return queryObj.list();
     }
-  
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllPublicProblemsByLocation(Long locationId,Long locationValue,String status)
+	{
+		
+		Query query = getSession().createQuery("select distinct (model.userProblemId) from UserProblem model where model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"'" +
+				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.problem.regionScopes.regionScopesId=:locationId and model.problem.problemStatus.status = :status");
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("locationId", locationId);
+		query.setParameter("status", status);
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getAllPrivateProblemsByLocation(Long locationValue,Long userId,Long locationId,String status)
+	{
+		
+		Query query = getSession().createQuery("select distinct count(model.userProblemId) from UserProblem model where model.visibility.type ='"+IConstants.PRIVATE+"' and model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"' " +
+				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.user.userId =:userId  and model.problem.regionScopes.regionScopesId=:locationId and model.problem.problemStatus.status = :status");
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("locationId", locationId);
+		query.setParameter("status", status);
+		
+		return (Long) query.uniqueResult();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	
+	public Long getAllPrivateProblemsBySource(Long locationValue,Long userId,Long locationId,Long sourceId)
+	{
+		Query query = getSession().createQuery("select distinct count(model.userProblemId) from UserProblem model where model.visibility.type ='"+IConstants.PRIVATE+"' and model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"' " +
+				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.user.userId =:userId  and model.problem.regionScopes.regionScopesId=:locationId and model.problem.informationSource.informationSourceId = :sourceId and model.problem.problemStatus.status = '"+IConstants.NEW+"' ");
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("locationId", locationId);
+		query.setParameter("sourceId", sourceId);
+		
+		return (Long) query.uniqueResult();	
+	}
 }

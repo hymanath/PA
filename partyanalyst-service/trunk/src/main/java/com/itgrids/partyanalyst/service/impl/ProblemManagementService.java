@@ -6859,9 +6859,153 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 	
 	}
 	
+	//Problems for voters Page 
+	public List<ProblemBeanVO> getProblemDetailsForVoterPage(Long userId,Long locationId,Long locationValue)
+	{
+	log.debug("Entered into getProblemDetailsForVoterPage().....");
+	ProblemBeanVO problemBeanVO = null;
+	List<ProblemBeanVO> resultList = new ArrayList<ProblemBeanVO>(0);
+	String status = "";
+	
+	try{
+		if(locationId == 5)
+		{
+			
+			if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+			{
+				locationId = 5l;
+			String id = locationValue.toString().substring(1);
+			locationValue = new Long(id);
+			}
+			else if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+			{
+			 List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1)));
+				locationId = 7l;
+				locationValue = new Long(localElectionBodyList.get(0));
+			
+			}
+		}
+		problemBeanVO = new ProblemBeanVO();
+		List<Long> Progress = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.PROGRESS);
+		List<Long> Fixed = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.FIXED);
+		List<Long> Pending = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.PENDING);
+		if(Progress != null && Progress.size() > 0)
+		problemBeanVO.setProgressProblems(new Long(Progress.size()));
+		else
+		problemBeanVO.setProgressProblems(0l);
+		if(Pending != null && Pending.size() > 0)
+		problemBeanVO.setPendingProblems(new Long(Pending.size()));
+		else
+		problemBeanVO.setPendingProblems(0l);	
+		if(Fixed != null && Fixed.size() > 0)
+		problemBeanVO.setFixedProblems(new Long(Fixed.size()));
+		else
+		problemBeanVO.setFixedProblems(0l);
+		problemBeanVO.setCadreProblems(userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,4l));
+		problemBeanVO.setUserProblems(userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,1l));
+		resultList.add(problemBeanVO);	
+		
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		log.error("Exception Occured in getProblemDetailsForVoterPage() - +e");
+	}
+	return resultList;
+	
+	}
+	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status)
+	{
+		List<ProblemBeanVO> problemDetails = new ArrayList<ProblemBeanVO>(0);
+		ProblemBeanVO problemBeanVO = null;
+		try{
+			if(locationId == 5)
+			{
+				if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+				{
+					locationId = 5l;
+				String id = locationValue.toString().substring(1);
+				locationValue = new Long(id);
+				}
+				else if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+				{
+				 List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1)));
+					locationId = 7l;
+					locationValue = new Long(localElectionBodyList.get(0));
+				
+				}
+			}
+			
+			List<Long> problemIds =userProblemDAO.getAllPublicProblemsByLocation(locationId,locationValue,status);
+			if(problemIds != null && problemIds.size() > 0)
+			for(Long problemId : problemIds)
+			{
+				problemDetails = getProblemCompleteInfoByLocation(problemId);	
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return problemDetails;
+	}
+	public List<ProblemBeanVO> getProblemCompleteInfoByLocation(Long problemId) {
+		
+		log.info("Entered in to getProblemCompleteInfo");
+		
+		ProblemBeanVO result = null;
+		List<ProblemBeanVO> resultList = new ArrayList<ProblemBeanVO>(0);
+		State state = null;
+		District district = null;
+		Constituency constituency = null;
+		Tehsil tehsil = null;
+		Hamlet hamlet = null;
+		LocalElectionBody localBody = null;
+		Constituency ward = null;
+		Booth booth = null;
+		
+		  
+	try
+	{
+		List<UserProblem> userProblem = userProblemDAO.getAllProblemDetails(problemId);
+		for(UserProblem problemDetails : userProblem)
+		{
+			result = new ProblemBeanVO();
+				
+			result.setProblemId(problemDetails.getProblem().getProblemId());
+			result.setProblem(problemDetails.getProblem().getTitle().toString());
+			result.setDescription(problemDetails.getProblem().getDescription().toString());
+			result.setExistingFrom(problemDetails.getProblem().getExistingFrom().toString());
+			result.setIdentifiedOn(problemDetails.getProblem().getIdentifiedOn().toString());
+			result.setProblemImpactLevelId(problemDetails.getProblem().getRegionScopes().getRegionScopesId());
+			result.setName(problemDetails.getUser().getFirstName().toString());
+			result.setLastName(problemDetails.getUser().getLastName().toString());
+			result.setImpactLevel(problemDetails.getProblem().getRegionScopes().getScope().toString());
+			result.setProblemImpactLevelValue(problemDetails.getProblem().getImpactLevelValue());
+			result.setReferenceNo(problemDetails.getProblem().getReferenceNo().toString());
+			if(problemDetails.getProblem().getProblemStatus() != null)
+			result.setStatus(problemDetails.getProblem().getProblemStatus().getStatus().toString());
+			result.setVisibilityType(problemDetails.getVisibility().getType());
+		}
+	
+		resultList.add(result);
+		
+		return resultList;
+		
+	}
+	
+		
+	//set problem Location
 	
 	
+	catch(Exception e)
+	{
+		log.debug("Exception Occured in getProblemCompleteInfo() method of ProblemMAnagement service");
+		return resultList;
+	}
 	
+		}
 	
 	
 	@SuppressWarnings("unchecked")
