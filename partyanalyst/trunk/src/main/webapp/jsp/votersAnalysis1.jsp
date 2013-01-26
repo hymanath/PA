@@ -179,8 +179,6 @@ table.gridtable td {
 	 padding-bottom:10px;
 	 font-family: verdana;
 	 font-size: 12px;
-	 margin-left:auto;
-	 margin-right:auto;
 	 font-weight:bold;
 	 color:#333333;
 
@@ -633,59 +631,6 @@ locationDetails.constituencyArr.push(ob);
 <!--DISPLAY NEWS GALLARIES END-->
 <br><br>
 <div id="MainDiv">
-<!--
-<div id="votersouterDiv" >
-<fieldset>
-<div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><P >Fields marked with <font color="red"> * </font> are mandatory</P>
-
-<div id="categoeryCreationDiv" style="float:right;">
-	
-	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create New Group</a>
-</div>
-
-<div id="AlertMsg" style="font-family: verdana;
-    font-size: 13px;"></div>
-
-<div id="reportLevelDiv" class="selectDiv">Select Report Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:30px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
-		<option value=1>Constituency</option>
-		<option value=2>Mandal</option>
-		<option value=3>Panchayat</option>
-		<option value=4>PollingStation</option>
-		</select>
-		
-</div>
-
-	<div id="ConstituencyDiv" class="selectDiv">
-	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;
-
-		
-	Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
-		</select>
-		
-	</div>
-	
-	<div id="mandalDiv" class="selectDiv" style="display:none;">
-		
-	Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;"></select></div>
-		
-	<div id="panchayatDiv" class="selectDiv" style="display:none;">
-	Select Panchayat<font class="requiredFont">*</font> 	
-	<select id="panchayatField" class="selectWidth" name="state"  style="margin-left:39px;"></select></div>
-	
-	<div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;"></select></div>
-
-	
-
-	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
-
-	
-	
-</fieldset>
-
-</div>-->
-
-
 <div id="votersouterDiv">
 <fieldset>
 <div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><div id="categoeryCreationDiv" style="float:right;">
