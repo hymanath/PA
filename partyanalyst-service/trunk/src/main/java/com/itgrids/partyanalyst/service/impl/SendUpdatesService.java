@@ -158,7 +158,7 @@ public class SendUpdatesService implements ISendUpdatesService{
 				selectOptionVO.setValue(mailMessage);
 				final String subjectone =subject;
 				JavaMailSenderImpl javamailsender = new JavaMailSenderImpl();
-				javamailsender.setSession(mailService.getSessionObject(IConstants.LOCALHOST));
+				javamailsender.setSession(mailService.getSessionObject(IConstants.DEFAULT_MAIL_SERVER));
 				MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	         public void prepare(MimeMessage mimeMessage) throws Exception {
 	        	 String  emailIdOfUser;
@@ -170,7 +170,7 @@ public class SendUpdatesService implements ISendUpdatesService{
 	 	               velocityEngine, templateVM, model);
 	            message.setText(text, true);
 	            message.setSubject(subjectone);
-	            message.setFrom("partyanalyst04@gmail.com");
+	            message.setFrom(IConstants.FROMEMAILID);
 	         }
 	      };
 	      javamailsender.send(preparator);	
