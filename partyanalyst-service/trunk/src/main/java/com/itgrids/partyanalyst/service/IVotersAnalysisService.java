@@ -102,4 +102,7 @@ public interface IVotersAnalysisService {
 	public VoterHouseInfoVO getSelectedCategoryOptionsForIndividual(List<VoterHouseInfoVO> voterIds,VoterHouseInfoVO parameters);
 	
 	public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast);
+	
+	public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId);
+	
 }

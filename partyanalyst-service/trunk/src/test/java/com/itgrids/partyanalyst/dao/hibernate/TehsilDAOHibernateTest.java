@@ -53,7 +53,7 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 		setComplete();
 	}*/
 	
-	@Test
+	/*@Test
 	public void test(){
 		Assert.assertEquals(1, 1);
 	}
@@ -62,6 +62,15 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 	public void testFindByTehsilsByDistrict(){
 		List tehsil =  tehsilDAO.findTehsilsByDistrict(new Long(17));
 		Assert.assertEquals(57, tehsil.size());
+	}*/
+	
+	public void testfindTehsilsByConstituencyIdAndPublicationDateId()
+	{
+		List<Object[]> list = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(232l, 7l);
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]);
+		}
 	}
 	
 }

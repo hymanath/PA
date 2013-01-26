@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
+import org.hibernate.Query;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
@@ -10,4 +14,52 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 	public VoterAgeInfoDAO(){
 		super(VoterAgeInfo.class);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VoterAgeInfo> getVoterAgeInfoByPublicationDateAndReportLevelId(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	{
+		Query query = getSession().createQuery(" select model from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
+				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId order by model.voterAgeRange.voterAgeRangeId ");
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VoterAgeInfo> getAgewiseVoterDetailsInSpecifiedRangeByAgeRangeId(Long reportLevelId, Long reportLevelValue, Long publicationDateId, Long ageRangeId)
+	{
+		Query query = getSession().createQuery(" select model from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
+				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId and model.voterAgeRange.voterAgeRangeId = :ageRangeId ");
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("ageRangeId", ageRangeId);
+		return query.list();
+	}
+	
+	public Long getVoterInfoIdByReportLevelValueAndReportLevelId(Long reportLevelId, Long reportLevelValue, Long ageRangeId)
+	{
+		Query query = getSession().createQuery("select model.voterAgeInfoId from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId =:reportLevelId " +
+				" and model.reportLevelValue =:reportLevelValue and model.voterAgeRange.voterAgeRangeId =:ageRangeId ");
+		
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameter("ageRangeId", ageRangeId);
+		return (Long) query.uniqueResult();
+	}
+	
+	public Integer deleteVoterAgeInfoByReportLevelIdAndReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId, Long ageRangeId)
+	{
+		Query query = getSession().createQuery(" delete from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId =:reportLevelId " +
+				" and model.reportLevelValue =:reportLevelValue and model.voterAgeRange.voterAgeRangeId =:ageRangeId and model.publicationDate.publicationDateId = :publicationDateId ");
+		
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameter("ageRangeId", ageRangeId);
+		
+		return  query.executeUpdate();
+	}
+	
 }
