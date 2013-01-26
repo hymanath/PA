@@ -3932,14 +3932,20 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						 Long voters =  new Long(votersInfoForMandalVO.getTotalMaleVoters());
 						 totalVoters = totalVoters+voters;
 						 votersInfo.setMaleVotersDiff((voters.longValue() -((Long)prevElecVotersInfo[0]).longValue()));
+						
+						 votersInfoForMandalVO.setMaleVotersDiff((voters.longValue() -((Long)prevElecVotersInfo[0]).longValue()));
 					 }
 					 if(votersInfoForMandalVO.getTotalFemaleVoters() != null){
 						 Long voters =  new Long(votersInfoForMandalVO.getTotalFemaleVoters());
 						 totalVoters = totalVoters+voters;
 						 votersInfo.setFemaleVotersDiff((voters.longValue() -((Long)prevElecVotersInfo[1]).longValue()));
+						
+						 votersInfoForMandalVO.setFemaleVotersDiff((voters.longValue() -((Long)prevElecVotersInfo[1]).longValue()));
 					 }
 					 if(totalVoters != null && totalVoters.longValue() > 0){
 						 votersInfo.setTotalVotersDiff((totalVoters.longValue() -((Long)prevElecVotersInfo[2]).longValue()));
+						 
+						 votersInfoForMandalVO.setTotalVotersDiff((totalVoters.longValue() -((Long)prevElecVotersInfo[2]).longValue()));
 					 }
 					 previousElectInfoList.add(votersInfo);
 					
