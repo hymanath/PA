@@ -12,8 +12,13 @@ private IVoterFamilyRangeDAO voterFamilyRangeDAO;
 		this.voterFamilyRangeDAO = voterFamilyRangeDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		voterFamilyRangeDAO.getAll();
+	}*/
+	
+	public void testGetVoterFamilyRangeIdByFamilyRange()
+	{
+		System.out.println(voterFamilyRangeDAO.getVoterFamilyRangeIdByFamilyRange("7-10"));
 	}
 }

@@ -25,12 +25,12 @@ public class VoterFamilyRange extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = -2948051165678102790L;
 	private Long voterFamilyRangeId;
-	private Long familyRange;
+	private String familyRange;
 	private Set<VoterFamilyInfo> voterFamilyInfos = new HashSet<VoterFamilyInfo>(0);
 	
 	public VoterFamilyRange(){}
 	
-	public VoterFamilyRange(Long familyRange)
+	public VoterFamilyRange(String familyRange)
 	{
 		this.familyRange = familyRange;
 	}
@@ -46,15 +46,6 @@ public class VoterFamilyRange extends BaseModel implements Serializable{
 		this.voterFamilyRangeId = voterFamilyRangeId;
 	}
 
-	@Column(name = "family_range", length = 15)
-	public Long getFamilyRange() {
-		return familyRange;
-	}
-
-	public void setFamilyRange(Long familyRange) {
-		this.familyRange = familyRange;
-	}
-
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voterFamilyRange")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
 	public Set<VoterFamilyInfo> getVoterFamilyInfos() {
@@ -63,6 +54,15 @@ public class VoterFamilyRange extends BaseModel implements Serializable{
 
 	public void setVoterFamilyInfos(Set<VoterFamilyInfo> voterFamilyInfos) {
 		this.voterFamilyInfos = voterFamilyInfos;
+	}
+	
+	@Column(name = "family_range", length = 15)
+	public String getFamilyRange() {
+		return familyRange;
+	}
+
+	public void setFamilyRange(String familyRange) {
+		this.familyRange = familyRange;
 	}
 	
 	

@@ -22,7 +22,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testGetVotersCount1()
+	/*public void testGetVotersCount1()
 	{
 		List<VoterInfo> list = voterInfoDAO.getVotersCount(1l, 232l, 7l);
 		if(list != null && list.size() > 0)
@@ -32,5 +32,11 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params.getMaleVoters());
 			}
 		}
+	}*/
+	
+	public void testDeleteVotersInfoByReportLevelValue()
+	{
+		System.out.println(voterInfoDAO.deleteVotersInfoByReportLevelValue(1l, 232l, 7l));
+		
 	}
 }

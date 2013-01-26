@@ -31,16 +31,18 @@ public class VoterFamilyInfo extends BaseModel implements Serializable{
 	private Long totalFamilies;
 	private Double familiesPercentage;
 	private PublicationDate publicationDate;
+	private Long reportLevelValue;
 	
 	public VoterFamilyInfo(){}
 	
-	public VoterFamilyInfo(VoterReportLevel voterReportLevel, VoterFamilyRange voterFamilyRange, Long totalFamilies, Double familiesPercentage, PublicationDate publicationDate)
+	public VoterFamilyInfo(VoterReportLevel voterReportLevel, VoterFamilyRange voterFamilyRange, Long totalFamilies, Double familiesPercentage, PublicationDate publicationDate, Long reportLevelValue)
 	{
 		this.voterReportLevel = voterReportLevel;
 		this.voterFamilyRange = voterFamilyRange;
 		this.totalFamilies = totalFamilies;
 		this.familiesPercentage = familiesPercentage;
 		this.publicationDate = publicationDate;
+		this.reportLevelValue = reportLevelValue;
 	}
 
 	@Id
@@ -107,7 +109,14 @@ public class VoterFamilyInfo extends BaseModel implements Serializable{
 	public void setPublicationDate(PublicationDate publicationDate) {
 		this.publicationDate = publicationDate;
 	}
-	
-	
+
+	@Column(name = "report_level_value", length = 15)
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
+	}
 	
 }

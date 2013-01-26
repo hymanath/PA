@@ -25,11 +25,11 @@ public class VoterAgeRange extends BaseModel implements Serializable{
 	
 	private static final long serialVersionUID = 2225466394145089166L;
 	private Long voterAgeRangeId ;
-	private Long ageRange;
+	private String ageRange;
 	private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
 	
 	public VoterAgeRange(){}
-	public VoterAgeRange(Long ageRange)
+	public VoterAgeRange(String ageRange)
 	{
 		this.ageRange = ageRange;
 	}
@@ -44,11 +44,11 @@ public class VoterAgeRange extends BaseModel implements Serializable{
 		this.voterAgeRangeId = voterAgeRangeId;
 	}
 	
-	@Column(name = "age_range", length = 15)
-	public Long getAgeRange() {
+	@Column(name = "age_range", length = 30)
+	public String getAgeRange() {
 		return ageRange;
 	}
-	public void setAgeRange(Long ageRange) {
+	public void setAgeRange(String ageRange) {
 		this.ageRange = ageRange;
 	}
 	
