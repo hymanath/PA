@@ -587,7 +587,7 @@ public String getPreviousEleVotingTrends()
 return Action.SUCCESS;
 }
 
-public String getProblemsByLocation()
+/*public String getProblemsByLocation()
 {
 	try{
 		 problemBeanVO= new ProblemBeanVO();
@@ -614,5 +614,5 @@ public String getProblemsByLocation()
 		log.error("Exception Occured in getProblemsByLocation() Method, Exception - "+e);
 	}
 return Action.SUCCESS;
-}
+}*/
 }
