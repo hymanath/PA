@@ -386,17 +386,12 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			 }
 		 }
 	}*/
-	public void testGetProblemDetailsForPublicProfile()
+	/*
+*/
+	
+	public void testgetAllPublicProblemsByLocation()
 	{
-		
-	 List<Object[]> list = userProblemDAO.getProblemDetailsForPublicProfile(1l, 0, 10);
-	 System.out.println(list.size());
-	 if(list != null && list.size() > 0)
-	 {
-		 for(Object[] params : list)
-		 {
-			 System.out.println(params[0]+" "+params[1]);
-		 }
-	 }
+		List<Long> problemIds = userProblemDAO.getAllPublicProblemsByLocation(4l,232l,"PROGRESS");
+		 System.out.println(problemIds);
 	}
 }
