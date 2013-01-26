@@ -124,7 +124,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	
-	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList;
 	
 	public RegionServiceDataImp getRegionServiceDataImp() {
 		return regionServiceDataImp;
@@ -229,6 +229,16 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setProblemBean(ProblemBeanVO problemBean) {
 		this.problemBean = problemBean;
 	}
+	
+	public List<SelectOptionVO> getUserAccessConstituencyList() {
+		return userAccessConstituencyList;
+	}
+
+	public void setUserAccessConstituencyList(
+			List<SelectOptionVO> userAccessConstituencyList) {
+		this.userAccessConstituencyList = userAccessConstituencyList;
+	}
+
 	public String execute() throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -238,7 +248,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		Long userID = user.getRegistrationID();
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-		constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		return SUCCESS;
 		
