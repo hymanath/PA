@@ -208,4 +208,8 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public List<ProblemBeanVO> getProblemDetailsByProfileId(Long profileId,int startIndex,int maxIndex);
 	
+	public List<ProblemBeanVO> getProblemDetailsForVoterPage(Long userId,Long locationId,Long locationValue);
+	
+	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status);
+	
 }
