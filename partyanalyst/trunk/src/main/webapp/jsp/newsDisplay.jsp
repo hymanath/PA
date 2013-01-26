@@ -2299,27 +2299,27 @@ function buildContentDetails()
 		{
 
 
-			str+='<table>';
+			str+='<table style="font-size:13px;">';
 			str+='<tr>';
 			str+='<td>';
 
 			
 
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>CategoryType</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
-				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
+				str+=' RegionScope</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font> &nbsp;';
 
 
 			 str+='</td>';
 
 			 str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
-				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>Source</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].fileDate != null)
-				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+				str+=' Date</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
 
 
 			 str+='</td>';
