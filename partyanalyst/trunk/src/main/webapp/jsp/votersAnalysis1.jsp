@@ -745,9 +745,14 @@ locationDetails.constituencyArr.push(ob);
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
-	
+
+<a href="javaScript:{getVotersDetails();}">Click here for voters details</a>
+<div id="votersOuterDiv1">
+ <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
-	
+ </div>
+</div>
+
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
 	
 <!-- for  body 3 end    result  -->
@@ -775,27 +780,36 @@ locationDetails.constituencyArr.push(ob);
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>-->
 
-<div id='ageWiseInfoDiv' class="divInfo">
-<br><br>
-<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
+<div id="processingDialogOuterDiv">
+  <div id="processingDialogInnerDiv">
+  </div>
+</div>
 
-<div id="voterDetailsNote" class="noteDiv"></div>
+<a href="javaScript:{showAgewiseDetails()}">Click here to get Agewise Details</a>
+<div id="ageWiseVotersDetailsOuterDiv">
 
-<div id="tableDiv" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+	<div id='ageWiseInfoDiv' class=""  style="height:500px;overflow-y:auto;">
+	<br><br>
+	<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
 
-<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
-<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+	<div id="voterDetailsNote" class="noteDiv"></div>
 
-<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
-<div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"> </div>
+	<div id="tableDiv" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+
+	<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
+	<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+
+	<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
+	<div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"> </div>
 
 
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
+	<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
 
-<div id="voterAgeAngGenderwiseDetailsInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
-<div id="AgeWiseNoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:45px;width:851px;"></div>
+	<div id="voterAgeAngGenderwiseDetailsInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+	<div id="AgeWiseNoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:45px;width:851px;"></div>
 
 	
+  </div>
 </div>
 
 <!-- for  body 4 end    result  -->
@@ -1009,6 +1023,17 @@ function openNewWindow(){
 function showHideDiv(){
   $('#newsDiv').toggle('slow');
  }
+
+
+function showAgewiseDetails(){
+		callCorrespondingAjaxCall();
+
+}
+
+function getVotersDetails(){
+		getVotersData();
+
+	}
 </script>
 </body>
 </html>
