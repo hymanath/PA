@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -22,7 +23,9 @@ import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -51,13 +54,49 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private VotersInfoForMandalVO votersInfo;
 	
 	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
+	private ProblemBeanVO problemBean;
 	
+
+
 	private List<VoterHouseInfoVO> votersFamilyInfo;
 	private PartyVotesEarnedVO partyVotesEarnedVO;
 	private List<PartyVotesEarnedVO> partyVotesEarnedVOList;
 	
 	public List<VotersDetailsVO> countList;
 	
+	private List<ProblemBeanVO> problemDetails;
+	
+	private ProblemBeanVO problemBeanVO;
+	
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
+
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
+
+
+	private IProblemManagementService problemManagementService;
+	
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
+	
+	public List<ProblemBeanVO> getProblemDetails() {
+		return problemDetails;
+	}
+
+	public void setProblemDetails(List<ProblemBeanVO> problemDetails) {
+		this.problemDetails = problemDetails;
+	}
+
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
 	}
@@ -181,6 +220,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setCountList(List<VotersDetailsVO> countList) {
 		this.countList = countList;
+	}
+	
+	public ProblemBeanVO getProblemBean() {
+		return problemBean;
+	}
+
+	public void setProblemBean(ProblemBeanVO problemBean) {
+		this.problemBean = problemBean;
 	}
 	public String execute() throws Exception
 	{
@@ -536,6 +583,35 @@ public String getPreviousEleVotingTrends()
 	}catch (Exception e) {
 		e.printStackTrace();
 		log.error("Exception Occured in getPreviousEleVotingTrends() Method, Exception - "+e);
+	}
+return Action.SUCCESS;
+}
+
+public String getProblemsByLocation()
+{
+	try{
+		 problemBeanVO= new ProblemBeanVO();
+		String param;
+		param = getTask();
+		jObj = new JSONObject(param);
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
+		
+		Long locationValue = jObj.getLong("locationValue");
+		Long locationId = jObj.getLong("locationId");
+		if(jObj.getString("task").equalsIgnoreCase("getProblemsByLocation"))
+		 problemDetails = problemManagementService.getProblemDetailsForVoterPage(userId,locationId,locationValue);
+		 if(jObj.getString("task").equalsIgnoreCase("getProblemDetailsByLocation"))
+		 {
+			 String status = jObj.getString("status");
+			 problemDetails = problemManagementService.getProblemDetailsInfoVoterPage(userId,locationId,locationValue,status);
+		 }
+		// problemBeanVO.setProblemBeanVOList(problemDetails);
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getProblemsByLocation() Method, Exception - "+e);
 	}
 return Action.SUCCESS;
 }
