@@ -867,6 +867,7 @@ oDT: votersByLocBoothDataTable
 		}	
 	}
 }
+var fromOnChange=false;
 $(document).ready(function(){
     $("#publicationDateList").change(function(){
 	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
@@ -936,9 +937,10 @@ $(document).ready(function(){
 	      getAllTabs();
 	});
     $("#publicationDateList").live("change",function(){
-    
-       //$('.voterDetails').html('');
-	   //$('.noteDiv').html('');
+		fromOnChange=true;
+		$('#ShowMenu').trigger('click');
+		//$('.voterDetails').html('');
+		//$('.noteDiv').html('');
 	   if($(this).val() != 0 ){
 
 	     if($("#reportLevel").val() == 1 && $("#constituencyList option").length > 0 && $("#constituencyList").val() != 0)
@@ -3635,7 +3637,7 @@ var jsObj=
 	var divEle1 = document.getElementById('reportLevelCountDiv1');
 	$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
 	document.getElementById('reportLevelCountDiv1').style.display = 'block';
-	$("#reportLevelCountDiv1").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+	$("#reportLevelCountDiv1").css({'border':'1px solid #d3d3d3','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
 	  if(jsObj.type == "mandal"){
 		if(mainreqid.charAt(0) =="1"){
 		type = "muncipality";
@@ -3751,16 +3753,22 @@ $(document).ready(function(){
 
 // Menu Show Events...
 $("#ShowMenu").click(function(){
-			if(showflag) {
-			$(".customMenu").css("display","inline-block");
-			$(this).html('Hide Menu <i class="icon-chevron-up"></i>');
+	if(showflag||fromOnChange) {
+		$(".customMenu").css("display","inline-block");
+		$(this).html('Hide Menu <i class="icon-chevron-up"></i>');
+		if(!fromOnChange){
 			showflag=false;
-			}
-			else {
-			$(".customMenu").hide();
-			$(this).html('Show Menu <i class="icon-chevron-down"></i>'); 
-			showflag=true;
-			}
+		}
+		else{
+			fromOnChange=false;
+			showflag=false;
+		}
+		}
+	else {
+		$(".customMenu").hide();
+		$(this).html('Show Menu <i class="icon-chevron-down"></i>'); 
+		showflag=true;
+	}
 
 });
 
