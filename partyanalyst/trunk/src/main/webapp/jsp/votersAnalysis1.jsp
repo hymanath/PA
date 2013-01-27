@@ -30,7 +30,7 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -655,7 +655,8 @@ locationDetails.constituencyArr.push(ob);
 	</fieldset>
 
 </div>
-<!-- for  body3 start    result  -->
+<!-- <div id="defaultWidth" style="min-height:300px;"></div>
+for  body3 start    result  -->
 <div id="votersDiv3" >
 
 
@@ -719,7 +720,7 @@ locationDetails.constituencyArr.push(ob);
 	
  
  <!--<h5 id="reportTopLevelheading" style="margin-left:15px;"></h5>-->
-<div id='votersHeaderDiv3' style="clear:both;">
+<div id='votersHeaderDiv3' style="clear:both;display:none;">
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
@@ -729,7 +730,7 @@ locationDetails.constituencyArr.push(ob);
 				</table>
 	</div>
     
-<div id='votersMainOuterDiv3'>
+<div id='votersMainOuterDiv3' style="display:none;">
  <h5 id="reportLevelheading1" style="margin-left:15px;"></h5>
 <div id="reportLevelCountDiv1" style="clear:both;"></div><br>
 	<div id="newsCountDiv"></div>
@@ -746,8 +747,8 @@ locationDetails.constituencyArr.push(ob);
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
 
-<a href="javaScript:{getVotersDetails();}">Click here for voters details</a>
-<div id="votersOuterDiv1">
+<div id="votersInfoMoreShowHide" style="display:none;"><a href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</a></div>
+<div id="votersOuterDiv1" style="display:none;">
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
  </div>
@@ -758,9 +759,9 @@ locationDetails.constituencyArr.push(ob);
 <!-- for  body 3 end    result  -->
 </div>
 </div><!-- body 3 end -->
-
+</div>
 <!-- for  body4 start    result  -->
-<div id="votersDiv4" >
+<div id="votersDiv4" style="display:none;">
 <div id='votersHeaderDiv4'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -770,7 +771,7 @@ locationDetails.constituencyArr.push(ob);
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv4'>
+<div id='votersMainOuterDiv4' style="max-height:45px;">
 	
 
 	<!-- <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
@@ -848,10 +849,11 @@ locationDetails.constituencyArr.push(ob);
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
 	
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
+		<div id="descriptionDiv" ></div>
 		<div id="impFamPancBothDtls"></div>
 	   </div>
 		<br>
-		<div id="descriptionDiv" ></div>
+		
 		<br>
 		<div id="NoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:5px;width:920px;"></div>
 		
@@ -930,12 +932,13 @@ locationDetails.constituencyArr.push(ob);
 <!-- main div  End-->
 </div>
 <script type="text/javascript">
-function getCastInfoForsubLevel()
+function getCastInfoForsubLevel(id,publicationId,type)
 	{
 	document.getElementById('localCastStatsVotersTitle').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody1').innerHTML='';
-	var publicationDateId = $("#publicationDateList").val();
+	var typeName=mainname;
+	/*var publicationDateId = $("#publicationDateList").val();
 	var level = $("#reportLevel").val();
 	var type = '';
 	var id='';
@@ -997,16 +1000,21 @@ function getCastInfoForsubLevel()
 	if(publicationDateId == 0|| publicationDateId == null)
 		{
 		flag =false;
+		}*/
+		if(type == "mandal"){
+
+		 if(locationValue.charAt(0) == "1"){
+			 return;
+		  }
 		}
-		if(flag)
+		if(true)
 		{
 		var jsObj=
 		{		
 				type:type,	
 				id:id,
-				validflag:validflag,
 				typeName:typeName,
-				publicationDateId:publicationDateId,	
+				publicationDateId:publicationId,	
 				task:"getCastInfoForsubLevels"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1032,7 +1040,6 @@ function showAgewiseDetails(){
 
 function getVotersDetails(){
 		getVotersData();
-
 	}
 </script>
 </body>

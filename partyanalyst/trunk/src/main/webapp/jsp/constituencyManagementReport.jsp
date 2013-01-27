@@ -1021,6 +1021,10 @@
 						
 					<a class="linkButton" href="votersAnalysisAction.action">New Voters Details</a>
 					</div>
+					<div style="text-align:right;padding:15px;">
+						
+					<a class="linkButton" href="votersAnalysisNewAction.action">Voters Details With New Changes</a>
+					</div>
 
 				</div>
 			</div>	
