@@ -791,7 +791,7 @@ for  body3 start    result  -->
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
-<span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}">View more details</a></b></span>
+<span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></b></span>
 
 
 <div id="ageWiseVotersDetailsOuterDiv">
