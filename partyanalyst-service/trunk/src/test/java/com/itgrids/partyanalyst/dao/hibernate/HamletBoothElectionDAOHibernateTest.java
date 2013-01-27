@@ -80,9 +80,20 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(list);
 	}*/
 	
-	public void testFindElectionsHappendInAPanchayat()
+	/*public void testFindElectionsHappendInAPanchayat()
 	{
 		List<Object[]> list = hamletBoothElectionDAO.findElectionsHappendInAPanchayat(1l, IConstants.ASSEMBLY_ELECTION_TYPE);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"  "+params[1]);
+		}
+	}*/
+	
+	public void testFindAllElectionsHappendInAPanchayat()
+	{
+		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(1l);
 		System.out.println(list.size());
 		
 		for(Object[] params : list)

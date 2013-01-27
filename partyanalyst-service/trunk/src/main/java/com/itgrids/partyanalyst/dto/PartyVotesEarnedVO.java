@@ -15,6 +15,7 @@ public class PartyVotesEarnedVO {
 	private List<String> partiesList;
 	private Long totalVotes;
 	private Long polledVotes;
+	private String reqType;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -100,6 +101,14 @@ public class PartyVotesEarnedVO {
 
 	public void setPolledVotes(Long polledVotes) {
 		this.polledVotes = polledVotes;
+	}
+
+	public String getReqType() {
+		return reqType;
+	}
+
+	public void setReqType(String reqType) {
+		this.reqType = reqType;
 	}
 
 	

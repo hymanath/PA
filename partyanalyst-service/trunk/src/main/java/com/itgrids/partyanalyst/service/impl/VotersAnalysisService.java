@@ -4248,7 +4248,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					{
 						List<PartyVotesEarnedVO> partyVotesEarnedVOList = new ArrayList<PartyVotesEarnedVO>(0);
 						try{
-							List<Object[]> list = hamletBoothElectionDAO.findElectionsHappendInAPanchayat(id, IConstants.ASSEMBLY_ELECTION_TYPE);
+							List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(id);
 							
 							if(list != null && list.size() > 0)
 							{
@@ -4259,9 +4259,19 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								{
 									Long polledVotes = 0l;
 									partyVotesEarnedVO = new PartyVotesEarnedVO();
-									partyVotesEarnedVO.setElectionYear(electionDAO.get((Long)params[0]).getElectionYear());
+									Election electionObj = electionDAO.get((Long)params[0]);
+									partyVotesEarnedVO.setElectionYear(electionObj.getElectionYear());
 									partyVotesEarnedVO.setElectionType(params[1].toString());
-									
+									String elecType ="";
+									if(electionObj.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase("Parliament")){
+										elecType ="PC";
+									}else{
+										elecType ="AC";
+									}
+									if(params[1].toString().equalsIgnoreCase("BYE"))
+										partyVotesEarnedVO.setReqType(electionObj.getElectionYear()+"("+elecType+" Bi)");
+									else
+									    partyVotesEarnedVO.setReqType(electionObj.getElectionYear()+"("+elecType+")");
 									String boothIdStr = "";
 									if(type.equalsIgnoreCase("panchayat"))
 									{
