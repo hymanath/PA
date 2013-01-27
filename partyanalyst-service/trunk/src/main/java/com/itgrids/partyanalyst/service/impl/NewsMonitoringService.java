@@ -13,7 +13,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -25,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
@@ -76,7 +76,16 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private INewsFlagDAO newsFlagDAO;
     private IUserDAO userDAO;
 	private TransactionTemplate transactionTemplate;
+	private IPanchayatHamletDAO panchayatHamletDAO;
 	
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -1050,9 +1059,21 @@ public class NewsMonitoringService implements INewsMonitoringService {
             locationValuesList.add(locationValue);
 			
 			
-           if(locationId == 3)	
-				locationValuesList = getAllBoothsInPanchayat(locationValue,
-						publicationId, locationValuesList);  
+           if(locationId == 3)	{
+				//locationValuesList = getAllBoothsInPanchayat(locationValue,
+					//	publicationId, locationValuesList); 
+        	   
+        	   locationValuesList = new ArrayList<Long>();
+	    	   
+ 	    	  List<Object[]> hamletsList =  panchayatHamletDAO.getHamletsOfAPanchayat(locationValue);
+ 	    	  
+                for(Object[] obj:hamletsList){
+             	   locationValuesList.add((Long)obj[0]);
+             	   
+             	   
+                }
+                locationId = 6L;
+           }
            
            
            if(locationId == 7){
@@ -1202,10 +1223,20 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	       if(fileVO.getLocationId() == 3){
 	    	   
 	       
-				locationValuesList = getAllBoothsInPanchayat(fileVO.getLocationVal(),
-						fileVO.getPublicationId(), locationValuesList);
+				//locationValuesList = getAllBoothsInPanchayat(fileVO.getLocationVal(),
+						//fileVO.getPublicationId(), locationValuesList);
+	    	   locationValuesList = new ArrayList<Long>();
+	    	   
+	    	  List<Object[]> hamletsList =  panchayatHamletDAO.getHamletsOfAPanchayat(fileVO.getLocationVal());
+	    	  
+               for(Object[] obj:hamletsList){
+            	   locationValuesList.add((Long)obj[0]);
+            	   
+            	   
+               }
+               fileVO.setLocationId(6L);
 				
-				fileVO.setLocationId(9L);
+				//fileVO.setLocationId(9L);
 	       }
 	       
 	       if(fileVO.getLocationId() == 7){
