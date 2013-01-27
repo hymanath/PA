@@ -771,7 +771,7 @@ for  body3 start    result  -->
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv4' style="max-height:45px;">
+<div id='votersMainOuterDiv4' style="height:300px;">
 	
 
 	<!-- <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
@@ -781,21 +781,28 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubDivForAgeWiseDetls" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>-->
 
-<div id="processingDialogOuterDiv">
+<!--<div id="processingDialogOuterDiv">
   <div id="processingDialogInnerDiv">
   </div>
-</div>
+</div>-->
 
-<a href="javaScript:{showAgewiseDetails()}">Click here to get Agewise Details</a>
+<!--<a href="javaScript:{showBasicAgewiseDetails()}">Click here to get Agewise Details</a>-->
+<span id="agewiseAjaxDiv" style="display:none;float:right;margin-left:30px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+<div id="voterDetailsNote1" class="noteDiv"></div>
+
+<div id="tableDiv1" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+<span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}">View more details</a></b></span>
+
+
 <div id="ageWiseVotersDetailsOuterDiv">
 
 	<div id='ageWiseInfoDiv' class=""  style="height:500px;overflow-y:auto;">
 	<br><br>
 	<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
 
-	<div id="voterDetailsNote" class="noteDiv"></div>
+	<div id="voterDetailsNote" class="noteDiv" style="display:none;"></div>
 
-	<div id="tableDiv" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+	<div id="tableDiv" style="margin-left:35px;padding:10px;display:none;" class="voterDetails"></div>
 
 	<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
 	<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
@@ -1040,7 +1047,17 @@ function showAgewiseDetails(){
 
 function getVotersDetails(){
 		getVotersData();
-	}
+}
+
+
+function showBasicAgewiseDetails(){
+   callCorrespondingAjaxCall('brief');
+}
+
+
+function showAllAgewiseDetails(){
+   callCorrespondingAjaxCall('all');
+}
 </script>
 </body>
 </html>
