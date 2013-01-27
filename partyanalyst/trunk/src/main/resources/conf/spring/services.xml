@@ -1118,6 +1118,7 @@
 		<property name="newsFlagDAO" ref="newsFlagDAO"></property>
 		<property name="userDAO" ref="userDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		
 	</bean>
 	
