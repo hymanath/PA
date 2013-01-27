@@ -796,13 +796,13 @@ function  buildProblemsCount(results){
 
 		 var categoryId = results[i].categoryId;
 
-	   str+='<div class="span3" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 15px;background-color:#f5f5f5;">';
+	   str+='<div class="" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 15px;background-color:#f5f5f5;height:100px;width:275px;">';
 
-	   str+='<div style="text-align:center;margin-top:6px;font-family:verdana;">';
+	   str+='<div style="text-align:center;margin-top:6px;font-family:verdana;height:30px;">';
 	   str+='<a>'+results[i].categoryName+'</a>';
 	   str+='</div>';
 
-		str+='<div style="margin-top:3px;">';
+		str+='<div style="margin-top:3px;margin-left:30px;">';
 
 		if(results[i].highImpactCount != null)
 			str+='<span class="badge badge-info" style="margin-left:30px">'+results[i].highImpactCount+'</span>';
@@ -817,7 +817,7 @@ function  buildProblemsCount(results){
 		else
 			str+='<span class="badge badge-info" style="margin-left: 22px;">0</span>';
 		str+='</div>';
-		str+='<div style="margin-top:3px;">';
+		str+='<div style="margin-top:3px;margin-left:22px;">';
 			str+='<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" class="linkClass" style="margin-left:34px">High</a>';
 			str+='<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" class="linkClass" style="margin-left:25px" >Medium</a>';
 			str+='<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" class="linkClass" style="margin-left: 26px;">Low</a>';
