@@ -979,44 +979,44 @@ function incrementStartEndIndexes(importanceId,categoryId){
 function buildProblemsCountByLocation(results,jsObj)
 {
 	
-	document.getElementById('problemsCountDiv').style.display = 'block';
+	document.getElementById('problemsCountDiv').style.display = 'inline-block';
 	var str='';
 	var locationId = jsObj.locationId;
 	var locationValue=jsObj.locationValue;
 	var status = '';
 	var divEle = document.getElementById('problemsCountDiv');
-	$("#problemsCountDiv").css({'float':'left','margin':'6px 3px 6px 12px','background-color':'#f5f5f5','width':'940px'});
-	str+='<div class="row breadcrumb"> ';
-	str+='<div class="span11 breadcrumb"><h5>Problems</h5></div>';
-	str+='<div class="span5"> ';
-	str+='<div class="row-fluid"> ';
+	$("#problemsCountDiv").css({'width':'100%'});
+	str+='<h5 style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Problems</h5><div class="widget-block breadcrumb"> ';
+	//str+='<div class="span11 breadcrumb"></div>';
+	//str+='<div class="widget-block breadcrumb"> ';
+	//str+='<div class="row-fluid"> ';
 	if(results[0].fixedProblems != 0)
-	str +='<div class="span4 center"><span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'FIXED\',0,\'Resolved\');">'+results[0].fixedProblems+'</a></span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'FIXED\',0,\'Resolved\');">'+results[0].fixedProblems+'</a></span><span class="help-inline f2">Resolved</span>';
 	else
-	str +='<div class="span4 center"><span class="btn">'+results[0].fixedProblems+'</span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn">'+results[0].fixedProblems+'</span><span class="help-inline f2">Resolved</span>';
 	if(results[0].progressProblems != 0)
-	str +='<div class="span4 center"><span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PROGRESS\',0,\'Progress\');">'+results[0].progressProblems+'</a></span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PROGRESS\',0,\'Progress\');">'+results[0].progressProblems+'</a></span><span class="help-inline f2">Progress</span>';
 	else
-	str +='<div class="span4 center"><span class="btn">'+results[0].progressProblems+'</span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn">'+results[0].progressProblems+'</span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
 	if(results[0].pendingProblems != 0)
-	str +='<div class="span4 center" style="margin-top:-15px;"><span class="btn btn-info"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PENDING\',0,\'Pending\');">'+results[0].pendingProblems+'</a></span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn btn-info"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PENDING\',0,\'Pending\');">'+results[0].pendingProblems+'</a></span><span class="help-inline f2">Pending</span>';
 	else
-	str +='<div class="span4 center" style="margin-top:-15px;"><span class="btn btn-info">'+results[0].pendingProblems+'</span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn btn-info">'+results[0].pendingProblems+'</span><span class="help-inline f2">Pending</span>';
 	
-	str+='</div>';
-	str+='</div>';
-	str+='<div class="span5" style="padding:5px 0px 5px 0px;border:1px solid #d3d3d3;"> ';
-	str+='<div class="row-fluid"> ';
-	str +='<div class="span2"><h5 style="margin-left:10px;">NEW</h5></div>';
+	//str+='</div>';
+	//str+='</div>';
+	str+='<div class="alert alert-danger" style="display:inline-block;margin-top:10px;padding-bottom:12px;" >';
+	//str+='<div class="row-fluid"> ';
+	str +='<h6 style="display:inline-block;padding-right:15px;">Newly Posted Problems</h6>';
 	if(results[0].cadreProblems != 0)
-	str +='<div class="span4"><span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',4,\'Cadre\');">'+results[0].cadreProblems+'</a></span><div>Cadre</div></div>';
+	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',4,\'Cadre\');">'+results[0].cadreProblems+'</a></span><span class="help-inline f2">Cadre</span>';
 	else
-	str +='<div class="span4"><span class="btn">'+results[0].cadreProblems+'</span><div>Cadre</div></div>';
+	str +='<span class="btn">'+results[0].cadreProblems+'</span><span class="help-inline f2">Cadre</span>';
 	if(results[0].userProblems != 0)
-	str +='<div class="span4"><span class="btn "><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',1,\'User\');">'+results[0].userProblems+'</a></span><div>User</div></div>';
+	str +='<span class="btn "><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',1,\'User\');">'+results[0].userProblems+'</a></span><span class="help-inline f2">User</span>';
 	else
-	str +='<div class="span4"><span class="btn ">'+results[0].userProblems+'</span><div>PAUser</div></div>';
-	str+='</div> ';
+	str +='<span class="btn ">'+results[0].userProblems+'</span><span class="help-inline f2">PartyAnalyst User</span>';
+	//str+='</div> ';
 	str+='</div> ';
 
 	str+='</div> ';
