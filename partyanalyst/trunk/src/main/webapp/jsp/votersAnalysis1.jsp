@@ -54,6 +54,7 @@
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
+
   <title>Voters analysis</title>
 
 <style type="text/css">
@@ -595,6 +596,32 @@ h5{font-family : Arial;}
     margin-left: 340px;
     margin-top: 110px;
    }
+ #problemsShowDIV h6 {
+    color: #005580;
+    margin-bottom: 10px;
+}
+#problemsShowDIV p {
+    margin-left: 16px;
+}
+#problemsShowDIV .widget-block {
+    display: inline-block;
+    width: 100%;
+	background:#FAFAFA;
+}
+#problemsShowDIV .widget {
+    margin-bottom: 10px;
+	background: none repeat scroll 0 0 #FAFAFA;
+    border-top: 5px solid #000000;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 5px 0 20px;
+    padding: 0 20px 20px;
+    position: relative;
+}
+
+#problemsShowDIV h6{margin:0px;padding:0px;font-size:15px; text-decoration:none; font-weight:bold;text-transform:capitalize;}
+#problemsShowDIV a,#problemsShowDIV span{text-decoration:none;font-size:12px;}
+.widget-block:nth-child(2n+1){background:#fff;}
+.leftmargin{margin-left:10px;padding:4px;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -742,10 +769,10 @@ for  body3 start    result  -->
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
 	   </div>
 	   
-	<!--<div id="problemsCountDiv" style="clear:both;"></div>
-	<div id="problemPopUp">
-	<div id="ProblempopupInnerDiv"></div>
-	</div>-->
+	<div id="problemsCountDiv" style="clear:both;"></div>
+	<div id="problemPopUp" style="background:#EEEEEE;">
+	<div id="problemsShowDIV"></div>
+	</div>
 	   <div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
