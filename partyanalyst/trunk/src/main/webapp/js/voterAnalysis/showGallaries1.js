@@ -943,7 +943,7 @@ str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
 	for(var i=0;i<results.length;i++){
 	var description=results[i].description;
 
-		str+='<div class="breadcrumb" title="'+description+'"><h5 style="margin:5px;"><img src="./images/icons/bullet.png" style="margin-bottom:2px;"/><a style="font-family:Georgia,Times New Roman,Times,serif;color:#3E78FD;" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a></h5><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Date:'+results[i].fileDate+'</span><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Source:'+results[i].source+'</span></div>';
+		str+='<div class="breadcrumb" title="'+description+'"><h5 style="margin:5px;"><img src="./images/icons/bullet.png" style="margin-bottom:2px;"/><a style="font-family:verdana;color:#3E78FD;" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a></h5><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Date:'+results[i].fileDate+'</span><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Source:'+results[i].source+'</span></div>';
 	}
 
 	if(results.length >=10)
