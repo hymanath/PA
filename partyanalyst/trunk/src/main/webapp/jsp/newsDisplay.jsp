@@ -1418,7 +1418,7 @@ function editNewsDetails(fileId){
 function getLocationDiv(){
 var id =  $('#scopeDiv').val();
 
- getLocations(id);
+ getLocations1(id);
 }
  function getLocations(id){
 
@@ -1996,6 +1996,17 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
       if (r == false)
        return;  
   
+  }
+
+  if(locationScopeId == 5 || locationScopeId == 7){
+
+try{
+    locationScopeValue = locationScopeValue.substring(1);
+}catch(e){
+	locationScopeValue = locationScopeValue;
+
+}
+
   }
    var jsObj=
 	      { 
