@@ -221,6 +221,7 @@ p {
  border-left: 1px solid #B3C1CE;
  border-right: 1px solid #B3C1CE;
  padding:5px;
+ padding-bottom:40px;
 
 }
 #partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#votersByLocationTabContentDiv_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
@@ -375,7 +376,7 @@ width: 860px;}
 #impfamilydatatable th{
   padding:5px;
 }
-.localCastDetailsHeadingDiv,#partyWiseTitle{ 
+.localCastDetailsHeadingDiv,#partyWiseTitle,#partyBasicInfoStatsTabNewTitle{ 
     border-radius: 3px;
     color: #FFFFFF;
     font-family: verdana;
@@ -393,7 +394,7 @@ width: 860px;}
 	#localCastChatDiv,#partyWiseChatDiv{clear: both;
     float: right;
      width: 500px;}
-	 .partyWiseDetailsMainDiv{ border: 1px solid #CCCCCC;
+	 .partyWiseDetailsMainDiv{ 
     clear: both;
     display: table;
      margin-left: 10px;
@@ -827,7 +828,7 @@ for  body3 start    result  -->
 </div>-->
 
 <!--<a href="javaScript:{showBasicAgewiseDetails()}">Click here to get Agewise Details</a>-->
-<span id="agewiseAjaxDiv" style="display:none;float:right;margin-left:30px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+<span id="agewiseAjaxDiv" style="display:none;float:right;margin-left:30px;margin-right:5px;margin-top:12px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
@@ -899,6 +900,7 @@ for  body3 start    result  -->
 	
 		<div id ="impFamilesBasicSubDetails" style="border:1px solid black"></div>
 		<div id="descriptionDiv" ></div>
+		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		<div id="impFamPancBothDtls"></div>
 	   </div>
 		<br>
@@ -946,25 +948,28 @@ for  body3 start    result  -->
 	<div class="castDetailsMainDiv">
 		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
 		<div id="localCastChatDiv"></div>
-	</div><br>
-	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
-	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="margin-top:25px;">	</div>
-	<div id='localCastStatsTabContent_subbody'>
-	</div><br><br>
+	</div>
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
+	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
+	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
+	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" >	</div>
+	<div id="partyWiselocalcastDiv" style="margin-top:20px;"></div>
+
 	<div id="localCastStatsVotersPopUpDiv" style="display:none;">
 	    <div id ="localCastStatsVotersTitle" ></div>
-	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
+	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
-	<div id="castPartyPopupShowBtn"><input type="button" class="btn" value="View More Details" style="float:right;" onclick="ShowCastPartyPopupDiv();"/></div>
-	<div id="castPartyPopupDiv" style="display:none">   
-		<div id="partyWiseDetailsHeadingDiv" class="localCastDetailsHeadingDiv"></div>
+	<div id="castPartyPopupShowBtn"><input type="button" class="btn" value="View More Details" style="float:right;margin-top:7px;clear:both;" onclick="ShowCastPartyPopupDiv();"/></div>
+	<div id="castPartyPopupDiv" style="display:none">  
+        <div id='localCastStatsTabContent_subbody'></div>	
+		<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
 	    <div id='partyWise_header'></div>
 		
 	    <div class="partyWiseDetailsMainDiv">
 		<table style="width:100%;"><tr>
 		  <td><div id="partyWiseDetailsDiv"></div></td>
 		  <td><div id="partyWiseChatDiv"></div></td></tr></table></div><br>
-		<div id="partyWiselocalcastDiv"></div>
+		
 	</div>	
 		<br><br>
 	
