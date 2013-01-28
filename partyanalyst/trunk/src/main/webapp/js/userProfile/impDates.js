@@ -1,6 +1,6 @@
 function showInitialImpEventsAndDates(eventsarr,type,task)
 	{
-		
+	
 		var divElmt;
 		if(type == "impDates")
 			var elmt = document.getElementById("cadreImpDatesBodyDiv");
@@ -9,7 +9,6 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		
 		for(var i in eventsarr)
 		{			
-		
 			if(type == "impDates" && eventsarr[i].impDate)
 			{	
 				var sDayobj = getDateTime(eventsarr[i].impDate);				
@@ -18,6 +17,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 				var startYearStr = sDayobj.year;
 				var startTimeHrs = sDayobj.hours;
 				var startTimeMin = sDayobj.minutes;
+				
 			}
 
 			if(eventsarr[i].endDate)
@@ -48,7 +48,8 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 			}
 			if(type == "impDates")
 			{
-			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
+			var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
+			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\',\''+newdate+'\')">';
 			}
 			
 			str+='<tr>';
@@ -100,14 +101,26 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 					removeByElement(eventsRenderArr,renderValue);
 					eventDateRenderArr.push(renderValue);
 				}
-			}
-			
-		
-			renderStack();
-				
+			}		
 						
 		}
+	datesRenderArr = new Array();
+	if(eventsarr != null &&  eventsarr.length > 0)
+	{
+	for(var i in eventsarr)
+	{
+	var impDayobj = getDateTime(eventsarr[i].impDate);
+	var impDate = new Date(impDayobj.month+"/"+impDayobj.day+"/"+impDayobj.year);
+	var renderValue=(impDate .getMonth()+1)+"/"+impDate.getDate()+"/"+impDate.getFullYear();
+	datesRenderArr.push(renderValue);
 	}
+	}
+	else
+	{
+		datesRenderArr.push("");
+	}
+	renderStack();
+}
 
 	function existingDataCheck(date,type)
 	{		
@@ -132,6 +145,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 	{	
 		for(var i in eventsRenderArr)
 		{
+		
 			mainEventCalendar.addRenderer(eventsRenderArr[i], mainEventCalendar.renderCellStyleHighlight1);			
 		}
 		for(var j in datesRenderArr)
@@ -409,7 +423,7 @@ function buildNewImpDatePopup()
 	
 	function handleImpDateSubmit()
 	{	
-	alert("handleImpDateSubmit");
+	//alert("handleImpDateSubmit");
 		var flag = checkDate("impDate");
 		if(flag)
 		return;
@@ -495,9 +509,9 @@ function buildNewImpDatePopup()
 								{
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","nextPreviousMonthEvents");
 								}
-								else if(jsObj.task=="deleteEvent" || jsObj.task=="deleteImpDate")
+								else if(jsObj.task=="deleteImpDate")
 								{
-									removeDeletedElement(myResults,jsObj);	
+									
 									var date = new Date();
 									
 									var jsObj1={
@@ -507,8 +521,9 @@ function buildNewImpDatePopup()
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
-									
 									callAjax(jsObj1,url);
+									removeDeletedElement(myResults,jsObj);
+									
 								}
 								else if(jsObj.task=="showSelectedDateEvent_nonEditable")
 								{				
@@ -532,10 +547,8 @@ function buildNewImpDatePopup()
 									elmt.innerHTML=myResults.subscribeTitle;
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","subscribe");
 								}
-								else if(jsObj.task=="updateCreateEvent" || jsObj.task=="updateImpDateEvent")
+								else if(jsObj.task=="updateImpDateEvent")
 								{	
-									
-									addCreatedEvent(myResults,jsObj);	
 									var date = new Date();
 									
 									var jsObj1={
@@ -560,8 +573,23 @@ function buildNewImpDatePopup()
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-	function addCreatedEvent(results,jsObj)
+	/*function addCreatedEvent(results,jsObj)
 	{
+	datesRenderArr = new Array();
+	if(results != null &&  results.length > 0)
+	{
+	for(var i in results)
+	{
+	var impDayobj = getDateTime(results[i].impDate);
+	var impDate = new Date(impDayobj.month+"/"+impDayobj.day+"/"+impDayobj.year);
+	var renderValue=(impDate .getMonth()+1)+"/"+impDate.getDate()+"/"+impDate.getFullYear();
+	datesRenderArr.push(renderValue);
+	}
+	}
+	else
+	{
+		datesRenderArr.push("");
+	}
 		if(jsObj.task == "updateImpDateEvent")
 		{
 			//eventDateDialog.hide();
@@ -614,11 +642,6 @@ function buildNewImpDatePopup()
 		{
 			elmt.appendChild(divElmt);
 		}
-		/*if(jsObj.task == "createImpDateEvent")
-		{
-			if(newDateDialog)
-				newDateDialog.cancel();	
-		}*/
 		
 		if(results.endDate)
 		{		
@@ -646,7 +669,6 @@ function buildNewImpDatePopup()
 		{			
 			var impDate = new Date(impDayobj.month+"/"+impDayobj.day+"/"+impDayobj.year);
 			var renderValue=(impDate .getMonth()+1)+"/"+impDate.getDate()+"/"+impDate.getFullYear();
-				
 			if(existingDataCheck(renderValue,jsObj.task))
 				datesRenderArr.push(renderValue);
 			else
@@ -657,7 +679,7 @@ function buildNewImpDatePopup()
 		}
 		
 		$('#eventDateDetails').dialog("close");
-	}
+	}*/
 	function showEndDateText(val)
 	{
 		var txtElmt = document.getElementById('ImpEndDateText_new');
@@ -669,7 +691,7 @@ function buildNewImpDatePopup()
 			txtElmt.disabled=false;
 	}
 	
-	function showUnEditableSelectedDateEvent(elmtId,eType,taskType)
+	function showUnEditableSelectedDateEvent(elmtId,eType,taskType,newdate)
 	{
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
 		var jsObj={
@@ -678,7 +700,8 @@ function buildNewImpDatePopup()
 					currentMonth:dateObj.monthVal,
 					currentYear:dateObj.yearVal,
 					eventType:eType,	
-					taskType:taskType,					
+					taskType:taskType,
+					newdate:newdate,
 					task:"showSelectedDateEvent_nonEditable"
 				  };
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -736,10 +759,9 @@ function buildNewImpDatePopup()
 	if(eventDateDialog)
 			eventDateDialog.hide();
 		if(jsObj.task=="deleteImpDate"){
-			
+		
 		var elmt = document.getElementById("ImpDate_"+myResults);
 		alert("Date successfully deleted");
-			
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
@@ -748,22 +770,21 @@ function buildNewImpDatePopup()
 	
 	function buildUnEditableSelectedDateEventPopup(results,jsObj)
 	{
-		
 		var elmt = document.getElementById('cadreManagementMainDiv');		
 
 		var divChild = document.createElement('div');
 		divChild.setAttribute('id','eventDateDetails');
 		divChild.setAttribute('class','yui-skin-sam');
-		
-		
 		if (jsObj.taskType == "impDate")
 		{
+			
 			if(results[0].startDate)
 				var startDateObj = getDateTime(results[0].startDate);
 			if(results[0].endDate)
 				var endDateObj = getDateTime(results[0].endDate);
 			if(results[0].impDate)
 				var impDateObj = getDateTime(results[0].impDate);
+
 		}		
 		
 		var eventStr='';
@@ -785,7 +806,7 @@ function buildNewImpDatePopup()
 			eventStr+='<tr>';
 
 			eventStr+='<th>Imp date</th>';
-			eventStr+='<td><span class="fieldSpan">'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'</span></td>';
+			eventStr+='<td><span class="fieldSpan">'+jsObj.newdate+'</span></td>';
 			eventStr+='</tr>';
 		}
 
