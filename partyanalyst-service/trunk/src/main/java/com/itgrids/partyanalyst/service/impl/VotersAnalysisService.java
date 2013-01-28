@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
@@ -131,6 +132,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterAgeRangeDAO voterAgeRangeDAO;
     private IVoterFamilyInfoDAO voterFamilyInfoDAO;
     private IVoterFamilyRangeDAO voterFamilyRangeDAO;
+    private IVillageBoothElectionDAO villageBoothElectionDAO;
     
 	public IVoterCategoryValueDAO getVoterCategoryValueDAO() {
 		return voterCategoryValueDAO;
@@ -368,6 +370,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 	public void setVoterFamilyRangeDAO(IVoterFamilyRangeDAO voterFamilyRangeDAO) {
 		this.voterFamilyRangeDAO = voterFamilyRangeDAO;
+	}
+
+	public IVillageBoothElectionDAO getVillageBoothElectionDAO() {
+		return villageBoothElectionDAO;
+	}
+
+	public void setVillageBoothElectionDAO(
+			IVillageBoothElectionDAO villageBoothElectionDAO) {
+		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -5056,4 +5067,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			}
 		}
 		
+		public List<SelectOptionVO> getAllElectionsInAConsti(Long electionTypeId,Long constiId){
+			List<SelectOptionVO> options = new ArrayList<SelectOptionVO>();
+			SelectOptionVO selectOptionVO = null;
+			try{
+			List<Object[]> electionsList = villageBoothElectionDAO.findElectionsForElectionTypeConstiId( electionTypeId, constiId);
+			if(electionsList != null && electionsList.size() > 0){
+				for(Object[] year:electionsList){
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)year[0]);
+					selectOptionVO.setName(year[1]!=null?year[1].toString():"");
+					options.add(selectOptionVO);
+				}
+					
+			}
+			}catch(Exception e){
+				log.error("Exception Occured in getAllElectionsInAConsti() Method, Exception - ",e);
+			}
+			return options;
+		}
+		 
 }
