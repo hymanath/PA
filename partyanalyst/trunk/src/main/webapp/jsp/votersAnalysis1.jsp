@@ -746,6 +746,10 @@ for  body3 start    result  -->
   	</div>
 	<div id="votersBasicInfoDiv"></div>
 	<div id="previousEleVotingTrendsDiv"></div>
+	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
+	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
+	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn" value="Get Panchayat Wise Election Results"/>
+	</div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
@@ -1065,6 +1069,37 @@ function showBasicAgewiseDetails(){
 function showAllAgewiseDetails(){
    callCorrespondingAjaxCall('all');
 }
+   function openwindowForPanchayatsToShow(){
+		var selElectionId = $("#revenueVillageWiseElecId").val();
+		var selElecyear = $("#revenueVillageWiseElecId option:selected").text() ;
+		var brow1 = window.open("panchayatWiseElectionResultsAction.action?mandalId="+mainreqid.slice(1)+"&electionId="+selElectionId+"&mandalName="+mainname.replace("MANDAL","")+"&electionType=Assembly&electionYear="+selElecyear+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		brow1.focus();
+}
+
+
+function showBasicAgewiseDetails(){
+   callCorrespondingAjaxCall('brief');
+}
+
+
+function showAllAgewiseDetails(){
+   callCorrespondingAjaxCall('all');
+}
+	function getElectionYearsAjaxAction(){
+	    var jObj=
+	{
+		electionTypeId:2,
+		constituencyId:$("#constituencyList").val(),
+		task:"getElectionYearsForPanchayat"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getAllElectionsInAConsti.action?save="+rparam;	
+
+	callAjax(jObj,url);
+	
+	}
+	
+	
 </script>
 </body>
 </html>

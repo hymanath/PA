@@ -681,4 +681,18 @@ public String saveVoterDetails(){
 			}
 			return Action.SUCCESS;
 		}
+	   
+	    public String getElectionsInAConsti(){
+	    	String param = null;
+			param = getTask();
+			try {
+				jObj = new JSONObject(param);
+				userAccessStates = votersAnalysisService.getAllElectionsInAConsti(2l,jObj.getLong("constituencyId"));
+				System.out.println(jObj);
+			} catch (ParseException e) {
+				Log.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
+				e.printStackTrace();
+			}
+			return Action.SUCCESS;
+	    }
    }

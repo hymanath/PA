@@ -1354,6 +1354,7 @@
 		<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO" />
 		<property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
 		<property name="voterFamilyRangeDAO" ref="voterFamilyRangeDAO" />
+		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
