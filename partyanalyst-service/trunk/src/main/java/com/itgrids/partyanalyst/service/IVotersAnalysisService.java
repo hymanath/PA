@@ -107,4 +107,6 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> getConstituencyList(List<SelectOptionVO> userAccessConstituencyList);
 	
+	public List<SelectOptionVO> getAllElectionsInAConsti(Long electionTypeId,Long constiId);
+	
 }

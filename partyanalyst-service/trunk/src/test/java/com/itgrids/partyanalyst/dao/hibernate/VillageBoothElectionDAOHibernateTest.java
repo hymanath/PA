@@ -73,12 +73,20 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list);
 	}*/
 	
-	public void testFindLatestElectionYearInARevenueVillageForElectionType()
+	/*public void testFindLatestElectionYearInARevenueVillageForElectionType()
 	{
 		List<Object> list = villageBoothElectionDAO.findLatestElectionYearInARevenueVillageForElectionType(21816l,IConstants.ASSEMBLY_ELECTION_TYPE);
 		
 		if(list != null && list.size() > 0)
 			System.out.println(list.get(0));
+	}*/
+	public void testFindElectionsForElectionTypeConstiId()
+	{
+		List<Object[]> list = villageBoothElectionDAO.findElectionsForElectionTypeConstiId(2l,232l);
+		
+		if(list != null && list.size() > 0)
+			for(Object[] year:list)
+			System.out.println(year[0].toString()+" "+year[1].toString());
 	}
 	
 }
