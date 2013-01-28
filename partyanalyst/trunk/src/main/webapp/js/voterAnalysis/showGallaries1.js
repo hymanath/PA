@@ -729,6 +729,11 @@ function callAjaxToShowNewsDetails(jObj,url){
                           displayNewsByImportance(jObj,myResults);					  
 					   else if(jObj.task == "newsForALocation")
 					      buildProblemsCount(myResults);
+					   else if(jObj.task="getNewsOfLocationInPopup"){
+							//buildNewsOfLocation(jObj,myResults);
+							showContentResultList = myResults;
+							buildContentDetails();
+					   }
 					   
 					  
 							
@@ -935,8 +940,9 @@ function displayNewsByImportance(jObj,results){
 str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
 
 	for(var i=0;i<results.length;i++){
+	var description=results[i].description;
 
-		str+='<h6 style="margin:5px;"><img src="./images/icons/bullet.png" style="margin-bottom:2px;"/><a style="font-family:Georgia,Times New Roman,Times,serif;color:#3E78FD;" href="javaScript:{getVideoDetails('+results[i].contentId+');}">'+results[i].title+'</a></h6>';
+		str+='<div class="breadcrumb" title="'+description+'"><h5 style="margin:5px;"><img src="./images/icons/bullet.png" style="margin-bottom:2px;"/><a style="font-family:Georgia,Times New Roman,Times,serif;color:#3E78FD;" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a></h5><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Date:'+results[i].fileDate+'</span><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Source:'+results[i].source+'</span></div>';
 	}
 
 	if(results.length >=10)
@@ -1127,4 +1133,53 @@ function buildProblemDetailsByStatus(result,jObj)
 function initialCap(data) {
    data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
    return data;
+}
+/*sasi*/
+function getNewsOfLocation(cntntId,imprtanceId,ctgryId){
+	
+	var jObj=
+	{
+		locationValue:locationValue,
+		locationId:locationId,
+		imprtanceId:imprtanceId,
+		ctgryId:ctgryId,
+		contentid:cntntId,
+		requestFrom : 'Candidate Page',
+		requestPageId :'0',
+		isCustomer:'true',
+		task:"getNewsOfLocationInPopup"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getNewsByLocationAndCategoryInPopup.action?"+rparam;	
+
+	callAjaxToShowNewsDetails(jObj,url);
+
+}
+/*sasi end*/
+function buildNewsOfLocation(jObj,results){
+	alert('success');
+}
+
+function getNewsInPopup(cntntId,imprtanceId,ctgryId)
+{
+	
+	$.fx.speeds._default = 1000;
+	  $("#showContentDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								overlay: { opacity: 0.5, background: 'black'},
+								close: function(event, ui) {
+								document.getElementById("showContentDivInnerDiv").innerHTML ='';
+							 }
+		  
+								});
+		$("#showContentDiv").dialog();
+		getNewsOfLocation(cntntId,imprtanceId,ctgryId);
 }
