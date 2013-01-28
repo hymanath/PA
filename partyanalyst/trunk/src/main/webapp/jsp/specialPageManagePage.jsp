@@ -41,6 +41,12 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script type="text/javascript">
 
 function selectedSpecialPage(id){
@@ -216,6 +222,17 @@ $(document).ready(function() {
 					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
 				}
 			});
+	$(".dateField").live("click", function(){
+		$(this).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			maxDate: new Date()
+			
+		}).datepicker("show");
+});	
+
+		
   });
 
 </script>
