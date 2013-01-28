@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CommentVO;
+import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
@@ -140,10 +142,47 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<FileVO> categoryList ;
 	private PdfGenerationVO  pdfGenerationVO ;
 	private List<FileVO> allNewsList ;
+	private ContentDetailsVO allNewsListForPopup ;
 	private List<FileVO> newsCountByCategoryList;
 	private List<CommentVO> commentsList;
 	private Long savedCommentId;
+	private IContentManagementService contentManagementService;
+	private ContentDetailsVO contentDetailsVO;
 	
+	
+	
+	public IContentManagementService getContentManagementService() {
+		return contentManagementService;
+	}
+
+
+	public void setContentManagementService(
+			IContentManagementService contentManagementService) {
+		this.contentManagementService = contentManagementService;
+	}
+
+
+	public ContentDetailsVO getContentDetailsVO() {
+		return contentDetailsVO;
+	}
+
+
+	public void setContentDetailsVO(ContentDetailsVO contentDetailsVO) {
+		this.contentDetailsVO = contentDetailsVO;
+	}
+
+
+
+	public ContentDetailsVO getAllNewsListForPopup() {
+		return allNewsListForPopup;
+	}
+
+
+	public void setAllNewsListForPopup(ContentDetailsVO allNewsListForPopup) {
+		this.allNewsListForPopup = allNewsListForPopup;
+	}
+
+
 	public Long getSavedCommentId() {
 		return savedCommentId;
 	}
@@ -1898,6 +1937,62 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return Action.SUCCESS;
 		
 	}
+	
+	
+		public String getNewsByLocationAndCategoryInPopup(){
+		
+		try{	 
+			 jObj = new JSONObject(getTask());
+			 
+		   }catch(Exception e){
+				 e.printStackTrace(); 
+		   }
+		
+		 session = request.getSession();
+		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		 
+		 
+		 FileVO fileVO = new FileVO();
+		
+		
+		Long locationValue = jObj.getLong("locationValue");
+		Long locationId = jObj.getLong("locationId");
+		//Long publicationId = jObj.getLong("publicationId");
+		Long importanceId = jObj.getLong("imprtanceId");
+		Long categoryId = jObj.getLong("ctgryId");
+		Long contentId=jObj.getLong("contentid");
+		String requestFrom=jObj.getString("requestFrom");
+		Long requestPageId=jObj.getLong("requestPageId");
+		String isCustomer=jObj.getString("isCustomer");
+		
+		
+		boolean tmpvar=true;
+		
+		
+		fileVO.setUserId(regVO.getRegistrationID());
+		fileVO.setLocationVal(locationValue);
+		fileVO.setLocationId(locationId);
+		//fileVO.setPublicationId(publicationId);
+		fileVO.setImportanceId(importanceId);
+		fileVO.setCategoryId(categoryId);
+		fileVO.setTempvar(tmpvar);
+		fileVO.setContentId(contentId);
+		fileVO.setRequestFrom(requestFrom);
+		fileVO.setRequestPageId(requestPageId);
+		fileVO.setIsCustomer(isCustomer);
+		
+		
+		
+		allNewsListForPopup = newsMonitoringService.getNewsByLocationAndCategoryInPopup(fileVO);
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	
+	
+	
 	
 	public String saveContentNotesByContentId(){
 		
