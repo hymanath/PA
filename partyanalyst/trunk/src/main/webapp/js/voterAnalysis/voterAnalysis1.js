@@ -14,7 +14,6 @@ var mainreqid;
 var mainpublicationId;
 var maintype;
 var mainname;
-
 function populate(id,boothId,publicationId,houseNo){
      if($('#'+id).is(':checked')){
 	   var obj={
@@ -520,15 +519,6 @@ oDT: votersByLocBoothDataTable
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
 	   $("#votersDiv4").show();
-	  
-	   if(type == "mandal"){
-	     getElectionYearsAjaxAction();
-		  $("#revenueVillageWiseElecResults").show();
-		  $("#revenueVillageWiseElecIdTitle").html("Panchayat Wise Results In "+mainname);
-		 }
-	    else{
-           $("#revenueVillageWiseElecResults").hide();
-	    }
 	   if(type == "panchayat" || type == "booth"){
 	      $("#votersInfoMoreShowHide").show();
 		 }else{
@@ -539,6 +529,7 @@ oDT: votersByLocBoothDataTable
 		getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
+		 //getProblemsByLocation(id,publicationId,type);
 		  getCounts(id,publicationId,type);
 		  getVotersCastInfo(id,publicationId,type);
          getCastInfoForsubLevel(id,publicationId,type);
@@ -772,10 +763,6 @@ oDT: votersByLocBoothDataTable
                                 else if(jsObj.task == "getVotersInAFamilySearch")
 								{
 								    buildVotersInFamilySearch(myResults,jsObj.hno);
-								}
-                                else if(jsObj.task == "getElectionYearsForPanchayat")
-								{
-								    buildElectionYears(myResults);
 								}								
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -791,16 +778,7 @@ oDT: votersByLocBoothDataTable
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
 
-	function buildElectionYears(results){
-        if(results != null && results.length > 0){
-		    $("#revenueVillageWiseElecId option").remove();
-			for(var i in results)
-			  if(results[i].id != 0)
-		        $("#revenueVillageWiseElecId").append('<option value='+results[i].id+'>'+results[i].name+'</option>');
-		}else{
-		    $("#revenueVillageWiseElecResults").hide();
-		}
-	}	
+	
 	function buildMandalList(results,jsObj)
 	{
 		//var selectedElmt=document.getElementById("mandalField");
@@ -1480,31 +1458,49 @@ function getvotersFamileyInfo(buttonType,voterBasicInfoFor)
  { 
   $('#imgDiv').show();
   $('#impfamilydatatable_wrapper').hide();
- 
- 
-
-	if(impFamltype == 'panchayat' || impFamltype == 'booth' ){
-	   
-	 var reqtype = impFamltype;
-	 if(impFamltype == 'booth'){
+  var level = $("#reportLevel").val();
+  var publicationDateId = $("#publicationDateList").val();
+  var type = '';
+  var id = '';
+  var typename = '';
+  if(level == 3)
+  {
+	type='panchayat';
+	id = $('#panchayatField').val();
+	typename =$("#panchayatField :selected").text()+' Panchayat';
+  }
+  if(level == 4)
+  {
+	
+	type = 'booth';
+    id = $("#pollingStationField").val();
+	typename =$("#pollingStationField :selected").text();
+  }
+	if(buttonType == "impFamilies"){
+	if(type == 'panchayat' || type == 'booth' ){
+	 var reqtype = type;
+	 if(type == 'booth'){
 	    reqtype = 'pollingstation';
 	 }
+	 
+	 
 	 showAjaxImgDiv('ajaxImageDiv');
 	    var jsObj2=
 			{
 					
 				type:reqtype,
-				id:impFamlId,
-				publicationDateId:impFamlpublicationDateId,
-				typename:impFamltypename,
+				id:id,
+				publicationDateId:publicationDateId,
+				typename:typename,
 				task:"gettotalimpfamlies"
 	
 			}
 	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2);
-	}
 	
+   }
+	}
 }
 
 function getVotersInAFamily(id,publicationDateId,hNo){
@@ -2541,7 +2537,6 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	$('#voterDetailsNote1').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
 
 
-
 	var str='';
 	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
 	str+='<tr>'
@@ -3098,8 +3093,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
     
-		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
-		
+		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		$("#votersTitle").html(jsObj.typename);
 		str += '<div>';
 		str += '<b><span>Total Voters : '+votersbasicinfo.totVoters+'</span>';
 		str += '<span style="margin-left:25px;">Male Voters : '+votersbasicinfo.totalMaleVoters+'</span>';
@@ -3226,8 +3221,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	
 	else
 	{
-		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
-		
+		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		$("#votersTitle").html(jsObj.typename);
 
 			$("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
 		
@@ -3475,7 +3470,7 @@ var divEle = document.getElementById('reportLevelCountDiv');
 if(jsObj.type == "constituency")
 {
 $("#reportLevelheading").html(" "+jsObj.typeName+" Information");
-document.getElementById('reportLevelCountDiv').style.display = 'block';
+document.getElementById('reportLevelCountDiv').style.display = 'inline-block';
 //$("#reportLevelCountDiv").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
 	str+='<div style="margin:10px;">';
 	if(results[0].totalmandals == null)
@@ -3549,9 +3544,9 @@ var jsObj=
 	//var value = $('#mandalField').val();
 	var str = '';
 	var divEle1 = document.getElementById('reportLevelCountDiv1');
-	$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
-	document.getElementById('reportLevelCountDiv1').style.display = 'block';
-	$("#reportLevelCountDiv1").css({'border':'1px solid #d3d3d3','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+	//$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
+	//document.getElementById('reportLevelCountDiv1').style.display = 'block';
+	$("#reportLevelCountDiv1").css({'display':'block','padding':'10px 0'});
 	  if(jsObj.type == "mandal"){
 		if(mainreqid.charAt(0) =="1"){
 		type = "muncipality";
@@ -3562,18 +3557,18 @@ var jsObj=
 	if(jsObj.type == "mandal" && type != "muncipality")
 
 	{
-	str +='<span class="badge badge-info badge-add">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>&nbsp;&nbsp;';
-	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	str +='<span class="btn btn-info">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if( jsObj.type == "mandal" && type == "muncipality")
 
 	{
-	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "panchayat")
 
 	{
-	str +='<span class="badge badge-info badge-add">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>&nbsp;&nbsp;';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	str+='</div>';
 
@@ -3754,7 +3749,6 @@ $(this).find("input").attr("checked",true);
 var mandalid=$(this).closest("a").attr("data-mandalid");
 var panchayatid=$(this).closest("a").attr("data-panchayatid");
 var levelId =3;
-
 mainreqid = panchayatid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'panchayat';
