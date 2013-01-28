@@ -514,6 +514,11 @@ oDT: votersByLocBoothDataTable
 			//$("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
 			//$("#votersBasicInfoSubDivForAgeWiseDetls").html("");
 			//$("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
+			$("#partyWiselocalcastDiv").html("");
+			$("#partyWiseLocalCastStatsTab").removeAttr('style');
+			  $("#localCastStatsTabContent_body").removeAttr('style');
+			  $("#LocalCastDiv").css('padding-bottom','0px');
+			$("#castPartyPopupShowBtn").hide();
 			$("#reportLevelheading1").html("");
 			$("#reportLevelCountDiv1").html("");
 			$("#reportLevelCountDiv1").removeAttr('style');
@@ -532,15 +537,15 @@ oDT: votersByLocBoothDataTable
 		 }else{
 		  $("#votersInfoMoreShowHide").hide();
 		 }
-		  $("#votersHeaderDiv3").show();
+		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
 		 getProblemsByLocation(id,publicationId,type);
-		  getCounts(id,publicationId,type);
-		  getVotersCastInfo(id,publicationId,type);
+		 getCounts(id,publicationId,type);
+		 getVotersCastInfo(id,publicationId,type);
          getCastInfoForsubLevel(id,publicationId,type);
          getvotersBasicInfo("impFamilies",id,publicationId,type);
 		
@@ -720,7 +725,7 @@ oDT: votersByLocBoothDataTable
 								   }
 								}
 								else if(jsObj.task == "gettotalimpfamlies")
-								{
+								{   $("#impFamPancBothDtlsAgxImg").hide();
 								    buildFamilyMembers(myResults,jsObj.publicationDateId,jsObj.type);
 								}
                                 else if(jsObj.task == "getVotersInAFamily")
@@ -1149,6 +1154,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		   }
 		 }
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
+		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0)
+		  return;
 		if(type != 'booth')
 		{
 		str +='<table id="subLevelTable">';
@@ -1462,6 +1469,7 @@ function getImpFamiliesVotersToShow(){
 	    reqtype = 'pollingstation';
 	 }
 	 showAjaxImgDiv('ajaxImageDiv');
+	 $("#impFamPancBothDtlsAgxImg").show();
 	    var jsObj2=
 			{
 					
@@ -1651,16 +1659,25 @@ function buildCastInfoData(myresults,jsObj)
 	var totalMale = result.maleVoters;
 	var totalFemale = result.femaleVoters;
 	var voters = '';
-	
+	if(result.maleVoters > 0){
+	    $("#castPartyPopupShowBtn").show();
+		$("#partyBasicInfoStatsTabNewTitle").html("Party Wise Voters Details").css("background","#06ABEA");
+	    $("#LocalCastDiv").css('padding-bottom','40px');
+	}
+	else{
+	   		$("#partyBasicInfoStatsTabNewTitle").html("").css("background","#ffffff");
+	}
 	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"> Total Voters : '+totalVoters+'&nbsp;&nbsp;&nbsp;';
 	localCastStatsTabContent += '&nbsp;&nbsp;&nbsp;Total Casts : '+totalCasts+'&nbsp;&nbsp;&nbsp;<br><br>';
 	//localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
 	//localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
 	localCastStatsTabContent += '<span>Caste Assigned Voters : '+result.maleVoters+'</span>';
 	localCastStatsTabContent += '<span style="padding-left:40px;">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
-	localCastStatsTabContent += '<br><br>';
-	
-	$('#localCastDetailsHeadingDiv').html('Cast category wise voters details').css("background","#06ABEA");
+
+	if(result.voterCastInfoVOList != null && result.voterCastInfoVOList.length > 0)
+	  $('#localCastDetailsHeadingDiv').html('Cast category wise voters details').css("background","#06ABEA");
+	else
+     	$('#localCastDetailsHeadingDiv').html('').css("background","#ffffff");
 	 voters +='<table><tr>';
 	  var reqx = 0;
 	  for(var i=0;i<result.castCategoryWiseVotersList.length;i++){
@@ -1710,7 +1727,7 @@ function buildCastInfoData(myresults,jsObj)
 		
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
-		$("#localCastStatsTabContent_body").html("No Data Found");
+		//$("#localCastStatsTabContent_body").html("Caste Is Not Assigned To Any Voter");
 		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
 		}
 
@@ -1756,7 +1773,7 @@ function buildCastInfoData(myresults,jsObj)
 			  str+=' </table>';
 			  str+='</div>';
 			  $("#partyWiseLocalCastStatsTab").html(str);
-	  
+	   $("#partyWiseLocalCastStatsTab").css("margin-top","25px;");
 				$('#partyWiseCastJqTable').dataTable({
 				"aaSorting": [[ 1, "asc" ]],
 				"iDisplayLength": 15,
@@ -1769,6 +1786,8 @@ function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
 	
 		  var result = results.voterCastInfodetails;
 		  var Data = result.partyWisevoterCastInfoVOList;
+		  if(Data == null || Data.length == 0)
+		    return;
 		  var str =' <table id="partyWiseJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
           str+='   <tr>';
@@ -1842,6 +1861,10 @@ function buildPartyWisePiechart(myResults,jsObj)
 	
 	var partyWise_header=document.getElementById('partyWise_header');
 	var results = myResults.voterCastInfodetails;
+	if(results.partyWiseAssignedVoters > 0){
+	  $("#castPartyPopupShowBtn").show();
+	   $("#LocalCastDiv").css('padding-bottom','40px');
+	}
 	var voters= '';
 	var str = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
 	
@@ -1853,9 +1876,16 @@ function buildPartyWisePiechart(myResults,jsObj)
 		voters +='</div>';
 	$('#partyWiseDetailsDiv').html(voters);
 	partyWise_header.innerHTML = str;
-
-	
-	
+    $('#partyBasicInfoStatsTab').html(str);
+	if(results == null || results.partyWisevoterCastInfoVOList == null || results.partyWisevoterCastInfoVOList.length == 0 )
+	 {
+	    $('.partyWiseDetailsMainDiv').removeAttr('style');
+	   $('.partyWiseDetailsMainDiv').css('border','1px solid #ffffff').css('clear','both').css('border', '1px solid #ffffff;').css('display','table').css('margin-left','10px').css('width','926px');
+        return;
+      }
+	  
+       $('.partyWiseDetailsMainDiv').removeAttr('style');
+	   $('.partyWiseDetailsMainDiv').css('border','1px solid #CCCCCC').css('clear','both').css('border', '1px solid #ffffff;').css('display','table').css('margin-left','10px').css('width','926px');
 	var data = new google.visualization.DataTable();
 	data.addColumn('string','party');
 	data.addColumn('number','percentage');
@@ -1873,7 +1903,8 @@ function buildPartyWisePiechart(myResults,jsObj)
 }
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type)
 	{
-	
+	 if(constMgmtMainObj.castStatsArray == null || constMgmtMainObj.castStatsArray.length == 0)
+	    return;
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 	 var castArray = constMgmtMainObj.castStatsArray;
 	$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
@@ -1913,7 +1944,7 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+=' </table>';
 	  
 	  $("#localCastStatsTabContent_body").html(str);
-	  
+	  $("#localCastStatsTabContent_body").css("margin-bottom","35px").css("margin-top","10px");
 	  	$('#localCastStatsJqTable').dataTable({
 		"aaSorting": [[ 1, "asc" ]],
 		"iDisplayLength": 15,
@@ -2539,7 +2570,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 		noteString = $('#pollingStationField :selected').text();
 
 	$('#voterDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
-	$('#voterDetailsNote1').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
+	//$('#voterDetailsNote1').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
 
 
 	var str='';
