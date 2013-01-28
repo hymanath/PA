@@ -145,7 +145,7 @@ public class ContentManagementService implements IContentManagementService{
 				for(FileGallary fileGallary : files)
 				{
 					fileVO = new FileVO();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 					
 					if(fileGallary.getFile() == null)
 						continue;
