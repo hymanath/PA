@@ -998,7 +998,7 @@ function buildProblemsCountByLocation(results,jsObj)
 	if(results[0].progressProblems != 0)
 	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PROGRESS\',0,\'Progress\');">'+results[0].progressProblems+'</a></span><span class="help-inline f2">Progress</span>';
 	else
-	str +='<span class="btn">'+results[0].progressProblems+'</span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<span class="btn">'+results[0].progressProblems+'</span><span class="help-inline f2">Progress</span>';
 	if(results[0].pendingProblems != 0)
 	str +='<span class="btn btn-info"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PENDING\',0,\'Pending\');">'+results[0].pendingProblems+'</a></span><span class="help-inline f2">Pending</span>';
 	else
