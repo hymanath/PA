@@ -906,7 +906,7 @@ function displayNewsByImportance(jObj,results){
   var str='';
 
  // str+='<div style="margin:13px;"><b>'++'</b></div>';
-str+='<div style="margin:13px;"><b>'+titleString+"  "+categoryStr+" "+displayStr+'</b></div>';
+str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
 
 	for(var i=0;i<results.length;i++){
 
