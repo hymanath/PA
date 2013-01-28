@@ -329,13 +329,19 @@ $(document).ready(function() {
 									alert("Important Event created successfully");
 								}
 								else if(jsObj.task=="createImpDateEvent")
-								{
-									/*if(myResults.importantDateId == null)
-									{
-										alert("Important date cannot be created due to some exception");
-									}*/
-									addCreatedEvent(myResults,jsObj);			
+								{			
 									alert("Important Date created successfully");
+									
+									var date = new Date();
+									
+									var jsObj1={
+									monthVal:date.getMonth(),
+									yearval:date.getFullYear(),
+									task:'nextMonthEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+									var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
+									callAjax(jsObj1,url);
 								}
 								else if(jsObj.task=="subscribe")
 								{									
@@ -355,8 +361,7 @@ $(document).ready(function() {
 									buildSelectedDateEventPopup(myResults,jsObj);
 								}
 								else if(jsObj.task=="showSelectedDateEvent_nonEditable")
-								{									
-									buildUnEditableSelectedDateEventPopup(myResults,jsObj);
+								{						      	buildUnEditableSelectedDateEventPopup(myResults,jsObj);
 								}								
 								else if(jsObj.task=="nextMonthEvents")
 								{
@@ -416,7 +421,7 @@ $(document).ready(function() {
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
-		//timedRefresh();		
+		timedRefresh();		
 	}
 	
 	function timedRefresh()
@@ -1573,7 +1578,7 @@ function fillDataForCadreLevel(results,jsObj)
 			eventStr+='<tr>';
 
 			eventStr+='<th>Imp date</th>';
-			eventStr+='<td><span class="fieldSpan">'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'</span></td>';
+			eventStr+='<td><span class="fieldSpan">'+jsObj.newdate+'</span></td>';
 			eventStr+='</tr>';
 		}
 
@@ -2235,7 +2240,7 @@ function fillDataForCadreLevel(results,jsObj)
 		callAjax(jsObj,url);
 	}
 
-	function showUnEditableSelectedDateEvent(elmtId,eType,taskType)
+	function showUnEditableSelectedDateEvent(elmtId,eType,taskType,newdate)
 	{
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
 
@@ -2245,7 +2250,8 @@ function fillDataForCadreLevel(results,jsObj)
 					currentMonth:dateObj.monthVal,
 					currentYear:dateObj.yearVal,
 					eventType:eType,	
-					taskType:taskType,					
+					taskType:taskType,
+					newdate:newdate,
 					task:"showSelectedDateEvent_nonEditable"
 				  };
 		
@@ -2311,9 +2317,15 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
-		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
+		{
+		var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
+		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\',\''+newdate+'\')">';
+		}
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
+		{
+		var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
+		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\',\''+newdate+'\')">';	
+        }		
 		str+='<tr>';
 		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
@@ -3753,6 +3765,7 @@ function fillDataForCadreLevel(results,jsObj)
 				var startYearStr = sDayobj.year;
 				var startTimeHrs = sDayobj.hours;
 				var startTimeMin = sDayobj.minutes;
+				
 			}
 			else if(type == "impDates" && eventsarr[i].impDate)
 			{	
@@ -3800,9 +3813,15 @@ function fillDataForCadreLevel(results,jsObj)
 			}
 
 			if(type == "impEvents")
-			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
+			{
+			var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
+			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\',\''+newdate+'\')">';
+			}
 			else if(type == "impDates")
-			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
+			{
+			var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
+			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\',\''+newdate+'\')">';
+			}
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 			str+='<td>'+eventsarr[i].title+'</td>';	
