@@ -620,7 +620,7 @@ h5{font-family : Arial;}
 
 #problemsShowDIV h6{margin:0px;padding:0px;font-size:15px; text-decoration:none; font-weight:bold;text-transform:capitalize;}
 #problemsShowDIV a,#problemsShowDIV span{text-decoration:none;font-size:12px;}
-.widget-block:nth-child(2n+1){background:#fff;}
+#problemsShowDIV .widget-block:nth-child(2n+1){background:#fff;}
 .leftmargin{margin-left:10px;padding:4px;}
 </style>
 <script type="text/javascript">
@@ -766,10 +766,10 @@ for  body3 start    result  -->
 	<div id="newsCountDiv" class="widget-block whitegloss"></div>
 	
 	   <div id="newsDisplayOuterDiv">
-		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
+		<div id="newsDisplayDiv" style=""></div>
 	   </div>
 	   
-	<div id="problemsCountDiv" style="clear:both;"></div>
+	<div id="problemsCountDiv" class="widget-block whitegloss"></div>
 	<div id="problemPopUp" style="background:#EEEEEE;">
 	<div id="problemsShowDIV"></div>
 	</div>
