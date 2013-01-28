@@ -105,10 +105,47 @@ public class FileVO extends ResultStatus implements Serializable {
 	
 	public int totalFlaggedNews;
 	private int totalNotesNews;
+	private boolean tempvar = false;
+	private String requestFrom;
+	private Long requestPageId;
+	private String isCustomer;
+	
+	
+	
+	
 	
 
-	
+	public String getRequestFrom() {
+		return requestFrom;
+	}
 
+	public void setRequestFrom(String requestFrom) {
+		this.requestFrom = requestFrom;
+	}
+
+	public Long getRequestPageId() {
+		return requestPageId;
+	}
+
+	public void setRequestPageId(Long requestPageId) {
+		this.requestPageId = requestPageId;
+	}
+
+	public String getIsCustomer() {
+		return isCustomer;
+	}
+
+	public void setIsCustomer(String isCustomer) {
+		this.isCustomer = isCustomer;
+	}
+
+	public boolean isTempvar() {
+		return tempvar;
+	}
+
+	public void setTempvar(boolean tempvar) {
+		this.tempvar = tempvar;
+	}
 
 	public int getTotalFlaggedNews() {
 		return totalFlaggedNews;
