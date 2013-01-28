@@ -42,7 +42,7 @@ function getContentDetails(contentId)
 	callAjaxForSpecialPage(jsObj,url); 
 }
 
-/*function callAjaxToShowProblemDetails(jObj,url){
+function callAjaxToShowProblemDetails(jObj,url){
 		
 			 var myResults;
 
@@ -70,7 +70,7 @@ function getContentDetails(contentId)
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
 
-	}*/
+	}
 var showContentResultList;
 function callAjaxForSpecialPage(jsObj,url)
 {
@@ -970,7 +970,7 @@ function incrementStartEndIndexes(importanceId,categoryId){
 }
 
 
-/*function buildProblemsCountByLocation(results,jsObj)
+function buildProblemsCountByLocation(results,jsObj)
 {
 	
 	document.getElementById('problemsCountDiv').style.display = 'block';
@@ -984,16 +984,32 @@ function incrementStartEndIndexes(importanceId,categoryId){
 	str+='<div class="span11 breadcrumb"><h5>Problems</h5></div>';
 	str+='<div class="span5"> ';
 	str+='<div class="row-fluid"> ';
-	str +='<div class="span4 center"><span class="badge badge-info badge-add" style="background:#55FE56;"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'FIXED\',0);">'+results[0].fixedProblems+'</a></span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
-	str +='<div class="span4 center"><span class="badge badge-info badge-add"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PROGRESS\',0);">'+results[0].progressProblems+'</a></span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
-	str +='<div class="span4 center" style="margin-top:-15px;"><span class="badge badge-info badge-add"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PENDING\',0);">'+results[0].pendingProblems+'</a></span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	if(results[0].fixedProblems != 0)
+	str +='<div class="span4 center"><span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'FIXED\',0,\'Resolved\');">'+results[0].fixedProblems+'</a></span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	else
+	str +='<div class="span4 center"><span class="btn">'+results[0].fixedProblems+'</span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	if(results[0].progressProblems != 0)
+	str +='<div class="span4 center"><span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PROGRESS\',0,\'Progress\');">'+results[0].progressProblems+'</a></span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	else
+	str +='<div class="span4 center"><span class="btn">'+results[0].progressProblems+'</span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	if(results[0].pendingProblems != 0)
+	str +='<div class="span4 center" style="margin-top:-15px;"><span class="btn btn-info"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PENDING\',0,\'Pending\');">'+results[0].pendingProblems+'</a></span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	else
+	str +='<div class="span4 center" style="margin-top:-15px;"><span class="btn btn-info">'+results[0].pendingProblems+'</span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	
 	str+='</div>';
 	str+='</div>';
 	str+='<div class="span5" style="padding:5px 0px 5px 0px;border:1px solid #d3d3d3;"> ';
 	str+='<div class="row-fluid"> ';
 	str +='<div class="span2"><h5 style="margin-left:10px;">NEW</h5></div>';
-	str +='<div class="span4"><span class="badge badge-info badge-add" style="background:red;"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',4);">'+results[0].cadreProblems+'</a></span><div>Cadre</div></div>';
-	str +='<div class="span4"><span class="badge badge-info badge-add" style="background:red;"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',1);">'+results[0].userProblems+'</a></span><div>PAUser</div></div>';
+	if(results[0].cadreProblems != 0)
+	str +='<div class="span4"><span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',4,\'Cadre\');">'+results[0].cadreProblems+'</a></span><div>Cadre</div></div>';
+	else
+	str +='<div class="span4"><span class="btn">'+results[0].cadreProblems+'</span><div>Cadre</div></div>';
+	if(results[0].userProblems != 0)
+	str +='<div class="span4"><span class="btn "><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',1,\'User\');">'+results[0].userProblems+'</a></span><div>User</div></div>';
+	else
+	str +='<div class="span4"><span class="btn ">'+results[0].userProblems+'</span><div>PAUser</div></div>';
 	str+='</div> ';
 	str+='</div> ';
 
@@ -1045,14 +1061,17 @@ function getProblemsByLocation(id,publicationId,type)
 }
 
 
-function getProblemDtailsByStatus(locationId,locationValue,status,srcId)
+function getProblemDtailsByStatus(locationId,locationValue,status,srcId,title)
 {
 
 var jObj=
 	{
 		locationValue:locationValue,
 		locationId:locationId,
+		
 		status : status,
+		title : title,
+		srcId:srcId,
 		
 		task:"getProblemDetailsByLocation"
 	};
@@ -1062,48 +1081,43 @@ var jObj=
 	callAjaxToShowProblemDetails(jObj,url);
 }
 
-function buildProblemDetailsByStatus(result)
+function buildProblemDetailsByStatus(result,jObj)
 {
 
 	var str='';
-	
+	var title = jObj.title;
 	$("#problemPopUp").dialog({ 
-	                            title:'Problem Details',
+	                            title:''+title+'  Problems<span style="margin-left:50px;"> Total : '+result[0].userProblems +'</span>',
 	                            height: 'auto',
-								width: 950,
+								width: 750,
 								closeOnEscape: false,
 								position:[30,30],
 								show: "blind",
 								hide: "explode",
 								modal: true,
-								maxWidth : 950,
+								maxWidth : 850,
 								overlay: { opacity: 0.5, background: 'black'},
 	                             buttons: {
 							   "Close":function() {$(this).dialog("close")}
 								   }	
 
      });
-	var divEle = document.getElementById("ProblempopupInnerDiv");
+	var divEle = document.getElementById("problemsShowDIV");
 	if(result != null)
 	{
 	for(var i in result)
 	{
 		str += '<div class ="widget-block">';
 				
-		str+='<div><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemId+'" ><h6>'+(result[i].problem)+'</h6></a></div>';
-		str+='<div><span class="pull-left" style="color:#51A451;margin-right: 4px;">Existing From:</span><span>'+result[i].existingFrom+'</span><span style="margin-left:10px;color:#51A451;margin-right: 4px;">Identified On:</span><span>'+result[i].identifiedOn+'</span><div class="star pull-right"></div><input type="hidden" style="display:none;" value='+result[i].averageRating.avgRating +'" >';
+		str+='<div class="leftmargin"><a target="_blank" title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemId+'" ><h6>'+(result[i].problem)+'</h6></a></div>';
+		str+='<div class="leftmargin"><span class="pull-left" style="color:#51A451;margin-right: 4px;">Existing From:</span><span>'+result[i].existingFrom+'</span><span style="margin-left:10px;color:#51A451;margin-right: 4px;">Identified On:</span><span>'+result[i].identifiedOn+'</span><div class="star pull-right"></div><input type="hidden" style="display:none;" value='+result[i].averageRating.avgRating +'" >';
 		str+='</div>';
-		str += '<p style="padding-top:5px;margin-bottom:10px;font-family:arial;">'+result[i].description+' </p>';
 		
-		if(result[i].url != null){
-		
-	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;margin-right: 4px;">Posted by:  </span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'" class="label pull-right"> '+initialCap(result[i].problemLocation)+'</a>';
-	   }else{
-	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;margin-right: 4px;">Posted by:  </span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<span class="label pull-right">'+initialCap(result[i].problemLocation)+'</span>';
-	   }
+		str += '<div class="leftmargin"><font style="color:#51A451;font-size: 12px;">Description: </font><span style="font-family:arial;">'+result[i].description+' </span></div>';
 		
 		
-		str += '</div>';
+	    str += '<div class="leftmargin"><font style="color:#51A451;font-size: 12px;">Posted by: '+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</font> <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Location: </font>'+initialCap(result[i].problemLocation)+'</div>';
+	 str += '</div>';
 	}
 	 divEle.innerHTML = str;
 	}
@@ -1113,4 +1127,4 @@ function buildProblemDetailsByStatus(result)
 function initialCap(data) {
    data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
    return data;
-}*/
+}
