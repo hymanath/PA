@@ -171,32 +171,31 @@ table.gridtable td {
  #votersouterDiv{
 	 margin-left: auto;
 	margin-right: auto;
-    width: 980px;
+  
  }
  .selectDiv{
 	 width:80%;
 	 padding-top:10px;
 	 padding-bottom:10px;
-	 font-family: verdana;
 	 font-size: 12px;
 	 font-weight:bold;
 	 color:#333333;
 
  }
-
+   /*
  fieldset,#votersMainOuterDiv1,#votersMainOuterDiv2,
 	 #votersMainOuterDiv3,#votersMainOuterDiv4{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    border: 3px solid #CFD6DF;
+ border: 3px solid #CFD6DF;
    
     margin-bottom: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 10px;
+    padding-top: 10px; 
 }
 #votersMainOutertopDiv3{
 -moz-border-bottom-colors: none;
@@ -206,7 +205,7 @@ table.gridtable td {
     border: 3px solid #CFD6DF;
 	margin-bottom: 10px;
 	height:100px;
-}
+}*/
 p {
     color: #333333;
     font-size: 11px;
@@ -556,8 +555,8 @@ body {
     background: none repeat scroll 0 0 #EDF5FF;
 }
 h5{font-family : Arial;}
-.customMenu {display:none;width:100%;clear:both; margin: 5px -15px;
-    padding: 5px 15px;background:#3198B6;}
+.customMenu {display:none;width:102%;clear:both; margin: 5px -20px;
+    padding: 5px 11px;background:#3198B6;}
 .customMenu .leftNav, .customMenu .middleNav,.customMenu .rightNav{background:#fff;border-radius:2px;box-shadow:0px 1px 2px #aaa;}
 .customMenu .rightNav{width:490px;margin-left:10px;}
 .customMenu .leftNav{margin-left:0px;}
@@ -568,6 +567,7 @@ h5{font-family : Arial;}
 .customMenu .rightNav li{margin:10px;display:inline-block;float:left;}
 .nav-stacked a.hoverclass{background:#5e5e5e;}
 .leftNav-Municipalities{margin-top:25px;}
+
 /*
 .customMenu .leftNav ul li{display:inline-block;clear:both;width:100%;}
 .customMenu .leftNav ul li a{display:inline-block;clear:both;width:100%;padding:5px;border:1px solid #ccc;}*/
@@ -631,20 +631,21 @@ locationDetails.constituencyArr.push(ob);
 <!--DISPLAY NEWS GALLARIES END-->
 <br><br>
 <div id="MainDiv">
-<div id="votersouterDiv">
-<fieldset>
-<div style="color:#707070;font-weight:bold;font-size:13px; font-family: verdana;">Please select from the following list boxes to view detailed statistics by Assembly/mandal/Panchayat/Polling station level</div><br><div id="categoeryCreationDiv" style="float:right;">
+<div id="votersouterDiv" class="widget green">
+<!--<fieldset>-->
+<blockquote style="margin-top:10px;">Get your Constituency's Complete Information up to Booth Level. Please select your Constituency.</blockquote>
+
+<div id="categoeryCreationDiv" style="float:right;">
 	
 	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create Custom Groups</a>
 </div>
 
-<div id="AlertMsg" style="font-family: verdana;
-    font-size: 13px;"></div>
+<div id="AlertMsg"></div>
 <div id="ConstituencyDiv" class="selectDiv">
-	Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();"/> &nbsp;&nbsp;
+	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();"/> &nbsp;&nbsp;
 
 		
-	Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+	 Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
 		
 	</div>
@@ -652,7 +653,7 @@ locationDetails.constituencyArr.push(ob);
 	
 	
 	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
-	</fieldset>
+	<!--</fieldset>-->
 
 </div>
 <!-- <div id="defaultWidth" style="min-height:300px;"></div>
@@ -664,7 +665,7 @@ for  body3 start    result  -->
 
 
 <div id='votersHeaderTopDiv3' style="clear:both;position:relative;">
-		<div class="breadcrumb">
+		<div class="widget blue">
 		
 		<h4 id="reportLevelheading" class=""> </h4>
 		
@@ -720,26 +721,26 @@ for  body3 start    result  -->
 	
  
  <!--<h5 id="reportTopLevelheading" style="margin-left:15px;"></h5>-->
-<div id='votersHeaderDiv3' style="clear:both;display:none;">
-		<table width="100%" cellpadding="0" cellspacing="0">
-					<tr>
-					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="votersTitle" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
-					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
-					</tr>					
-				</table>
+<div id='votersHeaderDiv3' class="widget green" style="display:none;">
+	<div class="votersWidgetMainHeader"><span id="votersTitle-unused" class="votersWidgetHeader_span"> </span></div>
 	</div>
     
-<div id='votersMainOuterDiv3' style="display:none;">
- <h5 id="reportLevelheading1" style="margin-left:15px;"></h5>
-<div id="reportLevelCountDiv1" style="clear:both;"></div><br>
-	<div id="newsCountDiv"></div>
+<div id='votersMainOuterDiv3' class="widget green" style="display:none;">
+<h2 id="votersTitle"> </h2>
+<div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
+<!-- Not in USe -->
+<h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
+
+	<div id="newsCountDiv" class="widget-block whitegloss"></div>
+	
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
 	   </div>
 	   
-	  <!-- <div id="problemsCountDiv" style="clear:both;">
-	   </div>-->
+	<!--<div id="problemsCountDiv" style="clear:both;"></div>
+	<div id="problemPopUp">
+	<div id="ProblempopupInnerDiv"></div>
+	</div>-->
 	   <div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
