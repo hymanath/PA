@@ -1055,102 +1055,9 @@ function getVotersCastInfo(id,publicationId,type)
   $("#localCastStatsTabContentTitle").html("");
   $("#localCastStatsTabContent_body").html("");
   var typename=mainname;
-  /*var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
-  var errorDivEle = document.getElementById('AlertMsg');
-  var publicationDateId = $("#publicationDateList").val();
-	var level = $("#reportLevel").val();
-	var type = '';
-	var id='';
-	var typename='';
-	var mandalId='';
-	var flag =true;
-	var str= '<font color="red">';
-	if(level == 1){
-	type = 'constituency';
-	id = $("#constituencyList").val();
-	typename = $('#constituencyList :selected').text() + ' Constituency ';
-	if(id == 0 ||id == null)
-		{
-		str +='Please Select Constituency';
-		flag =false;
-		}
-	}
-	else if(level == 2){
-	type = 'mandal';
-	id = $("#mandalField").val();
-	typename = $('#mandalField :selected').text();
-	if(id == 0 || id == null)
-	{
-	str +='Please Select Mandal';
-	flag =false;
-	}
- }
-	else if(level == 3){
-	var constituencyValue =$("#constituencyList").val(); 
-	var mandalValue = $("#mandalField").val();
-	var mandalText = $('#mandalField :selected').text();
-	var validflag= mandalText.search("MUNCIPALITY");
-	  type = 'panchayat';
-	  id = $("#panchayatField").val();
-	  typename = $('#panchayatField :selected').text()+ ' Panchayat ';
-	if(constituencyValue == 0 || constituencyValue == null)
-			{
-				str +='Please Select Constituency';
-				flag =false;
-			}
-	else if(validflag != -1)
-			{
-				str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
-				flag =false;
-				
-			}
-	else if(mandalValue == 0 || mandalValue == null)
-			{
-				str +='Please Select Mandal';
-				flag =false;
-			}
-			
-	else if(id == 0 || id == null)
-			{
-				str +='Please Select Panchayat';
-				flag =false;
-			}
-	}
-	else if(level == 4){
-		var constituencyValue =$("#constituencyList").val(); 
-		var mandalValue = $("#mandalField").val();
-		var mandalText = $('#mandalField :selected').text();
-		 type = 'booth';
-		 id = $("#pollingStationField").val();
-		 typename = $('#pollingStationField :selected').text();
-		 if(constituencyValue == 0 || constituencyValue == null)
-			{
-				str +='Please Select Constituency';
-				flag =false;
-			}
-			else if(mandalValue == 0 || mandalValue == null)
-			{
-				str +='Please Select Mandal';
-				flag =false;
-			}
-			
-			else if(id == 0 || id == null)
-			{
-			str +='Please Select Booth';
-			flag =false;
-			}
-	}
+  var castewiseAjaxDiv =  document.getElementById('castewiseAjaxDiv');
 
-	 if(publicationDateId == 0 || publicationDateId == null )
-		{
-		str +='<br>Please Select Publication Date';
-		flag =false;
-		}
-		errorDivEle.innerHTML = str;
-		if(flag)
-		{
-		errorDivEle.innerHTML ='';
-		showAjaxImgDiv('ajaxImageDiv');*/
+		showAjaxImgDiv('castewiseAjaxDiv');
 		var jsObj=
 			{
 				type:type,	
@@ -1359,8 +1266,9 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
    $("#NoteDiv").css("display","none"); 
    $("#NoteDiv").html("");
    $("#descriptionDiv").html('');
+   
   }
-   var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+   var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
   
     var level = $("#reportLevel").val();
 	//var type = '';
@@ -1729,8 +1637,8 @@ function buildCastInfoData(myresults,jsObj)
 	$('.localCastStatsVotersTitle').html('');
 	
 	var result = myresults.voterCastInfodetails;
-	var ajaxImageDiv = document.getElementById('ajaxImageDiv');
-	hideAjaxImgDiv('ajaxImageDiv');
+	var castewiseAjaxDiv = document.getElementById('castewiseAjaxDiv');
+	hideAjaxImgDiv('castewiseAjaxDiv');
 	var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 	var totalVoters = result.totalVoters;
 	var totalCasts = result.totalCasts;
@@ -2310,8 +2218,8 @@ function impFamilesStaticTable(myresults,jsObj)
 function buildImpFamilesChart(chartInfo)
 {
 // Create the data table.
-	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
-	hideAjaxImgDiv('ajaxImageDiv');
+	var ImpFamwiseAjaxDiv =  document.getElementById('ImpFamwiseAjaxDiv');
+	hideAjaxImgDiv('ImpFamwiseAjaxDiv');
 	var data = google.visualization.arrayToDataTable([
 			  ['Task', 'Percentage'],
 			  ['Families Below 3 Voters',  chartInfo.below3perc],
