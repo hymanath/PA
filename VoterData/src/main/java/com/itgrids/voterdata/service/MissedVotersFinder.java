@@ -66,8 +66,11 @@ public class MissedVotersFinder {
                     String str2 = " \r\n\r\nPhoto Electoral Roll - 2013";
                     sb.delete(0,sb.indexOf(str1)+str1.length()+1);
                     sb.delete(sb.indexOf(str2), sb.length()-1);
-                    sb.delete(0,sb.indexOf("\r\n"));
-                                       
+                    sb.delete(0,sb.indexOf("\r\n")+2);
+                    
+                    if(sb.toString().contains("\r\n"))
+                    	sb.delete(0,sb.indexOf("\r\n"));
+                    
                     String [] fileName = input.getName().split("-");
                     
                     String str = sb.toString();
