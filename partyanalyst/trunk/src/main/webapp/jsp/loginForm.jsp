@@ -307,7 +307,7 @@ if(request.getParameter("showMessage")!=null){
 		line-height:20px;
 	}
 
-	#accessDiv 
+	<!--#accessDiv 
 	{
 		background: none repeat scroll 0 0 #FFF8E5;
 		border: 1px solid #06ABEA;
@@ -317,7 +317,7 @@ if(request.getParameter("showMessage")!=null){
 		text-align: center;
 		width: 450px;
 		border-bottom: 2px solid #06ABEA;
-	}
+	}-->
 
 	.newFontSize{
 		font-size:14px;
@@ -342,13 +342,13 @@ if(request.getParameter("showMessage")!=null){
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
 		<div><br>
-		<!-- <div style="display:none;" id="accessDiv">
-			<img style="display:inline;" alt="sorry" src="images/icons/smiley_sad.png">&nbsp;&nbsp;<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;font-weight:bold;">Only Registered users can view this content.<br>
-			Already a member, Please Login Here.<br>
-			(OR)<br>
+		 <div style="display:none;width: 615px;margin-left: 184px;" id="accessDiv">
+			<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;font-weight:bold;font-size:15px">Only Registered users can view this content.
+			Already a member, Please Login Here.
+			(OR)
 			Not a member, Click here for <a href="freeUserRegistration.action">FREE REGISTRATION</a>.</h3>
 
-		</div>-->
+		</div>
 		</div>
 		<!-- bootstap code(html 5)-->
 	<div class="container">
