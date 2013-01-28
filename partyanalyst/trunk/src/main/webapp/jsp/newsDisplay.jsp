@@ -893,11 +893,19 @@ if(result.length == 0)
 
    YAHOO.widget.DataTable.description = function(elLiner, oRecord, oColumn, oData) 
   {
+	var strshortened;
 	var user = oData;
 	var description= oRecord.getData("description");
-
-	
-	  elLiner.innerHTML ='<div style="width:70px;">'+description+'</div>';
+	var length = description.length;
+	if(length > 50)
+	{
+		strshortened = description.slice(0,50)+'......';
+	}
+	else
+	{
+		strshortened = description;
+	}
+	elLiner.innerHTML ='<div style="width:70px;">'+strshortened+'</div>';
 
 		
   };
@@ -2136,7 +2144,7 @@ try{
    </td>
  </tr> 
   
-  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;" ></div></td></tr>
+  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;overflow-x: scroll;" ></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
            <div id="showNewsDiv"></div>
@@ -2188,8 +2196,6 @@ getNews("importance","getAllNewsImportanceDetails","","","","","","","","","",""
 <script>
 function getVideoDetails(contentId)
 {
-
-
 	$.fx.speeds._default = 1000;
 	  $("#showContentDiv").dialog({ stack: false,
 								height: 'auto',
@@ -2201,6 +2207,7 @@ function getVideoDetails(contentId)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
+								title:'News Gallery',
 								overlay: { opacity: 0.5, background: 'black'},
 								close: function(event, ui) {
 								document.getElementById("showContentDivInnerDiv").innerHTML ='';
@@ -2284,7 +2291,7 @@ function buildContentDetails()
 	
 	//document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${specialPageVO.heading} - '+result.contentType;
 
-	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>'+result.contentType;
+	//document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>'+result.contentType;
 
 	str += '<Div><center>';
 	str += '<div class="main-title-sec" style="clear:both;">';
@@ -2608,7 +2615,7 @@ function buildContentDetails()
 
 		str += '<Div><center>';
 		str += '<div class="main-title-sec" style="clear:left;">';
-		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries</div><div class="main-bbg"/></div>';
+		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' galleries</div><div class="main-bbg"/></div>';
 		
 		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
