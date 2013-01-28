@@ -747,7 +747,7 @@ for  body3 start    result  -->
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
 
-<div id="votersInfoMoreShowHide" style="display:none;"><a href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</a></div>
+<div id="votersInfoMoreShowHide" style="display:none;"><a style="margin:6px 0px 0px 755px;" class="btn" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</a></div>
 <div id="votersOuterDiv1" style="display:none;">
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -791,7 +791,7 @@ for  body3 start    result  -->
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
-<span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></b></span>
+<span id="ageLink" style="display:none;float:right;"><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></span>
 
 
 <div id="ageWiseVotersDetailsOuterDiv">
