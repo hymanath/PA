@@ -730,6 +730,7 @@ function callAjaxToShowNewsDetails(jObj,url){
 					   else if(jObj.task == "newsForALocation")
 					      buildProblemsCount(myResults);
 					   else if(jObj.task="getNewsOfLocationInPopup"){
+					        $("#showAjaxImgForNews").hide();
 							//buildNewsOfLocation(jObj,myResults);
 							showContentResultList = myResults;
 							buildContentDetails();
@@ -1136,7 +1137,7 @@ function initialCap(data) {
 }
 /*sasi*/
 function getNewsOfLocation(cntntId,imprtanceId,ctgryId){
-	
+	 $("#showAjaxImgForNews").show();
 	var jObj=
 	{
 		locationValue:locationValue,
