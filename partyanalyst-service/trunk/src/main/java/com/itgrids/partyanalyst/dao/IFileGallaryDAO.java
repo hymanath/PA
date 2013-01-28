@@ -147,6 +147,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	 
 	 
 	 public List<String> checkForVisibilityStatus(Long contentId);
+	 
+	 public List<FileGallary> getNewsByLocationAndCategoryInPopup(List<Long> candidateIds,
+				FileVO fileVO, List<Long> locationValuesList);
 	
 	
 }
