@@ -716,8 +716,34 @@ function callAjaxToShowNewsDetails(jObj,url){
 
 	}
 
+function callAjaxToShowProblemDetails(jObj,url){
+		
+			 var myResults;
 
+			 var callback = {			
+ 		              success : function( o ) {
+					try {
+						
+				       myResults = YAHOO.lang.JSON.parse(o.responseText);
 
+					   if(jObj.task == "getProblemsByLocation")
+                          buildProblemsCountByLocation(myResults,jObj);					  
+					  
+					  
+							
+					}catch (e) {
+						//alert('error');
+					}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+						  // alert('error');
+ 		                }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
+
+	}
 
 /* function buildProblemsCount(results){
 
@@ -938,4 +964,99 @@ function incrementStartEndIndexes(importanceId,categoryId){
 
 	getNews(importanceId , categoryId);
 
+}
+
+function getProblemsByLocation()
+{
+	document.getElementById('problemsCountDiv').style.display = 'none';
+	var level = $("#reportLevel").val();
+	var locationId =0;
+	var type = '';
+	var locationValue =0;
+	if(level == 1){
+		locationValue = $("#constituencyList").val();
+		locationId = 4;
+	}
+	else if(level == 2)
+	{
+		locationValue = $("#mandalField").val();
+		locationId = 5;
+	}
+	else if(level == 3)
+	{
+		locationValue = $("#panchayatField").val();
+		locationId = 3;
+		return;
+	}
+	else if(level == 4)
+	{
+		locationValue = $("#pollingStationField").val();
+		locationId = 9;
+		return;
+	}
+	var jObj=
+	{
+		locationValue:locationValue,
+		locationId:locationId,
+		//publicationId:0,
+		
+		task:"getProblemsByLocation"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getProblemsByLocation.action?"+rparam;	
+
+	callAjaxToShowProblemDetails(jObj,url);
+}
+
+/*function buildProblemsCountByLocation(results,jsObj)
+{
+	
+	var str='';
+	var divEle = document.getElementById('problemsCountDiv');
+	$("#problemsCountDiv").css({'float':'left','margin':'6px 3px 6px 12px','background-color':'#f5f5f5','width':'940px'});
+	str+='<div style="margin-left:10px;width:800px;"> ';
+	str+='<div class="span4"> ';
+	str+='<h5 style="margin-left:10px;">Problems</h5>';
+	str +='<div class="span1 breadcrumb center"><span class="badge badge-info badge-add" style="background:#55FE56;">'+results[0].fixedProblems+'</span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<div class="span1 breadcrumb center"><span class="badge badge-info badge-add">'+results[0].progressProblems+'</span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<div class="span1 breadcrumb center"><span class="badge badge-info badge-add">'+results[0].pendingProblems+'</span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str+='</div> ';
+	str+='<div class="span4 breadcrumb"> ';
+	str+='<h5 style="margin-left:10px;">NEW</h5>';
+	str +='<div class="span1 breadcrumb"><span class="badge badge-info badge-add">'+results[0].cadreProblems+'</span><div>Cadre</div></div>';
+	str +='<div class="span1 breadcrumb"><span class="badge badge-info badge-add">'+results[0].userProblems+'</span><div>PAUser</div></div>';
+	str+='</div> ';
+	str+='</div> ';
+	divEle.innerHTML=str;
+	
+}*/
+
+
+function buildProblemsCountByLocation(results,jsObj)
+{
+	
+	document.getElementById('problemsCountDiv').style.display = 'block';
+	var str='';
+	var divEle = document.getElementById('problemsCountDiv');
+	$("#problemsCountDiv").css({'float':'left','margin':'6px 3px 6px 12px','background-color':'#f5f5f5','width':'940px'});
+	str+='<div class="row breadcrumb"> ';
+	str+='<div class="span11 breadcrumb"><h5>Problems</h5></div>';
+	str+='<div class="span5"> ';
+	str+='<div class="row-fluid"> ';
+	str +='<div class="span4 center"><span class="badge badge-info badge-add" style="background:#55FE56;">'+results[0].fixedProblems+'</span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<div class="span4 center"><span class="badge badge-info badge-add">'+results[0].progressProblems+'</span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<div class="span4 center" style="margin-top:-15px;"><span class="badge badge-info badge-add">'+results[0].pendingProblems+'</span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str+='</div>';
+	str+='</div>';
+	str+='<div class="span5" style="padding:5px 0px 5px 0px;border:1px solid #d3d3d3;"> ';
+	str+='<div class="row-fluid"> ';
+	str +='<div class="span2"><h5 style="margin-left:10px;">NEW</h5></div>';
+	str +='<div class="span4"><span class="badge badge-info badge-add" style="background:red;">'+results[0].cadreProblems+'</span><div>Cadre</div></div>';
+	str +='<div class="span4"><span class="badge badge-info badge-add" style="background:red;">'+results[0].userProblems+'</span><div>PAUser</div></div>';
+	str+='</div> ';
+	str+='</div> ';
+
+	str+='</div> ';
+	divEle.innerHTML=str;
+	
 }
