@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CommentVO;
+import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.FileGallary;
 
 public interface INewsMonitoringService {
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs);
@@ -26,6 +28,8 @@ public interface INewsMonitoringService {
 			Long locationValue, Long locationId, Long publicationId);
 	
 	public List<FileVO> getNewsByLocationAndCategory(FileVO fileVO);
+	
+	public ContentDetailsVO getNewsByLocationAndCategoryInPopup(FileVO fileVo);
 	
 	public Long saveContentNotesByContentId(Long contentId , String commentText);
 	public List<CommentVO> getContentNotesByContentId(Long contentId,Long registrationId);
