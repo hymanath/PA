@@ -158,7 +158,7 @@ $( "#toDate" ).datepicker();
 	<div style="text-align:center;"><label style="position: absolute; margin-left: -412px; margin-top: 160px;"><input type="checkbox" id="allFileInd"><b>With All Files</b></input></label></div>
 
 
-<input type="button" class="btn btn-info pull-right" name="Pdf" onClick="generatePdfForSelectedGallary();" value="Generate Pdf" style="margin-top: 10px;"/>
+<input type="button" class="btn btn-info pull-right" name="Pdf" onClick="generatePdfForSelectedGallary();" value="Generate Pdf" style="margin-top: 10px;"/><img id="processingImg" alt="Processing Image" src="./images/icons/search.gif" style="display:none;"></img>
 
 
 </div>
@@ -187,8 +187,8 @@ $('#ErrDiv').html('&nbsp;');
 
 var gallaryName;
 
-function generatePdfForSelectedGallary(){
-
+function generatePdfForSelectedGallary()
+{
 	var selectType;
     if ($('#allFileInd').is(':checked')) 
 		selectType = "true";
@@ -242,7 +242,7 @@ function generatePdfForSelectedGallary(){
  
 
  callnewAjax(jsObj,url);
-
+ $('#processingImg').show();
 }
 
 function getFilesInGallaries(){
@@ -268,12 +268,12 @@ var callback = {
 			 myResults = YAHOO.lang.JSON.parse(o.responseText); 
 
 			 if( jsObj.task == "generatePdf"){
-
+				$('#processingImg').hide();
 				  if( myResults.noFilesExist =="true"){
 					alert("No Files Exist");
 					return false;
 				  }
-
+				
 				   window.location.href="generatePdfForAGallary.action";
 
 			} else if(jsObj.task == "getGallariesByCategory"){
