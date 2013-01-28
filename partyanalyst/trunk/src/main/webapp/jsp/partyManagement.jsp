@@ -45,7 +45,8 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <!-- JQuery files (End) -->
 
@@ -436,6 +437,10 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			}
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType=="News Gallary")
 			{ 
+			
+				/*$('#existingFromText').attr({
+				   id : this.id + '_' + 1 
+				 });*/
                clearOptionsListForSelectElmtId('gallaryId');
 			   createOptionsForSelectElmtId('gallaryId',myResults);
 			   $("#gallaryId").prepend("<option value='0'>Select Gallary</option>");
@@ -464,8 +469,9 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType == "Video Gallary")
 			{ 
-
-				
+				/*$('#existingFromText').attr({
+				   id : this.id + '_' + 2 
+				 });*/
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
 			   $("#gallarySelectId").prepend("<option value = '0'> Select Gallary</option>")
@@ -473,8 +479,6 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			}
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType == "Photo Gallary")
 			{ 
-
-				
                clearOptionsListForSelectElmtId('gallaryPhotoSelectId');
 			   createOptionsForSelectElmtId('gallaryPhotoSelectId',myResults);
 			   $("#gallaryPhotoSelectId").prepend("<option value = '0'> Select Gallary</option>")
@@ -715,7 +719,7 @@ function buildUploadPhotosDiv()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -727,11 +731,11 @@ function buildUploadPhotosDiv()
 	str += '   </TR></table>';*/
 	str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR></table>';
 
@@ -933,7 +937,6 @@ function getCompleteGallaries(gallaryId){
 
 function getPartyGallariesForUplaod(contentType)
 {
-	
 	var partyId=document.getElementById("partyId").value;
 	var jsObj =
 		{ 
@@ -1261,6 +1264,7 @@ function clearNewsUploadFileFields()
 	
 function clearUploadFileFields()
 {
+
 	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
 	document.getElementById('photofileTitleId').value = '';
@@ -1940,7 +1944,7 @@ function  buildUploadNews()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25" style="margin-top:8px;"/>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="25" style="margin-top:8px;"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -1952,11 +1956,12 @@ function  buildUploadNews()
 	str += '   </TR>';*/
 	str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
 	str += '   <tr>';
@@ -2013,6 +2018,7 @@ function  buildUploadNews()
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getPartyGallariesForUplaod("News Gallary");
+	
 	 getScopes();
 	 getSource("source");
 	 getLanguage("language");
@@ -2122,11 +2128,11 @@ function buildUploadVideoDiv()
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement" style="margin-top:8px;"></textarea></td></tr>';
     str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200" style="margin-top:8px;"></td></tr>';
@@ -3442,7 +3448,16 @@ $(document).ready(function() {
 					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
 				}
 			});
-  });
+	$(".dateField").live("click", function(){
+    $(this).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			maxDate: new Date()
+			
+		}).datepicker("show");
+});
+});
 
 
 showPhotoGallary1();
