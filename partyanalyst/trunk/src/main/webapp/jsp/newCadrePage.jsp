@@ -22,6 +22,8 @@
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
  
 <script type="text/javascript">
 	var currentTask = '${windowTask}';
@@ -407,6 +409,7 @@
 	var selectedState=0;
 	function populateLocations(val,source)
 	{	
+		$('#editButton').attr('disabled',true);
 		var row1El = document.getElementById("row1");
 		var row2El = document.getElementById("row2");
 		var row3El = document.getElementById("row3");
@@ -843,10 +846,10 @@
 									<table>
 									<tr>
 										<td>
-											<s:textfield id="dobText" readonly="true" name="dateOfBirth" size="25"/>
+											<s:textfield id="dobText" style="cursor: text;" readonly="true" name="dateOfBirth" size="25"/>
 											<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 										</td>
-										<td><input id="calBtnEl" type="button" style="width:27px;" class="calBtn" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
+										<td><input id="calBtnEl" type="button" style="width:27px;" class="calBtn" title="Click To Select A Date" onclick="showDateCall('dobText_div','dobText','1/1970')"/></td>
 									</tr>
 									</table>	
 								</span>
@@ -1023,7 +1026,7 @@
 				<td align="left" width="165px">
 					<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name"></s:select>				
 				</td>
-				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField', 'mandalField')"/></td>				
+				<td width="165px"><input type="button" id="pBoothDetailsPanel" class="btn" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField', 'mandalField')"/></td>				
 			</tr>
 		</table>			
 		<table class="cadreDetailsTable" width="100%">				
@@ -1172,7 +1175,7 @@
 			 		<tr>
 						<td style="width:140px;">Location</td>
 						<td style="color:black;"><s:property value="strCadreLevelValue" /></td>
-						<td><input type="button" value="Edit" onclick="populateLocations(selectedeffectedRange, 'onLoad')"  /></td>
+						<td><input type="button" id="editButton" class="btn" value="Edit" onclick="populateLocations(selectedeffectedRange, 'onLoad')"  /></td>
 					</tr>
 		 		</c:if>
 		<tr id="row1" style="display:none;">
@@ -1305,11 +1308,63 @@
 	</table>	
 	</s:form>
 <script type="text/javascript">
-	executeOnload();
-	
+	var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
+	var textBoxDivId;
+	executeOnload();	
 	if (window.opener) {
 	       window.opener.callback();
 	}
+	
+function showDateCall(divId, textBoxId,pageDate) {
+	
+	textBoxDivId = textBoxId;
+	var id = document.getElementById(divId);
+	if (dateCalendar)
+		dateCalendar.destroy();
+
+	var navConfig = {
+		strings : {
+			month : "Choose Month",
+			year : "Enter Year",
+			submit : "OK",
+			cancel : "Cancel",
+			invalidYear : "Please enter a valid year"
+		},
+		monthFormat : YAHOO.widget.Calendar.SHORT,
+		initialFocus : "year"
+	};
+
+	var dateCalendar = new YAHOO.widget.Calendar(id, {
+		navigator : navConfig,
+		pagedate: pageDate,
+		maxdate: maxDate,
+		title : "Choose a date:",
+		close : true
+	});
+		
+	dateCalendar.selectEvent.subscribe(displayTheDateText, dateCalendar, true);
+	dateCalendar.render();
+	dateCalendar.show();
+}
+function displayTheDateText(type, args, obj) {
+	var dates = args[0];
+	var date = dates[0];
+	var year = date[0], month = date[1], day = date[2];
+	var divId = obj.containerId;
+	var divElmt = document.getElementById(divId);
+
+	if(year>='1900'){
+	var txtDate1 = document.getElementById(textBoxDivId);
+	txtDate1.value = day + "/" + month + "/" + year;
+	minDate = month + "/" + day + "/" + year;
+	divElmt.style.display = 'none';
+	return;
+	}
+	else{
+		alert("Please select a valid year");
+		return false;
+	}
+}
 
 </script>
 </body>
