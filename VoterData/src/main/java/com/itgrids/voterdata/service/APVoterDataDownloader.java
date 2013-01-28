@@ -44,7 +44,7 @@ public class APVoterDataDownloader {
         
         int numOfDistricts = district.getOptions().size();
         
-        int d = 19;
+        int d = 7;
         //for (; d<=numOfDistricts; d++) {
             district.selectByValue(String.valueOf(d));
             Select constituency = new Select(driver.findElement(By.name("ddlAC")));
@@ -56,7 +56,7 @@ public class APVoterDataDownloader {
             } else {
                 i = 1;
             }
-            i= 235;
+            i= 72;
             //for(; i<=numOfconstituencies; i++){
                 constituency.selectByValue(String.valueOf(i));
                 String constituencyName = constituency.getFirstSelectedOption().getText();
@@ -91,7 +91,7 @@ public class APVoterDataDownloader {
                 	}
                 }
                 
-                int j = 0;
+                int j = 94;
                 if (i == 274) {
                   j = 133;
                 }
