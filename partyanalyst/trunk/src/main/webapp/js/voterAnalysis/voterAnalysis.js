@@ -435,6 +435,7 @@ function showImportantFamiliesDiv()
 		 getVotersData();
 		 showNewsDetails();
 		  getCounts();
+		  getProblemsByLocation();
 	}
 	function DefaultHighLight()
 	{
@@ -913,6 +914,7 @@ function getBasicInfo(){
 		   getVotersData();
 		   showNewsDetails();
 		    getCounts();
+			getProblemsByLocation();
 		 }else if($('#votersDiv4').css('display') == 'block'){
 			
              callCorrespondingAjaxCall();
