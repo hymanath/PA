@@ -28,6 +28,8 @@
     <link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
 	<title>Problem Details</title>
 <style>
+.commentSection{display:inline-block;clear:both;width:100%;position:relative;}
+.commentSection a{position:absolute;right:4px;bottom:1px;width:70px;}
 .button {
     background-attachment: scroll;
     background-color: #335291;
@@ -90,9 +92,9 @@ table {
 
 .clear-b{clear:both;}
 
-#postedcomments ul{list-style-type:none;margin:0px;}
-#postedcomments ul li{display:inline-block;width:90%;clear:both;margin:7px 0px; background:#f5f5f5;padding:5px;}
-#postedcomments ul li p{width:98%;background:#fcfcfc;clear:both;display:table;padding:5px;}
+#postedcomments ul{list-style-type:none;margin:1px;}
+#postedcomments ul li{display:inline-block;width:98%;clear:both;margin:7px 0px; background:#f5f5f5;padding:5px;}
+#postedcomments ul li p{width:98%;background:#fff;clear:both;display:table;padding:5px;border-radius:5px;}
 #postedcomments ul li div{float:left;display:inline-block;margin:5px 5px;}
 #postedcomments ul li .commentimage img{width:40px;height:40px;vertical-align:middle;}
 .commentname{font-weight:bold;font-size:14px;color:#06ABEA;}
@@ -175,6 +177,15 @@ table {
  width: 200px;}
 .fileUploadDiv{margin-top:10px;}
 .fileUploadDiv span{font-size:14px;}
+
+#postedcomments
+{
+border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 2px 2px #DDDDDD;
+    margin: 6px 5px;
+    padding: 10px;
+}
 </style>
 
 <script type="text/javascript">
@@ -984,7 +995,7 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "saveAbusedComments")
 							{
-								showAbusedCommentsResults(myResults);
+								showAbusedCommentsResults(myResults,jsObj);
 							}
 						}
 						catch(e)
@@ -1118,8 +1129,8 @@ function buildcomments(myResults){
 	   str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/'+myResults[i].profileImg+'" /> </div>';
 	 else
 	  str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/human.jpg" /> </div>';
-	 str +='<span><img width="20" height="20" src="images/icons/abused.jpg" style="margin-left: 350px;" onclick="saveAbusedCommentsToProblem('+myResults[i].commentId+')" title="Click Here to Abuse the Comments" /></span>';
-	 str+='<div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">'+myResults[i].date+'</span></div>';
+	 str +='<span><input type="button" value="Abuse Comment"   class="btn btn-danger pull-right btn-mini" onclick="saveAbusedCommentsToProblem('+myResults[i].commentId+')" title="Click Here to Abuse the Comments" /></span>';
+	 str+='<div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">'+myResults[i].date+'</span><span id="showDivId'+myResults[i].commentId+'" style="color: red;float: right;margin-left: 47px;margin-top: -18px;"></span></div>';
 	 str+='<p>'+myResults[i].comment+'</p>';
      str+='</li>';
 	 }
@@ -1276,6 +1287,7 @@ function openCadreSmsPopup(cadreId,pHistoryId)
 function getcomments(){
 	var problemId = '${completeProblemDetailsVO.problemId}';
 	if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
+	 
 	var jsObj = {
 					problemId:'${completeProblemDetailsVO.problemId}',
 					task:"getproblemcomments"
@@ -1587,13 +1599,19 @@ function saveAbusedCommentsToProblem(commentId)
 	
 }
 
-function showAbusedCommentsResults(result)
+function showAbusedCommentsResults(result,jsObj)
 {
+
 	var errorDivEle = document.getElementById('abusedErrorDiv');
 		var str = '';
 	if(result.resultCode == 0)
 	{
-		//str += '<font color="Green"><b>Saved Successfully.</b>';
+		var cssObj = {    
+					'font-weight' : 'bold',
+					'color' : 'green'
+				}
+				var commentId = jsObj.commentId;
+		$('#showDivId'+commentId).text("Your Request Sent Successfully").css(cssObj).show().delay(2000).fadeOut(400);
 	}
 	else if(result.resultCode == 1)
 	{
@@ -2001,10 +2019,10 @@ function displayDateText(type, args, obj) {
         <div class="span8">
 			<div id="errormsgdiv" class="errorClass"></div>
 		<h3>Comments:</h3>
-		 <div><div>
-		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-top:10px;" class="pull-right btn btn-info">Post</a></div></div>
+		 <div class="commentSection"><div>
+		 <textarea class="textareaid" id="commenttext" style="width:104%;"></textarea></div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-bottom:-31px;margin-right:-44px;margin-top: 4px;width: 21px;" class="pull-right btn btn-info">Post</a></div>
 		 <div id="abusedErrorDiv" style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;"></div>
-         <div id="postedcomments"></div>		
+         <div id="postedcomments"></div>	
 		</div>
 		</s:if>
 		<s:else>
