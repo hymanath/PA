@@ -6886,9 +6886,9 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			}
 		}
 		problemBeanVO = new ProblemBeanVO();
-		List<Long> Progress = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.PROGRESS);
-		List<Long> Fixed = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.FIXED);
-		List<Long> Pending = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.PENDING);
+		List<Long> Progress = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.PROGRESS);
+		List<Long> Fixed = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.FIXED);
+		List<Long> Pending = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.PENDING);
 		List<Long> Cadre = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,4l);
 		List<Long> User = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,1l);
 		if(Progress != null && Progress.size() > 0)
@@ -6946,7 +6946,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			}
 			if(!status.equalsIgnoreCase(IConstants.NEW))
 			{
-			 problemIds =userProblemDAO.getAllPublicProblemsByLocation(locationId,locationValue,status);
+			 problemIds =userProblemDAO.getAllPublicProblemsByLocation(userId,locationId,locationValue,status);
 			}
 			else if(status.equalsIgnoreCase(IConstants.NEW))
 			{
