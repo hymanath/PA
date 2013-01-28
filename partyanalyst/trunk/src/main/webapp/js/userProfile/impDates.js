@@ -267,7 +267,7 @@ function buildNewImpDatePopup()
 		eventStr+='<table width="200%" class="bordered-table">';
 		eventStr+='<tr>';
 		eventStr+='<th>Important Date Title <font style="color:red; font-size: 18px;">  * </font></th>';
-		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
+		eventStr+='<td><input type="text" size="50" id="ImpeventNameText"  name="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 		eventStr+='<tr>';
 		eventStr+='<th>Important Date</th>';
@@ -349,6 +349,37 @@ function buildNewImpDatePopup()
 	}
 	function updateSelectedEvent(type)
 	{
+		
+		var ImpeventNameValue = $("#ImpeventNameText").val();			
+		var ImpDescValu = $("#ImpdescTextArea1").val();
+			
+		var ImpDescVallength=ImpDescValu.trim().length;
+			
+		if(ImpeventNameValue == '')
+		    {
+			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
+			return;
+			}
+			else if ( ImpeventNameValue != null)
+			{ 				
+				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				
+		            for (var i = 0; i < ImpeventNameValue.length; i++)
+                {      
+                    if (iChars.indexOf(ImpeventNameValue.charAt(i)) != -1)
+                    {   
+					document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+					return false;
+                    } 
+                }
+			
+			}
+			
+		if(ImpDescVallength==0){
+					document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+				return;
+			}
+		 
 		var results = YAHOO.lang.JSON.parse(jsonStr);	
 		var jsObj;
 		if(type == 'impDate')
@@ -378,7 +409,7 @@ function buildNewImpDatePopup()
 	
 	function handleImpDateSubmit()
 	{	
-	//alert("handleImpDateSubmit");
+	alert("handleImpDateSubmit");
 		var flag = checkDate("impDate");
 		if(flag)
 		return;
@@ -389,17 +420,27 @@ function buildNewImpDatePopup()
 		ImpDescVal = removeEnterStrokeForString(ImpDescVal);
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
+		var ImpDescVallength=ImpDescVal.trim().length;
 		    if(ImpeventNameVal == '')
 		    {
 			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
 			return;
 			}
-			else if ( /[^A-Za-z\d\s]/.test(ImpeventNameVal))
-			{ 
-				document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
-				return;
+			else if ( ImpeventNameVal != null)
+			{ 				
+				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				
+		            for (var i = 0; i < ImpeventNameVal.length; i++)
+                {      
+                    if (iChars.indexOf(ImpeventNameVal.charAt(i)) != -1)
+                    {   
+					document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+			
+                    return false; 
+                    } 
+                }
 			}
-			else if(ImpDescVal == '')
+			if(ImpDescVallength==0)
 			{
 			   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
 			  return;
@@ -819,15 +860,15 @@ function buildNewImpDatePopup()
 		var eventStr='';
 		eventStr+='<div class="hd" style="color:#2B4E70;"></div> ';
 		eventStr+='<div class="bd">'; 
-		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
+		eventStr+='<div id="errorMesgDIV">&nbsp;</div>';
 		eventStr+='<table class="bordered-table">';
 		eventStr+='<tr>';
-		eventStr+='<th>Title</th>';		
+		eventStr+='<th style="width: 140px;">Important Date Title <font style="color:red; font-size: 18px;"> * </font></th>';		
 		
 		if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<td colspan="3">';
-			eventStr+='<input id="ImpeventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impDate\',\'title\')" value="'+results[0].title+'">';
+			eventStr+='<input id="ImpeventNameText" class="fieldSpan" name="srish"style="border-radius: 3px 3px 3px 3px; border: 1px solid rgb(195, 195, 195); width: 218px; height: 35px; margin-bottom: 7px;" onclick="changeToEditableField(this,\'text\',\'impDate\',\'title\')" value="'+results[0].title+'">';
 			eventStr+='</td>';					
 		}
 		eventStr+='</tr>';
@@ -846,7 +887,7 @@ function buildNewImpDatePopup()
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description</th>';
+		eventStr+='<th>Description <font style="color:red; font-size: 18px;">  * </font></th>';
 		
 		if(jsObj.taskType == "impDate")
 		{
@@ -879,12 +920,12 @@ function buildNewImpDatePopup()
 			eventStr+='</tr>';
 		}
 		
-		eventStr+='<tr>';
-		eventStr+='<td><input type="button" value="Update" class="btn btn-primary btn-small" onclick="dateCheck(\''+jsObj.taskType+'\')"></input></td>';
-		eventStr+='<td><input type="button" value="Cancel" class="btn btn-primary btn-small" onClick="cancelButton()" ></input></td>';		
-		eventStr+='</tr>';
-		
 		eventStr+='</table>';
+		eventStr+='<div style="background-color: black; width: 648px; margin-left: -10px; height: 1px; margin-bottom: 8px;"> </div>';
+		eventStr+='<div class="ui-dialog-buttonset" style="float: right;">';
+		eventStr+='<button class="btn btn-primary" type="button" onclick="dateCheck(\''+jsObj.taskType+'\')" style="position: absolute; margin-left: -100px; left: 560px;">Update</button>';
+		eventStr+='<button class="btn btn-primary" type="button" onClick="cancelButton()" style="position: relative; left: -15px;">Cancel</button>';	
+		eventStr+='</div>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
 
