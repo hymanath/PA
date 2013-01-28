@@ -17,13 +17,10 @@
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-<title> Party Analyst News  </title>
+<title></title>
 
 
 <style>
-#fromDate,#toDate{
- cursor: text !important;
-}
 .pr-cont-sec
 {
 	margin-left: 10px;
@@ -1168,62 +1165,17 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    }
  if(document.getElementById("betweendates").checked == true)
   {
-	var fromDate = "";
-	var toDate = "";
-	
-		fromDate = document.getElementById("fromDate").value;
-		toDate =  document.getElementById("toDate").value;
+   var fromDate = "";
+   var toDate = "";
 
-// STARTING : validations updated by srishailam
-
-	   var arrr = fromDate.split("-");
-			var fromyear=arrr[0];
-			var frommonth=arrr[1];
-			var fromDat=arrr[2];
-	   var arr = toDate.split("-");
-			var toyear=arr[0];
-			var tomonth=arr[1];
-			var toDat=arr[2];	
-			$('#searchAjaxImgSpan').hide();
-			$('#searchAjaxImgSpan').css("display","none");
-		if(!fromDate){
-		$('#searchAjaxImgSpan').hide();
-			document.getElementById('DateErrDiv').innerHTML='Please select from Date ';
-			return false;
-		}
-		else if(!toDate){
-			$('#searchAjaxImgSpan').hide();
-			document.getElementById('DateErrDiv').innerHTML='Please select to Date ';
-			return false;
-		}
-		if(fromyear>toyear){
-			$('#searchAjaxImgSpan').hide();
-			document.getElementById('DateErrDiv').innerHTML='from Date should not greater then to Date ';
-			return false;
-		}
-		else{
-				if(frommonth>tomonth){
-					$('#searchAjaxImgSpan').hide();
-					document.getElementById('DateErrDiv').innerHTML='from Date should not greater then to Date';
-					return false;
-				}
-					else{
-							if(fromDat>toDat){	
-								$('#searchAjaxImgSpan').hide();
-								document.getElementById('DateErrDiv').innerHTML='from Date should not greater then to Date';
-								return false;
-							}
-					}
-		}
-		document.getElementById('DateErrDiv').innerHTML='&nbsp;';
-
-// ENDING : validations updated by srishailam
-   var title = 'Between Dates '+fromDate+' and '+toDate;
+     fromDate = document.getElementById("fromDate").value;
+     toDate =  document.getElementById("toDate").value;
+  var title = 'Between Dates '+fromDate+' and '+toDate;
    getNews("betweendates","getCount","All",source,language,category,importance,"","","",fromDate,toDate);
    getGraphDetails("betweendates","categoryDetailsForGraph",fromDate,toDate,"categoryGraphDiv",source,language,category,importance);
    getNews("betweendates","getNews","All",source,language,category,importance,"","",title,fromDate,toDate);
-  
-   }
+   
+  }
   }
   function clearAll(){
   
@@ -1403,7 +1355,7 @@ function editNewsDetails(fileId){
 
 	str +='    <tr>';
     str +='	   <td class="tdWidth">Location Scope</td>';
-    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations1(this.options[this.selectedIndex].value)"  /></td>';
+    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
  
    if(reqFile.locationScope != null && reqFile.locationScope != "null"){
@@ -1466,7 +1418,7 @@ function editNewsDetails(fileId){
 function getLocationDiv(){
 var id =  $('#scopeDiv').val();
 
- getLocations1(id);
+ getLocations(id);
 }
  function getLocations(id){
 
@@ -2116,10 +2068,9 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
 					
        </tr>					
     </table>
-	<div id="DateErrDiv"  align="center" style="color:red">&nbsp; </div>
     </div>
 	<div style="padding-top:5px;">
-	   <center><b>Select Options To Filter Results</b><input type="button" class="btn btn-primary" value="Options" onclick="toggleOption();" style="margin-left: 5px;"></input></center>
+	   <center><b>Select Options To Filter Results</b><input type="button" value="Options" onclick="toggleOption();"></input></center>
 	</div>
 <div id="newsSearch" style="padding-bottom:5px;padding-top:10px;">	   
 	   <table align="center">
@@ -2144,7 +2095,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
  <center>
  <a href="javascript:{}" onclick="newsSearch();showAjaxImg('searchAjaxImgSpan')" ><img src="images/search_button.jpg" /></a>
  <a href="javascript:{}" onclick="clearAll();" style="padding-left:10px;" ><img src="images/clear_all_buttom.jpg" ></a>
-<span id="searchAjaxImgSpan" style="margin-left:15px;display:none;"><img src="images/icons/search.gif"></img width="18px" height="18px;"></div></center>
+ <span id="searchAjaxImgSpan" style="margin-left:15px;display:none;"><img src="images/icons/search.gif"></img width="18px" height="18px;"></div></center>
 </span>
 </div>
 <table  align="center" width="100%">
@@ -2348,27 +2299,27 @@ function buildContentDetails()
 		{
 
 
-			str+='<table>';
+			str+='<table style="font-size:13px;">';
 			str+='<tr>';
 			str+='<td>';
 
 			
 
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>CategoryType</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
-				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
+				str+=' RegionScope</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font> &nbsp;';
 
 
 			 str+='</td>';
 
 			 str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
-				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>Source</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].fileDate != null)
-				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+				str+=' Date</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
 
 
 			 str+='</td>';
