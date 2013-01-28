@@ -2169,8 +2169,8 @@ return res;
   			partiesList.add(new SelectOptionVO(886l,"Telangana Rastra Samithi","TRS"));
  			partiesList.add(new SelectOptionVO(839l,"Samajwadi Party","SP"));
  			partiesList.add(new SelectOptionVO(239l,"Bahujan Samaj Party","BSP"));
- 			partiesList.add(new SelectOptionVO(76l,"All India Trinamool Congress"," AITC"));
- 			partiesList.add(new SelectOptionVO(579l,"Nationalist Congress Party"," NCP"));
+ 			partiesList.add(new SelectOptionVO(76l,"All India Trinamool Congress","AITC"));
+ 			partiesList.add(new SelectOptionVO(579l,"Nationalist Congress Party","NCP"));
  			
  			return partiesList;
  			
