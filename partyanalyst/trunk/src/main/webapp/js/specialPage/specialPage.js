@@ -173,6 +173,10 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "eventGallariesForUplaod")
 			{
+			
+			/* $('#existingFromText').attr({
+               id : existingFromText.id + '_' + 1
+             });*/
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createListData('gallarySelectId',myResults);
 			}
@@ -183,7 +187,9 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "partyGallariesForUplaod")
 			{
-				
+			   /*$('#existingFromText').attr({
+               id : existingFromText.id + '_' + 2 
+             });*/
               // clearOptionsListForSelectElmtId('gallarySelectId');
 			   createListDataForNews('gallaryId',myResults);
 			}
@@ -234,7 +240,7 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "photoGallariesForUplaod")
 			{
-				
+				alert("photo");
 				clearOptionsListForSelectElmtId('gallarySelectId');
 			    createOptionsForSelectElmtId('gallarySelectId',myResults);
                 // createListDataForNews('gallarySelectId',myResults);
@@ -274,6 +280,7 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
+			alert("video");
 				 showUploadVideoStatus(myResults);
 				
 			}
@@ -1022,11 +1029,11 @@ function buildUploadVideoDiv()
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" id="existingFromText_Div" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
@@ -1693,11 +1700,11 @@ function  buildUploadNews()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
-	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="35"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	//str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '     </TD>';
 	str += '   </tr>';
 	str += '</table>';
@@ -4045,11 +4052,11 @@ function buildUploadPhotosDiv()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td class="tdWidth2" style="width:68px;"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	//str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '     </TD>';
 	str += '   </tr>';
 	str += '</table>';
@@ -5060,6 +5067,7 @@ var custom_paginator = {
         $('#custom_paginator_class a').removeClass('pagenationStyle');
 		$(this).addClass('pagenationStyle');
       });
+	
   });
 var news_Obj = {
 	
