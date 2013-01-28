@@ -646,7 +646,7 @@ public String getPreviousEleVotingTrends()
 return Action.SUCCESS;
 }
 
-/*public String getProblemsByLocation()
+public String getProblemsByLocation()
 {
 	try{
 		 problemBeanVO= new ProblemBeanVO();
@@ -659,12 +659,14 @@ return Action.SUCCESS;
 		
 		Long locationValue = jObj.getLong("locationValue");
 		Long locationId = jObj.getLong("locationId");
+		
 		if(jObj.getString("task").equalsIgnoreCase("getProblemsByLocation"))
 		 problemDetails = problemManagementService.getProblemDetailsForVoterPage(userId,locationId,locationValue);
 		 if(jObj.getString("task").equalsIgnoreCase("getProblemDetailsByLocation"))
 		 {
+			 Long informationsrcId = jObj.getLong("srcId");
 			 String status = jObj.getString("status");
-			 problemDetails = problemManagementService.getProblemDetailsInfoVoterPage(userId,locationId,locationValue,status);
+			 problemDetails = problemManagementService.getProblemDetailsInfoVoterPage(userId,locationId,locationValue,status,informationsrcId);
 		 }
 		// problemBeanVO.setProblemBeanVOList(problemDetails);
 	}
@@ -673,5 +675,5 @@ return Action.SUCCESS;
 		log.error("Exception Occured in getProblemsByLocation() Method, Exception - "+e);
 	}
 return Action.SUCCESS;
-}*/
+}
 }
