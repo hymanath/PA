@@ -342,3 +342,176 @@ function setFlagVariable(value){
 
 	$('#flagInd').val(value);
 }
+
+
+function getLocations1(id){
+
+   if(id==0)
+  {
+   var val ='';
+  val +='<table>';
+  val +='  <tr><td></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+    
+  }
+  else if(id==1)
+  {
+    var str ='';
+  str +='<table>';
+  str +='  <tr><td></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+  }
+  else if(id==2)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" name="locationValue" class="selectWidth"/></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==3)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" name="locationValue" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==4)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth"  onchange="getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==5 || id==7)
+  {
+   if(id==5)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==7)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+   
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==6 || id==8)
+  {
+   if(id==6)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==8)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv"  class="selectWidth" onchange="getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Village/Ward/Division :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==9)
+  {
+     var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width:105px;">Village/Ward/Division :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+}

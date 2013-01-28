@@ -1403,7 +1403,7 @@ function editNewsDetails(fileId){
 
 	str +='    <tr>';
     str +='	   <td class="tdWidth">Location Scope</td>';
-    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations1(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
  
    if(reqFile.locationScope != null && reqFile.locationScope != "null"){
@@ -1466,7 +1466,7 @@ function editNewsDetails(fileId){
 function getLocationDiv(){
 var id =  $('#scopeDiv').val();
 
- getLocations(id);
+ getLocations1(id);
 }
  function getLocations(id){
 
