@@ -74,6 +74,7 @@ function callAjax(jsObj,url)
 							else if(jsObj.task == "storeValues")
 							{
 								buildCategoryValues(myResults);
+								 $("#groupCreationErr").html('');
 								$("#groupCreationMsg").html("Group created successfully");
 							}
 							else if(jsObj.task == "getCategoryValues")
@@ -82,7 +83,7 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
-								$("#catrgoeryValue").val(""); 
+								$("#catrgoeryValue").val('');
                                 $("#groupValueCreationMsg").html("Group value added successfully");								
 							}
 							else if(jsObj.task == "storeVoterDate")
@@ -169,23 +170,31 @@ function storeGroupValue()
 	    $("#groupCreationErr").html("Group Name is required");
 		return;
 	 }
-	  groupName = removeAllUnwantedCharacters(groupName);
-	  if($.trim(groupName).length == 0){
-	    $("#groupCreationErr").html("Group Name should not contain any special characters");
-		return;
+	else if($.trim(groupName).length!=null){
+			var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+	
+		            for (var i = 0; i < groupName.length; i++)
+                {      
+                    if (iChars.indexOf(groupName.charAt(i)) != -1)
+                    {   
+						$("#groupCreationErr").html("Special Characters not allowed");
+						return false;									
+                    } 
+                }
 	 }
-	var jsObj=
-	{
-		name:groupName,
-		task:"storeValues"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getVotersCategoryAction.action?"+rparam;						
-		callAjax(jsObj,url);
+	 $("#groupCreationErr").html('&nbsp;');
+		var jsObj=
+			{
+				name:groupName,
+				task:"storeValues"
+			};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "getVotersCategoryAction.action?"+rparam;						
+				callAjax(jsObj,url);				
 }
+
 function buildCategoryValues(myResults)
 {
-
 	if(myResults.id != null && myResults.name != null)
 	{
 		$('#selectType').append('<option value='+myResults.id+'>'+myResults.name+'</option>');
@@ -195,8 +204,7 @@ function getCategoryValues(myResults)
 {
 	$('#selectType option').remove();
 	for(var i in myResults){
-	
-	$('#selectType').append('<option value='+myResults[i].id+'>'+myResults[i].name+'</option>');
+		$('#selectType').append('<option value='+myResults[i].id+'>'+myResults[i].name+'</option>');
 	
 	}
 }
@@ -206,8 +214,6 @@ function storeCategoryValues()
 	var categoryId = $('#selectType').val();
 	var categoryValue = $('#catrgoeryValue').val();
 	
-	
-	$("#groupValueCreationErr").html("");
 	$("#groupValueCreationMsg").html("");
 	if(categoryId == 0){
 	  $("#groupValueCreationErr").html("Please select Group");
@@ -217,12 +223,21 @@ function storeCategoryValues()
 	    $("#groupValueCreationErr").html("Group Value is required");
 		return;
 	 }
-	  categoryValue = removeAllUnwantedCharacters(categoryValue);
-	  if($.trim(categoryValue).length == 0){
-	    $("#groupValueCreationErr").html("Group Value should not contain any special characters");
-		return;
-	 }
+	  else if($.trim(categoryValue).length!=null){
+			var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
 	
+		            for (var i = 0; i < categoryValue.length; i++)
+                {      
+                    if (iChars.indexOf(categoryValue.charAt(i)) != -1)
+                    {   
+						 $("#groupValueCreationErr").html("Special Characters not allowed");
+					return false; 								
+                    } 
+                }
+	 }
+	 
+	$("#groupValueCreationErr").html('');
+	$("#groupValueCreationMsg").html('&nbsp;');
 	var jsObj =
 	{
 		categoryId:categoryId,
@@ -236,8 +251,8 @@ function storeCategoryValues()
 
 function showCasteStatus(result)
 {
-	
 	$("#casteId").val('');
+	$("#casteCreationErr").html('');
 	document.getElementById("userAccessStates_List").selectedIndex = 0;
 	document.getElementById("castCategoryGroup_List").selectedIndex = 0;
 	if(result.resultCode == 0)
@@ -251,7 +266,6 @@ function showCasteStatus(result)
 		return;
 	}
 }
-
 </script>
 </head>
 <body style="position: relative;">
@@ -260,7 +274,7 @@ function showCasteStatus(result)
 		 <div id="groupCreation" style="border:" >
 		 <h4>Create New Group</h4>
 		   <div style="margin-bottom:5px;"><b>NOTE :</b> Group Name should not contain any special characters</div>
-		  <div style="color:red" id="groupCreationErr"></div>
+		  <div style="color:red" id="groupCreationErr">&nbsp;</div>
 		  <div style="color:green" id="groupCreationMsg"></div>
 		 <lable name="CreateNewGroup"><b>Group Name<span style="color:red">*</span> :</b> 
 		 <input type="text" id="CreateNewGroupText" style="width: 175px;margin-left:30px;"></input></lable>
@@ -271,7 +285,7 @@ function showCasteStatus(result)
 		<div id="valuesDisplayDiv" >
 		   <h4>Add Values To Group</h4>
 		   <div style="margin-bottom:5px;"><b>NOTE :</b> Group Value should not contain any special characters</div>
-		   <div style="color:red" id="groupValueCreationErr"></div>
+		   <div style="color:red" id="groupValueCreationErr">&nbsp;</div>
 		   <div style="color:green" id="groupValueCreationMsg"></div>
 			<b>Select Group<span style="color:red">*</span> :</b><select id="selectType" style="width:187px;margin-left:32px;"></select>
 			</br>
@@ -285,7 +299,7 @@ function showCasteStatus(result)
 		 <div id="casteCreation" style="border:" >
 		 <h4>Create Caste</h4>
 		   <div style="margin-bottom:5px;"><b>NOTE :</b> Caste Name should not contain any special characters</div>
-		  <div style="color:red" id="casteCreationErr"></div>
+		  <div style="color:red" id="casteCreationErr">&nbsp;</div>
 		  <div style="color:green" id="casteCreationMsg"></div>
 		<table cellpadding="3">
 			<tr>
@@ -321,41 +335,42 @@ $(document).ready(function() {
  addFieldsToMainFileds();
 
  $("#createCaste").click(function(){
-
 	var casteName = $.trim($("#casteId").val());
 	var stateId = $("#userAccessStates_List").val();
 	var categoryId = $("#castCategoryGroup_List").val();
+	$("#casteCreationMsg").html('');
 	var validCharacters = /[a-zA-Z]/;
 
-	if(casteName == '' || casteName.length == 0)
+	 if(stateId == 0)
 	 {
-		$("#casteCreationErr").addClass('casteCreationErr').html('Caste Name is Required.');
-		return;
-	 }
-
-		casteName = removeAllUnwantedCharacters(casteName);
-	 if($.trim(casteName).length == 0)
-	 {
-	    $("#casteCreationErr").html("Caste Name should not contain any special characters");
-		return;
-	 }
-	 else if(!validCharacters.test(casteName))
-	 {
-		$("#casteCreationErr").html("Caste Name should not contain any special characters.");
-		return;
-	}
-
-	 else if(stateId == 0)
-	 {
-		$("#casteCreationErr").addClass('casteCreationErr').html('Please Select State.');
+		$("#casteCreationErr").html('Please Select State.');
 		return;
 	 }
 	 else if(categoryId == 0)
 	 {
-		$("#casteCreationErr").addClass('casteCreationErr').html('Please Select Caste Category Group.');
+		$("#casteCreationErr").html('Please Select Caste Category Group.');
 		return;
 	 }
-	 $("#casteCreationErr").html('');
+	else if(casteName == '' || casteName.length == 0)
+	 {
+		$("#casteCreationErr").html('Caste Name is Required.');
+		return;
+	 }
+		else if($.trim(casteName).length!=null){	
+		
+		var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+	
+		            for (var i = 0; i < casteName.length; i++)
+                {      
+                    if (iChars.indexOf(casteName.charAt(i)) != -1)
+                    {   
+					 $("#casteCreationErr").html('Special Characters not allowed');
+					return false; 
+					}
+				}
+	 }
+
+	 $("#casteCreationErr").html('&nbsp;');
 	 var jsObj=
 	{
 		casteName        : casteName,
@@ -366,7 +381,6 @@ $(document).ready(function() {
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "saveCasteNameAction.action?"+rparam;						
 		callAjax(jsObj,url);
-	 
  });
 });
 </script>
