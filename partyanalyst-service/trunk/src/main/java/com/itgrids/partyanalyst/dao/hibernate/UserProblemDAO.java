@@ -1129,14 +1129,16 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
     	return queryObj.list();
     }
 	@SuppressWarnings("unchecked")
-	public List<Long> getAllPublicProblemsByLocation(Long locationId,Long locationValue,String status)
+	public List<Long> getAllPublicProblemsByLocation(Long userId,Long locationId,Long locationValue,String status)
 	{
 		
-		Query query = getSession().createQuery("select distinct (model.userProblemId) from UserProblem model where model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"'" +
+		Query query = getSession().createQuery("select distinct(model.userProblemId) from UserProblem model where (model.user.userId = :userId or model.visibility.type = :visibilityType) and model.problem.isApproved ='"+IConstants.TRUE+"'" +
 				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.problem.regionScopes.regionScopesId=:locationId and model.problem.problemStatus.status = :status order by model.problem.problemId desc");
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("locationId", locationId);
 		query.setParameter("status", status);
+		query.setParameter("userId",userId);
+		query.setParameter("visibilityType",IConstants.PUBLIC);
 		return query.list();
 		
 	}
@@ -1160,7 +1162,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	
 	public List<Long> getAllPrivateProblemsBySource(Long locationValue,Long userId,Long locationId,Long sourceId)
 	{
-		Query query = getSession().createQuery("select distinct (model.userProblemId) from UserProblem model where model.visibility.type ='"+IConstants.PRIVATE+"' and model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"' " +
+		Query query = getSession().createQuery("select distinct(model.userProblemId) from UserProblem model where model.problem.isApproved ='"+IConstants.TRUE+"' " +
 				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.user.userId =:userId  and model.problem.regionScopes.regionScopesId=:locationId and model.problem.informationSource.informationSourceId = :sourceId and model.problem.problemStatus.status = '"+IConstants.NEW+"' order by model.problem.problemId desc");
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("userId", userId);
