@@ -6889,6 +6889,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		List<Long> Progress = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.PROGRESS);
 		List<Long> Fixed = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.FIXED);
 		List<Long> Pending = userProblemDAO.getAllPublicProblemsByLocation(locationId, locationValue,IConstants.PENDING);
+		List<Long> Cadre = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,4l);
+		List<Long> User = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,1l);
 		if(Progress != null && Progress.size() > 0)
 		problemBeanVO.setProgressProblems(new Long(Progress.size()));
 		else
@@ -6901,8 +6903,14 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		problemBeanVO.setFixedProblems(new Long(Fixed.size()));
 		else
 		problemBeanVO.setFixedProblems(0l);
-		problemBeanVO.setCadreProblems(userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,4l));
-		problemBeanVO.setUserProblems(userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,1l));
+		if(Cadre != null && Cadre.size() > 0)
+		problemBeanVO.setCadreProblems(new Long(Cadre.size()));
+		else
+			problemBeanVO.setCadreProblems(0l);
+		if(User != null && User.size() > 0)
+		problemBeanVO.setUserProblems(new Long(User.size()));
+		else
+			problemBeanVO.setUserProblems(0l);	
 		resultList.add(problemBeanVO);	
 		
 	}
@@ -6914,10 +6922,11 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 	return resultList;
 	
 	}
-	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status)
+	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status,Long informationsrcId)
 	{
 		List<ProblemBeanVO> problemDetails = new ArrayList<ProblemBeanVO>(0);
-		ProblemBeanVO problemBeanVO = null;
+		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+		List<Long> problemIds = new ArrayList<Long>(0);
 		try{
 			if(locationId == 5)
 			{
@@ -6935,13 +6944,40 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				
 				}
 			}
-			
-			List<Long> problemIds =userProblemDAO.getAllPublicProblemsByLocation(locationId,locationValue,status);
+			if(!status.equalsIgnoreCase(IConstants.NEW))
+			{
+			 problemIds =userProblemDAO.getAllPublicProblemsByLocation(locationId,locationValue,status);
+			}
+			else if(status.equalsIgnoreCase(IConstants.NEW))
+			{
+			problemIds =userProblemDAO.getAllPrivateProblemsBySource(locationValue,userId,locationId,informationsrcId);	
+			}
 			if(problemIds != null && problemIds.size() > 0)
+			{
+			
 			for(Long problemId : problemIds)
 			{
-				problemDetails = getProblemCompleteInfoByLocation(problemId);	
+				problemBeanVO = getProblemCompleteInfo(problemId);	
+				
+				 
+				int regionScope = problemBeanVO.getProblemImpactLevelId().intValue();
+				
+				if(regionScope == 4)
+					problemBeanVO.setUrl("constituencyPageAction.action?constituencyId="+problemBeanVO.getProblemImpactLevelValue()+"");
+				else if(regionScope == 3)
+					problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemImpactLevelValue()+"&districtName="+problemBeanVO.getProblemLocation()+"");
+	            else if(regionScope == 2)
+	             	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemImpactLevelValue()+"");
+				
+	            else if(regionScope == 5)
+	            	problemBeanVO.setUrl("mandalPageElectionInfoAction.action?MANDAL_ID="+problemBeanVO.getProblemImpactLevelValue()+"&MANDAL_NAME="+problemBeanVO.getProblemLocation()+"");
+				problemBeanVO.setUserProblems(new Long(problemIds.size()));	
+				problemDetails.add(problemBeanVO);
+				
 			}
+			
+			}
+			
 			
 		}
 		catch(Exception e)
