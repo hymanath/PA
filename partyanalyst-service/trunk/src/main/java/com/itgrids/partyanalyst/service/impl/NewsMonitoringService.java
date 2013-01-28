@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -77,7 +78,16 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IUserDAO userDAO;
 	private TransactionTemplate transactionTemplate;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
 	}
@@ -474,8 +484,55 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
 	    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
 	    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
-	    		  if(file.getRegionScopes()!=null)
-	    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
+	    		  
+	    		  
+	    		  if(file.getRegionScopes()!=null){
+	    			  
+	    			  if(file.getRegionScopes()
+								.getRegionScopesId().longValue() == 5 || file.getRegionScopes()
+										.getRegionScopesId().longValue() == 7){	    				  
+	    				  
+	    				  String locationVal = file.getLocationValue().toString();	    				  
+	    				  
+	    				  if(locationVal.charAt(0) == '2'){
+	    					  
+	    					  Long locationVal1 = Long.parseLong(locationVal.substring(1));
+	    				  
+					           fileVO.setLocationValue(candidateDetailsService
+							   .getLocationDetails(file.getRegionScopes()
+									.getRegionScopesId(), locationVal1));
+	    				  }else if(locationVal.charAt(0) == '1'){
+	    					  
+                           List<Long> locationValuesList = null;
+	    					  
+	    					  Long locationVal1 = Long.parseLong(locationVal.substring(1));
+	    					  
+	    					  List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationVal1);
+	    		 	    	  
+	    		 	    	  if(localElectionBodyList != null && localElectionBodyList.size() >0){
+	    		 	    		  
+	    		 	    		 locationValuesList = new ArrayList<Long>();
+	    		 	    		 
+	    		 	    		Long id = (Long)localElectionBodyList.get(0);
+	    		 	    		
+	    		 	    		List<String> nameList = localElectionBodyDAO.getLocalElectionBodyNameById(id);
+	    		 	    		  
+	    		 	    		if(nameList != null && nameList.size() >0)
+	    		 	    		fileVO.setLocationValue(nameList.get(0));
+	    		 	    	  }
+	    					  
+	    					  
+	    				  }
+	    			  }else{
+	    				  
+	    				  fileVO.setLocationValue(candidateDetailsService
+	  							.getLocationDetails(file.getRegionScopes()
+	  									.getRegionScopesId(), file
+	  									.getLocationValue()));
+	    				  
+	    				  
+	    			  }
+	    		  }
 	    		  
 	    		  fileVOList.add(fileVO);
 	    	  }
@@ -1086,11 +1143,6 @@ public class NewsMonitoringService implements INewsMonitoringService {
  	    		  locationValuesList.add((Long)localElectionBodyList.get(0));
  	    		  
  	    	  }
- 	    		  
- 	       
-        	   
-        	   
-        	   
            }
         	   
 			List<Object[]> countByCategoryList = fileGallaryDAO
