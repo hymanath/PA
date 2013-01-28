@@ -1226,6 +1226,12 @@
            		<param name="root">constituencyRevenueVillagesVO</param>
         	</result>		
         </action>
+        
+        <action name="assemblyWiseResultAction" class="constituencyPageAction" method="getConstituencyAssemblyWiseResults">
+              <result type="json" name="success">
+           		<param name="root">constituencyResultsVO</param>
+        	</result>		
+        </action>
          
          <action name="constituencyWiseMandalElectionsResultAction" class="constituencyPageAction" method="getPartyWiseConstituencyZptcOrMptcElectionTrends">
               <result type="json" name="success">
@@ -4221,6 +4227,12 @@
 		<action name="getNewsByLocation" class="candidateElectionResultsAction" method="getNewsByLocationAndCategory">
 		<result type="json" name="success">
            		<param name="root">allNewsList</param>
+        </result>
+		</action>
+		
+		<action name="getNewsByLocationAndCategoryInPopup" class="candidateElectionResultsAction" method="getNewsByLocationAndCategoryInPopup">
+		<result type="json" name="success">
+           		<param name="root">allNewsListForPopup</param>
         </result>
 		</action>
 		
