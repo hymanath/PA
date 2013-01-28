@@ -1714,21 +1714,22 @@ function fillDataForCadreLevel(results,jsObj)
 			
 
 		var eventStr='';
-		eventStr+='<div class="hd" style="color:#2B4E70;">Event Details...</div> ';
-		eventStr+='<div class="bd">'; 
+		eventStr+='<div class="hd" style="color: rgb(43, 78, 112); cursor: move; height: 25px; font-size: 15px; font-family: serif;">Event Details...</div> ';
+		eventStr+='<div class="bd" style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;">'; 		
+		eventStr+='<div id="errorMessgDIV">&nbsp;</div> ';
 		eventStr+='<table class="selectedDateEvent">';
 		eventStr+='<tr>';
-		eventStr+='<th>Title<font color="red"> *</font></th>';		
+		eventStr+='<th style="font-size: 13px;">Important Date Title :<font color="red"> *</font></th>';		
 		if(jsObj.taskType == "impEvent")
 		{
 			eventStr+='<td colspan="3">';
-			eventStr+='<input type="text" id="eventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'title\')" value="'+results.title+'">';
+			eventStr+='<input type="text" id="eventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'title\')" value="'+results.title+'" >';
 			eventStr+='</td>';
 		}
 		else if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<td colspan="3">';
-			eventStr+='<input id="ImpeventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impDate\',\'title\')" value="'+results[0].title+'">';
+			eventStr+='<input id="ImpeventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impDate\',\'title\')" value="'+results[0].title+'" style="border-radius: 3px 3px 3px 3px; border: 1px solid rgb(195, 195, 195); width: 218px; height: 35px; margin-bottom: 7px;">';
 			eventStr+='</td>';					
 		}
 		eventStr+='</tr>';
@@ -1738,7 +1739,7 @@ function fillDataForCadreLevel(results,jsObj)
 			eventStr+='<tr>';
 			if(results.startDate)
 			{
-				eventStr+='<th>Start date</th>';
+				eventStr+='<th style="font-size: 13px;">Start date :</th>';
 				eventStr+='<td>';
 				eventStr+='<div><input type="text" id="startDateText" readonly="readonly" name="startDateText" value="'+sDayobj.day+'/'+sDayobj.month+'/'+sDayobj.year+'" onfocus="showDateCal(\'startDateText_Div\',this.value)"/></div>';
 				eventStr+='<div id="startDateText_Div" class="tinyDateCal"></div>';
@@ -1746,7 +1747,7 @@ function fillDataForCadreLevel(results,jsObj)
 			}
 			if(results.endDate)
 			{
-				eventStr+='<th>End date</th>';
+				eventStr+='<th style="font-size: 13px;">End date :</th>';
 				eventStr+='<td>';
 				eventStr+='<div><input type="text" id="endDateText" readonly="readonly" name="endDateText" value="'+eDayobj.day+'/'+eDayobj.month+'/'+eDayobj.year+'" onfocus="showDateCal(\'endDateText_Div\',this.value)"/></div>';
 				eventStr+='<div id="endDateText_Div" class="tinyDateCal"></div>';
@@ -1756,7 +1757,7 @@ function fillDataForCadreLevel(results,jsObj)
 			eventStr+='<tr>';
 			if(results.startDate)
 			{		
-				eventStr+='<th>Start Time</th>';
+				eventStr+='<th style="font-size: 13px;">Start Time :</th>';
 				eventStr+='<td>';
 				eventStr+='<select id="startTimeHrs" name="startTimeText" class="timeSelect">';		
 				for(var i=0;i<=23;i++)
@@ -1776,7 +1777,7 @@ function fillDataForCadreLevel(results,jsObj)
 			}
 			if(results.endDate)
 			{
-				eventStr+='<th>End Time</th>';
+				eventStr+='<th style="font-size: 13px;">End Time :</th>';
 				eventStr+='<td>';
 				eventStr+='<select id="endTimeHrs" name="endTimeText" class="timeSelect">';
 				for(var i=0;i<=23;i++)
@@ -1801,7 +1802,7 @@ function fillDataForCadreLevel(results,jsObj)
 		{
 			eventStr+='<tr>';
 
-			eventStr+='<th>Imp date</th>';
+			eventStr+='<th style="font-size: 13px;">Imp date :</th>';
 			eventStr+='<td>';
 			eventStr+='<div><input type="text" id="ImpStartDateText" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_Div\')"/></div>';
 			eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
@@ -1810,7 +1811,7 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description<font style="color:red"> *</font></th>';
+		eventStr+='<th style="font-size: 13px;">Description :<font style="color:red"> *</font></th>';
 		if(jsObj.taskType == "impEvent")
 		{
 				eventStr+='<td colspan="3">';
@@ -1831,7 +1832,7 @@ function fillDataForCadreLevel(results,jsObj)
 		{	
 			eventCadresArray = results.organizers;
 			eventStr+='<tr>';
-			eventStr+='<th>Organizers</th>';
+			eventStr+='<th style="font-size: 13px;">Organizers :</th>';
 			if(results.organizers != null)
 			{
 				eventStr+='<td colspan="3">';
@@ -1903,7 +1904,7 @@ function fillDataForCadreLevel(results,jsObj)
 		if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<tr>';
-			eventStr+='<th>Repeat Frequency</th>';
+			eventStr+='<th style="font-size: 13px;">Repeat Frequency :</th>';
 			if(results[0].frequency != null)
 				eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';		
 			else
@@ -1911,7 +1912,7 @@ function fillDataForCadreLevel(results,jsObj)
 			
 			if(results[0].endDate)
 			{
-				eventStr+='<th>Repeat Until</th>';
+				eventStr+='<th style="font-size: 13px;">Repeat Until :</th>';
 				eventStr+='<td>';
 				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
@@ -1921,12 +1922,11 @@ function fillDataForCadreLevel(results,jsObj)
 			eventStr+='</tr>';
 		}
 		
-		eventStr+='<tr>';
-		eventStr+='<td><input type="button" value="Update" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')"></input></td>';
-		eventStr+='<td><input type="button" value="Delete" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')"></input></td>';		
-		eventStr+='</tr>';
-		
 		eventStr+='</table>';
+		eventStr+='<div class="ui-dialog-buttonset">';
+		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;"></input>';
+		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit; margin-left: 640px;" ></input>';		
+		eventStr+='</div>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
 
@@ -2091,7 +2091,7 @@ function fillDataForCadreLevel(results,jsObj)
 			selectedDateObj.task="createImpDateEvent";
 		}*/
 		if(type == 'impEvent')
-		{				
+		{			
 			var eventNameVal = document.getElementById("eventNameText").value;
 			var startDateVal = document.getElementById("startDateText").value;
 			var endDateVal = document.getElementById("endDateText").value;
@@ -2128,6 +2128,35 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 		else if(type == 'impDate')
 		{
+			var ImpeventNameValue = $("#ImpeventNameText").val();			
+			var ImpDescValu = $("#ImpdescTextArea1").val();
+			var ImpDescVallength=ImpDescValu.trim().length;
+			
+		if(ImpeventNameValue == '')
+		    {
+			document.getElementById("errorMessgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
+			return;
+			}
+			else if ( ImpeventNameValue != null)
+			{ 				
+				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				
+		            for (var i = 0; i < ImpeventNameValue.length; i++)
+                {      
+                    if (iChars.indexOf(ImpeventNameValue.charAt(i)) != -1)
+                    {   
+					document.getElementById("errorMessgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+					return false;
+                    } 
+                }
+			
+			}
+			
+		if(ImpDescVallength==0){
+					document.getElementById("errorMessgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+				return;
+			}
+
 			var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 			var ImpstartDateVal = document.getElementById("ImpStartDateText").value;		
 			var ImpendDateVal = document.getElementById("ImpEndDateText").value;		
@@ -3593,7 +3622,7 @@ function fillDataForCadreLevel(results,jsObj)
 				  y:700,
 				  hideaftersubmit:true,
 		          buttons : [ { text:"Create New Date", handler:handleImpDateSubmit, isDefault:true }, 
-	                          { text:"Cancel", handler:handleImpDateCancel } ]
+	                          { text:"Cancel", handler:handleImpDateCancel,isDefault:true } ]
 	             } ); 
 		newDateDialog .render(); 
 	}
