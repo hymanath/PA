@@ -26,7 +26,7 @@ function getVideoDetails(contentId)
 }
 
 function getContentDetails(contentId)
-{
+{   $("#showAjaxImgForNews").show();
 	//document.getElementById("contentAjaxCallImg").style.display="block";
 	var jsObj =
 		{   
@@ -109,7 +109,7 @@ var commentsObject = new Object();
 var result;
 function buildContentDetails()
 {
-
+  $("#showAjaxImgForNews").hide();
 //console.log(111);
 	//document.getElementById("contentAjaxCallImg").style.display="none";
 	result = showContentResultList;
@@ -946,6 +946,7 @@ str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
 
   $('#newsDisplayOuterDiv').dialog({    title:'News Details',
 	                            height: 'auto',
+								minHeight:450,
 								width: 950,
 								closeOnEscape: false,
 								position:[30,30],
