@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.CommentVO;
+import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -46,6 +47,7 @@ import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -77,7 +79,20 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IUserDAO userDAO;
 	private TransactionTemplate transactionTemplate;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IContentManagementService contentManagementService;
+	private ContentDetailsVO contentDetailsVO;
 	
+	
+	
+	public IContentManagementService getContentManagementService() {
+		return contentManagementService;
+	}
+
+	public void setContentManagementService(
+			IContentManagementService contentManagementService) {
+		this.contentManagementService = contentManagementService;
+	}
+
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
 	}
@@ -1222,6 +1237,72 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		
 	}
 	
+	//by sasi start
+	public ContentDetailsVO getNewsByLocationAndCategoryInPopup(FileVO fileVO){
+		log.debug("Entered into the getNewsByLocationAndCategoryInPopup service method");
+		
+		
+		List<FileVO> fileList = new ArrayList<FileVO>();
+		List<FileGallary> filesList =new ArrayList<FileGallary>();
+		
+		try{
+		
+			List<Long> candidateIds = getCandidateDetailsByRegistrationId(fileVO.getUserId());
+	
+	        List<Long> locationValuesList = new ArrayList<Long>();			
+	        locationValuesList.add(fileVO.getLocationVal());
+			
+			
+	       if(fileVO.getLocationId() == 3){
+	    	   
+	       
+				//locationValuesList = getAllBoothsInPanchayat(fileVO.getLocationVal(),
+						//fileVO.getPublicationId(), locationValuesList);
+	    	   locationValuesList = new ArrayList<Long>();
+	    	   
+	    	  List<Object[]> hamletsList =  panchayatHamletDAO.getHamletsOfAPanchayat(fileVO.getLocationVal());
+	    	  
+               for(Object[] obj:hamletsList){
+            	   locationValuesList.add((Long)obj[0]);
+            	   
+            	   
+               }
+               fileVO.setLocationId(6L);
+				
+				//fileVO.setLocationId(9L);
+	       }
+	       
+	       if(fileVO.getLocationId() == 7){
+	    	   
+	    	  List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(fileVO.getLocationVal());
+	    	  
+	    	  if(localElectionBodyList != null && localElectionBodyList.size() >0){
+	    		  
+	    		  
+	    		  locationValuesList = new ArrayList<Long>();	    		  
+	    		  locationValuesList.add((Long)localElectionBodyList.get(0));
+	    		  
+	    	  }
+	    		  
+	       }
+	       filesList = fileGallaryDAO.getNewsByLocationAndCategoryInPopup(
+					candidateIds,fileVO,locationValuesList); 
+	       
+	       
+	       contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleriesInPopup(fileVO.getContentId(),fileVO.getRequestFrom(),fileVO.getRequestPageId(),fileVO.getIsCustomer(),filesList);
+	      
+	       return contentDetailsVO;
+			}catch(Exception e){
+			
+			log.error("Exception raised in  the getNewsByLocationAndCategory service method");
+			e.printStackTrace();
+			return null;
+			
+		}
+		
+	}
+	
+	
 	
 	public List<FileVO> getNewsByLocationAndCategory(FileVO fileVO){
 		
@@ -1229,6 +1310,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		
 		
 		List<FileVO> fileList = new ArrayList<FileVO>();
+		List<Object[]> filesList =new ArrayList<Object[]>();
 		
 		try{
 		
@@ -1272,7 +1354,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	       }
 	       
 	       
-	       List<Object[]> filesList = fileGallaryDAO
+	       filesList = fileGallaryDAO
 					.getNewsByLocationAndCategory(
 							candidateIds,fileVO,locationValuesList);
 	       
@@ -1283,11 +1365,72 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    	   
 	    	   FileVO file = new FileVO();
 	    	   
-	    	   file.setTitle(fileDetails.getFileTitle());
-	    	   file.setDescription(fileDetails.getFileDescription());
-	    	   file.setContentId((Long)obj[1]);
 	    	   
-	    	   fileList.add(file);
+	    	     Set<FileSourceLanguage> fileSourceLanguageSet = fileDetails.getFileSourceLanguage();
+	    		 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
+	    		 Set<String> sourceSet = new HashSet<String>();
+	 			 Set<String> languageSet = new HashSet<String>();
+	 			 StringBuilder sourceVal =new StringBuilder();
+				 StringBuilder languageVal =new StringBuilder();
+				 
+				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+					 if(fileVO.getSourceId() == null && fileVO.getLanguegeId() == null)
+					 {
+						  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+						  if(fileSourceLanguage.getSource() != null)
+						  sourceSet.add(fileSourceLanguage.getSource().getSource());
+						  if(fileSourceLanguage.getLanguage() != null)
+						  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+					 }
+					 else if(fileVO.getLanguegeId() != null){
+						 if(fileVO.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
+						 {
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							 if(fileSourceLanguage.getSource() != null)
+							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							 if(fileSourceLanguage.getLanguage() != null)
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+					 }
+					 else if(fileVO.getSourceId() != null){
+						 if(fileVO.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
+						 { 
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							 if(fileSourceLanguage.getSource() != null)
+							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							 if(fileSourceLanguage.getLanguage() != null)
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+					 }
+					 
+				 }
+				 
+				 
+				 for(String source:sourceSet){
+					 sourceVal.append(source);
+					 sourceVal.append("-");
+				 }
+	             for(String language:languageSet){
+	            	 languageVal.append(language);
+	            	 languageVal.append("-");
+				 }
+	             if(sourceVal != null && sourceVal.length() > 0)
+	             sourceVal.deleteCharAt(sourceVal.length() - 1);
+	             if(languageVal != null && languageVal.length() > 0)
+	             languageVal.deleteCharAt(languageVal.length() - 1);
+	             file.setMultipleSource(fileVOSourceLanguageList.size());
+	             Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+	             file.setFileVOList(fileVOSourceLanguageList);
+			
+			
+    		  file.setSource(sourceVal!=null?sourceVal.toString():"");
+    		  file.setLanguage(languageVal!=null?languageVal.toString():"");
+	    	  file.setTitle(fileDetails.getFileTitle());
+	    	  file.setDescription(fileDetails.getFileDescription());
+	    	  file.setContentId((Long)obj[1]);
+	    	  file.setFileDate(fileDetails.getFileDate()!=null?fileDetails.getFileDate().toString():"");
+	    	   
+	    	  fileList.add(file);
 	    	   
 	       }
 			
