@@ -1119,6 +1119,7 @@
 		<property name="userDAO" ref="userDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
+		<property name="contentManagementService" ref="contentManagementService" />
 		
 	</bean>
 	
