@@ -1571,6 +1571,30 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		
 	}
 	
+	public List<FileGallary> getNewsByLocationAndCategoryInPopup(List<Long> candidateIds,
+			FileVO fileVO, List<Long> locationValuesList) {
+		
+		
+		Query query = getSession()
+				.createQuery(
+						"select model" +
+						" from FileGallary model where model.gallary.candidate.candidateId in(:candidateIds) " +						
+					    " and model.file.regionScopes.regionScopesId = :locationScopeId and " +
+					    " model.file.locationValue in( :locationValuesList) "+
+					    " and model.file.category.categoryId = :categoryId " +
+					    "and model.file.newsImportance.newsImportanceId = :newsImportanceId");
+					   
+		
+		query.setParameterList("candidateIds", candidateIds);
+		query.setParameter("locationScopeId", fileVO.getLocationId());
+		query.setParameterList("locationValuesList", locationValuesList);
+		query.setParameter("categoryId", fileVO.getCategoryId());
+		query.setParameter("newsImportanceId", fileVO.getImportanceId());
+		
+		return query.list();
+		
+	} 
+	
 	
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForACandidate(
 			List<Long> candidateIds, Long categoryId, Long locationId,
