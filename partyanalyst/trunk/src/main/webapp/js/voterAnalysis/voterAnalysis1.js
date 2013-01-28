@@ -3596,7 +3596,7 @@ var jsObj=
 		case 0: // Build Mandal Menu
 		  if(menudata[0].mandalList!=null){
 		  $.each(menudata[0].mandalList, function(iter,mandals){
-            str+='<li><a data-mandalid="'+ mandals.id+'" name-mandal="'+mandals.name+'"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+mandals.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+mandals.name+'</a></li>';
+            str+='<li><a onClick="" data-mandalid="'+ mandals.id+'" name-mandal="'+mandals.name+'"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+mandals.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+mandals.name+'</a></li>';
 		  });}
 		  $(".middleNav ul").html("");
 		 break;
@@ -3604,7 +3604,7 @@ var jsObj=
 		 case 1: // Build municipality Menu	
 		  if(menudata[0].localbodiesList!=null){
 		  	$.each(menudata[0].localbodiesList, function(iter,municipality){
-		  	str+='<li><a data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+'"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name+'</a></li>';
+		  	str+='<li><a onClick="" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+'"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name+'</a></li>';
 		  }); }
 		  $(".middleNav ul").html("");
 		 break;
@@ -3615,7 +3615,7 @@ var jsObj=
 		    $.each(menudata[0].mandalList, function(iter,mandals){
 		     if(mandalid==mandals.id && mandals.selectOptionsList != null){
 					  $.each(mandals.selectOptionsList,function(iter,panchayats){
-					str+='<li><a data-panchayatid="'+ panchayats.id+'" data-mandalid="'+ mandals.id+'" name-panchayat="'+panchayats.name+' Panchayat"><span class="checkbox"> <input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+panchayats.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span><i class="icon-chevron-right"></i>'+panchayats.name+'</a></li>';
+					str+='<li><a onClick="" data-panchayatid="'+ panchayats.id+'" data-mandalid="'+ mandals.id+'" name-panchayat="'+panchayats.name+' Panchayat"><span class="checkbox"> <input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+panchayats.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span><i class="icon-chevron-right"></i>'+panchayats.name+'</a></li>';
 					 });
 			}
 			});
