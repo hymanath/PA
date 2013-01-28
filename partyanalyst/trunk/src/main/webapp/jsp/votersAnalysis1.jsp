@@ -591,6 +591,10 @@ h5{font-family : Arial;}
   #partyWiseDetailsDiv{
      margin-left:42px;
   }
+  #showAjaxImgForNews{ 
+    margin-left: 340px;
+    margin-top: 110px;
+   }
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -619,6 +623,7 @@ locationDetails.constituencyArr.push(ob);
 <body>
 <!--DISPLAY NEWS GALLARIES START-->
  <div id="showContentDiv">
+    <div id="showAjaxImgForNews" style="display:none"><img src="images/icons/goldAjaxLoad.gif"/></div>
 	<div id="showContentDivInnerDiv"></div>
 	<div id="showContentDivInnerDiv"></div>
  </div>
