@@ -737,7 +737,10 @@ for  body3 start    result  -->
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
 	   </div>
-	<div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
+	   
+	  <!-- <div id="problemsCountDiv" style="clear:both;">
+	   </div>-->
+	   <div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
@@ -747,7 +750,7 @@ for  body3 start    result  -->
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
 
-<div id="votersInfoMoreShowHide" style="display:none;"><a style="margin:6px 0px 0px 755px;" class="btn" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</a></div>
+<div id="votersInfoMoreShowHide" style="display:none;"><a href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</a></div>
 <div id="votersOuterDiv1" style="display:none;">
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -791,7 +794,7 @@ for  body3 start    result  -->
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
-<span id="ageLink" style="display:none;float:right;"><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></span>
+<span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></b></span>
 
 
 <div id="ageWiseVotersDetailsOuterDiv">
@@ -847,6 +850,8 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
 	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>-->
+	 <span id="ImpFamwiseAjaxDiv" style="display: block; margin-top: 10px; float: right; clear: both; margin-right: 10px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
+
      	<div id="ImportantFamiliesDiv" class="divInfo">
 	<div id ="impFamilesBasicDetails"></div>
 	</br>
@@ -894,8 +899,9 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubChartDivForLclCastSts"></div>
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
     </div>-->
-	<div id='LocalCastDiv' class="divInfo">
 	
+	<span id="castewiseAjaxDiv" style="display: block; margin-top: 10px; float: right; clear: both; margin-right: 10px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+	<div id='LocalCastDiv' class="divInfo">
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	
 		<div id='localCastStatsTabContent_header'></div>
@@ -906,7 +912,8 @@ for  body3 start    result  -->
 	</div><br>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable">	</div><br>
 	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="margin-top:25px;">	</div>
-	<div id='localCastStatsTabContent_subbody'></div><br><br>
+	<div id='localCastStatsTabContent_subbody'>
+	</div><br><br>
 	<div id="localCastStatsVotersPopUpDiv" style="display:none;">
 	    <div id ="localCastStatsVotersTitle" ></div>
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div><br>
