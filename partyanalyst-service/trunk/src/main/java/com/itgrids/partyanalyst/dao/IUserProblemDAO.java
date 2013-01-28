@@ -176,6 +176,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 
 	 public Long getAllPrivateProblemsByLocation(Long locationValue,Long userId,Long locationId,String status);
 	 
-	 public Long getAllPrivateProblemsBySource(Long locationValue,Long userId,Long locationId,Long sourceId);
+	 public List<Long> getAllPrivateProblemsBySource(Long locationValue,Long userId,Long locationId,Long sourceId);
 	 
 }

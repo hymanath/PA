@@ -210,6 +210,6 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public List<ProblemBeanVO> getProblemDetailsForVoterPage(Long userId,Long locationId,Long locationValue);
 	
-	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status);
+	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status,Long informationsrcId);
 	
 }
