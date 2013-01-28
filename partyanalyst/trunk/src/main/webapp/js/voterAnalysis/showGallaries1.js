@@ -769,7 +769,9 @@ function callAjaxToShowNewsDetails(jObj,url){
 
 
 function  buildProblemsCount(results){
-
+	
+	if(results == null || results.length == 0)
+		return;
 
 	//$('#newsCountDiv').html('');
 	//$('#newsDisplayDiv').html('');
