@@ -911,9 +911,27 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 
 			 file.setFileDate(fileDate);
 			 
-			 if(fileVO.getLocationScope() != 0)
-			 file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
-			 file.setLocationValue(fileVO.getRegionValue());
+			 if(fileVO.getLocationScope() != 0){
+				 
+				 if(fileVO.getLocationScope().longValue() != 7){
+					 file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));				 
+					 file.setLocationValue(fileVO.getRegionValue());
+				 }else{
+					 file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));	
+					 List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(fileVO.getRegionValue());
+					 
+					 if(localElectionBodyList != null && localElectionBodyList.size() >0){
+						 
+						List<Long> locationValuesList = new ArrayList<Long>();	    		  
+						 file.setLocationValue((Long)localElectionBodyList.get(0));
+						 
+						 
+						 
+					 }
+					 
+					 
+				 }
+			 }
 			 
 			 fileDAO.save(file);
 			 
