@@ -41,6 +41,36 @@ function getContentDetails(contentId)
 	var url = "getSelectedContentAndRelatedGalleriesAForCustomer.action?"+rparam;
 	callAjaxForSpecialPage(jsObj,url); 
 }
+
+/*function callAjaxToShowProblemDetails(jObj,url){
+		
+			 var myResults;
+
+			 var callback = {			
+ 		              success : function( o ) {
+					try {
+						
+				       myResults = YAHOO.lang.JSON.parse(o.responseText);
+
+					   if(jObj.task == "getProblemsByLocation")
+                          buildProblemsCountByLocation(myResults,jObj);					  
+					  else if(jObj.task == "getProblemDetailsByLocation")
+						buildProblemDetailsByStatus(myResults,jObj);
+					  
+							
+					}catch (e) {
+						//alert('error');
+					}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+						  // alert('error');
+ 		                }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
+
+	}*/
 var showContentResultList;
 function callAjaxForSpecialPage(jsObj,url)
 {
@@ -769,9 +799,7 @@ function callAjaxToShowNewsDetails(jObj,url){
 
 
 function  buildProblemsCount(results){
-	
-	if(results == null || results.length == 0)
-		return;
+
 
 	//$('#newsCountDiv').html('');
 	//$('#newsDisplayDiv').html('');
@@ -791,40 +819,38 @@ function  buildProblemsCount(results){
 	//str+='<div class="span3" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 5px;background-color:#f5f5f5;">';
 	//str+='</div>';
  if(results != null && results.length >0)
-  str+='<h5 style="margin-left:15px;">'+newsString+'</h5>';
-
+   str+='<h5 style="margin-top: 6px; margin-bottom: 4px;">News Glance</h5>';
+   
+//str+='<h5 style="margin-left:15px;">'+newsString+'</h5>';
 
 	for(var i=0;i<results.length;i++){
 
 		 var categoryId = results[i].categoryId;
 
-	   str+='<div class="" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 15px;background-color:#f5f5f5;height:100px;width:275px;">';
+	   str+='<div class="span3 btn" style="margin:10px 17px;">';
 
-	   str+='<div style="text-align:center;margin-top:6px;font-family:verdana;height:30px;">';
-	   str+='<a>'+results[i].categoryName+'</a>';
-	   str+='</div>';
+	   str+='<h5 class="widget-block" style="font-size:16px;padding:5px 5px;padding-right:0px;margin-top:0px;">';
+	   str+='<a style="color:#555;">'+results[i].categoryName+'</a>';
+	   str+='</h5>';
 
-		str+='<div style="margin-top:3px;margin-left:30px;">';
+		str+='<div class="row-fluid" style="text-align:center;margin-top:10px;margin-bottom:10px;">';
 
 		if(results[i].highImpactCount != null)
-			str+='<span class="badge badge-info" style="margin-left:30px">'+results[i].highImpactCount+'</span>';
+			str+='<div class="span4"><span class="btn btn-danger">'+results[i].highImpactCount+'</span>'+'<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">High</a></div>';
 		else
-			str+='<span class="badge badge-info" style="margin-left:30px">0</span>';
+			str+='<div class="span4"><span class="btn btn-danger">0</span>'+'<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">High</a></div>';
+			
 		if(results[i].mediumImpactCount != null)
-			str+='<span style="margin-left:29px" class="badge badge-info">'+results[i].mediumImpactCount+'</span>';
+			str+='<div class="span4"><span class="btn btn-info">'+results[i].mediumImpactCount+'</span>'+'<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">Medium</a></div>';
 		else
-			str+='<span style="margin-left:29px" class="badge badge-info">0</span>';
+			str+='<div class="span4"><span class="btn btn-info">0</span>'+'<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">Medium</a></div>';
+			
 		if(results[i].lowImpactCount != null)
-			str+='<span class="badge badge-info" style="margin-left: 22px;">'+results[i].lowImpactCount+'</span>';
+			str+='<div class="span4"><span class="btn">'+results[i].lowImpactCount+'</span>'+'<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;" >Low</a></div>';
 		else
-			str+='<span class="badge badge-info" style="margin-left: 22px;">0</span>';
+			str+='<div class="span4"><span class="btn">0</span>'+'<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}"  style="clear:both;display:inline-block;width:100%;text-align:center;">Low</a></div>';
+			
 		str+='</div>';
-		str+='<div style="margin-top:3px;margin-left:22px;">';
-			str+='<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" class="linkClass" style="margin-left:34px">High</a>';
-			str+='<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" class="linkClass" style="margin-left:25px" >Medium</a>';
-			str+='<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" class="linkClass" style="margin-left: 26px;">Low</a>';
-		str+='</div>';
-
 		str+='</div>';
 	}
 
@@ -941,3 +967,149 @@ function incrementStartEndIndexes(importanceId,categoryId){
 	getNews(importanceId , categoryId);
 
 }
+
+
+/*function buildProblemsCountByLocation(results,jsObj)
+{
+	
+	document.getElementById('problemsCountDiv').style.display = 'block';
+	var str='';
+	var locationId = jsObj.locationId;
+	var locationValue=jsObj.locationValue;
+	var status = '';
+	var divEle = document.getElementById('problemsCountDiv');
+	$("#problemsCountDiv").css({'float':'left','margin':'6px 3px 6px 12px','background-color':'#f5f5f5','width':'940px'});
+	str+='<div class="row breadcrumb"> ';
+	str+='<div class="span11 breadcrumb"><h5>Problems</h5></div>';
+	str+='<div class="span5"> ';
+	str+='<div class="row-fluid"> ';
+	str +='<div class="span4 center"><span class="badge badge-info badge-add" style="background:#55FE56;"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'FIXED\',0);">'+results[0].fixedProblems+'</a></span><div>Resolved</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<div class="span4 center"><span class="badge badge-info badge-add"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PROGRESS\',0);">'+results[0].progressProblems+'</a></span><div>Progress</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str +='<div class="span4 center" style="margin-top:-15px;"><span class="badge badge-info badge-add"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'PENDING\',0);">'+results[0].pendingProblems+'</a></span><div>Pending</div></div>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str+='</div>';
+	str+='</div>';
+	str+='<div class="span5" style="padding:5px 0px 5px 0px;border:1px solid #d3d3d3;"> ';
+	str+='<div class="row-fluid"> ';
+	str +='<div class="span2"><h5 style="margin-left:10px;">NEW</h5></div>';
+	str +='<div class="span4"><span class="badge badge-info badge-add" style="background:red;"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',4);">'+results[0].cadreProblems+'</a></span><div>Cadre</div></div>';
+	str +='<div class="span4"><span class="badge badge-info badge-add" style="background:red;"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',1);">'+results[0].userProblems+'</a></span><div>PAUser</div></div>';
+	str+='</div> ';
+	str+='</div> ';
+
+	str+='</div> ';
+	divEle.innerHTML=str;
+	
+}
+function getProblemsByLocation(id,publicationId,type)
+{
+	document.getElementById('problemsCountDiv').style.display = 'none';
+	//var level = $("#reportLevel").val();
+	var locationId =0;
+	
+	var locationValue =0;
+	locationValue = id;
+	if(type == "constituency"){
+		
+		locationId = 4;
+	}
+	else if(type == "mandal")
+	{
+		
+		locationId = 5;
+	}
+	else if(type == "panchayat")
+	{
+		
+		locationId = 3;
+		return;
+	}
+	else if(type == "booth")
+	{
+		
+		locationId = 9;
+		return;
+	}
+	var jObj=
+	{
+		locationValue:locationValue,
+		locationId:locationId,
+		//publicationId:0,
+		
+		task:"getProblemsByLocation"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getProblemsByLocation.action?"+rparam;	
+
+	callAjaxToShowProblemDetails(jObj,url);
+}
+
+
+function getProblemDtailsByStatus(locationId,locationValue,status,srcId)
+{
+
+var jObj=
+	{
+		locationValue:locationValue,
+		locationId:locationId,
+		status : status,
+		
+		task:"getProblemDetailsByLocation"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getProblemsByLocation.action?"+rparam;	
+
+	callAjaxToShowProblemDetails(jObj,url);
+}
+
+function buildProblemDetailsByStatus(result)
+{
+
+	var str='';
+	
+	$("#problemPopUp").dialog({ 
+	                            title:'Problem Details',
+	                            height: 'auto',
+								width: 950,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+	var divEle = document.getElementById("ProblempopupInnerDiv");
+	if(result != null)
+	{
+	for(var i in result)
+	{
+		str += '<div class ="widget-block">';
+				
+		str+='<div><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemId+'" ><h6>'+(result[i].problem)+'</h6></a></div>';
+		str+='<div><span class="pull-left" style="color:#51A451;margin-right: 4px;">Existing From:</span><span>'+result[i].existingFrom+'</span><span style="margin-left:10px;color:#51A451;margin-right: 4px;">Identified On:</span><span>'+result[i].identifiedOn+'</span><div class="star pull-right"></div><input type="hidden" style="display:none;" value='+result[i].averageRating.avgRating +'" >';
+		str+='</div>';
+		str += '<p style="padding-top:5px;margin-bottom:10px;font-family:arial;">'+result[i].description+' </p>';
+		
+		if(result[i].url != null){
+		
+	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;margin-right: 4px;">Posted by:  </span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'" class="label pull-right"> '+initialCap(result[i].problemLocation)+'</a>';
+	   }else{
+	     str += '<span class="pull-left" style="color:#8E8B8B;font-size:14px;font-weight:bold;margin-right: 4px;">Posted by:  </span>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+' <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<span class="label pull-right">'+initialCap(result[i].problemLocation)+'</span>';
+	   }
+		
+		
+		str += '</div>';
+	}
+	 divEle.innerHTML = str;
+	}
+}
+	
+	
+function initialCap(data) {
+   data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
+   return data;
+}*/
