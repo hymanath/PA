@@ -176,7 +176,7 @@ Quick Links</h2>
 				<!---- View Election Results------->
 							<div class="widget-block" contentindex="4c">
 								<h5> View Election Results</h5>
-								<p>You can view your Assembly or Parliment past Election Results.</p>
+								<p>You can view your Assembly or Parliment past Election Results.</p>						
 								<table>
 									<tbody>
 									<tr>
@@ -208,7 +208,7 @@ Quick Links</h2>
 								</table>
 								
 								    <button class="btn btn-success btn-small pull-right" type="button" onclick="viewElectionResults()">Go</button>
-								
+									<div id="processingDiv1" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
 							</div>
 					<!---------------->
 		
@@ -219,6 +219,8 @@ Quick Links</h2>
 								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
 								
 								<button class="btn btn-success btn-small clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
+								<div id="processingDivForState" style="display: none;height:30px;">
+								<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
 										
 							</div>
 						<!----View Your district------>
@@ -232,7 +234,7 @@ Quick Links</h2>
 									   <a onclick="navigateToDistrictPage()" href="javascript:{}">
 									     <button class="btn btn-success btn-small pull-right" type="button">Go</button>
 									   </a>
-								    
+								    <div id="processingDivForDistrict" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
 							</div>
 						<!--View your constituency-->
 							<div class="widget-block" contentindex="2c" >
@@ -264,6 +266,8 @@ Quick Links</h2>
 								</table>
 								
 								<button class="btn btn-success btn-small pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
+								 <div id="processingDivForConstituency" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
+
 							</div>
 							
 							<!--View your Locality-->
@@ -309,6 +313,8 @@ Quick Links</h2>
 								</div>
 								  
 								<button class="btn btn-success btn-small pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
+								
+								<div id="processingDivForLocality" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
 								  
 							</div>	
 							
@@ -803,6 +809,9 @@ getProblemDetails();
         }
  
     });  
+	$('#assembly_radio').attr('checked','checked');
+	$('#stateList_d').val(1);
+	$('#electionTypeId').val(0);
 	});
 $(document).ready(function(){
 	$(".ws_images li").each(function(i){
