@@ -666,7 +666,10 @@ public String getProblemsByLocation()
 		 {
 			 Long informationsrcId = jObj.getLong("srcId");
 			 String status = jObj.getString("status");
-			 problemDetails = problemManagementService.getProblemDetailsInfoVoterPage(userId,locationId,locationValue,status,informationsrcId);
+			 String startIndex = request.getParameter("startIndex");
+			 String maxIndex = request.getParameter("maxIndex");
+			 
+			 problemDetails = problemManagementService.getProblemDetailsInfoVoterPage(userId,locationId,locationValue,status,informationsrcId,Integer.parseInt(startIndex),Integer.parseInt(maxIndex));
 		 }
 		// problemBeanVO.setProblemBeanVOList(problemDetails);
 	}
