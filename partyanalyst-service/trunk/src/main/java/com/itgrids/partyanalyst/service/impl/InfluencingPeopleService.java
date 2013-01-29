@@ -600,10 +600,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeopleBeanVO.setOccupation(parms[7]!=null?parms[7].toString():"");
 				influencingPeopleBeanVO.setOccupationType(occupationDAO.get(new Long(parms[7].toString())).getOccupation());
 				influencingPeopleBeanVO.setParty(parms[8]!=null?parms[8].toString():"");
+				if(parms[8]!=null){
 				influencingPeopleBeanVO.setPartyName(partyDAO.get(new Long(parms[8].toString())).getShortName());
+				}
 				influencingPeopleBeanVO.setCast(parms[9]!=null?parms[9].toString():"");
+				if(parms[9]!=null)
 				influencingPeopleBeanVO.setCastType(socialCategoryDAO.get(new Long(parms[9].toString())).getCategory());
 				influencingPeopleBeanVO.setPosition(parms[10]!=null?parms[10].toString():"");
+				if(parms[10]!=null)
 				influencingPeopleBeanVO.setPositionType(influencingPeoplePositionDAO.get(new Long(parms[10].toString())).getPosition());
 				
 		
