@@ -2006,7 +2006,8 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
   
   }
 
-  if(locationScopeId == 5 || locationScopeId == 7){
+
+  if(locationScopeId == 5 || locationScopeId == 7 || locationScopeId == 6){
 
 try{
     locationScopeValue = locationScopeValue.substring(1);
