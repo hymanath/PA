@@ -55,6 +55,8 @@
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+
   <title>Voters analysis</title>
 
 <style type="text/css">
@@ -619,6 +621,18 @@ h5{font-family : Arial;}
     position: relative;
 }
 
+#cnstHeading{
+	background: none repeat scroll 0 0 #48ADCB;
+    border-radius: 6px 6px 6px 6px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    height: 25px;
+    padding: 9px;
+    text-align: center;
+    width: 98%;
+}
+
 #problemsShowDIV h6{margin:0px;padding:0px;font-size:15px; text-decoration:none; font-weight:bold;text-transform:capitalize;}
 #problemsShowDIV a,#problemsShowDIV span{text-decoration:none;font-size:12px;}
 #problemsShowDIV .widget-block:nth-child(2n+1){background:#fff;}
@@ -675,7 +689,7 @@ locationDetails.constituencyArr.push(ob);
 
 <div id="AlertMsg"></div>
 <div id="ConstituencyDiv" class="selectDiv">
-	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();"/> &nbsp;&nbsp;
+	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();getConstituencyResults(this.value)"/> &nbsp;&nbsp;
 
 		
 	 Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
@@ -751,6 +765,10 @@ for  body3 start    result  -->
 
 	</div>
 	
+	<div id="constituencyInfo">
+		<div id="constituencyResults"></div>
+		<div id="constituencyPageElectionImgDiv"></div>
+	</div>
 	
  
  <!--<h5 id="reportTopLevelheading" style="margin-left:15px;"></h5>-->
@@ -1136,8 +1154,23 @@ function showAllAgewiseDetails(){
 	callAjax(jObj,url);
 	
 	}
-	
-	
+
+		
+function getConstituencyResults(conId,consName){
+var cnstncy=$('#constituencyList :selected').text();
+$('#constituencyInfo').val('');
+$('#constituencyInfo').css('display','block');
+	var jsObj = {
+			conId:conId,
+			cnstncy:cnstncy,
+			task:"getConstituencyResults"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/assemblyWiseResultAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+
 </script>
 </body>
 </html>
