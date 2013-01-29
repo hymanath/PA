@@ -1,3 +1,109 @@
+var news_Obj = {
+	
+	problemStatus:[],
+	
+	
+	};
+	
+	$(document).ready(function() {
+    $('#custom_paginator_class a').live("click",function() {
+	   
+        $('#custom_paginator_class a').removeClass('pagenationStyle');
+		$(this).addClass('pagenationStyle');
+      });
+	});
+	var startIndex=0;
+	var maxIndex=3;
+	var clickid = null;
+function copyId(id)
+{
+  clickid = id;
+}
+var custom_paginator = {
+	maxIndex:"",
+	startIndex:"",
+	ajaxCallURL:"",
+	initialParams:"",
+	resultsShown:"",
+	callBackFunction:"",
+	jObj:{},
+	results:{},
+	totalRecords:"",
+	paginatorElmt:"",		
+	paginator:function(obj){
+		this.startIndex = obj.startIndex;
+		this.ajaxCallURL = obj.ajaxCallURL;
+		this.jObj = obj.jObj;
+		this.callBackFunction = obj.callBackFunction;
+		this.paginatorElmt = obj.paginatorElmt;
+		this.maxIndex = obj.maxIndex;		
+	},	
+	doAjaxCall:function(start){
+		
+		var url = this.ajaxCallURL+"&startIndex="+start+"&maxIndex="+this.maxIndex;
+		
+		var callback = {	
+		
+	    success : function( o ) {
+		
+			try 
+			{				
+				results = YAHOO.lang.JSON.parse(o.responseText);
+				
+				if(results != null && results.length>0)
+				    this.totalRecords = parseInt(results[0].userProblems);	
+				else
+                     this.totalRecords = 0;
+					 this.buildPaginator();
+				this.callBackFunction();
+				
+			}
+			catch (e)
+			{   		
+				//alert("Invalid JSON result" + e);   
+			}  
+		},
+		scope : this,
+		failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				  }
+		};
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	},
+	initialize:function (){		
+		this.doAjaxCall(this.startIndex);
+	},
+	buildPaginator:function()
+	{
+	
+		var paginatorElmt = document.createElement('Div');
+		paginatorElmt.setAttribute("class","paginatorElmtClass");
+		var iteration = Math.ceil(this.totalRecords/this.maxIndex);		
+		var countIndex = this.startIndex;
+		var str = '';
+
+		if(iteration > 1)
+		{
+			for(var i=1; i<=iteration; i++)
+			{			
+				str += '<a href="javascript:{}" id="customPaginationId'+i+'" onclick="copyId(this.id);custom_paginator.doAjaxCall('+countIndex+')">'+i+'</a>';
+				countIndex+=this.maxIndex;
+			}
+		}
+		
+		if(document.getElementById("custom_paginator_class")!=null)	
+     	  document.getElementById("custom_paginator_class").innerHTML = str;
+		if(clickid != null)
+		{
+		 $("#"+clickid).addClass('pagenationStyle');
+		}
+		else
+		{
+		  $("#customPaginationId1").addClass('pagenationStyle');
+		}
+	}
+};
 
 function getVideoDetails(contentId)
 {
@@ -54,8 +160,8 @@ function callAjaxToShowProblemDetails(jObj,url){
 
 					   if(jObj.task == "getProblemsByLocation")
                           buildProblemsCountByLocation(myResults,jObj);					  
-					  else if(jObj.task == "getProblemDetailsByLocation")
-						buildProblemDetailsByStatus(myResults,jObj);
+					 /* else if(jObj.task == "getProblemDetailsByLocation")
+						buildProblemDetailsByStatus(myResults,jObj);*/
 					  
 							
 					}catch (e) {
@@ -992,7 +1098,7 @@ function buildProblemsCountByLocation(results,jsObj)
 	//str+='<div class="widget-block breadcrumb"> ';
 	//str+='<div class="row-fluid"> ';
 	if(results[0].newStatusProblems != 0)
-	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',0,\'NEW\');">'+results[0].newStatusProblems+'</a></span><span class="help-inline f2">New</span>';
+	str +='<span class="btn"><a id ="ProblemDetails" onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',0,\'NEW\');">'+results[0].newStatusProblems+'</a></span><span class="help-inline f2">New</span>';
 	else
 	str +='<span class="btn">'+results[0].newStatusProblems+'</span><span class="help-inline f2">New</span>';
 	if(results[0].fixedProblems != 0)
@@ -1088,20 +1194,43 @@ var jObj=
 		status : status,
 		title : title,
 		srcId:srcId,
+		//startIndex:0,
+		//maxIndex:10,
 		
 		task:"getProblemDetailsByLocation"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
-	var url = "getProblemsByLocation.action?"+rparam;	
+	var url = "getProblemsByLocation.action?"+rparam;
+	
+	
+	
+	custom_paginator.paginator({
+		   startIndex:0,
+		   maxIndex:this.maxIndex,
+		   jObj:jObj,
+		   ajaxCallURL:url,
+		   paginatorElmt:"custom_paginator_class",
+		   callBackFunction:function(){
+		 
+	          buildProblemDetailsByStatus(results);
+		   }
+	     });	
+	   
+	   custom_paginator.initialize();						
+   	 
+   }
 
-	callAjaxToShowProblemDetails(jObj,url);
-}
+   
 
-function buildProblemDetailsByStatus(result,jObj)
+//callAjaxToShowProblemDetails(jObj,url);	
+
+
+
+function buildProblemDetailsByStatus(result)
 {
-
+	
 	var str='';
-	var title = jObj.title;
+	var title = "New";
 	$("#problemPopUp").dialog({ 
 	                            title:''+title+'  Problems<span style="margin-left:50px;"> Total : '+result[0].userProblems +'</span>',
 	                            height: 'auto',
@@ -1133,8 +1262,11 @@ function buildProblemDetailsByStatus(result,jObj)
 		
 		
 	    str += '<div class="leftmargin"><font style="color:#51A451;font-size: 12px;">Posted by: </font>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'<font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Location: </font>'+initialCap(result[i].problemLocation)+'</div>';
+		
 	 str += '</div>';
+	 
 	}
+	
 	 divEle.innerHTML = str;
 	}
 }
