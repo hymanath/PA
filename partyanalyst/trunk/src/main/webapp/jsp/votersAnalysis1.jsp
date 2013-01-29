@@ -95,9 +95,9 @@ margin-right:auto;
 width:980px;
 }
 table.gridtable {
-	font-family: arial,sans-serif;
+	font-family: verdana,arial,sans-serif;
 	font-size:11px;
-	color:#333333;
+	color:#000;
 	border-width: 1px;
 	border-color: #666666;
 	border-collapse: collapse;
@@ -812,7 +812,7 @@ for  body3 start    result  -->
 					</tr>					
 				</table>
 	</div>
-<div id='votersMainOuterDiv4' style="height:300px;">
+<div id='votersMainOuterDiv4' style="height:300px;border:1px solid #E4E4E4;">
 	
 
 	<!-- <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
