@@ -3479,7 +3479,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 
 		if(id == 0 || id == null || id == '')
 			return false;*/
-	  if(maintype == "booth" || maintype == "panchayat"){
+	  if(maintype == "booth" || maintype == "panchayat" || maintype == "mandal"){
 		var jsObj=
 		{
 			id                :id,
@@ -3506,15 +3506,15 @@ function showPreviousEleVotingTrends(results,jsObj)
 		if(flag)
 		{
 		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<div style="margin-bottom: 20px;"><span id="prevVotTrendHeadingSpan">Previous Election Voting Trends in '+jsObj.name+' </span></div>');
-				str +='<table style="width:95%;font-family: arial;">';
-				str +='<tr>';
-				str +='<th><b>Year</b></th>';
+			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
+				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
+				str +='<thead class="info"><tr>';
+				str +='<th>Year</th>';
 				str +='<th>Total Voters</th>';
 				  str +='<th>Votes Polled</th>';
 			   for(var i in results[0].partiesList)
 			     str +='<th>'+results[0].partiesList[i]+'</th>';
-			     str +='</tr>';
+			     str +='</tr></thead><tbody>';
 				
 				for(var j in results)
 				{
@@ -3524,13 +3524,13 @@ function showPreviousEleVotingTrends(results,jsObj)
 					str +='<td>'+results[j].polledVotes+'</td>';
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
 					  for(var k in partyVotesEarnedVOs)
-				         str +='<td><b>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+				         str +='<td>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
 						
 					     str +='</tr>';
 		 			
 				}
 			 
-			 str +='</table>';
+			 str +='</tbody></table>';
 			 $("#previousEleVotingTrendsDiv").append(str);
 			 
 			}
