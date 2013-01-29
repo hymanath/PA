@@ -1642,6 +1642,20 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	   
 	   return SUCCESS;
 	}
+	
+	public String getConstituencyAssemblyWiseResults(){
+		 
+		 try {
+			 jObj = new JSONObject(getTask());
+				System.out.println("jObj = "+jObj);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 constituencyId=jObj.getLong("conId");
+		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+		return SUCCESS;
+	}
+	
   public String getParliamentConstituencyAssemblyWiseResults(){
 	  
 	  String param = getTask();
