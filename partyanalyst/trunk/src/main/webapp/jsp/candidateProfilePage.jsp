@@ -306,23 +306,40 @@ var userName = '${sessionScope.UserName}';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+
 $(document).ready(function(){
 $('#development').click(function(){
-$("#developmentspop").html('<font style="margin: 10px;color:ActiveCaption;">Page is Under Construction</font>');
-$("#developmentspop").dialog({
-									height: 100,
-									width: 500,
-									position:'center',								
-									modal: true,
-									title:'<font color="#000">ALERT</font>',
-									overlay: { opacity: 0.5, background: 'black'},
-									
+
+$("#developmentspop").dialog({	
+								stack: false,
+								height: 230,
+								width: 800,
+								modal: true,
+								position: [170,150],
+								title:'Developments',
+								overlay: { opacity: 0.5, background: 'black'}
 	
 	});
+		var elemt = document.getElementById("developmentspop_window_inner");
+		var str ='';
+		str+='<table width="100%">';
+		str+='<tr>';
+		str+='<td><img src="images/icons/homePage_new/UnderConstruction.jpg" height="100px" width="170px"></td>';
+		str+='<td>';
+		str+='<table style="margin-left:17px">';
+		str+='<tr>';
+		str+='<td><h6 style="color:red;">SORRY PAGE UNDER CONSTRUCTION</h6><br></td></tr>';
+		str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+		str+='<tr><td>Enquires: customer.servies@partyanalyst.com<br></td></tr>';
+		str+='<tr><td>Demo: sales@partyanalyst.com<br></td></tr>';
+		str+='</table>';
+		str+='</td>';
+		str+='</tr>';
+		str+='</table>';
+		elemt.innerHTML = str;
 
 });
 });
-
 
 </script>
 
@@ -415,9 +432,10 @@ Tweet</a>
               <li><a onclick="getTotalNews('totalNews');" href="javascript:{}">News and events</a><span></span></li>
               <li><a onclick="videoGallaryPopUp();" href="javascript:{}">Video Gallery</a><span></span></li>
               <li><a onclick="photoGallaryPopUp();" href="javascript:{}">Photo Gallery</a><span></span></li>
-              <li><a  id= "development"  href="javascript:{}">Developments</a><span></span></li>
+              <li><a  id= "development"  href="javascript:{}" >Developments</a><span></span></li>
             </ul>
 			<div id="developmentspop">
+				<div  id="developmentspop_window_inner"></div>
 			</div>
 
           </div>
