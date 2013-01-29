@@ -470,7 +470,7 @@ width: 860px;}
     color: #676A67;
     font: small-caption;
   }	
-	#previousEleVotingTrendsDiv p span {display: table-cell;}
+/*	#previousEleVotingTrendsDiv p span {display: table-cell;}
 	#prevVotTrendHeadingSpan{background:#06ABEA;color:#FFF;
 	font-weight:bold;font-size:15px;
 	border-radius: 3px;
@@ -485,12 +485,11 @@ width: 860px;}
     font-weight: bold;
     padding: 10px;
     text-align: left;
-}
+} 
 #previousEleVotingTrendsDiv table td {
     color: #676A67;
-    font: small-caption;
     padding: 8px 8px 8px 10px;
-}
+}*/
 .selectedLink{
 	  background-color:#5e5e5e;
 	  color:#fff;
@@ -803,7 +802,7 @@ for  body3 start    result  -->
 	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 	
 	</div>
-	   <div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
+	   <div id="previousEleVotingTrendsDiv" class="widget-block whitegloss"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
