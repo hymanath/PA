@@ -1229,7 +1229,7 @@
         
         <action name="assemblyWiseResultAction" class="constituencyPageAction" method="getConstituencyAssemblyWiseResults">
               <result type="json" name="success">
-           		<param name="root">constituencyResultsVO</param>
+           		<param name="root">constituencyElectionResultsVO</param>
         	</result>		
         </action>
          
