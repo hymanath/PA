@@ -807,8 +807,8 @@ function callAjaxToShowNewsDetails(jObj,url){
 function  buildProblemsCount(results){
 
 
-	//$('#newsCountDiv').html('');
-	//$('#newsDisplayDiv').html('');
+	$('#newsCountDiv').html('');
+	$('#newsDisplayDiv').html('');
 
 	var str='';
 
