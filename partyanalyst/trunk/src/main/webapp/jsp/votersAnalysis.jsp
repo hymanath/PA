@@ -779,7 +779,7 @@ locationDetails.constituencyArr.push(ob);
 		<div id="newsDisplayDiv" style="clear:both;margin:1px 0px 0px 8px;border-top:1px solid #c3c3c3;"></div>
 	   </div>
 	<div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
-	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
+	<div id="showHideLink" style="text-align:right;width:100%;margin-right:15px;"><a href="javaScript:{showHideDiv();}"><font style="font-weigth:bold;font-size:14px">Show/Hide News Details</font></a></div>
  	<div id="newsDiv" style="clear:both;">
   	</div>
 	<div id="votersBasicInfoDiv"></div>

@@ -248,6 +248,35 @@ text-decoration:none;
 
 }
 
+
+/** Favorite Link Start**/
+
+
+.favouritelink{position:fixed;bottom:72px;right:7px;height:37px;cursor:pointer;text-decoration:none; opacity:0.84; filter: alpha(opacity = 30);
+ transition: opacity .25s ease-in-out;
+ z-index:999999;
+}
+.favouritelink:hover {text-decoration:none;opacity:1; filter: alpha(opacity = 100);}
+.favouritelink .favouritelink-title{display:none;}
+.favouritelink:hover .favouritelink-title{display:inline-block; }
+.favouritelink:hover .favouritelink-title h6{color:#fff;padding:9px 20px;margin:2px;margin-right:-4px;border-radius:7px; 
+ }
+.favouritelink .favouritelink-image{display:inline-block;}
+.favouritelink .favouritelink-image img{vertical-align:middle;}
+.bluegrad{background: #1e5799; /* Old browsers */
+background: -moz-linear-gradient(top,  #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
+.favouritelink .favouritelink-close {position:absolute;top:-12px;right:5px;}
+.favouritelink:hover .favouritelink-close {display:block}
+/** Favorite Link End**/
+
+
 </style>
 </head>
 <body>
@@ -311,6 +340,7 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
 									
 									if(jObj.task == "saveFavouriteLink")
+										$('.favouritelink').hide();
 										alert("Link added successfully");																	
 								}
 							catch (e) {   
@@ -332,8 +362,21 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 		</div>
 	</div>
 	<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
-	<div style="float:right;margin-right:140px;">
+	<!-- <div style="float:right;margin-right:140px;">
 	<input type="button" style="position:fixed;z-index:2;" class="btn btn-success" value="Add to favourite links" onClick="savefavouriteLink();" title="Click here to add this link to favourite links"/>
+	</div> -->
+	<div class="favouritelink">
+	<a href="javaScript:{savefavouriteLink()}"   title="Click here to add this link to favourite links">
+	<span class="favouritelink-title">
+	<h6 class="bluegrad"> Add To Favourite </h6>
+	</span>
+	<span class="favouritelink-image">
+	<img src="images/add2fav.png">
+	</span>
+	</a>
+	<span class="favouritelink-close" onClick="hideFavouriteLink();" title="hide">
+    <i class="icon-remove-sign"></i>
+	</span>
 	</div>
 	</c:if>
 
@@ -612,6 +655,9 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 			</c:forEach>			
 		</c:if>
 		initializeStatePage();
+		function hideFavouriteLink(){
+		$('.favouritelink').hide();
+		}
 		
 	</script>
 
