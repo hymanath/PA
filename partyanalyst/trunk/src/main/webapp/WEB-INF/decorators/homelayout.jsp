@@ -1266,12 +1266,14 @@ elmt.innerHTML = str;
 
 function navigateToStatePage()
 {
+	$('#processingDivForState').show();
 	var stateSelectEl = document.getElementById("stateList_s");
 	var stateSelectElVal = stateSelectEl.options[stateSelectEl.selectedIndex].value
 	window.location="statePageAction.action?stateId="+stateSelectElVal; 
 }
 function navigateToDistrictPage()
-{
+{	
+	$('#processingDivForDistrict').show();
 	var distSelectEl = document.getElementById("districtList_d");
 	var alertEl = document.getElementById("alertMessage_district");
 	var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
@@ -1279,6 +1281,7 @@ function navigateToDistrictPage()
 	if(distSelectElVal == 0)
 	{
 		alertEl.innerHTML = 'Please Select Your District';
+		$('#processingDivForDistrict').hide();
 		return;
 	}
 	else
@@ -1287,7 +1290,8 @@ function navigateToDistrictPage()
 	
 }
 function navigateToConstituencyPage()
-{
+{		
+	$('#processingDivForConstituency').show();
 	var constSelectEl = document.getElementById("constituency");
 	var alertEl = document.getElementById("alertMessage");
 	var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value;
@@ -1295,6 +1299,7 @@ function navigateToConstituencyPage()
 	if(constSelectElVal == 0)
 	{
 		alertEl.innerHTML = 'Please Select Your Constituency';
+		$('#processingDivForConstituency').hide();
 		return;
 	}
 	window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
@@ -1312,7 +1317,7 @@ function navigateToLocalBodyPage()
 
 	if(!stateElmt || !localBodySelectElmt || !radioElmts || radioElmts.length == 0)
 		return;
-	
+	$('#processingDivForLocality').show();
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 	var localBodySelectElmtValue = localBodySelectElmt.options[localBodySelectElmt.selectedIndex].value;
 	for(var i=0; i<radioElmts.length; i++)
@@ -1324,6 +1329,7 @@ function navigateToLocalBodyPage()
 	if(localBodySelectElmtValue == 0 && errorElmt)
 	{
 		errorElmt.innerHTML = '<font color="red" style="font-size:12px;"> Please Select Location.. </font>';
+		$('#processingDivForLocality').hide();
 		return;
 	}
 	else
@@ -1521,6 +1527,7 @@ function hideBusyImgWithId(elmtId)
 function viewElectionResults()
 {
    var errorMsgDivEle = document.getElementById("electionDetailsErrorMsgDiv");
+   $('#processingDiv1').show();
   try
 	{
 	  var stateSelectEle = document.getElementById("states");
@@ -1539,15 +1546,18 @@ function viewElectionResults()
 		if(stateId == 0 || electionTypeId == 0 || electionId == 0)
 		{
 			errorMsgDivEle.style.display = 'block';
+			 $('#processingDiv1').hide();
 			return;
 		}
 		
 		errorMsgDivEle.style.display = 'none';
+		 
 		document.location = "electionDetailsReportAction.action?electionId="+electionId+"&stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear;
 	}
 	catch(err)
 	{
 		errorMsgDivEle.style.display = 'block';
+		 $('#processingDiv1').hide();
 		return;
 	}
 }
