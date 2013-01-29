@@ -6886,11 +6886,17 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			}
 		}
 		problemBeanVO = new ProblemBeanVO();
+		List<Long> New = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.NEW);
 		List<Long> Progress = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.PROGRESS);
 		List<Long> Fixed = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.FIXED);
 		List<Long> Pending = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.PENDING);
 		List<Long> Cadre = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,4l);
 		List<Long> User = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,1l);
+		List<Long> callcenter =userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,3l);
+		if(New != null && New.size() > 0)
+			problemBeanVO.setNewStatusProblems(new Long(New.size()));
+		else
+			problemBeanVO.setNewStatusProblems((0l));
 		if(Progress != null && Progress.size() > 0)
 		problemBeanVO.setProgressProblems(new Long(Progress.size()));
 		else
@@ -6910,7 +6916,11 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		if(User != null && User.size() > 0)
 		problemBeanVO.setUserProblems(new Long(User.size()));
 		else
-			problemBeanVO.setUserProblems(0l);	
+			problemBeanVO.setUserProblems(0l);
+		if(callcenter != null && callcenter.size() > 0)
+		problemBeanVO.setCallCenterProblems(new Long(callcenter.size()));
+		else
+			problemBeanVO.setCallCenterProblems(0l);	
 		resultList.add(problemBeanVO);	
 		
 	}
@@ -6944,11 +6954,11 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				
 				}
 			}
-			if(!status.equalsIgnoreCase(IConstants.NEW))
+			if(informationsrcId == 0)
 			{
 			 problemIds =userProblemDAO.getAllPublicProblemsByLocation(userId,locationId,locationValue,status);
 			}
-			else if(status.equalsIgnoreCase(IConstants.NEW))
+			else if(status.equalsIgnoreCase(IConstants.NEW) && informationsrcId > 0)
 			{
 			problemIds =userProblemDAO.getAllPrivateProblemsBySource(locationValue,userId,locationId,informationsrcId);	
 			}
