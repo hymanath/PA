@@ -4711,7 +4711,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
 			
 			selectOptionVO.setId((Long)obj[0]);
-			selectOptionVO.setName(obj[1].toString());
+			selectOptionVO.setName(obj[1].toString() +  " (" +( obj[2].toString())+ ")");
 			
 			gallaries.add(selectOptionVO);
 			
