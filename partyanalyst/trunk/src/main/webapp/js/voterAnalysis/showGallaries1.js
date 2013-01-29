@@ -991,6 +991,10 @@ function buildProblemsCountByLocation(results,jsObj)
 	//str+='<div class="span11 breadcrumb"></div>';
 	//str+='<div class="widget-block breadcrumb"> ';
 	//str+='<div class="row-fluid"> ';
+	if(results[0].newStatusProblems != 0)
+	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',0,\'NEW\');">'+results[0].newStatusProblems+'</a></span><span class="help-inline f2">New</span>';
+	else
+	str +='<span class="btn">'+results[0].newStatusProblems+'</span><span class="help-inline f2">New</span>';
 	if(results[0].fixedProblems != 0)
 	str +='<span class="btn"><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'FIXED\',0,\'Resolved\');">'+results[0].fixedProblems+'</a></span><span class="help-inline f2">Resolved</span>';
 	else
@@ -1016,7 +1020,12 @@ function buildProblemsCountByLocation(results,jsObj)
 	if(results[0].userProblems != 0)
 	str +='<span class="btn "><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',1,\'User\');">'+results[0].userProblems+'</a></span><span class="help-inline f2">User</span>';
 	else
-	str +='<span class="btn ">'+results[0].userProblems+'</span><span class="help-inline f2">PartyAnalyst User</span>';
+	str +='<span class="btn ">'+results[0].userProblems+'</span><span class="help-inline f2">User</span>';
+
+	if(results[0].callCenterProblems != 0)
+	str +='<span class="btn "><a onclick="getProblemDtailsByStatus('+locationId+','+locationValue+',\'NEW\',3,\'CallCenter\');">'+results[0].callCenterProblems+'</a></span><span class="help-inline f2">CallCenter</span>';
+	else
+	str +='<span class="btn ">'+results[0].callCenterProblems+'</span><span class="help-inline f2">CallCenter</span>';
 	//str+='</div> ';
 	str+='</div> ';
 
@@ -1123,7 +1132,7 @@ function buildProblemDetailsByStatus(result,jObj)
 		str += '<div class="leftmargin"><font style="color:#51A451;font-size: 12px;">Description: </font><span style="font-family:arial;">'+result[i].description+' </span></div>';
 		
 		
-	    str += '<div class="leftmargin"><font style="color:#51A451;font-size: 12px;">Posted by: '+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</font> <font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Location: </font>'+initialCap(result[i].problemLocation)+'</div>';
+	    str += '<div class="leftmargin"><font style="color:#51A451;font-size: 12px;">Posted by: </font>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'<font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Ref NO:</font> '+result[i].referenceNo+'<font style="color:#51A451;font-size: 12px;">&nbsp;&nbsp;&nbsp;Location: </font>'+initialCap(result[i].problemLocation)+'</div>';
 	 str += '</div>';
 	}
 	 divEle.innerHTML = str;
