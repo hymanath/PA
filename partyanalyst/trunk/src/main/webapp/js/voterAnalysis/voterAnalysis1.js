@@ -782,6 +782,10 @@ oDT: votersByLocBoothDataTable
 								{
 								    buildElectionYears(myResults);
 								}
+								else if(jsObj.task == "getConstituencyResults"){
+									buildConstituencyResults(myResults,jsObj);
+									showAllPartiesAllElectionResultsChartInVtrsPage(myResults,jsObj);
+								}
 								
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -796,6 +800,129 @@ oDT: votersByLocBoothDataTable
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
+	
+	function showAllPartiesAllElectionResultsChartInVtrsPage(myResults,jsObj)
+	{
+	
+	var chartColumns = myResults[0].partiesList;
+  
+     var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'Party');
+ 
+     var partiesArray = new Array();
+     //for chart columns
+	 for(var i in chartColumns)
+	 {
+	   var colData = chartColumns[i].name;
+	  
+	   data.addColumn('number', colData);
+
+	   partiesArray.push(chartColumns[i].name);
+	 }
+
+      //for chart rows
+	  for(var j in myResults)
+	  {
+		  
+		  var array = new Array();
+		  var year = myResults[j].electionYear+" "+myResults[j].electionType;
+		  array.push(year);
+
+		  for(var k in myResults[j].partyResultsVO)
+		  {
+			  var percentage = myResults[j].partyResultsVO[k].votesPercent;
+              array.push(percentage);
+		  }
+		 
+		  data.addRow(array);
+	  }
+
+		//var ctitle = 'All Parties Performance In Different Elections in '+jsObj.cnstncy; 
+		var ctitle='';
+		var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
+		$('#constituencyPageElectionImgDiv').css('display','none');
+      //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+		  new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,colors:staticColors,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+	  else
+	  {
+          new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+}
+	
+	var cnstncy;
+	var elecType;
+	function buildConstituencyResults(results,jsObj){
+	$('#constituencyResults').html('');
+		cnstncy=jsObj.cnstncy;
+		var conid=jsObj.conId;
+		var str='';
+		
+		str+='<div id="cnstHeading">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn btn-primary" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="constituencyResultsInner">';
+		str+='<table class="table table-bordered table-hover"><thead><tr class="btn-info"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
+        for(var i in results){
+		elecType=results[i].electionType;
+		str+='<tbody><tr id="constituencyElectionInfo_'+i+'" title="Click here to View '+cnstncy+' '+elecType+' Constituency results in the Year '+results[i].electionYear+'" onclick="showDetailedElectionResult(this.id,'+conid+','+results[i].electionYear+')"><td>'+results[i].electionYear+'</td><td>'+results[i].candidateResultsVO.candidateName+'-<span>['+results[i].candidateResultsVO.partyShortName+']</span></td><td>'+results[i].candidateResultsVO.votesMargin+'</td>'
+		
+		str+='<td>'+results[i].candidateOppositionList[0].candidateName+'-<span>['+results[i].candidateOppositionList[0].partyShortName+']</span></td></tr>';
+        }        
+        str+='</tbody></table>';
+		str+='<span class="btn" onClick="partiesPerformancePopup()">View Parties Performance Graphically</span>'
+		str+='</div>'
+        $('#constituencyResults').html(str);
+	}
+	var showConst=false;
+	
+	$('#ShowConstMenu').live('click',function(){
+	if(!showConst) {
+			$("#constituencyResultsInner").hide();
+			$(this).html('Show <i class="icon-chevron-down"></i>'); 
+			showConst=true;
+		}
+		else {
+			$("#constituencyResultsInner").css("display","block");
+			$(this).html('Hide <i class="icon-chevron-up"></i>');
+			showConst=false;
+		}
+	});
+	
+	function showDetailedElectionResult(id,conid,elYear)
+	{
+	var index = id.substring((id.indexOf('_')+1),id.length);
+	
+	var browser1 = window.open("constituencyElectionResultsAction.action?constituencyId="+conid+"&electionType="+elecType+"&electionYear="+elYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+    browser1.focus();
+	}
+	
+	
+	function partiesPerformancePopup(){
+	
+		$("#constituencyPageElectionImgDiv").dialog({ stack: false,
+						title:'All Parties Performance In Different Elections in '+cnstncy,
+						height: 'auto',
+						width: 750,
+						closeOnEscape: true,
+						position:[40,40],
+						show: "blind",
+						hide: "explode",
+						display:"block",
+						modal: true,
+						maxWidth : 750,
+						minHeight: 550,
+						overlay: { opacity: 0.5, background: 'black'},
+						close: function(event, ui) {
+						}
+		  			});
+		$("#constituencyPageElectionImgDiv").dialog();
+	}
 
 	function buildElectionYears(results){
 	        if(results != null && results.length > 0){
@@ -3699,6 +3826,8 @@ $(document).ready(function(){
 // Menu Show Events...
 $("#ShowMenu").click(function(){
 	if(showflag||fromOnChange) {
+		showConst=false;
+		$("#ShowConstMenu").trigger('click');
 		$(".customMenu").css("display","inline-block");
 		$(this).html('Hide Menu <i class="icon-chevron-up"></i>');
 		if(!fromOnChange){
