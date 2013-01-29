@@ -128,7 +128,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long fixedProblems;
 	private Long userProblems;
 	private Long cadreProblems;
+	private Long callCenterProblems;
 	
+
+	public Long getCallCenterProblems() {
+		return callCenterProblems;
+	}
+
+	public void setCallCenterProblems(Long callCenterProblems) {
+		this.callCenterProblems = callCenterProblems;
+	}
 
 	public Long getUserProblems() {
 		return userProblems;
