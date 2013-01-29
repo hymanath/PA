@@ -155,10 +155,10 @@ $( "#toDate" ).datepicker();
 			</div>
 	   </div>
 
-	<div style="text-align:center;"><label style="position: absolute; margin-left: -412px; margin-top: 160px;"><input type="checkbox" id="allFileInd"><b>With All Files</b></input></label></div>
+	<div id="allFilesDiv" style="width: 725px; height: 25px; float: right;" align="center" ><label ><input type="checkbox" id="allFileInd" onchange="dateMadeNull(),hideOptionsDiv();"><b>With All Files</b></input></label></div>
 
 
-<input type="button" class="btn btn-info pull-right" name="Pdf" onClick="generatePdfForSelectedGallary();" value="Generate Pdf" style="margin-top: 10px;"/><img id="processingImg" alt="Processing Image" src="./images/icons/search.gif" style="display:none;"></img>
+<input type="button" class="btn btn-info pull-right" name="Pdf" onClick="generatePdfForSelectedGallary();" value="Generate Pdf"/>
 
 
 </div>
@@ -186,7 +186,10 @@ $('#ErrDiv').html('&nbsp;');
 }
 
 var gallaryName;
-
+function dateMadeNull(){
+	$('#fromDate').val('');
+	$('#toDate').val('');
+}
 function generatePdfForSelectedGallary()
 {
 	var selectType;
@@ -268,7 +271,7 @@ var callback = {
 			 myResults = YAHOO.lang.JSON.parse(o.responseText); 
 
 			 if( jsObj.task == "generatePdf"){
-				$('#processingImg').hide();
+			 $('#processingImg').hide();
 				  if( myResults.noFilesExist =="true"){
 					alert("No Files Exist");
 					return false;
@@ -305,14 +308,26 @@ function showOptionsDiv(){
 	$('#optionsDiv').show('slow');
 	$('#showOptionsDiv').hide();
 	$('#hideOptionsDiv').show();
-
+	$('#allFileInd').attr("checked",false);
 }
 
 function hideOptionsDiv(){
-	$('#optionsDiv').hide('slow');
+	var checkedCount=1;	
 	
-	$('#showOptionsDiv').show();
-	$('#hideOptionsDiv').hide();
+	if($('#allFileInd').is(":checked")){
+		$('#optionsDiv').hide('slow');
+		$('#showOptionsDiv').show();
+		$('#hideOptionsDiv').hide();
+		checkedCount=checkedCount+1;
+	}
+	else if($('#allFileInd').attr("checked",false)){
+		$('#showOptionsDiv').show();
+		$('#hideOptionsDiv').hide();
+		checkedCount=checkedCount+1;
+	}
+	if(checkedCount=1){		
+		$('#optionsDiv').hide('slow');			
+	}
 }
 </script>
 </body>
