@@ -1171,4 +1171,38 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllProblemsByLocation(Long userId,Long locationId,Long locationValue,String status,Integer startIndex,Integer maxIndex)
+	{
+		
+		Query query = getSession().createQuery("select distinct(model.userProblemId) from UserProblem model where (model.user.userId = :userId or model.visibility.type = :visibilityType) and model.problem.isApproved ='"+IConstants.TRUE+"'" +
+				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.problem.regionScopes.regionScopesId=:locationId and model.problem.problemStatus.status = :status order by model.problem.problemId desc");
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("locationId", locationId);
+		query.setParameter("status", status);
+		query.setParameter("userId",userId);
+		query.setParameter("visibilityType",IConstants.PUBLIC);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+		
+	}
+	
+@SuppressWarnings("unchecked")
+	
+	public List<Long> getAllProblemsBySource(Long locationValue,Long userId,Long locationId,Long sourceId,Integer startIndex,Integer maxIndex)
+	{
+		Query query = getSession().createQuery("select distinct(model.userProblemId) from UserProblem model where model.problem.isApproved ='"+IConstants.TRUE+"' " +
+				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.impactLevelValue =:locationValue and model.user.userId =:userId  and model.problem.regionScopes.regionScopesId=:locationId and model.problem.informationSource.informationSourceId = :sourceId and model.problem.problemStatus.status = '"+IConstants.NEW+"' order by model.problem.problemId desc");
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("locationId", locationId);
+		query.setParameter("sourceId", sourceId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		
+		return query.list();
+	}
+	
 }

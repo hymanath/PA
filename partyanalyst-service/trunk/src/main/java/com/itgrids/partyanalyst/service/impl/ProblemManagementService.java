@@ -6932,11 +6932,13 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 	return resultList;
 	
 	}
-	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status,Long informationsrcId)
+	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status,Long informationsrcId,Integer startIndex,Integer maxIndex)
 	{
 		List<ProblemBeanVO> problemDetails = new ArrayList<ProblemBeanVO>(0);
 		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 		List<Long> problemIds = new ArrayList<Long>(0);
+		List<Long> problemsCount = new ArrayList<Long>(0);
+
 		try{
 			if(locationId == 5)
 			{
@@ -6956,11 +6958,13 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			}
 			if(informationsrcId == 0)
 			{
-			 problemIds =userProblemDAO.getAllPublicProblemsByLocation(userId,locationId,locationValue,status);
+			 problemIds =userProblemDAO.getAllProblemsByLocation(userId,locationId,locationValue,status,startIndex,maxIndex);
+			 problemsCount = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId,locationValue,status);
 			}
 			else if(status.equalsIgnoreCase(IConstants.NEW) && informationsrcId > 0)
 			{
-			problemIds =userProblemDAO.getAllPrivateProblemsBySource(locationValue,userId,locationId,informationsrcId);	
+			problemIds =userProblemDAO.getAllProblemsBySource(locationValue,userId,locationId,informationsrcId,startIndex,maxIndex);
+			 problemsCount = userProblemDAO.getAllPrivateProblemsBySource(locationValue,userId,locationId,informationsrcId);
 			}
 			if(problemIds != null && problemIds.size() > 0)
 			{
@@ -6981,7 +6985,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				
 	            else if(regionScope == 5)
 	            	problemBeanVO.setUrl("mandalPageElectionInfoAction.action?MANDAL_ID="+problemBeanVO.getProblemImpactLevelValue()+"&MANDAL_NAME="+problemBeanVO.getProblemLocation()+"");
-				problemBeanVO.setUserProblems(new Long(problemIds.size()));	
+				problemBeanVO.setUserProblems(new Long(problemsCount.size()));	
 				problemDetails.add(problemBeanVO);
 				
 			}
