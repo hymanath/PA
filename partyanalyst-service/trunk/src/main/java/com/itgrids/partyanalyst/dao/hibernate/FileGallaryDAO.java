@@ -1504,9 +1504,9 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
    
    public List<Object[]> getCandidateGallariesByCategory(List<Long> candidateds , Long categoryId){	   
 	   
-	   String queryString = "select distinct model.gallary.gallaryId , model.gallary.name from FileGallary model" +
+	   String queryString = "select distinct model.gallary.gallaryId , trim(model.gallary.name),model.gallary.candidate.lastname from FileGallary model" +
 	   		" where model.gallary.candidate.candidateId in (:candidateds) and model.isDelete = :delInd " +
-	   		" and model.file.category.categoryId = :categoryId";
+	   		" and model.file.category.categoryId = :categoryId order by  model.gallary.name";
 	   
 	   Query query = null;
 	   
