@@ -21,6 +21,9 @@
 
 
 <style>
+#fromDate,#toDate{
+ cursor: text !important;
+}
 .pr-cont-sec
 {
 	margin-left: 10px;
@@ -399,13 +402,13 @@ $(document).ready(function(){
         $( "#fromDate" ).datepicker({
             changeMonth: true,
             changeYear: true,
-			dateFormat: 'yy-mm-dd',
+			dateFormat: 'dd-mm-yy',
 			maxDate: new Date()
         });
 		$( "#toDate" ).datepicker({
             changeMonth: true,
             changeYear: true,
-			dateFormat: 'yy-mm-dd',
+			dateFormat: 'dd-mm-yy',
 			maxDate: new Date()
         });
 });
@@ -1116,7 +1119,9 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    
  }
  function showDates(){
-    
+ 
+	 document.getElementById("fromDate").value=null;
+     document.getElementById("toDate").value=null;
    if(document.getElementById("betweendates").checked == true)
      document.getElementById("showDates").style.display = "block";
    else
@@ -1173,16 +1178,39 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    }
  if(document.getElementById("betweendates").checked == true)
   {
-   var fromDate = "";
-   var toDate = "";
+     var startDate = document.getElementById("fromDate").value;
+     var  endDate =  document.getElementById("toDate").value;
 
-     fromDate = document.getElementById("fromDate").value;
-     toDate =  document.getElementById("toDate").value;
-  var title = 'Between Dates '+fromDate+' and '+toDate;
-   getNews("betweendates","getCount","All",source,language,category,importance,"","","",fromDate,toDate);
-   getGraphDetails("betweendates","categoryDetailsForGraph",fromDate,toDate,"categoryGraphDiv",source,language,category,importance);
-   getNews("betweendates","getNews","All",source,language,category,importance,"","",title,fromDate,toDate);
-   
+	  var dt1  = parseInt(startDate.substring(0,2),10);
+      var mon1 = parseInt(startDate.substring(3,5),10);
+      var yr1  = parseInt(startDate.substring(6,10),10);
+      var dt2  = parseInt(endDate.substring(0,2),10);
+      var mon2 = parseInt(endDate.substring(3,5),10);
+      var yr2  = parseInt(endDate.substring(6,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
+
+	document.getElementById('DateErrDiv').innerHTML='&nbsp;';
+	if(!startDate){
+			document.getElementById('DateErrDiv').innerHTML='Please select From Date ';
+			return false;
+		}
+	if(!endDate){
+			document.getElementById('DateErrDiv').innerHTML='Please select To Date ';
+			return false;
+		}
+	if(date2 < date1){ 
+		 document.getElementById('DateErrDiv').innerHTML="From Date should not greater than To Date";
+		 return true;
+		}
+	
+	startDate=yr1+"-"+mon1+"-"+dt1;	
+	endDate=yr2+"-"+mon2+"-"+dt2;
+	
+	var title = 'Between Dates '+startDate+' and '+endDate;
+ getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
+  getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);  getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
+	
   }
   }
   function clearAll(){
@@ -2088,9 +2116,10 @@ try{
 					
        </tr>					
     </table>
+	<div id="DateErrDiv"  align="center" style="color:red">&nbsp; </div>
     </div>
 	<div style="padding-top:5px;">
-	   <center><b>Select Options To Filter Results</b><input type="button" value="Options" onclick="toggleOption();"></input></center>
+	   <center><b>Select Options To Filter Results</b><input type="button"  class="btn btn-primary" value="Options" onclick="toggleOption();" style="margin-left: 5px;"></input></center>
 	</div>
 <div id="newsSearch" style="padding-bottom:5px;padding-top:10px;">	   
 	   <table align="center">
