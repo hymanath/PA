@@ -14,6 +14,7 @@ var questionsObj;
 
 function initializeHomePage()
 {
+	
 	//buildLogoImage();	
 	$( "#accordion" ).accordion();
 	
@@ -48,6 +49,7 @@ function initializeHomePage()
 }
 function initializeNewHomePage()
 {
+	
 	var statelocalEl = document.getElementById("stateList_d");
 	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
 	getDistrictsComboBoxForAState(statelocalEl.value, 'districtList_d');
@@ -55,11 +57,11 @@ function initializeNewHomePage()
 	var assemblyRadio = document.getElementById('assembly_radio');
 	var ParliamentRadio = document.getElementById('p_radio');
 	
-	if(assemblyRadio.checked == true)
+	if(assemblyRadio.checked == true)	
 	hideUnhideSelectBox('assembly_radio', 'constituency');
+	
 	if(ParliamentRadio.checked == true)
 	hideUnhideSelectBox('p_radio', 'constituency');
-	
 	getLocalBodiesForState(stateSelectlocalElVal);
 }
 
@@ -1239,32 +1241,35 @@ function navigateToConstituencyPage()
 }
 function hideUnhideSelectBox(radioElement, selectElement)
 {
-
+		
 	var tableEl = document.getElementById("constTable");
 	var stateTableEl = document.getElementById("stateTable");
 	var stateSelectEl = document.getElementById("stateList_c");
 	var stateId = stateSelectEl.options[stateSelectEl.selectedIndex].value;
+
 	var alertEl = document.getElementById("alertMessage");
 	alertEl.innerHTML = '';
 	if(radioElement == 'assembly_radio')
-	{
+	{	
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
 		
 		if(stateTableEl.style.display == 'none')
 		{
 			stateTableEl.style.display = 'block';
 		}
-		if(tableEl.style.display == 'none')
-		{
-			tableEl.style.display = 'block';
-		}
+		
+		
 		/*election type 2 for mla const*/
 		getAllConstituenciesInStateByType(2,stateId,selectElement);
 	} else if(radioElement == 'p_radio')
 	{
 		 /*election type 1 for mla const*/
-		
 		if(stateTableEl.style.display == 'block')
 		{
+			
 			stateTableEl.style.display = 'none';
 		}
 		if(tableEl.style.display == 'none')
