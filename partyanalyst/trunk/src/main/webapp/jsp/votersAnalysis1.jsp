@@ -54,10 +54,10 @@
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
-
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<title>Voters analysis</title>
 
-  <title>Voters analysis</title>
+
 
 <style type="text/css">
 .radio {
@@ -637,6 +637,11 @@ h5{font-family : Arial;}
 #problemsShowDIV a,#problemsShowDIV span{text-decoration:none;font-size:12px;}
 #problemsShowDIV .widget-block:nth-child(2n+1){background:#fff;}
 .leftmargin{margin-left:10px;padding:4px;}
+.pagenationStyle{
+  background-color:#2E9AFE;color:#fff;padding:5px;border-radius:3px;
+}
+.paginatorElmtClass a{padding:5px;}
+
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -787,10 +792,16 @@ for  body3 start    result  -->
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
 	   </div>
-	   
+	  <!--<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div> -->
 	<div id="problemsCountDiv" class="widget-block whitegloss"></div>
+	
 	<div id="problemPopUp" style="background:#EEEEEE;">
-	<div id="problemsShowDIV"></div>
+	
+	<div id="problemsShowDIV">
+	 
+	</div>
+	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
+	
 	</div>
 	   <div id="previousEleVotingTrendsDiv" style="clear:both;"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
