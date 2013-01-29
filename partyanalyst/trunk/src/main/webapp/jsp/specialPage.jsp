@@ -220,7 +220,7 @@ width: 500px;
 /** Favorite Link Start**/
 
 
-.favouritelink{position:fixed;bottom:15px;right:7px;height:37px;cursor:pointer;text-decoration:none; opacity:0.84; filter: alpha(opacity = 30);
+.favouritelink{position:fixed;bottom:72px;right:7px;height:37px;cursor:pointer;text-decoration:none; opacity:0.84; filter: alpha(opacity = 30);
  transition: opacity .25s ease-in-out;
  z-index:999999;
 }
