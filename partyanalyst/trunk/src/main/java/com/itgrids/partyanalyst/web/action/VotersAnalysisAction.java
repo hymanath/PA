@@ -68,6 +68,16 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private ProblemBeanVO problemBeanVO;
 	
+	private List<VotersInfoForMandalVO> previousDetailsList;
+	
+	public List<VotersInfoForMandalVO> getPreviousDetailsList() {
+		return previousDetailsList;
+	}
+
+	public void setPreviousDetailsList(List<VotersInfoForMandalVO> previousDetailsList) {
+		this.previousDetailsList = previousDetailsList;
+	}
+
 	public ProblemBeanVO getProblemBeanVO() {
 		return problemBeanVO;
 	}
@@ -348,6 +358,41 @@ public String getVoterDetails(){
 		}
 		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
 		return Action.SUCCESS;
+	}
+	
+	
+	
+	public String getVotersCountForAllElections(){
+		
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+		}
+		
+		
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long mandalId = jObj.getLong("mandalId");
+		Long panchayatId = jObj.getLong("panchayatId");
+		Long boothId = jObj.getLong("boothId");
+		String type = jObj.getString("type");
+		
+		
+		//previousDetailsList = votersAnalysisService.getAllElectionAndPublicationsForConstituencyId(constituencyId);
+		
+		previousDetailsList = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(
+				 constituencyId,mandalId, panchayatId, boothId , type);
+		
+		  // votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
+	
+		
+		return Action.SUCCESS;
+		
 	}
 
 	public VotersInfoForMandalVO getVotersInfo() {
