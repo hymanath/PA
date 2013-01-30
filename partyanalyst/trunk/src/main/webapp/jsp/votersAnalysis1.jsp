@@ -664,7 +664,8 @@ h5{font-family : Arial;}
   background-color:#2E9AFE;color:#fff;padding:5px;border-radius:3px;
 }
 .paginatorElmtClass a{padding:5px;}
-
+.table thead.info th{background:#d9edf7; color:#454545;}
+.whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -831,10 +832,12 @@ for  body3 start    result  -->
  	<div id="newsDiv" style="clear:both;">
   	</div>
 
-	<div style="margin:0px 0px 13px 14px;"><b>VOTERS BASIC INFORMATION</b><img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="displaY:none;float:right;margin-right:540px;"/></div>
+	
+	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;"><h5 class="whitegloss" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h5>
+	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;float:right;margin-right:540px;"/>
 <div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
-
+</div>
 	<div id="previousEleVotingTrendsDiv"></div>
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
@@ -858,17 +861,9 @@ for  body3 start    result  -->
 </div><!-- body 3 end -->
 </div>
 <!-- for  body4 start    result  -->
-<div id="votersDiv4" style="display:none;">
-<div id='votersHeaderDiv4'>
-		<table width="100%" cellpadding="0" cellspacing="0">
-					<tr>
-					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="votersWidgetMainHeader"><span id="AgeWisetitle" class="votersWidgetHeader_span" style="top:11px;"> </span></div></td>
-					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
-					</tr>					
-				</table>
-	</div>
-<div id='votersMainOuterDiv4' style="height:300px;border:1px solid #E4E4E4;">
+<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+					<h5 id="AgeWisetitle" class="" style="top:11px;"> </h5>
+<div id='votersMainOuterDiv4'>
 	
 
 	<!-- <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
@@ -887,7 +882,7 @@ for  body3 start    result  -->
 <span id="agewiseAjaxDiv" style="display:none;float:right;margin-left:30px;margin-right:5px;margin-top:12px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
-<div id="tableDiv1" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+<div id="tableDiv1" class="table table-bordered table-striped table-hover"></div>
 <span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></b></span>
 
 
