@@ -51,7 +51,9 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 <head>  
 <title> Registration</title>
 	
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 
+<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
@@ -66,8 +68,6 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>	
     <link rel="stylesheet" type="text/css" href="styles/jQuery/jquery.datepick.css">
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jQuery/jquery.datepick.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery.datepick-en-GB.js"></script>
 <style type="text/css">
