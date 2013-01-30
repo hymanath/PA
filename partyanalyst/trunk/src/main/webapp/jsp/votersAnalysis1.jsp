@@ -285,10 +285,11 @@ color:#333333;
     margin-right: auto;
     width:100%;
 }
+/*
 table.impTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
 table.impTableDiv th, table.impTableDiv td {text-align:center;border:1px solid black;padding:5px;}
 table.impTableDiv th {background-color:AntiqueWhite;}
-table.impTableDiv td:first-child {width:50%;}
+table.impTableDiv td:first-child {width:50%;} */
 
 table.votersPrevCountTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
 table.votersPrevCountTableDiv th, table.votersPrevCountTableDiv td {text-align:center;border:1px solid black;padding:5px;}
@@ -664,8 +665,10 @@ h5{font-family : Arial;}
   background-color:#2E9AFE;color:#fff;padding:5px;border-radius:3px;
 }
 .paginatorElmtClass a{padding:5px;}
-.table thead.info th{background:#d9edf7; color:#454545;}
+.table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
+
 .whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
+.FamiliyList li{margin:5px;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -855,15 +858,11 @@ for  body3 start    result  -->
 </div>
 
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
-	
-<!-- for  body 3 end    result  -->
-</div>
-</div><!-- body 3 end -->
-</div>
-<!-- for  body4 start    result  -->
-<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;">
-					<h5 id="AgeWisetitle" class="" style="top:11px;"> </h5>
-<div id='votersMainOuterDiv4'>
+	<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+					<h5 id="AgeWisetitle" class="whitegloss" > </h5>
+					<!-- for  body4 start    result  -->
+
+<div id='votersMainOuterDiv4' class="widget-block whitegloss" style="display:inline-block;width: 100%;">
 	
 
 	<!-- <input type="button" id="ageWiseDetlsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
@@ -882,10 +881,10 @@ for  body3 start    result  -->
 <span id="agewiseAjaxDiv" style="display:none;float:right;margin-left:30px;margin-right:5px;margin-top:12px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
-<div id="tableDiv1" class="table table-bordered table-striped table-hover"></div>
+<div id="tableDiv1"></div>
 <span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></b></span>
 
-
+<div style="display:none;"> <!-- HIDING THE POPUP -->
 <div id="ageWiseVotersDetailsOuterDiv">
 
 	<div id='ageWiseInfoDiv' class=""  style="height:500px;overflow-y:auto;">
@@ -910,17 +909,22 @@ for  body3 start    result  -->
 
 	
   </div>
-</div>
+</div> </div><!-- Hidden Popup-->
 
 <!-- for  body 4 end    result  -->
 
 </div>
+					
+					
 </div>
+
+
 
 
 <!-- for  body 1 start    result  -->
 <HR>
 <div id="votersDiv1" >
+<!--
 <div id='votersHeaderDiv1'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -930,9 +934,10 @@ for  body3 start    result  -->
 					</tr>					
 				</table>
 		
-	</div>
+	</div> -->
 
-<div id='votersMainOuterDiv1'>
+<div id='votersMainOuterDiv1' class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+<h5 class="whitegloss"  id="impFamiliesTitle" ></h5>
 	 <!--<input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForImpFam" >
         <div id="votersBasicInfoDivForImpFam"></div>
@@ -941,7 +946,7 @@ for  body3 start    result  -->
      </div>-->
 	 <span id="ImpFamwiseAjaxDiv" style="display: block; margin-top: 10px; float: right; clear: both; margin-right: 10px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
 
-     	<div id="ImportantFamiliesDiv" class="divInfo">
+     	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
 	</br>
 	   <div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVotersToShow();" class="btn" style="float:right;"/></div>
@@ -954,14 +959,12 @@ for  body3 start    result  -->
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		<div id="impFamPancBothDtls"></div>
 	   </div>
-		<br>
 		
-		<br>
-		<div id="NoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:5px;width:920px;"></div>
+		<div id="NoteDiv" class="breadcrumb"></div>
 		
 		<div id="impFamDtlsOuterPopUp" style="display:none;">
 		   <div id="impFamDtlsTitle"></div>
-		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;margin-top:10px;"></div>
+		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable"></div>
 	       <div class="buttonsTop"><span class="buttonLeft"><input class="btn" onclick="selectAll('familyMemberCheck')" type="button" value="Select All" /></span><span class="buttonLeft"><input onclick="deSelectAll('familyMemberCheck')" class="btn" type="button" value="De Select All" /></span><span class="buttonLeft"><input class="btn" type="button" value="Edit" onclick="getAllVoterFamiliesForEdit();"/></span></div>
 		   <div id="multipleVoterFamiliesEditDiv"></div>
 		</div>
@@ -973,6 +976,7 @@ for  body3 start    result  -->
 </div><!-- for  body 1 end -->
 <!-- for  body 2 start    result  -->
 <div id="votersDiv2" >
+<!--
 <div id='votersHeaderDiv2'>
 		<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -981,8 +985,9 @@ for  body3 start    result  -->
 					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>					
 				</table>
-	</div>
-<div id='votersMainOuterDiv2'>
+	</div> -->
+<div id='votersMainOuterDiv2'  class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+<h5 class="whitegloss"  id="localCastStatsTabContentTitle" ></h5>
 	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
     <div id="votersbasicinfoForLclCastSts" >
         <div id="votersBasicInfoDivForLclCastSts"></div>
@@ -991,7 +996,7 @@ for  body3 start    result  -->
     </div>-->
 	
 	<span id="castewiseAjaxDiv" style="display: block; margin-top: 10px; float: right; clear: both; margin-right: 10px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
-	<div id='LocalCastDiv' class="divInfo">
+	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	
 		<div id='localCastStatsTabContent_header'></div>
@@ -1032,6 +1037,14 @@ for  body3 start    result  -->
 </div><!-- for  body 2 end    result  -->
 </div><!-- for  body 2 end >
 
+<!-- for  body 3 end    result  -->
+</div>
+</div><!-- body 3 end -->
+
+
+</div>
+
+</div>
 
 
 
