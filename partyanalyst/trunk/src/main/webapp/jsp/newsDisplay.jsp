@@ -384,6 +384,12 @@ width: 618px;
 .unflagClass{
 	opacity:0.35;
 }
+.widgetHeader {
+    background-image: url("images/icons/districtPage/header_body.png");
+    height: 36px;
+    padding-left: 17px;
+    width: 959px;
+}
 </style>
 <script type="text/javascript">
 
@@ -2174,7 +2180,7 @@ try{
    </td>
  </tr> 
   
-  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;overflow-x: scroll;" ></div></td></tr>
+  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:1014px;" ></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
            <div id="showNewsDiv"></div>
