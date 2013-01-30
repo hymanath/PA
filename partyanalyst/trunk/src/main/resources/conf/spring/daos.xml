@@ -1079,4 +1079,8 @@
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	<bean id="publicationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicationDateDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
 </beans>		

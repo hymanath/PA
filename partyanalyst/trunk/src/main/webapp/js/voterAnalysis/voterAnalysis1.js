@@ -539,7 +539,8 @@ oDT: votersByLocBoothDataTable
 		 }
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		getvotersBasicInfo("voters",id,publicationId,type);
+		     getPreviousVotersDetails();
+		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
@@ -552,6 +553,60 @@ oDT: votersByLocBoothDataTable
 		// callCorrespondingAjaxCall();
 		 getPreviousElectionVotingTrends(id,publicationId,type);
 		 callCorrespondingAjaxCall('brief');
+	}
+
+	function getPreviousVotersDetails(){
+
+
+		$("#votersBasicInfoDiv").html("");
+        $("#votersBasicInfoSubChartDiv").html("");
+        $("#votersBasicInfoSubDiv").html("");
+	    $("#votersByLocationTabContentDiv_body").html("");
+	    $("#previousEleVotingTrendsDiv").html('');
+	    $("#votersByPanchayatTabContentDiv_body").html("");
+		$('#votersBasicInfoDiv1').html('');
+
+		var constituencyId = $('#constituencyList').val();
+		var publicationDateId = mainpublicationId;
+		var mandalId = 0;
+		var boothId = 0;
+		var panchayatId = 0;
+
+
+		if(maintype == "constituency"){
+			constituencyId = mainreqid;
+
+		}
+		else if(maintype == "mandal"){
+			mandalId = mainreqid;
+		}
+		else if(maintype == "panchayat"){
+			panchayatId = mainreqid;
+		}
+		else if(maintype == "booth"){
+			boothId = mainreqid;
+		}
+
+
+		var jsObj=
+					{					
+						constituencyId:constituencyId,
+						publicationDateId:publicationDateId,
+						mandalId:mandalId,
+						boothId:boothId,
+						panchayatId:panchayatId,
+						//name:mainname,
+					    type:maintype,
+						task:"getVotersCountForAllElections"
+					};
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountForAllElections.action?"+rparam;
+
+			callAjax(jsObj,url);
+
+	$('#basicDetailsAjax').css('display','block');
+
 	}
 
 	function ShowCastPartyPopupDiv(){
@@ -785,6 +840,13 @@ oDT: votersByLocBoothDataTable
 								else if(jsObj.task == "getConstituencyResults"){
 									buildConstituencyResults(myResults,jsObj);
 									showAllPartiesAllElectionResultsChartInVtrsPage(myResults,jsObj);
+								}
+								else if(jsObj.task == "getVotersCountForAllElections"){
+									$('#basicDetailsAjax').css('display','none');
+									hideAjaxImgDiv('ajaxImageDiv');
+									buildPreviousVotersDetails(myResults,jsObj);
+		
+								
 								}
 								
 							}catch (e) {
@@ -2494,6 +2556,7 @@ function getVoterDetailsForMandal(retrieveType){
 
 			var jsObj=
 					{
+				        constituencyId:'0',
 						mandalId:mandalId,
 						publicationDateId:mainpublicationId,
 						name:name,
@@ -3746,6 +3809,102 @@ var jsObj=
 	divEle1.innerHTML = str;
 
 	}
+
+
+function buildPreviousVotersDetails(myResults,jsObj){
+
+
+			$('#votersTitle').html(mainname);
+
+				
+
+			if(myResults.length == 0){
+				$('#votersBasicInfoDiv1').html("<span style='margin-left:15px;color:red;'> No  Data Available</span>");
+			return false;
+			}
+
+		
+			var str='';
+
+			str+='<table align="center" id="voterBasicInfoTable" class="gridtable1" style="text-align:center;">';
+			 str+='<tr>';
+			  str+='<th>Year</th>';
+		      str+='<th>Total Voters</th>';
+		 	  str+='<th>Male Voters</th>';
+		 	  str+='<th>Female Voters</th>';
+			  str+='<th>Total Voters Difference</td>';
+			  str+='<th>Male Voters Difference</td>';
+		  	  str+='<th>Female Voters Difference</td>';
+			 str+='</tr>';
+
+
+			 for(var i=myResults.length;i>=1;i--){
+
+			  str+='<tr>';
+
+			  if(myResults[i-1].isPublication =="false")
+			    str+='<td><span title='+myResults[i-1].electionDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(E)<b></td>';
+			  else 
+				str+='<td><span title='+myResults[i-1].publicationDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(P)<b></td>';
+
+		      str+='<td>'+myResults[i-1].totVoters+'</td>';
+		 	  str+='<td>'+myResults[i-1].totalMaleVoters+'</td>';
+		 	  str+='<td>'+myResults[i-1].totalFemaleVoters+'</td>';
+
+		     
+			  if(i !=1){
+
+				 if(myResults[i-1].totalVotersDiff < 0)
+				  str+='<td>'+myResults[i-1].totalVotersDiff+'<img class="imageSize" src="images/downarrow.png" /></td>';
+				 else if(myResults[i-1].totalVotersDiff > 0)
+				  str+='<td>'+myResults[i-1].totalVotersDiff+'<img class="imageSize" src="images/uparrow.png" /></td>';
+				 else
+				  str+='<td>'+myResults[i-1].totalVotersDiff+'</td>';
+			 }
+			 else
+				  str+='<td>---</td>';
+
+
+
+			  if(i != 1){
+			  
+				 if(myResults[i-1].maleVotersDiff < 0)		
+				   str+='<td>'+myResults[i-1].maleVotersDiff+' <img class="imageSize" src="images/downarrow.png" /></td>';
+				 else if(myResults[i-1].maleVotersDiff > 0)
+					str+='<td>'+myResults[i-1].maleVotersDiff+' <img class="imageSize" src="images/uparrow.png" /></td>';
+				 else 
+				   str+='<td>'+myResults[i-1].maleVotersDiff+'</td>';
+			  }
+			 else
+		          str+='<td>---</td>';
+			
+
+			 if(i !=1){
+
+				 if(myResults[i-1].femaleVotersDiff < 0)
+				  str+='<td>'+myResults[i-1].femaleVotersDiff+'<img class="imageSize" src="images/downarrow.png" /></td>';
+				 else if(myResults[i-1].femaleVotersDiff > 0)
+				  str+='<td>'+myResults[i-1].femaleVotersDiff+'<img class="imageSize" src="images/uparrow.png" /></td>';
+				 else
+				  str+='<td>'+myResults[i-1].femaleVotersDiff+'</td>';
+			 }
+			 else
+				  str+='<td>---</td>';
+
+
+			 str+='</tr>';
+			 }
+			str+='</table>';
+
+			str+='<div style="margin:6px 0px 4px 23px;"><font style="color:red;">Note</font> :<b>P</b>- Publication , <b>E</b>- Election</div>';
+			str+='<div style="margin:6px 0px 4px 33px;"> <img class="imageSize" src="images/uparrow.png" /> - Votes Increase , <img class="imageSize" src="images/downarrow.png" /> - Votes Decrease</div>';
+
+
+			$('#votersBasicInfoDiv1').html(str);
+
+		     $('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
+
+		}
 	
 	
 	/*** FUNCTIONS FOR NAVIGATIONS START***/
