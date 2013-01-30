@@ -44,6 +44,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 input, button, select, textarea {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+#mainDiv {margin-left:auto;margin-right:auto;width:990px;}
 </style>
 
  <script>
@@ -61,7 +62,7 @@ $( "#toDate" ).datepicker();
 </script>
 </head>
 <body>
-
+<div id="mainDiv">
 <div class="well span10" style="margin-left:79px;"> 
 <!--START-->
 	<div id="ErrDiv">&nbsp;</div>
@@ -163,7 +164,7 @@ $( "#toDate" ).datepicker();
 
 </div>
 
-
+</div>
 <script>
 
 function validate(){
