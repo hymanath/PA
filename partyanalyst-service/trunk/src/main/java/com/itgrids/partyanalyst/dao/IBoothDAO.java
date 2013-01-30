@@ -118,4 +118,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 
 	
 	 public List<Object[]> getBoothsCount(Long id,Long publicationDateId,String type);
+	 
+	 public List<Long> getAllPublicationDetailsForConstituency(Long constituencyId);
 }
