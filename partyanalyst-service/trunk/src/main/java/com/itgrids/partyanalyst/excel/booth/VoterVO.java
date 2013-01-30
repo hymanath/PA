@@ -1,10 +1,14 @@
 package com.itgrids.partyanalyst.excel.booth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 
-public class VoterVO {
+
+public class VoterVO implements Serializable , Comparable<VoterVO>{
 	
 	private String firstName;
 	private String voterMiddleName;
@@ -33,6 +37,12 @@ public class VoterVO {
 	private String casteNameByVoterId;
 	
 	private String mobileNo;
+	
+	private Long publicationDateId;
+	private Date publicationDate;
+	private Long electionId;
+	private Date electionDate;
+	private String type;
 	
 	public List<VoterVO> getVotersList() {
 		return votersList;
@@ -261,6 +271,55 @@ public class VoterVO {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
+	public Date getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(Date publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public Date getElectionDate() {
+		return electionDate;
+	}
+
+	public void setElectionDate(Date electionDate) {
+		this.electionDate = electionDate;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public int compareTo(VoterVO obj) {
+		if(obj instanceof VoterVO){
+			VoterVO vo = (VoterVO) obj;
+			return electionDate.compareTo(vo.getElectionDate());
+		}
+		else
+			return 0;
 	}
 
 

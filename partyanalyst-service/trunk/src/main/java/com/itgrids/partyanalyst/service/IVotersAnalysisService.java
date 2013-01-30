@@ -109,4 +109,9 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> getAllElectionsInAConsti(Long electionTypeId,Long constiId);
 	
+	//public List<VoterVO> getAllElectionAndPublicationsForConstituencyId(Long constituencyId);
+	
+	public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
+			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type);
+	
 }

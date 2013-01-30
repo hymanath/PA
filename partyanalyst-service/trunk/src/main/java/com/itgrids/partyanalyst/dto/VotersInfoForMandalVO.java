@@ -41,7 +41,35 @@ public class VotersInfoForMandalVO {
 	Integer prevBoothsCount;
 	String presentBooths;
 	String prevBooths;
+	private String isPublication;
+	private String publicationDate;
+	private String electionDate;
+	private int electinYear ;
 	
+	public int getElectinYear() {
+		return electinYear;
+	}
+	public void setElectinYear(int electinYear) {
+		this.electinYear = electinYear;
+	}
+	public String getElectionDate() {
+		return electionDate;
+	}
+	public void setElectionDate(String electionDate) {
+		this.electionDate = electionDate;
+	}
+	public String getPublicationDate() {
+		return publicationDate;
+	}
+	public void setPublicationDate(String publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+	public String getIsPublication() {
+		return isPublication;
+	}
+	public void setIsPublication(String isPublication) {
+		this.isPublication = isPublication;
+	}
 	public String getMandalId() {
 		return mandalId;
 	}
