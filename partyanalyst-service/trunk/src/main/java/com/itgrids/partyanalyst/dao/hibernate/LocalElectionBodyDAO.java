@@ -73,5 +73,17 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		Object[] params = {localBodyName, districtId};
 		return getHibernateTemplate().find("select model.localElectionBodyId from LocalElectionBody model where model.name = ? and model.district.districtId = ?",params);
 	} 
+	
+	public List<String> getLocalElectionBodyNameById(Long localElectionBodyId){
+		
+		Query query = getSession()
+				.createQuery(
+						"select model.name from LocalElectionBody model where model.localElectionBodyId = ?");
+		
+		query.setParameter(0, localElectionBodyId);
+		return query.list();
+		
+		
+	}
 
 }

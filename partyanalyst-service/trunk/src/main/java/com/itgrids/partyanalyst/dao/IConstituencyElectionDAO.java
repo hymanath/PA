@@ -160,4 +160,6 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List<Object[]> getElectionIdAndSubTypeByConstituencyIdAndDate(Long constituencyId, Date fromDate,Date toDate);
 	
+	public List<Object[]> getAllElectionIdsForConstituency(Long constituencyId);
+	
 }
