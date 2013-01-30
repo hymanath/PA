@@ -58,7 +58,6 @@
 <title>Voters analysis</title>
 
 
-
 <style type="text/css">
 .radio {
 	height: 25px;
@@ -118,6 +117,31 @@ table.gridtable td {
 	border-color: #666666;
 	background-color: #ffffff;
 }
+
+
+table.gridtable1 {
+	font-family: Verdana,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable1 th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #DBEBFF;
+}
+table.gridtable1 td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
 
 #votersBasicInfoDivSub{
     background-color: #EDF5FF;
@@ -806,7 +830,11 @@ for  body3 start    result  -->
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
+
+	<div style="margin:0px 0px 13px 14px;"><b>VOTERS BASIC INFORMATION</b><img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="displaY:none;float:right;margin-right:540px;"/></div>
+<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
+
 	<div id="previousEleVotingTrendsDiv"></div>
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
