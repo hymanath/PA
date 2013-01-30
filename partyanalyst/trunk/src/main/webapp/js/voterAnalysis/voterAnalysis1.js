@@ -3720,17 +3720,25 @@ var jsObj=
 	if(jsObj.type == "mandal" && type != "muncipality")
 
 	{
+		if(results[0].totalPanchayats == null)
+		results[0].totalPanchayats = 0;
+		if(results[0].totalBooths == null)
+		results[0].totalBooths = 0;
 	str +='<span class="btn btn-info">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
 	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if( jsObj.type == "mandal" && type == "muncipality")
 
 	{
+			if(results[0].totalBooths == null)
+			results[0].totalBooths = 0;
 	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "panchayat")
 
 	{
+		if(results[0].totalBooths == null)
+			results[0].totalBooths = 0;
 	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	str+='</div>';
