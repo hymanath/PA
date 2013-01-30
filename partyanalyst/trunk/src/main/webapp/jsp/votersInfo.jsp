@@ -34,8 +34,8 @@
 <link type="text/css" rel="stylesheet" href="styles/bubble.css">
 <!-- start of vedio files -->
 
-<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<!--<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
+<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script>
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>-->
 <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
@@ -186,7 +186,22 @@ h3{
     line-height: 16px;
     padding: 5px 9px;
 }
-
+.pr-title {
+    background-color: #ED5B21;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/24px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 24px;
+    margin-bottom: 13px;
+    padding: 0 15px;
+    position: relative;
+    text-transform: uppercase;
+}
+.or-down-arrow {
+    bottom: -6px;
+    left: 25px;
+    position: absolute;
+}
 </style>
 
 </head>
@@ -499,10 +514,32 @@ h3{
 
 		
 		</div>
-<div class="span4">
-<!--<h3 >Our Services</h3>-->
+		
+		<div class="">
+<h4 style="margin-left: 45px;" class="pr-title">videos<span class="or-down-arrow"><img alt="" src="images/candidatePage/or-down-arrow.png"></span> </h4>
+        <a class="youtube" href="#" rel="Kwilrv3LVLA" >
+<img  width="236px;" style="margin-left:32px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding:4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " title="Explaining the Indian Election System " src="http://img.youtube.com/vi/Kwilrv3LVLA/0.jpg"></a>
+  <a class="youtube" href="#" rel="2Kexv-ec7Jg" >
+<img  width="116px;"title="VOTE INDIA - MAKE A DIFFERENCE " style="margin-top:10px; margin-left:28px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/2Kexv-ec7Jg/0.jpg"></a>
+  <a class="youtube" href="#" rel="BUVly4H7kGU" >
+<img  width="116px;" title="VOTE INDIA!!!! (Must see for every INDIAN)"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/BUVly4H7kGU/0.jpg"></a>
 
-<!--<div class="image_styles">
+</div>
+<script src="js/jquery.youtubepopup.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<!---<link rel="stylesheet" href="js/jquery-ui.css">-->
+
+	
+		
+		<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+    </script>
+<!--<div class="span4">
+<!--<h3 >Our Services</h3>
+
+<div class="image_styles">
 
 <div id="videogallery">
 <h3>Video's</h3>
@@ -528,8 +565,8 @@ h3{
 
 </div>	
 	
-	</div>	-->
 	</div>
+	</div>-->
 </div>
 
 <script>
