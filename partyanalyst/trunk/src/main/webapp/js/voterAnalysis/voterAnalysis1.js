@@ -2359,79 +2359,76 @@ function impFamilesStaticTable(myresults,jsObj)
 	var value=0;
 	var str='';
 	var type = jsObj.type;	
-	str+='<div class="impFamilesMainDiv" >';
+	str+='<div class="impFamilesMainDiv row" >';
 	
 	$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
-	str+='</br>';
-	
-	str += '<div style="font-family: verdana;font-size: 13px;margin-left: 2px;font-weight:bold;"> Total Voters : '+myresults.totalVoters+' ';
-	
-	if(myresults.totalFamalies==null){
-		str+='&nbsp;&nbsp;&nbsp; Total Families : '+value+'';
+		
+	str += '<div class="span3"><ul class="FamiliyList"> <li> <span class="btn btn-info btn-small" style="clear:left;">'+myresults.totalVoters+'</span> Total Voters</li>';
+		if(myresults.totalFamalies==null){
+		str+='<li> <span class="btn btn-info btn-small" style="clear:left;">'+value+'</span> Total Families</li> ';
 	}
 	else{
-	str+='&nbsp;&nbsp;&nbsp; Total Families : '+myresults.totalFamalies+'';
+	str+='<li> <span class="btn btn-info btn-small" style="clear:left;">'+myresults.totalFamalies+'</span> Total Families</li> ';
 	}
 
 	if(myresults.totalMaleVoters==null){
-		str +='&nbsp;&nbsp;&nbsp; Total Male Voters : '+value+'';
+		str +='<li> <span class="btn btn-info btn-small" style="clear:left;"> '+value+'</span> Total Male Voters</li> ';
 	}
 	else{
-	str +='&nbsp;&nbsp;&nbsp; Total Male Voters : '+myresults.totalMaleVoters+'';
+	str +='<li> <span class="btn btn-info btn-small" style="clear:left;">'+myresults.totalMaleVoters+'</span> Total Male Voters</li> ';
 	}
 
 	if(myresults.totalFemaleVoters==null){
-		str +='&nbsp;&nbsp;&nbsp; Total Female Voters : '+value+'';
+		str +='<li> <span class="btn btn-info btn-small" style="clear:left;">'+value+'</span> Total Female Voters</li> ';
 	}
 	else{
-	str +='&nbsp;&nbsp;&nbsp; Total Female Voters : '+myresults.totalFemaleVoters+'';
+	str +='<li> <span class="btn btn-info btn-small" style="clear:left;">'+myresults.totalFemaleVoters+'</span> Total Female Voters</li> ';
 	}
 	
-	str +='</div>';
-	str+='</br>';
-	str+='<div style="font-family:verdana;">';
-	str+='<table class="impTableDiv">';
-	str+='<tr>';
+	str +='</ul></div>';
+	str+='<div class="span9" style="margin-top:6px;">';
+	str+='<table class="table table-bordered table-striped table-hover">';
+	str+='<thead class="info"><tr>';
 	str+='<th>Report</th><th>Voters Below 3</th><th>Voters Between 4-6</th><th>Voters Between 7-10</th><th>Above 10 Voters</th>';
-	str+='</tr>';
+	str+='</tr></thead><tbody>';
 	str+='<tr>';
 	str+='<th>No of Familes</th>';
 
 	if(myresults.below3 != null)
-		str+='<td><b>'+myresults.below3+'</td></b>';
+		str+='<td>'+myresults.below3+'</td>';
 	else
-		str+='<td><b>'+0+'</td></b>';
+		str+='<td>'+0+'</td>';
 
 	if(myresults.betwn4to6 != null)
-		str+='<td><b>'+myresults.betwn4to6+'</td></b>';
+		str+='<td>'+myresults.betwn4to6+'</td>';
 	else
-		str+='<td><b>'+0+'</td></b>';
+		str+='<td>'+0+'</td>';
 
 	if(myresults.betwn7to10 != null)
-		str+='<td><b>'+myresults.betwn7to10+'</td></b>';
+		str+='<td>'+myresults.betwn7to10+'</td>';
 	else
-		str+='<td><b>'+0+'</td></b>';
+		str+='<td>'+0+'</td>';
 
 	if(myresults.above10 != null)
-		str+='<td><b>'+myresults.above10+'</td></b>';
+		str+='<td>'+myresults.above10+'</td>';
 	else
-		str+='<td><b>'+0+'</td></b>';
+		str+='<td>'+0+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Familes %</th>';
 
 	if(myresults.below3perc != null)
-		str+='<td><b>'+myresults.below3perc+'%</td></b>';
+		str+='<td>'+myresults.below3perc+'%</td>';
 	if(myresults.betwn4to6perc != null)
-		str+='<td><b>'+myresults.betwn4to6perc+'%</td></b>';
+		str+='<td>'+myresults.betwn4to6perc+'%</td>';
 	if(myresults.betwn7to10perc != null)
-		str+='<td><b>'+myresults.betwn7to10perc+'%</td></b>';
+		str+='<td>'+myresults.betwn7to10perc+'%</td>';
 	if(myresults.above10perc != null)
-		str+='<td><b>'+myresults.above10perc+'%</td></b>';
+		str+='<td>'+myresults.above10perc+'%</td>';
 
 	str+='<tr>';
-	str+='</table>';
+	str+='</tbody></table>';
 	str+='</div>';
 	$("#impFamilesBasicDetails").html(str);
 	if(type == "constituency" || type == "mandal")
@@ -2764,7 +2761,9 @@ function buildVoterDetailsTable(result,type,retrieveType){
 
 
 	var str='';
-	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
+	str+='<table  class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
+	
+	str+='<thead class="info">'
 	str+='<tr>'
 	str+='<th rowspan="2">Age Range</th>';
 	str+='<th colspan="2">Total Voters</th>';
@@ -2783,9 +2782,12 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	//str+='<th>Voters</th>';
 	//str+='<th>Percentage</th>';
 	str+='</tr>';
+	str+='</thead><tbody>';
+	
 
 	for(var i in result.votersDetailsVO){
 
+	
 	str+='<tr>';
 	str+='<td>'+result.votersDetailsVO[i].ageRange+'</td>';
 	str+='<td>'+result.votersDetailsVO[i].totalVoters+'</td>';
@@ -2820,6 +2822,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 
 	}
 
+	str+='</tbody>';
 	str+='</table>';
 
 	$('#tableDiv').html(str);
@@ -3542,7 +3545,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 
 		if(id == 0 || id == null || id == '')
 			return false;*/
-	  if(maintype == "booth" || maintype == "panchayat" || maintype == "mandal"){
+	  //if(maintype == "booth" || maintype == "panchayat" || maintype == "mandal"){
 		var jsObj=
 		{
 			id                :id,
@@ -3555,7 +3558,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getPreviousEleVotingTrendsAction.action?"+rparam;	
 		callAjax(jsObj,url);
-      }
+      //}
 	}
 
 function showPreviousEleVotingTrends(results,jsObj)
@@ -3572,6 +3575,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
+				str +='<th>election Type</th>';
 				str +='<th>Year</th>';
 				str +='<th>Total Voters</th>';
 				  str +='<th>Votes Polled</th>';
