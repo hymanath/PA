@@ -3826,8 +3826,8 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		
 			var str='';
 
-			str+='<table align="center" id="voterBasicInfoTable" class="gridtable1" style="text-align:center;">';
-			 str+='<tr>';
+			str+='<table id="voterBasicInfoTable" class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
+			 str+='<thead class="info"><tr>';
 			  str+='<th>Year</th>';
 		      str+='<th>Total Voters</th>';
 		 	  str+='<th>Male Voters</th>';
@@ -3835,7 +3835,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			  str+='<th>Total Voters Difference</td>';
 			  str+='<th>Male Voters Difference</td>';
 		  	  str+='<th>Female Voters Difference</td>';
-			 str+='</tr>';
+			 str+='</tr></thead><tbody>';
 
 
 			 for(var i=myResults.length;i>=1;i--){
@@ -3894,15 +3894,15 @@ function buildPreviousVotersDetails(myResults,jsObj){
 
 			 str+='</tr>';
 			 }
-			str+='</table>';
+			str+='</tbody></table>';
 
-			str+='<div style="margin:6px 0px 4px 23px;"><font style="color:red;">Note</font> :<b>P</b>- Publication , <b>E</b>- Election</div>';
-			str+='<div style="margin:6px 0px 4px 33px;"> <img class="imageSize" src="images/uparrow.png" /> - Votes Increase , <img class="imageSize" src="images/downarrow.png" /> - Votes Decrease</div>';
+			str+='<div class="breadcrumb" style="float:right; margin: 3px 0;"><font style="color:red;">Note</font> :<span class="help-inline f2"><b>P</b>- Publication</span><span class="help-inline f2"><b>E</b>- Election</span>';
+			str+='<span class="help-inline f2"><img class="imageSize" src="images/uparrow.png" /> -Voters Increased</span> <span class="help-inline f2"><img class="imageSize" src="images/downarrow.png" /> - Voters Decrease</span></div>';
 
 
 			$('#votersBasicInfoDiv1').html(str);
 
-		     $('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
+		     //$('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
 
 		}
 	
