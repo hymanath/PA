@@ -388,7 +388,13 @@ width: 618px;
     background-image: url("images/icons/districtPage/header_body.png");
     height: 36px;
     padding-left: 17px;
-    width: 959px;
+    width: 916px;
+}
+
+.yui-skin-sam .yui-dt-liner {
+    margin: 0 0 0 -8px;
+    padding: 9px;
+	
 }
 </style>
 <script type="text/javascript">
@@ -921,17 +927,17 @@ if(result.length == 0)
 
   var newsResultColumnDefs = [ 		    	             
 		    	            
-							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
+							{key:"categoryType", label: "NEWS CATEGORY", resizeable:true, sortable: true},
 							{key:"gallaryName", label: "GALLERY", sortable: true},
-		    	           	{key:"source", label: "SOURCE", sortable: true},
-							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
+		    	           	{key:"source", label: "SOURCE", sortable: true, resizeable:true},
+							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true, resizeable:true},
 							//YAHOO.widget.DataTable.description
 								{key:"description", label: "DESCRIPTIONS",
-								formatter:YAHOO.widget.DataTable.description, sortable: true},
+								formatter:YAHOO.widget.DataTable.description, sortable: true, resizeable:true},
 							//{key:"description", label: "DESCRIPTIONS", sortable: true},
-		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
-							{key:"locationValue", label: "AREA NAME", sortable: true},
-							{key:"fileDate", label: "NEWS DATE", sortable: true},
+		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true, resizeable:true},
+							{key:"locationValue", label: "AREA NAME", sortable: true, resizeable:true},
+							{key:"fileDate", label: "NEWS DATE",sortable: true, resizeable:true},
 							
 
 							//{key:"delete", label: "DELETE",formatter:YAHOO.widget.DataTable.delet},
@@ -2184,7 +2190,7 @@ try{
    </td>
  </tr> 
   
-  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:1014px;" ></div></td></tr>
+  <tr><td><div id="showNews" class="yui-skin-sam" style="width:970px;overflow-x:scroll;"></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
            <div id="showNewsDiv"></div>
