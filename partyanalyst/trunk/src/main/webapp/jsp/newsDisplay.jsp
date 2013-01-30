@@ -1128,6 +1128,8 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
  
 	 document.getElementById("fromDate").value=null;
      document.getElementById("toDate").value=null;
+	 document.getElementById('DateErrDiv').innerHTML='&nbsp;';
+
    if(document.getElementById("betweendates").checked == true)
      document.getElementById("showDates").style.display = "block";
    else
@@ -1142,7 +1144,7 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
  }
  
  function newsSearch(){
- 
+ showAjaxImg('searchAjaxImgSpan');
    var sourceEle =   document.getElementById("source");
    var  source = sourceEle.options[sourceEle.selectedIndex].value;
    var categoryEle =  document.getElementById("category");
@@ -1198,14 +1200,17 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 
 	document.getElementById('DateErrDiv').innerHTML='&nbsp;';
 	if(!startDate){
+			$('#searchAjaxImgSpan').css('display','none');
 			document.getElementById('DateErrDiv').innerHTML='Please select From Date ';
 			return false;
 		}
 	if(!endDate){
+			$('#searchAjaxImgSpan').css('display','none');
 			document.getElementById('DateErrDiv').innerHTML='Please select To Date ';
 			return false;
 		}
 	if(date2 < date1){ 
+		 $('#searchAjaxImgSpan').css('display','none');
 		 document.getElementById('DateErrDiv').innerHTML="From Date should not greater than To Date";
 		 return true;
 		}
@@ -2148,7 +2153,7 @@ try{
 </div>
 <div style="padding-top:15px;">
  <center>
- <a href="javascript:{}" onclick="newsSearch();showAjaxImg('searchAjaxImgSpan')" ><img src="images/search_button.jpg" /></a>
+ <a href="javascript:{}" onclick="newsSearch();" ><img src="images/search_button.jpg" /></a>
  <a href="javascript:{}" onclick="clearAll();" style="padding-left:10px;" ><img src="images/clear_all_buttom.jpg" ></a>
  <span id="searchAjaxImgSpan" style="margin-left:15px;display:none;"><img src="images/icons/search.gif"></img width="18px" height="18px;"></div></center>
 </span>
@@ -2835,7 +2840,6 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 </script>
 
 <!--DISPLAY NEWS GALLARIES END-->
-
 
 <script>
 
