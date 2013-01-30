@@ -11,6 +11,21 @@
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<!-- JQuery files (Start) -->
+
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<!-- JQuery files (End) -->
 <!--<SCRIPT type="text/javascript" src="js/AddNewProblem/addFileInput.js"></SCRIPT>-->
 
 <LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
@@ -552,6 +567,18 @@ function checkValidations(){
 	return flag;
 	
 }
+function displayCal()
+{
+
+	$('#existingFromText').datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			maxDate: new Date()
+			
+		}).datepicker("show");
+	
+}
 </script>
 </head>
 <body onload="executeOnload()" class="bodyStyle">
@@ -780,11 +807,11 @@ function checkValidations(){
                     <td style="padding-left:10px;">
 						<TABLE>
 							<TR>
-								<TD><s:textfield id="existingFromText" readonly="true" name="existingFrom" size="20"/>
+								<TD><s:textfield id="existingFromText" readonly="true" name="existingFrom" size="20" onClick="displayCal()"/>
 								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
 								<TD>
 									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">
-									<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>	</TD>
+									<!--<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/>--></A>	</TD>
 							</TR>
 						</TABLE>		
 					</td>
