@@ -37,12 +37,13 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(voterFamilyInfoDAO.deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(1l, 232l, 7l, 1l));
 	}*/
 	
-	public void testGetTotalFamiliesCountByReportLevelValue()
+	/*public void testGetTotalFamiliesCountByReportLevelValue()
 	{
 		List totalFalies = voterFamilyInfoDAO.getTotalFamiliesCountByReportLevelValue(1l, 232l, 7l);
 		
 		System.out.println(totalFalies.size());
 		if(totalFalies != null && totalFalies.size() > 0)
 			System.out.println(totalFalies.get(0));
-	}
+	}*/
+	
 }
