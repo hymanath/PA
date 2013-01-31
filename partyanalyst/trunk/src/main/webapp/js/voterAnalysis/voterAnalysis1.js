@@ -3545,7 +3545,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 
 		if(id == 0 || id == null || id == '')
 			return false;*/
-	  //if(maintype == "booth" || maintype == "panchayat" || maintype == "mandal"){
+	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal"){
 		var jsObj=
 		{
 			id                :id,
@@ -3558,7 +3558,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getPreviousEleVotingTrendsAction.action?"+rparam;	
 		callAjax(jsObj,url);
-      //}
+      }
 	}
 
 function showPreviousEleVotingTrends(results,jsObj)
@@ -3572,7 +3572,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 		if(flag)
 		{
 		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
+			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
 				str +='<th>election Type</th>';
@@ -3587,6 +3587,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 				{
 				  str +='<tr>';
 				  str += '<td>'+results[j].reqType+'</td>';
+				  str += '<td>'+results[j].electionYear+'</td>';
 				  str +='<td>'+results[j].totalVotes+'</td>';
 					str +='<td>'+results[j].polledVotes+'</td>';
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
