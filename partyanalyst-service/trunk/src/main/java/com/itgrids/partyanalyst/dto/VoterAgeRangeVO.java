@@ -9,7 +9,28 @@ public class VoterAgeRangeVO implements Serializable {
 	private Long femaleVoters;
 	private Long totalVoters;
 	private String percentage;
+	private Long reportLevelId;
+	private Long reportLevelValue;
+	private Long publicationDateId;
 	
+	public Long getReportLevelId() {
+		return reportLevelId;
+	}
+	public void setReportLevelId(Long reportLevelId) {
+		this.reportLevelId = reportLevelId;
+	}
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
+	}
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
 	public String getAgeRange() {
 		return ageRange;
 	}
