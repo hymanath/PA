@@ -121,7 +121,6 @@ IDelimitationConstituencyMandalDAO {
 	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId)
 	{
 		return getHibernateTemplate().find("select model.tehsil.tehsilId from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID =?",constituencyId);
-
-
-}
 	}
+	
+}
