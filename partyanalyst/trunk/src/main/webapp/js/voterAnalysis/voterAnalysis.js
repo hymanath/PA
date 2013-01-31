@@ -836,7 +836,7 @@ $(document).ready(function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 		{
 	      getBasicInfo();
-		 
+		 getPreviousElectionVotingTrends();
 		}
 
 	  
@@ -844,6 +844,8 @@ $(document).ready(function(){
 	$("#mandalField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 2 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
+		 getPreviousElectionVotingTrends();
+
 	});
 	$("#panchayatField").live("change",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
@@ -856,7 +858,7 @@ $(document).ready(function(){
 	   $('.noteDiv').html('');
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
-		getPreviousElectionVotingTrends();
+		
 	});
     $("#publicationDateList").live("change",function(){
     
@@ -914,7 +916,8 @@ function getBasicInfo(){
 		   getVotersData();
 		   showNewsDetails();
 		    getCounts();
-			getProblemsByLocation();
+			getProblemsByLocation();			
+			getPreviousElectionVotingTrends();
 		 }else if($('#votersDiv4').css('display') == 'block'){
 			
              callCorrespondingAjaxCall();
@@ -3254,10 +3257,18 @@ function getPreviousElectionVotingTrends()
 		var constituencyId = $("#constituencyList").val(); 
 		var type = '';
 		var id='';
-		if(level == 1 || level == 2)
+
+		if(level == 1)
 		{
-			 $("#previousEleVotingTrendsDiv").html('');
-			 return;
+			 id = $("#constituencyList").val();
+			type = "Constituency";
+			name = $("#constituencyList option:selected").text()+" "+"Constituency.";
+		}
+		if(level == 2)
+		{
+			 id = $("#mandalField").val();
+			type = "Mandal";
+			name = $("#mandalField option:selected").text()+" ";
 		}
 		if(level == 3)
 		{
@@ -3267,13 +3278,15 @@ function getPreviousElectionVotingTrends()
 		}
 		if(level == 4)
 		{
-			id = $("#pollingStationField").val();
-			type = "booth";
-			name = $("#pollingStationField option:selected").text()
+			$("#previousEleVotingTrendsDiv").html('');
+			return;
 		}
 
 		if(id == 0 || id == null || id == '')
 			return false;
+		else if(publicationDateId == 0 || publicationDateId == '' || publicationDateId == null)
+			return false;
+
 		var jsObj=
 		{
 			id                :id,
@@ -3303,6 +3316,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 			$("#previousEleVotingTrendsDiv").append('<div style="margin-bottom: 20px;"><span id="prevVotTrendHeadingSpan">Previous Election Voting Trends in '+jsObj.name+' </span></div>');
 				str +='<table style="width:95%;font-family: arial;">';
 				str +='<tr>';
+				str +='<th>Election Type</th>';
 				str +='<th><b>Year</b></th>';
 				str +='<th>Total Voters</th>';
 				  str +='<th>Votes Polled</th>';
@@ -3313,6 +3327,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 				for(var j in results)
 				{
 				  str +='<tr>';
+				  str +='<td>'+results[j].reqType+'</td>';
 				  str += '<td>'+results[j].electionYear+'</td>';
 				  str +='<td>'+results[j].totalVotes+'</td>';
 					str +='<td>'+results[j].polledVotes+'</td>';
