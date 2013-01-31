@@ -750,7 +750,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 				 fileVOList.add(fileVO);
 			 }
 			 retVO.setFileVOList(fileVOList);
-			 retVO.setFileDate(mapKey);
+			 String fileDate = mapKey.substring(8,10)+'-'+mapKey.substring(5,7)+'-'+mapKey.substring(0,4);
+			 retVO.setFileDate(fileDate);
 			 returnVal.add(retVO);
 		 }
 		 
