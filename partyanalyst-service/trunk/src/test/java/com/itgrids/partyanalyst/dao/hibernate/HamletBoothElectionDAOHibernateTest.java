@@ -91,7 +91,7 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testFindAllElectionsHappendInAPanchayat()
+	/*public void testFindAllElectionsHappendInAPanchayat()
 	{
 		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(1l);
 		System.out.println(list.size());
@@ -100,6 +100,56 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0]+"  "+params[1]);
 		}
-	}
+	}*/
+	
+	/*public void testFindAllElectionsHappendInAPanchayat()
+	{
+		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAMandal(836l);
+		System.out.println(list.size());
 		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"  "+params[1]);
+		}
+	}
+	
+	public void testGetBoothIdsByMandalId()
+	{
+		List<Long> list = hamletBoothElectionDAO.getBoothIdsByMandalId(844l, 38l);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+			System.out.println(list.get(0));
+	}*/
+	
+	/*public void testGetAllBoothsByConstituencyId()
+	{
+		List<Long> list = hamletBoothElectionDAO.getBoothIdsByConstituencyId(232l, 38l);
+			System.out.println(list.size());
+			if(list != null && list.size() > 0)
+				for(Long ids : list)
+				System.out.println(ids);
+	}*/
+	
+	/*public void testfindAllElectionsHappendInAConstituency()
+	{
+		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAConstituency(232l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
+	}*/
+		
+	/*public void testfindAllElectionsHappendInALocalElectionBody()
+	{
+		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInALocalElectionBody(83l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
+	}
+	*/
+	
+	
 }
