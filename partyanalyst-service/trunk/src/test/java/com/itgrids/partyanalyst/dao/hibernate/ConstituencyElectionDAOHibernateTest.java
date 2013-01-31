@@ -305,7 +305,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testgetElectionIdAndEleTypeByConstituencyIdAndDate1()
+	/*public void testgetElectionIdAndEleTypeByConstituencyIdAndDate1()
 	{
 		List<Object[]> list = constituencyElectionDAO.getElectionIdAndSubTypeByConstituencyIdAndDate(323l,constituencyElectionDAO.get(10507l).getElection().getElectionDate(),new Date());
 		System.out.println(list.size());
@@ -315,6 +315,16 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			{
 				System.out.println(params[0]+" "+params[1]);
 			}
+		}
+	}*/
+	
+	public void testfindAllElectionsHappendInAConstituency()
+	{
+		List<Object[]> list = constituencyElectionDAO.findAllElectionsHappendInAConstituency(232l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
 		}
 	}
 }

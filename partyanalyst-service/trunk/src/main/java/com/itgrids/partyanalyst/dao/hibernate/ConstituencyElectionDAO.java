@@ -533,6 +533,19 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return query.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAllElectionsHappendInAConstituency(Long constituencyId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		stringBuilder.append("select distinct(model.election.electionId), model.election.elecSubtype from ConstituencyElection model where " +
+				"  model.constituency.constituencyId = :constituencyId and model.election.electionScope.electionType.electionTypeId in(1,2)  order by model.election.electionDate desc  ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }
 
 
