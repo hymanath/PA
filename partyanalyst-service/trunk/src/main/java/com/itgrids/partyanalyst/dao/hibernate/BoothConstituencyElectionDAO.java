@@ -435,4 +435,31 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     		query.setParameter("partNo", partNo);
     	return query.list();
    	}
+    
+    @SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByLocalEleBodyId(Long localEleBodyId, Long electionId)
+    {
+    	StringBuilder stringBuilder = new StringBuilder();
+    	stringBuilder.append("select model.booth.boothId from BoothConstituencyElection model where model.booth.localBody.localElectionBodyId =:localElectionBodyId  " +
+    			" and model.constituencyElection.election.electionId = :electionId ");
+    	Query query = getSession().createQuery(stringBuilder.toString());
+    	query.setParameter("electionId", electionId);
+    	query.setParameter("localElectionBodyId", localEleBodyId);
+    	return query.list();
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByConstituencyId(Long constituencyId, Long electionId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select distinct(model.booth.boothId) from BoothConstituencyElection model ");
+		stringBuilder.append(" where model.constituencyElection.election.electionId = :electionId ");
+		stringBuilder.append("and model.booth.constituency.constituencyId = :constituencyId ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+	}
 }
