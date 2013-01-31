@@ -21,7 +21,21 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	{
 		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId = ?",tehsilId);
 	}
-	  
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPanchayatIdsByTehsilId(Long tehsilId)
+	{
+		return getHibernateTemplate().find("select distinct(model.panchayatId) from Panchayat model where model.tehsil.tehsilId = ?",tehsilId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatIdsByMandalIdsList(List<Long> mandalIdsList)
+	{
+		Query query = getSession().createQuery("select distinct(model.panchayatId),model.tehsil.tehsilId from Panchayat model where model.tehsil.tehsilId in (:mandalIdsList)");
+		query.setParameterList("mandalIdsList",mandalIdsList);
+		return query.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId)
 	{
