@@ -108,6 +108,7 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> findAllElectionsHappendInAPanchayat(Long panchayatId)
 	{
 		Query query = getSession().createQuery("select distinct(HBE.boothConstituencyElection.constituencyElection.election.electionId),HBE.boothConstituencyElection.constituencyElection.election.elecSubtype from HamletBoothElection HBE, PanchayatHamlet PH where " +
@@ -115,4 +116,70 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		query.setParameter("panchayatId",panchayatId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAllElectionsHappendInAMandal(Long mandalId)
+	{
+		Query query = getSession().createQuery("select distinct(HBE.boothConstituencyElection.constituencyElection.election.electionId), HBE.boothConstituencyElection.constituencyElection.election.elecSubtype from HamletBoothElection HBE,  PanchayatHamlet PH where " +
+				" HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.tehsil.tehsilId = :tehsilId and HBE.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2) order by HBE.boothConstituencyElection.constituencyElection.election.electionDate desc ");
+		
+		query.setParameter("tehsilId", mandalId);
+		return query.list();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByMandalId(Long mandalId, Long electionId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select distinct(model.boothConstituencyElection.booth.boothId) from HamletBoothElection model , ");
+		stringBuilder.append(" PanchayatHamlet model2 where model.hamlet.hamletId = model2.hamlet.hamletId ");
+		stringBuilder.append(" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId ");
+		stringBuilder.append("and model2.panchayat.tehsil.tehsilId = :tehsilId ");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		queryObj.setParameter("electionId", electionId);
+		queryObj.setParameter("tehsilId", mandalId);
+		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAllElectionsHappendInAConstituency(Long constituencyId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		stringBuilder.append("select distinct(model.election.electionId), model.election.elecSubtype from ConstituencyElection model where " +
+				"  model.constituency.constituencyId = :constituencyId and model.election.electionScope.electionType.electionTypeId in(1,2)  order by model.election.electionDate desc  ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByConstituencyId(Long constituencyId, Long electionId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select distinct(model.boothConstituencyElection.booth.boothId) from HamletBoothElection model , ");
+		stringBuilder.append(" PanchayatHamlet model2 where model.hamlet.hamletId = model2.hamlet.hamletId ");
+		stringBuilder.append(" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId ");
+		stringBuilder.append("and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAllElectionsHappendInALocalElectionBody(Long localElectionBodyId)
+	{
+		Query query = getSession().createQuery("select distinct(model.constituencyElection.election.electionId), model.constituencyElection.election.elecSubtype from BoothConstituencyElection model where " +
+				" model.booth.localBody.localElectionBodyId = :localElectionBodyId and model.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2) order by model.constituencyElection.election.electionDate desc ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		return query.list();
+	}
+	
+		
 }
