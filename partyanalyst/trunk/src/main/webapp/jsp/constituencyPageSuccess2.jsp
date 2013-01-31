@@ -267,7 +267,7 @@ margin-top: 4px;
 .opinionpoll .answer span{margin-left:10px;}
 .main-mbg{line-height:none !important;}
 /*.main-title-sec {height:20px;}*/
-#constituencyType{margin-bottom:5px;}
+#constituencyType{margin-bottom:5px;display:inline-block;}
 
 /** Favorite Link Start**/
 
