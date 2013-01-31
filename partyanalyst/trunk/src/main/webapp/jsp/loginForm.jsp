@@ -342,14 +342,22 @@ if(request.getParameter("showMessage")!=null){
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
 		<div><br>
-		 <div style="display:none;width: 615px;margin-left: 184px;" id="accessDiv">
+		 <!--<div style="display:none;width: 615px;margin-left: 184px;" id="accessDiv">
 			<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;font-weight:bold;font-size:15px">Only Registered users can view this content.
 			Already a member, Please Login Here.
 			(OR)
 			Not a member, Click here for <a href="freeUserRegistration.action">FREE REGISTRATION</a>.</h3>
 
+		</div>-->
+		<div id="registerDiv" style= "background-color: #F9F9F9;border: 2px solid #06ABEA;color: #000000; cursor: pointer;margin-left: 152px;margin-top:-19px;padding: 6px;position: fixed;width: 235px;z-index: 9999;">
+		<a href="javaScript:hideRegisterDiv();" style="float: right;"><b>(X)</b></a>
+		Only Registered users can view this content.
+			Already a member, Please Login Here.
+			</br>(OR)
+			Not a member, Click here for <a href="freeUserRegistration.action">FREE REGISTRATION</a>.</h3> 
 		</div>
 		</div>
+		
 		<!-- bootstap code(html 5)-->
 	<div class="container">
 	
@@ -888,7 +896,10 @@ function executeOnload()
 	textBoxEl.focus();
 	
 }
-		
+	function hideRegisterDiv(){
+	$('#registerDiv').hide('slow');
+
+}	
 </script> 
 
 <script type="text/javascript">
