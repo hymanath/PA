@@ -679,7 +679,7 @@ function handleSubmit(type)
         var villageValue = $('#vilWrdDivSel :selected').val();
         var boothVal = $('#boothNoSel :selected').val();
 		var locationValue;
-		var targetDateVal = document.getElementById("actionPlanDate").value;
+		var targetDateVal = document.getElementById("endDateText_new").value;
 		var targetDateValArry = targetDateVal.split("/");
 		var targetdate = new Date(targetDateValArry[2], parseInt(targetDateValArry[1])-1, targetDateValArry[0]);
 		 
@@ -693,10 +693,10 @@ function handleSubmit(type)
 		  str+=  " Event Name should not contain special characters & numbers.</br>";
 		   errorReq = true;
 		}
-		else if(startdate > enddate){
+		/*else if(startdate > enddate){
 		  str+= "Please select A valid date for End date.<br/>";
 		   errorReq = true;
-		}
+		}*/
 		if(startNewDate == endNewDate)
 		{
 			if(startNewTimeHrsVal > endNewTimeHrsVal)
@@ -715,12 +715,12 @@ function handleSubmit(type)
 		}
 		if(targetdate < startdate)
 		{
-			str+= "Please Select A Valid Target Date.<br/>";
+			str+= "Please Select A Valid End Date.<br/>";
 			errorReq = true;
 		}
 		if(targetdate > enddate)
 		{
-			str+= "Please Select A Valid Target Date.<br/>";
+			str+= "Please Select A Valid End Date.<br/>";
 			errorReq = true;
 		}
 		if(scopeId == 0 ){
