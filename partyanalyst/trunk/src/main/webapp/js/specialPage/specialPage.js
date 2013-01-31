@@ -240,7 +240,6 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "photoGallariesForUplaod")
 			{
-				alert("photo");
 				clearOptionsListForSelectElmtId('gallarySelectId');
 			    createOptionsForSelectElmtId('gallarySelectId',myResults);
                 // createListDataForNews('gallarySelectId',myResults);
@@ -280,7 +279,6 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
-			alert("video");
 				 showUploadVideoStatus(myResults);
 				
 			}
@@ -1203,7 +1201,6 @@ function getNewsImportance()
  
 }
 function uploadVideoGallary(){
-
 	var makeThis = 'private';
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
@@ -1221,7 +1218,7 @@ function uploadVideoGallary(){
 	var spcheckboxIdElmt = document.getElementById('spcheckboxId');
 	var pcheckboxIdElmt = document.getElementById('pcheckboxId');
 	var ccheckboxIdElmt =  document.getElementById('ccheckboxId');
-	var fileDate = document.getElementById("existingFromText").value;
+	//var fileDate = document.getElementById("existingFromText").value;
 	var uploadVideoBtnId = document.getElementById("uploadVideoBtnId");
 
 	var spSelectId ='';
@@ -1485,6 +1482,7 @@ var hidden=1;
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 
 function displayDateText(type, args, obj) {
+
 	var dates = args[0];
 	var date = dates[0];
 	var year = date[0], month = date[1], day = date[2];
@@ -1700,7 +1698,7 @@ function  buildUploadNews()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="35"/>';
+	str += '<TD class="selectWidthPadd"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="35"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -1820,7 +1818,7 @@ function clearNewsUploadFileFields()
 	document.getElementById('fileTitle').value = '';
 	document.getElementById('fileDescription').value = '';
 	document.getElementById('keywords').value = '';
-	document.getElementById('existingFromText').value = '';
+	document.getElementById('existingFromTextNews').value = '';
 	document.getElementById('source').value = '';
 	document.getElementById('newsFileId').value = '';	
 	document.getElementById('publicRadioId').checked = true;
@@ -1837,7 +1835,7 @@ function validateNewsFileUpload()
 	var languageId = document.getElementById("language").value;
     //var categoryId = document.getElementById("category").value;
     var keywords = document.getElementById("keywords").value;
-	var fileDate = document.getElementById("existingFromText").value;
+	var fileDate = document.getElementById("existingFromTextNews").value;
 	var flag = true;
 
 	fileTitle = removeAllUnwantedCharacters(fileTitle);
@@ -4020,7 +4018,6 @@ function buildPhotoGalleryDiv()
 }
 function buildUploadPhotosDiv()
 {
-	
 	var tempSpecialPageId = document.getElementById("specialPageId").value;
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
@@ -4052,7 +4049,7 @@ function buildUploadPhotosDiv()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td class="tdWidth2" style="width:68px;"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="25"/>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromTextPhoto" class="dateField" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -4340,14 +4337,13 @@ function showUploadStatus(myResult)
 
 function clearUploadFileFields()
 {
-	
 	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
 	
 	document.getElementById('fileTitleId').value='';
 	document.getElementById('fileDescId').value='';
 	document.getElementById('fileId').value='';
-	document.getElementById('existingFromText').value = '';
+	document.getElementById('existingFromTextPhoto').value = '';
 	
 }
 
@@ -4363,7 +4359,7 @@ function validateFileUpload()
 	var partyGalId = document.getElementById("uploadPartyGalleryId");
 	var partySelectId = document.getElementById("partySelectId");
 	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
-	var fileDate = document.getElementById("existingFromText").value;
+	var fileDate = document.getElementById("existingFromTextPhoto").value;
 	var flag = true;
 	
 	fileTitle = removeAllUnwantedCharacters(fileTitle);
