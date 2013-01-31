@@ -731,7 +731,7 @@ function buildUploadPhotosDiv()
 	str += '   </TR></table>';*/
 	str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextPhoto" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -1032,6 +1032,7 @@ function disableButton(id)
 }
 function validateFileUpload()
 {
+alert("validateFileUpload");
 	var fileTitle = document.getElementById('photofileTitleId').value;
 	var fileDesc = document.getElementById('photofileDescId').value;
 	var fileVal = document.getElementById("photofileId").value;
@@ -1042,7 +1043,7 @@ function validateFileUpload()
 	var canGalId = document.getElementById("uploadCandidateGalleryId");
 	var candidateSelectId = document.getElementById("candidateSelectId");
 	var ccheckboxIdElmt = document.getElementById("ccheckboxId");
-	var fileDate = document.getElementById("existingFromText").value;
+	var fileDate = document.getElementById("existingFromTextPhoto").value;
 	var flag = true;
 
 	fileTitle = removeAllUnwantedCharacters(fileTitle);
@@ -1123,6 +1124,7 @@ function validateFileUpload()
 }
 function validateNewsFileUpload()
 {
+alert("validateNewsFileUpload");
 	var fileTitle = document.getElementById('newsfileTitle').value;
 	var fileDesc = document.getElementById('newsfileDescription').value;
 	var fileVal = document.getElementById("newsfileId").value;
@@ -1130,7 +1132,7 @@ function validateNewsFileUpload()
 	var languageId = document.getElementById("language").value;
 	var keywords = document.getElementById("keywords").value;
 	var galEle = document.getElementById("gallaryId").value;
-	var fileDate = document.getElementById("existingFromText").value;
+	var fileDate = document.getElementById("existingFromTextNews").value;
 	var flag = true;
 
 	fileTitle = removeAllUnwantedCharacters(fileTitle);	
@@ -1247,24 +1249,24 @@ function showNewsUploadStatus(myResult)
 
 function clearNewsUploadFileFields()
 {
-
+alert("clearNewsUploadFileFields");
 	$("#addMoreFilesDiv").html('');
 	$("#otherProNewsDiv").html('');
 	document.getElementById('newsfileTitle').value = '';
 	document.getElementById('newsfileDescription').value = '';
 	document.getElementById('keywords').value = '';
-	document.getElementById('existingFromText').value = '';
+	//document.getElementById('existingFromText').value = '';
 	document.getElementById('source').value = '';
 	document.getElementById('newsfileId').value = '';
 	//document.getElementById('publicRadioId').checked = true;
-	document.getElementById('existingFromText').value = '';
+	document.getElementById('existingFromTextNews').value = '';
 	document.getElementById('ImagenewsfileId').value = '';
 	getScopes();
 }
 	
 function clearUploadFileFields()
 {
-
+alert("clearUploadFileFields");
 	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
 	document.getElementById('photofileTitleId').value = '';
@@ -1272,7 +1274,7 @@ function clearUploadFileFields()
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('photofileId').value = '';
 	
-	document.getElementById('existingFromText').value = '';
+	document.getElementById('existingFromTextPhoto').value = '';
 }
 
 function clearGallaryFields()
@@ -1910,6 +1912,7 @@ function getLocations(id){
 
 function  buildUploadNews()
 {
+alert("newsBuild");
    var tempPartyId = document.getElementById("partyId").value;
    var str ='';
 	str+='<div id="content" style="width:650px;">';
@@ -1956,7 +1959,7 @@ function  buildUploadNews()
 	str += '   </TR>';*/
 	str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
@@ -2421,6 +2424,7 @@ function clearVideoGallaryFields()
 
 function clearUploadVideoFields()
 {
+alert("clearUploadVideoFields");
 	$("#addMoreVideosDiv").html('');
 	$("#otherProVideoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
