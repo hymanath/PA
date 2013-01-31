@@ -38,7 +38,7 @@ function createCoulmnChart(regionData,divId)
 
 	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
 		chart.draw(data, {width: 850, height: 420,legend:'right',legendTextStyle:{fontSize:10}, title: 'Influence People',
-				  hAxis: {textStyle:{fontSize:'8'},slantedText:true, slantedTextAngle:85, titleTextStyle: {color: 'red'}}
+				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:85, titleTextStyle: {color: 'red'}}
 				 });
 
 }
