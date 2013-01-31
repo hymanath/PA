@@ -19,7 +19,7 @@
 <!-- start of vedio files -->
 
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
+<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script>
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 
@@ -396,6 +396,10 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 	<img src="images/NewsSample/News_service2.PNG" />
 	</div>
 </div>
+
+<script type='text/javascript'>
+   var jQuery142 = jQuery.noConflict(true);
+</script>
 <script>
 $(document).ready(function(){
 
