@@ -540,7 +540,7 @@ oDT: votersByLocBoothDataTable
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		     getPreviousVotersDetails();
-		//getvotersBasicInfo("voters",id,publicationId,type);
+		getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
@@ -3572,7 +3572,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 		if(flag)
 		{
 		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
+			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
 				str +='<th>election Type</th>';
