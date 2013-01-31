@@ -540,7 +540,7 @@ oDT: votersByLocBoothDataTable
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		     getPreviousVotersDetails();
-		getvotersBasicInfo("voters",id,publicationId,type);
+		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
