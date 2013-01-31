@@ -47,11 +47,19 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}
 */
-	public void testgetPanchayatiesCount()
+	/*public void testgetPanchayatiesCount()
 	{
 	 //Long value = panchayatDAO.getPanchayatiesCount(844l,"constituency");
 	 //System.out.println(value);
-	}
+	}*/
 	
+	/*public void testGetPanchayatIdsByTehsilId()
+	{
+		List<Long> list = panchayatDAO.getPanchayatIdsByTehsilId(844l);
+		System.out.println(list.size());
+		
+		for(Long id : list)
+			System.out.println(id);
+	}*/
 	
 }

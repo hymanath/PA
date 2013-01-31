@@ -8,6 +8,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase{
 	
@@ -186,11 +187,45 @@ System.out.println(list.size());
 	 }
 }*/
 
-public void testGetConstituenciesIds()
+/*public void testGetConstituenciesIds()
 {
 	List<Long> constituencyIds = boothPublicationVoterDAO.getConstituenciesIds();
 	System.out.println(constituencyIds.size());
 	if(constituencyIds != null && constituencyIds.size() >0)
 		System.out.println(constituencyIds.get(0));
-}
+}*/
+
+/*public void testFindVotersGenderWiseCountByPublicationIdInALocation()
+{
+	List<Object[]> list = boothPublicationVoterDAO.findVotersGenderWiseCountByPublicationIdInALocation(IConstants.CONSTITUENCY,232l,7l);
+	System.out.println(list.size());
+	
+	for(Object[] params : list)
+		System.out.println(params[0]+" -- "+params[1]);
+}*/
+
+	/*public void testFindFamiliesCountByPublicationIdInALocation()
+	{
+		System.out.println(boothPublicationVoterDAO.findFamiliesCountByPublicationIdInALocation(IConstants.CONSTITUENCY, 232l, 7l));
+		
+	}
+	*/
+	//getAllImpFamilesCount
+	
+	/*public void testGetAllImpFamilesCount()
+	{
+		List<Long> list = boothPublicationVoterDAO.getAllImpFamilesCount(IConstants.BOOTH, 122084l, 7l);
+		System.out.println(list.size());
+		for(Long l :list)
+			System.out.println(l);
+	}*/
+
+	public void testGetVotersCountInAAgeRange()
+	{
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,16l, 25l));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,26l, 35l));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,36l, 45l));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,46l, 60l));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,60l, null));
+	}
 }
