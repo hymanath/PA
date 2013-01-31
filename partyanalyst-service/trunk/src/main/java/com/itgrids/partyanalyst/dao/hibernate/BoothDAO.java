@@ -405,6 +405,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return query.list();
 			  
 		  }
+	    
 
 	    public List<Long> getAllPublicationDetailsForConstituency(Long constituencyId){
 	    	
@@ -420,4 +421,34 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    	
 	    }
 	    
+	    @SuppressWarnings("unchecked")
+		public List<Object[]> getBoothIdsByPanchayatIdsInAPublication(List<Long> panchayatIds,Long publicationDateId)
+	    {
+	    	Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatId from Booth model where model.panchayat.panchayatId in(:panchayatIds) and " +
+	    			" model.publicationDate.publicationDateId = :publicationDateId and model.localBody is null ");
+	    	query.setParameterList("panchayatIds", panchayatIds);
+	    	query.setParameter("publicationDateId",publicationDateId);
+	    	return query.list();
+	    }
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> checkForUrbanBooth(Long boothId,Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select model.boothId from Booth model where model.localBody is not null and model.panchayat is null and model.boothId = :boothId and " +
+					" model.publicationDate.publicationDateId = :publicationDateId ");
+			query.setParameter("boothId",boothId);
+			query.setParameter("publicationDateId",publicationDateId);
+			
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothIdsInLocalBodiesForAPublication(List<Long> localBodiesList, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select model.boothId,model.localBody.localElectionBodyId from Booth model where model.localBody.localElectionBodyId in(:localElectionBodyId) " +
+					" and model.publicationDate.publicationDateId = :publicationDateId and model.panchayat is null ");
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameterList("localElectionBodyId", localBodiesList);
+			return query.list(); 
+		}
 }
