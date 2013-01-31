@@ -1194,6 +1194,8 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
   {
      var startDate = document.getElementById("fromDate").value;
      var  endDate =  document.getElementById("toDate").value;
+	  var startDate1 = document.getElementById("fromDate").value;
+     var  endDate1 =  document.getElementById("toDate").value;
 
 	  var dt1  = parseInt(startDate.substring(0,2),10);
       var mon1 = parseInt(startDate.substring(3,5),10);
@@ -1221,12 +1223,13 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 		 return true;
 		}
 	
-	//startDate=yr1+"-"+mon1+"-"+dt1;	
-	//endDate=yr2+"-"+mon2+"-"+dt2;
-	startDate=dt1+"-"+mon1+"-"+yr1;	
-	endDate=dt2+"-"+mon2+"-"+yr2;
+	startDate=yr1+"-"+mon1+"-"+dt1;	
+	endDate=yr2+"-"+mon2+"-"+dt2;
+
+	//startDate1=dt1+"-"+mon1+"-"+yr1;	
+	//endDate1=dt2+"-"+mon2+"-"+yr2;
 	
-	var title = 'Between Dates '+startDate+' and '+endDate;
+	
  getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
   getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);  getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
 	
