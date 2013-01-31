@@ -351,6 +351,7 @@ public interface IConstants {
     public static final String PARLIAMENT_CONSTITUENCY_LEVEL = "PARLIAMENT CONSTITUENCY";
     public static final String ASSEMBLY_CONSTITUENCY_LEVEL = "ASSEMBLY CONSTITUENCY";
     public static final String MUNCIPALITY_CORPORATION_LEVEL = "MUNCIPALITY/CORPORATION";
+    public static final String PANCHAYAT = "PANCHAYAT";
     public static final String MANDAL_LEVEL = "MANDAL";
     public static final int MAX_LEVEL_OF_CONNECTION = 2;
     public static final String COMPLETE_DETAILS = "COMPLETE_DETAILS";
