@@ -14,4 +14,6 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	
 	public Integer deleteVotersInfoByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId);
 	
+	public Long getVotersCountInALocation(Long reportLevelId, Long reportLevelValue, Long publicationDateId);
+	
 }
