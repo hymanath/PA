@@ -32,7 +32,29 @@ public class ImportantFamiliesInfoVo implements Serializable{
 	private String totalMaleVoters;
 	private String totalFemaleVoters;
 	private String unKnowVoters;
+	private Long reportLevelId;
+	private Long reportLevelValue;
+	private Long publicationDateId;
+	private Double totalPercentage;
+	private Long typeId;
 	
+	
+	public Long getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
+
+	public Double getTotalPercentage() {
+		return totalPercentage;
+	}
+
+	public void setTotalPercentage(Double totalPercentage) {
+		this.totalPercentage = totalPercentage;
+	}
+
 	public Long getTotalVoters() {
 		return totalVoters;
 	}
@@ -199,6 +221,30 @@ public class ImportantFamiliesInfoVo implements Serializable{
 
 	public void setUnKnowVoters(String unKnowVoters) {
 		this.unKnowVoters = unKnowVoters;
+	}
+
+	public Long getReportLevelId() {
+		return reportLevelId;
+	}
+
+	public void setReportLevelId(Long reportLevelId) {
+		this.reportLevelId = reportLevelId;
+	}
+
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
+	}
+
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
 	}
 	
 	
