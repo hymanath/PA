@@ -421,7 +421,9 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		  fileVO.setPath(file.getFilePath());
 	    		  fileVO.setFileTitle1(file.getFileTitle());
 	    		  fileVO.setDescription(file.getFileDescription());
-	    		  fileVO.setFileDate(file.getFileDate()!=null?file.getFileDate().toString():"");
+	    		  String fileDate = file.getFileDate().toString();
+	    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+	    		  fileVO.setFileDate(dateObj!=null?dateObj:"");
 	    		  fileVO.setFileGallaryId((Long)obj[3]);
 	    		  fileVO.setGallaryName(obj[4].toString());
 	    		  
