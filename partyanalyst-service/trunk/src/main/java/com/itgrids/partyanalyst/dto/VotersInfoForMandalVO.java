@@ -31,8 +31,42 @@ public class VotersInfoForMandalVO {
 	private String  totalVotersPercentage;
 	private String totalMalePercentage;
 	private String totalFemalePercentage;
+	private Long totalFamilies;
+	private String totalFamilyPercentage;
+	private Long reportLevelId;
+	private Long reportLevelValue;
+	private Long publicationDateId;
 	
-	
+	public Long getReportLevelId() {
+		return reportLevelId;
+	}
+	public void setReportLevelId(Long reportLevelId) {
+		this.reportLevelId = reportLevelId;
+	}
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
+	}
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+	public Long getTotalFamilies() {
+		return totalFamilies;
+	}
+	public void setTotalFamilies(Long totalFamilies) {
+		this.totalFamilies = totalFamilies;
+	}
+	public String getTotalFamilyPercentage() {
+		return totalFamilyPercentage;
+	}
+	public void setTotalFamilyPercentage(String totalFamilyPercentage) {
+		this.totalFamilyPercentage = totalFamilyPercentage;
+	}
 	private boolean panchayatInfoPresent; 
 	List<String> newlyAdded;
 	List<String> completelyRemoved;
