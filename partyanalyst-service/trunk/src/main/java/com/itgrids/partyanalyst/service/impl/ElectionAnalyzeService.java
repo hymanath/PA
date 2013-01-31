@@ -112,6 +112,10 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
 		
 		try{
+			String Bi = "Bi";
+			
+			if(electionYear.contains(Bi))
+				electionYear = electionYear.substring(0,4);
 			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)  || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE) ) {
 				
 				if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE))
