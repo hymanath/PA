@@ -1221,8 +1221,10 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 		 return true;
 		}
 	
-	startDate=yr1+"-"+mon1+"-"+dt1;	
-	endDate=yr2+"-"+mon2+"-"+dt2;
+	//startDate=yr1+"-"+mon1+"-"+dt1;	
+	//endDate=yr2+"-"+mon2+"-"+dt2;
+	startDate=dt1+"-"+mon1+"-"+yr1;	
+	endDate=dt2+"-"+mon2+"-"+yr2;
 	
 	var title = 'Between Dates '+startDate+' and '+endDate;
  getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
