@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAO extends
 		GenericDaoHibernate<BoothPublicationVoter, Long> implements
@@ -224,8 +225,54 @@ public class BoothPublicationVoterDAO extends
 		Query query = getSession().createQuery(str.toString()) ;
 		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameter("locationId", locationId);
-		query.setParameter("publicationDateId", publicationDateId);
 		return (Long)query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long findFamiliesCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.voter.houseNo) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+			str.append(" model.booth.constituency.constituencyId = :locationId ");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("booth"))
+			str.append(" model.booth.boothId = :locationId ");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
+		else if(locationType.equalsIgnoreCase("localElectionBody"))
+			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
+		
+		Query query = getSession().createQuery(str.toString()) ;
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("locationId", locationId);
+		return (Long) query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findVotersGenderWiseCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.voter.voterId),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+			str.append(" model.booth.constituency.constituencyId = :locationId ");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("booth"))
+			str.append(" model.booth.boothId = :locationId ");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
+		else if(locationType.equalsIgnoreCase("localElectionBody"))
+			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
+		str.append(" group by model.voter.gender ");
+		
+		Query query = getSession().createQuery(str.toString()) ;
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("locationId", locationId);
+		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -764,4 +811,62 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	  {
 		return getHibernateTemplate().find("select distinct(model.booth.constituency.constituencyId) from BoothPublicationVoter model");  
 	  }
+	  
+	  
+	  //voter Family info
+	  
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllImpFamilesCount(String locationType, Long locationValue,Long publicationDateId)
+	{
+			StringBuilder str = new StringBuilder();
+			str.append("select count(model.voter.houseNo) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			if(locationType.equalsIgnoreCase("constituency"))
+				str.append(" model.booth.constituency.constituencyId = :id ");
+			else if(locationType.equalsIgnoreCase("mandal"))
+				str.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
+			else if(locationType.equalsIgnoreCase("booth"))
+				str.append(" model.booth.boothId = :id ");
+			else if(locationType.equals(IConstants.LOCALELECTIONBODY))
+				str.append(" model.booth.localBody.localElectionBodyId = :localElectionBodyId ");
+			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				str.append(" model.booth.panchayat.panchayatId = :id ");
+			str.append(" group by model.booth.boothId,model.voter.houseNo");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("id", locationValue);
+		  return query.list();
+	}
+	
+	public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo)
+	{
+			StringBuilder str = new StringBuilder();
+			str.append("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			if(locationType.equalsIgnoreCase("constituency"))
+				str.append(" model.booth.constituency.constituencyId = :id ");
+			else if(locationType.equalsIgnoreCase("mandal"))
+				str.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
+			else if(locationType.equalsIgnoreCase("booth"))
+				str.append(" model.booth.boothId = :id ");
+			else if(locationType.equals(IConstants.LOCALELECTIONBODY))
+				str.append(" model.booth.localBody.localElectionBodyId = :localElectionBodyId ");
+			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				str.append(" model.booth.panchayat.panchayatId = :id ");
+			if(ageTo != null)
+				str.append(" and model.voter.age between :ageFrom and :ageTo ");
+			else
+				str.append(" and model.voter.age > :ageFrom");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("id", locationValue);
+			query.setParameter("ageFrom",ageFrom);
+			
+			if(ageTo != null)
+			query.setParameter("ageTo",ageTo);
+		  return (Long) query.uniqueResult();
+	}
+		
+	  
+	  
 	}
