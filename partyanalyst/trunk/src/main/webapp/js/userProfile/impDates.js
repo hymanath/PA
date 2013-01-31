@@ -302,7 +302,7 @@ function buildNewImpDatePopup()
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th>Repeat Until</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="ImpEndDateText_new" name="ImpEndDateText" disabled="true" readonly="readonly"  /></div>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" name="ImpEndDateText" readonly="readonly"  /></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
 		eventStr+='</td>';
 		eventStr+='</table>';
