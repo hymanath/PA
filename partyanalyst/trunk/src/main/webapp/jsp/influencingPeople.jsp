@@ -483,7 +483,8 @@ function hideText(){
 }
 function refreshParent()
 {
-	window.opener.location.reload(true);
+	setTimeout(window.opener.location.reload(true),2000);
+	
 }
 function validationCheck()
 {
