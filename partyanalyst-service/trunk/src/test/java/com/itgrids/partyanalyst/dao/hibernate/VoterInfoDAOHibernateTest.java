@@ -34,9 +34,14 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testDeleteVotersInfoByReportLevelValue()
+	/*public void testDeleteVotersInfoByReportLevelValue()
 	{
 		System.out.println(voterInfoDAO.deleteVotersInfoByReportLevelValue(1l, 232l, 7l));
 		
+	}*/
+	
+	public void testGetTotalVotersByReportLevelValue()
+	{
+		System.out.println(voterInfoDAO.getTotalVotersByReportLevelValue(1l, 232l, 7l));
 	}
 }
