@@ -438,7 +438,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 
 function refreshParentWindow(){
 window.close();
-
+refreshParent();
 }
 
 function addPosition(value){
@@ -511,20 +511,20 @@ function validationCheck()
 	var infl_thesil          = $('#mandalField').val();
 	var infl_village         = $('#hamletField_s').val();
 	var infl_booth			 = $('#boothField_s').val();	
-		
+		$('#errorDiv').html('&nbsp;');
 	if(firstName == '')
 	{
-		$('#errorDiv').html('<div>Please enter the first name</div>')
+		$('#errorDiv').html('<div>Please enter the first name</div>');
 		return false;
 	}
 	if(lastName == '')
 	{
-		$('#errorDiv').html('<div>Please enter the last name</div>')
+		$('#errorDiv').html('<div>Please enter the last name</div>');
 		return false;
 	}
 	if(fatherName == '')
 	{
-		$('#errorDiv').html('<div>Please enter the father or spouse name</div>')
+		$('#errorDiv').html('<div>Please enter the father or spouse name</div>');
 		return false;
 	}
 	/*if(genderMale == false && genderFemale == false)
@@ -533,48 +533,48 @@ function validationCheck()
 	}*/
 	if(mobileNo == '')
 	{
-		$('#errorDiv').html('<div>Please enter the mobile no</div>')
+		$('#errorDiv').html('<div>Please enter the mobile no</div>');
 		return false;
 	}
 	if(district == 0 || district == null)
 	{
-		$('#errorDiv').html('<div>Please select the district name</div>')
+		$('#errorDiv').html('<div>Please select the district name</div>');
 		return false;
 	}
 	if(constituency == 0 || constituency == null)
 	{
-		$('#errorDiv').html('<div>Please select the constituency </div>')
+		$('#errorDiv').html('<div>Please select the constituency </div>');
 		return false;
 	}
 	if(thesil == 0 || thesil == null)
 	{
-		$('#errorDiv').html('<div>Please select the tehsil </div>')
+		$('#errorDiv').html('<div>Please select the tehsil </div>');
 		return false;
 	}
 	if(village == 0 || village == null)
 	{
-		$('#errorDiv').html('<div>Please select the village </div>')
+		$('#errorDiv').html('<div>Please select the village </div>');
 		return false;
 	}
 	if(occupation == 0 || occupation == null)
 	{
-		$('#errorDiv').html('<div>Please select the occupation </div>')
+		$('#errorDiv').html('<div>Please select the occupation </div>');
 		return false;
 	}
 	if(casteCategoryLength == 0)
 	{
-		$('#errorDiv').html('<div>Please select the caste category</div>')
+		$('#errorDiv').html('<div>Please select the caste category</div>');
 		return false;
 	}
 	if(postion == 0 || postion == null)
 	{
-		$('#errorDiv').html('<div>Please select the postion</div>')
+		$('#errorDiv').html('<div>Please select the postion</div>');
 		return false;
 	}
 
 	if(influencingLevel == 0 || influencingLevel == null)
 	{
-		$('#errorDiv').html('<div>Please select the influencing level</div>')
+		$('#errorDiv').html('<div>Please select the influencing Details</div>');
 		return false;
 	}
 
@@ -584,7 +584,7 @@ function validationCheck()
 		
 		if(infl_district == 0 || infl_district == null)
 		{
-			$('#errorDiv').html('<div>Please select the District Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the District Name in the Influencing Details</div>');
 			return false;
 		}
 	}
@@ -593,13 +593,13 @@ function validationCheck()
 		
 		if(infl_district == 0 || infl_district == null)
 		{
-			$('#errorDiv').html('<div>Please select the District Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the District Name in the Influencing Details</div>');
 			return false;
 		}
 
 		if(infl_constituency == 0 || infl_constituency == null)
 		{
-			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing level </div>')
+			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing Details </div>');
 			return false;
 		}
 	}
@@ -608,18 +608,18 @@ function validationCheck()
 		
 		if(infl_district == 0 || infl_district == null)
 		{
-			$('#errorDiv').html('<div>Please select the District Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the District Name in the Influencing Details</div>');
 			return false;
 		}
 
 		if(infl_constituency == 0 || infl_constituency == null)
 		{
-			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing level </div>')
+			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing Details </div>');
 			return false;
 		}
 		if(infl_thesil == 0 || infl_thesil == null)
 		{
-			$('#errorDiv').html('<div>Please select the Tehsil/Mandal Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the Tehsil/Mandal Name in the Influencing Details</div>');
 			return false;
 		}
 	}
@@ -628,23 +628,23 @@ function validationCheck()
 		
 		if(infl_district == 0 || infl_district == null)
 		{
-			$('#errorDiv').html('<div>Please select the District Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the District Name in the Influencing Details</div>');
 			return false;
 		}
 
 		if(infl_constituency == 0 || infl_constituency == null)
 		{
-			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing level </div>')
+			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing Details </div>');
 			return false;
 		}
 		if(infl_thesil == 0 || infl_thesil == null)
 		{
-			$('#errorDiv').html('<div>Please select the Tehsil/Mandal Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the Tehsil/Mandal Name in the Influencing Details</div>');
 			return false;
 		}
 		if(infl_village == 0 || infl_village == null)
 		{
-			$('#errorDiv').html('<div>Please select the village Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the village Name in the Influencing Details</div>');
 			return false;
 		}
 
@@ -653,24 +653,24 @@ function validationCheck()
 		
 		if(infl_district == 0 || infl_district == null)
 		{
-			$('#errorDiv').html('<div>Please select the District Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the District Name in the Influencing Details</div>');
 			return false;
 		}
 
 		if(infl_constituency == 0 || infl_constituency == null)
 		{
-			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing level </div>')
+			$('#errorDiv').html('<div>Please select the Constituency Name in the Influencing Details </div>');
 			return false;
 		}
 		if(infl_thesil == 0 || infl_thesil == null)
 		{
-			$('#errorDiv').html('<div>Please select the Tehsil/Mandal Name in the Influencing level</div>')
+			$('#errorDiv').html('<div>Please select the Tehsil/Mandal Name in the Influencing Details</div>');
 			return false;
 		}
 		
 		if(infl_booth == 0 || infl_booth == null)
 		{
-		$('#errorDiv').html('<div>Please select the Booth Number in the Influencing level</div>')
+		$('#errorDiv').html('<div>Please select the Booth Number in the Influencing Details</div>');
 		return false;
 		}
 	}
@@ -697,7 +697,7 @@ function validationCheck()
 			</TR>
 	</TABLE>
 	</center>
-	<div id="errorDiv" style="color:red"></div>
+	<div id="errorDiv" style="color:red">&nbsp;</div>
  	<div id="loginDetailsDivBody" align="center" class="accessDivBody">
 		
 	<div id="errorMsgDiv">
@@ -901,8 +901,8 @@ function validationCheck()
 <s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /> 
 
 <div id="saveDiv" align="center">
-	<s:submit cssClass="button" value="Save" name="Save" onClick="refreshParent()"></s:submit>
-	<input type="button" value="Exit" class="button" onClick="refreshParentWindow()"/>
+	<s:submit cssClass="button" value="Save" name="Save"></s:submit>
+	<input type="button" value="Exit" class="button" onClick="refreshParentWindow();"/>
 </div>
 <!--<div id="exitDiv" align="center">
 	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 
