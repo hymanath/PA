@@ -204,12 +204,18 @@ System.out.println(list.size());
 		System.out.println(params[0]+" -- "+params[1]);
 }*/
 
-	/*public void testFindFamiliesCountByPublicationIdInALocation()
+	public void testFindFamiliesCountByPublicationIdInALocation()
 	{
-		System.out.println(boothPublicationVoterDAO.findFamiliesCountByPublicationIdInALocation(IConstants.CONSTITUENCY, 232l, 7l));
-		
+		List<Long> list = boothPublicationVoterDAO.findFamiliesCountByPublicationIdInALocation(IConstants.CONSTITUENCY, 233l, 8l);
+		System.out.println(list.size());
+		Long total = 0L;
+		for(Long l : list)
+		{
+			System.out.println(l);
+			total = total + l;
+		}
+		System.out.println(total);
 	}
-	*/
 	//getAllImpFamilesCount
 	
 	/*public void testGetAllImpFamilesCount()
@@ -220,12 +226,12 @@ System.out.println(list.size());
 			System.out.println(l);
 	}*/
 
-	public void testGetVotersCountInAAgeRange()
+	/*public void testGetVotersCountInAAgeRange()
 	{
-		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,16l, 25l));
-		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,26l, 35l));
-		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,36l, 45l));
-		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,46l, 60l));
-		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,60l, null));
-	}
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,16l, 25l,"F"));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,26l, 35l,"F"));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,36l, 45l,"F"));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,46l, 60l,"F"));
+		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,60l, null,"F"));
+	}*/
 }
