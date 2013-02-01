@@ -219,7 +219,8 @@ public class BoothPublicationVoterDAO extends
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
 			str.append(" model.booth.panchayat.panchayatId = :locationId ");
-		else if(locationType.equalsIgnoreCase("localElectionBody"))
+		else if(locationType.equalsIgnoreCase("localElectionBody") || 
+				locationType.equalsIgnoreCase("Local Election Body"))
 			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
@@ -229,7 +230,7 @@ public class BoothPublicationVoterDAO extends
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Long findFamiliesCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
+	public List<Long> findFamiliesCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(distinct model.voter.houseNo) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
@@ -242,13 +243,15 @@ public class BoothPublicationVoterDAO extends
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
 			str.append(" model.booth.panchayat.panchayatId = :locationId ");
-		else if(locationType.equalsIgnoreCase("localElectionBody"))
+		else if(locationType.equalsIgnoreCase("localElectionBody") || 
+				locationType.equalsIgnoreCase("Local Election Body"))
 			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
+		str.append(" group by model.booth.boothId ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
 		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameter("locationId", locationId);
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -265,7 +268,8 @@ public class BoothPublicationVoterDAO extends
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
 			str.append(" model.booth.panchayat.panchayatId = :locationId ");
-		else if(locationType.equalsIgnoreCase("localElectionBody"))
+		else if(locationType.equalsIgnoreCase("localElectionBody") || 
+				locationType.equalsIgnoreCase("Local Election Body"))
 			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
 		str.append(" group by model.voter.gender ");
 		
@@ -826,7 +830,8 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 			else if(locationType.equalsIgnoreCase("booth"))
 				str.append(" model.booth.boothId = :id ");
-			else if(locationType.equals(IConstants.LOCALELECTIONBODY))
+			else if(locationType.equals(IConstants.LOCALELECTIONBODY) 
+					|| locationType.equals("localElectionBody"))
 				str.append(" model.booth.localBody.localElectionBodyId = :localElectionBodyId ");
 			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				str.append(" model.booth.panchayat.panchayatId = :id ");
@@ -838,7 +843,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		  return query.list();
 	}
 	
-	public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo)
+	public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender)
 	{
 			StringBuilder str = new StringBuilder();
 			str.append("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
@@ -848,14 +853,18 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 			else if(locationType.equalsIgnoreCase("booth"))
 				str.append(" model.booth.boothId = :id ");
-			else if(locationType.equals(IConstants.LOCALELECTIONBODY))
+			else if(locationType.equals(IConstants.LOCALELECTIONBODY) || 
+					locationType.equals("localElectionBody"))
 				str.append(" model.booth.localBody.localElectionBodyId = :localElectionBodyId ");
 			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				str.append(" model.booth.panchayat.panchayatId = :id ");
 			if(ageTo != null)
 				str.append(" and model.voter.age between :ageFrom and :ageTo ");
 			else
-				str.append(" and model.voter.age > :ageFrom");
+				str.append(" and model.voter.age > :ageFrom ");
+			
+			if(gender != null)
+				str.append(" and model.voter.gender = :gender ");
 			
 			Query query = getSession().createQuery(str.toString()) ;
 			query.setParameter("publicationDateId", publicationDateId);
@@ -864,9 +873,11 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			
 			if(ageTo != null)
 			query.setParameter("ageTo",ageTo);
+			if(gender != null)
+			query.setParameter("gender",gender);	
 		  return (Long) query.uniqueResult();
 	}
 		
 	  
 	  
-	}
+}
