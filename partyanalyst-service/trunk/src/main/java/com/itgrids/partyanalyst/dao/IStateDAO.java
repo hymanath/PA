@@ -82,4 +82,6 @@ public interface IStateDAO extends GenericDao<State, Long>{
 	public List findStatesByCountryIdAndCountryAccessAndStateAccess(Long countryId,Long userId);
 
 	public List<Object[]> getAllStateDetails();
+	
+	public Object getStateName(Long stateId);
 }

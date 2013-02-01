@@ -33,5 +33,10 @@ public class SpecialPageDAO extends GenericDaoHibernate<SpecialPage,Long> implem
 	{
 		return getHibernateTemplate().find("select model.specialPageId,model.name from SpecialPage model where model.isDelete = 'false' order by name");
 	}
+	@SuppressWarnings("unchecked")
+	public Object getSpecialPageName(Long specialPageId)
+	{
+		return getHibernateTemplate().find("select model.name from SpecialPage model where model.specialPageId = ?",specialPageId);
+	}
 
 }

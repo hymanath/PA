@@ -17,9 +17,13 @@ public class UserSettingsVO {
 	private String favouriteLink;
 	private Long userFavoriteLinksId;
 	private String favouriteLinkType;
+	private String name;
+	
 	
 	
 
+	
+	
 	public String getFavouriteLinkType() {
 		return favouriteLinkType;
 	}
@@ -87,4 +91,12 @@ public class UserSettingsVO {
 	public void setContentName(String contentName) {
 		this.contentName = contentName;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

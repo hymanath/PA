@@ -163,4 +163,8 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 			return query.list();
 		
 	}
+	public Object getStateName(Long stateId)
+	{
+		return getHibernateTemplate().find("select  model.stateName from State model where  model.stateId=?",stateId);
+	}
 }

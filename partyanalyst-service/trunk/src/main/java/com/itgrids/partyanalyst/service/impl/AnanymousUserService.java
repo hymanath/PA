@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.ISettingsOptionDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
@@ -115,9 +116,18 @@ public class AnanymousUserService implements IAnanymousUserService {
 	
 	private IUserFavoriteLinksDAO userFavoriteLinksDAO;
 	private IFavoriteLinkPageDAO favoriteLinkPageDAO;
+	private ISpecialPageDAO specialPageDAO;
 	
 	
 	
+	public ISpecialPageDAO getSpecialPageDAO() {
+		return specialPageDAO;
+	}
+
+	public void setSpecialPageDAO(ISpecialPageDAO specialPageDAO) {
+		this.specialPageDAO = specialPageDAO;
+	}
+
 	private ISettingsOptionDAO settingsOptionDAO;
 	private IContentDAO contentDAO;	
 	private IUserPrivacySettingsDAO userPrivacySettingsDAO;
@@ -2754,7 +2764,12 @@ public List<UserSettingsVO> getUserFavouriteLinksAction(Long userId){
     	log.debug("Entered into getUserFavouriteLinksAction service method");
 	
 	List<UserSettingsVO> userFavoriteLinks = null;
-	
+	String constituencyId = null;
+	String districtId = null;
+	String stateID = null;
+	String specialPageId = null;
+	String specialPageName =null;
+	String stateName = null;
 	
 	try{
 	
@@ -2767,11 +2782,47 @@ public List<UserSettingsVO> getUserFavouriteLinksAction(Long userId){
 		for(UserFavoriteLinks userFavoriteLink:userFavoriteLinksList){
 			
 			UserSettingsVO userSettingsVO = new UserSettingsVO();
+			userSettingsVO.setFavouriteLinkType(userFavoriteLink.getFavoriteLinkPage().getPage());
+			
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("constituency"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+			 	constituencyId = url.replaceAll("\\D+","");
+				List<Object[]> values = constituencyDAO.getConstituencyName(new Long(constituencyId));
+				for(Object[] result : values)
+				{
+			 	userSettingsVO.setName(result[0].toString()+ " "+result[1].toString());
+				}
+			}
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("district"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+			 	districtId = url.replaceAll("\\D+","");
+				Object value = districtDAO.getDistrictNameById(new Long(districtId));
+				userSettingsVO.setName(value.toString());
+			}
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("state"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+				stateID = url.replaceAll("\\D+","");
+				Object value = stateDAO.getStateName(new Long(stateID));
+				stateName = value.toString().substring(1, value.toString().length()-1);
+				userSettingsVO.setName(stateName);
+			}
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("specialpage"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+				specialPageId = url.replaceAll("\\D+","");
+				Object value = specialPageDAO.getSpecialPageName(new Long(specialPageId));
+				specialPageName = value.toString().substring(1, value.toString().length()-1);
+				userSettingsVO.setName(specialPageName);
+			}
+			
 			
 			userSettingsVO.setUserFavoriteLinksId(userFavoriteLink.getUserFavoriteLinksId());
 			userSettingsVO.setFavouriteLink(userFavoriteLink.getUrl());
 			userSettingsVO.setFavouriteLinkTitle(userFavoriteLink.getPageTitle());	
-			userSettingsVO.setFavouriteLinkType(userFavoriteLink.getFavoriteLinkPage().getPage());
+			
 			
 			userFavoriteLinks.add(userSettingsVO);
 		}
