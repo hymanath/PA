@@ -111,7 +111,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			if(regVO == null)
 				return null;
 			
-			resultStatus = votersAnalysisService.insertVotersDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			resultStatus = votersAnalysisService.insertVotersDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
 			return Action.SUCCESS;
 		}
 }
