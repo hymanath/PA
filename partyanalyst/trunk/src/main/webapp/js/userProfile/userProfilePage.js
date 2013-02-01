@@ -264,33 +264,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	});
 
 	$(".districtPeopleLink").click(function(){
-	var locationId = districtId;
-	var locationType = "DISTRICT";
-	var locationName = districtName;
-	var userLoginId = loginUserId;
-	var jsObj ={
-				locationId:locationId,							
-				locationName:locationName,
-				userId:userLoginId,
-				locationType:locationType,
-				task:"getAllConnectedUsers"
-			 };
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllConnectedUserAction.action?"+rparam;	
-
-	custom_paginator.paginator({
-		startIndex:0,
-		resultsCount:20,
-		jsObj:jsObj,
-		ajaxCallURL:url,
-		paginatorElmt:"custom_paginator_class",
-		callBackFunction:function(){
-			showAllConnectedUsersInPanel(jsObj,results);
-		}
-	});
-	custom_paginator.initialize();
-	$("#impdatesDiv").hide();
+	getAllCconnectedUserDetails();
 	});
 
 
@@ -1706,6 +1680,7 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	if(locationType == "DISTRICT")
 	{
 		var connectConstiSelectElmt = document.getElementById("connectConstituencySelect");
+		connectedStatus=connectConstiSelectElmt;
 		if(connectConstiSelectElmt)
 			connectConstiSelectElmtValue = connectConstiSelectElmt.options[connectConstiSelectElmt.selectedIndex].value;
 
@@ -1750,10 +1725,55 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	
 }
 
+function getAllCconnectedUserDetails(){
+var locationId = districtId;
+	var locationType = "DISTRICT";
+	var locationName = districtName;
+	var userLoginId = loginUserId;
+	var jsObj ={
+				locationId:locationId,							
+				locationName:locationName,
+				userId:userLoginId,
+				locationType:locationType,
+				task:"getAllConnectedUsers"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllConnectedUserAction.action?"+rparam;
+custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:20,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllConnectedUsersInPanel(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+	$("#impdatesDiv").hide();
+}
+function selectedStatusValue(){
+	var connectedStatus = $('#connectStatusSelect option:selected').val();
+	if(connectedStatus == 'ALL'){
+    connectedStatus = 'ALL';
+	}
+	if(connectedStatus == 'CONNECTED'){
+    connectedStatus = 'CONNECTED';
+	}
+	else if(connectedStatus == 'PENDING'){
+    connectedStatus = 'PENDING';
+	}
+	else if(connectedStatus == 'NOT CONNECTED'){
+    connectedStatus = 'NOT CONNECTED';
+	}
+	return connectedStatus;
+}
  function showAllConnectedUsersInPanelByFilterView(jsObj,results)
 {
 	
 	var users = results.candidateVO;
+	var connectedStatuss=selectedStatusValue();
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
