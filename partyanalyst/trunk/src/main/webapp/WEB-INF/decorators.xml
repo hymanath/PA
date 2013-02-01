@@ -73,6 +73,7 @@
 	    <pattern>/votersEditSubAction.action*</pattern>
 	    <pattern>/votersCategoeryAction.action*</pattern>
 	    <pattern>/editLocalGroupAction.action*</pattern>
+	    <pattern>/panchayatWiseMandalElectionInfoAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

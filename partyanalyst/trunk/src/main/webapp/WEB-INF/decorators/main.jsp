@@ -158,7 +158,7 @@ var $j = jQuery.noConflict(true);
 				itemdata : [
 					{text: "Add New Problem", onclick: { fn: openAddNewProblemWindow }, keylistener: { ctrl: true, keys: 80 }},
 					{text: "All Problems", url: "constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"},
-					{text: "Problem Search & Report", url: "problemManagementReportAction.action"},
+					{text: "Problem Search & Report", url: "completeProblemDetailsSearchAction.action"},
 				]
 				}
 			},

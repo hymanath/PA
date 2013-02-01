@@ -1037,7 +1037,7 @@ window.open("<s:url action="constituencyManagementAction.action"/>","ManageProbl
 function openProblemSearchWindow()
 {	
 var browser1 = 
-window.open("<s:url action="problemManagementReportAction.action"/>","ManageProblem","scrollbars=yes,height=900,width=1000,left=5,top=200");
+window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","ManageProblem","scrollbars=yes,height=900,width=1000,left=5,top=200");
 						 
 		 browser1.focus();
 }

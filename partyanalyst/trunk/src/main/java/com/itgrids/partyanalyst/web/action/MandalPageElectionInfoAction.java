@@ -252,6 +252,9 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		mandalId = request.getParameter("MANDAL_ID");
 		String mandalID = request.getParameter("MANDAL_ID");
 		String mandalName=candidateDetailsService.getMandalName(Long.parseLong(mandalID));
+		if(request.getParameter("election_id") != null){
+			request.setAttribute("electionId",request.getParameter("election_id"));
+		}
 		//String mandalName = request.getParameter("MANDAL_NAME");
 		List<MandalInfoVO> mandalInfo = delimitationConstituencyMandalService.getCensusInfoForMandals(mandalID);
 		for(MandalInfoVO mandalInfoVO : mandalInfo){

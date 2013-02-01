@@ -40,7 +40,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <!-- YUI Skin Sam -->
 
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -58,7 +58,9 @@
 
 	<!-- Sam Skin CSS for TabView -->
 
- 
+ <link rel="stylesheet" href="styles/bootstrapInHome/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="styles/bootstrapInHome/bootstrap-responsive.min.css" type="text/css">
+
 
  
 <!-- Source file for TabView -->
@@ -162,6 +164,7 @@ width:100%;
 .selectWidth {
 padding:2px;
 width:120px;
+margin-bottom:0px;
 }
 .yui-skin-sam .yui-panel .bd
 {
@@ -347,6 +350,7 @@ width:100%;
 font-size: 13px;
 font-family: arial,sans-serif;
  color: #222;
+ display:none;
 }
 #stateref,#districtref,#assemblyref,#parliamentref,#mandalCensusDivHead{
 	color:#669900;
@@ -553,7 +557,9 @@ function getMoreResults(elecYear,elecType,constiId)
 		};
 	
 	var myDataTable = new YAHOO.widget.DataTable("dTTableDiv2",resultsColumnDefs, resultsDataSource,myConfigs);  
-
+      /* $('#dTTableDiv2').find('.yui-dt-liner').each(function(){
+	      alert($(this).html());
+	   });*/
 	}
 
 	function buildRevenueVillagesInfoTab(){
@@ -565,7 +571,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		revenueInfo += '<div id="revenueVillagesMainDiv">';
 		revenueInfo += '<table>';
 		revenueInfo += '<tr><td>Election Type:</td>';
-		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'village\')" class = "selectWidth">';
+		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'village\',\'\')" class = "selectWidth">';
 		revenueInfo += '<option value="0">Select </option>';
 		revenueInfo += '<option value="1">Parliament</option>';
 		revenueInfo += '<option value="2">Assembly</option>';
@@ -573,7 +579,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		revenueInfo += '<td><div id="electionIdSelectDivLabel" style="padding-left:25px;"></div></td>';
 		revenueInfo += '<td><div id="electionIdSelectDivData"></div></td>';
         revenueInfo += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
-        revenueInfo += '<td height="10px"><div id="revenueVillagesResultsLinkDiv" style="padding-left:25px;"></div></td>';
+        revenueInfo += '<td  height="10px"><div id="revenueVillagesResultsLinkDiv" style="padding-left:25px;"></div></td>';
         revenueInfo += '</tr>';
 		revenueInfo += '</table>';
 		revenueInfo += '<br>';
@@ -593,15 +599,15 @@ function getMoreResults(elecYear,elecType,constiId)
 		panchayatInfo += '<div id="panchayatMainDiv">';
 		panchayatInfo += '<table>';
 		panchayatInfo += '<tr><td>Election Type:</td>';
-		panchayatInfo += '<td><select id="electionTypeSelectId" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'panchayat\')" class = "selectWidth">';
+		panchayatInfo += '<td><select id="electionTypeSelectId" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'panchayat\',\'\')" class = "selectWidth">';
 		panchayatInfo += '<option value="0">Select </option>';
 		panchayatInfo += '<option value="1">Parliament</option>';
 		panchayatInfo += '<option value="2">Assembly</option>';
 		panchayatInfo += '</select></td>';
-		panchayatInfo += '<td><div id="electionIdSelectDivLabelId" style="padding-left:25px;"></div></td>';
+		panchayatInfo += '<td><div id="electionIdSelectDivLabelId" style="padding-left: 25px;"></div></td>';
 		panchayatInfo += '<td><div id="electionIdSelectDivDataId"></div></td>';
         panchayatInfo += '<td><div id="panchayatAjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
-		panchayatInfo += '<td height="10px"><div id="panchayatResultsLinkDiv" style="padding-left: 25px;"></div></td>';
+		panchayatInfo += '<td><div id="panchayatResultsLinkDiv" style="padding-left: 25px;"></div></td>';
         panchayatInfo += '</tr>';
 		panchayatInfo += '</table>';
 		panchayatInfo += '<br>';
@@ -612,7 +618,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		return panchayatInfo;
 	}
 
-	function getElectionYears(id,name){
+	function getElectionYears(id,name,value){
 		var task;
 		if(name == 'panchayat')
 			task = 'getElectionYearsForPanchayat';
@@ -621,7 +627,8 @@ function getMoreResults(elecYear,elecType,constiId)
 		var jsObj=
 			{
 					electionTypeId:id,
-					task:task			
+					task:task,
+                    val:value					
 			};
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -652,7 +659,7 @@ function getMoreResults(elecYear,elecType,constiId)
 			callAjax(rparam,jsObj,url);
 	}
 
-	function getPanchayatInfo(id){
+	function getPanchayatInfo(id,isReq){
          var imgElmt = document.getElementById('panchayatAjaxImgDiv');
 		 if(imgElmt.style.display == "none")
 		{
@@ -665,7 +672,8 @@ function getMoreResults(elecYear,elecType,constiId)
 			{
 					electionId:id,
 					mandalId:${mandalId},
-					task:"getPanchayatsInfo"						
+					task:"getPanchayatsInfo",
+                    req:isReq					
 			};
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -724,11 +732,11 @@ function getMoreResults(elecYear,elecType,constiId)
 								resultVO = YAHOO.lang.JSON.parse(o.responseText);										
 								if(jsObj.task == "getElectionYears")
 								{								
-									showElectionYearTextBox(resultVO);				
+									showElectionYearTextBox(resultVO,jsObj.val);				
 								}
 								if(jsObj.task == "getElectionYearsForPanchayat")
 								{								
-									showElectionYearTextBoxForPanchayat(resultVO);				
+									showElectionYearTextBoxForPanchayat(resultVO,jsObj.val);				
 								}
 								else if(jsObj.task == "getRevenueVillagesInfo")
 								{	
@@ -736,7 +744,7 @@ function getMoreResults(elecYear,elecType,constiId)
 								}	
 								else if(jsObj.task == "getPanchayatsInfo")
 								{
-									showPanchayatInfo(resultVO);
+									showPanchayatInfo(resultVO,jsObj.req);
 								}
 								else if(jsObj.task == "getRevenueVillagesElectionInfo")
 								{								
@@ -764,7 +772,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);			
 	}
 
-	function showElectionYearTextBox(resultVO){
+	function showElectionYearTextBox(resultVO,val){
 		
 		var electionYearSelect = '';
 		var elmtLabel = document.getElementById('electionIdSelectDivLabel');
@@ -782,15 +790,20 @@ function getMoreResults(elecYear,elecType,constiId)
 			elmtLabel.innerHTML='Election Year:';
 		if(elmtData)
 			elmtData.innerHTML=electionYearSelect;
+			
+			if(val != ""){
+			  $("#electionYearSelect").val(val);
+			     getRevenueVillagesInfo(val);
+			 }
 	}
 
-	function showElectionYearTextBoxForPanchayat(resultVO){
+	function showElectionYearTextBoxForPanchayat(resultVO,val){
 		
 		var electionYearSelect = '';
 		var elmtLabel = document.getElementById('electionIdSelectDivLabelId');
 		var elmtData = document.getElementById('electionIdSelectDivDataId');
 		
-		electionYearSelect += '<select id="electionYearSelectId" class = "selectWidth" onchange = "getPanchayatInfo(this.options[this.selectedIndex].value)">';
+		electionYearSelect += '<select id="electionYearSelectId" class = "selectWidth" onchange = "getPanchayatInfo(this.options[this.selectedIndex].value,false)">';
 		for(var i in resultVO)
 		{			
 			electionYearSelect += '<option value='+resultVO[i].id+'>'+resultVO[i].name+'</option>';
@@ -802,6 +815,10 @@ function getMoreResults(elecYear,elecType,constiId)
 			elmtLabel.innerHTML='Election Year:';
 		if(elmtData)
 			elmtData.innerHTML=electionYearSelect;
+		if(val != ""){
+			$("#electionYearSelectId").val(val);
+			getPanchayatInfo(val,true);
+		}
 	}
 
 	function showRevenueVillageElectionInfo(resultVO,jsObj){
@@ -917,7 +934,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		var rvStrDiv = document.getElementById('revenueVillagesInfo');
 
 		var revenueResult = document.getElementById('revenueVillagesResultsLinkDiv');
-		revenueResultStr = '<a href="#" onclick="openwin()" class="btn btn-primary"> Click Here For Revenue Village Wise Election Results</a>';
+		revenueResultStr = '<a href="#" onclick="openwin()"  class="btn btn-primary"> Click Here For Revenue Village Wise Election Results </a>';
 		revenueResult.innerHTML = revenueResultStr;
 		
 		var rvStr = '';		
@@ -934,7 +951,7 @@ function getMoreResults(elecYear,elecType,constiId)
 			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 			{			
 				rvStr += '<tr>';
-				rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationId+'&TOWNSHIP_NAME='+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'" >'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'</a></td>';
+				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'</td>';
 				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].population+'</td>';
 				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].votesPolled+'</td>';
 				rvStr += '<td>';
@@ -1010,7 +1027,7 @@ function getMoreResults(elecYear,elecType,constiId)
 
 	var ptypeSelectElmt;
 	var pyearSelectElmt;
-	function showPanchayatInfo(resultVO){
+	function showPanchayatInfo(resultVO,req){
 		
 		ptypeSelectElmt = document.getElementById("electionTypeSelectId");
 		pyearSelectElmt = document.getElementById("electionYearSelectId");		
@@ -1021,7 +1038,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		var rvStrDiv = document.getElementById('panchayatsInfo');
 		
 		var revenueResult = document.getElementById('panchayatResultsLinkDiv');
-		revenueResultStr = '<a href="#" onclick="openwindowForPanchayats()" class="btn btn-primary"> Click Here For Panchayat Wise Election Results</a>';
+		revenueResultStr = '<a href="#" onclick="openwindowForPanchayats()" class="btn btn-primary"> Click Here For Panchayat Wise Election Results </a>';
 		revenueResult.innerHTML = revenueResultStr;
 		
 		var boothIdStr;
@@ -1112,7 +1129,9 @@ function getMoreResults(elecYear,elecType,constiId)
 		{
            imgElmt.style.display = "none";
 		}
-
+      if(req){
+	      getElectionYears(2,'village','${electionId}');
+	  }
 	}
 
 
@@ -1155,6 +1174,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 			myTabs.addTab( new YAHOO.widget.Tab({
 			    label: 'Revenue Villages Wise Election Info',
+				active:true,
 			    content: buildRevenueVillagesInfoTab()
 			    
 			}));
@@ -1163,6 +1183,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 			myTabs.addTab( new YAHOO.widget.Tab({
 			    label: 'Panchayat Wise Election Info',
+				active:true,
 			    content: buildPanchayatInfoTab()
 			    
 			}));
@@ -1544,7 +1565,7 @@ No Data Aailable
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
 				<display:column style="text-align: left;" title="Village Name" 
-					property="townshipNameURL" sortable="true" />
+					property="townshipName" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
 					property="totalPersons" sortable="true" />
 				<display:column style="text-align: left;" title="Male Populations"
@@ -1572,7 +1593,13 @@ No Data Aailable
 </div>
 
 <script type="text/javascript">
-
+function buildRevenueVillagesPanchayatData(){
+  $("#electionTypeSelectId").val("2");
+  $("#electionTypeSelect").val("2");
+  getElectionYears(2,"panchayat",'${electionId}');
+  
+  
+}
 if(allZPTCMPTCElecInfo != "")
 {
 buildTabNavigator();
@@ -1581,6 +1608,9 @@ buildTabNavigator();
 	showElectionResultsInPopup();
 	buildCensusDataTable();
 	
+	  <c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
+		buildRevenueVillagesPanchayatData();
+	  </c:if>
 </script>
 </body>
 
