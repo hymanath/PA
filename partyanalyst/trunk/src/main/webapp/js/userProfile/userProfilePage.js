@@ -265,9 +265,8 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 	$(".districtPeopleLink").click(function(){
 	getAllCconnectedUserDetails();
+	
 	});
-
-
 
 	$(".connectLink").live("click",function(){
 		
@@ -1673,7 +1672,6 @@ function showAllConnectedUsersInPanel(jsObj,results)
 
 function getAllConnectedUsersByFilterView(locationType,userId)
 {
-	
 	var connectConstiSelectElmtValue = '';
 	var connectConstiArray = new Array();	
 	
@@ -1724,7 +1722,6 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	custom_paginator.initialize();
 	
 }
-
 function getAllCconnectedUserDetails(){
 var locationId = districtId;
 	var locationType = "DISTRICT";
@@ -1771,12 +1768,12 @@ function selectedStatusValue(){
 }
  function showAllConnectedUsersInPanelByFilterView(jsObj,results)
 {
-	
-	var users = results.candidateVO;
 	var connectedStatuss=selectedStatusValue();
+	var users = results.candidateVO;
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
+	
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html('');
@@ -1807,13 +1804,28 @@ function selectedStatusValue(){
 				templateClone.find(".imgClass").html('<img width="50" height="45" src="images/icons/indexPage/human.jpg">');
 			else
 				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
+			
+			if(connectedStatuss == "NOT CONNECTED" ){
+				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED"){
+				
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
+				
+				}
+			}
+			
+			if(connectedStatuss == "PENDING" ){
+				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED"){
+					templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
+				}
+			}
+			if(connectedStatuss == '0' ){
+			getAllCconnectedUserDetails();
+			return false;
+			}
 
-			if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED")
-				  templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
-			templateClone.appendTo(".placeholderCenterDiv");
-			
-			
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');	
+
+			templateClone.appendTo(".placeholderCenterDiv");						
 		}
 		
 	 var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
