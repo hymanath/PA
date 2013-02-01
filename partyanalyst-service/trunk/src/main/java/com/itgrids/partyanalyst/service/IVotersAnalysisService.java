@@ -114,4 +114,6 @@ public interface IVotersAnalysisService {
 	public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type);
 	
+	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId);
+	
 }
