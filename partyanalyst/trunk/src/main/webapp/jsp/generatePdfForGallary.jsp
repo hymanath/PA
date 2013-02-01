@@ -13,7 +13,9 @@
 
 
 <style>
-
+#fromDate,#toDate{
+ cursor: text !important;
+}
 .marginClass{
 
 	margin:5px;
@@ -55,8 +57,18 @@ $('#gallariesId').val(0);
 });
 
 $(function(){
-$( "#fromDate" ).datepicker();
-$( "#toDate" ).datepicker();
+		$( "#fromDate" ).datepicker({
+					dateFormat: 'dd-mm-yy',
+					changeMonth: true,
+					changeYear: true,
+					maxDate: new Date()	
+		});
+		$( "#toDate" ).datepicker({	
+					dateFormat: 'dd-mm-yy',
+					changeMonth: true,
+					changeYear: true,
+					maxDate: new Date()
+		});
 });
 
 </script>
@@ -149,8 +161,8 @@ $( "#toDate" ).datepicker();
 
 				<div  style="font-weight: bold;">
 
-				   Start Date : <input type="text" id="fromDate"/>
-				   End Date : <input type="text" id="toDate" />
+				   Start Date : <input type="text" READONLY="READONLY" id="fromDate"/>
+				   End Date : <input type="text" READONLY="READONLY" id="toDate" />
 
 				</div>
 			</div>
@@ -190,6 +202,9 @@ var gallaryName;
 function dateMadeNull(){
 	$('#fromDate').val('');
 	$('#toDate').val('');
+	$('#impactLevelId').val(0);
+	$('#importanceId').val(0);
+	$('#sourceId').val(0);
 }
 function generatePdfForSelectedGallary()
 {
@@ -209,8 +224,16 @@ function generatePdfForSelectedGallary()
 	var startDate = $('#fromDate').val();
 	var endDate =  $('#toDate').val();
 
+	  var dt1  = parseInt(startDate.substring(0,2),10);
+      var mon1 = parseInt(startDate.substring(3,5),10);
+      var yr1  = parseInt(startDate.substring(6,10),10);
+      var dt2  = parseInt(endDate.substring(0,2),10);
+      var mon2 = parseInt(endDate.substring(3,5),10);
+      var yr2  = parseInt(endDate.substring(6,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
     var betweenDates;
-
+	$('#ErrDiv').html('&nbsp');
 	if(categoryId == null || categoryId=='0'){
 			$('#ErrDiv').html('<font style="color:red;margin-left: 175px;">Please Select Category</font>');
 			return false;
@@ -219,12 +242,29 @@ function generatePdfForSelectedGallary()
 			$('#ErrDiv').html('<font style="color:red;margin-left: 175px;">Please Select Gallary</font>');
 			return false;
 	}
-	
-	if(startDate != "" || endDate != "")
+	if(startDate != "" || endDate != ""){
+
+		if(startDate == ""){
+			$('#ErrDiv').html('<font style="color:red;margin-left: 175px;">Start Date should not Empty </font>');
+			 return true;
+		}
+		else if(endDate == ""){
+			$('#ErrDiv').html('<font style="color:red;margin-left: 175px;">End Date should not Empty </font>');
+			 return true;
+		}
+		
+		if(date2 < date1){ 
+			  $('#ErrDiv').html('<font style="color:red;margin-left: 175px;">Start Date should not greater than End Date </font>');
+			 return true;
+			}
 		betweenDates = "true";
+	}		
 	else 
 		betweenDates = "false";
 	
+
+	startDate=mon1+"/"+dt1+"/"+yr1;	
+	endDate=mon2+"/"+dt2+"/"+yr2;
 	var jsObj =
 	{ 
 		gallaryId    :gallaryId,
