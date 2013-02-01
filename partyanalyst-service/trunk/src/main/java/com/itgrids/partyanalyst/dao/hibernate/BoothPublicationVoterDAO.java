@@ -832,7 +832,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId = :id ");
 			else if(locationType.equals(IConstants.LOCALELECTIONBODY) 
 					|| locationType.equals("localElectionBody"))
-				str.append(" model.booth.localBody.localElectionBodyId = :localElectionBodyId ");
+				str.append(" model.booth.localBody.localElectionBodyId = :id ");
 			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				str.append(" model.booth.panchayat.panchayatId = :id ");
 			str.append(" group by model.booth.boothId,model.voter.houseNo");
@@ -855,7 +855,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId = :id ");
 			else if(locationType.equals(IConstants.LOCALELECTIONBODY) || 
 					locationType.equals("localElectionBody"))
-				str.append(" model.booth.localBody.localElectionBodyId = :localElectionBodyId ");
+				str.append(" model.booth.localBody.localElectionBodyId = :id ");
 			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				str.append(" model.booth.panchayat.panchayatId = :id ");
 			if(ageTo != null)
