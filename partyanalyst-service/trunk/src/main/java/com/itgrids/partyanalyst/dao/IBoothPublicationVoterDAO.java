@@ -111,10 +111,10 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> findVotersGenderWiseCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
 	 
-	 public Long findFamiliesCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
+	 public List<Long> findFamiliesCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
 	 
 	 public List<Long> getAllImpFamilesCount(String locationType, Long locationValue,Long publicationDateId);
 	 
-	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo);
+	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender);
 	 
 }
