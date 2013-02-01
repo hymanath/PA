@@ -114,10 +114,8 @@ var windowTask = '${sessionScope.windowTask}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
 
-
 function executeOnUpdate()
 {
-	
 	var problemSourceScopeId = '${problemBeanVO.problemSourceScopeId}';
 	var	problemsource = '${problemBeanVO.probSource}';
 	//var selectIndex = document.getElementById('problemSourceScopeId').value ;
@@ -278,32 +276,38 @@ function limitText(limitField, limitCount, limitNum)
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 }
-function addAnotherProblem(divName){
       
+function addAnotherProblem(divName){
+		
 		var newdiv = document.createElement('div');
 		var str	= "";
 		str+="<hr>";
 		str += "<table>"
 		str += "<tr>"
-		str += '<td width="100px;">Title</td>';
-		str += '<td style="padding-left: 15px;"><input type="text" id="titleField" name="fileTitle" size="33"/></td>'
+		str += '<td width="100px;">Title<font class="requiredFont">*</font></td>';
+		str += '<td style="padding-left: 15px;"><input type="text" id="titleField" name="fileTitle" class="titleClass" size="33"/></td>'
 		str += "</tr>";
 		str += "<tr>"
-		str += '<td width="100px;">Description</td>'
-		str += '<td style="padding-left: 15px;"><textarea name="fileDescription" cols="25" rows="3" /></textarea></td>'
+		str += '<td width="100px;">Description<font class="requiredFont">*</font></td>'
+		str += '<td style="padding-left: 15px;"><textarea name="fileDescription" cols="25" rows="3" class="descClass" /></textarea></td>'
 		str += "</tr>";
 		str += "<tr>"
-		str += '<td width="100px;" style="padding-left:0px;">Documents And Images </td>'
-		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" id="userImage"/></td></tr>'
+		str += '<td width="100px;" style="padding-left:0px;">Documents And Images <font class="requiredFont">*</font></td>'
+		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" class="imageClass" id="userImage"/></td>'
+		str += '<td><a href="javascript:{}" class="closeBtn" style="padding-left: 27px;"><font color="green"><b>Close Document</b></font></a></td>'
+		str += '</tr>'
 		str += "<tr>";
 		
 		str += "</table>";
 		str +="<hr>";
         newdiv.innerHTML = str;
 		document.getElementById(divName).appendChild(newdiv);
+}
 
+$(".closeBtn").live("click",function(){
+	$(this).closest('div').remove();
+});
 
-  }
 var validateProb=false;
 function showOrHideProblemFilesDiv()
 {
@@ -548,21 +552,43 @@ function checkValidations(){
 	}
 	
 	if(validateProb){
-		if($('#titleField').val()==""){
-			$('#warningMsgs').append('<br><span>Please Provide Uploaded document Title</span>');
-			flag=false;
-		}
-		if($('#addNewProblemSubmitAction_fileDescription').val()==""){
-			$('#warningMsgs').append('<br><span>Please Provide Uploaded document Description</span>');
-			flag=false;
-		}
-		if($('#userImage').val().trim().length<=0){
-			$('#warningMsgs').append('<br><span>Please Uploaded document</span>');
-			flag=false;
-		}
 		
+		var titleArr = new Array();
+		var descArr = new Array();
+		var imageArr = new Array();
+
+		var titleArr=document.getElementsByName("fileTitle");
+		var descArr=document.getElementsByName("fileDescription");
+		var imageArr=document.getElementsByName("userImage");
 		
-	}
+		for(var i = 0; i < titleArr.length; i++)
+			{
+				var obj = document.getElementsByName("fileTitle").item(i);
+				if(obj.value==""){
+					$('#warningMsgs').append('<br><span>Please Provide Uploaded document Title</span>');
+					flag=false;
+					break;
+				}
+			}
+		for(var i = 0; i < descArr.length; i++)
+			{
+			var obj = document.getElementsByName("fileDescription").item(i);
+				if(obj.value==""){
+					$('#warningMsgs').append('<br><span>Please Provide Uploaded document Description</span>');
+					flag=false;
+					break;
+				}
+			}
+		for(var i = 0; i < imageArr.length; i++)
+			{
+			var obj = document.getElementsByName("userImage").item(i);
+				if(obj.value==""){
+					$('#warningMsgs').append('<br><span>Please Uploaded document</span>');
+					flag=false;
+					break;
+				}
+			}
+		}
 	
 	return flag;
 	
@@ -851,16 +877,16 @@ function displayCal()
 					<s:else>
 					<tr>
      					<td width="100px;"><s:label value="Title"/><span style="color:red;">*</span></td>
-						<td style="padding-left: 15px;"><s:textfield id="titleField" name="fileTitle" size="33"/></td>
+						<td style="padding-left: 15px;"><s:textfield  class="titleClass" id="titleField" name="fileTitle" size="33"/></td>
 					</tr>
 					
 					<tr>
 						<td width="100px;"><s:label value="Description"/><span style="color:red;">*</span></td>
-						<td style="padding-left: 15px;"><s:textarea  name="fileDescription" cols="25" rows="3" /></td>
+						<td style="padding-left: 15px;"><s:textarea class="descClass" name="fileDescription" cols="25" rows="3" /></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /><span style="color:red;">*</span></td>
-						<td style="padding-left:15px;"> <s:file name="userImage" id="userImage"/></td>
+						<td width="100px;" style="padding-left:0px;"><s:label value="Documents And Images" /><span style="color:red;">*</span></td>
+						<td style="padding-left:15px;"> <s:file  class="imageClass" name="userImage" id="userImage"/></td>
 						
 						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
 			       
@@ -870,6 +896,7 @@ function displayCal()
 					<table>
 					<tr><td>
 			<div id="dynamicDiv" ></div></td></tr>
+			<table>
 			<c:if test="${sessionScope.hasFreeUserRole && sessionScope.hasPartyAnalystUserRole}">
 			<tr>
 			<td><input type="radio" name="problemVisibility" id="publicProblem" value="private" checked=true>Make this Problem Private to me</input></td></tr>
@@ -883,7 +910,8 @@ function displayCal()
 					
 
 					</td>
-				</tr>													
+				</tr>
+			</table>
 			</table>
 			<div id="cadreDiv"></div>
 			<div id="cadreDetailsDiv" style="display:none;"></div>
