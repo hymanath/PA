@@ -595,14 +595,14 @@ else
 			}
 
 			function tabHighLightForViewResults(){
-				$("#viewResultsId").css({"background":"none repeat scroll 0 0 red"});
+				$("#viewResultsId").css({"background":"none repeat scroll 0 0 #487aea"});
 				$("#showResultsId").css({"background":"none repeat scroll 0 0 #483D8B"});
 		
 			}
 			
 			function tabHighLightForShowResults(){
 				$("#viewResultsId").css({"background":"none repeat scroll 0 0 #483D8B"});
-				$("#showResultsId").css({"background":"none repeat scroll 0 0 red"});
+				$("#showResultsId").css({"background":"none repeat scroll 0 0 #487aea"});
 		
 			}
 			window.opener.location.reload(true);
