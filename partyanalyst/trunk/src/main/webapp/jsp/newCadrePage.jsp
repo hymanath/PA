@@ -22,6 +22,7 @@
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
 	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
  
@@ -643,6 +644,16 @@
     }
 </script>
 <style type="text/css">
+.calendarWidth
+	{
+		height:24px;
+		width:22px;
+	}
+#dobText{
+  height:auto;
+  width:170px;
+  z-index:9999;
+}
 	#noOfFamilyMembersId{width:40px;margin-top:10px;}
 	
 	#noOfVotersId{width:40px;margin-top:10px;}
@@ -846,10 +857,10 @@
 									<table>
 									<tr>
 										<td>
-											<s:textfield id="dobText" style="cursor: text;" readonly="true" name="dateOfBirth" size="25"/>
+											<s:textfield id="dobText" style="cursor: text;" readonly="true" name="dateOfBirth" size="25" onClick="getCalender();"/>
 											<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 										</td>
-										<td><input id="calBtnEl" type="button" style="width:27px;" class="calBtn" title="Click To Select A Date" onclick="showDateCall('dobText_div','dobText','1/1970')"/></td>
+										<!--<td><input id="calBtnEl" type="button" style="width:27px;" class="calBtn" title="Click To Select A Date" onclick="showDateCall('dobText_div','dobText','1/1970')"/></td>-->
 									</tr>
 									</table>	
 								</span>
@@ -1345,6 +1356,15 @@ function showDateCall(divId, textBoxId,pageDate) {
 	dateCalendar.selectEvent.subscribe(displayTheDateText, dateCalendar, true);
 	dateCalendar.render();
 	dateCalendar.show();
+}
+function getCalender()
+{
+	$('#dobText').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd-mm-yy',
+			maxDate: new Date()
+        }).datepicker("show");
 }
 function displayTheDateText(type, args, obj) {
 	var dates = args[0];
