@@ -1095,7 +1095,7 @@ if(results == null || results.lenght == 0)
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a class='problemTitle' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle+"</a></b>");
-				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].name+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.constituencyDivInnerFav');
@@ -1123,7 +1123,7 @@ if(results == null || results.lenght == 0)
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle+"</a></b>");
 
-				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[j].favouriteLinkTitle+"' href="+results[j].favouriteLink+">"+results[j].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[j].favouriteLinkTitle+"' href="+results[j].favouriteLink+">"+results[j].name+"</a></b>");
 
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[j].userFavoriteLinksId+")}'>Remove</a></b>");
 
@@ -1153,7 +1153,7 @@ if(results == null || results.lenght == 0)
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[k].favouriteLinkTitle+"</a></b>");
-			templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[k].favouriteLinkTitle+"' href="+results[k].favouriteLink+">"+results[k].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
+			templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[k].favouriteLinkTitle+"' href="+results[k].favouriteLink+">"+results[k].name+"</a></b>");
 
 
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
@@ -1184,7 +1184,7 @@ if(results == null || results.lenght == 0)
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[m].favouriteLink+">"+results[m].favouriteLinkTitle+"</a></b>");
-				templateClone.find('.titleClass').html("<b><a  title='"+results[m].favouriteLinkTitle+"' class='problemTitle' href="+results[i].favouriteLink+">"+results[m].favouriteLinkTitle.substring(0,40)+" "+".."+"</a></b>");
+				templateClone.find('.titleClass').html("<b><a  title='"+results[m].favouriteLinkTitle+"' class='problemTitle' href="+results[m].favouriteLink+">"+results[m].name+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[m].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.specialPageDivInnerFav');
