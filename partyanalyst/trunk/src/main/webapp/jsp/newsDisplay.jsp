@@ -1226,13 +1226,12 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 	startDate=yr1+"-"+mon1+"-"+dt1;	
 	endDate=yr2+"-"+mon2+"-"+dt2;
 
-	//startDate1=dt1+"-"+mon1+"-"+yr1;	
-	//endDate1=dt2+"-"+mon2+"-"+yr2;
+	startDate1=dt1+"-"+mon1+"-"+yr1;	
+	endDate1=dt2+"-"+mon2+"-"+yr2;
 	
-	var title = 'Between Dates '+startDate+' and '+endDate;
-	//var title1 = 'Between Dates '+startDate1+' and '+endDate;
- getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
-  getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);  getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
+	var title = 'Between Dates '+startDate1+' and '+endDate1;
+	getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
+  	getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);  getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
 	
   }
   }
