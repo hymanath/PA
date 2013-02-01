@@ -618,7 +618,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	<div class="templateDiv templateholder templatePersons">
 			
 			<div class="imgClass span3 thumbnail"></div>
-			<div class="prinfo span9">
+			<div class="prinfo span9" style="height: 120px;">
 				<h6 class="connectedPersonName"></h6>
 				<span class="messageCls" style="display:none"></span>
 				<span class="constituencyName"></span>
