@@ -1652,7 +1652,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		if(image == null)
 			templateClone.find(".imgClass").html('<img width="50" height="45" src="images/icons/indexPage/human.jpg">');
 		else
-			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
+			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);" />');
 			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
