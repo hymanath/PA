@@ -322,7 +322,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
     		  fileVO.setSource(sourceVal!=null?sourceVal.toString():"");
     		  fileVO.setLanguage(languageVal!=null?languageVal.toString():"");
     		  fileVO.setCategoryId(file.getCategory()!=null?file.getCategory().getCategoryId():null);
-    		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"");
+    		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"N/A");
     		  fileVO.setNewsImportanceId(file.getNewsImportance()!=null?file.getNewsImportance().getNewsImportanceId():null);
     		  fileVO.setImportance(file.getNewsImportance()!=null?file.getNewsImportance().getImportance():"");
     		  fileVO.setLocationScope(file.getRegionScopes()!=null?file.getRegionScopes().getRegionScopesId():null);
@@ -484,7 +484,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		  fileVO.setSource(sourceVal!=null?sourceVal.toString():"");
 	    		  fileVO.setLanguage(languageVal!=null?languageVal.toString():"");
 	    		  fileVO.setCategoryId(file.getCategory()!=null?file.getCategory().getCategoryId():null);
-	    		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"");
+	    		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"N/A");
 	    		  fileVO.setNewsImportanceId(file.getNewsImportance()!=null?file.getNewsImportance().getNewsImportanceId():null);
 	    		  fileVO.setImportance(file.getNewsImportance()!=null?file.getNewsImportance().getImportance():"");
 	    		  fileVO.setLocationScope(file.getRegionScopes()!=null?file.getRegionScopes().getRegionScopesId():null);
@@ -516,7 +516,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		for(Object[] data:category){
 	    			fileVO = new FileVO();
 	    			fileVO.setSizeOfGallary((Long)data[0]);
-	    			fileVO.setCategoryType(data[1].toString());
+	    			fileVO.setCategoryType(data[1].toString()!=null?data[1].toString():"N/A");
 	    			fileVO.setCategoryId((Long)data[2]);
 	    			categoryFileVOList.add(fileVO);
 	    			totalCount += (Long)data[0];
