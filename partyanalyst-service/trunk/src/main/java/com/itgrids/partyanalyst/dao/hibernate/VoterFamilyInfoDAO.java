@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -51,5 +52,14 @@ public class VoterFamilyInfoDAO extends GenericDaoHibernate<VoterFamilyInfo, Lon
 		query.setParameter("publicationDateId", publicationDateId);
 		return  query.list();
 	}
-	
+	public List<VoterFamilyInfo> getMultipleVoterFamilyDetails(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId)
+	{
+		Query queryObj = getSession().createQuery("select model from VoterFamilyInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
+				" and model.reportLevelValue in (:reportLevelValues) and model.publicationDate.publicationDateId = :publicationDateId ");
+		
+		queryObj.setParameter("reportLevelId", reportLevelId);
+		queryObj.setParameterList("reportLevelValues", reportLevelValues);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		return queryObj.list();
+	}
 }

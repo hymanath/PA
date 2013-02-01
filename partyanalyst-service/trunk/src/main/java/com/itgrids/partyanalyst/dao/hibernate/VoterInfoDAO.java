@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -41,6 +43,19 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		return (Long)query.uniqueResult();
     }
 	
+	public List<VoterInfo> getVotersMultipleCount(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select model from VoterInfo model where ");
+		stringBuilder.append(" model.voterReportLevel.voterReportLevelId =:reportLevelId and model.reportLevelValue in(:reportLevelValues) ");
+		stringBuilder.append(" and model.publicationDate.publicationDateId =:publicationDateId ");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		
+		queryObj.setParameter("reportLevelId", reportLevelId);
+		queryObj.setParameterList("reportLevelValues", reportLevelValues);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		return queryObj.list();
+    }
 	
 	public Integer deleteVotersInfoByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
 	{

@@ -1,10 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-
-import org.hibernate.Query;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
@@ -60,6 +60,16 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		query.setParameter("ageRangeId", ageRangeId);
 		
 		return  query.executeUpdate();
+	}
+	
+	public List<VoterAgeInfo> getAgewiseVoterDetailsInAllRange(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId)
+	{
+		Query query = getSession().createQuery(" select model from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
+				" and model.reportLevelValue in(:reportLevelValues) and model.publicationDate.publicationDateId = :publicationDateId  ");
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameterList("reportLevelValues", reportLevelValues);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
 	}
 	
 }
