@@ -79,6 +79,7 @@
 		<property name="userPrivacySettingsDAO" ref="userPrivacySettingsDAO"/>
 		<property name="favoriteLinkPageDAO" ref="favoriteLinkPageDAO"/>
 		<property name="userFavoriteLinksDAO" ref="userFavoriteLinksDAO"/>
+		<property name="specialPageDAO" ref="specialPageDAO" />
 		
 	</bean>  
 	
