@@ -464,7 +464,7 @@ public String getVotersCastInfoByConstituency()
 	return SUCCESS;
 }
 
-public String getAgewiseVoterDetails(){
+/*public String getAgewiseVoterDetails(){
 	  
 	  
     String param;
@@ -556,7 +556,7 @@ public String getAgewiseVoterDetails(){
 
 		
 	
-       /* //VOTER DETAILS OVERVIEW  FOR BOOTH 
+        //VOTER DETAILS OVERVIEW  FOR BOOTH 
 		
 		List<VotersDetailsVO> votersDeatailsForBoothist = votersAnalysisService
 				.getVotersDetailsForBooth(boothId, publicationDateId);
@@ -573,12 +573,12 @@ public String getAgewiseVoterDetails(){
 		List<VotersDetailsVO> mandalAgeAndGenderVotersList = votersAnalysisService
 				.getAgeAndGenderwiseVoterDetailsByMandalWise(constituencyId,
 						publicationDateId);
-		*/
+		
 		
 				
 		
-	/*	constituencyManagementVO.setVoterDetails(votersList);
-		constituencyManagementVO.setMandalAgewiseVotersList(mandalAgeAndGenderVotersList);*/
+		constituencyManagementVO.setVoterDetails(votersList);
+		constituencyManagementVO.setMandalAgewiseVotersList(mandalAgeAndGenderVotersList);
 		
 		constituencyManagementVO.setVotersDetailsVO(votersDeatailsForConstituency);
 		
@@ -591,7 +591,7 @@ public String getAgewiseVoterDetails(){
   
   return Action.SUCCESS;
   
-} 
+} */
 
 public String getImportantFamaliesDetails(){
 	String param;
@@ -724,4 +724,74 @@ public String getProblemsByLocation()
 	}
 return Action.SUCCESS;
 }
+
+	public String getAgewiseVoterDetails(){
+	
+	
+		String param;
+		param = getTask();
+		constituencyManagementVO = new ConstituencyManagementVO();
+		
+		try{
+		jObj = new JSONObject(param);
+		
+		Long constituencyId = Long.parseLong(jObj.getString("constituencyId"));
+		Long mandalId = Long.parseLong(jObj.getString("mandalId"));
+		Long boothId = Long.parseLong(jObj.getString("boothId"));
+		Long publicationDateId = Long.parseLong(jObj.getString("publicationDateId"));
+		String type = jObj.getString("type");
+		Long panchayatId = Long.parseLong(jObj.getString("panchayatId"));
+		
+		List<VotersDetailsVO> tehsilVotersDetails = null;
+		List<VotersDetailsVO> panchatyVotersDetails = null;
+		List<VotersDetailsVO> boothVotersDetails = null;
+		//VOTER DETAILS OVERVIEW FOR CONSTITUENCY OR MANDAL
+		
+		List<VotersDetailsVO> votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
+		panchayatId , boothId, publicationDateId,type);
+		if(votersDeatailsForConstituency == null || votersDeatailsForConstituency.size() == 0)
+		votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,
+		panchayatId , boothId, publicationDateId,type);
+		
+		if(type.equalsIgnoreCase("constituency")){
+		
+		tehsilVotersDetails = votersAnalysisService.getAgewiseVotersDetForTehsilsByConstituencyId(constituencyId, publicationDateId, type);
+		if(tehsilVotersDetails == null || tehsilVotersDetails.size() == 0)
+		tehsilVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForTehsilsByConstituencyId(constituencyId,publicationDateId);
+		
+		constituencyManagementVO.setMandalsVotersDetails(tehsilVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("mandal")){
+		
+		panchatyVotersDetails = votersAnalysisService.getAgewiseVotersDetaForPanchayatisByTehsilId(mandalId,publicationDateId, type);
+		if(panchatyVotersDetails == null || panchatyVotersDetails.size() == 0)
+		panchatyVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForPanchayatisByTehsilId(mandalId,publicationDateId);
+		constituencyManagementVO.setPanchayatVotersDetails(panchatyVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("panchayat")){
+		
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type);
+		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
+		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("localElectionBody")){
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByLocalElectionBodyId(mandalId,publicationDateId, type);
+		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(mandalId,publicationDateId);
+		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+		}
+		
+		constituencyManagementVO.setVotersDetailsVO(votersDeatailsForConstituency);
+		
+		
+		
+		}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+		}
+		
+		return Action.SUCCESS;
+	
+	} 
 }

@@ -184,7 +184,7 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<p class="widgetDescPara" style="height:90px;"> ';
 	problems_OptionsContent += '<font style="color:#4B74C6"> Advanced Search Criteria</font> enables the user to search for a problem, based on location, status or department.';
 	problems_OptionsContent += '</p>';
-	problems_OptionsContent += '<p style="text-align:right;"> <A href="problemManagementReportAction.action" class="linkButton" target="_blank">Problem Search</A></DIV></p>';
+	problems_OptionsContent += '<p style="text-align:right;"> <A href="completeProblemDetailsSearchAction.action" class="linkButton" target="_blank">Problem Search</A></DIV></p>';
 	problems_OptionsContent += '</div>';
 	problems_OptionsContent += '</div>';
 	problems_OptionsContent += '</td>';

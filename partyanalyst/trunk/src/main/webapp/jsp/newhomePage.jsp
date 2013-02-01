@@ -476,7 +476,7 @@ Quick Links</h2>
 				  <h5>New or Existing - Our Platform elevates your problems to the external world. </h5>
 				<div class="pager widget-block"> 
 					
-							<a href="problemSearchAction.action" class="btn btn-info">View All Problems</a>
+							<a href="completeProblemDetailsSearchAction.action" class="btn btn-info">View All Problems</a>
 			
 								<c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
 									<a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-info" >Post Your Problems</a>

@@ -524,7 +524,28 @@ oDT: votersByLocBoothDataTable
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
 	   $("#votersDiv4").show();  
-	   if(type == "mandal"){
+	   if((type == "mandal" && mainreqid.substring(0,1) == "1") || type == "booth"){
+	     $("#ageLink").hide();  
+	   }else{
+	     $("#ageLink").show();
+	   }
+	   if(type == "constituency"){
+	     $("#ageLink").html('<b><a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Mandal Wise Age Details</a></b>');
+	      $("#impFamiliesMoreInfoButn").attr("value","View Mandal Wise Family Details");
+	   }
+	   else if(type == "booth"){
+	     $("#ageLink").html('<b><a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a></b>');
+	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
+	   }else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
+	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
+	   }else if(type="panchayat"){
+	     $("#ageLink").html('<b><a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a></b>');
+	     $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
+	   }else{
+	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
+	   }
+	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
+	   $("#ageLink").html('<b><a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a></b>');
 	     getElectionYearsAjaxAction();
 		  $("#revenueVillageWiseElecResults").show();
 		  $("#revenueVillageWiseElecIdTitle").html("Panchayat Wise Results In "+mainname);
@@ -1087,6 +1108,17 @@ oDT: votersByLocBoothDataTable
 }
 var fromOnChange=false;
 $(document).ready(function(){
+	/*$("#publicationDateList").change(function(){
+	     if($(this).val() != 0){
+		    if($("#constituencyList option").length > 0 && $("#constituencyList").val() != 0){
+			     mainreqid = $("#constituencyList").val() ;
+				 mainpublicationId = $("#publicationDateList").val();
+				 maintype = "constituency";
+				 mainname = $('#constituencyList :selected').text();
+				 getAllTabs(mainreqid,mainpublicationId,maintype)
+			}
+		 }
+	});*/
     $("#publicationDateList").change(function(){
 	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
 		//getCounts();
@@ -2317,8 +2349,12 @@ function buildTableForImpFamilesMandal(impFamilesData,name,type)
 	 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
 	 impFamiList.push(data);
   }
-  
-  $("#impFamilesBasicSubDetailsTitle").html(impFamilesData[0].type+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
+  var reqtytle ="";
+  for(var t in impFamilesData){
+     if(impFamilesData[t].type != null)
+	   reqtytle = impFamilesData[t].type;
+  }
+  $("#impFamilesBasicSubDetailsTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
@@ -2707,7 +2743,7 @@ function callAjaxorVoterDetails(jsObj,url){
 					try {
 							//$('#ajaxImageDiv').css('display','none');
                     $('#agewiseAjaxDiv').css('display','none');
-					$('#ageLink').css('display','block');
+					//$('#ageLink').css('display','block');
 
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);
 					  
@@ -2919,7 +2955,7 @@ function buildAgewiseDetails(results , obj){
 	str+='</tr>';
 
 for(var i=0;i<innerResults.length;i++){
-
+  if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
 
 	if(type == "constituency")
@@ -2943,7 +2979,7 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].totalVotersForAbove60+'</td>';
 	str+='<td>'+innerResults[i].votersPercentForAbove60+'</td>';
 	str+='</tr>';
-
+  }
 }
 str+='</table>';
 
@@ -3018,7 +3054,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	str+='</tr>';
 
 for(var i=0;i<innerResults.length;i++){
-
+  if(innerResults[i].totalMaleVotesFor18To25 != null){
 	str+='<tr>';
 	if(type == "constituency")
 	str+='<td>'+innerResults[i].tehsilName+'</td>';
@@ -3045,6 +3081,7 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].totalFemaleVotersForAbove60+'</td>';
 
 	str+='</tr>';
+  }
 }
    str+='</table>';
 
@@ -3212,7 +3249,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	str+='</tr>';
 
 for(var i=0;i<innerResults.length;i++){
-
+ if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
 	if(type == "constituency")
 	str+='<td>'+innerResults[i].tehsilName+'</td>';
@@ -3244,6 +3281,7 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].femaleVotersPercentForAbove60+'</td>';
 
 	str+='</tr>';
+  }
 }
    str+='</table>';
 
@@ -3322,8 +3360,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
     
-		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
-		$("#votersTitle").html(jsObj.typename);
+		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		//$("#votersTitle").html(jsObj.typename);
 		str += '<div>';
 		str += '<b><span>Total Voters : '+votersbasicinfo.totVoters+'</span>';
 		str += '<span style="margin-left:25px;">Male Voters : '+votersbasicinfo.totalMaleVoters+'</span>';
@@ -3450,8 +3488,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	
 	else
 	{
-		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
-		$("#votersTitle").html(jsObj.typename);
+		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		//$("#votersTitle").html(jsObj.typename);
 
 			$("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
 		
@@ -3819,7 +3857,7 @@ var jsObj=
 function buildPreviousVotersDetails(myResults,jsObj){
 
 
-			$('#votersTitle').html(mainname);
+			//$('#votersTitle').html(mainname);
 
 				
 

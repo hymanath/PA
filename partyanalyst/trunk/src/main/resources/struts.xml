@@ -4341,7 +4341,10 @@
 				<param name="root">votersInfo</param>				
 			</result> 
 		</action>-->
-		
+		 <action name="panchayatWiseMandalElectionInfoAction" class="mandalPageElectionInfoAction">
+			<result name="success">/jsp/mandalPageForVotersInfo.jsp</result>
+			<result name="error">/jsp/mandalPageFail.jsp</result>
+		</action>
 		
 	</package>
 </struts>      

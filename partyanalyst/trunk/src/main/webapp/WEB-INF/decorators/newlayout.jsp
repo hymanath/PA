@@ -317,13 +317,14 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
                     <div><ul>
                         <li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
                         <li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
-                        <li><a href="problemManagementReportAction.action"><span>Problem Search And Report</span></a></li>
+                        <li><a href="completeProblemDetailsSearchAction.action"><span>Problem Search And Report</span></a></li>
 						
 					 </ul></div>
                 </li>
           <li><a href="userGroupAction.action"><span>User Groups</span></a></li>
         <li><a href="callCenterAction.action"><span>Call Center</span></a></li>
-		<li><a href="votersAnalysisAction.action"><span>Voter Analysis</span></a></li>
+		<li><a href="votersAnalysisNewAction.action"><span>Constituency Analysis</span></a></li>
+		<li><a href="votersSearchAction.action"><span>Voters Search & Report</span></a></li>
 	
 	 </ul></div>
 

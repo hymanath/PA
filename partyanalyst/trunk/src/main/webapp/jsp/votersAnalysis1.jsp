@@ -55,6 +55,7 @@
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+
 <title>Voters analysis</title>
 
 
@@ -669,6 +670,9 @@ h5{font-family : Arial;}
 
 .whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
 .FamiliyList li{margin:5px;}
+#voterDetailsNote{
+  margin-bottom:5px;
+}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -844,7 +848,7 @@ for  body3 start    result  -->
 	<div id="previousEleVotingTrendsDiv"></div>
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
-	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn" value="Get Panchayat Wise Election Results"/>
+	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn" value="View Panchayat Wise Election Results & Voting Trendz"/>
 	</div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
@@ -882,7 +886,7 @@ for  body3 start    result  -->
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1"></div>
-<span id="ageLink" style="display:none;float:right;"><b><a href="javaScript:{showAllAgewiseDetails()}" class="btn">View more details</a></b></span>
+<span id="ageLink" style="display:none;float:right;margin-top:10px;"><b><a href="javaScript:{showAllAgewiseDetails()}"  class="btn">View more details</a></b></span>
 
 <div style="display:none;"> <!-- HIDING THE POPUP -->
 <div id="ageWiseVotersDetailsOuterDiv">
@@ -1174,8 +1178,9 @@ function showAllAgewiseDetails(){
    function openwindowForPanchayatsToShow(){
 		var selElectionId = $("#revenueVillageWiseElecId").val();
 		var selElecyear = $("#revenueVillageWiseElecId option:selected").text() ;
-		var brow1 = window.open("panchayatWiseElectionResultsAction.action?mandalId="+mainreqid.slice(1)+"&electionId="+selElectionId+"&mandalName="+mainname.replace("MANDAL","")+"&electionType=Assembly&electionYear="+selElecyear+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
-		brow1.focus();
+		//var brow1 = window.open("panchayatWiseElectionResultsAction.action?mandalId="+mainreqid.slice(1)+"&electionId="+selElectionId+"&mandalName="+mainname.replace("MANDAL","")+"&electionType=Assembly&electionYear="+selElecyear+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("panchayatWiseMandalElectionInfoAction.action?MANDAL_ID="+mainreqid.slice(1)+"&election_id="+selElectionId+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		reqBrowser.focus();
 }
 
 

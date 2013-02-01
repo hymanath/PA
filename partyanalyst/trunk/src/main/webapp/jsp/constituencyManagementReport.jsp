@@ -1023,7 +1023,7 @@
 					</div>
 					<div style="text-align:right;padding:15px;">
 						
-					<a class="linkButton" href="votersAnalysisNewAction.action">Voters Details With New Changes</a>
+					<a class="linkButton" href="votersAnalysisNewAction.action">Constituency Analysis</a>
 					</div>
 
 				</div>
