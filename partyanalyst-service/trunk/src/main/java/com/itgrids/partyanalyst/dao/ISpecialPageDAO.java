@@ -10,4 +10,6 @@ public interface ISpecialPageDAO extends GenericDao<SpecialPage,Long>{
 	public List<Object[]> getSpecialPageDetails(Long specialPageId);
 	
 	public List<Object[]> getSpecialPageNames();
+	
+	public Object getSpecialPageName(Long specialPageId);
 }
