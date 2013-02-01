@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -16,4 +17,5 @@ public interface IVoterAgeInfoDAO extends GenericDao<VoterAgeInfo, Long>{
 	
 	public Integer deleteVoterAgeInfoByReportLevelIdAndReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId, Long ageRangeId);
 
+	public List<VoterAgeInfo> getAgewiseVoterDetailsInAllRange(Long reportLevelId, Set<Long> reportLevelValue, Long publicationDateId);
 }

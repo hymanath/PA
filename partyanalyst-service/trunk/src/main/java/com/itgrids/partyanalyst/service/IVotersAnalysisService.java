@@ -115,5 +115,17 @@ public interface IVotersAnalysisService {
 			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type);
 	
 	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId);
+			
+	public List<VotersDetailsVO> getVoterAgeWiseDetails(Long constituencyId, Long mandalId,
+			 Long panchayatId , Long boothId, Long publicationDateId, String type);
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetForTehsilsByConstituencyId(Long constituencyId,Long publicationDateId, String type);
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetaForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId, String type);
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByLocalElectionBodyId(Long localElectionBodyId,Long publicationDateId, String type);
+	
+	public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByPanchayatId(Long panchayatId,Long publicationDateId, String type);
+
 	
 }

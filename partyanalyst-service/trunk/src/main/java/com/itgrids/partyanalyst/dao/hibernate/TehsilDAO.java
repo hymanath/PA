@@ -110,6 +110,39 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		
 	}
 	
+	public List<Object[]> findAllTehsilsByConstituencyIdAndPublicationDateId(
+			Long constituencyId, Long publicationDateId) {
+		
+		String queryString = "select distinct model.tehsil.tehsilId , model.tehsil.tehsilName from Booth model where " +
+				"model.publicationDate.publicationDateId = ? and model.constituency.constituencyId = ? and model.localBody is null";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter(0, publicationDateId);
+		query.setParameter(1, constituencyId);
+		
+		return query.list();
+		
+		
+		
+	}
+	public List<Object[]> findAllLocalElecBodyByConstituencyIdAndPublicationDateId(
+			Long constituencyId, Long publicationDateId) {
+		
+		String queryString = "select distinct model.localBody.localElectionBodyId , model.localBody.name,model.localBody.electionType.electionType from Booth model where " +
+				"model.publicationDate.publicationDateId = ? and model.constituency.constituencyId = ? and model.localBody is not null";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter(0, publicationDateId);
+		query.setParameter(1, constituencyId);
+		
+		return query.list();
+		
+		
+		
+	}
+	
 
 	
 }

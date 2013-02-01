@@ -61,4 +61,10 @@ public List<Object[]> getAllTehsilInfoDetails();
 	
 	public List<Object[]> findTehsilsByConstituencyIdAndPublicationDateId(
 			Long constituencyId, Long publicationDateId);
+	
+	public List<Object[]> findAllTehsilsByConstituencyIdAndPublicationDateId(
+			Long constituencyId, Long publicationDateId);
+	
+	public List<Object[]> findAllLocalElecBodyByConstituencyIdAndPublicationDateId(
+			Long constituencyId, Long publicationDateId);
 }
