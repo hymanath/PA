@@ -109,50 +109,8 @@
    overflow: visible;
     padding:0px;
 }
-
-.election-resulthome{margin-bottom: 6px;}
-.election-resulthome h1{font-size:20px;text-align:center;}
-.election-resulthome img{margin-bottom: 12px; margin-left: 0px;vertical-align:middle;}
-.election-resulthome .btn-mini a{text-decoration:none;}
-.election-resulthome .btn-mini a:hover{text-decoration:none;}
-.widget-padding{padding-bottom: 5px; padding-top: 5px;}
-
-
-#contenttable  .container .row-fluid  .span4 {
-    margin-left: 10px;
-    width: 245px;
-}
-
-
-#localBodiesRadioDiv_data > .radio:first-child{
-   width:70px;
-}
 			</style>
 <div class="container m-top15">
-
-<!-- 2012 Election Results -->
-<!--<div style="margin-bottom: 6px;" class="row-fluid election-resulthome">
-<div class="span6  btn" style="margin-left: 0px;">
-<h1 style="font-size:20px;text-align:center;">Gujarat Elections - Live Results</h1>
-<img width="300px" height="125px" src="uploaded_files/special_page_profile/13/img.jpg" class="span5" style="margin-bottom: 12px; margin-left: 0px;vertical-align:middle" alt="Gujarath 2012 Elections Image">
-<div class="span7"> 
-The most awaiting Gujarat 2012 Election Live Result updates through Party Analyst.
-<h5 class="btn btn-mini"><a href="specialPageAction.action?specialPageId=13" title="Gujarat 2012 Election Live Result">Click Here To See Live Updates</a></h5>
-</div></div>
-
-<div class="span6  btn" style="margin-left: 20px;">
-<h1 style="font-size:20px;text-align:center;">Himachal Pradesh Elections - Live Results</h1>
-<img width="200px" height="85px" src="uploaded_files/special_page_profile/14/img.jpg" class="span5" style="margin-bottom: 12px; margin-left: 0px;" alt="Gujarath 2012 Elections Image">
-
-<div class="span7"> 
-Interesting news, who will win in new constituencies in Himachal Pradesh 2012 Election.
-<h5 class="btn btn-mini"><a href="specialPageAction.action?specialPageId=14" title="Gujarat 2012 Election Live Result">Click Here To See Live Updates</a></h5>
-</div></div>
-
-
-</div>-->
-<!-- 2012 Election Results -->
-
 		<div class="row-fluid">
 			
 		<!--------left div------->
@@ -167,16 +125,11 @@ Interesting news, who will win in new constituencies in Himachal Pradesh 2012 El
 			
 		<div class="widget blue quicklinks"><h2><span><i class="icon-random "id="icon_leftsec"></i></span>
 Quick Links</h2>
-				<div class="widget-padding">
-				<a title="Gujarath 2012 Elections" href="specialPageAction.action?specialPageId=13" class="btn btn-success" style="padding-bottom:10px;">Gujarat Elections Results</a>
-				</div>
-				<div class="widget-padding white-gloss">
-				<a title="Himachal Pradesh 2012 Elections" href="specialPageAction.action?specialPageId=14" class="btn btn-success" style="padding-bottom:10px;">Himachal Pradesh Elections Results</a>
-				</div>
+				
 				<!---- View Election Results------->
 							<div class="widget-block" contentindex="4c">
 								<h5> View Election Results</h5>
-								<p>You can view your Assembly or Parliment past Election Results.</p>						
+								<p>You can view your Assembly or Parliment past Election Results.</p>
 								<table>
 									<tbody>
 									<tr>
@@ -207,8 +160,8 @@ Quick Links</h2>
 									</tbody>
 								</table>
 								
-								    <button class="btn btn-success btn-small pull-right" type="button" onclick="viewElectionResults()">Go</button>
-									<div id="processingDiv1" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
+								    <button class="btn btn-success pull-right" type="button" onclick="viewElectionResults()">Go</button>
+								
 							</div>
 					<!---------------->
 		
@@ -218,9 +171,7 @@ Quick Links</h2>
 								<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
 								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
 								
-								<button class="btn btn-success btn-small clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
-								<div id="processingDivForState" style="display: none;height:30px;">
-								<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
+								<button class="btn btn-success clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
 										
 							</div>
 						<!----View Your district------>
@@ -232,21 +183,21 @@ Quick Links</h2>
                                      <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
 									     <br>
 									   <a onclick="navigateToDistrictPage()" href="javascript:{}">
-									     <button class="btn btn-success btn-small pull-right" type="button">Go</button>
+									     <button class="btn btn-success pull-right" type="button">Go</button>
 									   </a>
-								    <div id="processingDivForDistrict" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
+								    
 							</div>
 						<!--View your constituency-->
 							<div class="widget-block" contentindex="2c" >
 							<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 								<h5>View Your Constituency</h5>
 								<p>Select Constituency Type<br>
-								<label class="radio" style="width:68px;">
-										<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked"/>
+								<label class="radio">
+										<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
 											Assembly
 											</label>
-											<label class="radio" style="width:68px;">
-										<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" />
+											<label class="radio">
+										<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
 											Parliament
 								      </label>
 								</p>
@@ -265,9 +216,7 @@ Quick Links</h2>
 									</tr>
 								</table>
 								
-								<button class="btn btn-success btn-small pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
-								 <div id="processingDivForConstituency" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
-
+								<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
 							</div>
 							
 							<!--View your Locality-->
@@ -290,10 +239,8 @@ Quick Links</h2>
 											<tr>
 												<td>
 													<div id="localBodiesRadioDiv_data">
-													
-														<input id="muncipality" type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality
-														
-														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio" id="corporation" />Corporation
+														<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality
+														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation
 														<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp
 													</div>
 												</td>									
@@ -312,9 +259,7 @@ Quick Links</h2>
 									</table>
 								</div>
 								  
-								<button class="btn btn-success btn-small pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
-								
-								<div id="processingDivForLocality" style="display: none;height:30px;"><img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 105px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/></div>
+								<button class="btn btn-success pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
 								  
 							</div>	
 							
@@ -371,11 +316,11 @@ Quick Links</h2>
 										</a>-->
 										
 										<c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;width:160px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;width:160px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;"  href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/candidates/${newsGallaryDetails.imagePathInUpperCase}.jpg" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										
 										<p class="span6 more"><s:property value="description"/></p>
@@ -384,11 +329,11 @@ Quick Links</h2>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;width:160px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;width:160px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span6 more"><s:property value="description"/></p>
 										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;">
@@ -396,10 +341,10 @@ Quick Links</h2>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
 										<c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;width:160px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;width:160px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span6 more" ><s:property value="description"/></p>
 										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' style="position:absolute;bottom:5px;right:20px;" class="pull-left round-link">
@@ -537,7 +482,7 @@ Quick Links</h2>
 									<a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-info" >Post Your Problems</a>
 								</c:if>
 								<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
-									<a href="javascript:{}" onclick="openAddNewProblemWindowForFreeUser('${sessionScope.USER.constituencyId}');" class="btn btn-info" style="margin:5px;">Post Your Problems</a>
+									<a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-info" style="margin:5px;">Post Your Problems</a>
 								</c:if>
 								
 								<div id="problemErrorMsgDiv"></div>
@@ -589,7 +534,7 @@ Hot Topics</h2>
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
 								
-								<a href="specialPageAction.action?specialPageId=${specialPages.specialPageId}"> <img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/></a>
+								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/>
 								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
@@ -717,12 +662,12 @@ Opinion Poll</h2>
 
 		<s:if test="%{#stat.index == 0}">         
 
-			str +='<label></label><input type="radio" class="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true">';
-	        str +="<s:property value='option'/>"; 
+			str +='<label><input type="radio" class="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true">';
+	        str +="<s:property value='option'/></label>"; 
 		</s:if>
 		<s:else>
-			str +='<label></label><input type="radio" class="radio"  name="pollradio" value="<s:property value="optionId"/>">';
-	        str+="<s:property value='option'/>";
+			str +='<label><input type="radio" class="radio"  name="pollradio" value="<s:property value="optionId"/>">';
+	        str+="<s:property value='option'/></label>";
 		</s:else></s:iterator>
 		
 		str+='</p><a href="javaScript:saveCurrentPollResult(${opinionPollVO.quesitons[0].questionId});" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
@@ -809,16 +754,20 @@ getProblemDetails();
         }
  
     });  
-	$('#assembly_radio').attr('checked','checked');
-	$('#stateList_d').val(1);
-	$('#electionTypeId').val(0);
+	
 	});
+	
+	
 $(document).ready(function(){
 	$(".ws_images li").each(function(i){
 	 var ids="wows3_"+i;
 	  $(this).find("a").attr("id",ids);
 	});
+	$('#assembly_radio').attr('checked','checked');
+	
+	
 	});
+	hideUnhideSelectBox('assembly_radio', 'constituency')
 </script>
 	<script type="text/javascript" src="styles/engine3/wowslider.js"></script>
 	<script type="text/javascript" src="styles/engine3/script.js"></script>
