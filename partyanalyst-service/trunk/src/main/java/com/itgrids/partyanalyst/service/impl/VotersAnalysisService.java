@@ -5147,6 +5147,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		  ResultStatus resultStatus = new ResultStatus();
 		  try{
 			  Long totalVoters = voterInfoDAO.getTotalVotersByReportLevelValue(getReportLevelId(locationType),locationValue, publicationDateId);
+			  
+			  if(totalVoters == null || totalVoters.longValue() == 0)
+				  return null;
 			  VoterAgeRangeVO voterAgeRangeVO = new VoterAgeRangeVO();
 			  voterAgeRangeVO.setReportLevel(locationType);
 			  voterAgeRangeVO.setReportLevelId(getReportLevelId(locationType));
