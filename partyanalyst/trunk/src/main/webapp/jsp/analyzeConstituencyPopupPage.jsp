@@ -507,6 +507,7 @@ if(category == "candidate")
 						var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;								
 						callAjax(jsObj,url);	
 						alertMessageEl.innerHTML = '';
+						alertMessageEl.innerHTML = '<font style="color:green;">Reasons Added successfully</font>';
 					}
 				},
 				Cancel: function() {
