@@ -1016,6 +1016,11 @@ function buildNewImpDatePopup()
 	}
 	function checkDate(task)
 	{
+	var repeteFrquency = $('#repeatFreqSelect').val();
+	if(repeteFrquency == "No Repeat")
+	{
+	}
+	else{
 	startDate = $('#ImpStartDateText_new').val();
 	endDate = $('#ImpEndDateText_new').val();
 	  var dt1  = parseInt(startDate.substring(0,2),10);
@@ -1033,6 +1038,7 @@ function buildNewImpDatePopup()
 		 return true;
 		}
 	return 	false;
+	}
 }
 function cancelButton()
 	{
