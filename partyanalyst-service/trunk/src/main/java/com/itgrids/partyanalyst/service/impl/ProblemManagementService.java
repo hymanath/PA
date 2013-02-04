@@ -6886,13 +6886,13 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			}
 		}
 		problemBeanVO = new ProblemBeanVO();
-		List<Long> New = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.NEW);
-		List<Long> Progress = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.PROGRESS);
-		List<Long> Fixed = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.FIXED);
-		List<Long> Pending = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId, locationValue,IConstants.PENDING);
-		List<Long> Cadre = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,4l);
-		List<Long> User = userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,1l);
-		List<Long> callcenter =userProblemDAO.getAllPrivateProblemsBySource(locationValue, userId, locationId,3l);
+		List<Long> New = userProblemDAO.getAllProblemsByLocation(userId,locationId, locationValue,IConstants.NEW);
+		List<Long> Progress = userProblemDAO.getAllProblemsByLocation(userId,locationId, locationValue,IConstants.PROGRESS);
+		List<Long> Fixed = userProblemDAO.getAllProblemsByLocation(userId,locationId, locationValue,IConstants.FIXED);
+		List<Long> Pending = userProblemDAO.getAllProblemsByLocation(userId,locationId, locationValue,IConstants.PENDING);
+		List<Long> Cadre = userProblemDAO.getAllUserProblemsBySource(locationValue, userId, locationId,4l);
+		List<Long> User = userProblemDAO.getAllUserProblemsBySource(locationValue, userId, locationId,1l);
+		List<Long> callcenter =userProblemDAO.getAllUserProblemsBySource(locationValue, userId, locationId,3l);
 		if(New != null && New.size() > 0)
 			problemBeanVO.setNewStatusProblems(new Long(New.size()));
 		else
@@ -6959,12 +6959,12 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			if(informationsrcId == 0)
 			{
 			 problemIds =userProblemDAO.getAllProblemsByLocation(userId,locationId,locationValue,status,startIndex,maxIndex);
-			 problemsCount = userProblemDAO.getAllPublicProblemsByLocation(userId,locationId,locationValue,status);
+			 problemsCount = userProblemDAO.getAllProblemsByLocation(userId,locationId,locationValue,status);
 			}
 			else if(status.equalsIgnoreCase(IConstants.NEW) && informationsrcId > 0)
 			{
 			problemIds =userProblemDAO.getAllProblemsBySource(locationValue,userId,locationId,informationsrcId,startIndex,maxIndex);
-			 problemsCount = userProblemDAO.getAllPrivateProblemsBySource(locationValue,userId,locationId,informationsrcId);
+			 problemsCount = userProblemDAO.getAllUserProblemsBySource(locationValue,userId,locationId,informationsrcId);
 			}
 			if(problemIds != null && problemIds.size() > 0)
 			{
