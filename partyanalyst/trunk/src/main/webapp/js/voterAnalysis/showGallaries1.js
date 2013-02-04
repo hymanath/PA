@@ -508,7 +508,7 @@ function buildContentDetails()
 	//str+='<input type="button" style="float:right;margin:3px 133px;" class="btn" value="Save" onClick="saveFileComment('+fileId+');"/>';
 
 
-	if(result.otherGalleries != null && result.otherGalleries.length > 0)
+	/*if(result.otherGalleries != null && result.otherGalleries.length > 0)
 	{
 		var galType = null;
 		
@@ -560,7 +560,7 @@ function buildContentDetails()
 		str += '</div>';
 
 		str += '</div>';
-	}
+	}*/
 	
 	str += '</center></Div>';
 
