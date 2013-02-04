@@ -69,6 +69,7 @@
 
 <link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
 <!-- Local script and css files (End)-->
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <style>
 
 #errorMsgDiv {
@@ -365,7 +366,7 @@ $(document).ready(function() {
 								}								
 								else if(jsObj.task=="nextMonthEvents")
 								{
-									showInitialImpEventsAndDates(myResults.userEvents,"impEvents","nextPreviousMonthEvents");
+								showInitialImpEventsAndDates(myResults.userEvents,"impEvents","nextPreviousMonthEvents");
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","nextPreviousMonthEvents");
 								}
 								else if(jsObj.type=="cadreLevel")
@@ -382,11 +383,30 @@ $(document).ready(function() {
 								}
 								else if(jsObj.task=="deleteEvent" || jsObj.task=="deleteImpDate")
 								{									
-									removeDeletedElement(myResults,jsObj);									
+									removeDeletedElement(myResults,jsObj);var date = new Date();
+									
+									var jsObj1={
+									monthVal:date.getMonth(),
+									yearval:date.getFullYear(),
+									task:'nextMonthEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+									var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
+									callAjax(jsObj1,url);									
 								}
 								else if(jsObj.task=="updateCreateEvent" || jsObj.task=="updateImpDateEvent")
 								{		
-									addCreatedEvent(myResults,jsObj);	
+									
+									var date = new Date();
+									
+									var jsObj1={
+									monthVal:date.getMonth(),
+									yearval:date.getFullYear(),
+									task:'nextMonthEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+									var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
+									callAjax(jsObj1,url);									
 								}
 										
 							}catch (e) {   
@@ -421,7 +441,7 @@ $(document).ready(function() {
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
-		timedRefresh();		
+		//timedRefresh();		
 	}
 	
 	function timedRefresh()
@@ -1719,7 +1739,7 @@ function fillDataForCadreLevel(results,jsObj)
 			
 
 		var eventStr='';
-		eventStr+='<div class="hd" style="color: rgb(43, 78, 112); cursor: move; height: 25px; font-size: 15px; font-family: serif;">Event Details...</div> ';
+		//eventStr+='<div class="hd" style="color: rgb(43, 78, 112); cursor: move; height: 25px; font-size: 15px; font-family: serif;">Event Details...</div> ';
 		eventStr+='<div class="bd" style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;">'; 		
 		eventStr+='<div id="errorMessgDIV">&nbsp;</div> ';
 		eventStr+='<table class="selectedDateEvent">';
@@ -1809,7 +1829,7 @@ function fillDataForCadreLevel(results,jsObj)
 
 			eventStr+='<th style="font-size: 13px;">Imp date :</th>';
 			eventStr+='<td>';
-			eventStr+='<div><input type="text" id="ImpStartDateText" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_Div\')"/></div>';
+			eventStr+='<div><input type="text" id="ImpStartDateText" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" name="ImpStartDateText" readonly="readonly" /></div>';
 			eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
 			eventStr+='</td>';			
 			eventStr+='</tr>';
@@ -1919,7 +1939,7 @@ function fillDataForCadreLevel(results,jsObj)
 			{
 				eventStr+='<th style="font-size: 13px;">Repeat Until :</th>';
 				eventStr+='<td>';
-				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
+				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText"  /></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
 				eventStr+='</td>';
 				//eventStr+='<span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'endDate\')">'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'</span></td>';
@@ -1930,14 +1950,14 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='</table>';
 		eventStr+='<div class="ui-dialog-buttonset">';
 		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;"></input>';
-		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit; margin-left: 640px;" ></input>';		
+		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;;" ></input>';		
 		eventStr+='</div>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
 
 		elmt.appendChild(divChild);
 
-		if(eventDateDialog)
+		/*if(eventDateDialog)
 			eventDateDialog.destroy();
 
 		eventDateDialog = new YAHOO.widget.Dialog("eventDateDetails",
@@ -1950,7 +1970,31 @@ function fillDataForCadreLevel(results,jsObj)
 				  iframe :true,
 				  modal :true
 	             } ); 
-		eventDateDialog.render(); 
+		eventDateDialog.render(); */
+		if(eventDateDialog)
+		{
+		 eventDateDialog.remove();
+		}
+		eventDateDialog = $('#eventDateDetails').dialog({
+			width:650,
+			'title':'Event Details...'
+		});
+		$("#ImpStartDateText" ).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			minDate: new Date()
+			
+		});
+		
+		$("#ImpEndDateText" ).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			minDate: new Date(),
+			
+			
+		});
 	}
 	
 	function editactionPlanForEvent(id)
@@ -3565,7 +3609,7 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		var eventStr='';
 		
-		eventStr+='<div class="hd">New Date</div> ';
+		//eventStr+='<div class="hd">New Date</div> ';
 		eventStr+='<div class="bd">'; 
 		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
 		eventStr+='<table width="100%">';
@@ -3577,7 +3621,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<tr>';
 		eventStr+='<th>Important Date</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_new_Div\')"/></div>';
+		eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly"  /></div>';
 		eventStr+='<div id="ImpStartDateText_new_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';		
 		eventStr+='</tr>';
@@ -3609,7 +3653,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th>Repeat Until</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_new_Div\')"/></div>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText"/></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
 		eventStr+='</td>';
 		//eventStr+='</td></tr>';
@@ -3619,26 +3663,43 @@ function fillDataForCadreLevel(results,jsObj)
 
 		divChild.innerHTML=eventStr;
 		elmt.appendChild(divChild);
-
 		if(newDateDialog)
-			newDateDialog.destroy();
+		{
+		 newDateDialog.remove();
+		}
+		newDateDialog = $('#newImpDateDiv').dialog({
+			width: 600,
+			buttons: {
+				"Create New Date": function(){
+				
+					handleImpDateSubmit();
+					
+				},"Cancel": function(){
+					$(this).dialog("close");
+				}
+			},
+			'title':'New Date',
+			
+		});
+		$(".ui-dialog-buttonset button").attr("class", "btn btn-primary");
+		$(".ui-dialog-title-eventDateDetails").attr("class","Cambria,'Abel',sans-serif,Helvetica");
+		$("#ImpStartDateText_new" ).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			minDate: new Date()
+			
+		});
 		
-		newDateDialog = new YAHOO.widget.Dialog("newImpDateDiv",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  x:200,
-				  y:700,
-				  hideaftersubmit:true,
-		          buttons : [ { text:"Create New Date", handler:handleImpDateSubmit, isDefault:true }, 
-	                          { text:"Cancel", handler:handleImpDateCancel,isDefault:true } ]
-	             } ); 
-		newDateDialog .render(); 
+		$("#ImpEndDateText_new" ).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			minDate: new Date(),
+			
+			
+		});
 	}
-	
 	function showEndDateText(val)
 	{
 		var txtElmt = document.getElementById('ImpEndDateText_new');
@@ -3882,9 +3943,25 @@ function fillDataForCadreLevel(results,jsObj)
 			}
 			
 		
-			renderStack();	
+			//renderStack();	
 						
 		}
+	datesRenderArr = new Array();
+	if(eventsarr != null &&  eventsarr.length > 0)
+	{
+	for(var i in eventsarr)
+	{
+	var impDayobj = getDateTime(eventsarr[i].impDate);
+	var impDate = new Date(impDayobj.month+"/"+impDayobj.day+"/"+impDayobj.year);
+	var renderValue=(impDate .getMonth()+1)+"/"+impDate.getDate()+"/"+impDate.getFullYear();
+	datesRenderArr.push(renderValue);
+	}
+	}
+	else
+	{
+		datesRenderArr.push("");
+	}
+	renderStack();
 	}
 
 	function existingDataCheck(date,type)
