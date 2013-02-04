@@ -581,7 +581,7 @@ oDT: votersByLocBoothDataTable
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 	   }
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
-	   $("#ageLink").html('<b><a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a></b>');
+	   $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
 		  $("#revenueVillageWiseElecResults").show();
 		  $("#revenueVillageWiseElecIdTitle").html("Panchayat Wise Results In "+mainname);
@@ -984,17 +984,17 @@ oDT: votersByLocBoothDataTable
 		var conid=jsObj.conId;
 		var str='';
 		
-		str+='<div id="cnstHeading">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn btn-primary" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="cnstHeading">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
 		str+='<div id="constituencyResultsInner">';
-		str+='<table class="table table-bordered table-hover"><thead><tr class="btn-info"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
+		str+='<table class="table table-bordered table-hover"><thead><tr class="" style="background:#E6E6E6;"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
         for(var i in results){
 		elecType=results[i].electionType;
-		str+='<tbody><tr id="constituencyElectionInfo_'+i+'" title="Click here to View '+cnstncy+' '+elecType+' Constituency results in the Year '+results[i].electionYear+'" onclick="showDetailedElectionResult(this.id,'+conid+','+results[i].electionYear+')"><td>'+results[i].electionYear+'</td><td>'+results[i].candidateResultsVO.candidateName+'-<span>['+results[i].candidateResultsVO.partyShortName+']</span></td><td>'+results[i].candidateResultsVO.votesMargin+'</td>'
+		str+='<tbody><tr style="cursor:pointer;" id="constituencyElectionInfo_'+i+'" title="Click here to View '+cnstncy+' '+elecType+' Constituency results in the Year '+results[i].electionYear+'" onclick="showDetailedElectionResult(this.id,'+conid+','+results[i].electionYear+')"><td>'+results[i].electionYear+'</td><td>'+results[i].candidateResultsVO.candidateName+'-<span>['+results[i].candidateResultsVO.partyShortName+']</span></td><td>'+results[i].candidateResultsVO.votesMargin+'</td>'
 		
 		str+='<td>'+results[i].candidateOppositionList[0].candidateName+'-<span>['+results[i].candidateOppositionList[0].partyShortName+']</span></td></tr>';
         }        
         str+='</tbody></table>';
-		str+='<span class="btn" onClick="partiesPerformancePopup()">View Parties Performance Graphically</span>'
+		str+='<span class="btn pull-right" onClick="partiesPerformancePopup()" style="margin-bottom:10px;">All Parties Performance In Previous  Elections Graphically</span>'
 		str+='</div>'
         $('#constituencyResults').html(str);
 	}
@@ -1919,7 +1919,7 @@ function buildCastInfoData(myresults,jsObj)
 	if(result.maleVoters > 0){
 	    $("#castPartyPopupShowBtn").show();
 		$("#partyBasicInfoStatsTabNewTitle").html("Party Wise Voters Details").css("background","#06ABEA");
-	    $("#LocalCastDiv").css('padding-bottom','40px');
+	    $("#LocalCastDiv").css('padding-bottom','20px');
 	}
 	else{
 	   		$("#partyBasicInfoStatsTabNewTitle").html("").css("background","#ffffff");
@@ -2120,7 +2120,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	var results = myResults.voterCastInfodetails;
 	if(results.partyWiseAssignedVoters > 0){
 	  $("#castPartyPopupShowBtn").show();
-	   $("#LocalCastDiv").css('padding-bottom','40px');
+	   $("#LocalCastDiv").css('padding','40px');
 	}
 	var voters= '';
 	var str = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
@@ -3649,7 +3649,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 			$("#previousEleVotingTrendsDiv").append('<h5 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Previous Election Voting Trends in '+jsObj.name+' </h5>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
-				str +='<th>election Type</th>';
+				str +='<th>Election Type</th>';
 				str +='<th>Year</th>';
 				str +='<th>Total Voters</th>';
 				  str +='<th>Votes Polled</th>';
