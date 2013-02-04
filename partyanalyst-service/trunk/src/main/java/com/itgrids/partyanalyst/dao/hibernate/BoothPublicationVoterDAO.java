@@ -131,10 +131,12 @@ public class BoothPublicationVoterDAO extends
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPublicationDetailsBasedOnConstituency(Long constituencyId)
 	{
-		return getHibernateTemplate().find("select distinct model.publicationDate.publicationDateId, " +
-				"model.publicationDate.date from Booth model where " +
-				"model.constituency.constituencyId = ? order by model.publicationDate.year desc)",constituencyId);
+		return getHibernateTemplate().find("select distinct model.booth.publicationDate.publicationDateId, " +
+				"model.booth.publicationDate.date from BoothPublicationVoter model where " +
+				"model.booth.constituency.constituencyId = ? order by model.booth.publicationDate.year desc)",constituencyId);
 	}
+	
+	
 	/**
 	 * @return object[]
 	 * @author prasad
