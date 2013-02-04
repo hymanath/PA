@@ -162,7 +162,7 @@ table.gridtable1 td {
   margin-left: 0px;
 }
 .pull-right{
-	 margin-top: -15px;
+	 //margin-top: -15px;
 }
 
 .form-horizontal label{  display:block; font:12px Arial;
@@ -647,9 +647,9 @@ h5{font-family : Arial;}
 }
 
 #cnstHeading{
-	background: none repeat scroll 0 0 #48ADCB;
+	background:#E6E6E6;
     border-radius: 6px 6px 6px 6px;
-    color: white;
+    color: #000000;
     font-size: 18px;
     font-weight: bold;
     height: 25px;
@@ -673,6 +673,7 @@ h5{font-family : Arial;}
 #voterDetailsNote{
   margin-bottom:5px;
 }
+#MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -716,7 +717,7 @@ locationDetails.constituencyArr.push(ob);
 <div id="MainDiv">
 <div id="votersouterDiv" class="widget green">
 <!--<fieldset>-->
-<blockquote style="margin-top:10px;">Get your Constituency's Complete Information up to Booth Level. Please select your Constituency.</blockquote>
+<div id='MainHeading'><h3 style="font-size: 19.5px;font-family:verdana;">Get your Constituency's Complete Information up to Booth Level.</h3><h4 style="font-weight:normal;border:0px;text-transform:none;">Please select your Constituency and Publication Date to view Constituency Wise Analysis.</h4></div>
 
 <div id="categoeryCreationDiv" style="float:right;">
 	
@@ -735,7 +736,8 @@ locationDetails.constituencyArr.push(ob);
 	
 	
 	
-	<div id="ajaxImageDiv" style="float:right;margin-right:90px;display:none;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
+	<div id="ajaxImageDiv" style="float:right;display:none; position: absolute; right: 10px;top: 146px;
+    z-index: 100;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 	<!--</fieldset>-->
 
 </div>
@@ -840,21 +842,21 @@ for  body3 start    result  -->
   	</div>
 
 	
-	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;"><h5 class="whitegloss" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h5>
-	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;float:right;margin-right:540px;"/>
+	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;"><h5 class="whitegloss" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h5>
+	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 <div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
 </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
-	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn" value="View Panchayat Wise Election Results & Voting Trendz"/>
+	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
 	</div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
 
-<div id="votersInfoMoreShowHide" style="display:none;"><a href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</a></div>
+<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn pull-right" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</span></div>
 <div id="votersOuterDiv1" style="display:none;">
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -862,7 +864,7 @@ for  body3 start    result  -->
 </div>
 
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
-	<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+	<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;margin-top:40px;">
 					<h5 id="AgeWisetitle" class="whitegloss" > </h5>
 					<!-- for  body4 start    result  -->
 
@@ -882,11 +884,11 @@ for  body3 start    result  -->
 </div>-->
 
 <!--<a href="javaScript:{showBasicAgewiseDetails()}">Click here to get Agewise Details</a>-->
-<span id="agewiseAjaxDiv" style="display:none;float:right;margin-left:30px;margin-right:5px;margin-top:12px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+<span id="agewiseAjaxDiv" style="display:none;position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1"></div>
-<span id="ageLink" style="display:none;float:right;margin-top:10px;"><b><a href="javaScript:{showAllAgewiseDetails()}"  class="btn">View more details</a></b></span>
+<span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn">View more details</a></span>
 
 <div style="display:none;"> <!-- HIDING THE POPUP -->
 <div id="ageWiseVotersDetailsOuterDiv">
@@ -925,8 +927,8 @@ for  body3 start    result  -->
 
 
 
-<!-- for  body 1 start    result  -->
-<HR>
+<!-- for  body 1 start    result  
+<HR>-->
 <div id="votersDiv1" >
 <!--
 <div id='votersHeaderDiv1'>
@@ -940,7 +942,7 @@ for  body3 start    result  -->
 		
 	</div> -->
 
-<div id='votersMainOuterDiv1' class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+<div id='votersMainOuterDiv1' class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;">
 <h5 class="whitegloss"  id="impFamiliesTitle" ></h5>
 	 <!--<input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForImpFam" >
@@ -948,7 +950,7 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
 	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>-->
-	 <span id="ImpFamwiseAjaxDiv" style="display: block; margin-top: 10px; float: right; clear: both; margin-right: 10px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
+	 <span id="ImpFamwiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
 
      	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
@@ -990,7 +992,7 @@ for  body3 start    result  -->
 					</tr>					
 				</table>
 	</div> -->
-<div id='votersMainOuterDiv2'  class="widget-block whitegloss" style="display:inline-block;width: 100%;">
+<div id='votersMainOuterDiv2'  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;">
 <h5 class="whitegloss"  id="localCastStatsTabContentTitle" ></h5>
 	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
     <div id="votersbasicinfoForLclCastSts" >
@@ -999,12 +1001,12 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
     </div>-->
 	
-	<span id="castewiseAjaxDiv" style="display: block; margin-top: 10px; float: right; clear: both; margin-right: 10px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
-	
+	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
 		<div id='localCastStatsTabContent_header'></div>
-		<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
+		
 	<div class="castDetailsMainDiv">
 		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
 		<div id="localCastChatDiv"></div>
@@ -1012,14 +1014,15 @@ for  body3 start    result  -->
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
 	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
 	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
+	<div id="partyWiselocalcastDiv" style="margin-top:20px;margin-bottom:50px;"></div>
 	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" >	</div>
-	<div id="partyWiselocalcastDiv" style="margin-top:20px;"></div>
+	
 
 	<div id="localCastStatsVotersPopUpDiv" style="display:none;">
 	    <div id ="localCastStatsVotersTitle" ></div>
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
-	<div id="castPartyPopupShowBtn"><input type="button" class="btn" value="View More Details" style="float:right;margin-top:7px;clear:both;" onclick="ShowCastPartyPopupDiv();"/></div>
+	<div id="castPartyPopupShowBtn"><input type="button" class="btn" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;clear:both;" onclick="ShowCastPartyPopupDiv();"/></div>
 	<div id="castPartyPopupDiv" style="display:none">  
         <div id='localCastStatsTabContent_subbody'></div>	
 		<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
