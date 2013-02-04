@@ -452,6 +452,8 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 		oPayload.totalRecords = oResponse.meta.totalRecords;
 		totalReq = oResponse.meta.totalRecords;
+		if(totalReq == null || totalReq == '')
+		 totalReq = 0;
 		$("#topCount").html("<b>Total Voters: "+totalReq+"</b>");
         $("#bottomCount").html("<b>Total Voters: "+totalReq+"</b>");
 		return oPayload;
@@ -1022,6 +1024,7 @@ function callAjaxForCandSearch(jsObj,url)
 </script>
 </head>
 <body>
+  <div style="width:960px;margin-left:auto;margin-right:auto;">
       <div class="titleHeading">VOTERS SEARCH</div>
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -1102,5 +1105,6 @@ function callAjaxForCandSearch(jsObj,url)
 <script type="text/javascript">
   getCategoriesForAUserInital();
 </script>
+</div>
 </body>
 </html>
