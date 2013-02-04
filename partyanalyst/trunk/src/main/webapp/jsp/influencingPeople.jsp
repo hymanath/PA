@@ -483,7 +483,7 @@ function hideText(){
 }
 function refreshParent()
 {
-	setTimeout(window.opener.location.reload(true),2000);
+	setTimeout(window.opener.location.reload(true),8000);
 	
 }
 function validationCheck()
@@ -676,6 +676,11 @@ function validationCheck()
 	}
 
 }
+function setTimer()
+{	
+	$("#successMsg").delay("2000");
+	$("#successMsg").hide("slow");
+}
 </script>
 
 <body onLoad="executeOnload()" class="bodyStyle">
@@ -711,10 +716,14 @@ function validationCheck()
 				</td>
 			</tr>
 		</table>
-	</div>	
-	
+	</div>
+
+	<c:if test="${message == 'update'}">
+		<div id="successMsg" style="color:green;" >Influencing People updated successfully!</div>
+	</c:if>
+
 	<c:if  test="${resultStatus == '0'}">
-	<div id="successMsg" style="color:green;" >Influencing People registered successfully!</div>
+		<div id="successMsg" style="color:green;" >Influencing People registered successfully!</div>
 	</c:if>	
 	<c:if  test="${resultStatus == '1'}">
 	<div id="successMsg" style="color:red;" style="color:green;">Error occurred while saving data.. please check the logs for details</div>
@@ -910,6 +919,9 @@ function validationCheck()
 <div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>
 </s:form>
 
-</div>		
+</div>	
+<script type="text/javascript">
+	setTimer();
+</script>	
 </body>
 </html> 
