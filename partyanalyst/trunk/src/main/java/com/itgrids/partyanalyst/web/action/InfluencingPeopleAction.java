@@ -69,8 +69,14 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private Long defaultBooth = 0l;
 	private Long pConstituencyId;
 	private String position;
+	private String message;
 	
-	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	public Long getDefaultBooth() {
 		return defaultBooth;
 	}
