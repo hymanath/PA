@@ -1144,17 +1144,6 @@ oDT: votersByLocBoothDataTable
 }
 var fromOnChange=false;
 $(document).ready(function(){
-	/*$("#publicationDateList").change(function(){
-	     if($(this).val() != 0){
-		    if($("#constituencyList option").length > 0 && $("#constituencyList").val() != 0){
-			     mainreqid = $("#constituencyList").val() ;
-				 mainpublicationId = $("#publicationDateList").val();
-				 maintype = "constituency";
-				 mainname = $('#constituencyList :selected').text();
-				 getAllTabs(mainreqid,mainpublicationId,maintype)
-			}
-		 }
-	});*/
     $("#publicationDateList").change(function(){
 	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
 		//getCounts();
@@ -1167,6 +1156,17 @@ $(document).ready(function(){
 		}else{
 		    publicationYear = "";
 		}
+	});
+	$("#publicationDateList").change(function(){
+	     if($(this).val() != 0){
+		    if($("#constituencyList option").length > 0 && $("#constituencyList").val() != 0){
+			     mainreqid = $("#constituencyList").val() ;
+				 mainpublicationId = $("#publicationDateList").val();
+				 maintype = "constituency";
+				 mainname = $('#constituencyList :selected').text();
+				 getAllTabs(mainreqid,mainpublicationId,maintype)
+			}
+		 }
 	});
     /*$("#impFamShowBasicInfo").click(function(){
 	   if($('#votersbasicinfoForImpFam').css('display') == 'none'){
