@@ -845,7 +845,7 @@ for  body3 start    result  -->
 <div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
 </div>
-	<div id="previousEleVotingTrendsDiv"></div>
+	<!--<div id="previousEleVotingTrendsDiv"></div>-->
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
 	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn" value="View Panchayat Wise Election Results & Voting Trendz"/>
