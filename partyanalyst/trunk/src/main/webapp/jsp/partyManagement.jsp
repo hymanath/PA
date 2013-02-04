@@ -1032,7 +1032,6 @@ function disableButton(id)
 }
 function validateFileUpload()
 {
-alert("validateFileUpload");
 	var fileTitle = document.getElementById('photofileTitleId').value;
 	var fileDesc = document.getElementById('photofileDescId').value;
 	var fileVal = document.getElementById("photofileId").value;
@@ -1388,7 +1387,6 @@ function showNewsUploadStatus(myResult)
 
 function clearNewsUploadFileFields()
 {
-alert("clearNewsUploadFileFields");
 	$("#addMoreFilesDiv").html('');
 	$("#otherProNewsDiv").html('');
 	document.getElementById('newsfileTitle').value = '';
@@ -1405,7 +1403,6 @@ alert("clearNewsUploadFileFields");
 	
 function clearUploadFileFields()
 {
-alert("clearUploadFileFields");
 	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
 	document.getElementById('photofileTitleId').value = '';
@@ -2563,7 +2560,6 @@ function clearVideoGallaryFields()
 
 function clearUploadVideoFields()
 {
-alert("clearUploadVideoFields");
 	$("#addMoreVideosDiv").html('');
 	$("#otherProVideoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
