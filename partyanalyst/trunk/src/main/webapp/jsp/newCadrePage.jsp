@@ -627,7 +627,126 @@
 	}
 	function validationMethod()
     {
-		
+		var fname = $('#firstNameField').val();
+		var lname = $('#lastNameField').val();
+		var gender= $('input[name=gender]:checked');
+		var genderLength = $(gender).size();
+		var state = $('#stateField').val();
+		var district = $('#districtField').val();
+		var mandal = $('#mandalField').val();
+		var constituency = $('#constituencyField').val();
+		var village  = $('#villageField').val();
+		var education = $('#educationField').val();
+		var profession = $('#professionField').val();
+		var casteCategory = $('input[name=socialStatus]:checked');
+		var casteCategoryLength = $(casteCategory).size();
+		var cadreLevel = $('#scopeLevel').val();
+		if(fname == '')
+		{
+			$('#errorDiv').html('<div>Please enter the first name</div>')
+			return false;
+		}
+		if(lname == '')
+		{
+			$('#errorDiv').html('<div>Please enter the lat name</div>')
+			return false;
+		}
+		if(genderLength == 0)
+		{
+			$('#errorDiv').html('<div>Please select the gender</div>')
+			return false;
+		}
+		if(state == 0 || state == null)
+		{
+			$('#errorDiv').html('<div>Please select the State</div>')
+			return false;
+		}
+		if(district == 0 || district == null)
+		{
+			$('#errorDiv').html('<div>Please select the District</div>')
+			return false;
+		}
+		if(constituency == 0 || constituency == null)
+		{
+			$('#errorDiv').html('<div>Please select the Constituency</div>')
+			return false;
+		}
+		if(mandal == 0 || mandal == null)
+		{
+			$('#errorDiv').html('<div>Please select the Mandal</div>')
+			return false;
+		}
+		if(village == 0 || village == null)
+		{
+			$('#errorDiv').html('<div>Please select the Village</div>')
+			return false;
+		}
+		if(education == 0 || education == null)
+		{
+			$('#errorDiv').html('<div>Please select the Education</div>')
+			return false;
+		}
+		if(profession == 0 || profession == null)
+		{
+			$('#errorDiv').html('<div>Please select the Profession/Occupation</div>')
+			return false;
+		}
+		if(casteCategoryLength == 0)
+		{
+			$('#errorDiv').html('<div>Please select the Caste Category</div>')
+			return false;
+		}
+		if(cadreLevel == 0)
+		{
+			$('#errorDiv').html('<div>Please select the Cadre Level Value</div>')
+			return false;
+		}
+		/*
+		if(cadreLevel == 2)
+		{
+			var stateName = $('#stateField_s').val();
+			if(stateName == 0)
+			{
+			$('#errorDiv').html('<div>Please select the State</div>')
+			return false;
+			}
+		}
+		if(cadreLevel == 3)
+		{
+			var distName = $('#districtField_s').val();
+			if(distName == 0)
+			{
+			$('#errorDiv').html('<div>Please select the District</div>')
+			return false;
+			}
+		}
+		if(cadreLevel == 4)
+		{
+			var constName = $('#constituencyField_s').val();
+			if(constName == 0)
+			{
+			$('#errorDiv').html('<div>Please select the Constituency</div>')
+			return false;
+			}
+		}
+		if(cadreLevel == 5 || cadreLevel == 7 || cadreLevel==9)
+		{
+			var mandalName = $('#mandalField_s').val();
+			if(mandalName == 0)
+			{
+			$('#errorDiv').html('<div>Please select the Mandal/Municipality/Corp/GMC </div>')
+			return false;
+			}
+		}
+		if(cadreLevel == 6 cadreLevel == 8)
+		{
+			var vilName = $('#hamletField_s').val();
+			if(vilName == 0)
+			{
+			$('#errorDiv').html('<div>Please select the Village/Ward/Division</div>')
+			return false;
+			}
+		}*/
 	   //alert("Please Select Valid Location");
 		var memberTypeNormal = document.getElementById('memberTypeNormal');
 		if(memberTypeNormal.checked)
@@ -791,11 +910,12 @@
 				<c:if test="${windowTask == 'update_existing'}">
 					<TD><div class="cadreReportHeader"><span style="margin-top:2px;">Update Cadre Details</span></div></TD>
 				</c:if>
+				
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
 			</TR>
 		</TABLE>
 	</CENTER>
-	
+	<div id="errorDiv" style="color:red; margin-left: 81px;"></div>
 	<div id="registrationMainDiv">
 	
 		<c:if test="${windowTask == 'new'}">
@@ -838,7 +958,7 @@
 				<td align="left"><s:textfield id="father_spouseName" name="fatherOrSpouseName" size="25" maxlength="100"/>  </td>
 			</tr>
 			<tr>				
-				<td><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /><font class="requiredFont"> * </font></td>
+				<td><s:label class="selectWidth"  for="genderField" id="genderLabel"  value="%{getText('gender')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
 					<s:radio id="gender" name="gender" list="#session.genders"/>
 				</td>
