@@ -204,7 +204,7 @@ System.out.println(list.size());
 		System.out.println(params[0]+" -- "+params[1]);
 }*/
 
-	public void testFindFamiliesCountByPublicationIdInALocation()
+	/*public void testFindFamiliesCountByPublicationIdInALocation()
 	{
 		List<Long> list = boothPublicationVoterDAO.findFamiliesCountByPublicationIdInALocation(IConstants.CONSTITUENCY, 233l, 8l);
 		System.out.println(list.size());
@@ -215,7 +215,7 @@ System.out.println(list.size());
 			total = total + l;
 		}
 		System.out.println(total);
-	}
+	}*/
 	//getAllImpFamilesCount
 	
 	/*public void testGetAllImpFamilesCount()
@@ -234,4 +234,10 @@ System.out.println(list.size());
 		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,46l, 60l,"F"));
 		System.out.println(boothPublicationVoterDAO.getVotersCountInAAgeRange(IConstants.BOOTH, 122084l,7l,60l, null,"F"));
 	}*/
+	
+	public void test()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getPublicationDetailsBasedOnConstituency(232l);
+		System.out.println(list.size());
+	}
 }
