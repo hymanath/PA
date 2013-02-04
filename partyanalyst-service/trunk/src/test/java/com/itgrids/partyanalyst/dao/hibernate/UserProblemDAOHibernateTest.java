@@ -391,7 +391,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetAllPublicProblemsByLocation()
 	{
-		List<Long> problemIds = userProblemDAO.getAllPublicProblemsByLocation(1l,4l,232l,"PROGRESS");
-		 System.out.println(problemIds);
+		//List<Long> problemIds = userProblemDAO.getAllPublicProblemsByLocation(1l,4l,232l,"PROGRESS");
+		 //System.out.println(problemIds);
 	}
 }
