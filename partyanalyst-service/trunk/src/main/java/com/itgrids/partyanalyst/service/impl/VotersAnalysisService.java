@@ -3759,7 +3759,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						query.append(" and model.booth.localBody.localElectionBodyId = :id ");
 						id = (Long)list.get(0);
 					 }else if(id.toString().substring(0,1).trim().equalsIgnoreCase("2")){
-						 query.append(" and model.booth.tehsil.tehsilId = :id ");
+						 query.append(" and model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 						 id = new Long(id.toString().substring(1).trim());
 					 }
 				}
