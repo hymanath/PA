@@ -931,7 +931,7 @@ function  buildProblemsCount(results){
 	//str+='<div class="span3" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 5px;background-color:#f5f5f5;">';
 	//str+='</div>';
  if(results != null && results.length >0)
-   str+='<h5 style="margin-top: 6px; margin-bottom: 4px;">News Glance</h5>';
+   str+='<h4 style="margin-top: 6px; margin-bottom: 4px;">News Glance</h4>';
    
 //str+='<h5 style="margin-left:15px;">'+newsString+'</h5>';
 
@@ -1093,7 +1093,7 @@ function buildProblemsCountByLocation(results,jsObj)
 	var status = '';
 	var divEle = document.getElementById('problemsCountDiv');
 	$("#problemsCountDiv").css({'width':'100%'});
-	str+='<h5 style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="whitegloss">Problems</h5><div class="widget-block breadcrumb"> ';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="">Problems</h4><div class="widget-block breadcrumb"> ';
 	//str+='<div class="span11 breadcrumb"></div>';
 	//str+='<div class="widget-block breadcrumb"> ';
 	//str+='<div class="row-fluid"> ';
