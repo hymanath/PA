@@ -514,13 +514,49 @@ oDT: votersByLocBoothDataTable
 			//$("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
 			//$("#votersBasicInfoSubDivForAgeWiseDetls").html("");
 			//$("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
+			$("#votersTitle").html("");
 			$("#partyWiselocalcastDiv").html("");
+			$("#previousEleVotingTrendsDiv").html("");
 			$("#partyWiseLocalCastStatsTab").removeAttr('style');
 			  $("#localCastStatsTabContent_body").removeAttr('style');
 			  $("#LocalCastDiv").css('padding-bottom','0px');
 			$("#castPartyPopupShowBtn").hide();
 			$("#reportLevelheading1").html("");
+			$('#newsCountDiv').html('');
+			$('problemsCountDiv').html('');
 			$("#reportLevelCountDiv1").html("");
+			$('#votersBasicInfoDiv1').html('');
+			$("#votersBasicInfoSubChartDiv").html("");
+			$("#votersBasicInfoSubDiv").html("");
+			$("#AgeWisetitle").html("");
+			$("#tableDiv1").html("");
+			$("#voterDetailsNote").html("");
+			$("#tableDiv").html("");
+			$("#voterAgewiseDetailsNote").html("");
+			$("#agewiseDetails").html("");
+			$("#voterAgeAngGenderwiseDetailsNote").html("");
+			$("#ageAndgenderWiseDetails").html("");
+			$("#voterAgeAngGenderwiseDetailsNoteInPercent").html("");
+			$("#voterAgeAngGenderwiseDetailsInPercent").html("");
+			$("#impFamiliesTitle").html("");
+			$("#impFamilesBasicDetails").html("");
+			$("#impFamilesBasicInfoSubChartDiv").html("");
+			$("#impFamilesBasicSubDetailsTitle").html("");
+			$("#impFamilesBasicSubDetails").html("");
+			$("#descriptionDiv").html("");
+			$("#impFamPancBothDtls").html("");
+			$("#localCastStatsTabContentTitle").html("");
+			$("#localCastStatsTabContent_header").html("");
+			$("#localCastDetailsDiv").html("");
+			$("#localCastStatsTabContent_body").html("");
+			$("#partyBasicInfoStatsTab").html("");
+			$("#partyWiseLocalCastStatsTab").html("");
+			$("#partyWiselocalcastDiv").html("");
+			$("#localCastStatsTabContent_subbody").html("");
+			$("#partyWise_header").html("");
+			$("#partyWiseDetailsDiv").html("");
+			$("#partyWiseChatDiv").html("");
+			
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
 	   $("#votersDiv4").show();  
@@ -2349,7 +2385,7 @@ function buildTableForImpFamilesMandal(impFamilesData,name,type)
 	 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
 	 impFamiList.push(data);
   }
-  var reqtytle ="";
+  var reqtytle ="Name";
   for(var t in impFamilesData){
      if(impFamilesData[t].type != null)
 	   reqtytle = impFamilesData[t].type;
@@ -2357,7 +2393,7 @@ function buildTableForImpFamilesMandal(impFamilesData,name,type)
   $("#impFamilesBasicSubDetailsTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
   
   var impFamilesColumnDefs = [
-    {key:"name", label: ""+impFamilesData[0].type+"", sortable: true},
+    {key:"name", label: ""+reqtytle+"", sortable: true},
 	{key:"totalVoters", label:"Total",sortable: true},
 	{key:"totalMaleVoters", label:"Male Voters",sortable: true},
 	{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
