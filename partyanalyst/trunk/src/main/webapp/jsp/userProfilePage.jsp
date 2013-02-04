@@ -364,10 +364,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	<!--PRASAD-->
 						</div>
 						<div class="FavoriteLinksDiv">
-							<div class="constituencyDivMain">
-								<div style="background:#2D6987;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
-								<div class="constituencyDivInnerFav"></div>
-							</div>
+							
 							<div class="stateDivMain">
 								<div style="background:#2D6987;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
 						        <div class="stateDivInnerFav"></div>
@@ -377,7 +374,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 								<div style="background:#2D6987;" class="favouriteLinksHeading districtDivheading districtHeadingCls" ></div>
 						        <div class="districtDivInnerFav"></div>
 							</div>
-
+								<div class="constituencyDivMain">
+								<div style="background:#2D6987;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
+								<div class="constituencyDivInnerFav"></div>
+							</div>
 							<div class="specialPageDivMain">
 								<div style="background:#2D6987;" class="favouriteLinksHeading specialPageDivheading specialPageHeadingCls" ></div>
 						        <div class="specialPageDivInnerFav"></div>
