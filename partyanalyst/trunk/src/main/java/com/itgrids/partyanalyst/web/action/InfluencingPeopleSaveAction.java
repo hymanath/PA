@@ -24,12 +24,39 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private String registrationId;
 	private int resultStatus = 3;
 	private HttpSession session;
-	
+	private String type;
 	private String scopeState,scopeDistrict,scopeConstituency;
 	private String scopeMandal,scopeVillage,scopeBooth;
 	private Long pConstituencyId;
+	private String editData;
+	private String id;
 	private InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
 	
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getEditData() {
+		return editData;
+	}
+
+	public void setEditData(String editData) {
+		this.editData = editData;
+	}
+
 	public int getResultStatus() {
 		return resultStatus;
 	}
@@ -454,7 +481,19 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 			influencingPeopleBeanVO =new InfluencingPeopleBeanVO();
 		}
 		resultStatus = result.getResultCode();
-		return SUCCESS;
+		
+		type = request.getParameter("windowTask");
+		id = request.getParameter("influencingPersonId");
+		
+		if(type.equalsIgnoreCase("edit"))
+		{
+			return "editData";
+		}
+		else 
+		{
+			return SUCCESS;
+		}
+		
 	}
 	
 	public void validate()
