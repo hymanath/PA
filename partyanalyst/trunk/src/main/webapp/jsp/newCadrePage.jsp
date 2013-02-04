@@ -1482,7 +1482,7 @@ function getCalender()
 	$('#dobText').datepicker({
             changeMonth: true,
             changeYear: true,
-			dateFormat: 'dd-mm-yy',
+			dateFormat: 'dd/mm/yy',
 			maxDate: new Date()
         }).datepicker("show");
 }
