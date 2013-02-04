@@ -363,3 +363,213 @@ function trim(str)
 	else
 		return str;
 }
+
+function showFeedBackFormPanel()
+{		
+	$("#feedback_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:350,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
+
+		var elmt = document.getElementById("feedback_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head" style="font-size:12px;">Feed Back</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackNote_div">';
+		str += '		<table>';
+		str += '		<tr>';
+		str += '		<td><img src="images/icons/infoicon.png"></td>';
+		str += '		<td style="font-size:12px;">Fields marked with (<font color="red">*</font>) are mandatory</td>';
+		str += '		</tr>';
+		str += '		</table>';
+		str += '	</div>';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<table id="feedbackTable" width="100%">';
+		str += '		<tr>';
+		str += '		<th style="font-size:11px;"><font color="red">*</font> Select Feed Back type </th>';
+		str += '		<td style="font-size:12px;">';
+		str += '			<input type="radio" style="margin-top:0px;margin-right:4px;" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
+		str += '			<input type="radio" style="margin-top:0px;margin-right:4px;"  margin-top:0px;margin-right:4px;class="selectWidth" value="2" name="commentType"> Problem ';
+		str += '			<input type="radio"  style="margin-top:0px;margin-right:4px;"  class="selectWidth" value="3" name="commentType"> Praise ';
+		str += '			<input type="radio" style="margin-top:0px;margin-right:4px;"  class="selectWidth" value="4" name="commentType"> Suggestion ';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		<tr>';
+		str += '		<th style="font-size:12px;"><font color="red">*</font> FeedBack about</th>';
+		str += '		<td style="font-size:12px;">';
+		str += '			<select id="taskId">';
+		str +='             <option value="0">Select feedback</option>';
+		str += '			<option value="1">Web Site</option>';
+		str += '			<option value="2">Party Analysis </option>';
+		str += '			<option value="3">Constituency page</option>';
+		str += '			<option value="4">Politician Analysis</option>';
+		str += '			<option value="5">Search Analysis</option>';
+		str += '			<option value="6">Other</option>';
+		str += '			</select>';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		<tr>';
+		str += '		<th style="font-size:12px;"><font color="red">*</font> FeedBack </th>';
+		str += '		<td style="font-size:12px;">';
+		str += '			<textarea align="right" id="commentId" style="background-color:white;" rows="5" cols="39" name="comment"></textarea>';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		<tr>';
+		str += '		<th style="font-size:12px;"><font color="red">*</font> Select Response Type </th>';
+		str += '		<td style="font-size:12px;">';
+		str += '		      <input type="radio" style="margin-top:0px;margin-right:4px;"  checked="checked" value="Early" name="responseCategory">Early ';
+		str += '		      <input type="radio" style="margin-top:0px;margin-right:4px;"  value="Late" name="responseCategory">Late';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		</table>';
+		str += '	</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="65%" align="left"><div id="feedback_window_Msg"></div></td>';
+		str += '	<td width="35%" align="right">';
+		str += '		<input id="postButton" type="button" value="Post"></input>';
+		str += '		<input id="close" type="button" value="Cancel"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton1 = new YAHOO.widget.Button("postButton");  
+		var oPushButton2 = new YAHOO.widget.Button("close");
+
+		oPushButton1.on("click",function(){
+			postFeedbackAjaxCall();
+		});
+
+		oPushButton2.on("click",function(){
+			$("#feedback_window").dialog("destroy");
+		});
+	}	
+	
+function postFeedbackAjaxCall()
+{
+	var errorElmt = document.getElementById("feedback_window_Msg");
+	
+	var feedBackElmt = document.getElementById("commentId");
+	feedBackElmtValue = feedBackElmt.value;
+   
+	if(feedBackElmtValue == "")
+	{	
+		errorElmt.innerHTML = '<font size="2" color="red">Feedback box cannot be empty</font>';
+	    return; 
+	}
+	
+	else
+		errorElmt.innerHTML = "";
+	
+   var feedbackTypeElmt = document.getElementsByName("commentType");
+   var feedbackAboutElmt = document.getElementById("taskId");
+   var responseTypeElmt = document.getElementsByName("responseCategory");
+	
+   var feedbackType = '';
+   var feedbackAbout = '';
+   var responseType = '';
+
+	feedbackAbout = feedbackAboutElmt.value;
+	if(feedbackAbout == 0)
+	{
+		errorElmt.innerHTML = '<font size="2" color="red">Please Select Feedback</font>';
+	return;
+	}
+	else 
+		errorElmt.innerHTML = "";
+   for(var i=0; i<feedbackTypeElmt.length; i++)
+		 if(feedbackTypeElmt[i].checked==true)
+             feedbackType = feedbackTypeElmt[i].value;
+	
+	for(var j=0;j<responseTypeElmt.length;j++)
+		if(responseTypeElmt[j].checked == true)
+				responseType = responseTypeElmt[j].value;
+
+  var jObj=
+         {
+			feedback:feedBackElmtValue,
+			commentTypeId :feedbackType,
+			commentTaskId :feedbackAbout,
+			responseType :responseType,
+			task : "getComments"
+		 };
+		 
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+     var url = "userFeedbackSubmitAjaxAction.action?"+rparam;
+	 callAjaxForFeedBack(jObj,url);
+}
+function callAjaxForFeedBack(jObj,url)
+{
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+
+							if(jObj.task == 'getComments')
+							{
+								showFeedBackStatusMessage(myResults);
+								$("#taskId").prepend("<option value='0'>Select feedback</option>");
+								document.getElementById("taskId").value = 0;
+							}
+						}
+					catch(e)
+
+						{   
+							//alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function showFeedBackStatusMessage(result)
+{
+
+
+var feedback_window = document.getElementById('feedback_window');
+	if(result.exceptionEncountered == null)
+	{
+		var errorElmt = document.getElementById("feedback_window_Msg");
+			errorElmt.innerHTML = "<font color='green'>Your FeedBack Submitted Successfully.</font>";
+			clearFeedBackFields();
+			
+		setTimeout("closeFeedbackwindow()",3000);
+	}
+	else
+	{
+		var errorElmt = document.getElementById("feedback_window_Msg");
+			errorElmt.innerHTML = "<font color='red'>Sorry,Your FeedBack not " +
+					"ted.Please Try again.</font>";
+	}
+	
+}
+
+function clearFeedBackFields()
+{
+document.getElementById('commentId').value='';
+	
+}
+
+function closeFeedbackwindow()
+{
+	$("#feedback_window").dialog("destroy");
+}
