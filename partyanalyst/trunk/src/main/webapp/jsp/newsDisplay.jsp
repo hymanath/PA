@@ -407,6 +407,7 @@ var newsDetails = null;
 var noOfRowsPerPage = 10;
 var modifiedRecord = 0;
 var returnedResults;
+var bvalue = false;
 $(document).ready(function(){
 
 	$('.yui-pg-rpp-options').live('change',function(){
@@ -1269,6 +1270,7 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
  }
 function editNewsDetails(fileId){
 
+	bvalue = false;
   $("#editNewsOuter").dialog({ stack: false,
 							    height: 'auto',
 								width: 700,
@@ -1291,18 +1293,19 @@ function editNewsDetails(fileId){
 
 	var str ='';
 
-	str+='<div style="float:right;"><b>Flag Status:</b><input type="hidden" name="flagValue" id="flagInd" value="'+reqFile.flagSet+'"></input>';
+	str+='<div style="float:right;"><div style="float:left;"><b>Flag Status:</b><input type="hidden" name="flagValue" id="flagInd" value="'+reqFile.flagSet+'"></input></div>';
       if(reqFile.flagSet == "true"){
-		  str+='<div id="flagSet"><a href=javaScript:{setFlagVariable(\'false\');}   ><i class="icon-flag"></i></a></div>';
+		  str+='<div id="flagSet" style="width: 130px;"><a href=javaScript:{setFlagVariable(\'false\');}   ><i class="icon-flag"></i></a></div>';
 
-		  str+='<div id="flagUnSet" style="display:none;"><a href=javaScript:{setFlagVariable(\'true\');}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
+		  str+='<div id="flagUnSet" style="display:none;width: 130px;"><a href=javaScript:{setFlagVariable(\'true\');}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
 	  }
 	  else{
-		    str+='<div id="flagSet" style="display:none;"><a href=javaScript:{setFlagVariable(\'false\');}><i class="icon-flag"></i></a></div>';
+		    str+='<div id="flagSet" style="display:none;width: 130px;"><a href=javaScript:{setFlagVariable(\'false\');}><i class="icon-flag"></i></a></div>';
 
-		   str+='<div id="flagUnSet"><a href=javaScript:{setFlagVariable(\'true\')}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
+		   str+='<div id="flagUnSet" style="width: 130px;"><a href=javaScript:{setFlagVariable(\'true\')}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
 		 // str+='';
 	  }
+	  str+='<div style="clear: both" ></div>';
 	  str+='</div>';
 
 	str+='<div>';
@@ -1356,8 +1359,8 @@ function editNewsDetails(fileId){
 	   str += '       <td><input type="hidden" id="languageEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
 	   str += '   </tr>';
 	}
-	str += '       <td class="tdWidth">Category<font class="requiredFont">*</font></td>';
-	str += '  <td><select id="categoryEdit" style="width:222px;"></select></td>';
+	str += '       <td class="tdWidth">Category</td>';
+	str += '  <td><select id="categoryEdit" style="width:222px;"><option value="0">-select category-</option></select></td>';
 	str += '   </tr>';
 	str += '   </tr>';
 	str += '       <td class="tdWidth">News Importance<font class="requiredFont">*</font></td>';
@@ -1477,11 +1480,12 @@ function editNewsDetails(fileId){
  }
 
 function getLocationDiv(){
-var id =  $('#scopeDiv').val();
+	bvalue=true;
+	var id =  $('#scopeDiv').val();
  getLocations1(id);
 }
  function getLocations(id){
-
+bvalue=true;
    if(id==0)
   {
    var val ='';
@@ -1961,7 +1965,7 @@ if(fileDescription == ""){
 	errorMessage+="File description is required";
 	validate = true;
 }
-
+if(bvalue){
 if(scope == 3)
 	{
 		var stateVal=document.getElementById('stateDiv').value;
@@ -2088,6 +2092,7 @@ if(scope == 3)
 		}
 		
 	}
+}
 if(validate == true) {
 $('#uploadNewsFileErrorDiv').html('<span style="color:red;">'+errorMessage+'</span>');
 validate = false;
