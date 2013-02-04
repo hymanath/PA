@@ -417,8 +417,8 @@ width: 860px;}
     margin-bottom: -138px;
     margin-top: 0;
     padding-top: 0;
-    width: 400px;padding-left: 29px;
-    padding-top: 20px;}
+    width: 400px;
+    }
 	#localCastChatDiv,#partyWiseChatDiv{clear: both;
     float: right;
      width: 500px;}
@@ -613,6 +613,7 @@ h5{font-family : Arial;}
 		font-family: verdana;
 		font-size: 13px;
 		font-weight: bold;
+		width:80%;
   }
   #votersDiv1,#votersDiv2{
     display:none;
@@ -673,7 +674,9 @@ h5{font-family : Arial;}
 #voterDetailsNote{
   margin-bottom:5px;
 }
-#MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;}
+#MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;margin:1px;}
+.widget h4, h2{font-family:verdana;}
+#localCastStatsTabContent_header span{padding:10px;clear:both;display:inline-block;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -842,7 +845,7 @@ for  body3 start    result  -->
   	</div>
 
 	
-	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;"><h5 class="whitegloss" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h5>
+	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 <div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
@@ -865,7 +868,7 @@ for  body3 start    result  -->
 
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
 	<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;margin-top:40px;">
-					<h5 id="AgeWisetitle" class="whitegloss" > </h5>
+					<h4 id="AgeWisetitle" class="" > </h4>
 					<!-- for  body4 start    result  -->
 
 <div id='votersMainOuterDiv4' class="widget-block whitegloss" style="display:inline-block;width: 100%;">
@@ -943,7 +946,7 @@ for  body3 start    result  -->
 	</div> -->
 
 <div id='votersMainOuterDiv1' class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;">
-<h5 class="whitegloss"  id="impFamiliesTitle" ></h5>
+<h4 class=""  id="impFamiliesTitle" ></h4>
 	 <!--<input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForImpFam" >
         <div id="votersBasicInfoDivForImpFam"></div>
@@ -993,7 +996,7 @@ for  body3 start    result  -->
 				</table>
 	</div> -->
 <div id='votersMainOuterDiv2'  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;">
-<h5 class="whitegloss"  id="localCastStatsTabContentTitle" ></h5>
+<h4 class=""  id="localCastStatsTabContentTitle" ></h4>
 	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
     <div id="votersbasicinfoForLclCastSts" >
         <div id="votersBasicInfoDivForLclCastSts"></div>
@@ -1011,7 +1014,7 @@ for  body3 start    result  -->
 		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
 		<div id="localCastChatDiv"></div>
 	</div>
-	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div><hr>
 	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
 	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
 	<div id="partyWiselocalcastDiv" style="margin-top:20px;margin-bottom:50px;"></div>
