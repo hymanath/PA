@@ -13,7 +13,7 @@ var news_Obj = {
       });
 	});
 	var startIndex=0;
-	var maxIndex=3;
+	var maxIndex=5;
 	var clickid = null;
 function copyId(id)
 {
@@ -160,7 +160,7 @@ function callAjaxToShowProblemDetails(jObj,url){
 
 					   if(jObj.task == "getProblemsByLocation")
                           buildProblemsCountByLocation(myResults,jObj);					  
-					 /* else if(jObj.task == "getProblemDetailsByLocation")
+					/* else if(jObj.task == "getProblemDetailsByLocation")
 						buildProblemDetailsByStatus(myResults,jObj);*/
 					  
 							
@@ -241,7 +241,7 @@ function buildContentDetails()
 
 	str += '<Div><center>';
 	str += '<div class="main-title-sec" style="clear:both;">';
-	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
+	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:900px;border-radius:5px 5px 5px 5px;"></div><div class="main-bbg"/></div>';
 
 	
 	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
@@ -508,7 +508,7 @@ function buildContentDetails()
 	//str+='<input type="button" style="float:right;margin:3px 133px;" class="btn" value="Save" onClick="saveFileComment('+fileId+');"/>';
 
 
-	/*if(result.otherGalleries != null && result.otherGalleries.length > 0)
+	if(result.otherGalleries != null && result.otherGalleries.length > 0)
 	{
 		var galType = null;
 		
@@ -524,14 +524,14 @@ function buildContentDetails()
 		str += '<Div><center>';
 		str += '<div class="main-title-sec" style="clear:left;">';
 		//str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${specialPageVO.heading}</div><div class="main-bbg"/></div>';
-		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other  gallaries </div><div class="main-bbg"/></div>';
+		str += '<div class="main-mbg" style="width:900px;border-radius:5px 5px 5px 5px;">Other  gallaries </div><div class="main-bbg"/></div>';
 		
 		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
-		str += '<Table>';
+		str += '<Table cellpadding="10">';
 		
 		for(var i=0;i<result.otherGalleries.length;i++)
 		{
-			if(i%5 == 0)
+			if(i%4 == 0)
 				str += '<tr>';
 			
 			str += '<td width="20%" valign="top">';
@@ -540,11 +540,11 @@ function buildContentDetails()
 			str += '<tr><td class="videoGalTitleStyle"><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
 			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
 			
-			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+			/*if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
 				str += '<img style="width:120px;height:90px;" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
 				
 			else if(result.contentType == 'Video Gallary')
-				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
+				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';*/
 			
 			str += '</a></td></tr>';
 			str += '<tr><td class="videoGallDescStyle">Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
@@ -553,14 +553,14 @@ function buildContentDetails()
 
 			str += '</td>';
 
-			if(i%5 == 4)
+			if(i%4 == 3)
 				str += '</tr>';
 		}
 		str += '</Table>';
 		str += '</div>';
 
 		str += '</div>';
-	}*/
+	}
 	
 	str += '</center></Div>';
 
@@ -1150,6 +1150,11 @@ function getProblemsByLocation(id,publicationId,type)
 	if(type == "constituency"){
 		
 		locationId = 4;
+	}
+	else if(type == "mandal" && locationValue.charAt(0) == "1")
+	{
+		locationId = 7;
+		return;
 	}
 	else if(type == "mandal")
 	{
