@@ -584,7 +584,7 @@ oDT: votersByLocBoothDataTable
 	   $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
 		  $("#revenueVillageWiseElecResults").show();
-		  $("#revenueVillageWiseElecIdTitle").html("Panchayat Wise Results In "+mainname);
+		  $("#revenueVillageWiseElecIdTitle").html("<h4>Panchayat Wise Results In "+mainname+"</h4>");
 		 }
 	    else{
            $("#revenueVillageWiseElecResults").hide();
@@ -1918,21 +1918,21 @@ function buildCastInfoData(myresults,jsObj)
 	var voters = '';
 	if(result.maleVoters > 0){
 	    $("#castPartyPopupShowBtn").show();
-		$("#partyBasicInfoStatsTabNewTitle").html("Party Wise Voters Details").css("background","#06ABEA");
+		$("#partyBasicInfoStatsTabNewTitle").html("<h2 id='subHeading'>Party Wise Voters Details</h2>");
 	    $("#LocalCastDiv").css('padding-bottom','20px');
 	}
 	else{
 	   		$("#partyBasicInfoStatsTabNewTitle").html("").css("background","#ffffff");
 	}
-	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span class="widget-simple" style="padding:10px;"> Total Voters : '+totalVoters+'</span>';
-	localCastStatsTabContent += '<span class="widget-simple">Total Casts : '+totalCasts+'</span>';
+	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span class="" style="padding:10px;"> Total Voters : '+totalVoters+'</span>';
+	localCastStatsTabContent += '<span class="">Total Casts : '+totalCasts+'</span>';
 	//localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
 	//localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
-	localCastStatsTabContent += '<span class="widget-simple">Caste Assigned Voters : '+result.maleVoters+'</span>';
-	localCastStatsTabContent += '<span class="widget-simple">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
+	localCastStatsTabContent += '<span class="">Caste Assigned Voters : '+result.maleVoters+'</span>';
+	localCastStatsTabContent += '<span class="">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
 
 	if(result.voterCastInfoVOList != null && result.voterCastInfoVOList.length > 0)
-	  $('#localCastDetailsHeadingDiv').html('Cast category wise voters details').css("background","#06ABEA");
+	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Cast category wise voters details</h2>');
 	else
      	$('#localCastDetailsHeadingDiv').html('').css("background","#ffffff");
 	 voters +='<table><tr>';
@@ -1999,7 +1999,7 @@ function buildCastInfoData(myresults,jsObj)
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
 		   var str ='<div style="overflow-x:scroll;">';
-		      str+='<div id="partyWiseLocalCastStatsTabTitle">Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</div>';
+		      str+='<div id="partyWiseLocalCastStatsTabTitle"><h2 id="subHeading" style="width:400px;">Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
 		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black;">';
 			  str+='  <thead>';
 			  str+='   <tr>';
