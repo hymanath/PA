@@ -918,4 +918,97 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPartyIdsByMandalIdAndElectionYear(String type, Long id, String year)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.nomination.party.partyId from CandidateBoothResult model where ");
+		str.append(" model.boothConstituencyElection.constituencyElection.election.electionYear =:electionYear ");
+		if(type.equalsIgnoreCase(IConstants.MANDAL))
+			str.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = :id and model.boothConstituencyElection.booth.localBody is null ");
+		else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			str.append(" and model.boothConstituencyElection.booth.localBody.localElectionBodyId =:id and model.boothConstituencyElection.booth.panchayat is null ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("id", id);
+		query.setParameter("electionYear", year);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPartyIdsByLocalEleBodyIdAndElectionYear(Long localEleBodyId, String year)
+	{
+		Query query = getSession().createQuery("select distinct model.nomination.party.partyId from CandidateBoothResult model where model.boothConstituencyElection.booth.localBody.localElectionBodyId =:localElectionBodyId " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionYear =:electionYear and model.boothConstituencyElection.booth.panchayat is null ");
+		query.setParameter("localElectionBodyId", localEleBodyId);
+		query.setParameter("electionYear", year);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllPartiesCrossVotingReportByMandalIdAndAssemblyConstituencyId(Long mandalId, Long constituencyId, String year, List<Long> partyIdsList)
+	{
+		Query query = getSession().createQuery("select distinct(model.nomination.party.partyId), model.nomination.party.shortName, " +
+				" model.nomination.constituencyElection.constituencyElectionResult.validVotes, model.votesEarned from CandidateBoothResult model " +
+				" where model.boothConstituencyElection.booth.tehsil.tehsilId =:tehsilId and model.boothConstituencyElection.constituencyElection.election.electionYear =:year and model.nomination.party.partyId in (:partyIdsList) " +
+				" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId =:constituencyId and model.boothConstituencyElection.booth.localBody is null ");
+		
+		query.setParameter("tehsilId", mandalId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("year", year);
+		query.setParameterList("partyIdsList", partyIdsList);
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllPartiesCrossVotingReportByEleYearAndConstituencyId(String type, Long id, Long constituencyId, String year, List<Long> partyIdsList)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct(model.nomination.party.partyId), model.nomination.party.shortName, model.nomination.constituencyElection.constituencyElectionResult.validVotes, ");
+		str.append(" model.votesEarned from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionYear =:year and model.nomination.party.partyId in (:partyIdsList) ");
+		str.append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId =:constituencyId ");
+		if(type.equalsIgnoreCase(IConstants.MANDAL))
+			str.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId =:id and model.boothConstituencyElection.booth.localBody is null ");
+		else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+		str.append(" and model.boothConstituencyElection.booth.localBody.localElectionBodyId =:id and model.boothConstituencyElection.booth.panchayat is null  ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("id", id);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("year", year);
+		query.setParameterList("partyIdsList", partyIdsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getValidVotesByEleTypeAndConstituencyId(String type, Long id, Long constituencyId, String year)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.nomination.constituencyElection.constituencyElectionResult.validVotes from CandidateBoothResult model where ");
+		str.append(" model.boothConstituencyElection.constituencyElection.election.electionYear =:year and model.boothConstituencyElection.constituencyElection.constituency.constituencyId =:constituencyId ");
+		if(type.equalsIgnoreCase(IConstants.MANDAL))
+			str.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId =:id and model.boothConstituencyElection.booth.localBody is null ");
+		else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			str.append(" and model.boothConstituencyElection.booth.localBody.localElectionBodyId =:id and model.boothConstituencyElection.booth.panchayat is null ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("id", id);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("year", year);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPartyIdsListByEleIdAndYearAndConstId(Long id, Long electionId, String year)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct(model.nomination.party.partyId) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.constituency.constituencyId =:id and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionYear =:electionYear and model.boothConstituencyElection.constituencyElection.election.electionId =:electionId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("id", id);
+		query.setParameter("electionYear", year);
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
 }
