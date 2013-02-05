@@ -195,12 +195,50 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 			 System.out.println(id);
 	}*/
 	
-	public void testgetBoothIdsByConstituencyId()
+	/*public void testgetBoothIdsByConstituencyId()
 	{
 		List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByConstituencyId(232l, 38l);
 		if(boothIds != null && boothIds.size() > 0)
 		 for(Long id : boothIds)
 			 System.out.println(id);
+	}*/
+	public void testgetElectionYearsByMandalId()
+	{
+		List list = boothConstituencyElectionDAO.getElectionYearsByMandalId(IConstants.LOCALELECTIONBODY,83l);
+		System.out.println(list);
+	}
+	
+	/*public void testGetConstituencyIdByMandalId()
+	{
+		List<Long list = boothConstituencyElectionDAO.getConstituencyIdByMandalId(844l, "2009", IConstants.PARLIAMENT_ELECTION_TYPE);
+		System.out.println(list);
+			
+	}*/
+	
+	/*public void testgetElectionYearsByLocalEleBodyId()
+	{
+		List l = boothConstituencyElectionDAO.getElectionYearsByLocalEleBodyId(83l);
+		System.out.println(l);
+	}*/
+	
+	/*public void testGetConstituencyIdByLocalEleBodyId()
+	{
+		List<Long> l = boothConstituencyElectionDAO.getConstituencyIdByLocalEleBodyId(83l, "2009", IConstants.ASSEMBLY_ELECTION_TYPE);
+		System.out.println(l);
+	}*/
+	
+	/*public void testgetConstituencyIdByMandalId()
+	{
+		List<Long> l = boothConstituencyElectionDAO.getConstituencyIdByElectionTypeAndYear(IConstants.LOCALELECTIONBODY, 83l, "2009", IConstants.PARLIAMENT_ELECTION_TYPE);
+		System.out.println(l);
+	}*/
+	
+	public void testgetConstituencyIdAndElectionYearByElectionType()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getConstituencyIdAndElectionYearByElectionType(IConstants.MANDAL, 844l, "2009", IConstants.ASSEMBLY_ELECTION_TYPE);
+		if(list != null && list.size() > 0)
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
 	}
 	
 }

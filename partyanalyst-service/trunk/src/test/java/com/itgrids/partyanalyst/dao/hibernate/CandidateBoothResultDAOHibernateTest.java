@@ -465,12 +465,69 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetPartiesParticipatedInAManadalForAnElection()
+	/*public void testGetPartiesParticipatedInAManadalForAnElection()
 	{
 		List<Long> list = candidateBoothResultDAO.getPartiesParticipatedInAManadalForAnElection(841l,38l);
 		System.out.println(list.size());
 		for(Long partyId : list)
 			System.out.println(partyId);
 	}
-
+*/
+	
+	/*public void testgetPartyIdsByConstituencyIdAndElectionYear()
+	{
+		List<Long> partyIdsList = candidateBoothResultDAO.getPartyIdsByMandalIdAndElectionYear(844l, "2009");
+		System.out.println(partyIdsList);
+		
+	}*/
+	
+	/*public void testgetPartyIdsByLocalEleBodyIdAndElectionYear()
+	{
+		List<Long> partyIdsList = candidateBoothResultDAO.getPartyIdsByLocalEleBodyIdAndElectionYear(83l, "2009");
+		System.out.println(partyIdsList);
+	}*/
+	
+	/*public void testgetAllPartiesCrossVotingReportByMandalIdAndAssemblyConstituencyId()
+	{
+		List<Long> partyIdsList = new ArrayList<Long>(0);
+		partyIdsList.add(163l);
+		partyIdsList.add(362l);
+		partyIdsList.add(872l);
+		partyIdsList.add(239l);
+		partyIdsList.add(651l);
+		partyIdsList.add(662l);
+		partyIdsList.add(366l);
+		partyIdsList.add(514l);
+		
+		List<Object[]> list = candidateBoothResultDAO.getAllPartiesCrossVotingReportByEleYearAndConstituencyId(IConstants.MANDAL,844l, 232l, "2009", partyIdsList);
+		System.out.println(list.size());
+		if(list != null && list.size() >0)
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);
+		}
+		
+	}*/
+	
+		
+	/*public void testgetValidVotesByLocalEleBodyIdAndConstituencyId()
+	{
+		List list = candidateBoothResultDAO.getValidVotesByEleTypeAndConstituencyId(IConstants.MANDAL,844l, 232l, "2009");
+		System.out.println(list);
+	}*/
+	
+	
+	/*public void testgetPartyIdsByMandalIdAndElectionYear()
+	{
+		List<Long> l = candidateBoothResultDAO.getPartyIdsByMandalIdAndElectionYear(IConstants.LOCALELECTIONBODY, 83l, "2009");
+		System.out.println(l);
+	}*/
+	
+	
+	public void testgetPartyIdsListByEleIdAndYearAndConstId()
+	{
+		List<Long> list = candidateBoothResultDAO.getPartyIdsListByEleIdAndYearAndConstId(232l, 38l, "2009");
+		
+				System.out.println(list);
+	}
 }

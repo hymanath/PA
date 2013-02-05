@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
@@ -56,6 +57,8 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
+import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -135,6 +138,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterFamilyRangeDAO voterFamilyRangeDAO;
     private IVillageBoothElectionDAO villageBoothElectionDAO;
     private IPublicationDateDAO publicationDAO;
+    private ICandidateBoothResultDAO candidateBoothResultDAO;
     
    	public IPublicationDateDAO getPublicationDAO() {
    		return publicationDAO;
@@ -389,6 +393,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setVillageBoothElectionDAO(
 			IVillageBoothElectionDAO villageBoothElectionDAO) {
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
+	}
+
+	public ICandidateBoothResultDAO getCandidateBoothResultDAO() {
+		return candidateBoothResultDAO;
+	}
+
+	public void setCandidateBoothResultDAO(
+			ICandidateBoothResultDAO candidateBoothResultDAO) {
+		this.candidateBoothResultDAO = candidateBoothResultDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -7014,5 +7027,198 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				return null;
 			}
 		 } 
+		
+		public List<SelectOptionVO> getElectionYearsByMandalId(String type,Long id)
+		{
+			List<SelectOptionVO> electionYearsList = new ArrayList<SelectOptionVO>(0);
+			try{
+				List<Object> list = null;
+				if(type.equalsIgnoreCase(IConstants.MANDAL))
+				{
+					if(id.toString().trim().substring(0, 1).equalsIgnoreCase("2"))
+					{
+						id = new Long(id.toString().trim().substring(1));
+						type = IConstants.MANDAL;
+					}
+					else
+					{
+						List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().trim().substring(1)));
+						if(list2 != null)
+							id = (Long)list2.get(0);
+							type = IConstants.LOCALELECTIONBODY;
+							
+					}
+					list = boothConstituencyElectionDAO.getElectionYearsByMandalId(type, id);
+					
+					if(list != null && list.size() > 0)
+					{
+						for(Object params : list)
+							electionYearsList.add(new SelectOptionVO(new Long(params.toString()), params.toString()));
+					}
+				}
+				return electionYearsList;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getElectionYearsByMandalId() Method, Exception - "+e);
+				return electionYearsList;
+			}
+		}
+		
+		public CrossVotingConsolidateVO getCrossVotingReportByMandalIdAndEleYear(String type, Long id, String year, String includeAliance)
+		{
+			CrossVotingConsolidateVO consolidateVO = new CrossVotingConsolidateVO();
+			List<CrossVotedMandalVO> crossVotedMandalVOList = new ArrayList<CrossVotedMandalVO>(0);
+			try{
+			    List<Long> partyIdsList = null;
+			    Long assemblyConValidVotes = 0l;
+			    Long parliamentConValidVotes = 0l;
+			   			    
+			    if(type.equalsIgnoreCase(IConstants.MANDAL))
+			    {
+			    	if(id.toString().trim().substring(0,1).equalsIgnoreCase("2"))
+				  	{
+			    		id = new Long(id.toString().trim().substring(1));
+			    		type = IConstants.MANDAL;
+				  	}
+					
+				    else
+				    {
+					   List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().trim().substring(1)));
+					   if(list2 != null)
+						   id = (Long)list2.get(0);
+					   type = IConstants.LOCALELECTIONBODY;
+				    }	
+			    }
+			   List<Object[]> assemblyIdsList = boothConstituencyElectionDAO.getConstituencyIdAndElectionYearByElectionType(type, id, year, IConstants.ASSEMBLY_ELECTION_TYPE);
+			   List<Object[]> parliamentIdsList = boothConstituencyElectionDAO.getConstituencyIdAndElectionYearByElectionType(type, id, year, IConstants.PARLIAMENT_ELECTION_TYPE);
+			   
+			   if(assemblyIdsList != null && assemblyIdsList.size() >0 && parliamentIdsList != null && parliamentIdsList.size() > 0)
+			   {
+				   
+					  partyIdsList = candidateBoothResultDAO.getPartyIdsListByEleIdAndYearAndConstId((Long)assemblyIdsList.get(0)[0], (Long)assemblyIdsList.get(0)[1], year);
+							
+					  if(partyIdsList != null && partyIdsList.size() >0)
+					  {
+						  List<Object[]> acList = null;
+						  List<Object[]> pcList = null;
+						  List acValidVotesList = null;
+						  List pcValidVotesList = null;
+					
+						  acValidVotesList = candidateBoothResultDAO.getValidVotesByEleTypeAndConstituencyId(type,id, (Long)assemblyIdsList.get(0)[0], year);
+						  pcValidVotesList = candidateBoothResultDAO.getValidVotesByEleTypeAndConstituencyId(type,id, (Long)parliamentIdsList.get(0)[0], year);
+					
+						  acList  = candidateBoothResultDAO.getAllPartiesCrossVotingReportByEleYearAndConstituencyId(type,id, (Long)assemblyIdsList.get(0)[0], year, partyIdsList);
+						  pcList = candidateBoothResultDAO.getAllPartiesCrossVotingReportByEleYearAndConstituencyId(type, id, (Long)parliamentIdsList.get(0)[0], year, partyIdsList);
+						
+						  if(acValidVotesList != null && acValidVotesList.size() > 0)
+							  assemblyConValidVotes = ((Double)acValidVotesList.get(0)).longValue();
+						  if(pcValidVotesList != null && pcValidVotesList.size() > 0)
+							  parliamentConValidVotes = ((Double)pcValidVotesList.get(0)).longValue();
+						
+						   getCrossVotingPartyWiseDetails(acList, pcList, assemblyConValidVotes, parliamentConValidVotes, crossVotedMandalVOList);
+						   consolidateVO.setMandals(crossVotedMandalVOList);
+					   
+				   }
+				   
+							
+			}
+				  
+				return consolidateVO;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getCrossVotingReportByMandalIdAndEleYear() Method, Exception - "+e);
+				return null;
+			}
+			
+		}
+
+		
+		public List<CrossVotedMandalVO> getCrossVotingPartyWiseDetails(List<Object[]> acList, List<Object[]> pcList, Long acValidVotes, Long pcValidVotes,List<CrossVotedMandalVO> crossVotedMandalVOList)
+		{
+			try{
+				
+				List<String> partyList = new ArrayList<String>(0);
+				
+				if(acList != null && acList.size() >0)
+				{
+					for(Object[] params : acList)
+					{
+						if(!partyList.contains(params[1]))
+						  partyList.add(params[1].toString());
+					}
+				}
+				if(pcList != null && pcList.size() > 0)
+				{
+					for(Object[] params : pcList)
+					{
+					  if(!partyList.contains(params[1]))
+							partyList.add(params[1].toString());
+					}
+				}
+				Collections.sort(partyList);
+				
+				for(String partyInList : partyList)
+				{
+					String partyName = partyInList;
+					Long acVotesEarned = 0l;
+					Long pcVotesEarned = 0l;
+					Double acPercentageDiff = 0.00;
+					Double pcPercentageDiff = 0.00;
+					Double percentageImpactOnConstituency = 0.00;
+					
+					CrossVotedMandalVO crossVotedMandalVO = new CrossVotedMandalVO();
+					crossVotedMandalVO.setPartyName(partyInList);
+					
+					for(Object[] objects : acList)
+					{
+						if(objects[1].toString().equalsIgnoreCase(partyName))
+						  acVotesEarned += (Long)objects[3];
+					}
+					
+					for(Object[] obj : pcList)
+					{
+						if(obj[1].toString().equalsIgnoreCase(partyName))
+							pcVotesEarned += (Long)obj[3];
+							
+					}
+					
+					crossVotedMandalVO.setPolledVotes(acValidVotes);
+					
+					if(acValidVotes != null && acValidVotes > 0)
+						acPercentageDiff = (acVotesEarned.doubleValue()*100.0)/acValidVotes.doubleValue();
+					
+					if(pcValidVotes != null && pcValidVotes > 0)
+					  pcPercentageDiff = (pcVotesEarned.doubleValue()*100.0)/pcValidVotes.doubleValue();
+					
+					percentageImpactOnConstituency = acPercentageDiff-pcPercentageDiff;
+					
+					crossVotedMandalVO.setAcPercentageInMandal(acPercentageDiff != null ? new BigDecimal(acPercentageDiff).setScale(2, BigDecimal.ROUND_HALF_UP).toString() :"0.00");
+					crossVotedMandalVO.setPcPercentageInMandal(pcPercentageDiff != null ? new BigDecimal(pcPercentageDiff).setScale(2, BigDecimal.ROUND_HALF_UP).toString() :"0.00");
+					crossVotedMandalVO.setPercentageDifferenceInMandal(percentageImpactOnConstituency != null? new BigDecimal(percentageImpactOnConstituency).setScale(2, BigDecimal.ROUND_HALF_UP).toString():"0.00");
+					
+					if(acValidVotes != null && acValidVotes > 0)
+					{
+						crossVotedMandalVO.setPercentageImpactOnConstituency(new BigDecimal(percentageImpactOnConstituency*100.0/acValidVotes).
+							setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					else
+					 crossVotedMandalVO.setPercentageImpactOnConstituency("0.00");
+					
+					System.out.println(percentageImpactOnConstituency +" "+ acValidVotes);
+					
+					crossVotedMandalVOList.add(crossVotedMandalVO);
+					
+				}
+				
+				return crossVotedMandalVOList;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getCrossVotingPartyWiseDetails() Method, Exception - "+e);
+				return null;
+			}
+		
+		}	
+		
+		
 
 }

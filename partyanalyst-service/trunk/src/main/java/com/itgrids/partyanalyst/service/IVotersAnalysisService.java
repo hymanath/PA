@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -115,7 +116,7 @@ public interface IVotersAnalysisService {
 			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type);
 	
 	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId);
-			
+	
 	public List<VotersDetailsVO> getVoterAgeWiseDetails(Long constituencyId, Long mandalId,
 			 Long panchayatId , Long boothId, Long publicationDateId, String type);
 	
@@ -127,5 +128,8 @@ public interface IVotersAnalysisService {
 	
 	public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByPanchayatId(Long panchayatId,Long publicationDateId, String type);
 
+	public List<SelectOptionVO> getElectionYearsByMandalId(String type,Long mandalId);
 	
+	public CrossVotingConsolidateVO getCrossVotingReportByMandalIdAndEleYear(String type, Long id, String year, String includeAliance);
+
 }
