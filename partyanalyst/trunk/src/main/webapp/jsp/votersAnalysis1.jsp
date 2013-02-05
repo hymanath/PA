@@ -675,8 +675,9 @@ h5{font-family : Arial;}
   margin-bottom:5px;
 }
 #MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;margin:1px;}
-.widget h4, h2{font-family:verdana;}
-#localCastStatsTabContent_header span{padding:10px;clear:both;display:inline-block;}
+.widget h4, h2{font-family:arial;}
+#localCastStatsTabContent_header span{padding:10px;clear:both;display:block;}
+#subHeading{color: #2A4F97; font-size: 14px; width: 300px;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -852,7 +853,7 @@ for  body3 start    result  -->
 </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
-	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
+	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;"><h4>Panchayat Wise Results In </h4></div>
 	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
 	</div>
 	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
