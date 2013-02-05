@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConstituencyElection, Long> implements IBoothConstituencyElectionDAO{
 
@@ -462,4 +463,40 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		
 		return query.list();
 	}
+    
+    public List getElectionYearsByMandalId(String type, Long id)
+    {
+    	StringBuilder str = new StringBuilder();
+    	str.append("select distinct model.constituencyElection.election.electionYear from BoothConstituencyElection model where ");
+    	if(type.equalsIgnoreCase(IConstants.MANDAL))
+    		str.append(" model.booth.tehsil.tehsilId =:id and model.booth.localBody is null ");
+    	else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+    		str.append(" model.booth.localBody.localElectionBodyId =:id and model.booth.panchayat is null ");
+    	str.append(" order by model.constituencyElection.election.electionYear ");
+    	Query query = getSession().createQuery(str.toString());
+    	
+    	query.setParameter("id", id);
+    	return query.list();
+    	
+    }
+    
+    
+    @SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyIdAndElectionYearByElectionType(String type,Long id, String year, String electionType)
+    {
+    	StringBuilder str = new StringBuilder();
+    	str.append("select distinct(model.constituencyElection.constituency.constituencyId),model.constituencyElection.election.electionId from  BoothConstituencyElection model ");
+    	str.append(" where model.constituencyElection.election.electionYear = :electionYear and model.constituencyElection.election.electionScope.electionType.electionType = :electionType ");
+    	
+    	if(type.equalsIgnoreCase(IConstants.MANDAL))
+       	 str.append(" and model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
+       	else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+       		str.append(" and model.booth.localBody.localElectionBodyId = :id and model.booth.panchayat is null "); 
+       	Query query = getSession().createQuery(str.toString());
+       	query.setParameter("id", id);
+       	query.setParameter("electionYear", year);
+       	query.setParameter("electionType", electionType);
+       	
+    	return query.list();
+    }
 }
