@@ -3767,61 +3767,40 @@ function buildCountData(results,jsObj)
 {
 document.getElementById("showHideDiv").style.display = "block";
 resultDataForNav=results;
-//console.log(resultDataForNav);
 var str = '';
 
 var result = results[0].mandalList;
 var divEle = document.getElementById('reportLevelCountDiv');
 
-/*if(jsObj.type != "constituency")
-	{
-	$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
-	document.getElementById('reportLevelCountDiv1').style.display = 'block';
-	$("#reportLevelCountDiv1").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
-	
-	}*/
 
 
 if(jsObj.type == "constituency")
 {
 $("#reportLevelheading").html(" "+jsObj.typeName+" Information");
 document.getElementById('reportLevelCountDiv').style.display = 'inline-block';
-//$("#reportLevelCountDiv").css({'border':'1px solid #d3d3d3','float':'left','margin':'6px 3px 6px 15px','background-color':'#f5f5f5','padding':'10px'});
+
 	str+='<div style="margin:10px;">';
-	if(results[0].totalmandals == null)
-		results[0].totalmandals = 0;
-	if(results[0].noOfLocalBodies == null)
-	results[0].noOfLocalBodies = 0;
-	if(results[0].totalPanchayats == null)
-		results[0].totalPanchayats = 0;
-	if(results[0].totalBooths == null)
-		results[0].totalBooths = 0;
 	
-	/*str+='<ul>';
-
-	str +='<li><a class="parent" href="#"><span class="badge badge-info badge-add">'+results[0].totalmandals+'</span></a><span class="help-inline f2">Mandals</span>&nbsp;&nbsp;';
-	for(var i in result)
-	{
-	str+='<li><a onclick="getvotersSubBasicInfo('+result[i].id+',\''+result[i].name+'\');showSubNewsDetails(\''+result[i].id+'\',5);"><span>'+result[i].name+'</span></a></li>';
-	}
-	str+='</ul>';*/
-
+	if(results[0].totalmandals != null)
 	str +='<span class="btn btn-success btn-small">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
+	if(results[0].noOfLocalBodies != null)
 	str +='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
+	if(results[0].totalPanchayats != null)
 	str +='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	if(results[0].totalBooths != null)
 	str +='<span class="btn btn-info btn-small">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 
 str+='</div>';
 divEle.innerHTML = str;
 }
 
-if(results[0].totalmandals>0) {
+if(results[0].totalmandals != null) {
 $(".leftNav-Mandals").show();
 $("#leftNav-Mandals-list").customMenu(resultDataForNav,0);}
 else {
 $(".leftNav-Mandals").hide();}
 
-if(results[0].noOfLocalBodies>0) {
+if(results[0].noOfLocalBodies != null) {
 $(".leftNav-Municipalities").show();
 $("#leftNav-Municipalities-list").customMenu(resultDataForNav,1); }
 else {
@@ -3856,11 +3835,10 @@ var jsObj=
 
 	function buildCountData1(results,jsObj)
 	{
-	//var value = $('#mandalField').val();
+	
 	var str = '';
 	var divEle1 = document.getElementById('reportLevelCountDiv1');
-	//$("#reportLevelheading1").html(" "+jsObj.typeName+" Information");
-	//document.getElementById('reportLevelCountDiv1').style.display = 'block';
+
 	$("#reportLevelCountDiv1").css({'display':'block','padding':'10px 0'});
 	  if(jsObj.type == "mandal"){
 		if(mainreqid.charAt(0) =="1"){
@@ -3872,26 +3850,22 @@ var jsObj=
 	if(jsObj.type == "mandal" && type != "muncipality")
 
 	{
-		if(results[0].totalPanchayats == null)
-		results[0].totalPanchayats = 0;
-		if(results[0].totalBooths == null)
-		results[0].totalBooths = 0;
-	str +='<span class="btn btn-info">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+		
+		if(results[0].totalPanchayats != null)
+		str +='<span class="btn btn-info">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+		if(results[0].totalBooths != null)
+		str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if( jsObj.type == "mandal" && type == "muncipality")
-
 	{
-			if(results[0].totalBooths == null)
-			results[0].totalBooths = 0;
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+		if(results[0].totalBooths != null)
+		str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "panchayat")
-
 	{
-		if(results[0].totalBooths == null)
-			results[0].totalBooths = 0;
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+		
+		if(results[0].totalBooths != null)
+		str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	str+='</div>';
 
