@@ -678,6 +678,40 @@ h5{font-family : Arial;}
 .widget h4, h2{font-family:arial;}
 #localCastStatsTabContent_header span{padding:10px;clear:both;display:block;}
 #subHeading{color: #2A4F97; font-size: 14px; width: 300px;}
+.crossVotingTableCls{width:100%;margin-top:20px;margin-bottom:15px;}
+#crossVotingReportDiv table{border: 1px solid #D3D3D3;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 100%;}
+#crossVotingReportDiv table th{
+	background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+	}
+
+#crossVotingReportDiv table td{
+	 color: #676A67;
+    font: small-caption;
+    padding: 8px 8px 8px 10px;
+}
+
+#crossVotingReportDiv table tr:nth-child(2n-1) {
+    background: none repeat scroll 0 0 #EDF5FF;
+}
+
+.crossVotingHeadingCls{margin-top: 10px; margin-bottom: 20px;}
+.crossVotingHeadingCls span{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 3px 15px;}
+	
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -821,6 +855,17 @@ for  body3 start    result  -->
 <div id='votersMainOuterDiv3' class="widget green" style="display:none;">
 <h2 id="votersTitle"> </h2>
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
+
+ <!-- 
+  //Cross Voting Report
+ <div id="crossVotingMainDiv" style="display:none;">
+	<div class="crossVotingHeadingCls"><span>Party Wise Cross Voting Report</span></div>
+	<div> Election Year : <select id="electionYearsForCrossVoting"></select> -->
+	<!-- <input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/>-->
+	 <!-- <img src="images/icons/search.gif" class="ajaxImg" style="display:none;"/></div>
+	<div id="crossVotingReportDiv"></div>
+  </div> -->
+
 <!-- Not in USe -->
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 
