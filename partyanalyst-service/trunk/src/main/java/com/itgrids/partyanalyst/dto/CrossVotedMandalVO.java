@@ -18,7 +18,10 @@ public class CrossVotedMandalVO {
 	private String percentageDifferenceInMandal;
 	private String percentageImpactOnConstituency;
 	private List<CrossVotedBoothVO> crossVotedBooths;
-	
+	private Long partyId;
+	private String partyName;
+	private Boolean isAliance;
+		
 	public CrossVotedMandalVO(){
 		
 	}
@@ -160,6 +163,30 @@ public class CrossVotedMandalVO {
 		this.crossVotedBooths = crossVotedBooths;
 	}
 
-	
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public Boolean getIsAliance() {
+		return isAliance;
+	}
+
+	public void setIsAliance(Boolean isAliance) {
+		this.isAliance = isAliance;
+	}
+
+		
 		
 }
