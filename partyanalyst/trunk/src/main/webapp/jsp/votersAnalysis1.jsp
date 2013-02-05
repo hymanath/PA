@@ -647,7 +647,7 @@ h5{font-family : Arial;}
     position: relative;
 }
 
-#cnstHeading{
+#cnstHeading,#votersTitle{
 	background:#E6E6E6;
     border-radius: 6px 6px 6px 6px;
     color: #000000;
@@ -668,16 +668,17 @@ h5{font-family : Arial;}
 }
 .paginatorElmtClass a{padding:5px;}
 .table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
-
+#tableDiv1 th{text-align:center;width:14%;}
+#tableDiv1 td{text-align:center;}
 .whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
-.FamiliyList li{margin:5px;}
+.FamiliyList li{margin:5px;font-weight:bold;font-size:14px;padding:6px;width:100%;}
 #voterDetailsNote{
   margin-bottom:5px;
 }
 #MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;margin:1px;}
 .widget h4, h2{font-family:arial;}
 #localCastStatsTabContent_header span{padding:10px;clear:both;display:block;}
-#subHeading{color: #2A4F97; font-size: 14px; width: 300px;}
+#subHeading{ color: #4682B4;}
 .crossVotingTableCls{width:100%;margin-top:20px;margin-bottom:15px;}
 #crossVotingReportDiv table{border: 1px solid #D3D3D3;
     border-collapse: collapse;
@@ -781,6 +782,11 @@ locationDetails.constituencyArr.push(ob);
 	<!--</fieldset>-->
 
 </div>
+
+	<div id="constituencyInfo">
+		<div id="constituencyResults"></div>
+		<div id="constituencyPageElectionImgDiv"></div>
+	</div>
 <!-- <div id="defaultWidth" style="min-height:300px;"></div>
 for  body3 start    result  -->
 <div id="votersDiv3" >
@@ -843,10 +849,7 @@ for  body3 start    result  -->
 
 	</div>
 	
-	<div id="constituencyInfo">
-		<div id="constituencyResults"></div>
-		<div id="constituencyPageElectionImgDiv"></div>
-	</div>
+
 	
  
  <!--<h5 id="reportTopLevelheading" style="margin-left:15px;"></h5>-->
@@ -854,8 +857,8 @@ for  body3 start    result  -->
 	<div class="votersWidgetMainHeader"><span id="votersTitle-unused" class="votersWidgetHeader_span"> </span></div>
 	</div>
     
-<div id='votersMainOuterDiv3' class="widget green" style="display:none;">
-<h2 id="votersTitle"> </h2>
+<div id='votersMainOuterDiv3' class="widget" style="display:none;border-top:none;">
+<h2 id="votersTitle" style="width:102%;padding:10px;"> </h2>
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
 
 <div id="votersBasicInfoMainDiv">
@@ -914,14 +917,14 @@ for  body3 start    result  -->
 </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
 	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
-	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;"><h4>Panchayat Wise Results In </h4></div>
-	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
+	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
+	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn btn-info pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
 	</div>
 	<!-- <div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
 	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>-->
 
-<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn pull-right" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</span></div>
+<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</span></div>
 <div id="votersOuterDiv1" style="display:none;">
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -953,7 +956,7 @@ for  body3 start    result  -->
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1"></div>
-<span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn">View more details</a></span>
+<span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn btn-info">View more details</a></span>
 
 <div style="display:none;"> <!-- HIDING THE POPUP -->
 <div id="ageWiseVotersDetailsOuterDiv">
@@ -1020,7 +1023,7 @@ for  body3 start    result  -->
      	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
 	</br>
-	   <div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVotersToShow();" class="btn" style="float:right;"/></div>
+	   <div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVotersToShow();" class="btn btn-info" style="float:right;"/></div>
 	   <div id="impFamilesAllInfoPopUp" style="display:none;">
         <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black"></div>
 		<div id ="impFamilesBasicSubDetailsTitle" ></div>
@@ -1070,12 +1073,13 @@ for  body3 start    result  -->
 	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
-		<div id='localCastStatsTabContent_header'></div>
-		
-	<div class="castDetailsMainDiv">
+	
+	<div id='localCastStatsTabContent_header' style="width:48%;float:left;"></div>
+	<div class="castDetailsMainDiv" style="width:48%;float:left;">
 		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
 		<div id="localCastChatDiv"></div>
 	</div>
+	
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div><hr>
 	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
 	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
@@ -1087,7 +1091,7 @@ for  body3 start    result  -->
 	    <div id ="localCastStatsVotersTitle" ></div>
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
-	<div id="castPartyPopupShowBtn"><input type="button" class="btn" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;clear:both;" onclick="ShowCastPartyPopupDiv();"/></div>
+	<div id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;clear:both;" onclick="ShowCastPartyPopupDiv();"/></div>
 	<div id="castPartyPopupDiv" style="display:none">  
         <div id='localCastStatsTabContent_subbody'></div>	
 		<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
