@@ -566,21 +566,32 @@ oDT: votersByLocBoothDataTable
 	     $("#ageLink").show();
 	   }
 	   if(type == "constituency"){
+		   $("#votersBasicInfoBtnDiv").show();
 	     $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Mandal Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View Mandal Wise Family Details");
+		  $("#votersShareBtn").attr("value","Mandal Wise Voters Info");	
 	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
+		  $("#votersBasicInfoBtnDiv").hide();
+
 	   }else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
 	   }else if(type=="panchayat"){
 	     $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	     $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
+		 $("#votersBasicInfoBtnDiv").show();
+		 $("#votersShareBtn").attr("value","Booth Wise Voters Info");
+
 	   }else{
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 	   }
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
+
+		 $("#votersBasicInfoBtnDiv").show();
+		$("#votersShareBtn").attr("value","Panchayat Wise Voters Info");
+
 	   $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
 		  $("#revenueVillageWiseElecResults").show();
@@ -594,10 +605,17 @@ oDT: votersByLocBoothDataTable
 		 }else{
 		  $("#votersInfoMoreShowHide").hide();
 		 }
+
+		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
+		 {
+			$("#votersBasicInfoBtnDiv").show();
+			$("#votersShareBtn").attr("value","Booth Wise Voters Info");
+			
+		 }
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		     getPreviousVotersDetails();
-		getvotersBasicInfo("voters",id,publicationId,type);
+		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
@@ -3398,15 +3416,50 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 { 
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
-
-	  $("#votersBasicInfoSubChartDiv").removeAttr('style');
-	  $("#votersBasicInfoSubDiv").removeAttr('style');
+	$("#votersInfoAjaxImg").css("display","none");
+	  //$("#votersBasicInfoSubChartDiv").removeAttr('style');
+	  //$("#votersBasicInfoSubDiv").removeAttr('style');
 
 	var str = '<div id="votersBasicInfoDivSub">';
+	var title = " Voters Basic Information of "+jsObj.typename+" in "+jsObj.year+"";
+	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
+	{
+		if(jsObj.type == "constituency")
+			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" Constituency";
+		else
+		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" ";
+	}
+
+	$('#votersBasicInfoMainDiv').dialog({ 
+					title:title,
+					height: 'auto',
+					width: 950,
+					show: "blind",
+					modal: true,
+					overlay: { opacity: 0.5, background: 'black'},
+					 buttons: {
+				   "Close":function() {$(this).dialog("close")}
+					   }	
+
+	   });
+
+	 if(votersbasicinfo.votersInfoForMandalVOList == null || votersbasicinfo.votersInfoForMandalVOList.length == 0)
+	 {
+		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		//$("#votersTitle").html(jsObj.typename);
+			$("#votersBasicInfoSubChartDiv").css('border','1px solid #FFF');
+			$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
+
+			$("#votersBasicInfoMsgDiv").html("<span id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</span>");
+		 return;
+	}
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
-    
-		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		
+		$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
+		$("#votersBasicInfoSubDiv").css('border','1px solid black');
+		$("#votersBasicInfoMsgDiv").html('');
+		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
 		str += '<div>';
 		str += '<b><span>Total Voters : '+votersbasicinfo.totVoters+'</span>';
@@ -4107,6 +4160,14 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			$("#crossVotingReportDiv").html(str);
 		}
 	}
+
+	$('#votersShareBtn').live("click",function(){
+
+		$('#votersInfoAjaxImg').css("display","block");
+		getvotersBasicInfo("voters",mainreqid,$("#publicationDateList").val(),maintype);
+		
+	});
+
 
 	/*** FUNCTIONS FOR NAVIGATIONS START***/
 
