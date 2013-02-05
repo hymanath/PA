@@ -71,7 +71,14 @@
 <!-- Local script and css files (End)-->
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <style>
-
+#impheaders{
+	float: left;
+    font-family: sans-serif,verdana;
+    font-size: 15px;
+    margin-top: 10px;
+    position: relative;
+    width: auto;
+}
 #errorMsgDiv {
     
 	color: #E92B2B;
@@ -83,7 +90,6 @@
 	margin-left:auto;
 	margin-right:auto;
 	background:#ffffff;
-
 }
 h2
 {
@@ -1744,7 +1750,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div id="errorMessgDIV">&nbsp;</div> ';
 		eventStr+='<table class="selectedDateEvent">';
 		eventStr+='<tr>';
-		eventStr+='<th style="font-size: 13px;">Important Date Title :<font color="red"> *</font></th>';		
+		eventStr+='<th id="impheaders">Important Date Title :<font color="red"> *</font></th>';		
 		if(jsObj.taskType == "impEvent")
 		{
 			eventStr+='<td colspan="3">';
@@ -1764,7 +1770,7 @@ function fillDataForCadreLevel(results,jsObj)
 			eventStr+='<tr>';
 			if(results.startDate)
 			{
-				eventStr+='<th style="font-size: 13px;">Start date :</th>';
+				eventStr+='<th id="impheaders">Start date :</th>';
 				eventStr+='<td>';
 				eventStr+='<div><input type="text" id="startDateText" readonly="readonly" name="startDateText" value="'+sDayobj.day+'/'+sDayobj.month+'/'+sDayobj.year+'" onfocus="showDateCal(\'startDateText_Div\',this.value)"/></div>';
 				eventStr+='<div id="startDateText_Div" class="tinyDateCal"></div>';
@@ -1772,7 +1778,7 @@ function fillDataForCadreLevel(results,jsObj)
 			}
 			if(results.endDate)
 			{
-				eventStr+='<th style="font-size: 13px;">End date :</th>';
+				eventStr+='<th id="impheaders">End date :</th>';
 				eventStr+='<td>';
 				eventStr+='<div><input type="text" id="endDateText" readonly="readonly" name="endDateText" value="'+eDayobj.day+'/'+eDayobj.month+'/'+eDayobj.year+'" onfocus="showDateCal(\'endDateText_Div\',this.value)"/></div>';
 				eventStr+='<div id="endDateText_Div" class="tinyDateCal"></div>';
@@ -1827,7 +1833,7 @@ function fillDataForCadreLevel(results,jsObj)
 		{
 			eventStr+='<tr>';
 
-			eventStr+='<th style="font-size: 13px;">Imp date :</th>';
+			eventStr+='<th id="impheaders">Imp date :</th>';
 			eventStr+='<td>';
 			eventStr+='<div><input type="text" id="ImpStartDateText" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" name="ImpStartDateText" readonly="readonly" /></div>';
 			eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
@@ -1836,7 +1842,7 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th style="font-size: 13px;">Description :<font style="color:red"> *</font></th>';
+		eventStr+='<th id="impheaders">Description :<font style="color:red"> *</font></th>';
 		if(jsObj.taskType == "impEvent")
 		{
 				eventStr+='<td colspan="3">';
@@ -1857,7 +1863,7 @@ function fillDataForCadreLevel(results,jsObj)
 		{	
 			eventCadresArray = results.organizers;
 			eventStr+='<tr>';
-			eventStr+='<th style="font-size: 13px;">Organizers :</th>';
+			eventStr+='<th id="impheaders">Organizers :</th>';
 			if(results.organizers != null)
 			{
 				eventStr+='<td colspan="3">';
@@ -1929,7 +1935,7 @@ function fillDataForCadreLevel(results,jsObj)
 		if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<tr>';
-			eventStr+='<th style="font-size: 13px;">Repeat Frequency :</th>';
+			eventStr+='<th id="impheaders">Repeat Frequency :</th>';
 			if(results[0].frequency != null)
 				eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';		
 			else
@@ -1937,9 +1943,9 @@ function fillDataForCadreLevel(results,jsObj)
 			
 			if(results[0].endDate)
 			{
-				eventStr+='<th style="font-size: 13px;">Repeat Until :</th>';
+				eventStr+='<th id="impheaders" style="margin-left: -50px;">Repeat Until :</th>';
 				eventStr+='<td>';
-				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText"  /></div>';
+				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" style="width: auto;"/></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
 				eventStr+='</td>';
 				//eventStr+='<span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'endDate\')">'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'</span></td>';
@@ -1949,8 +1955,8 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		eventStr+='</table>';
 		eventStr+='<div class="ui-dialog-buttonset">';
-		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;"></input>';
-		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;;" ></input>';		
+		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;margin-top: 10px;width:100px"></input>';
+		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;width:100px;" ></input>';		
 		eventStr+='</div>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
@@ -3614,12 +3620,12 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
 		eventStr+='<table width="100%">';
 		eventStr+='<tr>';
-		eventStr+='<th>Important Date Title<font color="red"> *</font></th>';
+		eventStr+='<th id="impheaders" >Important Date Title :<font color="red"> *</font></th>';
 		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
-		eventStr+='<th>Important Date</th>';
+		eventStr+='<th id="impheaders">Important Date :</th>';
 		eventStr+='<td>';
 		eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly"  /></div>';
 		eventStr+='<div id="ImpStartDateText_new_Div" class="tinyDateCal"></div>';
@@ -3627,7 +3633,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='</tr>';
 	
 		eventStr+='<tr>';
-		eventStr+='<th>Description<font color="red"> *</font></th>';
+		eventStr+='<th id="impheaders">Description :<font color="red"> *</font></th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea"></textarea></td>';
 		eventStr+='</tr></table>';		
 
@@ -3646,14 +3652,14 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		//eventStr+='<tr><td>';
 		eventStr+='<table width="100%">';
-		eventStr+='<th>Repeat Frequency</th>';
+		eventStr+='<th id="impheaders" style="width: 140px;">Repeat Frequency :</th>';
 		eventStr+='<td>';
 		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
 		eventStr+='<option value="No Repeat">No Repeat</option>';
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
-		eventStr+='<th>Repeat Until</th>';
+		eventStr+='<th id="impheaders" style="width: 130px;">Repeat Until :</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText"/></div>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" style="width: auto; margin-top: 6px;"/></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
 		eventStr+='</td>';
 		//eventStr+='</td></tr>';
@@ -4196,8 +4202,6 @@ function fillDataForCadreLevel(results,jsObj)
 			buildNewImpDatePopup();
 		if(createNewEvent == "true")
 			buildNewEventPopup();
-	</script>
-
-	
+	</script>	
 </body>
 </html>
