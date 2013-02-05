@@ -711,7 +711,9 @@ h5{font-family : Arial;}
     font-size: 15px;
     font-weight: bold;
     padding: 3px 15px;}
-	
+		
+	#votersInfoAjaxImg{float: right; clear: both;  margin-top: -30px; margin-right: 12px;}
+	#votersShareBtn{margin-left:30px;margin-top:8px;margin-right: 40px;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -856,6 +858,14 @@ for  body3 start    result  -->
 <h2 id="votersTitle"> </h2>
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
 
+<div id="votersBasicInfoMainDiv">
+	
+	<div id="votersBasicInfoMsgDiv"></div>
+	<div id="votersBasicInfoSubChartDiv"></div>
+	</br>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
+
+</div>
  <!-- 
   //Cross Voting Report
  <div id="crossVotingMainDiv" style="display:none;">
@@ -894,6 +904,12 @@ for  body3 start    result  -->
 	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 <div id="votersBasicInfoDiv1"></div>
+
+<div id="votersBasicInfoBtnDiv"> 
+	<input type="button" value="Mandal Wise Voters Info" class="btn pull-right" id="votersShareBtn" />
+	<span style="display:none;" id="votersInfoAjaxImg"><img src="./images/icons/search.gif" /></span>
+</div>
+
 	<div id="votersBasicInfoDiv"></div>
 </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
@@ -901,9 +917,9 @@ for  body3 start    result  -->
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;"><h4>Panchayat Wise Results In </h4></div>
 	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
 	</div>
-	<div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
+	<!-- <div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
-	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>
+	<div id="votersBasicInfoSubDiv" style="border:1px solid black" class="yui-skin-sam yui-dt-sortable"></div>-->
 
 <div id="votersInfoMoreShowHide" style="display:none;"><span class="btn pull-right" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</span></div>
 <div id="votersOuterDiv1" style="display:none;">
