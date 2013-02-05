@@ -154,4 +154,17 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List findPanchayatWiseAllPartyResultsInAMandal(String electionType,String electionYear, Long mandalId);
 	
 	public List<Long> getPartiesParticipatedInAManadalForAnElection(Long tehsilId, Long electionId);
+	
+	public List<Long> getPartyIdsByMandalIdAndElectionYear(String type, Long id, String year);
+	
+	public List<Long> getPartyIdsByLocalEleBodyIdAndElectionYear(Long localEleBodyId, String year);
+	
+	public List<Object[]> getAllPartiesCrossVotingReportByMandalIdAndAssemblyConstituencyId(Long mandalId, Long constituencyId, String year, List<Long> partyIdsList);
+	
+	public List<Object[]> getAllPartiesCrossVotingReportByEleYearAndConstituencyId(String type, Long id, Long constituencyId, String year, List<Long> partyIdsList);
+	
+	public List getValidVotesByEleTypeAndConstituencyId(String type, Long id, Long constituencyId, String year);
+	
+	public List<Long> getPartyIdsListByEleIdAndYearAndConstId(Long id, Long electionId, String year);
+		
 }
