@@ -1649,10 +1649,10 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDiv");
 		if(image == null)
-			templateClone.find(".imgClass").html('<img width="50" height="45" src="images/icons/indexPage/human.jpg">');
+			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
 		else
-			templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);" />');
-			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);"/></a>');
+			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
@@ -1795,15 +1795,15 @@ function selectedStatusValue(){
 			var image = results.candidateVO[i].image;
 			var templateClone = template.clone();
 			templateClone.removeClass("templateDiv");
-			templateClone.find(".connectedPersonName").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 
 			if(image == null)
-				templateClone.find(".imgClass").html('<img width="50" height="45" src="images/icons/indexPage/human.jpg">');
+				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
 			else
-				templateClone.find(".imgClass").html('<img height="45" width="50" src="'+imageStr+'" />');
+				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" /></a>');
 			
 			if(connectedStatuss == "NOT CONNECTED" ){
 				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED"){
