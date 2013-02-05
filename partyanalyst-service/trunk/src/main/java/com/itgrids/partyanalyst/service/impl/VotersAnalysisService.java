@@ -5649,7 +5649,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						mandalIds.put(new Long(mandal.getId().toString().trim().substring(1)),mandal.getName());
 						else
 						{
-							List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
+							List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(mandal.getId().toString().substring(1)));
 							 localBodyIds.put(new Long(list.get(0).toString()),mandal.getName());
 						}
 						
@@ -6440,15 +6440,16 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				}
 				List<VotersInfoForMandalVO> votersInfoList = getVotersDetailsByVoterMultipleReportLevelIds(reportLevelId,reportLevelValues, publicationDateId,"");
 				Map<Long,ImportantFamiliesInfoVo> importantFamiliesInfoVoMap = new HashMap<Long,ImportantFamiliesInfoVo>();
-				 for(Long key : reportLevelValues.keySet()){
-					 importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+				 for(Long key : reportLevelValues.keySet()){ 
 					 for(VotersInfoForMandalVO votersInfo : votersInfoList){
 						  if(votersInfo.getId().longValue() == key.longValue()){
+							  importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
 							  importantFamiliesInfoVo.setTotalMaleVoters(votersInfo.getTotalMaleVoters());
 							  importantFamiliesInfoVo.setTotalFemaleVoters(votersInfo.getTotalFemaleVoters());
 							  importantFamiliesInfoVo.setUnKnowVoters(votersInfo.getUnKnowVoters());
 							  importantFamiliesInfoVo.setTotalFamalies(0l);
 							  importantFamiliesInfoVo.setType(type);
+							  importantFamiliesInfoVo.setDataPresent(false);
 							  if(votersInfo.getTotalVoters() != null){
 								  try{
 								   importantFamiliesInfoVo.setTotalVoters(new Long(votersInfo.getTotalVoters()));
@@ -6459,9 +6460,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								  importantFamiliesInfoVo.setTotalVoters(0l);
 							  }
 							  importantFamiliesInfoVo.setName(reportLevelValues.get(key).toString());
+							  importantFamiliesInfoVoMap.put(key,importantFamiliesInfoVo);
 						  }
 					 }
-					 importantFamiliesInfoVoMap.put(key,importantFamiliesInfoVo);
+					 
 					 
 				 }
 				if(familyInfoList != null && familyInfoList.size() > 0)
@@ -6477,6 +6479,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							importantFamiliesInfoVo.setBelow3perc(familyInfo.getFamiliesPercentage() != null ?familyInfo.getFamiliesPercentage(): 0.00);
 							if(importantFamiliesInfoVo.getTotalFamalies() != null && familyInfo.getTotalFamilies() != null)
 							importantFamiliesInfoVo.setTotalFamalies(importantFamiliesInfoVo.getTotalFamalies()+familyInfo.getTotalFamilies());
+							importantFamiliesInfoVo.setDataPresent(true);
 						}
 						else if(familyInfo.getVoterFamilyRange().getVoterFamilyRangeId().equals(2l))
 						{
@@ -6484,7 +6487,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							importantFamiliesInfoVo.setBetwn4to6perc(familyInfo.getFamiliesPercentage()!= null ?familyInfo.getFamiliesPercentage(): 0.00);
 							if(importantFamiliesInfoVo.getTotalFamalies() != null && familyInfo.getTotalFamilies() != null)
 							importantFamiliesInfoVo.setTotalFamalies(importantFamiliesInfoVo.getTotalFamalies()+familyInfo.getTotalFamilies());
-							
+							importantFamiliesInfoVo.setDataPresent(true);
 						}
 						else if(familyInfo.getVoterFamilyRange().getVoterFamilyRangeId().equals(3l))
 						{
@@ -6492,7 +6495,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							importantFamiliesInfoVo.setBetwn7to10perc(familyInfo.getFamiliesPercentage() != null ?familyInfo.getFamiliesPercentage(): 0.00);
 							if(importantFamiliesInfoVo.getTotalFamalies() != null && familyInfo.getTotalFamilies() != null)
 							importantFamiliesInfoVo.setTotalFamalies(importantFamiliesInfoVo.getTotalFamalies()+familyInfo.getTotalFamilies());
-							
+							importantFamiliesInfoVo.setDataPresent(true);
 						}
 						else if(familyInfo.getVoterFamilyRange().getVoterFamilyRangeId().equals(4l))
 						{
@@ -6500,7 +6503,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							importantFamiliesInfoVo.setAbove10perc(familyInfo.getFamiliesPercentage() != null ?familyInfo.getFamiliesPercentage(): 0.00);
 							if(importantFamiliesInfoVo.getTotalFamalies() != null && familyInfo.getTotalFamilies() != null)
 							importantFamiliesInfoVo.setTotalFamalies(importantFamiliesInfoVo.getTotalFamalies()+familyInfo.getTotalFamilies());
-							
+							importantFamiliesInfoVo.setDataPresent(true);
 						}
 					}
 					
@@ -6556,7 +6559,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						mandalIds.put(new Long(mandal.getId().toString().trim().substring(1)),mandal.getName());
 						else
 						{
-							List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
+							List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(mandal.getId().toString().substring(1)));
 							 localBodyIds.put(new Long(list.get(0).toString()),mandal.getName());
 						}
 						
