@@ -574,7 +574,7 @@ oDT: votersByLocBoothDataTable
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 	   }else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
-	   }else if(type="panchayat"){
+	   }else if(type=="panchayat"){
 	     $("#ageLink").html('<a class="btn" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	     $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 	   }else{
@@ -610,6 +610,7 @@ oDT: votersByLocBoothDataTable
 		// callCorrespondingAjaxCall();
 		 getPreviousElectionVotingTrends(id,publicationId,type);
 		 callCorrespondingAjaxCall('brief');
+		 //getElectionyearsByMandalId(id,type);
 	}
 
 	function getPreviousVotersDetails(){
@@ -904,6 +905,15 @@ oDT: votersByLocBoothDataTable
 									buildPreviousVotersDetails(myResults,jsObj);
 		
 								
+								}
+								else if(jsObj.task == "getElectionyearsByMandalId")
+								{
+									showElectionYears(myResults);
+								}
+
+								else if(jsObj.task == "getCrossVotingReport")
+								{
+									showCrossVotingReport(myResults);
 								}
 								
 							}catch (e) {
@@ -3984,8 +3994,146 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		     //$('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
 
 		}
-	
-	
+		function getElectionyearsByMandalId(id,type)
+		{
+			
+			if(maintype == "mandal")
+			{
+			 if(id == 0)
+				return;
+			$("#crossVotingMainDiv").css("display","block");
+				
+		  var jsObj=
+		  {
+			 id                :id,
+			 type              :maintype,
+			 task:"getElectionyearsByMandalId"
+		 };
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "getElectionyearsByMandalIdAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+		  }
+		  else
+			{
+			$("#crossVotingMainDiv").css("display","none");
+			return;
+			}
+
+	 }
+	function showElectionYears(results)
+	{
+		
+		var selectedElmt=document.getElementById("electionYearsForCrossVoting");
+		removeSelectElements(selectedElmt);
+		for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}	
+		}
+
+		getCrossVotingReport();
+	}
+
+
+	$("#electionYearsForCrossVoting").live("change",function(){
+		getCrossVotingReport();
+	});
+
+	function forGetCrossVoting()
+	{
+		getCrossVotingReport();
+	}
+
+	function getCrossVotingReport()
+	{
+		
+		id = mainreqid;
+		type = maintype;
+		var eleYear = $("#electionYearsForCrossVoting option:selected").text();
+		
+		/* var allianceCheckElmt =  document.getElementById("allianceCheck");
+		if(allianceCheckElmt.checked==true)
+			var allianceValue = "true";
+		else
+			var allianceValue = "false";*/
+
+		if(id == 0)
+			return;
+
+		$(".ajaxImg").css("display","inline-block");
+		var jsObj=
+		{
+			id                :id,
+			type              :type,
+			year              :eleYear,
+			includeAliance    :false,
+			task:"getCrossVotingReport"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCrossVotingReportAction.action?"+rparam;	
+		callAjax(jsObj,url);
+      
+
+	}
+
+	function showCrossVotingReport(results)
+	{
+		
+		$("#crossVotingReportDiv").html('');
+		$(".ajaxImg").css("display","none");
+		var str = '';
+		if(results.mandals == null)
+		{
+			$("#crossVotingReportDiv").html('No Data Found.').css("margin-top","5px");
+			return;
+		}
+		if(results.mandals != null)
+		{
+			var crossVotingResults = results.mandals;
+
+			str +='<table class="crossVotingTableCls">';
+			str +='<tr>';
+			str +='<th>Party</th>';
+			str +='<th>Polled Votes</th>';
+			/* str +='<th>AC<font style="color:red;">*</font></th>';
+			str +='<th>PC<font style="color:red;">*</font></th>';
+			str +='<th>Votes Flown</th>';
+			str +='<th>IC<font style="color:red;">*</font></th>';*/
+			str +='<th>Assembly Candidate</th>';
+			str +='<th>Parliament Candidate</th>';
+			str +='<th>Votes Flown</th>';
+			str +='<th>Impact On Constituency</th>';
+			str +='</tr>';
+			str +='<tr>';
+			for(var i in crossVotingResults)
+			{
+				str +='<td>'+crossVotingResults[i].partyName+'</td>';
+				str +='<td>'+crossVotingResults[i].polledVotes+'</td>';
+				str +='<td>'+crossVotingResults[i].acPercentageInMandal+'</td>';
+				str +='<td>'+crossVotingResults[i].pcPercentageInMandal+'</td>';
+				str +='<td>'+crossVotingResults[i].percentageDifferenceInMandal+'</td>';
+				str +='<td>'+crossVotingResults[i].percentageImpactOnConstituency+'</td>';
+				str +='</tr>';
+			}
+			str +='</table>';
+			
+			/* str +='<div><span>AC* - Assembly Candidate,</span>';
+			str +='<span>PC* - Parliament Candidate,</span>'; 
+			str +='<span>IC* - Impact On Constituency</span></div>';*/
+			$("#crossVotingReportDiv").html(str);
+		}
+	}
+
 	/*** FUNCTIONS FOR NAVIGATIONS START***/
 
 (function($) {
