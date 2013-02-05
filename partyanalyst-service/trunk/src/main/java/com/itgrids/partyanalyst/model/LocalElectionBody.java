@@ -36,7 +36,7 @@ public class LocalElectionBody extends BaseModel {
 	private Set<Constituency> wards = new HashSet<Constituency>();
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0); 
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
-	
+	private Set<Locality> Localities = new HashSet<Locality>(0);
 	public LocalElectionBody(){
 		
 	}
@@ -150,6 +150,15 @@ public class LocalElectionBody extends BaseModel {
 
 	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
 		this.localGroupRegion = localGroupRegion;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "localElectionBody")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Locality> getLocalities() {
+		return Localities;
+	}
+
+	public void setLocalities(Set<Locality> localities) {
+		Localities = localities;
 	}
 	
 	

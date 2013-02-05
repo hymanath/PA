@@ -110,6 +110,8 @@ public class User extends BaseModel implements Serializable{
 	
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
+	private Set<Locality> Localities = new HashSet<Locality>(0);
+	
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -890,6 +892,15 @@ public class User extends BaseModel implements Serializable{
 
 	public void setNewsFlags(Set<NewsFlag> newsFlags) {
 		this.newsFlags = newsFlags;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Locality> getLocalities() {
+		return Localities;
+	}
+
+	public void setLocalities(Set<Locality> localities) {
+		Localities = localities;
 	}
 	
 	

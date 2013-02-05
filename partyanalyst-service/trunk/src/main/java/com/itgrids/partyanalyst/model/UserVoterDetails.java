@@ -30,6 +30,8 @@ public class UserVoterDetails implements java.io.Serializable{
 	private Party party;
 	private CasteState casteState;
 	
+	private Locality locality;
+	
 	public UserVoterDetails(){
 	}
 	
@@ -93,4 +95,17 @@ public class UserVoterDetails implements java.io.Serializable{
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
 	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="locality_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Locality getLocality() {
+		return locality;
+	}
+
+	public void setLocality(Locality locality) {
+		this.locality = locality;
+	}
+	
+	
 }
