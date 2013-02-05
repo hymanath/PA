@@ -27,7 +27,8 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	
+			<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
@@ -1029,7 +1030,7 @@ function callAjaxForCandSearch(jsObj,url)
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;"></div>
-      <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+      <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=3>Panchayat</option>
@@ -1038,43 +1039,70 @@ function callAjaxForCandSearch(jsObj,url)
       </div>
 
 	  <div id="ConstituencyDiv" class="selectDiv">
-	     Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;	
-	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+	     Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;	
+	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
 		</select>		
 	  </div>
 	  
 	  <div id="mandalDiv" class="selectDiv" style="display:none;">
-	     Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;"></select>
+	     Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select>
 	  </div>
 		
 	  <div id="panchayatDiv" class="selectDiv" style="display:none;">
 	    Select Panchayat<font class="requiredFont">*</font> 	
-	    <select id="panchayatField" class="selectWidth" name="state"  style="margin-left:39px;"></select>
+	    <select id="panchayatField" class="selectWidth" name="state"  style="margin-left:39px;width:165px;"></select>
 	  </div>
 	
 	  <div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;"></select>
+	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;width:165px;"></select>
 	  </div>
 	  
 	  <div class="selectDiv">
-	   VoterId<input style="width:137px;margin-left: 116px;" type="text" id="voterId" />
+	   VoterId<input style="width:154px;margin-left: 116px;" type="text" id="voterId" />
 	  </div>
 	  
 	  <div class="selectDiv">
-	   Name<input style="width:137px;margin-left: 127px;" type="text" id="voterName" />
-	   <input type="radio"name="voterNameChkBox" checked="true" id="startWith" style="margin-left:10px;" value="start" /> Start With <input type="radio" style="margin-left:10px;" id="anyWhere" name="voterNameChkBox" value="any"/> Any Where
+	   Name<input style="width:154px;margin-left: 127px;" type="text" id="voterName" />
+	   <div class="row pull-right">
+	   <div class="span2">
+	   <label class="radio"  style="margin-left: 9px;">
+	   <input type="radio"name="voterNameChkBox" checked="true" id="startWith"  value="start" /><b style="font-size: 12px; font-family: verdana;"> Start With</b>
+         </label>
+		 </div>
+		 <div class="span3">
+		<label class="radio"style="margin-left: -53px;">
+	   <input type="radio"  id="anyWhere" name="voterNameChkBox" value="any"/><b style="font-size: 12px; font-family: verdana;"> Any Where</b>
+	 </label>
+	 </div>
+	 </div>
 	  </div>
 	  
 	  <div class="selectDiv">
-	   Guardian Name<input style="width:137px;margin-left:62px;" type="text" id="gaurdianName" />
+	   Guardian Name<input style="width:154px;margin-left:62px;" type="text" id="gaurdianName" />
 	  </div>
 	  
 	  <div class="selectDiv">
-	   Gender <input type="radio" checked="true" style="margin-left:112px;" value="all" name="genderChkBox" /> All <input type="radio" id="maleSelect" name="genderChkBox" style="margin-left:10px;" value="male"  /> Male <input type="radio" id="femaleSelect" name="genderChkBox" style="margin-left:10px;" value="female" /> Female
+	   Gender 
+	    <div class="row "style="padding: 0px 0px 0px 162px; margin-top: -22px; ">
+		   <div class="span">
+		   <label class="radio">
+	   <input type="radio" checked="true"  value="all" name="genderChkBox" /><b style="font-size: 12px; font-family: verdana;"> All </b>
+	    </label>
+		 </div>
+		 	   <div class="span">
+		 <label class="radio">
+	   <input type="radio" id="maleSelect" name="genderChkBox"  value="male"  /><b style="font-size: 12px; font-family: verdana;"> Male </b>
+	    </label>
+			 </div>
+			 	   <div class="span">
+			 <label class="radio">
+	   <input type="radio" id="femaleSelect" name="genderChkBox"  value="female" /><b style="font-size: 12px; font-family: verdana;"> Female</b>
+	       </label>
+		    </div>
 	  </div>
-	  
+	    </div>
 	  <div class="selectDiv">
-	   Age Between <input style="width:59px;margin-left:73px;" type="text" id="fromAge" /> <input style="width:59px;" type="text" id="toAge" />
+	   Age Between <input style="width:67px;margin-left:73px;" type="text" id="fromAge" /> <input style="width:67px;" type="text" id="toAge" />
 	  </div>
 	  <div class="selectDiv">
 	   <table><tr>
@@ -1084,7 +1112,7 @@ function callAjaxForCandSearch(jsObj,url)
 	  </div>
 	  <div class="selectDiv">
 	   <table><tr>
-	     <td style="width:155px;"><span>Total Voters To Show For Each Page</span></td>
+	     <td style="width:165px;"><span>Total Voters To Show For Each Page</span></td>
 	     <td><select id="votersPageLimit"><option value="100">100</option><option value="200">200</option><option value="500">500</option><option value="1000">1000</option></select></td>
 	   </tr></table>
 	  </div>
