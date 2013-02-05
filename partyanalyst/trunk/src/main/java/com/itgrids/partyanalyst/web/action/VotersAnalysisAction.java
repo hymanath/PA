@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -69,6 +70,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private ProblemBeanVO problemBeanVO;
 	
 	private List<VotersInfoForMandalVO> previousDetailsList;
+	private List<SelectOptionVO> electionYearsList; 
+	private CrossVotingConsolidateVO crossVotingConsolidateVO;
 	
 	public List<VotersInfoForMandalVO> getPreviousDetailsList() {
 		return previousDetailsList;
@@ -247,6 +250,20 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setUserAccessConstituencyList(
 			List<SelectOptionVO> userAccessConstituencyList) {
 		this.userAccessConstituencyList = userAccessConstituencyList;
+	}
+	
+	public List<SelectOptionVO> getElectionYearsList() {
+		return electionYearsList;
+	}
+	public void setElectionYearsList(List<SelectOptionVO> electionYearsList) {
+		this.electionYearsList = electionYearsList;
+	}
+	public CrossVotingConsolidateVO getCrossVotingConsolidateVO() {
+		return crossVotingConsolidateVO;
+	}
+	public void setCrossVotingConsolidateVO(
+			CrossVotingConsolidateVO crossVotingConsolidateVO) {
+		this.crossVotingConsolidateVO = crossVotingConsolidateVO;
 	}
 
 	public String execute() throws Exception
@@ -794,4 +811,39 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	
 	} 
+	public String getElectionYearsByMandalId()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			jObj = new JSONObject(getTask());
+			electionYearsList = votersAnalysisService.getElectionYearsByMandalId(jObj.getString("type"),jObj.getLong("id"));
+	
+		}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getElectionYearsByMandalId() Method, Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getCrossVotingReportByMandalIdAndEleYear()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			jObj = new JSONObject(getTask());
+			crossVotingConsolidateVO = votersAnalysisService.getCrossVotingReportByMandalIdAndEleYear(jObj.getString("type"),jObj.getLong("id"),jObj.getString("year"), jObj.getString("includeAliance"));
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getCrossVotingReportByMandalId() Method, Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+
 }
