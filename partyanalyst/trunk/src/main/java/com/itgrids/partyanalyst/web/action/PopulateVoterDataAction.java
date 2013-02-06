@@ -114,4 +114,21 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			resultStatus = votersAnalysisService.insertVotersDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
 			return Action.SUCCESS;
 		}
+		
+		public String deleteVotersDataFromIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return null;
+			resultStatus = votersAnalysisService.deleteVotersDataFromIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
+		
 }

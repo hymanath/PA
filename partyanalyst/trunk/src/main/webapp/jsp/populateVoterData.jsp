@@ -96,7 +96,7 @@ fieldset{
 #errorMsgDiv{font-size: 14px;
         margin-left: 52px;color:red;}
 		#ajaxImage{display: block;
-    margin-left: 390px;
+    margin-left: 480px;
     margin-top: -22px;}
 	.headingDiv {
      background: none repeat scroll 0 0 #06ABEA;
@@ -129,6 +129,7 @@ fieldset{
 
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="voterDataInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="voterDataDeleteBtn" />
 			<img src="./images/icons/search.gif" style="display:none;" id="ajaxImage" />
 		</div>
 	</div>
@@ -210,6 +211,37 @@ $(document).ready(function(){
 
 });
 
+$("#voterDataDeleteBtn").click(function(){
+	
+        var constituencyId = $("#constituencyList").val(); 
+		var publicationDateId = $("#publicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#errorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#errorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#voterDataDeleteBtn").attr("disabled", "disabled");
+		$("#ajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"deleteVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deleteVotersDataFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+
+});
+
 function callAjax(jsObj,url)
 		{
 			 var myResults;
@@ -227,6 +259,9 @@ function callAjax(jsObj,url)
 								{
 									showInsertVoterDataStatus(myResults);
 								}
+								else if(jsObj.task == "deleteVotersData")
+									showDeleteVoterDataStatus(myResults);
+
 								}catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -260,6 +295,22 @@ function callAjax(jsObj,url)
 	}
 
 
+function showDeleteVoterDataStatus(result)
+	{
+		$("#ajaxImage").css("display","none");
+		$("#voterDataDeleteBtn").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#errorMsgDiv").html("Voters Data Deleted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#errorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
 </script>
 </body>
 </html>
