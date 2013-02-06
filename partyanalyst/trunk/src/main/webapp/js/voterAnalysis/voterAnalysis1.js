@@ -2653,11 +2653,13 @@ function getVoterDetailsForMandal(retrieveType){
 
 			var jsObj=
 					{
-				        constituencyId:'0',
-						mandalId:mandalId,
-						publicationDateId:mainpublicationId,
-						name:name,
-						type:"localElectionBody"
+					constituencyId:'0',
+					mandalId:mandalId,
+					publicationDateId:mainpublicationId,
+					name:name,
+					boothId:0,
+					panchayatId:'0',
+					type:"localElectionBody"
 						
 					};
 		}
@@ -3837,7 +3839,7 @@ document.getElementById('reportLevelCountDiv').style.display = 'inline-block';
 	if(results[0].totalmandals != null)
 	str +='<span class="btn btn-success btn-small">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
 	if(results[0].noOfLocalBodies != null)
-	str +='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
+	str +='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities/Corporations/Gmc</span>';
 	if(results[0].totalPanchayats != null)
 	str +='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
 	if(results[0].totalBooths != null)
@@ -4230,7 +4232,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		 	   $.each(menudata[0].localbodiesList, function(iter,municipality){
 		     if(municipalityid==municipality.id && municipality.selectOptionsList != null){
 					  $.each(municipality.selectOptionsList,function(iter,booths){
-									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 			});

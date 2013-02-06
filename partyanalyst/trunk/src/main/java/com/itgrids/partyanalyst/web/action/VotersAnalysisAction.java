@@ -792,12 +792,12 @@ return Action.SUCCESS;
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
 		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 		}
-		else if (type.equalsIgnoreCase("localElectionBody")){
+		/*else if (type.equalsIgnoreCase("localElectionBody")){
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByLocalElectionBodyId(mandalId,publicationDateId, type);
 		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(mandalId,publicationDateId);
 		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
-		}
+		}*/
 		
 		constituencyManagementVO.setVotersDetailsVO(votersDeatailsForConstituency);
 		
@@ -805,7 +805,7 @@ return Action.SUCCESS;
 		
 		}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+		log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- ",e);
 		}
 		
 		return Action.SUCCESS;
