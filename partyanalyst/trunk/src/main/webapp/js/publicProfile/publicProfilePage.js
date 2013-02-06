@@ -337,12 +337,12 @@ function showStreamingData(results,jsObj)
 			for(var j in list)
 			{
 				
-				 if(list[j].responseType == "Problems")
+				if(list[j].responseType == "Problems")
 				{
 					var template = $('.problemTemplate');
 					var templateClone = template.clone();
 					templateClone.removeClass('problemTemplate');
-					templateClone.find('.problemImg').html('<img src="pictures/profiles/'+list[j].userImageURL+'" class="span1"/>');
+					templateClone.find('.problemImg').html('<img src="pictures/profiles/'+list[j].userImageURL+'" class="thumbnail" height="40" width="40"/>');
 					templateClone.find('.postedPersonName').html(''+list[j].postedPersonName+' Posted');
 					templateClone.find('.problemTitle').html(''+list[j].problem+'');
 					templateClone.find('.problemDescription').html(''+list[j].description+'');
@@ -358,7 +358,7 @@ function showStreamingData(results,jsObj)
 					var template = $('.politicalReasonsTemplate');
 					var templateClone = template.clone();
 					templateClone.removeClass('politicalReasonsTemplate');
-					templateClone.find('.postedBy').html('<img src="pictures/profiles/'+list[j].userImageURL+'" class="span1"/>');
+					templateClone.find('.postedBy').html('<img src="pictures/profiles/'+list[j].userImageURL+'" class="thumbnail" height="40" width="40"/>');
 					
 					if(list[j].problemImpactLevelId == 1)
 						status = "winning";
