@@ -720,6 +720,9 @@ h5{font-family : Arial;}
     font-family: arial;
     font-size: 1.2em;
 }
+
+#voterAgeAngGenderwiseDetailsNoteInPercent .table th, .table td{padding:7px;}
+#voterAgeAngGenderwiseDetailsNoteInPercent .table th{text-align:center;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -782,7 +785,7 @@ locationDetails.constituencyArr.push(ob);
 	
 	
 	
-	<div id="ajaxImageDiv" style="display:none; position: absolute; right: 2px;bottom:21px;
+	<div id="ajaxImageDiv" style="display:none; position: absolute; right: 2px;top:200px;
     z-index: 100;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 	<!--</fieldset>-->
 
@@ -863,7 +866,7 @@ for  body3 start    result  -->
 	</div>
     
 <div id='votersMainOuterDiv3' class="widget" style="display:none;border-top:none;">
-<h2 id="votersTitle" style="width:102%;padding:10px;"> </h2>
+<h2 id="votersTitle" style="width:102%;padding:10px;"></h2>
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
 
 <div id="votersBasicInfoMainDiv">
@@ -966,24 +969,25 @@ for  body3 start    result  -->
 <div style="display:none;"> <!-- HIDING THE POPUP -->
 <div id="ageWiseVotersDetailsOuterDiv">
 
-	<div id='ageWiseInfoDiv' class=""  style="height:500px;overflow-y:auto;">
+	<!--<div id='ageWiseInfoDiv' class=""  style="height:500px;overflow-y:auto;">-->
+	<div id='ageWiseInfoDiv' class=""  style="height:500px;">
 	<br><br>
 	<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
 
 	<div id="voterDetailsNote" class="noteDiv" style="display:none;"></div>
 
-	<div id="tableDiv" style="margin-left:35px;padding:10px;display:none;" class="voterDetails"></div>
+	<div id="tableDiv" style="margin-left:20px;padding:10px;display:none;" class="voterDetails"></div>
 
 	<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
-	<div id="agewiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+	<div id="agewiseDetails" style="padding:4px;" class="voterDetails"></div>
 
 	<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
-	<div id="ageAndgenderWiseDetails" style="margin-left:35px;padding:10px;" class="voterDetails"> </div>
+	<div id="ageAndgenderWiseDetails" style="padding:4px;" class="voterDetails"> </div>
 
 
 	<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
 
-	<div id="voterAgeAngGenderwiseDetailsInPercent" style="margin-left:35px;padding:10px;" class="voterDetails"></div>
+	<div id="voterAgeAngGenderwiseDetailsInPercent" style="padding:4px;" class="voterDetails"></div>
 	<div id="AgeWiseNoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:45px;width:851px;"></div>
 
 	
