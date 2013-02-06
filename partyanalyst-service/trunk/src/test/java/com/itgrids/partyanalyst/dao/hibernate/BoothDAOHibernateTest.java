@@ -267,7 +267,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}
 	*/
-	public void testgetBoothIdsInLocalBodiesForAPublication()
+	/*public void testgetBoothIdsInLocalBodiesForAPublication()
 	{
 		List<Long> localEleBodyIdsList = new ArrayList<Long>(0);
 		localEleBodyIdsList.add(83l);
@@ -279,6 +279,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(booths[0]+" "+booths[1]);
 		}
 		
+	}*/
+	
+	public void testGetBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList()
+	{
+		List<Long> panchayatIdsList = new ArrayList<Long>(0);
+		panchayatIdsList.add(83l);
+		List<Long> l = boothDAO.getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(IConstants.LOCALELECTIONBODY, 7l, panchayatIdsList);
+		System.out.println(l);
 	}
 	
 }

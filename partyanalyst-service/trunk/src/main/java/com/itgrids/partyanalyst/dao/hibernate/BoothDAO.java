@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 
@@ -451,4 +452,22 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameterList("localElectionBodyId", localBodiesList);
 			return query.list(); 
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(String type, Long publicationDateId, List<Long> panchayatIdsList)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select distinct model.boothId from Booth model where model.publicationDate.publicationDateId = :publicationDateId ");
+			if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			  str.append(" and model.panchayat.panchayatId in (:id) and model.localBody is null ");
+			else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+				str.append(" and model.localBody.localElectionBodyId in (:id) and model.panchayat is null ");
+			Query query = getSession().createQuery(str.toString());
+			
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameterList("id", panchayatIdsList);
+			
+			return query.list();
+		}
+		 
 }
