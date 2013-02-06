@@ -1950,7 +1950,7 @@ function appendResults(results , divId){
 var fileTitle = $('#fileTitle').val();
 var fileDescription = $('#fileDescription').val();
 var flagInd = $('#flagInd').val();
-
+var scope = $('#scopeDiv').val();
 var errorMessage = "";
 var validate = false;
 
