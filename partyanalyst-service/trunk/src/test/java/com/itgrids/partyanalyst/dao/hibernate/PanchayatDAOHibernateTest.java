@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -61,5 +62,25 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		for(Long id : list)
 			System.out.println(id);
 	}*/
+	
+	/*public void testGetPanchayatIdsByMandalIdsList()
+	{
+		List<Long> mandalIdsList = new ArrayList<Long>(0);
+		mandalIdsList.add(844l);
+		List<Object[]> list = panchayatDAO.getPanchayatIdsByMandalIdsList(mandalIdsList);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]);
+		}
+	}*/
+	
+	public void testGetPanchayatIdsBytehsilIdsList()
+	{
+		List<Long> mandalIdsList = new ArrayList<Long>(0);
+		mandalIdsList.add(844l);
+		List<Long> panchayatIdsList = panchayatDAO.getPanchayatIdsBytehsilIdsList(mandalIdsList);
+		System.out.println(panchayatIdsList);
+	}
 	
 }
