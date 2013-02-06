@@ -1409,6 +1409,7 @@ select
 		$('#censusPopulationRange1').css('display','none');
 		$('#censusPopulationRange').css('display','none');
 		$('#censusPopulationRange_selectParty').css('display','none');
+		$('#partyResultsPerformance_main').css('display','none');
 		$('#censusSelect').val(0);
 	}
 </script>
