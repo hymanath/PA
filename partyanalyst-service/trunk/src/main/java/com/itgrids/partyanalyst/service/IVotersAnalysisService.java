@@ -131,5 +131,7 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getElectionYearsByMandalId(String type,Long mandalId);
 	
 	public CrossVotingConsolidateVO getCrossVotingReportByMandalIdAndEleYear(String type, Long id, String year, String includeAliance);
+	
+	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody);
 
 }

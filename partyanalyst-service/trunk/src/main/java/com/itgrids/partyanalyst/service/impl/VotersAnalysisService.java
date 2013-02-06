@@ -36,6 +36,9 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocalityDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
@@ -75,6 +78,7 @@ import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.User;
@@ -140,7 +144,40 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IPublicationDateDAO publicationDAO;
     private ICandidateBoothResultDAO candidateBoothResultDAO;
     
-   	public IPublicationDateDAO getPublicationDAO() {
+    private ILocalityDAO localityDAO;
+    
+    private IHamletDAO hamletDAO;
+    
+    private ILocalElectionBodyDAO localElectionBodyDAO;
+    
+    
+    
+    
+   	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public ILocalityDAO getLocalityDAO() {
+		return localityDAO;
+	}
+
+	public void setLocalityDAO(ILocalityDAO localityDAO) {
+		this.localityDAO = localityDAO;
+	}
+
+	public IPublicationDateDAO getPublicationDAO() {
    		return publicationDAO;
    	}
 
@@ -3710,8 +3747,39 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		
 	}
+	//save Locality details in Locality table
+	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody)
+	{
+	ResultStatus resultStatus = new ResultStatus();
+	Locality locality = null;
+	if(hamletId == 0)
+		hamletId = null;
+	if(localbody.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+		localbody = null;
+	try{
+		locality = new Locality();
+		locality.setIsGlobal("false");
+		if(hamletId != null)
+		locality.setHamlet(hamletDAO.get(hamletId));
+		if(localbody != null)
+		{
+		localbody = new Long(localbody.toString().substring(1));
+		locality.setLocalElectionBody(localElectionBodyDAO.get(localbody));
+		}
+		locality.setUser(userDAO.get(userId));
+		locality.setName(name);
+		localityDAO.save(locality);
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+		}		
+		catch(Exception e)
+		{
+		e.printStackTrace();
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+		}
 	
-		
+	}
 	public List<SelectOptionVO> getcastCategoryGroups()
 	{
 		List<SelectOptionVO> castCategoryList = new ArrayList<SelectOptionVO>(0);
