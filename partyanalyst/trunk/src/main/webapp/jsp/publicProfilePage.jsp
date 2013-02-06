@@ -187,7 +187,7 @@ padding:5px 20px;
     margin-bottom: 10px;
     margin-top: 15px;
     padding: 10px;
-	/* display:inline-block;*/
+	display:inline-block;
 	margin-left: 0;
     margin-right: 0;
 	}
@@ -213,6 +213,8 @@ padding:5px 20px;
     font-size: 12px;
     width: auto;
 }
+.subscriptionsImgTitleDescDiv {width:100%;background:#fafafa;display:inline-block;padding:5px;margin:5px;}
+
 </style>
 </head>
 <body>
@@ -220,7 +222,7 @@ padding:5px 20px;
 	<div class="row">
 		<div class="publicProfileInnerDiv">
 			<div class="span8">
-			<div class="row-fluid">
+			
 				<div class="span2">
 				<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
 					<img class="thumbnail"  src="pictures/profiles/human.jpg"  id="userProfileImg">
@@ -229,14 +231,14 @@ padding:5px 20px;
 				 <img class="thumbnail"  src="pictures/profiles/${loginUserProfilePic}"  id="userProfileImg">
 				</c:if>
 				</div>
-				<div class="span10">
+				<div class="span7">
 					<span class="profileUserName row">${profileUserName}</span>
-					<span class="fontStyle row"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
+					<span class="fontStyle"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
 
 					<c:if test='${logInStatus == false}'>
-						<span class="row pull-right">
+						<span class="pull-right">
 							<a href="javascript:{}" onclick="openDialogForLoginWindow()"><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a>
 							<a href="javascript:{}" onclick="openDialogForLoginWindow()"><i class="icon-envelope opacityFilter-50 fontStyle"></i> Send Message</a>
 						</span>
@@ -244,7 +246,7 @@ padding:5px 20px;
 
 
 					<c:if test='${logInStatus == true && userType == "OtherUser"}'>
-						<span class="row pull-right">
+						<span class="pull-right">
 							
 							<c:if test="${connectStatus == 'NOT CONNECTED'}">
 								<span class="connectStatusSpan"><a href="javascript:{}" class="connectLinkInPP"><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a></span>
@@ -275,12 +277,12 @@ padding:5px 20px;
 					
 					<!--<a class='btn btn-success btn-mini pull-right' href="/PartyAnalyst/userProfile.action">My Profile</a>-->
 				</div>
-			</div>
+			
 				
 				
-				<div class="placeholderCenterDiv" style="display:none;"></div>
+				<div class="span8 placeholderCenterDiv" ></div>
 				<div class="row-fluid">
-					<div id="problemsDiv" class="">
+					<!--<div id="problemsDiv" class="">
 					
 					<c:if test="${not empty problems.problemBeanVOList}">
 
@@ -317,7 +319,7 @@ padding:5px 20px;
 					  </c:forEach>
 					</c:if>
 
-					</div>
+					</div>-->
 				</div>
 			</div>
 			<div class="span4">
@@ -404,19 +406,19 @@ padding:5px 20px;
 		<span class="frndName span12"></span>
 	</div>
 	
-	<div class="problemTemplate templateholder" >
+	<div class="problemTemplate templateholder row-fluid" >
 
-		<div class="problemsShowDIV">
-			<div class=" problemImg"></div>
+		<div class="problemsShowDIV span12 widget-simple">
+			<div class="problemImg"></div>
 			<span class="postedPersonName"></span>
-			<div class="" style="background:#f1f1f1;padding:7px;">
+			<div class="span10" style="background:#f1f1f1;padding:7px;">
 				<div class="ProblemImgTitleDescDiv">
-    					 <span class="subscriptionsDescDiv span12">
+    					 <span class="subscriptionsDescDiv">
     						  <span class="activity-title">
 								<p><span class="problemTitle"/></p>
 							  </span>
     						  <span>
-    						   <p><span class="problemDescription"/></p>
+								<span class="problemDescription"/>
     						  </span>
     					  </span>
 				</div>
@@ -439,12 +441,10 @@ padding:5px 20px;
 
 
 <div class="politicalReasonsTemplate templateholder subscriptionsMain" style="margin:5px 0px;width:92%;">
-		<div class="politicalReasonsInnerDiv">
-			<div class="span2 postedBy">
-    				
-    		   </div>
-			<div class="">
-				<span class="headingCls ">
+		<div class="politicalReasonsInnerDiv row-fluid widget-simple">
+			<div class="postedBy"></div>
+			<div class="span10">
+				<span class="headingCls span12">
 					<h6><span class="headingCls"></span></h6>
 				</span>
 				
@@ -512,7 +512,7 @@ buildPolls();
 				friendsInPP.push(obj);
   </c:forEach>
 
-  //executeOnload();
+  executeOnload();
 
 </script>
 </body>
