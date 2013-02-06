@@ -2026,7 +2026,8 @@ function buildCastInfoData(myresults,jsObj)
 	   $("#partyWiseLocalCastStatsTab").html("");
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
-		   var str ='<div style="overflow-x:scroll;">';
+		   //var str ='<div style="overflow-x:scroll;">';
+			var str ='<div>';
 		      str+='<div id="partyWiseLocalCastStatsTabTitle"><h2 id="subHeading" >Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
 		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:3px solid black;">';
 			  str+='  <thead>';
@@ -4014,7 +4015,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			 }
 			str+='</tbody></table>';
 
-			str+='<div class="breadcrumb" style="float:right; margin: 3px 0;"><font style="color:red;">Note</font> :<span class="help-inline f2"><b>P</b>- Publication</span><span class="help-inline f2"><b>E</b>- Election</span>';
+			str+='<div class="breadcrumb pull-left" style="margin: 3px 0;"><font style="color:red;">Note</font> :<span class="help-inline f2"><b>P</b>- Publication</span><span class="help-inline f2"><b>E</b>- Election</span>';
 			str+='<span class="help-inline f2"><img class="imageSize" src="images/uparrow.png" /> -Voters Increased</span> <span class="help-inline f2"><img class="imageSize" src="images/downarrow.png" /> - Voters Decrease</span></div>';
 
 
