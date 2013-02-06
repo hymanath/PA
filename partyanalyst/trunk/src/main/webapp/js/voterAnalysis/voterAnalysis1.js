@@ -3712,7 +3712,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 		if(flag)
 		{
 		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
+			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
 				str +='<th>Election Type</th>';
