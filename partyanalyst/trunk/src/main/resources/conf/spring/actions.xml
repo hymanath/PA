@@ -1016,6 +1016,9 @@
 		singleton="false">
 			<property name="votersAnalysisService" ref="votersAnalysisService" />
 			<property name="staticDataService" ref="staticDataService" />
+			<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+			
 	</bean>
 	
 	
@@ -1046,5 +1049,6 @@
 	</bean>
 	<bean id="populateVoterDataAction" class="com.itgrids.partyanalyst.web.action.PopulateVoterDataAction">
 	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	
 	</bean>
 </beans>	

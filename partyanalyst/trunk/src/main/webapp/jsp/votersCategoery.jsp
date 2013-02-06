@@ -23,7 +23,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <style>
-#valuesDisplayDiv , #casteCreation{
+#valuesDisplayDiv , #casteCreation,#localityDiv{
 border:1px solid #a1a1a1;
 padding:10px 40px; 
 width:540px;
@@ -40,7 +40,7 @@ border-radius:10px;
 -moz-border-radius:25px;
 margin-left:15px;
 }
-#casteCreation{margin-bottom:30px;}
+#casteCreation,#localityDiv{margin-bottom:30px;}
 </style>
 <script type="text/javascript">
 function openProblemEditSubForm(id,name)
@@ -94,7 +94,22 @@ function callAjax(jsObj,url)
 							{
 								showCasteStatus(myResults);
 							}
-
+							else if(jsObj.task == "getMandalList")
+							{
+								buildMandalList(myResults,jsObj);
+										
+							}
+							else if(jsObj.task == "getHamletList")
+							{
+								buildTehsilList(myResults,jsObj);
+										
+							}
+							else if(jsObj.task == "saveLocality")
+							{
+								showLocalityStatus(myResults);
+										
+							}
+								
 							}catch(e){   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -266,6 +281,23 @@ function showCasteStatus(result)
 		return;
 	}
 }
+
+function showLocalityStatus(result)
+{
+$("#localityId").val('');
+if(result.resultCode == 0)
+	{
+		$("#errorMsg").html("Locality Saved Successfully.").css("color","green");
+		
+		return;
+	}
+	else
+	{
+		$("#errorMsg").addClass('casteCreationMsg').html('Data could not be Saved due to some technical difficulties').css('color','red');
+		return;
+	}
+	
+}
 </script>
 </head>
 <body style="position: relative;">
@@ -328,6 +360,36 @@ function showCasteStatus(result)
 		
 		 <input type="button" value="create" class="btn btn-success" style="clear: both; float: right; margin-top: -30px;" id="createCaste"></input>
 	 </div>
+	 
+	 <!-- Locality Div start-->
+	 <div id="popupDiv" style="float: left;margin-left:6px;">
+	 <div id="localityDiv" style="border:">
+	<h4>Create Locality</h4>
+			<div id="ConstituencyDiv" class="selectDiv">
+				<div id="errorMsg"></div>
+				<b>Select Constituency</b><font style="color:red">*</font><s:select theme="simple" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" style="margin-left:27px;" onchange="getMandalList();"/> &nbsp;&nbsp;
+			</div>
+		<div id="mandalDiv" class="selectDiv" >
+		
+			<b>Select Mandal</b><font style="color:red">*</font> <select id="mandalField" class="selectWidth" name="mandal" style="margin-left:63px;" onchange="getHamletsInATehsil();"></select>
+		</div>
+		
+		
+		<div id="tehsilDiv" class="selectDiv" style="display:none;">
+		
+		<b>Select Hamlet</b><font style="color:red">*</font> <select id="hamletField" class="selectWidth" name="hamlet" style="margin-left:66px;"></select>
+		</div>
+			<div id="localityNameDiv"><b>Name</b><span style="color:red">*</span>
+				
+			 <input type="text" id="localityId" style="width: 175px;margin-left:123px;"></input>
+			
+			</div>
+			
+		<input type="button" onclick="saveLocality();" value="create" class="btn btn-success" style="clear: both; float: right; margin-top: -30px;" id="createLocality"></input>
+		
+	 </div>
+	 </div>
+	 <!-- Locality Div End-->
 
 	</div>
 <script type="text/javascript">
@@ -383,6 +445,171 @@ $(document).ready(function() {
 		callAjax(jsObj,url);
  });
 });
+
+	function getMandalList()
+	{
+		var constituencyID = document.getElementById("constituencyList");
+		var name=constituencyID.options[constituencyID.selectedIndex].name;
+		var value=constituencyID.options[constituencyID.selectedIndex].value;
+		var choice=false;
+		
+		if(value == 0)
+		{
+			return false;
+		}
+		var jsObj=
+			{
+					
+					selected:value,
+					
+					task:"getMandalList"
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+	}
+	
+	
+	function getHamletsInATehsil()
+	{
+		
+		var errorDiv = document.getElementById('errorMsg');
+		errorDiv.innerHTML ='';
+		var mandalField = document.getElementById("mandalField");
+		
+		var tehsilId=mandalField.options[mandalField.selectedIndex].value;
+			
+		var choice=false;
+		
+		if(tehsilId == 0)
+		{
+			return false;
+		}
+		if(tehsilId.charAt(0) == "1")
+		{
+			
+			
+			document.getElementById("tehsilDiv").style.display = 'none';
+			return;
+			
+		}
+		if(tehsilId.charAt(0) == "2")
+		{
+			
+			document.getElementById("tehsilDiv").style.display = 'block';
+		}
+		tehsilId = tehsilId.substring(1);
+		var jsObj=
+			{
+					
+					tehsilId:tehsilId,
+					
+					task:"getHamletList"
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getHamletsInATehsilAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+	}
+	
+	function buildMandalList(results,jsObj)
+	{
+		
+		var selectElmt =document.getElementById("mandalField");
+		
+		removeSelectElements(selectElmt);
+		for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+
+			try
+			{
+				selectElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectElmt.add(opElmt); // IE only
+			}	
+		}
+	}
+
+	function buildTehsilList(results,jsObj)
+	{
+		
+		var selectElmt =document.getElementById("hamletField");
+		
+		removeSelectElements(selectElmt);
+		for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+
+			try
+			{
+				selectElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectElmt.add(opElmt); // IE only
+			}	
+		}
+	}
+	function removeSelectElements(selectedElmt)
+	{
+		var len = selectedElmt.length;
+		for(var i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}
+	}	
+
+
+	function saveLocality()
+	{
+	var str ='';
+	var localbodyId = $("#mandalField").val();
+	var hamletID = 0;
+	var name =$("#localityId").val();
+	var errorDiv = document.getElementById('errorMsg');
+	if(localbodyId.charAt(0) == "2")
+		{
+	 hamletID = $("#hamletField").val();
+
+		}
+		if(localbodyId == 0)
+		{
+			str +='<font color="red">Select mandal Name</font>';
+			errorDiv.innerHTML = str;
+			return;
+		}
+		 else if(name == "")
+		 {
+			str +='<font color="red">Name should not be empty</font>';
+			errorDiv.innerHTML = str;
+			return;
+		}
+		
+		else
+		errorDiv.innerHTML = '';	
+		
+	var jsObj=
+	{
+		
+		localbodyId     : localbodyId,
+		name            : name,
+		hamlet			: hamletID,
+		task			: "saveLocality"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveLocalityAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
 </script>
 </body>
 </html>

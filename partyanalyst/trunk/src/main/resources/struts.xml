@@ -4357,5 +4357,17 @@
            		<param name="root">crossVotingConsolidateVO</param>
         	</result>		
 		</action>
+		
+		 <action name="saveLocalityAction" class="votersEditAction" method="saveLocality">
+		    <result type="json" name="success">
+				 <param name="root">resultStatus</param>
+			</result>
+		</action> 
+		
+		<action name="getHamletsInATehsilAjaxAction" class="votersEditAction" method="getHamletsInATehsil">
+			<result type="json" name="success">
+				<param name="root">hamlets</param>				
+			</result>		
+		</action>
 	</package>
 </struts>      
