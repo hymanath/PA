@@ -11,7 +11,7 @@ public interface IVoterFamilyInfoDAO extends GenericDao<VoterFamilyInfo, Long>{
 
 	public List<VoterFamilyInfo> getVoterFamilyDetails(Long reportLevelId, Long reportLevelValue, Long publicationDateId);
 	
-	public Integer deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(Long reportLevelId, Long reportLevelValue, Long publicationDateId, Long familyRangeId);
+	public Integer deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(Long reportLevelId, List<Long> reportLevelValue, Long publicationDateId);
 	
 	public List getTotalFamiliesCountByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId);
 	

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -32,10 +33,12 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void testDeleteVoterFamilyDetByReportLevelValAndVoterAgeRange()
+	public void testDeleteVoterFamilyDetByReportLevelValAndVoterAgeRange()
 	{
-		System.out.println(voterFamilyInfoDAO.deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(1l, 232l, 7l, 1l));
-	}*/
+		List<Long> reportLevelValue = new ArrayList<Long>(0);
+		reportLevelValue.add(232l);
+		System.out.println(voterFamilyInfoDAO.deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(1l, reportLevelValue, 7l));
+	}
 	
 	/*public void testGetTotalFamiliesCountByReportLevelValue()
 	{
