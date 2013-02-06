@@ -367,8 +367,8 @@ table.dataTable tr.even td.sorting_1 {
 	#pollingStationField{width:160px;height:25px;}
 	#sublevelHeading,#impFamilesBasicSubDetailsTitle,#partyWiseLocalCastStatsTabTitle,#impFamPancBothDtlstitle,#impFamDtlsTitle{
 		color:steelblue;
-		font-size:13px;
-		font-family:verdana;
+		font-size:1.1em;
+		font-family:arial;
 		margin-bottom: 20px;
 		font-weight: bold;
 	}
@@ -479,7 +479,7 @@ width: 860px;}
     font-size: 14px;
     margin-top: 8px;
     padding: 4px;
-    width: 465px;}
+    width: 550px;}
 	.localCastStatsVotersTitle{background:#06ABEA;}
 	.imageSize{
 	   height:11px;
@@ -715,6 +715,11 @@ h5{font-family : Arial;}
 		
 	#votersInfoAjaxImg{float: right; clear: both;  margin-top: -30px; margin-right: 12px;}
 	#votersShareBtn{margin-left:30px;margin-top:8px;margin-right: 40px;}
+	
+.ui-widget {
+    font-family: arial;
+    font-size: 1.2em;
+}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -777,7 +782,7 @@ locationDetails.constituencyArr.push(ob);
 	
 	
 	
-	<div id="ajaxImageDiv" style="float:right;display:none; position: absolute; right: 10px;top: 146px;
+	<div id="ajaxImageDiv" style="display:none; position: absolute; right: 2px;bottom:21px;
     z-index: 100;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
 	<!--</fieldset>-->
 
@@ -909,7 +914,7 @@ for  body3 start    result  -->
 <div id="votersBasicInfoDiv1"></div>
 
 <div id="votersBasicInfoBtnDiv"> 
-	<input type="button" value="Mandal Wise Voters Info" class="btn pull-right" id="votersShareBtn" />
+	<input type="button" value="Mandal Wise Voters Info" class="btn btn-info pull-right" id="votersShareBtn" />
 	<span style="display:none;" id="votersInfoAjaxImg"><img src="./images/icons/search.gif" /></span>
 </div>
 
@@ -952,7 +957,7 @@ for  body3 start    result  -->
 </div>-->
 
 <!--<a href="javaScript:{showBasicAgewiseDetails()}">Click here to get Agewise Details</a>-->
-<span id="agewiseAjaxDiv" style="display:none;position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+<span id="agewiseAjaxDiv" style="display:none;position:absolute;bottom:20px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 <div id="voterDetailsNote1" class="noteDiv"></div>
 
 <div id="tableDiv1"></div>
@@ -1018,7 +1023,7 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
 	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>-->
-	 <span id="ImpFamwiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
+	 <span id="ImpFamwiseAjaxDiv" style="display: block; position:absolute;bottom:32px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
 
      	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
