@@ -3645,7 +3645,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 
 		if(flag)
 		{
-		  var str = '';
+		 var str = '';
 			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
@@ -3975,7 +3975,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			 }
 			str+='</tbody></table>';
 
-			str+='<div class="breadcrumb" style="float:right; margin: 3px 0;"><font style="color:red;">Note</font> :<span class="help-inline f2"><b>P</b>- Publication</span><span class="help-inline f2"><b>E</b>- Election</span>';
+			str+='<div class="breadcrumb pull-left" style="margin: 3px 0;"><font style="color:red;">Note</font> :<span class="help-inline f2"><b>P</b>- Publication</span><span class="help-inline f2"><b>E</b>- Election</span>';
 			str+='<span class="help-inline f2"><img class="imageSize" src="images/uparrow.png" /> -Voters Increased</span> <span class="help-inline f2"><img class="imageSize" src="images/downarrow.png" /> - Voters Decrease</span></div>';
 
 
