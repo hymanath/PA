@@ -15,8 +15,11 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -48,8 +51,51 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	//private String windowTask = null;
 	private ResultStatus resultStatus;
 	private List<VoterHouseInfoVO> votersFamilyInfo;
+	
 	private boolean status;
 	
+	private ICrossVotingEstimationService crossVotingEstimationService;
+	
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList;
+	
+	private RegionServiceDataImp regionServiceDataImp;
+	
+	private List<SelectOptionVO> hamlets;
+	
+	public List<SelectOptionVO> getHamlets() {
+		return hamlets;
+	}
+
+	public void setHamlets(List<SelectOptionVO> hamlets) {
+		this.hamlets = hamlets;
+	}
+
+	public RegionServiceDataImp getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
+	public List<SelectOptionVO> getUserAccessConstituencyList() {
+		return userAccessConstituencyList;
+	}
+
+	public void setUserAccessConstituencyList(
+			List<SelectOptionVO> userAccessConstituencyList) {
+		this.userAccessConstituencyList = userAccessConstituencyList;
+	}
+
 	public List<SelectOptionVO> getPartyGroupList() {
 		return partyGroupList;
 	}
@@ -242,6 +288,13 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
 
 	public String execute() throws Exception{
 		
@@ -257,6 +310,12 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 		castCategoryGroupList = votersAnalysisService.getcastCategoryGroups();
 		userAccessStates = staticDataService.getUserAccessStates(userId);
 		
+		
+		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
+		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 /*		HttpSession session = request.getSession();
 		session = request.getSession();
@@ -396,6 +455,27 @@ public String saveVoterDetails(){
 			Long stateId = jObj.getLong("stateId");
 			Long casteCateGroupId = jObj.getLong("casteCateGroupId");
 			resultStatus = votersAnalysisService.saveCasteName(userId,stateId,casteCateGroupId,casteName);
+		}catch (Exception e) {
+			Log.error("Exception Occured in saveCasteName() Method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+				
+	}
+	
+public String saveLocality()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return "error";
+		userId = user.getRegistrationID();
+		try{
+			jObj = new JSONObject(getTask());
+			String name = jObj.getString("name");
+			Long hamlet = jObj.getLong("hamlet");
+			Long localbodyId = jObj.getLong("localbodyId");
+			resultStatus = votersAnalysisService.saveLocality(userId,hamlet,name,localbodyId);
 		}catch (Exception e) {
 			Log.error("Exception Occured in saveCasteName() Method, Exception - ",e);
 		}
@@ -695,4 +775,19 @@ public String saveVoterDetails(){
 			}
 			return Action.SUCCESS;
 	    }
+	    
+	   public String getHamletsInATehsil()
+	   {
+		   String param = null;
+			param = getTask();
+			try {
+				jObj = new JSONObject(param);
+				hamlets = regionServiceDataImp.getHamletsInATehsil(jObj.getLong("tehsilId"));
+				System.out.println(jObj);
+			} catch (ParseException e) {
+				Log.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
+				e.printStackTrace();
+			}
+			return Action.SUCCESS;  
+	   }
    }

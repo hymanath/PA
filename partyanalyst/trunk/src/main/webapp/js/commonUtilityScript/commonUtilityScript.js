@@ -379,7 +379,7 @@ function showFeedBackFormPanel()
 		var elmt = document.getElementById("feedback_window_inner");
 
 		var str = '';
-		str += '<div id="feedback_window_head" style="font-size:12px;">Feed Back</div>';
+		str += '<div id="feedback_window_head" style="font-size:12px;">Feed Back<a onclick="closeFeedbackwindow();"><img src="images/icons/close.jpg" style="height:12px;float:right;"></a></div>';
 		str += '<div id="feedback_window_body">';
 		str += '	<div id="feedBackNote_div">';
 		str += '		<table>';
