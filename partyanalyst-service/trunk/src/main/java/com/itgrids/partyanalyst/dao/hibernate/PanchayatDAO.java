@@ -64,18 +64,22 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		  
 	  }
 	*/
-	public List<Object[]> getPanchayatiesCount(Long id,String type)
+	public List<Object[]> getPanchayatiesCount(Long id,String type,Long publicationId)
 	  {
 		  StringBuilder str = new StringBuilder();
 		  //str.append("select distinct count(model.panchayatId) from Panchayat model where");
 		  str.append("select model.panchayatId,model.panchayatName from Panchayat model where");
-		  if(type.equalsIgnoreCase("constituency"))
-			  str.append(" model.tehsil.tehsilId in(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where model1.delimitationConstituency.year =2009 and model1.delimitationConstituency.constituency.constituencyId = :id)");
-		  else if(type.equalsIgnoreCase("mandal"))
+		  if(type.equalsIgnoreCase("constituency")){
+			  str.append(" model.tehsil.tehsilId in(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where model1.delimitationConstituency.year =2009 and model1.delimitationConstituency.constituency.constituencyId = :id)" +
+			  		" and model.tehsil.tehsilId in(select model2.tehsil.tehsilId from Booth model2 where model2.constituency.constituencyId = :id and model2.localBody is null and model2.publicationDate.publicationDateId = :publicationId)");
+		  }
+		else if(type.equalsIgnoreCase("mandal"))
 		 str.append(" model.tehsil.tehsilId = :id ");
 		  Query query =getSession().createQuery(str.toString());
 		  query.setParameter("id",id);
-		  
+		  if(type.equalsIgnoreCase("constituency")){
+		   query.setParameter("publicationId",publicationId);
+		  }
 		 // return (Long)query.uniqueResult();
 		  return query.list();
 		  
