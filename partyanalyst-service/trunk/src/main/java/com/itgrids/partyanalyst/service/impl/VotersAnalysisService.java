@@ -5351,7 +5351,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 	  }
 	  
-	  public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId)
+	 /* public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId)
 	  {
 			ResultStatus resultStatus = new ResultStatus();
 			try{
@@ -5500,10 +5500,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						}
 							
 					}
-					/*Long totalFamilies = 0l;
+					Long totalFamilies = 0l;
 					List list = voterFamilyInfoDAO.getTotalFamiliesCountByReportLevelValue(getReportLevelId(type), reportLevelValue, publicationDateId);
 					if(list != null && list.size() > 0)
-						totalFamilies = (Long)list.get(0);*/
+						totalFamilies = (Long)list.get(0);
 					
 					voterInfoDAO.deleteVotersInfoByReportLevelValue(getReportLevelId(type), reportLevelValue, publicationDateId);
 					VoterInfo voterInfo = new VoterInfo();
@@ -5706,7 +5706,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				return resultStatus;
 			}
 		}
-		
+		*/
 		
 		public List<SelectOptionVO> getConstituencyList(List<SelectOptionVO> userAccessConstituencyList)
 		{
@@ -7333,5 +7333,95 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 							   return (new Integer(arg1.getValue()).intValue()) - (new Integer(arg2.getValue()).intValue());
 							}
 				};
+				
+		public ResultStatus deleteVotersDataFromIntermediateTables(Long reportLevelValue, Long publicationDateId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				
+				List<Long> constituencyIdsList = new ArrayList<Long>(0);
+				List<Long> mandalIdsList = new ArrayList<Long>(0);
+				List<Long> localEleBodyIdsList = new ArrayList<Long>(0);
+				List<Long> panchayatIdsList = new ArrayList<Long>(0);
+				List<Long> boothIdsList = new ArrayList<Long>(0);
+				
+				constituencyIdsList.add(reportLevelValue);
+				
+				List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue ,IConstants.PRESENT_YEAR, null);
+				if(mandalsList == null || mandalsList.size() == 0)
+					return null;
+				
+				for(SelectOptionVO selectOptionVO : mandalsList)
+				{
+					if(selectOptionVO.getId().toString().substring(0, 1).equalsIgnoreCase(IConstants.RURAL_TYPE))
+						mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
+					else
+						localEleBodyIdsList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+				}
+				
+				if(mandalIdsList == null || mandalIdsList.size() == 0)
+					return null;
+							
+				panchayatIdsList = panchayatDAO.getPanchayatIdsBytehsilIdsList(mandalIdsList);
+				
+				if(panchayatIdsList != null && panchayatIdsList.size() > 0)
+					boothIdsList = boothDAO.getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(IConstants.PANCHAYAT, publicationDateId, panchayatIdsList);
+				
+				if(localEleBodyIdsList != null && localEleBodyIdsList.size() > 0)
+				{
+					List<Long> boothIds = boothDAO.getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(IConstants.LOCALELECTIONBODY, publicationDateId, localEleBodyIdsList);
+					if(boothIds != null && boothIds.size() > 0)
+					{
+						for(Long boothId : boothIds)
+						{
+							if(!boothIdsList.contains(boothId))
+								boothIdsList.add(boothId);	
+						}
+					}
+				
+				}
+				
+				if(constituencyIdsList != null && constituencyIdsList.size() > 0)
+					deleteVoterInfoFromIntermediateTables(IConstants.CONSTITUENCY, publicationDateId, constituencyIdsList);
+				if(mandalIdsList != null && mandalIdsList.size() > 0)
+					deleteVoterInfoFromIntermediateTables(IConstants.MANDAL, publicationDateId, mandalIdsList);
+				if(localEleBodyIdsList != null && localEleBodyIdsList.size() > 0)
+					deleteVoterInfoFromIntermediateTables(IConstants.LOCALELECTIONBODY, publicationDateId, localEleBodyIdsList);
+				if(panchayatIdsList != null && panchayatIdsList.size() > 0)
+					deleteVoterInfoFromIntermediateTables(IConstants.PANCHAYAT, publicationDateId, panchayatIdsList);
+				if(boothIdsList != null && boothIdsList.size() > 0)
+					deleteVoterInfoFromIntermediateTables(IConstants.BOOTH, publicationDateId, boothIdsList);
+				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+		}
+		
+		public ResultStatus deleteVoterInfoFromIntermediateTables(String type, Long publicationDateId,List<Long> reportLevelValue)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				
+				if(reportLevelValue != null && reportLevelValue.size() > 0)
+				{
+					voterInfoDAO.deleteVotersInfoByReportLevelValue(getReportLevelId(type), reportLevelValue, publicationDateId);
+					voterFamilyInfoDAO.deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(getReportLevelId(type), reportLevelValue, publicationDateId);
+					voterAgeInfoDAO.deleteVoterAgeInfoByReportLevelIdAndReportLevelValue(getReportLevelId(type), reportLevelValue, publicationDateId);
+				}
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in deleteVoterInfoFromIntermediateTables() Method, Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+		}
 
 }

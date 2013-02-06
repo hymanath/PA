@@ -104,7 +104,7 @@ public interface IVotersAnalysisService {
 	
 	public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast);
 	
-	public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId);
+	//public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId);
 	
 	public List<SelectOptionVO> getConstituencyList(List<SelectOptionVO> userAccessConstituencyList);
 	
@@ -133,5 +133,8 @@ public interface IVotersAnalysisService {
 	public CrossVotingConsolidateVO getCrossVotingReportByMandalIdAndEleYear(String type, Long id, String year, String includeAliance);
 	
 	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody);
+
+	public ResultStatus deleteVotersDataFromIntermediateTables(Long reportLevelValue, Long publicationDateId);
+	
 
 }
