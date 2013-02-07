@@ -733,8 +733,11 @@ h5{font-family : Arial;}
     font-weight: bold;
     padding: 3px 15px;}
 		
-	#votersInfoAjaxImg{float: right; clear: both;  margin-top: -30px; margin-right: 12px;}
-	#votersShareBtn{margin-left:30px;margin-top:8px;margin-right: 40px;}
+	#votersInfoAjaxImg{float: right; clear: both;  margin-top: -22px; margin-right: -17px;}
+	#votersShareBtn{margin-left:30px;margin-top:8px;}
+	#votersBasicInfoBtnDiv{
+	  clear:both;
+	}
 	
 .ui-widget {
     font-family: arial;
