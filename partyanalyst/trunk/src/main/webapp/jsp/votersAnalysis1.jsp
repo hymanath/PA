@@ -56,7 +56,24 @@
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 <title>Voters analysis</title>
+
+<script>
+
+$(document).ready(function(){
+$(".dateField").live("click", function(){
+		$(this).datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+            changeYear: true,
+			maxDate: new Date()
+			
+		}).datepicker("show");
+});	
+});
+</script>
 
 
 <style type="text/css">
@@ -754,6 +771,12 @@ locationDetails.constituencyArr.push(ob);
 </script>
 </head>
 <body>
+
+
+<div id="problemOuterDiv"> 
+  <div id="problemInnerDiv">
+  </div>
+</div>
 <!--DISPLAY NEWS GALLARIES START-->
  <div id="showContentDiv">
     <div id="showAjaxImgForNews" style="display:none"><img src="images/icons/goldAjaxLoad.gif"/></div>
@@ -895,7 +918,7 @@ for  body3 start    result  -->
 <!-- Not in USe -->
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 
-	<div id="newsCountDiv" class="widget-block whitegloss"></div>
+	<div id="newsCountDiv" class="widget-block whitegloss"></div><img src="./images/icons/search.gif" alt="Processing Image" id="newsAjaxImage" style="display:none;"/>
 	
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
@@ -911,7 +934,7 @@ for  body3 start    result  -->
 	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 	
 	</div>
-	   <div id="previousEleVotingTrendsDiv" class="widget-block whitegloss"></div>
+	   <div id="previousEleVotingTrendsDiv" class="widget-block whitegloss" style="clear:both;"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
