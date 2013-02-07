@@ -611,7 +611,9 @@
 		<property name="problemRatingDAO" ref="problemRatingDAO" />
 		<property name="commentDAO" ref="commentDAO" />
 		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"/>
-		
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
+		<property name="newsProblemDAO" ref="newsProblemDAO"/> 
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -1121,7 +1123,11 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		<property name="contentManagementService" ref="contentManagementService" />
-		
+		<property name="panchayatDAO" ref="panchayatDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="newsProblemDAO" ref="newsProblemDAO"/>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+				
 	</bean>
 	
 	<bean name="contentManagementService" class="com.itgrids.partyanalyst.service.impl.ContentManagementService">
@@ -1130,6 +1136,7 @@
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="newsFlagDAO" ref="newsFlagDAO"/>
+		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 	</bean>
 	
 	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">
