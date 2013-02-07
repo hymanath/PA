@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.Tehsil;
 
@@ -121,6 +122,14 @@ IDelimitationConstituencyMandalDAO {
 	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId)
 	{
 		return getHibernateTemplate().find("select model.tehsil.tehsilId from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID =?",constituencyId);
+	}
+	
+	public List<Constituency> getConstituencyByTehsilId(Long tehsilId){
+		
+		return getHibernateTemplate()
+				.find("select model.delimitationConstituency.constituency from model where model.tehsil.tehsilId = ?",
+						tehsilId);
+	
 	}
 	
 }
