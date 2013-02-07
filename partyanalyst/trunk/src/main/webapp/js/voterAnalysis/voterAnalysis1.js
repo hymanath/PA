@@ -2857,7 +2857,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	else 
 		noteString = $('#pollingStationField :selected').text();
 
-	$('#voterDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
+	$('#voterDetailsNote').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
 	//$('#voterDetailsNote1').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
 
 
@@ -2985,7 +2985,7 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h5>');
+	$('#voterAgewiseDetailsNote').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 	str+='<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
@@ -3083,7 +3083,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -3273,7 +3273,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h5>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -3683,6 +3683,15 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 
 		if(id == 0 || id == null || id == '')
 			return false;*/
+		
+		
+		
+		/* Updated by sasi*/
+		//Because booth doesnt consists the results iam hiding the PreviousElections results div by calling the function
+		
+		if(maintype=="booth"){
+			$("#previousEleVotingTrendsDiv").css('display','none');
+		}
 	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal"){
 		var jsObj=
 		{
@@ -3697,11 +3706,12 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		var url = "getPreviousEleVotingTrendsAction.action?"+rparam;	
 		callAjax(jsObj,url);
       }
-	}
+	 }
 
 function showPreviousEleVotingTrends(results,jsObj)
 {
 	 var flag = false;
+	 $("#previousEleVotingTrendsDiv").css('display','block');
 	 $("#previousEleVotingTrendsDiv").html('');
       for(var i in results)
 		 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
@@ -3739,8 +3749,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 			 str +='</tbody></table>';
 			 $("#previousEleVotingTrendsDiv").append(str);
 			 
-			}
-		
+		}		
 	}
 
 function getCountsForConstituency()
