@@ -56,7 +56,7 @@ public class APVoterDataDownloader {
             } else {
                 i = 1;
             }
-            i= 57;
+            i= 63;
             //for(; i<=numOfconstituencies; i++){
                 constituency.selectByValue(String.valueOf(i));
                 String constituencyName = constituency.getFirstSelectedOption().getText();
@@ -91,7 +91,7 @@ public class APVoterDataDownloader {
                 	}
                 }
                 
-                int j = 94;
+                int j = 60;
                 if (i == 274) {
                   j = 133;
                 }
@@ -125,7 +125,9 @@ public class APVoterDataDownloader {
                         }
                     });
                     if (downloadedFile.exists()) {
-                        FileUtils.moveFile(downloadedFile, new File(IConstants.DOWNLOAD_DIRECTORY+"\\"+boothFileName.replaceAll("/", "")));
+                    	boothFileName = boothFileName.replaceAll("/","");
+                    	boothFileName = boothFileName.replaceAll("\"","");
+                        FileUtils.moveFile(downloadedFile, new File(IConstants.DOWNLOAD_DIRECTORY+"\\"+boothFileName));
                         downloadedFile.delete();
                     }
                     
