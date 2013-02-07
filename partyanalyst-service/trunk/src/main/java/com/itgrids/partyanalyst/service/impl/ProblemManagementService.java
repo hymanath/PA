@@ -7,6 +7,11 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -43,12 +48,15 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
+import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INewsProblemDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
@@ -79,7 +87,6 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IVisibilityDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -103,15 +110,19 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreProblems;
 import com.itgrids.partyanalyst.model.ClassifiedProblems;
 import com.itgrids.partyanalyst.model.Comment;
+import com.itgrids.partyanalyst.model.CommentCategoryParty;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.NewsProblem;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemActivity;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
@@ -141,6 +152,7 @@ import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.model.Visibility;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -215,8 +227,45 @@ public class ProblemManagementService implements IProblemManagementService {
     private IProblemRatingDAO problemRatingDAO;
     private ICommentDAO commentDAO;
     private IAbusedCommentsDAO abusedCommentsDAO; 
+    private IFileGallaryDAO fileGallaryDAO;
+    private ICandidateDetailsService candidateDetailsService;
+    private IPanchayatHamletDAO panchayatHamletDAO;
+    private INewsProblemDAO newsProblemDAO;
     
+    
+    public INewsProblemDAO getNewsProblemDAO() {
+		return newsProblemDAO;
+	}
+
+	public void setNewsProblemDAO(INewsProblemDAO newsProblemDAO) {
+		this.newsProblemDAO = newsProblemDAO;
+	}
+
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
 	
+	public IFileGallaryDAO getFileGallaryDAO() {
+		return fileGallaryDAO;
+	}
+
+	public void setFileGallaryDAO(IFileGallaryDAO fileGallaryDAO) {
+		this.fileGallaryDAO = fileGallaryDAO;
+	}
+
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
 	}
@@ -7724,6 +7773,23 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			else if(problemId !=0 && problemId > 0)
 			{
 				Integer result = problemDAO.deleteProblemDetails(problemId, currentDate);
+				
+				List<Long> countList = newsProblemDAO.getCountByProblemId(problemId);
+				
+				if(countList != null && countList.size() >0){
+					
+					List<NewsProblem> newsProblemList = newsProblemDAO.getNewsProblemByProblemId(problemId);
+					
+					if(newsProblemList != null && newsProblemList.size() >0){
+						
+						NewsProblem newsProblem = newsProblemList.get(0);
+						newsProblem.setIsDelete(IConstants.TRUE);
+						newsProblemDAO.save(newsProblem);
+						
+					}
+					
+				}
+				
 				if(result != 0)
 					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				else if(result == 0)
@@ -8254,8 +8320,217 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 	}
 
 
+	
+	
+	public ProblemBeanVO saveProblemDataForNews(final ProblemBeanVO problemBeanVO){
+		this.problemBeanVO = problemBeanVO;
+		
+		ProblemBeanVO problemBeanVO1 = (ProblemBeanVO)transactionTemplate.execute(new TransactionCallback() {
 
+			public Object doInTransaction(TransactionStatus status) {
+		
+		try{
+			
+			Problem problem = new Problem();
+			ProblemCompleteLocation problemCompleteLocation = new ProblemCompleteLocation();
+			ProblemType problemType = new ProblemType();
+			UserProblem userProblem = new UserProblem();
+			ProblemActivity problemActivity = null;
+			InformationSource problemSource = null;
+			
+			FileGallary fileGallary = fileGallaryDAO.get(problemBeanVO.getContentId());
+			
+			if(fileGallary.getFile().getRegionScopes() == null || fileGallary.getFile().getLocationValue() == null){
+				problemBeanVO.setLocationExist("false");
+				return problemBeanVO;
+			}
+			
+			Long locationScope = fileGallary.getFile().getRegionScopes().getRegionScopesId();
+			Long locationValue = fileGallary.getFile().getLocationValue();
+			String fileTitle = fileGallary.getFile().getFileTitle();
+			String fileDescription = fileGallary.getFile().getFileDescription();
+			Date fileDate = fileGallary.getFile().getFileDate();
+			File file = fileGallary.getFile();
+			
+			problemCompleteLocation = getProblemCompleteLocationDetailsByLocationIdAndLocationValue(locationScope , locationValue);
+			
+			problemCompleteLocation = problemCompleteLocationDAO
+					.save(problemCompleteLocation);
+			
+			if (problemCompleteLocation != null)
+				problem.setProblemCompleteLocation(problemCompleteLocation);
+			
+			problemSource = informationSourceDAO.get(1L);
+			problem.setInformationSource(problemSource);
+			
+			refNo = getProblemReferenceNo();
+			
+			if (refNo != null)
+			  problem.setReferenceNo(getRefNo(refNo, "PU"));
+			
+			problem.setRegionScopes(regionScopesDAO.get(locationScope));
+			
+			
+			if (!fileTitle.contains(" ")) {
+				problem.setTitle(stringUtilService
+						.fragmentARegularString(
+								fileTitle, 100, " "));
+			} else {
+				problem.setTitle(fileTitle);
+			}
 
+			if (!fileDescription.contains(" ")) {
+				problem.setDescription(stringUtilService
+						.fragmentARegularString(
+								fileDescription, 100,
+								" "));
+			} else {
+				problem.setDescription(fileDescription);
+			}
+			
+			Date eDate = sdf.parse(problemBeanVO.getExistingFrom());
+			
+			problem.setIdentifiedOn(fileDate);
+			problem.setExistingFrom(eDate);
+			
+			problem.setProblemStatus(problemStatusDAO.get(1L));
+			
+			problem.setIsDelete(IConstants.FALSE);
+			
+			//AGAIN PROBLEM SOURCE
+			
+			problem.setInsertedTime(dateUtilService
+					.getCurrentDateAndTime());
+			problem.setUpdatedTime(dateUtilService
+					.getCurrentDateAndTime());
+			problem.setImpactLevelValue(locationValue);
+			problem.setIsApproved(IConstants.TRUE);
+			
+			problem = problemDAO.save(problem);
+			
+			problemBeanVO.setProblemId(problem.getProblemId());
+			
+			NewsProblem newsProblem = new NewsProblem();
+			
+			newsProblem.setFile(file);
+			newsProblem.setProblem(problem);
+			newsProblem.setIsDelete(IConstants.FALSE);
+			newsProblemDAO.save(newsProblem);
+			
+			problemBeanVO.setWindowTask(IConstants.NEW);
+			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
+			
+			userProblem = saveUserProblemDetails(problemBeanVO , problem);	
+			
+			
+			List<String> fileName = new ArrayList<String>();
+			List<String> fileDescrptn = new ArrayList<String>();
+			List<String> fileContentType = new ArrayList<String>();
+			List<String> filePaths1 = new ArrayList<String>();
+			List<String> fileTitle1 = new ArrayList<String>();
+			
+			Set<FileSourceLanguage> fileSourceLanguages = file.getFileSourceLanguage();
+			
+			
+			for(FileSourceLanguage fileSource:fileSourceLanguages){
+				
+				Set<FilePaths> filePaths = fileSource.getFilePaths();
+				
+				   for(FilePaths filePath :filePaths){
+					   
+					  
+					   String[] filePth = filePath.getFilePath().split("/");
+					   
+					  //copyNewsFiles(filePath,filePth);
+					   
+					   copyNewsFiles(filePath,filePth,fileTitle1,fileDescrptn,
+							   fileContentType,filePaths1,fileName,fileTitle,fileDescription);
+					 
+					   
+					/*   fileTitle1.add(fileTitle);
+					  // fileName.add(fileTitle);
+					   fileDescrptn.add(fileDescription);
+					   fileContentType.add(fileTypeDAO.get(filePath.getFileType().getFileTypeId()).getType());
+					   filePaths1.add(filePath.getFilePath());
+					
+					   
+					   fileName.add(filePth[filePth.length-1]);*/
+				   }
+			}
+			
+           FileVO fileVO = new FileVO();
+           
+          
+           fileVO.setFileName(fileName);
+           fileVO.setFileDescription(fileDescrptn);
+           fileVO.setFileContentType(fileContentType);
+           fileVO.setFilePath(filePaths1);
+           fileVO.setFileTitle(fileTitle1);
+           
+           problemBeanVO.setFileVO(fileVO);
+           
+		   saveProblemRelatedFiles(problemBeanVO, problem, userProblem);
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			status.setRollbackOnly();
+			log.debug("Exception Raised :" + e);
+		}
+		return problemBeanVO;
+			}
+		});
+		return problemBeanVO;
+		
+	}
+	
+	public void copyNewsFiles(FilePaths filePath , String[] filePth,
+			List<String> fileTitle1,List<String> fileDescrptn,List<String>fileContentType,
+			List<String> filePaths1,List<String> fileName , String fileTitle,String fileDescription){
+		
+		log.debug("Entered into the copyNewsFiles service method");
+		
+		    InputStream inStream = null;
+		    OutputStream outStream = null;
+		    
+		    try{
+			   
+    	    java.io.File afile =new java.io.File(problemBeanVO.getSourceFilePath()+filePath.getFilePath());
+    	    java.io.File bfile =new java.io.File(problemBeanVO.getDestinationFilePath()+problemBeanVO.getPathSepecrator()+filePth[filePth.length-1]);
+ 
+    	    inStream = new FileInputStream(afile);
+    	    outStream = new FileOutputStream(bfile);
+ 
+    	    byte[] buffer = new byte[1024];
+ 
+    	    int length;
+    	    //copy the file content in bytes 
+    	    while ((length = inStream.read(buffer)) > 0){
+ 
+    	    	outStream.write(buffer, 0, length);
+ 
+    	    }
+ 
+    	    inStream.close();
+    	    outStream.close();
+    	    
+    	      fileTitle1.add(fileTitle);
+			  // fileName.add(fileTitle);
+			   fileDescrptn.add(fileDescription);
+			   fileContentType.add(fileTypeDAO.get(filePath.getFileType().getFileTypeId()).getType());
+			   filePaths1.add(filePath.getFilePath());
+			
+			   
+			   fileName.add(filePth[filePth.length-1]);
+ 
+    	    System.out.println("File is copied successful!");
+		    }catch(Exception e){
+		    	log.error("Exception raised in copyNewsFiles service method");
+		    	e.printStackTrace();
+		    	
+		    }
+	 
+	}
 
 
 public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
@@ -8654,6 +8929,78 @@ public List<ProblemBeanVO> getProblemDetailsByProfileId(Long profileId,int start
 	return problemsList;
 }
 
-
-
+	public ProblemCompleteLocation getProblemCompleteLocationDetailsByLocationIdAndLocationValue(
+			Long locationScopeId, Long locationValue) {
+		
+		ProblemCompleteLocation problemCompleteLocation = new ProblemCompleteLocation();
+		
+		log.debug("Entered into the getProblemCompleteLocationDetailsByLocationIdAndLocationValue " +
+				"service method");
+		
+		try{
+			
+			
+			if(locationScopeId.longValue() == 2){
+				problemCompleteLocation.setState(stateDAO.get(locationValue));
+			}else if(locationScopeId.longValue() == 3){
+				
+				problemCompleteLocation.setDistrict(districtDAO.get(locationValue));
+				problemCompleteLocation.setState(districtDAO.get(locationValue).getState());
+				
+			}else if(locationScopeId.longValue() == 4){
+				
+				problemCompleteLocation.setConstituency(constituencyDAO.get(locationValue));
+				problemCompleteLocation.setDistrict(constituencyDAO.get(locationValue).getDistrict());
+				problemCompleteLocation.setState(constituencyDAO.get(locationValue).getDistrict().getState());
+				
+			}else if(locationScopeId.longValue() == 5){				
+				List<Constituency> constituencies = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(locationValue);
+				
+				Constituency constituency = constituencies.get(0);				
+				problemCompleteLocation.setConstituency(constituency);
+				problemCompleteLocation.setDistrict(constituency.getDistrict());
+				problemCompleteLocation.setState(constituency.getDistrict().getState());
+				
+			}else if(locationScopeId.longValue() == 6){
+				
+				List<Panchayat> panchayatList= panchayatHamletDAO.getPanchayatByHamletId(locationValue);
+				
+				if(panchayatList != null && panchayatList.size() >0){
+					
+					problemCompleteLocation.setHamlet(hamletDAO.get(locationValue));
+					problemCompleteLocation.setTehsil(panchayatList.get(0).getTehsil());
+					problemCompleteLocation.setDistrict(panchayatList.get(0).getTehsil().getDistrict());
+					problemCompleteLocation.setState(panchayatList.get(0).getTehsil().getDistrict().getState());
+				}
+               
+				
+			}else if(locationScopeId.longValue() == 7){
+				
+				LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);
+				
+                problemCompleteLocation.setLocalElectionBody(localElectionBody);
+                problemCompleteLocation.setDistrict(localElectionBody.getDistrict());
+                problemCompleteLocation.setState(localElectionBody.getDistrict().getState());
+                
+			}else if(locationScopeId.longValue() == 8){
+				
+				Constituency  constituency = constituencyDAO.get(locationValue);
+				
+				  problemCompleteLocation.setWard(constituency);
+				  problemCompleteLocation.setLocalElectionBody(constituency.getLocalElectionBody());
+	              problemCompleteLocation.setDistrict(constituency.getLocalElectionBody().getDistrict());
+	              problemCompleteLocation.setState(constituency.getLocalElectionBody().getDistrict().getState());
+				}	
+			
+			
+		}catch(Exception e){
+		
+			log.error("Exception raised in getProblemCompleteLocationDetailsByLocationIdAndLocationValue service method");
+			e.printStackTrace();
+			
+		}
+		
+		return problemCompleteLocation;
+	
+    }
 }

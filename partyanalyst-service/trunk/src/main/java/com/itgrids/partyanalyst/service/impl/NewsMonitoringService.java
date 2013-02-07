@@ -19,11 +19,15 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
+import com.itgrids.partyanalyst.dao.INewsProblemDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
@@ -34,6 +38,7 @@ import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.NewsCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Category;
@@ -81,9 +86,46 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private IContentManagementService contentManagementService;
 	private ContentDetailsVO contentDetailsVO;
+	private IPanchayatDAO panchayatDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private INewsProblemDAO newsProblemDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
 	
 	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public INewsProblemDAO getNewsProblemDAO() {
+		return newsProblemDAO;
+	}
+
+	public void setNewsProblemDAO(INewsProblemDAO newsProblemDAO) {
+		this.newsProblemDAO = newsProblemDAO;
+	}
+
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
 	public IContentManagementService getContentManagementService() {
 		return contentManagementService;
 	}
@@ -1080,10 +1122,419 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		return returnFileVOList;
 	  }
 	 
+ public List<FileVO> getNewsCountForALocationByCategory(Long registrationId,
+			Long locationValue, Long locationId, Long publicationId) {
 	 
+	 List<Long> candidateIds = getCandidateDetailsByRegistrationId(registrationId);
+	// List<Long> locationValuesList = new ArrayList<Long>();	
+	 //List<Object[]> countByCategoryList = null ;
+	 List<FileVO> filesList = null;
+	 
+	 try{
+	 
+	     if(locationId.longValue() == 5)
+	    	 filesList =  getNewsCountForMandalLevel(candidateIds , locationId , locationValue);		    	 
+	     else if(locationId.longValue() == 3)
+	    	 filesList = getNewsCountDetailsByPanchayat(candidateIds , locationValue);	    	
+	     else if(locationId.longValue() == 4)
+	    	 filesList =  getNewsCountDetailsByConstituencyLevel(candidateIds , locationId , locationValue);
+	     else if(locationId.longValue() == 7)
+	    	 filesList =  getNewsCountDetailsForMuncipality(candidateIds , locationId , locationValue);
+	 }catch(Exception e){
+		 e.printStackTrace();			 
+	 }
+	 
+	 return filesList;
+ }
+ 
+ 
+public  List<FileVO> getNewsCountForMandalLevel(List<Long> candidateIds ,Long  locationId ,Long locationValue){
+        log.debug("Entered into the getNewsCountForMandalLevel service method");
+        List<FileVO> filesList = null;
+
+		try{
+		
+			List<Long> locationValuesList = new ArrayList<Long>();	
+			List<Long> hamletIds = null;
+			Long hamletScopeId = null;
+			List<Object[]> countByCategoryList = null ;
+				
+		    locationValuesList.add(locationValue);
+			
+			List<Long> panchayitIdsList = panchayatDAO.getPanchayatIdsByTehsilId(locationValue);
+			
+			if(panchayitIdsList != null && panchayitIdsList.size() >0){
+			    hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);					
+				hamletScopeId  = 6L;
+			}				
+			
+			 countByCategoryList =	fileGallaryDAO.getNewsCountForMandalLevel(
+					candidateIds,locationId,locationValuesList,hamletScopeId,hamletIds);
+			 
+			 NewsCountVO newsCountVO = new NewsCountVO();
+			 
+			 newsCountVO.setTehsilScopeId(locationId);
+			 newsCountVO.setTehsilIds(locationValuesList);
+			 newsCountVO.setHamletScopeId(hamletScopeId);
+			 newsCountVO.setHamletIds(hamletIds);
+			 newsCountVO.setCandidateIds(candidateIds);
+			 
+			 filesList  = setNewsCountValuesToFileVO1(countByCategoryList , newsCountVO , "tehsil");
+			 
+			 
+			 //setNewsCountValuesToFileVO(countByCategoryList,candidateIds,locationId,locationValuesList,hamletScopeId,hamletIds);
+		}catch(Exception e){
+			log.error("Exception raised in the getNewsCountForMandalLevel service method");
+			e.printStackTrace();		
+		}
+		return filesList;
+
+}
+
+public List<FileVO> getNewsCountDetailsByPanchayat(List<Long> candidateIds ,Long  locationValue){
+
+ log.debug("Entered into the getNewsCountDetailsByPanchayat service method");	
+ List<FileVO> filesList = null;
+ 
+		 try{
+			 List<Object[]> countByCategoryList = null ;
+			     List<Long> hamletIds = null;
+			     Long hamletScopeId = 6L;
+			
+			 List<Long> panchayitIdsList  = new ArrayList<Long>();
+			 panchayitIdsList.add(locationValue);
+			
+			 hamletIds =  panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
+		
+		    countByCategoryList =	fileGallaryDAO.getNewsCountForMandalLevel(
+						candidateIds,null,null,hamletScopeId,hamletIds);
+		    
+		    NewsCountVO newsCountVO = new NewsCountVO();
+		    
+		    newsCountVO.setHamletScopeId(hamletScopeId);
+		    newsCountVO.setHamletIds(hamletIds);
+		    newsCountVO.setCandidateIds(candidateIds);
+		    
+		    filesList  = setNewsCountValuesToFileVO1(countByCategoryList , newsCountVO , "panchayat");
+		    
+		    //setNewsCountValuesToFileVO(countByCategoryList,candidateIds,null,null,hamletScopeId,hamletIds);
+		   
+		
+			
+		}catch(Exception e){
+	      log.error("Exception raised in getNewsCountDetailsByPanchayat service method");
+	     e.printStackTrace();	
+         }
+		 
+       return filesList;
+
+}
+
+public List<FileVO> getNewsCountDetailsForMuncipality(
+		      List<Long> candidateIds ,Long locationId ,Long locationValue){
+	 List<FileVO> filesList = null;
+	 List<Long> locationValuesList = null;
+	 List<Object[]> countByCategoryList = null;
 	
+	try{
+
+ 	   
+   	  List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
+   	  
+   	  if(localElectionBodyList != null && localElectionBodyList.size() >0){
+   		  
+   		 locationValuesList = new ArrayList<Long>();	    		  
+   		  locationValuesList.add((Long)localElectionBodyList.get(0));
+   		  
+   	  }
+   	  
+   	  NewsCountVO newsCountVO = new NewsCountVO();
+   	  
+   	    newsCountVO.setCandidateIds(candidateIds);
+   	    newsCountVO.setMuncipalityScopeId(7L);
+    	newsCountVO.setMuncipalityValuesList(locationValuesList);
+   	  
+   	countByCategoryList = 	fileGallaryDAO.getNewsCountForMuncipality(candidateIds ,locationId ,locationValuesList);
+   	
+    filesList  = setNewsCountValuesToFileVO1(countByCategoryList , newsCountVO , "muncipality");
+
+  	   
+     
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		
+	}
+	return filesList;
+}
+
+public List<FileVO> getNewsCountDetailsByConstituencyLevel(
+		List<Long> candidateIds, Long locationId, Long locationValue) {	
 	
-	public List<FileVO> getNewsCountForALocationByCategory(Long registrationId,
+	log.debug("Entered into the getNewsCountDetailsByConstituencyLevel service method");	
+    List<FileVO> filesList = null;
+ 
+ try
+	 {
+		 List<Object[]> countByCategoryList = null ;
+		 List<Long> panchayitIdsList = new ArrayList<Long>();
+		// Long constituencyScopeId = locationId;
+		 Long constituencyScopeId = 4L;
+		 Long constituencyVal = locationValue;
+	
+		 Long tehsilScopeId = 5L;
+		 List<Long> tehsilIds = new ArrayList<Long>();
+	
+		 Long hamletScopeId = 6L;
+		 List<Long> hamletIds = null;
+		 
+		 Long muncipalityScopeId = 7L;
+	
+		 List<Object[]> mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(constituencyVal);
+	
+		 for(Object[] obj:mandalsList)
+			 tehsilIds.add((Long)obj[0]);
+	
+		 List<Object[]> panchayitisList = panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
+		 
+		 
+		 for(Object[] obj :panchayitisList)
+			 panchayitIdsList.add((Long)obj[0]);
+	
+		 if(panchayitIdsList != null && panchayitIdsList.size() >0)
+			 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
+		 
+		 
+		List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+	
+		 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
+			 
+			 
+			 countByCategoryList =	fileGallaryDAO.getNewsCountForConstituencyLevelWithMuncipality(
+						candidateIds,constituencyScopeId,constituencyVal,tehsilScopeId,
+						tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId , localElectionBodyIds);
+		
+		 	
+		 }else{
+			 
+			 countByCategoryList =	fileGallaryDAO.getNewsCountForConstituencyLevel(
+						candidateIds,constituencyScopeId,constituencyVal,tehsilScopeId,
+						tehsilIds,hamletScopeId,hamletIds);
+			 
+			 
+		 }
+	 
+	 
+	/* setNewsCountValuesToFileVO1(countByCategoryList,
+				candidateIds,constituencyScopeId,constituencyVal,tehsilScopeId,
+				tehsilIds,hamletScopeId,hamletIds);
+	*/
+	 
+		 	NewsCountVO newsCountVO = new NewsCountVO();
+	 
+		 	newsCountVO.setConstituencyScopeId(constituencyScopeId);
+		 	newsCountVO.setConstituencyValue(constituencyVal);
+		 	newsCountVO.setTehsilScopeId(tehsilScopeId);
+		 	newsCountVO.setTehsilIds(tehsilIds);
+		 	newsCountVO.setHamletScopeId(hamletScopeId);
+		 	newsCountVO.setHamletIds(hamletIds);
+		 	newsCountVO.setCandidateIds(candidateIds);
+		 	
+		 	if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
+		 	  newsCountVO.setMuncipalityScopeId(muncipalityScopeId);
+		 	  newsCountVO.setMuncipalityValuesList(localElectionBodyIds);
+		 	}
+	
+		 	filesList  =  setNewsCountValuesToFileVO1
+		 			(countByCategoryList , newsCountVO , "constituency");
+		 	
+	 }catch(Exception e){
+	 
+	 log.error("Exception raised in getNewsCountDetailsByConstituencyLevel service method");
+	 e.printStackTrace();	 
+     }
+    return filesList;
+
+   }
+	 
+	public List<FileVO> setNewsCountValuesToFileVO1(
+			List<Object[]> countByCategoryList, NewsCountVO newsCountVO , String type) {
+		 
+		 List<FileVO> filesList = new ArrayList<FileVO>();
+		 List<Object[]> importanceCountList = null;
+		 try{
+			 
+			 for(Object[] obj:countByCategoryList){				
+					
+					FileVO file = new FileVO();				
+					Long categoryId = (Long)obj[2];				
+					file.setCategoryName(obj[0].toString());	
+					file.setCategoryId(categoryId);
+			
+					
+					if(type.equalsIgnoreCase("constituency")){
+						
+						if(newsCountVO.getMuncipalityScopeId() != null && newsCountVO.getMuncipalityValuesList() != null){
+							
+							importanceCountList = fileGallaryDAO
+									.getNewsCountForALocationByCategoryAndImportanceForConstituencyWithMuncipality(
+											 categoryId ,newsCountVO );
+							
+						}else{
+					        importanceCountList = fileGallaryDAO
+							.getNewsCountForALocationByCategoryAndImportanceForConstituency(
+									 categoryId ,newsCountVO );
+						}
+					 
+					}else if(type.equalsIgnoreCase("tehsil")){
+						
+						importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportanceForMandal(
+										 categoryId ,newsCountVO );
+						
+					}else if(type.equalsIgnoreCase("panchayat")){
+						
+						importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportanceForPanchayat(
+										 categoryId ,newsCountVO );
+					}else if(type.equalsIgnoreCase("muncipality")){
+						
+						importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportanceForMuncipality(
+										 categoryId ,newsCountVO );
+					}
+			
+					for(Object[] importanceNews:importanceCountList){					
+						Long importanceId = (Long)importanceNews[0];
+						Long newsCount = (Long)importanceNews[2];
+						
+						if(importanceId == 1)							
+							file.setLowImpactCount(newsCount);
+						else if(importanceId == 2)
+							file.setMediumImpactCount(newsCount);
+						else if(importanceId == 3)
+							file.setHighImpactCount(newsCount);
+						
+					}			
+						filesList.add(file);
+						
+					}
+			 
+		 }catch(Exception e){
+			 e.printStackTrace();			 
+		 }
+		 
+		 return filesList;
+		 
+	 } 
+	 
+	/* public List<FileVO> setNewsCountValuesToFileVO2(List<Object[]> countByCategoryList,
+				List<Long> candidateIds,Long constituencyScopeId,Long constituencyVal,Long tehsilScopeId,
+				List<Long> tehsilIds,Long hamletScopeId,List<Long> hamletIds){
+		 
+		 List<FileVO> filesList = new ArrayList<FileVO>();
+		 
+		 try{
+			 
+			 for(Object[] obj:countByCategoryList){				
+					
+					FileVO file = new FileVO();				
+					Long categoryId = (Long)obj[2];				
+					file.setCategoryName(obj[0].toString());	
+					file.setCategoryId(categoryId);
+					
+					List<Object[]> importanceCountList = fileGallaryDAO
+							.getNewsCountForALocationByCategoryAndImportanceForACandidate(
+									candidateIds, categoryId , locationId , locationValuesList );
+					
+					List<Object[]> importanceCountList = fileGallaryDAO
+							.getNewsCountForALocationByCategoryAndImportanceForConstituency(
+									candidateIds, categoryId , constituencyScopeId,constituencyVal,
+									tehsilScopeId,tehsilIds,hamletScopeId,hamletIds);
+			
+						for(Object[] importanceNews:importanceCountList){					
+							Long importanceId = (Long)importanceNews[0];
+							Long newsCount = (Long)importanceNews[2];
+							
+							if(importanceId == 1)							
+								file.setLowImpactCount(newsCount);
+							else if(importanceId == 2)
+								file.setMediumImpactCount(newsCount);
+							else if(importanceId == 3)
+								file.setHighImpactCount(newsCount);
+							
+						}				
+						filesList.add(file);
+						
+					}
+			 
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 
+		 }
+		 
+	 }*/
+	 
+	public List<FileVO> setNewsCountValuesToFileVO(List<Object[]> countByCategoryList,List<Long> candidateIds,
+			Long locationId, List<Long> locationValuesList, Long hamletScopeId,
+			List<Long> hamletIds) {
+		 log.debug("Entered into the setNewsCountValuesToFileVO service method");
+		 try{
+			 
+			 
+			 for(Object[] obj:countByCategoryList){				
+					
+					FileVO file = new FileVO();				
+					Long categoryId = (Long)obj[2];				
+					file.setCategoryName(obj[0].toString());	
+					file.setCategoryId(categoryId);
+					
+					/*List<Object[]> importanceCountList = fileGallaryDAO
+							.getNewsCountForALocationByCategoryAndImportanceForACandidate(
+									candidateIds, categoryId , locationId , locationValuesList );*/
+					
+					 List<File> importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportance(
+										candidateIds, categoryId , locationId , locationValuesList,hamletScopeId , hamletIds );
+					 
+					 
+					 for(File file1:importanceCountList){
+						 
+						// file1.
+						 
+						 
+						 
+					 }
+			/*
+						for(Object[] importanceNews:importanceCountList){					
+							Long importanceId = (Long)importanceNews[0];
+							Long newsCount = (Long)importanceNews[2];
+							
+							if(importanceId == 1)							
+								file.setLowImpactCount(newsCount);
+							else if(importanceId == 2)
+								file.setMediumImpactCount(newsCount);
+							else if(importanceId == 3)
+								file.setHighImpactCount(newsCount);
+							
+						}				
+						filesList.add(file);*/
+						
+					}
+			 
+			
+			 
+			
+			 
+			 
+		 }catch(Exception e){
+			 log.error("Exception raised in setNewsCountValuesToFileVO service method");
+			 e.printStackTrace();
+		}
+		 return null;
+	 }
+	
+	public List<FileVO> getNewsCountForALocationByCategory1(Long registrationId,
 			Long locationValue, Long locationId, Long publicationId) {
 		
 		log.debug("Enterd into the getNewsCountForALocationByCategory service method");
@@ -1105,8 +1556,6 @@ public class NewsMonitoringService implements INewsMonitoringService {
  	    	  
                 for(Object[] obj:hamletsList){
              	   locationValuesList.add((Long)obj[0]);
-             	   
-             	   
                 }
                 locationId = 6L;
            }
@@ -1122,10 +1571,6 @@ public class NewsMonitoringService implements INewsMonitoringService {
  	    		  locationValuesList.add((Long)localElectionBodyList.get(0));
  	    		  
  	    	  }
- 	    		  
- 	       
-        	   
-        	   
         	   
            }
         	   
@@ -1240,8 +1685,218 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		
 	}
 	
-	//by sasi start
+	
 	public ContentDetailsVO getNewsByLocationAndCategoryInPopup(FileVO fileVO){
+		
+		//List<FileVO> fileList = new ArrayList<FileVO>();
+		List<FileGallary> filesList =new ArrayList<FileGallary>();
+		
+		try{			
+			List<Long> candidateIds = getCandidateDetailsByRegistrationId(fileVO.getUserId());
+			
+			if(fileVO.getLocationId().longValue() == 3)
+				filesList = getNewsDetailsForPanchayat(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 5)
+				filesList = getNewsDetailsForMandal(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 4)
+				filesList = getNewsDetailsForConstituency(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 7)
+				filesList = getNewsDetailsForMuncipality(candidateIds,fileVO);
+			
+		contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleriesInPopup(
+				fileVO.getContentId(),fileVO.getRequestFrom(),fileVO.getRequestPageId(),
+				fileVO.getIsCustomer(),filesList);
+
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return contentDetailsVO;
+	}
+	
+	public List<FileGallary> getNewsDetailsForPanchayat(List<Long> candidateIds , FileVO fileVO){
+		List<FileGallary> fileGallaryList = null;
+		
+		try{
+			
+            List<Long> hamletIds = null;
+            Long hamletScopeId = 6L;
+           
+			 List<Long> panchayitIdsList  = new ArrayList<Long>();
+			 panchayitIdsList.add(fileVO.getLocationVal());
+			
+			 hamletIds =  panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
+			 
+			 NewsCountVO newsCountVO = new NewsCountVO();
+			 
+			 newsCountVO.setCandidateIds(candidateIds);
+			 newsCountVO.setHamletScopeId(hamletScopeId);
+			 newsCountVO.setHamletIds(hamletIds);
+			 newsCountVO.setCategoryId(fileVO.getCategoryId());
+			 newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			
+			 
+			 fileGallaryList = fileGallaryDAO.getFilegallaryDetailsForPanchayat(newsCountVO);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return fileGallaryList;
+	}
+	
+	public List<FileGallary> getNewsDetailsForMandal(List<Long> candidateIds , FileVO fileVO){
+		
+		List<FileGallary> fileGallaryList = null;
+		try{
+
+			Long tehsilScopeId = 5L;
+			Long hamletScopeId = 6L;
+			List<Long> hamletIds = null;
+			List<Long> tehsilIds = new ArrayList<Long>();
+			
+			List<Long> panchayitIdsList = panchayatDAO.getPanchayatIdsByTehsilId(fileVO.getLocationVal());
+			
+			if(panchayitIdsList != null && panchayitIdsList.size() >0){
+			    hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);					
+			}
+			
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+			tehsilIds.add(fileVO.getLocationVal());
+			
+			newsCountVO.setCandidateIds(candidateIds);
+			newsCountVO.setTehsilIds(tehsilIds);
+			newsCountVO.setTehsilScopeId(tehsilScopeId);
+			newsCountVO.setHamletScopeId(hamletScopeId);
+			newsCountVO.setHamletIds(hamletIds);
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			
+			fileGallaryList = fileGallaryDAO.getNewsDetailsByForMandal(newsCountVO);
+			//filesList =  processAllFileDetails(fileVO,fileList);
+	
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return fileGallaryList;
+	}
+	
+	public List<FileGallary> getNewsDetailsForMuncipality(List<Long> candidateIds , FileVO fileVO){
+		
+		List<FileGallary> fileGallaryList = null;
+		
+		try{
+			Long muncipalityScopeId = 7L;
+			List<Long> muncipalityValues = null;
+			
+	       List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(fileVO.getLocationVal());
+	  
+	       if(localElectionBodyList != null && localElectionBodyList.size() >0){
+		     muncipalityValues = new ArrayList<Long>();	    		  
+		     muncipalityValues.add((Long)localElectionBodyList.get(0));	
+		     
+	       }
+	       
+		     NewsCountVO newsCountVO = new NewsCountVO();
+		     
+		     newsCountVO.setCandidateIds(candidateIds);
+		     newsCountVO.setMuncipalityScopeId(muncipalityScopeId);
+		     newsCountVO.setMuncipalityValuesList(muncipalityValues);
+		     newsCountVO.setCategoryId(fileVO.getCategoryId());
+			 newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			 newsCountVO.setStartIndex(fileVO.getStartIndex());
+			 newsCountVO.setMaxResults(fileVO.getMaxResult());
+
+	    	
+	       fileGallaryList = fileGallaryDAO.getNewsDetailsByForMuncipality(newsCountVO);
+	       
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return fileGallaryList;
+		
+		
+	}
+	
+	
+	public List<FileGallary> getNewsDetailsForConstituency(List<Long> candidateIds , FileVO fileVO){
+		List<FileGallary> fileGallaryList = null;
+		
+		try{
+			Long constituencyScopeId = 4L;
+			List<Long> constituencyValuesList = new ArrayList<Long>();
+			Long tehsilScopeId = 5L;
+			List<Long> tehsilIds = new ArrayList<Long>();
+			Long hamletScopeId = 6L;
+			List<Long> hamletIds = null;
+			List<Long> panchayitIdsList = new ArrayList<Long>();
+			
+			constituencyValuesList.add(fileVO.getLocationVal());
+			
+			List<Object[]> mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(fileVO.getLocationVal());
+			
+			 for(Object[] obj:mandalsList)
+				 tehsilIds.add((Long)obj[0]);
+			 
+			 List<Object[]> panchayitisList = panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
+			 
+			 
+			 for(Object[] obj :panchayitisList)
+				 panchayitIdsList.add((Long)obj[0]);
+		
+			 if(panchayitIdsList != null && panchayitIdsList.size() >0)
+				 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
+			 
+			List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+
+			 
+			 NewsCountVO newsCountVO = new NewsCountVO();
+			 
+			 newsCountVO.setCandidateIds(candidateIds);
+			 newsCountVO.setConstituencyScopeId(constituencyScopeId);
+			 newsCountVO.setConstituencyValuesList(constituencyValuesList);
+			 newsCountVO.setTehsilScopeId(tehsilScopeId);
+			 newsCountVO.setTehsilIds(tehsilIds);
+			 newsCountVO.setHamletScopeId(hamletScopeId);
+			 newsCountVO.setHamletIds(hamletIds);
+			 newsCountVO.setCategoryId(fileVO.getCategoryId());
+			 newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			 newsCountVO.setStartIndex(fileVO.getStartIndex());
+			 newsCountVO.setMaxResults(fileVO.getMaxResult());
+			 
+			 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
+				 newsCountVO.setMuncipalityScopeId(7L);
+				 newsCountVO.setMuncipalityValuesList(localElectionBodyIds);
+				 
+				  fileGallaryList = fileGallaryDAO.getNewsDetailsForConstituencyWithMuncipality(newsCountVO);
+
+			 
+			 }else{			 
+			  fileGallaryList = fileGallaryDAO.getNewsDetailsForConstituency(newsCountVO);
+			 }
+			 
+			// filesList =  processAllFileDetails(fileVO,fileList);
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return fileGallaryList;
+	}
+	
+	//by sasi start
+	public ContentDetailsVO getNewsByLocationAndCategoryInPopup1(FileVO fileVO){
 		log.debug("Entered into the getNewsByLocationAndCategoryInPopup service method");
 		
 		
@@ -1305,9 +1960,329 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		
 	}
 	
-	
-	
 	public List<FileVO> getNewsByLocationAndCategory(FileVO fileVO){
+		List<FileVO> filesList = null;
+		
+		try{
+			List<Long> candidateIds = getCandidateDetailsByRegistrationId(fileVO.getUserId());
+			
+			if(fileVO.getLocationId().longValue() == 3)
+				filesList = getNewsForPanchayat(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 5)
+				filesList = getNewsForMandal(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 4)
+				filesList = getNewsForConstituency(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 7)
+				filesList = getNewsForMuncipality(candidateIds,fileVO);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return filesList;
+	}
+	
+	
+	public List<FileVO> getNewsForPanchayat(List<Long> candidateIds , FileVO fileVO){
+		 List<FileVO> filesList = null;
+		
+		try{
+			
+             List<Long> hamletIds = null;
+             Long hamletScopeId = 6L;
+            
+			 List<Long> panchayitIdsList  = new ArrayList<Long>();
+			 panchayitIdsList.add(fileVO.getLocationVal());
+			
+			 hamletIds =  panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
+			 
+			 NewsCountVO newsCountVO = new NewsCountVO();
+			 
+			 newsCountVO.setCandidateIds(candidateIds);
+			 newsCountVO.setHamletScopeId(hamletScopeId);
+			 newsCountVO.setHamletIds(hamletIds);
+			 newsCountVO.setCategoryId(fileVO.getCategoryId());
+			 newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			 newsCountVO.setStartIndex(fileVO.getStartIndex());
+			 newsCountVO.setMaxResults(fileVO.getMaxResult());
+			 
+			List<Object[]> fileList = fileGallaryDAO.getNewsByForPanchayat(newsCountVO);
+			filesList = processAllFileDetails(fileVO,fileList);
+		
+			
+		}catch(Exception e){
+			e.printStackTrace();			
+		}
+		
+		return filesList;
+		
+	}
+	
+	public List<FileVO> getNewsForMuncipality(List<Long> candidateIds , FileVO fileVO){
+		List<FileVO> filesList = null;
+		
+		try{
+			
+			List<Long> muncipalityValuesList = new ArrayList<Long>();
+			
+			List<Long> localElectionBodyList =  assemblyLocalElectionBodyDAO.getLocalElectionBodyId(fileVO.getLocationVal());
+	    	  
+	    	  if(localElectionBodyList != null && localElectionBodyList.size() >0)
+	    		  muncipalityValuesList.add((Long)localElectionBodyList.get(0));
+	    	
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+			newsCountVO.setCandidateIds(candidateIds);
+			newsCountVO.setMuncipalityScopeId(7L);
+			newsCountVO.setMuncipalityValuesList(muncipalityValuesList);
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			newsCountVO.setStartIndex(fileVO.getStartIndex());
+			newsCountVO.setMaxResults(fileVO.getMaxResult());
+			
+			List<Object[]> fileList = fileGallaryDAO.getNewsByForMuncipality(newsCountVO);
+			filesList =  processAllFileDetails(fileVO,fileList);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+       return filesList;
+		
+	}
+	
+	
+	public List<FileVO> getNewsForMandal(List<Long> candidateIds , FileVO fileVO){
+		List<FileVO> filesList = null;
+		
+		try{
+			Long tehsilScopeId = 5L;
+			Long hamletScopeId = 6L;
+			List<Long> hamletIds = null;
+			List<Long> tehsilIds = new ArrayList<Long>();
+			
+			List<Long> panchayitIdsList = panchayatDAO.getPanchayatIdsByTehsilId(fileVO.getLocationVal());
+			
+			if(panchayitIdsList != null && panchayitIdsList.size() >0){
+			    hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);					
+			}
+			
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+			tehsilIds.add(fileVO.getLocationVal());
+			
+			newsCountVO.setCandidateIds(candidateIds);
+			newsCountVO.setTehsilIds(tehsilIds);
+			newsCountVO.setTehsilScopeId(tehsilScopeId);
+			newsCountVO.setHamletScopeId(hamletScopeId);
+			newsCountVO.setHamletIds(hamletIds);
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			newsCountVO.setStartIndex(fileVO.getStartIndex());
+			newsCountVO.setMaxResults(fileVO.getMaxResult());
+			 
+			
+			List<Object[]> fileList = fileGallaryDAO.getNewsByForMandal(newsCountVO);
+			filesList =  processAllFileDetails(fileVO,fileList);
+
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return filesList;
+	}
+	
+	
+	public List<FileVO> getNewsForConstituency(List<Long> candidateIds , FileVO fileVO){
+		List<FileVO> filesList = null;
+		try{
+			Long constituencyScopeId = 4L;
+			List<Long> constituencyValuesList = new ArrayList<Long>();
+			Long tehsilScopeId = 5L;
+			List<Long> tehsilIds = new ArrayList<Long>();
+			Long hamletScopeId = 6L;
+			List<Long> hamletIds = null;
+			List<Long> panchayitIdsList = new ArrayList<Long>();
+			
+			constituencyValuesList.add(fileVO.getLocationVal());
+			
+			List<Object[]> mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(fileVO.getLocationVal());
+			
+			 for(Object[] obj:mandalsList)
+				 tehsilIds.add((Long)obj[0]);
+			 
+			 List<Object[]> panchayitisList = panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
+			 
+			 
+			 for(Object[] obj :panchayitisList)
+				 panchayitIdsList.add((Long)obj[0]);
+		
+			 if(panchayitIdsList != null && panchayitIdsList.size() >0)
+				 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
+			 
+		List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+
+			 
+			 NewsCountVO newsCountVO = new NewsCountVO();
+			 
+			 newsCountVO.setCandidateIds(candidateIds);
+			 newsCountVO.setConstituencyScopeId(constituencyScopeId);
+			 newsCountVO.setConstituencyValuesList(constituencyValuesList);
+			 newsCountVO.setTehsilScopeId(tehsilScopeId);
+			 newsCountVO.setTehsilIds(tehsilIds);
+			 newsCountVO.setHamletScopeId(hamletScopeId);
+			 newsCountVO.setHamletIds(hamletIds);
+			 newsCountVO.setCategoryId(fileVO.getCategoryId());
+			 newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			 newsCountVO.setStartIndex(fileVO.getStartIndex());
+			 newsCountVO.setMaxResults(fileVO.getMaxResult());
+			 
+			 List<Object[]> fileList  = null;
+			 
+			 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
+				 newsCountVO.setMuncipalityScopeId(7L);
+				 newsCountVO.setMuncipalityValuesList(localElectionBodyIds);
+				 
+				 fileList = fileGallaryDAO.getNewsByForConstituencyWithMuncipality(newsCountVO);
+				 
+			 }else{
+			 
+			 fileList = fileGallaryDAO.getNewsByForConstituency(newsCountVO);
+			 }
+			 
+			 filesList =  processAllFileDetails(fileVO,fileList);
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return filesList;
+		
+	}
+	
+	
+	public List<FileVO> processAllFileDetails(FileVO fileVO , List<Object[]> filesList){
+		
+		List<FileVO> fileList = new ArrayList<FileVO>();
+		try{
+			List<Long> fileIdsList = new ArrayList<Long>();
+			
+			for(Object[] obj1:filesList)
+				fileIdsList.add(((File)obj1[0]).getFileId());
+			
+			Map<Long ,Long> problemCountMap = new HashMap<Long, Long>();
+			List<Object[]> problemCountList = newsProblemDAO.getProblemIdsByFileIds(fileIdsList);
+			
+			for(Object[] problemCount:problemCountList)
+				problemCountMap.put((Long)problemCount[1], (Long)problemCount[0]);
+			
+			 for(Object[] obj:filesList){
+		    	   
+		    	   File fileDetails = (File)obj[0];
+		    	   String visibility = obj[2].toString();
+		    	   
+		    	   FileVO file = new FileVO();
+		    	   file.setIsPrivate(visibility);
+		    	   
+		    	   if(fileDetails.getRegionScopes() != null)
+		    		   file.setLocationScopeValue(fileDetails.getRegionScopes().getScope());
+		    	   
+		    	   
+		    	   
+		    	   if(problemCountMap.get(fileDetails.getFileId()) != null){
+		    		   file.setIsProblem("true");
+		    		   file.setProblemId(problemCountMap.get(fileDetails.getFileId()));
+		    	   }
+		    	   else
+		    		   file.setIsProblem("false");
+		    	   
+		    	   
+		    	     Set<FileSourceLanguage> fileSourceLanguageSet = fileDetails.getFileSourceLanguage();
+		    		 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
+		    		 Set<String> sourceSet = new HashSet<String>();
+		 			 Set<String> languageSet = new HashSet<String>();
+		 			 StringBuilder sourceVal =new StringBuilder();
+					 StringBuilder languageVal =new StringBuilder();
+					 
+					 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+						 if(fileVO.getSourceId() == null && fileVO.getLanguegeId() == null)
+						 {
+							  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							  if(fileSourceLanguage.getSource() != null)
+							  sourceSet.add(fileSourceLanguage.getSource().getSource());
+							  if(fileSourceLanguage.getLanguage() != null)
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+						 else if(fileVO.getLanguegeId() != null){
+							 if(fileVO.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
+							 {
+								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+								 if(fileSourceLanguage.getSource() != null)
+								 sourceSet.add(fileSourceLanguage.getSource().getSource());
+								 if(fileSourceLanguage.getLanguage() != null)
+								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+							 }
+						 }
+						 else if(fileVO.getSourceId() != null){
+							 if(fileVO.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
+							 { 
+								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+								 if(fileSourceLanguage.getSource() != null)
+								 sourceSet.add(fileSourceLanguage.getSource().getSource());
+								 if(fileSourceLanguage.getLanguage() != null)
+								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+							 }
+						 }
+						 
+					 }
+					 
+					 
+					 for(String source:sourceSet){
+						 sourceVal.append(source);
+						 sourceVal.append("-");
+					 }
+		             for(String language:languageSet){
+		            	 languageVal.append(language);
+		            	 languageVal.append("-");
+					 }
+		             if(sourceVal != null && sourceVal.length() > 0)
+		             sourceVal.deleteCharAt(sourceVal.length() - 1);
+		             if(languageVal != null && languageVal.length() > 0)
+		             languageVal.deleteCharAt(languageVal.length() - 1);
+		             file.setMultipleSource(fileVOSourceLanguageList.size());
+		             Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+		             file.setFileVOList(fileVOSourceLanguageList);
+				
+				
+	    		  file.setSource(sourceVal!=null?sourceVal.toString():"");
+	    		  file.setLanguage(languageVal!=null?languageVal.toString():"");
+		    	  file.setTitle(fileDetails.getFileTitle());
+		    	  file.setDescription(fileDetails.getFileDescription());
+		    	  file.setContentId((Long)obj[1]);
+		    	  file.setFileDate(fileDetails.getFileDate()!=null?fileDetails.getFileDate().toString():"");
+		    	   
+		    	  if(fileDetails.getRegionScopes() != null && fileDetails.getLocationValue() != null)
+		    	  file.setLocationName(candidateDetailsService.getLocationDetails(fileDetails.getRegionScopes().getRegionScopesId() ,fileDetails.getLocationValue()));
+		    	  fileList.add(file);
+		    	   
+		       }
+			
+		}catch(Exception e){e.printStackTrace();
+			
+		}
+		return fileList;
+		
+	}
+	
+	
+	public List<FileVO> getNewsByLocationAndCategory1(FileVO fileVO){
 		
 		log.debug("Entered into the getNewsByLocationAndCategory service method");
 		
