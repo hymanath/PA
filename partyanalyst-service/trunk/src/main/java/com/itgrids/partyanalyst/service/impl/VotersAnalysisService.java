@@ -7175,7 +7175,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		 */
 		public ResultStatus saveVoters(final String name, final String voterCardNo,
 				final String houseNo, final String gaurdian, final String relationShip,
-				final String gender,  final Long age,final Long boothId) {
+				final String gender, final String mobileNo, final Long age,final Long boothId) {
 				
 			  log.info("Entered into saveVoters Method...");
 			  ResultStatus resultStatus = new ResultStatus();
@@ -7199,6 +7199,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 							voter.setRelationshipType(relationShip);
 							voter.setGender(gender);
 							voter.setAge(age);
+							voter.setMobileNo(mobileNo);
 							//voterDAO.save(voter);
 							BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
 							if(boothId != null)
