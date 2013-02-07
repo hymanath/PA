@@ -143,9 +143,10 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 			String gaurdian = jObj.getString("gaurdian");
 			String relationShip = jObj.getString("relationShip");
 			String gender = jObj.getString("gender");
+			String mobileNo = jObj.getString("mobileNo");
 			Long age = jObj.getLong("age");
 			Long boothId = jObj.getLong("boothId");
-			storeVoter = votersAnalysisService.saveVoters(name,voterCardNo,houseNo,gaurdian,relationShip,gender,age,boothId);
+			storeVoter = votersAnalysisService.saveVoters(name,voterCardNo,houseNo,gaurdian,relationShip,gender,mobileNo,age,boothId);
 			return "storeVoter";
 		}
 		return Action.SUCCESS;
