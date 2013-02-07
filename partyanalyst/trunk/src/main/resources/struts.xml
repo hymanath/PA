@@ -4341,6 +4341,14 @@
         	</result>		
 		</action>
 		
+		
+		<action name="convertNewsToProblem" class="addNewProblemAction" method="convertNewsToProblem">
+		<result type="json" name="success">
+           		<param name="root">problemBeanFromDB</param>
+        	</result>
+		
+		</action>
+		
 		<!-- <action name="getVotersCountInfoAction" class="votersAnalysisAction" method="getVotersCount">
 			<result type="json" name="success">
 				<param name="root">votersInfo</param>				

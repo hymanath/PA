@@ -4,11 +4,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -28,7 +30,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class AddNewProblemAction extends ActionSupport implements ServletRequestAware,Preparable,ModelDriven<ProblemBeanVO>{
+public class AddNewProblemAction extends ActionSupport implements ServletRequestAware,ServletContextAware,Preparable,ModelDriven<ProblemBeanVO>{
 
 	/**
 	 * 
@@ -70,7 +72,26 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private RegistrationVO user = null;
 	private String windowTask = null;
 	private Long constituencyId;
+	private ServletContext context;
+	private ProblemBeanVO problemBeanFromDB;
 	
+	public ProblemBeanVO getProblemBeanFromDB() {
+		return problemBeanFromDB;
+	}
+
+	public void setProblemBeanFromDB(ProblemBeanVO problemBeanFromDB) {
+		this.problemBeanFromDB = problemBeanFromDB;
+	}
+	
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+		
+	}
+	
+	public ServletContext getContext() {
+		return context;
+	}
+
 	public String getWindowTask() {
 		return windowTask;
 	}
@@ -637,5 +658,87 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	}
 	
 	
-
+	public String convertNewsToProblem(){
+		
+		log.debug("Entered into the convertNewsToProblem method");
+		
+		try{
+		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Boolean hasFreeUserRole = (Boolean)session.getAttribute("hasFreeUserRole"); 
+			Boolean hasPartyAnalystUserRole = (Boolean)session.getAttribute("hasPartyAnalystUserRole");
+			
+			if(user==null)
+				return ERROR;
+			problemBeanVO.setHasFreeUserRole(hasFreeUserRole);
+			problemBeanVO.setHasPartyAnalystUserRole(hasPartyAnalystUserRole);
+			
+			if(user.getParentUserId() == null || user.getParentUserId() == 0)
+			{
+				problemBeanVO.setUserID(user.getRegistrationID());
+				problemBeanVO.setSubUserId(user.getRegistrationID());
+			}
+			else
+			{
+				problemBeanVO.setUserID(user.getMainAccountId());
+				problemBeanVO.setSubUserId(user.getRegistrationID());
+			}
+			
+			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
+			
+            String accessType =user.getAccessType();
+			
+			if("MP".equals(accessType))
+				problemBeanVO.setIsParliament(true);
+			else
+				problemBeanVO.setIsParliament(false);
+			
+			try{		
+			  jObj = new JSONObject(getTask());
+			
+			}catch(Exception e){
+				e.printStackTrace();			
+			}
+			
+			problemBeanVO.setContentId(jObj.getLong("contentId"));
+			problemBeanVO.setExistingFrom(jObj.getString("existingFrom"));
+			problemBeanVO.setProblemVisibility(jObj.getString("visibility"));
+			
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			String sourceFilePath = null;
+			String destFilePath = null;
+			
+			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+				destFilePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
+			else
+				destFilePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+pathSeperator+"Problem_Files"+ pathSeperator;
+			
+			
+			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+				//sourceFilePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
+				sourceFilePath = IWebConstants.STATIC_CONTENT_FOLDER_URL ;
+			else
+				//sourceFilePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
+				sourceFilePath = context.getRealPath("/");
+			
+			problemBeanVO.setSourceFilePath(sourceFilePath);
+			problemBeanVO.setDestinationFilePath(destFilePath);
+			problemBeanVO.setPathSepecrator(pathSeperator);
+			
+			problemBeanVO.setYear(IConstants.PRESENT_YEAR);
+	        problemBeanVO.setWindowTask(IConstants.NEW);
+	            
+	        problemBeanFromDB =  problemManagementService.saveProblemDataForNews(problemBeanVO);
+			
+			
+			
+		}catch(Exception e){
+			log.debug("Exception raised in the convertNewsToProblem method");
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 }
