@@ -271,7 +271,7 @@ function buildContentDetails()
 				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
-				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
+				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'('+result.relatedGalleries[0].filesList[i].locationName+')</font>';
 
 
 			 str+='</td>';
@@ -775,12 +775,13 @@ newsString = mainname+" News";
 		 locationValue = locationValue.substring(1);
 	  }
   }
-
 	  
    var jObj=
 	{
 		locationValue:locationValue,
 		locationId:locationId,
+		//locationValue:232,
+		//locationId:4,
 		publicationId:0,
 		//locationValue:locationValue,
 		//locationId:locationId,
@@ -831,8 +832,10 @@ function callAjaxToShowNewsDetails(jObj,url){
 						
 				       myResults = YAHOO.lang.JSON.parse(o.responseText);
 
-					   if(jObj.task == "getNewsByLocation")
-                          displayNewsByImportance(jObj,myResults);					  
+					   if(jObj.task == "getNewsByLocation"){
+                          displayNewsByImportance(jObj,myResults);
+						  $('#newsAjaxImage').css('display','none');
+					   }
 					   else if(jObj.task == "newsForALocation")
 					      buildProblemsCount(myResults);
 					   else if(jObj.task="getNewsOfLocationInPopup"){
@@ -930,8 +933,14 @@ function  buildProblemsCount(results){
 	//str+='<div>';
 	//str+='<div class="span3" style="border:1px solid #5e5e5e;float:left;margin:6px 3px 6px 5px;background-color:#f5f5f5;">';
 	//str+='</div>';
- if(results != null && results.length >0)
+ //if(results != null && results.length >0)
    str+='<h4 style="margin-top: 6px; margin-bottom: 4px;">News Glance</h4>';
+
+if(results == null || results.length == 0){
+    str+='<h5>No news Available</h5>';
+	 $('#newsCountDiv').html(str);
+	return false;
+}
    
 //str+='<h5 style="margin-left:15px;">'+newsString+'</h5>';
 
@@ -974,6 +983,11 @@ function  buildProblemsCount(results){
 var displayStr;
 var categoryStr;
 function getNews1(importanceId , categoryId , count){
+var noNews = false;
+	if(count== null){
+		alert("No news Exist");
+		noNews = true;
+	}
 	 categoryStr='';
 	 categoryStr+=' Category :';
 	 categoryStr+='<font style="color:red;">';
@@ -992,22 +1006,32 @@ function getNews1(importanceId , categoryId , count){
 	else if(categoryId == 7)
 		categoryStr+="Events";
 	 categoryStr+='</font>';
+
+	 categoryStr+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 	
 
     displayStr='';
 	if(importanceId == 3){
-		displayStr+='High level impacted News :<font style="color:red;">'+count+'</font>';
+		//displayStr+='ImpactLevel :High :<font style="color:red;">'+count+'</font>';
+		displayStr+='Impact Level :<span style="color:red;">High</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
+
 	}
 	else if (importanceId == 2){
-		displayStr+='Medium level impacted News :<font style="color:red;">'+count+'</font>';;
+		displayStr+='Impact Level :<span style="color:red;">Medium</span>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
 	}
 	else if (importanceId == 1){
-		displayStr+='low level impacted News :<font style="color:red;">'+count+'</font>';;
+		//displayStr+='ImpactLevel :Low :<font style="color:red;">'+count+'</font>';;
+		displayStr+='Impact Level :<span style="color:red;">Low</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
+
 	}
 
 		startIndex = 0;
 	    lastIndex = 10;
+
+		if(noNews == false){
+			$('#newsAjaxImage').css('display','block');
 		getNews(importanceId , categoryId);
+		}
 
 }
 
@@ -1020,6 +1044,8 @@ function getNews(importanceId , categoryId){
 	{
 		locationValue:locationValue,
 		locationId:locationId,
+		//locationValue:232,
+		//locationId:4,
 		publicationId:0,
 		importanceId:importanceId,
 		categoryId:categoryId,
@@ -1037,23 +1063,101 @@ function getNews(importanceId , categoryId){
 
 function displayNewsByImportance(jObj,results){
 
+
      var importanceId = jObj.importanceId;
 	 var  categoryId = jObj.categoryId;
 
-
   var str='';
+  str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
+
+
+  for(var i=0;i<results.length;i++){
+	  var description=results[i].description;
+
+  str+='<div style="height:38px;margin-bottom:4px;"  class="alert alert-info">';
+
+    str+='<div style="height: 50px; float: left; width: 480px;">';
+	 str+='<span style="color:black">';
+
+	 if(results[i].title.length > 100)
+	  str+='<a style="font-family:verdana;color:#686868;font-size:14px;font-weight:bold;" title="'+description+'" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title.substring(0,100)+'...</a>';
+	 else
+ 	  str+='<a style="font-family:verdana;color:#686868;font-size:14px;font-weight:bold;" title="'+description+'" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a>';
+	 str+='</span>';
+    str+='</div>';
+
+    if(categoryId == "1"){
+	 str+='<div style="height: 50px; width: 181px; float: left;">';
+	}else{
+		str+='<div style="height: 50px; width: 181px; float: right;">';
+	}
+	 str+='<span style="float: left; clear: right;">';
+	  str+='<span style="color:sienna;font-size:13px;">'+results[i].source+'  ('+results[i].fileDate+')</span>';
+     str+='</span>';
+
+	 if(results[i].locationScopeValue != "MUNICIPAL-CORP-GMC")
+	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:15px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">'+results[i].locationScopeValue.toLowerCase()+'</span></span>';
+	 else
+ 	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:15px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">Muncipality</span></span>';
+	str+='</div>';
+
+	str+='<div style="float: right; height: 50px; width: 178px; ">';
+	  if(categoryId == "1"){
+
+	     if(results[i].isProblem == "false"){
+	       str+='<a id=notAdded'+results[i].contentId+' style="float: right; color: green;" href="javaScript:{changeToProblem('+results[i].contentId+')}">Post as problem</a>';
+   		   str+='<span style="margin-left:18px;" id=added'+results[i].contentId+'> <a   title="Click here to see problem details" style="float:right;color:red;display:none;" href="javaScript:{}">&nbsp;&nbsp;<img src="images/icons/details.png"></img></a></span>';
+
+		 }else{
+		   str+='<a  style="display:none;" id=notAdded'+results[i].contentId+' style="float:right;color:red;" href="javaScript:{changeToProblem('+results[i].contentId+')}" style="color:green;">Make it as problem</a>';
+
+		   str+='<a  id=added'+results[i].contentId+' title="Click here to see problem details" style="float:right;color:red;" href="javaScript:{showProblemDetails('+results[i].problemId+');}" style="color:green;">Added as problem &nbsp;<img src="images/icons/details.png"></img></a>';
+
+
+		 }
+
+	  }
+	str+='</div>';
+  str+='</div>';
+
+  }
 
  // str+='<div style="margin:13px;"><b>'++'</b></div>';
-str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
 
-	for(var i=0;i<results.length;i++){
+/*	for(var i=0;i<results.length;i++){
 	var description=results[i].description;
+		
 
-		str+='<div class="breadcrumb" title="'+description+'"><h5 style="margin:5px;"><img src="./images/icons/bullet.png" style="margin-bottom:2px;"/><a style="font-family:verdana;color:#3E78FD;" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a></h5><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Date:'+results[i].fileDate+'</span><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Source:'+results[i].source+'</span></div>';
+		str+='<div class="breadcrumb" title="'+description+'"><h5 style="margin:5px;"><img src="./images/icons/bullet.png" style="margin-bottom:2px;"/><a style="font-family:verdana;color:#3E78FD;" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a></h5><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Date:'+results[i].fileDate+'</span><span style="margin-left:10px;margin-right:20px;margin-bottom:20px;">Source:'+results[i].source+'</span>';
+		str+='<span>Impact Level:'+results[i].locationScopeValue+'('+results[i].locationName+')</span>';
+       if(results[i].isProblem == "false"){
+		 if(categoryId == "1"){
+		  str+='<a  id=notAdded'+results[i].contentId+' style="float:right;color:red;" href="javaScript:{changeToProblem('+results[i].contentId+')}" style="color:green;">Make it as problem</a>';
+  		  str+='<span id=added'+results[i].contentId+' style="display:none;float:right;">Added as problem</span>';
+
+
+		 }
+	   }else if(results[i].isProblem == "true"){
+
+		  //str+='<a  id=notAdded'+results[i].contentId+' style="display:none;float:right;color:red;" href="javaScript:{changeToProblem('+results[i].contentId+')}" style="color:green;">Add as problem</a>';
+		   str+='<span id=added'+results[i].contentId+' style="float:right;">Added as problem';
+		   str+='<a  href="javaScript:{showProblemDetails('+results[i].problemId+');}" title="Click here to see the problem details"><img src="images/icons/details.png"></img></a></span>';
+
+	   }
+
+		str+='</div>';
+	
+
+		
+	}*/
+
+    if(startIndex > 1){
+		str+='<h6 style="margin:5px;text-align:center;"><a class="btn btn-mini btn-info" style="color:#fff;float:left;" href="javaScript:{decrementStartEndIndexes('+importanceId+','+categoryId+');}"> << Previous </a></h6>';
 	}
 
+
 	if(results.length >=10)
-		str+='<h6 style="margin:5px;text-align:center;"><a class="btn btn-mini btn-info" style="color:#fff;float:right;" href="javaScript:{incrementStartEndIndexes('+importanceId+','+categoryId+');}">Next .....</a></h6>';
+		str+='<h6 style="margin:5px;text-align:center;"><a class="btn btn-mini btn-info" style="color:#fff;float:right;" href="javaScript:{incrementStartEndIndexes('+importanceId+','+categoryId+');}">Next>></a></h6>';
 
   $('#newsDisplayDiv').html(str);
 
@@ -1067,10 +1171,122 @@ str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
 								hide: "explode",
 								modal: true,
 								maxWidth : 950,
-								overlay: { opacity: 0.5, background: 'black'}
+								overlay: { opacity: 0.5, background: 'black'},
+	                            buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
 
   });
 
+}
+
+
+function changeToProblem(contentId){
+
+	var str='';
+	str+='<div>';
+	str+='<div id="errorDiv"></div>';
+	str+='<span>Existing From:<input type="text" name="date" class="dateField" id="existingFrom" readonly/></span>';
+	//str+='<span>Visibility:<input type="text" id="visibility"></input></span>';
+	str+='<span style="float:left;margin:6px;">Visibility:</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+	str+='<div><label style="float:left;margin:6px;"><input style="margin:0px;" checked type="radio" name="visibility" value="private"/> Private </label>';
+	str+='<label style="float:left;margin:6px;"><input style="margin:0px;" type="radio" name="visibility" value="public"/> Public </label></div>';
+	str+='</div>';
+
+
+   $('#problemInnerDiv').html(str);
+
+   $("#problemOuterDiv").dialog({ 
+	                            title:'Add Problem',
+	                            height: 'auto',
+								width: 400,
+								closeOnEscape: false,
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 850,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+ 							   "Save":function() {callAjaxToChangeToProblem(contentId)},
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+
+}
+
+
+function showProblemDetails(problemId)
+{
+  window.open("completeProblemDetailsAction.action?problemId="+problemId, '_blank');
+  window.focus();
+}
+
+function callAjaxToChangeToProblem(contentId){
+
+	$('#errorDiv').html('');
+
+
+	if($('#existingFrom').val() == ""){
+		$('#errorDiv').html('<span style="color:red;">Existing from date is required</span>');
+	 return false;
+	}
+
+	var visibility = $('input:radio[name=visibility]:checked').val();
+
+
+	var jObj=
+	{
+		existingFrom:$('#existingFrom').val(),
+		//visibility:$('#visibility').val(),
+		visibility:visibility,
+		contentId:contentId,
+		//contentId:12327,
+		task:"convertNewsToProblem"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "convertNewsToProblem.action?"+rparam;	
+
+	callAjaxToConvertNewsToProblem(jObj,url);
+}
+
+function callAjaxToConvertNewsToProblem(jObj,url){
+		
+			 var myResults;
+
+			 var callback = {			
+ 		              success : function( o ) {
+					try {
+						
+				         myResults = YAHOO.lang.JSON.parse(o.responseText);
+                          alert("News successfully added as problem ");	
+
+						 $("#problemOuterDiv").dialog('close');
+						 $('#notAdded'+myResults.contentId).css('display','none');
+ 						 $('#added'+myResults.contentId).css('display','block');
+						 $('#added'+myResults.contentId).html('<span>Added as problem&nbsp;<a href="javaScript:{showProblemDetails('+myResults.problemId+')}"><img src="images/icons/details.png"></img></a></span>');
+							
+					    }catch (e) {
+						//alert('error');
+					    }  
+ 		                },
+ 		                  scope : this,
+ 		                  failure : function( o ) {
+						  // alert('error');
+ 		                }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
+
+	}
+
+
+function decrementStartEndIndexes(importanceId,categoryId){
+
+	startIndex = startIndex - 10;
+	lastIndex =  10 ; 
+
+	getNews(importanceId , categoryId);
 }
 
 
@@ -1288,6 +1504,8 @@ function getNewsOfLocation(cntntId,imprtanceId,ctgryId){
 	{
 		locationValue:locationValue,
 		locationId:locationId,
+		//locationId:4,
+		//locationValue:232,
 		imprtanceId:imprtanceId,
 		ctgryId:ctgryId,
 		contentid:cntntId,
