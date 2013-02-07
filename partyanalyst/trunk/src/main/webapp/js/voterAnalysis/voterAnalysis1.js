@@ -2652,11 +2652,13 @@ function getVoterDetailsForMandal(retrieveType){
 
 			var jsObj=
 					{
-				        constituencyId:'0',
-						mandalId:mandalId,
-						publicationDateId:mainpublicationId,
-						name:name,
-						type:"localElectionBody"
+					constituencyId:'0',
+					mandalId:mandalId,
+					publicationDateId:mainpublicationId,
+					name:name,
+					boothId:0,
+					panchayatId:'0',
+					type:"localElectionBody"
 						
 					};
 		}
@@ -3708,7 +3710,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 		if(flag)
 		{
 		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
+			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
 				str +='<th>Election Type</th>';
@@ -4255,7 +4257,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		 	   $.each(menudata[0].localbodiesList, function(iter,municipality){
 		     if(municipalityid==municipality.id && municipality.selectOptionsList != null){
 					  $.each(municipality.selectOptionsList,function(iter,booths){
-									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 			});
