@@ -1017,7 +1017,7 @@ var noNews = false;
 
 	}
 	else if (importanceId == 2){
-		displayStr+='Impact Level :<span style="color:red;">Medium</span>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
+		displayStr+='Impact Level :<span style="color:red;">Medium</span>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
 	}
 	else if (importanceId == 1){
 		//displayStr+='ImpactLevel :Low :<font style="color:red;">'+count+'</font>';;
