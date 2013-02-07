@@ -217,13 +217,15 @@ padding:5px 20px;
 .subscriptionsImgTitleDescDiv {width:100%;background:#fafafa;display:inline-block;padding:5px;margin:5px;}
 .frndName{ padding: 18px;
     width: auto;
-   margin-top: -27px;
+   margin-top: -50px;
+   display:block;
+   position:relative;
 }
 .frndImg {
  width: auto;
 }
 .friendListTemplate1{
- display: -moz-inline-box;
+ display: inline;
 }
 </style>
 </head>
