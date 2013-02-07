@@ -355,8 +355,8 @@ padding:5px 20px;
 						<a href="userProfile.action?profileId=${friendsDetails.registrationID}"></a>
 								
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
-									<!--<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>-->
-									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> 
+									<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
+									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
 								</c:if>
 						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
 								<img height="50" width="55" src="/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
