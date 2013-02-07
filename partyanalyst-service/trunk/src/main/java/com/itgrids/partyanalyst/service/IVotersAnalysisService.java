@@ -138,5 +138,5 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> getBoothsForConstituencyAndPublication(Long constituencyId,Long publicationId);
 	
-	public ResultStatus saveVoters(String name,String voterCardNo,String houseNo,String gaurdian,String relationShip,String gender,Long age,Long boothId);
+	public ResultStatus saveVoters(String name,String voterCardNo,String houseNo,String gaurdian,String relationShip,String gender,String mobileNo,Long age,Long boothId);
 }
