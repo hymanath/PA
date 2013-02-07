@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.Tehsil;
 
@@ -35,4 +36,6 @@ public interface IDelimitationConstituencyMandalDAO extends GenericDao<Delimitat
 	public List<Object[]> getLatestMandalsForAConstituency(Long constituencyId);
 	
 	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId);
+	
+	public List<Constituency> getConstituencyByTehsilId(Long tehsilId);
 }

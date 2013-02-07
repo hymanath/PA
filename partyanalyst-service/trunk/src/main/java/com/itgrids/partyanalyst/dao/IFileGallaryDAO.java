@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.NewsCountVO;
 import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -150,7 +151,59 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	 
 	 public List<FileGallary> getNewsByLocationAndCategoryInPopup(List<Long> candidateIds,
 				FileVO fileVO, List<Long> locationValuesList);
+	 
+	 public List<Object[]> getNewsCountForMandalLevel(List<Long> candidateIds,
+				Long tehsilScopeId, List<Long> tehsilIdsList,
+				Long panchayatScopeId, List<Long> panchayatIdsList);
+	 
+	public List<File> getNewsCountForALocationByCategoryAndImportance(
+				List<Long> candidateIds,Long categoryId ,Long locationScopeId ,List<Long> locationValuesList,Long hamletScopeId ,
+				List<Long> hamletIds );
+	 
+		
+	public List<Object[]> getNewsCountForConstituencyLevel(
+				List<Long> candidateIds, Long constituencyScopeId, Long constituencyVal,
+				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
+				List<Long> hamletIds);
 	
+	public List<Object[]> getNewsCountForConstituencyLevelWithMuncipality(
+			List<Long> candidateIds, Long constituencyScopeId, Long constituencyVal,
+			Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
+			List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds);
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForConstituency(
+            Long categoryId , NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMandal(
+            Long categoryId , NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForPanchayat(
+            Long categoryId , NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForConstituencyWithMuncipality(
+            Long categoryId , NewsCountVO newsCountVO);
+	
+	
+	public List<Object[]> getNewsByForPanchayat(NewsCountVO newsCountVO);
+	public List<Object[]> getNewsByForMandal(NewsCountVO newsCountVO);
+	public List<Object[]> getNewsByForConstituency(NewsCountVO newsCountVO);
+	public List<Object[]> getNewsByForMuncipality(NewsCountVO newsCountVO);
+	public List<Object[]> getNewsByForConstituencyWithMuncipality(NewsCountVO newsCountVO);
+
+	
+	public List<FileGallary> getNewsDetailsByForMandal(NewsCountVO newsCountVO);
+	public List<FileGallary> getNewsDetailsForConstituency(NewsCountVO newsCountVO);
+	public List<FileGallary> getNewsDetailsByForMuncipality(NewsCountVO newsCountVO);
+	public List<FileGallary> getNewsDetailsForConstituencyWithMuncipality(NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsCountForMuncipality(
+			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList);
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMuncipality(
+			Long categoryId , NewsCountVO newsCountVO);
+	
+	public List<FileGallary> getFilegallaryDetailsForPanchayat(NewsCountVO newsCountVO);
+	
+
 	
 }
 
