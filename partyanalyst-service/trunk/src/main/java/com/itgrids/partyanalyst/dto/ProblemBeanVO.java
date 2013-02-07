@@ -129,7 +129,53 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long userProblems;
 	private Long cadreProblems;
 	private Long callCenterProblems;
+	private Long contentId;
 	
+	private String sourceFilePath;
+	private String destinationFilePath;
+	private String pathSepecrator;
+	private String locationExist;
+	
+
+	public String getLocationExist() {
+		return locationExist;
+	}
+
+	public void setLocationExist(String locationExist) {
+		this.locationExist = locationExist;
+	}
+
+	public String getPathSepecrator() {
+		return pathSepecrator;
+	}
+
+	public void setPathSepecrator(String pathSepecrator) {
+		this.pathSepecrator = pathSepecrator;
+	}
+
+	public String getSourceFilePath() {
+		return sourceFilePath;
+	}
+
+	public void setSourceFilePath(String sourceFilePath) {
+		this.sourceFilePath = sourceFilePath;
+	}
+
+	public String getDestinationFilePath() {
+		return destinationFilePath;
+	}
+
+	public void setDestinationFilePath(String destinationFilePath) {
+		this.destinationFilePath = destinationFilePath;
+	}
+
+	public Long getContentId() {
+		return contentId;
+	}
+
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
+	}
 
 	public Long getCallCenterProblems() {
 		return callCenterProblems;
