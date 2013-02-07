@@ -1051,4 +1051,8 @@
 	<property name="votersAnalysisService" ref="votersAnalysisService" />
 	
 	</bean>
+	<bean id="missingVotersSearchAction" class="com.itgrids.partyanalyst.web.action.MissingVotersAction">
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+	</bean>
 </beans>	

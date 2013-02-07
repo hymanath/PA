@@ -2156,13 +2156,13 @@
 			</result>	
         </action>
         
-        <action name="getGroupNamesByCategoryAction" class="createLocalGroupAction" method="getGroupNamesByCategory">
+        <action name="getGroupNamesByCategoryAction" class="constituencyManagementAction" method="getGroupNamesByCategory">
            <result type="json" name="success">
 				<param name="root">groupNames</param>				
 			</result>	
         </action>
         
-        <action name="getDesignationsByCategoryAction" class="createLocalGroupAction" method="getDesignationsByCategory">
+        <action name="getDesignationsByCategoryAction" class="saveLocalGroupMembersAction" method="getDesignationsByCategory">
            <result type="json" name="success">
 				<param name="root">designations</param>				
 			</result>	
@@ -2177,7 +2177,11 @@
 		   <result name="error">/jsp/localUserGroupMemberPage.jsp</result>
            <result name="success">/jsp/localUserGroupMemberPage.jsp</result>	
         </action>
-        
+        <action name="getGroupNamesBasedOnCategoryAction" class="constituencyManagementAction" method="getGroupsForCategoery">
+		   <result type="json" name="success">
+		   	<param name="root">groupList</param>
+		   </result>	
+        </action>
 		 <action name="getBoothsCompleteDetailsAction" class="locationsHierarchyAction" method="getBoothCompleteDetails">
            <result type="json" name="success">
 				<param name="root">boothsCompleteDetails</param>				
@@ -4346,7 +4350,18 @@
 			<result name="success">/jsp/mandalPageForVotersInfo.jsp</result>
 			<result name="error">/jsp/mandalPageFail.jsp</result>
 		</action>
-		
+		<action name="missingVotersSearchAction" class="missingVotersSearchAction">
+			<result name="success">/jsp/missingVotersSearch.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="getBoothsForConstituencyIdAndPublicationId" class="missingVotersSearchAction" method="ajaxHandler">
+			 <result type="json" name="boothsList">
+           		<param name="root">boothsList</param>
+           	</result>
+           	 <result type="json" name="storeVoter">
+           		<param name="root">storeVoter</param>
+           	</result>
+		</action>
 		<action name="getElectionyearsByMandalIdAction" class="votersAnalysisAction" method="getElectionYearsByMandalId">
 		    <result type="json" name="success">
            		<param name="root">electionYearsList</param>
