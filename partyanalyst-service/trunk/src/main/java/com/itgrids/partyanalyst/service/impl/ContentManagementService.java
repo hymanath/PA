@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -33,7 +34,17 @@ public class ContentManagementService implements IContentManagementService{
 	private IGallaryDAO gallaryDAO;
 	private IPartyGalleryDAO partyGalleryDAO;
 	private INewsFlagDAO newsFlagDAO;
+	private ICandidateDetailsService candidateDetailsService;
 	
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
 	public INewsFlagDAO getNewsFlagDAO() {
 		return newsFlagDAO;
 	}
@@ -367,8 +378,8 @@ public class ContentManagementService implements IContentManagementService{
 					requestPageId = fileGallaryDAO.get(contentId).getGallary().getCandidate().getCandidateId();
 				}
 				
-				else
-				 filesObjList = fileGallaryDAO.getFilesOfInGallaries(gallaryIds);
+				//else
+				// filesObjList = fileGallaryDAO.getFilesOfInGallaries(gallaryIds);
 				
 				for(FileGallary fileGallary : filesObjList)
 					if(!checkForFileExistance(files,fileGallary))
@@ -466,9 +477,18 @@ public class ContentManagementService implements IContentManagementService{
 						
 					fileVO.setFileId(fileGallary.getFile().getFileId());
 					
+					//change for location name
+					
+					
+					if(fileGallary.getFile().getRegionScopes() != null){
+					  String locationName = candidateDetailsService.getLocationDetails(fileGallary.getFile().getRegionScopes().getRegionScopesId(), fileGallary.getFile().getLocationValue());
+					  fileVO.setLocationName(locationName);
+					}
+					
 					if(fileGallary.getFile().getCategory() != null){
 						fileVO.setCategoryType(fileGallary.getFile().getCategory().getCategoryType());
-						fileVO.setCandidateId(fileGallary.getFile().getCategory().getCategoryId());
+						//fileVO.setCandidateId(fileGallary.getFile().getCategory().getCategoryId());
+						fileVO.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
 					}
 					fileVO.setComments(fileGallary.getFile().getComment());
 					
@@ -515,10 +535,11 @@ public class ContentManagementService implements IContentManagementService{
 					fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
 						sdf.format(fileGallary.getFile().getFileDate()));
 					 fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
+					 fileVO.setFileGallaryDate(fileGallary.getCreatedDate());
 					filesList.add(fileVO);
 				  }
 				}
-				Collections.sort(filesList,date_comparator);				
+				Collections.sort(filesList,reverse_date_comparator);				
 				relatedGallary.setFilesList(filesList);
 				relatedGalleries.add(relatedGallary);
 				contentDetailsVO.setRelatedGalleries(relatedGalleries);
@@ -612,4 +633,21 @@ public class ContentManagementService implements IContentManagementService{
 		 	        else return 0;
 		        }
 		    };
+		    
+		    public static Comparator<FileVO> reverse_date_comparator = new Comparator<FileVO>()
+				    {
+				   
+				        public int compare(FileVO fileVO1, FileVO fileVO2)
+				        {
+				        	long n1 = 0l;
+				        	 long n2 = 0l;
+				        	 if(fileVO1.getFileGallaryDate() != null)
+				        	 n1 = fileVO1.getFileGallaryDate().getTime();
+				        	 if(fileVO2.getFileGallaryDate() != null)
+					         n2 = fileVO2.getFileGallaryDate().getTime();
+				        	 if (n1 > n2) return -1;
+				 	        else if (n1 < n2) return 1;
+				 	        else return 0;
+				        }
+				    };
 }

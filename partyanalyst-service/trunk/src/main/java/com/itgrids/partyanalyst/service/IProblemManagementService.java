@@ -212,4 +212,6 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public List<ProblemBeanVO> getProblemDetailsInfoVoterPage(Long userId,Long locationId,Long locationValue,String status,Long informationsrcId,Integer startIndex,Integer maxIndex);
 	
+	public ProblemBeanVO saveProblemDataForNews(ProblemBeanVO problemBeanVO);
+	
 }
