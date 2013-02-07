@@ -176,9 +176,9 @@ padding:5px 20px;
 .problemTitle{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 .friendsImgs{border: 1px solid #CDCDCD;margin-top: 10px; margin-right: 6px; background:  #00FFFF;}
 .imgLi{clear: both;
-    display: inline-block;;
+    display: inline-table;
     
-    width: 85px;}
+    width: 74px;}
 	.TemplateCollection{display:none;}
 	
 	 .placeholderCenterDiv{
@@ -186,23 +186,24 @@ padding:5px 20px;
     border: 1px solid #CDCDCD;
     margin-bottom: 10px;
     margin-top: 15px;
-    padding: 10px;
+    padding: 5px;
 	display:inline-block;
 	margin-left: 0;
     margin-right: 0;
 	}
 	
-	.templatePersons{width:29%;height:70px;}
+	.templatePersons{width:;height:70px;}
 	 .opacityFilter-50{opacity: 0.65;}
 	 .politicalReasonsTemplate{display: table;}
 
 	 .requestsDivCls span {
     clear: none;
     color: #999999;
-    display: inline-block;
+   
     float: left;
     font-size: 12px;
     margin: 0 2px;
+	  display: table;
 }
 
 .requestsDivCls {
@@ -214,7 +215,16 @@ padding:5px 20px;
     width: auto;
 }
 .subscriptionsImgTitleDescDiv {width:100%;background:#fafafa;display:inline-block;padding:5px;margin:5px;}
-
+.frndName{ padding: 18px;
+    width: auto;
+   margin-top: -27px;
+}
+.frndImg {
+ width: auto;
+}
+.friendListTemplate1{
+ display: -moz-inline-box;
+}
 </style>
 </head>
 <body>
@@ -280,8 +290,12 @@ padding:5px 20px;
 			
 				
 				
-				<div class="span8 placeholderCenterDiv" ></div>
+				<div class="span8 placeholderCenterDiv" >
+				
+				</div>
+				
 				<div class="row-fluid">
+				
 					<!--<div id="problemsDiv" class="">
 					
 					<c:if test="${not empty problems.problemBeanVOList}">
@@ -322,33 +336,39 @@ padding:5px 20px;
 					</div>-->
 				</div>
 			</div>
-			<div class="span4">
-			<div class="friendsDiv widget blue">
+			<div class="span4 ">
+			<div class="friendsDiv widget blue ">
 			<h2>
 				<span><i class="icon-fire" id="icon_leftsec"></i></span>
 					Friends 
 					<span style="font-size: 11px;margin-left: 120px;text-transform: none;cursor:pointer;" class="friendsInPP">See All</span>
 					</h2>
-					<div>
+					<div class=""style="margin-left: -15px;">
+					
 					<ul>
 				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
 
 					<li class="imgLi">
+	
 						<a href="userProfile.action?profileId=${friendsDetails.registrationID}"></a>
+								
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
-									<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
-									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
+									<!--<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>-->
+									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> 
 								</c:if>
 						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
 								<img height="50" width="55" src="/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
 						</c:if>
-						
-						<span>${friendsDetails.firstName} ${friendsDetails.lastName}</span>
+								
+						<span><b style="font-size:13px;">${friendsDetails.firstName} ${friendsDetails.lastName}</b></span>
+						<hr>
 					</li>
+					
 				</c:forEach>
 			
 				</ul>
 				</div>
+				
 			</div>
 			<!-- opinionPollDiv Start -->
 				<div class="widget blue" style="padding-bottom:0px;">
@@ -401,9 +421,14 @@ padding:5px 20px;
   </div>
 	
 <div class="TemplateCollection">
+
 	<div class="friendListTemplate templateholder templatePersons">
-		<div class="frndImg thumbnail span3" ></div>
-		<span class="frndName span12"></span>
+
+	<div class="friendListTemplate1">
+	
+		<div class="frndImg thumbnail " style="width:67px;"></div>
+		<h6  class="frndName span2 pull-right" ></h6>
+</div>
 	</div>
 	
 	<div class="problemTemplate templateholder row-fluid" >
