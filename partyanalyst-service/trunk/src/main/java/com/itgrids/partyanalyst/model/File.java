@@ -60,6 +60,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	private Set<FileSourceLanguage> fileSourceLanguage = new HashSet<FileSourceLanguage>(0);
 	private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
+	private Set<NewsProblem> newsProblems = new HashSet<NewsProblem>();
 	
 	private String comment;
 
@@ -285,6 +286,18 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "file")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<NewsProblem> getNewsProblems() {
+		return newsProblems;
+	}
+
+	public void setNewsProblems(Set<NewsProblem> newsProblems) {
+		this.newsProblems = newsProblems;
 	}
 
   
