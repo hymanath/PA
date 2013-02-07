@@ -6,6 +6,7 @@ $("document").ready(function(){
 	$('.friendsInPP').click(function(){
 		$(".placeholderCenterDiv").children().remove();
 		$(".placeholderCenterDiv").css('display','inline-block');
+	    $(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;">Friends</h4>');                           
 		$("#problemsDiv").children().remove();
 
 		for(var i in friendsInPP)
