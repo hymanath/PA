@@ -251,7 +251,10 @@ p {
  padding-bottom:40px;
 
 }
-#partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#votersByLocationTabContentDiv_body table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+#votersByLocationTabContentDiv_body table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
 #partyWiseJqTable tr:nth-child(even),#subLevelTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even){background:#EdF5FF;}
 
 #partyWiseJqTable td,#subLevelTable td,#impfamilydatatable td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
@@ -721,8 +724,10 @@ h5{font-family : Arial;}
     font-size: 1.2em;
 }
 
-#voterAgeAngGenderwiseDetailsNoteInPercent .table th, .table td{padding:7px;}
-#voterAgeAngGenderwiseDetailsNoteInPercent .table th{text-align:center;}
+#voterAgeAngGenderwiseDetailsNoteInPercent .table th, .table td{padding:6px;}
+
+#voterAgeAngGenderwiseDetailsInPercent th{text-align:center;}
+#ageAndgenderWiseDetails th,#agewiseDetails th,#tableDiv th{text-align:center;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -866,7 +871,7 @@ for  body3 start    result  -->
 	</div>
     
 <div id='votersMainOuterDiv3' class="widget" style="display:none;border-top:none;">
-<h2 id="votersTitle" style="width:102%;padding:10px;"></h2>
+<!--<div id="votersTitle"><h2  style="width:102%;padding:10px;"></h2></div>-->
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
 
 <div id="votersBasicInfoMainDiv">
@@ -979,7 +984,7 @@ for  body3 start    result  -->
 	<div id="tableDiv" style="margin-left:20px;padding:10px;display:none;" class="voterDetails"></div>
 
 	<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
-	<div id="agewiseDetails" style="padding:4px;" class="voterDetails"></div>
+	<div id="agewiseDetails" style="padding:5px;" class="voterDetails"></div>
 
 	<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
 	<div id="ageAndgenderWiseDetails" style="padding:4px;" class="voterDetails"> </div>
