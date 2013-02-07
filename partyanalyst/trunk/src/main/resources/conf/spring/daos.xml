@@ -1086,4 +1086,8 @@
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	
+	<bean id="newsProblemDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsProblemDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 </beans>		
