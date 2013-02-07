@@ -109,11 +109,51 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String requestFrom;
 	private Long requestPageId;
 	private String isCustomer;
+	private String locationName;
+	private String isProblem;
+	private Long problemId;
+	private String isPrivate;
+	private Date fileGallaryDate;
 	
-	
-	
-	
-	
+	public Date getFileGallaryDate() {
+		return fileGallaryDate;
+	}
+
+	public void setFileGallaryDate(Date fileGallaryDate) {
+		this.fileGallaryDate = fileGallaryDate;
+	}
+
+	public String getIsPrivate() {
+		return isPrivate;
+	}
+
+	public void setIsPrivate(String isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+
+	public Long getProblemId() {
+		return problemId;
+	}
+
+	public void setProblemId(Long problemId) {
+		this.problemId = problemId;
+	}
+
+	public String getIsProblem() {
+		return isProblem;
+	}
+
+	public void setIsProblem(String isProblem) {
+		this.isProblem = isProblem;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
 	public String getRequestFrom() {
 		return requestFrom;
