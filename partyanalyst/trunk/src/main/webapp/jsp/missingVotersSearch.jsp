@@ -42,7 +42,7 @@ font-weight: bold;
 margin-left: 200px;
 width: 800px;
 margin-top:5px;
-margin-left:97px;
+margin-left:150px;
 }
 
 #tdHeader{
@@ -58,12 +58,11 @@ margin-top:15px;
 }
 #errmsg{
 margin-left:-260px;
-}
-#errmsg{
-margin-left:-260px;
+font-size:15px;
 }
 </style>
 <script type="text/javascript">
+var flag=false;
 /* This Method is used for calling the ajax method for getting publication dates */
 function getPublicationDate()
 {
@@ -144,6 +143,8 @@ function buildBoothsForConstituencyAndPublicationDate(myResults)
 /* This method is used for calling the ajax method for saving the voter details into the voters table */
 function saveVoterDetails()
 {
+	if(!flag){
+	flag=true;
 	$('#processingImgId').show();
 	var boothId = $('#booth').val();
 	var name = $('#nameId').val();
@@ -153,7 +154,7 @@ function saveVoterDetails()
 	var relationShip = $('#relationShip option:selected').text();
 	var gender = $('.gender:checked').val();
 	var age = $('#age').val();
-	var mobileNo = $('#mobileNo').val();
+	var mobileNo=$('#mobileNo').val();
 	if(gender == 'male')
 		gender = 'M';
 	else
@@ -166,27 +167,34 @@ function saveVoterDetails()
 		gaurdian:gaurdian,
 		relationShip:relationShip,
 		gender:gender,
-		age:age,
 		mobileNo:mobileNo,
+		age:age,
 		boothId:boothId,
 		task:"saveVoterDetails"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getBoothsForConstituencyIdAndPublicationId.action?"+rparam;
 	callAjax(jsObj,url);
+	}
+	else{
+	$('#requestDiv').html('<b style="color: blue; margin-left: 70px;">Please wait ... </b>');
+	}
 }
 /* This Method is used to inform to the user weather voter details stored or not */
 function buildVotersDetailsInformation(myResults)
 {
+	flag=false;
 	$('#processingImgId').hide();
+	$('#requestDiv').html('');
 	var result = myResults.resultCode;
+	
 	if(result == 1)
 	{
-		$('#errorMsgDiv').html('<b>Voter already exists please enter another voter id</b>');
+		$('#errorMsgDiv').html('<b id="errmsg">Voter already exists please enter another voter id</b>');
 	}
 	else
 	{
-		$('#errorMsgDiv').html('<b id="errmsg" style="color:green;">Voter information added successfully</b>');
+		$('#errorMsgDiv').html('<b id="errmsg" style="color:green;">Voter information added Successfully</b>');
 		clearAllFields();
 	}
 }
@@ -203,22 +211,21 @@ function clearAllFields()
 	$('#relationShipId').val('0');
 	$('#genderMale').attr('checked', true);
 	$('#age').val('');
-	$('#mobileNo').val();
 }
 /* This method is used for validating the all fields for voters details */
 function validationCheck()
 {
-	var constituencyId = $('#constituencyList').val();
-	var publicationId = $('#publicationDateList').val();
-	var boothId = $('#booth').val();
-	var name = $('#nameId').val();
-	var voterCardNo= $('#voterCardId').val();
-	var houseNo= $('#houseNoId').val();
-	var gaurdian = $('#gaurdianId').val();
-	var relationShipId = $('#relationShipId').val();
-	var gender = $('.gender:checked').val();
-	var age = $('#age').val();
-	$('#errorMsgDiv').html('&nbsp;');
+	var constituencyId = trim($('#constituencyList').val());
+	var publicationId = trim($('#publicationDateList').val());
+	var boothId = trim($('#booth').val());
+	var name = trim($('#nameId').val());
+	var voterCardNo= trim($('#voterCardId').val());
+	var houseNo= trim($('#houseNoId').val());
+	var gaurdian = trim($('#gaurdianId').val());
+	var relationShipId = trim($('#relationShipId').val());
+	var gender = trim($('.gender:checked').val());
+	var age = trim($('#age').val());
+	var mobileNo = trim($('#mobileNo').val());
 	if(constituencyId == '0')
 	{
 		$('#errorMsgDiv').html('<b id="errmsg">Please Select The Constituency </b>');
@@ -241,31 +248,31 @@ function validationCheck()
 	}
 	if(name.length > 0)
 	{
-		if(/[^a-zA-Z]/.test(name)){
+		if(/[^a-z A-Z]/.test(name)){
 		$('#errorMsgDiv').html('<b id="errmsg">Name Accepts only Characters</b>');
 		return false;
 		}
 	}
 	if(voterCardNo == ''){
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The voter Card No. </b>');
-		return false;
-	}	
+			$('#errorMsgDiv').html('<b id="errmsg">Please Enter The voter Card No. </b>');
+			return false;
+	}
 	if(voterCardNo.length>0){
-		var letters = /([^a-zA-Z])([0-9])/; 
-		var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";
-		for (var i = 0; i < voterCardNo.length; i++)
-            {      
-                if (iChars.indexOf(voterCardNo.charAt(i)) != -1)
-                {   
-					$('#errorMsgDiv').html('<b id="errmsg">Please Enter A Valid Voter Id</b>');
-					return false;
-                } 
-            }
-		if (!voterCardNo.match(letters))
-		{   
+	var letters = /([^a-zA-Z])([0-9])/;
+	var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";
+	for (var i = 0; i < voterCardNo.length; i++)
+		{
+			if (iChars.indexOf(voterCardNo.charAt(i)) != -1)
+			{
 			$('#errorMsgDiv').html('<b id="errmsg">Please Enter A Valid Voter Id</b>');
 			return false;
-		}	
+			}
+		}
+	if (!voterCardNo.match(letters))
+		{
+		$('#errorMsgDiv').html('<b id="errmsg">Please Enter A Valid Voter Id</b>');
+		return false;
+		}
 	}
 	if(houseNo == ''){
 		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The House No. </b>');
@@ -273,15 +280,10 @@ function validationCheck()
 	}	
 	if(houseNo.length>0){
 		var houseNoValue=trim(houseNo);
-		if( /[^a-z A-Z0-9,.:\/\-]/.test(houseNoValue)) {
+		if( /[^a-zA-Z0-9,. :\/\-]/.test(houseNoValue)) {
 			$('#errorMsgDiv').html('<b id="errmsg">Enter A Valid House No</b>');
 			return false;
-		}
-		/*else if(isNaN(houseNoValue) === true)
-		{
-			$('#errorMsgDiv').html('<b id="errmsg">Enter A Valid House No</b>');
-			return false;
-		}*/
+		}		
 	}
 	if(gaurdian == '')
 	{
@@ -301,6 +303,16 @@ function validationCheck()
 		$('#errorMsgDiv').html('<b id="errmsg">Please Select The Relationship Type</b>');
 		return false;
 	}
+	if(mobileNo.length >=1){
+		if(isNaN(!mobileNo)){
+			$('#errorMsgDiv').html('<b id="errmsg">Please Enter Valid Mobile</b>');
+			return false;
+			}
+	}
+	if(mobileNo.length > 10 || (mobileNo.length < 10 && mobileNo.length >=1)){
+		$('#errorMsgDiv').html('<b id="errmsg">Please Enter Valid Mobile222222</b>');
+		return false;
+		}
 	if(age == '')
 	{
 		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The Age </b>');
@@ -318,10 +330,9 @@ function validationCheck()
 	{
 			$('#errorMsgDiv').html('<b id="errmsg">Please enter valid Age</b>');
 			return false;
-	}
-	$('#errorMsgDiv').html('&nbsp;');
-    $('#submitButtonId').attr("disabled",'disabled'); 
-	saveVoterDetails();
+	}	
+	$('#errorMsgDiv').html('&nbsp;');		
+	saveVoterDetails();	
 }
 /* This method is used for building the ajax calls */
 function callAjax(jsObj,url)
@@ -359,8 +370,8 @@ function callAjax(jsObj,url)
 <body>
 <div class="titleHeading">Adding Missing Voters Details </div>
 <div id="mainDiv">
-<div id="errorMsgDiv" align="center" style="margin-top: 15px; width: 450px; margin-left: 220px;">&nbsp;</div>
-<div id="SelectionDiv" align="center">
+<div id="errorMsgDiv"  align="center"  style="margin-top: 10px; width: 450px; margin-left: 350px;">&nbsp;</div>
+<div id="SelectionDiv" align="center" style="margin-top: -10px;">
 <table style="margin-top: 15px; margin-left: 70px;">
 <tr>
 <td id="tdHeader">
@@ -450,10 +461,10 @@ Gender : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </tr>
 <tr>
 <td class="tdHeader">
-Mobile No: <font class="requiredFont" style="color:red;font-size:large;"></font>
+Mobile No:
 </td>
 <td>
-<input class="textID" type="text" name="mobileno" id="mobileNo" id="mobileNoId"/>
+<input class="textID" type="text" name="mobileno" id="mobileNo"/>
 </td>
 </tr>
 <tr>
@@ -461,14 +472,15 @@ Mobile No: <font class="requiredFont" style="color:red;font-size:large;"></font>
 Age: <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </td>
 <td>
-<input class="textID" type="text" name="age" id="age" id="ageId"/>
+<input class="textID" type="text" name="age" id="age"/>
 </td>
 </tr>
 </table>
 <div id="buttonsDiv" style="margin-top: 10px; border-bottom-width: 0px; height: 50px;">
 <input type="button" value="save" id="submitButtonId" class="btn btn-primary" style="margin-top: 10px;width:100px" onClick="validationCheck();"/>
 <input type="button" value="Clear" class="btn btn-primary" style="margin-top: 10px;width:100px" onClick="clearAllFields();"/>
-<img alt="processimg" src="images/icons/search.gif" id="processingImgId"style="display:none;"></img>
+<img alt="processimg" src="images/icons/search.gif" id="processingImgId"style="display: none; margin-left: 5px; margin-top:10px;"></img>
+<div id="requestDiv" style="float: right; position: absolute; margin-left: 575px; width: 200px; margin-top: -20px;"></div>
 </div>
 </div>
 </div>
