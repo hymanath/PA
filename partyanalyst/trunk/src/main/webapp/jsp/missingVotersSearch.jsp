@@ -153,6 +153,7 @@ function saveVoterDetails()
 	var relationShip = $('#relationShip option:selected').text();
 	var gender = $('.gender:checked').val();
 	var age = $('#age').val();
+	var mobileNo = $('#mobileNo').val();
 	if(gender == 'male')
 		gender = 'M';
 	else
@@ -166,6 +167,7 @@ function saveVoterDetails()
 		relationShip:relationShip,
 		gender:gender,
 		age:age,
+		mobileNo:mobileNo,
 		boothId:boothId,
 		task:"saveVoterDetails"
 	};
@@ -201,11 +203,12 @@ function clearAllFields()
 	$('#relationShipId').val('0');
 	$('#genderMale').attr('checked', true);
 	$('#age').val('');
+	$('#mobileNo').val();
 }
 /* This method is used for validating the all fields for voters details */
 function validationCheck()
 {
-	var constituencyId = $('#constituencyList').val();
+	/*var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
 	var boothId = $('#booth').val();
 	var name = $('#nameId').val();
@@ -278,7 +281,7 @@ function validationCheck()
 		{
 			$('#errorMsgDiv').html('<b id="errmsg">Enter A Valid House No</b>');
 			return false;
-		}*/
+		}
 	}
 	if(gaurdian == '')
 	{
@@ -310,7 +313,7 @@ function validationCheck()
 			$('#errorMsgDiv').html('<b id="errmsg">Age Accepts only Numbers</b>');
 			return false;
 		}
-	}
+	}*/
 	if(age > 150 || age < 18)
 	{
 			$('#errorMsgDiv').html('<b id="errmsg">Please enter valid Age</b>');
@@ -445,6 +448,14 @@ Gender : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 <input type="radio" name="gender" value="male" checked="true" id="genderMale" class="gender" style="margin-left: 60px;"
 /> Male
 <input type="radio" name="gender" value="female" id="genderFemale" class="gender"/> Female
+</td>
+</tr>
+<tr>
+<td class="tdHeader">
+Mobile No: <font class="requiredFont" style="color:red;font-size:large;"></font>
+</td>
+<td>
+<input class="textID" type="text" name="mobileno" id="mobileNo" id="mobileNoId"/>
 </td>
 </tr>
 <tr>
