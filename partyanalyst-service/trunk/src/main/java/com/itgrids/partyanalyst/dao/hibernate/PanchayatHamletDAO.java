@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.model.Panchayat;
@@ -32,6 +33,18 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		
 		return getHibernateTemplate().find("select model.panchayat from PanchayatHamlet model where model.hamlet.hamletId = ? ",hamletId);
 
+		
+	}
+	
+	
+	public List<Long> getHamletsOfPanchayitis(List<Long> panchayitIds){
+		
+		
+		Query query = getSession().createQuery("select model.hamlet.hamletId from PanchayatHamlet model where model.panchayat.panchayatId in(:panchayitIds)");
+		
+		query.setParameterList("panchayitIds", panchayitIds);
+		
+		return query.list();
 		
 	}
 }
