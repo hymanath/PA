@@ -343,11 +343,16 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testfindByDistrictIdForUser(){
+	/*public void testfindByDistrictIdForUser(){
 		List<Constituency> list = constituencyDAO.findConstituenciesByDistrictId(23l);
 		System.out.println(list.size());
 		for(Constituency consti:list){
 			System.out.println(consti.getName());
 		}
+	}*/
+	public void testfindByStateIdForUserr(){
+		List<Constituency> list = constituencyDAO.findByStateIdForUser(1l);
+		System.out.println(list.size());
+		
 	}
 }

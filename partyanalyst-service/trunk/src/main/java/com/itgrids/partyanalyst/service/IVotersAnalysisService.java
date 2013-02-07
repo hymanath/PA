@@ -136,5 +136,7 @@ public interface IVotersAnalysisService {
 
 	public ResultStatus deleteVotersDataFromIntermediateTables(Long reportLevelValue, Long publicationDateId);
 	
-
+	public List<SelectOptionVO> getBoothsForConstituencyAndPublication(Long constituencyId,Long publicationId);
+	
+	public ResultStatus saveVoters(String name,String voterCardNo,String houseNo,String gaurdian,String relationShip,String gender,Long age,Long boothId);
 }

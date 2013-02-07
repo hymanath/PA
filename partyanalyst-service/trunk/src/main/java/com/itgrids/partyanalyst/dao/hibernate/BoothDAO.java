@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -470,4 +471,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return query.list();
 		}
 		 
+		/**
+		 * This Method is used to get all the booths in the constituency based on 
+		 * constituencyId and publicationDateId
+		 * @author Prasad Thiragabathina
+		 * @param constituencyId
+		 * @param publicationDateId
+		 * @return List<Long>
+		 */
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsBasedOnConstituencyAndPublicationDate(
+				Long constituencyId, Long publicationDateId) {
+			Object[] parms = {constituencyId,publicationDateId};
+			return getHibernateTemplate().find("select model.boothId ,model.partNo from Booth model where " +
+					"model.constituency.constituencyId = ? " +
+					"and model.publicationDate.publicationDateId = ? ",parms);
+		}
 }

@@ -7133,7 +7133,96 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				log.error("Exception Occured in getVotersCount() Method, Exception - "+e);
 				return null;
 			}
-		 } 
+		 }
+
+		/**
+		 * This method is used to get the all booth details based on constituencyId and publicationId
+		 * @author Prasad Thiragabathina
+		 * @param constituencyId
+		 * @param publicationId
+		 * @return List<SelectOptionVO>
+		 */
+		public List<SelectOptionVO> getBoothsForConstituencyAndPublication(
+				Long constituencyId, Long publicationId) {
+			List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
+			
+			log.debug("Entered into the getBoothsForConstituencyAndPublication service method");
+			if(constituencyId != 0 && publicationId!=0)
+			{
+				List<Object[]> booths = boothDAO.getBoothsBasedOnConstituencyAndPublicationDate(constituencyId,publicationId);
+				for (Object[] booth : booths) {
+					SelectOptionVO selectOptions = new SelectOptionVO();
+					selectOptions.setId((Long) booth[0]);
+					selectOptions.setName((String) booth[1].toString());
+					boothsList.add(selectOptions);
+				}
+			}
+			return boothsList;
+		}
+
+		/**
+		 * This method is used to store the voter details into the voter table and booth_voter_publication table
+		 * @author Prasad Thiragabathina
+		 * @param name
+		 * @param voterCardNo
+		 * @param houseNo
+		 * @param gaurdian
+		 * @param relationShip
+		 * @param gender
+		 * @param age
+		 * @param boothId
+		 * @return ResultStatus
+		 */
+		public ResultStatus saveVoters(final String name, final String voterCardNo,
+				final String houseNo, final String gaurdian, final String relationShip,
+				final String gender,  final Long age,final Long boothId) {
+				
+			  log.info("Entered into saveVoters Method...");
+			  ResultStatus resultStatus = new ResultStatus();
+			  try{
+				List<Voter> voters = voterDAO.getVoterByVoterCardNo(voterCardNo);
+					if(voters != null && voters.size() > 0)
+					{
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						return resultStatus;
+					}
+					else
+					{
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+						protected void doInTransactionWithoutResult(TransactionStatus status) 
+						{
+							Voter voter = new Voter();
+							voter.setName(name);
+							voter.setVoterIDCardNo(voterCardNo);
+							voter.setHouseNo(houseNo);
+							voter.setGender(gaurdian);
+							voter.setRelationshipType(relationShip);
+							voter.setGender(gender);
+							voter.setAge(age);
+							//voterDAO.save(voter);
+							BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
+							if(boothId != null)
+							{
+							boothPublicationVoter.setBoothId(boothId);
+							boothPublicationVoter.setVoter(voter);
+							boothPublicationVoterDAO.save(boothPublicationVoter);
+							}
+							
+						}});
+					}
+						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						return resultStatus;	
+					
+					
+			  }catch (Exception e) {
+				  e.printStackTrace();
+				  log.error("Exception Occured in saveVoters Method, Exception - "+e);
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  return resultStatus;
+			}
+		  
+			
+		} 
 		
 		public List<SelectOptionVO> getElectionYearsByMandalId(String type,Long id)
 		{

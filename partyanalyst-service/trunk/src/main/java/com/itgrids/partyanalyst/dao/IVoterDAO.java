@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Voter;
 
 public interface IVoterDAO extends GenericDao<Voter, Long>{
@@ -64,4 +65,6 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public Integer updateVoterNameAndRelativeName(String name, String relativeName,Long voterId);
 	
 	public List<Object[]>getVoterIdsByVoterIdCardNos(List<String> voterIdCardNosList);
+	
+	public List<Voter> getVoterByVoterCardNo(String voterCardId);
 }

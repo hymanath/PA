@@ -79,7 +79,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		}	
 		
 	}*/
-	public void testGetGroupsByName()
+	/*public void testGetGroupsByName()
 	{
 		List result = personalUserGroupDAO.getGroupsByName(1L, "aaa");
 		if(Long.parseLong(result.get(0).toString())==0L){
@@ -91,7 +91,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(result.size());			
 		
 		
-	}
+	}*/
 	/*
 	public void testFindAllGroupCategoriesInfoAndCountsOfLocationsByLocation(){
 		List list = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.district.districtId", 
@@ -169,4 +169,13 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(" Results Size :" + result.size());
 		Long count  = Long.parseLong(result.get(0).toString());
 	}*/
+	public void testgetGroupsForAUserInAGroupCategory()
+	{
+		
+		List result = personalUserGroupDAO.getGroupsForAUserInAGroupCategory(3l,1l);
+		for (Object object : result) {
+			System.out.println(object);
+			
+		}
+	}
 }
