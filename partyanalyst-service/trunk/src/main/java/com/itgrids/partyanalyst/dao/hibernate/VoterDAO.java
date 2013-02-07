@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Voter;
 
 public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoterDAO{
@@ -223,6 +224,20 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				Query query = getSession().createQuery(" select model.voterId,model.voterIDCardNo from Voter model where model.voterIDCardNo in (:voterIdCardNosList)");
 				query.setParameterList("voterIdCardNosList",voterIdCardNosList);
 				return query.list();
+			}
+
+			/**
+			 * This method is used for checking weather voteruserId is present are there in voter table
+			 * @author Prasad Thiragabathina
+			 * @param voterCardId
+			 * @return List<Voter>
+			 */
+			@SuppressWarnings("unchecked")
+			public List<Voter> getVoterByVoterCardNo(String voterCardId) {
+				
+				Query query = getSession().createQuery("select model from Voter model where model.voterIDCardNo = :voterCardId");
+				query.setParameter("voterCardId", voterCardId);
+				return query.list(); 
 			}
 	
 }

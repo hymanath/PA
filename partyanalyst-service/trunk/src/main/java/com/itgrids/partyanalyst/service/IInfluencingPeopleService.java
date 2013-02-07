@@ -90,5 +90,7 @@ public interface IInfluencingPeopleService {
     public boolean updateGroupDate(UserGroupMembersVO userGroupMembersVO);
     
     public Integer deleteGroupData(Long id);
+    
+    public List<SelectOptionVO> getGroupNamesBasedOnCategoeryId(Long categoeryId , Long UserId);
 	
 }

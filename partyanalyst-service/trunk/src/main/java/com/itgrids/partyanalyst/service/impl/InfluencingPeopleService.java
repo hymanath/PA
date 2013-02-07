@@ -3774,5 +3774,30 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		return deleteRecordNo;
 		 
 	}
+	 public List<SelectOptionVO> getGroupNamesBasedOnCategoeryId(Long categoeryId , Long UserId)
+	 {
+		List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO = null;
+		try {
+			if(log.isDebugEnabled()){
+				log.debug("Entered in to getGroupNamesBasedOnCategoeryId() method..");
+			}
+			 if(categoeryId > 0){
+				 List<Object[]> groupList = personalUserGroupDAO.getGroupsForAUserInAGroupCategory(categoeryId, UserId);
+				for (Object[] objects : groupList) {
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long) objects[0]);
+					selectOptionVO.setName((String) objects[1]);
+					selectOptionVOs.add(selectOptionVO);
+				}
+				
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return selectOptionVOs;
+		 
+	 }
 }
 

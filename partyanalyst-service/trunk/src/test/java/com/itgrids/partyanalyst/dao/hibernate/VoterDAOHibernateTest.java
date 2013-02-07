@@ -6,6 +6,8 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class VoterDAOHibernateTest extends BaseDaoTestCase{
 
@@ -156,7 +158,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(records);
 	}*/
 	
-	public void testGetVoterIdsByVoterIdCardNos()
+	/*public void testGetVoterIdsByVoterIdCardNos()
 	{
 		List<String> vidLiist = new ArrayList<String>(0);
 		vidLiist.add("RYT0605790");
@@ -166,6 +168,13 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		vidLiist.add("RYT0981647");
 		
 		List<Object[]> list = voterDAO.getVoterIdsByVoterIdCardNos(vidLiist);
+		System.out.println(list.size());
+	}*/
+	public void testGetVoterByVoterCardNo()
+	{
+		
+		
+		List<Voter> list = voterDAO.getVoterByVoterCardNo("ZAF0448416");
 		System.out.println(list.size());
 	}
 		

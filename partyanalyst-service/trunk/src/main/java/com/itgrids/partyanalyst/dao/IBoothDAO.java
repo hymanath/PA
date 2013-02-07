@@ -26,6 +26,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List findLocalBodiesByElectionAndConstituency(String electionYear,Long constituencyId, String localBodyTypes);
 	
+	public List<Object[]> getBoothsBasedOnConstituencyAndPublicationDate(Long constituencyId,Long publicationDateId);
+	
 	public List findLocalBodyWardsByElectionAndConstituency(String electionYear,Long constituencyId, String localBodyTypes);
 
 	public List findByConstituencyAndElectionYear(Long constituencyId, Long year);

@@ -7,6 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -113,13 +114,13 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	/*public void testFindStatesByElectionType(){
-		List result = electionDAO.findStatesByElectionType(6l);
+		List result = electionDAO.findStatesByElectionType(2l);
 		
 		for(int i=0;i<result.size();i++)
 		{
 			Object[] parms = (Object[])result.get(i);
-			System.out.print(Long.parseLong(parms[0].toString()));
-			System.out.print(parms[1].toString());
+			System.out.println(Long.parseLong(parms[0].toString()));
+			System.out.println(parms[1].toString());
 				
 		}
 			
@@ -251,7 +252,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.get(0)[1]);
 	}*/
 	
-	/*public void testGetElectionYearsBasedOnElectionTypeAndState()
+	public void testGetElectionYearsBasedOnElectionTypeAndState()
 	{
 		List<Object[]> list = electionDAO.getElectionYearsBasedOnElectionTypeAndState(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
 		
@@ -259,14 +260,19 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		if(list != null && list.size() > 0)
 		for(Object[] id : list)
 			System.out.println("Election Id -- "+id[0] + "       Election year  --- "+id[1]);
-	}*/
+	}
 	
 	/*public void testGetStatesBasedOnElectionTypeId(){
 		
 		List<Object[]> statesList = electionDAO.getStatesBasedOnElectionTypeId(2l, IConstants.ASSEMBLY_ELECTION_TYPE);
-		System.out.println(statesList.size());
-	}
-	public void testGetStatesBasedOnElectionTypeId(){
+		for (Object[] objects : statesList) {
+			
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);
+			
+		}
+	}*/
+	/*public void testGetStatesBasedOnElectionTypeId(){
 		
 		List<Object[]> statesList = electionDAO.getElectionYears(27l, IConstants.PARLIAMENT_ELECTION_TYPE);
 		System.out.println(statesList.size());

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -148,7 +149,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 		}
 	}*/
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void testGetStates(){
 		List results = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(new Long(2));
 		if(results != null && results.size() > 0){
@@ -158,7 +159,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" State Id :" + (Long)params[0] + " State Name :"  + (String)params[1]);
 			}
 		}
-	}*/
+	}
 	
 	/*public void testGetConstituenciesCountByStateAndElection(){
 		List list = constituencyElectionDAO.getConstituenciesCountByDistrictForStateAndElection(1l, 3l);
