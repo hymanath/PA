@@ -569,7 +569,7 @@ oDT: votersByLocBoothDataTable
 		   $("#votersBasicInfoBtnDiv").show();
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Mandal Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View Mandal Wise Family Details");
-		  $("#votersShareBtn").attr("value","Mandal Wise Voters Info");	
+		  $("#votersShareBtn").attr("value","Mandal Wise Voters Info of "+mainname);	
 	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
@@ -581,7 +581,7 @@ oDT: votersByLocBoothDataTable
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	     $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 		 $("#votersBasicInfoBtnDiv").show();
-		 $("#votersShareBtn").attr("value","Booth Wise Voters Info");
+		 $("#votersShareBtn").attr("value","Booth Wise Voters Info of "+mainname);
 
 	   }else{
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
@@ -589,7 +589,7 @@ oDT: votersByLocBoothDataTable
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 
 		 $("#votersBasicInfoBtnDiv").show();
-		$("#votersShareBtn").attr("value","Panchayat Wise Voters Info");
+		$("#votersShareBtn").attr("value","Panchayat Wise Voters Info of "+mainname);
 
 	   $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
@@ -608,7 +608,7 @@ oDT: votersByLocBoothDataTable
 		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		 {
 			$("#votersBasicInfoBtnDiv").show();
-			$("#votersShareBtn").attr("value","Booth Wise Voters Info");
+			$("#votersShareBtn").attr("value","Booth Wise Voters Info of "+mainname);
 			
 		 }
 		  $("#votersHeaderDiv3").hide();
