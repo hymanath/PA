@@ -208,7 +208,7 @@ function clearAllFields()
 /* This method is used for validating the all fields for voters details */
 function validationCheck()
 {
-	/*var constituencyId = $('#constituencyList').val();
+	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
 	var boothId = $('#booth').val();
 	var name = $('#nameId').val();
@@ -281,7 +281,7 @@ function validationCheck()
 		{
 			$('#errorMsgDiv').html('<b id="errmsg">Enter A Valid House No</b>');
 			return false;
-		}
+		}*/
 	}
 	if(gaurdian == '')
 	{
@@ -313,16 +313,14 @@ function validationCheck()
 			$('#errorMsgDiv').html('<b id="errmsg">Age Accepts only Numbers</b>');
 			return false;
 		}
-	}*/
+	}
 	if(age > 150 || age < 18)
 	{
 			$('#errorMsgDiv').html('<b id="errmsg">Please enter valid Age</b>');
 			return false;
 	}
 	$('#errorMsgDiv').html('&nbsp;');
-	/*$('#submitButtonId').click(function() {
-    $(this).attr("disabled", true); 
-	});*/
+    $('#submitButtonId').attr("disabled",'disabled'); 
 	saveVoterDetails();
 }
 /* This method is used for building the ajax calls */
