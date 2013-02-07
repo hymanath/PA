@@ -147,6 +147,7 @@
 		<pattern>/createThumbNailsAction*</pattern>
 		<pattern>/generatePdfForGallaryAction*</pattern>
 		<pattern>/sendUpdatesByemailAction*</pattern>
+		<pattern>/missingVotersSearchAction*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">

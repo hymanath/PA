@@ -23,7 +23,6 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
-import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -488,7 +487,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		if(grCategoryId.equalsIgnoreCase("0") || grCategoryId == null){
 			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(userId);
-			
+			//groupCategories.add(0, new SelectOptionVO(0l,"Select Categoery" ));
 			groupNames = new ArrayList<SelectOptionVO>();
 					
 			if(groupCategories != null && groupCategories.size() > 0)
@@ -502,7 +501,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		}else{
 			
 			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(grCategoryId));
-			
+			//groupCategories.add(0, new SelectOptionVO(0l,"Select Categoery" ));
 			if(groupId.equalsIgnoreCase("0") || groupId == null)
 			    groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(grCategoryId), userId);
 			else

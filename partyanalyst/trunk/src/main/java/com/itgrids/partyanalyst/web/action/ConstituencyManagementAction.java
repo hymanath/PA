@@ -85,6 +85,16 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<RegionSelectOptionVO> regionSelectOptionVO;
 	private InfluencingPeopleBeanVO influencingPersonVO;
 	private List<SelectOptionVO> problemStatus;
+	private List<SelectOptionVO> groupList;
+	
+	
+	public List<SelectOptionVO> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<SelectOptionVO> groupList) {
+		this.groupList = groupList;
+	}
 
 	public List<SelectOptionVO> getProblemStatus() {
 		return problemStatus;
@@ -1217,6 +1227,23 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		return constVO;
 	}
 	*/
+public String getGroupsForCategoery() {
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long categoeryId = jObj.getLong("groupCategoryval");
+		if(jObj.getString("task").equalsIgnoreCase("getgroupsByCategoery")){
+			groupList = influencingPeopleService.getGroupNamesBasedOnCategoeryId(categoeryId,userId);
+		}
+		return Action.SUCCESS;
+		
+	}
 }
 
 

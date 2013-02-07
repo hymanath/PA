@@ -59,6 +59,18 @@
 
 <script type="text/javascript">
 	
+	$(document).ready(function(){
+	alert("hi");
+		var status = '${savedStatus}';
+		if (status == 'true')
+		{
+			$('#name').val('');
+			$('#mobile').val('');
+			$('#email').val('');
+			$('#address').val('');
+			$('#city').val('');
+		}
+	});
 	function showAddDesignation()
 	{
 		var elmt = document.getElementById("designationDiv");
@@ -155,6 +167,7 @@
 
 	function callAjax(jsObj,url)
 	{
+	
 		var myResults;
 					
 		var callback = {			
@@ -181,6 +194,11 @@
 										clearOptionsListForSelectElmtId("designations");
 										createOptionsForSelectElmtId("designations",myResults);										
 									}
+									else if(jsObj.task == "getgroupsByCategoery")
+									{
+									 $("#groupName option").remove();
+									buildGroupsByCategoery(myResults);		
+									}
 									
 
 								}
@@ -197,7 +215,20 @@
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+	
+	function getGroupsBasedOnCategoery()
+	{
+		var groupCategoryval = $('#groupCategory').val(); 
+		var jsObj = {
+						groupCategoryval:groupCategoryval,						
+						task:'getgroupsByCategoery'
+					};
+		
+		var param = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getGroupNamesBasedOnCategoryAction.action?"+param;
 
+		callAjax(jsObj,url);
+	}
 	function getGroupNamesByCategory(elmt)
 	{
 		var categoryId = elmt.options[elmt.selectedIndex].value;
@@ -212,7 +243,19 @@
 
 		callAjax(jsObj,url);
 	}
-
+	function buildGroupsByCategoery(myResults)
+	{
+		
+		for (i in myResults)
+		{
+			
+			var groups = myResults[i].name;
+			var groupId = myResults[i].id;
+			 $('#groupName').append('<option value='+groupId+'>'+groups+'</option>');
+			
+		}
+		
+	}	
 	function getDesignationsByCategoryName(categoryId)
 	{
 
@@ -238,11 +281,13 @@
 			//window.close();
 		</c:if>		
 	}
+	
 
-	function refreshParentWindow(){
+	function refreshParentWindow()
+	{
 		window.close();
-		}
-
+	}
+	
 </script>
 
 <style type="text/css">
@@ -290,7 +335,7 @@
 </head>
 <body onload="checkSavedStatus()">
 		
-<s:form action="saveLocalGroupMembersAction" method="GET" theme="simple" name="form">
+<s:form action="saveLocalGroupMembersAction" method="POST" theme="simple" name="form">
 	<div id="localGroupMember_main">
 		<div id="localGroupMember_head"> Add Local Group Member</div>
 		<div id="localGroupMember_body">
@@ -350,16 +395,17 @@
 
 				<tr>
 					<th> <font color="red"> * </font> Select Category</th>
-					<td colspan="2"> <s:select id="groupCategory" name="groupCategory"  cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name" headerKey="">
+					<td colspan="2"> <s:select id="groupCategory" name="groupCategory"  cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name" headerKey="" onChange="getGroupsBasedOnCategoery();">
 					</s:select>
 					</td>
 				</tr>
 
 
 				<tr>
-					<th> <font color="red"> * </font> Select Group</th>
-					<td colspan="2"><s:select id="groupName" name="groupName" cssStyle="width:150px;" list="#session.groupNames" listKey="id" listValue="name"></s:select></td>
+				<th> <font color="red"> * </font> Select Group </th>
+				<td colspan="2"><s:select id="groupName" name="groupName" cssStyle="width:150px;" list="#session.groupNames" listKey="id" listValue="name"></s:select></td>
 				</tr>
+
 
 				<tr>
 					<th> <font color="red"> * </font> Designation</th>
