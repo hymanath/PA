@@ -688,7 +688,7 @@ oDT: votersByLocBoothDataTable
 	   $("#castPartyPopupDiv").dialog({
             modal: true,
             title: "<b>Voters Party Details</b>",
-			width: 970,
+			width: 1050,
             height: 600
            
         });
@@ -2025,7 +2025,7 @@ function buildCastInfoData(myresults,jsObj)
 	   $("#partyWiseLocalCastStatsTab").html("");
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
-		   var str ='<div style="overflow-x:scroll;">';
+		   var str ='<div>';
 		      str+='<div id="partyWiseLocalCastStatsTabTitle"><h2 id="subHeading" >Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
 		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:3px solid black;">';
 			  str+='  <thead>';
@@ -2860,7 +2860,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 
 
 	var str='';
-	str+='<table  class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
+	str+='<table  class="table table-bordered table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 	
 	str+='<thead class="info">'
 	str+='<tr>'
@@ -2986,7 +2986,7 @@ function buildAgewiseDetails(results , obj){
 	$('#voterAgewiseDetailsNote').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h5>');
 
 	var str='';
-	str+='<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
+	str+='<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
 
 	str+='<tr>';
 	if(type == "constituency")
@@ -3006,15 +3006,15 @@ function buildAgewiseDetails(results , obj){
 	str+='</tr>';
 	str+='<tr>';
 	str+='<th>Voters</th>';
-	str+='<th>Percentage</th>';
+	str+='<th>%</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percentage</th>';
+	str+='<th>%</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percentage</th>';
+	str+='<th>%</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percentage</th>';
+	str+='<th>%</th>';
 	str+='<th>Voters</th>';
-	str+='<th>Percentage</th>';
+	str+='<th>%</th>';
 	str+='</tr>';
 
 for(var i=0;i<innerResults.length;i++){
@@ -3085,7 +3085,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 
 	var str='';
 
-	str+='	<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
+	str+='	<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
 
 	str+='<tr>';
 	if(type == "constituency")
@@ -3275,7 +3275,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 
 	var str='';
 
-	str+='	<table border="1" style="margin-top:20px;text-align:center;min-width:97%;" class="gridtable">';
+	str+='	<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
 
 	str+='<tr>';
 	if(type == "constituency")
@@ -3360,13 +3360,13 @@ if(obj.retrieveType == "all"){
       $('#ageWiseVotersDetailsOuterDiv').dialog({ 
 	                            title:'Voters Details',
 	                            height: 'auto',
-								width: 950,
+								width: 1050,
 								closeOnEscape: false,
 								position:[30,30],
 								show: "blind",
 								hide: "explode",
 								modal: true,
-								maxWidth : 950,
+								maxWidth : 1050,
 								overlay: { opacity: 0.5, background: 'black'},
 	                             buttons: {
 							   "Close":function() {$(this).dialog("close")}
@@ -3707,8 +3707,8 @@ function showPreviousEleVotingTrends(results,jsObj)
 
 		if(flag)
 		{
-		 var str = '';
-			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
+		  var str = '';
+			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
 				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 				str +='<thead class="info"><tr>';
 				str +='<th>Election Type</th>';
