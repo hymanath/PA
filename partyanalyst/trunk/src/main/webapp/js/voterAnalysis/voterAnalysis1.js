@@ -566,21 +566,31 @@ oDT: votersByLocBoothDataTable
 	     $("#ageLink").show();
 	   }
 	   if(type == "constituency"){
+		   $("#votersBasicInfoBtnDiv").show();
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Mandal Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View Mandal Wise Family Details");
+		  $("#votersShareBtn").attr("value","Mandal Wise Voters Info");	
 	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
+		  $("#votersBasicInfoBtnDiv").hide();
 	   }else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
-	   }else if(type="panchayat"){
+	   }else if(type=="panchayat"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	     $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
+		 $("#votersBasicInfoBtnDiv").show();
+		 $("#votersShareBtn").attr("value","Booth Wise Voters Info");
+
 	   }else{
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 	   }
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
+
+		 $("#votersBasicInfoBtnDiv").show();
+		$("#votersShareBtn").attr("value","Panchayat Wise Voters Info");
+
 	   $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
 		  $("#revenueVillageWiseElecResults").show();
@@ -594,10 +604,17 @@ oDT: votersByLocBoothDataTable
 		 }else{
 		  $("#votersInfoMoreShowHide").hide();
 		 }
+
+		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
+		 {
+			$("#votersBasicInfoBtnDiv").show();
+			$("#votersShareBtn").attr("value","Booth Wise Voters Info");
+			
+		 }
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		     getPreviousVotersDetails();
-		getvotersBasicInfo("voters",id,publicationId,type);
+		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
@@ -610,6 +627,7 @@ oDT: votersByLocBoothDataTable
 		// callCorrespondingAjaxCall();
 		 getPreviousElectionVotingTrends(id,publicationId,type);
 		 callCorrespondingAjaxCall('brief');
+		 //getElectionyearsByMandalId(id,type);
 	}
 
 	function getPreviousVotersDetails(){
@@ -904,6 +922,15 @@ oDT: votersByLocBoothDataTable
 									buildPreviousVotersDetails(myResults,jsObj);
 		
 								
+								}
+								else if(jsObj.task == "getElectionyearsByMandalId")
+								{
+									showElectionYears(myResults);
+								}
+
+								else if(jsObj.task == "getCrossVotingReport")
+								{
+									showCrossVotingReport(myResults);
 								}
 								
 							}catch (e) {
@@ -3388,15 +3415,50 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 { 
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
-
-	  $("#votersBasicInfoSubChartDiv").removeAttr('style');
-	  $("#votersBasicInfoSubDiv").removeAttr('style');
+	$("#votersInfoAjaxImg").css("display","none");
+	  //$("#votersBasicInfoSubChartDiv").removeAttr('style');
+	  //$("#votersBasicInfoSubDiv").removeAttr('style');
 
 	var str = '<div id="votersBasicInfoDivSub">';
+	var title = " Voters Basic Information of "+jsObj.typename+" in "+jsObj.year+"";
+	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
+	{
+		if(jsObj.type == "constituency")
+			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" Constituency";
+		else
+		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" ";
+	}
+
+	$('#votersBasicInfoMainDiv').dialog({ 
+					title:title,
+					height: 'auto',
+					width: 950,
+					show: "blind",
+					modal: true,
+					overlay: { opacity: 0.5, background: 'black'},
+					 buttons: {
+				   "Close":function() {$(this).dialog("close")}
+					   }	
+
+	   });
+
+	 if(votersbasicinfo.votersInfoForMandalVOList == null || votersbasicinfo.votersInfoForMandalVOList.length == 0)
+	 {
+		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		//$("#votersTitle").html(jsObj.typename);
+			$("#votersBasicInfoSubChartDiv").css('border','1px solid #FFF');
+			$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
+
+			$("#votersBasicInfoMsgDiv").html("<span id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</span>");
+		 return;
+	}
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
-    
-		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
+		
+		$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
+		$("#votersBasicInfoSubDiv").css('border','1px solid black');
+		$("#votersBasicInfoMsgDiv").html('');
+		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
 		str += '<div>';
 		str += '<b><span>Total Voters : '+votersbasicinfo.totVoters+'</span>';
@@ -3984,8 +4046,154 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		     //$('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
 
 		}
-	
-	
+		function getElectionyearsByMandalId(id,type)
+		{
+			
+			if(maintype == "mandal")
+			{
+			 if(id == 0)
+				return;
+			$("#crossVotingMainDiv").css("display","block");
+				
+		  var jsObj=
+		  {
+			 id                :id,
+			 type              :maintype,
+			 task:"getElectionyearsByMandalId"
+		 };
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "getElectionyearsByMandalIdAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+		  }
+		  else
+			{
+			$("#crossVotingMainDiv").css("display","none");
+			return;
+			}
+
+	 }
+	function showElectionYears(results)
+	{
+		
+		var selectedElmt=document.getElementById("electionYearsForCrossVoting");
+		removeSelectElements(selectedElmt);
+		for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}	
+		}
+
+		getCrossVotingReport();
+	}
+
+
+	$("#electionYearsForCrossVoting").live("change",function(){
+		getCrossVotingReport();
+	});
+
+	function forGetCrossVoting()
+	{
+		getCrossVotingReport();
+	}
+
+	function getCrossVotingReport()
+	{
+		
+		id = mainreqid;
+		type = maintype;
+		var eleYear = $("#electionYearsForCrossVoting option:selected").text();
+		
+		/* var allianceCheckElmt =  document.getElementById("allianceCheck");
+		if(allianceCheckElmt.checked==true)
+			var allianceValue = "true";
+		else
+			var allianceValue = "false";*/
+
+		if(id == 0)
+			return;
+
+		$(".ajaxImg").css("display","inline-block");
+		var jsObj=
+		{
+			id                :id,
+			type              :type,
+			year              :eleYear,
+			includeAliance    :false,
+			task:"getCrossVotingReport"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCrossVotingReportAction.action?"+rparam;	
+		callAjax(jsObj,url);
+      
+
+	}
+
+	function showCrossVotingReport(results)
+	{
+		
+		$("#crossVotingReportDiv").html('');
+		$(".ajaxImg").css("display","none");
+		var str = '';
+		if(results.mandals == null)
+		{
+			$("#crossVotingReportDiv").html('No Data Found.').css("margin-top","5px");
+			return;
+		}
+		if(results.mandals != null)
+		{
+			var crossVotingResults = results.mandals;
+
+			str +='<table class="crossVotingTableCls">';
+			str +='<tr>';
+			str +='<th>Party</th>';
+			str +='<th>Polled Votes</th>';
+			/* str +='<th>AC<font style="color:red;">*</font></th>';
+			str +='<th>PC<font style="color:red;">*</font></th>';
+			str +='<th>Votes Flown</th>';
+			str +='<th>IC<font style="color:red;">*</font></th>';*/
+			str +='<th>Assembly Candidate</th>';
+			str +='<th>Parliament Candidate</th>';
+			str +='<th>Votes Flown</th>';
+			str +='<th>Impact On Constituency</th>';
+			str +='</tr>';
+			str +='<tr>';
+			for(var i in crossVotingResults)
+			{
+				str +='<td>'+crossVotingResults[i].partyName+'</td>';
+				str +='<td>'+crossVotingResults[i].polledVotes+'</td>';
+				str +='<td>'+crossVotingResults[i].acPercentageInMandal+'</td>';
+				str +='<td>'+crossVotingResults[i].pcPercentageInMandal+'</td>';
+				str +='<td>'+crossVotingResults[i].percentageDifferenceInMandal+'</td>';
+				str +='<td>'+crossVotingResults[i].percentageImpactOnConstituency+'</td>';
+				str +='</tr>';
+			}
+			str +='</table>';
+			
+			/* str +='<div><span>AC* - Assembly Candidate,</span>';
+			str +='<span>PC* - Parliament Candidate,</span>'; 
+			str +='<span>IC* - Impact On Constituency</span></div>';*/
+			$("#crossVotingReportDiv").html(str);
+		}
+	}
+
+	$('#votersShareBtn').live("click",function(){
+
+		$('#votersInfoAjaxImg').css("display","block");
+		getvotersBasicInfo("voters",mainreqid,$("#publicationDateList").val(),maintype);
+		
+	});
+
+
 	/*** FUNCTIONS FOR NAVIGATIONS START***/
 
 (function($) {
