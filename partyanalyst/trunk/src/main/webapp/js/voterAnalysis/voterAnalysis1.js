@@ -569,7 +569,7 @@ oDT: votersByLocBoothDataTable
 		   $("#votersBasicInfoBtnDiv").show();
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Mandal Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View Mandal Wise Family Details");
-		  $("#votersShareBtn").attr("value","Mandal Wise Voters Info of "+mainname);	
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'> Mandal Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
@@ -581,15 +581,15 @@ oDT: votersByLocBoothDataTable
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	     $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 		 $("#votersBasicInfoBtnDiv").show();
-		 $("#votersShareBtn").attr("value","Booth Wise Voters Info of "+mainname);
-
+		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		 
 	   }else{
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 	   }
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 
-		 $("#votersBasicInfoBtnDiv").show();
-		$("#votersShareBtn").attr("value","Panchayat Wise Voters Info of "+mainname);
+		$("#votersBasicInfoBtnDiv").show();
+		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Panchayat Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Panchayat Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 
 	   $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
@@ -608,7 +608,7 @@ oDT: votersByLocBoothDataTable
 		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		 {
 			$("#votersBasicInfoBtnDiv").show();
-			$("#votersShareBtn").attr("value","Booth Wise Voters Info of "+mainname);
+			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
 		  $("#votersHeaderDiv3").hide();
@@ -688,7 +688,7 @@ oDT: votersByLocBoothDataTable
 	   $("#castPartyPopupDiv").dialog({
             modal: true,
             title: "<b>Voters Party Details</b>",
-			width: 1050,
+			width: 980,
             height: 600
            
         });
@@ -1011,7 +1011,7 @@ oDT: votersByLocBoothDataTable
 		var conid=jsObj.conId;
 		var str='';
 		
-		str+='<div id="cnstHeading" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
 		str+='<div id="constituencyResultsInner" style="padding-bottom:25px;">';
 		str+='<table class="table table-bordered table-hover"><thead><tr class="" style="background:#E6E6E6;"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
         for(var i in results){
@@ -1352,10 +1352,10 @@ function callCorrespondingAjaxCall(retrieveType){
 function getVotersData(){
   //var level = $("#reportLevel").val();
     if(maintype == "panchayat"){
-	  $("#votersByLocationTabContentDiv_body").css("border","1px solid black");
+	  //$("#votersByLocationTabContentDiv_body").css("border","1px solid black");
 	  buildVotersByLocPanchayatDataTable("panchayatField");
 	}else if(maintype == "booth"){
-	  $("#votersByLocationTabContentDiv_body").css("border","1px solid black");
+	  //$("#votersByLocationTabContentDiv_body").css("border","1px solid black");
 	  buildVotersByLocBoothDataTable("pollingStationField");
 	}else{
 	  $("#votersByLocationTabContentDiv_body").removeAttr('style'); 
@@ -2022,8 +2022,8 @@ function buildCastInfoData(myresults,jsObj)
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
 		   var str ='<div>';
-		      str+='<div id="partyWiseLocalCastStatsTabTitle"><h2 id="subHeading" >Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
-		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:3px solid black;">';
+		      str+='<div id="partyWiseLocalCastStatsTabTitle" style="width:400px;"><h2 id="subHeading" >Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
+		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:2px solid black;">';
 			  str+='  <thead>';
 			  str+='   <tr>';
 			  str+='     <th>Caste</th>';
@@ -2068,7 +2068,7 @@ function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
 		  var Data = result.partyWisevoterCastInfoVOList;
 		  if(Data == null || Data.length == 0)
 		    return;
-		  var str =' <table id="partyWiseJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:3px solid black">';
+		  var str =' <table id="partyWiseJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:2px solid black">';
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>Party</th>';
@@ -2188,7 +2188,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 	 var castArray = constMgmtMainObj.castStatsArray;
 	$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
-         var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:3px solid black">';
+         var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:2px solid black">';
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>Caste</th>';
@@ -2460,24 +2460,24 @@ function impFamilesStaticTable(myresults,jsObj)
 		
 	str += '<div class="span3"><ul class="FamiliyList"> <li> <div style="width:68%;float:left;">Total Voters </div> <span style="clear:left;">- '+myresults.totalVoters+'</span></li>';
 		if(myresults.totalFamalies==null){
-		str+='<li><div style="width:68%;float:left;"> Total Families </div> - <span style="clear:left;">'+value+'</span> </li> ';
+		str+='<li><div style="width:68%;float:left;"> Total Families </div> : <span style="clear:left;">'+value+'</span> </li> ';
 	}
 	else{
-	str+='<li><div style="width:68%;float:left;"> Total Families </div> - <span style="clear:left;">'+myresults.totalFamalies+'</span></li> ';
+	str+='<li><div style="width:68%;float:left;"> Total Families </div> : <span style="clear:left;">'+myresults.totalFamalies+'</span></li> ';
 	}
 
 	if(myresults.totalMaleVoters==null){
-		str +='<li><div style="width:68%;float:left;"> Total Male Voters </div> - <span style="clear:left;"> '+value+'</span></li> ';
+		str +='<li><div style="width:68%;float:left;"> Total Male Voters </div> : <span style="clear:left;"> '+value+'</span></li> ';
 	}
 	else{
-	str +='<li><div style="width:68%;float:left;"> Total Male Voters </div> - <span style="clear:left;">'+myresults.totalMaleVoters+'</span> </li> ';
+	str +='<li><div style="width:68%;float:left;"> Total Male Voters </div> : <span style="clear:left;">'+myresults.totalMaleVoters+'</span> </li> ';
 	}
 
 	if(myresults.totalFemaleVoters==null){
-		str +='<li><div style="width:68%;float:left;">Total Female Voters </div>- <span style="clear:left;">'+value+'</span> </li> ';
+		str +='<li><div style="width:68%;float:left;">Total Female Voters </div>: <span style="clear:left;">'+value+'</span> </li> ';
 	}
 	else{
-	str +='<li> <div style="width:68%;float:left;">Total Female Voters </div>- <span style="clear:left;">'+myresults.totalFemaleVoters+'</span> </li> ';
+	str +='<li> <div style="width:68%;float:left;">Total Female Voters </div>: <span style="clear:left;">'+myresults.totalFemaleVoters+'</span> </li> ';
 	}
 	
 	str +='</ul></div>';
@@ -3358,13 +3358,13 @@ if(obj.retrieveType == "all"){
       $('#ageWiseVotersDetailsOuterDiv').dialog({ 
 	                            title:'Voters Details',
 	                            height: 'auto',
-								width: 1050,
+								width: 950,
 								closeOnEscape: false,
 								position:[30,30],
 								show: "blind",
 								hide: "explode",
 								modal: true,
-								maxWidth : 1050,
+								maxWidth : 950,
 								overlay: { opacity: 0.5, background: 'black'},
 	                             buttons: {
 							   "Close":function() {$(this).dialog("close")}
@@ -3707,7 +3707,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 function showPreviousEleVotingTrends(results,jsObj)
 {
 	 var flag = false;
-	 $("#previousEleVotingTrendsDiv").css('display','block');
+	 $("#previousEleVotingTrendsDiv").css({'display':'block','width':'96%','color':'#000'});
 	 $("#previousEleVotingTrendsDiv").html('');
       for(var i in results)
 		 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
