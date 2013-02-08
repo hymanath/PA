@@ -342,6 +342,8 @@ textarea {
     color: #4B74C6;
     font-weight: bold;
 	padding-left: 60px;
+	position: inherit;
+	width: 160px;
 }
 .requiredFont {
     color: red;
@@ -383,6 +385,18 @@ width: 618px;
 
 .unflagClass{
 	opacity:0.35;
+}
+.widgetHeader {
+    background-image: url("images/icons/districtPage/header_body.png");
+    height: 36px;
+    padding-left: 17px;
+    width: 916px;
+}
+
+.yui-skin-sam .yui-dt-liner {
+    margin: 0 0 0 -8px;
+    padding: 9px;
+	
 }
 </style>
 <script type="text/javascript">
@@ -439,7 +453,6 @@ var jsObj=
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "getNewsToDisplayAction.action?"+rparam;						
       callAjax(jsObj,url);
-	  hideImg();
 }
 function drawChart(result,obj){
 
@@ -478,7 +491,6 @@ document.getElementById("showTypes").innerHTML = str;
 	  {
 	    ctitle = "Category Wise News Comparison";
 		document.getElementById("graphType").value = 1;
-		document.getElementById('searchAjaxImgSpan').style.display = 'none';
 	  }
 	 else if(obj.id == "sourceGraphDiv")
 	 {
@@ -495,7 +507,7 @@ document.getElementById("showTypes").innerHTML = str;
 	  ctitle = "News Importance Wise Comparison";
 	  document.getElementById("graphType").value = 4;
 	  }
-	 	
+	  
 	 new google.visualization.LineChart(chartResultDiv).
 		  draw(data, {curveType: "function",width: 800, height: 300,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
 		
@@ -898,9 +910,10 @@ if(result.length == 0)
 
    YAHOO.widget.DataTable.description = function(elLiner, oRecord, oColumn, oData) 
   {
+	var strshortened;
 	var user = oData;
 	var description= oRecord.getData("description");
-var length = description.length;
+	var length = description.length;
 	if(length > 50)
 	{
 		strshortened = description.slice(0,50)+'......';
@@ -909,24 +922,24 @@ var length = description.length;
 	{
 		strshortened = description;
 	}
-elLiner.innerHTML ='<div style="width:70px;">'+strshortened+'</div>';
+	elLiner.innerHTML ='<div style="width:70px;">'+strshortened+'</div>';
 
-	  
+		
   };
 
   var newsResultColumnDefs = [ 		    	             
 		    	            
-							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
+							{key:"categoryType", label: "NEWS CATEGORY", resizeable:true, sortable: true},
 							{key:"gallaryName", label: "GALLERY", sortable: true},
-		    	           	{key:"source", label: "SOURCE", sortable: true},
-							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
+		    	           	{key:"source", label: "SOURCE", sortable: true, resizeable:true},
+							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true, resizeable:true},
 							//YAHOO.widget.DataTable.description
 								{key:"description", label: "DESCRIPTIONS",
-								formatter:YAHOO.widget.DataTable.description, sortable: true},
+								formatter:YAHOO.widget.DataTable.description, sortable: true, resizeable:true},
 							//{key:"description", label: "DESCRIPTIONS", sortable: true},
-		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
-							{key:"locationValue", label: "AREA NAME", sortable: true},
-							{key:"fileDate", label: "NEWS DATE", sortable: true},
+		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true, resizeable:true},
+							{key:"locationValue", label: "AREA NAME", sortable: true, resizeable:true},
+							{key:"fileDate", label: "NEWS DATE",sortable: true, resizeable:true},
 							
 
 							//{key:"delete", label: "DELETE",formatter:YAHOO.widget.DataTable.delet},
@@ -1120,8 +1133,11 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    
  }
  function showDates(){
-   $("#fromDate").val('');
-   $("#toDate").val('');
+ 
+	 document.getElementById("fromDate").value=null;
+     document.getElementById("toDate").value=null;
+	 document.getElementById('DateErrDiv').innerHTML='&nbsp;';
+
    if(document.getElementById("betweendates").checked == true)
      document.getElementById("showDates").style.display = "block";
    else
@@ -1136,7 +1152,7 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
  }
  
  function newsSearch(){
- 
+ showAjaxImg('searchAjaxImgSpan');
    var sourceEle =   document.getElementById("source");
    var  source = sourceEle.options[sourceEle.selectedIndex].value;
    var categoryEle =  document.getElementById("category");
@@ -1178,65 +1194,48 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    }
  if(document.getElementById("betweendates").checked == true)
   {
-	  var fromDate = "";
-	  var toDate = "";	
-		fromDate = document.getElementById("fromDate").value;
-		toDate =  document.getElementById("toDate").value;
+     var startDate = document.getElementById("fromDate").value;
+     var  endDate =  document.getElementById("toDate").value;
+	  var startDate1 = document.getElementById("fromDate").value;
+     var  endDate1 =  document.getElementById("toDate").value;
 
-// STARTING : validations updated by srishailam
+	  var dt1  = parseInt(startDate.substring(0,2),10);
+      var mon1 = parseInt(startDate.substring(3,5),10);
+      var yr1  = parseInt(startDate.substring(6,10),10);
+      var dt2  = parseInt(endDate.substring(0,2),10);
+      var mon2 = parseInt(endDate.substring(3,5),10);
+      var yr2  = parseInt(endDate.substring(6,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
 
-	   var arrr = fromDate.split("-");
-			var fromDat=arrr[0];
-			var frommonth=arrr[1];
-			var fromyear=arrr[2];
-	   var arr = toDate.split("-");
-			var toDat=arr[0];
-			var tomonth=arr[1];
-			var toyear=arr[2];
-	if(!fromDate){
-			document.getElementById('DateErrDiv').innerHTML='Please select from Date ';
-			$('#searchImg').hide();
+	document.getElementById('DateErrDiv').innerHTML='&nbsp;';
+	if(!startDate){
+			$('#searchAjaxImgSpan').css('display','none');
+			document.getElementById('DateErrDiv').innerHTML='Please select From Date ';
 			return false;
 		}
-	if(!toDate){
-			$('#searchImg').hide();
-			document.getElementById('DateErrDiv').innerHTML='Please select to Date ';
+	if(!endDate){
+			$('#searchAjaxImgSpan').css('display','none');
+			document.getElementById('DateErrDiv').innerHTML='Please select To Date ';
 			return false;
 		}
-	if(fromyear>toyear){
-		$('#searchImg').hide();
-		document.getElementById('DateErrDiv').innerHTML='From Date should not greater then To Date ';
-		return false;
-	}
-	 if(frommonth>tomonth){
-		   if(fromyear == toyear){
-		   $('#searchImg').hide();
-			document.getElementById('DateErrDiv').innerHTML='From Date should not greater then To Date ';
-			return false;
+	if(date2 < date1){ 
+		 $('#searchAjaxImgSpan').css('display','none');
+		 document.getElementById('DateErrDiv').innerHTML="From Date should not greater than To Date";
+		 return true;
 		}
-		
-	}
 	
-	if(fromDat>toDat){	
-		if(frommonth == tomonth && fromyear == toyear){			
-			 $('#searchImg').hide();
-			document.getElementById('DateErrDiv').innerHTML='From Date should not greater then To Date ';
-			return false;		
-		   }
-	}
-		document.getElementById('DateErrDiv').innerHTML='&nbsp;';
-		$('#searchImg').show();
+	startDate=yr1+"-"+mon1+"-"+dt1;	
+	endDate=yr2+"-"+mon2+"-"+dt2;
+
+	startDate1=dt1+"-"+mon1+"-"+yr1;	
+	endDate1=dt2+"-"+mon2+"-"+yr2;
 	
-	var title = 'Between Dates '+fromDat+' and '+toDat;	
-	startDate=fromyear+"-"+frommonth+"-"+fromDat;	
-	endDate=toyear+"-"+tomonth+"-"+toDat;
-	
+	var title = 'Between Dates '+startDate1+' and '+endDate1;
 	getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
-  	getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);
-  	getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
+  	getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);  getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
 	
-// ENDING : validations updated by srishailam
-   }
+  }
   }
   function clearAll(){
   
@@ -1417,10 +1416,16 @@ function editNewsDetails(fileId){
 	str += '   </tr>';
 
 	str +='    <tr>';
-    str +='	   <td class="tdWidth">Location Scope</td>';
-    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+    str +='	   <td class="tdWidth">Location Scope<font class="requiredFont">*</font></td>';
+    str +='	   <td><select id="scopeDiv" name="locationScope" style="width:222px;" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
  
+	str +='  <tr>';
+	str +='    <td colspan="2">';
+	str +='       <div id="showScopeSubs" />'; 
+	str +='    </td>';
+	str +='  </tr>';
+
    if(reqFile.locationScope != null && reqFile.locationScope != "null"){
 
 
@@ -1429,7 +1434,7 @@ function editNewsDetails(fileId){
 
        str+='<input type="hidden" id="locationValueId" value='+reqFile.location+'></input>';
 
-		str +='       <div style="font-weight:bold;flost:right;">'+reqFile.locationValue+'</div>'; 
+		str +='       <div style="font-weight:bold;margin-left: 54px;">'+reqFile.locationValue+'</div>'; 
 		str +='    </td>';
 		str +='    <td>';
 		str +='<input type="button" class="btn" value="Edit" onClick="getLocationDiv();"/>'; 
@@ -1438,11 +1443,7 @@ function editNewsDetails(fileId){
 
    }
    
-	str +='  <tr>';
-	str +='    <td colspan="2">';
-	str +='       <div id="showScopeSubs" />'; 
-	str +='    </td>';
-	str +='  </tr>';
+	
 
 
 
@@ -1498,7 +1499,7 @@ bvalue=true;
   else if(id==1)
   {
     var str ='';
-  str +='<table>';
+  str +='<table style="margin-left:-5px">';
   str +='  <tr><td></td>';
   str +='  </tr>';
   str +='</table>';
@@ -1507,27 +1508,28 @@ bvalue=true;
   else if(id==2)
   {
    var str ='';
-  str +='<table>';
+  str +='<table style="width: 450px;">';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" name="locationValue" class="selectWidth"/></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="stateDiv" name="locationValue" style="width:222px;" class="selectWidth"/></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
    getStatesForLocationScope();
   }
   else if(id==3)
-  {
+  {	 
    var str ='';
-  str +='<table>';
+ str +='<table style="margin-left:-5px">';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;"><span>State<font class="requiredFont">*</font></span></td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth" style="width:222px;"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" name="locationValue" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">District<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth" style="width:222px;"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
+  
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
    getStatesForLocationScope();
@@ -1535,18 +1537,18 @@ bvalue=true;
   else if(id==4)
   {
    var str ='';
-  str +='<table>';
+  str +='<table style="margin-left:-5px">';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;"><span>State<font class="requiredFont">*</font></span></td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth" style="width:222px;"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">District<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth" style="width:222px;"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="constituencyDiv" name="locationValue" style="width:222px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
@@ -1566,22 +1568,22 @@ bvalue=true;
    }
    
     var str ='';
-  str +='<table>';
+  str +='<table style="margin-left:-5px">';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="stateDiv"   class="selectWidth" style="width:222px;" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">District<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="districtDiv"  class="selectWidth" style="width:222px;" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="constituencyDiv"  class="selectWidth" style="width:222px;" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Mandal/ Municipality/ Corp/ GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="mandalDiv" name="locationValue" style="width:222px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
@@ -1600,26 +1602,26 @@ bvalue=true;
      areaType2 = "URBAN" ;
    }
     var str ='';
-  str +='<table>';
+  str +='<table style="margin-left:-5px">';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="stateDiv"  class="selectWidth" style="width:222px;" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">District<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="districtDiv"  class="selectWidth" style="width:222px;" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="constituencyDiv"  class="selectWidth" style="width:222px;" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Mandal/ Municipality/ Corp/ GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="mandalDiv"  class="selectWidth" style="width:222px;" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Village/Ward/Division :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Village/Ward/Division<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="villageDiv" name="locationValue" style="width:222px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
@@ -1628,26 +1630,26 @@ bvalue=true;
   else if(id==9)
   {
      var str ='';
-  str +='<table>';
+  str +='<table style="margin-left:-5px">';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">State :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth" style="width:222px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">District :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">District<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth" style="width:222px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Assembly Constituency :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="constituencyDiv" class="selectWidth" style="width:222px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Mandal/Municipality/Corp/GMC :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Mandal/ Municipality/ Corp/ GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="mandalDiv" class="selectWidth" style="width:222px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width:105px;">Village/Ward/Division :</td>';
-  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth">Village/Ward/Division<font class="requiredFont">*</font></td>';
+  str +='	   <td><select id="villageDiv" name="locationValue" style="width:222px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
@@ -2186,6 +2188,17 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
        return;  
   
   }
+
+  if(locationScopeId == 5 || locationScopeId == 7 || locationScopeId == 6 || locationScopeId == 8){
+
+try{
+    locationScopeValue = locationScopeValue.substring(1);
+}catch(e){
+	locationScopeValue = locationScopeValue;
+
+}
+
+  }
    var jsObj=
 	      { 
 		  title		       :	title,
@@ -2260,7 +2273,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
 	<div id="DateErrDiv"  align="center" style="color:red">&nbsp; </div>
     </div>
 	<div style="padding-top:5px;">
-	   <center><b>Select Options To Filter Results</b><input type="button" class="btn btn-primary" value="Options" onclick="toggleOption();" style="margin-left: 5px;"></input></center>
+	   <center><b>Select Options To Filter Results</b><input type="button"  class="btn btn-primary" value="Options" onclick="toggleOption();" style="margin-left: 5px;"></input></center>
 	</div>
 <div id="newsSearch" style="padding-bottom:5px;padding-top:10px;">	   
 	   <table align="center">
@@ -2283,7 +2296,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
 </div>
 <div style="padding-top:15px;">
  <center>
- <a href="javascript:{}" onclick="newsSearch();showAjaxImg('searchAjaxImgSpan')" ><img src="images/search_button.jpg" /></a>
+ <a href="javascript:{}" onclick="newsSearch();" ><img src="images/search_button.jpg" /></a>
  <a href="javascript:{}" onclick="clearAll();" style="padding-left:10px;" ><img src="images/clear_all_buttom.jpg" ></a>
  <span id="searchAjaxImgSpan" style="margin-left:15px;display:none;"><img src="images/icons/search.gif"></img width="18px" height="18px;"></div></center>
 </span>
@@ -2292,7 +2305,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
 
   <tr><td><div id="showNewsCount"></div></td></tr>
   
-  <center><div id="showTypes" style="margin-top: 10px;"></div></center>
+  <center><div id="showTypes"></div></center>
   <center><div id="categoryGraphDiv" style="position:inherit;"></div></center>
   <center><div id="sourceGraphDiv" style="position:inherit;"></div></center>
   <center><div id="languageGraphDiv" style="position:inherit;"></div></center>
@@ -2315,7 +2328,7 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
    </td>
  </tr> 
   
-  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;" ></div></td></tr>
+  <tr><td><div id="showNews" class="yui-skin-sam" style="width:970px;overflow-x:scroll;"></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
            <div id="showNewsDiv"></div>
@@ -2367,8 +2380,6 @@ getNews("importance","getAllNewsImportanceDetails","","","","","","","","","",""
 <script>
 function getVideoDetails(contentId)
 {
-
-
 	$.fx.speeds._default = 1000;
 	  $("#showContentDiv").dialog({ stack: false,
 								height: 'auto',
@@ -2380,6 +2391,7 @@ function getVideoDetails(contentId)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
+								title:'News Gallery',
 								overlay: { opacity: 0.5, background: 'black'},
 								close: function(event, ui) {
 								document.getElementById("showContentDivInnerDiv").innerHTML ='';
@@ -2463,7 +2475,7 @@ function buildContentDetails()
 	
 	//document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${specialPageVO.heading} - '+result.contentType;
 
-	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>'+result.contentType;
+	//document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>'+result.contentType;
 
 	str += '<Div><center>';
 	str += '<div class="main-title-sec" style="clear:both;">';
@@ -2489,27 +2501,27 @@ function buildContentDetails()
 		{
 
 
-			str+='<table>';
+			str+='<table style="font-size:13px;">';
 			str+='<tr>';
 			str+='<td>';
 
 			
 
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>CategoryType</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
-				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
+				str+=' RegionScope</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font> &nbsp;';
 
 
 			 str+='</td>';
 
 			 str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
-				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>Source</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].fileDate != null)
-				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+				str+=' Date</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
 
 
 			 str+='</td>';
@@ -2787,7 +2799,7 @@ function buildContentDetails()
 
 		str += '<Div><center>';
 		str += '<div class="main-title-sec" style="clear:left;">';
-		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries</div><div class="main-bbg"/></div>';
+		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' galleries</div><div class="main-bbg"/></div>';
 		
 		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
