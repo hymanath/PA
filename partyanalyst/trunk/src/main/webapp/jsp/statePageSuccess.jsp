@@ -108,7 +108,7 @@
 	float:none;
 	background:#FFFFFF;
 	width:990px;
-	margin-top:5px;
+	margin-top:30px;
 	}
 	 #statePage_header
 	{
@@ -152,7 +152,7 @@ margin-right:1px;
     border-bottom: 2px solid #E0E0D6;
 }
 .headerLabelSpan {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
     top: 10px;
     position: relative;
@@ -234,6 +234,8 @@ color:none;
 	 border-left: 1px solid #E0E0D6;
     border-right: 1px solid #E0E0D6 ;
     border-bottom: 1px solid #E0E0D6;
+	 padding-top: 8px;
+	  padding-bottom: 8px;
 }
 #ministerDiv a:hover{
 text-decoration:none;
@@ -276,7 +278,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 .favouritelink:hover .favouritelink-close {display:block}
 /** Favorite Link End**/
 
-
+.ministerTabCls{line-height:1.7em; margin-left: 2px;}
 </style>
 </head>
 <body>
@@ -442,7 +444,7 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 									<a href="candidateElectionResultsAction.action?candidateId=${electionGoverningBodyVO.candidateId}">
 									<img src="images/candidates/${electionGoverningBodyVO.candidateName}.jpg" width="100px" height="88px;"   style="margin:2px 0px 2px 2px;" alt="${electionGoverningBodyVO.candidateName}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"/></a>
 									</div></td><td>
-									<table>
+									<table class="ministerTabCls">
 									<tr>
 									
 									<td style="font-size: 12px; font-weight: normal;" colspan="2"><a href="candidateElectionResultsAction.action?candidateId=${electionGoverningBodyVO.candidateId}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"><span style="color:#8B4724;font-weight:bold;font-size:11px;"><c:out value="${electionGoverningBodyVO.candidateName}"></c:out></span></a></td>
@@ -578,7 +580,7 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 
 			<c:if test="${electionGoverningBodyVO != null}">
 				<div class="productFeatureMain" style="margin-top:15px;">							
-							  <div class="productFeatureHeader" id="productFeatureHeaderDiv" style="margin-bottom: -5px;">
+							  <div class="productFeatureHeader" id="productFeatureHeaderDiv" style="">
 								
 										<div class="productFeatureHeaderBackground_center" style="background:#06ABEA;border-radius: 3px 3px 3px 3px; text-align: left; height: 30px;">
 											<span class="headerLabelSpan" style="left: 16px; top: 6px;">
@@ -587,7 +589,7 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 										</div>
 									
 							</div>
-							<table cellspacing="10"><tr><td>
+							<table width="100%" cellspacing="10"><tr><td>
 							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;height:auto;">
 								
 							</div></td><td>

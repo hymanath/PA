@@ -109,7 +109,6 @@
 		<pattern>/partyResultsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
 		<pattern>/ministersPageAction*</pattern>
-		<pattern>/statePageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
 		<pattern>/newsMonitoringService*</pattern>
 		<pattern>/searchInPartyAnalyst*</pattern>
@@ -130,7 +129,6 @@
 		<pattern>/adminUpload*</pattern>
 		<pattern>/profileManagePageAction*</pattern>
 		<pattern>/initailConstituencyManagementAction*</pattern>
-		<pattern>/electionComparisonReportAction*</pattern>
 		<pattern>/partyPerformanceReport*</pattern>
 		<pattern>/abuseCommentaction*</pattern>
 		<pattern>/partyManagementAction*</pattern>
@@ -180,6 +178,8 @@
 		<pattern>/populateVoterDataAction*</pattern>
 		<pattern>/cadreRegisterPageAction*</pattern>
 		<pattern>/cadreRegisterAction*</pattern>
+		<pattern>/statePageAction*</pattern>
+		<pattern>/electionComparisonReportAction*</pattern>
     </decorator>
 
 </decorators>
