@@ -56,6 +56,8 @@
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 <title>Voters analysis</title>
 
 
@@ -751,9 +753,27 @@ var locationDetails={
 locationDetails.constituencyArr.push(ob);
 </c:forEach>		
 
+$(document).ready(function(){
+$(".dateField").live("click", function(){
+$(this).datepicker({
+dateFormat: "dd/mm/yy",
+changeMonth: true,
+changeYear: true,
+maxDate: new Date()
+
+}).datepicker("show");
+});
+});
+
+
 </script>
 </head>
 <body>
+
+<div id="problemOuterDiv">
+<div id="problemInnerDiv">
+</div>
+</div>
 <!--DISPLAY NEWS GALLARIES START-->
  <div id="showContentDiv">
     <div id="showAjaxImgForNews" style="display:none"><img src="images/icons/goldAjaxLoad.gif"/></div>
