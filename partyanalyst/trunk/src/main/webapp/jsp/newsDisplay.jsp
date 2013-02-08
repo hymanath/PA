@@ -1194,48 +1194,65 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    }
  if(document.getElementById("betweendates").checked == true)
   {
-     var startDate = document.getElementById("fromDate").value;
-     var  endDate =  document.getElementById("toDate").value;
-	  var startDate1 = document.getElementById("fromDate").value;
-     var  endDate1 =  document.getElementById("toDate").value;
+	  var fromDate = "";
+	  var toDate = "";	
+		fromDate = document.getElementById("fromDate").value;
+		toDate =  document.getElementById("toDate").value;
 
-	  var dt1  = parseInt(startDate.substring(0,2),10);
-      var mon1 = parseInt(startDate.substring(3,5),10);
-      var yr1  = parseInt(startDate.substring(6,10),10);
-      var dt2  = parseInt(endDate.substring(0,2),10);
-      var mon2 = parseInt(endDate.substring(3,5),10);
-      var yr2  = parseInt(endDate.substring(6,10),10);
-      var date1 = new Date(yr1, mon1, dt1);
-      var date2 = new Date(yr2, mon2, dt2);
+// STARTING : validations updated by srishailam
 
+	   var arrr = fromDate.split("-");
+			var fromDat=arrr[0];
+			var frommonth=arrr[1];
+			var fromyear=arrr[2];
+	   var arr = toDate.split("-");
+			var toDat=arr[0];
+			var tomonth=arr[1];
+			var toyear=arr[2];
+	if(!fromDate){
+			document.getElementById('DateErrDiv').innerHTML='Please select from Date ';
+			$('#searchImg').hide();
+			return false;
+		}
+	if(!toDate){
+			$('#searchImg').hide();
+			document.getElementById('DateErrDiv').innerHTML='Please select to Date ';
+			return false;
+		}
+	if(fromyear>toyear){
+		$('#searchImg').hide();
+		document.getElementById('DateErrDiv').innerHTML='From Date should not greater then To Date ';
+		return false;
+	}
+	 if(frommonth>tomonth){
+		   if(fromyear == toyear){
+		   $('#searchImg').hide();
+			document.getElementById('DateErrDiv').innerHTML='From Date should not greater then To Date ';
+			return false;
+		}
+		
+	}
+	
+	if(fromDat>toDat){	
+		if(frommonth == tomonth && fromyear == toyear){			
+			 $('#searchImg').hide();
+			document.getElementById('DateErrDiv').innerHTML='From Date should not greater then To Date ';
+			return false;		
+		   }
+	}
 	document.getElementById('DateErrDiv').innerHTML='&nbsp;';
-	if(!startDate){
-			$('#searchAjaxImgSpan').css('display','none');
-			document.getElementById('DateErrDiv').innerHTML='Please select From Date ';
-			return false;
-		}
-	if(!endDate){
-			$('#searchAjaxImgSpan').css('display','none');
-			document.getElementById('DateErrDiv').innerHTML='Please select To Date ';
-			return false;
-		}
-	if(date2 < date1){ 
-		 $('#searchAjaxImgSpan').css('display','none');
-		 document.getElementById('DateErrDiv').innerHTML="From Date should not greater than To Date";
-		 return true;
-		}
+	$('#searchImg').show();
 	
-	startDate=yr1+"-"+mon1+"-"+dt1;	
-	endDate=yr2+"-"+mon2+"-"+dt2;
-
-	startDate1=dt1+"-"+mon1+"-"+yr1;	
-	endDate1=dt2+"-"+mon2+"-"+yr2;
+	var title = 'Between Dates '+fromDat+' and '+toDat;	
+	startDate=fromyear+"-"+frommonth+"-"+fromDat;	
+	endDate=toyear+"-"+tomonth+"-"+toDat;
 	
-	var title = 'Between Dates '+startDate1+' and '+endDate1;
 	getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
-  	getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);  getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
+  	getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);
+  	getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
 	
-  }
+// ENDING : validations updated by srishailam
+   }
   }
   function clearAll(){
   
