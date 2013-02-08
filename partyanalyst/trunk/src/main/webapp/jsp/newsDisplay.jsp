@@ -1134,8 +1134,8 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
  }
  function showDates(){
  
-	 document.getElementById("fromDate").value=null;
-     document.getElementById("toDate").value=null;
+	 //document.getElementById("fromDate").value=null;
+     //document.getElementById("toDate").value=null;
 	 document.getElementById('DateErrDiv').innerHTML='&nbsp;';
 
    if(document.getElementById("betweendates").checked == true)
