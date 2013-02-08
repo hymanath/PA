@@ -2458,7 +2458,7 @@ function impFamilesStaticTable(myresults,jsObj)
 	
 	$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
 		
-	str += '<div class="span3"><ul class="FamiliyList"> <li> <div style="width:68%;float:left;">Total Voters </div> <span style="clear:left;">- '+myresults.totalVoters+'</span></li>';
+	str += '<div class="span3"><ul class="FamiliyList"> <li> <div style="width:68%;float:left;">Total Voters </div> <span style="clear:left;">: '+myresults.totalVoters+'</span></li>';
 		if(myresults.totalFamalies==null){
 		str+='<li><div style="width:68%;float:left;"> Total Families </div> : <span style="clear:left;">'+value+'</span> </li> ';
 	}
