@@ -508,7 +508,7 @@ function buildContentDetails()
 	//str+='<input type="button" style="float:right;margin:3px 133px;" class="btn" value="Save" onClick="saveFileComment('+fileId+');"/>';
 
 
-	if(result.otherGalleries != null && result.otherGalleries.length > 0)
+	/*if(result.otherGalleries != null && result.otherGalleries.length > 0)
 	{
 		var galType = null;
 		
@@ -540,11 +540,11 @@ function buildContentDetails()
 			str += '<tr><td class="videoGalTitleStyle"><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
 			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
 			
-			/*if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
-				str += '<img style="width:120px;height:90px;" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
+			//if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+			//	str += '<img style="width:120px;height:90px;" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
 				
-			else if(result.contentType == 'Video Gallary')
-				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';*/
+			//else if(result.contentType == 'Video Gallary')
+			//	str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
 			
 			str += '</a></td></tr>';
 			str += '<tr><td class="videoGallDescStyle">Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
@@ -560,7 +560,7 @@ function buildContentDetails()
 		str += '</div>';
 
 		str += '</div>';
-	}
+	}*/
 	
 	str += '</center></Div>';
 
