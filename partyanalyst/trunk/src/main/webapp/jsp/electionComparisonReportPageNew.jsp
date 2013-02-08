@@ -831,7 +831,7 @@ function buildElectionResultsComparePanel()
 	   fStr+='<div id="'+id+'_electionResults_footer" class="resultFooterClass">';
 	   fStr+='<table width="100%">';
        fStr+='<tr>';
-	   fStr+='<td align="center" colspan="2"><input type="button" name="'+id+'_compbutton" value="Compare Results" onclick="getComparedResults(\''+id+'\')"/></td>';
+	   fStr+='<td align="center" colspan="2"><input class="btn btn-info" type="button" name="'+id+'_compbutton" value="Compare Results" onclick="getComparedResults(\''+id+'\')"/></td>';
 	   fStr+='</tr>';
 	   fStr+='</table>';
 	   fStr+='</div>';
