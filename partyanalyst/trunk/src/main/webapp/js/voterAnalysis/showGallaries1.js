@@ -1308,7 +1308,7 @@ function buildProblemsCountByLocation(results,jsObj)
 	var locationValue=jsObj.locationValue;
 	var status = '';
 	var divEle = document.getElementById('problemsCountDiv');
-	$("#problemsCountDiv").css({'width':'100%'});
+	$("#problemsCountDiv").css({'width':'96%'});
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="">Problems</h4><div class="widget-block breadcrumb"> ';
 	//str+='<div class="span11 breadcrumb"></div>';
 	//str+='<div class="widget-block breadcrumb"> ';
