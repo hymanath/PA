@@ -1563,12 +1563,8 @@ var jsObj={
 }
 function getvotersBasicInfo(buttonType,id,publicationId,type){
     if(buttonType == "voters"){
-     $("#votersBasicInfoDiv").html("");
-     $("#votersBasicInfoSubChartDiv").html("");
-     $("#votersBasicInfoSubDiv").html("");
-	 $("#votersByLocationTabContentDiv_body").html("");
-	 $("#previousEleVotingTrendsDiv").html('');
-	 $("#votersByPanchayatTabContentDiv_body").html("");
+      $("#votersByLocationTabContentDiv_body").html("");
+   	  $("#votersByPanchayatTabContentDiv_body").html("");
    }
   if(buttonType == "impFamilies"){
    $("#impFamilesBasicDetails").html("");
