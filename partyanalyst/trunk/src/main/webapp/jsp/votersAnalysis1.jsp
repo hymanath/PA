@@ -506,7 +506,7 @@ width: 860px;}
 	font-weight:bold;font-size:15px;
 	border-radius: 3px;
     padding: 3px 10px;}
-	#previousEleVotingTrendsDiv {margin-top: 30px;margin-bottom:25px;}
+	#previousEleVotingTrendsDiv {margin-top: 30px;margin-bottom:25px;width:96%;}
 	#previousEleVotingTrendsDiv p{height:25px;}
 	#previousEleVotingTrendsDiv table{border:1px solid #cdcdcd;}
 	#previousEleVotingTrendsDiv table th {
@@ -719,7 +719,7 @@ h5{font-family : Arial;}
     padding: 3px 15px;}
 		
 	#votersInfoAjaxImg{right:2px;bottom:16px;position:absolute;}
-	#votersShareBtn{margin-top:8px;}
+	
 	
 .ui-widget {
     font-family: arial;
@@ -730,6 +730,7 @@ h5{font-family : Arial;}
 
 #voterAgeAngGenderwiseDetailsInPercent th{text-align:center;}
 #ageAndgenderWiseDetails th,#agewiseDetails th,#tableDiv th{text-align:center;}
+
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -889,8 +890,12 @@ for  body3 start    result  -->
 <div id='votersHeaderDiv3' class="widget green" style="display:none;">
 	<div class="votersWidgetMainHeader"><span id="votersTitle-unused" class="votersWidgetHeader_span"> </span></div>
 	</div>
-    
-<div id='votersMainOuterDiv3' class="widget" style="display:none;border-top:none;">
+<div id="votersBasicInfoBtnDiv"> 
+	<span></span>
+	<span value="Mandal Wise Voters Info" id="votersShareBtn1"></span>
+	
+</div>  
+<div id='votersMainOuterDiv3' class="" style="display:none;border-top:none;">
 <!--<div id="votersTitle"><h2  style="width:102%;padding:10px;"></h2></div>-->
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
 
@@ -915,13 +920,13 @@ for  body3 start    result  -->
 <!-- Not in USe -->
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 
-	<div id="newsCountDiv" class="widget-block whitegloss"></div>
+	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;"></div>
 	
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
 	   </div>
 	  <!--<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div> -->
-	<div id="problemsCountDiv" class="widget-block whitegloss"></div>
+	<div id="problemsCountDiv" class="widget blue whitegloss"></div>
 	
 	<div id="problemPopUp" style="background:#EEEEEE;">
 	
@@ -931,25 +936,19 @@ for  body3 start    result  -->
 	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 	
 	</div>
-	   <div id="previousEleVotingTrendsDiv" class="widget-block"></div>
+	   <div id="previousEleVotingTrendsDiv" class="widget blue whitegloss"></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
 
 	
-	<div  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
+   <div  class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
-<div id="votersBasicInfoDiv1"></div>
-
-<div id="votersBasicInfoBtnDiv"> 
-	<input type="button" value="Mandal Wise Voters Info" class="btn btn-info pull-right" id="votersShareBtn" />
-	<span style="display:none;" id="votersInfoAjaxImg"><img src="./images/icons/search.gif" /></span>
-</div>
-
+	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
-</div>
+  </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
-	<div style="margin-left:10px;margin-bottom: 15px;" id="revenueVillageWiseElecResults">
+	<div style="margin-bottom: 15px;" id="revenueVillageWiseElecResults" class="widget blue" style="color:#000000;">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
 	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn btn-info pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
 	</div>
@@ -965,7 +964,7 @@ for  body3 start    result  -->
 </div>
 
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
-	<div id="votersDiv4" class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;margin-top:40px;">
+	<div id="votersDiv4" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top:40px;">
 					<h4 id="AgeWisetitle" class="" > </h4>
 					<!-- for  body4 start    result  -->
 
@@ -1044,7 +1043,7 @@ for  body3 start    result  -->
 		
 	</div> -->
 
-<div id='votersMainOuterDiv1' class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;">
+<div id='votersMainOuterDiv1' class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
 <h4 class=""  id="impFamiliesTitle" ></h4>
 	 <!--<input type="button" id="impFamShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
      <div id="votersbasicinfoForImpFam" >
@@ -1094,7 +1093,7 @@ for  body3 start    result  -->
 					</tr>					
 				</table>
 	</div> -->
-<div id='votersMainOuterDiv2'  class="widget-block whitegloss" style="display:inline-block;width: 100%;position:relative;">
+<div id='votersMainOuterDiv2'  class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
 <h4 class=""  id="localCastStatsTabContentTitle" ></h4>
 	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
     <div id="votersbasicinfoForLclCastSts" >
