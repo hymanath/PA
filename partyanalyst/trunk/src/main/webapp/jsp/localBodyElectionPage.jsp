@@ -257,6 +257,7 @@
 					</div>                  
 				</td>
 			</tr>
+		<c:if test="${sessionScope.hasPartyAnalystUserRole == true}"> 
 			<tr>
 				<td colspan="2">
 					<div id="wardsElectionResults_main">
@@ -287,6 +288,7 @@
 					</div>
 				</td>
 			</tr>
+		 </c:if>
 		</table>
 	</div>
 
@@ -317,8 +319,13 @@
 		
 	problemsInfo.push(problemObj);
 	</c:forEach>
-	
+	    <c:if test="${sessionScope.hasPartyAnalystUserRole == true}"> 
 		initializeLocalBodiesElectionPage();
+	    </c:if>
+		<c:if test="${sessionScope.hasPartyAnalystUserRole != true}"> 
+		   buildLocalBodyElectionNews();
+	       buildElectionResultsDataTable();
+	    </c:if>
 		buildLocalElectionLevelProblemWindow("${localBodyElectionResults.localBodyElectionType}");
 	</script>
 </body>
