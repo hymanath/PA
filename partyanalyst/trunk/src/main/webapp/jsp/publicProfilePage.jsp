@@ -18,6 +18,11 @@
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <style>
+#userProfileImg{
+cursor: auto; 
+width: 80px;
+height: 80px;
+}
 	.widget .widget-block{
 		padding-bottom: 20px;
 		border-bottom: 1px solid #EFEFEF;
@@ -235,7 +240,7 @@ padding:5px 20px;
 		<div class="publicProfileInnerDiv">
 			<div class="span8">
 			
-				<div class="span2">
+				<div class="span2" style="width: 90px;">
 				<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
 					<img class="thumbnail"  src="pictures/profiles/human.jpg"  id="userProfileImg">
 				</c:if>
@@ -244,7 +249,7 @@ padding:5px 20px;
 				</c:if>
 				</div>
 				<div class="span7">
-					<span class="profileUserName row">${profileUserName}</span>
+					<span class="profileUserName row"  style="text-transform: capitalize;">${profileUserName}</span>
 					<span class="fontStyle"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
@@ -352,18 +357,19 @@ padding:5px 20px;
 
 					<li class="imgLi">
 	
-						<a href="userProfile.action?profileId=${friendsDetails.registrationID}"></a>
+						<a href="userProfile.action?profileId=${friendsDetails.registrationID}">
 								
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
 									<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
 									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
 								</c:if>
+						</a>
+													
 						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
 								<img height="50" width="55" src="/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
-						</c:if>
-								
-						<span><b style="font-size:13px;">${friendsDetails.firstName} ${friendsDetails.lastName}</b></span>
-						<hr>
+						</c:if>								
+						<span><a href="userProfile.action?profileId=${friendsDetails.registrationID}"> <b style="font-size:13px;text-transform: capitalize;">${friendsDetails.firstName} ${friendsDetails.lastName}</b></a></span>
+						<hr style="margin-top: 30px;position: inherit;">
 					</li>
 					
 				</c:forEach>
