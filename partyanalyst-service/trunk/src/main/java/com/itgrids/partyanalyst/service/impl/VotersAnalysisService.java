@@ -6912,11 +6912,11 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						getAllElectionAndPublicationsForConstituencyId(constituencyId);*/
 				
 				if(type.equalsIgnoreCase("constituency"))
-				  previousDetailsList = getAllElectionAndPublications(constituencyId , type,null);
+				  previousDetailsList = getAllElectionAndPublications(constituencyId , type,constituencyId);
 				else if(type.equalsIgnoreCase("mandal"))
-					  previousDetailsList = getAllElectionAndPublications(mandalId , type,null);
+					  previousDetailsList = getAllElectionAndPublications(mandalId , type,constituencyId);
 				else if(type.equalsIgnoreCase("panchayat"))
-					  previousDetailsList = getAllElectionAndPublications(panchayatId , type , null);
+					  previousDetailsList = getAllElectionAndPublications(panchayatId , type , constituencyId);
 				else if(type.equalsIgnoreCase("booth"))
 					  previousDetailsList = getAllElectionAndPublications(boothId , type,constituencyId);
 				
