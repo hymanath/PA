@@ -1371,7 +1371,8 @@
 		
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
-		
+		<property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
+		<property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
