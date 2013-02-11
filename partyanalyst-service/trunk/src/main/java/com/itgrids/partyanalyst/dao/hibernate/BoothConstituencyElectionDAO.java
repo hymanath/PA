@@ -499,4 +499,33 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
        	
     	return query.list();
     }
+	
+	public List<Object[]> findAllElectionsHappenedInABooth(Long boothId){
+		
+		
+		Query query = getSession().createQuery("select distinct(model.constituencyElection.election.electionId)," +
+				" model.constituencyElection.election.elecSubtype from BoothConstituencyElection model " +
+				" where model.booth.boothId =  ?");
+		
+		query.setParameter(0, boothId);
+		
+		return query.list();
+		
+	}
+	
+	
+	public List<Object[]> findAllElectionsHappenedInABooth1(Long boothId , List<Long> constElectionIds){
+		
+		Query query = getSession().createQuery("select distinct(model.constituencyElection.election.electionId)," +
+				" model.constituencyElection.election.elecSubtype from BoothConstituencyElection model " +
+				"where model.constituencyElection.constiElecId in(:constElectionIds) and model.booth.partNo=" +
+				"(select model1.partNo from Booth model1 where model1.boothId = :boothId)");
+		
+		query.setParameterList("constElectionIds", constElectionIds);
+		query.setParameter("boothId", boothId);
+		
+		
+		return query.list();
+		
+	}
 }

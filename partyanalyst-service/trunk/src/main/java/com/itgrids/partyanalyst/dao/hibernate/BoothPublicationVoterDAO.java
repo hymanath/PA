@@ -190,7 +190,7 @@ public class BoothPublicationVoterDAO extends
 				"group by model.voter.hamlet.hamletId,model.voter.houseNo",parms);
 		
 	}
-	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId){
+/*	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId){
 		StringBuilder query = new StringBuilder();
 		query.append("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		if(type.equalsIgnoreCase("constituency"))
@@ -206,6 +206,61 @@ public class BoothPublicationVoterDAO extends
 		queryObj.setParameter("id", id);
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		return queryObj.list();
+	}
+	*/
+	
+	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId){
+		StringBuilder query = new StringBuilder();
+		//query.append("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		query.append("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothPublicationVoter model " +
+				" where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		if(type.equalsIgnoreCase("constituency"))
+			query.append(" model.booth.constituency.constituencyId = :id ");
+		else if(type.equalsIgnoreCase("mandal"))
+			query.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
+		else if(type.equalsIgnoreCase("booth"))
+			//query.append(" model.booth.boothId = :id ");
+		//query.append(" group by model.voter.gender ");
+			query.append(" model.booth.boothId = :id ");
+
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("id", id);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		return queryObj.list();
+	}
+	
+/*	public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId){
+		
+		
+		Query query = getSession().createQuery("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothPublicationVoter model " +
+				" where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.tehsil.tehsilId = :tehsilId and model.booth.partNo = :partNo");
+		
+		query.setParameter("publicationDateId", publicationId);
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("partNo", partNo);
+		
+		return query.list();
+		
+		
+	}*/
+	
+	public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId){
+		
+		
+		Query query = getSession().createQuery("select sum(model.maleVoters),sum(model.femaleVoters),sum(model.totalVoters) from Booth model " +
+				" where model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.tehsil.tehsilId = :tehsilId and model.partNo = :partNo");
+		
+		query.setParameter("publicationDateId", publicationId);
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("partNo", partNo);
+		
+		return query.list();
+		
+		
 	}
 	
 	public Long findVotersCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
@@ -269,10 +324,13 @@ public class BoothPublicationVoterDAO extends
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" model.booth.panchayat.panchayatId = :locationId ");
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");			
 		else if(locationType.equalsIgnoreCase("localElectionBody") || 
 				locationType.equalsIgnoreCase("Local Election Body"))
 			str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
+		else if(locationType.equalsIgnoreCase("ward"))
+			str.append(" model.booth.localBodyWard.constituencyId = :locationId ");
+		
 		str.append(" group by model.voter.gender ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
@@ -837,6 +895,9 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.localBody.localElectionBodyId = :id ");
 			else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				str.append(" model.booth.panchayat.panchayatId = :id ");
+			else if(locationType.equalsIgnoreCase(IConstants.WARD))
+				str.append(" model.booth.localBodyWard.constituencyId = :id ");
+			
 			str.append(" group by model.booth.boothId,model.voter.houseNo");
 			
 			Query query = getSession().createQuery(str.toString()) ;
