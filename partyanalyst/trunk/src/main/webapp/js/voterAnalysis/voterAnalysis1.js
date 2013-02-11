@@ -14,6 +14,8 @@ var mainreqid;
 var mainpublicationId;
 var maintype;
 var mainname;
+var parliamentConstituencyId;
+
 function populate(id,boothId,publicationId,houseNo){
      if($('#'+id).is(':checked')){
 	   var obj={
@@ -1083,12 +1085,24 @@ oDT: votersByLocBoothDataTable
 								}
 								else if(jsObj.task == "getElectionyearsByMandalId")
 								{
-									showElectionYears(myResults);
+									$("#crossVotingEleyearAjaximg").css("display","none");
+									clearOptionsListForSelectElmtId("electionYearsForCrossVoting");
+									createOptionsForSelectElmtId("electionYearsForCrossVoting",myResults);
+									getPartiesList();
+									getParliamentConstituencyId();
+									
 								}
-
-								else if(jsObj.task == "getCrossVotingReport")
+								else if(jsObj.task == "getParliamentConstituencyId")
 								{
-									showCrossVotingReport(myResults);
+									parliamentConstituencyId = myResults;
+									
+								}
+								else if(jsObj.task=="getParty")
+								{	
+									$("#crossVotingPartyAjaximg").css("display","none");
+									clearOptionsListForSelectElmtId("PartySelect");
+									createOptionsForSelectElmtId("PartySelect",myResults.dataList);
+									
 								}
 								
 							}catch (e) {
@@ -1441,6 +1455,13 @@ $(document).ready(function(){
 		$('.linkClass').removeClass('selectedLink');
 		$(this).addClass('selectedLink');
 	});
+	
+	$("#electionYearsForCrossVoting").live("change",function(){
+		getParliamentConstituencyId();
+		getPartiesList();
+	
+	});
+	
 });
 
 /*function getBasicInfo(){
@@ -1553,7 +1574,7 @@ function hideAjaxImgDiv(id)
 }
 function buildCastInfoForSubLevels(myresults,jsObj)
 	{
-		
+	if(mainreqid == jsObj.id){
 		var str ='';
 		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
@@ -1684,7 +1705,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		});
 	$('#subLevelTable tr').removeClass("odd");
 	$('#subLevelTable tr').removeClass("even");
-	$('#subLevelTable td').removeClass("sorting_1"); 
+	$('#subLevelTable td').removeClass("sorting_1");
+	}
 	}	
 	}
 function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
@@ -2086,6 +2108,8 @@ function buildVotersInFamily(results){
 
 function buildCastInfoData(myresults,jsObj)
 {
+  if(mainreqid == jsObj.id)
+  {
 	$('#localCastDetailsHeadingDiv').html('');
 	$('.localCastStatsVotersTitle').html('');
 	
@@ -2173,7 +2197,8 @@ function buildCastInfoData(myresults,jsObj)
 		//buildCastPiechart(myresults,jsObj);  
 		buildPartyWisePiechart(myresults,jsObj);
 		buildPartyWiseCastData(myresults,typeName,publicationDateId,boothId,type);
-		buildPartyWiseCastDetailsTable(myresults,jsObj); 
+		buildPartyWiseCastDetailsTable(myresults,jsObj);
+  }
 }
 
 	function buildPartyWiseCastDetailsTable(myresults,jsObj){
@@ -3865,6 +3890,8 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 
 function showPreviousEleVotingTrends(results,jsObj)
 {
+	if(mainreqid == jsObj.id)
+	{	
 	 var flag = false;
 	 $("#previousEleVotingTrendsDiv").css({'display':'block','width':'96%','color':'#000'});
 	 $("#previousEleVotingTrendsDiv").html('');
@@ -3904,7 +3931,8 @@ function showPreviousEleVotingTrends(results,jsObj)
 			 str +='</tbody></table>';
 			 $("#previousEleVotingTrendsDiv").append(str);
 			 
-		}		
+		}
+	 }
 	}
 
 function getCountsForConstituency()
@@ -4215,12 +4243,12 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		function getElectionyearsByMandalId(id,type)
 		{
 			
-			if(maintype == "mandal")
+			if(maintype == "constituency")
 			{
 			 if(id == 0)
 				return;
 			$("#crossVotingMainDiv").css("display","block");
-				
+			$("#crossVotingEleyearAjaximg").css("display","inline-block");	
 		  var jsObj=
 		  {
 			 id                :id,
@@ -4238,126 +4266,107 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			}
 
 	 }
-	function showElectionYears(results)
-	{
-		
-		var selectedElmt=document.getElementById("electionYearsForCrossVoting");
-		removeSelectElements(selectedElmt);
-		for(var val in results)
-		{
-			var opElmt = document.createElement('option');
-			opElmt.value=results[val].id;
-			opElmt.text=results[val].name;
+		$('#votersShareBtn').live("click",function(){
 
-			try
-			{
-				selectedElmt.add(opElmt,null); // standards compliant
-			}
-			catch(ex)
-			{
-				selectedElmt.add(opElmt); // IE only
-			}	
-		}
-
-		getCrossVotingReport();
-	}
-
-
-	$("#electionYearsForCrossVoting").live("change",function(){
-		getCrossVotingReport();
-	});
-
-	function forGetCrossVoting()
-	{
-		getCrossVotingReport();
-	}
-
-	function getCrossVotingReport()
-	{
-		
-		id = mainreqid;
-		type = maintype;
-		var eleYear = $("#electionYearsForCrossVoting option:selected").text();
-		
-		/* var allianceCheckElmt =  document.getElementById("allianceCheck");
-		if(allianceCheckElmt.checked==true)
-			var allianceValue = "true";
-		else
-			var allianceValue = "false";*/
-
-		if(id == 0)
-			return;
-
-		$(".ajaxImg").css("display","inline-block");
-		var jsObj=
-		{
-			id                :id,
-			type              :type,
-			year              :eleYear,
-			includeAliance    :false,
-			task:"getCrossVotingReport"
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getCrossVotingReportAction.action?"+rparam;	
-		callAjax(jsObj,url);
-      
-
-	}
-
-	function showCrossVotingReport(results)
-	{
-		
-		$("#crossVotingReportDiv").html('');
-		$(".ajaxImg").css("display","none");
-		var str = '';
-		if(results.mandals == null)
-		{
-			$("#crossVotingReportDiv").html('No Data Found.').css("margin-top","5px");
-			return;
-		}
-		if(results.mandals != null)
-		{
-			var crossVotingResults = results.mandals;
-
-			str +='<table class="crossVotingTableCls">';
-			str +='<tr>';
-			str +='<th>Party</th>';
-			str +='<th>Polled Votes</th>';
-			/* str +='<th>AC<font style="color:red;">*</font></th>';
-			str +='<th>PC<font style="color:red;">*</font></th>';
-			str +='<th>Votes Flown</th>';
-			str +='<th>IC<font style="color:red;">*</font></th>';*/
-			str +='<th>Assembly Candidate</th>';
-			str +='<th>Parliament Candidate</th>';
-			str +='<th>Votes Flown</th>';
-			str +='<th>Impact On Constituency</th>';
-			str +='</tr>';
-			str +='<tr>';
-			for(var i in crossVotingResults)
-			{
-				str +='<td>'+crossVotingResults[i].partyName+'</td>';
-				str +='<td>'+crossVotingResults[i].polledVotes+'</td>';
-				str +='<td>'+crossVotingResults[i].acPercentageInMandal+'</td>';
-				str +='<td>'+crossVotingResults[i].pcPercentageInMandal+'</td>';
-				str +='<td>'+crossVotingResults[i].percentageDifferenceInMandal+'</td>';
-				str +='<td>'+crossVotingResults[i].percentageImpactOnConstituency+'</td>';
-				str +='</tr>';
-			}
-			str +='</table>';
+			$('#votersInfoAjaxImg').css("display","block");
+			getvotersBasicInfo("voters",mainreqid,$("#publicationDateList").val(),maintype);
 			
-			/* str +='<div><span>AC* - Assembly Candidate,</span>';
-			str +='<span>PC* - Parliament Candidate,</span>'; 
-			str +='<span>IC* - Impact On Constituency</span></div>';*/
-			$("#crossVotingReportDiv").html(str);
-		}
-	}
+		});
 
-	$('#votersShareBtn').live("click",function(){
-
-		$('#votersInfoAjaxImg').css("display","block");
-		getvotersBasicInfo("voters",mainreqid,$("#publicationDateList").val(),maintype);
 		
-	});
+		 function getParliamentConstituencyId()
+		{
+			
+				var id = $("#constituencyList").val();
+				var eleYear = $("#electionYearsForCrossVoting").val();
+
+				if(id == 0 || id == -1)
+					return;
+				else if(eleYear == 0 || eleYear == -1)
+					return;
+
+				var jsObj=
+				{
+				 id                :id,
+				 eleYear		   :eleYear,
+				 type              :"constituency",
+				 task:"getParliamentConstituencyId"
+				};
+				 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				 var url = "getParliamentConstituencyIdAction.action?"+rparam;	
+				 callAjax(jsObj,url);
+			
+		}
+
+		function getPartiesList()
+		{
+		
+			var elecValue =  $("#electionYearsForCrossVoting").val();
+			var assemblyValue =  $("#constituencyList").val();
+					
+			if(elecValue == -1 || assemblyValue == -1 || elecValue == 0 || assemblyValue == 0)
+				return;
+				
+			else
+			{
+				$("#crossVotingPartyAjaximg").css("display","inline-block");
+				var jsObj={						
+						electionYear:elecValue,
+						assemblyVal:assemblyValue ,
+						task:"getParty"
+				  }
+			
+				var rparam="crossVotingReportAjaxAction.action?assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear;
+				callAjax(jsObj,rparam);
+			}
+
+		}
+
+		function getCrossVoting()
+		{
+		
+			var elecValue =  $("#electionYearsForCrossVoting").val();
+			var partyValue = $("#PartySelect").val();
+			var assemblyValue =  $("#constituencyList").val();
+			var parliamentValue =  parliamentConstituencyId;
+
+			var jsObj={
+							electionValue : elecValue,
+							partyValue : partyValue,
+							parliamentValue : partyValue,
+							assemblyValue : assemblyValue,
+							alliances		:"false",
+							task:"crossVotingReport"
+					  }
+				
+				var rparam="crossVotingReportAjaxAction.action?election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue+"&includeAliance="+jsObj.alliances;
+				callAjax(jsObj,rparam);
+
+		}
+		
+		$("#crossVotingReportBtn").live("click",function(){
+
+			var elecValue =  $("#electionYearsForCrossVoting").val();
+			var partyValue = $("#PartySelect").val();
+			var assemblyValue =  $("#constituencyList").val();
+			var parliamentValue =  parliamentConstituencyId;
+
+			$("#crossVotingErrorMsgDiv").html('');
+			 if(elecValue == 0 || elecValue == -1 || elecValue == '')
+			{
+				$("#crossVotingErrorMsgDiv").html('Please Select Election Year');
+				return;
+			}
+			else if(partyValue == 0 || partyValue == -1 || partyValue == '')
+			{
+				$("#crossVotingErrorMsgDiv").html('Please Select Party.');
+				return;
+			}
+			
+			var url = "crossVotingReportInputAction.action?electionYear="+elecValue+"&&acId="+assemblyValue+"&&pcId="+parliamentValue+"&&party="+partyValue+"&&";
+			window.open(url,'_blank');
+			window.focus();
+		});
 
 
 	/*** FUNCTIONS FOR NAVIGATIONS START***/

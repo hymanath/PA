@@ -690,7 +690,8 @@ h5{font-family : Arial;}
 #localCastStatsTabContent_header span{padding:10px;clear:both;display:block;}
 #subHeading{ color: #4682B4;}
 .crossVotingTableCls{width:100%;margin-top:20px;margin-bottom:15px;}
-#crossVotingReportDiv table{border: 1px solid #D3D3D3;
+
+/* #crossVotingReportDiv table{border: 1px solid #D3D3D3;
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
@@ -714,7 +715,7 @@ h5{font-family : Arial;}
 #crossVotingReportDiv table tr:nth-child(2n-1) {
     background: none repeat scroll 0 0 #EDF5FF;
 }
-
+*/
 .crossVotingHeadingCls{margin-top: 10px; margin-bottom: 20px;}
 .crossVotingHeadingCls span{background: none repeat scroll 0 0 #06ABEA;
     border-radius: 3px 3px 3px 3px;
@@ -735,7 +736,8 @@ h5{font-family : Arial;}
 
 #voterAgeAngGenderwiseDetailsInPercent th{text-align:center;}
 #ageAndgenderWiseDetails th,#agewiseDetails th,#tableDiv th{text-align:center;}
-
+#crossVotingReportBtn{margin-left: 25px;}
+#electionYearsForCrossVoting{margin-right: 5px;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -912,15 +914,24 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
 
 </div>
- <!-- 
-  //Cross Voting Report
+ 
+  
  <div id="crossVotingMainDiv" style="display:none;">
-	<div class="crossVotingHeadingCls"><span>Party Wise Cross Voting Report</span></div>
-	<div> Election Year : <select id="electionYearsForCrossVoting"></select> -->
-	<!-- <input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/>-->
-	 <!-- <img src="images/icons/search.gif" class="ajaxImg" style="display:none;"/></div>
-	<div id="crossVotingReportDiv"></div>
-  </div> -->
+	 <div class="crossVotingHeadingCls">
+	   <span>Cross Voting Report</span>
+	 </div>
+	 <div id="crossVotingErrorMsgDiv"></div>
+	 <div> 
+	   Election Year : <select id="electionYearsForCrossVoting"></select>
+	   <img src="./images/icons/search.gif" id="crossVotingEleyearAjaximg" style="display:none"/>
+	   Party : <select id="PartySelect">
+	           <option value="0">Select </option>
+	           </select>
+	   <img src="./images/icons/search.gif" id="crossVotingPartyAjaximg" style="display:none"/>
+	   <input id="crossVotingReportBtn" type="button" value="cross Voting Report" class="btn btn-info" />
+	 </div>
+		
+  </div> 
 
 <!-- Not in USe -->
 
