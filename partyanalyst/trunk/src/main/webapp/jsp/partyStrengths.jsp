@@ -67,12 +67,12 @@
     border: 2px solid #D3D3D3;
     margin-left: auto;
 	margin-right:auto;
-    margin-top: -13px;
+    margin-top: 15px;
     padding: 25px;
     width: 996px;
-		
-	}
 	
+	}
+	table #partyStrenghtsTable {border-collapse: separate;}
 	#remaining_const_body, #new_const_body, #required_const_body  {
 	    border-bottom: 1px solid #E0E0D6;
 	    border-left: 1px solid #E0E0D6;
@@ -146,6 +146,7 @@
 		font-weight:bold;
 		width:300px;
 		margin-bottom:10px;
+		
 	}
 	.cursorStyle
 	{
@@ -158,6 +159,7 @@
 	{
 		width:100%;
 	}
+	.districtPageRoundedHeaders_center{width:805px;}
 </style>
 
 <script type="text/javascript">
@@ -656,9 +658,9 @@
 			str += '   <div id="'+partiesDetails[k].partyName+'_DIV" style="display:none;">';			
 			str += '	<table>';
 			str +='		<tr style="font-weight:bold;font-size:11px;">';
-			str += '		<td><input type="radio" id="default_checkId_'+partiesDetails[k].partyName+'" checked="checked" name="alliance_'+partiesDetails[k].partyName+'" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')" value="exclude"/>Excluding Alliance </td>';
+			str += '		<td><input type="radio" style="margin-top:0px;" id="default_checkId_'+partiesDetails[k].partyName+'" checked="checked" name="alliance_'+partiesDetails[k].partyName+'" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')" value="exclude"/>&nbsp;&nbsp;Excluding Alliance </td>';
 			str += '		<td><span id="ajaxImageEl_'+partiesDetails[k].partyName+'" style="margin-left:10px;display:none;"><img src="images/icons/search.gif"/></span></td>';
-			str += '		<td><input type="radio" name="alliance_'+partiesDetails[k].partyName+'" onclick="getAllAllianceYearsForAParty(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')" value="include"/>Including Alliance </td>';
+			str += '		<td><input type="radio" style="margin-top:0px;" name="alliance_'+partiesDetails[k].partyName+'" onclick="getAllAllianceYearsForAParty(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')" value="include"/>&nbsp;&nbsp;Including Alliance </td>';
 			str += '		<td><span id="ajaxIncludingImageEl_'+partiesDetails[k].partyName+'" style="margin-left:10px;display:none;"><img src="images/icons/search.gif"/></span></td>';					
 			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesYears"></div></td>';				
 			str += '	</tr>';	
@@ -1541,7 +1543,7 @@
     border-radius: 5px 5px 5px 5px;
     color: #FFFFFF;
     margin-left: 200px;
-    margin-top: -43px;
+    margin-top: 2px;
     padding: 6px;
     position: absolute;
     text-align: center;
@@ -1562,7 +1564,7 @@
 				</table>
 				</div>
 				<form name="partyStrengthResultsAction" action="partyStrengthResultsAction" method="POST">
-				<table id="partyStrenghtsTable" width="97%;" >		
+				<table id="partyStrenghtsTable" width="97%;">		
 					
 						<tr>
 							<td align="left" class="tdStyle">Election Type</td>
@@ -1598,8 +1600,8 @@
 						<tr>
 							<td colspan="5">
 								<div id="busyImage" style="margin-top:20px;margin-left:300px;">				
-					<div> Loading Data Please Wait..</div><br/>
-					<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>							
+					<div style="margin-left:5px;"> Loading Data Please Wait..</div><br/>
+					<img id="ajaxImg" height="13" width="100" style="margin-left:10px;margin-bottom:5px;" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>							
 			</div>	
 							</td>
 						</tr>
@@ -1631,7 +1633,7 @@
 		 		</tr> 
 		 		<tr>
 					<td>
-						<div id="electionYearsDiv" align="left" style="margin-bottom:20px;"></div>
+						<div id="electionYearsDiv" align="left" style="margin-bottom:20px;font-family:verdana,san-serif;"></div>
 					</td>
 		 		</tr>
 		 		<tr>
