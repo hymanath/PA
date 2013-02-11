@@ -27,4 +27,13 @@ public class BoothLocalBodyWardDAO extends GenericDaoHibernate<BoothLocalBodyWar
 		return queryObject.executeUpdate();
 	}
 	
+	public List<Long> getBoothsForWard(Long wardId,Long publicationId){
+		return getHibernateTemplate().find("select model.booth.boothId from BoothLocalBodyWard model where model.localBodyWard.constituencyId = ? and model.booth.publicationDate.publicationDateId ", wardId);
+		
+	}
+	
+	public List<Object[]> getBoothsDetailsForWard(Long wardId,Long publicationId){
+		return getHibernateTemplate().find("select model.booth.boothId,model.booth.partNo from BoothLocalBodyWard model where model.localBodyWard.constituencyId = ? and model.booth.publicationDate.publicationDateId ", wardId);
+		
+	}
 }

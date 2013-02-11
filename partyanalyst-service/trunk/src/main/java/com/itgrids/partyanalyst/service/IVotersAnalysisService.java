@@ -141,5 +141,8 @@ public interface IVotersAnalysisService {
 	public ResultStatus saveVoters(String name,String voterCardNo,String houseNo,String gaurdian,String relationShip,String gender,String mobileNo,Long age,Long boothId);
 	
 	public Long getParliamentConstituencyId(String type, Long id, Long year);
+		
+	public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long publicationDateId);
 	
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForWardsByLocalElectionBodyId(Long assemblyLocalBodyId,Long publicationDateId);
 }

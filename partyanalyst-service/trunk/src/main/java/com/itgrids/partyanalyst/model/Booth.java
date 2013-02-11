@@ -55,6 +55,8 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	
 	private PublicationDate publicationDate;
 	
+	private Constituency localBodyWard;
+	
 	/** default constructor */
 	public Booth() {
 	}
@@ -301,5 +303,18 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	public void setPanchayat(Panchayat panchayat) {
 		this.panchayat = panchayat;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ward_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getLocalBodyWard() {
+		return localBodyWard;
+	}
+
+	public void setLocalBodyWard(Constituency localBodyWard) {
+		this.localBodyWard = localBodyWard;
+	}
+	
 	
 }

@@ -428,6 +428,8 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     		queryStr.append(" and model.booth.localBody.localElectionBodyId = :id ");
     	}else if(type.equalsIgnoreCase("booth")){
     		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.partNo = :partNo ");
+    	}else if(type.equalsIgnoreCase("ward")){
+    		queryStr.append(" and model.booth.boothId in(select model1.booth.boothId from BoothLocalBodyWard model1 where model1.localBodyWard.constituencyId = :id )");
     	}
     	Query query = getSession().createQuery(queryStr.toString());
     	query.setParameter("electionId", electionId);

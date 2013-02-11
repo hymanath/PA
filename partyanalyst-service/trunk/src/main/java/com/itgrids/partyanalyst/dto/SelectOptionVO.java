@@ -12,6 +12,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String type;
 	private String value;
 	private List<SelectOptionVO> selectOptionsList;
+	private List<SelectOptionVO> selectOptionsList1;
 	
 	public String getType() {
 		return type;
@@ -61,6 +62,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<SelectOptionVO> getSelectOptionsList1() {
+		return selectOptionsList1;
+	}
+
+	public void setSelectOptionsList1(List<SelectOptionVO> selectOptionsList1) {
+		this.selectOptionsList1 = selectOptionsList1;
 	}
 
 	@Override

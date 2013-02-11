@@ -118,5 +118,13 @@ public interface IBoothPublicationVoterDAO extends
 	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender);
 	 
 	public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId);
+		 
+	 public List<Long> getVotersCountForMultipleBooths(List<Long> ids,Long publicationDateId);
 	 
+	 public List<Object[]> getGenderWiseVotersCountForWard(Long wardId,Long publicationDateId);
+	 
+	 public List<Object[]> getImpFamilesForWard(List<Long> boothids,Long publicationDateId,String queryString);
+	 
+	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
+				List<Long> boothIds, Long publicationDateId, Long startAge, Long endAge);
 }

@@ -38,4 +38,11 @@ public class LocalElectionBodyWardDAO extends GenericDaoHibernate<LocalElectionB
 		return getHibernateTemplate().find("select model.constituency.constituencyId from LocalElectionBodyWard model where "+
 				"model.wardName = ? and model.constituency.localElectionBody.localElectionBodyId = ?",params);
 	}
+	
+	public List findWardName(Long wardId) {
+		
+		//	Object[] params = {name,localBodyId};
+			return getHibernateTemplate().find("select model.wardName  from LocalElectionBodyWard model where "+
+					"model.constituency.constituencyId = ?",wardId);
+		}
 }
