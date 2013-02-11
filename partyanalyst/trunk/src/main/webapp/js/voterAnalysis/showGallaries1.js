@@ -845,7 +845,8 @@ function callAjaxToShowNewsDetails(jObj,url){
 							buildContentDetails();
 					   }
 					   
-					  
+					  $('#newsAjaxImage').css('display','none');
+
 							
 					}catch (e) {
 						//alert('error');
@@ -977,7 +978,7 @@ if(results == null || results.length == 0){
 
 	str+='</div>';
 
-
+str+='<img src="./images/icons/search.gif" alt="Processing Image" id="newsAjaxImage" style="display:none;"/>';
 	 $('#newsCountDiv').html(str);
 }
 var displayStr;
@@ -1038,7 +1039,7 @@ var noNews = false;
 var startIndex;
 var lastIndex;
 function getNews(importanceId , categoryId){
-
+$('#newsAjaxImage').css('display','block');
 
 	var jObj=
 	{
