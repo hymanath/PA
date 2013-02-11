@@ -4375,11 +4375,6 @@
            		<param name="root">electionYearsList</param>
         	</result>		
 		</action>
-		<action name="getCrossVotingReportAction" class="votersAnalysisAction" method="getCrossVotingReportByMandalIdAndEleYear">
-		    <result type="json" name="success">
-           		<param name="root">crossVotingConsolidateVO</param>
-        	</result>		
-		</action>
 		
 		 <action name="saveLocalityAction" class="votersEditAction" method="saveLocality">
 		    <result type="json" name="success">
@@ -4399,6 +4394,10 @@
         	</result>
 		</action>
 		
-		
+		<action name="getParliamentConstituencyIdAction" class="votersAnalysisAction" method="getParliamentConstituencyIds">
+		     <result type="json" name="success">
+           		<param name="root">parliamentConstituencyId</param>
+        	</result>
+		</action>
 	</package>
 </struts>      
