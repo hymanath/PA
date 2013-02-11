@@ -547,6 +547,7 @@ public String saveLocality()
 						voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
 						voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
 						voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+						voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileNo"));
 						voterHouseInfoVO.setUserId(userId);
 						categoriesList = new ArrayList<VoterHouseInfoVO>();
 						VoterHouseInfoVO category = null;
