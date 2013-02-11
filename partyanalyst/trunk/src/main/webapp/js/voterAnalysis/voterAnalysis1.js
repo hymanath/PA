@@ -1175,6 +1175,7 @@ $(document).ready(function(){
 	    if($("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0){
 		//getCounts();
 		   var str = $('#publicationDateList :selected').text();
+		  scrollToMandals();
 		   var year=str.split("-");
 		   try{
 		    publicationYear =year[2];
@@ -4350,6 +4351,7 @@ mainreqid = mandalid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'mandal';
 mainname = $(this).closest("a").attr("name-mandal"); 
+scrollToNewsDiv();
 getAllTabs(mandalid,$("#publicationDateList").val(),'mandal');
 //getvotersSubBasicInfo(mandalid,"mandal-name","mandal");
 //showSubNewsDetails(mandalid,"Mandal");
@@ -4364,6 +4366,7 @@ mainreqid = municipalityid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'mandal';
 mainname = $(this).closest("a").attr("name-muncipal");
+scrollToNewsDiv();
 getAllTabs(municipalityid,$("#publicationDateList").val(),'mandal');
 //alert("SHOW Municipality DATA");
 //getvotersSubBasicInfo(municipalityid,"mun-name","mandal");
@@ -4380,6 +4383,7 @@ mainreqid = panchayatid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'panchayat';
 mainname = $(this).closest("a").attr("name-panchayat");
+scrollToNewsDiv();
 getAllTabs(panchayatid,$("#publicationDateList").val(),'panchayat');
 //alert("SHOW Panchayat DATA");
 //getvotersSubBasicInfo(panchayatid,"panchayat-name","panchayat");
@@ -4398,6 +4402,7 @@ mainreqid = boothid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'booth';
 mainname = $(this).closest("a").attr("name-booth");
+scrollToNewsDiv();
 getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 //alert("SHOW BOOOTH DATA");
 
