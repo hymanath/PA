@@ -96,6 +96,7 @@ function buildVotersInFamilyForEdit(results){
 		var family = results.boothsList[i].familiesList;
 		for(var j in family){
 		   str+="<div class='votersEditTitle'>Voters in House No : "+family[j].houseNo+"</div>";
+		  // str +='<div id="errorDiv"></div>';
 		   var voters = family[j].votersList;
 		   str+="<fieldset>";
 		   str+="<table style='width:900px;'>";
@@ -109,11 +110,15 @@ function buildVotersInFamilyForEdit(results){
 			  str+="<tr>";	
 		      str+="<td  style='width:300px;padding-top:20px;'>";
               str+="<table>";
+			  str+="   <tr><td id='errorDiv' class='errorDiv'></td></tr>";
 			  str+="   <tr><td><b>Voter Name:</b></td><td>"+voters[k].name+"<input type='hidden' class='familyVoterEditId' value='"+voters[k].voterId+"' /></td></tr>";
 			  str+="   <tr><td><b>Guardian Name:  </b></td><td>"+voters[k].gaurdian+"</td></tr>";
 			  str+="   <tr><td><b>RelationShip:</b></td><td>"+voters[k].relationship+"</td></tr>";
 			  str+="   <tr><td><b>Age:</b></td><td>"+voters[k].age+"</td></tr>";
 			  str+="   <tr><td><b>Gender:</b></td><td>"+voters[k].gender+"</td></tr>";
+			  str+="   <tr><td><b>MobileNo:</b></td><td><input type='text' id='mobileNo' class='mobileNo' value="+voters[k].mobileNo+"></input></td></tr>";
+			  
+
 			  str+="   <tr>";	
 		      str+="    <td><b>Caste:</b></td>";		  
 			  str+="    <td><select id='castvalid"+localid+"' class='castallfamily castallfamily"+j+"' >";
@@ -187,14 +192,46 @@ function applyValueToAllVoters(id,classId){
 }
 
 function updateAllSelectedVoters(){
+	
       var votersEditInfo = new Array();
+	  var flag = true;
+	  var str ='';
+	  var errorDiv = 
+	
      $('.familyVoterEditId').each(function() {
 	        var obj={
 	    
 	        };
+			 
+			var $errorDiv = $(this).closest("table").find(".errorDiv");
+			$errorDiv.text("").css("color", "#fff");
+			var mobile = $.trim($(this).closest("table").find(".mobileNo").val());
+			
+			if(isNaN(mobile)) {
+			
+			$errorDiv.text("Enter valid").css("color", "red");
+			
+			flag =false;
+			return;
+			}
+			
+			
+			else if(!(mobile.length == 0 || (mobile.length >=10 && mobile.length<=12)))
+			{
+			$errorDiv.text("Enter valid").css("color", "red");
+			flag =false;
+			return;
+			}
+			
+			if(flag == true)
+			{
+			  $errorDiv.text("").css("color", "#fff");
+			}
+			
 			  obj["voterId"] = $(this).val();
 			  obj["castId"] = $(this).closest("table").find(".castallfamily").val();
 			  obj["partyId"] = $(this).closest("table").find(".partyallfamily").val();
+			  obj["mobileNo"] =$(this).closest("table").find(".mobileNo").val();
 			  if(totalCategories > 0){
 			    for(var i=0; i<totalCategories ; i++){
 				  var val1= $(this).closest("table").find(".categ"+i+"main").val();
@@ -205,6 +242,9 @@ function updateAllSelectedVoters(){
 			  votersEditInfo.push(obj);
 			
         });
+		if(flag == true)
+			{
+			
 		if(votersEditInfo.length > 0){
 		 if(votersLimitExist){
 		    if(votersEditInfo.length > 30)
@@ -213,6 +253,7 @@ function updateAllSelectedVoters(){
 			   return;
 			}
 		  }
+		  
 		    $("#votersEditSaveAjaxImg").show();
 			$("#votersEditSaveButtnImg").attr("disabled", "disabled");	
 		     var jsObj=
@@ -224,6 +265,7 @@ function updateAllSelectedVoters(){
 		  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		  var url = "getMultipleFamilesInfoForEditAction.action?"+rparam+"&save=";		  
 		  callAjax(jsObj,url);
+		}
 		}
 }
 
@@ -4413,3 +4455,5 @@ getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 });
 /** END FUNCTIONS FOR NAVIGATIONS **/	
 	
+
+ 
