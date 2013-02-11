@@ -937,7 +937,7 @@ function  buildProblemsCount(results){
    str+='<h4 style="margin-top: 6px; margin-bottom: 4px;">News Glance</h4>';
 
 if(results == null || results.length == 0){
-    str+='<h5>No news Available</h5>';
+    str+='<h5>No news available</h5>';
 	 $('#newsCountDiv').html(str);
 	return false;
 }
