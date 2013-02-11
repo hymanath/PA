@@ -66,7 +66,8 @@ var flag=false;
 /* This Method is used for calling the ajax method for getting publication dates */
 function getPublicationDate()
 {
-	$('#submitButtonId').removeAttr('disabled');
+	$('#publicationDateList').val('0');
+	$('#booth').val('0');
 	$('#errorMsgDiv').html('&nbsp;');
 	var constituencyID = document.getElementById("constituencyList");
 	var name=constituencyID.options[constituencyID.selectedIndex].name;
@@ -115,7 +116,7 @@ function removeSelectElements(selectedElmt)
 /* This method is used for calling the ajax method for building the booth detais based on constituency id and publication date id */
 function getBoothsForConstituency()
 {
-	$('#submitButtonId').removeAttr('disabled');
+	$('#booth').val('0');
 	$('#errorMsgDiv').html('&nbsp;');
 	var constituencyId = $('#constituencyList').val();
 	var publicationId = $('#publicationDateList').val();
@@ -144,50 +145,52 @@ function buildBoothsForConstituencyAndPublicationDate(myResults)
 function saveVoterDetails()
 {
 	if(!flag){
-	flag=true;
-	$('#processingImgId').show();
-	var boothId = $('#booth').val();
-	var name = $('#nameId').val();
-	var voterCardNo= $('#voterCardId').val();
-	var houseNo= $('#houseNoId').val();
-	var gaurdian = $('#gaurdianId').val();
-	var relationShip = $('#relationShip option:selected').text();
-	var gender = $('.gender:checked').val();
-	var age = $('#age').val();
-	var mobileNo=$('#mobileNo').val();
-	if(gender == 'male')
-		gender = 'M';
-	else
-		gender = 'F';
-	var jsObj=
-	{
-		name:name,
-		voterCardNo:voterCardNo,
-		houseNo:houseNo,
-		gaurdian:gaurdian,
-		relationShip:relationShip,
-		gender:gender,
-		mobileNo:mobileNo,
-		age:age,
-		boothId:boothId,
-		task:"saveVoterDetails"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getBoothsForConstituencyIdAndPublicationId.action?"+rparam;
-	callAjax(jsObj,url);
+		flag=true;
+		$('#processingImgId').show();
+		var boothId = $('#booth').val();
+		var name = $('#nameId').val();
+		var voterCardNo= $('#voterCardId').val();
+		var houseNo= $('#houseNoId').val();
+		var gaurdian = $('#gaurdianId').val();
+		var relationShip = $('#relationShip option:selected').text();
+		var gender = $('.gender:checked').val();
+		var age = $('#age').val();
+		var mobileNo=$('#mobileNo').val();
+		if(gender == 'male')
+			gender = 'M';
+		else
+			gender = 'F';
+		var jsObj=
+		{
+			name:name,
+			voterCardNo:voterCardNo,
+			houseNo:houseNo,
+			gaurdian:gaurdian,
+			relationShip:relationShip,
+			gender:gender,
+			mobileNo:mobileNo,
+			age:age,
+			boothId:boothId,
+			task:"saveVoterDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getBoothsForConstituencyIdAndPublicationId.action?"+rparam;
+		callAjax(jsObj,url);
 	}
 	else{
-	$('#requestDiv').html('<b style="color: blue; margin-left: 70px;">Please wait ... </b>');
+		$('#requestDiv').html('<b style="color: blue; margin-left: 70px;">Please wait ... </b>');
 	}
+}
+function clearErrDiv(){
+$('#errorMsgDiv').html('&nbsp;');
 }
 /* This Method is used to inform to the user weather voter details stored or not */
 function buildVotersDetailsInformation(myResults)
 {
+	var result = myResults.resultCode;
 	flag=false;
 	$('#processingImgId').hide();
 	$('#requestDiv').html('');
-	var result = myResults.resultCode;
-	
 	if(result == 1)
 	{
 		$('#errorMsgDiv').html('<b id="errmsg">Voter already exists please enter another voter id</b>');
@@ -391,10 +394,10 @@ Select Publication Date : <font class="requiredFont" style="color:red;font-size:
 </tr>
 <tr>
 <td id="tdHeader">
-Booth : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
+Booth : <font class="requiredFont" style="color:red;font-size:large;">*</font>
 </td>
 <td>
-<select id="booth" style="width: 225px; height: 30px; margin-left: 20px;">
+<select id="booth"  onChange="clearErrDiv()" style="width: 225px; height: 30px; margin-left: 20px;">
 </select>
 </td>
 </tr>
@@ -407,7 +410,7 @@ Booth : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 Name : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </td>
 <td id="tdHeader">
-<input class="textID" type="text" name="voterName"id="nameId"/>
+<input class="textID" type="text" name="voterName"id="nameId" onKeyUp="clearErrDiv();"/>
 </td>
 </tr>
 <tr>
@@ -415,7 +418,7 @@ Name : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 Voter ID Card No: <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </td>
 <td id="tdHeader">
-<input class="textID" type="text" name="voterCardNo" id="voterCardId"/>
+<input class="textID" type="text" name="voterCardNo" id="voterCardId" onKeyUp="clearErrDiv();"/>
 </td>
 </tr>
 <tr>
@@ -423,7 +426,7 @@ Voter ID Card No: <font class="requiredFont" style="color:red;font-size:large;" 
 House No: <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </td>
 <td>
-<input class="textID" type="text" name="houseNo" id="houseNoId"/>
+<input class="textID" type="text" name="houseNo" id="houseNoId" onKeyUp="clearErrDiv();"/>
 </td>
 </tr>
 
@@ -432,7 +435,7 @@ House No: <font class="requiredFont" style="color:red;font-size:large;" >*</font
 Guardian Name: <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </td>
 <td>
-<input class="textID" type="text" name="gardianName" id="gaurdianId"/>
+<input class="textID" type="text" name="gardianName" id="gaurdianId" onKeyUp="clearErrDiv();"/>
 </td>
 </tr>
 <tr>
@@ -440,7 +443,7 @@ Guardian Name: <font class="requiredFont" style="color:red;font-size:large;" >*<
 RelationShip Type : <font class="requiredFont" style="color:red;font-size:large;" >* </font>
 </td>
 <td>
-<select class="relationShip" style="width: 225px" id="relationShipId">
+<select class="relationShip" style="width: 225px" id="relationShipId" onChange="clearErrDiv();">
 <option value="0"> Select RelationShip</option>
 <option value="1"> Father </option>
 <option value="2"> Mother </option>
@@ -464,7 +467,7 @@ Gender : <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 Mobile No:
 </td>
 <td>
-<input class="textID" type="text" name="mobileno" id="mobileNo"/>
+<input class="textID" type="text" name="mobileno" id="mobileNo" onKeyUp="clearErrDiv();"/>
 </td>
 </tr>
 <tr>
@@ -472,7 +475,7 @@ Mobile No:
 Age: <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 </td>
 <td>
-<input class="textID" type="text" name="age" id="age"/>
+<input class="textID" type="text" name="age" id="age" onKeyUp="clearErrDiv();"/>
 </td>
 </tr>
 </table>
