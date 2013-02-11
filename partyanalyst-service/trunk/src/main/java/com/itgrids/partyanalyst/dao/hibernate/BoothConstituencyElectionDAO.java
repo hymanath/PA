@@ -468,7 +468,9 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     {
     	StringBuilder str = new StringBuilder();
     	str.append("select distinct model.constituencyElection.election.electionYear from BoothConstituencyElection model where ");
-    	if(type.equalsIgnoreCase(IConstants.MANDAL))
+    	if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+    		str.append(" model.constituencyElection.constituency.constituencyId =:id  ");
+    	else if(type.equalsIgnoreCase(IConstants.MANDAL))
     		str.append(" model.booth.tehsil.tehsilId =:id and model.booth.localBody is null ");
     	else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
     		str.append(" model.booth.localBody.localElectionBodyId =:id and model.booth.panchayat is null ");
