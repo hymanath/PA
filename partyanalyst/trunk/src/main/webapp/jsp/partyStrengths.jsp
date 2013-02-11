@@ -1195,6 +1195,7 @@
 	
 	function buildElectionYearsTable(results)
 	{
+
 		var showElections = document.getElementById("electionTypeTd");
 		
 		var populateElections='';
@@ -1202,11 +1203,11 @@
 		
 		for(var i in results)  
 		{
-			if(results[i].id==7){
+			/*if(results[i].id==7){
 				populateElections+='<option value="'+results[i].id+'" selected="selected">'+results[i].name+'</option>';
-			}else{
+			}else{*/
 				populateElections+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
-			}
+			//}
 			
 		}
 		populateElections+='</select>';
@@ -1585,7 +1586,7 @@
 							<td align="left" class="tdStyle">No.of Previous Election Years</td>
 							<td align="left" id="electionTypeTd">
 								<select id="electionYearsSelect" name="electionYears" class = "selectWidth">																
-									<option value="7">7</option>									
+															
 								</select>								
 							</td>
 						
