@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Source;
@@ -2585,10 +2586,16 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		log.debug("Entered into the updateVisibility service method");
 		
 		try{
-			
+		
 			FileGallary fileGallary = fileGallaryDAO.get(contentId);
-			fileGallary.setIsPrivate(visibility);
 			
+			fileGallary.setIsPrivate(visibility);
+			if(visibility.equalsIgnoreCase("false"))
+			{
+				
+				Gallary gallary = gallaryDAO.get(fileGallary.getGallary().getGallaryId());
+				gallary.setIsPrivate(visibility);
+			}
 			fileGallaryDAO.save(fileGallary);
 			
 			return IConstants.SUCCESS;
