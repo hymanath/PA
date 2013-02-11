@@ -801,13 +801,18 @@ return Action.SUCCESS;
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
 		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 		}
-		/*else if (type.equalsIgnoreCase("localElectionBody")){
+		else if (type.equalsIgnoreCase("ward")){
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByWardId(panchayatId,publicationDateId);
+		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(panchayatId,publicationDateId);
+		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+		}
+		else if (type.equalsIgnoreCase("localElectionBody")){
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByLocalElectionBodyId(mandalId,publicationDateId, type);
 		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
-		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(mandalId,publicationDateId);
+		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForWardsByLocalElectionBodyId(mandalId,publicationDateId);
 		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
-		}*/
-		
+		}
 		constituencyManagementVO.setVotersDetailsVO(votersDeatailsForConstituency);
 		
 		
