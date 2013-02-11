@@ -211,18 +211,14 @@ public class BoothPublicationVoterDAO extends
 	
 	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId){
 		StringBuilder query = new StringBuilder();
-		//query.append("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
-		query.append("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothPublicationVoter model " +
-				" where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		query.append("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		if(type.equalsIgnoreCase("constituency"))
 			query.append(" model.booth.constituency.constituencyId = :id ");
 		else if(type.equalsIgnoreCase("mandal"))
 			query.append(" model.booth.tehsil.tehsilId = :id and model.booth.localBody is null ");
 		else if(type.equalsIgnoreCase("booth"))
-			//query.append(" model.booth.boothId = :id ");
-		//query.append(" group by model.voter.gender ");
 			query.append(" model.booth.boothId = :id ");
-
+		query.append(" group by model.voter.gender ");
 		
 		Query queryObj = getSession().createQuery(query.toString()) ;
 		queryObj.setParameter("publicationDateId", publicationDateId);
