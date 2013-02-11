@@ -72,7 +72,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private List<VotersInfoForMandalVO> previousDetailsList;
 	private List<SelectOptionVO> electionYearsList; 
 	private CrossVotingConsolidateVO crossVotingConsolidateVO;
-	
+	private Long parliamentConstituencyId;
+		
 	public List<VotersInfoForMandalVO> getPreviousDetailsList() {
 		return previousDetailsList;
 	}
@@ -264,6 +265,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setCrossVotingConsolidateVO(
 			CrossVotingConsolidateVO crossVotingConsolidateVO) {
 		this.crossVotingConsolidateVO = crossVotingConsolidateVO;
+	}
+
+	public void setParliamentConstituencyId(Long parliamentConstituencyId) {
+		this.parliamentConstituencyId = parliamentConstituencyId;
+	}
+	
+	public Long getParliamentConstituencyId() {
+		return parliamentConstituencyId;
 	}
 
 	public String execute() throws Exception
@@ -845,5 +854,25 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getParliamentConstituencyIds()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getParliamentConstituencyId() Method, Exception - "+e); 
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		parliamentConstituencyId = votersAnalysisService.getParliamentConstituencyId(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("eleYear"));
+		return Action.SUCCESS;
+	}
+	
+	
 
 }
