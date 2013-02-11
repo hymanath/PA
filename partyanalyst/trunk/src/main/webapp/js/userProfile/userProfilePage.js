@@ -1226,9 +1226,9 @@ function getFriendsListForUser(results)
 		templateClone.removeClass("templateDiv");
 		templateClone.find('.connectedPersonName').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'">'+results.connectedPeople[i].candidateName+'</a>');
 		if(results.connectedPeople[i].image == null)
-			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
+			templateClone.find('.imgClass').html('<a onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
 		else
-			templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.connectedPeople[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
+			templateClone.find('.imgClass').html('<a  onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="50" width="55" src="'+imageStr+'"/></a>');
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
@@ -1312,8 +1312,8 @@ function showAllRequestMessagesForUser(results,jsObj){
 		var template = $(".templateDiv");
 		var templateClone =  template.clone();
 		templateClone.removeClass("templateDiv");
-		templateClone.find('.connectedPersonName').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'">'+results.friendRequest[i].candidateName+'</a>');
-		templateClone.find('.imgClass').html('<a href="userProfile.action?profileId='+results.friendRequest[i].id+'"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
+		templateClone.find('.connectedPersonName').html('<a style="cursor: pointer;" onClick="openNewWindow('+results.candidateVO[i].id+');">'+results.friendRequest[i].candidateName+'</a>');
+		templateClone.find('.imgClass').html('<a  onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
 		templateClone.find('.messageCls').html(''+results.friendRequest[i].message+'').css("display","block");
 		templateClone.find('.constituencyName').html(''+results.friendRequest[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.friendRequest[i].district+'');
@@ -1374,7 +1374,10 @@ function showRequestedMessagesForAUser(results)
 		templateClone.appendTo(".placeholderCenterDiv");
 		}
 }
-
+function openNewWindow(id)
+{
+window.open('userProfile.action?profileId='+id,'_blank');
+}
 function showSentBoxMessagesForAUser(results)
 {
 	
@@ -1649,15 +1652,15 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDiv");
 		if(image == null)
-			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
+			templateClone.find(".imgClass").html('<a onClick="openNewWindow('+results.candidateVO[i].id+');"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
 		else
-			templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);"/></a>');
-			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
+			templateClone.find(".imgClass").html('<a "onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);"/></a>');
+			templateClone.find(".connectedPersonName").html('<a style="cursor: pointer;" onClick="openNewWindow('+results.candidateVO[i].id+');">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
-				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" rel="tooltip" title="Connect" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\');" rel="tooltip" title="Connect" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
 				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
 			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
@@ -1795,15 +1798,15 @@ function selectedStatusValue(){
 			var image = results.candidateVO[i].image;
 			var templateClone = template.clone();
 			templateClone.removeClass("templateDiv");
-			templateClone.find(".connectedPersonName").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'">'+results.candidateVO[i].candidateName+'</a>');
+			templateClone.find(".connectedPersonName").html('<a style="cursor: pointer;" onClick="openNewWindow('+results.candidateVO[i].id+');">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find(".districtName").html(''+results.candidateVO[i].district+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 
 			if(image == null)
-				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
+				templateClone.find(".imgClass").html('<a  onClick="openNewWindow('+results.candidateVO[i].id+');"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
 			else
-				templateClone.find(".imgClass").html('<a href="userProfile.action?profileId='+results.candidateVO[i].id+'"><img height="45" width="50" src="'+imageStr+'" /></a>');
+				templateClone.find(".imgClass").html('<a  onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="45" width="50" src="'+imageStr+'" /></a>');
 			
 			if(connectedStatuss == "NOT CONNECTED" ){
 				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED"){
@@ -2593,6 +2596,6 @@ function buildPeopleYouMayKnowBlock(results)
 		templateClone.find(".usernamehiddenVar").html('<input type="hidden" value="'+friendsList[i].candidateName+'" class="userName" />');
 		templateClone.find(".constituencyNamehiddenVar").html('<input type="hidden" value="'+friendsList[i].constituencyName+'" class="constituencyName" />');
 		templateClone.appendTo(".peopleYouMayKnowULClass");
-
+		
 	}
 }
