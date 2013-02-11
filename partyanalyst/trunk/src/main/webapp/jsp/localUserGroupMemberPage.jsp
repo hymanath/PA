@@ -60,7 +60,6 @@
 <script type="text/javascript">
 	
 	$(document).ready(function(){
-	alert("hi");
 		var status = '${savedStatus}';
 		if (status == 'true')
 		{
