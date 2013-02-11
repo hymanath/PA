@@ -918,6 +918,8 @@ for  body3 start    result  -->
   </div> -->
 
 <!-- Not in USe -->
+
+<div id="scrollToHere"></div>	
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 
 	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;"></div>
@@ -1326,6 +1328,15 @@ $('#constituencyInfo').css('display','block');
 	callAjax(jsObj, url);
 }
 
+function scrollToNewsDiv(){
+ $('html,body').animate({scrollTop: $("#scrollToHere").offset().top}, 2000);
+
+}
+
+function scrollToMandals(){
+
+ $('html,body').animate({scrollTop: 250}, 2000);
+}
 
 </script>
 </body>
