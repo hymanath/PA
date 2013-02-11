@@ -674,7 +674,7 @@ function validationCheck()
 		return false;
 		}
 	}
-
+refreshParent();
 }
 function setTimer()
 {	
