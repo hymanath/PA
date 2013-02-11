@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
@@ -149,6 +150,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IHamletDAO hamletDAO;
     
     private ILocalElectionBodyDAO localElectionBodyDAO;
+    private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
     
     
     
@@ -439,6 +441,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -4507,8 +4518,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							String type2 = null;
 							
 							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
-								list = constituencyElectionDAO.findAllElectionsHappendInAConstituency(id);
+							{
+								List<Long> constituencyIdsList = new ArrayList<Long>(0);
 								
+								List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(id);
+								if(parliamentList != null && parliamentList.size() > 0)
+								{
+									for(Object[] params : (List<Object[]>)parliamentList)
+									{
+										if(!constituencyIdsList.contains(params[0]))
+											constituencyIdsList.add((Long)params[0]);
+									}
+								}
+								if(!constituencyIdsList.contains(id))
+									constituencyIdsList.add(id);
+								if(constituencyIdsList != null && constituencyIdsList.size() > 0)
+									list = constituencyElectionDAO.findAllEleHappendInAConstituency(constituencyIdsList);
+								
+							}
 							else if(type.equalsIgnoreCase(IConstants.MANDAL))
 							{
 								if(id.toString().trim().substring(0, 1).equalsIgnoreCase("2"))
@@ -7433,15 +7460,15 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						if(list2 != null)
 							id = (Long)list2.get(0);
 							type = IConstants.LOCALELECTIONBODY;
-							
 					}
-					list = boothConstituencyElectionDAO.getElectionYearsByMandalId(type, id);
 					
-					if(list != null && list.size() > 0)
-					{
-						for(Object params : list)
-							electionYearsList.add(new SelectOptionVO(new Long(params.toString()), params.toString()));
-					}
+				 }
+				list = boothConstituencyElectionDAO.getElectionYearsByMandalId(type, id);
+				
+				if(list != null && list.size() > 0)
+				{
+					for(Object params : list)
+						electionYearsList.add(new SelectOptionVO(new Long(params.toString()), params.toString()));
 				}
 				return electionYearsList;
 			}catch (Exception e) {
@@ -7703,5 +7730,25 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				return resultStatus;
 			}
 		}
-
+		
+		public Long getParliamentConstituencyId(String type, Long id, Long year)
+		{
+			Long parliamentConId = null;
+			try{
+				if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				{
+					List pcsInfoList = delimitationConstituencyAssemblyDetailsDAO.findParliamentByAssemblyIdAndElectionYear(id,year);
+					
+					List<Object[]> pcsInfo = (List<Object[]>)pcsInfoList;
+					if(pcsInfo != null && pcsInfo.size() >0)
+						parliamentConId = (Long)pcsInfo.get(0)[0];
+				}
+				return parliamentConId;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getParliamentConstituencyId() Method, Exception - "+e);
+				return parliamentConId;
+			}
+		}
+		
 }
