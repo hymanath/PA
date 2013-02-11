@@ -738,6 +738,9 @@ h5{font-family : Arial;}
 #ageAndgenderWiseDetails th,#agewiseDetails th,#tableDiv th{text-align:center;}
 #crossVotingReportBtn{margin-left: 25px;}
 #electionYearsForCrossVoting{margin-right: 5px;}
+#previousEleVotingTrendsDiv{
+  overflow-x:scroll;
+}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});

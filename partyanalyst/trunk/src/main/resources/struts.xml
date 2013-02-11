@@ -3731,7 +3731,7 @@
 		</action>
 		<action name="votersAnalysisNewAction" class="votersAnalysisAction">
 			<result name="success">/jsp/votersAnalysis1.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=voterAnalysisAction</result>	
+			<result name="error">/jsp/loginForm.jsp?src=votersAnalysisNewAction</result>	
 		</action>
 		
          <action name="voterAnalysisAjaxAction" class="votersAnalysisAction" method="AjaxHandler">
