@@ -59,10 +59,28 @@
 	<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 	<script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
 	
-
+	<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 <script type="text/javascript">
-	
+$(document).ready(function(){
+		$('#identifiedFromText').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: new Date()
+        });
+		
+		$('#reportedFromText').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: new Date()
+        });
+		
+});
+
 	var accessType = '${accessType}';
 	
 	var Localization = { <%
@@ -3591,8 +3609,12 @@
 </head>
 <body>
 <style>
+#identifiedFromText,#reportedFromText{
+cursor:text !important;
+}
 .paginatorElmtClass a{padding:5px;}
 </style>
+
 <div id="problemManagementDiv_main">
 	<div id="activities"></div>
 	<div id="problemManagementDiv_head">
@@ -3670,19 +3692,17 @@
 															<!--<td><font class="requiredFont"> * </font></td>	-->
 															<td>
 																<input type="text" value=""  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" size="15"/>
-																<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>
+																<div id="identifiedFromText_Div" class="tinyDateCal"></div>
 															</td>
-															<td valign="top">
-																<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+															<td>
 															</td>				
 															
 															<!-- <td><font class="requiredFont"> * </font></td>-->
 															<td>
 																<input type="text" READONLY="READONLY" name ="reportedDate" id="reportedFromText" size="15"/>
-																<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div>
+																<div id="reportedFromText_Div" class="tinyDateCal"></div></div>
 															</td>				
-															<td valign="top">
-																<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+															<td>
 															</td>
 															
 														</tr>
@@ -3695,7 +3715,7 @@
 													<s:select theme="simple" id="statusSelectElmt" list="problemStatus" headerKey="0" headerValue="All" listKey="id" listValue="name"/>								</td>
 													
 													<td>
-														<input type="button" class="buttonClass" value="view" onclick="pMgmt_Obj.getAllProblemsByFilter()">
+														<input type="button" class="buttonClass btn btn-primary" value="view" onclick="pMgmt_Obj.getAllProblemsByFilter()">
 														
 													</td>
 												</tr>
