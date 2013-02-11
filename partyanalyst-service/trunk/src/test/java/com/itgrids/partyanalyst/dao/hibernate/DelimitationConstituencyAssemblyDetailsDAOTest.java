@@ -127,10 +127,10 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 			System.out.println(param[2].toString());
 		}
 	}*/
-	public void testfindParliamentForAssemblyForTheGivenYear(){
+	/*public void testfindParliamentForAssemblyForTheGivenYear(){
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheMaxOfGivenYear(496l);
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void testfindDistrictsOfParliamentConstituencies()
 	{
@@ -142,4 +142,11 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 			 System.out.println(params[1].toString());
 		 }}
 	}*/
+	
+	
+	public void testFindParliamentForAssembly(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentByAssemblyIdAndElectionYear(232l,2004l);
+		System.out.println(((Object[])list.get(0))[1]);
+		
+	}
 }
