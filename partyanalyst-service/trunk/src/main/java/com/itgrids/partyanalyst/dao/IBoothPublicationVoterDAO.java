@@ -117,4 +117,6 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender);
 	 
+	public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId);
+	 
 }

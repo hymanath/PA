@@ -723,4 +723,16 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return query.list();
 	}
 	
+	
+	public List<Election> getElectionDetailsForElections(List<Long> electionIds){
+		
+		Query query = getSession().createQuery("select model from Election model where " +
+				"model.electionId in (:electionIds)");
+		
+		query.setParameterList("electionIds", electionIds);
+		
+		return query.list();
+		
+	}
+	
 }
