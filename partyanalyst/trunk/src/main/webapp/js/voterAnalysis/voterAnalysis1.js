@@ -655,7 +655,8 @@ oDT: votersByLocBoothDataTable
 		 }
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		     getPreviousVotersDetails();
+		  getPreviousVotersDetails1();
+		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		 showNewsDetails(id,publicationId,type);
@@ -672,6 +673,121 @@ oDT: votersByLocBoothDataTable
 		 //getElectionyearsByMandalId(id,type);
 	}
 
+	
+	function getPreviousVotersDetails1(){
+
+		$("#votersBasicInfoDiv").html("");
+        $("#votersBasicInfoSubChartDiv").html("");
+        $("#votersBasicInfoSubDiv").html("");
+	    $("#votersByLocationTabContentDiv_body").html("");
+	    $("#previousEleVotingTrendsDiv").html('');
+	    $("#votersByPanchayatTabContentDiv_body").html("");
+		$('#votersBasicInfoDiv1').html('');
+
+		if(maintype == "constituency"){
+			constituencyId = mainreqid;
+			getPrevioesVotersDetailsForConstituency();
+
+		}
+		else if(maintype == "mandal"){
+			mandalId = mainreqid;
+			getPrevioesVotersDetailsForMandal();
+		}
+		else if(maintype == "panchayat"){
+			panchayatId = mainreqid;
+			getPrevioesVotersDetailsForPanchayat();
+		}
+		else if(maintype == "booth"){
+			boothId = mainreqid;
+			getPrevioesVotersDetailsForBooth();
+		}
+	}
+
+	function getPrevioesVotersDetailsForConstituency(){
+
+		var jsObj=
+					{					
+						constituencyId:constituencyId,
+						mandalId:0,
+						boothId:0,
+						panchayatId:0,
+					    type:maintype,
+						task:"getVotersCountForAllElections"
+					};
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountForAllElections.action?"+rparam;
+
+			callAjax(jsObj,url);
+
+	  $('#basicDetailsAjax').css('display','block');
+	}
+
+	function getPrevioesVotersDetailsForMandal(){
+
+
+
+		var jsObj=
+					{					
+						constituencyId:$('#constituencyList').val(),
+						mandalId:mandalId,
+						boothId:0,
+						panchayatId:0,
+					    type:maintype,
+						task:"getVotersCountForAllElections"
+					};
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountForAllElections.action?"+rparam;
+
+			callAjax(jsObj,url);
+
+	  $('#basicDetailsAjax').css('display','block');
+
+	}
+
+	function getPrevioesVotersDetailsForPanchayat(){
+
+		var jsObj=
+					{					
+						constituencyId:$('#constituencyList').val(),
+						mandalId:0,
+						boothId:0,
+						panchayatId:panchayatId,
+					    type:maintype,
+						task:"getVotersCountForAllElections"
+					};
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountForAllElections.action?"+rparam;
+
+			callAjax(jsObj,url);
+
+	  $('#basicDetailsAjax').css('display','block');
+
+	}
+
+	function getPrevioesVotersDetailsForBooth(){
+
+		var jsObj=
+					{					
+						constituencyId:$('#constituencyList').val(),
+						mandalId:0,
+						boothId:boothId,
+						panchayatId:0,
+					    type:maintype,
+						task:"getVotersCountForAllElections"
+					};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getVotersCountForAllElections.action?"+rparam;
+
+			callAjax(jsObj,url);
+
+	  $('#basicDetailsAjax').css('display','block');
+
+	
+	}
 	function getPreviousVotersDetails(){
 
 
