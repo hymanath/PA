@@ -62,6 +62,11 @@
 
 
 <style type="text/css">
+
+#voterBasicInfoTable td{
+	text-align:center;
+
+}
 .radio {
 	height: 25px;
 	width: 19px;
