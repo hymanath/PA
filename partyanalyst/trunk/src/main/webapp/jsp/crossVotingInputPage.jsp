@@ -250,7 +250,19 @@ td.tdStyle{
 </style>
 <script type="text/javascript">
 
-function getParty()
+var selAssemblyId = "${acId}";
+var selParliamentId = "${pcId}";
+var selElectionYear = "${electionYear}";
+var selParty = "${party}";
+
+$(document).ready(function(){
+	 if(selElectionYear != ""){
+       $("#electionYearField").val(selElectionYear);
+	   if(selParliamentId != "" && selAssemblyId != "" && selParty != "")
+        getParliament(selParliamentId,selAssemblyId,selParty);
+	 }
+});
+function getParty(partyId)
 {
     var img = document.getElementById("ajaxImg3");
 	img.style.display = 'block';
@@ -271,7 +283,8 @@ function getParty()
 		var jsObj={						
 					electionYear:elecValue,
 					assemblyVal:assemblyValue ,
-					task:"getParty"
+					task:"getParty",
+					partyId:partyId
 			  }
 		
 		var bparam="assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear;
@@ -281,7 +294,7 @@ function getParty()
 
 
 	
-function getAssembly()
+function getAssembly(assemblyId,partyId)
 {
 	var img = document.getElementById("ajaxImg2");
 	img.style.display = 'block';
@@ -302,7 +315,9 @@ function getAssembly()
 		var jsObj={
 					parliamentValue : parliamentValue,
 					electionYear:electionYearValue,
-					task:"Assembly"
+					task:"Assembly",
+                    assemblyId:assemblyId,
+					partyId:partyId
 			  }
 		
 		var bparam="parliamentValue="+jsObj.parliamentValue+"&election="+jsObj.electionYear;
@@ -652,7 +667,21 @@ function getAssembly()
 			{
 				pSelectElmt.add(childElmt);
 			}				
-		}		
+		}	
+		if(jObj.task=="getParliament" && jObj.parliamentId !="")
+		{
+              $("#parliamentField").val(jObj.parliamentId);
+              getAssembly(jObj.assemblyId,jObj.partyId);
+		}
+		else if(jObj.task=="Assembly" && jObj.assemblyId !=""){
+			
+              $("#AssemblySelect").val(jObj.assemblyId);
+			  getParty(jObj.partyId);
+		}
+		else if(jObj.task=="getParty" && jObj.partyId !=""){
+			  $("#PartySelect").val(jObj.partyId);
+			  forGetCrossVoting();
+		}
 	}
 	
 	function removeSelectElements(elmt)
@@ -699,7 +728,7 @@ function getAssembly()
 			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue+"&includeAliance="+jsObj.alliances;
 			callAjax(jsObj,bparam);
 	}
-	function getParliament()
+	function getParliament(parliamentId,assemblyId,partyId)
 	{
 		var img = document.getElementById("ajaxImg1");
 		img.style.display = 'block';
@@ -709,7 +738,10 @@ function getAssembly()
 
 		var jsObj={
 						electionValue : elecValue,
-						task:"getParliament"
+						task:"getParliament",
+						parliamentId:parliamentId,
+						assemblyId:assemblyId,
+						partyId:partyId
 				  }
 
 		var bparam="election="+jsObj.electionValue;
@@ -760,13 +792,13 @@ function getAssembly()
 				<tr>
 					<td align="left" class="tdStyle"><label for="electionYearField" id="electionYearLabel">Election Year<font color="red">*</font></label></td>
 					<td align="left">
-						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
+						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament('','','')"></s:select>
 					</td>
 					<td><img id="ajaxImg1" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				
 					<td align="left" class="tdStyle" style="padding-left:10px;"><label theme="simple" for="parliamentField" id="parliamentLabel">Parliament Constituency<font color="red">*</font></label></td>
 					<td align="left"> 
-						<select class="selectstyle" id="parliamentField" onchange="getAssembly()">
+						<select class="selectstyle" id="parliamentField" onchange="getAssembly('','')">
 							<option value="-1">Select</option>
 						</select>
 					</td>
@@ -775,7 +807,7 @@ function getAssembly()
 				<tr>
 					<td align="left" class="tdStyle">Assembly Constituency<font color="red">*</font></td>
 					<td align="left">
-						<select class="selectstyle" id="AssemblySelect" onchange="getParty()">
+						<select class="selectstyle" id="AssemblySelect" onchange="getParty('')">
 							<option value="-1">Select</option>
 						</select>
 
