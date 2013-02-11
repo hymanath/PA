@@ -438,7 +438,7 @@ function displayComparedResults(jsObj,data)
 	str+='<div id="descDiv">';
 	str+='<table>';
 	str+='<tr>';
-	str+='<th>DC:</th>Delimited Constituency<td></td>';
+	str+='<th>DC:</th><td>Delimited Constituency</td>';
 	str+='</tr>';
 	str+='<tr>';
 	str+='<th>NC:</th><td>New Constituency</td>';
@@ -458,7 +458,7 @@ function displayComparedResults(jsObj,data)
 	str+='<div id="descDiv">';
 	str+='<table>';
 	str+='<tr>';
-	str+='<th>DC:</th>Delimited Constituency<td></td>';
+	str+='<th>DC:</th><td>Delimited Constituency</td>';
 	str+='</tr>';
 	str+='<tr>';
 	str+='<th>NC:</th><td>New Constituency</td>';
