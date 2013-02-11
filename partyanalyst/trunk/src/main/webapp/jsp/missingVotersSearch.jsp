@@ -39,10 +39,7 @@ text-transform: uppercase;
 font-family: sans-serif,verdana,serif;
 font-size: 20px;
 font-weight: bold;
-margin-left: 200px;
-width: 800px;
 margin-top:5px;
-margin-left:150px;
 }
 
 #tdHeader{
@@ -57,8 +54,19 @@ margin:40px;
 margin-top:15px;
 }
 #errmsg{
-margin-left:-260px;
 font-size:15px;
+font-weight:bold;
+}
+#errorMsgDiv{
+font-size:15px;
+color:red;
+font-weight:bold;
+}
+#requestDiv{
+font-size:15px;
+color:blue;
+margin-left: 70px;
+font-weight:bold;
 }
 </style>
 <script type="text/javascript">
@@ -178,7 +186,7 @@ function saveVoterDetails()
 		callAjax(jsObj,url);
 	}
 	else{
-		$('#requestDiv').html('<b style="color: blue; margin-left: 70px;">Please wait ... </b>');
+		$('#requestDiv').html('Please wait ...');
 	}
 }
 function clearErrDiv(){
@@ -193,7 +201,7 @@ function buildVotersDetailsInformation(myResults)
 	$('#requestDiv').html('');
 	if(result == 1)
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Voter already exists please enter another voter id</b>');
+		$('#errorMsgDiv').html('Voter already exists please enter another voter id');
 	}
 	else
 	{
@@ -231,107 +239,107 @@ function validationCheck()
 	var mobileNo = trim($('#mobileNo').val());
 	if(constituencyId == '0')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Select The Constituency </b>');
+		$('#errorMsgDiv').html('Please Select The Constituency');
 		return false;
 	}
 	if(publicationId == '0')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Select The Publication Date </b>');
+		$('#errorMsgDiv').html('Please Select The Publication Date');
 		return false;
 	}
 	if(boothId == '0')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Select The Booth </b>');
+		$('#errorMsgDiv').html('Please Select The Booth');
 		return false;
 	}
 	if(name == '')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The Name </b>');
+		$('#errorMsgDiv').html('Please Enter The Name');
 		return false;
 	}
 	if(name.length > 0)
 	{
 		if(/[^a-z A-Z]/.test(name)){
-		$('#errorMsgDiv').html('<b id="errmsg">Name Accepts only Characters</b>');
+		$('#errorMsgDiv').html('Name Accepts only Characters');
 		return false;
 		}
 	}
 	if(voterCardNo == ''){
-			$('#errorMsgDiv').html('<b id="errmsg">Please Enter The voter Card No. </b>');
+			$('#errorMsgDiv').html('Please Enter The voter Card No.');
 			return false;
 	}
 	if(voterCardNo.length>0){
-	var letters = /([^a-zA-Z])([0-9])/;
-	var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";
+	var letters = /([a-zA-Z])([0-9])/;
+	var iChars = "!`@#$%^ &*()+=-[]\\\';,./{}|\":<>?~";
 	for (var i = 0; i < voterCardNo.length; i++)
 		{
 			if (iChars.indexOf(voterCardNo.charAt(i)) != -1)
 			{
-			$('#errorMsgDiv').html('<b id="errmsg">Please Enter A Valid Voter Id</b>');
+			$('#errorMsgDiv').html('Please Enter A Valid Voter Id');
 			return false;
 			}
 		}
 	if (!voterCardNo.match(letters))
 		{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter A Valid Voter Id</b>');
+		$('#errorMsgDiv').html('Please Enter A Valid Voter Id');
 		return false;
 		}
 	}
 	if(houseNo == ''){
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The House No. </b>');
+		$('#errorMsgDiv').html('Please Enter The House No.');
 		return false;
 	}	
 	if(houseNo.length>0){
 		var houseNoValue=trim(houseNo);
 		if( /[^a-zA-Z0-9,. :\/\-]/.test(houseNoValue)) {
-			$('#errorMsgDiv').html('<b id="errmsg">Enter A Valid House No</b>');
+			$('#errorMsgDiv').html('Enter A Valid House No');
 			return false;
 		}		
 	}
 	if(gaurdian == '')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The Guardian </b>');
+		$('#errorMsgDiv').html('Please Enter The Guardian');
 		return false;
 	}
 	if(gaurdian.length > 0)
 	{
-		if(/[^a-zA-Z]/.test(gaurdian))
+		if(/[^a-z A-Z]/.test(gaurdian))
 		{
-			$('#errorMsgDiv').html('<b id="errmsg">Guardian Accepts only Charactors</b>');
+			$('#errorMsgDiv').html('Guardian Accepts only Charactors');
 			return false;
 		}
 	}
 	if(relationShipId == '0')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Select The Relationship Type</b>');
+		$('#errorMsgDiv').html('Please Select The Relationship Type');
 		return false;
 	}
 	if(mobileNo.length >=1){
 		if(isNaN(!mobileNo)){
-			$('#errorMsgDiv').html('<b id="errmsg">Please Enter Valid Mobile</b>');
+			$('#errorMsgDiv').html('Please Enter Valid Mobile');
 			return false;
 			}
 	}
 	if(mobileNo.length > 10 || (mobileNo.length < 10 && mobileNo.length >=1)){
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter Valid Mobile222222</b>');
+		$('#errorMsgDiv').html('Please Enter Valid Mobile');
 		return false;
 		}
 	if(age == '')
 	{
-		$('#errorMsgDiv').html('<b id="errmsg">Please Enter The Age </b>');
+		$('#errorMsgDiv').html('Please Enter The Age');
 		return false;
 	}
 	if(age.length > 0)
 	{
 		if(isNaN(age) === true)
 		{
-			$('#errorMsgDiv').html('<b id="errmsg">Age Accepts only Numbers</b>');
+			$('#errorMsgDiv').html('Age Accepts only Numbers');
 			return false;
 		}
 	}
 	if(age > 150 || age < 18)
 	{
-			$('#errorMsgDiv').html('<b id="errmsg">Please enter valid Age</b>');
+			$('#errorMsgDiv').html('Please enter valid Age');
 			return false;
 	}	
 	$('#errorMsgDiv').html('&nbsp;');		
@@ -371,9 +379,9 @@ function callAjax(jsObj,url)
 }
 </script>
 <body>
-<div class="titleHeading">Adding Missing Voters Details </div>
+<div class="titleHeading" align="center">Add Missing Voters Details </div>
 <div id="mainDiv">
-<div id="errorMsgDiv"  align="center"  style="margin-top: 10px; width: 450px; margin-left: 350px;">&nbsp;</div>
+<div id="errorMsgDiv"  align="center"  style="margin-top: 10px;">&nbsp;</div>
 <div id="SelectionDiv" align="center" style="margin-top: -10px;">
 <table style="margin-top: 15px; margin-left: 70px;">
 <tr>
@@ -444,7 +452,7 @@ RelationShip Type : <font class="requiredFont" style="color:red;font-size:large;
 </td>
 <td>
 <select class="relationShip" style="width: 225px" id="relationShipId" onChange="clearErrDiv();">
-<option value="0"> Select RelationShip</option>
+<option value="0"> Select Relationship</option>
 <option value="1"> Father </option>
 <option value="2"> Mother </option>
 <option value="3"> Husband </option>
@@ -483,7 +491,7 @@ Age: <font class="requiredFont" style="color:red;font-size:large;" >*</font>
 <input type="button" value="save" id="submitButtonId" class="btn btn-primary" style="margin-top: 10px;width:100px" onClick="validationCheck();"/>
 <input type="button" value="Clear" class="btn btn-primary" style="margin-top: 10px;width:100px" onClick="clearAllFields();"/>
 <img alt="processimg" src="images/icons/search.gif" id="processingImgId"style="display: none; margin-left: 5px; margin-top:10px;"></img>
-<div id="requestDiv" style="float: right; position: absolute; margin-left: 575px; width: 200px; margin-top: -20px;"></div>
+<div id="requestDiv" style="float: right; position: absolute; margin-left: 600px; width: 200px; margin-top: -20px;"></div>
 </div>
 </div>
 </div>
