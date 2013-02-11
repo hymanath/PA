@@ -486,7 +486,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setCast(voter.getCast());
 					voterVO.setCastCatagery(voter.getCastCatagery());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
-					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :"N/A");
+					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
 					voters.add(voterVO);
 	
 				}
@@ -1534,7 +1534,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 	    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 	    	voterHouseInfoVO.setBoothId(boothId);
-	    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : "N/A");
+	    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
 	    	voterHouseInfoVOList.add(voterHouseInfoVO);
 	    	sno = sno+1;
 	    }
@@ -3088,6 +3088,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	 	    	booth.setBoothName(boothInfo.getBoothName());
 	 	    	booth.setVilliageCovered(boothInfo.getVilliageCovered());
 	 	    	booth.setPanchayatName(boothInfo.getPanchayatName());
+	 	    	booth.setMobileNo(boothInfo.getMobileNo()!=null ? boothInfo.getMobileNo():" ");
 	 	    	Map<String, List<VoterHouseInfoVO>> families = boothMap.get(key);
 	 	    	familiesList = new ArrayList<VoterHouseInfoVO>();
 	 	    	for(String familyKey:families.keySet()){
@@ -3120,6 +3121,9 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	 voterHouseInfoVO.setHouseNo(voterInfo.getHouseNo());
 	 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
 	 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
+	
+		
+	 voterHouseInfoVO.setMobileNo(voterInfo.getMobileNo()!=null ? voterInfo.getMobileNo() : " ");
 	 
 	 //voterHouseInfoVO.setCast(voterInfo.getCast());
 	 
@@ -3233,6 +3237,9 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 					
 		Voter voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
 		User user =  userDAO.get(voterHouseInfoVO.getUserId());
+		String mobileNo = voterHouseInfoVO.getMobileNo();
+		voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
+		
 		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
 			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
 				
