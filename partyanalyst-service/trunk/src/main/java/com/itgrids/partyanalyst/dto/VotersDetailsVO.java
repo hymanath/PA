@@ -104,6 +104,7 @@ public class VotersDetailsVO implements Serializable{
 	
 	private List<SelectOptionVO> localbodiesList;
 	
+	private int totalNoOfWards;
 	
 	public List<SelectOptionVO> getLocalbodiesList() {
 		return localbodiesList;
@@ -549,4 +550,11 @@ public class VotersDetailsVO implements Serializable{
 	public void setBoothsList(List<SelectOptionVO> boothsList) {
 		this.boothsList = boothsList;
 	}
+	public int getTotalNoOfWards() {
+		return totalNoOfWards;
+	}
+	public void setTotalNoOfWards(int totalNoOfWards) {
+		this.totalNoOfWards = totalNoOfWards;
+	}
+	
 }

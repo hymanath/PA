@@ -502,8 +502,8 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 
 			StringBuilder query = new StringBuilder();
-			query.append("select distinct model.localBodyWard.constituencyId,model.localBodyWard.name from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
-			query.append(" model.localBody.localElectionBodyId = :ids ");
+			query.append("select distinct model.localBodyWard.constituencyId,model.localBody.localElectionBodyId from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
+			query.append(" model.localBody.localElectionBodyId in (:ids) ");
 			Query queryObj = getSession().createQuery(query.toString()) ;
 			queryObj.setParameter("publicationDateId", publicationDateId);
 			queryObj.setParameterList("ids", ids);
@@ -512,5 +512,54 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			
 		}
-
+		
+		public List<Object[]> getBoothsForWard(Long wardId,Long publicationDateId){
+			StringBuilder query = new StringBuilder();
+			query.append("select distinct model.boothId,model.partNo from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
+			query.append(" model.localBodyWard.constituencyId = :wardId ");
+			Query queryObj = getSession().createQuery(query.toString()) ;
+			queryObj.setParameter("publicationDateId", publicationDateId);
+			queryObj.setParameter("wardId", wardId);
+			return queryObj.list();
+		}
+		
+		public List<Long> getBoothIdsForWard(Long wardId,Long publicationDateId){
+			StringBuilder query = new StringBuilder();
+			query.append("select distinct model.boothId from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
+			query.append(" model.localBodyWard.constituencyId = :wardId ");
+			Query queryObj = getSession().createQuery(query.toString()) ;
+			queryObj.setParameter("publicationDateId", publicationDateId);
+			queryObj.setParameter("wardId", wardId);
+			return queryObj.list();
+		}
+		
+		public List<Object[]> getBoothInWard(Long wardId, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select distinct model.boothId,model.partNo from Booth model " +
+					"where model.localBodyWard.constituencyId = :id and model.publicationDate.publicationDateId =:publicationDateId"); 
+					
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("id", wardId);
+			return query.list(); 
+		}
+		public List<Object[]> getWardsInMuncipality(Long id, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select distinct model.localBodyWard.constituencyId,model.localBodyWard.name from Booth model " +
+					"where model.localBody.localElectionBodyId in(select a.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody a " +
+					"where a.assemblyLocalElectionBodyId = :id ) and model.publicationDate.publicationDateId =:publicationDateId "); 
+					
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("id", id);
+			return query.list(); 
+		}
+		
+		public List<Object[]> getNoOfWardsInMuncipality(Long id, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select distinct model.localBodyWard.constituencyId,model.localBodyWard.name from Booth model " +
+					"where model.localBody.localElectionBodyId = :id and model.publicationDate.publicationDateId =:publicationDateId" );
+								
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("id", id);
+			return query.list(); 
+		}
 }

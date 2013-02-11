@@ -126,12 +126,20 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Object[]> getBoothIdsInLocalBodiesForAPublication(List<Long> localBodiesList, Long publicationDateId);
 	 
-	 
-	 public List<Long> getAllPublicationDetailsForConstituency(Long constituencyId);
+	public List<Long> getAllPublicationDetailsForConstituency(Long constituencyId);
 	
 	public List<Long> getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(String type, Long publicationDateId, List<Long> panchayatIdsList);
 	
 	public List<Object[]> getWardsByLocalElecBodyId(Long id,Long publicationDateId);
 	public List<Object[]> getWardsByLocalElecBodyIds(List<Long> ids,Long publicationDateId);
+		
+	public List<Object[]> getBoothsForWard(Long wardId,Long publicationDateId);
 	
+	public List<Long> getBoothIdsForWard(Long wardId,Long publicationDateId);
+	
+	public List<Object[]> getBoothInWard(Long wardId, Long publicationDateId);
+	
+	public List<Object[]> getWardsInMuncipality(Long id, Long publicationDateId);
+	
+	public List<Object[]> getNoOfWardsInMuncipality(Long id, Long publicationDateId);
 }

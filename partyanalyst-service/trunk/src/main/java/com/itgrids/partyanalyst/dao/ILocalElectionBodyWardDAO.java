@@ -12,5 +12,5 @@ public interface ILocalElectionBodyWardDAO extends GenericDao<LocalElectionBodyW
 	
 	@SuppressWarnings("unchecked")
 	public List findWardIdByWardNameAndLocalelectionId(String name,Long localBodyId);
-	
+	public List findWardName(Long wardId);
 }
