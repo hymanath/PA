@@ -338,7 +338,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 			</div>
 		<div id="newsAnalyse">
 			<a href="javascript:{};" onclick="openShowNews();" class="grad" style="text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News Articles</a>
-			<span class="tempstyle">View and Analyze News Articels</span>
+			<span class="tempstyle">View and Analyze News Articles</span>
 		</div>
 
 		<div style="float:right;margin:10px 50px 0px 0px;"><a href="generatePdfForGallaryAction.action" class="btn btn-success">Generate Pdf For Gallery</a></div>
