@@ -116,5 +116,14 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				"model.constituency.district.districtId", parliamentId);
 	}
 	
-
+	
+	public List findParliamentByAssemblyIdAndElectionYear(Long assemblyId, Long electionYear){
+		Query query = getSession().createQuery("select model.delimitationConstituency.constituency.constituencyId," +
+				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year =:year " +
+				" and model.constituency.constituencyId = :constituencyId ");
+		query.setParameter("constituencyId", assemblyId);
+		query.setParameter("year", electionYear);
+		
+		return query.list();
+	} 
 }
