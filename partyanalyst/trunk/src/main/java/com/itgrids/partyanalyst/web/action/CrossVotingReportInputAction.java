@@ -24,6 +24,10 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	private HttpServletRequest request;
 	private EntitlementsHelper entitlementsHelper;
 	private ICrossVotingEstimationService crossVotingEstimationService;
+	private String acId;
+	private String pcId;
+	private String electionYear;
+	private String party;
 	
 	public ICrossVotingEstimationService getCrossVotingEstimationService() {
 		return crossVotingEstimationService;
@@ -68,6 +72,38 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	public String getAcId() {
+		return acId;
+	}
+
+	public String getPcId() {
+		return pcId;
+	}
+
+	public String getElectionYear() {
+		return electionYear;
+	}
+
+	public String getParty() {
+		return party;
+	}
+
+	public void setAcId(String acId) {
+		this.acId = acId;
+	}
+
+	public void setPcId(String pcId) {
+		this.pcId = pcId;
+	}
+
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+
+	public void setParty(String party) {
+		this.party = party;
 	}
 
 	public String execute(){
