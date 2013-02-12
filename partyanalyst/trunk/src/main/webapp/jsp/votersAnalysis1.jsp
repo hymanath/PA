@@ -741,6 +741,8 @@ h5{font-family : Arial;}
 #previousEleVotingTrendsDiv{
   overflow-x:scroll;
 }
+
+#voterCasteAjaxImg{clear: both; display: block; margin-left: auto; margin-right: auto; float: none;}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -1146,7 +1148,10 @@ for  body3 start    result  -->
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 	<div id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;clear:both;" onclick="ShowCastPartyPopupDiv();"/></div>
-	<div id="castPartyPopupDiv" style="display:none">  
+	<div id="castPartyPopupDiv" style="display:none"> 
+	
+	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
+
         <div id='localCastStatsTabContent_subbody'></div>	
 		<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
 	    <div id='partyWise_header'></div>
