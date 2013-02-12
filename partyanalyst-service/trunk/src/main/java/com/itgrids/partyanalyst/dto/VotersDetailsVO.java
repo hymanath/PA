@@ -87,6 +87,8 @@ public class VotersDetailsVO implements Serializable{
 	private String femaleVotersPercentFor46To60;
 	private String femaleVotersPercentForAbove60;
 	
+	private String areaType;
+	
 	private Long Totalmandals;
 	
 	private Long TotalPanchayats;
@@ -556,5 +558,13 @@ public class VotersDetailsVO implements Serializable{
 	public void setTotalNoOfWards(int totalNoOfWards) {
 		this.totalNoOfWards = totalNoOfWards;
 	}
+	public String getAreaType() {
+		return areaType;
+	}
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+	
+	
 	
 }
