@@ -1501,12 +1501,18 @@ function fillDataForCadreLevel(results,jsObj)
 
 	function getDateTime(date)
 	{		
-		var startDayStr = date.substring(8,10);		
-		var startMonStr = date.substring(5,7);
-		var startYearStr = date.substring(0,4);	
-
-		var startTimeHrs = date.substring(11,13);	
-		var startTimeMin = date.substring(14,16);	
+		var startDayStr = 00;
+	      var startMonStr  = 00;
+	      var startYearStr = 0000;
+	      var startTimeHrs = 00;
+	      var startTimeMin = 00;
+		 if(date != undefined && date != null) {
+		   startDayStr = date.substring(8,10);		
+		   startMonStr = date.substring(5,7);
+		   startYearStr = date.substring(0,4);	
+		   startTimeHrs = date.substring(11,13);	
+		   startTimeMin = date.substring(14,16);	
+        }
 
 	/*	var index = date.indexOf('T');
 		var colIndex1 = date.indexOf(':');
