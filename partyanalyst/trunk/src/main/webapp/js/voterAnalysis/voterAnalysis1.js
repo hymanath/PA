@@ -15,6 +15,7 @@ var mainpublicationId;
 var maintype;
 var mainname;
 var parliamentConstituencyId;
+var areatype='';
 
 function populate(id,boothId,publicationId,houseNo){
      if($('#'+id).is(':checked')){
@@ -610,10 +611,10 @@ oDT: votersByLocBoothDataTable
 	     $("#ageLink").show();
 	   }
 	   if(type == "constituency"){
-		   $("#votersBasicInfoBtnDiv").show();
-	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Mandal Wise Age Details</a>');
-	      $("#impFamiliesMoreInfoButn").attr("value","View Mandal Wise Family Details");
-		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'> Mandal Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
+		var area='';
+		  $("#votersBasicInfoBtnDiv").show();
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
+		  $("#votersShareBtn1").css('display','none');
 	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
@@ -4098,6 +4099,26 @@ function buildCountData(results,jsObj)
 {
 document.getElementById("showHideDiv").style.display = "block";
 resultDataForNav=results;
+areatype=results[0].areaType;
+		   
+		  if(areatype=="RURAL"){
+		  area='MANDAL';
+		  }
+		  if(areatype=="URBAN"){
+		  area='WARD';
+		  }
+		  if(areatype=="RURAL-URBAN"){
+		  area='MANDAL/MUNCIPALITY/CORPORATION';
+		  }
+		  $("#areaId").text(area);
+		  $('#votersShareBtn1').css('display','block');
+		  var btnAgeLnk='View '+area+' Wise Age Details';
+		  var btnFmlyLnk='View '+area+' Wise Family Details' ;
+		  
+		  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">'+btnAgeLnk+'</a>');
+	      $("#impFamiliesMoreInfoButn").attr("value",btnFmlyLnk);
+			
+		   
 //console.log(resultDataForNav);
 var str = '';
 
