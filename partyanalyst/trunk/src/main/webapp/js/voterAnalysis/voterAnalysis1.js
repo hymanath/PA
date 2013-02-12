@@ -670,7 +670,7 @@ oDT: votersByLocBoothDataTable
 		 getProblemsByLocation(id,publicationId,type);
 		 getCounts(id,publicationId,type);
 		 getVotersCastInfo(id,publicationId,type);
-         getCastInfoForsubLevel(id,publicationId,type);
+         //getCastInfoForsubLevel(id,publicationId,type);
          getvotersBasicInfo("impFamilies",id,publicationId,type);
 				
 		// callCorrespondingAjaxCall();
@@ -875,13 +875,17 @@ oDT: votersByLocBoothDataTable
 	}
 
 	function ShowCastPartyPopupDiv(){
-	   $("#castPartyPopupDiv").dialog({
+	
+	 getCastInfoForsubLevel(mainreqid,$("#publicationDateList").val(),maintype);
+
+	    $("#castPartyPopupDiv").dialog({
             modal: true,
             title: "<b>Voters Party Details</b>",
 			width: 980,
             height: 600
            
         });
+		$("#voterCasteAjaxImg").css("display","block");
 	}
 		
 	function getMandalList(selectElmt)
@@ -1611,6 +1615,9 @@ function hideAjaxImgDiv(id)
 function buildCastInfoForSubLevels(myresults,jsObj)
 	{
 	if(mainreqid == jsObj.id){
+
+		$("#voterCasteAjaxImg").css("display","none");
+		
 		var str ='';
 		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
