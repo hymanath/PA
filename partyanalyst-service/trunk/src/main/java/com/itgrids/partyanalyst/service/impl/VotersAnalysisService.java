@@ -4554,6 +4554,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 List<VotersDetailsVO> resultlist = new ArrayList<VotersDetailsVO>();
 					 SelectOptionVO panchayat1;
 					 String mandalName = "";
+					 votersDetailsVO.setAreaType(constituencyDAO.get(id).getAreaType());
 					
 				 try
 					 {
