@@ -4613,7 +4613,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								}
 						}
 							 	//each Muncipality boothList
-								if(muncipalityList != null && muncipalityList.size() > 0)
+								if(muncipalityList != null && muncipalityList.size() > 0){
+									int totalWards=0;
 								for(SelectOptionVO localbody : muncipalityList)
 								{
 									localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId);
@@ -4621,7 +4622,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									if(localbody1!= null && localbody1.size() > 0)
 									{
 									localbody.setSelectOptionsList(localbody1);	
-									
+									totalWards = totalWards +localbody1.size();
 									localbody.setValue(new Long(localbody1.size()).toString());
 									}
 									else if(localbody2!= null && localbody2.size() > 0){
@@ -4630,7 +4631,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									else
 										localbody.setValue("0");
 									
-								 }
+								 }if(totalWards>0)
+								votersDetailsVO.setTotalNoOfWards(totalWards);
+								}
 								
 				 }
 					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody") && !type.equalsIgnoreCase("ward"))
@@ -4677,8 +4680,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					if(type.equalsIgnoreCase("localElectionBody"))
 					{
 						//getCount for wards
-						List<Object[]> count = boothDAO.getNoOfWardsInMuncipality(id, publicationDateId);
-						votersDetailsVO.setTotalNoOfWards(count.size());
+						List<Object> count = boothDAO.getNoOfWardsInMuncipality(id, publicationDateId);
+						 if(count != null && count.size()>0 )
+						votersDetailsVO.setTotalNoOfWards(((Long)count.get(0)).intValue());
 					}
 					if(muncipalityList != null && muncipalityList.size() > 0)
 					{
