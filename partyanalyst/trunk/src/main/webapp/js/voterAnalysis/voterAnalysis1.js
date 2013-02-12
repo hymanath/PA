@@ -4519,7 +4519,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 					  $.each(mandals.selectOptionsList,function(iter,panchayats){
 							 if(panchayatid==panchayats.id && panchayats.selectOptionsList != null){
 									  $.each(panchayats.selectOptionsList,function(iter,booths){
-									str+='<li class="nav nav-pills"><a class="btn" data-panchayatid="'+ panchayats.id+'" data-mandalid="'+ mandals.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									str+='<li class="nav nav-pills"><a class="btn" data-panchayatid="'+ panchayats.id+'" data-mandalid="'+ mandals.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:50px;"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 					 }); 
@@ -4532,7 +4532,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		 	   $.each(menudata[0].localbodiesList, function(iter,municipality){
 		     if(municipalityid==municipality.id && municipality.selectOptionsList1 != null){
 					  $.each(municipality.selectOptionsList1,function(iter,booths){
-									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:50px;"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 			});
@@ -4563,7 +4563,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		  $.each(municipality.selectOptionsList, function(iter,wards){
 		     if(panchayatid==wards.id && wards.selectOptionsList != null){
 					  $.each(wards.selectOptionsList,function(iter,booths){
-						str+='<li class="nav nav-pills"><a class="btn" data-wardid="'+ wards.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+						str+='<li class="nav nav-pills"><a class="btn" data-wardid="'+ wards.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 					 }); 

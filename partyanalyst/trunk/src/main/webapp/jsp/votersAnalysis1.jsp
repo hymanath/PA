@@ -84,7 +84,7 @@
 	clear:left;
 	float:left;
 	margin: 0 0 3px;
-	padding: 0 0 0 26px;
+	/*padding: 0 0 0 26px;*/
 	background: url("js/jtransform/checkbox.png") no-repeat;
 	cursor: default;
 	text-align:left;
