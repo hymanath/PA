@@ -978,6 +978,8 @@ oDT: votersByLocBoothDataTable
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "voterAnalysisAjaxAction.action?"+rparam;	
+
+	$('#publicationAjaxImage').css('display','block');
 	callAjax(jsObj,url);
 }
 
@@ -1003,6 +1005,8 @@ oDT: votersByLocBoothDataTable
 									}
 								else if(jsObj.task == "getPublicationDate")
 								{
+								$('#publicationAjaxImage').css('display','none');
+
 									buildPublicationDateList(myResults);
 								}
 								else if(jsObj.task == "votersbasicinfo")
