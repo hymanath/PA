@@ -2182,7 +2182,7 @@ function buildCastInfoData(myresults,jsObj)
 	localCastStatsTabContent += '<span class="">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
 
 	if(result.voterCastInfoVOList != null && result.voterCastInfoVOList.length > 0)
-	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Cast category wise voters details</h2>');
+	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Caste category wise voters details</h2>');
 	else
      	$('#localCastDetailsHeadingDiv').html('').css("background","#ffffff");
 	 voters +='<table><tr>';
@@ -2250,8 +2250,8 @@ function buildCastInfoData(myresults,jsObj)
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
 		   var str ='<div>';
-		      str+='<div id="partyWiseLocalCastStatsTabTitle" style="width:400px;"><h2 id="subHeading" >Cast Vs Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
-		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:2px solid black;">';
+		      str+='<div id="partyWiseLocalCastStatsTabTitle" style="width:409px;"><h2 id="subHeading" >Cast V/s Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
+		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%">';
 			  str+='  <thead>';
 			  str+='   <tr>';
 			  str+='     <th>Caste</th>';
@@ -2360,7 +2360,7 @@ function buildCastPiechart(myResults,jsObj)
 	} 
 
 	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
-		chart.draw(data, {width: 400, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'Cast category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+		chart.draw(data, {width: 400, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
 	});
 }
 function buildPartyWisePiechart(myResults,jsObj)
@@ -2416,7 +2416,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 	 var castArray = constMgmtMainObj.castStatsArray;
 	$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
-         var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:2px solid black">';
+         var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%">';
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>Caste</th>';
@@ -3956,7 +3956,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		//Because booth doesnt consists the results iam hiding the PreviousElections results div by calling the function
 		
 		if(maintype=="booth"|| maintype == "ward"){
-			$("#previousEleVotingTrendsDiv").css('display','none');
+			$("#previousEleVotingTrendsDiv1").css('display','none');
 		}
 	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal"){
 		var jsObj=
@@ -3979,7 +3979,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 	if(mainreqid == jsObj.id)
 	{	
 	 var flag = false;
-	 $("#previousEleVotingTrendsDiv").css({'display':'block','width':'96%','color':'#000'});
+	 $("#previousEleVotingTrendsDiv1").css({'display':'block','width':'96%','color':'#000'});
 	 $("#previousEleVotingTrendsDiv").html('');
       for(var i in results)
 		 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
@@ -4551,7 +4551,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 					  $.each(mandals.selectOptionsList,function(iter,panchayats){
 							 if(panchayatid==panchayats.id && panchayats.selectOptionsList != null){
 									  $.each(panchayats.selectOptionsList,function(iter,booths){
-									str+='<li class="nav nav-pills"><a class="btn" data-panchayatid="'+ panchayats.id+'" data-mandalid="'+ mandals.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:50px;"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									str+='<li class="nav nav-pills"><a class="btn" data-panchayatid="'+ panchayats.id+'" data-mandalid="'+ mandals.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:44px;"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 					 }); 
@@ -4564,7 +4564,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		 	   $.each(menudata[0].localbodiesList, function(iter,municipality){
 		     if(municipalityid==municipality.id && municipality.selectOptionsList1 != null){
 					  $.each(municipality.selectOptionsList1,function(iter,booths){
-									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:50px;"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:44px;"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 			});
