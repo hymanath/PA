@@ -4082,7 +4082,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 for(Object[] booth:booths){
 			 selectOptionVO = new SelectOptionVO();
 			 selectOptionVO.setId((Long)booth[0]);
-			 selectOptionVO.setName(booth[1]!=null?"Booth No- "+booth[1].toString():"");
+			 selectOptionVO.setName(booth[1]!=null?booth[1].toString():"");
 			 selectOptionVO.setValue(booth[1].toString());
 			 list.add(selectOptionVO);
 		 }
@@ -4668,7 +4668,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					{
 						for(Object[] params :booths)
 						{
-						booth = new SelectOptionVO((Long)params[0],"Booth No - " +params[1].toString());
+						booth = new SelectOptionVO((Long)params[0],params[1].toString());
 						boothsList.add(booth);
 						}
 						votersDetailsVO.setTotalBooths(new Long(boothsList.size()));
