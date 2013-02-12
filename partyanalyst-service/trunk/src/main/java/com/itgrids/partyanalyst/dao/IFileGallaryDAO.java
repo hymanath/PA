@@ -171,6 +171,12 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 			Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 			List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds);
 	
+	public List<Object[]> getNewsCountForConstituencyLevelWithMuncipalityAndWards(
+			List<Long> candidateIds, Long constituencyScopeId, Long constituencyVal,
+			Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
+			List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long wardScopeId,List<Long> wardIdsList);
+			
+	
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForConstituency(
             Long categoryId , NewsCountVO newsCountVO);
 	
@@ -195,15 +201,26 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public List<FileGallary> getNewsDetailsForConstituency(NewsCountVO newsCountVO);
 	public List<FileGallary> getNewsDetailsByForMuncipality(NewsCountVO newsCountVO);
 	public List<FileGallary> getNewsDetailsForConstituencyWithMuncipality(NewsCountVO newsCountVO);
+	public List<FileGallary> getNewsDetailsByForMuncipalityWithWards(NewsCountVO newsCountVO);
+	public List<FileGallary> getNewsDetailsForConstituencyWithMuncipalityAndWards(NewsCountVO newsCountVO);
 	
 	public List<Object[]> getNewsCountForMuncipality(
 			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList);
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMuncipality(
 			Long categoryId , NewsCountVO newsCountVO);
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMuncipalityWithWards(
+			Long categoryId , NewsCountVO newsCountVO);
 	
 	public List<FileGallary> getFilegallaryDetailsForPanchayat(NewsCountVO newsCountVO);
 	
-
+	public List<Object[]> getNewsCountForMuncipalityWithWards(NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsByForMuncipalityWithWards(NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForConstituencyWithMuncipalityAndWards(
+            Long categoryId , NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCountVO newsCountVO);
 	
 }
 
