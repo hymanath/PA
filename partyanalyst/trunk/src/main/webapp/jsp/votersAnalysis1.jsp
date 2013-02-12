@@ -816,7 +816,7 @@ maxDate: new Date()
 		
 	 Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
-		
+	<img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:165px;"/>	
 	</div>
 	
 	
