@@ -1005,7 +1005,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	{
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		try{
-			if(locationType.equalsIgnoreCase("mandal")){
+			if(locationType.equalsIgnoreCase("mandal"))
+			{
 				String mandalId= locationId.toString();
 				String id=mandalId.substring(1);
 				locationId = new Long(id);
@@ -1017,7 +1018,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					locationId = (Long) list.get(0);
 				}
 			}
-			Long totalVoters = getVotersCountByPublicationIdInALocation(locationType,locationId,publicationDateId);
+			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(IConstants.CONSTITUENCY),locationId,publicationDateId);
 			Long votesConsidered = 0L;
 			Long partyWisevotesConsidered = 0L;
 			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
