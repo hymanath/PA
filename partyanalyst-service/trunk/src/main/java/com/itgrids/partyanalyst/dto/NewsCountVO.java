@@ -26,9 +26,23 @@ public class NewsCountVO extends ResultStatus implements Serializable{
 	private List<Long> constituencyValuesList;
 	private Long muncipalityScopeId;
 	private List<Long> muncipalityValuesList;
+	private List<Long> wardIdsList;
+	private Long wardScopeId;
 	
 	
 
+	public List<Long> getWardIdsList() {
+		return wardIdsList;
+	}
+	public void setWardIdsList(List<Long> wardIdsList) {
+		this.wardIdsList = wardIdsList;
+	}
+	public Long getWardScopeId() {
+		return wardScopeId;
+	}
+	public void setWardScopeId(Long wardScopeId) {
+		this.wardScopeId = wardScopeId;
+	}
 	public Long getMuncipalityScopeId() {
 		return muncipalityScopeId;
 	}

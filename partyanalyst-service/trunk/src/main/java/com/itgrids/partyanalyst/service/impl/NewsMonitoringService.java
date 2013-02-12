@@ -1249,13 +1249,24 @@ public List<FileVO> getNewsCountDetailsForMuncipality(
    		  
    	  }
    	  
+   	 List<Long> wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(locationValuesList);
+   	  
    	  NewsCountVO newsCountVO = new NewsCountVO();
    	  
    	    newsCountVO.setCandidateIds(candidateIds);
    	    newsCountVO.setMuncipalityScopeId(7L);
     	newsCountVO.setMuncipalityValuesList(locationValuesList);
-   	  
-   	countByCategoryList = 	fileGallaryDAO.getNewsCountForMuncipality(candidateIds ,locationId ,locationValuesList);
+    	
+    	
+    	if(wardIds != null && wardIds.size() >0){
+    		newsCountVO.setWardIdsList(wardIds);
+        	newsCountVO.setWardScopeId(8L);
+        	
+    	 countByCategoryList = 	fileGallaryDAO.getNewsCountForMuncipalityWithWards(newsCountVO);
+    	}
+    	else
+    	 countByCategoryList = fileGallaryDAO.getNewsCountForMuncipality(
+  	    		   candidateIds ,locationId ,locationValuesList);
    	
     filesList  = setNewsCountValuesToFileVO1(countByCategoryList , newsCountVO , "muncipality");
 
@@ -1285,11 +1296,16 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 	
 		 Long tehsilScopeId = 5L;
 		 List<Long> tehsilIds = new ArrayList<Long>();
+		 tehsilIds.add(0L);
 	
 		 Long hamletScopeId = 6L;
-		 List<Long> hamletIds = null;
+		 List<Long> hamletIds = new ArrayList<Long>();
+		 hamletIds.add(0L);
 		 
 		 Long muncipalityScopeId = 7L;
+		 Long wardScopeId = 8L;
+		 List<Long> wardIds = new ArrayList<Long>();
+		 wardIds.add(0L);
 	
 		 List<Object[]> mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(constituencyVal);
 	
@@ -1310,10 +1326,19 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 	
 		 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
 			 
+			  wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(localElectionBodyIds);
 			 
+			 
+			 if(wardIds != null && wardIds.size() >0)
+				 countByCategoryList =	fileGallaryDAO.getNewsCountForConstituencyLevelWithMuncipalityAndWards(
+							candidateIds,constituencyScopeId,constituencyVal,tehsilScopeId,
+							tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId , localElectionBodyIds,wardScopeId,wardIds);
+			 else
 			 countByCategoryList =	fileGallaryDAO.getNewsCountForConstituencyLevelWithMuncipality(
 						candidateIds,constituencyScopeId,constituencyVal,tehsilScopeId,
 						tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId , localElectionBodyIds);
+			 
+			 
 		
 		 	
 		 }else{
@@ -1340,6 +1365,14 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		 	newsCountVO.setHamletScopeId(hamletScopeId);
 		 	newsCountVO.setHamletIds(hamletIds);
 		 	newsCountVO.setCandidateIds(candidateIds);
+		 	
+		 	if(wardIds != null){
+		 		
+		 		newsCountVO.setWardScopeId(8L);
+		 		newsCountVO.setWardIdsList(wardIds);
+		 		
+		 	}
+		 		
 		 	
 		 	if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
 		 	  newsCountVO.setMuncipalityScopeId(muncipalityScopeId);
@@ -1377,6 +1410,13 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 						
 						if(newsCountVO.getMuncipalityScopeId() != null && newsCountVO.getMuncipalityValuesList() != null){
 							
+							
+							if(newsCountVO.getWardScopeId() != null && newsCountVO.getWardIdsList() != null && newsCountVO.getWardIdsList().size() >0)
+								importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportanceForConstituencyWithMuncipalityAndWards(
+										 categoryId ,newsCountVO );
+						
+							else
 							importanceCountList = fileGallaryDAO
 									.getNewsCountForALocationByCategoryAndImportanceForConstituencyWithMuncipality(
 											 categoryId ,newsCountVO );
@@ -1400,7 +1440,13 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 										 categoryId ,newsCountVO );
 					}else if(type.equalsIgnoreCase("muncipality")){
 						
-						importanceCountList = fileGallaryDAO
+						
+						if(newsCountVO.getWardIdsList() != null &&newsCountVO.getWardIdsList().size()>0 && newsCountVO.getWardScopeId() != null)
+							importanceCountList = fileGallaryDAO
+							.getNewsCountForALocationByCategoryAndImportanceForMuncipalityWithWards(
+									 categoryId ,newsCountVO );
+						else							
+						  importanceCountList = fileGallaryDAO
 								.getNewsCountForALocationByCategoryAndImportanceForMuncipality(
 										 categoryId ,newsCountVO );
 					}
@@ -1804,6 +1850,9 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		     
 	       }
 	       
+	       List<Long> wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(muncipalityValues);
+	       
+	      
 		     NewsCountVO newsCountVO = new NewsCountVO();
 		     
 		     newsCountVO.setCandidateIds(candidateIds);
@@ -1813,9 +1862,14 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
 			 newsCountVO.setStartIndex(fileVO.getStartIndex());
 			 newsCountVO.setMaxResults(fileVO.getMaxResult());
-
-	    	
-	       fileGallaryList = fileGallaryDAO.getNewsDetailsByForMuncipality(newsCountVO);
+			 newsCountVO.setWardScopeId(8L);
+			 newsCountVO.setWardIdsList(wardIds);
+			 
+			 if(wardIds != null && wardIds.size() >0){
+				 fileGallaryList = fileGallaryDAO.getNewsDetailsByForMuncipalityWithWards(newsCountVO);
+		    	   
+		     }else
+	            fileGallaryList = fileGallaryDAO.getNewsDetailsByForMuncipality(newsCountVO);
 	       
 			
 		}catch(Exception e){
@@ -1838,8 +1892,9 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			Long tehsilScopeId = 5L;
 			List<Long> tehsilIds = new ArrayList<Long>();
 			Long hamletScopeId = 6L;
-			List<Long> hamletIds = null;
+			List<Long> hamletIds = new ArrayList<Long>();
 			List<Long> panchayitIdsList = new ArrayList<Long>();
+			 List<Long> wardIds = new ArrayList<Long>();
 			
 			constituencyValuesList.add(fileVO.getLocationVal());
 			
@@ -1859,7 +1914,14 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 
 			List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
 
-			 
+	       wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(localElectionBodyIds);
+
+	       
+				tehsilIds.add(0L);
+				hamletIds.add(0L);
+				wardIds.add(0L);
+				panchayitIdsList.add(0L);
+			
 			 NewsCountVO newsCountVO = new NewsCountVO();
 			 
 			 newsCountVO.setCandidateIds(candidateIds);
@@ -1874,11 +1936,21 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 newsCountVO.setStartIndex(fileVO.getStartIndex());
 			 newsCountVO.setMaxResults(fileVO.getMaxResult());
 			 
+			 if(wardIds != null && wardIds.size() >0){
+				 
+				 newsCountVO.setWardScopeId(8L);
+				 newsCountVO.setWardIdsList(wardIds);
+				 
+			 }
+			 
 			 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
 				 newsCountVO.setMuncipalityScopeId(7L);
 				 newsCountVO.setMuncipalityValuesList(localElectionBodyIds);
 				 
-				  fileGallaryList = fileGallaryDAO.getNewsDetailsForConstituencyWithMuncipality(newsCountVO);
+				 if(wardIds != null && wardIds.size() >0)
+					 fileGallaryList = fileGallaryDAO.getNewsDetailsForConstituencyWithMuncipalityAndWards(newsCountVO);
+				 else				 
+				   fileGallaryList = fileGallaryDAO.getNewsDetailsForConstituencyWithMuncipality(newsCountVO);
 
 			 
 			 }else{			 
@@ -2032,6 +2104,9 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 	    	  if(localElectionBodyList != null && localElectionBodyList.size() >0)
 	    		  muncipalityValuesList.add((Long)localElectionBodyList.get(0));
 	    	
+	    	  
+	    	  List<Long> wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(muncipalityValuesList);
+	    	  
 			
 			NewsCountVO newsCountVO = new NewsCountVO();
 			
@@ -2042,9 +2117,19 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
 			newsCountVO.setStartIndex(fileVO.getStartIndex());
 			newsCountVO.setMaxResults(fileVO.getMaxResult());
+			newsCountVO.setWardScopeId(8L);
+			newsCountVO.setWardIdsList(wardIds);
 			
-			List<Object[]> fileList = fileGallaryDAO.getNewsByForMuncipality(newsCountVO);
-			filesList =  processAllFileDetails(fileVO,fileList);
+			List<Object[]> fileList = null;
+			
+			if(wardIds != null && wardIds.size() >0)
+				 fileList = fileGallaryDAO.getNewsByForMuncipalityWithWards(newsCountVO);
+			else
+				fileList = fileGallaryDAO.getNewsByForMuncipality(newsCountVO);
+
+			 
+			
+			  filesList =  processAllFileDetails(fileVO,fileList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2105,10 +2190,11 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			Long constituencyScopeId = 4L;
 			List<Long> constituencyValuesList = new ArrayList<Long>();
 			Long tehsilScopeId = 5L;
-			List<Long> tehsilIds = new ArrayList<Long>();
+			List<Long> tehsilIds = new ArrayList<Long>();			
 			Long hamletScopeId = 6L;
-			List<Long> hamletIds = null;
-			List<Long> panchayitIdsList = new ArrayList<Long>();
+			List<Long> hamletIds = new ArrayList<Long>();			
+			List<Long> panchayitIdsList = new ArrayList<Long>();			
+			List<Long> wardIds = new ArrayList<Long>();
 			
 			constituencyValuesList.add(fileVO.getLocationVal());
 			
@@ -2128,7 +2214,14 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 
 		List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
 
+		if(localElectionBodyIds != null && localElectionBodyIds.size() >0)
+		  wardIds = boothDAO.getWardIdsByLocalElectionBodyIds(localElectionBodyIds);
 			 
+		   tehsilIds.add(0L);
+			hamletIds.add(0L);
+			panchayitIdsList.add(0L);
+			wardIds.add(0L);
+			
 			 NewsCountVO newsCountVO = new NewsCountVO();
 			 
 			 newsCountVO.setCandidateIds(candidateIds);
@@ -2143,13 +2236,25 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 newsCountVO.setStartIndex(fileVO.getStartIndex());
 			 newsCountVO.setMaxResults(fileVO.getMaxResult());
 			 
+			 if(wardIds != null && wardIds.size() >0){
+				 
+				 newsCountVO.setWardScopeId(8L);
+				 newsCountVO.setWardIdsList(wardIds);
+				 
+				 
+			 }
+			   
+			 
 			 List<Object[]> fileList  = null;
 			 
 			 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
 				 newsCountVO.setMuncipalityScopeId(7L);
 				 newsCountVO.setMuncipalityValuesList(localElectionBodyIds);
 				 
-				 fileList = fileGallaryDAO.getNewsByForConstituencyWithMuncipality(newsCountVO);
+				 if(wardIds != null && wardIds.size() >0)
+					fileList = fileGallaryDAO.getNewsByForConstituencyWithMuncipalityWithWards(newsCountVO);
+				 else				 
+				   fileList = fileGallaryDAO.getNewsByForConstituencyWithMuncipality(newsCountVO);
 				 
 			 }else{
 			 
