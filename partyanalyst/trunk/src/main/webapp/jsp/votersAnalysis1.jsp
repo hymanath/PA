@@ -688,7 +688,8 @@ h5{font-family : Arial;}
 #MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;margin:1px;}
 .widget h4, h2{font-family:arial;}
 #localCastStatsTabContent_header span{padding:10px;clear:both;display:block;}
-#subHeading{ color: #4682B4;}
+/*#subHeading{ color: #4682B4;background:#EEEEEE;margin-left:-4px;border-radius:5px;}*/
+#subHeading{color: #4682B4;}
 .crossVotingTableCls{width:100%;margin-top:20px;margin-bottom:15px;}
 
 /* #crossVotingReportDiv table{border: 1px solid #D3D3D3;
@@ -739,6 +740,7 @@ h5{font-family : Arial;}
 #crossVotingReportBtn{margin-left: 25px;}
 #electionYearsForCrossVoting{margin-right: 5px;}
 #previousEleVotingTrendsDiv{
+	width:100%;
   overflow-x:scroll;
 }
 
@@ -959,7 +961,7 @@ for  body3 start    result  -->
 	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 	
 	</div>
-	   <div id="previousEleVotingTrendsDiv" class="widget blue whitegloss"></div>
+	   <div id="previousEleVotingTrendsDiv1" class="widget blue whitegloss" style="display: none; width: 96%; color: rgb(0, 0, 0);"><div id="previousEleVotingTrendsDiv" class="widget-block" style="margin-top:-6px;clear:both;"></div></div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
@@ -1116,7 +1118,7 @@ for  body3 start    result  -->
 					</tr>					
 				</table>
 	</div> -->
-<div id='votersMainOuterDiv2'  class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+<div id='votersMainOuterDiv2'  class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;background:#fff;">
 <h4 class=""  id="localCastStatsTabContentTitle" ></h4>
 	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
     <div id="votersbasicinfoForLclCastSts" >
@@ -1151,8 +1153,8 @@ for  body3 start    result  -->
 	<div id="castPartyPopupDiv" style="display:none"> 
 	
 	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
-
-        <div id='localCastStatsTabContent_subbody'></div>	
+		
+		 <div id='localCastStatsTabContent_subbody'></div>	
 		<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
 	    <div id='partyWise_header'></div>
 		
