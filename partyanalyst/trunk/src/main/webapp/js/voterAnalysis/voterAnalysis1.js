@@ -643,6 +643,7 @@ oDT: votersByLocBoothDataTable
 	   $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
 		  $("#revenueVillageWiseElecResults").show();
+		  $("#revenueVillageWiseElecResults").css('color','#000000');
 		  $("#revenueVillageWiseElecIdTitle").html("<h4>Panchayat Wise Results In "+mainname+"</h4>");
 		 }
 	    else{
