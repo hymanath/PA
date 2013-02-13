@@ -1136,9 +1136,12 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		str.append("select distinct(model.userProblemId) from UserProblem model where (model.user.userId = :userId or model.visibility.type = :visibilityType) and model.problem.isApproved ='"+IConstants.TRUE+"'" +
 				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.problemStatus.status = :status ");
 		if(locationId ==4)
-			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue order by model.problem.problemId desc");	
+			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue ");	
 		else if(locationId == 5)
-		str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue order by model.problem.problemId desc");
+		str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue ");
+		else if(locationId == 8)
+			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
+		str.append(" order by model.problem.problemId desc ");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
@@ -1174,10 +1177,14 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		str.append("select distinct(model.userProblemId) from UserProblem model where model.problem.isApproved ='"+IConstants.TRUE+"' " +
 				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.user.userId =:userId and model.problem.informationSource.informationSourceId = :sourceId and model.problem.problemStatus.status = '"+IConstants.NEW+"' ");
 		if(locationId ==4)
-			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue order by model.problem.problemId desc");	
+			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue ");	
 		else if(locationId == 5)
-			str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue order by model.problem.problemId desc");
-	
+			str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue ");
+		
+		else if(locationId == 8)
+			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
+		str.append(" order by model.problem.problemId desc ");
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("userId", userId);
@@ -1194,9 +1201,12 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		str.append("select distinct(model.userProblemId) from UserProblem model where (model.user.userId = :userId or model.visibility.type = :visibilityType) and model.problem.isApproved ='"+IConstants.TRUE+"'" +
 				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.problemStatus.status = :status ");
 		if(locationId ==4)
-			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue order by model.problem.problemId desc");	
+			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue ");	
 		else if(locationId == 5)
-			str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue order by model.problem.problemId desc");
+			str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue ");
+		else if(locationId == 8)
+			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
+		str.append(" order by model.problem.problemId desc ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
 		//query.setParameter("locationId", locationId);
@@ -1218,9 +1228,14 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		str.append("select distinct(model.userProblemId) from UserProblem model where model.problem.isApproved ='"+IConstants.TRUE+"' " +
 				" and model.problem.isDelete ='"+IConstants.FALSE+"'  and model.user.userId =:userId and model.problem.informationSource.informationSourceId = :sourceId and model.problem.problemStatus.status = '"+IConstants.NEW+"' ");
 		if(locationId ==4)
-			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue order by model.problem.problemId desc");	
+			str.append(" and model.problem.problemCompleteLocation.constituency.constituencyId = :locationValue ");	
 		else if(locationId == 5)
-		str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue order by model.problem.problemId desc");
+		str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue ");
+		
+		else if(locationId == 8)
+			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
+		str.append(" order by model.problem.problemId desc ");
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("userId", userId);

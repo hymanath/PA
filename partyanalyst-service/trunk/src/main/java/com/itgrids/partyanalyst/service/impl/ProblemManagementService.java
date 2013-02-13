@@ -9003,4 +9003,15 @@ public List<ProblemBeanVO> getProblemDetailsByProfileId(Long profileId,int start
 		return problemCompleteLocation;
 	
     }
+	
+	public Long getRegionScopesIdByScope(String scope)
+	{
+		try{
+			return regionScopesDAO.getRegionScopeIdByScope(scope);
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRegionScopesIdByScope() Method, Exception - "+e);
+			return 0l;
+		}
+	}
 }

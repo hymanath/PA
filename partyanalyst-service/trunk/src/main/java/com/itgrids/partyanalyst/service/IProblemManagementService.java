@@ -214,4 +214,6 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public ProblemBeanVO saveProblemDataForNews(ProblemBeanVO problemBeanVO);
 	
+	public Long getRegionScopesIdByScope(String scope);
+	
 }
