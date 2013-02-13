@@ -1141,7 +1141,10 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue ");
 		else if(locationId == 8)
 			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
-		str.append(" order by model.problem.problemId desc ");
+		
+		else if(locationId == 7)
+			str.append(" and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId =:locationValue ");
+			str.append(" order by model.problem.problemId desc ");	
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
@@ -1183,7 +1186,10 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		else if(locationId == 8)
 			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
-		str.append(" order by model.problem.problemId desc ");
+		else if(locationId == 7)
+			str.append(" and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId =:locationValue ");
+			str.append(" order by model.problem.problemId desc ");	
+		
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
@@ -1206,7 +1212,10 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			str.append(" and model.problem.problemCompleteLocation.tehsil.tehsilId = :locationValue ");
 		else if(locationId == 8)
 			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
-		str.append(" order by model.problem.problemId desc ");
+		else if(locationId == 7)
+			str.append(" and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId =:locationValue ");
+			str.append(" order by model.problem.problemId desc ");	
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
 		//query.setParameter("locationId", locationId);
@@ -1234,7 +1243,9 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		else if(locationId == 8)
 			str.append(" and model.problem.problemCompleteLocation.ward.constituencyId =:locationValue ");
-		str.append(" order by model.problem.problemId desc ");
+		else if(locationId == 7)
+			str.append(" and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId =:locationValue ");
+			str.append(" order by model.problem.problemId desc ");	
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", locationValue);
