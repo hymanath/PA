@@ -1149,14 +1149,17 @@ for  body3 start    result  -->
 	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
 	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
 	<div id="partyWiselocalcastDiv" style="margin-top:20px;margin-bottom:50px;"></div>
-	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" >	</div>
+	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="display:none;">	</div>
 	
 
 	<div id="localCastStatsVotersPopUpDiv" style="display:none;">
 	    <div id ="localCastStatsVotersTitle" ></div>
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
-	<div id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;clear:both;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></div>
+	<div style="clear:both;">
+	  <span id="castPartyNewPopupShowBtn"><input type="button" class="btn btn-info" value="View Casts Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
+	  <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
+	</div>
 	<div id="castPartyPopupDiv" style="display:none"> 
 	
 	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>

@@ -460,7 +460,24 @@ public String getVotersCastInfoByConstituency()
 		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastWiseDetailsInALocation(userId,type,id,publicationId);
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 	}
-	
+	else if(jObj.getString("task").equalsIgnoreCase("getPartyInfo"))
+	{
+		constituencyManagementVO = new ConstituencyManagementVO();
+		Long id = jObj.getLong("id");
+		String type = jObj.getString("type");
+		Long publicationId = jObj.getLong("publicationDateId");
+	VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersPartyDetailsInALocation(userId,type,id,publicationId);
+		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+	}
+	else if(jObj.getString("task").equalsIgnoreCase("getPartyCastInfo"))
+	{
+		constituencyManagementVO = new ConstituencyManagementVO();
+		Long id = jObj.getLong("id");
+		String type = jObj.getString("type");
+		Long publicationId = jObj.getLong("publicationDateId");	
+		VoterCastInfoVO votersByCast  = votersAnalysisService.getCastWisePartyCount(userId,type,id,publicationId);
+		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+	}
 	else if(jObj.getString("task").equalsIgnoreCase("getCastInfoForsubLevels"))
 	{
 		constituencyManagementVO = new ConstituencyManagementVO();
