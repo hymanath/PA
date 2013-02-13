@@ -1037,6 +1037,16 @@ oDT: votersByLocBoothDataTable
 								    $("#votersDiv2").show();
 									buildCastInfoData(myResults,jsObj);
 								}
+								else if(jsObj.task == "getPartyInfo")
+								{
+								    $("#votersDiv2").show();
+									buildPartyWisePiechart(myResults,jsObj);
+									buildPartyWiseCastData(myResults,jsObj.typename,jsObj.publicationDateId,jsObj.id,jsObj.type);
+								}
+								else if(jsObj.task == "getPartyCastInfo")
+								{
+									buildPartyWiseCastDetailsTable(myResults,jsObj);
+								}
 								else if(jsObj.task == "getCountForLevel")
 								{
 									if(jsObj.type == "constituency")
@@ -1612,7 +1622,45 @@ function getVotersCastInfo(id,publicationId,type)
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
 		callAjax(jsObj,url);
+		
+		var jsObj1=
+			{
+				type:type,	
+				id:id,
+				typename:typename,
+				publicationDateId:publicationId,
+				task:"getPartyInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj1,url);
 }
+
+function getPartyWiseCastInfo(){
+  $("#partyWiseLocalCastStatsTab").dialog({
+            modal: true,
+            title: "<b>Cast V/s Party Analysis</b>",
+			width: 970,
+            height: 500
+           
+        });
+		$("#partyWiseLocalCastStatsTab").html('<div style="margin-left:375px;margin-top:70px;"><img style="clear: both; display: block;" src="images/icons/goldAjaxLoad.gif" ></div>');
+  var typename=mainname;
+		var jsObj=
+			{
+				type:type,	
+				id:id,
+				typename:typename,
+				publicationDateId:mainpublicationId,
+				task:"getPartyCastInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+}
+
 function showAjaxImgDiv(id)
 {
 	document.getElementById(id).style.display = 'block';
@@ -2248,14 +2296,8 @@ function buildCastInfoData(myresults,jsObj)
 		
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
-		//$("#localCastStatsTabContent_body").html("Caste Is Not Assigned To Any Voter");
 		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
 		}
-
-		//buildCastPiechart(myresults,jsObj);  
-		buildPartyWisePiechart(myresults,jsObj);
-		buildPartyWiseCastData(myresults,typeName,publicationDateId,boothId,type);
-		buildPartyWiseCastDetailsTable(myresults,jsObj);
   }
 }
 
@@ -2295,12 +2337,16 @@ function buildCastInfoData(myresults,jsObj)
 			  str+=' </table>';
 			  str+='</div>';
 			  $("#partyWiseLocalCastStatsTab").html(str);
-	   $("#partyWiseLocalCastStatsTab").css("margin-top","25px;");
+	          $("#partyWiseLocalCastStatsTab").css("margin-top","25px;");
 				$('#partyWiseCastJqTable').dataTable({
 				"aaSorting": [[ 1, "asc" ]],
 				"iDisplayLength": 15,
 				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
 				});
+				$("#partyWiseCastJqTable_wrapper").css("border","1px solid #D3D3D3");
+	            $("#partyWiseCastJqTable_wrapper").css("padding","8px 8px 25px");
+	   }else{
+			$("#partyWiseLocalCastStatsTab").html('<div style="font-weight:bold;margin-left:375px;margin-top:70px;">Data Not Available</div>');
 	   }
 	}
 function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
@@ -2477,44 +2523,6 @@ function buildPartyWisePiechart(myResults,jsObj)
 	  
     ] 
 		});
-
-/*
-	YAHOO.widget.DataTable.casteLink = function(elLiner, oRecord, oColumn, oData) 
-	{
-		var caste = oData;
-		
-		var caste = oRecord.getData("caste");
-
-		elLiner.innerHTML ='<a onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+caste+'\')">'+caste+'</a>';
-	};
-
-	var localCastStatsColumnDefs = [ 
-		    	            
-		    	            {key:"caste", label: "Caste", sortable: true,formatter:YAHOO.widget.DataTable.casteLink},
-							{key:"castePopulation", label: "Caste Population", formatter:"number", sortable: true},
-		    				{key:"malePopulation", label: "Male Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"femalePopulation", label: "Female Population", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true},
-							{key:"castePercentage", label: "Caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
-		    					    			    				
-		    	        ]; 
-	var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
-		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		localCastStatsDataSource.responseSchema = { 
-            fields: ["caste",{key:"castePopulation", parser:"number"},{key:"malePopulation", parser:"number"},{key:"femalePopulation", parser:"number"},{key:"castePercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
-        };
-		
-    var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10
-			    }) 
-				};
-		
-	var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource,myConfigs);
-
-		return {
-				oDS: localCastStatsDataSource,
-				oDT: localCastStatsDataTable
-			};*/
 	}
 
 	function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
