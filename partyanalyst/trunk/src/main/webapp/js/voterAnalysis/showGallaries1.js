@@ -1367,11 +1367,6 @@ function getProblemsByLocation(id,publicationId,type)
 		
 		locationId = 4;
 	}
-	else if(type == "mandal" && locationValue.charAt(0) == "1")
-	{
-		locationId = 7;
-		return;
-	}
 	else if(type == "mandal")
 	{
 		
@@ -1391,7 +1386,7 @@ function getProblemsByLocation(id,publicationId,type)
 	}
 	else if(type == "ward")
 		locationId = 8;
-
+	
 	$("#problemAjaxImg").show();
 	var jObj=
 	{
