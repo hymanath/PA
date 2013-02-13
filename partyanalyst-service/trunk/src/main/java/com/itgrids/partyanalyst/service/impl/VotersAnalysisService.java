@@ -1598,7 +1598,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				// For Mandal
 				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
 					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"mandal",new Long(id),publicationDateId);
-					Long totalVoters = getVotersCountByPublicationIdInALocation("mandal",new Long(id),publicationDateId);
+					Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("mandal"),new Long(id),publicationDateId);
+					if(totalVoters == null)
+						totalVoters = getVotersCountByPublicationIdInALocation("mandal",new Long(id),publicationDateId);
 					voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForUserCast(mandalCastDetails,totalVoters));
 					//voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(new Long(id),publicationDateId)));
 				}
@@ -1607,7 +1609,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id));
 					
 					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"localElectionBody",(Long)list.get(0),publicationDateId);
-				Long totalVoters = getVotersCountByPublicationIdInALocation("localElectionBody",new Long(id),publicationDateId);
+					Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("localElectionBody"),new Long(id),publicationDateId);
+					if(totalVoters == null)
+						totalVoters = getVotersCountByPublicationIdInALocation("localElectionBody",new Long(id),publicationDateId);
 				voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForUserCast(mandalCastDetails,totalVoters));
 				//voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(new Long(id),publicationDateId))); 
 				}
