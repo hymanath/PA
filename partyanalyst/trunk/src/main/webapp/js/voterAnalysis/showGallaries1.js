@@ -1390,6 +1390,11 @@ function getProblemsByLocation(id,publicationId,type)
 		locationId = 9;
 		return;
 	}
+	else if(type == "ward")
+		locationId = 8;
+		
+	
+
 	var jObj=
 	{
 		locationValue:locationValue,
