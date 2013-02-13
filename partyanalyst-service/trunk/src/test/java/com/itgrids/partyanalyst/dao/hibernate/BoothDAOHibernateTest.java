@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -281,12 +282,21 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList()
+	/*public void testGetBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList()
 	{
 		List<Long> panchayatIdsList = new ArrayList<Long>(0);
 		panchayatIdsList.add(83l);
 		List<Long> l = boothDAO.getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(IConstants.LOCALELECTIONBODY, 7l, panchayatIdsList);
 		System.out.println(l);
+	}*/
+	
+	public void testGetWardsByLocalElecBodyIds()
+	{
+		List<Long> panchayatIdsList = new ArrayList<Long>(0);
+		panchayatIdsList.add(83l);
+		List<Object[]> l = boothDAO.getWardsByLocalElecBodyIds(panchayatIdsList, 7l);
+		for(Object[] ward:l)
+			System.out.println(ward[0]+"   "+ward[1].toString());
 	}
 	
 }
