@@ -1004,6 +1004,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
 	{
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		String locationType1 = locationType;
 		try{
 			if(locationType.equalsIgnoreCase("mandal"))
 			{
@@ -1012,13 +1013,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				locationId = new Long(id);
 				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
 					locationType = "mandal";
+					locationType1 = "mandal";
 				}else if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
 					locationType = "localElectionBody";
+					locationType1 = IConstants.LOCALELECTIONBODY;
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationId);
 					locationId = (Long) list.get(0);
 				}
 			}
-			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(IConstants.CONSTITUENCY),locationId,publicationDateId);
+			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId);
 			Long votesConsidered = 0L;
 			Long partyWisevotesConsidered = 0L;
 			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
