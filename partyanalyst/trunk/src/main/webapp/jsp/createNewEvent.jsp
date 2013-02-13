@@ -151,7 +151,8 @@ function showReqSelection(){
   clearSelectItems(true,true,true,true,true,true);
   var selId = $("#locationLvl option:selected").val();
   if(selId != 0)
-    getStates();
+	//getStates();
+    getStatesInPS();
   if(selId == 0){
     $("#stateDiv").hide();
     $("#districtDiv").hide();
@@ -208,6 +209,18 @@ function getStates()
 			var url = "<%=request.getContextPath()%>/candidatePhotoGallaryAction.action?"+rparam;
 
 		callAjaxToGetData(jsObj, url);
+	}
+function getStatesInPS(selectedElmt)
+	{	
+		
+		var jsObj=
+		{		
+				electionType :'Assembly',		
+				task:"getStatesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getStatesAjaxAction.action?"+rparam;						
+		callAjaxToGetData(jsObj,url);
 	}
 function getPariamentConstituencies()
 	{	    
@@ -328,8 +341,13 @@ function callAjaxToGetData(jsObj,url)
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								if(jsObj.task == "getStates"){
+								if(jsObj.task == "getStates")
+								{
 									buildOptions(myResults,"stateSel","Select State");
+								}
+								else if(jsObj.task == "getStatesAjaxAction")
+								{
+									buildStates(myResults);
 								}
 								else if(jsObj.task == "getPariamentConstituencies"){
 								    buildSelectOptions(myResults,"constituencySel","Select Parliament Constituency")
@@ -394,6 +412,14 @@ function buildSelectOptions(result,id,initialVal){
 	   if(result[i].id != 0)
           $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	}
+	}
+}
+function buildStates(myResults)
+{
+	$('#stateSel').append('<option value=0>Select State</option>');
+	for( i in myResults)
+	{
+	$('#stateSel').append('<option value='+myResults[i].id+'>'+myResults[i].name+'</option>');
 	}
 }
 function getDistParlConsti(){
@@ -989,12 +1015,12 @@ function handleSubmit(type)
 	</div>
 	<div>
 	    <span class="titleStyle">Start Date<font class="requiredFont"> * </font> : </span>
-		<input type="text" id="startDateText_new" readonly="readonly" name="startDateText" value="" />
+		<input type="text" id="startDateText_new" readonly="readonly" name="startDateText" value="" style= "cursor:text"/>
 		</div>
 		<div>
 	    
 		<span class="titleStyle" style="margin-top:10px;">End Date<font class="requiredFont"> * </font> : </span>
-		<input type="text" id="endDateText_new" readonly="readonly" name="endDateText" value="" />
+		<input type="text" id="endDateText_new" readonly="readonly" name="endDateText" value="" style= "cursor:text"/>
 		
 	</div>
 	
