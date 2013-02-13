@@ -616,6 +616,13 @@ oDT: votersByLocBoothDataTable
 		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 		  $("#votersShareBtn1").css('display','none');
 	   }
+	   //updated by sasi for getting ward related headings
+	   else if(type == "ward"){
+			$("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
+			$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
+			$("#votersBasicInfoBtnDiv").show();
+			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
@@ -882,7 +889,7 @@ oDT: votersByLocBoothDataTable
 
 	    $("#castPartyPopupDiv").dialog({
             modal: true,
-            title: "<b>Voters Party Details</b>",
+            title: "<b>Voters Details - Caste, Party Wise</b>",
 			width: 980,
             height: 600
            
@@ -1665,6 +1672,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0)
 		  return;
+		  
 		if(type != 'booth')
 		{
 		str +='<table id="subLevelTable">';
@@ -1674,6 +1682,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
 		else if(type =="panchayat")
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
+		else if(type =="ward")
+		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		
 		str+='<thead>';
 		str+='<tr>';
 		
@@ -1682,6 +1693,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		if(type == "mandal")
 		str +='<th>Panchayat</th>';
 		if(type =="panchayat")
+		str +='<th>Booth</th>';
+		if(type =="ward")
 		str +='<th>Booth</th>';
 
 		str +='<th>Caste</th>';
@@ -4656,10 +4669,18 @@ $(".leftNav li").removeClass("active");
 //$(this).closest("li").addClass("active").siblings().removeClass("active");
 $(this).closest("li").addClass("active");
 var dest=$(this).attr("dest-atr");
-  if(dest === "booth")
+  if(dest === "booth"){
     $("#rightNav-Booths-list").customMenu(resultDataForNav,4,0,0,$(this).attr("data-municipalityid"));
-  else if(dest === "ward")
-$("#middleNav-Wards-list").customMenu(resultDataForNav,5,0,0,$(this).attr("data-municipalityid"));
+	$("#impFamiliesMoreInfoButn").css('display','none');
+	$("#ageLink").css('display','none');
+	$("#votersShareBtn1").css('display','none');
+	}
+  else if(dest === "ward"){
+	$("#middleNav-Wards-list").customMenu(resultDataForNav,5,0,0,$(this).attr("data-municipalityid"));
+	//$("#impFamiliesMoreInfoButn").css('display','none');
+	//$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Ward Wise Age Details</a>');
+	
+	}
 });
 
 
