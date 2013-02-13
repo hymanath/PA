@@ -951,7 +951,12 @@ for  body3 start    result  -->
 		<div id="newsDisplayDiv" style=""></div>
 	   </div>
 	  <!--<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div> -->
-	<div id="problemsCountDiv" class="widget blue whitegloss" style="color:#000;"></div>
+	 <div id="problemAjaxImg" style="display:none;float:right;">
+	<img src="./images/icons/search.gif" /></div>
+	
+	<div id="problemsCountDiv" class="widget blue whitegloss">
+	 
+	</div>
 	
 	<div id="problemPopUp" style="background:#EEEEEE;">
 	

@@ -1302,7 +1302,7 @@ function incrementStartEndIndexes(importanceId,categoryId){
 
 function buildProblemsCountByLocation(results,jsObj)
 {
-	
+		$("#problemAjaxImg").hide();
 	document.getElementById('problemsCountDiv').style.display = 'inline-block';
 	var str='';
 	var locationId = jsObj.locationId;
@@ -1359,7 +1359,6 @@ function buildProblemsCountByLocation(results,jsObj)
 function getProblemsByLocation(id,publicationId,type)
 {
 	document.getElementById('problemsCountDiv').style.display = 'none';
-	//var level = $("#reportLevel").val();
 	var locationId =0;
 	
 	var locationValue =0;
@@ -1390,11 +1389,7 @@ function getProblemsByLocation(id,publicationId,type)
 		locationId = 9;
 		return;
 	}
-	else if(type == "ward")
-		locationId = 8;
-		
-	
-
+	$("#problemAjaxImg").show();
 	var jObj=
 	{
 		locationValue:locationValue,
