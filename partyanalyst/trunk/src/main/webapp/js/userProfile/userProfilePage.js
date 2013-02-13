@@ -1608,7 +1608,6 @@ function closeConnectPanel(jsObj,results)
 
 function showAllConnectedUsersInPanel(jsObj,results)
 {
-	alert('2');
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();	
 	clearAllSubscriptionDivs();
@@ -1654,7 +1653,6 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str +='</select></div>';
 	filterDiv.append(str);
 	$("#headerDiv").append(filterDiv);
-	debugger;
 	 for(var i in results.candidateVO)
 	{
 		var imageStr = "pictures/profiles/"+results.candidateVO[i].image;
@@ -1737,7 +1735,6 @@ function getAllConnectedUsersByFilterView(locationType,userId)
 	
 }
 function getAllCconnectedUserDetails(){
-	alert('1');
 var locationId = districtId;
 	var locationType = "DISTRICT";
 	var locationName = districtName;
