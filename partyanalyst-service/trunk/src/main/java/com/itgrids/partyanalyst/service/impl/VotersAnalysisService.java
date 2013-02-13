@@ -1033,22 +1033,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			}
 			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId);
 			Long votesConsidered = 0L;
-			Long partyWisevotesConsidered = 0L;
+			
+			
 			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
 			voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
 			voterCastInfoVO.setTotalCasts(voterCastInfoVO.getVoterCastInfoVOList().size());
 			voterCastInfoVO.setTotalVoters(totalVoters);
-			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
+			
 			for(VoterCastInfoVO castInfoVO : voterCastInfoVO.getVoterCastInfoVOList())
 				votesConsidered = votesConsidered + castInfoVO.getTotalVoters();
 			
 			voterCastInfoVO.setMaleVoters(votesConsidered);
 			voterCastInfoVO.setFemaleVoters(totalVoters - votesConsidered);
-			for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
-			partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
-			voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
-			voterCastInfoVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
-			voterCastInfoVO.setCastVOs(getCastWisePartyCount(userId,locationType,locationId,publicationDateId));
+			
+			//voterCastInfoVO.setCastVOs(getCastWisePartyCount(userId,locationType,locationId,publicationDateId));
 			return voterCastInfoVO;
 		}catch (Exception e) {
 			log.error("Exception Occured in getVotersCastWiseDetailsInALocation() Method, Exception is - "+e);
@@ -1056,6 +1054,40 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	}
 	
+	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	{
+		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		String locationType1 = locationType;
+		try{
+			if(locationType.equalsIgnoreCase("mandal"))
+			{
+				String mandalId= locationId.toString();
+				String id=mandalId.substring(1);
+				locationId = new Long(id);
+				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+					locationType = "mandal";
+					locationType1 = "mandal";
+				}else if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+					locationType = "localElectionBody";
+					locationType1 = IConstants.LOCALELECTIONBODY;
+					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationId);
+					locationId = (Long) list.get(0);
+				}
+			}
+			Long partyWisevotesConsidered = 0L;
+			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId);
+			
+			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
+			for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
+				partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
+				voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
+				voterCastInfoVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
+			return voterCastInfoVO;
+		}catch (Exception e) {
+			log.error("Exception Occured in getVotersCastWiseDetailsInALocation() Method, Exception is - "+e);
+			return voterCastInfoVO;
+		}
+	}
 	public Long getVotersCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId)
 	{
 		try{
@@ -4464,10 +4496,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		
 	 }
 	 
-	 public List<CastVO> getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId)
+	 public VoterCastInfoVO getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId)
 		{
+		    VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 			List<CastVO> resultList = null;
 			try{
+				if(locationType.equalsIgnoreCase("mandal"))
+				{
+					String mandalId= locationId.toString();
+					String id=mandalId.substring(1);
+					locationId = new Long(id);
+					if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						locationType = "mandal";
+					}else if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						locationType = "localElectionBody";
+						List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationId);
+						locationId = (Long) list.get(0);
+					}
+				}
 				List<Object[]> castList = boothPublicationVoterDAO.getCastWiseCount(userId,locationType,locationId,publicationDateId);
 				List<Object[]> partiesList = boothPublicationVoterDAO.getPartyWiseCount(userId,locationType,locationId,publicationDateId);
 				List<Object[]> parties = boothPublicationVoterDAO.getParties(userId,locationType,locationId,publicationDateId);
@@ -4513,10 +4559,11 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						Collections.sort(result.getPartiesList(),castVOSort);
 					}
 				}
-				return resultList;
+				voterCastInfoVO.setCastVOs(resultList);
+				return voterCastInfoVO;
 			}catch (Exception e) {
 				log.error("Exception Occured in getCastWisePartyCount() Method, Exception is - ",e);
-				return resultList;
+				return voterCastInfoVO;
 			}
 		     
 		 }
@@ -6262,6 +6309,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				  votersDetailsVO.setTotalVoters(0l);
 				  if(type.equalsIgnoreCase("booth") || type.equalsIgnoreCase("ward")){
 				      votersDetailsVO.setBoothName(reportLevelValues.get(key));
+				      votersDetailsVO.setTehsilName(reportLevelValues.get(key));
 				  }else if(type.equalsIgnoreCase("panchayat")){
 					  votersDetailsVO.setPanchayatname(reportLevelValues.get(key));
 				  }else if(type.equalsIgnoreCase("mandal") || type.equalsIgnoreCase("localElec" )|| type.equalsIgnoreCase("ward")){
