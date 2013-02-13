@@ -335,7 +335,8 @@
 	            <value>com.itgrids.partyanalyst.model.ContentNotes</value>
 	            <value>com.itgrids.partyanalyst.model.NewsFlag</value>	
 	            <value>com.itgrids.partyanalyst.model.Locality</value>
-                <value>com.itgrids.partyanalyst.model.NewsProblem</value>			    		
+                <value>com.itgrids.partyanalyst.model.NewsProblem</value>
+                <value>com.itgrids.partyanalyst.model.PublicationElection</value>			    		
 			</list>
 		</property>
 	</bean>
@@ -1735,5 +1736,9 @@
 	
 	<bean id="voterFamilyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFamilyInfoDAO">
 	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="publicationElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicationElectionDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 </beans>

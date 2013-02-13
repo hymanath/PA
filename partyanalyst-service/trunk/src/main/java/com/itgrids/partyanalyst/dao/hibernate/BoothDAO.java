@@ -413,13 +413,13 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 
 	    public List<Long> getAllPublicationDetailsForConstituency(Long constituencyId){
 	    	
-		Query query = getSession()
-				.createQuery(
-						"select distinct model.publicationDate.publicationDateId " +
-						"from Booth model where model.constituency.constituencyId = ?");
-		
-		
-		query.setParameter(0, constituencyId);
+	    	Query query = getSession()
+					.createQuery(
+							"select distinct model.publicationDate.publicationDateId from Booth model where model.constituency.constituencyId = ? " +
+							" and model.publicationDate.publicationDateId not in (select distinct model1.publicationDate.publicationDateId from PublicationElection model1)");
+			
+			
+			query.setParameter(0, constituencyId);
 		
 		return query.list();
 	    	

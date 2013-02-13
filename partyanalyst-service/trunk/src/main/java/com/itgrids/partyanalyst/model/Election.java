@@ -63,6 +63,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Set<PartyElectionResultsWithGenderAnalysis> partyElectionResultsWithGenderAnalysis = new HashSet<PartyElectionResultsWithGenderAnalysis>(0);
 	private String isPartial;
 	private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
+	private Set<PublicationElection> publicationElections = new HashSet<PublicationElection>(0);
 	private Date electionDate;
 
 	// Constructors
@@ -268,5 +269,16 @@ public class Election extends BaseModel implements java.io.Serializable {
 	public void setElectionMinisters(Set<ElectionMinisters> electionMinisters) {
 		this.electionMinisters = electionMinisters;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "election")
+	public Set<PublicationElection> getPublicationElections() {
+		return publicationElections;
+	}
+
+	public void setPublicationElections(
+			Set<PublicationElection> publicationElections) {
+		this.publicationElections = publicationElections;
+	}
+	
 	
 }

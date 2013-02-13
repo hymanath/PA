@@ -37,6 +37,7 @@ public class PublicationDate implements Serializable{
 	 private Set<VoterInfo> voterInfos = new HashSet<VoterInfo>(0);
 	 private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
 	 private Set<VoterFamilyInfo> voterFamilyInfos = new HashSet<VoterFamilyInfo>(0);
+	 private Set<PublicationElection> publicationElections = new HashSet<PublicationElection>(0);
 	 
 	 
 	 @Id
@@ -116,6 +117,15 @@ public class PublicationDate implements Serializable{
 	}
 	public void setVoterFamilyInfos(Set<VoterFamilyInfo> voterFamilyInfos) {
 		this.voterFamilyInfos = voterFamilyInfos;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publicationDate")
+	public Set<PublicationElection> getPublicationElections() {
+		return publicationElections;
+	}
+	public void setPublicationElections(
+			Set<PublicationElection> publicationElections) {
+		this.publicationElections = publicationElections;
 	}
 	
 	

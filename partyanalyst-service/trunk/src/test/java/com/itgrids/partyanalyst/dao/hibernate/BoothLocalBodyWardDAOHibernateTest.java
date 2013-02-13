@@ -19,10 +19,15 @@ public class BoothLocalBodyWardDAOHibernateTest extends BaseDaoTestCase{
 		this.boothLocalBodyWardDAO = boothLocalBodyWardDAO;
 	}
 	
-	public void testGetAll(){
+	/*public void testGetAll(){
 		List list = boothLocalBodyWardDAO.getAll();
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetBoothsForWard(){
+		List<Long> list = boothLocalBodyWardDAO.getBoothsForWard(31884l,1l);
+		for(Long booth:list){
+			System.out.println(booth);
+		}
 	}
-	
-	
 }
