@@ -10,11 +10,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadre Management </title>
-
-	
-	
 <!-- YUI Dependency files (Start) -->
-
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -38,15 +34,9 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-
-
-
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
 <!-- YUI Skin Sam -->
-
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -57,16 +47,13 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.03.02-18/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">
 <!-- YUI Dependency files (End) -->
-
 <!-- Local script and css files (Start)-->
 <script type="text/javascript" src="js/cadreManagement/cadreManagement.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>
 <script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>-->
-
 <link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
 <!-- Local script and css files (End)-->
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
@@ -114,15 +101,19 @@ h2
     font-size: 12px;
     padding: 5px;
 }
+.selectedDateEvent th {
+    color: #2B4E70;
+    padding: 5px;
+    text-align: left;
+    width: 150px;
+}
 </style>
-	
-
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#cadreId").css("background-position","left -54px");
 	$("#cadreSpanId").css("background-position","right -81px");
-	 $("#cadreSpanId").closest("li").addClass("active");
-  });
+	$("#cadreSpanId").closest("li").addClass("active");
+	});
 	var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
 	var selectedEventObj={
 							userEventsId:"",
@@ -179,8 +170,8 @@ $(document).ready(function() {
 	var createNewDate = '${createDate}';
 	var createNewEvent = '${createEvent}'; 
 
-	function smsRenewalMessage()
-	{
+function smsRenewalMessage()
+{
 		var elmt = document.getElementById('smsErrorPopupDiv');
 		var divChild = document.createElement('div');
 		divChild.setAttribute('id','smsErrorDiv');
@@ -224,11 +215,8 @@ $(document).ready(function() {
 	             } ); 
 		popupPanel.render();
 	}
-	
-	
-	
-	function buildSMSPopup()
-	{
+function buildSMSPopup()
+{
 		var remainingSms = "${remainingSms}";
 		if(remainingSms==0){
 			smsRenewalMessage();
@@ -301,20 +289,16 @@ $(document).ready(function() {
 
 		smsDialog.render(); 
 		
-	}
+}
 
-	function showSendSMSPopup()
-	{
-		smsDialog.show(); 
-	}
-	
-	
-	//----------
+function showSendSMSPopup()
+{
+	smsDialog.show(); 
+}
 
-	function callAjax(jsObj,url)
-	{			
-		
- 		var callback = {			
+function callAjax(jsObj,url)
+{
+	var callback = {			
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
@@ -338,7 +322,7 @@ $(document).ready(function() {
 								else if(jsObj.task=="createImpDateEvent")
 								{			
 									alert("Important Date created successfully");
-									
+									$('#newImpDateDiv').dialog('close');
 									var date = new Date();
 									
 									var jsObj1={
@@ -402,7 +386,7 @@ $(document).ready(function() {
 								}
 								else if(jsObj.task=="updateCreateEvent" || jsObj.task=="updateImpDateEvent")
 								{		
-									
+									alert("Updated Successfully");
 									var date = new Date();
 									
 									var jsObj1={
@@ -426,10 +410,10 @@ $(document).ready(function() {
  		               };
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
+}
 	
-	function removeDeletedElement(id,jsObj)
-	{
+function removeDeletedElement(id,jsObj)
+{
 		
 		if(eventDateDialog)
 			eventDateDialog.hide();
@@ -448,21 +432,21 @@ $(document).ready(function() {
 		parent.removeChild(elmt);
 		}
 		//timedRefresh();		
-	}
+}
 	
-	function timedRefresh()
-	{
-	   setTimeout("document.location.reload(true);");
-	}
+function timedRefresh()
+{
+	setTimeout("document.location.reload(true);");
+}
 
-	function setCadreValue(value)
-	{
-		document.getElementById("cadreLevelValue").value=value;
-		return true;
-	}
+function setCadreValue(value)
+{
+	document.getElementById("cadreLevelValue").value=value;
+	return true;
+}
 	
-	function getCadreLevelValues(name,value,id)
-	{
+function getCadreLevelValues(name,value,id)
+{
 		var cadreLevelElmt = document.getElementById("cadreLevelField");
 		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
 		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
@@ -496,10 +480,10 @@ $(document).ready(function() {
 			
 		//if(document.getElementById("cadreLevelField").value == 5)
 		//	getDistrictLevelValues(name,value,id)
-	}
+}
 
-	function getStateList()
-	{	
+function getStateList()
+{	
 		var cadreLevelElmt = document.getElementById("cadreLevelField");
 		
 		var stateElmt = document.getElementById("cadreLevelState");
@@ -567,9 +551,9 @@ $(document).ready(function() {
 		
 		getStatesNDistricts("cadreLevel",cadreLevelElmtText,cadreLevelElmtValue)
 		
-	}
-	function getStatesNDistricts(level,text,value)
-	{	    
+}
+function getStatesNDistricts(level,text,value)
+{	    
 		var jsObj=
 			{
 					type:level,
@@ -581,10 +565,10 @@ $(document).ready(function() {
 			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
 
 		callAjax(jsObj, url);
-	}
+}
 
-	function getnextList(name,value,choice)
-	{
+function getnextList(name,value,choice)
+{
 
 		var jsObj=
 			{
@@ -598,10 +582,10 @@ $(document).ready(function() {
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
 		callAjax(jsObj, url);
-	}
+}
 
-	function displaySuccessMessage(results,jsObj)
-	{
+function displaySuccessMessage(results,jsObj)
+{
 		var divElmt = document.getElementById("successDiv");
 		var region_type_AlertEl = document.getElementById("region_type_Alert");
 		var sms_text_AlertEl = document.getElementById("sms_text_Alert");
@@ -630,9 +614,9 @@ $(document).ready(function() {
 		}
 		
 		divElmt.innerHTML=str;
-	}
-	function fillSelectElement(results,jsObj)
-	{
+}
+function fillSelectElement(results,jsObj)
+{
 		if(jsObj.type == "cadreDetails")
 		{
 			if(jsObj.reportLevel=="state")
@@ -701,10 +685,10 @@ $(document).ready(function() {
 			}
 		}
 		
-	}
+}
 
 function getUserLocationData(val,type)
-	{			
+{			
 		if(type == 'event' || type == 'Editevent' )
 		{
 			var str="cadreLevelDivId_"+type;
@@ -740,11 +724,10 @@ function getUserLocationData(val,type)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/cadreSMSLocationWiseData.action?";
 		callAjax(jsObj,url);
-	}
-
+}
 
 function getUsersCadreLevelData(value,type)
-	{		
+{		
 		var str="cadreLevelDivId_"+type;
 		
 		cadreAnim = new YAHOO.util.Anim(str, {
@@ -774,10 +757,10 @@ function getUsersCadreLevelData(value,type)
 			  };
 		var url = "<%=request.getContextPath()%>/usersCadreLevelData.action";	
 		callAjax(jsObj,url);
-	}
+}
 	
-	function getNextRegions(id,val,regTask)
-	{
+function getNextRegions(id,val,regTask)
+{
 		var selectElmt = document.getElementById(id);
 		var selectValue = selectElmt.options[selectElmt.selectedIndex].value;
 		
@@ -793,20 +776,21 @@ function getUsersCadreLevelData(value,type)
 		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?REGION="+val+"&REGION_ID="+selectValue;
 		callAjax(jsObj,url);
 
-	}
+}
 
-	function enableTextBox(){
+function enableTextBox()
+{
 		var textBoxElmt = document.getElementById("user_name");
 		textBoxElmt.disabled =false;
-	}
-	function disableTextBox(){
+}
+function disableTextBox()
+{
 		var textBoxElmt = document.getElementById("user_name");
 		textBoxElmt.disabled =true;
-	}
-
+}
 
 function getCadresLevelForEvent(regTask)
-	{
+{
 		var region;
 		var elmtId = "cadreLevelDivId_"+regTask;
 
@@ -843,11 +827,10 @@ function getCadresLevelForEvent(regTask)
 		var url = "<%=request.getContextPath()%>/getCadresForEvent.action?"+rparam;
 		
 		callAjax(jsObj, url);
-	}
-
+}
 
 function fillDataForCadreLevel(results,jsObj)
-	{
+{
 		var successDivElmt=	 document.getElementById("successDiv");
 		//successDivElmt.innerHTML="";
 		
@@ -948,10 +931,9 @@ function fillDataForCadreLevel(results,jsObj)
 		if(buttonDiv)
 			buttonDiv.innerHTML=bstr;
 		
-	}
-
-	function fillDataOptions(results,jsObj)
-	{			
+}
+function fillDataOptions(results,jsObj)
+{			
 		//Setting values for region type..
 		var regTask = jsObj.taskType;
 		if(jsObj.taskType == 'sms')
@@ -1136,10 +1118,10 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 	
-	}
+}
 
-	function animateExpandDiv(val,num)
-	{			
+function animateExpandDiv(val,num)
+{			
 		if(!document.getElementById(""+val))
 		{
 			return;
@@ -1152,10 +1134,10 @@ function fillDataForCadreLevel(results,jsObj)
 		}, 1, YAHOO.util.Easing.easeIn);
 
 		myAnim.animate();	
-	}
+}
 
-	function getCadresForEvent(regTask)
-	{		
+function getCadresForEvent(regTask)
+{		
 		var region,regionSelect;
 		
 		if(regTask == 'action')
@@ -1207,10 +1189,10 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		callAjax(jsObj, url);
 		
-	}
+}
 	
-	function limitText(limitField, limitCount, limitNum)
-	{		
+function limitText(limitField, limitCount, limitNum)
+{		
 		var limitFieldElmt = document.getElementById(limitField);
 		var limitCountElmt = document.getElementById(limitCount);
 
@@ -1222,9 +1204,10 @@ function fillDataForCadreLevel(results,jsObj)
 		{			
 			limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 		}
-	}
+}
 
-	function sendSMSCadreLevel(){
+function sendSMSCadreLevel()
+{
 		var val = null;
 		var region_type_AlertEl = document.getElementById("region_type_Alert");
 		var sms_text_AlertEl = document.getElementById("sms_text_Alert");
@@ -1288,9 +1271,9 @@ function fillDataForCadreLevel(results,jsObj)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam;
 		callAjax(jsObj,url);
-	}
-	function sendSMS()
-	{
+}
+function sendSMS()
+{
 		var val= null;
 		var region_type_AlertEl = document.getElementById("region_type_Alert");
 		var sms_text_AlertEl = document.getElementById("sms_text_Alert");
@@ -1352,15 +1335,15 @@ function fillDataForCadreLevel(results,jsObj)
 		var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam+"&smsHidden="+smsHidden;
 		callAjax(jsObj,url);
 		
-	}
+}
 
-	function smsHiddenIncrementHidden()
-	{
-		smsHidden++;
-	}
+function smsHiddenIncrementHidden()
+{
+	smsHidden++;
+}
 	
-	function displayRegionsSelect(val,regTask)
-	{
+function displayRegionsSelect(val,regTask)
+{
 		var stateSelectElmt = document.getElementById(regTask+"_StateSelect");
 		var districtSelectElmt = document.getElementById(regTask+"_DistrictSelect");
 		var constituencySelectElmt = document.getElementById(regTask+"_ConstituencySelect");
@@ -1401,10 +1384,10 @@ function fillDataForCadreLevel(results,jsObj)
 			mandalSelectElmt.disabled=false;	
 			villageSelectElmt.disabled=false;	
 		}		
-	}
+}
 
-	function showRegionLevelCadres(arr)
-	{
+function showRegionLevelCadres(arr)
+{
 		
 		cadreObj.regionCadres=arr;
 		var elmt = document.getElementById("regionLevelCadreDivBody");
@@ -1433,21 +1416,20 @@ function fillDataForCadreLevel(results,jsObj)
 
 			elmt.appendChild(child);
 		}
-	}
+}
 
-
-	function dateToLocaleString(dt, cal)
-	{ 
+function dateToLocaleString(dt, cal)
+{ 
 		 
 		var dStr = dt.getDate(); 
 		var mStr = dt.getMonth()+1; 
 		var yStr = dt.getFullYear();
 		
 		return (dStr + "/" + mStr + "/" + yStr); 
-	} 
+} 
 	 
-	function mySelectHandler(type,args,obj)
-	{ 
+function mySelectHandler(type,args,obj)
+{ 
 		var selected = args[0]; 
 		var selDate = this.toDate(selected[0]); 
 
@@ -1463,10 +1445,10 @@ function fillDataForCadreLevel(results,jsObj)
 			//elmt.appendChild(divElmt);
 		}
 	     
-	};
+};
 	
-	function displayDateText(type,args,obj)
-	{	
+function displayDateText(type,args,obj)
+{	
 		var divId = obj.containerId;		
 		var subStr = divId.substring(0,divId.lastIndexOf('_'));	
 				
@@ -1497,10 +1479,10 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		divElmt.style.display='none';
-	}
+}
 
-	function getDateTime(date)
-	{		
+function getDateTime(date)
+{		
 		var startDayStr = 00;
 	      var startMonStr  = 00;
 	      var startYearStr = 0000;
@@ -1533,10 +1515,10 @@ function fillDataForCadreLevel(results,jsObj)
 						};
 
 		return dateTimeObj;
-	}
+}
 	
-	function buildUnEditableSelectedDateEventPopup(results,jsObj)
-	{
+function buildUnEditableSelectedDateEventPopup(results,jsObj)
+{
 		
 		var elmt = document.getElementById('cadreManagementMainDiv');		
 
@@ -1563,11 +1545,11 @@ function fillDataForCadreLevel(results,jsObj)
 		}		
 		
 		var eventStr='';
-		eventStr+='<div class="hd" style="color:#2B4E70;">Event Details...</div> ';
+		//eventStr+='<div class="hd" style="color:#2B4E70;">Event Details...</div> ';
 		eventStr+='<div class="bd">'; 
 		eventStr+='<table class="selectedDateEvent">';
 		eventStr+='<tr>';
-		eventStr+='<th>Title<font color="red"> *</font></th>';		
+		eventStr+='<th>Title</th>';		
 		if(jsObj.taskType == "impEvent")
 		{
 			eventStr+='<td colspan="3"><span id="" class="fieldSpan">'+results.title+'</span></td>';
@@ -1615,7 +1597,7 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description<font style="color:red">*</font></th>';
+		eventStr+='<th>Description</th>';
 		if(jsObj.taskType == "impEvent")
 		{
 			if(results.description != '')
@@ -1700,26 +1682,21 @@ function fillDataForCadreLevel(results,jsObj)
 
 		elmt.appendChild(divChild);
 
-		if(eventDateDialog)
-			eventDateDialog.destroy();
-
-		eventDateDialog = new YAHOO.widget.Dialog("eventDateDetails",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-				  x:350,
-				  y:800,
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true
-	             } ); 
-		eventDateDialog.render(); 
-	}
-    function showplanorgs(id){
+		if(newDateDialog)
+		{
+		 newDateDialog.remove();
+		}
+		newDateDialog = $('#eventDateDetails').dialog({
+			width:600,
+			'title':'Important Date Details'
+		});
+}
+function showplanorgs(id)
+{
 	  $("#"+id).toggle("slow");
-	}
-	function buildSelectedDateEventPopup(results,jsObj)
-	{
+}
+function buildSelectedDateEventPopup(results,jsObj)
+{
 		var elmt = document.getElementById('cadreManagementMainDiv');		
 		var eventId;
 		
@@ -1747,13 +1724,13 @@ function fillDataForCadreLevel(results,jsObj)
 				var endDateObj = getDateTime(results[0].endDate);
 			if(results[0].impDate)
 				var impDateObj = getDateTime(results[0].impDate);
+				
 		}
 			
-
 		var eventStr='';
 		//eventStr+='<div class="hd" style="color: rgb(43, 78, 112); cursor: move; height: 25px; font-size: 15px; font-family: serif;">Event Details...</div> ';
 		eventStr+='<div class="bd" style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;">'; 		
-		eventStr+='<div id="errorMessgDIV">&nbsp;</div> ';
+		eventStr+='<div id="errorMsgDIV"><font color="red"</font></div>';
 		eventStr+='<table class="selectedDateEvent">';
 		eventStr+='<tr>';
 		eventStr+='<th id="impheaders">Important Date Title :<font color="red"> *</font></th>';		
@@ -1778,7 +1755,7 @@ function fillDataForCadreLevel(results,jsObj)
 			{
 				eventStr+='<th id="impheaders">Start date :</th>';
 				eventStr+='<td>';
-				eventStr+='<div><input type="text" id="startDateText" readonly="readonly" name="startDateText" value="'+sDayobj.day+'/'+sDayobj.month+'/'+sDayobj.year+'" onfocus="showDateCal(\'startDateText_Div\',this.value)"/></div>';
+				eventStr+='<div><input type="text" id="startDateText" readonly="readonly" name="startDateText" style= "cursor:text" value="'+sDayobj.day+'/'+sDayobj.month+'/'+sDayobj.year+'" onfocus="showDateCal(\'startDateText_Div\',this.value)" /></div>';
 				eventStr+='<div id="startDateText_Div" class="tinyDateCal"></div>';
 				eventStr+='</td>';				
 			}
@@ -1786,7 +1763,7 @@ function fillDataForCadreLevel(results,jsObj)
 			{
 				eventStr+='<th id="impheaders">End date :</th>';
 				eventStr+='<td>';
-				eventStr+='<div><input type="text" id="endDateText" readonly="readonly" name="endDateText" value="'+eDayobj.day+'/'+eDayobj.month+'/'+eDayobj.year+'" onfocus="showDateCal(\'endDateText_Div\',this.value)"/></div>';
+				eventStr+='<div><input type="text" id="endDateText" readonly="readonly" style= "cursor:text" name="endDateText" value="'+eDayobj.day+'/'+eDayobj.month+'/'+eDayobj.year+'" onfocus="showDateCal(\'endDateText_Div\',this.value)"/></div>';
 				eventStr+='<div id="endDateText_Div" class="tinyDateCal"></div>';
 				eventStr+='</td>';				
 			}
@@ -1838,10 +1815,9 @@ function fillDataForCadreLevel(results,jsObj)
 		else if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<tr>';
-
 			eventStr+='<th id="impheaders">Imp date :</th>';
 			eventStr+='<td>';
-			eventStr+='<div><input type="text" id="ImpStartDateText" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" name="ImpStartDateText" readonly="readonly" /></div>';
+			eventStr+='<div><input type="text" id="ImpStartDateText" value='+jsObj.newdate+' name="ImpStartDateText" readonly="readonly" style= "cursor:text"  class="impdate"/></div>';
 			eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
 			eventStr+='</td>';			
 			eventStr+='</tr>';
@@ -1951,7 +1927,7 @@ function fillDataForCadreLevel(results,jsObj)
 			{
 				eventStr+='<th id="impheaders" style="margin-left: -50px;">Repeat Until :</th>';
 				eventStr+='<td>';
-				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" style="width: auto;"/></div>';
+				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" style="width: auto;cursor:text;"  class="impdate"/></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
 				eventStr+='</td>';
 				//eventStr+='<span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'endDate\')">'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'</span></td>';
@@ -1961,7 +1937,7 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		eventStr+='</table>';
 		eventStr+='<div class="ui-dialog-buttonset">';
-		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;margin-top: 10px;width:100px"></input>';
+		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="dateCheck(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;margin-top: 10px;width:100px"></input>';
 		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;width:100px;" ></input>';		
 		eventStr+='</div>';
 		eventStr+='</div>';		
@@ -1989,28 +1965,20 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 		eventDateDialog = $('#eventDateDetails').dialog({
 			width:650,
-			'title':'Event Details...'
+			'title':'Update Important Date'
 		});
-		$("#ImpStartDateText" ).datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-            changeYear: true,
-			minDate: new Date()
-			
-		});
-		
-		$("#ImpEndDateText" ).datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-            changeYear: true,
-			minDate: new Date(),
-			
-			
-		});
-	}
+		$(".ui-dialog-buttonset button").attr("class", "btn btn-primary");
+		$(".ui-dialog-title-eventDateDetails").attr("class","Cambria,'Abel',sans-serif,Helvetica");
+		$('.impdate').datepicker({
+				dateFormat: "dd/mm/yy",
+				changeMonth: true,
+				changeYear: true,
+				minDate: new Date()
+			});
+}
 	
-	function editactionPlanForEvent(id)
-	{
+function editactionPlanForEvent(id)
+{
 		var divElmt = document.getElementById(id);
 		if(divElmt)
 			divElmt.innerHTML='';
@@ -2019,9 +1987,9 @@ function fillDataForCadreLevel(results,jsObj)
 		divElmt.innerHTML=editEventStr;		
 		var divElmt = document.getElementById("cadreLevelDivId_EditactionPlan");
 		divElmt.style.display = 'block';
-	}
-	function editOrganizersForEvent(id)
-	{		
+}
+function editOrganizersForEvent(id)
+{		
 		var divElmt = document.getElementById(id);
 		if(divElmt)
 			divElmt.innerHTML='';
@@ -2031,10 +1999,10 @@ function fillDataForCadreLevel(results,jsObj)
 
 		var divElmt = document.getElementById("cadreLevelDivId_Editevent");
 		divElmt.style.display = 'block';
-	}
+}
 
-	function addCadresToEditEventPanel(type)
-	{
+function addCadresToEditEventPanel(type)
+{
 		var cadreArray = new Array();
 
 		
@@ -2084,10 +2052,10 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 		
 		closeCadresInfoDiv("cadreLevelDivId_"+type+"_anc");
-	}
+}
 
-	function deleteEventCadreFromPanelDiv(id,type)
-	{
+function deleteEventCadreFromPanelDiv(id,type)
+{
 		var status=confirm("Are you sure want to delete this organizer from this event");
 		if(status==false)
 			return;
@@ -2112,9 +2080,9 @@ function fillDataForCadreLevel(results,jsObj)
 		var cDivId = document.getElementById(cadreId+"_div");
 		var parent = cDivId.parentNode;
 		parent.removeChild(cDivId);	
-	}
-	function updateSelectedEvent(type)
-	{			
+}
+function updateSelectedEvent(type)
+{	
 		var results = YAHOO.lang.JSON.parse(jsonStr);
 		
 		var jsObj;
@@ -2189,62 +2157,64 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 		else if(type == 'impDate')
 		{
-			var ImpeventNameValue = $("#ImpeventNameText").val();			
-			var ImpDescValu = $("#ImpdescTextArea1").val();
-			var ImpDescVallength=ImpDescValu.trim().length;
-			
-		if(ImpeventNameValue == '')
-		    {
-			document.getElementById("errorMessgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
-			return;
-			}
-			else if ( ImpeventNameValue != null)
-			{ 				
-				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				var ImpeventNameValue = $("#ImpeventNameText").val();			
+				var ImpDescValu = $("#ImpdescTextArea1").val();
+				var ImpDescVallength=ImpDescValu.trim().length;
 				
-		            for (var i = 0; i < ImpeventNameValue.length; i++)
-                {      
-                    if (iChars.indexOf(ImpeventNameValue.charAt(i)) != -1)
-                    {   
-					document.getElementById("errorMessgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
-					return false;
-                    } 
-                }
-			
-			}
-			
-		if(ImpDescVallength==0){
-					document.getElementById("errorMessgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+				if(ImpeventNameValue == '')
+				{
+				document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red">Please Enter Important Date Title </font></b>';
 				return;
+				}
+				else if ( ImpeventNameValue != null)
+				{ 				
+					var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+					
+						for (var i = 0; i < ImpeventNameValue.length; i++)
+					{      
+						if (iChars.indexOf(ImpeventNameValue.charAt(i)) != -1)
+						{   
+						document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red"> Important Date Title cannot allow special characters & Numbers</font></b>';
+						return false;
+						} 
+					}
+				
+				}
+				
+			if(ImpDescVallength==0)
+			{
+						document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red">Please Enter Description</font></b>';
+					return;
 			}
-
 			var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 			var ImpstartDateVal = document.getElementById("ImpStartDateText").value;		
 			var ImpendDateVal = document.getElementById("ImpEndDateText").value;		
 			var ImpDescVal = document.getElementById("ImpdescTextArea1").value;
-
 			selectedDateObj.importantDateId = results[0].importantDateId;
-			selectedDateObj.eventId = results[0].eventId;
-			selectedDateObj.eventType = results[0].eventType;
-			selectedDateObj.eventName = ImpeventNameVal;
-			selectedDateObj.startDate = ImpstartDateVal;
-			selectedDateObj.endDate = ImpendDateVal;
-			selectedDateObj.desc = ImpDescVal;
-			selectedDateObj.frequency = results[0].frequency;
-			selectedDateObj.isDeleted = "NO";
-			selectedDateObj.task="updateImpDateEvent";
+					selectedDateObj.eventId = results[0].eventId;
+					selectedDateObj.eventType = results[0].eventType;
+					selectedDateObj.eventName = ImpeventNameVal;
+					selectedDateObj.startDate = ImpstartDateVal;
+					selectedDateObj.endDate = ImpendDateVal;
+					selectedDateObj.desc = ImpDescVal;
+					selectedDateObj.frequency = results[0].frequency;
+					selectedDateObj.isDeleted = "NO";
+					selectedDateObj.task="updateImpDateEvent";
 
-			jsObj = selectedDateObj;			
+					jsObj = selectedDateObj;			
+				
+		
+		
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;	
+						$('#eventDateDetails').dialog("close");					
+					callAjax(jsObj,url);
 		}		
 		
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
-		callAjax(jsObj,url);
-	}
+}
 
-	function deleteSelectedEvent(type,eId)
-	{		
+function deleteSelectedEvent(type,eId)
+{		
 		var jsObj;
 			if(type == 'impEvent')
 			{	
@@ -2267,11 +2237,10 @@ function fillDataForCadreLevel(results,jsObj)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/deleteEventAction.action?"+rparam;		
 		callAjax(jsObj,url);		
-	}
+}
 
-	function showSelectedDateEvent(elmtId,eType,taskType)
-	{	
-	
+function showSelectedDateEvent(elmtId,eType,taskType,newdate)
+{	
 		//var mainEventCalendarNavigator = new YAHOO.widget.CalendarNavigator(mainEventCalendar);
 		
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
@@ -2286,7 +2255,8 @@ function fillDataForCadreLevel(results,jsObj)
 					currentMonth:dateObj.monthVal,
 					currentYear:dateObj.yearVal,
 					eventType:eType,	
-					taskType:taskType,					
+					taskType:taskType,
+					newdate:newdate,					
 					task:"showSelectedDateEvent"
 				  };
 		
@@ -2294,10 +2264,10 @@ function fillDataForCadreLevel(results,jsObj)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/showImpDateEvent.action?"+rparam;		
 		callAjax(jsObj,url);
-	}
+}
 
-	function showUnEditableSelectedDateEvent(elmtId,eType,taskType,newdate)
-	{
+function showUnEditableSelectedDateEvent(elmtId,eType,taskType,newdate)
+{
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
 
 		var jsObj={
@@ -2315,9 +2285,9 @@ function fillDataForCadreLevel(results,jsObj)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/showImpDateEvent.action?"+rparam;		
 		callAjax(jsObj,url);
-	}
-	function addCreatedEvent(results,jsObj)
-	{	
+}
+function addCreatedEvent(results,jsObj)
+{	
 	  if(jsObj.task == "updateCreateEvent") 
 		{
 			
@@ -2350,23 +2320,23 @@ function fillDataForCadreLevel(results,jsObj)
 		var str='';
 		
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
-		{			
+		{	var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;		
 			str+='<div id="ImpEvent_'+results.userEventsId+'" class="eventSummaryDiv">';
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
 			str+='<span id="cadreSpan_'+results.userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+results.userEventsId+')"> X </span>';
-			str+='<span id="cadreSpan_'+results.userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
+			str+='<span id="cadreSpan_'+results.userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\',\''+newdate+'\')">';
 			str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 
 			//str+='<div id="ImpEvent_'+results.userEventsId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\'\',\'impEvent\')">';
 		}
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-		{			
+		{	var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;		
 			str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv">';	
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+')"> X </span>';
-			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(this.id,\'ImpDate_'+results[0].importantDateId+'\',\'impDate\')">';
+			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(this.id,\'ImpDate_'+results[0].importantDateId+'\',\'impDate\',\''+newdate+'\')">';
 			str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 
 			//str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+results[0].eventType+'\',\'impDate\')">';
@@ -2490,9 +2460,9 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		mainEventCalendar.render(); */
 		
-	}
-	function buildCalendarControl()
-	{
+}
+function buildCalendarControl()
+{
 		var navConfig = { 
 	      strings : { 
 	          month: "Choose Month", 
@@ -2509,10 +2479,10 @@ function fillDataForCadreLevel(results,jsObj)
 		mainEventCalendar.selectEvent.subscribe(mySelectHandler, mainEventCalendar, true); 
 		mainEventCalendar.changePageEvent.subscribe(changePageHandler, mainEventCalendar, true); 
 		mainEventCalendar.render(); 
-	}
+}
 	
-	function changePageHandler(type,args,obj)
-	{		
+function changePageHandler(type,args,obj)
+{		
 		var current = args[1];
 		var date = new Date(current);
 		var month = date.getMonth();
@@ -2532,9 +2502,9 @@ function fillDataForCadreLevel(results,jsObj)
 		var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;		
 		callAjax(jsObj,url);
 		
-	}
-	function showDateCal(id,val)
-	{			
+}
+function showDateCal(id,val)
+{			
 		//var dataL = val.substring(2,4)+'/'+val.substring(0,2)+'/'+val.substring(4,val.length);
 		
 		var date = (new Date().getMonth()+1)+"/"+new Date().getDate()+"/"+ new Date().getFullYear();
@@ -2558,28 +2528,28 @@ function fillDataForCadreLevel(results,jsObj)
 		dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true); 		
 		dateCalendar.render(); 
 		dateCalendar.show();		
-	}
+}
 
-	function setEndDateText(text)
-	{
+function setEndDateText(text)
+{
 		
-	}
-	function removeElementsArray(arr)
-	{	
+}
+function removeElementsArray(arr)
+{	
 		if(!arr && arr.length == 0)
 			return;
 		
 		for(var i=0;arr.length!=0;i++)
 			arr.pop();
 		
-	}
-	function buildNewEventPopup()
-	{
+}
+function buildNewEventPopup()
+{
 		var browser2 = window.open("createNewEvent.action","cadreCreateNewEvent","scrollbars=yes,height=600,width=700,left=150,top=100");	
 		browser2.focus();
-	}
-	function buildNewEventPopup1()
-	{		
+}
+function buildNewEventPopup1()
+{		
 		
 		removeElementsArray(eventCadresArray);
 		removeElementsArray(actionCadresArray);
@@ -2605,11 +2575,11 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<tr>';
 		eventStr+='<th>Start Date</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="startDateText_new" readonly="readonly" name="startDateText" value="'+date+'" onfocus="showDateCal(\'startDateText_new_Div\',this.value)"/></div>';
+		eventStr+='<div><input type="text" id="startDateText_new" readonly="readonly" style= "cursor:text" name="startDateText" value="'+date+'" onfocus="showDateCal(\'startDateText_new_Div\',this.value)"/></div>';
 		eventStr+='<div id="startDateText_new_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';
 		eventStr+='<th>End Date</th>';
-		eventStr+='<td><div><input type="text" id="endDateText_new" readonly="readonly" name="endDateText" value="'+date+'" onfocus="showDateCal(\'endDateText_new_Div\',this.value)"/></div>';
+		eventStr+='<td><div><input type="text" id="endDateText_new" readonly="readonly" style= "cursor:text" name="endDateText" value="'+date+'" onfocus="showDateCal(\'endDateText_new_Div\',this.value)"/></div>';
 		eventStr+='<div id="endDateText_new_Div" class="tinyDateCal"></div></td>';
 		eventStr+='</tr>';
 
@@ -2756,10 +2726,10 @@ function fillDataForCadreLevel(results,jsObj)
 	                          { text:"Cancel", handler:handleCancel } ]
 	             } ); 
 		newEventDialog.render(); 
-	}
+}
 	
-	function createActionPlan(regTask)
-	{		
+function createActionPlan(regTask)
+{		
 		var actObj = {};
 		var str='';
 		str+='<div id="cadreLevelDivId_'+regTask+'" class="actioncadreLevelDivClass">';
@@ -2781,10 +2751,10 @@ function fillDataForCadreLevel(results,jsObj)
 		str+='</div></div>';
 
 		return str;
-	}
+}
 
-	function getActionPlanString(actObj,status,index,regTask)
-	{
+function getActionPlanString(actObj,status,index,regTask)
+{
 		var str=''; 
 		str+='<tr>';
 		str+='<th> Action Plan</th>';
@@ -2844,10 +2814,10 @@ function fillDataForCadreLevel(results,jsObj)
 			
 
 		return str;
-	}
+}
 	
-	function expandActionPlansDiv(type)
-	{
+function expandActionPlansDiv(type)
+{
 		var str="cadreLevelDivId_"+type;
 		
 		cadreAnim = new YAHOO.util.Anim(str, {
@@ -2860,10 +2830,10 @@ function fillDataForCadreLevel(results,jsObj)
 
 		var elmt = document.getElementById('cadreLevelDivId_'+type+'_anc');
 		elmt.style.display = 'block';
-	}
+}
 
-	function getOrganisersString(regTask)
-	{
+function getOrganisersString(regTask)
+{
 		var eventStr='';
 		eventStr+='<div id="cadreLevelDivId_'+regTask+'" class="cadreLevelDivClass">';
 		eventStr+='<div id="cadreLevelDivId_'+regTask+'_inner" class="cadreLevelDivClassInner">';
@@ -2895,10 +2865,10 @@ function fillDataForCadreLevel(results,jsObj)
 
 		return eventStr;
 
-	}
+}
 	
-	function clearActionPlanDetails(id,type)
-	{
+function clearActionPlanDetails(id,type)
+{
 		if(document.getElementById('actionPlanText'))
 			document.getElementById('actionPlanText').value = '';
 		if(document.getElementById('actionTargetDateText'))
@@ -2913,9 +2883,9 @@ function fillDataForCadreLevel(results,jsObj)
 		removeElementsArray(actionPlanArray);
 
 		closeCadresInfoDiv(id,type);
-	}
-	function closeCadresInfoDiv(id,type)
-	{
+}
+function closeCadresInfoDiv(id,type)
+{
 		/*var ancElmt = document.getElementById(id);
 		if(ancElmt)
 			ancElmt.style.display = 'none';*/
@@ -2940,9 +2910,9 @@ function fillDataForCadreLevel(results,jsObj)
 		var animElmt = document.getElementById(elmtId);
 		if(animElmt)
 			animElmt.style.display = 'none';
-	}
-	function showEventForCadres(results,jsObj)
-	{	
+}
+function showEventForCadres(results,jsObj)
+{	
 		var taskType = jsObj.displayType;
 		var eventsHeadElmt = document.getElementById(taskType+"CadreDivHead");
 		var eventsBodyElmt = document.getElementById(taskType+"CadreDivBody");
@@ -3032,10 +3002,10 @@ function fillDataForCadreLevel(results,jsObj)
 
 		var parentElmt = document.getElementById(taskType+"CadreDivBody");
 		parentElmt.appendChild(cElmt);
-	}
+}
 	
-	function selectCadresToEvent(type)
-	{
+function selectCadresToEvent(type)
+{
 		var elements = document.getElementsByTagName('input'); 
 		for(var i=0;i<elements.length;i++)
 		{
@@ -3044,9 +3014,9 @@ function fillDataForCadreLevel(results,jsObj)
 				elements[i].checked=true;				
 			}
 		}
-	}
-	function deselectCadresToEvent(type)
-	{
+}
+function deselectCadresToEvent(type)
+{
 		var elements = document.getElementsByTagName('input'); 
 		for(var i=0;i<elements.length;i++)
 		{
@@ -3055,10 +3025,10 @@ function fillDataForCadreLevel(results,jsObj)
 				elements[i].checked=false;				
 			}
 		}
-	}
+}
 
-	function addCadresToEvent(type)
-	{			
+function addCadresToEvent(type)
+{			
 		var elements = document.getElementsByTagName('input'); 		
 		
 		var length;
@@ -3100,10 +3070,10 @@ function fillDataForCadreLevel(results,jsObj)
 		{			
 			addCadresToEventPanel(type);
 		}
-	}
+}
 	
-	function hasObjectInArray(array,cId)
-	{
+function hasObjectInArray(array,cId)
+{
 		var status=true;
 		for(var i=0; i<array.length;i++ )
 		{ 
@@ -3111,10 +3081,10 @@ function fillDataForCadreLevel(results,jsObj)
 				status=false; 
 		}	
 		return status;
-	}
+}
 	
-	function addCadresToEventPanel(type)
-	{		
+function addCadresToEventPanel(type)
+{		
 		var cadreArray = new Array();
 		var divElmt;
 		if(type == 'Editevent' || type == 'Editaction')
@@ -3182,10 +3152,10 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		cleanCadresInfoDiv(type);
 		closeCadresInfoDiv("cadreLevelDivId_"+type+"_anc");
-	}
+}
 
-	function cleanCadresInfoDiv(type)
-	{
+function cleanCadresInfoDiv(type)
+{
 		var actionRegionSelectLabel = document.getElementById(type+'_region_select_Label');
 		var actionRegionSelectData = document.getElementById(type+'_region_select_Data');
 		var actionRegionSubmit = document.getElementById(type+'_region_submit');
@@ -3215,10 +3185,10 @@ function fillDataForCadreLevel(results,jsObj)
 				actionPlanDivBody.innerHTML='';
 			}
 		}*/
-	}
+}
 	
-	function closeEventCadrePanelDiv(id,type)
-	{
+function closeEventCadrePanelDiv(id,type)
+{
 		var cadreArr,divElmt;
 
 		if(type == 'event')
@@ -3248,10 +3218,10 @@ function fillDataForCadreLevel(results,jsObj)
 	
 		if(elmt)
 		elmt.style.display='none';
-	}
+}
 	
-	function addActionPlanForEditablePanel(type)
-	{		
+function addActionPlanForEditablePanel(type)
+{		
 		actionPlansElmt = document.getElementById("actionPlanDiv_Body");
 		var actionDivElmt = document.getElementById("actionDetailsDiv");
 
@@ -3305,9 +3275,9 @@ function fillDataForCadreLevel(results,jsObj)
 
 		if(actionPlansElmt)
 			actionPlansElmt.innerHTML = divStr;
-	}
-	function addActionPlanToEvent(type)
-	{	
+}
+function addActionPlanToEvent(type)
+{	
 		var actionPlansElmt; 
 		if(type == 'eventAction')
 		{			
@@ -3374,10 +3344,10 @@ function fillDataForCadreLevel(results,jsObj)
 		cleanCadresInfoDiv('action');
 		closeCadresInfoDiv('cadreLevelDivId_'+type+'_anc');
 
-	}
+}
 
-	function deleteActionPlanFormEventPanel(id,type)
-	{			
+function deleteActionPlanFormEventPanel(id,type)
+{			
 		var actPlan = id.substring(id.indexOf('_')+1,id.length);
 		var actionPlansDiv = document.getElementById("actionPlanDiv_Body");
 
@@ -3397,9 +3367,9 @@ function fillDataForCadreLevel(results,jsObj)
 
 		if(actionPlanArray.length == 0 && actionPlansDiv)
 			actionPlansDiv.innerHTML='<span style="color:#CFCFCF">No Action Plans For Event</span>';	
-	}
-	function showCreatedActionPlan(divId,type)
-	{
+}
+function showCreatedActionPlan(divId,type)
+{
 		var score = divId.indexOf('_');	
 		var lastScore = divId.lastIndexOf('_');	
 		var index = divId.slice(score+1,lastScore);
@@ -3427,10 +3397,10 @@ function fillDataForCadreLevel(results,jsObj)
 		if(bodyElmt)
 			bodyElmt.innerHTML=str;
 		
-	}
+}
 	
-	function upDateActionPlanToEvent(index,type)
-	{
+function upDateActionPlanToEvent(index,type)
+{
 		var actionPlanValue = document.getElementById('actionPlanText_'+index).value;
 		var targetDateValue = document.getElementById('actionTargetDateText_'+index).value;
 		var organisersSelectElmt = document.getElementById('actionOrganisersSelect_'+index);
@@ -3457,20 +3427,20 @@ function fillDataForCadreLevel(results,jsObj)
 			bodyElmt.innerHTML="";
 			bodyElmt.style.display = 'none';
 		}
-	}
-	function hideActionBodyDiv(div)
-	{		
+}
+function hideActionBodyDiv(div)
+{		
 		var elmt = document.getElementById(div+'_body');
 		elmt.innerHTML='';
 		elmt.style.display = 'none';
-	}
-	function showNewEventPopup()
-	{
+}
+function showNewEventPopup()
+{
 		newEventDialog.show();		
-	}
+}
 
-	function handleSubmit()
-	{
+function handleSubmit()
+{
 		var eventNameVal = document.getElementById("eventNameText").value;
 		var startDateVal = document.getElementById("startDateText_new").value;
 		var endDateVal = document.getElementById("endDateText_new").value;
@@ -3600,40 +3570,34 @@ function fillDataForCadreLevel(results,jsObj)
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 
 		callAjax(selectedEventObj,url);
-	}
+}
 
-	function handleCancel()
-	{
-		this.cancel();
-	}	
+function handleCancel()
+{
+	this.cancel();
+}	
 
-	
-
-	function buildNewImpDatePopup()
-	{
+function buildNewImpDatePopup()
+{
 		var elmt = document.getElementById('cadreManagementMainDiv');
 		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
-
-				
 		var divChild = document.createElement('div');
 		divChild.setAttribute('id','newImpDateDiv');
 		divChild.setAttribute('class','yui-skin-sam');
-		
 		var eventStr='';
-		
-		//eventStr+='<div class="hd">New Date</div> ';
+		eventStr+='<div class="hd"></div> ';
 		eventStr+='<div class="bd">'; 
 		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
 		eventStr+='<table width="100%">';
 		eventStr+='<tr>';
 		eventStr+='<th id="impheaders" >Important Date Title :<font color="red"> *</font></th>';
-		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
+		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText" class="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
 		eventStr+='<th id="impheaders">Important Date :</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly"  /></div>';
+		eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly" style= "cursor:text" class="impdate"/></div>';
 		eventStr+='<div id="ImpStartDateText_new_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';		
 		eventStr+='</tr>';
@@ -3651,7 +3615,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th>Repeat Until</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_new_Div\')"/></div>';
+		eventStr+='<div><input type="text" id="ImpEndDateText_new" readonly="readonly" style= "cursor:text"  value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_new_Div\')" /></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';
 		eventStr+='</tr>';	*/
@@ -3665,7 +3629,7 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th id="impheaders" style="width: 130px;">Repeat Until :</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" style="width: auto; margin-top: 6px;"/></div>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly"  value="'+date+'" name="ImpEndDateText" style="width: auto; margin-top: 6px;cursor:text;" class="impdate"/></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
 		eventStr+='</td>';
 		//eventStr+='</td></tr>';
@@ -3695,25 +3659,16 @@ function fillDataForCadreLevel(results,jsObj)
 		});
 		$(".ui-dialog-buttonset button").attr("class", "btn btn-primary");
 		$(".ui-dialog-title-eventDateDetails").attr("class","Cambria,'Abel',sans-serif,Helvetica");
-		$("#ImpStartDateText_new" ).datepicker({
+		$(".impdate" ).datepicker({
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,
             changeYear: true,
 			minDate: new Date()
 			
 		});
-		
-		$("#ImpEndDateText_new" ).datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-            changeYear: true,
-			minDate: new Date(),
-			
-			
-		});
-	}
-	function showEndDateText(val)
-	{
+}
+function showEndDateText(val)
+{
 		var txtElmt = document.getElementById('ImpEndDateText_new');
 		if(val == "No Repeat")
 		{
@@ -3721,66 +3676,103 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 		else
 			txtElmt.disabled=false;
-	}
-
-	function showNewImpDatePopup()
-	{
-		newDateDialog.show();
-	}
-	function checkDate()
-	{
-	startDate = $('#ImpStartDateText_new').val();
-	endDate = $('#ImpEndDateText_new').val();
-	  var dt1  = parseInt(startDate.substring(0,2),10);
-      var mon1 = parseInt(startDate.substring(3,5),10);
-      var yr1  = parseInt(startDate.substring(6,10),10);
-      var dt2  = parseInt(endDate.substring(0,2),10);
-      var mon2 = parseInt(endDate.substring(3,5),10);
-      var yr2  = parseInt(endDate.substring(6,10),10);
-      var date1 = new Date(yr1, mon1, dt1);
-      var date2 = new Date(yr2, mon2, dt2);
-	
-	 if(date2 < date1)
-		{ 
-		 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
-		 return true;
-		}
-	return 	false;
 }
-	function handleImpDateSubmit()
-	{	
+
+function showNewImpDatePopup()
+{
+	newDateDialog.show();
+}
+function checkDate()
+{
+		  startDate = $('#ImpStartDateText_new').val();
+		  endDate = $('#ImpEndDateText_new').val();
+		  var dt1  = parseInt(startDate.substring(0,2),10);
+		  var mon1 = parseInt(startDate.substring(3,5),10);
+		  var yr1  = parseInt(startDate.substring(6,10),10);
+		  var dt2  = parseInt(endDate.substring(0,2),10);
+		  var mon2 = parseInt(endDate.substring(3,5),10);
+		  var yr2  = parseInt(endDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
 		
-		var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
+		 if(date2 < date1)
+			{ 
+			 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
+			 return true;
+			}
+		return false;
+}
+function dateCheck(task)
+{
+		fromDate = $("#ImpStartDateText").val();
+		toDate  = $("#ImpEndDateText").val();
+
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{
+	  
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+			if(date2 < date1)
+				{ 
+				 $('#errorMsgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
+				}
+			else
+				{	
+					updateSelectedEvent(task);
+					
+				}
+		}
+}
+function handleImpDateSubmit()
+{	
+		var flag=checkDate();
+		if(flag)
+		return;
+		var ImpeventNameVal = $('.ImpeventNameText').val();
 		var ImpstartDateVal = document.getElementById("ImpStartDateText_new").value;		
 		var ImpendDateVal = document.getElementById("ImpEndDateText_new").value;		
 		var ImpDescVal = document.getElementById("ImpdescTextArea").value;
 		ImpDescVal = removeEnterStrokeForString(ImpDescVal);
-
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
-			
-			//validation code for Imp dates
+		var ImpDescVallength=ImpDescVal.trim().length;
+		
 		    if(ImpeventNameVal == '')
 		    {
 			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
 			return;
 			}
-			else if ( /[^A-Za-z\d\s]/.test(ImpeventNameVal))
-			{ 
-				document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
-				return;
+			else if ( ImpeventNameVal != null)
+			{ 				
+				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				
+		            for (var i = 0; i < ImpeventNameVal.length; i++)
+                {      
+                    if (iChars.indexOf(ImpeventNameVal.charAt(i)) != -1)
+                    {   
+					document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+			
+                    return; 
+                    } 
+                }
 			}
-			else if(ImpDescVal == '')
+			if(ImpDescVallength==0)
 			{
 			   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
-			  return;
+			  return false;
 			}
-
 			 if(repeatFreqVal == "No Repeat")
 			{
 				ImpendDateVal = ImpstartDateVal;
 			}
-		checkDate();
+	
 		selectedDateObj.importantDateId="";
 		selectedDateObj.eventId="";
 		selectedDateObj.eventType="";
@@ -3796,27 +3788,28 @@ function fillDataForCadreLevel(results,jsObj)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(selectedDateObj);
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 		callAjax(selectedDateObj,url);
-	}
+		
+}
 	
-	function handleImpDateCancel()
-	{
-		this.cancel();
-	}
+function handleImpDateCancel()
+{
+	this.cancel();
+}
 
-	function displayEditCloseIcons(id)
-	{		
+function displayEditCloseIcons(id)
+{		
 		document.getElementById('cadreSpan_'+id.substring(id.indexOf('_')+1,id.length)+'_cross').style.display='block';
 		document.getElementById('cadreSpan_'+id.substring(id.indexOf('_')+1,id.length)+'_edit').style.display='block';
-	}
+}
 
-	function hideEditCloseIcons(id)
-	{
+function hideEditCloseIcons(id)
+{
 		document.getElementById('cadreSpan_'+id.substring(id.indexOf('_')+1,id.length)+'_cross').style.display='none';
 		document.getElementById('cadreSpan_'+id.substring(id.indexOf('_')+1,id.length)+'_edit').style.display='none';
-	}
+}
 
-	function showInitialImpEventsAndDates(eventsarr,type,task)
-	{			
+function showInitialImpEventsAndDates(eventsarr,type,task)
+{			
 		var divElmt;
 		if(type == "impEvents")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
@@ -3870,17 +3863,19 @@ function fillDataForCadreLevel(results,jsObj)
 			var str='';
 			if(type == "impEvents")
 			{
+				var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
 				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv">';				
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+eventsarr[i].userEventsId+')"> X </span>';
-				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
+				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\',\''+newdate+'\')">';
 				/*str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\''+eventsarr[i].eventType+'\',\'\',\'impEvent\')">';*/
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 			}			
 			else if(type == "impDates")
 			{
+				var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
 				str+='<div id="ImpDate_'+eventsarr[i].importantDateId+'" class="eventSummaryDiv">';	
 				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+eventsarr[i].importantDateId+')"> X </span>';
-				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
+				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\',\''+newdate+'\')">';
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 				
 			}
@@ -3974,10 +3969,10 @@ function fillDataForCadreLevel(results,jsObj)
 		datesRenderArr.push("");
 	}
 	renderStack();
-	}
+}
 
-	function existingDataCheck(date,type)
-	{		
+function existingDataCheck(date,type)
+{		
 		var testArray = new Array();
 		var status = true;
 		if(type == "impEvents" || type == "createEvent")		
@@ -3996,20 +3991,20 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 		
 		return status;
-	}
+}
 
-	function removeByElement(arrayName,arrayElement)
-	{		
+function removeByElement(arrayName,arrayElement)
+{		
 		for(var i=0; i<arrayName.length;i++ )
 		{ 
 			if(arrayName[i]==arrayElement)
 				arrayName.splice(i,1); 
 		 } 		
-	}
+}
 
 
-	function renderStack()
-	{	
+function renderStack()
+{	
 		for(var i in eventsRenderArr)
 		{
 			mainEventCalendar.addRenderer(eventsRenderArr[i], mainEventCalendar.renderCellStyleHighlight1);			
@@ -4025,17 +4020,20 @@ function fillDataForCadreLevel(results,jsObj)
 
 		
 		mainEventCalendar.render(); 
-	}
+}
 	
-	function subscribe()
-	{		
+function subscribe()
+{		
 		var url = "<%=request.getContextPath()%>/userSubscribePartyImpDates.action?";
 		var jsObj={
 				task:"subscribe"
 			  }		
 			callAjax(jsObj,url);
-	}
+}
 	
+function changeToEditableField()
+{
+}
 </script>
 </head>
 <body>
@@ -4145,10 +4143,7 @@ function fillDataForCadreLevel(results,jsObj)
 			</table>
 		</div>		
 	</div>
-	
-	
-
-	<script type="text/javascript">
+<script type="text/javascript">
 		
 		buildCalendarControl();	
 		//buildSMSPopup();
@@ -4156,8 +4151,6 @@ function fillDataForCadreLevel(results,jsObj)
 		//buildNewImpDatePopup();
 		//var sendSMSButton = new YAHOO.widget.Button("sendSMSAnc"); 
 		//sendSMSButton.on("click", showSendSMSPopup);
-
-		
 		var regionLevelCadres = new Array();
 		<c:forEach var="pd1" items="${cadreManagementVO.cadresByCadreLevel}" >				
 				var ob =
