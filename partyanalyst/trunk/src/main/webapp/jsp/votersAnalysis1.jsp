@@ -945,13 +945,13 @@ for  body3 start    result  -->
 <div id="scrollToHere"></div>	
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 
-	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;"></div>
+	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;color:#000000;"></div>
 	
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
 	   </div>
 	  <!--<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div> -->
-	<div id="problemsCountDiv" class="widget blue whitegloss"></div>
+	<div id="problemsCountDiv" class="widget blue whitegloss" style="color:#000;"></div>
 	
 	<div id="problemPopUp" style="background:#EEEEEE;">
 	
@@ -973,7 +973,7 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoDiv"></div>
   </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
-	<div style="margin-bottom: 15px;" id="revenueVillageWiseElecResults" class="widget blue" style="color:#000000;">
+	<div style="margin-bottom: 15px;" id="revenueVillageWiseElecResults" class="widget blue">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
 	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn btn-info pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
 	</div>
