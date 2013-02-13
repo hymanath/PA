@@ -938,7 +938,7 @@ function  buildProblemsCount(results){
    str+='<h4 style="margin-top: 6px; margin-bottom: 4px;">News Glance</h4>';
 
 if(results == null || results.length == 0){
-    str+='<h5>No news available</h5>';
+    str+='<h5>No News Available</h5>';
 	 $('#newsCountDiv').html(str);
 	return false;
 }
@@ -1309,7 +1309,7 @@ function buildProblemsCountByLocation(results,jsObj)
 	var locationValue=jsObj.locationValue;
 	var status = '';
 	var divEle = document.getElementById('problemsCountDiv');
-	$("#problemsCountDiv").css({'width':'96%'});
+	$("#problemsCountDiv").css({'width':'96%','color':'#000000'});
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="">Problems</h4><div class="widget-block breadcrumb"> ';
 	//str+='<div class="span11 breadcrumb"></div>';
 	//str+='<div class="widget-block breadcrumb"> ';
