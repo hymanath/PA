@@ -80,6 +80,7 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.Panchayat;
@@ -778,13 +779,22 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 		List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountByPublicationId(type,id,publicationDateId);
 		if(!votersCountList.isEmpty() && votersCountList.get(0)[1] != null){
-		  VotersInfoForMandalVO votersInfoForMandalVO = populateDataToVotersInfoForMandalVO(votersCountList,id,constituencyDAO.get(id).getName(),"Constituency");
+			Constituency constituency = constituencyDAO.get(id);
+		  VotersInfoForMandalVO votersInfoForMandalVO = populateDataToVotersInfoForMandalVO(votersCountList,id,constituency.getName(),"Constituency");
 		   //getting  all mandals and muncipalities and ghmcs in constituency
 		  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
-		  //getting voters count for all mandals and muncipalities and ghmcs in constituency
-		  getVotersCountForMultipleMandal(mandalsList,publicationDateId,votersInfoForMandalVO);
-		  calculatePercentage(votersInfoForMandalVO);
-		  return votersInfoForMandalVO;
+		  if("URBAN".equalsIgnoreCase(constituency.getAreaType()) && mandalsList != null && mandalsList.size() == 1){
+			  String localBodyId = mandalsList.get(0).getId().toString();
+			  if(localBodyId.substring(0,1).trim().equalsIgnoreCase("1")){
+				  getVotersCountForMultipleWards(new Long(localBodyId.substring(1)),publicationDateId,votersInfoForMandalVO);
+			  }
+			  return votersInfoForMandalVO;
+		  }else{
+			  //getting voters count for all mandals and muncipalities and ghmcs in constituency
+			  getVotersCountForMultipleMandal(mandalsList,publicationDateId,votersInfoForMandalVO);
+			  calculatePercentage(votersInfoForMandalVO);
+			  return votersInfoForMandalVO;
+		  }
 	   }else{
 		   VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
 		   votersInfoForMandalVO.setDatapresent(false);
@@ -2838,8 +2848,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	public ImportantFamiliesInfoVo getImportantFamiliesForConstituency(String type,Long id,Long publicationDateId){
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		Constituency constituency = constituencyDAO.get(id);
 		importantFamiliesInfoVo.setType("Constituency");
-		importantFamiliesInfoVo.setName(constituencyDAO.get(id).getName());
+		importantFamiliesInfoVo.setName(constituency.getName());
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"constituency"));
 		 getImpFamilesInfo(type,id,publicationDateId,importantFamiliesInfoVo,"","main",null);
 		 
@@ -2850,15 +2861,26 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 		 if(importantFamiliesInfoVo.isDataPresent()){
 		    List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
-		    for(SelectOptionVO mandal : mandalsList){
-				
-		    	ImportantFamiliesInfoVo mandalList = getImportantFamiliesForMandal("mandal",mandal.getId(),publicationDateId,"sub");
-		    	VotersInfoForMandalVO votersInfoForMandal = getVotersCountForMandal("mandal", mandal.getId(), publicationDateId);
-		    	mandalList.setTotalMaleVoters(votersInfoForMandal.getTotalMaleVoters());
-		    	mandalList.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
-		    	mandalList.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
-		    	importantFamiliesInfoVo.getSubList().add(mandalList);
-		    }
+		    if("URBAN".equalsIgnoreCase(constituency.getAreaType()) && mandalsList != null && mandalsList.size() == 1){
+				  String localBodyId = mandalsList.get(0).getId().toString();
+				  if(localBodyId.substring(0,1).trim().equalsIgnoreCase("1")){
+					  List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(localBodyId.substring(1)));
+					  List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long)list.get(0),publicationDateId);
+						for (Object[] ward : wardsList){
+							importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForWard((Long)ward[0],publicationDateId,"sub"));
+						}
+				  }
+			  }else{
+			    for(SelectOptionVO mandal : mandalsList){
+					
+			    	ImportantFamiliesInfoVo mandalList = getImportantFamiliesForMandal("mandal",mandal.getId(),publicationDateId,"sub");
+			    	VotersInfoForMandalVO votersInfoForMandal = getVotersCountForMandal("mandal", mandal.getId(), publicationDateId);
+			    	mandalList.setTotalMaleVoters(votersInfoForMandal.getTotalMaleVoters());
+			    	mandalList.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
+			    	mandalList.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
+			    	importantFamiliesInfoVo.getSubList().add(mandalList);
+			    }
+			  }
 		 }
 		 return  importantFamiliesInfoVo;
 	}
@@ -5750,7 +5772,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		public VotersInfoForMandalVO getVotersBasicInfoForConstituency(String type,Long id,Long publicationDateId,String reqType){
 			
 			try{
-				VotersInfoForMandalVO votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId(type), id, publicationDateId, constituencyDAO.get(id).getName(),"Constituency");
+				Constituency constituency = constituencyDAO.get(id);
+				VotersInfoForMandalVO votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId(type), id, publicationDateId, constituency.getName(),"Constituency");
 				if(votersInfoForMandalVO.isDatapresent() && reqType.equalsIgnoreCase("main"))
 				{
 					List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
@@ -5758,6 +5781,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 //calculatePercentage(votersInfoForMandalVO);
 					Map<Long,String> mandalIds = new HashMap<Long,String>();
 					Map<Long,String> localBodyIds = new HashMap<Long,String>();
+					List<Long> urban = new ArrayList<Long>();
 					for (SelectOptionVO mandal : mandalsList){
 						if(mandal.getId().toString().substring(0,1).equalsIgnoreCase("2"))
 						mandalIds.put(new Long(mandal.getId().toString().trim().substring(1)),mandal.getName());
@@ -5765,6 +5789,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						{
 							List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(mandal.getId().toString().substring(1)));
 							 localBodyIds.put(new Long(list.get(0).toString()),mandal.getName());
+							 if("URBAN".equalsIgnoreCase(constituency.getAreaType()))
+								 urban.add(new Long(list.get(0).toString()));
 						}
 						
 					}
@@ -5772,9 +5798,21 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						votersInfoForMandalVO.setVotersInfoForMandalVOList(getVotersDetailsByVoterMultipleReportLevelIds(getReportLevelId(IConstants.MANDAL),mandalIds, publicationDateId,"Mandal"));
 					if(localBodyIds.size() > 0)
 					{
-						List<VotersInfoForMandalVO> localElec = getVotersDetailsByVoterMultipleReportLevelIds(getReportLevelId(IConstants.LOCALELECTIONBODY),localBodyIds, publicationDateId,IConstants.LOCALELECTIONBODY);
-						if(localElec != null && localElec.size() > 0)
-						votersInfoForMandalVO.getVotersInfoForMandalVOList().addAll(localElec);
+						if("URBAN".equalsIgnoreCase(constituency.getAreaType()) && urban != null && urban.size() == 1){
+							List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId(urban.get(0),publicationDateId);
+							
+							Map<Long,String> wardIds = new HashMap<Long,String>();
+							for (Object[] ward : wardsList){
+								wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+							}
+							if(wardIds.size() > 0)
+								votersInfoForMandalVO.getVotersInfoForMandalVOList().addAll(getVotersDetailsByVoterMultipleReportLevelIds(getReportLevelId("Ward"), wardIds, publicationDateId,"Ward"));
+							
+						}else{
+							List<VotersInfoForMandalVO> localElec = getVotersDetailsByVoterMultipleReportLevelIds(getReportLevelId(IConstants.LOCALELECTIONBODY),localBodyIds, publicationDateId,IConstants.LOCALELECTIONBODY);
+							if(localElec != null && localElec.size() > 0)
+							votersInfoForMandalVO.getVotersInfoForMandalVOList().addAll(localElec);
+						}
 					}
 					if(votersInfoForMandalVO != null && votersInfoForMandalVO.getVotersInfoForMandalVOList() != null && votersInfoForMandalVO.getVotersInfoForMandalVOList().size() > 0)
 						votersInfoForMandalVO.setSubLevelExists(true);
@@ -5998,7 +6036,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	 	try{
 	 		List<VoterAgeInfo> voterAgeInfoList = new ArrayList<VoterAgeInfo>(0);
 	 		
-	 		if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+	 		if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
 	 		{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(reportLevelValue);
 					reportLevelValue = (Long) list.get(0);
@@ -6222,7 +6260,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  for(Long key : reportLevelValues.keySet()){
 				  votersDetailsVO = new VotersDetailsVO();
 				  votersDetailsVO.setTotalVoters(0l);
-				  if(type.equalsIgnoreCase("booth")){
+				  if(type.equalsIgnoreCase("booth") || type.equalsIgnoreCase("ward")){
 				      votersDetailsVO.setBoothName(reportLevelValues.get(key));
 				  }else if(type.equalsIgnoreCase("panchayat")){
 					  votersDetailsVO.setPanchayatname(reportLevelValues.get(key));
@@ -6343,17 +6381,33 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					
 			}
 			List<Object[]> localBodyList = tehsilDAO.findAllLocalElecBodyByConstituencyIdAndPublicationDateId(constituencyId,publicationDateId);
+			Constituency constituency = constituencyDAO.get(constituencyId);
 			if(localBodyList != null && localBodyList.size() > 0)
 			{
 			  Map<Long,String> localBodyIds = new HashMap<Long,String>();
+			  List<Long> urban = new ArrayList<Long>();
 			  for (Object[] localBody : localBodyList){
 				  localBodyIds.put((Long)localBody[0],localBody[1]!=null?localBody[1].toString()+" "+localBody[2].toString():"");
-				}
+				  if("URBAN".equalsIgnoreCase(constituency.getAreaType()))
+						 urban.add((Long)localBody[0]);
+			  }
 				if(localBodyIds.size() > 0)
 				{
-					List<VotersDetailsVO> localElec = getAllAgesWiseVotersDetails(getReportLevelId(IConstants.LOCALELECTIONBODY), localBodyIds, publicationDateId,"localElec");
-					if(localElec != null && localElec.size() > 0)
-						votersDetailsVOList.addAll(localElec);
+					if("URBAN".equalsIgnoreCase(constituency.getAreaType()) && urban != null && urban.size() == 1){
+						List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId(urban.get(0),publicationDateId);
+						
+						Map<Long,String> wardIds = new HashMap<Long,String>();
+						for (Object[] ward : wardsList){
+							wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+						}
+						if(wardIds.size() > 0)
+							votersDetailsVOList.addAll(getAllAgesWiseVotersDetails(getReportLevelId("Ward"), wardIds, publicationDateId,"Ward"));
+						
+					}else{
+						List<VotersDetailsVO> localElec = getAllAgesWiseVotersDetails(getReportLevelId(IConstants.LOCALELECTIONBODY), localBodyIds, publicationDateId,"localElec");
+						if(localElec != null && localElec.size() > 0)
+							votersDetailsVOList.addAll(localElec);
+					}
 				}
 			}
 			return votersDetailsVOList;
@@ -6673,9 +6727,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			try{
 				importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
 				importantFamiliesInfoVo = getImportantFamilyInfo(getReportLevelId(IConstants.CONSTITUENCY), id, publicationDateId,"main");
-				
+				Constituency constituency = constituencyDAO.get(id);
 				importantFamiliesInfoVo.setType("Constituency");
-				importantFamiliesInfoVo.setName(constituencyDAO.get(id).getName());
+				importantFamiliesInfoVo.setName(constituency.getName());
 				importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCount(id,publicationDateId,"constituency"));
 				VotersInfoForMandalVO votersInfoForConstituency = getVotersBasicInfoForConstituency(type, id, publicationDateId,"sub");
 				importantFamiliesInfoVo.setTotalVoters(votersInfoForConstituency.getTotVoters() != null ? votersInfoForConstituency.getTotVoters().longValue() : 0l);
@@ -6684,25 +6738,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				importantFamiliesInfoVo.setUnKnowVoters(votersInfoForConstituency.getUnKnowVoters());
 				if(importantFamiliesInfoVo.isDataPresent())
 				{
-					/*List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
-					if(mandalsList != null && mandalsList.size() > 0)
-					{
-						for(SelectOptionVO mandal : mandalsList)
-						{
-							ImportantFamiliesInfoVo mandalList = getImpFamiliesForMandal(type, mandal.getId(), publicationDateId,"sub");
-							
-							VotersInfoForMandalVO votersInfoForMandal = getVotersBasicInfoForMandal("mandal", mandal.getId(), publicationDateId);
-							mandalList.setTotalMaleVoters(votersInfoForMandal.getTotalMaleVoters());
-					    	mandalList.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
-					    	mandalList.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
-					    	importantFamiliesInfoVo.getSubList().add(mandalList);
-							
-						}
-					}*/
-					
 					List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
 					Map<Long,String> mandalIds = new HashMap<Long,String>();
 					Map<Long,String> localBodyIds = new HashMap<Long,String>();
+					List<Long> urban = new ArrayList<Long>();
 					for (SelectOptionVO mandal : mandalsList){
 						if(mandal.getId().toString().substring(0,1).equalsIgnoreCase("2"))
 						mandalIds.put(new Long(mandal.getId().toString().trim().substring(1)),mandal.getName());
@@ -6710,6 +6749,8 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 						{
 							List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(mandal.getId().toString().substring(1)));
 							 localBodyIds.put(new Long(list.get(0).toString()),mandal.getName());
+							 if("URBAN".equalsIgnoreCase(constituency.getAreaType()))
+								 urban.add(new Long(list.get(0).toString()));
 						}
 						
 					}
@@ -6718,9 +6759,21 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 						importantFamiliesInfoVo.setSubList(getImportantFamilyInfoForMultiple(getReportLevelId(IConstants.MANDAL),mandalIds, publicationDateId,"Mandal"));
 					if(localBodyIds.size() > 0)
 					{
-						List<ImportantFamiliesInfoVo> localElec = getImportantFamilyInfoForMultiple(getReportLevelId(IConstants.LOCALELECTIONBODY),localBodyIds, publicationDateId,"Mandal");
-						if(localElec != null && localElec.size() > 0)
-							importantFamiliesInfoVo.getSubList().addAll(localElec);
+						if("URBAN".equalsIgnoreCase(constituency.getAreaType()) && urban != null && urban.size() == 1){
+							List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId(urban.get(0),publicationDateId);
+							
+							Map<Long,String> wardIds = new HashMap<Long,String>();
+							for (Object[] ward : wardsList){
+								wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+							}
+							if(wardIds.size() > 0)
+								importantFamiliesInfoVo.getSubList().addAll(getImportantFamilyInfoForMultiple(getReportLevelId("Ward"), wardIds, publicationDateId,"Ward"));
+							
+						}else{
+							List<ImportantFamiliesInfoVo> localElec = getImportantFamilyInfoForMultiple(getReportLevelId(IConstants.LOCALELECTIONBODY),localBodyIds, publicationDateId,"Mandal");
+							if(localElec != null && localElec.size() > 0)
+								importantFamiliesInfoVo.getSubList().addAll(localElec);
+						}
 					}
 				}
 				
