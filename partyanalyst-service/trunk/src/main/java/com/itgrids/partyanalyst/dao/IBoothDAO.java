@@ -144,5 +144,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Object> getNoOfWardsInMuncipality(Long id, Long publicationDateId);
 	
 	public List<Long> getWardIdsByLocalElectionBodyIds(List<Long> localElectionBodyIds);
+	
+	public List<Long> getWardIdsByLocalEleBodyIdsList(List<Long> localEleBodyIds, Long publicationDateId);
 
 }
