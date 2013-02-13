@@ -3960,6 +3960,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 			$("#previousEleVotingTrendsDiv1").css('display','none');
 		}
 	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal"){
+		  $("#previousEleAjaxImg").css("display","block");
 		var jsObj=
 		{
 			id                :id,
@@ -3977,6 +3978,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 
 function showPreviousEleVotingTrends(results,jsObj)
 {
+	 $("#previousEleAjaxImg").css("display","none");
 	if(mainreqid == jsObj.id)
 	{	
 	 var flag = false;
