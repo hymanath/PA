@@ -208,6 +208,34 @@ font-size:18px;
 	width : 230px;
 }
 .specPagehighLightsErrorMsgDivId{color: red;font-size: 12px;margin-top: 4px;}
+#contenttable {
+	/*padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;*/
+	background: #fff;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:60px;
+	padding-left:auto;
+	padding-right:auto;width : 980px;
+	
+}
+#content
+{
+	
+	margin: 24px auto 24px auto;
+	padding: 0 60px 30px 60px;
+	border: solid 1px #cbcbcb;
+	background: #fafafa;
+	-moz-box-shadow: 0px 0px 10px #cbcbcb;
+	-webkit-box-shadow: 0px 0px 10px #cbcbcb;
+	
+}
+textarea{
+background-color:#fff;
+ width: 208px;
+}
 </style>
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
