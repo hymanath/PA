@@ -222,15 +222,14 @@ padding:5px 20px;
 .subscriptionsImgTitleDescDiv {width:100%;background:#fafafa;display:inline-block;padding:5px;margin:5px;}
 .frndName{ padding: 18px;
     width: auto;
-   margin-top: -50px;
-   display:block;
-   position:relative;
+   margin-top: -27px;
 }
 .frndImg {
  width: auto;
+ padding: 2px;
 }
 .friendListTemplate1{
- display: inline;
+ display: -moz-inline-box;
 }
 </style>
 </head>
@@ -248,8 +247,8 @@ padding:5px 20px;
 				 <img class="thumbnail"  src="pictures/profiles/${loginUserProfilePic}"  id="userProfileImg">
 				</c:if>
 				</div>
-				<div class="span7">
-					<span class="profileUserName row"  style="text-transform: capitalize;">${profileUserName}</span>
+				<div class="span7" style="width: 550px;">
+					<span class="profileUserName row"  style="text-transform: capitalize; font-family: sans-serif;">${profileUserName}<br></span>
 					<span class="fontStyle"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="statePageAction.action?stateId=${dataTransferVO.stateId}">${dataTransferVO.stateName}</a></span>
@@ -269,7 +268,7 @@ padding:5px 20px;
 								<span class="connectStatusSpan"><a href="javascript:{}" class="connectLinkInPP"><i class="icon-plus-sign opacityFilter-50 fontStyle"></i> Connect </a></span>
 							</c:if>
 							<c:if test="${connectStatus == 'PENDING'}">
-								<span class="connectStatusSpan"><a class="btn-mini" href="javascript:{}" rel="tooltip" title="Pending"><i class="icon-adjust opacityFilter-50"></i>Request Pending</a></span>
+								<span class="connectStatusSpan"><a class="btn-mini" href="javascript:{}" rel="tooltip" title="Pending" style="font-size:15px"><i class="icon-adjust opacityFilter-50"></i> Request Pending</a></span>
 
 							</c:if>
 							<c:if test="${connectStatus == 'Respond to Friend'}">
@@ -348,11 +347,16 @@ padding:5px 20px;
 			<h2>
 				<span><i class="icon-fire" id="icon_leftsec"></i></span>
 					Friends 
+					<c:if test="${ !empty registrationVOList }">
 					<span style="font-size: 11px;margin-left: 120px;text-transform: none;cursor:pointer;" class="friendsInPP">See All</span>
+					 </c:if>
 					</h2>
 					<div class=""style="margin-left: -15px;">
 					
 					<ul>
+					<c:if test="${ empty registrationVOList }">
+                 <li style="color:#0088CC">There are No Friends for <br><b style="text-transform: capitalize;text-align: justify;">${profileUserName}</b></li>
+                    </c:if>
 				<c:forEach var="friendsDetails" items="${registrationVOList}" begin="0" end="5">
 
 					<li class="imgLi">
@@ -360,15 +364,15 @@ padding:5px 20px;
 						<a href="userProfile.action?profileId=${friendsDetails.registrationID}">
 								
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
-									<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>
-									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
+									<!--<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>-->
+									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"> </img>
 								</c:if>
 						</a>
 													
 						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
 								<img height="50" width="55" src="/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
 						</c:if>								
-						<span><a href="userProfile.action?profileId=${friendsDetails.registrationID}"> <b style="font-size:13px;text-transform: capitalize;">${friendsDetails.firstName} ${friendsDetails.lastName}</b></a></span>
+						<span><a href="userProfile.action?profileId=${friendsDetails.registrationID}"> <b style="font-size: 13px; text-transform: capitalize;">${friendsDetails.firstName} ${friendsDetails.lastName}</b></a></span>
 						<hr style="margin-top: 30px;position: inherit;">
 					</li>
 					
@@ -434,8 +438,8 @@ padding:5px 20px;
 
 	<div class="friendListTemplate1">
 	
-		<div class="frndImg thumbnail " style="width:67px;"></div>
-		<h6  class="frndName span2 pull-right" ></h6>
+		<div class="frndImg thumbnail "></div>
+		<h6  class="frndName span2 pull-right" style="margin-top: 0px;"></h6>
 </div>
 	</div>
 	
