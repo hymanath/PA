@@ -6,23 +6,31 @@ $("document").ready(function(){
 	$('.friendsInPP').click(function(){
 		$(".placeholderCenterDiv").children().remove();
 		$(".placeholderCenterDiv").css('display','inline-block');
-	    $(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;">Friends</h4>');                           
+	    $(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;">Friends :</h4>');                           
 		$("#problemsDiv").children().remove();
 
-		for(var i in friendsInPP)
-		{
-		   var name = friendsInPP[i].firstName+" "+friendsInPP[i].lastName;
-		   var imageStr = "pictures/profiles/"+friendsInPP[i].profilePic;
-		   var template = $(".friendListTemplate");
-		   var templateClone =  template.clone();
-		   templateClone.removeClass("friendListTemplate");
-		   templateClone.find('.frndName').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
-		   if(friendsInPP[i].profilePic == null)
-			  templateClone.find('.frndImg').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg"/></a>');
-		   else
-			  templateClone.find('.frndImg').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'"/></a>');
-		 templateClone.appendTo(".placeholderCenterDiv");
-	    }
+	if(friendsInPP.length > 0 && friendsInPP != 'null'){
+			for(var i in friendsInPP)
+			{
+			   var name = friendsInPP[i].firstName+" "+friendsInPP[i].lastName;
+			   var imageStr = "pictures/profiles/"+friendsInPP[i].profilePic;
+			   var template = $(".friendListTemplate");
+			   var templateClone =  template.clone();
+				   templateClone.removeClass("friendListTemplate");
+				   templateClone.find('.frndName').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'">'+name+'</a>');
+			   
+			   if(friendsInPP[i].profilePic == null)
+				  templateClone.find('.frndImg').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="pictures/profiles/member.jpg" /></a>');
+			   else
+				  templateClone.find('.frndImg').html('<a href="userProfile.action?profileId='+friendsInPP[i].id+'"><img height="50" width="55" src="'+imageStr+'" style="height: 60px;"/></a>');
+			 templateClone.appendTo(".placeholderCenterDiv");
+			}
+	}
+	else{
+			$(".placeholderCenterDiv").children().remove();
+			$(".placeholderCenterDiv").css('display','inline-block'); 
+		  $(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;">Friends :</h4><b><font style="text-transform: capitalize;">'+profileUserName+' </font> dont have any Friends<b>'); 
+	  }
 	});
 
 	 $(".problemLink").click(function(){
@@ -327,11 +335,12 @@ function showStreamingData(results,jsObj)
 {
 	$("#problemsDiv").children().remove();
 	var status;
-	if(results != null)
+	if(results != null && results.length > 0)
 	{
 		for(var i in results)
 		{
 			var postedDate = $('<div></div>');
+			$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Problems : </span></h4>');
 			postedDate.append('<span>'+results[i].postedDate+'</span>');
 			postedDate.appendTo('.placeholderCenterDiv');
 			var list = results[i].problemBeanVOList;
@@ -375,7 +384,11 @@ function showStreamingData(results,jsObj)
 			}
 		}
 	}
-
+	else{
+		$(".placeholderCenterDiv").children().remove();
+		$(".placeholderCenterDiv").css('display','inline-block'); 
+		$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Problems : </span></h4><b> <font style="text-transform: capitalize;">'+profileUserName+'  </font> has not posted any Problems or Reasons<b>');	
+	}
 }
 
 function setDefaultImage(img)
