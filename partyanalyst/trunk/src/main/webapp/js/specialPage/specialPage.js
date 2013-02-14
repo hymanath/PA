@@ -24,6 +24,8 @@ var timeST = new Date().getTime();
 
 function insertProfileDiscription()
 {
+	document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+	document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('descriptionDiv').style.display = 'none')
 		document.getElementById('descriptionDiv').style.display = 'block';
 
@@ -50,8 +52,8 @@ function insertProfileDiscription()
 
 	document.getElementById("headingnames").innerHTML = "Event Description";
 	var str ='';
-	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="content" align="center" style="width:650px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
@@ -66,7 +68,7 @@ function insertProfileDiscription()
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Event  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
-	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 5px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -75,8 +77,8 @@ function insertProfileDiscription()
 } 
 function addDescriptionDiv(){
 	var str='';
-	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="content" align="center" style="width:650px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
@@ -91,7 +93,7 @@ function addDescriptionDiv(){
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Event  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
-	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 5px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -656,8 +658,8 @@ function showEventDescription(myResults)
 	sizeOfArray = listSize;
 	var i;
 	var str ='';
-	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="content" align="center" style="width:650px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
@@ -673,14 +675,14 @@ function showEventDescription(myResults)
 	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
 	for(i=0 ; i<listSize ; i++)
 	{
-	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].orderNo+'" size="5"></td>';
-	str += ' <td style="padding-right: 82px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
-	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].specialPageDescriptionId+')"></td></tr>';
+	str += ' <tr><td style="padding-right:100px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].orderNo+'" size="5" style="width: 40px;"></td>';
+	str += ' <td style="padding-right: 75px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
+	str += ' <td style="padding-right: 80px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].specialPageDescriptionId+')"></td></tr>';
 	str += ' <input type="hidden" id="specialPageDescriptionId_'+i+'" value="'+myResults[i].specialPageDescriptionId+'">';
 
 	}
 	str += '</table>';
-	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 5px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -830,7 +832,8 @@ function showDiscriptionUpdateStatus(myResult)
 
 
 function showVideoGallary(){
-
+document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 if(document.getElementById('descriptionDiv').style.display = 'block')
 	document.getElementById('descriptionDiv').style.display = 'none' ;
 
@@ -859,9 +862,9 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 		
 	var videoGallaryDivElmt = document.getElementById("videoGallaryDiv");
 	var str ='';
-	str +='<div id="content" style="width:650px;">';
+	str +='<div id="content" align="center" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
@@ -871,7 +874,7 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Video Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId" style="margin-left: 50px;"></div></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pVGallaryNameId" size="25" maxlength="100"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
@@ -879,7 +882,7 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right:5px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
 	
 	str += '</fieldset>';
@@ -894,9 +897,9 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 function buildCreateVideoGallaryDiv(){
 	 var videoGallaryDivElmt = document.getElementById("videoGallaryDiv");
 	var str ='';
-	str +='<div id="content" style="width:650px;">';
+	str +='<div id="content" align="center" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
@@ -906,7 +909,7 @@ function buildCreateVideoGallaryDiv(){
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Video Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId" style="margin-left:50px;"></div></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pVGallaryNameId" size="25" maxlength="100"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
@@ -914,7 +917,7 @@ function buildCreateVideoGallaryDiv(){
 	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right:5px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
 	
 	str += '</fieldset>';
@@ -1008,19 +1011,19 @@ function buildUploadVideoDiv()
 {
 	document.getElementById("newsGallaryDiv").innerHTML = '';
 	var str ='';
-	str+='<div id="content" style="width:650px;">';
+	str+='<div id="content" align="center" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
 	str += '</tr>';
 	str += '</table>';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:440px;">';
 	str += '<h2 align="center">Upload A Video</h2>';
 	str+=  '<div id="fileSuccessDiv"></div>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
+    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId" style="margin-left:50px;"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallarySelectIdss" style="width:175px;"><option value="0">Select</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="200"></td></tr>';
@@ -1047,7 +1050,7 @@ function buildUploadVideoDiv()
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str +='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromSpecialPage\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str +='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
-	str += '<table style="margin-top: 27px;"><tr><td style="padding-right: 18px;"><input type="button" id="uploadVideoBtnId" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin-top: 27px;"><tr><td style="padding-right: 5px;"><input type="button" id="uploadVideoBtnId" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</fieldset>';
 	str+='</div>';
@@ -1498,6 +1501,8 @@ function displayDateText(type, args, obj) {
 //for NewsGallary
 
 function showNewsGallaey(){
+	document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+	document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 if(document.getElementById('videoGallaryDiv').style.display = 'block')
 	document.getElementById('videoGallaryDiv').style.display = 'none';
 
@@ -1525,8 +1530,8 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	//var newsGallaryDiv = document.getElementById("newsGallaryDiv");
 	document.getElementById("headingnames").innerHTML = "News Gallery";
 	var str ='';
-	str+='<div id="content" style="width:650px;">';
-	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str+='<div id="content" align="center" style="width:650px;">';
+	str +=  '<table style="margin-top:10px;">';
 	str +=  '<tr>';
 	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
@@ -1534,7 +1539,7 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	str += 	'</table>';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A News Category</h2>';
-	str+='<table align="left" class="paddingCss"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
+	str+='<table align="left" class="paddingCss"><tr><td><div id="newsErrorMsgDivId" style="margin-left: 50px;"/></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
@@ -1560,8 +1565,8 @@ if(newsGallaryDiv.style.display = 'none')
 	newsGallaryDiv.style.display = 'block';
 	
 	var str ='';
-	str+='<div id="content" style="width:650px;">';
-	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str+='<div id="content" align="center" style="width:650px;">';
+	str +=  '<table style="margin-top:10px;">';
 	str +=  '<tr>';
 	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
@@ -1569,7 +1574,7 @@ if(newsGallaryDiv.style.display = 'none')
 	str += 	'</table>';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A News Category</h2>';
-	str+='<table align="left" class="paddingCss"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
+	str+='<table align="left" class="paddingCss"><tr><td><div id="newsErrorMsgDivId" style="margin-left:50px;"/></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
@@ -1667,18 +1672,18 @@ function  buildUploadNews()
 	var tempSpecialPageId = specialPageIdEle.options[specialPageIdEle.selectedIndex].value
   
    var str ='';
-	str+='<div id="content" style="width:650px;">';
-	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str+='<div id="content" align="center" style="width:650px;">';
+	str +=  '<table style="margin-top:10px;">';
 	str +=  '<tr>';
 	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
 	str += 	 '</tr>';
 	str += 	'</table>';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:440px;">';
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
-	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
-	str += '<table>';
+	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" style="margin-left:32px;"/></td></tr></table>';
+	str += '<table width="75%">';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
 	str += '   </tr>';
@@ -3434,6 +3439,8 @@ function buildAllVideosInGallary(results){
 
 function buildCreateNewDiv()
 {
+document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 
 	if(document.getElementById('descriptionDiv').style.display = 'block')
 		document.getElementById('descriptionDiv').style.display = 'none' ;
@@ -3463,21 +3470,21 @@ function buildCreateNewDiv()
 	var str ='';
 	str +='<div id="content" style="width:650px;">';
 		
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px;margin-top:25px;margin-left:auto;margin-right:auto;">';
 	str += '<h2 align="center">Create A Special Page</h2>';
 	
 	str += '<div id="createNewInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	
-	str += '<table align="left" class="paddingCss"><tr><td><div id="createNewErrorMsgDivId"></div></td></tr></table>';
+	str += '<table style="margin-left: 52px;" class="paddingCss"><tr><td><div id="createNewErrorMsgDivId"></div></td></tr></table>';
 
-	str += '<table width="75%">';
+	str += '<table align="center" width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="createNewNameId" size="25" maxlength="100"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="createNewTitleId" size="25" maxlength="500"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Heading<font class="requiredFont">*</font></font></b></td><td><input type="text" id="createNewHeadingId" size="25" maxlength="300"></td></tr>';
 
-	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Create" style="background-color:#57B731" onClick="createNewSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearCreateNewDiv()" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center"><tr><td style="padding-right:5px"><input type="button" class="imageButton" value="Create" style="background-color:#57B731" onClick="createNewSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearCreateNewDiv()" style="background-color:#CF4740"></td></tr></table>';
 
 	
 	str += '</fieldset>';
@@ -3984,7 +3991,8 @@ function getDistricts1(stateId){
 
 function buildMetaInfoDiv()
 {
-
+document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('descriptionDiv').style.display = 'block')
 		document.getElementById('descriptionDiv').style.display = 'none' ;
 
@@ -4012,14 +4020,14 @@ function buildMetaInfoDiv()
 	document.getElementById("headingnames").innerHTML = "Meta Info";
 	var metaInfoDivElmt = document.getElementById("metaInfoDiv");
 	var str ='';
-	str +='<div id="content" style="width:650px;">';
+	str +='<div id="content" align="center" style="width:650px;">';
 		
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Add Meta Information</h2>';
 	
 	str += '<div id="metaInfoInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	
-	str += '<table align="left" class="paddingCss"><tr><td><div id="metaInfoErrorMsgDivId"></div></td></tr></table>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="metaInfoErrorMsgDivId" style="margin-left:5px;"></div></td></tr></table>';
 
 	str += '<table width="95%">';
 	str += '<tr><td><b><font color="#4B74C6">Meta Keywords<font class="requiredFont">*</font></font></b></td><td><textarea id="metaKeywordsId" cols="25" rows="5" name="requirement"></textarea></td></tr>';
@@ -4104,8 +4112,8 @@ function buildPhotoGallery()
 {
 	var photoGallaryDivEle = document.getElementById("photoGallaryDiv");
 	var str ='';
-    str +='<div id="content" style="width:650px;">';
-	str +='<table style="margin:5px;width:40%;margin-left:50px;">';
+    str +='<div id="content" align="center" style="width:650px;">';
+	str +='<table style="margin-top:10px;">';
 	str +='   <tr>';
 	str +='      <td><input type="button" class="imageButton" value="Create Gallery" onclick="buildPhotoGalleryDiv()"/></td>';
 	str +='      <td><input type="button" class="imageButton" value="Upload Photos" onclick="buildUploadPhotosDiv()"/></td>';
@@ -4114,13 +4122,13 @@ function buildPhotoGallery()
 	str +='<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDiv"></div></td></tr></table>';
+    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDiv" style="margin-left: 50px;"></div></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 5px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +='</fieldset>';
 	str+='</div>';
 	photoGallaryDivEle.innerHTML = str;
@@ -4136,8 +4144,8 @@ function buildPhotoGalleryDiv()
 {
 	var photoGallaryDivEle = document.getElementById("photoGallaryDiv");
 	var str ='';
-    str +='<div id="content" style="width:650px;">';
-	str +='<table style="margin:5px;width:40%;margin-left:50px;">';
+    str +='<div id="content" align="center" style="width:650px;">';
+	str +='<table style="margin-top:10px;">';
 	str +='   <tr>';
 	str +='      <td><input type="button" class="imageButton" value="Create Gallery" onclick="buildPhotoGalleryDiv()"/></td>';
 	str +='      <td><input type="button" class="imageButton" value="Upload Photos" onclick="buildUploadPhotosDiv()"/></td>';
@@ -4146,13 +4154,13 @@ function buildPhotoGalleryDiv()
 	str +='<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDiv"></div></td></tr></table>';
+    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDiv" style="margin-left: 50px;"></div></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 5px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +='</fieldset>';
 	str+='</div>';
 	photoGallaryDivEle.innerHTML = str;
@@ -4161,9 +4169,9 @@ function buildUploadPhotosDiv()
 {
 	var tempSpecialPageId = document.getElementById("specialPageId").value;
 	var str ='';
-	str+='<div id="content" style="width:650px;">';
+	str+='<div id="content" align="center" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '	<td><input type="button" class="imageButton" value="Create Gallery" onclick="buildPhotoGalleryDiv()"></td>';
 	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
@@ -4175,7 +4183,7 @@ function buildUploadPhotosDiv()
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Photo</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId" style="margin-left: 30px;"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="200"></td></tr>';
@@ -4208,7 +4216,7 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromSpecialPage\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>';
-	str += '<table style="margin-top: 31px;"><tr><td style="padding-right: 22px;"><input type="button" id="uploadPhotoId" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin-top: 31px;"><tr><td style="padding-right: 5px;"><input type="button" id="uploadPhotoId" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</form>';
 	str += '</fieldset>';
@@ -4662,9 +4670,9 @@ function buildCandidatePhotoGallary(results)
 {
 	var str ='';
 
-		str+='<div id="content" style="width:650px;">';
+		str+='<div id="content" align="center" style="width:650px;">';
 		
-		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+		str += '<table style="margin-top:10px;">';
 		str += '<tr>';
 		str += '	<td><input type="button" class="imageButton" value="Create Gallery" onclick="buildPhotoGallery()"></td>';
 		str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
@@ -4805,18 +4813,18 @@ function updateGallary(gallaryId)
 	document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 	document.getElementById("profileManagementMainOuterDiv6").style.display = 'block';
 	
-	str+='<div id="content" style="width:650px;">';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str+='<div id="content" align="center" style="width:650px;">';
+	str += '<fieldset class="imgFieldset" style="width:440px;margin-top:25px;">';
 	str += '<h2 align="center">Update A Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDiv"></div></td></tr></table>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDiv" style="margin-left: 50px;"></div></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont"> * </font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement">'+myResults.gallaryDescription+'</textarea></td></tr></table>';
 	str +='<input type = "hidden" name = gallaryId id = gallaryId value ='+myResults.gallaryId+'>';
 	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallery()" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 5px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallery()" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("updateGallaryDiv").innerHTML = str;
@@ -5254,7 +5262,8 @@ var news_Obj = {
 function buildSpecialPageInfoDiv(result)
 {
 var specialPageId = $("#specialPageId").val();
-
+document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('descriptionDiv').style.display = 'block')
 		document.getElementById('descriptionDiv').style.display = 'none';
 
@@ -5287,13 +5296,13 @@ var specialPageId = $("#specialPageId").val();
 	if(result == null || result.length == 0)
 	{
 	str += '<form id="updateSpecialPageFormId" method="post" enctype="multipart/form-data" action="updateSpecialPageForm.action" name="specialPageForm">';
-	str +='<div id="content" style="width:650px;">';
+	str +='<div id="content" align="center" style="width:650px;">';
 		
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:540px;">';
 	str += '<h2 align="center">Update A Special Page</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="specialPageInfoErrorMsgDivId"  style="margin-bottom: 5px;"></div></td></tr></table>';
-	str += '<table width="75%" style="margin: 0px 38px 10px 0px;">';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="specialPageInfoErrorMsgDivId"  style="margin-bottom: 5px;margin-left:50px;width:200px;"></div></td></tr></table>';
+	str += '<table width="75%" style="margin: 0px 15px 10px 0px;">';
 
 	str += '<tr><td><b><font color="#4B74C6">Title<font class="requiredFont">*</font></font></b></td><td><input name="title" type="text" id="specialPageTitle" size="25" maxlength="100"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
@@ -5303,7 +5312,7 @@ var specialPageId = $("#specialPageId").val();
 	str +='<div style="padding-right: 63px; margin-top: 10px; margin-bottom: 10px;"><b><font color="#4B74C6">Display in Home Page</font></b> <input type="radio" value="Yes" name="specialPageVisibility" id="specialPagePublicRadioId" checked="true" class="specialPagePrivateRadioCls">Yes</input>';
 	str += '<input type="radio" value="No" name="specialPageVisibility" id="specialPagePrivateRadioId" class="specialPagePrivateRadioCls">No</input></div>';
 
-	str += '<table><tr><td style="padding-right:40px"><input type="button" id="specialPageButtonId" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right:5px"><input type="button" id="specialPageButtonId" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +='<input type="hidden" value="'+specialPageId+'" name="speciPageId"/>';
 	str +='</form>';
 	str += '</fieldset>';
@@ -5316,19 +5325,19 @@ var specialPageId = $("#specialPageId").val();
 	{
 	
 	
-	str +='<div id="content" style="width:650px;">';
+	str +='<div id="content" align="center" style="width:650px;">';
 		
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:540px;">';
 	str += '<form id="updateSpecialPageFormId" method="post" enctype="multipart/form-data" action="updateSpecialPageForm.action" name="specialPageForm">';
 	str += '<h2 align="center">Update A Special Page</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="specialPageInfoErrorMsgDivId"  style="margin-bottom: 5px;"></div></td></tr></table>';
-	str += '<table width="75%" style="margin: 0px 38px 10px 0px;">';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="specialPageInfoErrorMsgDivId"  style="margin-bottom: 5px;margin-left:50px;width:200px;"></div></td></tr></table>';
+	str += '<table width="75%" style="margin: 0px 15px 10px 0px;">';
 
 	str += '<tr><td><b><font color="#4B74C6">Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="specialPageTitle" size="25" maxlength="100" value="'+result[i].title+'" name="title"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="specialPageDescription" cols="19" rows="3" name="description">'+result[i].description+'</textarea></td></tr></table>';
-	str += '<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font></td><td class="selectWidthPadd"><input type="file" name="userImage" id="specialPageImgPath" style="margin-left: 11px;" size="25" value="'+result[i].eventImagePath+'"/></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6" style="margin-left: -35px;">File Path<font class="requiredFont">*</font></font></td><td class="selectWidthPadd"><input type="file" name="userImage" id="specialPageImgPath" style="margin-left: 43px;" size="25" value="'+result[i].eventImagePath+'"/></td></tr>';
 	str += '<div id="specialPageImgDiv" style="margin-top:10px;"><img src="'+result[i].eventImagePath+'" style="border: 2px solid #ccc; padding: 5px; border-radius: 3px; height: 100px; width: 130px;cursor:pointer;"/></div>';
 	str += '<div style="padding-right: 63px; margin-top: 10px; margin-bottom: 10px;"><b><font color="#4B74C6">Display in Home Page</font></b>';
 	str += '<input type="radio" value="Yes" name="specialPageVisibility" id="specialPagePublicRadioId" ';
@@ -5340,7 +5349,7 @@ var specialPageId = $("#specialPageId").val();
 		str +='checked="true"';
 	str += 'class="specialPagePrivateRadioCls">No</input></div>';
 
-	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right:5px"><input type="button" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +=	'<input type="hidden" value="'+result[i].specialPageId+'" name="speciPageId"/>';
 	str +='</form>';
 	str += '</fieldset>';
@@ -5445,7 +5454,8 @@ divEle.innerHTML = "";
 
 function buildSpecialPageHighlightsDiv()
 {
-	
+	document.getElementById('profileManagementMainOuterDiv6').style.display = 'none' ;
+	document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('descriptionDiv').style.display = 'none')
 		document.getElementById('descriptionDiv').style.display = 'block';
 
@@ -5475,8 +5485,8 @@ function buildSpecialPageHighlightsDiv()
 
 	var specialPageHighLightsDiv = document.getElementById("specialPageHighLightsDiv");
 	var str ='';
-	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="content" align="center" style="width:650px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="buildSpecialPageHighlightsDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="getSpecialPageHighLights()"></td>';
@@ -5491,7 +5501,7 @@ function buildSpecialPageHighlightsDiv()
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Description</font></b></td><td><textarea id="specialPageHighLightDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
-	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addSpecialPageHighLights()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addSpecialPageHighLights()"></td><td style="padding-left: 5px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 		specialPageHighLightsDiv.innerHTML = str;
@@ -5563,8 +5573,8 @@ function buildSpecialPageHighLightsForUpdate(results)
 	sizeOfArray = myResults.length;
 	var str ='';
 	var i;
-	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="content" align="center" style="width:650px;">';
+	str += '<table style="margin-top:10px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="buildSpecialPageHighlightsDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="getSpecialPageHighLights()"></td>';
@@ -5580,13 +5590,13 @@ function buildSpecialPageHighLightsForUpdate(results)
 	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
 	for(i=0 ; i<results.length ; i++)
 	{
-	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNo_'+i+'" value= "'+results[i].orderNo+'" size="5"></td>';
+	str += ' <tr><td style="padding-right:100px"><input type="text" id="orderNo_'+i+'" value= "'+results[i].orderNo+'" size="5" style="width: 40px;"></td>';
 	str += ' <td style="padding-right: 82px"> <textarea id="descriptionId_'+i+'" cols="25" rows="4"> '+results[i].description+'</textarea> </td>';
 	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteSpecialPageHighLightsById('+results[i].ids+')"></td></tr>';
 	str += ' <input type="hidden" id="specialPageDescId_'+i+'" value="'+results[i].ids+'">';
 	}
 	str += '</table>';
-	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateSpecialPageHighLightDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 5px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateSpecialPageHighLightDiscription()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
