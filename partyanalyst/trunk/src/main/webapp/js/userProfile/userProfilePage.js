@@ -293,11 +293,15 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var Name=$(userName);
 		var constituencyName = $(constituencyName);
 		var message = $("<label class='messageLabel'></label>");
-		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'></textarea>");
+		var textArea = $("<textarea  id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 327px; height:102px;'></textarea>");
 		var image = $('<img height="80" width="80" src="images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
 		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:12px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
-		var errorDiv = $("<div id='errorMsgDiv'></div>")
+		var errorDiv = $("<div id='errorMsgDiv'></div>");
+		var str ='';
+			str+='<div id="processingImage1" style="display: none;height:30px">';
+			str+='<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: 		-167px; margin-left: 467px; border-top-width: 0px; padding-top: 127px; 				padding-bottom: 19px;"/>';
+			str+='</div>';
 		div.append(errorDiv);
 		div.append(Name);
 		div.append(constituencyName);
@@ -306,6 +310,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		div.append(image);
 		div.append(connectBtn);
 		div.append(connectedPersonId);
+		div.append(str);
 		$('#allConnectedUsersDisplay_main').append(div);
 		$("#impdatesDiv").hide();
 	});
@@ -313,6 +318,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 
 	$("#connectPeopleLink").live("click",function(){
+		
 		$("#errorMsgDiv").html('');
 		var connectUserId = $(this).closest(".connectPeoplePopupInnerDiv").find('#connectedPersonId').val();
 		var connectUserMsg = $.trim($("#connectUserMsg").val());
@@ -321,6 +327,8 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var locationId = constituencyId;
 		var locationName = constituencyName;
 		var userId = loginUserId;
+
+		
 		 if(connectUserMsg.length > 200)
 		{
 			$("#errorMsgDiv").html('<font style="color:red">Message Should be lessthan 200 characters.</font>');
@@ -328,7 +336,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		}
 		
 		disableButton("connectPeopleLink");
-		$("#connectPeoplePopup").dialog('close');
+		//$("#connectPeoplePopup").dialog('close');
 		var jsObj ={
 				
 				locationId:locationId,			
@@ -343,13 +351,15 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserAction.action?"+rparam;					
 	callAjax1(jsObj,url);
-	$("#impdatesDiv").hide();	
+	$("#impdatesDiv").hide();
+	$("#processingImage1").show();
+	
 		
 	});
 
 
 	$("#connectDistrictPeopleLink").live("click",function(){
-		
+	
 		$("#errorMsgDiv").html('');
 		var connectUserId = $(this).closest(".connectPeoplePopupInnerDiv").find('#connectedPersonId').val();
 		var connectMsg = $.trim($("#connectUserMsg").val());
@@ -362,14 +372,14 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var users = new Array();
 		users.push(connectUserId);
 
-		 if(connectUserMsg.length > 200)
+		 if(connectMsg.length > 200)
 		{
 			$("#errorMsgDiv").html('<font style="color:red">Message Should be lessthan 200 characters.</font>');
 			return;
 		}
 		
 		disableButton("connectDistrictPeopleLink");
-		$("#connectPeoplePopup").dialog('close');
+		//$("#connectPeoplePopup").dialog('close');
 		
 		var jsObj ={
 			
@@ -385,6 +395,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var url = "connectToUserSetAction.action?"+rparam;					
 	callAjax1(jsObj,url);			
 	$("#impdatesDiv").hide();
+	$("#processingImage2").show();
 	});
 	
 //change Password
@@ -922,6 +933,7 @@ function callAjax1(jsObj,url){
 						if(jsObj.type=="Connect"){
 							location.reload(true);//For refreshing the page...
 						}else{
+								$("#processingImage").hide();
 							showMessageSentConfirmation(results);
 						}
 					}
@@ -950,11 +962,13 @@ function callAjax1(jsObj,url){
 					}
 					else if(jsObj.task == "connectToUser")
 					{
+						$("#processingImage1").hide();
 						closeConnectPanel(jsObj,results);
 						getPeopleYouMayKnowDetails();
 					}
 					else if(jsObj.task =="connectUserSet")
 					{
+						$("#processingImage2").hide();
 						showAllConnectedUsersStatus(jsObj,results);
 					}
 					else if(jsObj.task =="getUserScriptions")
@@ -1434,13 +1448,14 @@ function showSentBoxMessagesForAUser(results)
 
 function showMailPopup(id,name,type)
 {
+	
 	$("#allConnectedUsersDisplay_main").children().remove();
 	$( "#connectPeoplePopup").dialog({
 			title:"Send Message to "+name,
 			autoOpen: true,
 			show: "blind",
-			width: 400,
-			minHeight:250,
+			width: 380,
+			minHeight:200,
 			modal: true,
 			hide: "explode"
 		});
@@ -1448,12 +1463,17 @@ function showMailPopup(id,name,type)
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'></label>");
-		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'></textarea><br>");
-		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..' style='width: 320px; height: 75px;'></textarea><br>");
+		var button = $("<input class='btn btn-mini btn-small btn-info' id='sendMessageButtonId' type='button' value='send' style='margin-top: 1px;width: 45px; height: 22px;' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		var str ='';
+			str+='<div id="processingImage" style="display: none;height:30px">';
+			str+='<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: 		-145px; margin-left: 335px; border-top-width: 0px; padding-top: 127px; 				padding-bottom: 19px;"/>';
+			str+='</div>';
 		div.append(errorDiv);
 		div.append(label);
 		div.append(textarea);
 		div.append(button);
+		div.append(str);
 		$('#allConnectedUsersDisplay_main').append(div);
 
 }
@@ -1485,6 +1505,7 @@ function sendMessageToConnectedUser(userId,type)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "messageToConnectedUser.action?"+rparam;					
 	callAjax1(jsObj,url);
+	$("#processingImage").show();
 }
 
 
@@ -1588,7 +1609,6 @@ function showSpecialPages(results)
 
 function closeConnectPanel(jsObj,results)
 { 
-		
 	var connectUserMsg = $("#connectUserMsg").val('');
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
@@ -1602,7 +1622,8 @@ function closeConnectPanel(jsObj,results)
 		$("#errorMsgDiv").html('<font color="red" style="font-weight:bold;">Request Cannot be sent due to some technically difficulty.</font>');
 		return;
 	}
-	
+	setTimeout("$('#connectPeoplePopup').dialog('close')",3500);
+
 }
 
 
@@ -1921,26 +1942,32 @@ function connectToSelectedPerson(id,name)
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			minHeight:250,
+			minHeight:235,
 			modal: true,
 			hide: "explode"
 		});
 
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
-		var Name=$("<label>"+userName+"</label>");
-		var message = $("<label class='messageLabel'>Message</label>");
-		var textArea = $("<textarea id='connectUserMsg'></textarea>");
-		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
-		var connectBtn = $('<input type="button" value="Connect" id="connectDistrictPeopleLink"/>');
+		/*var Name=$("<label>"+userName+"</label>");
+		var message = $("<label class='messageLabel'>Message</label>");*/
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 327px; height:102px;'></textarea>");
+		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg" style="margin-left: 12px;">');
+		var connectBtn = $('<input type="button" value="Connect" id="connectDistrictPeopleLink" class="btn btn-info btn-mini" style="margin-left: 367px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
-		var errorDiv = $("<div id='errorMsgDiv'></div>")
+		var errorDiv = $("<div id='errorMsgDiv'></div>");
+		var str ='';
+			str+='<div id="processingImage2" style="display: none;height:30px">';
+			str+='<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: 		-194px; margin-left: 462px; border-top-width: 0px; padding-top: 127px; 				padding-bottom: 19px;"/>';
+			str+='</div>';
+
 		div.append(errorDiv);
-		div.append(Name);
-		div.append(message);
+		/*div.append(Name);
+		div.append(message);*/
 		div.append(textArea);
 		div.append(image);
 		div.append(connectBtn);
 		div.append(connectedPersonId);
+		div.append(str);
 		$('#allConnectedUsersDisplay_main').append(div);
 }
 
@@ -1948,13 +1975,15 @@ function connectToSelectedPerson(id,name)
 
 function showAllConnectedUsersStatus(jsObj,results)
 {
+	
 	$(".placeholderCenterDiv").children().remove();
 	$(".districtPeopleLink").trigger("click");
 
 
 if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{		
-		var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');
+		/*var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');*/
+		$("#errorMsgDiv").html('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.' );
 		if(jsObj.locationType=="DISTRICT"){
 			$("#districtPeopleLink").trigger("click");
 			//showAllConnectedUsersInPanelOfDistrict(jsObj,results);		
@@ -1967,6 +1996,7 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 	}
 	//else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
 		//elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent to the selected users due to some technical difficulty.</blink></font>';
+	setTimeout("$('#connectPeoplePopup').dialog('close')",3500);
 }
 
 
