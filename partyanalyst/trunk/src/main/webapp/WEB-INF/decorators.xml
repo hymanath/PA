@@ -180,8 +180,8 @@
 		<pattern>/cadreRegisterAction*</pattern>
 		<pattern>/statePageAction*</pattern>
 		<pattern>/electionComparisonReportAction*</pattern>
-		
 		<pattern>/partyStrengthAction*</pattern>
+		<pattern>/specialPageManageAction*</pattern>
     </decorator>
 
 </decorators>
