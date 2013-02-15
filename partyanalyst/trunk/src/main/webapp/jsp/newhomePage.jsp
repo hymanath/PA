@@ -272,9 +272,9 @@ Quick Links</h2>
 										<ul class="nav nav-tabs nav-stacked" role="menu" aria-labelledby="dLabel" id="viewYourParty">
 											<li><a tabindex="-1" href="partyPageAction.action?partyId=362"><img src="images/party_flags/INC.png" class="thumbnail" alt="INC Party" />  <h6>Indian National Congress [INC]</h6></a></li>
 										
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=872"><img src="images/party_flags/TDP.PNG" class="thumbnail"  alt="TDP Party" /><h6> Telugu Desam Party [TDP]</h6></a></li>	
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=872"><img src="images/party_flags/TDP.png" class="thumbnail"  alt="TDP Party" /><h6> Telugu Desam Party [TDP]</h6></a></li>	
 											
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=1117"><img src="images/party_flags/YSRC.PNG" class="thumbnail"  alt="YSRC Party" /> <h6>Yuvajana Sramika Raithu Congress [YSRC]</h6></a></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=1117"><img src="images/party_flags/YSRC.png" class="thumbnail"  alt="YSRC Party" /> <h6>Yuvajana Sramika Raithu Congress [YSRC]</h6></a></li>
 								
 											<li><a tabindex="-1" href="partyPageAction.action?partyId=163"><img src="images/party_flags/BJP.png" class="thumbnail" alt="BJP Party" /><h6> Bharath Janathadal Party [BJP]</h6></a></li>
 											
