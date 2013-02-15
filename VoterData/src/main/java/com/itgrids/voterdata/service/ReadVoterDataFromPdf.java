@@ -190,8 +190,8 @@ public class ReadVoterDataFromPdf {
                         voterInfoList.add(voter);
                         voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
                         System.out.println(voterInfo);
-                        sb2.append(voterInfo);
-                        writer.write(voterInfo); 
+                        sb2.append(voterInfo+"\n");
+                        writer.write(voterInfo+"\n"); 
                     }
                     if (pd != null) {
                         pd.close();
