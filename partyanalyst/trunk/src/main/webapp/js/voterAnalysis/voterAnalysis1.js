@@ -4017,6 +4017,8 @@ function showPreviousEleVotingTrends(results,jsObj)
 				str +='<thead class="info"><tr>';
 				str +='<th>Election Type</th>';
 				str +='<th>Year</th>';
+				if(jsObj.type != "booth")
+				str +='<th>Total Booths</th>';
 				str +='<th>Total Voters</th>';
 				  str +='<th>Votes Polled</th>';
 			   for(var i in results[0].partiesList)
@@ -4028,6 +4030,8 @@ function showPreviousEleVotingTrends(results,jsObj)
 				  str +='<tr>';
 				  str += '<td>'+results[j].reqType+'</td>';
 				  str += '<td>'+results[j].electionYear+'</td>';
+				  if(jsObj.type != "booth")
+                  str += '<td>'+results[j].totalBooths+'</td>';
 				  str +='<td>'+results[j].totalVotes+'</td>';
 					str +='<td>'+results[j].polledVotes+'</td>';
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
@@ -4308,12 +4312,14 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			str+='<table id="voterBasicInfoTable" class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 			 str+='<thead class="info"><tr>';
 			  str+='<th>Year</th>';
-		      str+='<th>Total Voters</th>';
-		 	  str+='<th>Male Voters</th>';
-		 	  str+='<th>Female Voters</th>';
-			  str+='<th>Total Voters Difference</td>';
-			  str+='<th>Male Voters Difference</td>';
-		  	  str+='<th>Female Voters Difference</td>';
+			 if(jsObj.type != "booth")
+			  str+='<th>Booths</th>';
+		      str+='<th>Total</th>';
+		 	  str+='<th>Male</th>';
+		 	  str+='<th>Female</th>';
+			  str+='<th>Total Difference</td>';
+			  str+='<th>Male Difference</td>';
+		  	  str+='<th>Female Difference</td>';
 			 str+='</tr></thead><tbody>';
 
 
@@ -4325,7 +4331,8 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			    str+='<td><span title='+myResults[i-1].electionDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(E)<b></td>';
 			  else 
 				str+='<td><span title='+myResults[i-1].publicationDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(P)<b></td>';
-
+              if(jsObj.type != "booth")
+			  str+='<td>'+myResults[i-1].totalBooths+'</td>';
 		      str+='<td>'+myResults[i-1].totVoters+'</td>';
 		 	  str+='<td>'+myResults[i-1].totalMaleVoters+'</td>';
 		 	  str+='<td>'+myResults[i-1].totalFemaleVoters+'</td>';
