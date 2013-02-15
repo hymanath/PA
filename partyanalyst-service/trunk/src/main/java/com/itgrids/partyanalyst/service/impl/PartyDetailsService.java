@@ -468,7 +468,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 				log.debug("Entered into convertDataToFileVO() of candidateDetailsService");
 
 		     List<FileVO> retValue = new ArrayList<FileVO>();
-			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			 try{
 				  FileVO fileVO;
 				  
@@ -553,6 +553,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 	public List<FileVO> getNewsToDisplay(Long partyId, int firstResult,int maxResult, String queryType) 
 	{
 		List<FileVO> retValue = new ArrayList<FileVO>();
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			//List<File> file = partyGalleryDAO.getFirstFourNewsForParty(partyId,firstResult, maxResult, queryType);
 			
@@ -570,7 +571,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 					fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
 					fileVO.setSource(file.getSourceObj() != null ? file.getSourceObj().getSource() : "");
 					fileVO.setLanguage(file.getLanguage() != null ? file.getLanguage().getLanguage() : "");
-					fileVO.setFileDate(file.getFileDate() != null ? file.getFileDate().toString() : "");
+					fileVO.setFileDate(file.getFileDate() != null ? (sdf.format((Date)file.getFileDate())) : "");
 					fileVO.setContentId((Long)params[1]);
 					
 					List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();

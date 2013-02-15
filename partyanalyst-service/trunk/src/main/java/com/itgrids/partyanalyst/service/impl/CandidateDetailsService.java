@@ -1225,7 +1225,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult,String queryType){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		 try{
 			  FileVO fileVO;
 			  List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,null,queryType); 
@@ -4173,7 +4173,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			log.debug("Entered into convertDataToFileVO() of candidateDetailsService");
 
 	     List<FileVO> retValue = new ArrayList<FileVO>();
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		 try{
 			  FileVO fileVO;
 			  

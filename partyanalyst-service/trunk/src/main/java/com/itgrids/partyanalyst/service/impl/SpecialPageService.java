@@ -503,6 +503,7 @@ public class SpecialPageService implements ISpecialPageService{
 	public List<FileVO> getNewsGalleryBasedOnSpecialPageId(Long specialPageId,int startingRecord,int maxRecord , String queryType){
 		
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try{
 		List<Object[]> fileObject = specialPageGalleryDAO.getGalleriesBasedOnSpecialPageId(specialPageId, startingRecord, maxRecord, IConstants.NEWS_GALLARY);
 		List<Long> totalRecords = specialPageGalleryDAO.getGalleryCountBasedOnSpecialPageId(specialPageId,  IConstants.NEWS_GALLARY);
@@ -520,7 +521,7 @@ public class SpecialPageService implements ISpecialPageService{
 				fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() : "");
 				fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
 				
-				fileVO.setFileDate(file.getFileDate() != null ? file.getFileDate().toString() : "");
+				fileVO.setFileDate(file.getFileDate() != null ? (sdf.format((Date)file.getFileDate())) : "");
 				fileVO.setCount(totalRecords.size());
 				
 				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
