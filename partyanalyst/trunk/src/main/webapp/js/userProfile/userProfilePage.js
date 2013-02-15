@@ -85,7 +85,7 @@ $("document").ready(function(){
               str+='  <tr><td><a href="javascript:{}" class="changePwdLink"><span class="icon-hand-right"></span>  Change Password</a></td></tr>';
               str+='   <tr><td><a href="javascript:{}" class="editPictureLink"><span class="icon-user"></span>  Edit Picture</a></td></tr>';
               str+='   <tr><td><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Edit View Settings</a></td></tr>';
-              str+='   <tr><td><a href="javascript:{}" class="editCoverImgLink"><span class="icon-user"></span>  Upload CoverImage</a></td></tr>';
+             // str+='   <tr><td><a href="javascript:{}" class="editCoverImgLink"><span class="icon-user"></span>  Upload CoverImage</a></td></tr>';
 			  str+='  </tbody>';
               str+='</table>';
 		//$("#headerDiv").append("<ul id='accountStngs'><li><span style='font-weight:bold;'>Settings</span></li><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
@@ -1316,7 +1316,6 @@ function getSubscriptionDetails(type){
 }
 
 function showAllRequestMessagesForUser(results,jsObj){
-
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
@@ -1337,13 +1336,13 @@ function showAllRequestMessagesForUser(results,jsObj){
 
 		templateClone.find('.connectedPersonName').html('<a style="cursor: pointer;" onClick="openNewWindow('+results.friendRequest[i].id+');">'+results.friendRequest[i].candidateName+'</a>');
 		templateClone.find('.imgClass').html('<a  onClick="openNewWindow('+results.friendRequest[i].id+');"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
-		templateClone.find('.messageCls').html(''+results.friendRequest[i].message+'').css("display","block");
+		templateClone.find('.messageCls').html(''+results.friendRequest[i].message+'').css("display","none");
 		templateClone.find('.constituencyName').html(''+results.friendRequest[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.friendRequest[i].district+'');
 		templateClone.find('.stateName').html(''+results.friendRequest[i].state+'');
-		templateClone.find('.sendMsg').html('<a onclick="acceptRequest('+results.friendRequest[i].id+')" class="acceptButton btn btn-mini" rel="tooltip" title="Confirm"><i class="icon-thumbs-up opacityFilter-50"></i></a>');
-		templateClone.find('.connectCls').html('<a onclick="rejectRequest('+results.friendRequest[i].id+')" class="rejectButton btn btn-mini" rel="tooltip" title="Reject" ><i class="icon-thumbs-down opacityFilter-50"></i></a>');
-		templateClone.find('.blockPersonBtn').html('<a onclick="blockRequest('+results.friendRequest[i].id+')" class="rejectButton btn btn-mini" rel="tooltip" title="Block This Person"><i class="icon-ban-circle opacityFilter-50"></i></a>').css("display","block");
+		templateClone.find('.sendMsg').html('<a id="xv"  onclick="acceptRequest('+results.friendRequest[i].id+',\''+results.friendRequest[i].candidateName+'\')" class="acceptButton btn btn-mini" rel="tooltip" title="Confirm"><i  class="icon-thumbs-up opacityFilter-50"></i></a>');
+		templateClone.find('.connectCls').html('<a onclick="rejectRequest('+results.friendRequest[i].id+',\''+results.friendRequest[i].candidateName+'\')" class="rejectButton btn btn-mini" rel="tooltip" title="Reject" ><i class="icon-thumbs-down opacityFilter-50"></i></a>');
+		templateClone.find('.blockPersonBtn').html('<a onclick="blockRequest('+results.friendRequest[i].id+',\''+results.friendRequest[i].candidateName+'\')" class="rejectButton btn btn-mini" rel="tooltip" title="Block This Person"><i class="icon-ban-circle opacityFilter-50"></i></a>').css("display","block");
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 }
@@ -1526,7 +1525,7 @@ function showMessageSentConfirmation(results)
 	
 }
 
-function blockRequest(requestId)
+function blockRequest(requestId,requestName)
 {
 	var jsObj=
 	{		
@@ -1536,11 +1535,12 @@ function blockRequest(requestId)
 	};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "updateUserStatusAction.action?"+rparam;					
+	var url = "updateUserStatusAction.action?"+rparam;		
+	alert(requestName+" request is blocked.");
 	callAjax1(jsObj,url);
 }
 
-function acceptRequest(requestId)
+function acceptRequest(requestId,requestName)
 {
 	var jsObj=
 	{		
@@ -1550,11 +1550,12 @@ function acceptRequest(requestId)
 	};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "updateUserStatusAction.action?"+rparam;					
+	var url = "updateUserStatusAction.action?"+rparam;		
+	alert(requestName+" request is successfully accepted.");
 	callAjax1(jsObj,url);
 }
 
-function rejectRequest(requestId)
+function rejectRequest(requestId,requestName)
 {
 	var jsObj=
 	{		
@@ -1564,7 +1565,8 @@ function rejectRequest(requestId)
 	};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "updateUserStatusAction.action?"+rparam;					
+	var url = "updateUserStatusAction.action?"+rparam;	
+	alert(requestName+" request is rejected.");
 	callAjax1(jsObj,url);
 }
  function showStatus(results,jsObj)
