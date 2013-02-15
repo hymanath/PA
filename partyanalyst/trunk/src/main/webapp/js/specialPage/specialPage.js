@@ -52,8 +52,8 @@ function insertProfileDiscription()
 
 	document.getElementById("headingnames").innerHTML = "Event Description";
 	var str ='';
-	str += '<div id="content" align="center" style="width:650px;">';
-	str += '<table style="margin-top:10px;">';
+	str += '<div id="content" style="width:650px;">';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
@@ -68,7 +68,7 @@ function insertProfileDiscription()
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Event  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
-	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 5px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -1685,7 +1685,7 @@ function  buildUploadNews()
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" style="margin-left:32px;"/></td></tr></table>';
 	str += '<table width="75%">';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
+	str += '       <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
@@ -3773,7 +3773,7 @@ function getLocations(id){
   str +='	   <td><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 88px;">Village/Ward/Division :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 85px;">Village/Ward/Division :<font class="requiredFont">*</font></td>';
   str +='	   <td><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
