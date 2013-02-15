@@ -66,7 +66,7 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInAPanchayat(Long electionId,Long panchayatId){
 		Object[] params = {electionId, panchayatId};
-		return getHibernateTemplate().find("select sum(model2.maleVoters),sum(model2.femaleVoters),sum(model2.totalVoters) from Booth model2 where model2.boothId in (select distinct model.boothConstituencyElection.booth.boothId from HamletBoothElection model " +
+		return getHibernateTemplate().find("select sum(model2.maleVoters),sum(model2.femaleVoters),sum(model2.totalVoters),count(*) from Booth model2 where model2.boothId in (select distinct model.boothConstituencyElection.booth.boothId from HamletBoothElection model " +
 		" ,PanchayatHamlet model1 where model.boothConstituencyElection.constituencyElection.election.electionId = ? and model.hamlet.hamletId = model1.hamlet.hamletId and model1.panchayat.panchayatId = ? ) ",params);
 	}
 	
