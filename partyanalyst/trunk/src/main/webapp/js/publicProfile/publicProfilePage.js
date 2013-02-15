@@ -340,7 +340,7 @@ function showStreamingData(results,jsObj)
 		for(var i in results)
 		{
 			var postedDate = $('<div></div>');
-			$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Problems : </span></h4>');
+			$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Updates : </span></h4>');
 			postedDate.append('<span>'+results[i].postedDate+'</span>');
 			postedDate.appendTo('.placeholderCenterDiv');
 			var list = results[i].problemBeanVOList;
@@ -387,7 +387,7 @@ function showStreamingData(results,jsObj)
 	else{
 		$(".placeholderCenterDiv").children().remove();
 		$(".placeholderCenterDiv").css('display','inline-block'); 
-		$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Problems : </span></h4><b> <font style="text-transform: capitalize;">'+profileUserName+'  </font> has not posted any Problems or Reasons<b>');	
+		$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Updates : </span></h4><b> There are no Updates from <font style="text-transform: capitalize;">'+profileUserName+'  </font> <b>');	
 	}
 }
 
