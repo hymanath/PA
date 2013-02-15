@@ -56,7 +56,7 @@ public class APVoterDataDownloader {
             } else {
                 i = 1;
             }
-            i= 63;
+            i= 57;
             //for(; i<=numOfconstituencies; i++){
                 constituency.selectByValue(String.valueOf(i));
                 String constituencyName = constituency.getFirstSelectedOption().getText();
@@ -80,7 +80,7 @@ public class APVoterDataDownloader {
                 		for(String fileName : filesNameList)
                 		{
                 			File file = new File(IConstants.DOWNLOAD_DIRECTORY+"\\"+fileName);
-                			if(file.isFile() && fileName.endsWith(".pdf"))
+                			if(file.isFile() && fileName.endsWith(".pdf") && !file.isHidden())
                 				fileExistanceList.add(new Integer(fileName.split("-")[2]));
                 			else
                 				file.deleteOnExit();
@@ -91,7 +91,7 @@ public class APVoterDataDownloader {
                 	}
                 }
                 
-                int j = 60;
+                int j = 0;
                 if (i == 274) {
                   j = 133;
                 }
@@ -102,7 +102,7 @@ public class APVoterDataDownloader {
                 	
                 	if(IConstants.IS_MISSED_FILES_DOWNLOAD && !missedList.contains(j+1))
                 		continue;
-                	Thread.sleep(3000);
+                	//Thread.sleep(100);
                 	int no = j + 2;
                    
                     if (no < 10) {
