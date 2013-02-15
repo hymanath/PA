@@ -16,6 +16,7 @@ public class PartyVotesEarnedVO {
 	private Long totalVotes;
 	private Long polledVotes;
 	private String reqType;
+	private Integer totalBooths = 0;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -111,7 +112,14 @@ public class PartyVotesEarnedVO {
 		this.reqType = reqType;
 	}
 
-	
+	public Integer getTotalBooths() {
+		return totalBooths;
+	}
+
+	public void setTotalBooths(Integer totalBooths) {
+		this.totalBooths = totalBooths;
+	}
+
 	
 	
 }

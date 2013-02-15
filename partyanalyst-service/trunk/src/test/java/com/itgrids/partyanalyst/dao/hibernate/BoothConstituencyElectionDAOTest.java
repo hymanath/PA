@@ -175,17 +175,17 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 	{
 		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAConstituency(38l,232l);
 		for(Object[] data:dataList){
-			System.out.println(data[0]+" - "+data[1]+" - "+data[2]);
+			System.out.println(data[0]+" - "+data[1]+" - "+data[2]+" - "+data[3]);
 		}
 	}*/
 	
-	/*public void testGetVotersCountInAMandal()
+	public void testGetVotersCountInAMandal()
 	{
-		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAMandalBooth(38l,835l,"booth","1");
+		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAMandalBooth(38l,844l,"mandal","1");
 		for(Object[] data:dataList){
-			System.out.println(data[0]+" - "+data[1]+" - "+data[2]);
+			System.out.println(data[0]+" - "+data[1]+" - "+data[2]+" - "+data[3]);
 		}
-	}*/
+	}
 	
 	/*public void testgetBoothIdsByLocalEleBodyId()
 	{
@@ -233,12 +233,12 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(l);
 	}*/
 	
-	public void testgetConstituencyIdAndElectionYearByElectionType()
+	/*public void testgetConstituencyIdAndElectionYearByElectionType()
 	{
 		List<Object[]> list = boothConstituencyElectionDAO.getConstituencyIdAndElectionYearByElectionType(IConstants.CONSTITUENCY, 232l, "2004", IConstants.PARLIAMENT_ELECTION_TYPE);
 		if(list != null && list.size() > 0)
 			for(Object[] params : list)
 				System.out.println(params[0]+" "+params[1]);
-	}
+	}*/
 	
 }
