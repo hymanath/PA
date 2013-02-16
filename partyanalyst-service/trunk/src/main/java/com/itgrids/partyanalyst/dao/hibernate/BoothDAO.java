@@ -568,7 +568,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			Query query = getSession().createQuery("select distinct model.localBodyWard.constituencyId from " +
 					" Booth model where " +
-					" model.localBody.localElectionBodyId = :localElectionBodyIds and model.localBodyWard is not null");
+					" model.localBody.localElectionBodyId in (:localElectionBodyIds) and model.localBodyWard is not null");
 			
 			query.setParameterList("localElectionBodyIds", localElectionBodyIds);
 			
