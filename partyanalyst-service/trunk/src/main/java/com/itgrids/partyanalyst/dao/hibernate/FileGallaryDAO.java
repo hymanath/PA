@@ -1621,6 +1621,31 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		
 	}
 	
+   public List<FileGallary> getNewsDetailsByForWards(NewsCountVO newsCountVO){
+		
+		Query query = getSession()
+				.createQuery(
+						"select model from FileGallary model where model.gallary.candidate.candidateId " +
+						"in(:candidateIds) and" +
+						" ( model.file.regionScopes.regionScopesId = :wardScopeId and " +
+						" model.file.locationValue in( :wardIdsList))"+						
+					    " and model.file.category.categoryId = :categoryId " +
+					    " and model.file.newsImportance.newsImportanceId = :newsImportanceId" +
+					    " order by model.createdDate desc");
+		
+		
+		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
+		query.setParameter("wardScopeId", newsCountVO.getWardScopeId());
+		query.setParameterList("wardIdsList", newsCountVO.getWardIdsList());
+		query.setParameter("categoryId", newsCountVO.getCategoryId());
+		query.setParameter("newsImportanceId", newsCountVO.getNewsImportanceId());
+		
+	
+		return query.list();	
+		
+		
+	}
+	
 	
 	public List<FileGallary> getNewsDetailsByForMuncipalityWithWards(NewsCountVO newsCountVO){
 		
@@ -1727,6 +1752,34 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
 		query.setParameter("muncipalityScopeId", newsCountVO.getMuncipalityScopeId());
 		query.setParameterList("muncipalityValues", newsCountVO.getMuncipalityValuesList());
+		query.setParameter("wardScopeId", newsCountVO.getWardScopeId());
+		query.setParameterList("wardIds", newsCountVO.getWardIdsList());
+		query.setParameter("categoryId", newsCountVO.getCategoryId());
+		query.setParameter("newsImportanceId", newsCountVO.getNewsImportanceId());
+		
+		query.setFirstResult(newsCountVO.getStartIndex());
+		query.setMaxResults(newsCountVO.getMaxResults());
+		
+	
+		return query.list();	
+		
+		
+	}
+	
+public List<Object[]> getNewsByWard(NewsCountVO newsCountVO){
+		
+		Query query = getSession()
+				.createQuery(
+						"select model.file,model.fileGallaryId,model.isPrivate from FileGallary model where " +
+						" model.gallary.candidate.candidateId in(:candidateIds) and" +
+						" (model.file.regionScopes.regionScopesId = :wardScopeId and " +
+						" model.file.locationValue in( :wardIds))"+
+					    " and model.file.category.categoryId = :categoryId " +
+					    " and model.file.newsImportance.newsImportanceId = :newsImportanceId" +
+					    " order by model.createdDate desc");
+		
+		
+		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
 		query.setParameter("wardScopeId", newsCountVO.getWardScopeId());
 		query.setParameterList("wardIds", newsCountVO.getWardIdsList());
 		query.setParameter("categoryId", newsCountVO.getCategoryId());
@@ -2203,6 +2256,27 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 
 }
 	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForWard(
+            Long categoryId , NewsCountVO newsCountVO){
+		
+		Query query = getSession().createQuery(
+				        " select model.file.newsImportance.newsImportanceId,model.file.newsImportance.importance," +
+						" count(*) from FileGallary model where model.gallary.candidate.candidateId in(:candidateIds)" +
+					    " and "+
+					    " ( model.file.regionScopes.regionScopesId = :wardScopeId and " +
+					    " model.file.locationValue in( :wardIds))"+
+		                " and model.file.category.categoryId = :categoryId " +
+		                " group by model.file.newsImportance.newsImportanceId");
+		
+		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
+		query.setParameter("wardScopeId", newsCountVO.getWardScopeId());
+		query.setParameterList("wardIds", newsCountVO.getWardIdsList());		
+		query.setParameter("categoryId", categoryId);
+		
+		return query.list();
+		
+	}
+	
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMandal(
 			                           Long categoryId , NewsCountVO newsCountVO){
 		
@@ -2530,6 +2604,25 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		query.setParameterList("wardIds",newsCountVO.getWardIdsList());
 	
 	    return query.list();
+		
+	}
+	
+	
+	public List<Object[]> getNewsCountForWards(List<Long> candidateIds,
+			Long wardScopeId, List<Long> wardValuesList) {
+		
+		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
+				"model.file.category.categoryId from FileGallary model " +
+				" where model.gallary.candidate.candidateId in(:candidateIds) " +
+				" and model.file.regionScopes.regionScopesId =:wardScopeId and" +
+				" model.file.locationValue in( :wartdIds) group by model.file.category.categoryId");
+	
+	query.setParameterList("candidateIds", candidateIds);
+	query.setParameter("wardScopeId", wardScopeId);
+	query.setParameterList("wartdIds", wardValuesList);
+	
+	return query.list();
+		
 		
 	}
    
