@@ -1978,11 +1978,14 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 for(Object[] obj:mandalsList)
 				 tehsilIds.add((Long)obj[0]);
 			 
+			 tehsilIds.add(0L);
 			 List<Object[]> panchayitisList = panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
 			 
 			 
 			 for(Object[] obj :panchayitisList)
 				 panchayitIdsList.add((Long)obj[0]);
+			 
+			 panchayitIdsList.add(0L);
 		
 			 if(panchayitIdsList != null && panchayitIdsList.size() >0)
 				 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
@@ -1992,10 +1995,10 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 	       wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(localElectionBodyIds);
 
 	       
-				tehsilIds.add(0L);
+			//	tehsilIds.add(0L);
 				hamletIds.add(0L);
 				wardIds.add(0L);
-				panchayitIdsList.add(0L);
+				//panchayitIdsList.add(0L);
 			
 			 NewsCountVO newsCountVO = new NewsCountVO();
 			 
