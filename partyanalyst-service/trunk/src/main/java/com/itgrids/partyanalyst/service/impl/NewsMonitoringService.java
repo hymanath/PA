@@ -1991,6 +1991,8 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 				 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
 			 
 			List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+			
+			localElectionBodyIds.add(0L);
 
 	       wardIds =  boothDAO.getWardIdsByLocalElectionBodyIds(localElectionBodyIds);
 
