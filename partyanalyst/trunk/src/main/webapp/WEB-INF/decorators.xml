@@ -182,6 +182,7 @@
 		<pattern>/electionComparisonReportAction*</pattern>
 		<pattern>/partyStrengthAction*</pattern>
 		<pattern>/specialPageManageAction*</pattern>
+		<pattern>/righttoinformation*</pattern>
     </decorator>
 
 </decorators>
