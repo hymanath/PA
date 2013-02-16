@@ -298,7 +298,7 @@ public class MissedVotersFinder {
                     else if(IConstants.PATTERN == 3)
                     {
                     	sb = ReadVoterDataFromPdf.formatText(sb);
-                    	System.out.println(sb);
+                    	//System.out.println(sb);
                     	
                     	for(Integer sno : boothVO.getMissedVotesList())
                         {
