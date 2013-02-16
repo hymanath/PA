@@ -1141,6 +1141,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    	 filesList =  getNewsCountDetailsByConstituencyLevel(candidateIds , locationId , locationValue);
 	     else if(locationId.longValue() == 7)
 	    	 filesList =  getNewsCountDetailsForMuncipality(candidateIds , locationId , locationValue);
+	     else if(locationId.longValue() == 8)
+	    	 filesList =  getNewsCountDetailsForWard(candidateIds , locationId , locationValue);
 	 }catch(Exception e){
 		 e.printStackTrace();			 
 	 }
@@ -1229,6 +1231,40 @@ public List<FileVO> getNewsCountDetailsByPanchayat(List<Long> candidateIds ,Long
 		 
        return filesList;
 
+}
+
+public List<FileVO> getNewsCountDetailsForWard(
+	      List<Long> candidateIds ,Long locationId ,Long locationValue){
+	
+	 List<FileVO> filesList = null;
+	 List<Long> locationValuesList = new ArrayList<Long>();
+	 Long wardScopeId = 8L;
+	 List<Object[]> countByCategoryList = null;
+	 
+	 try{
+		 
+		 locationValuesList.add(locationValue);
+		 
+		 countByCategoryList = 	fileGallaryDAO.getNewsCountForWards(candidateIds,wardScopeId,locationValuesList);
+		 
+		 NewsCountVO newsCountVO = new NewsCountVO();
+		 
+		 newsCountVO.setCandidateIds(candidateIds);
+		 newsCountVO.setWardScopeId(wardScopeId);
+		 newsCountVO.setWardIdsList(locationValuesList);
+		 
+		 
+		  filesList  = setNewsCountValuesToFileVO1(countByCategoryList , newsCountVO , "ward");
+		 
+	 }catch(Exception e){
+		 e.printStackTrace();
+		 return null;
+		 
+	 }
+	 
+	 return filesList;
+	
+	
 }
 
 public List<FileVO> getNewsCountDetailsForMuncipality(
@@ -1448,6 +1484,11 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 						else							
 						  importanceCountList = fileGallaryDAO
 								.getNewsCountForALocationByCategoryAndImportanceForMuncipality(
+										 categoryId ,newsCountVO );
+					}else if(type.equalsIgnoreCase("ward")){
+						
+						importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportanceForWard(
 										 categoryId ,newsCountVO );
 					}
 			
@@ -1749,6 +1790,8 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 				filesList = getNewsDetailsForConstituency(candidateIds,fileVO);
 			else if(fileVO.getLocationId().longValue() == 7)
 				filesList = getNewsDetailsForMuncipality(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 8 )
+				filesList = getNewsDetailsForWard(candidateIds,fileVO);
 			
 		contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleriesInPopup(
 				fileVO.getContentId(),fileVO.getRequestFrom(),fileVO.getRequestPageId(),
@@ -1832,6 +1875,36 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		}
 		
 		return fileGallaryList;
+	}
+	
+	
+	public List<FileGallary> getNewsDetailsForWard(List<Long> candidateIds , FileVO fileVO){
+		
+		List<FileGallary> fileGallaryList = null;
+		
+		try{
+			
+			
+			List<Long> wardsList = new ArrayList<Long>(); 
+			wardsList.add(fileVO.getLocationVal());
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+			newsCountVO.setCandidateIds(candidateIds);
+			newsCountVO.setWardScopeId(8L);
+			newsCountVO.setWardIdsList(wardsList);
+			
+			 fileGallaryList = fileGallaryDAO.getNewsDetailsByForWards(newsCountVO);
+			
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return fileGallaryList;		
+		
 	}
 	
 	public List<FileGallary> getNewsDetailsForMuncipality(List<Long> candidateIds , FileVO fileVO){
@@ -2047,6 +2120,8 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 				filesList = getNewsForConstituency(candidateIds,fileVO);
 			else if(fileVO.getLocationId().longValue() == 7)
 				filesList = getNewsForMuncipality(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 8)
+				filesList = getNewsForWard(candidateIds,fileVO);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2089,6 +2164,47 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		}
 		
 		return filesList;
+		
+	}
+	
+
+	
+	public List<FileVO> getNewsForWard(List<Long> candidateIds , FileVO fileVO){
+		List<FileVO> filesList = null;
+		
+		try{
+			
+			List<Long> wardIdsList = new ArrayList<Long>();
+			wardIdsList.add(fileVO.getLocationVal());
+			Long wardScopeId = 8L;
+			
+			
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+			newsCountVO.setCandidateIds(candidateIds);
+			
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			newsCountVO.setStartIndex(fileVO.getStartIndex());
+			newsCountVO.setMaxResults(fileVO.getMaxResult());
+			newsCountVO.setWardScopeId(8L);
+			newsCountVO.setWardIdsList(wardIdsList);
+			
+			List<Object[]> fileList = null;
+			
+				 fileList = fileGallaryDAO.getNewsByWard(newsCountVO);
+			
+
+			 
+			
+			  filesList =  processAllFileDetails(fileVO,fileList);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+       return filesList;
 		
 	}
 	
