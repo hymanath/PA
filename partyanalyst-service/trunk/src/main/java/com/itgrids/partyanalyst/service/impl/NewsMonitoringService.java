@@ -1893,6 +1893,8 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			newsCountVO.setCandidateIds(candidateIds);
 			newsCountVO.setWardScopeId(8L);
 			newsCountVO.setWardIdsList(wardsList);
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
 			
 			 fileGallaryList = fileGallaryDAO.getNewsDetailsByForWards(newsCountVO);
 			
