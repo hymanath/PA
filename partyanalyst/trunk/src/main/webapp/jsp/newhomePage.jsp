@@ -524,7 +524,11 @@ Quick Links</h2>
 				<img src="images/voters_pulse.gif" alt="voters pulse Image">
 				<a class="btn btn-success btn-small" href="VotersPulse.action">View Now</a></div>
 				</div>
+				<div class="widget red explore-info">
+				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
+				<img src="images/RIT_Act_Tham.gif" style="opacity: 0.8;"><a href="righttoinformation.action" class="btn btn-small btn-primary pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Right To Information  Image">R T I</a>
 				
+				</div></div>
 				
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
