@@ -2589,11 +2589,11 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
 				"model.file.category.categoryId from FileGallary model " +
 				" where model.gallary.candidate.candidateId in(:candidateIds) " +
-				" and ( model.file.regionScopes.regionScopesId =:muncipalityScopeId and" +
+				" and (( model.file.regionScopes.regionScopesId =:muncipalityScopeId and" +
 				" model.file.locationValue in( :muncipalityValuesList) " +
 				" or "+
 				" model.file.regionScopes.regionScopesId =:wardScopeId and" +
-				" model.file.locationValue in( :wardIds)) " +
+				" model.file.locationValue in( :wardIds))) " +
 				"group by model.file.category.categoryId");
 		
 	
