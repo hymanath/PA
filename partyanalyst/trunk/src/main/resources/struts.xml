@@ -4399,5 +4399,8 @@
            		<param name="root">parliamentConstituencyId</param>
         	</result>
 		</action>
+		<action name="righttoinformation">
+		<result>/jsp/RTI.jsp</result>
+		</action>
 	</package>
 </struts>      
