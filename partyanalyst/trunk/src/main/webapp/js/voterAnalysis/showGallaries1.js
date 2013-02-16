@@ -263,12 +263,12 @@ function buildContentDetails()
 		{
 
 
-			str+='<table>';
+			/*str+='<table>';
 			str+='<tr>';
 			str+='<td>';
 			
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>CategoryType</B> : <font color="#FF4500"><span>'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
 				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'('+result.relatedGalleries[0].filesList[i].locationName+')</font>';
@@ -288,7 +288,48 @@ function buildContentDetails()
 
 
 			 str+='</tr>';
-			 str+='</table>';
+			 str+='</table>';*/
+			 
+
+			 str+='<div style="width:850px;font-family:verdana;">';
+           
+				 str+='<div style="float:left;">';
+				   str+='<span>CategoryType :</span>';
+
+				   if(result.relatedGalleries[0].filesList[i].categoryType != null)
+				//str+='<B>CategoryType</B> : <font color="#FF4500"><span>'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+
+  				   str+='<span style="color:red;">'+result.relatedGalleries[0].filesList[i].categoryType+'</span>';
+				 str+='</div>';
+
+				 str+='<div>';
+  				   //str+='<span>Problems</span>';
+				   if(result.relatedGalleries[0].filesList[i].locationScopeValue != null){
+					   str+='<span>RegionScope :</span>';
+				       str+='<span style="color:red;">'+result.relatedGalleries[0].filesList[i].locationScopeValue+'('+result.relatedGalleries[0].filesList[i].locationName+')</span>';
+				   }
+
+				 str+='</div>';
+
+			 str+='</div>';
+
+			 str+='<div style="width:850px;font-family:verdana;">';
+           
+				 str+='<div style="float:left;">';
+				 if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
+				   str+='<span>Source :</span>';
+  				   str+='<span id="sourceChangeSpan" style="color:red;">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span>';
+				 str+='</div>';
+
+				 str+='<div>';
+				 if(result.relatedGalleries[0].filesList[i].fileDate != null)
+				   str+='<span>Date :</span>';
+  				   str+='<span style="color:red;">'+result.relatedGalleries[0].filesList[i].fileDate+'</span>';
+				 str+='</div>';
+
+			 str+='</div>';
+
+
 
 		}
 	}
@@ -750,13 +791,14 @@ $('#newsDisplayDiv').html('');
 
 	//var locationType = $('#reportLevel :selected').text();
 
-
 	if(type == "constituency")
 		locationId = 4;
 	else if(type == "panchayat")
 		locationId = 3;
 	else if(type == "mandal")
 		locationId = 5;
+	else if(type == "ward")
+        locationId = 8;
 newsString = mainname+" News";
 
   if(locationValue == 0 || locationId == 0 || locationValue == null || locationValue == "null" || locationId == null || locationId == "null")

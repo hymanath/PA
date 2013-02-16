@@ -63,6 +63,14 @@
 
 <style type="text/css">
 
+.newssources{
+ background-color:#97DFEB;
+ padding:8px 8px 8px 8px;
+ margin-left:5px;
+ border-radius: 5px 5px 5px 5px;
+
+}
+
 #voterBasicInfoTable td{
 	text-align:center;
 
