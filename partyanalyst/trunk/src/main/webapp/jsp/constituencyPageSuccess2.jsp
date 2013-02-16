@@ -608,7 +608,7 @@ var queryString='';
           <!--ELECTED INFORMATION SECTION START-->
           
           <div class="cl-sub-fields-sec">
-            <h1 class="toptwo"></h1><h1 class="blu-title"><span>Election Information in ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span></h1>
+            <h1 class="toptwo"></h1><h1 class="blu-title"><span>Election Information in ${constituencyDetails.constituencyName} &nbsp;${constituencyDetails.constituencyType} Constituency</span></h1>
             <div class="detailed-ele-inf"> 
             </div>
              
