@@ -47,6 +47,13 @@ var userStatusType = "${dataTransferVO.userStatusType}";
 
 var hasNewsMonitoring = "${hasNewsMonitoring == true}";
 
+
+<%
+      String environment = "local";
+	  if(request.getRequestURL().indexOf("partyanalyst.com") != -1)
+	  environment = "live";
+%>
+environment = '<%=environment%>';
 </script>
 <style>
 .profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
@@ -204,6 +211,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 -moz-border-radius:5px;
 }
 .subscribedLink{color:red;font-weight:bold;}
+.modal{width:400px;left:60%;}
+.modal.fade.in { top: 70%;}
 </style>
 </head>
 <body>
@@ -764,15 +773,38 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 		</ul>
 
 	</div>
-
+<div id="addPopupForFavouriteLinks"></div>
 </div>
 
+<!--<span id="openModal" class="btn" data-toggle="modal" onClick="openModal()">Launch Modal</span>-->
+ 
+<!-- Modal -->
+<div class="modal hide fade" id="myModal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">X</a>
+		<h4>Alert</h4>
+  </div>
+  <div class="modal-body">
+		<p style="font-size:16px;font-weight:bold;"></p>
+  </div>
+ </div>
 
 <!-- Templated END -->
 
 	
 
 <script type="text/javascript">
+ 
+ function openModal(alertMsg,type){'color',''
+ if(type=="alert"){$('.modal-header').find('h4').html('<h4 style="color:#E4662C;">Alert</h4>')}
+ else if(type=="msg"){$('.modal-header').find('h4').html('<h4 style="color:green;">Message</h4>')}
+ 
+	$('#myModal').find('p').html('<span style="color:#4F2817;">'+alertMsg+'</span>');	
+	$('#myModal').modal('show');
+}
+ 
+    
+
 <c:if test="${hasNewsMonitoring == false}">
 getInitialUpdates();
 </c:if>
@@ -825,6 +857,7 @@ var impDates = new Array();
 		buildPolls();
 		
 	$(document).ready(function(){
+	
 	
 		$(".profile-left .bs-docs-sidenav a").click(function(){
 		
