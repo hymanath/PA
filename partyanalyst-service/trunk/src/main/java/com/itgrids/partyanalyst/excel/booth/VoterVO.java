@@ -30,6 +30,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String voterId;
 	private Long totalVoters;
 	private Long boothNo;
+	private String status;
 	private String boothName;
 	private List<VoterVO> votersList = new ArrayList<VoterVO>();
 	private Long voterIds;
@@ -313,6 +314,14 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 		this.type = type;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public int compareTo(VoterVO obj) {
 		if(obj instanceof VoterVO){
 			VoterVO vo = (VoterVO) obj;
