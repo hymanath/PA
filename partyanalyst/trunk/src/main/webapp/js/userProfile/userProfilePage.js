@@ -1031,7 +1031,7 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task== "saveFavouriteLink"){
 						openModal("Link added successfully","msg");
 						$("#FavouriteLinks").trigger('click');//to rebuild the favourite link section
-						setTimeout(hello,1000);
+						setTimeout(defaultState,1000);
 					}
 					else if(jsObj.task =="getStatesAjaxAction"){
 						buildStatesIntoDropDown(results,'stateList');
@@ -1066,7 +1066,7 @@ function callAjax1(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function hello(){
+function defaultState(){
 	$('#districtList').find('option').remove().end().append('<option value="0">select</option>').val('0');
 	$('#constituencyList').find('option').remove().end().append('<option value="0">select</option>').val('0');
 	$('#specialPageList').find('option').remove().end().append('<option value="0">select</option>').val('0');
@@ -3133,7 +3133,6 @@ var jsObj=
 }
 
 function showSelectBoxForSpecialPages(results){
-	debugger;
 	var elmt = document.getElementById("specialPageList");
 	
 	if( !elmt || results == null)
