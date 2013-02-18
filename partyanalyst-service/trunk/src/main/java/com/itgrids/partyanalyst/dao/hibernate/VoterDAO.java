@@ -248,5 +248,13 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				query.setParameter("voterId",voterId);
 				return query.executeUpdate();
 			}
+			
+			@SuppressWarnings("unchecked")
+			public List<Object[]> getVoterIdsByCardNos(List<String> voterIdCardNosList)
+			{
+				Query query = getSession().createQuery("select model.voterId,model.voterIDCardNo from Voter model where model.voterIDCardNo in (:voterIdCardNosList)");
+				query.setParameterList("voterIdCardNosList",voterIdCardNosList);
+				return query.list();
+			}
 	
 }
