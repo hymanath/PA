@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class UserSettingsVO {
 	
@@ -18,12 +19,15 @@ public class UserSettingsVO {
 	private Long userFavoriteLinksId;
 	private String favouriteLinkType;
 	private String name;
+	private Map<String, List<Long>> setFavIdMap;
 	
 	
-	
-
-	
-	
+	public Map<String, List<Long>> getSetFavIdMap() {
+		return setFavIdMap;
+	}
+	public void setSetFavIdMap(Map<String, List<Long>> setFavIdMap) {
+		this.setFavIdMap = setFavIdMap;
+	}
 	public String getFavouriteLinkType() {
 		return favouriteLinkType;
 	}
