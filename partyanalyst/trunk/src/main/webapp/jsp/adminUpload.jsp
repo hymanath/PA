@@ -496,6 +496,12 @@
 										Populate Voters Data To Intermediate Tables</b>
 										</a>
 									</span><br>
+									<!-- Updated By Prasad For Adding Missing Voters-->
+									<span class="fontStyle">
+										Add Missing Voters:&nbsp;
+										<a class="alinkstyle" href="<s:url action="missingVotersSearchAction"/>"><b>Add Missing Voters </b>
+										</a>
+									</span><br>
 									</fieldset></td>
 								<td></td>
 								<td></td>
