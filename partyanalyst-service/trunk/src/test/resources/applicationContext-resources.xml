@@ -336,12 +336,22 @@
 	            <value>com.itgrids.partyanalyst.model.NewsFlag</value>	
 	            <value>com.itgrids.partyanalyst.model.Locality</value>
                 <value>com.itgrids.partyanalyst.model.NewsProblem</value>
-                <value>com.itgrids.partyanalyst.model.PublicationElection</value>			    		
+                <value>com.itgrids.partyanalyst.model.PublicationElection</value>
+				<value>com.itgrids.partyanalyst.model.VoterModificationTemp</value>	
+				<value>com.itgrids.partyanalyst.model.VoterModification</value>	    		
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="voterModificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterModificationTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationTempDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="voterTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTempDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
