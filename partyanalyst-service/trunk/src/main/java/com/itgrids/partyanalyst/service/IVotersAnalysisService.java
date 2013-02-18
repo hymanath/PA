@@ -149,4 +149,6 @@ public interface IVotersAnalysisService {
 	public VoterCastInfoVO getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId);
 	
 	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	
+	public ResultStatus moveVotersModificationDataFromTempToMainTable(Long constituencyId,Long publicationDateId);
 }
