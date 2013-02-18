@@ -2756,7 +2756,80 @@ public String updateUserSettingsDetailsAction(Long selectedOptionId , Long userI
 	
 }
 
-
+public List<UserSettingsVO> getUserFavAllLinksAction(Long userId){
+	if(log.isDebugEnabled())
+    	log.debug("Entered into getUserFavAllLinksAction service method");
+	
+	List<UserSettingsVO> userFavoriteLinks = null;
+	String constituencyId = null;
+	String districtId = null;
+	String stateID = null;
+	String specialPageId = null;
+	String specialPageName =null;
+	String stateName = null;
+	
+	List<Long> constituencyList=new ArrayList<Long>();
+	List<Long> districtList=new ArrayList<Long>();
+	List<Long> stateList=new ArrayList<Long>();
+	List<Long> specialPagesList=new ArrayList<Long>();
+	
+	Map<String,List<Long>> map= new HashMap<String,List<Long>>();
+	
+	try{
+		List<UserFavoriteLinks>  userFavoriteLinksList = userFavoriteLinksDAO.getUserFavouriteLinksAction(userId);
+		if(userFavoriteLinksList != null && userFavoriteLinksList.size() >0)
+			userFavoriteLinks = new ArrayList<UserSettingsVO>();
+			UserSettingsVO userSettingsVO = new UserSettingsVO();
+		
+for(UserFavoriteLinks userFavoriteLink:userFavoriteLinksList){
+			
+			
+			userSettingsVO.setFavouriteLinkType(userFavoriteLink.getFavoriteLinkPage().getPage());
+			
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("constituency"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+			 	constituencyId = url.replaceAll("\\D+","");
+				constituencyList.add(Long.valueOf(constituencyId));
+			}
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("district"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+			 	districtId = url.replaceAll("\\D+","");
+			 	districtList.add(Long.valueOf(districtId));
+			}
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("state"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+				stateID = url.replaceAll("\\D+","");
+				stateList.add(Long.valueOf(stateID));
+			}
+			if(userSettingsVO.getFavouriteLinkType().equalsIgnoreCase("specialpage"))
+			{
+				String url = userFavoriteLink.getUrl().toString();
+				specialPageId = url.replaceAll("\\D+","");
+				specialPagesList.add(Long.valueOf(specialPageId));
+			}
+			//have to add all the list to list
+		}
+			
+			map.put("constituencies", constituencyList);
+			map.put("district", districtList);
+			map.put("states", stateList);
+			map.put("specialPages", specialPagesList);
+			
+			
+			userSettingsVO.setSetFavIdMap(map);
+			
+			userFavoriteLinks.add(userSettingsVO);
+	}
+	catch (Exception e) {
+		log.debug("Exception raised in getUserFavouriteLinksAction service method");
+		e.printStackTrace();
+	}
+	
+	return userFavoriteLinks;
+}
 public List<UserSettingsVO> getUserFavouriteLinksAction(Long userId){
 	
 	
