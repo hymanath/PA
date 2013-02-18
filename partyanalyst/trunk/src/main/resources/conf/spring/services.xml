@@ -1368,11 +1368,12 @@
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="localityDAO" ref="localityDAO" />
-		
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 		<property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
 		<property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
+		<property name="voterModificationTempDAO" ref="voterModificationTempDAO" />
+		<property name="voterModificationDAO" ref="voterModificationDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>
