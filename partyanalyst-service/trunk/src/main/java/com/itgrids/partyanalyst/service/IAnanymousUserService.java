@@ -88,6 +88,8 @@ public interface IAnanymousUserService {
 	
 	public List<UserSettingsVO> getUserFavouriteLinksAction(Long userId);
 	
+	public List<UserSettingsVO> getUserFavAllLinksAction(Long userId);
+	
 	public String removeFavouriteLink(Long linkId);
 	
 	public String saveUserFavouriteLink(Long userId , String link,String pageTitle, String queryString , String environment);
