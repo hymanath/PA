@@ -844,14 +844,33 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	
 	
 	public String getFavouriteLinksAction(){
+		String param;
+		String returnString = "";
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in removeFavouriteLinkAction() Method,Exception is- "+e);
+		}
 		
 		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		userFavoutiteLinks = ananymousUserService.getUserFavouriteLinksAction(user.getRegistrationID());
 		
-		return Action.SUCCESS;
-		
+		String task=jObj.getString("task");
+		if(task.equalsIgnoreCase("forAllFavLinks")){
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			userFavoutiteLinks = ananymousUserService.getUserFavAllLinksAction(user.getRegistrationID());
+			returnString= "favLinks";
+		}
+		else if (task.equalsIgnoreCase("getFavouriteLinks")){
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			userFavoutiteLinks = ananymousUserService.getUserFavouriteLinksAction(user.getRegistrationID());
+			returnString=Action.SUCCESS;
+		}
+		return returnString;
 	}
 	
 	
