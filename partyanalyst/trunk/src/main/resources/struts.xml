@@ -3942,6 +3942,9 @@
 		<action name="getFavouriteLinksAction"  class="userProfileAction"  method="getFavouriteLinksAction">
 			<result type="json" name="success">
 					<param name="root">userFavoutiteLinks</param>				
+			</result>
+			<result type="json" name="favLinks">
+				<param name="root">userFavoutiteLinks</param>
 			</result>		
 		</action>
 		
