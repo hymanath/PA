@@ -33,10 +33,7 @@ $("document").ready(function(){
 	});
 
 	
-	
-
-	
-	 $("#friendsLink").click(function(){
+	$("#friendsLink").click(function(){
 		var jsObj ={
 			task:"getLatestFriendsList"
 	};
@@ -154,7 +151,7 @@ $("document").ready(function(){
 
 
    $("#FavouriteLinks").click(function(){
-	
+   
 	 var jsObj ={
 			task:"getFavouriteLinks"
 		};
@@ -1005,10 +1002,11 @@ function callAjax1(jsObj,url){
 						showAllPostedReasonsForUserProfile(jsObj,results);
 					else if(jsObj.task == "getFavouriteLinks")
 						buildFavouriteLinks(results);
+						
 					else if(jsObj.task =="removeFavouriteLink"){
-					$('#FavouriteLinks').click();
-
-					}else if(jsObj.task == "allsubscriptions" || jsObj.task == "oldersubscriptions"){
+						$('#FavouriteLinks').click();
+					}
+					else if(jsObj.task == "allsubscriptions" || jsObj.task == "oldersubscriptions"){
 					   $("#subscriptionsStreamingAjaxImg").hide();
 					   if(results == "sessionExpired"){
 						  openDialogForLoginWindow();
@@ -1030,8 +1028,30 @@ function callAjax1(jsObj,url){
 					{
 						buildPeopleYouMayKnowBlock(results);
 					}
-
-
+					else if(jsObj.task== "saveFavouriteLink"){
+						openModal("Link added successfully","msg");
+						$("#FavouriteLinks").trigger('click');//to rebuild the favourite link section
+						setTimeout(hello,1000);
+					}
+					else if(jsObj.task =="getStatesAjaxAction"){
+						buildStatesIntoDropDown(results,'stateList');
+					}
+					else if(jsObj.task =="findDistrictsForAState"){
+						buildStatesIntoDropDown(results,'districtList');
+					}
+					else if(jsObj.task =="getConstituencies"){
+						buildStatesIntoDropDown(results,'constituencyList');
+					}
+					else if(jsObj.task =="getAllParliamentConstituencies"){
+						buildStatesIntoDropDown(results,'constituencyList');
+					}
+					else if(jsObj.task =="forAllFavLinks"){
+						buildAvailFavIds(results);
+					}
+					else if(jsObj.task == "getSpecialPagesIdTtl")
+					{
+						showSelectBoxForSpecialPages(results);
+					}
 			}catch (e) {  
                   $("#subscriptionsStreamingAjaxImg").hide();			
 			   	//alert("Invalid JSON result" + e);   
@@ -1046,6 +1066,64 @@ function callAjax1(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function hello(){
+	$('#districtList').find('option').remove().end().append('<option value="0">select</option>').val('0');
+	$('#constituencyList').find('option').remove().end().append('<option value="0">select</option>').val('0');
+	$('#specialPageList').find('option').remove().end().append('<option value="0">select</option>').val('0');
+	
+	rebuildId=$('input:radio[name=radioForFavourite]:checked').attr('id');
+	if(rebuildId=='Special Page'){
+		getSpecialPagesInfo();
+	}
+	else if(rebuildId=='Constituency'){
+		if($('input:radio[name=typeRadio]:checked').attr('id')=='Parliament'){$('#Parliament').trigger('click');}
+		else
+		$('#'+rebuildId).trigger('click');
+	}
+	else if(rebuildId=='state'){
+		$('#'+rebuildId).trigger('click');
+	}
+	else
+	$('#'+rebuildId).trigger('click');
+	
+//constituencyList
+}
+
+//created by sasi
+var conList = new Array();
+var disList = new Array();
+var stateList = new Array();
+var spclList = new Array();
+function buildAvailFavIds(results){
+	conList.length=0;
+	disList.length=0;
+	stateList.length=0;
+	spclList.length=0;
+
+	if(results[0].setFavIdMap.constituencies.length>0){
+	for(var i in results[0].setFavIdMap.constituencies){
+		 conList.push(results[0].setFavIdMap.constituencies[i]);
+		 }
+	}
+	
+	if(results[0].setFavIdMap.district.length>0){
+	for(var i in results[0].setFavIdMap.district){
+		 disList.push(results[0].setFavIdMap.district[i]);
+		 }
+	}
+	
+	if(results[0].setFavIdMap.specialPages.length>0){
+	for(var i in results[0].setFavIdMap.specialPages){
+		 spclList.push(results[0].setFavIdMap.specialPages[i]);
+		 }
+	}
+	
+	if(results[0].setFavIdMap.states.length>0){
+	for(var i in results[0].setFavIdMap.states){
+		 stateList.push(results[0].setFavIdMap.states[i]);
+		 }
+	}
+}
 
 
 function buildFavouriteLinks(results){
@@ -1069,9 +1147,13 @@ var district = false;
 
 if(results == null || results.lenght == 0)
 {
-	$("#headerDiv").html('No Favourite Links has been added.');
+	$("#headerDiv").html('No Favourite Links has been added.<br>');
+	$("#headerDiv").append('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 	return;
 }
+
+//$("#headerDiv").html('<span btn="info" onClick="savefavouriteLink()">Add</span> <br> <select id="specialPageSelectBox" name="specialPage"></select>');
+$("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
@@ -1203,10 +1285,22 @@ if(results == null || results.lenght == 0)
 				templateClone.appendTo('.specialPageDivInnerFav');
 			}
 
-			}
-
+		}
+	getAllFavLinksOfUser();
 }
 
+
+function getStatesInPs()
+	{	
+		var jsObj=
+		{		
+				electionType :"Assembly",		
+				task:"getStatesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getStatesAjaxAction.action?"+rparam;						
+		callAjax1(jsObj,url);
+	}
 
 
 function updatedInfo(results){
@@ -1587,7 +1681,6 @@ function rejectRequest(requestId,requestName)
 
 function showSpecialPages(results)
 {
-
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
@@ -2494,16 +2587,11 @@ function removeFavouriteLink(id){
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "removeFavouriteLinkAction.action?"+rparam;						
 		callAjax1(jsObj,url);
-
-  }
+}
  else
   {
-  $('#'+id).show();
+	$('#'+id).show();
   }
-
- 
-
-	
 }
 
 
@@ -2640,3 +2728,454 @@ function buildPeopleYouMayKnowBlock(results)
 		
 	}
 }
+
+
+function savefavouriteLink(){
+	var id='';
+	var name='';
+	var pageTitle='';
+	var queryString='';
+	var link='';
+	
+	var areaSelected=$('input:radio[name=radioForFavourite]:checked').val();
+	if(areaSelected=='Constituency'){
+		var constType=$('input:radio[name=typeRadio]:checked').val();
+		
+		if(constType=='Assembly'){
+			if($("#stateList option:selected").val()!=0){
+				var id=	$("#constituencyList option:selected").val();
+				if(id!=0){
+					var name=$("#constituencyList option:selected").text();
+					pageTitle=name+' Assembly Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results';
+					link='constituencyPageAction';
+					queryString ='constituencyId='+id+',';
+				}
+				else{
+					openModal('Please Select Assembly Constituency',"alert");
+					return;
+				}
+			}
+			else{
+				openModal('Please Select State','"alert"');
+				return;
+			}
+		}
+		
+		else if(constType=='Parliament'){
+			var id=	$("#constituencyList option:selected").val();
+			if(id!=0){
+				var name=$("#constituencyList option:selected").text();
+				pageTitle=name+' Parliament Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results';
+				link='constituencyPageAction';
+				queryString ='constituencyId='+id+',';	
+			}
+			else{
+				openModal('Please Select Parliament Constituency',"alert");
+				return;
+			}
+		}
+		else{
+			openModal('Please Select Constituency Type',"alert");
+		}
+	}
+	else if(areaSelected=='State'){
+		var id=	$("#stateList option:selected").val();
+		if(id!=0){
+			var name=$("#stateList option:selected").text();
+			pageTitle=name+' News,Elections, districts,Constituencies,Census, Election Results';
+			link='statePageAction';
+			queryString ='stateId='+id+',';
+		}
+		else{
+			openModal('Please Select the State',"alert");
+			return;
+		}
+		
+	}
+	else if(areaSelected=='District'){
+		if($("#stateList option:selected").val()!=0){
+			var id=	$("#districtList option:selected").val();
+			if(id!=0){
+				var name=$("#districtList option:selected").text();
+				pageTitle=name+' District News,Constituencies,MLA, MP,Details,  Elections Results,Parties Performance,MPTC, ZPTC, Municipality, Corporation Election Results';
+				link='districtPageAction';
+				queryString='districtName='+name+',districtId='+id+',';
+			}
+			else{
+				openModal('Please Select District',"alert");
+				return;
+			}
+		}
+		else{
+			openModal('Please Select State',"alert");
+			return;
+		}
+	
+	}
+	else if(areaSelected=='Special Page'){
+		var id=	$("#specialPageList option:selected").val();
+		if(id!=0){
+			var name=$("#specialPageList option:selected").text();
+			pageTitle=name+' Exit Polls, Live Result Analysis, Latest Updates - News, Videos, Photos,Parties Performace';
+			link='specialPageAction';
+			queryString ='specialPageId='+id+',';
+		}
+		else{
+			openModal('Please Select Special Page',"alert");
+			return;
+		}
+	}
+	
+	else {
+		openModal('Please Select Any Option',"alert");
+	}
+	var jObj = {
+				link: link,
+				queryString:queryString,
+				pageTitle:pageTitle,
+				environment:environment,
+				task: 'saveFavouriteLink'
+				
+			};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "saveUserFavouriteLink.action?"+rparam;
+	callAjax1(jObj,url);
+
+}
+	function getSpecialPagesInfo(){
+		var jsObj ={
+			task:"getSpecialPagesIdTtl"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getSpecialPageAction.action?"+rparam;	
+		callAjax1(jsObj,url);
+	}
+	
+	function buildStatesIntoDropDown(results,id){
+		//getAllFavLinksOfUser();
+		var elmt = document.getElementById(id);
+		var area=$('input:radio[name=radioForFavourite]:checked').val();
+		if(results[0].id == 0)
+		{
+			delete results[0];
+		}  
+		
+		if( !elmt || results == null)
+		return;
+	
+		$('#'+id).find('option').remove();
+		
+		var option = document.createElement('option');
+		option.value="0";
+		option.text="Select";
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+		if(area=='State'){
+			for(var i in results)
+			{
+				var stExist=$.inArray(results[i].id, stateList)
+				if(stExist==-1){
+					var option = document.createElement('option');
+					option.value=results[i].id;
+					option.text=results[i].name;
+					try
+					{
+						elmt.add(option,null); // standards compliant
+					}
+					catch(ex)
+					{
+						elmt.add(option); // IE only
+					}
+				}
+		   }
+		}
+		else if(area=='District'){
+			if($('#stateList option').length<=1){
+			  for(var i in results)
+			  {
+				var option = document.createElement('option');
+					option.value=results[i].id;
+					option.text=results[i].name;
+					try
+					{
+						elmt.add(option,null); // standards compliant
+					}
+					catch(ex)
+					{
+						elmt.add(option); // IE only
+					}
+			  }
+			}
+			else{
+			for(var i in results)
+			{
+				var distExist=$.inArray(results[i].id, disList)
+				if(distExist==-1){
+					var option = document.createElement('option');
+					option.value=results[i].id;
+					option.text=results[i].name;
+					try
+					{
+						elmt.add(option,null); // standards compliant
+					}
+					catch(ex)
+					{
+						elmt.add(option); // IE only
+					}
+				}
+		   }
+		   }
+		}
+		else if(area=='Constituency'||area=='Assembly'){
+			if($('#stateList option').length<=1){
+			  for(var i in results)
+			  {
+				var option = document.createElement('option');
+					option.value=results[i].id;
+					option.text=results[i].name;
+					try
+					{
+						elmt.add(option,null); // standards compliant
+					}
+					catch(ex)
+					{
+						elmt.add(option); // IE only
+					}
+			  }
+			}
+			else{
+			for(var i in results)
+			{
+				var consExist=$.inArray(results[i].id, conList)
+				if(consExist==-1){
+					var option = document.createElement('option');
+					option.value=results[i].id;
+					option.text=results[i].name;
+					try
+					{
+						elmt.add(option,null); // standards compliant
+					}
+					catch(ex)
+					{
+						elmt.add(option); // IE only
+					}
+				}
+		   }
+		   }
+		}
+		else if(area=='Parliament'){
+			for(var i in results)
+			{
+				var consExist=$.inArray(results[i].id, conList)
+				if(consExist==-1){
+					var option = document.createElement('option');
+					option.value=results[i].id;
+					option.text=results[i].name;
+					try
+					{
+						elmt.add(option,null); // standards compliant
+					}
+					catch(ex)
+					{
+						elmt.add(option); // IE only
+					}
+				}
+		   }
+		}
+		
+	}
+	
+	
+//modified from gayathri
+
+function displayLocationScope(id){
+	
+	if(id == 'state'){
+		$("#Statediv").css("display","block");
+		$("#specialDiv").css("display","none");
+		$("#Districtdiv").css("display","none");
+		$("#electionTypes").css("display","none");
+		$("#Constituencydiv").css("display","none");
+		
+		getStatesInPs();
+	}
+	if(id == 'District'){
+	$("#Statediv").css("display","block");
+	$("#Districtdiv").css("display","block");
+	$("#specialDiv").css("display","none");
+	$("#electionTypes").css("display","none");
+	$("#Constituencydiv").css("display","none");
+	getStatesInPs();
+	}
+	
+	if(id == 'Constituency'){
+		getStatesInPs();
+		$('#Assembly').attr('checked',true);
+		$("#electionTypes").css("display","block");
+		$("#specialDiv").css("display","none");
+		$("#Statediv").css("display","block");
+		$("#Districtdiv").css("display","none");
+		$("#Constituencydiv").css("display","block");
+		
+	}
+	if(id == 'Special Page'){
+		$("#specialDiv").css("display","block");
+		$("#Statediv").css("display","none");
+		$("#Districtdiv").css("display","none");
+		$("#electionTypes").css("display","none");
+		$("#Constituencydiv").css("display","none");
+		
+		getSpecialPagesInfo();
+
+	}
+}
+$('#Assembly').live('click',function(){
+
+	$("#Statediv").css("display","block");
+	$("#Districtdiv").css("display","none");
+	$("#Constituencydiv").css("display","block");
+	$("#specialDiv").css("display","none"); 
+	$('#constituencyList').find('option').remove().append('<option value="0">Select</option>');
+	getStatesInPs();
+	
+			
+});
+$('#Parliament').live('click',function(){
+	
+	$("#Constituencydiv").css("display","block");
+	$("#specialDiv").css("display","none");
+	$("#Statediv").css("display","none");
+	$("#Districtdiv").css("display","none");
+	getParliamentsInState();
+});
+
+function openPopupForFavouriteLinks(){
+
+var str=''; 
+str+='<input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State"/> State';
+str+=' <input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District"/> District';
+str+='  <input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency"/>  Constituency';
+str+=' <input type="radio" id="Special Page" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page"/> Special Page';
+str+='  <div id="electionTypes" style="display: none;"><input type="radio" id="Assembly" name="typeRadio"  value="Assembly" checked="checked"/> Assembly ';
+str+=' <input type="radio" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</div>';
+str+='<div id="Statediv" style="display:none;"> Select State:<select id="stateList" name="stateList" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
+str+=' <div id="Districtdiv" style="display: none;"> Select District:<select id="districtList" name="districtList"> <option value="0"> Select District </option> </select> </div>';
+str+='<div id="Constituencydiv" style="display: none;">	Select Constituency:<select id="constituencyList" name="constituencyList"></select> </div>';
+str+='<div id="specialDiv" style="display: none;">Select Special Page:<select id="specialPageList" name="specialPageList"></select></div>';
+str+='<span btn="info" onClick="savefavouriteLink()" id="addFav" style="display:none;">Add</span>';
+
+$("#addPopupForFavouriteLinks").html(str);
+	
+	$("#addPopupForFavouriteLinks").dialog({
+			title:"Add Your FavouriteLinks ",
+			autoOpen: true,
+			show: "blind",
+			width: 450,
+			minHeight:250,
+			modal: true,
+			hide: "explode",
+			buttons: { "Add": function() { $('#addFav').trigger('click'); } } 
+		});
+
+}	
+function getLocalitiesUnderState(){
+var id=$('#stateList').val();
+getDistrictsInState(id);
+getConstituencyInState(id);
+}
+
+function getConstituencyInState(value)
+{
+	var jsObj=
+	{				
+			electionTypeId:2,
+			stateId: value,
+			task: "getConstituencies",
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllConstituenciesInState.action?"+rparam;						
+callAjax1(jsObj,url);
+}
+
+function getParliamentsInState(value)
+{
+	
+	var jsObj=
+	{				
+			task: "getAllParliamentConstituencies",
+			elmtId: 'constituency' 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllParliamentConstInCountry.action?"+rparam;						
+callAjax1(jsObj,url);
+}
+
+function getDistrictsInState(value){
+var jsObj=
+		{				
+				stateId:value,
+				task:"findDistrictsForAState",
+				taskType:"getRegions"				
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getDistrictsForAStateAjaxAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+
+function showSelectBoxForSpecialPages(results){
+	debugger;
+	var elmt = document.getElementById("specialPageList");
+	
+	if( !elmt || results == null)
+		return;
+	
+	$('#specialPageList').find('option').remove();
+	
+	var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+	for(var i in results)
+	{
+		var eleExist=$.inArray(results[i].specialPageId, spclList)
+		if(eleExist==-1){
+		var option = document.createElement('option');
+		option.value=results[i].specialPageId;
+		option.text=results[i].title;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	}
+}
+function getAllFavLinksOfUser(){
+	 var jsObj ={
+			task:"forAllFavLinks"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getFavouriteLinksAction.action?"+rparam;	
+		callAjax1(jsObj,url);
+}
+	
