@@ -71,9 +71,12 @@ public class VotersModificationIdentifier {
                     
                     String additionsStr = sb.substring(sb.indexOf(str1), sb.indexOf(str2));
                     String deletionsStr = sb.substring(sb.indexOf(str2), sb.indexOf(str3));
-                    //System.out.println(additionsStr);
+                    System.out.println(additionsStr);
                     System.out.println(deletionsStr);
-                    
+                    deletedVotersStr.append("---------Added----------------");
+                    deletedVotersStr.append(additionsStr);
+                    deletedVotersStr.append("---------deleted----------------");
+                    deletedVotersStr.append(deletionsStr);
                     Pattern p = Pattern.compile("Age:\\r\\nHouse No:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nElector's Name:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\nSex:\\s([a-zA-Z]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\(\\)\\/\\*\\,\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9]*)\\r\\n");
                 	Matcher m = p.matcher(additionsStr);
                 	
@@ -87,6 +90,19 @@ public class VotersModificationIdentifier {
                 		voterInfo.setVoterId((m.group(2).replaceAll("\\r\\n","").trim()));
                 		voterInfo.setsNo(new Long((m.group(8).replaceAll("\\r\\n","").trim())));
                 		newVoters.add(voterInfo);
+                    }
+                	
+                	Matcher m2 = p.matcher(deletionsStr);
+                	while (m2.find()) 
+                    {
+                		VoterInfo voterInfo = new VoterInfo();
+                		voterInfo.setBoothName(fileName[3].substring(0,fileName[3].length()-4).trim());
+                		voterInfo.setBoothNo(fileName[2].trim());
+                		voterInfo.setConstituency(fileName[1].trim());
+                		voterInfo.setConstituencyId(constituencyId);
+                		voterInfo.setVoterId((m2.group(2).replaceAll("\\r\\n","").trim()));
+                		voterInfo.setsNo(new Long((m2.group(8).replaceAll("\\r\\n","").trim())));
+                		deletedVoters.add(voterInfo);
                     }
                 	
                     if (pd != null) {
@@ -107,8 +123,18 @@ public class VotersModificationIdentifier {
         	}
         	outwriter.write(addVotersStr.toString());
         	outwriter.close();
+        	
+        	index = 0;
+        	for(VoterInfo voterInfo : deletedVoters)
+        	{
+        		String tempStr = ++index+")\tPart No - "+voterInfo.getBoothNo()+"\tS.NO - "+voterInfo.getsNo()+"\t Voter ID - "+voterInfo.getVoterId()
+        				+"\tConstituency Id - "+voterInfo.getConstituencyId()+"\tConstituency - "+voterInfo.getConstituency()+"\n";
+        		System.out.print(tempStr);
+        		//deletedVotersStr.append(tempStr);
+        	}
         }
-            	
+        outwriter2.write(deletedVotersStr.toString());
+    	outwriter2.close();    	
         } catch (Exception e) {
             e.printStackTrace();
         }
