@@ -199,8 +199,6 @@ public class MissedVotersFinder {
     	try{
     		StringBuilder sb = null;
     		PDDocument pd = null;
-    		File resultFile  = new File("D:\\Kamal\\19-Nellore\\VotesMissed2.txt");
-            BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
     		for(BoothVO boothVO : boothsInfoList)
     		{
     			if(boothVO.getMissedVotesList() != null && boothVO.getMissedVotesList().size() > 0){
@@ -210,8 +208,6 @@ public class MissedVotersFinder {
                     PDFTextStripper stripper = new PDFTextStripper();
                     sb.append(stripper.getText(pd));
                     //System.out.println(sb.toString());
-                   // outwriter.write(sb.toString());
-                    //outwriter.close();
                     
                     if(IConstants.PATTERN == 1)
                     {
