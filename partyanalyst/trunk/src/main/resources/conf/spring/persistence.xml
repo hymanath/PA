@@ -316,7 +316,8 @@
 	            <value>com.itgrids.partyanalyst.model.Locality</value>
 	            <value>com.itgrids.partyanalyst.model.NewsProblem</value>
 	            <value>com.itgrids.partyanalyst.model.PublicationElection</value>
-	            
+	            <value>com.itgrids.partyanalyst.model.VoterModificationTemp</value>
+	            <value>com.itgrids.partyanalyst.model.VoterModification</value>
 			</list>
 		</property>
 	</bean>
