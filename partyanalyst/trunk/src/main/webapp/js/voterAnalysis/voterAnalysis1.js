@@ -4534,7 +4534,8 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		case 0: // Build Mandal Menu
 		  if(menudata[0].mandalList!=null){
 		  $.each(menudata[0].mandalList, function(iter,mandals){
-            str+='<li><a onClick="" data-mandalid="'+ mandals.id+'" name-mandal="'+mandals.name+'"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+mandals.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+mandals.name+'</a></li>';
+            str+='<li><a onClick="" data-mandalid="'+ mandals.id+'" name-mandal="'+mandals.name+'"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+mandals.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+mandals.name.replace('MANDAL','')+'</a></li>';
+			/*replace() Method Addes By Prasad Thiragabathina To Remove "MANDAL" String From The Mandal Name*/
 		  });}
 		  $(".middleNav ul").html("");
 		  $(".rightNav-Booths").hide();
