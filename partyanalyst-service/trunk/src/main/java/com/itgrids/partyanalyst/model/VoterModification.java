@@ -35,10 +35,8 @@ public class VoterModification extends BaseModel implements Serializable{
 	private Long voterModificationId;
 	private Voter voter;
 	private String status;
-	private Booth booth;
 	private PublicationDate publicationDate;
 	private Long voterId;
-	private Long boothId;
 	private Long publicationDateId;
 	
 	public VoterModification()
@@ -48,7 +46,6 @@ public class VoterModification extends BaseModel implements Serializable{
 	{
 		this.voter = voter;
 		this.status = status;
-		this.booth = booth;
 		this.publicationDate = publicationDate;
 	}
 	
@@ -82,17 +79,6 @@ public class VoterModification extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="booth_id",insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Booth getBooth() {
-		return booth;
-	}
-	public void setBooth(Booth booth) {
-		this.booth = booth;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="publication_date_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -110,15 +96,6 @@ public class VoterModification extends BaseModel implements Serializable{
 
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
-	}
-
-	@Column(name = "booth_id")
-	public Long getBoothId() {
-		return boothId;
-	}
-
-	public void setBoothId(Long boothId) {
-		this.boothId = boothId;
 	}
 
 	@Column(name = "publication_date_id")
