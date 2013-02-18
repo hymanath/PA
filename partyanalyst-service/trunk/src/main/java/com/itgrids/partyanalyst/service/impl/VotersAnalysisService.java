@@ -60,6 +60,8 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -94,6 +96,7 @@ import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
+import com.itgrids.partyanalyst.model.VoterModification;
 import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -147,18 +150,33 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVillageBoothElectionDAO villageBoothElectionDAO;
     private IPublicationDateDAO publicationDAO;
     private ICandidateBoothResultDAO candidateBoothResultDAO;
-    
     private ILocalityDAO localityDAO;
-    
     private IHamletDAO hamletDAO;
-    
     private ILocalElectionBodyDAO localElectionBodyDAO;
     private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-    
     private IBoothLocalBodyWardDAO boothLocalBodyWardDAO;
-    
     private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
-   	public IHamletDAO getHamletDAO() {
+    private IVoterModificationTempDAO voterModificationTempDAO;
+    private IVoterModificationDAO voterModificationDAO;
+    
+   	public IVoterModificationDAO getVoterModificationDAO() {
+		return voterModificationDAO;
+	}
+
+	public void setVoterModificationDAO(IVoterModificationDAO voterModificationDAO) {
+		this.voterModificationDAO = voterModificationDAO;
+	}
+
+	public IVoterModificationTempDAO getVoterModificationTempDAO() {
+		return voterModificationTempDAO;
+	}
+
+	public void setVoterModificationTempDAO(
+			IVoterModificationTempDAO voterModificationTempDAO) {
+		this.voterModificationTempDAO = voterModificationTempDAO;
+	}
+
+	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
 
@@ -8005,5 +8023,116 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			
 				 return list;
 			 
+		 }
+		 
+		 /**
+		 * This method move the Voters Modification Data from Temporary Table(voter_modification_temp) 
+		 * to Main Table(voter_modification)
+		 * 
+		 * @author Kamalakar Dandu
+		 * @param Long Constituency Id
+		 * @param Long Publication Date Id
+		 * @return {@link ResultStatus}
+		 * 
+		 */
+		 public ResultStatus moveVotersModificationDataFromTempToMainTable(Long constituencyId,Long publicationDateId)
+		 {
+			 log.debug("Entered into moveVotersModificationDataFromTempToMainTable() Method");
+			 ResultStatus resultStatus = new ResultStatus();
+			 try{
+				 
+				 List<Object[]> result = voterModificationTempDAO.getVoterIDAndStatusFromVoterModificationTempByConstituencyId(constituencyId);
+				 
+				 if(result != null && result.size() > 0)
+				 {
+					 VoterVO voterVO = null;
+					 List<String> voterIdCardNosList = new ArrayList<String>(0);
+					 List<VoterVO> votersList = new ArrayList<VoterVO>(0);
+					 for(Object[] params : result)
+					 {
+						 voterVO = new VoterVO();
+						 voterVO.setVoterIDCardNo(params[0].toString());
+						 voterVO.setStatus(params[1].toString());
+						 votersList.add(voterVO);
+						 voterIdCardNosList.add(params[0].toString());
+					 }
+					 
+					 List<SelectOptionVO> voterIdsList = getVoterIdsByCardNosList(voterIdCardNosList);
+					 
+					 for(VoterVO voterVO2 : votersList)
+					 {
+						 Long voterId = getVoterIdByVoterIdCardNo(voterVO2.getVoterIDCardNo(),voterIdsList);
+						 if(voterId != null)
+						 {
+							 VoterModification voterModification = new VoterModification();
+							 voterModification.setVoterId(voterId);
+							 voterModification.setPublicationDateId(publicationDateId);
+							 voterModification.setStatus(voterVO2.getStatus());
+							 voterModificationDAO.save(voterModification);
+						 }
+					 }
+					 voterDAO.flushAndclearSession();
+				 }
+				 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				 return resultStatus;
+				 
+			 }catch (Exception e) {
+				 log.error("Exception Occured in moveVotersModificationDataFromTempToMainTable() Method");
+				 log.error("Exception is - "+e);
+				 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				 resultStatus.setExceptionEncountered(e);
+				 return resultStatus;
+			 }
+		 }
+		 
+		 /**
+		 * This method will return Voter Ids and their Voter Id Card Numbers, when we pass 
+		 * Voter Id Card Numbers List as Parameter
+		 * 
+		 * @author Kamalakar Dandu
+		 * @param List<String> voterIdCardNosList
+		 * @return List<{@link SelectOptionVO}>
+		 * 
+		 */
+		 public List<SelectOptionVO> getVoterIdsByCardNosList(List<String> voterIdCardNosList)
+		 {
+			 log.debug("Entered into getVoterIdsByCardNos() Method");
+			 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+			 try{
+				 List<Object[]> list = voterDAO.getVoterIdsByCardNos(voterIdCardNosList);
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+						 resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+				 }
+				 return resultList;
+			 }catch (Exception e) {
+				 log.error("Exception Occured in getVoterIdsByCardNos() Method");
+				 log.error("Exception is - "+e);
+				 return resultList;
+			 }
+		 }
+		 
+		 /**
+		 * This method will return Voter Id, when we pass Voter Id Card Number as Parameter
+		 * 
+		 * @author Kamalakar Dandu
+		 * @param String voterIdCardNo
+		 * @param List<String> voterIdsList
+		 * @return List<{@link SelectOptionVO}>
+		 * 
+		 */
+		 public Long getVoterIdByVoterIdCardNo(String voterIdCardNo,List<SelectOptionVO> voterIdsList)
+		 {
+			 try{
+				 for(SelectOptionVO optionVO : voterIdsList)
+					 if(optionVO.getName().equalsIgnoreCase(voterIdCardNo))
+						 return optionVO.getId();
+				 return null;
+			 }catch (Exception e) {
+				 log.error("Exception Occured in getVoterIdByVoterIdCardNo() Method");
+				 log.error("Exception is - "+e);
+				 return null;
+			 }
 		 }
 }
