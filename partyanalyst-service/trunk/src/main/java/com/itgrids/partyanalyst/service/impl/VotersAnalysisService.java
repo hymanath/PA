@@ -8059,19 +8059,22 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 					 
 					 List<SelectOptionVO> voterIdsList = getVoterIdsByCardNosList(voterIdCardNosList);
 					 
-					 for(VoterVO voterVO2 : votersList)
+					 if(voterIdsList != null && voterIdsList.size() > 0)
 					 {
-						 Long voterId = getVoterIdByVoterIdCardNo(voterVO2.getVoterIDCardNo(),voterIdsList);
-						 if(voterId != null)
+						 for(VoterVO voterVO2 : votersList)
 						 {
-							 VoterModification voterModification = new VoterModification();
-							 voterModification.setVoterId(voterId);
-							 voterModification.setPublicationDateId(publicationDateId);
-							 voterModification.setStatus(voterVO2.getStatus());
-							 voterModificationDAO.save(voterModification);
+							 Long voterId = getVoterIdByVoterIdCardNo(voterVO2.getVoterIDCardNo(),voterIdsList);
+							 if(voterId != null)
+							 {
+								 VoterModification voterModification = new VoterModification();
+								 voterModification.setVoterId(voterId);
+								 voterModification.setPublicationDateId(publicationDateId);
+								 voterModification.setStatus(voterVO2.getStatus());
+								 voterModificationDAO.save(voterModification);
+							 }
 						 }
+						 voterDAO.flushAndclearSession();
 					 }
-					 voterDAO.flushAndclearSession();
 				 }
 				 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				 return resultStatus;
@@ -8096,10 +8099,32 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		 */
 		 public List<SelectOptionVO> getVoterIdsByCardNosList(List<String> voterIdCardNosList)
 		 {
-			 log.debug("Entered into getVoterIdsByCardNos() Method");
+			 log.debug("Entered into getVoterIdsByCardNosList() Method");
 			 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
 			 try{
-				 List<Object[]> list = voterDAO.getVoterIdsByCardNos(voterIdCardNosList);
+				 List<Object[]> list = new ArrayList<Object[]>(0);
+				 List<Object[]> list2 = new ArrayList<Object[]>(0);
+				 
+				 int startindex = 0;
+				 int maxResults = 1000;
+				 
+				 for(;;)
+				 {
+					 if(voterIdCardNosList.size() <= 1000)
+					 {
+						 list2 = voterDAO.getVoterIdsByCardNos(voterIdCardNosList);
+						 list.addAll(list2);
+						 break;
+					 }
+					 else
+					 {
+						 list2 = voterDAO.getVoterIdsByCardNos(voterIdCardNosList.subList(startindex, maxResults));
+						 list.addAll(list2);
+						 for(int delIndex=0;delIndex<maxResults;delIndex++)
+							 voterIdCardNosList.remove(0);
+					 }
+				 }
+				 
 				 if(list != null && list.size() > 0)
 				 {
 					 for(Object[] params : list)
@@ -8107,7 +8132,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				 }
 				 return resultList;
 			 }catch (Exception e) {
-				 log.error("Exception Occured in getVoterIdsByCardNos() Method");
+				 log.error("Exception Occured in getVoterIdsByCardNosList() Method");
 				 log.error("Exception is - "+e);
 				 return resultList;
 			 }
@@ -8133,6 +8158,32 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				 log.error("Exception Occured in getVoterIdByVoterIdCardNo() Method");
 				 log.error("Exception is - "+e);
 				 return null;
+			 }
+		 }
+		 
+		 /**
+		 * This method will return List of Constituencies, which are to be the mapped for
+		 * Modified Voter data
+		 * 
+		 * @author Kamalakar Dandu
+		 * @return List<{@link SelectOptionVO}>
+		 * 
+		 */
+		 public List<SelectOptionVO> getConstituenciesToBeMappedForVoterChanges()
+		 {
+			 log.debug("Entered into getConstituenciesToBeMappedForVoterChanges() Method");
+			 List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
+			 try{
+				 List<Object[]> list = voterModificationTempDAO.getConstituenciesToBeMappedForVoterChanges();
+				 
+				 if(list != null && list.size() > 0)
+					 for(Object[] params : list)
+						 result.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+				 return result;
+			 }catch (Exception e) {
+				 log.error("Exception Occured in getConstituenciesToBeMappedForVoterChanges() Method");
+				 log.error("Exception is - "+e);
+				 return result;
 			 }
 		 }
 }
