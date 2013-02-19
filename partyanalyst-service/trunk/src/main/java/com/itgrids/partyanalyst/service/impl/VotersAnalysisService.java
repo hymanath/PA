@@ -77,6 +77,7 @@ import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
@@ -8410,4 +8411,19 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			
 			return optionsList;
 		}
+	 
+		 
+		 public VoterModificationVO getAddedAndDeletedVotersCountInBetweenPublicationsInALocation(String locationType,Long locationValue,Long fromPublicationDateId,Long toPublicationDateId)
+		 {
+			 VoterModificationVO voterModificationVO = null; 
+			 log.debug("Entered into getAddedAndDeletedVotersCountInBetweenPublicationsInALocation() Method");
+			 try{
+				 
+				 return voterModificationVO;
+			 }catch (Exception e) {
+				 log.error("Exception Occured in getAddedAndDeletedVotersCountInBetweenPublicationsInALocation() Method");
+				 log.error("Exception is - "+e);
+				 return voterModificationVO;
+			 }
+		 }
 }
