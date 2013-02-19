@@ -31,7 +31,17 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 	JSONObject jObj;
 	private ResultStatus resultStatus;
 	private HttpSession session;
+	private List<SelectOptionVO> constituenciesListForVoterChanges;
 	
+	public List<SelectOptionVO> getConstituenciesListForVoterChanges() {
+		return constituenciesListForVoterChanges;
+	}
+
+	public void setConstituenciesListForVoterChanges(
+			List<SelectOptionVO> constituenciesListForVoterChanges) {
+		this.constituenciesListForVoterChanges = constituenciesListForVoterChanges;
+	}
+
 	public IVotersAnalysisService getVotersAnalysisService() {
 		return votersAnalysisService;
 	}
@@ -150,6 +160,8 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		
 		publicationDateList = votersAnalysisService.getAllPublicationDates();
 		
+		constituenciesListForVoterChanges = votersAnalysisService.getConstituenciesToBeMappedForVoterChanges();
+		
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -163,8 +175,11 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		
 		if(jObj.getString("task").equalsIgnoreCase("insertVoterData"))
 		{
-				resultStatus = votersAnalysisService.insertVoterData(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"));
-			  //resultStatus = votersAnalysisService.updateVoterData(jObj.getLong("constituencyId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"));
+			resultStatus = votersAnalysisService.insertVoterData(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("insertVoterModificationData"))
+		{
+			resultStatus = votersAnalysisService.moveVotersModificationDataFromTempToMainTable(jObj.getLong("constituencyId"), jObj.getLong("publicationDateId"));
 		}
 		return Action.SUCCESS;
 	}
