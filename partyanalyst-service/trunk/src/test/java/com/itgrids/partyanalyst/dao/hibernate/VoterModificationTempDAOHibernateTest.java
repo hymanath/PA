@@ -20,12 +20,20 @@ public class VoterModificationTempDAOHibernateTest extends BaseDaoTestCase{
 		voterModificationTempDAO.getAll();
 	}*/
 	
-	public void testGetVoterIDAndStatusFromVoterModificationTempByConstituencyId()
+	/*public void testGetVoterIDAndStatusFromVoterModificationTempByConstituencyId()
 	{
 		List<Object[]> list = voterModificationTempDAO.getVoterIDAndStatusFromVoterModificationTempByConstituencyId(232l);
 		System.out.println(list.size());
 		
 		for(Object[] params :list)
+			System.out.println(params[0]+"\t"+params[1]);
+	}*/
+	
+	public void testGetConstituenciesToBeMappedForVoterChanges()
+	{
+		List<Object[]> list = voterModificationTempDAO.getConstituenciesToBeMappedForVoterChanges();
+		System.out.println(list.size());
+		for(Object[] params : list)
 			System.out.println(params[0]+"\t"+params[1]);
 	}
 }
