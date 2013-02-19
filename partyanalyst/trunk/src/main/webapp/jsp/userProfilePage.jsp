@@ -324,7 +324,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;"></div>
+				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;padding: 14px;"></div>
 						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;">
 						
 						
@@ -372,23 +372,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				
 	<!--PRASAD-->
 						</div>
-						<div class="FavoriteLinksDiv">
+						<div class="FavoriteLinksDiv breadcrumb  ">
 							
-							<div class="stateDivMain">
-								<div style="background:#2D6987;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
+							<div class="stateDivMain ">
+								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
 						        <div class="stateDivInnerFav"></div>
 							</div>
 
-							<div class="districtDivMain">
-								<div style="background:#2D6987;" class="favouriteLinksHeading districtDivheading districtHeadingCls" ></div>
+							<div class="districtDivMain ">
+								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading districtDivheading districtHeadingCls" ></div>
 						        <div class="districtDivInnerFav"></div>
 							</div>
-								<div class="constituencyDivMain">
-								<div style="background:#2D6987;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
+							<div class="constituencyDivMain ">
+								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
 								<div class="constituencyDivInnerFav"></div>
 							</div>
-							<div class="specialPageDivMain">
-								<div style="background:#2D6987;" class="favouriteLinksHeading specialPageDivheading specialPageHeadingCls" ></div>
+							<div class="specialPageDivMain ">
+								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading specialPageDivheading specialPageHeadingCls"></div>
 						        <div class="specialPageDivInnerFav"></div>
 							</div>
 
