@@ -282,7 +282,18 @@ h3{
 					<span>- You can <a href="#cancel" style="bottom: 0px;position:relative;right: 0px;" title="Click to know how to Cancel the Vote.">Cancel</a> them.</span></h3></li>
 										
 				</ul>	
-
+               <div class="breadcrumb">
+					<h4>Don't you like any candidate and decided not to vote any one after entered in the polling booth?</h4>
+					
+					<p>you can do it there is a rule for you....<br>
+					For more detailed information please access the below link<br><br>
+					
+					<a title="Click to know more about the EVM" href="http://eci.nic.in/eci_main1/current/Rule_49o.pdf" target="_blank" style="position: static;" class="inline">http://eci.nic.in/eci_main1/current/Rule_49o.pdf</a>
+					</p>
+					
+					
+					
+			</div>
 			
 			<div class="breadcrumb">
 					<h3>Do this to give your support to strengthen our Democracy!</h3>
