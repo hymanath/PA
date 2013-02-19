@@ -16,6 +16,9 @@ var maintype;
 var mainname;
 var parliamentConstituencyId;
 var areatype='';
+var pResults;
+var reqfields = "";
+var reqfieldsArr = new Array();
 
 function populate(id,boothId,publicationId,houseNo){
      if($('#'+id).is(':checked')){
@@ -670,21 +673,21 @@ oDT: votersByLocBoothDataTable
 		 }
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		  getPreviousVotersDetails1();
+		 // getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
-		 showNewsDetails(id,publicationId,type);
+		// showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
-		 getProblemsByLocation(id,publicationId,type);
-		 getCounts(id,publicationId,type);
+		// getProblemsByLocation(id,publicationId,type);
+		// getCounts(id,publicationId,type);
 		 getVotersCastInfo(id,publicationId,type);
          //getCastInfoForsubLevel(id,publicationId,type);
          getvotersBasicInfo("impFamilies",id,publicationId,type);
 				
 		// callCorrespondingAjaxCall();
-		 getPreviousElectionVotingTrends(id,publicationId,type);
-		 callCorrespondingAjaxCall('brief');
+		// getPreviousElectionVotingTrends(id,publicationId,type);
+		// callCorrespondingAjaxCall('brief');
 		 //getElectionyearsByMandalId(id,type);
 	}
 
@@ -1078,6 +1081,11 @@ oDT: votersByLocBoothDataTable
                                 else if(jsObj.task == "getVotersInAFamily")
 								{
 								    buildVotersInFamily(myResults,jsObj.hno);
+									pResults = myResults;
+								}
+								else if(jsObj.task == "getUserCategories")
+								{
+									buildCategories(myResults);
 								}
 								else if(jsObj.task =="getVotersInACaste")
 								{
@@ -1095,6 +1103,7 @@ oDT: votersByLocBoothDataTable
 								    if(myResults == "notLogged"){
 									 openDialogForLoginWindow();
 									}else{
+										pResults = myResults;
 								     buildVotersInFamily(myResults);
 									}
 								}
@@ -2084,6 +2093,7 @@ function getvotersFamileyInfo(buttonType,voterBasicInfoFor)
 }
 
 function getVotersInAFamily(id,publicationDateId,hNo){
+
     var jsObj=
 			{
 					
@@ -2095,6 +2105,19 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 			}
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "votersFamilyDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+function getUserCategories(){
+
+	var jsObj=
+			{
+			 task:"getUserCategories"
+	
+			}
+	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getUserCategoriesAction.action?"+rparam;						
 		callAjax(jsObj,url);
 
 }
@@ -2136,7 +2159,7 @@ var result = results;
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
 							{key:"relationship", label: "Relationship",sortable:true},
 							{key:"voterIdCardNo",label:"Voter Id",sortable: true},
-	                        {key:"mobileNo",label:"mobileNo",sortable:true}
+	                        {key:"mobileNo",label:"MobileNo",sortable:true}
 		    	        ]; 
 
     
@@ -2160,9 +2183,18 @@ var result = results;
 
 
 function buildVotersInFamily(results){
+	  getUserCategories();
+
+	$('.requiredAttrClass').each(function(){
+	  $(this).attr('checked','checked');
+    });
+
+	$('.notRequiredAttrClass').each(function(){
+		$(this).attr('checked',false);
+	});
 //console.log(results);
     $("#multipleVoterFamiliesEditDiv").html("");
-    $("#impFamDtlsTitle").html("<b>Voter Details</b>");
+   // $("#impFamDtlsTitle").html("<b>Voter Details</b>");
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
@@ -2190,7 +2222,7 @@ function buildVotersInFamily(results){
 							{key:"houseNo", label: "House No",sortable:true},
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
 							{key:"relationship", label: "Relationship",sortable:true},
-							{key:"mobileNo",label:"mobileNo",sortable:true}
+							{key:"mobileNo",label:"MobileNo",sortable:true}
 						]; 
 
     var myConfigs = { 
@@ -4808,6 +4840,173 @@ getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 
 });
 /** END FUNCTIONS FOR NAVIGATIONS **/
-	
 
- 
+
+
+
+function buildVotersInFamilyWithRetrievedResults(){
+
+
+	var results = pResults;
+
+    $("#multipleVoterFamiliesEditDiv").html("");
+   // $("#impFamDtlsTitle").html("<b>Voter Details</b>");
+	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var id=oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		var name = oRecord.getData("name");
+		
+		elLiner.innerHTML ='<a id="openProblemEditFormId" onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
+		
+	}
+
+	YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var name = oData;
+		var id= oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+id+"'/><input type='hidden' class='selectedBoothId' value='"+boothId+"'/>";
+					
+	};
+
+	 for(var i in reqfieldsArr){
+		YAHOO.widget.DataTable["select"+i] = function(elLiner, oRecord, oColumn, oData) 
+	  { 
+
+		 var ids = reqfieldsArr[oColumn.field.charAt(oColumn.field.length-1)].split(",");
+
+
+		 var val = "";
+		var categ = oRecord.getData("categoriesList");
+
+		  for(var i in categ){
+
+			if(categ[i].categoryValuesId == ids[0])
+			   if(categ[i].name != null)
+				val = categ[i].name;
+		  }
+		elLiner.innerHTML=val;			
+	  };
+	 }
+
+
+     var votersResultColumnDefs = [ 		    	             
+		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
+							//{key:"sNo", label: "SNo", sortable: true},
+		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
+							//{key:"gender", label: "Gender", sortable: true},
+		    				//{key:"age", label: "Age",sortable:true},
+							{key:"houseNo", label: "House No",sortable:true},
+							//{key:"gaurdian", label: "Guardian Name",sortable:true},
+							//{key:"relationship", label: "Relationship",sortable:true},
+							//{key:"mobileNo",label:"Mobile No",sortable:true}
+						]; 
+             if($("#ageId").is(':checked')){
+
+				obj = {key:"age",label: "Age",sortable: true};
+				votersResultColumnDefs.push(obj);
+			 }
+
+			if($("#guardianNameId").is(':checked')){
+
+				obj = {key:"gaurdian",label: "Guardian Name",sortable: true};
+				votersResultColumnDefs.push(obj);
+			}
+
+			if($("#relationShipId").is(':checked')){
+
+				obj = {key:"relationship",label: "Relationship",sortable: true};
+				votersResultColumnDefs.push(obj);
+			}
+
+			if($("#genderId").is(':checked')){
+
+				obj = {key:"gender",label: "Gender",sortable: true};
+				votersResultColumnDefs.push(obj);
+			}
+
+			if($("#mobileId").is(':checked')){
+
+				obj = {key:"mobileNo",label: "Mobile No",sortable: true};
+				votersResultColumnDefs.push(obj);
+			}
+
+			if($("#casteId").is(':checked')){
+
+				obj = {key:"cast",label: "Caste",sortable: true};
+				votersResultColumnDefs.push(obj);
+			}
+
+          if($("#partyId").is(':checked')){
+
+				obj = {key:"party",label: "Party",sortable: true};
+				votersResultColumnDefs.push(obj);
+			}
+
+			
+			 for(var i in reqfieldsArr){
+
+			 //console.log(reqfieldsArr);
+		    var ids = reqfieldsArr[i].split(",");
+
+		      obj = {
+				key:"select"+i, label: ""+ids[1], formatter:YAHOO.widget.DataTable["select"+i]
+					};
+					votersResultColumnDefs.push(obj);
+		      }
+    var myConfigs = { 
+			    
+				};
+	var myDataSource = new YAHOO.util.DataSource(results);
+
+	myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+	myDataSource.responseschema = {
+		 fields : ["name","gender","age","houseNo","gaurdian","relationship","voterId","boothId"
+		 ,"categoriesList","cast","party"]
+	};
+
+		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
+    $("#impFamDtlsOuterPopUp").dialog({
+            modal: true,
+            title: "<b>Voters Details</b>",
+			width: 970,
+            height: 600
+           
+        });
+
+		
+ reqfields = "";
+ reqfieldsArr = new Array();
+}
+
+function checkForAttributesToDisplay(){
+
+
+	 $('.attributeTypeClassIni1').each(function() {
+           if($(this).is(':checked')){
+		        var ids = ($(this).val()).split(",");
+		       reqfieldsArr.push($(this).val());
+		       reqfields = reqfields+","+ids[0];
+		    }
+          });
+		   if(reqfields.length > 0)
+		  reqfields = reqfields.slice(1);
+
+		   buildVotersInFamilyWithRetrievedResults();
+
+}
+
+function buildCategories(results){
+
+    var str='';
+
+	for(var i in results){
+      
+       str+='<label style="float:left;margin:3px;"><input type="checkbox" style="margin:0px 7px 4px 0px;" class="attributeTypeClassIni1" value="'+results[i].id+','+results[i].name+'"/>'+results[i].name+'</label>';
+	}
+
+	$('#impFamilySelectedDetails1').html(str);
+
+}
