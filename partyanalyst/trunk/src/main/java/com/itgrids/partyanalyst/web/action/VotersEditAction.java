@@ -505,7 +505,8 @@ public String saveLocality()
 					voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
 					familiesList.add(voterHouseInfoVO);
 				}
-				votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInfo(familiesList);
+				//votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInfo(familiesList);
+				votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInformation(familiesList,userId);
 			
 		}catch (Exception e) {
 			Log.error("Exception Occured in getMultipleFamilesInfo() Method, Exception - ",e);
