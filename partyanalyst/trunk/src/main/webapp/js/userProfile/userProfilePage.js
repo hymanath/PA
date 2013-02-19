@@ -1144,6 +1144,7 @@ $('.specialPageDivheading').children().remove();
 var constituency = false;
 var state = false;
 var district = false;
+var specialpage=false;
 
 if(results == null || results.lenght == 0)
 {
@@ -3145,6 +3146,7 @@ var jsObj=
 }
 
 function showSelectBoxForSpecialPages(results){
+
 	var elmt = document.getElementById("specialPageList");
 	
 	if( !elmt || results == null)
