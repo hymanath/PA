@@ -153,4 +153,11 @@ public interface IVotersAnalysisService {
 	public ResultStatus moveVotersModificationDataFromTempToMainTable(Long constituencyId,Long publicationDateId);
 	
 	public List<SelectOptionVO> getConstituenciesToBeMappedForVoterChanges();
+	
+	
+	public List<VoterHouseInfoVO> getFamilyInformation(Long boothId, Long publicationDateId,String houseNo,Long userId);
+	
+	public List<VoterHouseInfoVO> getMultipleFamiliesInformation(List<VoterHouseInfoVO> familiesList,Long userId);
+	 
+	public List<SelectOptionVO> getUserCategoryValuesByUserId(Long userId);;
 }

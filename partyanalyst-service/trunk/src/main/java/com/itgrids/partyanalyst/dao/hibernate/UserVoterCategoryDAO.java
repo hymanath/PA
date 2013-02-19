@@ -35,7 +35,9 @@ public List<Object[]> getCategoryValuesList(Long userId) {
 		
 	}
 
-
-
-	
+	public List<UserVoterCategory> getUserCategoriesByUserId(Long userId){
+		
+		return getHibernateTemplate().find("from UserVoterCategory model where model.user.userId = ?",userId);
+		
+	}
 }
