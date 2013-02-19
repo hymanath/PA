@@ -7,6 +7,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.regex.Pattern;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
-import com.itgrids.voterdata.VO.BoothVO;
 import com.itgrids.voterdata.VO.VoterInfo;
+import com.itgrids.voterdata.util.IConstants;
 
 public class VotersModificationIdentifier {
 	
@@ -61,7 +62,7 @@ public class VotersModificationIdentifier {
                     PDFTextStripper stripper = new PDFTextStripper();
 
                     sb.append(stripper.getText(pd));
-                    
+                    System.out.println("Reading "+input.getName()+"......");
                     String [] fileName = input.getName().split("-");
                     constituencyId = fileName[0];
                     
@@ -71,13 +72,10 @@ public class VotersModificationIdentifier {
                     
                     String additionsStr = sb.substring(sb.indexOf(str1), sb.indexOf(str2));
                     String deletionsStr = sb.substring(sb.indexOf(str2), sb.indexOf(str3));
-                    System.out.println(additionsStr);
-                    System.out.println(deletionsStr);
-                    deletedVotersStr.append("---------Added----------------");
-                    deletedVotersStr.append(additionsStr);
-                    deletedVotersStr.append("---------deleted----------------");
-                    deletedVotersStr.append(deletionsStr);
-                    Pattern p = Pattern.compile("Age:\\r\\nHouse No:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nElector's Name:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\nSex:\\s([a-zA-Z]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\(\\)\\/\\*\\,\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9]*)\\r\\n");
+                    //System.out.println(additionsStr);
+                    //System.out.println(deletionsStr);
+                    
+                    Pattern p = Pattern.compile("Age:\\r\\nHouse No:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nElector's Name:\\r\\n([A-Z\\d]*)\\r\\n");
                 	Matcher m = p.matcher(additionsStr);
                 	
                 	while (m.find()) 
@@ -88,7 +86,6 @@ public class VotersModificationIdentifier {
                 		voterInfo.setConstituency(fileName[1].trim());
                 		voterInfo.setConstituencyId(constituencyId);
                 		voterInfo.setVoterId((m.group(2).replaceAll("\\r\\n","").trim()));
-                		voterInfo.setsNo(new Long((m.group(8).replaceAll("\\r\\n","").trim())));
                 		newVoters.add(voterInfo);
                     }
                 	
@@ -101,7 +98,6 @@ public class VotersModificationIdentifier {
                 		voterInfo.setConstituency(fileName[1].trim());
                 		voterInfo.setConstituencyId(constituencyId);
                 		voterInfo.setVoterId((m2.group(2).replaceAll("\\r\\n","").trim()));
-                		voterInfo.setsNo(new Long((m2.group(8).replaceAll("\\r\\n","").trim())));
                 		deletedVoters.add(voterInfo);
                     }
                 	
@@ -116,28 +112,60 @@ public class VotersModificationIdentifier {
         	int index = 0;
         	for(VoterInfo voterInfo : newVoters)
         	{
-        		String tempStr = ++index+")\tPart No - "+voterInfo.getBoothNo()+"\tS.NO - "+voterInfo.getsNo()+"\t Voter ID - "+voterInfo.getVoterId()
+        		String tempStr = ++index+")\tPart No - "+voterInfo.getBoothNo()+"\tVoter ID - "+voterInfo.getVoterId()
         				+"\tConstituency Id - "+voterInfo.getConstituencyId()+"\tConstituency - "+voterInfo.getConstituency()+"\n";
         		System.out.print(tempStr);
         		addVotersStr.append(tempStr);
         	}
         	outwriter.write(addVotersStr.toString());
         	outwriter.close();
-        	
-        	index = 0;
+        	saveVotersInModificationTempTable(newVoters,IConstants.ADDED);
+        }	
+        if(deletedVoters.size() > 0)
+        {
+        	int index = 0;
         	for(VoterInfo voterInfo : deletedVoters)
         	{
-        		String tempStr = ++index+")\tPart No - "+voterInfo.getBoothNo()+"\tS.NO - "+voterInfo.getsNo()+"\t Voter ID - "+voterInfo.getVoterId()
+        		String tempStr = ++index+")\tPart No - "+voterInfo.getBoothNo()+"\tVoter ID - "+voterInfo.getVoterId()
         				+"\tConstituency Id - "+voterInfo.getConstituencyId()+"\tConstituency - "+voterInfo.getConstituency()+"\n";
         		System.out.print(tempStr);
-        		//deletedVotersStr.append(tempStr);
+        		deletedVotersStr.append(tempStr);
         	}
         }
         outwriter2.write(deletedVotersStr.toString());
-    	outwriter2.close();    	
+    	outwriter2.close();
+    	saveVotersInModificationTempTable(deletedVoters,IConstants.DELETED);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+		
+	public static void saveVotersInModificationTempTable(List<VoterInfo> votersList,String Status)
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL,USER,PASS);
+    		stmt = conn.createStatement();
+			for(VoterInfo voterInfo : votersList)
+			{
+				try{
+					String insertQuery = "INSERT INTO voter_modification_temp(voter_id,Status,constituency_id,constituency_name,booth_id) VALUES ('"+
+							voterInfo.getVoterId()+"','"+Status+"',"+voterInfo.getConstituencyId()+",'"+voterInfo.getConstituency()+"',"+voterInfo.getBoothNo()+")";
+		    		stmt.executeUpdate(insertQuery);
+				}catch (Exception e) {
+					System.out.println("Exception Occured While Saving the Voter ID -"+voterInfo.getVoterId());
+    				System.out.println("Exception is - "+e);
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				conn.close();
+			} catch (SQLException e) {}
+		}
+	}
        	
 }
