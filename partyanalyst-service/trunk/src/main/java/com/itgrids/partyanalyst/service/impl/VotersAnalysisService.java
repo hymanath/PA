@@ -8426,12 +8426,28 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 VoterModificationVO voterModificationVO = null; 
 			 log.debug("Entered into getAddedAndDeletedVotersCountInBetweenPublicationsInALocation() Method");
 			 try{
+				 List<Long> publicationIdsList = new ArrayList<Long>(0);
+				 
+				 if(fromPublicationDateId == null || fromPublicationDateId == 0 || fromPublicationDateId.equals(toPublicationDateId))
+					 publicationIdsList.add(toPublicationDateId);
+				 else
+					 publicationIdsList = getPublicationIdsBetweenTwoPublications(fromPublicationDateId,toPublicationDateId);
+					 
 				 
 				 return voterModificationVO;
 			 }catch (Exception e) {
 				 log.error("Exception Occured in getAddedAndDeletedVotersCountInBetweenPublicationsInALocation() Method");
 				 log.error("Exception is - "+e);
 				 return voterModificationVO;
+			 }
+		 }
+		 
+		 private List<Long> getPublicationIdsBetweenTwoPublications(Long fromPublicationDateId,Long toPublicationDateId) 
+		 {
+			 try{
+				 return null;
+			 }catch (Exception e) {
+				 return null;
 			 }
 		 }
 }
