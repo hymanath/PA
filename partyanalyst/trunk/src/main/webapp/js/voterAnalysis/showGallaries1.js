@@ -1028,7 +1028,7 @@ var categoryStr;
 function getNews1(importanceId , categoryId , count){
 var noNews = false;
 	if(count== null){
-		alert("No news exist");
+		alert("No news Exist");
 		noNews = true;
 	}
 	 categoryStr='';
