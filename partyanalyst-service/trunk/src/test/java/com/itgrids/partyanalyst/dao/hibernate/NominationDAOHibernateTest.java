@@ -1246,9 +1246,19 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(params[1]); 
 	 }
 }*/
-	public void testgetAllCandidatesInADistrict()
+	/*public void testgetAllCandidatesInADistrict()
 	{
 	 List<Object[]> list = nominationDAO.getAllCandidatesInADistrict(202l, 152l) ;
+	 System.out.println(list.size());
+	 for(Object[] params : (List<Object[]>)list)
+	 {
+		System.out.println(params[1]); 
+	 }
+	}*/
+
+	public void testFindSeatsWonByAPartyInMuncipalityForAnElectionYear()
+	{
+	 List<Object[]> list = nominationDAO.findSeatsWonByAPartyInMuncipalityForAnElectionYear("46","2007","MUNCIPALITY",1l) ;
 	 System.out.println(list.size());
 	 for(Object[] params : (List<Object[]>)list)
 	 {

@@ -572,6 +572,23 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		query.setParameterList("constituencyId", constituencyId);
 		return query.list();
 	}
+	
+	public List<String> findLatestElectionYear(String electionType,Long localElectionBodyId){
+		Object[] params ={electionType,localElectionBodyId};
+		return getHibernateTemplate().find("select max(model.election.electionYear) from ConstituencyElection model where model.election.electionScope.electionType.electionType = ? " +
+				" and model.constituency.localElectionBody.localElectionBodyId = ?", params);
+	}
+	
+	public List findLatestElectionYearByConstituencyIds(String electionType,Long stateId,List<Long> constituencyIds){
+		Query query = getSession().createQuery("select distinct model.election.electionId,model.election.electionYear from ConstituencyElection model where model.election.electionScope.electionType.electionType = :electionType " +
+				" and model.election.electionScope.state.stateId = :stateId and model.constituency.localElectionBody.localElectionBodyId in (select model1.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model1 " +
+				" where model1.constituency.constituencyId in(:constituencyIds))");
+		
+		query.setParameter("electionType", electionType);
+		query.setParameter("stateId",stateId);
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
 }
 
 

@@ -33,7 +33,7 @@ public interface ILocalBodyElectionService {
 	
 	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId,Long partyId,Long wardId);
 	
-	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId) throws Exception;
+	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId,List<Long> constituencyIds) throws Exception;
 	
 	public NavigationVO getLatestGHMCElectionIdAndLatestElectionYear(String electionType);
 			

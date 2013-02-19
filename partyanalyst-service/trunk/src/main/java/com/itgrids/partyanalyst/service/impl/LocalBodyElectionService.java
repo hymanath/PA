@@ -257,7 +257,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				localBodyElectionResultVO.setLocalBodyElectionYear(election.getElectionYear());
 				localBodyElectionResultVO.setOtherElectionYears(electionsList);
 			}else{
-				electionsList = getLocalBodyElectionsList(localBodyId,state.getStateId());
+				electionsList = getLocalBodyElectionsList(localBodyId,state.getStateId(),null);
 				if(electionsList != null && electionsList.size() > 0){
 					localBodyElectionResultVO.setLocalBodyElectionId(electionsList.get(0).getId());
 					localBodyElectionResultVO.setLocalBodyElectionYear(electionsList.get(0).getName());
@@ -269,15 +269,19 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId) throws Exception{
+	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId,List<Long> constituencyIds) throws Exception{
 		List<SelectOptionVO> elections = new ArrayList<SelectOptionVO>();
 		List electionsList = null;
 		if(localBody != null && stateId != null){
 			if(localBody instanceof Long)
 				electionsList = constituencyElectionDAO.getLocalBodyElectionsInAState((Long)localBody, stateId);
-			else
-				electionsList = electionDAO.getLocalBodyElectionsInAState(localBody.toString(), stateId);
-			
+			else{
+				try{
+				electionsList = constituencyElectionDAO.findLatestElectionYearByConstituencyIds(localBody.toString(), stateId,constituencyIds);
+				}catch(Exception e){
+					
+				}
+			}
 			if(electionsList != null && electionsList.size() > 0){
 				
 				for(int i=0;i<electionsList.size();i++){
