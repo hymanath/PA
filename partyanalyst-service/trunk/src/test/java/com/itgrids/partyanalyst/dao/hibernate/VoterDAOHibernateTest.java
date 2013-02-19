@@ -181,11 +181,19 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	public void testGetVoterIdsByCardNos()
 	{
 		List<String> voterIdCardNosList = new ArrayList<String>(0);
-		voterIdCardNosList.add("RYT0605790");
-		voterIdCardNosList.add("RYT1113588");
-		voterIdCardNosList.add("RYT1113703");
-		List<Object[]> list = voterDAO.getVoterIdsByCardNos(voterIdCardNosList);
-		System.out.println(list.size());
+		voterIdCardNosList.add("1");
+		voterIdCardNosList.add("2");
+		voterIdCardNosList.add("3");
+		voterIdCardNosList.add("4");
+		voterIdCardNosList.add("5");
+		voterIdCardNosList.add("6");
+		
+		for(String s : voterIdCardNosList.subList(1,9))
+			System.out.println(s);
+		
+		
+		//List<Object[]> list = voterDAO.getVoterIdsByCardNos(voterIdCardNosList);
+		//System.out.println(list.size());
 	}
 		
 }
