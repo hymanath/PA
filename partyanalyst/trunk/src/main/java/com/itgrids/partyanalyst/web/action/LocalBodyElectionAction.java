@@ -370,6 +370,10 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		
 		Long constituencyId = jObj.getLong("constituencyId");
 		Long localBodyElectionId = jObj.getLong("localBodyElectionId");
+		if(localBodyElectionId == null || localBodyElectionId.longValue() == 0){
+			teshilPartyInfoVO = new TeshilPartyInfoVO();
+			return SUCCESS;
+		}
 		teshilPartyInfoVO = localBodyElectionService.getMuncipalOrCorporationElectionsResultsForAnAssembly(localBodyElectionId, constituencyId);
 		String title = "";
 		String pieChartName = "";
