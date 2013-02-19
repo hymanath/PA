@@ -4661,7 +4661,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		  $.each(municipality.selectOptionsList, function(iter,wards){
 		     if(panchayatid==wards.id && wards.selectOptionsList != null){
 					  $.each(wards.selectOptionsList,function(iter,booths){
-						str+='<li class="nav nav-pills"><a class="btn" data-wardid="'+ wards.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+						str+='<li class="nav nav-pills"><a class="btn" data-wardid="'+ wards.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
 									 });
 								}
 					 }); 
