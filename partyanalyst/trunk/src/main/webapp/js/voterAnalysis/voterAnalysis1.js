@@ -671,24 +671,24 @@ oDT: votersByLocBoothDataTable
 			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
-		  $("#votersHeaderDiv3").hide();
+		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		 // getPreviousVotersDetails1();
+		  getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
-		// showNewsDetails(id,publicationId,type);
+		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
-		// getProblemsByLocation(id,publicationId,type);
-		// getCounts(id,publicationId,type);
+		 getProblemsByLocation(id,publicationId,type);
+		 getCounts(id,publicationId,type);
 		 getVotersCastInfo(id,publicationId,type);
-         //getCastInfoForsubLevel(id,publicationId,type);
-         getvotersBasicInfo("impFamilies",id,publicationId,type);
+        //getCastInfoForsubLevel(id,publicationId,type);
+        getvotersBasicInfo("impFamilies",id,publicationId,type);
 				
 		// callCorrespondingAjaxCall();
-		// getPreviousElectionVotingTrends(id,publicationId,type);
-		// callCorrespondingAjaxCall('brief');
-		 //getElectionyearsByMandalId(id,type);
+		 getPreviousElectionVotingTrends(id,publicationId,type);
+		 callCorrespondingAjaxCall('brief');
+		 //getElectionyearsByMandalId(id,type)
 	}
 
 	
