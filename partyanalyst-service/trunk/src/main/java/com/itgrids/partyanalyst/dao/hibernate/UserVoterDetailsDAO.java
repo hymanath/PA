@@ -26,6 +26,33 @@ IUserVoterDetailsDAO{
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getUserVoterDetailsByVoterIds(List<Long> voterIds,Long userId){
+		
+		Query query = getSession().createQuery("select model.voter.voterId , model.party.shortName," +
+				"model.casteState.caste.casteName from UserVoterDetails model where model.voter.voterId in(:voterIds)" +
+				" and model.user.userId = :userId");
+		
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+		
+		
+	}
+	
+  public List<UserVoterDetails> getUserVoterDtlsVoterIds(List<Long> voterIds,Long userId){
+		
+		Query query = getSession().createQuery("select model from UserVoterDetails model where model.voter.voterId in(:voterIds)" +
+				" and model.user.userId = :userId");
+		
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+		
+		
+	}
 
 	/*public Candidate findCandidateByLastName(String lastName){
 		Candidate candidate = null;

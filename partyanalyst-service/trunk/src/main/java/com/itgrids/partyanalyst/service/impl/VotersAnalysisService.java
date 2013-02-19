@@ -1744,6 +1744,172 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    }
 		return voterHouseInfoVOList;
 	} 
+	
+	/**
+	 * This method will get all the voters information in a family
+	 * 
+	 * @author Samba Penugonda
+	 * @param Long  boothId ,boothId of the house
+	 * @param Long publicationDateId , the voters publication date Id
+	 * @param Long houseNo ,houseNo  of the family
+	 * @param Long userId , userId of logged in user
+	 * @return the voter details of a family
+	 * 
+	 */
+
+	public List<VoterHouseInfoVO> getFamilyInformation(Long boothId, Long publicationDateId,String houseNo,Long userId)
+	{		
+		log.debug("Entered into the getFamilyInformation method");
+		
+		List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();		
+		
+		try{
+		
+			VoterHouseInfoVO voterHouseInfoVO = null;
+			List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfo(boothId, publicationDateId, houseNo);
+		    long sno = 1;
+		    
+		    List<Long> voterIds = new ArrayList<Long>();
+		    for(Voter voter : votersInfoList)
+		    	voterIds.add(voter.getVoterId());
+		    
+		    List<Object[]> votersCategoriesList = 
+					 voterCategoryValueDAO.getVoterCategoryValuesForVoters(userId,voterIds);
+			 
+		    
+		   Map<Long, VoterHouseInfoVO> voterCastePartyDetails =  getUserCasteAndSelectedPartyVoters(voterIds,userId);
+		    	
+			for(Voter voter : votersInfoList){
+		    	voterHouseInfoVO = new VoterHouseInfoVO();
+		    	voterHouseInfoVO.setsNo(sno);
+		    	voterHouseInfoVO.setName(voter.getName());
+		    	voterHouseInfoVO.setGender(voter.getGender());
+		    	voterHouseInfoVO.setAge(voter.getAge());
+		    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
+		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
+		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+		    	
+		    	voterHouseInfoVO.setCast(voter.getCast());
+		    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
+		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
+		    	voterHouseInfoVO.setBoothId(boothId);
+		    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
+		    	VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
+		    	
+		    	setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
+		    	setCastePartyDetails(voterHouseInfoVO,voterCastPartyVO);
+		    	
+		    
+		    	voterHouseInfoVOList.add(voterHouseInfoVO);
+		    	//getUserCasteAndSelectedParty(voterHouseInfoVO , voter.getVoterId(),userId);
+		    	
+		    	
+		    	sno = sno+1;
+	    }
+		
+		}catch(Exception e){
+			log.error("Exception raised in getFamilyInformation method");
+			e.printStackTrace();
+		}
+		return voterHouseInfoVOList;
+	}
+	
+	/**
+	 * This method will set the voter selected categories values
+	 * @author Samba Penugonda
+	 * @param votersCategoriesList ,voters selected categories list
+	 * @param voter , voter details
+	 * @param voterHouseInfoVO , category values need to set to this vo
+	 */
+	public void setVotersCategories(List<Object[]> votersCategoriesList,
+			Voter voter, VoterHouseInfoVO voterHouseInfoVO) throws Exception{
+		
+		try{
+		
+		 VoterHouseInfoVO category = null;
+			
+		 for(Object[] voterDetails:votersCategoriesList){
+			 
+			 Long voterId = (Long)voterDetails[0];
+			 
+			 if(voterId.longValue() == voter.getVoterId()){
+				 
+				 List<VoterHouseInfoVO> categoriesList1 = voterHouseInfoVO.getCategoriesList();
+				 
+				 if(categoriesList1 == null){
+					 categoriesList1 = new ArrayList<VoterHouseInfoVO>();
+					 voterHouseInfoVO.setCategoriesList(categoriesList1);
+					 
+				 }
+				   category = new VoterHouseInfoVO();
+	    		  categoriesList1.add(category);
+	    		  category.setCategoryValuesId((Long)voterDetails[1]);
+	    		  category.setName(voterDetails[2]!=null?voterDetails[2].toString():"");
+				 
+			 }
+	     }
+		 
+		}catch(Exception e){
+			throw new Exception();			
+		}
+	}
+	
+	/**
+	 * This method will set the voter's party and caste details
+	 * @author Samba Penugonda
+	 * @param voterHouseInfoVO , voters party and caste details need to set to this vo
+	 * @param voterCastPartyVO , contains voter's party and caste details
+	 */
+	public void setCastePartyDetails(VoterHouseInfoVO voterHouseInfoVO,
+			VoterHouseInfoVO voterCastPartyVO) throws Exception {
+		try{
+			if(voterCastPartyVO != null){
+	    		
+	    		if(voterCastPartyVO.getCast() !=null)
+	    			voterHouseInfoVO.setCast(voterCastPartyVO.getCast());
+	    		
+	    		if(voterCastPartyVO.getParty() != null)
+	    			voterHouseInfoVO.setParty(voterCastPartyVO.getParty());
+	    		
+	    	}
+		}catch(Exception e){
+			throw new Exception();
+		}
+		
+	}
+	
+	/**
+	 * This method will get the caste and party details of voters of logged in user
+	 * @author Samba Penugonda
+	 * @param voterIds , total voterIds to get the caste and party details
+	 * @param userId , logged in user id
+	 * @return caste and party details of voters as map having key as voter id
+	 */
+	 public Map<Long,VoterHouseInfoVO> getUserCasteAndSelectedPartyVoters(List<Long> voterIds,Long userId){
+
+		  Map<Long,VoterHouseInfoVO> voterCasteDetailsMap = new HashMap<Long, VoterHouseInfoVO>();
+
+		  List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDtlsVoterIds(voterIds,userId);
+		  
+		  
+		  for(UserVoterDetails userVoterDetails:userVoterDetailsList){
+			  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
+			  
+			  if(userVoterDetails.getParty() != null)
+				  voterHouseInfoVO.setParty(userVoterDetails.getParty().getShortName());
+			  
+			  if(userVoterDetails.getCasteState() != null)
+				  voterHouseInfoVO.setCast(userVoterDetails.getCasteState().getCaste().getCasteName());
+			  
+			  
+			  voterHouseInfoVO.setVoterId(userVoterDetails.getVoter().getVoterId());
+			  
+			  voterCasteDetailsMap.put(voterHouseInfoVO.getVoterId(), voterHouseInfoVO); 
+		  }
+		 
+		  return voterCasteDetailsMap;
+	  }
+	
 	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type)
 	{
 		
@@ -8186,4 +8352,62 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				 return result;
 			 }
 		 }
+		 
+		 
+			
+	 /**This method will return multiple families information to edit
+	  * @author Samba Penugonda
+	  * @param familiesList , families information
+	  * @param userId , logged in user id
+	  * @return all the existing voters details of selected families 
+	  */
+	public List<VoterHouseInfoVO> getMultipleFamiliesInformation(
+			List<VoterHouseInfoVO> familiesList, Long userId) {
+		log.debug("Entered into the getMultipleFamiliesInformation service method");
+		 List<VoterHouseInfoVO> votersInfo = new ArrayList<VoterHouseInfoVO>();
+		 
+		 try{
+			 for(VoterHouseInfoVO family : familiesList){
+				 votersInfo.addAll(getFamilyInformation(family.getBoothId(),family.getPublicationId(),family.getHouseNo(),userId));
+			 }
+			 for(int i =0; i<votersInfo.size();i++){
+				 VoterHouseInfoVO voter = votersInfo.get(i);
+				 voter.setsNo(new Long(i+1));
+			 }
+		 }catch(Exception e){			 
+			 log.error("Exception raised in  getMultipleFamiliesInformation service method");
+			 e.printStackTrace();
+		 }
+		 return votersInfo;
+	 }
+		 
+		 
+	/**
+	 * This method will return all the categories exist for logged in user
+	 * @author Samba Penugonda
+	 * @param userId , logged in user id
+	 * @return all the categories of logged in user	 
+	 */
+	 public List<SelectOptionVO> getUserCategoryValuesByUserId(Long userId){
+			log.debug("Entered into the getUserCategoryValuesByUserId service method");
+			List<SelectOptionVO> optionsList = new ArrayList<SelectOptionVO>();
+			
+			try{
+				List<UserVoterCategory> categories =userVoterCategoryDAO.getUserCategoriesByUserId(userId);
+				
+				for(UserVoterCategory userVoterCategory:categories){
+					SelectOptionVO optionVO = new SelectOptionVO();
+					
+					optionVO.setId(userVoterCategory.getUserVoterCategoryId());
+					optionVO.setName(userVoterCategory.getCategoryName());
+					optionsList.add(optionVO);
+				}
+				
+			}catch(Exception e){
+			  log.debug("Exception raised in  getUserCategoryValuesByUserId service method");
+			   e.printStackTrace();
+			}
+			
+			return optionsList;
+		}
 }

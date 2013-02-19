@@ -65,7 +65,16 @@ public class VoterHouseInfoVO {
 	private String[] sortIds;
 	private boolean sortReq;
 	private String sortEle;
+	private String partyName;
 	
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
 	public VoterHouseInfoVO(){
 		
 	}
