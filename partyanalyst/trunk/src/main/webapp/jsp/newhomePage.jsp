@@ -137,7 +137,7 @@ Quick Links</h2>
 									</tr>
 										<tr>
 											<td>
-												<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;"
+												<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;" autoComplete="off"
 		                                          onchange="checkElectionType(this.options[this.selectedIndex].value)">
 		                                               <option value="0">Select Type</option>
 		                                               <option value="2">Assembly</option>
@@ -540,7 +540,7 @@ Hot Topics</h2>
 						<div class="media-body">
 							<h5>${specialPages.title}</h5>
 								
-								<img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/>
+								<a  href="specialPageAction.action?specialPageId=${specialPages.specialPageId}"><img src="${specialPages.eventImagePath}" width="200px"height="85px" style="margin-bottom:12px; " alt="${specialPages.title} Image"/></a>
 								<p class="hottopics_desc">
 									${specialPages.description}
 								</p>
