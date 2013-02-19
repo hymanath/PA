@@ -104,6 +104,10 @@
 {
 width:146px;
 }
+.LEGEND
+{
+	font-family : Arial;
+}
 </style>
 </head>
 <script type="text/javascript"> 
