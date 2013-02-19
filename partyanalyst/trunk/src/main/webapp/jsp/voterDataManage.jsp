@@ -25,6 +25,7 @@
 	}
 	.voterManagementInnerDiv p{font-size: 13px;}
 	#voterDataInsertId{font-weight:bold;}
+	#voterChangesButtonId{font-weight:bold;margin-top:10px;}
 	.errorMsgDiv{color: red;
     font-size: 13px;
     padding-bottom: 12px; padding-top: 12px;}
@@ -70,7 +71,31 @@
 	</fieldset>
 </div>
 
+<div id="voterManagementMainDiv" class="span8">
+ <div class="headingDiv" style="width:615px;">Copy Voter Modification Data from temporary table to main table</div>
 
+  <fieldset>
+	<div id="errorMsgDivId" class="errorMsgDiv"></div>
+	<div class="voterManagementInnerDiv">
+		
+	<center>
+		<table cellpadding="4">
+			<tr>
+				<th>Constituency </th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesListForVoterChanges" id="constituencySelectId" list="constituenciesListForVoterChanges" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"></s:select></td>
+			</tr>
+			<tr>
+				<th>Publication Date</th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="publicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+		</table>
+		<p><input type="button" value="Submit" id="voterChangesButtonId" class="btn btn-info" onClick="insertVoterModifiedData()"/><div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
+	</center>		
+	</div>
+	</fieldset>
+</div>
 
 
 <script type="text/javascript">
@@ -88,6 +113,10 @@ function callAjax(jsObj, url){
 							if(jsObj.task == "insertVoterData")
 							{
 								showVoterinsertDataStatus(myResults);
+							}
+							else if(jsObj.task == "insertVoterModificationData")
+							{
+								showModifiedVotersInsertDataStatus(myResults);
 							}
 							
 						}
@@ -183,6 +212,62 @@ function callAjax(jsObj, url){
 		});
 
 	});
+
+	function insertVoterModifiedData()
+	{
+		var constituencyEle = document.getElementById("constituencySelectId");
+		var publicationDateEle = document.getElementById("publicationDateId");
+
+		var constituencyId = constituencyEle.options[constituencyEle.selectedIndex].value;
+		var publicationDateId = publicationDateEle.options[publicationDateEle.selectedIndex].value;
+		var errorDivEle = document.getElementById("errorMsgDivId");
+		
+		var errorStr = '';
+		var flag = false;
+		if(constituencyId == 0)
+		{
+			errorStr += 'Please Select Constituency<BR>';
+			flag = true;
+		}
+		if(publicationDateId == 0)
+		{
+			errorStr += 'Please Select Publication Date<BR>';
+			flag = true;
+		}
+		if(flag)
+		{
+			errorDivEle.innerHTML = errorStr;
+			return;
+		}
+		
+		errorDivEle.innerHTML = '';
+		document.getElementById("ajaxImgDivId").style.display = 'block';
+		var jsObj=
+		{				
+			constituencyId		: constituencyId,
+			publicationDateId	: publicationDateId,
+			task				: "insertVoterModificationData"
+			
+		}
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "insertVoterDataAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	
+	function showModifiedVotersInsertDataStatus(results)
+	{
+		$(".errorMsgDiv").html('');
+		document.getElementById("ajaxImgDivId").style.display = 'none';
+		if(results.resultCode == 0)
+		{
+			document.getElementById('constituencySelectId').selectedIndex = 0;
+			document.getElementById('publicationDateId').selectedIndex = 0;
+			$(".errorMsgDiv").html('Voters Modification Data inserted successfully.').css("color","green");
+		}
+		else
+			$(".errorMsgDiv").html('Voters Modification Data is not inserted.');
+	}
 
 	function showVoterinsertDataStatus(results)
 	{
