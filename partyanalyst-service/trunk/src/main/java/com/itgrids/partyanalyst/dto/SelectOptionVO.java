@@ -11,6 +11,8 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String url;
 	private String type;
 	private String value;
+	private String location;
+	private String villageCovered;
 	private List<SelectOptionVO> selectOptionsList;
 	private List<SelectOptionVO> selectOptionsList1;
 	
@@ -106,5 +108,22 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	public void setSelectOptionsList(List<SelectOptionVO> selectOptionsList) {
 		this.selectOptionsList = selectOptionsList;
 	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getVillageCovered() {
+		return villageCovered;
+	}
+
+	public void setVillageCovered(String villageCovered) {
+		this.villageCovered = villageCovered;
+	}
+
 	
 }

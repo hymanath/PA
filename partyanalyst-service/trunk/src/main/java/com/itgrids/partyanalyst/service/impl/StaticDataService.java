@@ -4902,6 +4902,14 @@ public class StaticDataService implements IStaticDataService {
 		while (it.hasNext()) {
 			Object[] parmss = (Object[]) it.next();
 			String muncipalityId = parmss[1].toString();
+			
+			//Added by mahesh to get latest election Year
+			if(muncipalityId != null && muncipalityId.trim().length() >0){
+				List<String> electionYears = constituencyElectionDAO.findLatestElectionYear(electionType,new Long(muncipalityId));
+			    if(electionYears != null && electionYears.size() >0)
+			      latestMuncipalElectionYear = electionYears.get(0);
+			}//end of getting latest election Year
+			
 			TeshilPartyInfoVO allMuncipalitiesVO = new TeshilPartyInfoVO();
 			allMuncipalitiesVO.setMuncipalityName(parmss[0].toString());
 			allMuncipalitiesVO.setTotalMuncipalities(result.size());
@@ -5001,9 +5009,20 @@ public class StaticDataService implements IStaticDataService {
 		ResultStatus resultStatus = new ResultStatus();
 		int flag = 0;
 		try {
+			String electionYear = null;
+			/*Changed by mahesh
 			List latestYearResult = electionDAO
 					.findLatestElectionYear(electionType);
 			String electionYear = latestYearResult.get(0).toString();
+			*/
+			//Added by mahesh to get latest election Year
+			if(muncipalityId != null){
+				List<String> electionYears = constituencyElectionDAO.findLatestElectionYear(electionType,muncipalityId);
+			    if(electionYears != null && electionYears.size() >0)
+			    	electionYear = electionYears.get(0);
+			}//end of getting latest election Year
+			
+			
 			if (candidateDetailsType.equalsIgnoreCase("winners")) {
 				successorCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(
 						electionType, muncipalityId, electionYear,

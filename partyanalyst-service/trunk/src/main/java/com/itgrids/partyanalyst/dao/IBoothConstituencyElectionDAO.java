@@ -112,9 +112,9 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Object[]> getVotersCountInAConstituency(Long electionId,Long constituencyId);
 
-	public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo);
+	public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo,Long constituencyId);
 	
-	public List<Long> getBoothIdsByLocalEleBodyId(Long localEleBodyId, Long electionId);
+	public List<Long> getBoothIdsByLocalEleBodyId(Long localEleBodyId, Long electionId,Long constituencyId);
 	
 	public List<Long> getBoothIdsByConstituencyId(Long constituencyId, Long electionId);
 	

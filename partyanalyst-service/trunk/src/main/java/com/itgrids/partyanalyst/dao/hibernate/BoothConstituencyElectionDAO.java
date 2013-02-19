@@ -418,14 +418,16 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	return query.list();
    	}
     
-    public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo){
+    public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo,Long constituencyId){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters),count(*) from BoothConstituencyElection model " +
 				" where model.constituencyElection.election.electionId = :electionId ");
     	if(type.equalsIgnoreCase("mandal")){
     		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.localBody is null");
     	}else if(type.equalsIgnoreCase("localElec")){
-    		queryStr.append(" and model.booth.localBody.localElectionBodyId = :id ");
+    	    queryStr.append(" and model.booth.localBody.localElectionBodyId = :id ");
+    		if(constituencyId != null && constituencyId > 0l)
+    		  queryStr.append(" and model.booth.constituency.constituencyId = :constituencyId ");
     	}else if(type.equalsIgnoreCase("booth")){
     		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.partNo = :partNo ");
     	}else if(type.equalsIgnoreCase("ward")){
@@ -436,18 +438,21 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	query.setParameter("id", id);
     	if(type.equalsIgnoreCase("booth"))
     		query.setParameter("partNo", partNo);
+    	if(type.equalsIgnoreCase("localElec") && constituencyId != null && constituencyId > 0l)
+    	    query.setParameter("constituencyId", constituencyId);	
     	return query.list();
    	}
     
     @SuppressWarnings("unchecked")
-	public List<Long> getBoothIdsByLocalEleBodyId(Long localEleBodyId, Long electionId)
+	public List<Long> getBoothIdsByLocalEleBodyId(Long localEleBodyId, Long electionId,Long constituencyId)
     {
     	StringBuilder stringBuilder = new StringBuilder();
-    	stringBuilder.append("select model.booth.boothId from BoothConstituencyElection model where model.booth.localBody.localElectionBodyId =:localElectionBodyId  " +
-    			" and model.constituencyElection.election.electionId = :electionId ");
+    	stringBuilder.append("select distinct model.booth.boothId from BoothConstituencyElection model where model.booth.localBody.localElectionBodyId =:localElectionBodyId  " +
+    			" and model.constituencyElection.election.electionId = :electionId and model.booth.constituency.constituencyId = :constituencyId");
     	Query query = getSession().createQuery(stringBuilder.toString());
     	query.setParameter("electionId", electionId);
     	query.setParameter("localElectionBodyId", localEleBodyId);
+    	query.setParameter("constituencyId", constituencyId);
     	return query.list();
     }
     

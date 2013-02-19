@@ -355,12 +355,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 
 	    public List<Object[]> getBoothsInAPanchayat(Long panchayatId,Long publicationDateId){
 	    	Object[] params={panchayatId,publicationDateId};
-	    	return getHibernateTemplate().find("select model.boothId,model.partNo from Booth model where model.panchayat.panchayatId = ? and model.publicationDate.publicationDateId = ?",params);
+	    	return getHibernateTemplate().find("select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.panchayat.panchayatId = ? and model.publicationDate.publicationDateId = ?",params);
 	    }
 	    
 	    public List<Object[]> getBoothsInAMunicipality(Long lclElecBodyId,Long publicationDateId){
 	    	Object[] params={lclElecBodyId,publicationDateId};
-	    	return getHibernateTemplate().find("select model.boothId,model.partNo from Booth model where model.localBody.localElectionBodyId = ? and model.publicationDate.publicationDateId = ? order by model.partNo",params);
+	    	return getHibernateTemplate().find("select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.localBody.localElectionBodyId = ? and model.publicationDate.publicationDateId = ? order by model.partNo",params);
 	    }
 	    
 	    public List<Long> getStateIdByPublicationId(Long publicationDateId){
@@ -390,7 +390,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			 
 			  StringBuilder str = new StringBuilder();
 			  //str.append("select distinct count(model.boothId) from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
-			  str.append("select distinct model.boothId,model.partNo from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
+			  str.append("select distinct model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.publicationDate.publicationDateId = :publicationDateId and ");
 
 			  if(type.equalsIgnoreCase("constituency"))
 				  str.append(" model.constituency.constituencyId = :id ");
@@ -491,7 +491,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		public List<Object[]> getBoothInWard(Long wardId, Long publicationDateId)
 		{
-			Query query = getSession().createQuery("select distinct model.boothId,model.partNo from Booth model " +
+			Query query = getSession().createQuery("select distinct model.boothId,model.partNo, model.location, model.villagesCovered from Booth model " +
 					"where model.localBodyWard.constituencyId = :id and model.publicationDate.publicationDateId =:publicationDateId"); 
 					
 			query.setParameter("publicationDateId", publicationDateId);

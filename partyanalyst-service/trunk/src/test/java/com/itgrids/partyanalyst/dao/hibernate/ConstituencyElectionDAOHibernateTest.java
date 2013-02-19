@@ -149,7 +149,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 		}
 	}*/
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetStates(){
 		List results = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(new Long(2));
 		if(results != null && results.size() > 0){
@@ -159,7 +159,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" State Id :" + (Long)params[0] + " State Name :"  + (String)params[1]);
 			}
 		}
-	}
+	}*/
 	
 	/*public void testGetConstituenciesCountByStateAndElection(){
 		List list = constituencyElectionDAO.getConstituenciesCountByDistrictForStateAndElection(1l, 3l);
@@ -329,7 +329,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testfindAllElectionsHappendInAConstituency()
+	/*public void testfindAllElectionsHappendInAConstituency()
 	{
 		List<Long> constituencyId = new ArrayList<Long>(0);
 		constituencyId.add(232l);
@@ -338,6 +338,27 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 		for(Object[] params : list)
 		System.out.println(params[0]+" "+params[1]);
-	}
+	}*/
 	
+	/*public void testfindLatestElectionYear()
+	{
+		List<Long> constituencyId = new ArrayList<Long>(0);
+		constituencyId.add(232l);
+		constituencyId.add(234l);
+		List<String> list = constituencyElectionDAO.findLatestElectionYear("MUNCIPALITY",58l);
+		System.out.println(list.size());
+		for(String params : list)
+		System.out.println(params);
+	}*/
+	public void testFindLatestElectionYearByConstituencyIds()
+	{
+		List<Long> constituencyId = new ArrayList<Long>(0);
+		constituencyId.add(309l);
+		List list = constituencyElectionDAO.findLatestElectionYearByConstituencyIds("MUNCIPALITY",1l,constituencyId);
+		System.out.println(list.size());
+		for(int i=0;i<list.size();i++){
+			Object[] data = (Object[])list.get(i);
+		   System.out.println(data[0].toString()+"  "+data[1].toString());
+		}
+	}
 }
