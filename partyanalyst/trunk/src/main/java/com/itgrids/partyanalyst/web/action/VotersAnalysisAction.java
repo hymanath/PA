@@ -73,7 +73,17 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private List<SelectOptionVO> electionYearsList; 
 	private CrossVotingConsolidateVO crossVotingConsolidateVO;
 	private Long parliamentConstituencyId;
+	
+	private List<SelectOptionVO> userCategoriesList;
 		
+	public List<SelectOptionVO> getUserCategoriesList() {
+		return userCategoriesList;
+	}
+
+	public void setUserCategoriesList(List<SelectOptionVO> userCategoriesList) {
+		this.userCategoriesList = userCategoriesList;
+	}
+
 	public List<VotersInfoForMandalVO> getPreviousDetailsList() {
 		return previousDetailsList;
 	}
@@ -663,12 +673,33 @@ public String getVotersFamilyDetails(){
 		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
 		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"));
 		else
-			votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
+			//votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
+			votersFamilyInfo = votersAnalysisService.getFamilyInformation(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId);
 	}catch(Exception e){
 		log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
 	}
 	
 	return SUCCESS;
+}
+
+public String getUserCategories(){
+	
+	try{
+		String param;
+		param = getTask();
+		jObj = new JSONObject(param);
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
+		userCategoriesList = votersAnalysisService.getUserCategoryValuesByUserId(userId);
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		
+	}
+	
+	return Action.SUCCESS;
+	
 }
 
 public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
