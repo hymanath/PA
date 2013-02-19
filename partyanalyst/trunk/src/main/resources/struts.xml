@@ -3821,6 +3821,13 @@
 		</action>
 		
 		
+		<action name="getUserCategoriesAction" class="votersAnalysisAction" method="getUserCategories">
+			<result type="json" name="success">
+				<param name="root">userCategoriesList</param>				
+			</result> 
+		</action>
+		
+		
 		
 		<action name="getAdminSocialAction" class="adminSocialAction" method="ajaxCallHandler">
 			<result type="json" name="success">
