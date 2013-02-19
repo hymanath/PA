@@ -151,4 +151,6 @@ public interface IVotersAnalysisService {
 	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
 	
 	public ResultStatus moveVotersModificationDataFromTempToMainTable(Long constituencyId,Long publicationDateId);
+	
+	public List<SelectOptionVO> getConstituenciesToBeMappedForVoterChanges();
 }
