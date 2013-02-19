@@ -842,11 +842,34 @@ public class ConstituencyPageAction extends ActionSupport implements
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
    				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,true);
-		
-   		municipalElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.MUNCIPLE_ELECTION_TYPE, 1l);
-   		corporateElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.CORPORATION_ELECTION_TYPE, 1l);
-   		greaterElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.GREATER_ELECTION_TYPE, 1l);
-   		
+   		List<Long> constituencyIds = new ArrayList<Long>();
+   		if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+   			constituencyIds.add(constituencyId);
+   		}else{
+   			ConstituencyInfoVO  constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(constituencyId);
+   			if(constituencyInfoVO.getAssembyConstituencies() != null && constituencyInfoVO.getAssembyConstituencies().size() >0){
+   				for(SelectOptionVO option:constituencyInfoVO.getAssembyConstituencies())
+   					constituencyIds.add(option.getId());
+   			}
+   		}
+		if(constituencyIds.size() >0){
+   		    municipalElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.MUNCIPLE_ELECTION_TYPE, 1l,constituencyIds);
+   		    corporateElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.CORPORATION_ELECTION_TYPE, 1l,constituencyIds);
+   		    greaterElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.GREATER_ELECTION_TYPE, 1l,constituencyIds);
+		}
+		SelectOptionVO defaultData = new SelectOptionVO(0l, "");
+		if(municipalElections == null || municipalElections.size() == 0){
+			municipalElections = new ArrayList<SelectOptionVO>();
+			municipalElections.add(defaultData);
+		}
+		if(corporateElections == null || corporateElections.size() == 0){
+			corporateElections = new ArrayList<SelectOptionVO>();
+			corporateElections.add(defaultData);
+		}
+		if(greaterElections == null || greaterElections.size() == 0){
+			greaterElections = new ArrayList<SelectOptionVO>();
+			greaterElections.add(defaultData);
+		}
    		allLocalBodyIds = localBodyElectionService.getLatestGHMCElectionIdAndLatestElectionYear(IConstants.GREATER_ELECTION_TYPE).getMessageTypes();
    		localBodyId = localBodyElectionService.getLocalBodyElectionIdsForAConstituency(constituencyId,IConstants.GREATER_ELECTION_TYPE).getMessageTypes();
    		if(localBodyId!=null && localBodyId.size()!=0){

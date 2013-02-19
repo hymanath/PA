@@ -384,15 +384,17 @@ public String getVoterDetails(){
 	public String getVotersCount(){
 		String param;
 		param = getTask();
-		
+		Long constituencyId = null;
 		try{
-			jObj = new JSONObject(param);	
+			jObj = new JSONObject(param);
+			constituencyId = jObj.getLong("constituencyId");
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 		}
-		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
+		
+		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId);
 		return Action.SUCCESS;
 	}
 	
