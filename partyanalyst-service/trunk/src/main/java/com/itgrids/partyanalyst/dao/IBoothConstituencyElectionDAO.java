@@ -126,6 +126,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Object[]> findAllElectionsHappenedInABooth1(Long boothId , List<Long> constElectionIds);
 	 
-	
+	public List<Long> getBoothIdsByConstituencyIdPartNo(Long constituencyId, Long electionId,String partNo);
 	
 }

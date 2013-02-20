@@ -5042,11 +5042,11 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							List<Object[]> list = null;
 							String type2 = null;
 							
-							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type))
 							{
 								List<Long> constituencyIdsList = new ArrayList<Long>(0);
 								
-								List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(id);
+								List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
 								if(parliamentList != null && parliamentList.size() > 0)
 								{
 									for(Object[] params : (List<Object[]>)parliamentList)
@@ -5055,8 +5055,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 											constituencyIdsList.add((Long)params[0]);
 									}
 								}
-								if(!constituencyIdsList.contains(id))
-									constituencyIdsList.add(id);
+								if(!constituencyIdsList.contains(constituencyId))
+									constituencyIdsList.add(constituencyId);
 								if(constituencyIdsList != null && constituencyIdsList.size() > 0)
 									list = constituencyElectionDAO.findAllEleHappendInAConstituency(constituencyIdsList);
 								
@@ -5128,10 +5128,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									
 									else if(type.equalsIgnoreCase("booth"))
 									{
-										boothIdStr = id.toString();
-										List<Long> boothId = new ArrayList<Long>(0);
-										boothId.add(id);
-										totalVoters = boothDAO.getTotalaVotesByBoothIds(boothId);
+										Booth booth = boothDAO.get(id);
+										boothIdsList = boothConstituencyElectionDAO.getBoothIdsByConstituencyIdPartNo(constituencyId,(Long)params[0],booth.getPartNo());
 									}
 									else if(type.equalsIgnoreCase("ward"))
 									{   boothIdsList =  boothConstituencyElectionDAO.getBoothIdsByConstituencyId(id, (Long)params[0]);
@@ -8693,4 +8691,16 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			return optionsList;
 		}
 	 
+	 public SelectOptionVO getBoothBasicInfo(Long boothId){
+			try{
+			 SelectOptionVO selectOptionVO = new SelectOptionVO();
+			 Booth booth = boothDAO.get(boothId);
+			 selectOptionVO.setLocation(booth.getLocation());
+			 selectOptionVO.setVillageCovered(booth.getVillagesCovered());
+			 return selectOptionVO;
+			}catch(Exception e){
+				log.error("Exception rised in getBoothBasicInfo  ",e);
+			}
+			return null;
+		 }
 }
