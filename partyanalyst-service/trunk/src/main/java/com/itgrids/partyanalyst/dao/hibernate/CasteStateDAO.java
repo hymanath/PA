@@ -61,7 +61,7 @@ public List<Object[]> getAllCasteInfoDetails(){
     @SuppressWarnings("unchecked")
 	public List<Object[]> getAllCastesForVoters(Long stateId,Long userId){
 		
-		Query query = getSession().createQuery("select distinct(model.casteStateId) , model.caste.casteName from CasteState model where model.state.stateId = :stateId and ( model.isGlobal = :isGlobal or model.user.userId = :userId) order by model.caste.casteName");
+		Query query = getSession().createQuery("select distinct(model.casteStateId) , model.caste.casteName from CasteState model where model.state.stateId = :stateId and (model.isGlobal = :isGlobal or model.user.userId = :userId) order by model.caste.casteName");
 		query.setParameter("stateId", stateId);
 		query.setParameter("userId", userId);
 		query.setParameter("isGlobal", IConstants.TRUE);
@@ -70,7 +70,7 @@ public List<Object[]> getAllCasteInfoDetails(){
 		
 	}
 	
-	public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
+	/*public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("from CasteState model where model.user.userId = :userId and model.caste.casteId =:casteId ");
@@ -80,6 +80,17 @@ public List<Object[]> getAllCasteInfoDetails(){
 		query.setParameter("stateId", stateId);
 		query.setParameter("casteId", casteId);
 		query.setParameter("casteCategoryId", casteCategoryId);
+		return (CasteState)query.uniqueResult();
+	}*/
+	public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("from CasteState model where model.user.userId = :userId and model.caste.casteId =:casteId ");
+		stringBuilder.append(" and model.state.stateId =:stateId ");
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("stateId", stateId);
+		query.setParameter("casteId", casteId);
 		return (CasteState)query.uniqueResult();
 	}
 }

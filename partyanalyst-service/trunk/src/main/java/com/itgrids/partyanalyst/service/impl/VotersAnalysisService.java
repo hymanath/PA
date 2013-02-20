@@ -4273,8 +4273,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				casteState.setState(stateDAO.get(stateId));
 				casteState.setCaste(caste);
 				casteStateDAO.save(casteState);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			}
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			else
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
 		}catch (Exception e) {
 			e.printStackTrace();
