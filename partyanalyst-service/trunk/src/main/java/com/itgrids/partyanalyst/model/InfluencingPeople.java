@@ -41,7 +41,7 @@ public class InfluencingPeople extends BaseModel{
 	private String middleName;
 	private String fatherOrSpouseName;
 	private Hamlet hamlet;
-	
+	private Voter voter;
 	
 	public InfluencingPeople(){
 		
@@ -237,5 +237,17 @@ public class InfluencingPeople extends BaseModel{
 		this.hamlet = hamlet;
 	}
 	
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "voter_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getVoter() {
+	return voter;
+	}
+
+	public void setVoter(Voter voter) {
+	this.voter = voter;
+	}
+
 
 }

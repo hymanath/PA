@@ -14,13 +14,17 @@ public class UserRelationDAOHibernateTest extends BaseDaoTestCase {
 		this.userRelationDAO = userRelationDAO;
 	}
 	
-	public void test(){
+	/*public void test(){
 	List<UserRelation> result = userRelationDAO.getAll();	
 	for(UserRelation UserRelation: result)
 	{
 		System.out.println(UserRelation.getUserRelationId()+"------"+UserRelation.getRelationship());
 		
 	}
-   }
+   }*/
+   public void testGetRelationId(){
+		List<Long> result = userRelationDAO.getRelationId("Husband");	
+		System.out.println(result);
+	   }
 
 }

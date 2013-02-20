@@ -113,4 +113,18 @@ IUserVoterDetailsDAO{
 		return query.list();
 		
 	}
+	/**
+	 * This method is used to get the party name and caste categoery of a voter based on voter id and user id
+	 * @author Prasad Thiragabathina
+	 * @param Long voterId
+	 * @param Long userId
+	 * @return List<Object[]>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyAndCasteDetails(Long voterId , Long userId) {
+		Object[] param = {voterId,userId};
+		return getHibernateTemplate().find("select model.casteState.caste.casteId," +
+				" model.casteState.caste.casteName,model.party.partyId,model.party.shortName " +
+				"from UserVoterDetails model where model.voter.voterId = ? and model.user.userId = ? ",param);
+	}
 }

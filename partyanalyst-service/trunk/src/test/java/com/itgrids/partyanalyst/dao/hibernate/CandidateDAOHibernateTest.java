@@ -86,8 +86,16 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testEmailInsertionInCandidate(){
+	/*public void testEmailInsertionInCandidate(){
 		Integer value = candidateDAO.findEmailInsertionInCandidate("sravanthi@gmail.com",187847l);
 		System.out.println(value);
+	}*/
+	public void testgetCandidateDetailsBySearch(){
+		List<Object[]> candidatesList = candidateDAO.getCandidateDetailsBySearch("M","prasad",232l,1l);
+		for (Object[] objects : candidatesList) {
+			
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);
+		}
 	}
 }

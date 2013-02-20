@@ -32,4 +32,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getUserVoterDetailsByVoterIds(List<Long> voterIds,Long userId);
 	
 	public List<UserVoterDetails> getUserVoterDtlsVoterIds(List<Long> voterIds,Long userId);
+	
+	public List<Object[]> getPartyAndCasteDetails(Long voterId,Long userId);
 }

@@ -91,6 +91,8 @@ import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
@@ -210,7 +212,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ICommentDAO commentDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
+	private IVoterDAO voterDAO;
 	
+	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 	public IPartyElectionStateResultDAO getPartyElectionStateResultDAO() {
 		return partyElectionStateResultDAO;
 	}
@@ -5111,6 +5123,72 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
 	
 	
 	return pdfGenerationVO;
+	
+}
+/**
+ * This Method Is Used To Get The Candidate Details Based On Candidate Name Search Criteria ,
+ * gender , ConstituencyId and StateId
+ * @author Prasad Thiragabathina
+ * @param String gender
+ * @param String name
+ * @param Long constituencyId
+ * @param Long stateId
+ * @return List<SelectOptionVO>
+*/
+public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,
+		String name, Long constituencyId, Long stateId) {
+	List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+	try
+	{
+		log.debug("Entered into the getCandidateDetailsBySearch() method");
+	   List<Object[]> results = candidateDAO.getCandidateDetailsBySearch(gender,name,constituencyId,stateId);
+	   for(Object[] candidateDetails: results)
+	   {
+		  SelectOptionVO selectOptionVO = new SelectOptionVO();
+		  selectOptionVO.setId((Long)candidateDetails[0]);
+		  selectOptionVO.setName(candidateDetails[1] != null ? candidateDetails[1].toString() :"");
+		  selectOptionVO.setType(candidateDetails[2] != null ? candidateDetails[2].toString():"");
+		  returnValue.add(selectOptionVO);
+	   }
+	  return returnValue;
+	}
+	catch(Exception e)
+	{
+		log.error("error occured in the getCandidateDetailsBySearch() method");
+		e.printStackTrace();
+		return returnValue;
+	}
+}
+/**
+ * This Method Is Used To Store Voter Details Into The Candidate
+ * @author Prasad Thiragabathina
+ * @param  Long CandidateId
+ * @param Long voterId
+ * @return ResultStatus
+ */	
+@SuppressWarnings("unchecked")
+public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
+	ResultStatus resultStatus = new ResultStatus();
+	try {
+		log.debug("Entered into the saveCandidateVoterDetails() method");
+		if(voterId != null && voterId.longValue() > 0l)
+		{
+			Candidate candidate =  candidateDAO.get(CandidateId);
+			
+			if(candidate != null )
+			{	
+				candidate.setVoter(voterDAO.get(voterId));
+				candidateDAO.save(candidate);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}
+		return resultStatus;
+	} catch (Exception e) {
+		log.debug("Error occured in saveCandidateVoterDetails() method");
+		e.printStackTrace();
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
 	
 }
 }

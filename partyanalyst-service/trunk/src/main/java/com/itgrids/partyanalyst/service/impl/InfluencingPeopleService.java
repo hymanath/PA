@@ -40,7 +40,9 @@ import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeDetailsVO;
@@ -114,6 +116,16 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IStaticLocalGroupDAO staticLocalGroupDAO;
 	private ILocalGroupRegionDAO localGroupRegionDAO;
 	private IStaticUserDesignationDAO staticUserDesignationDAO;
+	private IVoterDAO voterDAO;
+	
+	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -365,6 +377,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeople.setCaste(influencingPeopleVO.getCast());
 				influencingPeople.setOccupation(influencingPeopleVO.getOccupation());
 				influencingPeople.setInfluencingScope(influencingPeopleVO.getInfluencingRange());
+				
 				if(influencingPeopleVO.getPosition() instanceof String){
 					InfluencingPeoplePosition influencingPeoplePosition = new InfluencingPeoplePosition();						
 					List<InfluencingPeoplePosition> influencePeop = influencingPeoplePositionDAO.getAll();
@@ -461,13 +474,23 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			public Object doInTransaction(TransactionStatus status) {
 				
 				InfluencingPeopleBeanVO influencingPeopleVO = new InfluencingPeopleBeanVO();
-				InfluencingPeople influencingPeople;
-				UserAddress userAddress;
+				InfluencingPeople influencingPeople = null;
+				UserAddress userAddress = null;
 				
 				if(influencingPeopleBeanVO.getWindowTask().equalsIgnoreCase("edit"))
 				{
-					 influencingPeople = influencingPeopleDAO.get(new Long(influencingPeopleBeanVO.getInfluencingPersonId().toString()));
-					 userAddress = userAddressDAO.get(influencingPeople.getUserAddress().getUserAddressId());
+					if(influencingPeopleBeanVO.getVoterId().isEmpty())
+					{
+						influencingPeople = influencingPeopleDAO.get(new Long(influencingPeopleBeanVO.getInfluencingPersonId().toString()));
+						 userAddress = userAddressDAO.get(influencingPeople.getUserAddress().getUserAddressId());
+						
+					}
+					else
+					{
+						 influencingPeople = new InfluencingPeople();
+						 userAddress = new UserAddress();
+					}
+					
 				}
 				else
 				{
@@ -490,7 +513,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeople.setCaste(influencingPeopleBeanVO.getCast());
 					influencingPeople.setOccupation(influencingPeopleBeanVO.getOccupation());
 					influencingPeople.setInfluencingPeoplePosition(influencingPeoplePositionDAO.get(new Long(influencingPeopleBeanVO.getPosition())));
-										
+					if(influencingPeopleBeanVO.getVoterId() != null & influencingPeopleBeanVO.getVoterId().trim().length() > 0 )
+					{
+						influencingPeople.setVoter(voterDAO.get(new Long(influencingPeopleBeanVO.getVoterId())));
+					}
 					userAddress.setCountry(countryDAO.get(new Long(1L)));
 					userAddress.setState(stateDAO.get(new Long(influencingPeopleBeanVO.getState())));
 					if("MP".equals(influencingPeopleBeanVO.getAccessType()))
@@ -3681,7 +3707,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	
 	}
 	/**
-	 * @author prasad
+	 * @author prasad Thiragabathina
 	 * @return UserGroupMembersVO
 	 * @param id
 	 */
@@ -3711,7 +3737,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	}
 	/**
-	 * @author prasad
+	 * @author prasad Thiragabathina
 	 * @return List<SelectOptionVO>
 	 * 
 	 */
@@ -3733,7 +3759,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	}
 	/**
-	 * @author prasad
+	 * @author prasad Thiragabathina
 	 * @return boolean
 	 * @param UserGroupMembersVO userGroupMembersVO
 	 */

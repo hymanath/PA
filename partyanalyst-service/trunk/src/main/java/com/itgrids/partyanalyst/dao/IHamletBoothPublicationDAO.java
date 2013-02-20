@@ -8,4 +8,6 @@ import com.itgrids.partyanalyst.model.HamletBoothPublication;
 
 public interface IHamletBoothPublicationDAO extends GenericDao<HamletBoothPublication, Long> {
 	public List<Object[]> getBoothsInPanchayatByPublicationId(Long panchayatId,Long publicationDateId);
+	
+	public List<HamletBoothPublication> getHameletDetailsByBoothId(Long boothId);
 }

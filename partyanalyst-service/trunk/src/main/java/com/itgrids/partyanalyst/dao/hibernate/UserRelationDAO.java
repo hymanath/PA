@@ -17,5 +17,13 @@ public class UserRelationDAO extends GenericDaoHibernate<UserRelation, Long> imp
 		
 		return getHibernateTemplate().find("from UserRelation model where model.relationship = ?",relation);
 	}
+
+	/**
+	 * This method is used to get Relation type id based on Relation type name
+	 */
+	public List<Long> getRelationId(String relationName) {
+		// TODO Auto-generated method stub
+		return getHibernateTemplate().find("select model.userRelationId from UserRelation model where model.relationship = ?",relationName);
+	}
 	
 }

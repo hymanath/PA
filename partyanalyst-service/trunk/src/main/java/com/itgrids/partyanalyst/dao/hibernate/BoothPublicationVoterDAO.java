@@ -961,7 +961,33 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			query.setParameter("gender",gender);	
 		  return (Long) query.uniqueResult();
 	}
+	/**
+	 * This method is used for getting the voter contact details based on voter id
+	 * @author Prasad Thiragabathina
+	 * @param Long voterId
+	 * @return List<Object[]>
+	 */
+	public List<BoothPublicationVoter> findVoterContactDetails(Long voterId) {
 		
+		return getHibernateTemplate().find("select model from BoothPublicationVoter model where model.voter.voterId = ? order by model.booth.publicationDate.date desc",voterId);
+	}
+	
+	/**
+	 * This method is used to get the familey members count based on house no and booth id
+	 * @author Prasad Thiragabathina
+	 * @param  String houseNo
+	 * @param Long boothId
+	 * @return List<Long>
+	 */
+	public List<Long> getFamilyMemberCount(String houseNo,Long boothId) {
+		
+		Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where" +
+				" model.voter.houseNo = :houseNo and model.booth.boothId =:boothId ");
+		query.setParameter("houseNo", houseNo);
+		query.setParameter("boothId", boothId);
+		return query.list(); 
+	} 
+	
 	public List<Long> getVotersCountForMultipleBooths(List<Long> ids,Long publicationDateId){
 		StringBuilder query = new StringBuilder();
 		query.append("select count(*) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
@@ -1008,6 +1034,22 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		query.setParameter("publicationDateId", publicationDateId);
 		
 		return query.list();
+		
+	}
+	/**
+	 * This method is used to get the familey member detais based on  houseno and boothid
+	 * @author Prasad Thiragabathina
+	 * @param String houseNo
+	 * @param Long boothId
+	 * @return List<Object[]>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFamileyMembersDetailsForHouseNo(String houseNo,Long boothId,Long voterId)
+	{
+		Object[] parms = {houseNo,boothId,voterId};
+		return getHibernateTemplate().find("select model.voter.voterId,model.voter.name," +
+				"model.voter.relationshipType  from BoothPublicationVoter model where model.voter.houseNo = ? " +
+				"and model.booth.boothId = ? and model.voter.voterId != ? ",parms);
 		
 	}
 }

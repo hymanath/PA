@@ -28,10 +28,22 @@ public class InfluencingPeopleVO implements Serializable{
 	private String influencingRangeName;
 	private String position;
 	private Long hamletId;
-	
+	private Long boothId;
+	private Long voterId;
 	public String getParty() {
 		return party;
 	}
+
+	
+	public Long getVoterId() {
+		return voterId;
+	}
+
+
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+
 
 	public void setHamletId(Long hamletId) {
 		this.hamletId = hamletId;
@@ -173,6 +185,15 @@ public class InfluencingPeopleVO implements Serializable{
 	public Long getInfluencingPeopleId() {
 		return influencingPeopleId;
 	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	
 	
 	
 }

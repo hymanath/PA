@@ -21,6 +21,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionScope;
@@ -227,6 +228,50 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	public List<Candidate> getEmailInfo(Long candidateId){
 		
 		return getHibernateTemplate().find("from Candidate model where model.candidateId = ?", candidateId);
+	}
+	/**
+	 * This Method Is Used To Get The Candidate Details Based On Candidate Name Search Criteria ,
+	 * gender , ConstituencyId and StateId
+	 * @author Prasad Thiragabathina
+	 * @param String gender
+	 * @param 	String name
+	 * @param Long constituencyId
+	 * @param Long stateId
+	 * @return List<Object[]>
+	 */
+	public List<Object[]> getCandidateDetailsBySearch(String gender,
+			String name, Long constituencyId, Long stateId) {
+		
+		StringBuilder query = new StringBuilder();
+		query.append("select distinct model.candidate.candidateId,model.candidate.lastname ,model.constituencyElection.constituency.name from Nomination model " +
+		" where model.candidate.candidateId is not null");
+		
+		if(name!= null && name.trim().length()>0)
+			query.append("  and model.candidate.lastname like '%"+name+"%' ");
+		
+		if(gender!= null && gender.trim().length()>0)
+			query.append("  and model.candidate.gender=:gender ");	
+		
+		if(constituencyId!= null && constituencyId>0L)
+			query.append("  and model.constituencyElection.constituency.constituencyId=:constituencyId ");	
+		
+		if(stateId!= null && stateId>0L)
+			query.append("  and model.constituencyElection.constituency.state.stateId=:stateId ");
+		
+		query.append("  order by model.candidate.lastname asc ");	
+		
+		 Query queryObject = getSession().createQuery(query.toString());
+		 
+		 if(gender!= null && gender.trim().length()>0)
+		 queryObject.setString("gender",gender);
+		 
+		 if(constituencyId!= null && constituencyId>0L)
+			 queryObject.setLong("constituencyId", constituencyId);	 
+		 
+		 if(stateId!= null && stateId>0L)
+			 queryObject.setLong("stateId", stateId);	 
+		 
+		 return	queryObject.list();
 	}
 	
 }

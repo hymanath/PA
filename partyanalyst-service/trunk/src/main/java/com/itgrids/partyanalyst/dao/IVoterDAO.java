@@ -71,4 +71,8 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public Integer updateVoterMobileNo(String mobileNo,Long voterId);
 	
 	public List<Object[]> getVoterIdsByCardNos(List<String> voterIdCardNosList);
+	
+	public List<Voter> findVoterDetailsBasedOnVoterId(Long voterId);
+	
+	
 }
