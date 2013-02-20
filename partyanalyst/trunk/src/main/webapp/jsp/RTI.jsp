@@ -534,7 +534,7 @@ The Appellate Authority will entertain and dispose off appeals against the decis
 		
 	</div>
 	<div class="rightdiv whitegloss">
-		<div class="span5 ">
+		<div class="span4">
 		<ul class="nav nav-tabs nav-stacked span3">
 		<li class="active"><a style="margin-bottom: 5px;" href="#RTI">What Is Right To Information Act?</a></li>
 		<li class="active"><a style="margin-bottom: 5px;" href="#WriteRTI">How to write an RTI Application?</a></li>
