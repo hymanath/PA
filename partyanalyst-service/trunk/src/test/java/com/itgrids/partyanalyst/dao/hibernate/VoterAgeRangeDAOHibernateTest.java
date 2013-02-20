@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
@@ -21,8 +23,15 @@ private IVoterAgeRangeDAO voterAgeRangeDAO;
 		voterAgeRangeDAO.getAll();
 	}*/
 	
-	public void testGetVoterAgeRangeIdByType()
+	/*public void testGetVoterAgeRangeIdByType()
 	{
 		System.out.println(voterAgeRangeDAO.getVoterAgeRangeIdByType("18-25"));
+	}*/
+	
+	public void testGetAllVoterAgeRanges()
+	{
+		List<String> list = voterAgeRangeDAO.getAllVoterAgeRanges();
+		for(String str : list)
+			System.out.println(str);
 	}
 }
