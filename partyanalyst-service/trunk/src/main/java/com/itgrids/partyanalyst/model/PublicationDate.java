@@ -38,7 +38,7 @@ public class PublicationDate implements Serializable{
 	 private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
 	 private Set<VoterFamilyInfo> voterFamilyInfos = new HashSet<VoterFamilyInfo>(0);
 	 private Set<PublicationElection> publicationElections = new HashSet<PublicationElection>(0);
-	 
+	 private String name;
 	 
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -128,6 +128,13 @@ public class PublicationDate implements Serializable{
 		this.publicationElections = publicationElections;
 	}
 	
+	@Column(name = "name", length=25)
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	
 }
