@@ -275,6 +275,11 @@ function showCasteStatus(result)
 		$("#casteCreationMsg").html("Caste Saved Successfully.").css("color","green");
 		return;
 	}
+	else if(result.resultCode == 1)
+	{
+		$("#casteCreationMsg").html("Caste already avaliable").css("color","red");
+		return;
+	}
 	else
 	{
 		$("#casteCreationMsg").addClass('casteCreationMsg').html('Data could not be Saved due to some technical difficulties').css('color','red');
