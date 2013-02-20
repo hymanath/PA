@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
+import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -19,7 +22,10 @@ public class VoterModificationService implements IVoterModificationService{
 	private IVotersAnalysisService votersAnalysisService;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IVoterModificationDAO voterModificationDAO;
-
+	private static final Logger log = Logger.getLogger(VotersAnalysisService.class);
+	private IVoterInfoDAO voterInfoDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	
 	public IVotersAnalysisService getVotersAnalysisService() {
 		return votersAnalysisService;
 	}
@@ -29,7 +35,40 @@ public class VoterModificationService implements IVoterModificationService{
 		this.votersAnalysisService = votersAnalysisService;
 	}
 	
-	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
+	public IVoterModificationDAO getVoterModificationDAO() {
+		return voterModificationDAO;
+	}
+
+	public void setVoterModificationDAO(IVoterModificationDAO voterModificationDAO) {
+		this.voterModificationDAO = voterModificationDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 	/**
 	 * This method will return VoterModificationVO, which contains Voters Added/deleted Count Between two Publications 
 	 * @param String locationType
@@ -116,4 +155,51 @@ public class VoterModificationService implements IVoterModificationService{
 		 }
 	 }
 	
+	 
+	 public List<VoterAgeRangeVO> getVoterInfoByPublicationDateList(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+	 {
+		 List<VoterAgeRangeVO> voterAgeRangeVOList = null;
+		 try{
+			 
+			 List<Long> publicationDateIds = getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
+			 
+			 if(publicationDateIds != null && publicationDateIds.size() > 0)
+			 {
+				 if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+				 {
+					 Long id = new Long(locationValue.toString().trim().substring(1));
+					 
+					 if(locationValue.toString().trim().substring(0,1).equalsIgnoreCase("2"))
+						 locationValue = id;
+					 else
+					 {
+						 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id);
+						 locationValue = (Long)list.get(0);
+						 locationType = IConstants.LOCALELECTIONBODY;
+					 }
+				 }
+			   List<Object[]> list = voterInfoDAO.getVoterInfoByPublicationDateIds(votersAnalysisService.getReportLevelId(locationType), locationValue, publicationDateIds);
+			   if(list != null && list.size() > 0)
+			   {
+				   voterAgeRangeVOList = new ArrayList<VoterAgeRangeVO>(0);
+				 for(Object[] params : list)
+				 {
+					 VoterAgeRangeVO voterAgeRangeVO = new VoterAgeRangeVO();
+					 voterAgeRangeVO.setTotalVoters((Long)params[0]);
+					 voterAgeRangeVO.setMaleVoters((Long)params[1]);
+					 voterAgeRangeVO.setFemaleVoters((Long)params[2]);
+					 voterAgeRangeVO.setPublicationDate(params[3].toString());
+					 voterAgeRangeVOList.add(voterAgeRangeVO);
+				 }
+			   }
+			}
+			 return voterAgeRangeVOList;
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 log.error("Exception Occured in getVoterInfoByPublicationDateList() Method, Exception - "+e);
+			 return voterAgeRangeVOList;
+		}
+		 
+	 }
+	 
 }

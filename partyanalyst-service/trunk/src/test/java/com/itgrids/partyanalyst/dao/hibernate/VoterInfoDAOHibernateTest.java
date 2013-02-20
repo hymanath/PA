@@ -35,16 +35,30 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testDeleteVotersInfoByReportLevelValue()
+	/*public void testDeleteVotersInfoByReportLevelValue()
 	{
 		List<Long> reportLevelValue = new ArrayList<Long>(0);
 		reportLevelValue.add(232l);
 		System.out.println(voterInfoDAO.deleteVotersInfoByReportLevelValue(1l, reportLevelValue, 7l));
 		
-	}
+	}*/
 	
 	/*public void testGetTotalVotersByReportLevelValue()
 	{
 		System.out.println(voterInfoDAO.getTotalVotersByReportLevelValue(1l, 232l, 7l));
 	}*/
+	
+	public void testgetVoterInfoByPublicationDateIds()
+	{
+		List<Long> publicationDateIds = new ArrayList<Long>(0);
+		publicationDateIds.add(7l);
+		List<Object[]> list = voterInfoDAO.getVoterInfoByPublicationDateIds(1l, 232l, publicationDateIds);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]);
+		}
+		
+	}
+	
 }
