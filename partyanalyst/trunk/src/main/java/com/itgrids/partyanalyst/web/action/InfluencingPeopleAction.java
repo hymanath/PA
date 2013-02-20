@@ -13,16 +13,14 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
-import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
-import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -48,6 +46,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private List<SelectOptionVO> positionsList,staticParties,influenceRange;
 	private InfluencingPeopleBeanVO influencingPeopleBeanVO;
 	private String windowTask,influencingPersonId;
+	private Long voterId;
 	private List<String> gender = new ArrayList<String>();
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
@@ -70,7 +69,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private Long pConstituencyId;
 	private String position;
 	private String message;
-	
+	private IVotersAnalysisService votersAnalysisService;
 	public String getMessage() {
 		return message;
 	}
@@ -316,6 +315,22 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		return pConstituencyId; 
 	}
 	
+	
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	
+	
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
 	public String execute() throws Exception {
 		
 		session = request.getSession();
@@ -463,7 +478,6 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			
 		}
 		
-		
 		session.setAttribute(ISessionConstants.STATES, stateList);
 		session.setAttribute(ISessionConstants.DISTRICTS,districtList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
@@ -507,7 +521,13 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		
 		influencingPersonId = request.getParameter("influencingPersonId");
 		windowTask = request.getParameter("windowTask");
-						
+		if(request.getParameter("voterId") != null)
+		voterId = Long.parseLong(request.getParameter("voterId"));
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+			return ;
+		Long userId = regVO.getRegistrationID();
         if( "0".equals(influencingPersonId)) {
         	
         	influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
@@ -516,6 +536,10 @@ public class InfluencingPeopleAction extends ActionSupport implements
         else if(influencingPersonId != null) 
         {	
         	 influencingPeopleBeanVO = influencingPeopleService.getDetailsByInfluencingPersonId(new Long(getInfluencingPersonId()));
+        }
+       else if(voterId != null && !voterId.equals(0L))
+        {
+    	   influencingPeopleBeanVO = votersAnalysisService.getDetailsByVoterId(voterId,userId);
         }
 	
 	}

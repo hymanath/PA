@@ -415,7 +415,14 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return pConstituencyId; 
 	}
 
-
+	public String getVoterId(String voterId)
+	{
+		return influencingPeopleBeanVO.getVoterId();
+	}
+	public void setVoterId (String voterId)
+	{
+		this.influencingPeopleBeanVO.setVoterId(voterId);
+	}
 	public String execute() throws Exception{
 		
 		session = request.getSession();
