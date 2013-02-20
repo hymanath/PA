@@ -1066,4 +1066,11 @@
 	<bean id="assigningCandidatesToVoterAction" class="com.itgrids.partyanalyst.web.action.AssigningCandidatesToVoterAction">
 	<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 	</bean>
+	<bean id="votersSearchAndEditAction" class="com.itgrids.partyanalyst.web.action.VotersSearchAndEditAction" singleton="false">			
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />	
+	</bean>
+	
 </beans>	
+	

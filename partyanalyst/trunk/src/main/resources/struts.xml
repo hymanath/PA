@@ -159,6 +159,7 @@
 			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
+			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
@@ -4207,11 +4208,16 @@
         	</result>
        </action>
 		
-		<action name="votersSearchAction" class="votersAnalysisAction">
+		<!-- <action name="votersSearchAction" class="votersAnalysisAction">
 			<result name="success">/jsp/votersSearch.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>	
-		</action>
+		</action> -->
 		
+		<action name="votersSearchAction" class="votersSearchAndEditAction">
+			<result name="success">/jsp/votersSearch.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=VOTER_SEARCH_AND_EDIT</result>	
+		</action>
 		<action name="getVotersInfoBySearchAction" class="votersEditAction" method="getVotersInfoBySearchCriteria">
 			<result type="json" name="success">
            		<param name="root">voterHouseInfoVO1</param>
