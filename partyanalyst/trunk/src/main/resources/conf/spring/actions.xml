@@ -80,7 +80,8 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
-		<property name="problemManagementService" ref="problemManagementService" />			
+		<property name="problemManagementService" ref="problemManagementService" />	
+		<property name="votersAnalysisService" ref="votersAnalysisService"></property>		
 	</bean>			
 	
 	<bean id="politicalChangesAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesAction" singleton="false">
@@ -234,7 +235,9 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
-		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />		
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="partyStrengthService" ref="partyStrengthService" />	
 	</bean>
 	
 	<bean id="cadreRegisterAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAjaxAction" singleton="false">
@@ -1058,5 +1061,9 @@
 	
 	<bean id="voterModificationReportAction" class="com.itgrids.partyanalyst.web.action.VoterModificationReportAction" singleton="false">			
 	
+	</bean>
+	
+	<bean id="assigningCandidatesToVoterAction" class="com.itgrids.partyanalyst.web.action.AssigningCandidatesToVoterAction">
+	<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 	</bean>
 </beans>	

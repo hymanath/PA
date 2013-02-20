@@ -204,6 +204,7 @@
 		<property name="localGroupRegionDAO" ref="localGroupRegionDAO" />
 		<property name="staticUserDesignationDAO" ref="staticUserDesignationDAO" />
 		<property name="userDAO" ref="userDAO" />
+		<property name="voterDAO" ref="voterDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
@@ -354,6 +355,7 @@
 		<property name="commentDAO" ref="commentDAO"/>
 	    <property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO"/>
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO"/>
+		<property name="voterDAO" ref="voterDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -471,6 +473,7 @@
 		<property name="problemActivityDAO" ref="problemActivityDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="bloodGroupDAO" ref="bloodGroupDAO" />
+		<property name="voterDAO" ref="voterDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
@@ -1374,6 +1377,7 @@
 		<property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
 		<property name="voterModificationTempDAO" ref="voterModificationTempDAO" />
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
+		<property name="userRelationDAO" ref="userRelationDAO" />
 	</bean>
 	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
 			<property name="filePathsDAO" ref="filePathsDAO"/>

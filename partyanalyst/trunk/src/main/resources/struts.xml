@@ -4417,6 +4417,23 @@
 			<result name="success">/jsp/voterModificationReport.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=voterAnalysisAction</result>	
 		</action>
-		
+				
+		<action name="assigningCandidatesToVoterAction" class="assigningCandidatesToVoterAction">
+			<result name="success">/jsp/addCandidateToVoter.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="getCandidateDetailsBySearch" class="assigningCandidatesToVoterAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">selectOptionVO</param>				
+			</result>		
+		</action>
+		<action name="saveCandidateDetailsAction" class="assigningCandidatesToVoterAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">selectOptionVO</param>				
+			</result>
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
 	</package>
 </struts>      
