@@ -1379,9 +1379,15 @@
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
 		<property name="userRelationDAO" ref="userRelationDAO" />
 	</bean>
-	 <bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
-			<property name="filePathsDAO" ref="filePathsDAO"/>
-
+	
+	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
+		<property name="votersAnalysisService" ref="votersAnalysisService"/>
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+		<property name="voterModificationDAO" ref="voterModificationDAO"/>
+	</bean>
+	
+	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
+		<property name="filePathsDAO" ref="filePathsDAO"/>
 	</bean>
 	
 	<bean name="specialPageDataUploadService" class="com.itgrids.partyanalyst.service.impl.SpecialPageDataUploadService">
