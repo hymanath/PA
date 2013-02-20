@@ -406,6 +406,34 @@ var panchaytId =  mainreqid;
 
 if(panchaytId == "0" || publicationId == "0")
 	return false;
+YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
+{
+var str ='';
+var id=oRecord.getData("voterIds");
+str += '<ul class="dd_menu">';
+str += ' <li><i class="icon-th-list"></i>';
+str += ' <ul>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="openRegistrationForm('+id+');">Create New Cadre</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};">Add To Existing Cadre</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="addInfluencingPeople('+id+');">Create New Influencing People</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};">Add To Existing Influencing People</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="addToPolitician('+id+');">Add To Politician</a>';
+str += ' </li>';
+str += ' </ul>';
+str += ' </li>';
+str += ' </ul>';
+elLiner.innerHTML =str;
+
+}
 
 var votersByLocBoothColumnDefs = [
 {key:"voterId", label: "SNo"},
@@ -416,7 +444,9 @@ var votersByLocBoothColumnDefs = [
 {key:"houseNo", label: "House No", sortable:true},
 {key:"relativeFirstName", label: "GuardName", sortable:true},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"mobileNo",sortable:true}
+{key:"mobileNo",label:"mobileNo",sortable:true},
+{key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
+
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -427,7 +457,8 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds"],
+
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -469,7 +500,26 @@ oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
 };
 }	
-
+function addInfluencingPeople(voterId)
+{
+	var type='edit';
+	var urlStr = "influencingPeopleAction.action?windowTask="+type+"&voterId="+voterId;
+	var browser2 = window.open(urlStr,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+	browser2.focus();
+}
+function openRegistrationForm(voterId)
+{
+	var task = "update_existing";
+	var urlStr = "cadreRegisterPageAction.action?voterId="+voterId+"&windowTask="+task;
+	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
+	updateBrowser.focus();				
+}
+function addToPolitician(voterId)
+{
+	var urlStr = "assigningCandidatesToVoterAction.action?voterId="+voterId;
+	var browser2 = window.open(urlStr,"assigningCandidatesToVoterAction");
+	browser2.focus();
+}
 /*function showImportantFamiliesDiv()
 	{
 		var ImpDiv = document.getElementById('ImportantFamiliesDiv');
@@ -4569,7 +4619,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		  if(menudata[0].mandalList!=null){
 		  $.each(menudata[0].mandalList, function(iter,mandals){
             str+='<li><a onClick="" data-mandalid="'+ mandals.id+'" name-mandal="'+mandals.name+'"><span class="checkbox"><input type="radio" data-mandalid="'+ mandals.id+'" id="Chk-'+mandals.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+mandals.name.replace('MANDAL','')+'</a></li>';
-			/*replace() Method Addes By Prasad Thiragabathina To Remove "MANDAL" String From The Mandal Name*/
+			/*replace() method added by prasad Thiragabthina to remove "MANDAL" string at the end of Mandal name*/
 		  });}
 		  $(".middleNav ul").html("");
 		  $(".rightNav-Booths").hide();

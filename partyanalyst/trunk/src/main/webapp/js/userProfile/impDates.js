@@ -849,7 +849,7 @@ function buildNewImpDatePopup()
 		}
 		newDateDialog = $('#eventDateDetails').dialog({
 			width:600,
-			'title':'Event Details...'
+			'title':'Importent Date Details'
 		});
 	}
 	function buildSelectedDateEventPopup(results,jsObj)
@@ -967,7 +967,7 @@ function buildNewImpDatePopup()
 		var date = day+"/"+month+"/"+year;
 		newDateDialog = $('#eventDateDetails').dialog({
 			width:650,
-			'title':'Event Details...'
+			'title':'Update Important Details'
 		});
 		$("#ImpStartDateText" ).datepicker({
 			dateFormat: "dd/mm/yy",
@@ -1109,3 +1109,4 @@ function displayDateText(type,args,obj)
 		
 		return (dStr + "/" + mStr + "/" + yStr); 
 	} 
+	

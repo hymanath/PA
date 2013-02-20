@@ -908,7 +908,12 @@
 					<TD><div class="cadreReportHeader"><span style="margin-top:2px;">Add New Cadre</span></div></TD>
 				</c:if>
 				<c:if test="${windowTask == 'update_existing'}">
+				<c:if test="${ empty voterId}">
 					<TD><div class="cadreReportHeader"><span style="margin-top:2px;">Update Cadre Details</span></div></TD>
+				</c:if>	
+				<c:if test="${ !empty voterId}">
+					<TD><div class="cadreReportHeader"><span style="margin-top:2px;">Add Voter To Cadre</span></div></TD>
+				</c:if>
 				</c:if>
 				
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
@@ -940,7 +945,7 @@
 	</table>
 	<input type="hidden" id="hiddenVal" name="cadreId" value="${cadreId}"/>
 	<input type="hidden" id="hiddenValue" name="windowTask" value="${windowTask}"/>
-	
+	<input type="hidden" id="hiddenValue" name="voterId" value="${voterId}"/>
 	
 	<FIELDSET>
 		<LEGEND><strong>Personal Details</strong></LEGEND>
@@ -1304,9 +1309,10 @@
 				
 				<s:hidden id="effectRangeVal" name="effectRangeVal" value="%{update_existing}" />
 			 		<tr>
+						<c:if test="${ empty voterId}">
 						<td style="width:140px;">Location</td>
 						<td style="color:black;"><s:property value="strCadreLevelValue" /></td>
-						<td><input type="button" id="editButton" class="btn" value="Edit" onclick="populateLocations(selectedeffectedRange, 'onLoad')"  /></td>
+						<td><input type="button" id="editButton" class="btn" value="Edit" onclick="populateLocations(selectedeffectedRange, 'onLoad')"  /></td></c:if>
 					</tr>
 		 		</c:if>
 		<tr id="row1" style="display:none;">
