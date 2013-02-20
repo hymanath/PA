@@ -1066,4 +1066,14 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		query.setParameter("toPublicationDateId",toPublicationDateId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPreviousPublicationIds(Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.publicationDate.publicationDateId from BoothPublicationVoter model " +
+				" where model.booth.publicationDate.date < (select model2.date from PublicationDate model2 where model2.publicationDateId = :publicationDateId) " +
+				" order by model.booth.publicationDate.date desc ");
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 }
