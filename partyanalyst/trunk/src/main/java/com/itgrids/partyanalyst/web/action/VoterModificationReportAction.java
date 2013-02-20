@@ -7,10 +7,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -31,6 +33,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private Long locationValue;
 	private String locationType;
 	private IVoterModificationService voterModificationService;
+	private List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -106,6 +109,14 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			IVoterModificationService voterModificationService) {
 		this.voterModificationService = voterModificationService;
 	}
+	
+	public List<VoterModificationAgeRangeVO> getVoterModificationAgeRangeVOList() {
+		return voterModificationAgeRangeVOList;
+	}
+	public void setVoterModificationAgeRangeVOList(
+			List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList) {
+		this.voterModificationAgeRangeVOList = voterModificationAgeRangeVOList;
+	}
 	public String execute()throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -133,6 +144,27 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		String locationType = jObj.getString("locationType");
 		Long locationValue = jObj.getLong("locationValue");
 		voterAgeRangeVOList = voterModificationService.getVoterInfoByPublicationDateList(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		return Action.SUCCESS;
+	}
+	
+	public String getAddedOrDeletedVoterInfoInALocation()
+	{
+		String param ;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);		
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in getAddedOrDeletedVoterInfoInALocation() Method, Exception - "+e);
+		}
+		
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+		String locationType = jObj.getString("locationType");
+		Long locationValue = jObj.getLong("locationValue");
+		
+		voterModificationAgeRangeVOList = voterModificationService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 		return Action.SUCCESS;
 	}
 	

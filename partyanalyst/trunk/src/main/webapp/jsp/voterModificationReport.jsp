@@ -7,11 +7,11 @@
 <title>Voters analysis</title>
 <style>
 #voterModReportMainDiv{margin-left:auto;margin-right:auto;float:none;width:960px;margin-top: 30px; margin-bottom: 30px;}
-#voterInfoTab{border: 1px solid #D3D3D3;
+#voterInfoTab, #voterAgeInfoTab{border: 1px solid #D3D3D3;
     border-collapse: collapse;
     padding: 10px;width:50%}
 
-	#voterInfoTab th {
+	#voterInfoTab th,#voterAgeInfoTab th {
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -20,7 +20,7 @@
     text-align: left;
 }
 
-#voterInfoTab td {
+#voterInfoTab td ,#voterAgeInfoTab td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -41,6 +41,7 @@ var locationValue = "${locationValue}";
 
 	function getVoterInfo(){
 		
+		$("#voterInfoAjaxImg").css("display","block");
 	    var jObj=
 		{
 			constituencyId			: constituencyId,
@@ -57,6 +58,24 @@ var locationValue = "${locationValue}";
 	
 	}
 
+	function getAddedDeletedVoterInfoInALocation()
+	{
+		$("#voterAgeInfoAjaxImg").css("display","block");
+		var jObj=
+		{
+			constituencyId			: constituencyId,
+			fromPublicationDateId	: fromPublicationDateId,
+			toPublicationDateId		: toPublicationDateId,
+			locationType			: locationType,
+			locationValue			: locationValue,
+			task:"getAddedOrDeletedVoterInfoInALocation"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getAddedOrDeletedVoterInfoInALocationAction.action?"+rparam;	
+
+	callAjax(jObj,url);
+	}
+
 	function callAjax(jsObj,url)
 		{
 			 var myResults;
@@ -65,16 +84,17 @@ var locationValue = "${locationValue}";
  		               success : function( o ) {
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
-									if(jsObj.task == "getVoterInfo")
-								{
-										showVoterInfo(myResults,jsObj);
+								if(jsObj.task == "getVoterInfo")
+								
+									showVoterInfo(myResults,jsObj);
 										
-								}
+								
+								else if(jsObj.task == "getAddedOrDeletedVoterInfoInALocation")
+										showAddedDeletedVoterInfoInALocation(myResults,jsObj);
 								
 								
 							}catch (e) {
-							     $("#votersEditSaveAjaxImg").hide();
-							     $("#votersEditSaveButtnImg").removeAttr("disabled");
+							     
 								}  
  		               },
  		               scope : this,
@@ -125,7 +145,47 @@ function showVoterInfo(results,jsObj)
 	  return;
 	}
 }
+
+function showAddedDeletedVoterInfoInALocation(results,jsObj)
+{
+	$("#voterAgeInfoAjaxImg").css("display","none");
+	$('#voterAgeInfoDiv').html('');
+
+	var str = '';
+	str +='<div class="voterinfoHeading"><h2>Age Wise Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>';
+	
+	if(results != null)
+	{
+		
+		str +='<table id="voterAgeInfoTab" border="1">';
+		str +='<tr>';
+		str +='<th>Age Range</th>';
+		for(var i in results)
+		  str +='<td>'+results[i].range+'</td>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Added</th>';
+		for(var i in results)
+		 str +='<td>'+results[i].addedCount+'</td>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Deleted</th>';
+		for(var i in results)
+		 str +='<td>'+results[i].deletedCount+'</td>';
+		str +='</tr>';
+		
+		str +='</table>';
+		$('#voterAgeInfoDiv').html(str);
+	}
+
+	else 
+	{
+	  $('#voterAgeInfoDiv').html('<div>No Data Available.</div>');
+	  return;
+	}
+}
 getVoterInfo();
+getAddedDeletedVoterInfoInALocation();
 	</script>
 
 </head>
@@ -136,7 +196,11 @@ getVoterInfo();
 
   </div>
 <div id="voterInfoDiv">
-   <span id="voterInfoAjaxImg"><img src="images/icons/search.gif" /></span>
+   <span id="voterInfoAjaxImg" style="display:none;"><img src="images/icons/search.gif" /></span>
+</div>
+  <div id="voterAgeInfoDiv">
+	<span id="voterAgeInfoAjaxImg" style="display:none;"><img src="images/icons/search.gif" /></span>
+
 </div>
 </div>
 

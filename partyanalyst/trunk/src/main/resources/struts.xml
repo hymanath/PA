@@ -4446,5 +4446,10 @@
 				<param name="root">voterAgeRangeVOList</param>				
 			</result>
 		</action>
+		<action name="getAddedOrDeletedVoterInfoInALocationAction" class="voterModificationReportAction" method="getAddedOrDeletedVoterInfoInALocation">
+		  <result type="json" name="success">
+				<param name="root">voterModificationAgeRangeVOList</param>				
+			</result>
+		</action>
 	</package>
 </struts>      
