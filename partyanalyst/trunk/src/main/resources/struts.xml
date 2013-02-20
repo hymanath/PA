@@ -4412,5 +4412,11 @@
 		<action name="righttoinformation">
 		<result>/jsp/RTI.jsp</result>
 		</action>
+		
+		<action name="voterModificationReportAction" class="voterModificationReportAction">
+			<result name="success">/jsp/voterModificationReport.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=voterAnalysisAction</result>	
+		</action>
+		
 	</package>
 </struts>      
