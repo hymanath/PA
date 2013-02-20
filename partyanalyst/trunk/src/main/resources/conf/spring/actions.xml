@@ -1055,4 +1055,8 @@
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 	</bean>
+	
+	<bean id="voterModificationReportAction" class="com.itgrids.partyanalyst.web.action.VoterModificationReportAction" singleton="false">			
+	
+	</bean>
 </beans>	
