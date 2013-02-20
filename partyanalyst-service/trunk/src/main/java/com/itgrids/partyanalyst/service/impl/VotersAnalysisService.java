@@ -8692,7 +8692,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		}
 	 
 		 
-		 public VoterModificationVO getAddedAndDeletedVotersCountInBetweenPublicationsInALocation(String locationType,Long locationValue,Long fromPublicationDateId,Long toPublicationDateId)
+		 public VoterModificationVO getAddedAndDeletedVotersCountInBetweenPublicationsInALocation(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
 		 {
 			 VoterModificationVO voterModificationVO = null; 
 			 log.debug("Entered into getAddedAndDeletedVotersCountInBetweenPublicationsInALocation() Method");
@@ -8702,8 +8702,9 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				 if(fromPublicationDateId == null || fromPublicationDateId == 0 || fromPublicationDateId.equals(toPublicationDateId))
 					 publicationIdsList.add(toPublicationDateId);
 				 else
-					 publicationIdsList = getPublicationIdsBetweenTwoPublications(fromPublicationDateId,toPublicationDateId);
+					 publicationIdsList = getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId,toPublicationDateId);
 					 
+				 List<Object[]> list = voterModificationDAO.getAddedAndDeletedVotersCountInBetweenPublicationsInALocation(locationType, locationValue, constituencyId, publicationIdsList);
 				 
 				 return voterModificationVO;
 			 }catch (Exception e) {
@@ -8713,11 +8714,14 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 }
 		 }
 		 
-		 private List<Long> getPublicationIdsBetweenTwoPublications(Long fromPublicationDateId,Long toPublicationDateId) 
+		 private List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId,Long toPublicationDateId) 
 		 {
+			 log.debug("Entered into getVoterPublicationIdsBetweenTwoPublications() Method");
 			 try{
-				 return null;
+				 return boothPublicationVoterDAO.getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
 			 }catch (Exception e) {
+				 log.error("Exception Occured in getAddedAndDeletedVotersCountInBetweenPublicationsInALocation() Method");
+				 log.error("Exception is - "+e);
 				 return null;
 			 }
 		 }
