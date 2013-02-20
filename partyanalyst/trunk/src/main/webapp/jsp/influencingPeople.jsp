@@ -487,8 +487,9 @@ function hideText(){
 }
 function refreshParent()
 {
+	<c:if test="${ empty voterId}">
 	setTimeout(window.opener.location.reload(true),8000);
-	
+	</c:if>
 }
 function validationCheck()
 {
@@ -678,6 +679,7 @@ function validationCheck()
 		return false;
 		}
 	}
+
 refreshParent();
 }
 function setTimer()
@@ -912,6 +914,7 @@ function setTimer()
 <%-- <s:hidden id="influenceRangeInputId" name="influencingScopeValue"/> --%>
 <s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/>
 <s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /> 
+<s:hidden id="voterId" name="voterId" value="%{voterId}" /> 
 
 <div id="saveDiv" align="center">
 	<s:submit cssClass="button" value="Save" name="Save"></s:submit>

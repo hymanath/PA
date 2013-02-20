@@ -74,6 +74,7 @@
 	    <pattern>/votersCategoeryAction.action*</pattern>
 	    <pattern>/editLocalGroupAction.action*</pattern>
 	    <pattern>/panchayatWiseMandalElectionInfoAction.action*</pattern>
+	    <pattern>/assigningCandidatesToVoterAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -146,6 +147,7 @@
 		<pattern>/generatePdfForGallaryAction*</pattern>
 		<pattern>/sendUpdatesByemailAction*</pattern>
 		<pattern>/missingVotersSearchAction*</pattern>
+		<pattern>/assigningCandidatesToVoterAction*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
