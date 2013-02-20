@@ -101,13 +101,13 @@ public void setBoothPublicationVoterDAO(
 	
 }*/
 
-	public void testGetVotersCountByPublicationId()
+	/*public void testGetVotersCountByPublicationId()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getVotersCountByPublicationId("mandal",844l,7l);;
 		System.out.println(list.size());
 		System.out.println(list.get(0)[0]+" -- "+list.get(0)[1]);
 		System.out.println(list.get(1)[0]+" -- "+list.get(1)[1]);
-	}
+	}*/
 	
 	/*public void testFindVotersCountByPublicationIdInALocation()
 	{
@@ -264,4 +264,13 @@ System.out.println(list.size());
 		List<Object[]> list = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(83l,7l,46L, 60L);
 		System.out.println(list.size());
 	}*/
+
+	public void testGetVoterPublicationIdsBetweenTwoPublications()
+	{
+		List<Long> list = boothPublicationVoterDAO.getVoterPublicationIdsBetweenTwoPublications(1l,8l);
+		System.out.println(list.size());
+		
+		for(Long l : list)
+			System.out.println(l);
+	}
 }
