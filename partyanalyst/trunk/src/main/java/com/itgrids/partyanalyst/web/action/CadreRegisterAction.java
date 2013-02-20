@@ -118,7 +118,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String booth;
 	private String pBooth;
 	private Long partyCommittee;
-	
+	private Long VoterId;
 	private File uploadImage;
     private String uploadImageContentType;
     private String uploadImageFileName;
@@ -870,6 +870,14 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setPartyCommittee(partyCommittee);
 	}
 	
+	public Long getVoterId() {
+		return cadreInfo.getVoterId();
+	}
+
+	public void setVoterId(Long voterId) {
+		this.cadreInfo.setVoterId(voterId);
+	}
+
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();

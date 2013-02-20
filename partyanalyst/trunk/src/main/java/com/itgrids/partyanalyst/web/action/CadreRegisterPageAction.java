@@ -14,8 +14,11 @@ import org.apache.struts2.util.ServletContextAware;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -24,7 +27,6 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class CadreRegisterPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware, ModelDriven, Preparable{
 	/**
@@ -84,7 +86,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private Long defaultConstId = 0l;	
 	private Long defaultCadreLevelId;
 	private List<SelectOptionVO> bloodGroupTypes;
-	
+	private Long voterId;
+	private IPartyStrengthService partyStrengthService;
+	private IVotersAnalysisService votersAnalysisService;
 	public List<SelectOptionVO> getBloodGroupTypes() {
 		return bloodGroupTypes;
 	}
@@ -93,6 +97,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		this.bloodGroupTypes = bloodGroupTypes;
 	}
 	
+	
+	public IPartyStrengthService getPartyStrengthService() {
+		return partyStrengthService;
+	}
+
+	public void setPartyStrengthService(IPartyStrengthService partyStrengthService) {
+		this.partyStrengthService = partyStrengthService;
+	}
+
 	public ServletContext getContext() {
 		return context;
 	}
@@ -393,6 +406,24 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		this.designationsList = designationsList;
 	}
 
+		
+	public Long getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
 	public String execute(){
 		if(log.isDebugEnabled())
 			log.debug("CadreRegisterPageAction.execute() start");
@@ -411,7 +442,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
 		
 		//all states in country
-		stateList_o = regionServiceDataImp.getStatesByCountry(1l);
+		//stateList_o = regionServiceDataImp.getStatesByCountry(1l);
+		stateList_o = partyStrengthService.getAllStatesHavinElectionData("Assembly");
 		stateList_o.add(0,new SelectOptionVO(0l,"Select State"));
 		//initialize all the required lists with empty array
 		//current address
@@ -623,7 +655,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void prepare() throws Exception {
 		cadreId = request.getParameter("cadreId");
-		
+		if(request.getParameter("voterId") != null)
+		voterId = Long.parseLong(request.getParameter("voterId"));
         if( "0".equals(cadreId)) {
         	cadreInfo = new CadreInfo();
         	cadreLevelsList = cadreManagementService.getAllCadreLevels();
@@ -631,7 +664,12 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
         {	
         	cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
         	prepopulateLocations(cadreInfo);
-        }        
+        }  
+        else if(voterId != 0)
+        {
+        	cadreInfo = votersAnalysisService.getCadreDetailsByVoterId(voterId);
+        	prepopulateLocations(cadreInfo);
+        }
 	}    
 
      public Object getModel() {
