@@ -89,4 +89,17 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		query.setParameter("publicationDateId", publicationDateId);
 		return (Long)query.uniqueResult();
     }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterInfoByPublicationDateIds(Long reportLevelId, Long reportLevelValue, List<Long> publicationDateIds)
+	{
+		Query query = getSession().createQuery("select model.totalVoters, model.maleVoters, model.femaleVoters,model.publicationDate.name " +
+				"  from VoterInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
+				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId in (:publicationDateId) ");
+		
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameterList("publicationDateId", publicationDateIds);
+		return query.list();
+	}
 }

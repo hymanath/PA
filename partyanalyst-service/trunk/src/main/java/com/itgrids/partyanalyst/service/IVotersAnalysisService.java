@@ -166,4 +166,7 @@ public interface IVotersAnalysisService {
 	public InfluencingPeopleBeanVO getDetailsByVoterId(Long voterId,Long userId);
 	
 	public CadreInfo getCadreDetailsByVoterId(Long voterId);
+	
+	public Long getReportLevelId(String type);
+
 }
