@@ -760,9 +760,9 @@ h5{font-family : Arial;}
 
 .dd_menu ul {position:absolute; left:-9999px; top:-9999px; list-style-type:none;}
 .dd_menu li:hover {position:relative; background:none;}
-.dd_menu li:hover ul {left:-132px; top:15px; padding:3px; border:1px solid grey; width:auto;}
+.dd_menu li:hover ul {left:-160px; top:15px; padding:3px; border:1px solid grey; width:208px;}
 .dd_menu li:hover ul li {border:none;}
-.dd_menu li:hover ul li a {height:18px;color:#003366; padding:5px 0px; display:block; font-size:11px; width:185px; line-height:18px; text-indent:5px; color:#444; background:#d0e0ea; text-decoration:none; border:1px solid transparent;}
+.dd_menu li:hover ul li a {height:18px;color:#003366; padding:5px 0px; display:block; font-size:11px; width:208px; line-height:18px; text-indent:5px; color:#444; background:#d0e0ea; text-decoration:none; border:1px solid transparent;}
 .dd_menu li:hover ul li a:hover {height:18px; background:#c4d8e6; color:#003366; border:solid 1px #444;}
 
 </style>
