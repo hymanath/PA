@@ -1036,6 +1036,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		return query.list();
 		
 	}
+	
 	/**
 	 * This method is used to get the familey member detais based on  houseno and boothid
 	 * @author Prasad Thiragabathina
@@ -1051,5 +1052,18 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				"model.voter.relationshipType  from BoothPublicationVoter model where model.voter.houseNo = ? " +
 				"and model.booth.boothId = ? and model.voter.voterId != ? ",parms);
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId, Long toPublicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.publicationDate.publicationDateId from BoothPublicationVoter model " +
+				" where model.booth.publicationDate.date between " +
+				" (select model2.date from PublicationDate model2 where model2.publicationDateId = :fromPublicationDateId) and " +
+				" (select model3.date from PublicationDate model3 where model3.publicationDateId = :toPublicationDateId) order by model.booth.publicationDate.date desc ");
+		
+		query.setParameter("fromPublicationDateId",fromPublicationDateId);
+		query.setParameter("toPublicationDateId",toPublicationDateId);
+		return query.list();
 	}
 }
