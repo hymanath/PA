@@ -51,7 +51,7 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private ResultStatus resultStatus;
 	private Long pConstituencyId;
 	private String parliamentConstName;
-	
+	private String voterId;
 	public String getWindowTask() {
 		return windowTask;
 	}
@@ -411,6 +411,14 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setParliamentConstName(String parliamentConstName) {
 		this.parliamentConstName = parliamentConstName;
+	}
+
+	public String getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
 	}
 	
 	

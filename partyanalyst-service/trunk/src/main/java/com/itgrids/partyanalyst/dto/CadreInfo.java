@@ -118,7 +118,7 @@ public class CadreInfo implements Serializable{
 	private Long bloodGroup;
 	private String bloodGroupStr;
 	private Long onlineRegistrationId;
-	
+	private Long voterId;
 	public String getBloodGroupStr() {
 		return bloodGroupStr;
 	}
@@ -772,6 +772,12 @@ public class CadreInfo implements Serializable{
 	}
 	public void setOnlineRegistrationId(Long onlineRegistrationId) {
 		this.onlineRegistrationId = onlineRegistrationId;
+	}
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
 	}
 	
 }

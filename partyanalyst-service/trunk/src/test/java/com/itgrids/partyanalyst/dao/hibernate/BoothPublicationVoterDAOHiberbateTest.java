@@ -1,6 +1,7 @@
 
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.io.Console;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -239,6 +240,24 @@ System.out.println(list.size());
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getPublicationDetailsBasedOnConstituency(232l);
 		System.out.println(list.size());
+	}*/
+	/*public void testFindVoterContactDetails()
+	{
+		List<BoothPublicationVoter> list = boothPublicationVoterDAO.findVoterContactDetails(1l);
+		for (BoothPublicationVoter objects : list) {
+			
+			System.out.println(objects);
+		}
+	}*/
+	/*public void testGetFamileyMembersDetailsForHouseNo()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getFamileyMembersDetailsForHouseNo("000",121884l,1l);
+		for (Object[] objects : list) {
+			
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);
+			System.out.println(objects[2]);
+		}
 	}*/
 	/*public void test()
 	{

@@ -256,5 +256,17 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				query.setParameterList("voterIdCardNosList",voterIdCardNosList);
 				return query.list();
 			}
+			/**
+			 * This method is user for get all the details of the voter based on voterId
+			 * @author Prasad Thiragabathina
+			 * @param Long voterId
+			 * @return List<Voter>
+			 */
+			public List<Voter> findVoterDetailsBasedOnVoterId(Long voterId) {
+				
+				return getHibernateTemplate().find("select model from Voter model where model.voterId = ?",voterId);
+			}
+
+			
 	
 }

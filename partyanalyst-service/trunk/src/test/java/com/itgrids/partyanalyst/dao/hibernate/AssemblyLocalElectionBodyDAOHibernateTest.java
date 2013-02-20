@@ -78,12 +78,13 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 				
 
 		
-	}
+	}*/
 	public void testGetAssemblyLocalElectionBodyId()
 	{
-		System.out.println(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(488L).get(0).toString());
+		List ids= assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(4L);
+		System.out.println(ids.size());
 		
-	}*/
+	}
 	
 	/*public void testDeleteByLocalElectionBodyAndConstituency()
 	{

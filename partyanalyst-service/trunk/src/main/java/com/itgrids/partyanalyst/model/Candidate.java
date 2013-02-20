@@ -61,7 +61,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String gender;
 	private String image;
 	private Party party;
-	
+	private Voter voter;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
@@ -382,5 +382,15 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.newsFlags = newsFlags;
 	}
 	
-	
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "voter_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getVoter() {
+	return voter;
+	}
+
+	public void setVoter(Voter voter) {
+	this.voter = voter;
+	}
 }

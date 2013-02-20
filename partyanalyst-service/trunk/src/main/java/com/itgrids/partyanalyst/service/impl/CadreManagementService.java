@@ -55,6 +55,8 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -97,6 +99,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserRelation;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
@@ -152,10 +155,21 @@ public class CadreManagementService {
 	private IProblemActivityDAO problemActivityDAO;
 	private IUserDAO userDAO;
 	private IBloodGroupDAO bloodGroupDAO;
-	
+	private IVoterDAO voterDAO;
 	public ICadreOnlineRegistrationDAO getCadreOnlineRegistrationDAO() {
 		return cadreOnlineRegistrationDAO;
 	}
+
+	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 
 	public void setCadreOnlineRegistrationDAO(
 			ICadreOnlineRegistrationDAO cadreOnlineRegistrationDAO) {
@@ -496,9 +510,21 @@ public class CadreManagementService {
 			try {
 				
 				if(!("0".equals(cadreInfo.getCadreId())) && IConstants.UPDATE_EXISTING.equals(task))
-				{								
-					cadre = cadreDAO.get(new Long(cadreInfo.getCadreId()));
-				} else{
+				{	
+					if(cadreInfo.getVoterId() == null)
+					{
+						cadre = cadreDAO.get(new Long(cadreInfo.getCadreId()));
+					}
+					else
+					{
+						cadre = new Cadre();
+						cadre.setCadreOnlineRegistrationId(cadreInfo.getOnlineRegistrationId());
+					}
+					
+					
+				} 
+				
+				else{
 					cadre = new Cadre();
 					cadre.setCadreOnlineRegistrationId(cadreInfo.getOnlineRegistrationId());
 				}							
@@ -510,6 +536,10 @@ public class CadreManagementService {
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
 				cadre.setBloodGroupId(cadreInfo.getBloodGroup() != 0 ? cadreInfo.getBloodGroup() : null);
+				if(cadreInfo.getVoterId() != null)
+				{
+					cadre.setVoter(voterDAO.get(cadreInfo.getVoterId()));
+				}
 				
 							
 				// setting address

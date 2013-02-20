@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -160,4 +162,8 @@ public interface IVotersAnalysisService {
 	public List<VoterHouseInfoVO> getMultipleFamiliesInformation(List<VoterHouseInfoVO> familiesList,Long userId);
 	 
 	public List<SelectOptionVO> getUserCategoryValuesByUserId(Long userId);;
+	
+	public InfluencingPeopleBeanVO getDetailsByVoterId(Long voterId,Long userId);
+	
+	public CadreInfo getCadreDetailsByVoterId(Long voterId);
 }

@@ -59,7 +59,7 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private String parliamentConstituencyName;
 	private Long partyId;
 	private String candidateRole;
-	
+	private Long voterId;
 	
 	
 	// Candidate update form properties
@@ -589,5 +589,12 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	}
 	public void setCandidateRole(String candidateRole) {
 		this.candidateRole = candidateRole;
+	}
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
 	}	
+	
 }

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -54,7 +55,8 @@ public class Voter extends BaseModel implements Serializable {
 	private Date dateOfBirth;
 	private Date insertedTime;
 	private String mobileNo;
-	
+	private InfluencingPeople influencingPeople;
+
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
 	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
@@ -325,6 +327,15 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	public InfluencingPeople getInfluencingPeople() {
+	return influencingPeople;
+	}
+
+	public void setInfluencingPeople(InfluencingPeople influencingPeople) {
+	this.influencingPeople = influencingPeople;
 	}
 
 	

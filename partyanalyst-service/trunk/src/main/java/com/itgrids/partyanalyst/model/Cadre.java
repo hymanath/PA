@@ -47,7 +47,7 @@ public class Cadre extends BaseModel{
 	 private String gender;
 	 private String email;
 	 private String mobile;
-	 
+	 private Voter voter;
 	 //new fields
 	 private Date dateOfBirth;
 	 private String telephone;	 
@@ -514,5 +514,16 @@ public class Cadre extends BaseModel{
 	public void setCadreOnlineRegistrationId(Long cadreOnlineRegistrationId) {
 		this.cadreOnlineRegistrationId = cadreOnlineRegistrationId;
 	}
+	
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "voter_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getVoter() {
+	return voter;
+	}
 
+	public void setVoter(Voter voter) {
+	this.voter = voter;
+	}
  }

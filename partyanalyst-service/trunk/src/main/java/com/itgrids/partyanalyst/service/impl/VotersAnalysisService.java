@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -48,6 +49,7 @@ import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
@@ -64,10 +66,12 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
+import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -85,6 +89,7 @@ import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.HamletBoothPublication;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PublicationDate;
@@ -151,6 +156,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVillageBoothElectionDAO villageBoothElectionDAO;
     private IPublicationDateDAO publicationDAO;
     private ICandidateBoothResultDAO candidateBoothResultDAO;
+    private IUserRelationDAO userRelationDAO;
     private ILocalityDAO localityDAO;
     private IHamletDAO hamletDAO;
     private ILocalElectionBodyDAO localElectionBodyDAO;
@@ -481,6 +487,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setBoothLocalBodyWardDAO(
 			IBoothLocalBodyWardDAO boothLocalBodyWardDAO) {
 		this.boothLocalBodyWardDAO = boothLocalBodyWardDAO;
+	}
+
+	
+	public IUserRelationDAO getUserRelationDAO() {
+		return userRelationDAO;
+	}
+
+	public void setUserRelationDAO(IUserRelationDAO userRelationDAO) {
+		this.userRelationDAO = userRelationDAO;
 	}
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
@@ -8122,7 +8137,263 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				return resultStatus;
 			}
 		}
-		
+		/**
+		 * 	This method is used to get the all the details of the voter based on voterId and 
+		 * 	This voter is added eaithe cader or a influencing prople
+		 * @author Prasad Thiragabathina
+		 * @param Long voterId
+		 * @param Long userId
+		 * @return InfluencingPeopleBeanVO
+		 */
+
+		public InfluencingPeopleBeanVO getDetailsByVoterId(Long voterId ,Long userId) {
+			
+			try {
+				log.info("Entered into getDetailsByVoterId Method...");
+				InfluencingPeopleBeanVO influencingPeopleVO = new InfluencingPeopleBeanVO();
+				influencingPeopleVO.setInfluencingRange("0");
+				List<Voter> voters = new ArrayList<Voter>();
+				
+				voters = voterDAO.findVoterDetailsBasedOnVoterId(voterId);
+					if(voters != null && voters.size() > 0)
+					{
+						Voter voter = voters.get(0);
+							influencingPeopleVO.setFirstName(voter.getName());
+							influencingPeopleVO.setHouseNo(voter.getHouseNo());
+							influencingPeopleVO.setFatherOrSpouseName(voter.getRelativeName());
+							if(voter.getGender() != null)
+							{
+								String gender = voter.getGender();
+								if(voter.getGender().equalsIgnoreCase("m"))
+									 gender = "Male";
+									else
+									 gender = "Female";
+									
+									influencingPeopleVO.setGender(gender);
+							}
+							else
+							{
+								influencingPeopleVO.setGender("Male");
+							}
+							influencingPeopleVO.setMobile(voter.getMobileNo());
+							
+					}
+					
+					List<BoothPublicationVoter> voterContactDetails= boothPublicationVoterDAO.findVoterContactDetails(voterId);
+					if(voterContactDetails != null & voterContactDetails.size() > 0)
+					{
+						BoothPublicationVoter boothPublicationVoter = voterContactDetails.get(0);
+							if(boothPublicationVoter.getBooth().getConstituency().getState() != null)
+							{
+							influencingPeopleVO.setState(boothPublicationVoter.getBooth().getConstituency().getState().getStateId().toString());
+							influencingPeopleVO.setStateName(boothPublicationVoter.getBooth().getConstituency().getState().getStateName());
+							}
+							if(boothPublicationVoter.getBooth().getConstituency().getDistrict() != null)
+							{
+							influencingPeopleVO.setDistrict(boothPublicationVoter.getBooth().getConstituency().getDistrict().getDistrictId().toString());
+							influencingPeopleVO.setDistrictName(boothPublicationVoter.getBooth().getConstituency().getDistrict().getDistrictName());
+							}
+							if(boothPublicationVoter.getBooth().getConstituency() != null)
+							{
+							influencingPeopleVO.setConstituency(boothPublicationVoter.getBooth().getConstituency().getConstituencyId().toString());
+							influencingPeopleVO.setConstituencyName(boothPublicationVoter.getBooth().getConstituency().getName());
+							}
+							if(boothPublicationVoter.getBooth().getTehsil() != null)
+							{
+							  if(boothPublicationVoter.getBooth().getLocalBody() == null)
+								{
+								influencingPeopleVO.setMandal(IConstants.RURAL_TYPE+boothPublicationVoter.getBooth().getTehsil().getTehsilId().toString());
+								influencingPeopleVO.setMandalName(boothPublicationVoter.getBooth().getTehsil().getTehsilName());
+								}
+							  else
+							  	{
+								 Long localElectionBodyId = boothPublicationVoter.getBooth().getLocalBody().getLocalElectionBodyId();
+								 List assemblyLocalElectionBodyId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localElectionBodyId);
+								 if(assemblyLocalElectionBodyId != null && assemblyLocalElectionBodyId.size() > 0)
+								 {
+								 Long assemblyLocalElectionBodyIds = (Long)assemblyLocalElectionBodyId.get(0);
+								 influencingPeopleVO.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyIds.toString());
+								 }
+							   }
+							  if(boothPublicationVoter.getBooth() != null)
+							  {
+								  influencingPeopleVO.setBooth(boothPublicationVoter.getBooth().getPartNo().toString());
+								  influencingPeopleVO.setBoothName(boothPublicationVoter.getBooth().getPartNo());
+							  }
+							}
+							Long boothId = (Long) boothPublicationVoter.getBooth().getBoothId();
+							List<HamletBoothPublication> hamletBoothPublicationList = hamletBoothPublicationDAO.getHameletDetailsByBoothId(boothId);
+							if(hamletBoothPublicationList != null & hamletBoothPublicationList .size() > 0)
+							{
+								HamletBoothPublication hamletBoothPublication = hamletBoothPublicationList.get(0);
+								if(hamletBoothPublication.getBooth().getLocalBody() == null)
+								{
+									influencingPeopleVO.setWardOrHamlet(IConstants.RURAL_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
+									influencingPeopleVO.setWardOrHamletName(hamletBoothPublication.getHamlet().getHamletName().toString());
+								}
+								else
+								{
+									influencingPeopleVO.setWardOrHamlet(IConstants.URBAN_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
+									influencingPeopleVO.setWardOrHamletName(hamletBoothPublication.getHamlet().getHamletName().toString());
+								}
+							}
+						}
+							List<Object[]> voterPartyAndCaste = userVoterDetailsDAO.getPartyAndCasteDetails(voterId,userId);
+							if(voterPartyAndCaste != null && voterPartyAndCaste.size() > 0)
+							{
+								Object[] 	voterPartyAndCasteDetails = voterPartyAndCaste.get(0);
+								influencingPeopleVO.setParty(voterPartyAndCasteDetails[2].toString());
+								influencingPeopleVO.setPartyName(voterPartyAndCasteDetails[3].toString());
+								influencingPeopleVO.setCast(voterPartyAndCasteDetails[0].toString());
+								influencingPeopleVO.setCastType(voterPartyAndCasteDetails[1].toString());
+							}
+				return influencingPeopleVO;
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception raised in getDetailsByVoterId Method...");
+				return null;
+			}
+			
+		}
+		/**
+		 * This method is used to get all the details of the voter based on voter id and set all 
+		 * these details as cadre details
+		 * @author Prasad Thiragabathina
+		 * @param  Long voterId
+		 * @return CadreInfo
+		 */
+		public CadreInfo getCadreDetailsByVoterId(Long voterId) {
+			try {
+				log.info("Entered into getCadreDetailsByVoterId Method...");
+				CadreInfo cadreInfo = new CadreInfo();
+				SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+				List<Voter> voters = new ArrayList<Voter>();
+				voters = voterDAO.findVoterDetailsBasedOnVoterId(voterId);
+				if(voters != null && voters.size() > 0)
+				{
+					Voter voter = voters.get(0);
+					cadreInfo.setFirstName(voter.getName());
+					cadreInfo.setHouseNo(voter.getHouseNo());
+					cadreInfo.setFatherOrSpouseName(voter.getRelativeName());
+					String gender = voter.getGender();
+					if(gender.equalsIgnoreCase("m"))
+					gender= "Male";
+					else
+					gender = "Female";
+					cadreInfo.setGender(gender);
+					cadreInfo.setMobile(voter.getMobileNo());
+					//cadreInfo.setDateOfBirth(sdf.format(dob));
+					Long age = voter.getAge();
+					Date today = new Date();
+					Long year = (long) today.getYear();
+					Long dobYear = year-age;
+					cadreInfo.setDateOfBirth(sdf.format(dobYear));
+					cadreInfo.setAge(voter.getAge().toString());
+					cadreInfo.setDobOption("Age");
+				}
+				List<BoothPublicationVoter> voterContactDetails= boothPublicationVoterDAO.findVoterContactDetails(voterId);
+				if(voterContactDetails != null & voterContactDetails.size() > 0)
+				{
+					BoothPublicationVoter boothPublicationVoter = voterContactDetails.get(0);
+						if(boothPublicationVoter.getBooth().getConstituency().getState() != null)
+						{
+							cadreInfo.setState(boothPublicationVoter.getBooth().getConstituency().getState().getStateId().toString());
+							cadreInfo.setStateName(boothPublicationVoter.getBooth().getConstituency().getState().getStateName());
+						}
+						if(boothPublicationVoter.getBooth().getConstituency().getDistrict() != null)
+						{
+							cadreInfo.setDistrict(boothPublicationVoter.getBooth().getConstituency().getDistrict().getDistrictId().toString());
+							cadreInfo.setDistrictName(boothPublicationVoter.getBooth().getConstituency().getDistrict().getDistrictName());
+						}
+						if(boothPublicationVoter.getBooth().getConstituency() != null)
+						{
+							cadreInfo.setConstituencyID(boothPublicationVoter.getBooth().getConstituency().getConstituencyId());
+							cadreInfo.setConstituencyName(boothPublicationVoter.getBooth().getConstituency().getName());
+						}
+						if(boothPublicationVoter.getBooth().getTehsil() != null)
+						{
+						  if(boothPublicationVoter.getBooth().getLocalBody() == null)
+							{
+							  cadreInfo.setMandal(IConstants.RURAL_TYPE+boothPublicationVoter.getBooth().getTehsil().getTehsilId().toString());
+							  cadreInfo.setMandalName(boothPublicationVoter.getBooth().getTehsil().getTehsilName());
+							}
+						  else
+						  	{
+							 Long localElectionBodyId = boothPublicationVoter.getBooth().getLocalBody().getLocalElectionBodyId();
+							 List assemblyLocalElectionBodyId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localElectionBodyId);
+							 if(assemblyLocalElectionBodyId != null && assemblyLocalElectionBodyId.size() > 0)
+							 {
+							 Long assemblyLocalElectionBodyIds = (Long)assemblyLocalElectionBodyId.get(0);
+							 cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyIds.toString());
+							 }
+						   }
+						}
+						Long boothId = (Long) boothPublicationVoter.getBooth().getBoothId();
+						List<HamletBoothPublication> hamletBoothPublicationList = hamletBoothPublicationDAO.getHameletDetailsByBoothId(boothId);
+						if(hamletBoothPublicationList != null & hamletBoothPublicationList .size() > 0)
+						{
+							HamletBoothPublication hamletBoothPublication = hamletBoothPublicationList.get(0);
+							if(hamletBoothPublication.getBooth().getLocalBody() == null)
+							{
+								cadreInfo.setVillage(IConstants.RURAL_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
+								cadreInfo.setVillageName(hamletBoothPublication.getHamlet().getHamletName().toString());
+							}
+							else
+							{
+								cadreInfo.setVillage(IConstants.URBAN_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
+								cadreInfo.setVillageName(hamletBoothPublication.getHamlet().getHamletName().toString());
+							}
+						}
+						List<Long> famileyMemberCount = boothPublicationVoterDAO.getFamilyMemberCount(cadreInfo.getHouseNo(), boothPublicationVoter.getBooth().getBoothId());
+						cadreInfo.setNoOfFamilyMembers(famileyMemberCount.get(0).toString());
+						cadreInfo.setNoOfVoters(famileyMemberCount.get(0).toString());
+						List<Object[]> famileyMembersDetails = boothPublicationVoterDAO.getFamileyMembersDetailsForHouseNo(cadreInfo.getHouseNo(), boothPublicationVoter.getBooth().getBoothId(),voterId);
+						int count = 0;
+						if(famileyMembersDetails != null && famileyMembersDetails.size() > 0)
+						{
+							for (Object[] objects : famileyMembersDetails) {
+								
+								if(count == 0)
+								{
+									cadreInfo.setFirstFamilyMemberName(objects[1].toString());
+									//cadreInfo.setFirstFamilyMemberRelation(objects[2].toString());
+									//List<Long> relationId = userRelationDAO.getRelationId( objects[2].toString());
+									//cadreInfo.setFirstFamilyMemberRelationId(relationId.toString());
+								}
+								if(count == 1)
+								{
+									cadreInfo.setSecondFamilyMemberName(objects[1].toString());
+									//cadreInfo.setSecondFamilyMemberRelation(objects[2].toString());
+									//List<Long> relationId = userRelationDAO.getRelationId(objects[2].toString());
+									//cadreInfo.setSecondFamilyMemberRelationId(relationId.toString());
+								}	
+								if(count == 2)
+								{
+									cadreInfo.setThirdFamilyMemberName(objects[1].toString());
+									//cadreInfo.setThirdFamilyMemberRelation(objects[2].toString());	
+									//List<Long> relationId = userRelationDAO.getRelationId(objects[2].toString());
+									//cadreInfo.setThirdFamilyMemberRelationId(relationId.toString());
+								}
+								if(count > 2)
+								{
+									break;
+								}
+								count++;
+							}
+						}
+						
+					}
+						
+						cadreInfo.setSameAsCA(true);
+				return cadreInfo;
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception raised in getCadreDetailsByVoterId Method...");
+				return null;
+			}
+			
+		}
+
 		public Long getParliamentConstituencyId(String type, Long id, Long year)
 		{
 			Long parliamentConId = null;
@@ -8142,7 +8413,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				return parliamentConId;
 			}
 		}
-				
+
 		public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId){
 			 List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 			try{

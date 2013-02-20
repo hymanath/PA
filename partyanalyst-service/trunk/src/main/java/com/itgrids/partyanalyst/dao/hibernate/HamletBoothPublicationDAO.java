@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
@@ -22,4 +23,18 @@ public class HamletBoothPublicationDAO extends
 		  query.setParameter("panchayatId", panchayatId);
 		  return query.list();
 	}
+
+	/**
+	 * 	This method is used for getting the hamlet name based on booth id
+	 * @author Prasad Thiragabathina
+	 * @param Long boothId
+	 * @return List<Object[]>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<HamletBoothPublication> getHameletDetailsByBoothId(Long boothId) {
+		// TODO Auto-generated method stub
+		return getHibernateTemplate().find("select model from HamletBoothPublication model where model.booth.boothId = ?",boothId);
+	}
+	
+	
 }

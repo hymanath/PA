@@ -127,4 +127,11 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 				List<Long> boothIds, Long publicationDateId, Long startAge, Long endAge);
+	 
+	 public List<BoothPublicationVoter> findVoterContactDetails(Long voterId);
+	 
+	 public List<Long> getFamilyMemberCount(String houseNo,Long boothId);
+	 
+	 public List<Object[]> getFamileyMembersDetailsForHouseNo(String houseNo,Long boothId,Long voterId);
+	 
 }
