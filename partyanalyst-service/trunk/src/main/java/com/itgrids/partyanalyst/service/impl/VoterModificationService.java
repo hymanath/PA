@@ -8,8 +8,10 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -22,10 +24,35 @@ public class VoterModificationService implements IVoterModificationService{
 	private IVotersAnalysisService votersAnalysisService;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IVoterModificationDAO voterModificationDAO;
-	private static final Logger log = Logger.getLogger(VotersAnalysisService.class);
+	private IVoterAgeRangeDAO voterAgeRangeDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+	
+	public IVoterModificationDAO getVoterModificationDAO() {
+		return voterModificationDAO;
+	}
+
+	public void setVoterModificationDAO(IVoterModificationDAO voterModificationDAO) {
+		this.voterModificationDAO = voterModificationDAO;
+	}
+
+	public IVoterAgeRangeDAO getVoterAgeRangeDAO() {
+		return voterAgeRangeDAO;
+	}
+
+	public void setVoterAgeRangeDAO(IVoterAgeRangeDAO voterAgeRangeDAO) {
+		this.voterAgeRangeDAO = voterAgeRangeDAO;
+	}
+
 	public IVotersAnalysisService getVotersAnalysisService() {
 		return votersAnalysisService;
 	}
@@ -41,23 +68,6 @@ public class VoterModificationService implements IVoterModificationService{
 
 	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
 		this.voterInfoDAO = voterInfoDAO;
-	}
-
-	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
-		return boothPublicationVoterDAO;
-	}
-
-	public void setBoothPublicationVoterDAO(
-			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
-		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
-	}
-
-	public IVoterModificationDAO getVoterModificationDAO() {
-		return voterModificationDAO;
-	}
-
-	public void setVoterModificationDAO(IVoterModificationDAO voterModificationDAO) {
-		this.voterModificationDAO = voterModificationDAO;
 	}
 
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
@@ -154,6 +164,68 @@ public class VoterModificationService implements IVoterModificationService{
 			 return null; 
 		 }
 	 }
+	 
+	 public List<Long> getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(Long fromPublicationDateId,Long toPublicationDateId)
+	 {
+		 LOG.debug("Entered into getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
+		 List<Long> publicationIdsList = new ArrayList<Long>(0);
+		 try{
+			 if(fromPublicationDateId == null || fromPublicationDateId == 0 || fromPublicationDateId.equals(toPublicationDateId))
+				 publicationIdsList.add(toPublicationDateId);
+			 else
+			 {
+				 publicationIdsList = getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId,toPublicationDateId);
+				 publicationIdsList.remove(fromPublicationDateId);
+			 }
+			 return publicationIdsList;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
+			 LOG.error("Exception is - "+e);
+			 return publicationIdsList; 
+		 }
+	 }
+	 
+	 public List<VoterModificationAgeRangeVO> getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+	 {
+		 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+		 List<VoterModificationAgeRangeVO> result = new ArrayList<VoterModificationAgeRangeVO>(0);
+		 try{
+			 List<String> ageRanges = voterAgeRangeDAO.getAllVoterAgeRanges();
+			 VoterModificationAgeRangeVO voterModificationAgeRangeVO = null;
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 for(String ageRange : ageRanges)
+			 {
+				 try{
+				 voterModificationAgeRangeVO = new VoterModificationAgeRangeVO();
+				 voterModificationAgeRangeVO.setRange(ageRange);
+				 String[] ages = ageRange.split("-");
+				 Long ageFrom = new Long(ages[0].trim());
+				 Long ageTo = null;
+				 if(!ages[1].trim().equalsIgnoreCase("Above"))
+					 ageTo = new Long(ages[1].trim());
+					 
+				 List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation(locationType, locationValue, constituencyId, publicationIdsList, ageFrom, ageTo);
+				 
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params :list)
+					 {
+						 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						 	voterModificationAgeRangeVO.setAddedCount((Long)params[0]);
+						 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED));
+						 	voterModificationAgeRangeVO.setDeletedCount((Long)params[0]);
+					 }
+				 }
+				 result.add(voterModificationAgeRangeVO);
+				 }catch (Exception e) {}
+			 }
+			 return result; 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+			 LOG.error("Exception is - "+e);
+			 return result; 
+		 }
+	 }
 	
 	 
 	 public List<VoterAgeRangeVO> getVoterInfoByPublicationDateList(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
@@ -196,7 +268,7 @@ public class VoterModificationService implements IVoterModificationService{
 			 return voterAgeRangeVOList;
 		 }catch (Exception e) {
 			 e.printStackTrace();
-			 log.error("Exception Occured in getVoterInfoByPublicationDateList() Method, Exception - "+e);
+			 LOG.error("Exception Occured in getVoterInfoByPublicationDateList() Method, Exception - "+e);
 			 return voterAgeRangeVOList;
 		}
 		 
