@@ -654,11 +654,12 @@ function addToPolitician(voterId)
 			$("#partyWise_header").html("");
 			$("#partyWiseDetailsDiv").html("");
 			$("#partyWiseChatDiv").html("");
-			
+			$("#selectedBoothInfo").html('');	
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
 	   $("#votersDiv4").show();  
 	   if(type == "booth"){
+	     getBoothInfo();
 	     $("#ageLink").hide();  
 	   }else{
 	     $("#ageLink").show();
@@ -1220,7 +1221,9 @@ function addToPolitician(voterId)
 									createOptionsForSelectElmtId("PartySelect",myResults.dataList);
 									
 								}
-								
+								else if(jsObj.task=="getBoothInfo"){
+								   showBoothInfo(myResults);
+								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -4060,10 +4063,10 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		/* Updated by sasi*/
 		//Because booth doesnt consists the results iam hiding the PreviousElections results div by calling the function
 		
-		if(maintype=="booth"|| maintype == "ward"){
+		if(maintype == "ward"){
 			$("#previousEleVotingTrendsDiv1").css('display','none');
 		}
-	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal"){
+	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal" || maintype == "booth"){
 		  $("#previousEleAjaxImg").css("display","block");
 		var jsObj=
 		{
@@ -5061,4 +5064,20 @@ function buildCategories(results){
 
 	$('#impFamilySelectedDetails1').html(str);
 
+}
+function getBoothInfo(){
+        var jsObj=
+					{					
+						boothId:mainreqid,
+						task:"getBoothInfo"
+					};
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getBoothBasicInfoAction.action?"+rparam;
+
+			callAjax(jsObj,url);
+}
+function showBoothInfo(result){
+  if(result != null && result.location != null)
+        $("#selectedBoothInfo").html("<b>Booth Location  :</b> "+result.location+" <br/><b>Areas Covered :</b> "+result.villageCovered+"  ");
 }

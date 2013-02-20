@@ -4450,6 +4450,11 @@
 		  <result type="json" name="success">
 				<param name="root">voterModificationAgeRangeVOList</param>				
 			</result>
+		</action>		
+		<action name="getBoothBasicInfoAction" class="votersAnalysisAction" method="getBoothBasicInfo">
+			<result type="json" name="success">
+				<param name="root">selectOptionVO</param>				
+			</result>		
 		</action>
 	</package>
 </struts>      

@@ -76,6 +76,16 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private List<SelectOptionVO> userCategoriesList;
 		
+	private SelectOptionVO selectOptionVO;
+	
+	public SelectOptionVO getSelectOptionVO() {
+		return selectOptionVO;
+	}
+
+	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
+		this.selectOptionVO = selectOptionVO;
+	}
+
 	public List<SelectOptionVO> getUserCategoriesList() {
 		return userCategoriesList;
 	}
@@ -928,6 +938,15 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getBoothBasicInfo(){
+		try{
+			jObj = new JSONObject(getTask());
+			selectOptionVO = votersAnalysisService.getBoothBasicInfo(jObj.getLong("boothId"));
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getBoothBasicInfo() Method, Exception ",e); 
+		}
+		return Action.SUCCESS;
+	}
 
 }
