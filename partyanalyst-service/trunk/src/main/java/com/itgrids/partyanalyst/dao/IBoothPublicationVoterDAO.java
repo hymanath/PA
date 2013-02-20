@@ -135,4 +135,6 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]> getFamileyMembersDetailsForHouseNo(String houseNo,Long boothId,Long voterId);
 	 
 	 public List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId, Long toPublicationdateId);
+	 
+	 public List<Long> getPreviousPublicationIds(Long publicationDateId);
 }

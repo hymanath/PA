@@ -265,12 +265,19 @@ System.out.println(list.size());
 		System.out.println(list.size());
 	}*/
 
-	public void testGetVoterPublicationIdsBetweenTwoPublications()
+	/*public void testGetVoterPublicationIdsBetweenTwoPublications()
 	{
 		List<Long> list = boothPublicationVoterDAO.getVoterPublicationIdsBetweenTwoPublications(1l,8l);
 		System.out.println(list.size());
 		
 		for(Long l : list)
 			System.out.println(l);
+	}*/
+
+	public void testGetPreviousPublicationIds()
+	{
+		List<Long> list = boothPublicationVoterDAO.getPreviousPublicationIds(8l);
+		for(Long l : list)
+		System.out.println(l);
 	}
 }
