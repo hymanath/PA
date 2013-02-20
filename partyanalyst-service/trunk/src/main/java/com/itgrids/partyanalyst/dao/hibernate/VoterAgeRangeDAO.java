@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -19,6 +21,12 @@ public class VoterAgeRangeDAO extends GenericDaoHibernate<VoterAgeRange, Long> i
 				" where model.ageRange = :ageRange ");
 		queryObj.setParameter("ageRange", ageRange);
 		return (Long) queryObj.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getAllVoterAgeRanges()
+	{
+		return getHibernateTemplate().find("select model.ageRange from VoterAgeRange model");
 	}
 	
 }
