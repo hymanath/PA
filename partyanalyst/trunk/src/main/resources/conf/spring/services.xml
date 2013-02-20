@@ -1384,8 +1384,9 @@
 		<property name="votersAnalysisService" ref="votersAnalysisService"/>
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
 		<property name="voterModificationDAO" ref="voterModificationDAO"/>
-		<property name="voterInfoDAO" ref="voterInfoDAO" />
-		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="voterInfoDAO" ref="voterInfoDAO"/>
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+		<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"/>
 	</bean>
 	
 	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
