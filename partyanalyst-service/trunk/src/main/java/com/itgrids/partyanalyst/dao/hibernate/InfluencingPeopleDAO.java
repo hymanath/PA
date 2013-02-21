@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 
 public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople, Long> implements IInfluencingPeopleDAO{
@@ -489,6 +490,17 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	@SuppressWarnings("unchecked")
 	public List getInfluencingPersonLocationDetailsById(Long influencingPersonId) {
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where model.influencingPeopleId = ?",influencingPersonId);
+	}
+	
+	
+	public List<InfluencingPeople> getInfluencePeopleBySearch(
+			InfluencingPeopleVO influencingPeopleVO, String queryString) {
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter("userId", influencingPeopleVO.getUserId());
+		
+		return query.list();
 	}
 
 		

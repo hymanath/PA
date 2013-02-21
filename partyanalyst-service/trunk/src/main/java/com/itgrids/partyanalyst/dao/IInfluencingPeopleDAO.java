@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 
 public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Long> {
@@ -133,5 +134,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getInfluencingPersonLocationDetailsById(Long influencingPersonId);
 	
 	
+	public List<InfluencingPeople> getInfluencePeopleBySearch(
+			InfluencingPeopleVO influencingPeopleVO, String queryString);
 
 }

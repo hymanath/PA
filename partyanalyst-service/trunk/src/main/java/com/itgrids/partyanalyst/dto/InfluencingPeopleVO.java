@@ -30,6 +30,129 @@ public class InfluencingPeopleVO implements Serializable{
 	private Long hamletId;
 	private Long boothId;
 	private Long voterId;
+	
+	private String fatherOrSpouceName;
+	private Long userId;
+	private String firstName;
+	private Long influencePersonId;
+	
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	private Long mandalId;
+	private Long muncipalityId;
+	private Long wardId;
+	
+	public String getFatherOrSpouceName() {
+		return fatherOrSpouceName;
+	}
+
+
+	public void setFatherOrSpouceName(String fatherOrSpouceName) {
+		this.fatherOrSpouceName = fatherOrSpouceName;
+	}
+
+
+	public Long getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+	public Long getInfluencePersonId() {
+		return influencePersonId;
+	}
+
+
+	public void setInfluencePersonId(Long influencePersonId) {
+		this.influencePersonId = influencePersonId;
+	}
+
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
+
+	public Long getMuncipalityId() {
+		return muncipalityId;
+	}
+
+
+	public void setMuncipalityId(Long muncipalityId) {
+		this.muncipalityId = muncipalityId;
+	}
+
+
+	public Long getWardId() {
+		return wardId;
+	}
+
+
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+
+
+	public Long getScopeValue() {
+		return scopeValue;
+	}
+
+
+	public void setScopeValue(Long scopeValue) {
+		this.scopeValue = scopeValue;
+	}
+
+	private Long scopeValue;
 	public String getParty() {
 		return party;
 	}

@@ -44,7 +44,32 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long electionId;
 	private Date electionDate;
 	private String type;
-	
+	private Boolean isInfluencePerson;
+	private String influencePerson;
+	public String getInfluencePerson() {
+		return influencePerson;
+	}
+
+	public void setInfluencePerson(String influencePerson) {
+		this.influencePerson = influencePerson;
+	}
+
+	public Boolean getIsInfluencePerson() {
+		return isInfluencePerson;
+	}
+
+	public void setIsInfluencePerson(Boolean isInfluencePerson) {
+		this.isInfluencePerson = isInfluencePerson;
+	}
+
+	public Boolean isInfluencePerson() {
+		return isInfluencePerson;
+	}
+
+	public void setInfluencePerson(Boolean isInfluencePerson) {
+		this.isInfluencePerson = isInfluencePerson;
+	}
+
 	public List<VoterVO> getVotersList() {
 		return votersList;
 	}
