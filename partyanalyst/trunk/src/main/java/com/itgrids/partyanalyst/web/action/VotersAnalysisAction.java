@@ -984,7 +984,7 @@ return Action.SUCCESS;
 	public String getBoothBasicInfo(){
 		try{
 			jObj = new JSONObject(getTask());
-			selectOptionVO = votersAnalysisService.getBoothBasicInfo(jObj.getLong("boothId"));
+			userCategoriesList = votersAnalysisService.getBoothBasicInfo(jObj.getLong("boothId"));
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in getBoothBasicInfo() Method, Exception ",e); 
