@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
+import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.opensymphony.xwork2.Action;
@@ -34,6 +35,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private String locationType;
 	private IVoterModificationService voterModificationService;
 	private List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList;
+	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -117,6 +119,15 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList) {
 		this.voterModificationAgeRangeVOList = voterModificationAgeRangeVOList;
 	}
+	
+	public VoterModificationGenderInfoVO getVoterModificationGenderInfoVO() {
+		return voterModificationGenderInfoVO;
+	}
+	public void setVoterModificationGenderInfoVO(
+			VoterModificationGenderInfoVO voterModificationGenderInfoVO) {
+		this.voterModificationGenderInfoVO = voterModificationGenderInfoVO;
+	}
+	
 	public String execute()throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -165,6 +176,27 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		Long locationValue = jObj.getLong("locationValue");
 		
 		voterModificationAgeRangeVOList = voterModificationService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		return Action.SUCCESS;
+	}
+	
+	public String getGenderWiseVoterModificationsBetweenPublications()
+	{
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in getGenderWiseVoterModificationsBetweenPublications() Method, Exception - "+e);
+		}
+		
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+		String locationType = jObj.getString("locationType");
+		Long locationValue = jObj.getLong("locationValue");
+		
+		voterModificationGenderInfoVO = voterModificationService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 		return Action.SUCCESS;
 	}
 	
