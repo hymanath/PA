@@ -1378,6 +1378,8 @@
 		<property name="voterModificationTempDAO" ref="voterModificationTempDAO" />
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
 		<property name="userRelationDAO" ref="userRelationDAO" />
+		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+		
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">

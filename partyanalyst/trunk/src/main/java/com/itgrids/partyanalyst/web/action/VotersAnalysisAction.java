@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -26,7 +27,6 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
-import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -75,9 +75,17 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private Long parliamentConstituencyId;
 	
 	private List<SelectOptionVO> userCategoriesList;
+	private List<InfluencingPeopleVO> influencingPeopleList;
 		
 	private SelectOptionVO selectOptionVO;
-	
+	public List<InfluencingPeopleVO> getInfluencingPeopleList() {
+		return influencingPeopleList;
+	}
+
+	public void setInfluencingPeopleList(
+			List<InfluencingPeopleVO> influencingPeopleList) {
+		this.influencingPeopleList = influencingPeopleList;
+	}
 	public SelectOptionVO getSelectOptionVO() {
 		return selectOptionVO;
 	}
@@ -85,6 +93,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
 		this.selectOptionVO = selectOptionVO;
 	}
+
 
 	public List<SelectOptionVO> getUserCategoriesList() {
 		return userCategoriesList;
@@ -938,6 +947,40 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
+	public String getInfluencingPeopleBySearch(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getInfluencingPeopleBySearch() Method, Exception - "+e); 
+		}
+		
+		InfluencingPeopleVO influencingPeopleVO = new InfluencingPeopleVO();
+		
+		influencingPeopleVO.setPersonName(jObj.getString("name"));
+		influencingPeopleVO.setFatherOrSpouceName(jObj.getString("fatherOrSpouceName"));
+		influencingPeopleVO.setStateId(jObj.getLong("state"));
+		influencingPeopleVO.setDistrictId(jObj.getLong("district"));
+		influencingPeopleVO.setConstituencyId(jObj.getLong("constituency"));
+		influencingPeopleVO.setMandalId(jObj.getLong("mandal"));
+		influencingPeopleVO.setMuncipalityId(jObj.getLong("muncipality"));
+		influencingPeopleVO.setHamletId(jObj.getLong("hamlet"));
+		influencingPeopleVO.setWardId(jObj.getLong("ward"));
+		//influencingPeopleVO.setWardId(jObj.getLong("villageOrWard"));
+		influencingPeopleVO.setBoothId(jObj.getLong("booth"));
+		influencingPeopleVO.setScopeValue(jObj.getLong("scope"));
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		influencingPeopleList = votersAnalysisService.getInfluencingPeopleBySearch(user.getRegistrationID(),influencingPeopleVO);
+		
+		return Action.SUCCESS;
+		
+	}
 	public String getBoothBasicInfo(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -948,5 +991,24 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
-
+	public String mapVoterAsInfluencingPerson(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in mapVoterAsInfluencingPerson() Method, Exception - "+e); 
+		}
+		
+		
+		Long influencePersonId = jObj.getLong("influencePersonId");
+		Long voterId = jObj.getLong("voterId");
+		
+		votersAnalysisService.mapVoterAsInfluencingPerson(influencePersonId,voterId);
+		
+		
+		
+		return Action.SUCCESS;
+		
+	}
 }

@@ -63,6 +63,10 @@
 
 <style type="text/css">
 
+.locationErrorMsg{
+	color:red;
+}
+
 .newssources{
  background-color:#97DFEB;
  padding:8px 8px 8px 8px;
@@ -809,6 +813,12 @@ maxDate: new Date()
 <div id="problemInnerDiv">
 </div>
 </div>
+
+<div id="influencePeopleOuterDiv">
+  <div id="influencePeopleInnerDiv"></div>
+  <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable"></div>
+</div>
+
 <!--DISPLAY NEWS GALLARIES START-->
  <div id="showContentDiv">
     <div id="showAjaxImgForNews" style="display:none"><img src="images/icons/goldAjaxLoad.gif"/></div>
