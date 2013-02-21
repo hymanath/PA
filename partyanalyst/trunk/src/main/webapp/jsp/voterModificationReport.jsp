@@ -351,8 +351,14 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 		for(var i in results)
 		{
 		 str +='<tr>';
-		 str +='<td>'+results[i].previousPublicationName+'</td>';
-		 str +='<td>'+results[i].publicationName+'</td>';
+		 if(results[i].previousPublicationName != null)
+		  str +='<td>'+results[i].previousPublicationName+'</td>';
+		 else
+		  str +='<td>N/A</td>';
+		 if(results[i].publicationName != null)
+			str +='<td>'+results[i].publicationName+'</td>';
+		 else
+			str +='<td>N/A</td>';
 		 str +='<td>'+results[i].addedTotal+'</td>';
 		 str +='<td>'+results[i].addedMale+'</td>';
 		 str +='<td>'+results[i].addedFemale+'</td>';
