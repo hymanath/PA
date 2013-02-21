@@ -8711,13 +8711,29 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			return optionsList;
 		}
 	 
-	 public SelectOptionVO getBoothBasicInfo(Long boothId){
+	 public List<SelectOptionVO> getBoothBasicInfo(Long boothId){
 			try{
-			 SelectOptionVO selectOptionVO = new SelectOptionVO();
-			 Booth booth = boothDAO.get(boothId);
-			 selectOptionVO.setLocation(booth.getLocation());
-			 selectOptionVO.setVillageCovered(booth.getVillagesCovered());
-			 return selectOptionVO;
+				 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 Booth booth = boothDAO.get(boothId);
+				 Long prevPublicationId = 0l;
+				 List<Long> previousIds = publicationDAO.getPreviousPublicationIds(booth.getPublicationDate().getPublicationDateId());
+				 if(previousIds != null && previousIds.size() > 0 && previousIds.get(0) != null)
+					 prevPublicationId = previousIds.get(0);
+				 selectOptionVO.setLocation(booth.getLocation());
+				 selectOptionVO.setVillageCovered(booth.getVillagesCovered());
+				 returnList.add(selectOptionVO);
+				 if(prevPublicationId > 0){
+					 List<Booth> booths = boothDAO.getBoothByPartNoPublicationId(booth.getConstituency().getConstituencyId(),prevPublicationId,booth.getPartNo());
+				     if(booths != null && booths.size() >0){
+				    	 booth = booths.get(0);
+				    	 selectOptionVO = new SelectOptionVO();
+				    	 selectOptionVO.setLocation(booth.getLocation());
+						 selectOptionVO.setVillageCovered(booth.getVillagesCovered());
+						 returnList.add(selectOptionVO);
+				     }
+				 }
+			   return returnList;
 			}catch(Exception e){
 				log.error("Exception rised in getBoothBasicInfo  ",e);
 			}

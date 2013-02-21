@@ -148,4 +148,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Long> getWardIdsByLocalEleBodyIdsList(List<Long> localEleBodyIds, Long publicationDateId);
 
 	public List<Long> getBoothsCountByPublicationId(String type,Long id,Long publicationDateId);
+	
+	public List<Booth> getBoothByPartNoPublicationId(Long constituencyId,Long publicationId,String partNo);
 }
