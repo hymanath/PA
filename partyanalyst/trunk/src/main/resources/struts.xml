@@ -4433,6 +4433,13 @@
 				<param name="root">selectOptionVO</param>				
 			</result>		
 		</action>
+		
+		<action name="getModifiedVotersCountBetweenPublications" class="voterModificationReportAction" method="getModifiedVotersCountBetweenPublications" >
+			<result type="json" name="success">
+				<param name="root">voterModificationVO</param>
+			</result> 
+		</action>
+		
 		<action name="saveCandidateDetailsAction" class="assigningCandidatesToVoterAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionVO</param>				
