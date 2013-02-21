@@ -7,11 +7,11 @@
 <title>Voters analysis</title>
 <style>
 #voterModReportMainDiv{margin-left:auto;margin-right:auto;float:none;width:960px;margin-top: 30px; margin-bottom: 30px;}
-#voterInfoTab, #voterAgeInfoTab{border: 1px solid #D3D3D3;
+#voterInfoTab, #voterAgeInfoTab,#voterGenderInfoTab{border: 1px solid #D3D3D3;
     border-collapse: collapse;
     padding: 10px;width:50%}
 
-	#voterInfoTab th,#voterAgeInfoTab th {
+	#voterInfoTab th,#voterAgeInfoTab th,#voterGenderInfoTab th {
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -20,7 +20,7 @@
     text-align: left;
 }
 
-#voterInfoTab td ,#voterAgeInfoTab td{
+#voterInfoTab td ,#voterAgeInfoTab td,#voterGenderInfoTab td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -76,6 +76,23 @@ var locationValue = "${locationValue}";
 	callAjax(jObj,url);
 	}
 
+	function getGenderWiseVoterModificationsBetweenPublications()
+	{
+		var jObj=
+		{
+			constituencyId			: constituencyId,
+			fromPublicationDateId	: fromPublicationDateId,
+			toPublicationDateId		: toPublicationDateId,
+			locationType			: locationType,
+			locationValue			: locationValue,
+			task:"getNewlyAddedOrDeletedVoterInfo"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getGenderWiseVoterModifiBetweenPublicationsAction.action?"+rparam;	
+
+	callAjax(jObj,url);
+	}
+
 	function callAjax(jsObj,url)
 		{
 			 var myResults;
@@ -91,6 +108,9 @@ var locationValue = "${locationValue}";
 								
 								else if(jsObj.task == "getAddedOrDeletedVoterInfoInALocation")
 										showAddedDeletedVoterInfoInALocation(myResults,jsObj);
+
+								else if(jsObj.task == "getNewlyAddedOrDeletedVoterInfo")
+										showGenderWiseVoterModifiBetweenPublications(myResults,jsObj);
 								
 								
 							}catch (e) {
@@ -184,8 +204,50 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 	  return;
 	}
 }
+
+function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
+{
+	
+	$('#voterGenderInfoDiv').html('');
+
+	var str = '';
+	str +='<div class="voterinfoHeading"><h2>Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>';
+	
+	if(results != null)
+	{
+		str +='<table id="voterGenderInfoTab" border="1">';
+		str +='<tr>';
+		str +='<th>Status</th>';
+		str +='<th>Total</th>';
+		str +='<th>Male</th>';
+		str +='<th>Female</th>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Added</th>';
+		str +='<td>'+results.addedTotal+'</td>';
+		str +='<td>'+results.addedMale+'</td>';
+		str +='<td>'+results.addedFemale+'</td>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Deleted</th>';
+		str +='<td>'+results.deletedTotal+'</td>';
+		str +='<td>'+results.deletedMale+'</td>';
+		str +='<td>'+results.deletedFemale+'</td>';
+		str +='</tr>';
+		str +='</table>';
+		$('#voterGenderInfoDiv').html(str);
+	}
+
+	else 
+	{
+	  $('#voterGenderInfoDiv').html('<div>No Data Available.</div>');
+	  return;
+	}
+}
 getVoterInfo();
 getAddedDeletedVoterInfoInALocation();
+getGenderWiseVoterModificationsBetweenPublications();
+
 	</script>
 
 </head>
@@ -193,15 +255,19 @@ getAddedDeletedVoterInfoInALocation();
 
 <div id="voterModReportMainDiv">
   <div id="voterModReportInnerDiv">
+		<div id="voterInfoDiv">
+			<span id="voterInfoAjaxImg" style="display:none;">
+			   <img src="images/icons/search.gif" />
+			</span>
+		</div>
+		<div id="voterAgeInfoDiv">
+			<span id="voterAgeInfoAjaxImg" style="display:none;">
+			   <img src="images/icons/search.gif" />
+			</span>
+		</div>
+		<div id="voterGenderInfoDiv"></div>
 
   </div>
-<div id="voterInfoDiv">
-   <span id="voterInfoAjaxImg" style="display:none;"><img src="images/icons/search.gif" /></span>
-</div>
-  <div id="voterAgeInfoDiv">
-	<span id="voterAgeInfoAjaxImg" style="display:none;"><img src="images/icons/search.gif" /></span>
-
-</div>
 </div>
 
 
