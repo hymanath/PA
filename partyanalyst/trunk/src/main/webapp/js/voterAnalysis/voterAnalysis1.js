@@ -5142,8 +5142,14 @@ function getBoothInfo(){
 			callAjax(jsObj,url);
 }
 function showBoothInfo(result){
-  if(result != null && result.location != null)
-        $("#selectedBoothInfo").html("<b>Booth Location  :</b> "+result.location+" <br/><b>Areas Covered :</b> "+result.villageCovered+"  ");
+var str = "";
+  if(result != null && result.length > 0){
+        if(result[0].location != null && result[0].location != "")
+	       str+= "<b>Current Booth Location  :</b> "+result[0].location+" <b>&nbsp;&nbsp;Areas Covered :</b> "+result[0].villageCovered;
+	   if(result.length > 1 && result[1].location != null && result[1].location != "")
+		   str+= "<br/><b>Previous Booth Location  :</b> "+result[1].location+" <b>&nbsp;&nbsp;Areas Covered :</b> "+result[1].villageCovered;
+  }
+   $("#selectedBoothInfo").html(str);
 }
 
 
