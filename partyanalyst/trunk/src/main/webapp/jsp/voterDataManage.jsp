@@ -25,11 +25,12 @@
 	}
 	.voterManagementInnerDiv p{font-size: 13px;}
 	#voterDataInsertId{font-weight:bold;}
-	#voterChangesButtonId{font-weight:bold;margin-top:10px;}
-	.errorMsgDiv{color: red;
+	#voterChangesButtonId,#mapVoterButtonId{font-weight:bold;margin-top:10px;}
+	.errorMsgDiv,.errorMsgDiv1{color: red;
     font-size: 13px;
     padding-bottom: 12px; padding-top: 12px;}
 	table{font-size:13px;}
+	table th{font-weight:normal;}
 	#minResults,#maxResults{width:186px;}
 	</style>
 </head>
@@ -70,6 +71,35 @@
 	</div>
 	</fieldset>
 </div>
+<div id="voterManagementMainDiv" class="span8">
+ <div class="headingDiv" style="width:488px;">Map Voter Data From One publication to another Publication</div>
+ 
+<fieldset>
+<div class="errorMsgDiv1"></div>
+<div class="voterManagementInnerDiv">
+<center>
+<table cellpadding="4">
+			<tr>
+				<th>Constituency </th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="mapVoterConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+			<tr>
+				<th>From Publication </th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="frompublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+			<tr>
+				<th>To Publication </th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+			</table>
+			<p><input type="button" value="Submit" onclick="InsertmapVoterData();" id="mapVoterButtonId" class="btn btn-info" /><div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
+			</center>
+	</div>
+</fieldset>
+</div>
 
 <div id="voterManagementMainDiv" class="span8">
  <div class="headingDiv" style="width:615px;">Copy Voter Modification Data from temporary table to main table</div>
@@ -83,7 +113,7 @@
 			<tr>
 				<th>Constituency </th>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesListForVoterChanges" id="constituencySelectId" list="constituenciesListForVoterChanges" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"></s:select></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesListForVoterChanges" id="constituencySelectId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"></s:select></td>
 			</tr>
 			<tr>
 				<th>Publication Date</th>
@@ -254,7 +284,43 @@ function callAjax(jsObj, url){
 		var url = "insertVoterDataAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
-	
+	function InsertmapVoterData()
+	{
+		var constituencyId = $("#mapVoterConstituencyId").val();
+		var frompublicationDateId = $("#frompublicationDateId").val();
+		var topublicationDateId = $("#topublicationDateId").val();
+		var str = '';
+			var errorEle = $(".errorMsgDiv1");
+			errorEle.html('');
+			if(constituencyId == 0 || constituencyId == '')
+			{
+				errorEle.html('Please Select Constituency');
+				return;
+			}
+			else if(frompublicationDateId == 0 || frompublicationDateId== '')
+			{
+				errorEle.html('Please Select From Publication Date');
+				return;
+			}
+			else if(topublicationDateId == 0 || topublicationDateId== '')
+			{
+				errorEle.html('Please Select To Publication Date');
+				return;
+			}
+			
+		var jsObj=
+		{				
+			constituencyId		 : constituencyId,
+			frompublicationDateId: frompublicationDateId,
+			topublicationDateId  :topublicationDateId,
+			task				 : "InsertmapVoterData"
+			
+		}
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "insertVoterDataAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
 	function showModifiedVotersInsertDataStatus(results)
 	{
 		$(".errorMsgDiv").html('');
