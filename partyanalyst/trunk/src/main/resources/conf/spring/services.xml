@@ -1389,6 +1389,7 @@
 		<property name="voterInfoDAO" ref="voterInfoDAO"/>
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 		<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"/>
+		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 	</bean>
 	
 	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
