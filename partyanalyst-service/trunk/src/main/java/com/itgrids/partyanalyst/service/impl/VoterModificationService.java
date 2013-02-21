@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -361,6 +362,15 @@ public class VoterModificationService implements IVoterModificationService{
 		 }
 	 }
 	 
+	 
+	 /**
+	 * This method search for existing item in List, if available returns that Object otherwise null 
+	 * @param List<{@link VoterModificationGenderInfoVO}>
+	 * @param Long publicationDateId
+	 * @author Kamalakar Dandu
+	 * @return List<{@link VoterModificationGenderInfoVO}>
+	 * 
+	 */
 	 public VoterModificationGenderInfoVO getVoterModificationGenderInfoVOFromResultList(Long publicationDateId,List<VoterModificationGenderInfoVO> resultList)
 	 {
 		 try{
@@ -419,6 +429,81 @@ public class VoterModificationService implements IVoterModificationService{
 			 return voterAgeRangeVOList;
 		}
 		 
+	 }
+	 
+	 /**
+	 * This method will give Newly Added/Deleted Voters Info in the form of List<{@link VoterVO}>
+	 * @param String locationType
+	 * @param Long locationValue
+	 * @param Long Constituency Id
+	 * @param Long From Publication Id
+	 * @param Long To Publication Id
+	 * @param String status
+	 * @author Kamalakar Dandu
+	 * @return List<{@link VoterVO}>
+	 * 
+	 */
+	 public List<VoterVO> getModifiedVotersInALocationBetweenPublucations(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,String status)
+	 {
+		 List<VoterVO> votersList = new ArrayList<VoterVO>(0);
+		 LOG.debug("Entered into getModifiedVotersInALocationBetweenPublucations() Method");
+		 try{
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<Object[]> list = voterModificationDAO.getModifiedVotersInALocationBetweenPublucations(locationType, locationValue, constituencyId, publicationIdsList,status);
+			 if(list != null && list.size() > 0)
+				 return coypModifiedVoterDataToVoterList(list);
+			 return votersList;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method");
+			 LOG.error("Exception is - "+e);
+			 return votersList;
+		}
+	 }
+	 
+	 /**
+	 * This method Copy the Voter Data from Object[] to List<{@link VoterVO}>
+	 * @param List<Object[]> inputList
+	 * @author Kamalakar Dandu
+	 * @return List<{@link VoterVO}>
+	 * 
+	 */
+	 public List<VoterVO> coypModifiedVoterDataToVoterList(List<Object[]> inputList)
+	 {
+		 List<VoterVO> votersList = new ArrayList<VoterVO>();
+		 try{
+			 if(inputList == null || inputList.size() == 0)
+				 return votersList;
+			 
+			 VoterVO voter = null;
+			 for(Object[] params : inputList)
+			 {
+				 try{
+					 voter = new VoterVO();
+					 voter.setVoterId(params[0].toString());
+					 voter.setFirstName(params[1].toString());
+					 voter.setGender(params[2].toString());
+					 voter.setAge((Long)params[3]);
+					 voter.setRelativeFirstName(params[4].toString());
+					 voter.setRelationshipType(params[5].toString());
+					 voter.setBoothId((Long)params[6]);
+					 voter.setBoothNo((Long)params[7]);
+					 voter.setBoothName(params[8].toString());
+					 voter.setPanchayatId((Long)params[9]);
+					 voter.setPanchayatName(params[10].toString());
+					 voter.setStatus(params[11].toString());
+					 voter.setPublicationDateId((Long)params[12]);
+					 voter.setPublicationName(params[13].toString());
+					 votersList.add(voter);
+				 }catch (Exception e) {
+					 LOG.error("Exception is - "+e);
+				 }
+			 }
+			 return votersList;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in coypModifiedVoterDataToVoterList() Method");
+			 LOG.error("Exception is - "+e);
+			 return votersList;
+		 }
 	 }
 	 
 }
