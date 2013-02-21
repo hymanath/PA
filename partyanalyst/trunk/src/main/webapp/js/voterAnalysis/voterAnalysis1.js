@@ -795,8 +795,27 @@ function addToPolitician(voterId)
 		 getPreviousElectionVotingTrends(id,publicationId,type);
 		 callCorrespondingAjaxCall('brief');
 		 //getElectionyearsByMandalId(id,type)
+		 var fromPublicationDateId=0;
+		 getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
+
 	}
 
+	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
+	constituencyId=$('#constituencyList option:selected').val()
+		var jsObj={					
+						toPublicationDateId:toPublicationDateId,
+						fromPublicationDateId:fromPublicationDateId,
+						locationValue:locationValue,
+						locationType:locationType,
+						constituencyId:constituencyId,
+						task:"getModifiedVotersCountBetweenPublications"
+				  };
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getModifiedVotersCountBetweenPublications.action?"+rparam;
+
+			callAjax(jsObj,url);
+	}
 	
 	function getPreviousVotersDetails1(){
 
@@ -1276,6 +1295,11 @@ function addToPolitician(voterId)
 									createOptionsForSelectElmtId("PartySelect",myResults.dataList);
 									
 								}
+								
+								else if(jsObj.task=="getModifiedVotersCountBetweenPublications")
+								{	
+									buildModfiedVotersCountSection(myResults,jsObj);							
+								}
 								else if(jsObj.task=="getBoothInfo"){
 								   showBoothInfo(myResults);
 								}								
@@ -1302,6 +1326,71 @@ function addToPolitician(voterId)
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
+	
+	function buildModfiedVotersCountSection(results,jsObj){
+		var addedCount=results.addedCount;
+		var deletedCount=results.deletedCount;
+		var presPId=results.presentPublicationId;
+		var prevPId=results.previousPublicationId;
+		var url='/PartyAnalyst/voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
+		var vrl='/PartyAnalyst/voterModificationReportAction.action'
+		$('#detailModifiedVoters').attr('href',url);
+		if(addedCount!=null){$("#addedVtrs").text(addedCount);}
+		else{$("#addedVtrs").text('No Data');}
+		
+		if(deletedCount!=null){$("#delVtrs").text(deletedCount);}
+		else{$("#delVtrs").text('No Data');}
+		
+		
+		var selectedElmt=document.getElementById("prespublicationDateList");
+		removeSelectElements(selectedElmt);
+		
+		for(var val in publicationDatesList)
+		{
+		
+			var opElmt = document.createElement('option');
+			opElmt.value=publicationDatesList[val].id;
+			opElmt.text=publicationDatesList[val].name;
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}
+		  if(publicationDatesList[val].id==presPId){	
+			$(opElmt).attr("selected","selected") ;		  
+		  }
+		}
+		
+		
+		var selectedElmt2=document.getElementById("prevpublicationDateList");
+		removeSelectElements(selectedElmt2);
+		
+		for(var val in publicationDatesList)
+		{
+		
+			var opElmt2 = document.createElement('option');
+			opElmt2.value=publicationDatesList[val].id;
+			opElmt2.text=publicationDatesList[val].name;
+
+			try
+			{
+				selectedElmt2.add(opElmt2,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt2.add(opElmt2); // IE only
+			}
+		  if(publicationDatesList[val].id==prevPId){	
+			$(opElmt).attr("selected","selected") ;		  
+		  }
+		}
+		
+		
+	}
 	
 	function showAllPartiesAllElectionResultsChartInVtrsPage(myResults,jsObj)
 	{
@@ -1504,8 +1593,10 @@ function addToPolitician(voterId)
 			selectedElmt.remove(i);
 		}
 	}
+	var publicationDatesList;
 	function buildPublicationDateList(results)
 	{
+	publicationDatesList=results;
 	var selectedElmt=document.getElementById("publicationDateList");
 	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
