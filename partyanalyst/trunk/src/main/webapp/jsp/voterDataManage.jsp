@@ -95,8 +95,12 @@
 				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
 			</tr>
 			</table>
+			<div style="margin-left:100px;"><input type="checkbox" id="checkedID">
+				
+				Create Booth if not Available</div>
+			
 			<p><input type="button" value="Submit" onclick="InsertmapVoterData();" id="mapVoterButtonId" class="btn btn-info" /><div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
-			</center>
+				</center>
 	</div>
 </fieldset>
 </div>
@@ -289,6 +293,9 @@ function callAjax(jsObj, url){
 		var constituencyId = $("#mapVoterConstituencyId").val();
 		var frompublicationDateId = $("#frompublicationDateId").val();
 		var topublicationDateId = $("#topublicationDateId").val();
+		
+        var boothCreateflag = $("#checkedID").attr('checked');
+		
 		var str = '';
 			var errorEle = $(".errorMsgDiv1");
 			errorEle.html('');
@@ -313,6 +320,7 @@ function callAjax(jsObj, url){
 			constituencyId		 : constituencyId,
 			frompublicationDateId: frompublicationDateId,
 			topublicationDateId  :topublicationDateId,
+			boothCreateflag      :boothCreateflag,
 			task				 : "InsertmapVoterData"
 			
 		}
