@@ -4453,7 +4453,7 @@
 		</action>		
 		<action name="getBoothBasicInfoAction" class="votersAnalysisAction" method="getBoothBasicInfo">
 			<result type="json" name="success">
-				<param name="root">selectOptionVO</param>				
+				<param name="root">userCategoriesList</param>				
 			</result>		
 		</action>
 		
