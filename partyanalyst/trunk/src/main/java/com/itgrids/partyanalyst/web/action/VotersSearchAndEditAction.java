@@ -109,7 +109,7 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 		this.jObj = jObj;
 	}
 
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest arg0) {
 		this.request = arg0; 
 	}

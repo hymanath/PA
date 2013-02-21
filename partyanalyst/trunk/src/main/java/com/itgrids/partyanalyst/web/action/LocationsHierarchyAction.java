@@ -141,6 +141,65 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> parliamentConstituencies) {
 		this.parliamentConstituencies = parliamentConstituencies;
 	}
+	
+	
+	public String getLocationsById(){
+		
+		session = request.getSession();
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
+		{
+			    Long stateId = jObj.getLong("id");
+				List<SelectOptionVO> districts = getRegionServiceDataImp().getDistrictsByStateID(stateId);			
+				setRegionsList(districts);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
+		{
+			Long districtId = jObj.getLong("id");
+			List<SelectOptionVO> constituencies = 
+					getRegionServiceDataImp().getConstituenciesByDistrictID(districtId);
+			setRegionsList(constituencies);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("subRegionsInConstituency"))
+		{
+			Long constituencyId = jObj.getLong("id");
+			String areaType = jObj.getString("areaType");
+			List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, areaType);
+			setRegionsList(subRegions);
+
+
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("hamletsOrWardsInRegion"))
+		{
+			Long locationId = jObj.getLong("id");
+			List<SelectOptionVO> hamletsOrWards = new ArrayList<SelectOptionVO>();
+			if(locationId !=0){
+			 hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+			}
+			setRegionsList(hamletsOrWards);
+
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("boothsInTehsilOrMunicipality"))
+		{
+			Long locationId = jObj.getLong("id");
+			Long constituencyId = jObj.getLong("constId");
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			setRegionsList(booths);
+		
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 
 	public String ajaxCallHandler() throws Exception{
 		session = request.getSession();

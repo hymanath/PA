@@ -4456,5 +4456,27 @@
 				<param name="root">selectOptionVO</param>				
 			</result>		
 		</action>
+		
+				
+		
+		<action name="getInfluencingPeopleBySearch" class="votersAnalysisAction" method="getInfluencingPeopleBySearch">
+		<result type="json" name="success">
+           		<param name="root">influencingPeopleList</param>
+        	</result>
+		</action>
+		
+		
+		<action name="mapVoterAsInfluencingPerson" class="votersAnalysisAction" method="mapVoterAsInfluencingPerson">
+		    <result type="json" name="success">
+           		<param name="root">influencingPeopleList</param>
+        	</result>
+		</action>
+		
+		
+		<action name="getLocationsById" class="locationsHierarchyAction" method="getLocationsById">
+		    <result type="json" name="success">
+           		<param name="root">regionsList</param>
+        	</result>
+		</action>
 	</package>
 </struts>      
