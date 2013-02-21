@@ -8740,7 +8740,13 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			return null;
 		 }
 	 
-	 
+	/**
+	 * This method will get the influencing people of logged in user by search criteria 
+	 * @author Samba Penugonda
+	 * @param userId , logged in user id
+	 * @param influencingPeopleVO , it has the details of search criteria i.e constituency ,tehsil,name ... etc
+	 * @return return all the influence people who matched with search criteria
+	 */
 	 public List<InfluencingPeopleVO> getInfluencingPeopleBySearch(Long userId,
 				InfluencingPeopleVO influencingPeopleVO) {	
 			
@@ -8791,22 +8797,6 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				
 				if(influencingPeopleVO.getBoothId().longValue() != 0)
 					queryString.append(" and model.influencingScope = 'BOOTH' and model.influencingScopeValue = "+influencingPeopleVO.getBoothId().toString());
-
-				//queryString.append(")");
-	            
-	             
-				/*
-				queryString.append("(");
-				
-				if(influencingPeopleVO.getPersonName() != null && !influencingPeopleVO.getPersonName().equalsIgnoreCase("")){
-					queryString.append(" model.firstName like '%"+influencingPeopleVO.getPersonName()+"%'");
-					queryString.append(" or model.lastName like '%"+influencingPeopleVO.getPersonName()+"%'");
-				}
-				
-				if(influencingPeopleVO.getFatherOrSpouceName() != null && !influencingPeopleVO.getFatherOrSpouceName().equalsIgnoreCase(""))
-					queryString.append(" or model.fatherOrSpouseName like '%"+influencingPeopleVO.getPersonName()+"%'");
-			*/	
-				
 				
 				influencingPeopleVO.setUserId(userId);
 				
@@ -8815,7 +8805,6 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				for(InfluencingPeople influencePeople:influencePeoplesList){
 					
 					InfluencingPeopleVO influencePeopleVO = new InfluencingPeopleVO();
-					
 					
 					influencePeopleVO.setFatherOrSpouceName(influencePeople.getFatherOrSpouseName());
 					influencePeopleVO.setFirstName(influencePeople.getFirstName());
@@ -8830,11 +8819,6 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 					influencePeopleList.add(influencePeopleVO);
 				}
 				
-			/*	
-				query.append(" or model.voter.name like '"+searchInfo.getName()+"%'");
-		    	  else
-		    		query.append(" or model.voter.name like '%"+searchInfo.getName()+"%'");*/
-				
 			}catch(Exception e){
 				log.error("Exception raised in getInfluencingPeopleBySearch service method");
 				e.printStackTrace();
@@ -8842,15 +8826,28 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			return influencePeopleList;
 		}
 		
+	
+	 /**
+	  * This method will map the voter as influencing person
+	  * @author Samba Penugonda
+	  * @param influencePeopleId , this is the id of influenced person to whom the voter is going to be mapped
+	  * @param voterId , this is the id of voter who is going to be mapped
+	  */
+	public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId){
 		
-		public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId){
-			
+		log.debug("Entered into the mapVoterAsInfluencingPerson service method");
+		
+		try{
+	
 			InfluencingPeople influencingPeople = influencingPeopleDAO.get(influencePeopleId);
 			
 			influencingPeople.setVoter(voterDAO.get(voterId));
 			
 			influencingPeopleDAO.save(influencingPeople);
-			
+		}catch(Exception e){
+			log.error("Exception raised in mapVoterAsInfluencingPerson service method");
+			e.printStackTrace();
 			
 		}
+	}
 }
