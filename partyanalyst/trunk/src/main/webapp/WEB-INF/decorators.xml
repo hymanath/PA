@@ -124,7 +124,7 @@
 		<pattern>/connectPeopleAction*</pattern>
 		<pattern>/sendUpdatesAction*</pattern>
 		<pattern>/problemSearchAction*</pattern>
-		<pattern>/changePasswordAction*</pattern>
+		<!-- <pattern>/changePasswordAction*</pattern> -->
 		<pattern>/completeProblemDetailsAction*</pattern>
 		<pattern>/assigningPartyToUserAction*</pattern>
 		<pattern>/adminUpload*</pattern>
@@ -186,6 +186,7 @@
 		<pattern>/specialPageManageAction*</pattern>
 		<pattern>/righttoinformation*</pattern>
 		<pattern>/voterModificationReportAction*</pattern>
+    	<pattern>/changePasswordAction*</pattern>
     </decorator>
 
 </decorators>
