@@ -112,7 +112,11 @@ public class VoterModificationService implements IVoterModificationService{
 			 if(fromPublicationDateId == null || fromPublicationDateId == 0 || fromPublicationDateId.equals(toPublicationDateId))
 			 {
 				 publicationIdsList.add(toPublicationDateId);
-				 voterModificationVO.setPreviousPublicationId(getPreviousPublicationIds(toPublicationDateId).get(0));
+				 Long previousPublicationId = 0L;
+				 List<Long> idslist = getPreviousPublicationIds(toPublicationDateId);
+				 if(idslist != null && idslist.size() > 0)
+					 previousPublicationId = idslist.get(0); 
+				 voterModificationVO.setPreviousPublicationId(previousPublicationId);
 			 }
 			 else
 			 {
