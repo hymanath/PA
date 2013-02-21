@@ -14,7 +14,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -25,6 +27,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task;
+	private VoterModificationVO voterModificationVO;
 	JSONObject jObj;
 	private static final Logger LOG = Logger.getLogger(VoterModificationReportAction.class);
 	private List<VoterAgeRangeVO> voterAgeRangeVOList;
@@ -68,6 +71,12 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		this.request=arg0;
 	}
 	
+	public VoterModificationVO getVoterModificationVO() {
+		return voterModificationVO;
+	}
+	public void setVoterModificationVO(VoterModificationVO voterModificationVO) {
+		this.voterModificationVO = voterModificationVO;
+	}
 	public List<VoterAgeRangeVO> getVoterAgeRangeVOList() {
 		return voterAgeRangeVOList;
 	}
@@ -145,6 +154,24 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getModifiedVotersCountBetweenPublications()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String locationType = jObj.getString("locationType");
+		Long locationValue = jObj.getLong("locationValue");
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+		
+		voterModificationVO = voterModificationService.getAddedAndDeletedVotersCountInBetweenPublicationsInALocation(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		return Action.SUCCESS;
+	} 
 
 	public String ajaxHandler()
 	{
