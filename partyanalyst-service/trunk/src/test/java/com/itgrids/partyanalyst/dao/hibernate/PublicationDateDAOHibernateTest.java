@@ -19,7 +19,7 @@ public class PublicationDateDAOHibernateTest extends BaseDaoTestCase  {
 		System.out.println(result.size());
 	}
 	*/
-	public void testgetAllPublicationDates()
+	/*public void testgetAllPublicationDates()
 	{
 		List<Object[]> list = publicationDateDAO.getAllPublicationDates();
 		System.out.println(list.size());
@@ -30,5 +30,10 @@ public class PublicationDateDAOHibernateTest extends BaseDaoTestCase  {
 				System.out.println(params[0]+" "+params[1]);
 			}
 		}
+	}*/
+	
+	public void testGetNamePublicationDateId()
+	{
+		System.out.println(publicationDateDAO.getNamePublicationDateId(8L));
 	}
 }

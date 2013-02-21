@@ -33,4 +33,11 @@ public class PublicationDateDAO extends
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+	
+	public String getNamePublicationDateId(Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select model.name from PublicationDate model where model.publicationDateId = :publicationDateId");
+		query.setParameter("publicationDateId", publicationDateId);
+		return (String) query.uniqueResult();
+	}
 }
