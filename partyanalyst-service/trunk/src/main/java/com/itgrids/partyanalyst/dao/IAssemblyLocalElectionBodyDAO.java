@@ -36,4 +36,6 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	public Long getLocalElectionBodyIdByassemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId);
 	
 	public List<Object[]> getLocalElecBodyName(String assemblyLocalElectionBodyId);
+	
+	public List<Long> getLocalElectionBodyIdByConstituency(Long constituencyId);
 }
