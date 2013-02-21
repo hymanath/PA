@@ -788,8 +788,8 @@ function addToPolitician(voterId)
 		 getProblemsByLocation(id,publicationId,type);
 		 getCounts(id,publicationId,type);
 		 getVotersCastInfo(id,publicationId,type);
-        //getCastInfoForsubLevel(id,publicationId,type);
-        getvotersBasicInfo("impFamilies",id,publicationId,type);
+       //getCastInfoForsubLevel(id,publicationId,type);
+       getvotersBasicInfo("impFamilies",id,publicationId,type);
 				
 		// callCorrespondingAjaxCall();
 		 getPreviousElectionVotingTrends(id,publicationId,type);
@@ -1281,6 +1281,7 @@ function addToPolitician(voterId)
 								}								
 								else if(jsObj.task == "getInfluencingPeopleBySearch")
                                 {
+									$('#ajaxImageDiv1').css('display','none');
                                      buildInfluencePeopleSearchResults(myResults,jsObj.voterId);
 								}  
 								else if(jsObj.task == "mapVoterAsInfluencingPerson"){
@@ -5202,6 +5203,7 @@ function showInfluencePeopleDialog(voterId){
  
 	str+='</div>';
 	str+='<div><a class="btn btn-primary" style="float:right;" href="javaScript:{callAjaxToSearchInfluencingPeople('+voterId+');}">Search</a></div>';
+	str+='<div id="ajaxImageDiv1" style="display:none;"><img style="margin-left:244px;" src="images/icons/ajaxImg.gif"></div>';
 
 
 	$('#influencePeopleInnerDiv').html(str);
@@ -5466,6 +5468,10 @@ function callAjaxToSearchInfluencingPeople(voterId)
 
 function callAjaxToSearchInfluencingPeople1(voterId)
 {
+
+document.getElementById('ajaxImageDiv1').style.display = 'block';
+
+
 
 	var stateVal = 0;
 	var districtVal = 0;
