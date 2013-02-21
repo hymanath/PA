@@ -10,4 +10,6 @@ public interface IPublicationDateDAO extends GenericDao<PublicationDate, Long> {
 	public List<PublicationDate> getPublicationDates();
 	
 	public List<Object[]> getAllPublicationDates();
+	
+	public List<Long> getPreviousPublicationIds(Long publicationDateId);
 }

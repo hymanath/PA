@@ -168,7 +168,7 @@ public interface IVotersAnalysisService {
 
 	public Long getReportLevelId(String type);
 	
-	public SelectOptionVO getBoothBasicInfo(Long boothId);
+	public List<SelectOptionVO> getBoothBasicInfo(Long boothId);
 	
 	public List<InfluencingPeopleVO> getInfluencingPeopleBySearch(Long userId,
 			InfluencingPeopleVO influencingPeopleVO);
