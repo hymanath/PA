@@ -8,9 +8,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <style>
-#currentPWDId,#newPWDId,#confirmPWDId{margin-left:15px;}
+#currentPWDId,#newPWDId,#confirmPWDId{margin-left:15px;width:230px;}
 </style>
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
+<link href="styles/assets/css/bootstrap.css" rel="stylesheet" />
 <script type="text/javascript">
 
 var labelResources = { <%
@@ -30,19 +31,29 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 </script>
 
 <title>Change Password</title>
+<style>
+#changeButton,#cancelButton{font-family: Verdana;
+    font-size: 12px;
+    font-weight: bold;}
+	#password_window_errorMsg{ margin-top: 10px;}
+	#password_window_body_div{background-color: #FFFFFF;border: 1px solid #D3D3D3;color: #3A4347;float: right;padding: 15px 5px;width: 419px;}
+	#changepwdOuterDiv{margin-top: 45px; padding: 10px; margin-bottom: 35px; width: 707px; border: 2px solid #CCCCCC;border-radius: 5px;float: none;margin-left: auto;margin-right: auto;}
+	#changepwdOuterDiv p{padding:0}
+	#changeNewUserPassword{ font-family: verdana;font-size: 14px;line-height: 1.5em;}
+</style>
 </head>
 <body>
-<div style="margin-top: 10px; margin-left: 150px; padding: 10px; margin-bottom: 20px; width: 707px;">
+<div id="changepwdOuterDiv">
 <fieldset style="background:#FFF; margin-bottom: 3px; padding-bottom: 44px; border-radius: 6px 6px 6px 6px; padding-left: 16px; padding-top: 17px;font-family:verdana;font-size:15px;">
 <div id="changeNewUserPassword">
 		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.name}" /></span>,</p>
 		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.userName}" /></b></p>
-		<p>Please verify email to change your password.</p>
+		<p style="font-family: verdana;font-weight: bold;">Please check your email to change your password.</p>
 
 		<div id="changePasswordDiv" style="margin-top: 21px; width: 373px; margin-left: 192px;" style="padding-top: 11px; padding-left: 7px;">
 		<div id="password_window" style="background-color: rgb(120, 152, 188); color: rgb(255, 255, 255); font-weight: bold; padding: 5px; width: 421px;float:right;">Change Password</div>
 		 
-		<div id="password_window_body_div" style="width:419px;float:right;background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); ">
+		<div id="password_window_body_div">
 		<!-- <s:form action="newUserChangePasswordAction.action?" method="Post" onsubmit="return  validatefields()">
 
 				<s:textfield name="currentPWD" label="Current Password" id="currentPWDId" />
@@ -53,13 +64,13 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 		</s:form>-->
 
 		<form action="newUserChangePasswordAction.action?" method="Post" onsubmit="return  validatefields()">
-		<table style="margin: 7px;">
+		<!-- <table style="margin: 7px;">
 		<tbody><tr><td colspan="2"><img src="images/icons/infoicon.png">
-		Fields marked with (<font color="red">*</font>) are mandatory</td></tr></table>
+		Fields marked with (<font color="red">*</font>) are mandatory</td></tr></table> -->
 		<div id="pwdErrorMsg" style="color: red; margin-left: 125px; margin-top: -8px; margin-bottom: 6px;"></div>
 		<div id="password_window_errorMsg" style="font-size: 13px; margin-left: 123px; margin-top: -3px; margin-bottom: 8px;"></div>
 		
-		<table>
+		<table style="font-family: verdana; font-size: 13px;margin-left: 5px;color:#000;">
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle" onBlur="getUserPassword()"></td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPWDId" cssclass="textFieldStyle">
 	    </td></tr>
