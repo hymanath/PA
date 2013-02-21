@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
+import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
@@ -226,7 +227,55 @@ public class VoterModificationService implements IVoterModificationService{
 			 return result; 
 		 }
 	 }
-	
+	 
+	 /**
+	 * This method will return {@link VoterModificationGenderInfoVO}, which contains Gender wise Newly Added/Deleted Voters Count.     
+	 * @param String locationType
+	 * @param Long locationValue
+	 * @param Long Constituency Id
+	 * @param Long From Publication Id
+	 * @param Long To Publication Id
+	 * @author Kamalakar Dandu
+	 * @return {@link VoterModificationGenderInfoVO}
+	 * 
+	 */
+	 public VoterModificationGenderInfoVO getGenderWiseVoterModificationsBetweenPublications(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+	 {
+		 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+		 VoterModificationGenderInfoVO result = new VoterModificationGenderInfoVO();
+		 try{
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationsBetweenPublications(locationType, locationValue, constituencyId, publicationIdsList);
+			 
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+					 {
+						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							 result.setAddedMale((Long)params[0]);
+						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 result.setAddedFemale((Long)params[0]);
+					 }
+					 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+					 {
+						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							 result.setDeletedMale((Long)params[0]);
+						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 result.setDeletedFemale((Long)params[0]);
+					 }
+				 }
+				 result.setAddedTotal(result.getAddedMale() + result.getAddedFemale());
+				 result.setDeletedTotal(result.getDeletedMale() + result.getDeletedFemale());
+			 }
+			 return result;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+			 LOG.error("Exception is - "+e);
+			 return result;
+		 }
+	 }
 	 
 	 public List<VoterAgeRangeVO> getVoterInfoByPublicationDateList(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
 	 {
