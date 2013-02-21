@@ -1358,7 +1358,12 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
 		 
 		 
-		List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+		List<Long> localElectionBodyIds = null;
+				
+		if(tehsilIds != null&& tehsilIds.size()  != 1)
+				localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+		else
+			localElectionBodyIds = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituency(constituencyVal);
 	
 		 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
 			 
@@ -1990,7 +1995,14 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 if(panchayitIdsList != null && panchayitIdsList.size() >0)
 				 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
 			 
-			List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+			List<Long> localElectionBodyIds =  null;
+			
+			if(tehsilIds != null && tehsilIds.size() != 1)		
+				localElectionBodyIds = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+			else
+			    localElectionBodyIds = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituency(fileVO.getLocationVal());
+
+					
 			
 			localElectionBodyIds.add(0L);
 
@@ -2339,7 +2351,13 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 			 if(panchayitIdsList != null && panchayitIdsList.size() >0)
 				 hamletIds = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
 			 
-		List<Long> localElectionBodyIds =  localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+		List<Long> localElectionBodyIds  =  null;
+		
+		if(tehsilIds != null && tehsilIds.size() != 1)		
+			localElectionBodyIds = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+		else
+		 localElectionBodyIds = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituency(fileVO.getLocationVal());
+
 
 		if(localElectionBodyIds != null && localElectionBodyIds.size() >0)
 		  wardIds = boothDAO.getWardIdsByLocalElectionBodyIds(localElectionBodyIds);
