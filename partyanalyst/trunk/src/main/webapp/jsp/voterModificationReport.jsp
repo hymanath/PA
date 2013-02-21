@@ -65,7 +65,21 @@
  
 </head>
 <body>
-
+<div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Count Vary between Publication Dates</h4>
+	<div style="margin-top:10px;" class='breadcrumb'>
+		Previous Publication Date<font class="requiredFont">*</font> <select id="prevpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
+		</select>
+		
+		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList" onChange='buildVoterDiff()'>
+		</select>
+		<span class="btn" onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)">View</span>
+	</div>
+	<div id='VoterDiff' style="margin-left:auto;margin-right:auto;width:400px;" class="breadcrumb">
+		<span>Added Voters </span>-<span class='btn'> 1025</span>
+		<span>Deleted Voters </span>-<span class='btn'> 500</span>
+	</div>
+  </div>
 <div id="voterModReportMainDiv">
   <div id="voterModReportInnerDiv">
 		<div id="voterInfoDiv">
