@@ -17,8 +17,15 @@ public class ResultStatus implements Serializable{
     private boolean isResultPartial;	
     private String exceptionClass;
     private String exceptionMsg;
+    private String message;
     
-    private Long resultState;
+    public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	private Long resultState;
     
     public int getResultCode() {
 		return resultCode;
