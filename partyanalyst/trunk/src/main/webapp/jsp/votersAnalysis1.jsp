@@ -1008,6 +1008,22 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
   </div>
+  <div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Count Vary between Publication Dates</h4>
+	<div style="margin-top:10px;" class='breadcrumb'>
+		Previous Publication Date<font class="requiredFont">*</font> <select id="prevpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
+		</select>
+		
+		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList">
+		</select>
+		<a class="btn" id='detailModifiedVoters'>View Detailed Report</a>
+		<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
+	</div>
+	<div id='VoterDiff' style="margin-left:auto;margin-right:auto;width:400px;" class="breadcrumb">
+		<span>Added Voters </span>-<span class='btn' id='addedVtrs'></span>
+		<span>Deleted Voters </span>-<span class='btn' id='delVtrs'></span>
+	</div>
+  </div>
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
 	<div style="margin-bottom: 15px;" id="revenueVillageWiseElecResults" class="widget blue">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
