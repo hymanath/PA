@@ -36,6 +36,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private IVoterModificationService voterModificationService;
 	private List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList;
 	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
+	private List<VoterModificationGenderInfoVO> voterModificationGenderInfoVOList;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -127,6 +128,13 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			VoterModificationGenderInfoVO voterModificationGenderInfoVO) {
 		this.voterModificationGenderInfoVO = voterModificationGenderInfoVO;
 	}
+	public List<VoterModificationGenderInfoVO> getVoterModificationGenderInfoVOList() {
+		return voterModificationGenderInfoVOList;
+	}
+	public void setVoterModificationGenderInfoVOList(
+			List<VoterModificationGenderInfoVO> voterModificationGenderInfoVOList) {
+		this.voterModificationGenderInfoVOList = voterModificationGenderInfoVOList;
+	}
 	
 	public String execute()throws Exception
 	{
@@ -166,7 +174,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			jObj = new JSONObject(param);		
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getAddedOrDeletedVoterInfoInALocation() Method, Exception - "+e);
+			LOG.error("Exception Occured in getAddedOrDeletedVoterInfoInALocation() Method, Exception - "+e);
 		}
 		
 		Long constituencyId = jObj.getLong("constituencyId");
@@ -187,7 +195,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			jObj = new JSONObject(param);
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getGenderWiseVoterModificationsBetweenPublications() Method, Exception - "+e);
+			LOG.error("Exception Occured in getGenderWiseVoterModificationsBetweenPublications() Method, Exception - "+e);
 		}
 		
 		Long constituencyId = jObj.getLong("constituencyId");
@@ -197,6 +205,27 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		Long locationValue = jObj.getLong("locationValue");
 		
 		voterModificationGenderInfoVO = voterModificationService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getGenderWiseVoterModificationsForEachPublication()
+	{
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getGenderWiseVoterModificationsForEachPublication() Method, Exception - "+e);
+		}
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+		String locationType = jObj.getString("locationType");
+		Long locationValue = jObj.getLong("locationValue");
+		
+		voterModificationGenderInfoVOList = voterModificationService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 		return Action.SUCCESS;
 	}
 	

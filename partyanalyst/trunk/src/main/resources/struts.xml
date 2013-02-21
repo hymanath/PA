@@ -4484,5 +4484,11 @@
 		     <param name="root">voterModificationGenderInfoVO</param>
 		   </result>
 		</action>
+		
+		<action name="getGenderWiseVoterModifiForEachPublicAction" class="voterModificationReportAction" method="getGenderWiseVoterModificationsForEachPublication">
+			<result type="json" name="success">
+			  <param name="root">voterModificationGenderInfoVOList</param>
+			</result>
+		</action>
 	</package>
 </struts>      
