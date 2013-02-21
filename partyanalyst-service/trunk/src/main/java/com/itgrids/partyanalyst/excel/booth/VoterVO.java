@@ -34,7 +34,43 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String boothName;
 	private List<VoterVO> votersList = new ArrayList<VoterVO>();
 	private Long voterIds;
+	private Long boothId;
+	private Long panchayatId;
+	private String panchayatName;
+	private String publicationName;
 	
+	public String getPublicationName() {
+		return publicationName;
+	}
+
+	public void setPublicationName(String publicationName) {
+		this.publicationName = publicationName;
+	}
+
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+
 	private String casteNameByVoterId;
 	
 	private String mobileNo;
