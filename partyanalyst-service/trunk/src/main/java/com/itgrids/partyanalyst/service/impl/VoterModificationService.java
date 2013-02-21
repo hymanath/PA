@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
@@ -28,7 +29,16 @@ public class VoterModificationService implements IVoterModificationService{
 	private IVoterAgeRangeDAO voterAgeRangeDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IPublicationDateDAO publicationDateDAO;
 	
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
+	}
+
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -277,6 +287,94 @@ public class VoterModificationService implements IVoterModificationService{
 		 }
 	 }
 	 
+	 /**
+	 * This method will return List<{@link VoterModificationGenderInfoVO}>, which contains Gender wise Newly Added/Deleted Voters Count.     
+	 * @param String locationType
+	 * @param Long locationValue
+	 * @param Long Constituency Id
+	 * @param Long From Publication Id
+	 * @param Long To Publication Id
+	 * @author Kamalakar Dandu
+	 * @return List<{@link VoterModificationGenderInfoVO}>
+	 * 
+	 */
+	 public List<VoterModificationGenderInfoVO> getGenderWiseVoterModificationsForEachPublication(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+	 {
+		 LOG.debug("Entered into getGenderWiseVoterModificationsForEachPublication() Method");
+		 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>();
+		 try{
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationsForEachPublication(locationType, locationValue, constituencyId, publicationIdsList);
+			 
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 VoterModificationGenderInfoVO infoVO = getVoterModificationGenderInfoVOFromResultList((Long)params[0],result);
+					 boolean flag = false;
+					 
+					 if(infoVO == null)
+					 {
+						 infoVO = new VoterModificationGenderInfoVO();
+						 infoVO.setPublicationId((Long)params[0]);
+						 infoVO.setPublicationName(params[4].toString());
+						 flag = true;
+					 }
+					 if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+					 {
+						 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+							 infoVO.setAddedMale((Long)params[1]);
+						 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 infoVO.setAddedFemale((Long)params[1]);
+					 }
+					 else if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+					 {
+						 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+							 infoVO.setDeletedMale((Long)params[1]);
+						 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 infoVO.setDeletedFemale((Long)params[1]);
+					 }
+					 if(flag)
+						 result.add(infoVO); 
+				 }
+				 
+				 for(VoterModificationGenderInfoVO infoVO : result)
+				 {
+					 List<Long>	idsList = getPreviousPublicationIds(infoVO.getPublicationId());
+					 if(idsList != null && idsList.size() > 0)
+					 {
+						 infoVO.setPreviousPublicationId(idsList.get(0));
+						 infoVO.setPreviousPublicationName(publicationDateDAO.getNamePublicationDateId(idsList.get(0)));
+					 }
+					 else
+						 infoVO.setPreviousPublicationId(0L);
+					 
+					 infoVO.setAddedTotal(infoVO.getAddedMale() + infoVO.getAddedFemale());
+					 infoVO.setDeletedTotal(infoVO.getDeletedMale() + infoVO.getDeletedFemale());
+				 }
+			 }
+			 return result;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getGenderWiseVoterModificationsForEachPublication() Method");
+			 LOG.error("Exception is - "+e);
+			 return result;
+		 }
+	 }
+	 
+	 public VoterModificationGenderInfoVO getVoterModificationGenderInfoVOFromResultList(Long publicationDateId,List<VoterModificationGenderInfoVO> resultList)
+	 {
+		 try{
+			 if(resultList != null && resultList.size() > 0)
+				 for(VoterModificationGenderInfoVO infoVO : resultList)
+					 if(infoVO.getPublicationId().equals(publicationDateId))
+						 return infoVO;
+			 return null;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method");
+			 LOG.error("Exception is - "+e);
+			 return null;
+		}
+	 }
 	 public List<VoterAgeRangeVO> getVoterInfoByPublicationDateList(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
 	 {
 		 List<VoterAgeRangeVO> voterAgeRangeVOList = null;

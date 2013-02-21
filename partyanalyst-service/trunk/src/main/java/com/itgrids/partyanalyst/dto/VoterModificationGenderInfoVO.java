@@ -6,6 +6,10 @@ public class VoterModificationGenderInfoVO implements Serializable{
 
 	private static final long serialVersionUID = -2275881848012595870L;
 	
+	private String previousPublicationName;
+	private String publicationName;
+	private Long previousPublicationId;
+	private Long publicationId;
 	private Long addedTotal = 0L;
 	private Long addedMale = 0L;
 	private Long addedFemale = 0L;
@@ -13,6 +17,31 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	private Long deletedMale = 0L;
 	private Long deletedFemale = 0L;
 	
+	public String getPreviousPublicationName() {
+		return previousPublicationName;
+	}
+	public void setPreviousPublicationName(String previousPublicationName) {
+		this.previousPublicationName = previousPublicationName;
+	}
+	public String getPublicationName() {
+		return publicationName;
+	}
+	public void setPublicationName(String publicationName) {
+		this.publicationName = publicationName;
+	}
+	
+	public Long getPreviousPublicationId() {
+		return previousPublicationId;
+	}
+	public void setPreviousPublicationId(Long previousPublicationId) {
+		this.previousPublicationId = previousPublicationId;
+	}
+	public Long getPublicationId() {
+		return publicationId;
+	}
+	public void setPublicationId(Long publicationId) {
+		this.publicationId = publicationId;
+	}
 	public Long getAddedTotal() {
 		return addedTotal;
 	}
