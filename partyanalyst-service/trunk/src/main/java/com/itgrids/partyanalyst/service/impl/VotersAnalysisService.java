@@ -4004,6 +4004,23 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 	}
 }
 
+public ResultStatus mapVoterDataFromOnePublicationToAnotherPublication(Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		
+	
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		resultStatus.setMessage("Voter Data Mapped Successfully");
+		return resultStatus;
+	}catch (Exception e) {
+		log.error("Exception Occured in mapVoterDataFromOnePublicationToAnotherPublication() Method");
+		log.error("Exception is - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		resultStatus.setMessage("Exception Occured..");
+		return resultStatus;
+	}
+}
 public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Integer maxResults)
 {
 	ResultStatus resultStatus = new ResultStatus();
