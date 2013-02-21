@@ -5163,6 +5163,8 @@ function getInfluencePeopleOfAnUser(voterId){
 
 
 function showInfluencePeopleDialog(voterId){
+	$('#searchResultsDiv').html('');
+
 
 	var str='';
 
