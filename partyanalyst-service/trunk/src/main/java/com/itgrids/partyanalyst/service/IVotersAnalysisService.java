@@ -6,8 +6,8 @@ import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -15,7 +15,6 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.Voter;
 
 public interface IVotersAnalysisService {
 	
@@ -170,4 +169,9 @@ public interface IVotersAnalysisService {
 	public Long getReportLevelId(String type);
 	
 	public SelectOptionVO getBoothBasicInfo(Long boothId);
+	
+	public List<InfluencingPeopleVO> getInfluencingPeopleBySearch(Long userId,
+			InfluencingPeopleVO influencingPeopleVO);
+	
+	public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId);
 }

@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.ILocalityDAO;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -81,7 +83,6 @@ import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
-import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
@@ -90,6 +91,7 @@ import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PublicationDate;
@@ -165,8 +167,17 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
     private IVoterModificationTempDAO voterModificationTempDAO;
     private IVoterModificationDAO voterModificationDAO;
+    private IInfluencingPeopleDAO influencingPeopleDAO;
     
-   	public IVoterModificationDAO getVoterModificationDAO() {
+   	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+		return influencingPeopleDAO;
+	}
+
+	public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
+		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
+	public IVoterModificationDAO getVoterModificationDAO() {
 		return voterModificationDAO;
 	}
 
@@ -544,6 +555,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setCastCatagery(voter.getCastCatagery());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
+					
+					if(voter.getInfluencingPeople() != null){
+						voterVO.setInfluencePerson(true);
+						voterVO.setInfluencePerson("true");
+					}
+					else{
+						voterVO.setInfluencePerson(false);
+						voterVO.setInfluencePerson("false");
+					}
 					voters.add(voterVO);
 	
 				}
@@ -8703,4 +8723,118 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			}
 			return null;
 		 }
+	 
+	 
+	 public List<InfluencingPeopleVO> getInfluencingPeopleBySearch(Long userId,
+				InfluencingPeopleVO influencingPeopleVO) {	
+			
+			log.debug("Entered into the getInfluencingPeopleBySearch service method");
+			
+			List<InfluencingPeopleVO> influencePeopleList = new ArrayList<InfluencingPeopleVO>();		
+			
+			try{
+				
+				StringBuffer queryString = new StringBuffer();
+				queryString.append("select model from InfluencingPeople model where model.user.userId = :userId and  model.voter is null and ");
+				
+				
+				if(influencingPeopleVO.getPersonName() != null && !influencingPeopleVO.getPersonName().equalsIgnoreCase("")){
+					queryString.append("( model.firstName like '%"+influencingPeopleVO.getPersonName()+"%'");
+					queryString.append(" or model.lastName like '%"+influencingPeopleVO.getPersonName()+"%'");
+				}
+				
+				if(influencingPeopleVO.getFatherOrSpouceName() != null && !influencingPeopleVO.getFatherOrSpouceName().equalsIgnoreCase(""))
+					queryString.append(" or model.fatherOrSpouseName like '%"+influencingPeopleVO.getPersonName()+"%'");
+				
+				queryString.append(")");
+				
+				if(influencingPeopleVO.getStateId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'STATE' and model.influencingScopeValue = "+influencingPeopleVO.getStateId().toString());
+				
+				if(influencingPeopleVO.getDistrictId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'DISTRICT' and model.influencingScopeValue = "+influencingPeopleVO.getDistrictId().toString());
+
+				if(influencingPeopleVO.getConstituencyId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'CONSTITUENCY' and model.influencingScopeValue = "+influencingPeopleVO.getConstituencyId().toString());
+				
+				if(influencingPeopleVO.getMandalId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'MANDAL' and model.influencingScopeValue = "+influencingPeopleVO.getMandalId().toString());
+
+				if(influencingPeopleVO.getMuncipalityId().longValue() != 0){
+					
+					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(influencingPeopleVO.getMuncipalityId());
+					queryString.append(" and  model.influencingScope = 'MUNCIPALITY/CORPORATION' and model.influencingScopeValue = "+list.get(0).toString());
+				}
+				
+				if(influencingPeopleVO.getHamletId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'VILLAGE' and model.influencingScopeValue = "+influencingPeopleVO.getHamletId().toString());
+				
+				
+				if(influencingPeopleVO.getWardId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'WARD' and model.influencingScopeValue = "+influencingPeopleVO.getWardId().toString());
+				
+				if(influencingPeopleVO.getBoothId().longValue() != 0)
+					queryString.append(" and model.influencingScope = 'BOOTH' and model.influencingScopeValue = "+influencingPeopleVO.getBoothId().toString());
+
+				//queryString.append(")");
+	            
+	             
+				/*
+				queryString.append("(");
+				
+				if(influencingPeopleVO.getPersonName() != null && !influencingPeopleVO.getPersonName().equalsIgnoreCase("")){
+					queryString.append(" model.firstName like '%"+influencingPeopleVO.getPersonName()+"%'");
+					queryString.append(" or model.lastName like '%"+influencingPeopleVO.getPersonName()+"%'");
+				}
+				
+				if(influencingPeopleVO.getFatherOrSpouceName() != null && !influencingPeopleVO.getFatherOrSpouceName().equalsIgnoreCase(""))
+					queryString.append(" or model.fatherOrSpouseName like '%"+influencingPeopleVO.getPersonName()+"%'");
+			*/	
+				
+				
+				influencingPeopleVO.setUserId(userId);
+				
+				List<InfluencingPeople> influencePeoplesList = influencingPeopleDAO.getInfluencePeopleBySearch(influencingPeopleVO , queryString.toString());
+				
+				for(InfluencingPeople influencePeople:influencePeoplesList){
+					
+					InfluencingPeopleVO influencePeopleVO = new InfluencingPeopleVO();
+					
+					
+					influencePeopleVO.setFatherOrSpouceName(influencePeople.getFatherOrSpouseName());
+					influencePeopleVO.setFirstName(influencePeople.getFirstName());
+					influencePeopleVO.setLastName(influencePeople.getLastName());
+					influencePeopleVO.setGender(influencePeople.getGender());
+					influencePeopleVO.setInfluencePersonId(influencePeople.getInfluencingPeopleId());
+					influencePeopleVO.setContactNumber(influencePeople.getPhoneNo());
+					
+					if(influencePeople.getParty() != null)
+					 influencePeopleVO.setParty(influencePeople.getParty().getShortName());
+					
+					influencePeopleList.add(influencePeopleVO);
+				}
+				
+			/*	
+				query.append(" or model.voter.name like '"+searchInfo.getName()+"%'");
+		    	  else
+		    		query.append(" or model.voter.name like '%"+searchInfo.getName()+"%'");*/
+				
+			}catch(Exception e){
+				log.error("Exception raised in getInfluencingPeopleBySearch service method");
+				e.printStackTrace();
+			}
+			return influencePeopleList;
+		}
+		
+		
+		public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId){
+			
+			InfluencingPeople influencingPeople = influencingPeopleDAO.get(influencePeopleId);
+			
+			influencingPeople.setVoter(voterDAO.get(voterId));
+			
+			influencingPeopleDAO.save(influencingPeople);
+			
+			
+		}
 }
