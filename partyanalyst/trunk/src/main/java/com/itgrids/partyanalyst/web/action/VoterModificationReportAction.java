@@ -15,8 +15,8 @@ import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
-import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -40,7 +40,14 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList;
 	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
 	private List<VoterModificationGenderInfoVO> voterModificationGenderInfoVOList;
+	private List<VoterVO> voterVOs;
 	
+	public List<VoterVO> getVoterVOs() {
+		return voterVOs;
+	}
+	public void setVoterVOs(List<VoterVO> voterVOs) {
+		this.voterVOs = voterVOs;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -255,5 +262,37 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		voterModificationGenderInfoVOList = voterModificationService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 		return Action.SUCCESS;
 	}
+	
+	public String getAllVoterInformationInALocation()
+	{
+
+		String param ;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);		
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+		}
+		
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+		String locationType = jObj.getString("locationType");
+		Long locationValue = jObj.getLong("locationValue");
+		String status = jObj.getString("status");
+		
+		//voterModificationAgeRangeVOList = voterModificationService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		
+		voterVOs = voterModificationService
+				.getModifiedVotersInALocationBetweenPublucations(locationType,
+						locationValue, constituencyId, fromPublicationDateId,
+						toPublicationDateId, status);
+		return Action.SUCCESS;
+	
+		//allVotersList	
+		
+	}
+	
 	
 }

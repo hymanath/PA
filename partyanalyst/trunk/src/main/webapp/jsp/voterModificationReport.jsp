@@ -4,8 +4,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Voters analysis</title>
+<title>Voter Modification Report</title>
+
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/voterModificationReport.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <style>
+.errorClass
+{
+	color:red;
+}
 #voterModReportMainDiv{margin-left:auto;margin-right:auto;float:none;width:960px;margin-top: 30px; margin-bottom: 30px;}
 #voterInfoTab, #voterAgeInfoTab,#voterGenderInfoTab{border: 1px solid #D3D3D3;
     border-collapse: collapse;
@@ -55,7 +63,10 @@
 
 </style>
 <script type="text/javascript" src="js/voterModificationReport.js"></script>
+
+
  <script type="text/javascript">
+
 	var constituencyId = "${constituencyId}";
 	var fromPublicationDateId = "${fromPublicationDateId}";
 	var toPublicationDateId = "${toPublicationDateId}";
@@ -103,6 +114,103 @@
 			<div id="genderWiseVoterModifiDiv"></div>
 		</div>
 
+
+        <div id="mainDiv" class="breadcrumb" style="margin-top:20px;">
+
+	<div  style="text-align: center;">	
+	   <span class="title">Allur Panchayat newly added / deleted voters information</span>	   
+	</div>
+
+	<div class="form-horizontal" style="margin-left:238px;">
+
+
+
+		<div class="control-group" style="margin-top:19px;">
+			<label style="text-align:left;" class="control-label">FROM PUBLICATION DATE:</label>
+			  <div class="controls">
+			      <select id="fromPublicationDateId">
+				</select>
+              </div>
+	     </div>
+
+		<div class="control-group" style="margin-top:19px;">
+			<label style="text-align:left;" class="control-label">TO PUBLICATION DATE:</label>
+			  <div class="controls">
+			     <select id="toPublicationDateId">	
+				</select><span class="errorClass" id="topubErrMsg"></span>
+              </div>
+	     </div>
+
+     <div class="control-group" style="margin-top:19px;">
+	    <label style="text-align:left;" class="control-label"> SCOPE:</label>
+			  <div class="controls">
+			      <select  id="scopeSelectId">
+					<option value="0">SELECT SCOPE</option>
+					<option value="1">MANDAL/MUNCIPALITY</option>
+					<option value="2">PANCHAYAT/WARD</option>
+					<option value="3">BOOTH</option>
+				  </select>
+              </div>
+	</div>
+
+
+
+	<div class="control-group" id="mandalDiv" style="display:none;"> 
+		 
+		<label style="text-align:left;" class="control-label"> MANDAL/MUNCIPALITY:</label>
+		     <div class="controls">
+		        <select id="mandalSelectId">
+				 <option value="0">SELECT</option>				              
+			    </select>
+             </div>
+	</div>
+	<div class="control-group" id="panchayatDiv" style="display:none;">
+	   <label style="text-align:left;" class="control-label"> PANCHAYAT/WARD:</label>
+		     <div class="controls">
+		        <select id="panchayatSelectId">
+				 <option value="0">SELECT</option>				             
+				</select>
+             </div>
+	</div>
+	<div class="control-group" id="boothDiv" style="display:none;">		 
+	    <label style="text-align:left;" class="control-label">BOOTH:</label>
+		      <div class="controls">
+		         <select id="boothSelectId">
+				   <option value="0">SELECT</option>				                 
+				 </select>
+              </div>
+	</div>
+
+	
+
+	<div style="margin-left:116px;">
+	<h6>Select status</h6>
+		<label style="margin:5px;float:left;">
+           <input style="margin:0px;" type="radio" name="status"  value="Added">Added
+        </label>
+        <label style="margin:5px;float:left;">
+           <input style="margin:0px;" type="radio" name="status"  value="Deleted">Deleted
+        </label>
+		 <label style="margin:5px;float:left;">
+           <input style="margin:0px;" type="radio" name="status"  checked value="all">All
+        </label>
+
+	</div>
+	
+
+   <div><a class="btn btn-primary" href="javaScript:{getAllVotersModificationDetailsBetweenPublications('search','');}">Search</a></div>
+    </div>
+
+   </div>
+
+<span id="allvotersDetails" style="display:none;float: right;clear:both;">
+			   <img src="images/icons/search.gif" />
+			</span>
+	 <div id="allVoterDetailsForALocation">
+	 </div>
+
+
+
   </div>
 </div>
 
@@ -110,11 +218,12 @@
 
 //Created by sasi
 getPublicationDate();
-	
 getVoterInfo();
 getAddedDeletedVoterInfoInALocation();
 getGenderWiseVoterModificationsBetweenPublications();
 getGenderWiseVoterModificationsForEachPublication();
+
+getAllVotersModificationDetailsBetweenPublications('default',"onload");
 
 </script>
 </body>
