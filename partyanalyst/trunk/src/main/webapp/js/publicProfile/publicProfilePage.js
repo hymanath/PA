@@ -104,7 +104,7 @@ $(".connectLinkInPP").click(function(){
 		var Name=$("<label>"+userName+"</label>");
 		var message = $("<label class='messageLabel'>Message</label>");
 		var textArea = $("<textarea id='connectUserMsg'></textarea>");
-		var image = $('<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">');
+		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
 		var connectBtn = $('<input type="button" value="Connect" id="connectMessageLinkInPP"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
@@ -364,7 +364,7 @@ function showStreamingData(results,jsObj)
 				
 				if(list[j].responseType == "Comments")
 				{
-					var imageStr = "/PartyAnalyst/images/candidates/"+list[j].name;
+					var imageStr = "images/candidates/"+list[j].name;
 					var template = $('.politicalReasonsTemplate');
 					var templateClone = template.clone();
 					templateClone.removeClass('politicalReasonsTemplate');
