@@ -451,13 +451,13 @@ str += '<ul class="dd_menu">';
 str += ' <li><i class="icon-th-list"></i>';
 str += ' <ul>';
 str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="openRegistrationForm('+id+');">Create New Cadre</a>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\');">Create New Cadre</a>';
 str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};">Add To Existing Cadre</a>';
 str += ' </li>';
 str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="addInfluencingPeople('+id+');">Create New Influencing People</a>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\');">Create New Influencing People</a>';
 str += ' </li>';
 	if(influencePerson == "false")
 	{
@@ -466,7 +466,7 @@ str += ' </li>';
 	 str += ' </li>';
 	}
 str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="addToPolitician('+id+');">Add To Politician</a>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\');">Add To Politician</a>';
 str += ' </li>';
 str += ' </ul>';
 str += ' </li>';
@@ -555,6 +555,56 @@ oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
 };
 }	
+function checkForVoter(voterId,type)
+{
+	var jsObj = {
+			voterId:voterId,
+			type : type,
+			task:"ckeckForVoterId"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "ckeckForVoterIdAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+function buildVoterToSelectedType(result,jsObj)
+{
+	if(jsObj.type == "influencingPeople")
+	{
+		if(result.resultCode == 1)
+		{
+			addInfluencingPeople(jsObj.voterId);
+		}
+		else 
+		{
+			alert("Voter is already added as a Influencing People");
+		}
+	}
+	
+	if(jsObj.type == "cadre")
+	{
+		if(result.resultCode == 1)
+		{
+			openRegistrationForm(jsObj.voterId);
+		}
+		else
+		{
+			alert("Voter is already added as a Cadre");
+		}
+	}
+	
+	if(jsObj.type == "candidate")
+	{
+		if(result.resultCode == 1)
+		{
+		addToPolitician(jsObj.voterId);
+		}
+		else
+		{
+			alert("Voter is already added as a politician");
+		}
+	}
+	
+}
 function addInfluencingPeople(voterId)
 {
 	var type='edit';
@@ -572,7 +622,7 @@ function openRegistrationForm(voterId)
 function addToPolitician(voterId)
 {
 	var urlStr = "assigningCandidatesToVoterAction.action?voterId="+voterId;
-	var browser2 = window.open(urlStr,"assigningCandidatesToVoterAction");
+	var browser2 = window.open(urlStr,"assigningCandidatesToVoterAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 	browser2.focus();
 }
 /*function showImportantFamiliesDiv()
@@ -1295,10 +1345,14 @@ function addToPolitician(voterId)
 									createOptionsForSelectElmtId("PartySelect",myResults.dataList);
 									
 								}
-								
+											
 								else if(jsObj.task=="getModifiedVotersCountBetweenPublications")
 								{	
 									buildModfiedVotersCountSection(myResults,jsObj);							
+								}
+								else if(jsObj.task=="ckeckForVoterId")
+								{	
+									buildVoterToSelectedType(myResults,jsObj);
 								}
 								else if(jsObj.task=="getBoothInfo"){
 								   showBoothInfo(myResults);

@@ -4452,6 +4452,11 @@
 			<result type="json" name="success">
 				<param name="root">voterAgeRangeVOList</param>				
 			</result>
+		</action>		
+		<action name="ckeckForVoterIdAction" class="votersAnalysisAction" method="checkForVoter">
+		     <result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
 		</action>
 		<action name="getAddedOrDeletedVoterInfoInALocationAction" class="voterModificationReportAction" method="getAddedOrDeletedVoterInfoInALocation">
 		  <result type="json" name="success">

@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -76,7 +77,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private List<SelectOptionVO> userCategoriesList;
 	private List<InfluencingPeopleVO> influencingPeopleList;
-		
+	private ResultStatus resultStatus;
+	
 	private SelectOptionVO selectOptionVO;
 	public List<InfluencingPeopleVO> getInfluencingPeopleList() {
 		return influencingPeopleList;
@@ -302,6 +304,15 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	public Long getParliamentConstituencyId() {
 		return parliamentConstituencyId;
+	}
+
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 	public String execute() throws Exception
@@ -991,6 +1002,32 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
+	/**
+	 * This Method is used to check for a voter weather he added as a influencing people , cadre or political
+	 * @author Prasad Thiragabathina 
+	 * @return String
+	 */
+	public String checkForVoter()
+	{
+		String param;
+		param = getTask();
+		try {
+			log.debug("Entered into The checkForVoter() method");
+			jObj = new JSONObject(getTask());
+			
+		} catch (Exception e) {
+			log.error("Exception Occured in checkForVoter() Method, Exception - "+e); 
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		return ERROR;
+		Long voterId = jObj.getLong("voterId");
+		String type = jObj.getString("type");
+		resultStatus = votersAnalysisService.checkForVoter(voterId,type);
+		return Action.SUCCESS;
+	}
+	
 	public String mapVoterAsInfluencingPerson(){
 		
 		try{
