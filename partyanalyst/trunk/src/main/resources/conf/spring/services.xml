@@ -1379,6 +1379,8 @@
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
 		<property name="userRelationDAO" ref="userRelationDAO" />
 		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="cadreDAO" ref="cadreDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
 	</bean>
