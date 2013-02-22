@@ -274,10 +274,16 @@ System.out.println(list.size());
 			System.out.println(l);
 	}*/
 
-	public void testGetPreviousPublicationIds()
+	/*public void testGetPreviousPublicationIds()
 	{
 		List<Long> list = boothPublicationVoterDAO.getPreviousPublicationIds(8l);
 		for(Long l : list)
 		System.out.println(l);
+	}*/
+
+	public void testGetVotersByBoothId()
+	{
+		List<Voter> list = boothPublicationVoterDAO.getVotersByBoothId(121884l);
+		System.out.println(list.size());
 	}
 }

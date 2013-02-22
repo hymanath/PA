@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 
@@ -53,7 +54,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetModifiedVotersInALocationBetweenPublucations()
+	/*public void testGetModifiedVotersInALocationBetweenPublucations()
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
@@ -66,5 +67,11 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
+	}*/
+	
+	public void testGetModifiedVotersByPartNo()
+	{
+		List<Long> list = voterModificationDAO.getModifiedVotersByPartNo("1",241l,8l,IConstants.STATUS_ADDED);
+		System.out.println(list.size());
 	}
 }
