@@ -74,8 +74,9 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getConstituenciesByDistrictDForUser(Long districtID);
 	
 	public List<SelectOptionVO> getConstituenciesByDistrictIDs(Long districtID);
-
 	
+	public List<SelectOptionVO> getPanchayitiesInTehsil(Long tehsilId);
 	
-	
+	public List<SelectOptionVO> getBoothsInAPanchayatByPublicationId(Long panchayatId , Long publicationId);
+	public List<SelectOptionVO> getboothsInWardByPublicationId(Long wardId, Long constituencyId , Long publicationId);
 }
