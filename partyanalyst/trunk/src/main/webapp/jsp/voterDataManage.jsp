@@ -80,20 +80,52 @@
 <center>
 <table cellpadding="4">
 			<tr>
-				<th>Constituency </th>
-				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="mapVoterConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
-			</tr>
-			<tr>
 				<th>From Publication </th>
 				<td>:</td>
 				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="frompublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
 			</tr>
+			
 			<tr>
 				<th>To Publication </th>
 				<td>:</td>
 				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
 			</tr>
+
+			<tr>
+				<th>Constituency </th>
+				<td>:</td>
+				<td>
+				<!-- <s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="mapVoterConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select> -->
+
+				<select id="mapVoterConstituencyId" class="selectBoxWidth" name="constituenciesList">
+				<option value="0">Select</option>
+				<option value="223">KANDUKUR</option>
+				<option value="231">GUDUR</option>
+				<option value="232">KAVALI</option>
+				<option value="233">KOVUR</option>
+				<option value="236">SARVEPALLI</option>
+				<option value="237">SULLURPET</option>
+				<option value="238">UDAYAGIRI</option>
+				<option value="239">VENKATAGIRI</option>
+				<option value="241">ATMAKUR</option>
+				<option value="280">CHANDRAGIRI</option>
+				<option value="291">TIRUPATI</option>
+				<option value="299">RAPTADU</option>
+				<option value="307">KAKINADA RURAL</option>
+				<option value="308">KAKINADA CITY</option>
+				<option value="340">NELLORE CITY</option>
+				<option value="341">NELLORE RURAL</option>
+				<option value="347">UPPAL</option>
+				<option value="354">VISAKHAPATNAM EAST</option>
+				<option value="355">VISAKHAPATNAM SOUTH</option>
+				<option value="356">VISAKHAPATNAM NORTH</option>
+				<option value="357">VISAKHAPATNAM WEST</option>
+				<option value="358">GAJUWAKA</option>
+				<option value="368">BHIMILI</option>
+				</select>
+				</td>
+			</tr>
+			
 			</table>
 			<div style="margin-left:100px;"><input type="checkbox" id="checkedID">
 				
