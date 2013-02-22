@@ -3693,4 +3693,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryObject.setParameter("partyId",partyId);		
          return queryObject.list();
 	}
+	
+	public List<Object[]> getLocalBodyWiseResultsOfAllPartiesInLocalElectionBodies(Long localBodyId, Long electionId,List<Long> wardIds) {
+		StringBuilder queryStr = new StringBuilder();
+		     queryStr.append("select model.party.partyId,model.party.shortName,sum(model.candidateResult.votesEarned) "+
+				" from Nomination model where  model.constituencyElection.constituency.constituencyId in(:wardIds) ");
+		     
+		     if(localBodyId != null)
+			   queryStr.append(" and model.constituencyElection.constituency.localElectionBody.localElectionBodyId = :localBodyId");
+				  
+			 queryStr.append(" and model.constituencyElection.election.electionId = :electionId group by model.party.partyId ");
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(localBodyId != null)
+		 query.setParameter("localBodyId", localBodyId);
+		query.setParameter("electionId", electionId);
+		query.setParameterList("wardIds", wardIds);
+		return query.list();
+	}
 }

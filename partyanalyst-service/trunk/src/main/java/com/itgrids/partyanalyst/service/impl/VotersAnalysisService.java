@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
@@ -46,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.ILocalityDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
@@ -173,8 +175,28 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterModificationTempDAO voterModificationTempDAO;
     private IVoterModificationDAO voterModificationDAO;
     private IInfluencingPeopleDAO influencingPeopleDAO;
+    private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+    private INominationDAO nominationDAO;
     private ICadreDAO cadreDAO;
     private ICandidateDAO candidateDAO;
+    
+   	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}
+
    	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
 		return influencingPeopleDAO;
 	}
@@ -5096,12 +5118,15 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					
 					public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type)
 					{
+						Long assemblyLclEleBdyId = 0l;
+						List<Long> wardIds = null;
 						List<PartyVotesEarnedVO> partyVotesEarnedVOList = new ArrayList<PartyVotesEarnedVO>(0);
 						try{
 							List<Object[]> list = null;
+							List<Object[]> localEleclist = null;
 							String type2 = null;
 							
-							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type))
+							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type) || "ward".equalsIgnoreCase(type))
 							{
 								List<Long> constituencyIdsList = new ArrayList<Long>(0);
 								
@@ -5130,20 +5155,39 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								}
 								else if(id.toString().trim().substring(0, 1).equalsIgnoreCase("1"))
 								{
+									assemblyLclEleBdyId = new Long(id.toString().trim().substring(1));
 									List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().trim().substring(1)));
 									id = (Long)list2.get(0);
 									list = hamletBoothElectionDAO.findAllElectionsHappendInALocalElectionBody(id);
+									wardIds = assemblyLocalElectionBodyWardDAO.getWardIdsByAssemblyLocalElectionBody(assemblyLclEleBdyId,constituencyId);
+									if(wardIds != null && wardIds.size() > 0 && wardIds.get(0) != null){
+										localEleclist = constituencyElectionDAO.findAllLocalEleHappendInAConstituency(wardIds);	
+									}
+									if(list == null || list.size() == 0){
+										list = localEleclist;
+									}else if(localEleclist != null && localEleclist.size() >0){
+										list.addAll(localEleclist);
+									}
+										
 									type2 = IConstants.URBAN;
 								}
 								
 								
 							}
-							else if(type.equalsIgnoreCase("ward")){
-								list = constituencyElectionDAO.findAllElectionsHappendInAConstituency(id);
-								
-							}else if(type.equalsIgnoreCase("panchayat"))
+							else if(type.equalsIgnoreCase("panchayat"))
 							 list = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(id);
 							
+							if(type.equalsIgnoreCase("ward")){
+								wardIds = new ArrayList<Long>();
+								wardIds.add(id);
+								localEleclist = constituencyElectionDAO.findAllLocalEleHappendInAConstituency(wardIds);	
+								if(list == null || list.size() == 0){
+									list = localEleclist;
+								}else if(localEleclist != null && localEleclist.size() >0){
+									list.addAll(localEleclist);
+								}
+								
+							}
 								
 							
 							if(list != null && list.size() > 0)
@@ -5161,8 +5205,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									String elecType ="";
 									if(electionObj.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase("Parliament")){
 										elecType ="Parliament";
+									}else if("Assembly".equalsIgnoreCase(electionObj.getElectionScope().getElectionType().getElectionType())){
+										elecType = "Assembly";
 									}else{
-										elecType ="Assembly";
+										elecType = electionObj.getElectionScope().getElectionType().getElectionType();
 									}
 									if(params[1].toString().equalsIgnoreCase("BYE"))
 										partyVotesEarnedVO.setReqType(elecType+" (Bye)");
@@ -5178,9 +5224,17 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									{
 										if(type2.equalsIgnoreCase(IConstants.RURAL))
 										 boothIdsList = hamletBoothElectionDAO.getBoothIdsByMandalId(id, (Long)params[0]);
-										else if(type2.equalsIgnoreCase(IConstants.URBAN))
-											boothIdsList = boothConstituencyElectionDAO.getBoothIdsByLocalEleBodyId(id, (Long)params[0],constituencyId);
-									}
+										else if(type2.equalsIgnoreCase(IConstants.URBAN)){
+											  if("Parliament".equalsIgnoreCase(elecType) || "Assembly".equalsIgnoreCase(elecType))
+												boothIdsList = boothConstituencyElectionDAO.getBoothIdsByLocalEleBodyId(id, (Long)params[0],constituencyId);
+											  else{	
+												getLocalElectionResults((Long)params[0],wardIds,id,partyVotesEarnedVO,partiesList);
+												 if(partyVotesEarnedVO.getPartyVotesEarnedVOs() != null && partyVotesEarnedVO.getPartyVotesEarnedVOs().size() >0)
+													 partyVotesEarnedVOList.add(partyVotesEarnedVO);
+												  continue;
+											  }
+										 }
+								   }
 									
 									else if(type.equalsIgnoreCase("panchayat"))
 										boothIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(id, (Long)params[0]);
@@ -5191,7 +5245,17 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										boothIdsList = boothConstituencyElectionDAO.getBoothIdsByConstituencyIdPartNo(constituencyId,(Long)params[0],booth.getPartNo());
 									}
 									else if(type.equalsIgnoreCase("ward"))
-									{   boothIdsList =  boothConstituencyElectionDAO.getBoothIdsByConstituencyId(id, (Long)params[0]);
+									{  
+										if("Parliament".equalsIgnoreCase(elecType) || "Assembly".equalsIgnoreCase(elecType)){
+											 try{
+												boothIdsList = boothConstituencyElectionDAO.getBoothIdsByWardId(id, (Long)params[0],constituencyId);
+											 }catch(Exception e){}
+										 }else{	
+											getLocalElectionResults((Long)params[0],wardIds,null,partyVotesEarnedVO,partiesList);
+											 if(partyVotesEarnedVO.getPartyVotesEarnedVOs() != null && partyVotesEarnedVO.getPartyVotesEarnedVOs().size() >0)
+												 partyVotesEarnedVOList.add(partyVotesEarnedVO);
+											  continue;
+										  }
 									}
 									 if(boothIdsList != null && boothIdsList.size() > 0)
 									{
@@ -8859,7 +8923,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				}
 				
 			}catch(Exception e){
-				log.error("Exception raised in getInfluencingPeopleBySearch service method");
+				log.error("Exception raised in getInfluencingPeopleBySearch service method",e);
 				e.printStackTrace();
 			}
 			return influencePeopleList;
@@ -8937,6 +9001,34 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			}
 			return resultStatus;
 		}
-	
-		
+
+		public void getLocalElectionResults(Long electionId,List<Long> wardIds,Long localElecBodyId,PartyVotesEarnedVO partyVotesEarnedVO,List<String> partiesList){
+		 try{
+			 List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
+				PartyVotesEarnedVO partyVotesVO = null;
+				partyVotesEarnedVO.setTotalBooths(wardIds.size());
+			   //boothConstituencyElectionDAO.getBoothIdsByElectionIdWardIds(electionId,wardIds);
+			   List<Object[]> partiesResultsList = nominationDAO.getLocalBodyWiseResultsOfAllPartiesInLocalElectionBodies(localElecBodyId,electionId,wardIds);	
+			   List<Object[]> basicInfo = constituencyElectionDAO.getVotesInfoForLocalBodyElection(localElecBodyId,electionId,wardIds);
+			   if(basicInfo != null && basicInfo.size() > 0){
+				   Object[] basicDetails = basicInfo.get(0);
+				   partyVotesEarnedVO.setTotalVotes(((Double)basicDetails[1]).longValue());
+				   partyVotesEarnedVO.setPolledVotes(((Double)basicDetails[0]).longValue());
+			   }
+			   if(partiesResultsList != null){
+				   for(Object[] params:partiesResultsList){
+					   partyVotesVO = new PartyVotesEarnedVO();
+					   partyVotesVO.setPartyId((Long)params[0]);
+					   partyVotesVO.setPartyName(params[1].toString());
+					   partyVotesVO.setVotesEarned(((Double)params[2]).longValue());
+					   partyResults.add(partyVotesVO);
+					   if(!partiesList.contains(params[1].toString()))
+							partiesList.add(params[1].toString());
+				   }
+			   }
+			   partyVotesEarnedVO.setPartyVotesEarnedVOs(partyResults);
+		 }catch(Exception e){
+			 log.error("Exception raised in getLocalElectionResults",e);
+		 }
+		}
 }

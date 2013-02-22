@@ -589,6 +589,32 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();
 	}
+	
+	public List<Object[]> findAllLocalEleHappendInAConstituency(List<Long> constituencyId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		stringBuilder.append("select distinct(model.election.electionId), model.election.elecSubtype from ConstituencyElection model where " +
+				"  model.constituency.constituencyId in (:constituencyId) and model.election.electionScope.electionType.electionTypeId in(5,6,7)  order by model.election.electionDate desc  ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameterList("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVotesInfoForLocalBodyElection(Long localBodyId, Long electionId,List<Long> wardIds){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select sum(model.constituencyElectionResult.validVotes),sum(model.constituencyElectionResult.totalVotes) from ConstituencyElection model "+
+				" where model.election.electionId = :electionId and model.constituency.constituencyId in(:wardIds) ");
+		if(localBodyId != null)
+		  queryStr.append(" and model.constituency.localElectionBody.localElectionBodyId = :localBodyId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(localBodyId != null)
+		 query.setParameter("localBodyId", localBodyId);
+		query.setParameter("electionId", electionId);
+		query.setParameterList("wardIds", wardIds);
+		return query.list();
+	}
 }
 
 
