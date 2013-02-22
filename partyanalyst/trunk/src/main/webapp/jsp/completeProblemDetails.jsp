@@ -249,7 +249,7 @@ var problemDetailsInEdit = null;
       
       }
       
-     str +='<input type="button" value="delete" id="buttonId" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);">';
+    // str +='<input type="button" value="delete" id="buttonId" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);">';
 
       }
 
@@ -309,7 +309,7 @@ var problemDetailsInEdit = null;
       
       str+= '</a></td>';
       str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td>';
-	  str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
+	 // str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
       
       
       }
@@ -317,7 +317,7 @@ var problemDetailsInEdit = null;
       str+= '<td><table><tr><td>';
       str+= '<a rel="more_photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" width="135px" /></a></td>';
       str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td>';
-	  str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
+	  //str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
       
       }
       
