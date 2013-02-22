@@ -56,6 +56,10 @@ var hasNewsMonitoring = "${hasNewsMonitoring == true}";
 environment = '<%=environment%>';
 </script>
 <style>
+
+#connectDistrictSelect,#connectConstituencySelect,#connectStatusSelect{
+width:225px;
+}
 .profile-left .widget-block{margin: 0 -20px !important;;padding-bottom:0px;padding-top:0px;border:none;display:inline-block;width:100%;height:auto;}
 .profile-left .widget-block h4{border:none;background:#e5e5e5;display:none;}
 .left-section{width:175px  !important;}
@@ -812,7 +816,7 @@ getInitialUpdates();
 getNews('byTodayDate','getCount','','','','','','','');
 </c:if>
 
-
+stateId='${dataTransferVO.stateId}';
 districtId = '${dataTransferVO.districtId}';
 districtName = '${dataTransferVO.districtName}';
 constituencyId = '${dataTransferVO.constituencyId}';
