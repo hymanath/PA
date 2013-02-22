@@ -1265,5 +1265,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(params[1]); 
 	 }
 	}
+	public void testGetLocalBodyWiseResultsOfAllPartiesInLocalElectionBodies()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(31805l);
+	 List<Object[]> list = nominationDAO.getLocalBodyWiseResultsOfAllPartiesInLocalElectionBodies(null,63l,ids) ;
+	 System.out.println(list.size());
+	 for(Object[] params : (List<Object[]>)list)
+	 {
+		System.out.println(params[1]+" "+params[2]); 
+	 }
+	}
 }	
 	
