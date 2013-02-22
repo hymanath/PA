@@ -4507,5 +4507,11 @@
 				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
+			
+		<action name="getAllVoterInformationInALocation" class="voterModificationReportAction" method="getAllVoterInformationInALocation">
+		<result type="json" name="success">
+				<param name="root">voterVOs</param>				
+			</result>	
+		</action>
 	</package>
 </struts>      

@@ -197,6 +197,31 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		}
 		
+		else if(jObj.getString("task").equalsIgnoreCase("panchayitiesInAMandal"))
+		{
+			Long locationId = jObj.getLong("id");
+			List<SelectOptionVO> panchayities = getRegionServiceDataImp().getPanchayitiesInTehsil(locationId);
+			setRegionsList(panchayities);
+			
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getBoothsInPanchayat"))
+		{
+			Long locationId = jObj.getLong("id");
+			Long publicationId = jObj.getLong("publicationId");
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInAPanchayatByPublicationId(locationId,publicationId);
+			setRegionsList(booths);
+			
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("boothsInWard"))
+		{
+				//to get all booths in ward  
+				Long locationId = jObj.getLong("id");
+				Long constituencyId = jObj.getLong("constId");
+				Long publicationId = jObj.getLong("publicationId");
+				List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWardByPublicationId(locationId, constituencyId,publicationId);
+				setRegionsList(booths);
+			
+			} 
 		return Action.SUCCESS;
 		
 	}
@@ -233,7 +258,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 				Collections.sort(states);
 			}
 
-		 else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
+
+			
+			
+			
+			
+			else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
 		{
 			//to fetch all districts in state
 				Long stateId = jObj.getLong("id");
