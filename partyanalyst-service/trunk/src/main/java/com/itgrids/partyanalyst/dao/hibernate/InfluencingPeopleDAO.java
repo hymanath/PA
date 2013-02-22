@@ -503,5 +503,19 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return query.list();
 	}
 
+	/**
+	 * This Method is used To get The Count Of Voters based on voterId
+	 * @author Prasad Thiragabathina
+	 * @param Long voterId
+	 * @return List<Long>
+	 */
+	public List<Long> getinfluencingPeopleVoterId(Long voterId) {
+		Query query = getSession().createQuery("select count(model.voter.voterId) from InfluencingPeople model where model.voter.voterId = ? ");
+		query.setParameter(0, voterId);
+		return query.list();
+	}
+	
+	
+
 		
 }

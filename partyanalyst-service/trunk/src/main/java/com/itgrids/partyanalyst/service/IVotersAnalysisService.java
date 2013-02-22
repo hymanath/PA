@@ -174,4 +174,6 @@ public interface IVotersAnalysisService {
 			InfluencingPeopleVO influencingPeopleVO);
 	
 	public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId);
+	
+	public ResultStatus checkForVoter(Long voterId,String type);
 }

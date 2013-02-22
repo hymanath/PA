@@ -133,6 +133,8 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	@SuppressWarnings("unchecked")
 	public List getInfluencingPersonLocationDetailsById(Long influencingPersonId);
 	
+	public List<Long> getinfluencingPeopleVoterId(Long voterId);
+	
 	
 	public List<InfluencingPeople> getInfluencePeopleBySearch(
 			InfluencingPeopleVO influencingPeopleVO, String queryString);
