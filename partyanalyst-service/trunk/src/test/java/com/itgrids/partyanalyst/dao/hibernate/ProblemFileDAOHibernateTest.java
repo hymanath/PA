@@ -51,7 +51,7 @@ public class ProblemFileDAOHibernateTest extends BaseDaoTestCase{
 
 
 
-public void testGetAllNonApprovedFilesAndProblemDetails()
+/*public void testGetAllNonApprovedFilesAndProblemDetails()
 	{
 		List<ProblemFile> list = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
 		
@@ -62,7 +62,7 @@ public void testGetAllNonApprovedFilesAndProblemDetails()
 			System.out.println();
 			System.out.print("----"+params.toString());
 		}
-	}
+	}*/
 	/*
 	 * .problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,
 	 * model.problemHistory.problemLocation.problemImpactLevel.scope," +
@@ -186,11 +186,16 @@ public void testGetAllNonApprovedFilesAndProblemDetails()
 		}
 		}*/
 	
-	public void testGetNoOfFilesUploadedForAUser()
+	/*public void testGetNoOfFilesUploadedForAUser()
 	{
 		Object object = problemFileDAO.getNoOfFilesUploadedForAUser(223l);
 		System.out.println(object);
 	}
-	
-	
+	*/
+
+/*public void testdeleteProblemFile()
+{
+	Integer value = problemFileDAO.deleteProblemFile(38l);
+	System.out.println(value);
+}*/
 }
