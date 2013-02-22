@@ -7,7 +7,7 @@ var uploadResult;
 var userType = '';
 var startIndex;
 var jcrop_api;
-
+var flag=false;
 $("document").ready(function(){
 	setInterval("callForEveryFiveMins()", 10*60*60*5);
     $("#subscriptionsStreamingMore").live("click",function(){
@@ -260,9 +260,13 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	callAjax1(jsObj,url);
 	});
 
-	$(".districtPeopleLink").click(function(){
+	//flag value created by Srishailam
+	$(".districtPeopleLink").click(function(){	
+	flag=false;
 	getAllCconnectedUserDetails();
-	
+	setTimeout("getDetailsForallDistricts()",500);	
+	setTimeout("getDetailsForallConstituencies(districtId)",650);		
+	setTimeout("getAllConnectedUsersByFilterView()",1000);
 	});
 
 	$(".connectLink").live("click",function(){
@@ -290,15 +294,11 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var Name=$(userName);
 		var constituencyName = $(constituencyName);
 		var message = $("<label class='messageLabel'></label>");
-		var textArea = $("<textarea  id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 327px; height:102px;'></textarea>");
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'></textarea>");
 		var image = $('<img height="80" width="80" src="images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
 		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:12px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
-		var errorDiv = $("<div id='errorMsgDiv'></div>");
-		var str ='';
-			str+='<div id="processingImage1" style="display: none;height:30px">';
-			str+='<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: 		-167px; margin-left: 467px; border-top-width: 0px; padding-top: 127px; 				padding-bottom: 19px;"/>';
-			str+='</div>';
+		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
 		div.append(Name);
 		div.append(constituencyName);
@@ -307,7 +307,6 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		div.append(image);
 		div.append(connectBtn);
 		div.append(connectedPersonId);
-		div.append(str);
 		$('#allConnectedUsersDisplay_main').append(div);
 		$("#impdatesDiv").hide();
 	});
@@ -315,7 +314,6 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 
 	$("#connectPeopleLink").live("click",function(){
-		
 		$("#errorMsgDiv").html('');
 		var connectUserId = $(this).closest(".connectPeoplePopupInnerDiv").find('#connectedPersonId').val();
 		var connectUserMsg = $.trim($("#connectUserMsg").val());
@@ -324,8 +322,6 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var locationId = constituencyId;
 		var locationName = constituencyName;
 		var userId = loginUserId;
-
-		
 		 if(connectUserMsg.length > 200)
 		{
 			$("#errorMsgDiv").html('<font style="color:red">Message Should be lessthan 200 characters.</font>');
@@ -333,7 +329,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		}
 		
 		disableButton("connectPeopleLink");
-		//$("#connectPeoplePopup").dialog('close');
+		$("#connectPeoplePopup").dialog('close');
 		var jsObj ={
 				
 				locationId:locationId,			
@@ -348,15 +344,12 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserAction.action?"+rparam;					
 	callAjax1(jsObj,url);
-	$("#impdatesDiv").hide();
-	$("#processingImage1").show();
-	
+	$("#impdatesDiv").hide();	
 		
 	});
 
 
 	$("#connectDistrictPeopleLink").live("click",function(){
-	
 		$("#errorMsgDiv").html('');
 		var connectUserId = $(this).closest(".connectPeoplePopupInnerDiv").find('#connectedPersonId').val();
 		var connectMsg = $.trim($("#connectUserMsg").val());
@@ -365,7 +358,6 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var distId = districtId;
 		var locationName = districtName;
 		var connectUserLoginId = loginUserId;
-
 		var users = new Array();
 		users.push(connectUserId);
 
@@ -376,7 +368,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		}
 		
 		disableButton("connectDistrictPeopleLink");
-		//$("#connectPeoplePopup").dialog('close');
+		$("#connectPeoplePopup").dialog("close");
 		
 		var jsObj ={
 			
@@ -392,7 +384,6 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var url = "connectToUserSetAction.action?"+rparam;					
 	callAjax1(jsObj,url);			
 	$("#impdatesDiv").hide();
-	$("#processingImage2").show();
 	});
 	
 //change Password
@@ -930,7 +921,6 @@ function callAjax1(jsObj,url){
 						if(jsObj.type=="Connect"){
 							location.reload(true);//For refreshing the page...
 						}else{
-								$("#processingImage").hide();
 							showMessageSentConfirmation(results);
 						}
 					}
@@ -959,13 +949,11 @@ function callAjax1(jsObj,url){
 					}
 					else if(jsObj.task == "connectToUser")
 					{
-						$("#processingImage1").hide();
 						closeConnectPanel(jsObj,results);
 						getPeopleYouMayKnowDetails();
 					}
 					else if(jsObj.task =="connectUserSet")
 					{
-						$("#processingImage2").hide();
 						showAllConnectedUsersStatus(jsObj,results);
 					}
 					else if(jsObj.task =="getUserScriptions")
@@ -1031,7 +1019,7 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task== "saveFavouriteLink"){
 						openModal("Link added successfully","msg");
 						$("#FavouriteLinks").trigger('click');//to rebuild the favourite link section
-						setTimeout(defaultState,1000);
+						setTimeout(hello,1000);
 					}
 					else if(jsObj.task =="getStatesAjaxAction"){
 						buildStatesIntoDropDown(results,'stateList');
@@ -1052,6 +1040,14 @@ function callAjax1(jsObj,url){
 					{
 						showSelectBoxForSpecialPages(results);
 					}
+					else if(jsObj.task == 'getDistrictNames')
+							{
+								iterateDistrictNames(results);
+							}		
+					else if(jsObj.task == 'getConstituencyNames')
+							{
+								iterateDetailsNames(results);
+							}
 			}catch (e) {  
                   $("#subscriptionsStreamingAjaxImg").hide();			
 			   	//alert("Invalid JSON result" + e);   
@@ -1066,7 +1062,7 @@ function callAjax1(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function defaultState(){
+function hello(){
 	$('#districtList').find('option').remove().end().append('<option value="0">select</option>').val('0');
 	$('#constituencyList').find('option').remove().end().append('<option value="0">select</option>').val('0');
 	$('#specialPageList').find('option').remove().end().append('<option value="0">select</option>').val('0');
@@ -1144,17 +1140,16 @@ $('.specialPageDivheading').children().remove();
 var constituency = false;
 var state = false;
 var district = false;
-var specialpage=false;
 
 if(results == null || results.lenght == 0)
 {
 	$("#headerDiv").html('No Favourite Links has been added.<br>');
-	$("#headerDiv").append('<span  >Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+	$("#headerDiv").append('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 	return;
 }
 
 //$("#headerDiv").html('<span btn="info" onClick="savefavouriteLink()">Add</span> <br> <select id="specialPageSelectBox" name="specialPage"></select>');
-$("#headerDiv").html('<span style="font-weight: bold; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 14px;">Add Your Interested State/District/Constituency/Special Pages</span><input type="button" style="margin-right: -4px; margin-top: -4px;" class="btn btn-primary pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+$("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
@@ -1173,7 +1168,7 @@ $("#headerDiv").html('<span style="font-weight: bold; font-family: &quot;Helveti
 				if(i ==0 && constituency == true)
 				{
 					
-					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" style="font-weight: bold; padding: 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 17px;" class="label label-info constituencyHeadingCls">Constituency</a></div>');
+					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls">Constituency</a></div>');
 					$('.constituencyDivheading').append(div);
 				}
 
@@ -1202,12 +1197,11 @@ $("#headerDiv").html('<span style="font-weight: bold; font-family: &quot;Helveti
 			for(var j in results){
 
 				if(j==0 && state == true)
-				     
-					$('.stateDivheading ').html('<span  class="stateHeadingCls ">State</span>');
+					$('.stateDivheading').html('<span class="stateHeadingCls">State</span>');
 				
 		    if(results[j].favouriteLinkType == "state"){
-             
-				$('.stateDivheading').html('<a href="javaScript:{}" style="font-weight: bold; padding: 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 17px;" class="label label-info stateHeadingCls">State</span>');
+
+				$('.stateDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">State</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1238,7 +1232,7 @@ $("#headerDiv").html('<span style="font-weight: bold; font-family: &quot;Helveti
 		    if(results[k].favouriteLinkType == "district"){
 
 
-				$('.districtDivheading').html('<a href="javaScript:{}" style="font-weight: bold; padding: 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 17px;" class="label label-info stateHeadingCls">District</span>');
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1264,12 +1258,12 @@ $("#headerDiv").html('<span style="font-weight: bold; font-family: &quot;Helveti
 			for(var m in results){
 
 				if(m == 0 && specialpage == true)
-					$('.specialPageDivheading').html('<span class="specialPageHeadingCls ">SpecialPage</span>');
+					$('.specialPageDivheading').html('<span class="specialPageHeadingCls">SpecialPage</span>');
 				
 		    if(results[m].favouriteLinkType == "specialpage"){
 
 
-				$('.specialPageDivheading').html('<a href="javaScript:{}"style="font-weight: bold; padding: 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 17px;"  class="label label-info specialPageHeadingCls">SpecialPage</span>');
+				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls">SpecialPage</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1281,7 +1275,7 @@ $("#headerDiv").html('<span style="font-weight: bold; font-family: &quot;Helveti
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[m].favouriteLink+">"+results[m].favouriteLinkTitle+"</a></b>");
-				templateClone.find('.titleClass').html("<b><a   title='"+results[m].favouriteLinkTitle+"' class='problemTitle' href="+results[m].favouriteLink+">"+results[m].name+"</a></b>");
+				templateClone.find('.titleClass').html("<b><a  title='"+results[m].favouriteLinkTitle+"' class='problemTitle' href="+results[m].favouriteLink+">"+results[m].name+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  title='Remove this link' href='javaScript:{removeFavouriteLink("+results[m].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.specialPageDivInnerFav');
@@ -1543,14 +1537,13 @@ function showSentBoxMessagesForAUser(results)
 
 function showMailPopup(id,name,type)
 {
-	
 	$("#allConnectedUsersDisplay_main").children().remove();
 	$( "#connectPeoplePopup").dialog({
 			title:"Send Message to "+name,
 			autoOpen: true,
 			show: "blind",
-			width: 380,
-			minHeight:200,
+			width: 400,
+			minHeight:250,
 			modal: true,
 			hide: "explode"
 		});
@@ -1558,17 +1551,12 @@ function showMailPopup(id,name,type)
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'></label>");
-		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..' style='width: 320px; height: 75px;'></textarea><br>");
-		var button = $("<input class='btn btn-mini btn-small btn-info' id='sendMessageButtonId' type='button' value='send' style='margin-top: 1px;width: 45px; height: 22px;' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
-		var str ='';
-			str+='<div id="processingImage" style="display: none;height:30px">';
-			str+='<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: 		-145px; margin-left: 335px; border-top-width: 0px; padding-top: 127px; 				padding-bottom: 19px;"/>';
-			str+='</div>';
+		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'></textarea><br>");
+		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
 		div.append(errorDiv);
 		div.append(label);
 		div.append(textarea);
 		div.append(button);
-		div.append(str);
 		$('#allConnectedUsersDisplay_main').append(div);
 
 }
@@ -1600,7 +1588,6 @@ function sendMessageToConnectedUser(userId,type)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "messageToConnectedUser.action?"+rparam;					
 	callAjax1(jsObj,url);
-	$("#processingImage").show();
 }
 
 
@@ -1706,6 +1693,7 @@ function showSpecialPages(results)
 
 function closeConnectPanel(jsObj,results)
 { 
+		
 	var connectUserMsg = $("#connectUserMsg").val('');
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
@@ -1719,10 +1707,8 @@ function closeConnectPanel(jsObj,results)
 		$("#errorMsgDiv").html('<font color="red" style="font-weight:bold;">Request Cannot be sent due to some technically difficulty.</font>');
 		return;
 	}
-	setTimeout("$('#connectPeoplePopup').dialog('close')",3500);
-
+	
 }
-
 
 function showAllConnectedUsersInPanel(jsObj,results)
 {
@@ -1752,18 +1738,13 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	filterDiv.append("<span>Not Connected - "+notConnectedPeopleCount+"</span>");*/
 	
 	filterDiv.append("<div style='padding:4px;width:100%;'><label style='width:40%;float:left;'>Search By Name :</label><input id='connectStatusTextBox' type='text' value='' onkeyup='getAllConnectedUsersByFilterView(\""+jsObj.locationType+"\",\""+jsObj.userId+"\") '/></div>");
-	if(jsObj.locationType == "DISTRICT")
-	{
-		
-		str +='<div style="padding:4px;width:100%;"><label    style="width:40%;float:left;">By Constituency: </label>';
-		str +='<select id="connectConstituencySelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\',\''+jsObj.userId+'\')">';
-		str +='<option value="0">All</option>';
-		for(var i in constituencies)
-			str += '<option value="'+constituencies[i].id+'">'+constituencies[i].name+'</option>';
+		str +='<div style="padding:4px;width:100%;"><label   style="width:40%;float:left;">By District : </label>';
+		str +='<select id="connectDistrictSelect" onchange="getDetailsForallConstituencies(this.value);getAllConnectedUsersByDistrictWiseFilterView(\''+jsObj.locationType+'\',\''+jsObj.userId+'\')">';
 		str += '</select></div>';
-	}
-
-	str +='<div style="padding:4px;width:100%;"><label style="width:40%;float:left;">By Status:</label>';
+		str +='<div style="padding:4px;width:100%;"><label    style="width:40%;float:left;">By Constituency : </label>';
+		str +='<select id="connectConstituencySelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\',\''+jsObj.userId+'\')">';
+		str += '</select></div>';
+	str +='<div style="padding:4px;width:100%;"><label style="width:40%;float:left;">By Status :</label>';
 	str +='<select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\',\''+jsObj.userId+'\')">';
 	str +='<option value="0">All</option>';
 	for(var i in connectStatus)
@@ -1771,90 +1752,47 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str +='</select></div>';
 	filterDiv.append(str);
 	$("#headerDiv").append(filterDiv);
+	if(flag)
+	{
 	 for(var i in results.candidateVO)
 	{
+		if(results.candidateVO[i].status != null && results.candidateVO[i].status != "LOGGED_USER")
+		{
 		var imageStr = "pictures/profiles/"+results.candidateVO[i].image;
 		var image = results.candidateVO[i].image;
 		var template = $(".templateDiv");
 		var templateClone = template.clone();
 		templateClone.removeClass("templateDiv");
+		
 		if(image == null)
-			templateClone.find(".imgClass").html('<a onClick="openNewWindow('+results.candidateVO[i].id+');"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
+			templateClone.find(".imgClass").html('<a href="javascript:{}" onClick="openNewWindow('+results.candidateVO[i].id+');"><img width="50" height="45" src="images/icons/indexPage/human.jpg"></img></a>');
 		else
-			templateClone.find(".imgClass").html('<a "onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);"/></a>');
+			templateClone.find(".imgClass").html('<a href="javascript:{}"" onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImage(this);"/></a>');
 			templateClone.find(".connectedPersonName").html('<a style="cursor: pointer;" onClick="openNewWindow('+results.candidateVO[i].id+');">'+results.candidateVO[i].candidateName+'</a>');
 			templateClone.find(".constituencyName").html(''+results.candidateVO[i].constituencyName.toLowerCase()+'');
 			templateClone.find('.stateName').html(''+results.candidateVO[i].state+'');
 			templateClone.find('.districtName').html(''+results.candidateVO[i].district+'');
 			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED")
 				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\');" rel="tooltip" title="Connect" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
+			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "DISCONNECTED")
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\');" rel="tooltip" title="Connect" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
 				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
+			
 			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
 			
 			templateClone.appendTo(".placeholderCenterDiv");
-			
+		}	
 	}
 
 	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
 	pagination.appendTo('.placeholderCenterDiv');
+	}
 }
 
-function getAllConnectedUsersByFilterView(locationType,userId)
-{
-	var connectConstiSelectElmtValue = '';
-	var connectConstiArray = new Array();	
-	
-	if(locationType == "DISTRICT")
-	{
-		var connectConstiSelectElmt = document.getElementById("connectConstituencySelect");
-		connectedStatus=connectConstiSelectElmt;
-		if(connectConstiSelectElmt)
-			connectConstiSelectElmtValue = connectConstiSelectElmt.options[connectConstiSelectElmt.selectedIndex].value;
-
-				
-		if(connectConstiSelectElmtValue == 0)
-		{
-			for(var i in constituencies)
-				connectConstiArray.push(constituencies[i].id);		
-		}
-		else
-			connectConstiArray.push(connectConstiSelectElmtValue);
-	}
-	else
-	{
-		connectConstiArray.push(connetLocationId);
-	}
-	var connectStatusSelectElmt = $("#connectStatusSelect").val();
-	var statusText = $('#connectStatusSelect option:selected' ).text();
-	var textValue = $.trim($("#connectStatusTextBox").val());
-	
-	var jsObj ={
-				constituencyIds:connectConstiArray,				
-				statusText:statusText,
-				nameString:textValue,
-				task:"getAllConnectedUsersByFilterView"
-			 };
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;					
-	
-	custom_paginator.paginator({
-		startIndex:0,
-		resultsCount:20,
-		jsObj:jsObj,
-		ajaxCallURL:url,
-		paginatorElmt:"custom_paginator_class",
-		callBackFunction:function(){
-			showAllConnectedUsersInPanelByFilterView(jsObj,results);
-		}
-	});
-	custom_paginator.initialize();
-	
-}
 function getAllCconnectedUserDetails(){
-var locationId = districtId;
-	var locationType = "DISTRICT";
+	var locationId = districtId;	
+	var locationType= "DISTRICT";
 	var locationName = districtName;
 	var userLoginId = loginUserId;
 	var jsObj ={
@@ -1864,9 +1802,9 @@ var locationId = districtId;
 				locationType:locationType,
 				task:"getAllConnectedUsers"
 			 };
-
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllConnectedUserAction.action?"+rparam;
+	
 custom_paginator.paginator({
 		startIndex:0,
 		resultsCount:20,
@@ -1879,6 +1817,7 @@ custom_paginator.paginator({
 	});
 	custom_paginator.initialize();
 	$("#impdatesDiv").hide();
+	
 }
 function selectedStatusValue(){
 	var connectedStatus = $('#connectStatusSelect option:selected').val();
@@ -1898,6 +1837,7 @@ function selectedStatusValue(){
 }
  function showAllConnectedUsersInPanelByFilterView(jsObj,results)
 {
+
 	var connectedStatuss=selectedStatusValue();
 	var users = results.candidateVO;
 	$(".placeholderCenterDiv").children().remove();
@@ -1920,6 +1860,8 @@ function selectedStatusValue(){
 	{
 		for(var i in results.candidateVO)
 		{
+		if(results.candidateVO[i].status != null && results.candidateVO[i].status != "LOGGED_USER"){		
+				
 			var template = $(".templateDiv");
 			var imageStr = "pictures/profiles/"+results.candidateVO[i].image;
 			var image = results.candidateVO[i].image;
@@ -1935,34 +1877,99 @@ function selectedStatusValue(){
 			else
 				templateClone.find(".imgClass").html('<a  onClick="openNewWindow('+results.candidateVO[i].id+');"><img height="45" width="50" src="'+imageStr+'" /></a>');
 			
-			if(connectedStatuss == "NOT CONNECTED" ){
-				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED"){
-				
-				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');
-				
-				}
-			}
-			
+			if(connectedStatuss == "NOT CONNECTED" ){		
+				if(results.candidateVO[i].status != null && (results.candidateVO[i].status == "DISCONNECTED" || results.candidateVO[i].status == "NOT CONNECTED")){	
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>');			
+				}				
+			}	
 			if(connectedStatuss == "PENDING" ){
-				if(results.candidateVO[i].status != null && results.candidateVO[i].status != "CONNECTED"){
+				if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING"){
 					templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
 				}
 			}
-			if(connectedStatuss == '0' ){
-			getAllCconnectedUserDetails();
-			return false;
+			if(connectedStatuss == '0' ){			
+			if(results.candidateVO[i].status != null && results.candidateVO[i].status == "NOT CONNECTED"){
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>')			
+				}
+				if(results.candidateVO[i].status != null && results.candidateVO[i].status == "DISCONNECTED"){
+				templateClone.find('.connectCls').html('<a href="javascript:{}" onclick="connectToSelectedPerson(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\')" class="btn btn-mini"><i class="icon-plus-sign opacityFilter-50"></i></a>')			
+				}
+				if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING"){
+				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');			
+				}
+				
 			}
-
 			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');	
 
 			templateClone.appendTo(".placeholderCenterDiv");						
 		}
-		
-	 var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
-	pagination.appendTo('.placeholderCenterDiv');
+	}
+		 var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
+
+		pagination.appendTo('.placeholderCenterDiv');
 	}
 }
 
+function getAllConnectedUsersByFilterView(locationType,userId)
+{
+		var connectConstiSelectElmtValue = '';
+		var connectConstiArray = new Array();	
+		var allConstituencies=$('#connectConstituencySelect').val();
+		var allDistricts = $('#connectDistrictSelect').val();
+		
+		if( allDistricts != 0 && allConstituencies == '0'){
+		getAllConnectedDistrictWise1UsersByFilterView(locationType,userId);
+		return false;
+		}		
+		if(allConstituencies == '0'){
+			getAllConnectedUsersByDistrictWiseFilterView(locationType,userId);
+			return false;
+		}
+		if(locationType == "DISTRICT")
+		{
+			var connectConstiSelectElmt = document.getElementById("connectConstituencySelect");
+			connectedStatus=connectConstiSelectElmt;
+			if(connectConstiSelectElmt)
+				connectConstiSelectElmtValue = connectConstiSelectElmt.options[connectConstiSelectElmt.selectedIndex].value					
+			if(connectConstiSelectElmtValue == 0)
+			{
+			for(var i in constituencies)
+				connectConstiArray.push(constituencies[i].id);		
+			}
+			else{
+				connectConstiArray.push(connectConstiSelectElmtValue);
+				}
+		}
+		else
+		{	
+			connectConstiArray.push(allConstituencies);
+		}
+		var connectStatusSelectElmt = $("#connectStatusSelect").val();
+		var statusText = $('#connectStatusSelect option:selected' ).text();
+		var textValue = $.trim($("#connectStatusTextBox").val());
+		
+		var jsObj ={
+					constituencyIds:connectConstiArray,				
+					statusText:statusText,
+					nameString:textValue,
+					task:"getAllConnectedUsersByFilterView"
+				 };
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;	
+		
+		custom_paginator.paginator({
+			startIndex:0,
+			resultsCount:20,
+			jsObj:jsObj,
+			ajaxCallURL:url,
+			paginatorElmt:"custom_paginator_class",
+			callBackFunction:function(){
+				showAllConnectedUsersInPanelByFilterView(jsObj,results);
+			}
+		});
+		custom_paginator.initialize();	
+}
 
 //total problems
 
@@ -2022,8 +2029,6 @@ function showAllPostedProblems(jsObj,results)
 	
 }
 
-
-
 function connectToSelectedPerson(id,name)
 {
 	$("#allConnectedUsersDisplay_main").children().remove();			
@@ -2039,32 +2044,26 @@ function connectToSelectedPerson(id,name)
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			minHeight:235,
+			minHeight:250,
 			modal: true,
 			hide: "explode"
 		});
 
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
-		/*var Name=$("<label>"+userName+"</label>");
-		var message = $("<label class='messageLabel'>Message</label>");*/
-		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 327px; height:102px;'></textarea>");
-		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg" style="margin-left: 12px;">');
-		var connectBtn = $('<input type="button" value="Connect" id="connectDistrictPeopleLink" class="btn btn-info btn-mini" style="margin-left: 367px;"/>');
+		var Name=$("<label>"+userName+"</label>");
+		var message = $("<label class='messageLabel'>Message</label>");
+		var textArea = $("<textarea id='connectUserMsg'></textarea>");
+		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
+		var connectBtn = $('<input type="button" class="btn" name="connectDistrictPeopleLink" value="Connect" id="connectDistrictPeopleLink"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
-		var errorDiv = $("<div id='errorMsgDiv'></div>");
-		var str ='';
-			str+='<div id="processingImage2" style="display: none;height:30px">';
-			str+='<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: 		-194px; margin-left: 462px; border-top-width: 0px; padding-top: 127px; 				padding-bottom: 19px;"/>';
-			str+='</div>';
-
+		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
-		/*div.append(Name);
-		div.append(message);*/
+		div.append(Name);
+		div.append(message);
 		div.append(textArea);
 		div.append(image);
 		div.append(connectBtn);
 		div.append(connectedPersonId);
-		div.append(str);
 		$('#allConnectedUsersDisplay_main').append(div);
 }
 
@@ -2072,17 +2071,17 @@ function connectToSelectedPerson(id,name)
 
 function showAllConnectedUsersStatus(jsObj,results)
 {
-	
 	$(".placeholderCenterDiv").children().remove();
-	$(".districtPeopleLink").trigger("click");
+	//$(".districtPeopleLink").trigger("click");
+	getAllConnectedUsersByFilterView();
 
 
 if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{		
-		/*var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');*/
-		$("#errorMsgDiv").html('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.' );
+		var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');
 		if(jsObj.locationType=="DISTRICT"){
-			$("#districtPeopleLink").trigger("click");
+		getAllConnectedUsersByFilterView();
+			//$("#districtPeopleLink").trigger("click");
 			//showAllConnectedUsersInPanelOfDistrict(jsObj,results);		
 			//buildConnectUsersContentOfDistrict(results.candidateVO,connectDivId,connetLocationType,connetLocationId,connetLocationName,connectUserLoginStatus,connectUserLoginId, results.totalResultsCount);
 		}
@@ -2093,7 +2092,6 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 	}
 	//else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
 		//elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent to the selected users due to some technical difficulty.</blink></font>';
-	setTimeout("$('#connectPeoplePopup').dialog('close')",3500);
 }
 
 
@@ -2675,7 +2673,6 @@ function clearAllFavoriteLinkDivs()
 {
 	$(".constituencyDivheading").children().remove();
 	$(".constituencyDivInnerFav").children().remove();
-
 	$(".stateDivheading").children().remove();
 	$(".stateDivInnerFav").children().remove();
 	$(".districtDivheading").children().remove();
@@ -3062,26 +3059,16 @@ $('#Parliament').live('click',function(){
 function openPopupForFavouriteLinks(){
 
 var str=''; 
-
-str+='<label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State" style="margin-top:1px;"/> State</label>';
-
-str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District" style="margin-top:1px;"/> District</label>';
-str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"> <input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency" style="margin-top:1px;"/>  Constituency</label>';
-str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="Special Page" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page" style="margin-top:1px;"/> Special Page</label>';
-str+='<hr style="margin-top: 0px; border: 1px solid rgb(212, 212, 212);">';
-str+='  <div id="electionTypes" style="display: none; text-align:center;"><label class="" style="display:inline-block;margin-left: 10px;"><input type="radio" id="Assembly" name="typeRadio"  value="Assembly" checked="checked" style="margin-top:1px;"/> Assembly</label> ';
-str+=' <label class="" style="display:inline-block;margin-left: 10px;"><input type="radio" id="Parliament"  name="typeRadio" value="Parliament" style="margin-top:1px;"/> Parliament</label></div>';
-
-str+='<form class="form-horizontal"><div class="control-group" id="Statediv" style="display:none;"> <label class="control-label">Select State:</label><div class="controls"><select id="stateList" name="stateList" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div></div></form >';
-
-
-str+=' <form class="form-horizontal"><div class="control-group" id="Districtdiv" style="display: none;">  <label class="control-label">Select District:</label><div class="controls"><select id="districtList" name="districtList"> <option value="0"> Select District </option> </select> </div></div></form >';
-
-str+='<form class="form-horizontal"><div class="control-group"  id="Constituencydiv" style="display: none;">	<label class="control-label">Select Constituency:</label><div class="controls"><select id="constituencyList" name="constituencyList"></select></div> </div></form >';
-
-
-str+='<form class="form-horizontal"><div class="control-group" id="specialDiv" style="display: none;"> <label class="control-label">Select Special Page:</label><div class="controls"><select id="specialPageList" name="specialPageList"></select></div></div></form >';
-
+str+='<input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State"/> State';
+str+=' <input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District"/> District';
+str+='  <input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency"/>  Constituency';
+str+=' <input type="radio" id="Special Page" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page"/> Special Page';
+str+='  <div id="electionTypes" style="display: none;"><input type="radio" id="Assembly" name="typeRadio"  value="Assembly" checked="checked"/> Assembly ';
+str+=' <input type="radio" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</div>';
+str+='<div id="Statediv" style="display:none;"> Select State:<select id="stateList" name="stateList" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
+str+=' <div id="Districtdiv" style="display: none;"> Select District:<select id="districtList" name="districtList"> <option value="0"> Select District </option> </select> </div>';
+str+='<div id="Constituencydiv" style="display: none;">	Select Constituency:<select id="constituencyList" name="constituencyList"></select> </div>';
+str+='<div id="specialDiv" style="display: none;">Select Special Page:<select id="specialPageList" name="specialPageList"></select></div>';
 str+='<span btn="info" onClick="savefavouriteLink()" id="addFav" style="display:none;">Add</span>';
 
 $("#addPopupForFavouriteLinks").html(str);
@@ -3146,7 +3133,7 @@ var jsObj=
 }
 
 function showSelectBoxForSpecialPages(results){
-
+	debugger;
 	var elmt = document.getElementById("specialPageList");
 	
 	if( !elmt || results == null)
@@ -3191,4 +3178,179 @@ function getAllFavLinksOfUser(){
 		var url = "getFavouriteLinksAction.action?"+rparam;	
 		callAjax1(jsObj,url);
 }
+
+// starting ----------You May Know Module (See All) updated by Srishailam------
+
+function  getDetailsForallDistricts(){
+var userStateId=stateId;
+var jsObj=
+		{						
+				stateId:userStateId,
+				task:"getDistrictNames"
+		}	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "sendUpdatesByemailsAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+function  getDetailsForallConstituencies(district){
+	$('#connectStatusSelect').val(0);
+	var districts = $('#connectDistrictSelect').val();
+		if( districts == '0' ){
+		$(".templateDiv").html('<div> Please Select District</div>').appendTo(".placeholderCenterDiv");
+		return false;
+		}
+var jsObj=
+		{						
+				districtId:district,
+				task:"getConstituencyNames"
+		}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "sendUpdatesByemailsAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+function iterateDistrictNames(result)
+{
+	var elmt = document.getElementById('connectDistrictSelect');
+	var option = document.createElement('option');
+	clearOptionsListForSelectElmtId('connectDistrictSelect');
+	option.value="0";
+	option.text="Select District";
+	try
+	{
+	elmt.add(option,null);	
+	}
+	catch (ex)
+	{
+		elmt.add(option);
+	}
+	for(var i in result)
+	{		
+		var option=document.createElement('option');		
+		option.value=result[i].id;
+		option.text=result[i].name;
+	try
+	{
+	elmt.add(option,null);	
+	}
+	catch (ex)
+	{
+		elmt.add(option);
+	}
+	}
+	$('#connectDistrictSelect').val(districtId);
+}
+function iterateDetailsNames(result){
+	var elmt = document.getElementById('connectConstituencySelect');
+	var option = document.createElement('option');
+	clearOptionsListForSelectElmtId('connectConstituencySelect');
+	option.value="0";
+	option.text="All";
+	try
+	{
+	elmt.add(option,null);	
+	}
+	catch (ex)
+	{
+		elmt.add(option);
+	}
+	for(var i in result)
+	{		
+		var option=document.createElement('option');		
+		option.value=result[i].id;
+		option.text=result[i].name;		
+	try
+	{
+	elmt.add(option,null);	
+	}
+	catch (ex)
+	{
+		elmt.add(option);
+	}
+	}
+	if(!flag){
+	flag=true;
+	$('#connectConstituencySelect').val(constituencyId);	
+	}
+}
+function clearOptionsListForSelectElmtId(elmtId)
+{
+	var elmt = document.getElementById(elmtId);
+	if(!elmt)
+		return;	
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+}
+
+function getAllConnectedUsersByDistrictWiseFilterView(locationType,userId)
+{	
+	var myDistrictId= $('#connectDistrictSelect').val();
+	var mylocationId = myDistrictId;	
+	var locationType= "DISTRICT";
+	var locationName = districtName;
+	var userLoginId = loginUserId;
+	var jsObj ={
+				locationId:mylocationId,							
+				locationName:locationName,
+				userId:userLoginId,
+				locationType:locationType,
+				task:"getAllConnectedUsers"
+			 };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllConnectedUserAction.action?"+rparam;
 	
+	custom_paginator.paginator({
+			startIndex:0,
+			resultsCount:20,
+			jsObj:jsObj,
+			ajaxCallURL:url,
+			paginatorElmt:"custom_paginator_class",
+			callBackFunction:function(){
+				showAllConnectedUsersInPanelByFilterView(jsObj,results);
+			}
+		});
+		custom_paginator.initialize();	
+}
+
+function getAllConnectedDistrictWise1UsersByFilterView(locationType,userId)
+{
+		var connectConstiSelectElmtValue = '';
+		var connectConstiArray = new Array();	
+		var allConstituencies=$('#connectConstituencySelect').val();		
+		
+		var connectStatusSelectElmt = $("#connectStatusSelect").val();
+		var statusText = $('#connectStatusSelect option:selected' ).text();
+		var textValue = $.trim($("#connectStatusTextBox").val());
+		
+		$('#connectConstituencySelect option').each(function(){
+		var value=$(this).val();
+		if(value!=0)
+		connectConstiArray.push(value);		
+		});
+		
+		var jsObj ={
+					constituencyIds:connectConstiArray,				
+					statusText:statusText,
+					nameString:textValue,
+					task:"getAllConnectedUsersByFilterView"
+				 };
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;	
+		
+		custom_paginator.paginator({
+			startIndex:0,
+			resultsCount:20,
+			jsObj:jsObj,
+			ajaxCallURL:url,
+			paginatorElmt:"custom_paginator_class",
+			callBackFunction:function(){
+				showAllConnectedUsersInPanelByFilterView(jsObj,results);
+			}
+		});
+		custom_paginator.initialize();	
+}
+
+// ending ----------You May Know Module (See All) updated by Srishailam------
