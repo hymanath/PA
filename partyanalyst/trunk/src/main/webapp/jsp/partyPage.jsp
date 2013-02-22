@@ -697,7 +697,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			   </h1><br><br>
 			   <s:iterator value="partyVO.electionTypes" status="stat">
 			   <s:if test="partyVO.electionTypes[#stat.index] =='Parliament'">
-			   <div style="margin-top: 1px;font-size: 13px;"><input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
+			   <div style="margin-top: 1px;font-size: 13px;"><input style="margin: 5px 5px 5px -140px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
 			   </s:if>
 			   <s:if test="partyVO.electionTypes[#stat.index] == 'Assembly'">
 			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="selectedStateForAssembly('stateDiv');"><s:property value="partyVO.electionTypes[#stat.index]" />
