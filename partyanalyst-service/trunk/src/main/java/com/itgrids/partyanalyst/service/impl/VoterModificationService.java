@@ -490,7 +490,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 voter.setRelativeFirstName(params[4].toString());
 					 voter.setRelationshipType(params[5].toString());
 					 voter.setBoothId((Long)params[6]);
-					 voter.setBoothNo((Long)params[7]);
+					 voter.setBoothNo(new Long(params[7].toString()));
 					 voter.setBoothName(params[8].toString());
 					 voter.setPanchayatId((Long)params[9]);
 					 voter.setPanchayatName(params[10].toString());

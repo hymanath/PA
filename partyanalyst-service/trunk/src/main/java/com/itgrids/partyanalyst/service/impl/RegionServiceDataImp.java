@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.sql.Select;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
 import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -68,7 +70,16 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO;
 	
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IPanchayatDAO panchayatDAO;
 	
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -817,6 +828,23 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return regionsList;		
 	}
 	
+	
+	public List<SelectOptionVO> getboothsInWardByPublicationId(Long wardId, Long constituencyId , Long publicationId) {
+		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
+		String id = wardId.toString().substring(1);
+		List<Object[]> boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(new Long(id), constituencyId ,  publicationId);
+		if(boothsList.size()>0)
+		{
+			for(int j=0;j<boothsList.size();j++)
+			{
+				Object[] obj = (Object[])boothsList.get(j);
+				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No" + obj[1]));
+			}
+		}
+		return regionsList;		
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getboothDetailsInWard(Long wardId, Long year,
 			Long constituencyId) {
@@ -1323,6 +1351,71 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		Collections.sort(result);
 		return result;
+	}
+	
+	
+	/**
+	 * This method will get the all panchayat details of a mandal
+	 * @author Samba Penugonda
+	 * @param tehsilId , this is tehsilId
+	 * @return all the panchayat details in the form of list
+	 */
+	public List<SelectOptionVO> getPanchayitiesInTehsil(Long tehsilId)
+	{
+		log.debug("Entered into the getPanchayitiesInTehsil service method");
+		List<SelectOptionVO> panchayatList = new ArrayList<SelectOptionVO>();
+		
+		try
+		{
+			List<Object[]> panchayatDetailsList = panchayatDAO.getPanchayatsBymandalId(new Long(tehsilId.toString().substring(1)));
+			
+			
+			for(Object[] obj:panchayatDetailsList)
+			{
+				SelectOptionVO selectOption = new SelectOptionVO();
+				 selectOption.setId(new Long("2"+obj[0].toString()));
+				 selectOption.setName(obj[1].toString());
+				 panchayatList.add(selectOption);
+				
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("Exception raised in getPanchayitiesInTehsil service method");
+			e.printStackTrace();
+			
+		}
+		return panchayatList;
+	}
+	
+
+
+	public List<SelectOptionVO> getBoothsInAPanchayatByPublicationId(Long panchayatId , Long publicationId)
+	{
+		log.debug("Entered into the getBoothsInAPanchayatForPresentElectionYear service method");
+		List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
+		
+		try
+		{
+		List<Object[]> boothDetailsList = boothDAO.getBoothsInAPanchayatByPublicationId(new Long(panchayatId.toString().substring(1)),publicationId);
+		
+		for(Object[] obj:boothDetailsList)
+		{
+			 SelectOptionVO selectOption = new SelectOptionVO();
+			 selectOption.setId(new Long(obj[0].toString()));
+			 selectOption.setName("BOOTH - "+obj[1].toString());
+			 boothsList.add(selectOption);
+			
+		}
+		}catch(Exception e)
+		{
+			log.error("Exception raised in getBoothsInAPanchayatForPresentElectionYear service method");
+			e.printStackTrace();
+		}
+		
+		return boothsList;
+		
+		
 	}
 	
 }

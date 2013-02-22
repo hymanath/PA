@@ -202,6 +202,16 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				"model.localBody.localElectionBodyId = ? and model.year = ? ", params);
 	}
 	
+	public List<Object[]> findBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(Long wardId , Long constituencyId , Long publicationId)
+	{
+		Object[] params = {constituencyId, wardId, publicationId};
+		return getHibernateTemplate().find("select model.boothId, model.partNo" +
+				" from Booth model where model.constituency.constituencyId = ? and " +
+				"model.boothLocalBodyWard.localBodyWard.constituencyId = ? and model.publicationDate.publicationDateId = ? ", params);
+	
+		
+	}
+	
 	public List findBoothsInfoForALocalBodyWardByConstituencyAndYear(Long localBodyWardId, Long year, Long constituencyId){
 		Object[] params = {constituencyId, localBodyWardId, year};
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location, model.villagesCovered from Booth model where model.constituency.constituencyId = ? and " +
@@ -378,6 +388,19 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			queryObj.setParameterList("boothIds", boothIds);
 			return queryObj.list();
 		}
+	    
+	    public List<Object[]> getBoothsInAPanchayatByPublicationId(Long panchayatId,Long publicationId)
+	    {
+	    	
+	    	Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model where " +
+	    			"model.publicationDate.publicationDateId = ? and model.panchayat.panchayatId = ?");
+	    	
+	    	query.setParameter(0, publicationId);
+	    	query.setParameter(1, panchayatId);
+	    	
+	    	return query.list();
+	    	
+	    }
 	    
 	    public List<Object[]> getBoothsInAPanchayatForPresentElectionYear(Long panchayatId,Long year){
 	    	Object[] params={panchayatId,year};
