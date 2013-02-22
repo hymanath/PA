@@ -191,4 +191,17 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 			query.setParameter("constituencyId",constituencyId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getModifiedVotersByPartNo(String partNo,Long constituencyId, Long publicationDateId, String status)
+	{
+		Query query = getSession().createQuery(" select distinct model.voter.voterId from VoterModification model, BoothPublicationVoter model2 where " +
+				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.booth.constituency.constituencyId = :constituencyId and model2.booth.partNo = :partNo and model.status = :status ");
+		query.setParameter("partNo",partNo);
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("status",status);
+		return query.list();
+	}
 }

@@ -55,12 +55,6 @@ public class Voter extends BaseModel implements Serializable {
 	private Date dateOfBirth;
 	private Date insertedTime;
 	private String mobileNo;
-	private InfluencingPeople influencingPeople;
-
-	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
-	private Set<BoothPublicationVoter> boothPublicationVoters =new HashSet<BoothPublicationVoter>(0);
-	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
-	private Set<VoterCategoryValue> voterCategoryValue = new HashSet<VoterCategoryValue>();
 	
 	public Voter(){
 		
@@ -91,7 +85,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.insertionDate = insertionDate;
 		this.hamlet = hamlet;
 		this.localArea = localArea;
-		this.boothConstituencyElectionVoters = boothConstituencyElectionVoters;
 	}
 
 	@Id
@@ -234,16 +227,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.hamlet = hamlet;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
-	public Set<BoothConstituencyElectionVoter> getBoothConstituencyElectionVoters() {
-		return boothConstituencyElectionVoters;
-	}
-
-	public void setBoothConstituencyElectionVoters(
-			Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters) {
-		this.boothConstituencyElectionVoters = boothConstituencyElectionVoters;
-	}
-
 	@Column(name = "local_area", length = 50)
 	public String getLocalArea() {
 		return localArea;
@@ -263,28 +246,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<BoothPublicationVoter> getBoothPublicationVoters() {
-		return boothPublicationVoters;
-	}
-
-	public void setBoothPublicationVoters(
-			Set<BoothPublicationVoter> boothPublicationVoters) {
-		this.boothPublicationVoters = boothPublicationVoters;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserVoterDetails> getUservoterdetails() {
-		return uservoterdetails;
-	}
-
-	public void setUservoterdetails(Set<UserVoterDetails> uservoterdetails) {
-		this.uservoterdetails = uservoterdetails;
-	}
 	@Column(name = "name", length = 200)
 	public String getName() {
 		return name;
@@ -311,15 +272,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.insertedTime = insertedTime;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<VoterCategoryValue> getVoterCategoryValue() {
-		return voterCategoryValue;
-	}
-
-	public void setVoterCategoryValue(Set<VoterCategoryValue> voterCategoryValue) {
-		this.voterCategoryValue = voterCategoryValue;
-	}
 	@Column(name="mobile_no",length = 15)
 	public String getMobileNo() {
 		return mobileNo;
@@ -328,15 +280,5 @@ public class Voter extends BaseModel implements Serializable {
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
-	public InfluencingPeople getInfluencingPeople() {
-	return influencingPeople;
-	}
-
-	public void setInfluencingPeople(InfluencingPeople influencingPeople) {
-	this.influencingPeople = influencingPeople;
-	}
-
 	
 }

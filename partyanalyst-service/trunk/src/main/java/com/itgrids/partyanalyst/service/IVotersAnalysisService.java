@@ -176,4 +176,6 @@ public interface IVotersAnalysisService {
 	public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId);
 	
 	public ResultStatus checkForVoter(Long voterId,String type);
+	
+	public ResultStatus mapVoterDataFromOnePublicationToAnotherPublication(Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,Boolean boothCreateFlag);
 }
