@@ -813,4 +813,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 		
 	}
+	/**
+	 * This Method is used To get The Count Of Voters based on voterId
+	 * @author Prasad Thiragabathina
+	 * @param Long voterId
+	 * @return List<Long>
+	 */
+	public List<Long> getinfluencingPeopleVoterId(Long voterId) {
+		
+		return getHibernateTemplate().find("select count(model) from Cadre model where model.voter.voterId = ?",voterId);
+	}
 }

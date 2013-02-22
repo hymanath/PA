@@ -29,7 +29,9 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
@@ -67,6 +69,9 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CadreDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CandidateDAO;
+import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
@@ -168,7 +173,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterModificationTempDAO voterModificationTempDAO;
     private IVoterModificationDAO voterModificationDAO;
     private IInfluencingPeopleDAO influencingPeopleDAO;
-    
+    private ICadreDAO cadreDAO;
+    private ICandidateDAO candidateDAO;
    	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
 		return influencingPeopleDAO;
 	}
@@ -734,6 +740,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		this.publicationDateDAO = publicationDateDAO;
 	}
 	
+	
 	/*public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId){
 		try{
 			List<Election> electionIds = getPrevElections(publicationDateId);
@@ -769,10 +776,25 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		   return votersInfoForMandalVO;
 	}*/
 	
+	public ICadreDAO getCadreDAO() {
+		return cadreDAO;
+	}
+
+	public void setCadreDAO(ICadreDAO cadreDAO) {
+		this.cadreDAO = cadreDAO;
+	}
+	
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+
 	public ILocalElectionBodyWardDAO getLocalElectionBodyWardDAO() {
 		return localElectionBodyWardDAO;
 	}
-
 	public void setLocalElectionBodyWardDAO(
 			ILocalElectionBodyWardDAO localElectionBodyWardDAO) {
 		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
@@ -8867,4 +8889,54 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			
 		}
 	}
+		 /**
+		  * This Method Is Used To Check Weater The influencing people  is Already Avalibale Or Not with the 
+		  * voterId
+		  * @author Prasad Thiragabathina
+		  * @param Long voterId
+		  * @param String type
+		  * @return ResultStatus
+		  */
+		public ResultStatus checkForVoter(Long voterId, String type) {
+			ResultStatus resultStatus = new ResultStatus();
+			Long count = 0l;
+			List<Long> voterIds = null;
+			if(voterId != null && voterId > 0)
+			{	
+				if(type.equalsIgnoreCase("influencingPeople"))
+				{
+					voterIds = influencingPeopleDAO.getinfluencingPeopleVoterId(voterId);
+					
+				}
+				else if(type.equalsIgnoreCase("cadre"))
+				{
+					 voterIds = cadreDAO.getinfluencingPeopleVoterId(voterId);
+					
+				}
+				else if(type.equalsIgnoreCase("candidate"))
+				{
+					 voterIds = candidateDAO.getinfluencingPeopleVoterId(voterId);
+					
+				}
+				if(voterIds != null && voterIds.size() > 0 && voterIds.get(0) != null)
+				{
+					 count = voterIds.get(0);
+					 if(count > 0)
+						{
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						}
+						else
+						{
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						}
+				}
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+			}
+			return resultStatus;
+		}
+	
+		
 }
