@@ -16,5 +16,7 @@ public interface IProblemFilesDAO extends GenericDao<ProblemFiles,Long>{
 	//public Long getCountOfNewlyPostedImagesByFreeUser();
 	
 	public Long getCountOfNewlyPostedImagesByFreeUser(Date currentDate);
+	
+	public Integer deleteProblemFile(Long problemFileId);
 
 }

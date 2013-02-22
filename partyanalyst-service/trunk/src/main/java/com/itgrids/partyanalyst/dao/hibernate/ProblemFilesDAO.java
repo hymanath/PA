@@ -61,4 +61,13 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 		Object[] params = {problemId,userId};
 		return getHibernateTemplate().find("select model.file.fileName ,model.file.fileTitle,model.file.fileDescription ,model.file.filePath from ProblemFiles model where model.isApproved='true' and model.isDelete ='false' and model.problem.problemId =? and model.user.userId = ?",params);
 	}
+	@SuppressWarnings("unchecked")
+	public Integer deleteProblemFile(Long problemFileId)
+	{
+		Query queryObj = getSession().createQuery("delete from ProblemFiles model where model.problemFilesId = :problemFileId");
+		queryObj.setParameter("problemFileId", problemFileId);
+		return queryObj.executeUpdate();
+		
+	}
+	
 }
