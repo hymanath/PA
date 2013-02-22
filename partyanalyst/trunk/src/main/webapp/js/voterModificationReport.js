@@ -70,6 +70,7 @@ $(document).ready(function() {
 
 function getPublicationDate()
 	{
+		$('#voterAgeInfoAjaxImg').css('display','block');
 		var value=constituencyId;
 		
 		var jsObj=
@@ -80,7 +81,7 @@ function getPublicationDate()
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "voterAnalysisAjaxAction.action?"+rparam;	
 
-		$('#publicationAjaxImage').css('display','block');
+		
 		callAjax(jsObj,url);
 	}
 //Ended by sasi
@@ -209,6 +210,7 @@ function getPublicationDate()
 
 //Created by sasi for populating the selectbox for publication
 function buildSelectBoxes(results,jsObj){
+	$("#voterAgeInfoAjaxImg").css("display","none");
 	var selectedElmt=document.getElementById("prespublicationDateList");
 		removeSelectElements(selectedElmt);
 		
@@ -327,7 +329,7 @@ function showVoterInfo(results,jsObj)
 	if(results != null)
 	{
 		
-		str +='<table id="voterInfoTab">';
+		str +='<table id="voterInfoTab" class="table table-bordered table-hover">';
 		str +='<tr>';
 		str +='<th>Publication Date</th>';
 		str +='<th>Total Voters</th>';
@@ -349,7 +351,8 @@ function showVoterInfo(results,jsObj)
 
 	else 
 	{
-	  $('#voterInfoDiv').html('<div>No Data Available.</div>');
+	  $('#voterInfoDiv').html('<div class="voterinfoHeading"><h2>Voters Basic Information</h2></div>');
+	  $('#voterInfoDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
 }
@@ -365,7 +368,7 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 	if(results != null)
 	{
 		
-		str +='<table id="voterAgeInfoTab" border="1">';
+		str +='<table id="voterAgeInfoTab" border="1" class="table table-bordered table-hover">';
 		str +='<tr>';
 		str +='<th>Age Range</th>';
 		for(var i in results)
@@ -388,7 +391,8 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 
 	else 
 	{
-	  $('#voterAgeInfoDiv').html('<div>No Data Available.</div>');
+	  $('#voterAgeInfoDiv').html('<div class="voterinfoHeading"><h2>Age Wise Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>');
+	  $('#voterAgeInfoDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
 }
@@ -403,7 +407,7 @@ function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
 	
 	if(results != null)
 	{
-		str +='<table id="voterGenderInfoTab" border="1">';
+		str +='<table id="voterGenderInfoTab" border="1" class="table table-bordered table-hover">';
 		str +='<tr>';
 		str +='<th>Status</th>';
 		str +='<th>Total</th>';
@@ -428,7 +432,8 @@ function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
 
 	else 
 	{
-	  $('#voterGenderInfoDiv').html('<div>No Data Available.</div>');
+	  $('#voterGenderInfoDiv').html('<div class="voterinfoHeading"><h2>Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>');
+	  $('#voterGenderInfoDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
 }
@@ -443,7 +448,7 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 
 	if(results != null)
 	{
-		str +='<table class="voterInfoTable">';
+		str +='<table class="voterInfoTable" class="table table-bordered table-hover">';
 		str +='<tr>';
 		str +='<th rowspan="2">Publication Name</th>';
 		str +='<th rowspan="2">Previous Publication Name</th>';
@@ -483,7 +488,8 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 	}
 	else 
 	{
-	  $('#genderWiseVoterModifiDiv').html('<div>No Data Available.</div>');
+	  $('#genderWiseVoterModifiDiv').html('<div class="voterinfoHeading"><h2>Gender Wise Voter Modifications For Each Publication</h2></div>');
+	  $('#genderWiseVoterModifiDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
 	
