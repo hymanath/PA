@@ -181,6 +181,10 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		{
 			resultStatus = votersAnalysisService.moveVotersModificationDataFromTempToMainTable(jObj.getLong("constituencyId"), jObj.getLong("publicationDateId"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("InsertmapVoterData"))
+		{
+			resultStatus = votersAnalysisService.mapVoterDataFromOnePublicationToAnotherPublication(jObj.getLong("constituencyId"),jObj.getLong("frompublicationDateId"),jObj.getLong("topublicationDateId"),jObj.getBoolean("boothCreateflag"));
+		}
 		return Action.SUCCESS;
 	}
 
