@@ -4273,10 +4273,6 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		/* Updated by sasi*/
 		//Because booth doesnt consists the results iam hiding the PreviousElections results div by calling the function
 		
-		if(maintype == "ward"){
-			$("#previousEleVotingTrendsDiv1").css('display','none');
-		}
-	  if(maintype == "constituency" || maintype == "panchayat" || maintype == "mandal" || maintype == "booth"){
 		  $("#previousEleAjaxImg").css("display","block");
 		var jsObj=
 		{
@@ -4290,7 +4286,7 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getPreviousEleVotingTrendsAction.action?"+rparam;	
 		callAjax(jsObj,url);
-      }
+      
 	 }
 
 function showPreviousEleVotingTrends(results,jsObj)
@@ -4313,8 +4309,12 @@ function showPreviousEleVotingTrends(results,jsObj)
 				str +='<thead class="info"><tr>';
 				str +='<th>Election Type</th>';
 				str +='<th>Year</th>';
-				if(jsObj.type != "booth")
-				str +='<th>Total Booths</th>';
+				if(jsObj.type != "booth"){
+				   if((jsObj.type == 'mandal' && jsObj.id.substring(0,1) == "1") || jsObj.type == 'ward')
+				    str +='<th>Total Booths/Wards</th>';
+				   else
+				     str +='<th>Total Booths</th>';
+				}
 				str +='<th>Total Voters</th>';
 				  str +='<th>Votes Polled</th>';
 			   for(var i in results[0].partiesList)
@@ -4907,7 +4907,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		     if(municipalityid==municipality.id && municipality.selectOptionsList != null){
 					  $.each(municipality.selectOptionsList,function(iter,wards){ 
 									//str+='<li class="nav nav-pills"><a class="btn" data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="'+booths.name+'" href="javascript:{}"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
-									str+='<li><a onClick="" data-wardid="'+ wards.id+'" data-municipalityid="'+ municipality.id+'" name-ward="'+wards.name+' wards"><span class="checkbox"> <input type="radio" data-municipalityid="'+ municipality.id+'" id="Chk-'+wards.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span><i class="icon-chevron-right"></i>'+wards.name+'</a></li>';
+									str+='<li><a onClick="" data-wardid="'+ wards.id+'" data-municipalityid="'+ municipality.id+'" name-ward="'+wards.name+'"><span class="checkbox"> <input type="radio" data-municipalityid="'+ municipality.id+'" id="Chk-'+wards.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span><i class="icon-chevron-right"></i>'+wards.name+'</a></li>';
 									});
 									}
 			});
