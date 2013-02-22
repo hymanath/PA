@@ -203,6 +203,7 @@ var problemDetailsInEdit = null;
 						candidateId : '${file.candidateId}',
 						firstname:' ${file.name}',
 						lastname : '${file.names}',
+						problemFileId:'${file.problemFileId}',
 					 };		
 	
 	problemFilesArray.push(fileObj);
@@ -214,7 +215,7 @@ var problemDetailsInEdit = null;
 	 
 	});
 	function buildInitalfiles(result){
-	       if(result.length > 4)
+		 if(result.length > 4)
 		   document.getElementById("moreimags").style.display="block";
       var problemRelatedImagesElmt = document.getElementById("imagesdisplaydiv");
 	  if(problemRelatedImagesElmt == null)
@@ -241,7 +242,6 @@ var problemDetailsInEdit = null;
       str+= '<a href="'+result[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
       }
       
-      
       }
       else{
       
@@ -249,7 +249,8 @@ var problemDetailsInEdit = null;
       
       }
       
-      
+     str +='<input type="button" value="delete" id="buttonId" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);">';
+
       }
 
       problemRelatedImagesElmt.innerHTML = str;
@@ -307,21 +308,23 @@ var problemDetailsInEdit = null;
       }
       
       str+= '</a></td>';
-      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr></table></td>';
+      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td>';
+	  str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
       
       
       }
       else{
       str+= '<td><table><tr><td>';
       str+= '<a rel="more_photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" width="135px" /></a></td>';
-      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr></table></td>';
+      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td>';
+	  str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
       
       }
       
       if(j % no_of_imagesPerRow == 0){
       str+= '</tr>';
       }
-      
+     
       }
       str+= ' </table>';
       str+='</div>';
@@ -997,6 +1000,10 @@ function callAjax(jsObj,url)
 							{
 								showAbusedCommentsResults(myResults,jsObj);
 							}
+							else if(jsObj.task == "deleteProblemFile")
+							{
+								showProblemFileDeleteStatus(myResults,jsObj);
+							}
 						}
 						catch(e)
 						{   
@@ -1012,7 +1019,20 @@ function callAjax(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function showProblemFileDeleteStatus(result,jsObj)
+{
 
+	if(result.resultCode == 0 && jsObj.id == "buttonId")
+	{
+	getMessage();
+	}
+	else if(result.resultCode == 0 && jsObj.id == "popupButton")
+	{
+		getMessage();
+		getNewImagesDetails('final');
+	}
+	
+}
 function showProblemDetailsForUpdate(myresults)
 {
 
@@ -2253,6 +2273,19 @@ function rateWiseCountOfAProblem()
 	}
   }
   
+ function deleteProblemFile(problemFileId,id)
+ {
+	var jsObj = {
+		problemFileId  :problemFileId,
+		id             :id,
+		task       : "deleteProblemFile"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "deleteProblemFileAction.action?"+rparam;
+	 callAjax(jsObj,url);
+
+}
  
  
  

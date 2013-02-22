@@ -760,6 +760,18 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	   
 	   return Action.SUCCESS;
    }
+   
+   public String deleteProblemFile()
+   {
+	 
+	 		try {
+	 			jObj = new JSONObject(getTask());
+	 		} catch (ParseException e) {
+	 			e.printStackTrace();
+	 		}
+	 		resultStatus = problemManagementService.deleteProblemFile(jObj.getLong("problemFileId"));
+			return Action.SUCCESS;
+   }
 
    public String saveAbusedCommentsToProblem()
    {
