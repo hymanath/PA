@@ -584,14 +584,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
 					
-					if(voter.getInfluencingPeople() != null){
+					/*if(voter.getInfluencingPeople() != null){
 						voterVO.setInfluencePerson(true);
 						voterVO.setInfluencePerson("true");
 					}
 					else{
 						voterVO.setInfluencePerson(false);
 						voterVO.setInfluencePerson("false");
-					}
+					}*/
 					voters.add(voterVO);
 	
 				}
@@ -4048,23 +4048,112 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 	}
 }
 
-public ResultStatus mapVoterDataFromOnePublicationToAnotherPublication(Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
-{
-	ResultStatus resultStatus = new ResultStatus();
-	try{
-		
-	
-		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		resultStatus.setMessage("Voter Data Mapped Successfully");
-		return resultStatus;
-	}catch (Exception e) {
-		log.error("Exception Occured in mapVoterDataFromOnePublicationToAnotherPublication() Method");
-		log.error("Exception is - "+e);
-		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-		resultStatus.setMessage("Exception Occured..");
-		return resultStatus;
+	public ResultStatus mapVoterDataFromOnePublicationToAnotherPublication(Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,Boolean boothCreateFlag)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<Object[]> list = boothDAO.getBoothIdsAndPartNosOfAConstituencyInAPublication(constituencyId,fromPublicationDateId);
+			
+			if(list == null || list.size() == 0)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setMessage("Booths Not Available for this Publication");
+				return resultStatus;
+			}
+			
+			for(Object[] params : list)
+			{
+				Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(params[1].toString(),constituencyId,toPublicationDateId);
+				if(booth == null && boothCreateFlag)
+				{
+					Booth previousBooth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(params[1].toString(),constituencyId,fromPublicationDateId);
+					booth = copyBoothObject(previousBooth);
+					booth.setPublicationDate(publicationDateDAO.get(toPublicationDateId));
+					booth = boothDAO.save(booth);
+					voterDAO.flushAndclearSession();
+				}
+				else if(booth == null && !boothCreateFlag)
+					continue;
+				List<Voter> votersList = boothPublicationVoterDAO.getVotersByBoothId((Long)params[0]);
+				
+				if(votersList != null && votersList.size() > 0)
+				{
+					List<Long> addedVoterIdsList = voterModificationDAO.getModifiedVotersByPartNo(booth.getPartNo(),constituencyId,fromPublicationDateId,IConstants.STATUS_ADDED);
+					List<Long> deletedVoterIdsList = voterModificationDAO.getModifiedVotersByPartNo(booth.getPartNo(),constituencyId,fromPublicationDateId,IConstants.STATUS_DELETED);
+					
+					if(addedVoterIdsList == null)
+						addedVoterIdsList = new ArrayList<Long>(0);
+					if(deletedVoterIdsList == null)
+						deletedVoterIdsList = new ArrayList<Long>(0);
+					
+					for(Voter voter : votersList)
+					{
+						if(deletedVoterIdsList.contains(voter.getVoterId()))
+							deletedVoterIdsList.remove(voter.getVoterId());
+							
+						if(!addedVoterIdsList.contains(voter.getVoterId()))
+						{
+							BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
+							boothPublicationVoter.setVoter(voter);
+							boothPublicationVoter.setBoothId(booth.getBoothId());
+							boothPublicationVoterDAO.save(boothPublicationVoter);
+						}
+					}
+					
+					if(deletedVoterIdsList != null && deletedVoterIdsList.size() > 0)
+					{
+						for(Long voterId : deletedVoterIdsList)
+						{
+							BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
+							boothPublicationVoter.setVoter(voterDAO.get(voterId));
+							boothPublicationVoter.setBoothId(booth.getBoothId());
+							boothPublicationVoterDAO.save(boothPublicationVoter);
+						}
+					}
+					voterDAO.flushAndclearSession();
+				}
+			}
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setMessage("Voter Data Mapped Successfully");
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Occured in mapVoterDataFromOnePublicationToAnotherPublication() Method");
+			log.error("Exception is - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setMessage("Exception Occured..");
+			return resultStatus;
+		}
 	}
-}
+
+	public Booth copyBoothObject(Booth booth)
+	{
+		try{
+			Booth newBooth = new Booth();
+			if(booth == null)
+				return null;
+			newBooth.setPartNo(booth.getPartNo());
+			newBooth.setPartName(booth.getPartName());
+			newBooth.setLocation(booth.getLocation());
+			newBooth.setVillagesCovered(booth.getVillagesCovered());
+			newBooth.setTehsil(booth.getTehsil());
+			newBooth.setMaleVoters(booth.getMaleVoters());
+			newBooth.setFemaleVoters(booth.getFemaleVoters());
+			newBooth.setTotalVoters(booth.getTotalVoters());
+			newBooth.setConstituency(booth.getConstituency());
+			newBooth.setYear(booth.getYear());
+			newBooth.setLocalBody(booth.getLocalBody());
+			newBooth.setPublicationDate(booth.getPublicationDate());
+			newBooth.setPanchayat(booth.getPanchayat());
+			newBooth.setLocalBodyWard(booth.getLocalBodyWard());
+			return newBooth;
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in copyBoothObject() Method");
+			log.error("Exception is - "+e);
+			return null;
+		}
+	}
 public ResultStatus updateVoterData(Long constituencyId,Integer startIndex, Integer maxResults)
 {
 	ResultStatus resultStatus = new ResultStatus();

@@ -1076,4 +1076,10 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Voter> getVotersByBoothId(Long boothId)
+	{
+		return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model where model.booth.boothId = ? ",boothId);
+	}
 }
