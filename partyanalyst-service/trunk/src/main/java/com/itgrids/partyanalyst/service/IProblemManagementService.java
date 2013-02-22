@@ -216,4 +216,6 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public Long getRegionScopesIdByScope(String scope);
 	
+	public ResultStatus deleteProblemFile(Long problemFileId);
+	
 }
