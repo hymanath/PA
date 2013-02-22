@@ -156,11 +156,11 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 			query.append(" and (model1.userSource.district.districtId in (:locationIds) and model1.userTarget.district.districtId in (:locationIds)) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-			query.append(" and (model1.userSource.constituency.constituencyId in (:locationIds) and model1.userTarget.constituency.constituencyId in (:locationIds)) ");
+			query.append(" and (model1.userSource.constituency.constituencyId in (:locationIds) or model1.userTarget.constituency.constituencyId in (:locationIds)) and model.constituency.constituencyId in (:locationIds) ");
 		}
 		if(nameString != null && !nameString.trim().equalsIgnoreCase(""))
 		{
-			query.append("and ((model1.userSource.firstName like '"+nameString+"%' or model1.userSource.lastName like '"+nameString+"%') or " +
+			query.append("and ((model1.userSource.firstName like '"+nameString+"%'  or model.lastName like '"+nameString+"%' or model1.userSource.lastName like '"+nameString+"%') or " +
 					"(model1.userTarget.firstName like '"+nameString+"%' or model1.userTarget.lastName like '"+nameString+"%'))");
 		}
 		
