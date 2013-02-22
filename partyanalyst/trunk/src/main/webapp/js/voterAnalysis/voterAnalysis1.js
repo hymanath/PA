@@ -851,6 +851,7 @@ function addToPolitician(voterId)
 	}
 
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
+	$("#votersCountModifyAjaxDiv").css("display","block");
 	constituencyId=$('#constituencyList option:selected').val()
 		var jsObj={					
 						toPublicationDateId:toPublicationDateId,
@@ -1387,8 +1388,8 @@ function addToPolitician(voterId)
 		var presPId=results.presentPublicationId;
 		var prevPId=results.previousPublicationId;
 		var url='/PartyAnalyst/voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
-		var vrl='/PartyAnalyst/voterModificationReportAction.action'
-		$('#detailModifiedVoters').attr('href',url);
+		$('#detailModifiedVoters').attr('url',url);
+		
 		if(addedCount!=null){$("#addedVtrs").text(addedCount);}
 		else{$("#addedVtrs").text('No Data');}
 		
@@ -1442,7 +1443,7 @@ function addToPolitician(voterId)
 			$(opElmt).attr("selected","selected") ;		  
 		  }
 		}
-		
+		$("#votersCountModifyAjaxDiv").css("display","none");
 		
 	}
 	
