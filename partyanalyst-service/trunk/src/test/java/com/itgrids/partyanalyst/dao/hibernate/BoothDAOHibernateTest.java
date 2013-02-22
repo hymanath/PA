@@ -308,9 +308,24 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(wardIds);
 	}*/
 	
-	public void testGetBoothsCountByPublicationId()
+	/*public void testGetBoothsCountByPublicationId()
 	{
 		List<Long> wardIds = boothDAO.getBoothsCountByPublicationId("mandal",844l, 7l);
 		System.out.println(wardIds);
+	}*/
+	
+	/*public void testGetBoothIdsAndPartNosOfAConstituencyInAPublication()
+	{
+		List<Object[]> list = boothDAO.getBoothIdsAndPartNosOfAConstituencyInAPublication(232l,8l);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+			System.out.println(params[0]+"\t"+params[1]);
+	}*/
+	
+	public void testGetBoothByPartNoAndPublicationIdInAConstituency()
+	{
+		Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency("1",241l,8l);
+		System.out.println(booth.getLocation());
 	}
 }
