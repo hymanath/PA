@@ -846,7 +846,7 @@ function addToPolitician(voterId)
 		 callCorrespondingAjaxCall('brief');
 		 //getElectionyearsByMandalId(id,type)
 		 var fromPublicationDateId=0;
-		 getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
+		 //getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
 
 	}
 
