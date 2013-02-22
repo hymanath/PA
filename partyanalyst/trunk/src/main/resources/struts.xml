@@ -4502,5 +4502,10 @@
 			  <param name="root">voterModificationGenderInfoVOList</param>
 			</result>
 		</action>
+		<action name="deleteProblemFileAction" class="problemAssigningAction" method="deleteProblemFile">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
 	</package>
 </struts>      
