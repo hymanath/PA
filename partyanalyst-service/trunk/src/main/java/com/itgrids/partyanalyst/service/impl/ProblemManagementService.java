@@ -9014,4 +9014,22 @@ public List<ProblemBeanVO> getProblemDetailsByProfileId(Long profileId,int start
 			return 0l;
 		}
 	}
+
+	public ResultStatus deleteProblemFile(Long problemFileId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Integer result = problemFilesDAO.deleteProblemFile(problemFileId);
+			if(result != 0)
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			else if(result == 0)
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);	
+			}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return resultStatus;
+	}
+
 }
