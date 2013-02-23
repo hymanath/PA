@@ -281,9 +281,16 @@ System.out.println(list.size());
 		System.out.println(l);
 	}*/
 
-	public void testGetVotersByBoothId()
+	/*public void testGetVotersByBoothId()
 	{
 		List<Voter> list = boothPublicationVoterDAO.getVotersByBoothId(121884l);
 		System.out.println(list.size());
+	}*/
+
+	public void testGetBoothIdAndVoterIdByConstituencyInAPublication()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getPartNoAndVoterIdByConstituencyInAPublication(232l,7l);
+		System.out.println(list.size());
 	}
+	
 }
