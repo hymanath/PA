@@ -201,7 +201,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		}	
 		query.append("and model.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
 		if(nameString != null && nameString.trim().length() >0)
-		  query.append(" and model.firstName like '"+nameString+"%' or model.lastName like '"+nameString+"%'");
+		  query.append(" and (model.firstName like '"+nameString+"%' or model.lastName like '"+nameString+"%')");
 		query.append("  order by model.userId desc");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
@@ -238,7 +238,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		query.append(" model.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
 		
 		if(nameString != null && nameString.trim().length() >0)
-		 query.append("and model.firstName like '"+nameString+"%'  or model.lastName like '"+nameString+"%'");
+		 query.append(" and (model.firstName like '"+nameString+"%' or model.lastName like '"+nameString+"%')");
 		query.append(" order by model.userId desc");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
