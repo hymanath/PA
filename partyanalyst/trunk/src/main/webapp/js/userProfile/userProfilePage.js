@@ -8,6 +8,7 @@ var userType = '';
 var startIndex;
 var jcrop_api;
 var flag=false;
+var flag1=false;
 $("document").ready(function(){
 	setInterval("callForEveryFiveMins()", 10*60*60*5);
     $("#subscriptionsStreamingMore").live("click",function(){
@@ -263,10 +264,13 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	//flag value created by Srishailam
 	$(".districtPeopleLink").click(function(){	
 	flag=false;
+	if(!flag1){
+	flag1=true;
 	getAllCconnectedUserDetails();
 	setTimeout("getDetailsForallDistricts()",500);	
-	setTimeout("getDetailsForallConstituencies(districtId)",650);		
+	setTimeout("getDetailsForallConstituencies(districtId)",750);		
 	setTimeout("getAllConnectedUsersByFilterView()",1000);
+	}
 	});
 
 	$(".connectLink").live("click",function(){
@@ -1788,6 +1792,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	var pagination = $('<div class="custom_paginator_class" style="clear: both; margin-top: 0px; padding-top: 10px;"></div>');
 	pagination.appendTo('.placeholderCenterDiv');
 	}
+	flag1=false;
 }
 
 function getAllCconnectedUserDetails(){
@@ -1908,6 +1913,7 @@ function selectedStatusValue(){
 
 		pagination.appendTo('.placeholderCenterDiv');
 	}
+	flag1=false;
 }
 
 function getAllConnectedUsersByFilterView(locationType,userId)
@@ -3192,8 +3198,9 @@ var jsObj=
 	var url = "sendUpdatesByemailsAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 }
-function  getDetailsForallConstituencies(district){
+function getDetailsForallConstituencies(district){
 	$('#connectStatusSelect').val(0);
+	$('#connectStatusTextBox').val('');
 	var districts = $('#connectDistrictSelect').val();
 		if( districts == '0' ){
 		$(".templateDiv").html('<div> Please Select District</div>').appendTo(".placeholderCenterDiv");
@@ -3237,6 +3244,7 @@ function iterateDistrictNames(result)
 		elmt.add(option);
 	}
 	}
+	$("select[name='connectDistrictSelect'] option:eq(0)").remove();
 	$('#connectDistrictSelect').val(districtId);
 }
 function iterateDetailsNames(result){
