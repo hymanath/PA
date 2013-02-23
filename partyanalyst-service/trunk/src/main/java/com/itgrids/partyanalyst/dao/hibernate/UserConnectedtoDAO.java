@@ -160,8 +160,10 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		}
 		if(nameString != null && !nameString.trim().equalsIgnoreCase(""))
 		{
-			query.append("and ((model1.userSource.firstName like '"+nameString+"%'  or model.lastName like '"+nameString+"%' or model1.userSource.lastName like '"+nameString+"%') or " +
-					"(model1.userTarget.firstName like '"+nameString+"%' or model1.userTarget.lastName like '"+nameString+"%'))");
+			query.append("and (model.firstName like '"+nameString+"%'  or model.lastName like '"+nameString+"%' )");
+			/*query.append("and ((model1.userSource.firstName like '"+nameString+"%'  or model.lastName like '"+nameString+"%' or model1.userSource.lastName like '"+nameString+"%') or " +
+			"(model1.userTarget.firstName like '"+nameString+"%' or model1.userTarget.lastName like '"+nameString+"%'))");
+			 */
 		}
 		
 		query.append(" and model.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) order by model.userId desc");
