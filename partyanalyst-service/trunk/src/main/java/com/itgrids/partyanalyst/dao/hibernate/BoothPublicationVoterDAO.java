@@ -1082,4 +1082,14 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	{
 		return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model where model.booth.boothId = ? ",boothId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select model.booth.partNo,model.voter.voterId from BoothPublicationVoter model where " +
+				" model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 }
