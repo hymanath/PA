@@ -139,4 +139,6 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Long> getPreviousPublicationIds(Long publicationDateId);
 	 
 	 public List<Voter> getVotersByBoothId(Long boothId);
+	 
+	 public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId);
 }

@@ -18,4 +18,6 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	public List<Object[]> getModifiedVotersInALocationBetweenPublucations(String locationType,Long locationValue,Long constituencyId,List<Long> publicationIdsList,String status);
 	
 	public List<Long> getModifiedVotersByPartNo(String partNo,Long constituencyId, Long publicationDateId, String status);
+	
+	public List<Long> getModifiedVotersByConstituency(Long constituencyId, Long publicationDateId, String status);
 }
