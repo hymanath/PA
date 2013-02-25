@@ -7,7 +7,7 @@
 <title>Voter Modification Report</title>
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="js/voterModificationReport.js"></script>
+
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <style>
 .errorClass
@@ -43,7 +43,7 @@
     min-width: 97%;
     text-align: center;}
 
-	.voterInfoTable th {
+    .voterInfoTable th {
     background-color: #DBEBFF;
     border-color: #666666;
     border-style: solid;
@@ -119,8 +119,8 @@
 
         <div id="mainDiv" class="breadcrumb" style="margin-top:20px;">
 
-	<div  style="text-align: center;">	
-	   <span class="title">Allur Panchayat newly added / deleted voters information</span>	   
+	<div  style="text-align: center;text-transform: uppercase;">	
+	   <span class="title"><span id="titleDiv"></span>  Newly added / deleted voters information</span>	   
 	</div>
 
 	<div class="form-horizontal" style="margin-left:238px;">
@@ -188,13 +188,13 @@
 	<div style="margin-left:116px;">
 	<h6>Select status</h6>
 		<label style="margin:5px;float:left;">
-           <input style="margin:0px;" type="radio" name="status"  value="Added">Added
+           <input style="margin:0px;" type="radio" name="status"  value="Added">&nbsp;&nbsp;Added
         </label>
         <label style="margin:5px;float:left;">
-           <input style="margin:0px;" type="radio" name="status"  value="Deleted">Deleted
+           <input style="margin:0px;" type="radio" name="status"  value="Deleted">&nbsp;&nbsp;Deleted
         </label>
 		 <label style="margin:5px;float:left;">
-           <input style="margin:0px;" type="radio" name="status"  checked value="all">All
+           <input style="margin:0px;" type="radio" name="status"  checked value="all">&nbsp;&nbsp;All
         </label>
 
 	</div>
@@ -205,8 +205,8 @@
 
    </div>
 
-<span id="allvotersDetails" style="display:none;float: right;clear:both;">
-			   <img src="images/icons/search.gif" />
+<span id="allvotersDetails" style="margin-left:400px;display:none;">
+			<img src="images/icons/goldAjaxLoad.gif"/>
 			</span>
 	 <div id="allVoterDetailsForALocation">
 	 </div>
