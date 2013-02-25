@@ -993,7 +993,8 @@
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
-		<property name="problemManagementService" ref="problemManagementService" />	
+		<property name="problemManagementService" ref="problemManagementService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />	
 		
 	</bean>
 	
