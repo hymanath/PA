@@ -186,6 +186,12 @@ border: 1px solid #CCCCCC;
     margin: 6px 5px;
     padding: 10px;
 }
+.problemFileTitleCLs{margin-top: 20px;margin-left: 15px;color:#000;}
+.problemFileEditBtn{margin-top: 18px; margin-right: 37px; float: right;}
+#problemFileErrMsgDiv{color: red; margin-top: 5px; margin-left: 14px;}
+
+#imagesdisplaydiv > p {display: table-cell;}
+.problemFileIconsCls{cursor:pointer;}
 </style>
 
 <script type="text/javascript">
@@ -204,6 +210,8 @@ var problemDetailsInEdit = null;
 						firstname:' ${file.name}',
 						lastname : '${file.names}',
 						problemFileId:'${file.problemFileId}',
+						updatable    :'${file.updatable}',
+
 					 };		
 	
 	problemFilesArray.push(fileObj);
@@ -230,6 +238,9 @@ var problemDetailsInEdit = null;
 	   break;
       var fileType = result[i].file.split(".");
       
+	  
+		str +='<p style="width: 159px;">';
+
       if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
        
       if(fileType[(fileType.length-1)] == "pdf"  ){
@@ -248,9 +259,14 @@ var problemDetailsInEdit = null;
       str+= '<a rel="photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" width="135px" /></a>';
       
       }
-      
-    // str +='<input type="button" value="delete" id="buttonId" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);">';
-
+	  
+		if(result[i].updatable == 'true' || result[i].updatable == true)
+		 {
+			str +='<span style="margin-left: 45px;"><i title="click here to edit details" style="margin-right: 15px; margin-top: 3px;" onclick="openProblemFileEditForm('+result[i].problemFileId+')"   class="icon-tag problemFileIconsCls"></i>';
+			str +='<i title="click here to delete file" style="margin-top: 3px;" class="icon-remove problemFileIconsCls" id="buttonId" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);" ></i></span>';
+			
+		 }
+		 str+='</p>';
       }
 
       problemRelatedImagesElmt.innerHTML = str;
@@ -308,17 +324,30 @@ var problemDetailsInEdit = null;
       }
       
       str+= '</a></td>';
-      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr></table></td>';
-	 // str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
-      
-      
+      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr>';
+	  if(result[i].updatable == 'true' || result[i].updatable == true)
+		 {
+		    str +='<tr><td style="text-align: center;">';
+			str +='<span><i title="click here to edit details" onclick="openProblemFileEditForm('+result[i].problemFileId+')" class="icon-tag problemFileIconsCls" ></i>';
+			str +='<i style="margin-left: 11px;" title="click here to delete file" class="icon-remove problemFileIconsCls" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);" ></i></span>';
+			str +='</td></tr>';
+		 }
+	  str +='</table></td>';
+	       
       }
       else{
       str+= '<td><table><tr><td>';
       str+= '<a rel="more_photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" width="135px" /></a></td>';
-      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr></table></td>';
-	  //str+='<td><input type="button" value="delete" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);"></td></tr></table></td>';
-      
+      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr>';
+	  if(result[i].updatable == 'true' || result[i].updatable == true)
+		 {
+		    str +='<tr><td style="text-align: center;">';
+			str +='<span><i title="click here to edit details"  onclick="openProblemFileEditForm('+result[i].problemFileId+')" class="icon-tag problemFileIconsCls"></i>';
+			str +='<i style="margin-left:11px;" class="icon-remove problemFileIconsCls" id="popupButton" onclick="deleteProblemFile(\''+result[i].problemFileId+'\',this.id);" title="click here to delete file"></i></span>';
+			str +='</td></tr>';
+		 }
+	  str +='</table></td>';
+	  
       }
       
       if(j % no_of_imagesPerRow == 0){
@@ -361,16 +390,16 @@ var problemDetailsInEdit = null;
 	
 	str +='<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>';
 	str += '<div>';
-	str += '<div class="fileUploadDiv"> <span style="margin-right: 62px;">Title</span><span><input type="text" id="titleField" name="fileTitle" size="15"/></span></div>';
+	str += '<div class="fileUploadDiv"> <span style="margin-right: 62px;">Title<font color="red">*</font></span><span><input type="text" id="titleField" name="fileTitle" size="15"/></span></div>';
 	str += '</div>';
 	str+='<span id="alertMsg1"></span>';
 	str += '<div>';
-	str +='<div class="fileUploadDiv"><span style="margin-right: 13px;">Description</span>';
+	str +='<div class="fileUploadDiv"><span style="margin-right: 13px;">Description<font color="red">*</font></span>';
 	str += '<span><textarea class="textareaid" name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></span></div>';
 	str+='<span id="alertMsg2"></span>';
 	str+='<span id="alertMsg3"></span>';
 	str += '<div class="fileUploadDiv">';
-	str += '<div><span style="margin-right: 8px;">Documents And Images</span>';
+	str += '<div><span style="margin-right: 8px;">Documents And Images<font color="red">*</font></span>';
 	str += '<input type="hidden" name="problemHistoryId" value="${completeProblemDetailsVO.problemId}">';
 	str += '<span><input type="file" name="userImage" id="userImage"/></span></div>';
 	str += ' <div style="margin-top: 20px; width: 120px; margin-left: 375px;"><input type="button" style="float:none;padding: 2px;" class="button" value="Upload" onclick="postFilesAndImages()" ></div>';
@@ -391,12 +420,29 @@ var problemDetailsInEdit = null;
 	var userImgVal = $("#userImage").val();
 	var title = $("#titleField").val();
 	var fileDesc = $("#fileDescription").val();
-	
-		if(alltrim(title) == '' && alltrim(fileDesc) == '')
+	;
+		if(alltrim(title) == '' && alltrim(fileDesc) == '' && alltrim(userImgVal) == '')
+		{
+			str +='Title, Description And File is Required.';
+			eFlag = true;
+		}
+
+		else if(alltrim(title) == '' && alltrim(fileDesc) == '')
 		{
 			str +='Title And Description is Required.';
 			eFlag = true;
 		}
+		else if(alltrim(title) == '' && alltrim(userImgVal) == '')
+		{
+			str +='Title And File is Required.';
+			eFlag = true;
+		}
+		else if(alltrim(fileDesc) == '' && alltrim(userImgVal) == '')
+		{
+			str +='Description And File is Required.';
+			eFlag = true;
+		}
+
 		else if(alltrim(title) == '')
 		{
 		  str +='Title is Required.';
@@ -1004,6 +1050,14 @@ function callAjax(jsObj,url)
 							{
 								showProblemFileDeleteStatus(myResults,jsObj);
 							}
+
+							else if(jsObj.task == "getProbleFileDetails")
+							{
+								showProblemFileDetails(myResults,jsObj);	
+							}
+							else if(jsObj.task == "updateProbleFileDetails")
+								showProblemFileUpdateStatus(myResults,jsObj);
+							
 						}
 						catch(e)
 						{   
@@ -1694,6 +1748,10 @@ function displayDateText(type, args, obj) {
 </table>
 
 <article class="background">
+<div id="problemFileEditDiv"> 
+	<div id="problemFileEditAjaxImg" style="display:none;"><img src="images/icons/goldAjaxLoad.gif" /></div>
+	<div id="problemFileEditInnerDiv"></div>
+</div>
 
 <div class="container" ><!-- Container Opening -->
 
@@ -2275,6 +2333,10 @@ function rateWiseCountOfAProblem()
   
  function deleteProblemFile(problemFileId,id)
  {
+
+	var status=confirm("Are you sure want to delete");
+		if(status==false)
+			return;
 	var jsObj = {
 		problemFileId  :problemFileId,
 		id             :id,
@@ -2287,8 +2349,99 @@ function rateWiseCountOfAProblem()
 
 }
  
- 
- 
+ function openProblemFileEditForm(problemFileId)
+ {
+	$("#problemFileEditDiv").dialog({
+            modal: true,
+            title: "<b>Edit Problem File Details</b>",
+			width: 400,
+            height: 300
+           
+        });
+	
+		$("#problemFileEditAjaxImg").css("display","block");
+		var jsObj = {
+		time		   : new Date().getTime(),
+		problemFileId  : problemFileId,
+		task		   : "getProbleFileDetails"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "getProbleFileDetailsAction.action?"+rparam;
+	 callAjax(jsObj,url);
+	
+ }
+ function showProblemFileDetails(results,jsObj)
+ {
+	 
+	$("#problemFileEditAjaxImg").css("display","none");
+	var str = '';
+	if(results != null)
+	{
+		str +='<div id="problemFileErrMsgDiv"></div>';
+		str +='<div class="problemFileTitleCLs"><span>Title<font style="color:red;">*</font></span><span style="margin-left: 52px;">: <input type="text" value="'+results.fileTitle1+'" id="probFileTile"/></span></div>';
+		str +='<div class="problemFileTitleCLs"><span>Description<font style="color:red;">*</font> </span>';
+		str +='<span>: <input type="text" value="'+results.fileDescription1+'" id="probFileDesc"/></span></div>';
+		str +='<div class="problemFileEditBtn"><input type="button" value="Update" onclick="updateProblemFileDetails('+results.fileId+')" class="btn btn-info" /></div>';
+		$("#problemFileEditInnerDiv").html(str);
+	}
+
+ }
+
+function updateProblemFileDetails(fileId)
+{
+	$("#problemFileErrMsgDiv").html('');
+	var title= $("#probFileTile").val();
+	var description = $("#probFileDesc").val(); 
+
+	if(alltrim(title) == '' && alltrim(description) == '')
+		{
+			$("#problemFileErrMsgDiv").html('Title And Description is Required.').css("color","red");
+			return;
+		}
+		else if(alltrim(title) == '')
+		{
+		  $("#problemFileErrMsgDiv").html('Title is Required.').css("color","red");
+		  return;
+		}
+		else if(alltrim(description) == '')
+		{
+		  $("#problemFileErrMsgDiv").html('Description is Required.').css("color","red");
+			return;
+		}
+
+	var jsObj = {
+		time			: new Date().getTime(),
+		fileId			: fileId,
+		fileTitle		: title,
+		fileDescription	: description,
+		task		    : "updateProbleFileDetails"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "upDateProbleFileDetailsAction.action?"+rparam;
+	 callAjax(jsObj,url);
+	
+}
+
+function showProblemFileUpdateStatus(results,jsObj)
+{
+	$('#problemFileErrMsgDiv').html('');
+	if(results.resultCode == 0)
+	{
+		$("#probFileTile").val('');
+		$("#probFileDesc").val('');
+		$('#problemFileErrMsgDiv').html('Updated Successfully.').css('color','green');
+		return;
+	}
+	else
+	{
+		$('#problemFileErrMsgDiv').html('Error Occured Try Again.').css('color','red');
+		return;
+	}
+}
+
+
   $(document).ready(function() {
     $("#tabs").tabs();
 

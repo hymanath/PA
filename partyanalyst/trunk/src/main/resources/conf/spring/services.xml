@@ -1277,6 +1277,8 @@
 		<property name="problemCommentsDAO" ref="problemCommentsDAO" />
 	    <property name="problemDAO" ref="problemDAO" />
 	    <property name="problemManagementReportService" ref="problemManagementReportService" />
+	    <property name="problemFilesDAO" ref="problemFilesDAO" />
+	    <property name="fileDAO" ref="fileDAO" />
 	</bean>
 	
 	<bean name="completeProblemDetailsSearchService" class="com.itgrids.partyanalyst.service.impl.CompleteProblemDetailsSearchService">
