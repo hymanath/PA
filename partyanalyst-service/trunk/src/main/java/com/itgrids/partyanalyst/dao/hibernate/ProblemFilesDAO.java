@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IProblemFilesDAO;
 import com.itgrids.partyanalyst.model.ProblemFiles;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> implements IProblemFilesDAO{
 
@@ -70,4 +71,14 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 		
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemFileDetailsByProblemFileId(Long problemFilesId)
+	{
+		Query query = getSession().createQuery("select model.file.fileId, model.file.fileTitle,model.file.fileDescription,model.problemFilesId from ProblemFiles " +
+				" model where model.problemFilesId = :problemFilesId and model.isApproved = :isApproved ");
+		query.setParameter("problemFilesId", problemFilesId);
+		query.setParameter("isApproved", IConstants.TRUE);
+		return query.list();
+	}
 }

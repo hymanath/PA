@@ -19,4 +19,6 @@ public interface IProblemFilesDAO extends GenericDao<ProblemFiles,Long>{
 	
 	public Integer deleteProblemFile(Long problemFileId);
 
+	public List<Object[]> getProblemFileDetailsByProblemFileId(Long problemFilesId);
+
 }

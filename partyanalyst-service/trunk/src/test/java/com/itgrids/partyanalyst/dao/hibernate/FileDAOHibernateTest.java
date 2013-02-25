@@ -45,4 +45,9 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
+	public void testUpdateProblemFileDetailsByFileId()
+	{
+		System.out.println(fileDAO.updateProblemFileDetailsByFileId(10l, "qweqw", "qweqwe"));
+	}
+	
 }

@@ -10,14 +10,18 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
+import com.itgrids.partyanalyst.dao.IProblemFilesDAO;
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemProgress;
@@ -37,6 +41,8 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	private IProblemCommentsDAO problemCommentsDAO;
 	private IProblemDAO problemDAO;
 	private IProblemManagementReportService problemManagementReportService;
+	private IFileDAO fileDAO;
+	private IProblemFilesDAO problemFilesDAO;
 	
 	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
@@ -94,6 +100,21 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	public void setProblemManagementReportService(
 			IProblemManagementReportService problemManagementReportService) {
 		this.problemManagementReportService = problemManagementReportService;
+	}
+
+	public IFileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(IFileDAO fileDAO) {
+		this.fileDAO = fileDAO;
+	}
+	public IProblemFilesDAO getProblemFilesDAO() {
+		return problemFilesDAO;
+	}
+
+	public void setProblemFilesDAO(IProblemFilesDAO problemFilesDAO) {
+		this.problemFilesDAO = problemFilesDAO;
 	}
 
 	public CompleteProblemDetailsVO getProblemCompleteDetails(final Long problemId,final Long userId,final String userStatus,String queryReq){
@@ -284,7 +305,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
 			completeProblemDetailsVO.setProblemRecentActivity(getProblemProgressDetails(problemId,IConstants.PUBLIC));
 			if(queryReq == null || queryReq.equalsIgnoreCase("getphotodetails"))
-			completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,IConstants.PUBLIC));
+			completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,IConstants.PUBLIC,userId));
 			
 		}
 		if(LOG.isDebugEnabled()){
@@ -328,7 +349,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			 completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
 			completeProblemDetailsVO.setProblemRecentActivity(getProblemProgressDetails(problemId,null));
 			if(queryReq == null || queryReq.equalsIgnoreCase("getphotodetails"))
-			 completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,null));
+			 completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,null,userId));
 			if(queryReq == null || queryReq.equalsIgnoreCase("getotheractvdetails"))
 			completeProblemDetailsVO.setProblemStatus(problemManagementService.getProblemRecentDetailsByProblemId(problemId,userId));
 			
@@ -363,7 +384,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		return problemRecentActivityList;
 	}
 	
-	private List<FileVO> getProblemRelatedFiles(Long problemId,Long userId,String visibility){
+	private List<FileVO> getProblemRelatedFiles(Long problemId,Long userId,String visibility,Long loggedUserId){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemRelatedFiles method ");
 		}
@@ -373,10 +394,10 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		}catch(Exception e){
 			LOG.error("Exception rised in getProblemRelatedFiles method  ",e);
 		}
-		return populateDataToVO(problemFilesList);
+		return populateDataToVO(problemFilesList,loggedUserId);
 	}
 	
-	private List<FileVO> populateDataToVO(List<Object[]> problemFilesList){
+	private List<FileVO> populateDataToVO(List<Object[]> problemFilesList,Long userId){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into populateDataToVO method ");
 		}
@@ -392,6 +413,9 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			fileVO.setCandidateId((Long)problemFile[3]);
 			fileVO.setName(problemFile[4]!= null?problemFile[4].toString():"");
 			fileVO.setNames(problemFile[5]!= null?problemFile[5].toString():"");
+			if(userId != null && userId.equals(problemFile[3]))
+				fileVO.setUpdatable(true);
+			fileVO.setProblemFileId((Long)problemFile[6]);
 			returnVal.add(fileVO);
 		  }catch(Exception e){
 			  LOG.error("Exception rised in populateDataToVO method while iterating and getting problem related files data ",e);
@@ -586,5 +610,44 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			problemIds.add(key);
 		}
 		return problemIds;
+	}
+	
+	public FileVO getProbleFileDetailsByProblemFileId(Long problemFileId)
+	{
+		FileVO fileVO = null; 
+		try{
+			List<Object[]> list = problemFilesDAO.getProblemFileDetailsByProblemFileId(problemFileId);
+			if(list != null && list.size() > 0)
+			{
+				fileVO = new FileVO();
+				for(Object[] params : list)
+				{
+					fileVO.setFileId((Long)params[0]);
+					fileVO.setFileTitle1(params[1] != null ? params[1].toString() : " ");
+					fileVO.setFileDescription1(params[2]!=null ? params[2].toString() : " ");
+					fileVO.setProblemFileId((Long)params[3]);
+				}
+			}
+			return fileVO;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getProbleFileDetailsByProblemFileId() Method, Exception - "+e);
+			return fileVO;
+		}
+	}
+	
+	public ResultStatus upDateProbleFileDetails(Long fileId, String fileTitle, String fileDescription)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Integer result = fileDAO.updateProblemFileDetailsByFileId(fileId, fileTitle, fileDescription);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in upDateProbleFileDetails() Method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
 	}
 }
