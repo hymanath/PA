@@ -117,11 +117,11 @@
 		</div>
 
 
-        <div id="mainDiv" class="breadcrumb" style="margin-top:20px;">
+        <div id="mainDiv" class="widget blue whitegloss" style="margin-top:20px;display:inline-block;width: 96%;color:#000;position:relative;">
 
-	<div  style="text-align: center;text-transform: uppercase;">	
-	   <span class="title"><span id="titleDiv"></span>  Newly added / deleted voters information</span>	   
-	</div>
+	
+	  <h4> Newly added / deleted voters information</h4>	   
+	
 
 	<div class="form-horizontal" style="margin-left:238px;">
 
@@ -185,8 +185,8 @@
 
 	
 
-	<div style="margin-left:116px;">
-	<h6>Select status</h6>
+	<div class="control-group" style="margin-top:19px;">
+	 <label style="text-align:left;" class="control-label">SELECT STATUS:</label>
 		<label style="margin:5px;float:left;">
            <input style="margin:0px;" type="radio" name="status"  value="Added">&nbsp;&nbsp;Added
         </label>
@@ -200,8 +200,7 @@
 	</div>
 	
 
-   <div><a class="btn btn-primary" href="javaScript:{getAllVotersModificationDetailsBetweenPublications('search','');}">Search</a></div>
-    </div>
+	<span><a class="btn btn-primary" href="javaScript:{getAllVotersModificationDetailsBetweenPublications('search','');}" style="margin-left:180px;margin-bottom:10px;">Search</a></span>
 
    </div>
 
