@@ -19,7 +19,7 @@ var areatype='';
 var pResults;
 var reqfields = "";
 var reqfieldsArr = new Array();
-
+var boothsLoc = new Array();
 function populate(id,boothId,publicationId,houseNo){
      if($('#'+id).is(':checked')){
 	   var obj={
@@ -335,17 +335,14 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 		str += ' <a href= "javascript:{};" onclick="openRegistrationForm('+id+');">Create New Cadre</a>';
 		str += ' </li>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};">Add To Existing Cadre</a>';
+		str += ' <a href= "javascript:{};" onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
 		str += ' </li>';
 		str += ' <li>';
 		str += ' <a href= "javascript:{};" onclick="addInfluencingPeople('+id+');">Create New Influencing People</a>';
 		str += ' </li>';
-			if(influencePerson == "false")
-			{
-			 str += ' <li>';
-			 str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
-			 str += ' </li>';
-			}
+		str += ' <li>';
+		str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
+		str += ' </li>';
 		str += ' <li>';
 		str += ' <a href= "javascript:{};" onclick="addToPolitician('+id+');">Add To Politician</a>';
 		str += ' </li>';
@@ -454,17 +451,14 @@ str += ' <li>';
 str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\');">Create New Cadre</a>';
 str += ' </li>';
 str += ' <li>';
-str += ' <a href= "javascript:{};">Add To Existing Cadre</a>';
+str += ' <a href= "javascript:{};"  onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
 str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\');">Create New Influencing People</a>';
 str += ' </li>';
-	if(influencePerson == "false")
-	{
-	 str += ' <li>';
-	 str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
-	 str += ' </li>';
-	}
+str += ' <li>';
+str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
+str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\');">Add To Politician</a>';
 str += ' </li>';
@@ -759,7 +753,8 @@ function addToPolitician(voterId)
 			$("#partyWise_header").html("");
 			$("#partyWiseDetailsDiv").html("");
 			$("#partyWiseChatDiv").html("");
-			$("#selectedBoothInfo").html('');	
+			$("#selectedBoothInfo").html('');
+            $("#selectedBoothInfo").hide('');			
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
 	   $("#votersDiv4").show();  
@@ -1367,7 +1362,15 @@ function addToPolitician(voterId)
 									alert("Voter Added as influence person.");
 									$('#influencePeopleOuterDiv').dialog('close');
 								}
-
+								else if(jsObj.task == "addVoterToCadre"){
+									if(myResults == "notLogged"){
+									 openDialogForLoginWindow();
+									}else if(myResults == "error" || myResults == "failure"){
+									  alert("Unable to process your request,please try later.");
+									}else{
+									   alert("Voter Added To Cadre Successfully.");
+									}
+								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -5289,17 +5292,41 @@ function getBoothInfo(){
 			callAjax(jsObj,url);
 }
 function showBoothInfo(result){
-var str = "";
+boothsLoc = result;
+var str = "<h4 style='margin-top: 6px; margin-bottom: 8px;'>Booth Location In Various Publications</h4><div>Select <select id='boothprevlocs' onchange='showPrevBoothLocs();'></select> to get previous booth locations</div><br/>";
   if(result != null && result.length > 0){
-        if(result[0].location != null && result[0].location != "")
-	       str+= "<b>Current Booth Location  :</b> "+result[0].location+" <b>&nbsp;&nbsp;Areas Covered :</b> "+result[0].villageCovered;
-	   if(result.length > 1 && result[1].location != null && result[1].location != "")
-		   str+= "<br/><b>Previous Booth Location  :</b> "+result[1].location+" <b>&nbsp;&nbsp;Areas Covered :</b> "+result[1].villageCovered;
-  }
-   $("#selectedBoothInfo").html(str);
+       $("#selectedBoothInfo").show('');	
+      for(var i in result){
+	      if(result[i].type == "true")
+		  str+=result[i].location;
+	  }
+	   $("#selectedBoothInfo").html(str);
+	      $("#boothprevlocs").append('<option value="0">All</option>');
+	    for(var i in result){
+	      if(result[i].type == "true")
+		   $("#boothprevlocs").append('<option value='+result[i].id+' selected=selected>'+result[i].name+'</option>');
+		  else
+		   $("#boothprevlocs").append('<option value='+result[i].id+' >'+result[i].name+'</option>');
+	  }
+   }
+   
 }
 
-
+function showPrevBoothLocs(){
+  if($("#boothprevlocs").val() == '0'){
+     var str = '';
+     for(var i in boothsLoc){
+			str+=boothsLoc[i].location;
+	  }
+	  $("#boothlocval").html(str);
+  }
+  else{
+	  for(var i in boothsLoc){
+		 if(boothsLoc[i].id == $("#boothprevlocs").val())
+			$("#boothlocval").html(boothsLoc[i].location);
+	  }
+  }
+}
 
 function getInfluencePeopleOfAnUser(voterId){
 
@@ -5923,3 +5950,21 @@ function buildBooths(results){
 		$('#boothSelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
 
 }
+//added by mahesh for adding cadre to voter	
+function mapSelectedCadreToVoter(cid,cName,voterId){
+	 var jsObj=
+		{
+			 cadreId:cid,
+			 voterId:voterId,
+			 task:"addVoterToCadre"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "addVoterToCadreAction.action?"+rparam;	
+		callAjax(jsObj,url);
+}	
+function openCadreSearchWindow(clickedId){
+  
+	var cadreWindow = window.open("cadreSearchAction.action?windowTask=Search&voterId="+clickedId,"cadreSearch","scrollbars=yes,height=600,width=750,left=200,top=200");
+  cadreWindow.focus();
+}
+//end of adding cadre to voter
