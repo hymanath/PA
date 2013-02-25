@@ -2,9 +2,9 @@ var scopeId = 0; //selected scopeId
 
 $(document).ready(function() {
 
-		
 
 		$('#scopeSelectId').change(function(){
+
 			scopeId = $(this).val();
 
 			   if(scopeId == "1")
@@ -618,26 +618,44 @@ function getAllVotersModificationDetailsBetweenPublications(type,loadingstatus)
 
 }
 
-
+var titleString = "";
 function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatus)
 	{
 		$('#allVoterDetailsForALocation').html('');
 		
    var locationScope = "";
    var locationValue1 = 0;
+   var frmPblCtnId = 0;
+   var toPblCtnId = 0;
+    titleString = "";
 
-   if(loadingstatus == "onload")
+   if(loadingstatus == "onload"){
 	   locationScope = locationType;
 	   locationValue1 = locationValue;
+	   frmPblCtnId =  fromPublicationDateId;
+	   toPblCtnId = toPublicationDateId;
+
+   }else{
+
+	   frmPblCtnId =  $('#fromPublicationDateId').val();
+	   toPblCtnId = $('#toPublicationDateId').val();
+
+   }
 
 
     if(scopeId == "1")
 	{
 		locationValue1 = $('#mandalSelectId').val();
 		if(locationValue1.substring(0,1) == "1")
+		{
 			locationScope = "localElectionBody";
+			titleString += $('#mandalSelectId :selected').text();
+		}
 		else
+		{
 			locationScope = "mandal";
+			titleString += $('#mandalSelectId :selected').text();
+		}
 		locationValue1 = $('#mandalSelectId').val().substring(1);
 	}
 	else if(scopeId == "2")
@@ -645,9 +663,16 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
       locationValue1 = $('#panchayatSelectId').val();
 
 	  if(locationValue1.substring(0,1) == "1")
+		{
 			locationScope = "ward";
+			titleString += $('#panchayatSelectId :selected').text()+" WARD";
+		}
 		else
+		{
 			locationScope = "panchayat";
+			titleString += $('#panchayatSelectId :selected').text()+" PANCHAYAT";
+
+		}
 
 		locationValue1 = $('#panchayatSelectId').val().substring(1);
 	}
@@ -655,6 +680,7 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 	{
 		locationValue1 = $('#boothSelectId').val();
 		locationScope = "booth";
+		titleString += $('#boothSelectId :selected').text();
 
 
 	}
@@ -663,8 +689,8 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 		var jObj=
 		{
 			constituencyId			: constituencyId,
-			fromPublicationDateId	: fromPublicationDateId,
-			toPublicationDateId		: toPublicationDateId,
+			fromPublicationDateId	: frmPblCtnId,
+			toPublicationDateId		: toPblCtnId,
 			locationType			: locationScope,
 			locationValue			: locationValue1,
 			status:status,
@@ -682,11 +708,9 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 function showAllVoterInformationInALocation(results){
 	
 
-	if(results.length == 0)
-		return false;
-
-
+$('#titleDiv').html(titleString);
 	var str='';
+	str+='<div  class="widget blue whitegloss" style="margin:5px;"></div>';
 str+='<div>';
 
  str+='<table id="voterDetails" class="gridtable1">';
@@ -696,8 +720,8 @@ str+='<div>';
    str+='<th>GENDER</th>';
    str+='<th>AGE</th>';
    str+='<th>STATUS</th>';
-   str+='<th>RELATION</th>';
-   str+='<th>RELATION TYPE</th>';
+   //str+='<th>RELATION</th>';
+   //str+='<th>RELATION TYPE</th>';
    str+='<th>BOOTH</th>';
   // str+='<th>LOCATION</th>';
    str+=' <th>PANCHAYAT</th>';
@@ -710,14 +734,14 @@ str+='<div>';
 
 		 str+='<tr>';
 		  str+='<td>'+results[i].firstName+'</td>';
-		  str+='<td>'+results[i].gender+'</td>';
-		  str+='<td>'+results[i].age+'</td>';
-		  str+='<td>'+results[i].status+'</td>';
-		  str+='<td>'+results[i].relativeFirstName+'</td>';
-		  str+='<td>'+results[i].relationshipType+'</td>';
+		  str+='<td style="text-align:center;">'+results[i].gender+'</td>';
+		  str+='<td style="text-align:center;">'+results[i].age+'</td>';
+		  str+='<td style="text-align:center;">'+results[i].status+'</td>';
+		//  str+='<td>'+results[i].relativeFirstName+'</td>';
+		 // str+='<td>'+results[i].relationshipType+'</td>';
 		  str+='<td>'+results[i].boothName+'</td>';
 		  str+='<td>'+results[i].panchayatName+'</td>';
-		  str+='<td>'+results[i].publicationDateId+'</td>';
+		  str+='<td style="text-align:center;">'+results[i].publicationDateId+'</td>';
 		 str+='</tr>';
 	 }
   
@@ -727,10 +751,5 @@ str+='</div>';
 
 $('#allVoterDetailsForALocation').html(str);
 
-$('#voterDetails').dataTable( {
-			"sPaginationType": "full_numbers",
-				 "bDestroy": true
-		} );
-
-
+$('#voterDetails').dataTable();
 }
