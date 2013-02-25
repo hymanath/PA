@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -80,6 +81,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private ResultStatus resultStatus;
 	
 	private SelectOptionVO selectOptionVO;
+	private CadreManagementService cadreManagementService;
+	
 	public List<InfluencingPeopleVO> getInfluencingPeopleList() {
 		return influencingPeopleList;
 	}
@@ -313,6 +316,15 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
 	}
 
 	public String execute() throws Exception
@@ -1047,5 +1059,22 @@ return Action.SUCCESS;
 		
 		return Action.SUCCESS;
 		
+	}
+	
+	public String addVoterToCadre(){
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null){
+				task = "notLogged";
+				return Action.SUCCESS;
+			}
+			task = cadreManagementService.updateCadreVoterId(jObj.getLong("cadreId"),jObj.getLong("voterId"),user.getRegistrationID());
+		}catch (Exception e) {
+			log.error("Exception Occured in addVoterToCadre() Method, Exception - ",e);
+			task =  "error";
+		}
+		return Action.SUCCESS;
 	}
 }

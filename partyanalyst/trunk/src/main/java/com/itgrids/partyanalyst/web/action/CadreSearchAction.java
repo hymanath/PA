@@ -47,6 +47,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private IRegionServiceData regionServiceDataImp;
 	private List<SelectOptionVO> parliamentConstituencies;
 	private List<SelectOptionVO> bloodGroupList;
+	private Long voterId;
 	JSONObject jObj = null;
 	
 	public List<SelectOptionVO> getBloodGroupList() {
@@ -215,6 +216,14 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	public void setParliamentConstituencies(
 			List<SelectOptionVO> parliamentConstituencies) {
 		this.parliamentConstituencies = parliamentConstituencies;
+	}
+
+	public Long getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
 	}
 
 	public String execute() throws Exception
