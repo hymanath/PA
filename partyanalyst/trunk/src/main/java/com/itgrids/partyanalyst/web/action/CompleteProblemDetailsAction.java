@@ -9,10 +9,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.service.ICompleteProblemDetailsService;
@@ -42,6 +45,9 @@ import com.opensymphony.xwork2.Action;
    private List<UserCommentsInfoVO> userCommentsInfoVOList;
    JSONObject jObj = null;
    private String task = null;
+   private FileVO fileVO;
+   private ResultStatus resultStatus;
+   
    
    public Long getProblemId() {
 	return problemId;
@@ -129,6 +135,19 @@ import com.opensymphony.xwork2.Action;
   public void setUserCommentsInfoVOList(
 		List<UserCommentsInfoVO> userCommentsInfoVOList) {
 	this.userCommentsInfoVOList = userCommentsInfoVOList;
+  }
+  public FileVO getFileVO() {
+		return fileVO;
+  }
+  public void setFileVO(FileVO fileVO) {
+	this.fileVO = fileVO;
+   }
+  
+  public ResultStatus getResultStatus() {
+	return resultStatus;
+  }
+  public void setResultStatus(ResultStatus resultStatus) {
+	this.resultStatus = resultStatus;
   }
   
   public String execute(){
@@ -258,4 +277,33 @@ import com.opensymphony.xwork2.Action;
 	  }
 	  return Action.SUCCESS;
   }
+  
+  public String getProbleFileDetails()
+  {
+	  String param;
+	  param = getTask();
+	  try{
+		  jObj = new JSONObject(param);
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in editProbleFileDetails() Method, Exception - "+e);
+	}
+	  fileVO = completeProblemDetailsService.getProbleFileDetailsByProblemFileId(jObj.getLong("problemFileId"));
+	  return Action.SUCCESS;
+  }
+  
+  public String upDateProbleFileDetails()
+  {
+	  String param;
+	  param = getTask();
+	  try{
+		  jObj = new JSONObject(param);
+		  resultStatus = completeProblemDetailsService.upDateProbleFileDetails(jObj.getLong("fileId"),jObj.getString("fileTitle"),jObj.getString("fileDescription"));
+	  }catch (Exception e) {
+		e.printStackTrace();
+		Log.error("Exception Occured in saveProbleFileDetailsAction() Method, Exception - "+e);
+	}
+	  return Action.SUCCESS;
+  }
+  
 }
