@@ -828,7 +828,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return regionsList;		
 	}
 	
-	
+	/**
+	 * This method is used to get all the booths in a ward for a publication
+	 * @author Samba Penugonda
+	 * @param wardId , this is the id of a ward 
+	 * @param constituencyId , this is the id of constituency which the ward exist.
+	 * @param publicationId , this is the publication id
+	 * @return all the booth details exist in a ward by publication id
+	 *  
+	 */
 	public List<SelectOptionVO> getboothsInWardByPublicationId(Long wardId, Long constituencyId , Long publicationId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
 		String id = wardId.toString().substring(1);
@@ -1388,7 +1396,13 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return panchayatList;
 	}
 	
-
+/**
+ * This method will get all the booth details in a panchayat
+ * @author Samba Penugonda
+ * @param panchayatId , this is the panchayatId for which we need to retrieve booths
+ * @param publicationId , this is publicationdate id
+ * @return all the booth details of given panchayat
+ */
 
 	public List<SelectOptionVO> getBoothsInAPanchayatByPublicationId(Long panchayatId , Long publicationId)
 	{
