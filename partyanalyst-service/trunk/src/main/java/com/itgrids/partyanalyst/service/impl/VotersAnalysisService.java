@@ -3751,9 +3751,12 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		   //List<Object[]> castsList = casteStateDAO.getAllCasteDetailsForVoters(stateIdsList.get(0));
 		     List<Object[]> castsList = casteStateDAO.getAllCastesForVoters(stateIdsList.get(0), userId);
 		   for(Object[] casts:castsList){
+			   String categoryName = "";
+			   if(casts[2] != null && !casts[2].toString().equalsIgnoreCase(""))
+				   categoryName = casts[2].toString();
 			   selectOptionVO = new SelectOptionVO();
 			   selectOptionVO.setId((Long)casts[0]);
-			   selectOptionVO.setName(casts[1]!=null?casts[1].toString():"");
+			   selectOptionVO.setName(casts[1]!=null?casts[1].toString()+" ("+categoryName+")":"");
 			   castsVo.add(selectOptionVO);
 		   }
 		   voterHouseInfoVO.setCasteGroupNameList(castsVo);

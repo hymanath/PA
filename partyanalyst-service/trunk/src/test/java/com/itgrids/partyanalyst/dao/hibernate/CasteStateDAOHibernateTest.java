@@ -59,21 +59,21 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	/*public void testgetAllCasteDetailsForVoters1()
+	public void testgetAllCasteDetailsForVoters1()
 	{
 		List<Object[]> list = casteStateDAO.getAllCastesForVoters(1l, 1l);
 		if(list != null && list.size() > 0)
 		{
 			for(Object[] params : list)
-				System.out.println(params[0]+" "+params[1]);
+				System.out.println(params[0]+" "+params[1]+"("+params[2]+")");
 		}
-	}*/
+	}
 	
-	public void testGetCasteStateByCasteId()
+	/*public void testGetCasteStateByCasteId()
 	{
 		CasteState casteState = casteStateDAO.getCasteStateByCasteId(1l, 1l, 1l, 2l);
 		if(casteState != null)
 			System.out.println(casteState.getCaste().getCasteName());
-	}
+	}*/
 	
 }

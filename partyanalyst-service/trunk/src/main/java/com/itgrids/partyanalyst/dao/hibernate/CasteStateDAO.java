@@ -61,7 +61,7 @@ public List<Object[]> getAllCasteInfoDetails(){
     @SuppressWarnings("unchecked")
 	public List<Object[]> getAllCastesForVoters(Long stateId,Long userId){
 		
-		Query query = getSession().createQuery("select distinct(model.casteStateId) , model.caste.casteName from CasteState model where model.state.stateId = :stateId and (model.isGlobal = :isGlobal or model.user.userId = :userId) order by model.caste.casteName");
+		Query query = getSession().createQuery("select distinct(model.casteStateId) , model.caste.casteName, model.casteCategoryGroup.casteCategoryGroupName from CasteState model where model.state.stateId = :stateId and (model.isGlobal = :isGlobal or model.user.userId = :userId) order by model.caste.casteName");
 		query.setParameter("stateId", stateId);
 		query.setParameter("userId", userId);
 		query.setParameter("isGlobal", IConstants.TRUE);
