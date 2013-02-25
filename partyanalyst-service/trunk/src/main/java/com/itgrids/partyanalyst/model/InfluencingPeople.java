@@ -237,7 +237,7 @@ public class InfluencingPeople extends BaseModel{
 		this.hamlet = hamlet;
 	}
 	
-	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "voter_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)

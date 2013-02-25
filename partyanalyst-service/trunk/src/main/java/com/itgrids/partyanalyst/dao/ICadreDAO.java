@@ -166,4 +166,6 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public Cadre getCadreByCadreId(Long id);
 	
 	public List<Long> getinfluencingPeopleVoterId(Long voterId);
+	
+	public List<Cadre> getCadreByCadreIdUserId(Long cadreId,Long userId);
 }

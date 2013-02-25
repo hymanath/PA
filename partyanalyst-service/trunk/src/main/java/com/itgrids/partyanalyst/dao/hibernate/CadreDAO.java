@@ -823,4 +823,9 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 		return getHibernateTemplate().find("select count(model) from Cadre model where model.voter.voterId = ?",voterId);
 	}
+	
+	public List<Cadre> getCadreByCadreIdUserId(Long cadreId,Long userId){
+		Object[] params = {cadreId, userId};
+		 return getHibernateTemplate().find("select model from Cadre model where model.cadreId = ? and model.user.userId = ?", params);
+	}
 }
