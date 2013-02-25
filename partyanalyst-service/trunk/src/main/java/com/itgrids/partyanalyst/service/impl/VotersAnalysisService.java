@@ -8943,24 +8943,23 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 	 public List<SelectOptionVO> getBoothBasicInfo(Long boothId){
 			try{
 				 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
-				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 Calendar calendar = Calendar.getInstance();
+				 SelectOptionVO selectOptionVO = null;
 				 Booth booth = boothDAO.get(boothId);
-				 Long prevPublicationId = 0l;
-				 List<Long> previousIds = publicationDAO.getPreviousPublicationIds(booth.getPublicationDate().getPublicationDateId());
-				 if(previousIds != null && previousIds.size() > 0 && previousIds.get(0) != null)
-					 prevPublicationId = previousIds.get(0);
-				 selectOptionVO.setLocation(booth.getLocation());
-				 selectOptionVO.setVillageCovered(booth.getVillagesCovered());
-				 returnList.add(selectOptionVO);
-				 if(prevPublicationId > 0){
-					 List<Booth> booths = boothDAO.getBoothByPartNoPublicationId(booth.getConstituency().getConstituencyId(),prevPublicationId,booth.getPartNo());
-				     if(booths != null && booths.size() >0){
-				    	 booth = booths.get(0);
-				    	 selectOptionVO = new SelectOptionVO();
-				    	 selectOptionVO.setLocation(booth.getLocation());
-						 selectOptionVO.setVillageCovered(booth.getVillagesCovered());
-						 returnList.add(selectOptionVO);
+				 Long publicationId = booth.getPublicationDate().getPublicationDateId();
+				 List<Object[]> boothLocationInfoList = boothDAO.getBoothLocations(booth.getPartNo(),booth.getConstituency().getConstituencyId());
+				 for(Object[] part : boothLocationInfoList){
+					 selectOptionVO = new SelectOptionVO();
+					 selectOptionVO.setId((Long)part[2]);
+					 calendar.setTime((Date)part[3]);
+					 selectOptionVO.setName(calendar.get(Calendar.DAY_OF_MONTH)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.YEAR));
+				     if(publicationId.longValue() == ((Long)part[2]).longValue()){
+				    	 selectOptionVO.setType("true");
+				     }else{
+				    	 selectOptionVO.setType("false");
 				     }
+				     selectOptionVO.setLocation("<div id='boothlocval'>In "+selectOptionVO.getName()+" <b>Booth Location  :</b> "+part[0].toString()+" <b>&nbsp;&nbsp;Areas Covered :</b> "+part[1].toString()+"</div>");
+				     returnList.add(selectOptionVO);
 				 }
 			   return returnList;
 			}catch(Exception e){

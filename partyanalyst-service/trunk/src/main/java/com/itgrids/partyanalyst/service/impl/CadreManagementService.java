@@ -4755,4 +4755,20 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 	}	
 
+	public String updateCadreVoterId(Long cadreId,Long voterId,Long userId){
+	   try{
+		List<Cadre> caderList = cadreDAO.getCadreByCadreIdUserId(cadreId,userId);
+		if(caderList != null && caderList.size() >0 && voterId != null && voterId > 0l){
+			Cadre cadre = caderList.get(0);
+			cadre.setVoter(voterDAO.get(voterId));
+			cadreDAO.save(cadre);
+			return "success";
+		}
+		return "failure";
+	   }catch(Exception e){
+		   log.error("Exception occured in updateCadreVoterId() - "+e);
+		   return "error";
+	   }
+	   
+	}
 }
