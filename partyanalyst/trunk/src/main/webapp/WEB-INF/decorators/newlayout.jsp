@@ -169,20 +169,18 @@ function intialize()
 function buildAccordion()
 {
 	var accordionElmtId = document.getElementById("accordion");
-	
 	if($("#accordion").parents(".ui-dialog").is(":visible"))
 		return;
+
 	accordionElmtId.style.display = 'block';
 
 	getStatesInQuickView('siteSearch','stateList_s');
-	
 	getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
 	hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
 	getAllStatesHavingLocalBody("stateList_l");
 	getLocalBodiesForState(1);
-
 	$("#accordion").accordion();
-		$(function() {
+		//$(function() {
 		$( "#accordion").dialog({
 			autoOpen: true,
 			show: "blind",
@@ -191,7 +189,7 @@ function buildAccordion()
 			hide: "explode"
 		});
 	
-	});
+	//});
  }	
 </script>
 
