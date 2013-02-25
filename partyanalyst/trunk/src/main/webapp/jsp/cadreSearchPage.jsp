@@ -71,7 +71,7 @@ var accessValue = '${sessionScope.USER.accessValue}';
 var accessType = '${sessionScope.USER.accessType}';
 var winTask = '${windowTask}';
 var isProblemAdding = <%=request.getParameter("addProblem")%>;
-
+var voterId = '${voterId}'; 
 function populateLocations(val,source)
 {	
 	REPORTLEVEL = val;
@@ -833,6 +833,14 @@ function showCadreSearchResults(searchCount)
 		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setOrganizers()" value="Add Organizers"/><BR><BR></span>';
 		cadreProbDivEle.innerHTML = cadreProbStr;
 	}
+	if(voterId !== ''){
+	   footerElmt.style.display = 'none';
+		
+		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
+		var cadreProbStr = '';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreToVoter()" value="Add Selected cadre"/><BR><BR></span>';
+		cadreProbDivEle.innerHTML = cadreProbStr;
+	}
 }
 function setOrganizers(){
    var elements = document.getElementsByName("cadreResult_check");
@@ -855,7 +863,7 @@ function setOrganizers(){
 	}
 	if(cid == null)
 	{
-		errorSpanElmt.innerHTML = '<font style="color:red;">Please Select Cadre to Add the Problem</font>';
+		errorSpanElmt.innerHTML = '<font style="color:red;">Please Select Cadre to Add As Organiser</font>';
 		return;
 	}
 	else if(cid != null)
@@ -866,7 +874,36 @@ function setOrganizers(){
 	}
 
 }
+function setCadreToVoter(){
+   var elements = document.getElementsByName("cadreResult_check");
+	var errorSpanElmt = document.getElementById("addSelectedCadreErrorMsg");
+    var cid = null;
+	var cName = null;
+	var cCount = 0;
 
+	for(var i=0; i<elements.length; i++)
+	{
+		if(elements[i].checked == false)
+			continue;
+		cCount = cCount+1;
+		cid  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
+		cName = elements[i].value.substring(elements[i].value.lastIndexOf('_')+1,elements[i].value.length);
+	}
+	if(cCount == 0)
+	{
+		errorSpanElmt.innerHTML = '<font style="color:red;">Please Select Cadre</font>';
+		return;
+	}else if(cCount > 1){
+	    errorSpanElmt.innerHTML = '<font style="color:red;">Please Select Only One Cadre</font>';
+		return;
+	}
+	else if(cid != null && cCount == 1)
+	{
+		errorSpanElmt.innerHTML = '';
+		window.opener.mapSelectedCadreToVoter(cid,cName,voterId);
+		window.close();
+	}
+}
 <!--  cadre search  --- end> 
 </script>
 </body>

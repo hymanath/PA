@@ -973,7 +973,7 @@ for  body3 start    result  -->
 
 <div id="scrollToHere"></div>	
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
-<div id="selectedBoothInfo"></div>
+<div id="selectedBoothInfo" style="color:#000000;padding-bottom:5px;" class="widget blue whitegloss"></div>
 	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;color:#000000;"></div>
 	
 	   <div id="newsDisplayOuterDiv">
