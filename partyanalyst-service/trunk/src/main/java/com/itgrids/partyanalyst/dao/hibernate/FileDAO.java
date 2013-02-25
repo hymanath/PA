@@ -41,4 +41,16 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		
 		
 	}
+	
+	public Integer updateProblemFileDetailsByFileId(Long fileId, String fileTitle, String fileDescription)
+	{
+		Query query = getSession().createQuery(" update File model set model.fileTitle = ?, model.fileDescription =? " +
+				" where model.fileId = ? ");
+		
+		query.setParameter(0, fileTitle);
+		query.setParameter(1, fileDescription);
+		query.setParameter(2, fileId);
+		
+		return query.executeUpdate();
+	}
 }

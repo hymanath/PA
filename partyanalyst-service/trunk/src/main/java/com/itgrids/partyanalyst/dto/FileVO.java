@@ -114,6 +114,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long problemId;
 	private String isPrivate;
 	private Date fileGallaryDate;
+	private boolean isUpdatable = false;
 	
 	public Date getFileGallaryDate() {
 		return fileGallaryDate;
@@ -970,5 +971,14 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setRegionValue(Long regionValue) {
 		this.regionValue = regionValue;
 	}
+
+	public boolean isUpdatable() {
+		return isUpdatable;
+	}
+
+	public void setUpdatable(boolean isUpdatable) {
+		this.isUpdatable = isUpdatable;
+	}
+	
 
 }

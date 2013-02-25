@@ -22,7 +22,7 @@ public class ProblemFilesDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
-	public void testfindUserApprovalStatusbetweendates()throws Exception
+	/*public void testfindUserApprovalStatusbetweendates()throws Exception
 	{  
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 					
@@ -42,11 +42,23 @@ public class ProblemFilesDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("9"+obj[8]);		
 			
 		}
-	}
+	}*/
 	
 	/*public void testGetCountOfNewlyPostedImagesByFreeUser()
 	{
 		Long newlyPostedImagesCount = problemFilesDAO.getCountOfNewlyPostedImagesByFreeUser();
 		System.out.println(newlyPostedImagesCount);
 	}*/
+	
+	public void testgetProblemFileDetailsByProblemFileId()
+	{
+		List<Object[]> list = problemFilesDAO.getProblemFileDetailsByProblemFileId(35l);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);
+			}
+		}
+	}
 }

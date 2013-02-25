@@ -32,7 +32,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 	public List<Object[]> getProblemFiles(final Long problemId,final Long userId,final String visibility){
 
 		StringBuilder query = new StringBuilder();
-		query.append("select model.fileSourceLanguage.file.fileTitle,model.fileSourceLanguage.file.fileDescription,model.filePath,model1.user.userId,model1.user.firstName,model1.user.lastName " +
+		query.append("select model.fileSourceLanguage.file.fileTitle,model.fileSourceLanguage.file.fileDescription,model.filePath,model1.user.userId,model1.user.firstName,model1.user.lastName, model1.problemFilesId " +
 				" from FilePaths model,ProblemFiles model1 where model.fileSourceLanguage.file.fileId = model1.file.fileId  and model1.isApproved='true' and model1.isDelete ='false' and model1.problem.problemId = :problemId ");
 		if(visibility != null)
 			query.append(" and model1.visibility.type = :visibility ");
