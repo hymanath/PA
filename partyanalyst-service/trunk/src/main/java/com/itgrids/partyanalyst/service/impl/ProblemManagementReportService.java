@@ -3259,7 +3259,9 @@ public class ProblemManagementReportService implements
 						ProblemAssignedDepartment problemAssignedDepartment = null;
 						problemBeanVO.setProblem(userProblem.getProblem().getTitle().toString());
 						problemBeanVO.setDescription(userProblem.getProblem().getDescription().toString());
-						problemBeanVO.setReportedDate(userProblem.getProblem().getIdentifiedOn().toString());
+						String date1 = userProblem.getProblem().getIdentifiedOn().toString();
+						String dateObj1 = date1.substring(8,10)+'-'+date1.substring(5,7)+'-'+date1.substring(0,4);
+						problemBeanVO.setReportedDate(dateObj1);
 						problemBeanVO.setProblemStatus(userProblem.getProblem().getProblemStatus().getStatus().toString());
 						problemBeanVO.setProblemHistoryId(userProblem.getUserProblemId());
 						problemBeanVO.setProblemLocation(getProblemLocation(userProblem.getProblem().getRegionScopes().getRegionScopesId(),userProblem.getProblem().getImpactLevelValue()));
