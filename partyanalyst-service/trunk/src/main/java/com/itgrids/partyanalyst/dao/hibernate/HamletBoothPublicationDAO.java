@@ -35,6 +35,21 @@ public class HamletBoothPublicationDAO extends
 		// TODO Auto-generated method stub
 		return getHibernateTemplate().find("select model from HamletBoothPublication model where model.booth.boothId = ?",boothId);
 	}
+		
 	
 	
+	public List<Object> getBoothsIds(Long panchayatId,Long publicationDateId){
+		Query query = getSession().createQuery("select  distinct h.booth.boothId  from HamletBoothPublication h  " +
+                                             " where h.hamlet.hamletId =:id and h.booth.publicationDate.publicationDateId = :publicationDateId ") ;
+		                   query.setParameter("publicationDateId", publicationDateId);
+		                   query.setParameter("id", panchayatId);
+		                   return query.list();
+	             }
+	public List<Object[]> getBoothsInHamlet(Long panchayatId,Long publicationDateId){
+		Query query = getSession().createQuery("select  distinct h.booth.boothId,h.booth.partNo  from HamletBoothPublication h  " +
+                                             " where h.hamlet.hamletId =:id and h.booth.publicationDate.publicationDateId = :publicationDateId ") ;
+		                   query.setParameter("publicationDateId", publicationDateId);
+		                   query.setParameter("id", panchayatId);
+		                   return query.list();
+	             }
 }
