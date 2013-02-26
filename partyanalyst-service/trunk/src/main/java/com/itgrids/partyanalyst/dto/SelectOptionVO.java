@@ -15,6 +15,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String villageCovered;
 	private List<SelectOptionVO> selectOptionsList;
 	private List<SelectOptionVO> selectOptionsList1;
+	private boolean hampletPresent;
 	
 	public String getType() {
 		return type;
@@ -108,7 +109,6 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	public void setSelectOptionsList(List<SelectOptionVO> selectOptionsList) {
 		this.selectOptionsList = selectOptionsList;
 	}
-
 	public String getLocation() {
 		return location;
 	}
@@ -125,5 +125,11 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		this.villageCovered = villageCovered;
 	}
 
-	
+	public boolean isHampletPresent() {
+		return hampletPresent;
+	}
+
+	public void setHampletPresent(boolean hampletPresent) {
+		this.hampletPresent = hampletPresent;
+	}
 }
