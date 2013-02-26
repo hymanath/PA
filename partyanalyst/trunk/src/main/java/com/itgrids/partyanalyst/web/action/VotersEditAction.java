@@ -295,7 +295,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
 		this.constituencyList = constituencyList;
 	}
-
+	
 	public String execute() throws Exception{
 		
 		
@@ -613,11 +613,14 @@ public String saveLocality()
                 	   searchInfo.setPartyPresent(true);
 			    	}else if(id.equalsIgnoreCase("cast")){
 			    		searchInfo.setCastPresent(true);
-			    	}else{
+			    	}else if(id.equalsIgnoreCase("locality")){
+			    		searchInfo.setLocalityPresent(true);
+			    	}
+			    	else{
 			    		categories.add(new Long(id));
 			    	}
 			    }
-			}
+			} 
 			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,request.getParameter("locationLvl"),Long.parseLong(request.getParameter("id")),categories);
 		  }else{
 			  voterHouseInfoVO1 = votersAnalysisService.getUserVoterCategories(userId);
@@ -650,15 +653,21 @@ public String saveLocality()
 					    		parameters.setAll(true);
 					    		parameters.setPartyPresent(true);
 					    		parameters.setCastPresent(true);
+					    		parameters.setLocalityPresent(true);
 					    	}else if(id.equalsIgnoreCase("party")){
 					    		parameters.setPartyPresent(true);
 					    	}else if(id.equalsIgnoreCase("cast")){
 					    		parameters.setCastPresent(true);
-					    	}else{
+					    	}else if(id.equalsIgnoreCase("locality")){
+					    		parameters.setLocalityPresent(true);
+					    	} 	
+					    	else{
 					    		categories.add(new Long(id));
 					    	}
 					    }
-					    
+					    parameters.setSelectedType(jObj.getString("selectedType"));
+				       	parameters.setSelectedTypeId(jObj.getLong("selectedTypeId"));
+				       	parameters.setPublicationId(jObj.getLong("publicationId"));
 					    if(jObj.getString("type").equalsIgnoreCase("getAllVoters")){
 					    	org.json.JSONArray votersJSONArray = jObj.getJSONArray("votersIds");
 						    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
@@ -673,7 +682,9 @@ public String saveLocality()
 							voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters);
 					    }else{   
 					    	parameters.setVoterId(jObj.getLong("voterId"));
+					    	
 						  voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptions(parameters);
+						  //
 					    }
 						return "data";
 				  }else if(jObj.getString("task").equalsIgnoreCase("updateAllVoters")){
@@ -682,6 +693,7 @@ public String saveLocality()
 						int totalCategCount =  jObj.getInt("total");
 						boolean partyPresent = jObj.getBoolean("partyPresent");
 						boolean castPresent = jObj.getBoolean("castPresent");
+						boolean localityPresent = jObj.getBoolean("localityPresent");
 						for(int i = 0;i<jSONArray.length();i++){
 							JSONObject jSONObject= jSONArray.getJSONObject(i);
 							//voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
@@ -689,6 +701,20 @@ public String saveLocality()
 							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
 							if(partyPresent)
 							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							if(localityPresent){
+								Long hamletId=jSONObject.getLong("hamletId");
+								Long locId=jSONObject.getLong("localityHamletId");
+								
+								if(hamletId !=null &&  hamletId !=0)
+								{   if(locId !=0 && locId!=null)
+									voterHouseInfoVO.setLocalitityId(locId);
+							
+									voterHouseInfoVO.setHamletId(hamletId);
+								}else if(locId !=0l && locId!=null)
+									voterHouseInfoVO.setLocalitityId(locId);
+														
+							}
+								//  voterHouseInfoVO.setl(jSONObject.getLong("partyId"));
 							voterHouseInfoVO.setUserId(userId);
 							categoriesList = new ArrayList<VoterHouseInfoVO>();
 							VoterHouseInfoVO category = null;
@@ -705,12 +731,15 @@ public String saveLocality()
 							voterHouseInfoVO.setCategoriesList(categoriesList);
 						}
 						String type = null;
-						if(castPresent && partyPresent){
+						if(castPresent && partyPresent && localityPresent){
 							type ="all";
 						}else if(castPresent){
 							type ="cast";
 						}else if(partyPresent){
 							type ="party";
+						}
+							else if(localityPresent){
+								type ="localityPresent";
 						}
 						String[] voters = jObj.getString("voterIds").split(",");
 						 votersAnalysisService.updateSelectedFieldsForAllVoters(voterHouseInfoVO,voters,type);
@@ -722,6 +751,7 @@ public String saveLocality()
 						int totalCategCount =  jObj.getInt("total");
 						boolean partyPresent = jObj.getBoolean("partyPresent");
 						boolean castPresent = jObj.getBoolean("castPresent");
+						boolean localityPresent = jObj.getBoolean("localityPresent");
 						for(int i = 0;i<jSONArray.length();i++){
 							JSONObject jSONObject= jSONArray.getJSONObject(i);
 							voterHouseInfoVO = new VoterHouseInfoVO();
@@ -730,6 +760,21 @@ public String saveLocality()
 							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
 							if(partyPresent)
 							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							if(localityPresent){
+								Long hamletId=jSONObject.getLong("hamletId");
+								
+								Long locId= 0l;
+								try{
+									locId	=jSONObject.getLong("localityHamletId");
+								}catch(Exception e){}
+								if(hamletId !=null &&  hamletId !=0)
+								{   if(locId !=0l && locId!=null)
+									voterHouseInfoVO.setLocalitityId(locId);
+							
+									voterHouseInfoVO.setHamletId(hamletId);
+								}else if(locId !=0l && locId!=null)
+									voterHouseInfoVO.setLocalitityId(locId);		
+							}
 							voterHouseInfoVO.setUserId(userId);
 							categoriesList = new ArrayList<VoterHouseInfoVO>();
 							VoterHouseInfoVO category = null;
@@ -747,12 +792,14 @@ public String saveLocality()
 							votersList.add(voterHouseInfoVO);
 						}
 						String type = null;
-						if(castPresent && partyPresent){
+						if(castPresent && partyPresent && localityPresent){
 							type ="all";
 						}else if(castPresent){
 							type ="cast";
-						}else if(partyPresent){
+						}else if(partyPresent)
 							type ="party";
+							else if(localityPresent){
+								type ="localityPresent";
 						}
 					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type);
 					  return "update";
