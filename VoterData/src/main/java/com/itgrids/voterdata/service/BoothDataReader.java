@@ -34,7 +34,6 @@ public class BoothDataReader {
                 File BoothInfo  = new File(args[0]+"/BoothDataReader.txt");
                 BufferedWriter boothInfoReader = new BufferedWriter(new FileWriter(BoothInfo));
                 StringBuilder sb = null;
-                StringBuilder sb2 = null;
                 StringBuilder boothSB = new StringBuilder();
                 List<BoothVO> boothsInfoList = new ArrayList<BoothVO>(0);
                 Class.forName("com.mysql.jdbc.Driver");
@@ -49,35 +48,28 @@ public class BoothDataReader {
                 	try{
                 	stmt = conn.createStatement();
                 	sb = new StringBuilder();
-                	sb2 = new StringBuilder();
                     pd = PDDocument.load(input);
                     String constituencyId = null;
                     PDFTextStripper stripper = new PDFTextStripper();
 
                     sb.append(stripper.getText(pd));
-                    sb2.append(stripper.getText(pd));
                     String str1 = "deletions and corrections under Special \r\nSummary Revision 2013";
                     String str2 = " \r\n\r\nPhoto Electoral Roll - 2013";
                     String str3 = "District\r\n:";
                     String str4 = "Roll Identification: Basic roll of  Special";
                     
-                    sb.delete(0,sb.indexOf(str1)+str1.length()+1);
-                    sb.delete(sb.indexOf(str2), sb.length()-1);
-                    sb.delete(0,sb.indexOf("\r\n")+2);
+                    String sbStr = sb.substring(sb.indexOf(str1)+str1.length()+1, sb.indexOf(str2)+1);
+                    sbStr = sbStr.substring(sbStr.indexOf("\r\n")+3);
                     
-                    sb2.delete(0,sb2.indexOf(str3)+str3.length()+2);
-                    sb2.delete(sb2.indexOf(str4),sb2.length()-1);
+                    String sb2Str = sb.substring(sb.indexOf(str3)+str3.length()+2,sb.indexOf(str4));
                     
-                    //System.out.println(sb2.toString());
-                    
-                    if(sb.toString().contains("\r\n"))
-                    	sb.delete(0,sb.indexOf("\r\n"));
+                    if(sbStr.contains("\r\n"))
+                    	sbStr = sbStr.substring(sb.indexOf("\r\n")+1);
                     
                     String [] fileName = input.getName().split("-");
                     
-                    String str = sb.toString();
-                    str = str.replaceAll("\\r\\n","").trim();
-                    String[] voters = str.split(" ");
+                    sbStr = sbStr.replaceAll("\\r\\n","").trim();
+                    String[] voters = sbStr.split(" ");
                     
                     constituencyId = fileName[0];
                     BoothVO boothVO = new BoothVO();
@@ -89,7 +81,7 @@ public class BoothDataReader {
                     boothVO.setPartNo(fileName[2].trim());
                     boothVO.setConstituencyId(constituencyId);
                     boothVO.setConstituencyName(fileName[1].trim());
-                    boothVO.setMandalName(sb2.toString().split("\r\n")[1]);
+                    boothVO.setMandalName(sb2Str.split("\r\n")[1]);
                     
                     boothSB.append("Booth - "+boothVO.getPartNo()+"\tMandal - "+boothVO.getMandalName()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\n");
                     System.out.println("Booth - "+boothVO.getPartNo()+"\tMandal - "+boothVO.getMandalName()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters());
