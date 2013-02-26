@@ -68,6 +68,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String isApproved;
 	private String isDeleted;
 	private String booth;
+	private Long boothId;
 	private String ward;
 	private List<ProblemHistoryVO> problemHistories;
 	private String totalResultsCount;
@@ -130,12 +131,29 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long cadreProblems;
 	private Long callCenterProblems;
 	private Long contentId;
+	private Long locationElectionId;
 	
 	private String sourceFilePath;
 	private String destinationFilePath;
 	private String pathSepecrator;
 	private String locationExist;
-	
+
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+
+	public Long getLocationElectionId() {
+		return locationElectionId;
+	}
+
+	public void setLocationElectionId(Long locationElectionId) {
+		this.locationElectionId = locationElectionId;
+	}
 
 	public String getLocationExist() {
 		return locationExist;
