@@ -24,12 +24,12 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		System.out.println(count.size());
 	}
 	*/
-	public void testGetVotersCountForPanchayatByPublicationId(){
+/*	public void testGetVotersCountForPanchayatByPublicationId(){
 		List<Object[]> count = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationId(1l,2l);
 		System.out.println(count.size());
 		System.out.println(count.get(0)[0]+" "+count.get(0)[1]);
 		System.out.println(count.get(1)[0]+" "+count.get(1)[1]);
-	}
+	}*/
 	
 	
 	/*public void testGetVotersDetailsForPanchayatByPublicationId(){
@@ -48,15 +48,16 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		System.out.println(((Object[])l.get(0))[1]);
 		
 	}
-	
+		}*/
 	
 	public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
 		
-		List<Object[]> l = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(232L,2L,18L,25L);
+		List<Object[]> l = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(50819L,7L,18L,25L);
 
       for(Object[] obj:l){
     	  System.out.println(obj[0].toString()+"-"+obj[1].toString());
     	  
       }		
-	}*/
+
 }
+	}
