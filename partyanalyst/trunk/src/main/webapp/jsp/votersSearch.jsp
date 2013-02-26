@@ -374,9 +374,9 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 		  selectedVotersArr = new Array();
 		  $("#topSelCount").html("Total Voters Selected For Edit : "+selectedVotersArr.length);
           $("#bottomSelCount").html("Total Voters Selected For Edit : "+selectedVotersArr.length);
-		  alert(selectedType);
-	      alert(selectedTypeId);
-	      alert(publicationId);
+		  //alert(selectedType);
+	      //alert(selectedTypeId);
+	      //alert(publicationId);
 	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr);
 	   //alert(reqfieldsArr);
 	
