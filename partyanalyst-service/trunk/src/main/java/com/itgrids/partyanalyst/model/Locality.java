@@ -24,7 +24,7 @@
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	public class Locality implements java.io.Serializable{
 		
-	private long LocalityId;
+	private Long localityId;
 	
 	private String name;
 	
@@ -46,7 +46,7 @@
 	//Full Constructor
 	public Locality(Long LocalityId,String name,Hamlet hamlet,LocalElectionBody localElectionBody,User user,String isGlobal)
 	{
-	this.LocalityId = LocalityId;
+	this.localityId = LocalityId;
 	this.name = name;
 	this.hamlet = hamlet;
 	this.localElectionBody = localElectionBody;
@@ -55,12 +55,12 @@
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "locality_id", unique = true, nullable = false)
-	public long getLocalityId() {
-		return LocalityId;
+	@Column(name = "locality_id", unique = true ,  nullable = false)
+	public Long getLocalityId() {
+		return localityId;
 	}
-	public void setLocalityId(long localityId) {
-		LocalityId = localityId;
+	public void setLocalityId(Long localityId) {
+		this.localityId = localityId;
 	}
 	@Column(name="name",length=150)
 	public String getName() {
@@ -97,7 +97,7 @@
 	public String getIsGlobal() {
 		return isGlobal;
 	}
-	public void setIsGlobal(String isGlobal) {
+	public void setIsGlobal(String isGlobal) { 
 		this.isGlobal = isGlobal;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "locality")
