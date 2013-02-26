@@ -561,6 +561,8 @@ function populateLocations(val,source)
 	var mandalFieldEl = document.getElementById("mandalField_s");
 	var selectedConst = 0;
 	var selectedDistrict = 0;
+	var selectedMan = 0;
+	var selectedManName= null;
 	
 	var hamletFieldEl = document.getElementById("hamletField_s");
 	var pConstituencyFieldEl = document.getElementById("pConstituencyField_s");
@@ -572,37 +574,45 @@ function populateLocations(val,source)
 	row5El.style.display = 'none';
 	row6El.style.display = 'none';
 	
-	if(districtFieldEl && districtFieldEl.options.length > 0)
+	if(districtFieldEl && districtFieldEl.options.length > 0){
 		selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;	
-	if(constituencyFieldEl.options.length > 0)
-		 selectedConst = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value; 
-	
+	}
+	if(constituencyFieldEl && constituencyFieldEl.options.length > 0){
+		selectedConst = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value; 
+	}
+	if(mandalFieldEl.options.length > 0){
+		 selectedMan = mandalFieldEl.options[mandalFieldEl.selectedIndex].value; 
+		 selectedManName = mandalFieldEl.options[mandalFieldEl.selectedIndex].text; 
+	}
 	if(source == 'onChange')
 	{	
 		hiddenEl.value='';
-		if(scope == 2)
+		if(val == 2)
 		{
 			
-		} else if(scope == 3)
+		} else if(val == 3)
 		{
 			constituencyFieldEl.selectedIndex = '0';
 			mandalFieldEl.selectedIndex = '0';
 			hamletFieldEl.selectedIndex = '0';
 			boothFieldEl.selectedIndex = '0';
-			getSubRegionsInDistrict(selectedDistrict,'newProblemPost','constituencyField_s','currentAdd')
+			getSubRegionsInDistrict(selectedDistrict,'newProblemPost','constituencyField_s','currentAdd');
 			
-		} else if (scope == 4)
+		} else if (val == 4)
 		{
 			mandalFieldEl.selectedIndex = '0';
 			hamletFieldEl.selectedIndex = '0';
 			boothFieldEl.selectedIndex = '0';			
 			getSubRegionsInConstituency(selectedConst,'newProblemPost','mandalField_s','currentAdd');		
 			
-		} else if (scope == 7)
+		} else if (val == 5)
 		{
 			
-		}			
-		
+			hamletFieldEl.selectedIndex = '0';
+			boothFieldEl.selectedIndex = '0';			
+			getSubRegionsInTehsilOrLocalElecBody(25,'Adilabad MANDAL','newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');		
+			
+		}
 	} else if(source == "onLoad")
 		{
 		setLocationValue(accessValue,'onChange');
