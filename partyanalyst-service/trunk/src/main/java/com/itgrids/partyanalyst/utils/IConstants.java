@@ -19,7 +19,7 @@ public interface IConstants {
 	public static final String STATIC_PARTIES_KARNATAKA_WITHOUT_QUOTES = "JD(S),JD(U),KNDP,AIADMK,INC,CPI,CPM,BJP";
 	public static final String STATIC_STATE_PARTIES_35 = "'AIADMK','DMK','PMK'";
 	public static final String STATIC_STATE_PARTIES_13 = "'AIADMK','RSP'";
-	
+	public static final String DATE_PATTERN_VALUE = "dd-MM-yyyy";
 	
 	public static final String NoPassword = "0";
 	public static final String YesPassword = "121";
