@@ -38,5 +38,6 @@ public interface IWardDAO extends GenericDao<Ward, Long>{
 	public List<Ward> findByWardCode(Object wardCode);
 	
 	public List<Ward> findByWardNameAndTownship(String wardName,Long townId);
+	  public List<Object[]> findByWardsByAssemblyLocalElectionBodyId(Long  alebi,Long publicationId );
 
 }
