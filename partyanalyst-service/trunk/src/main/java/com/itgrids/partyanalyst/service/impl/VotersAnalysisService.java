@@ -575,15 +575,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
-			String columnName) {
+			String columnName,Long userId) {
 
 		if (log.isDebugEnabled())
 			log.debug("Excecuting getVoterDetails() method in RegionServiceDataImp service");
 
-		List<VoterVO> voters = new ArrayList<VoterVO>();
+		Map<Long,VoterVO> voters = new HashMap<Long, VoterVO>();
+		List<VoterVO> returnValue = null;
 		List<Voter> votersList = new ArrayList<Voter>();;
 		Long totalCount = 0L;
-
+		VoterVO voterVO = null;
 		try {   
 			if(boothId != null && panchayatId == null){
 				 votersList = boothPublicationVoterDAO
@@ -596,18 +597,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 						.getVotersDetailsForPanchayatByPublicationId(
 								 panchayatId,  publicationDateId,  startIndex,
 								 maxRecords,  order,  columnName);
-				 
 				 totalCount = (Long) boothPublicationVoterDAO.getVotersCountForPanchayat(panchayatId,publicationDateId).get(0);
 				
 			}
 	
 				
 				Long count = new Long(startIndex);
+				List<Long> voterIdsList = new ArrayList<Long>();
 				
 				for (Voter voter : votersList) {
 	
-					VoterVO voterVO = new VoterVO();
+					voterVO = new VoterVO();
 					voterVO.setVoterIds(voter.getVoterId());
+					voterIdsList.add(voter.getVoterId());
 					voterVO.setVoterId((++count)+"");
 					voterVO.setFirstName(voter.getName());
 					voterVO.setAge(voter.getAge());
@@ -628,29 +630,58 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 						voterVO.setInfluencePerson(false);
 						voterVO.setInfluencePerson("false");
 					}*/
-					voters.add(voterVO);
+					voters.put(voter.getVoterId(), voterVO);
 	
 				}
-				
-				if(voters != null)
-				if(voters.size() > 0)
-					voters.get(0).setTotalVoters(totalCount);
-
+				List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList,userId);
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+				{
+					for (Long influencingPeople : influencingPeopleList) {
+					   voterVO = voters.get(influencingPeople);
+						if(voterVO != null)
+						{
+							voterVO.setInfluencePerson(true);
+						}
+					}
+				}
+				List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIdsList,userId);
+				if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+				{
+					for (Long cadrePeople : cadrePeopleList) {
+						voterVO = voters.get(cadrePeople);
+						if(voterVO != null)
+						{
+							voterVO.setIsCadrePerson(true);
+						}
+					}
+				}
+				List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIdsList);
+				if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+				{
+					for (Long candidatePeople : candidatePeopleList) {
+						voterVO = voters.get(candidatePeople);
+						if(voterVO != null)
+						{
+							voterVO.setIsPoliticion(true);
+						}
+					}
+				}
+				if(voters != null && voters.size() > 0)
+				{
+					returnValue = new ArrayList<VoterVO>(voters.values());
+					returnValue.get(0).setTotalVoters(totalCount);
+				}
 		} catch (Exception e) {
 			
 			log.error("Exception Occured in getVoterDetails() method - " + e);
 			return null;
 		}
-	
-		return voters;
+		return returnValue;
 	}
-
-
-
 
 	/**
 	 * @return publicationDetails
-	 * @author prasad
+	 * @author prasad Thiragabathina
 	 * @param constituencyId
 	 */
 	public List<SelectOptionVO> publicationDetailsBasedOnConstituency(Long constituencyId)
@@ -683,7 +714,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	 * @param publicationDateId
 	 * @param name
 	 * @return returnVal
-	 * @author prasad
+	 * @author prasad Thiragabathina
 	 */
 	public List<Long> getImpFamiles(Long id,Long publicationDateId,String name){
 		List<Object[]>  impFamilesList = null;
@@ -3816,7 +3847,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	
   }
   
-  public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO){
+public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO){
 	  
 	  List<Long> stateIdsList = boothPublicationVoterDAO.getVoterStateId(voterId);
 	    if(stateIdsList != null && stateIdsList.size() > 0 ){
@@ -3836,12 +3867,9 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		   //List<Object[]> castsList = casteStateDAO.getAllCasteDetailsForVoters(stateIdsList.get(0));
 		     List<Object[]> castsList = casteStateDAO.getAllCastesForVoters(stateIdsList.get(0), userId);
 		   for(Object[] casts:castsList){
-			   String categoryName = "";
-			   if(casts[2] != null && !casts[2].toString().equalsIgnoreCase(""))
-				   categoryName = casts[2].toString();
 			   selectOptionVO = new SelectOptionVO();
 			   selectOptionVO.setId((Long)casts[0]);
-			   selectOptionVO.setName(casts[1]!=null?casts[1].toString()+" ("+categoryName+")":"");
+			   selectOptionVO.setName(casts[1]!=null?casts[1].toString():"");
 			   castsVo.add(selectOptionVO);
 		   }
 		   voterHouseInfoVO.setCasteGroupNameList(castsVo);
@@ -3856,6 +3884,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	    	voterHouseInfoVO.setCasteGroupNameList(partiesList);
 	    }
   }
+
 
   public void voterSelectedCastAndPartyDetails(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId){
 	  List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterId,userId);
@@ -8934,11 +8963,13 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						  else
 						  	{
 							 Long localElectionBodyId = boothPublicationVoter.getBooth().getLocalBody().getLocalElectionBodyId();
-							 List assemblyLocalElectionBodyId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localElectionBodyId);
+							 List<Object[]> assemblyLocalElectionBodyId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetails(localElectionBodyId);
 							 if(assemblyLocalElectionBodyId != null && assemblyLocalElectionBodyId.size() > 0)
 							 {
-							 Long assemblyLocalElectionBodyIds = (Long)assemblyLocalElectionBodyId.get(0);
-							 cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyIds.toString());
+								for (Object[] assemblyLocalElectionBodyIds : assemblyLocalElectionBodyId) {
+									cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyIds[0].toString());
+									cadreInfo.setMandalName(assemblyLocalElectionBodyIds[1]+"assemblyLocalElectionBodyIds[2]");
+								} 
 							 }
 						   }
 						}
@@ -9007,7 +9038,6 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			}
 			
 		}
-
 		public Long getParliamentConstituencyId(String type, Long id, Long year)
 		{
 			Long parliamentConId = null;

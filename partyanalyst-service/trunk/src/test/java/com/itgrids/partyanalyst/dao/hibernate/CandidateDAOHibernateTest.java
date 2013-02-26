@@ -8,6 +8,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Voter;
 
 
 public class CandidateDAOHibernateTest extends BaseDaoTestCase {
@@ -90,12 +91,23 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		Integer value = candidateDAO.findEmailInsertionInCandidate("sravanthi@gmail.com",187847l);
 		System.out.println(value);
 	}*/
-	public void testgetCandidateDetailsBySearch(){
+	/*public void testgetCandidateDetailsBySearch(){
 		List<Object[]> candidatesList = candidateDAO.getCandidateDetailsBySearch("M","prasad",232l,1l);
 		for (Object[] objects : candidatesList) {
 			
 			System.out.println(objects[0]);
 			System.out.println(objects[1]);
 		}
+	}*/
+	public void testFindCandidatePeopleDetails()
+	{
+		List<Long> voterIds = new ArrayList<Long>();
+		voterIds.add(2172793l);
+		voterIds.add(2130033l);
+		voterIds.add(2152480l);
+		voterIds.add(20l);
+		voterIds.add(210l);
+		List<Long> list = candidateDAO.findCandidatePeopleDetails(voterIds);
+		System.out.println(list.size());
 	}
 }

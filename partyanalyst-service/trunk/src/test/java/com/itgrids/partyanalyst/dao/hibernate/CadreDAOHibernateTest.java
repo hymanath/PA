@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dao.columns.enums.EducationQualificationColumnNa
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreDAOHibernateTest extends BaseDaoTestCase {
@@ -486,6 +487,17 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(object.toString());
 		}
 	}*/
+	public void testFindCandidatePeopleDetails()
+	{
+		List<Long> voterIds = new ArrayList<Long>();
+		voterIds.add(2172793l);
+		voterIds.add(2130033l);
+		voterIds.add(2152480l);
+		voterIds.add(20l);
+		voterIds.add(210l);
+		List<Long> list = cadreDAO.findCadrePeopleDetails(voterIds,1l);
+		System.out.println(list.size());
+	}
 }
 	
 

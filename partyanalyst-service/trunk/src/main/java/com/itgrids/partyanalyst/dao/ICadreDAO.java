@@ -4,6 +4,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Voter;
 /**
  * 
  * @author Narender Akula
@@ -168,4 +169,6 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Long> getinfluencingPeopleVoterId(Long voterId);
 	
 	public List<Cadre> getCadreByCadreIdUserId(Long cadreId,Long userId);
+	
+	public List<Long> findCadrePeopleDetails(List<Long> voterIds , Long userId);
 }

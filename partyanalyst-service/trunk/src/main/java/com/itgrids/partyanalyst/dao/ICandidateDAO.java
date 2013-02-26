@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Voter;
 
 /**
  * Interface for CandidateDAO.
@@ -79,4 +80,6 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 	public List<Object[]> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId);
 	
 	public List<Long> getinfluencingPeopleVoterId(Long voterId);
+	
+	public List<Long> findCandidatePeopleDetails(List<Long> voterIds);
 }

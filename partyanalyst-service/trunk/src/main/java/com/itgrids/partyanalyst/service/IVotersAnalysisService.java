@@ -23,7 +23,7 @@ public interface IVotersAnalysisService {
 	
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
-			String columnName);
+			String columnName,Long userId);
 	
 	public List<Long> getImpFamiles(Long id,Long publicationDateId,String name);
 	

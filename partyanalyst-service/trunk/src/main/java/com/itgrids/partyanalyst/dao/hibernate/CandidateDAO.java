@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -284,6 +285,19 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		Query query = getSession().createQuery("select count(model.voter.voterId) from Candidate model where model.voter.voterId = ? ");
 		query.setParameter(0, voterId);
 		return query.list();
+	}
+	/**
+	 * This Methos is Used To get the details of the candidate weather he is a voter r not
+	 * @author Prasad Thiragabathina
+	 * @param List<Long> voterIds
+	 * @return List<Long>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Long> findCandidatePeopleDetails(List<Long> voterIds) {
+	String queryString = "select model.voter.voterId from Candidate model where model.voter.voterId in(:voterIds)";
+	Query query = getSession().createQuery(queryString);
+	query.setParameterList("voterIds", voterIds);
+	return query.list();
 	}
 	
 }
