@@ -117,7 +117,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserFavoriteLinksDAO userFavoriteLinksDAO;
 	private IFavoriteLinkPageDAO favoriteLinkPageDAO;
 	private ISpecialPageDAO specialPageDAO;
-	
+	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
 	
 	
 	public ISpecialPageDAO getSpecialPageDAO() {
@@ -1802,7 +1802,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					CommentData commentData = (CommentData)params[0];
 					comment.setCommentId(commentData.getCommentDataId());
 					comment.setCommentDesc(commentData.getCommentDesc());
-					comment.setCommentedOn(commentData.getCommentDate().toString());
+					String date = commentData.getCommentDate().toString();
+					String dateObj = date.substring(8,10)+'-'+date.substring(5,7)+'-'+date.substring(0,4);
+					comment.setCommentedOn(dateObj);
 					comment.setCommentedBy(commentData.getCommentBy());
 					comment.setIsApproved(commentData.getIsApproved());
 					comment.setCandidateId((Long)params[1]);
@@ -1975,7 +1977,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					Object[] params = (Object[])problems.get(i);
 					ProblemDetailsVO problem= new ProblemDetailsVO(); 
 					problem.setProblemID(params[0]!=null?(Long)params[0]:0);
-					problem.setDescription(params[2]!=null?params[2].toString():"");
+					//problem.setDescription(params[2]!=null?params[2].toString():"");
+					problem.setIdentifiedDate(params[3]!=null?sdf.format(params[3]):"");
 					problem.setIdentifiedDate(params[3]!=null?params[3].toString():"");
 					problemRating = problemManagementService.getAverageRatingOfAProblem((Long)params[0]);
 					problem.setAverageRating(problemRating);
@@ -1984,7 +1987,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					if(params[3]!=null)
 					problem.setPostedDate((Date)params[3]);
 					
-					problem.setDefinition(params[1]!=null?params[1].toString():"");
+					//problem.setDefinition(params[1]!=null?params[1].toString():"");
+					problem.setExistingFrom(params[4]!=null?sdf.format(params[4]):"");
 					problem.setExistingFrom(params[4]!=null?params[4].toString():"");
 					problem.setUserId((Long)params[10]);
 					problem.setUserImageURL(params[11] != null && params[11].toString().length() > 0 ? params[11].toString() : "human.jpg");
