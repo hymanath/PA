@@ -1,11 +1,16 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.Panchayat;
+import com.itgrids.partyanalyst.model.PanchayatHamlet;
 
 public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -42,12 +47,21 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 	}
 	}*/
 	
-	/*public void testgetPanchayatsBymandalId()
+	public void testgetPanchayatsBymandalId()
 	{
-		List<Object[]> list = panchayatDAO.getPanchayatsBymandalId(295l);
+		List<Object> list = panchayatDAO.getPanchayatsBymandalId1(295l);
+		List<Hamlet> lis=new ArrayList<Hamlet>();
+		 Panchayat p=(Panchayat) list.get(0);
+		Set<PanchayatHamlet> h  = p.getPanchayatHamlets();
+		 Iterator itr=  h.iterator();
+		 PanchayatHamlet ph=null;
+		 while(itr.hasNext()){
+			 ph=(PanchayatHamlet) itr.next();
+		  lis.add(ph.getHamlet());}
+		//PanchayatHamlet p1=(PanchayatHamlet) h.iterator()
 		System.out.println(list.size());
 	}
-*/
+
 	/*public void testgetPanchayatiesCount()
 	{
 	 //Long value = panchayatDAO.getPanchayatiesCount(844l,"constituency");
@@ -75,12 +89,12 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetPanchayatIdsBytehsilIdsList()
+	/*public void testGetPanchayatIdsBytehsilIdsList()
 	{
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
 		mandalIdsList.add(844l);
 		List<Long> panchayatIdsList = panchayatDAO.getPanchayatIdsBytehsilIdsList(mandalIdsList);
 		System.out.println(panchayatIdsList);
-	}
+	}*/
 	
 }
