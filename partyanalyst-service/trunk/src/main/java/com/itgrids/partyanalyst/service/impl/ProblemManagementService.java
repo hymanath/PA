@@ -192,6 +192,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private ProblemBeanVO problemBeanVO = null;
 	private List<ProblemBeanVO> problemBeanVOs = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	private SimpleDateFormat sdf1 = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IBoothDAO boothDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
@@ -231,7 +232,7 @@ public class ProblemManagementService implements IProblemManagementService {
     private ICandidateDetailsService candidateDetailsService;
     private IPanchayatHamletDAO panchayatHamletDAO;
     private INewsProblemDAO newsProblemDAO;
-    
+
     
     public INewsProblemDAO getNewsProblemDAO() {
 		return newsProblemDAO;
@@ -3310,8 +3311,8 @@ public class ProblemManagementService implements IProblemManagementService {
 			problemBeanVO.setProblemHistoryId(problem.getProblemId());
 			problemBeanVO.setProblem(problem.getTitle());
 			problemBeanVO.setDescription(problem.getDescription());
-			problemBeanVO.setExistingFrom(problem.getExistingFrom().toString());
-			problemBeanVO.setReportedDate(problem.getIdentifiedOn().toString());
+			problemBeanVO.setExistingFrom(sdf1.format(problem.getExistingFrom()));
+			problemBeanVO.setReportedDate(sdf1.format(problem.getIdentifiedOn()));
 			problemBeanVO.setProblemStatus(problem.getProblemStatus().getStatus());
 			problemBeanVO.setVisibility(userProblem.getVisibility().getVisibilityId());
 
@@ -3321,6 +3322,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			else
 				problemBeanVO.setProbSource("");
 			// Problem Location Details
+			if(problemCompleteLocation != null)
 			problemBeanVO.setProblemLocation(getProblemLocationString(problemCompleteLocation));
 
 			problemBeanVOLst.add(problemBeanVO);
@@ -7134,8 +7136,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				result.setProblemId(problemDetails.getProblem().getProblemId());
 				result.setProblem(problemDetails.getProblem().getTitle().toString());
 				result.setDescription(problemDetails.getProblem().getDescription().toString());
-				result.setExistingFrom(problemDetails.getProblem().getExistingFrom().toString());
-				result.setIdentifiedOn(problemDetails.getProblem().getIdentifiedOn().toString());
+				result.setExistingFrom(sdf1.format(problemDetails.getProblem().getExistingFrom()));
+				result.setIdentifiedOn(sdf1.format(problemDetails.getProblem().getIdentifiedOn()));
 				//result.setPostedPersonName(problemDetails.getUser().getFirstName().toString());
 				result.setPostedDate(problemDetails.getProblem().getIdentifiedOn().toString());
 				result.setPostDate(problemDetails.getProblem().getIdentifiedOn());
@@ -8203,6 +8205,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 									.getConstituency().getName());
 							problemBeanVO.setPConstituencyId(params.getProblem().getProblemCompleteLocation().getConstituency().getConstituencyId());
 						}
+						
 						if (params.getProblem() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
@@ -8211,8 +8214,38 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 							problemBeanVO.setMandal(params.getProblem()
 									.getProblemCompleteLocation().getTehsil()
 									.getTehsilName());
-						problemBeanVO.setTehsilId(params.getProblem().getProblemCompleteLocation().getTehsil().getTehsilId());
+							String tehsilValue=params.getProblem().getProblemCompleteLocation().getTehsil().getTehsilId().toString();
+							String tehsilNumber="2";
+							String tehsilId=tehsilNumber+tehsilValue;
+							problemBeanVO.setTehsilId(new Long(tehsilId));
+						}	
+						else if(params.getProblem() != null
+								&& params.getProblem()
+								.getProblemCompleteLocation().getLocalElectionBody() != null){
+							problemBeanVO.setMandal(params.getProblem()
+									.getProblemCompleteLocation().getLocalElectionBody().getName());
+							
+							Long value=assemblyLocalElectionBodyDAO.getTehsilValues(params.getProblem()
+									.getProblemCompleteLocation().getLocalElectionBody().getLocalElectionBodyId(),params.getProblem().getProblemCompleteLocation().getConstituency().getConstituencyId());
+							String tehsilNumber="1";
+							String tehsilId=tehsilNumber+value;
+							problemBeanVO.setTehsilId(new Long(tehsilId));
 						}
+						if(params.getProblem().getRegionScopes().getRegionScopesId()==6)
+						{
+						if (params.getProblem() != null
+								&& params.getProblem()
+										.getProblemCompleteLocation()
+										.getTehsil() != null)
+						{
+							problemBeanVO.setMandal(params.getProblem()
+									.getProblemCompleteLocation().getTehsil()
+									.getTehsilName());
+							String tehsilValue=params.getProblem().getProblemCompleteLocation().getTehsil().getTehsilId().toString();
+							String tehsilNumber="2";
+							String tehsilId=tehsilNumber+tehsilValue;
+						problemBeanVO.setTehsilId(new Long(tehsilId));
+						}						
 						if (params.getProblem().getProblemCompleteLocation() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
@@ -8221,8 +8254,49 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 							problemBeanVO.setVillage(params.getProblem()
 									.getProblemCompleteLocation().getHamlet()
 									.getHamletName());
-							problemBeanVO.setHamletId(params.getProblem().getProblemCompleteLocation().getHamlet().getHamletId());
+							String hamletValue=params.getProblem().getProblemCompleteLocation().getHamlet().getHamletId().toString();
+							String hamletState="2";
+							String hamletId=hamletState + hamletValue;
+							problemBeanVO.setHamletId(new Long(hamletId));
 						}
+						}
+						
+						if(params.getProblem().getRegionScopes().getRegionScopesId()==8)
+						{
+						if (params.getProblem() != null
+									&& params.getProblem()
+											.getProblemCompleteLocation()
+											.getTehsil() != null)
+							{
+								problemBeanVO.setMandal(params.getProblem()
+										.getProblemCompleteLocation().getLocalElectionBody().getName());
+								
+								problemBeanVO.setLocationElectionId(params.getProblem().getProblemCompleteLocation().getLocalElectionBody().getLocalElectionBodyId());
+								Long value=assemblyLocalElectionBodyDAO.getTehsilValues(params.getProblem()
+										.getProblemCompleteLocation().getLocalElectionBody().getLocalElectionBodyId(),params.getProblem().getProblemCompleteLocation().getConstituency().getConstituencyId());
+								//String tehsilNumber="1";
+								//String tehsilId=tehsilNumber+value;
+							problemBeanVO.setTehsilId(value);
+							}
+						if(params.getProblem().getProblemCompleteLocation() !=null 
+								&& params.getProblem().getProblemCompleteLocation().getWard()!= null)
+						{
+							String wardValue=params.getProblem().getProblemCompleteLocation().getWard().getConstituencyId().toString();
+							String wardState="1";
+							String wardId=wardState + wardValue;
+							problemBeanVO.setVillage(params.getProblem().getProblemCompleteLocation().getWard().getName());
+							problemBeanVO.setHamletId(new Long(wardId));
+														
+						}
+						}
+						if(params.getProblem().getProblemCompleteLocation() != null
+								&& params.getProblem()
+								.getProblemCompleteLocation() != null
+								&& params.getProblem()
+								.getProblemCompleteLocation().getBooth() != null)
+							problemBeanVO.setBoothId(params.getProblem()
+									.getProblemCompleteLocation().getBooth().getBoothId());
+							
 						if (params.getProblem().getProblemCompleteLocation() != null
 								&& params.getProblem()
 										.getProblemCompleteLocation()
@@ -8230,9 +8304,14 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 								&& params.getProblem()
 										.getProblemCompleteLocation()
 										.getLocalElectionBody().getName() != null)
+						//	String mandalName=params.getProblem()
+							//.getProblemCompleteLocation()
+						//	.getLocalElectionBody().getName();
+						
 							problemBeanVO.setMandal(params.getProblem()
 									.getProblemCompleteLocation()
 									.getLocalElectionBody().getName());
+						
 						if (params.getProblem().getExistingFrom() != null)
 
 							 
@@ -8313,6 +8392,19 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 					}
 
 				}
+			
+			List<CadreProblems> cadreProblem = cadreProblemsDAO
+					.getCadreProblemDetailsByProblemId(problemId);
+			if (cadreProblem != null)
+				for (CadreProblems params : cadreProblem) {
+					if (params.getCadre()!= null) {
+						if (params.getCadre().getFirstName() != null){
+							problemBeanVO.setCadreId(params.getCadre().getCadreId());
+							problemBeanVO.setCadreName(params.getCadre().getFirstName());
+						}
+					}
+				}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -8603,12 +8695,15 @@ public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
 							&& !"0".equals(problemBeanVO.getTehsil())) {
 						if (IConstants.RURAL_TYPE.equals(problemBeanVO
 								.getTehsil().substring(0, 1)))
+						{
+							problemCompleteLocation.setLocalElectionBody(null);
 							problemCompleteLocation.setTehsil(tehsilDAO
 									.get(new Long(problemBeanVO.getTehsil()
 											.substring(1))));
-
+						}
 						else if (IConstants.URBAN_TYPE.equals(problemBeanVO
 								.getTehsil().substring(0, 1))) {
+							problemCompleteLocation.setTehsil(null);
 							Long assemblyLocalElectionBodyId = new Long(
 									problemBeanVO.getTehsil().substring(1));
 							List localElectionBodyIdsList = assemblyLocalElectionBodyDAO
