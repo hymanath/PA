@@ -367,6 +367,27 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
 			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getWards"))
+		{
+			Long selectedId = jObj.getLong("selected");
+			Long PublicationId = jObj.getLong("publicationValue");
+	       namesList = votersAnalysisService.getWards(selectedId,PublicationId);
+			//namesList.add(0, new SelectOptionVO(0L,"Select"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getHamletsList"))
+		{
+			Long selectedId = jObj.getLong("selected");
+			Long PublicationId = jObj.getLong("publicationValue");
+			namesList = votersAnalysisService.getHamlets(selectedId);
+			//namesList.add(0, new SelectOptionVO(0L,"Select"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getLocalities"))
+		{
+			Long selectedId = jObj.getLong("selected");
+		
+		 namesList = votersAnalysisService.getLocalities(selectedId);
+			//namesList.add(0, new SelectOptionVO(0L,"Select"));
+		}
 			
 		return Action.SUCCESS;
 	}
@@ -893,6 +914,13 @@ return Action.SUCCESS;
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
 		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 		}
+		else if (type.equalsIgnoreCase("hamlet")){
+			
+			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type);
+			if(boothVotersDetails == null || boothVotersDetails.size() == 0)
+			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
+			constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+			}
 		else if (type.equalsIgnoreCase("ward")){
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByWardId(panchayatId,publicationDateId);
 		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
