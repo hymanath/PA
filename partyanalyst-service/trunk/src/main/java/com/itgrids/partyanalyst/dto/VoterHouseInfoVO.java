@@ -75,6 +75,127 @@ public class VoterHouseInfoVO {
 		this.partyName = partyName;
 	}
 
+	//start
+	private List<SelectOptionVO> localitiesList;
+	private boolean localityPresent;
+	private String  selectedType;
+	private Long selectedTypeId;
+	private Long localitityId;
+	private Long hamletId;
+	private String location;
+	private boolean hamletPresent;
+	private boolean localAreaPresent;
+	private List<SelectOptionVO> hamletIds; 
+	private List<SelectOptionVO> localAreaIds; 
+	private String hamletName;
+	private String localAreaName;
+	
+	
+	
+	public String getHamletName() {
+		return hamletName;
+	}
+
+	public void setHamletName(String hamletName) {
+		this.hamletName = hamletName;
+	}
+
+	public String getLocalAreaName() {
+		return localAreaName;
+	}
+
+	public void setLocalAreaName(String localAreaName) {
+		this.localAreaName = localAreaName;
+	}
+
+	public boolean isHamletPresent() {
+		return hamletPresent;
+	}
+
+	public void setHamletPresent(boolean hamletPresent) {
+		this.hamletPresent = hamletPresent;
+	}
+
+	public boolean isLocalAreaPresent() {
+		return localAreaPresent;
+	}
+
+	public void setLocalAreaPresent(boolean localAreaPresent) {
+		this.localAreaPresent = localAreaPresent;
+	}
+
+	public List<SelectOptionVO> getHamletIds() {
+		return hamletIds;
+	}
+
+	public void setHamletIds(List<SelectOptionVO> hamletIds) {
+		this.hamletIds = hamletIds;
+	}
+
+	public List<SelectOptionVO> getLocalAreaIds() {
+		return localAreaIds;
+	}
+
+	public void setLocalAreaIds(List<SelectOptionVO> localAreaIds) {
+		this.localAreaIds = localAreaIds;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Long getLocalitityId() {
+		return localitityId;
+	}
+
+	public void setLocalitityId(Long localitityId) {
+		this.localitityId = localitityId;
+	}
+
+	public Long getHamletId() {
+		return hamletId;
+	}
+
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
+
+	public List<SelectOptionVO> getLocalitiesList() {
+		return localitiesList;
+	}
+
+	public void setLocalitiesList(List<SelectOptionVO> localitiesList) {
+		this.localitiesList = localitiesList;
+	}
+
+	public boolean isLocalityPresent() {
+		return localityPresent;
+	}
+
+	public String getSelectedType() {
+		return selectedType;
+	}
+
+	public void setSelectedType(String selectedType) {
+		this.selectedType = selectedType;
+	}
+
+	public Long getSelectedTypeId() {
+		return selectedTypeId;
+	}
+
+	public void setSelectedTypeId(Long selectedTypeId) {
+		this.selectedTypeId = selectedTypeId;
+	}
+
+	public void setLocalityPresent(boolean localityPresent) {
+		this.localityPresent = localityPresent;
+	}
+//end
 	public VoterHouseInfoVO(){
 		
 	}
