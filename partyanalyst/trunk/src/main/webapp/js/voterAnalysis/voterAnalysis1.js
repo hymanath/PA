@@ -332,40 +332,59 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 		str += ' <li><i class="icon-th-list"></i>';
 		str += ' <ul>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};" onclick="openRegistrationForm('+id+');">Create New Cadre</a>';
+		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\');">Create New Cadre</a>';
 		str += ' </li>';
 		str += ' <li>';
 		str += ' <a href= "javascript:{};" onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
 		str += ' </li>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};" onclick="addInfluencingPeople('+id+');">Create New Influencing People</a>';
+		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\');">Create New Influencing People</a>';
 		str += ' </li>';
 		str += ' <li>';
 		str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
 		str += ' </li>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};" onclick="addToPolitician('+id+');">Add To Politician</a>';
+		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\');">Add To Politician</a>';
 		str += ' </li>';
 		str += ' </ul>';
 		str += ' </li>';
 		str += ' </ul>';
 		elLiner.innerHTML =str;
 	}
-
-
+YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	{
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var isInfluencePerson=oRecord.getData("isInfluencePerson");
+		var isCadere = oRecord.getData("isCadrePerson");
+		var isPolitician = oRecord.getData("isPoliticion");
+		if(isInfluencePerson == true)
+		{
+			str+='<img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/>';
+		}
+		if(isCadere == true)
+		{
+			str+='<img title="Cadre" alt="CadrePerson" src="./images/icons/cadre.png"/>';
+		}
+		if(isPolitician == true)
+		{
+			str+='<img title="Politician" alt="Politicion" src="./images/icons/politican.png"/>';
+		}
+		elLiner.innerHTML =str;
+	}
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
-{key:"voterIDCardNo",label: "voter Id",sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "GuardName", sortable:true},
+{key:"voterId", label: "SNo",width:20,},
+{key:"firstName", label: "Name",width:80, sortable: true},
+{key:"voterIDCardNo", label: "voter ID",sortable: true},
+{key:"gender", label: "Gender", width:50, sortable: true},
+{key:"age", label: "Age",  width:30,sortable:true},
+{key:"houseNo", label: "House No",width:50, sortable:true},
+{key:"relativeFirstName", label: "GuardName", width:100,sortable:true},
+{key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
-
 ];
 
 YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
@@ -383,7 +402,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencePerson"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -467,7 +486,27 @@ str += ' </li>';
 str += ' </ul>';
 elLiner.innerHTML =str;
 }
-
+YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	{
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var isInfluencePerson=oRecord.getData("isInfluencePerson");
+		var isCadere = oRecord.getData("isCadrePerson");
+		var isPolitician = oRecord.getData("isPoliticion");
+		if(isInfluencePerson == true)
+		{
+			str+='<img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/>';
+		}
+		if(isCadere == true)
+		{
+			str+='<img title="Cadre" alt="CadrePerson" src="./images/icons/cadre.png"/>';
+		}
+		if(isPolitician == true)
+		{
+			str+='<img title="Politician" alt="Politicion" src="./images/icons/politican.png"/>';
+		}
+		elLiner.innerHTML =str;
+	}
 YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
 	{
 	    var str='';
@@ -484,13 +523,14 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 	};
 
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true},
+{key:"voterId", label: "SNo",width:20,},
+{key:"firstName", label: "Name",width:80, sortable: true},
 {key:"voterIDCardNo", label: "voter ID",sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "GuardName", sortable:true},
+{key:"gender", label: "Gender", width:50, sortable: true},
+{key:"age", label: "Age",  width:30,sortable:true},
+{key:"houseNo", label: "House No",width:50, sortable:true},
+{key:"relativeFirstName", label: "GuardName", width:100,sortable:true},
+{key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
@@ -506,11 +546,11 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson"],
 
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
-}
+},
 };
 
 var myConfigs = {
@@ -1063,7 +1103,7 @@ function addToPolitician(voterId)
 
 	    $("#castPartyPopupDiv").dialog({
             modal: true,
-            title: "<b>Voters Details - Caste, Party Wise</b>",
+            title: "<b>Voters Details - Caste Wise</b>",
 			width: 980,
             height: 600
            
@@ -2530,7 +2570,7 @@ function buildCastInfoData(myresults,jsObj)
 	var voters = '';
 	if(result.maleVoters > 0){
 	    $("#castPartyPopupShowBtn").show();
-		$("#partyBasicInfoStatsTabNewTitle").html("<h2 id='subHeading'>Party Wise Voters Details</h2>");
+		$("#partyBasicInfoStatsTabNewTitle").html("<div id='partyDiv'><h2 id='subHeading'>Party Wise Voters Details</h2><input type='button' value='Graphical Representation Of Party Wise Voters Details' class='btn btn-info pull-right' onClick='showPartyWiseDetailsInGraph()' id='partyGraphButtonId'/></div>");
 	    $("#LocalCastDiv").css('padding-bottom','20px');
 	}
 	else{
@@ -5949,6 +5989,16 @@ function buildBooths(results){
   for(var i=0;i<results.length;i++)
 		$('#boothSelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
 
+}
+function showPartyWiseDetailsInGraph()
+{
+	 $("#partyGraphDiv").dialog({
+            modal: true,
+            title: "<b>Voters Details - Party Wise</b>",
+			width: 980,
+            height: 500
+           
+        });
 }
 //added by mahesh for adding cadre to voter	
 function mapSelectedCadreToVoter(cid,cName,voterId){

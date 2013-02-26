@@ -448,6 +448,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 				setDefaultConstituency(new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultMandal(new Long(influencingPeopleBeanVO.getMandal()));
 				setDefaultDistrict(new Long(influencingPeopleBeanVO.getDistrict()));
+				if(influencingPeopleBeanVO.getWardOrHamlet() != null)
 				setDefaultWardOrHamlet(new Long(influencingPeopleBeanVO.getWardOrHamlet()));
 				if(influencingPeopleBeanVO.getBooth()!=null)
 				setDefaultBooth(new Long(influencingPeopleBeanVO.getBooth()));

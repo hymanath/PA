@@ -402,6 +402,9 @@ public String getVoterDetails(){
 		String param;
 		param = getTask();
 		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
 		
 		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
 		String order = request.getParameter("dir");
@@ -421,11 +424,11 @@ public String getVoterDetails(){
 			if(boothId == 0 && panchaytId != 0)			
 				votersList = votersAnalysisService.getVoterDetails(
 						publicationId, null, panchaytId, startIndex,
-						maxRecords, order, columnName);
+						maxRecords, order, columnName,userId);
 			else if(boothId != 0 && panchaytId == 0)
 				votersList = votersAnalysisService.getVoterDetails(
 						publicationId, boothId , null, startIndex, maxRecords,
-						order, columnName);
+						order, columnName,userId);
 
 		
 		constituencyManagementVO.setVoterDetails(votersList);
