@@ -113,6 +113,18 @@ var scope = '${scope}';
 var windowTask = '${sessionScope.windowTask}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
+var validateProb=false;
+
+$(document).ready(function(){
+	if('${cadreName}' != null && '${cadreName}' != ''){
+	setSelectedCadre('${cadreId}','${cadreName}');
+	}
+	var x=$(ProblemSourceScopeId).val();
+	if($(ProblemSourceScopeId).val() == 2 || $(ProblemSourceScopeId).val() == 3)
+	{	
+		validatePerson=true;
+	}
+});
 
 function executeOnUpdate()
 {
@@ -308,7 +320,7 @@ $(".closeBtn").live("click",function(){
 	$(this).closest('div').remove();
 });
 
-var validateProb=false;
+
 function showOrHideProblemFilesDiv()
 {
 var problemDetailDivEle = document.getElementById("problemDetailDiv");
@@ -427,9 +439,12 @@ function checkValidations(){
 	var flag=true;	
 
 	$('#warningMsgs').html("");
-	
+	var exp=/^[A-Za-z\s]+$/;  
 	if($('#nameText').val() == ""){
 		$('#warningMsgs').append('<span>Please Provide Problem title</span>');
+		flag=false;
+	}else if(!($('#nameText').val().match(exp))){
+		$('#warningMsgs').append('<br><span>Problem field should not contain special characters and numbers</span>');
 		flag=false;
 	}
 	
@@ -530,6 +545,9 @@ function checkValidations(){
 		if($('#personNameField').val()==""){
 			$('#warningMsgs').append('<br><span>Please Provide Name in complained Person Details</span>');
 			flag=false;
+		}else if(!($('#personNameField').val().match(exp))){
+		$('#warningMsgs').append('<span>Complained Person Name should not contain special characters and numbers</span>');
+		flag=false;
 		}
 		if($('#mobileField').val()==""){
 			$('#warningMsgs').append('<br><span>Please Provide Mobile Number in complained Person Details</span>');
@@ -762,11 +780,11 @@ function displayCal()
 							<TD><%=PCONSTITUENCY%></TD>
 							<c:if test="${windowTask != 'update_existing'}">
 							<TD style="padding-left: 15px;">
-							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="defaultPConstituency" headerKey="0" headerValue="Select Location"  onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 							<c:if test="${windowTask == 'update_existing'}">
 							<TD style="padding-left: 15px;">
-							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="pConstituencyId" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="pConstituencyId" headerKey="0" headerValue="Select Location"  onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 							</TD><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</TR>
@@ -775,10 +793,10 @@ function displayCal()
 						<td><%=ACONSTITUENCY%><font class="requiredFont">* </font></td>
 						<td style="padding-left: 15px;">
 						<c:if test="${windowTask != 'update_existing'}">
-							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" headerKey="0" headerValue="Select Location" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 							<c:if test="${windowTask == 'update_existing'}">
-							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="pConstituencyId" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="pConstituencyId"  headerKey="0" headerValue="Select Location" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 					</tr>								
@@ -786,10 +804,10 @@ function displayCal()
 						<td><%=MANDAL%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
 						<c:if test="${windowTask != 'update_existing'}">
-							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" headerKey="0" headerValue="Select Location"  onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 							<c:if test="${windowTask == 'update_existing'}">
-							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" value="tehsilId" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" value="tehsilId" headerKey="0" headerValue="Select Location"  onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 					</tr>					
@@ -797,18 +815,18 @@ function displayCal()
 						<td><%=HAMLET%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
 						<c:if test="${windowTask != 'update_existing'}">
-							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" headerKey="0" headerValue="Select Location"  onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 							<c:if test="${windowTask == 'update_existing'}"> 
 							
-							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" value="hamletId" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" value="hamletId" headerKey="0" headerValue="Select Location"  onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</c:if>
 
 						</td>
 					</tr>	
 					<tr id="row6" style="display:none;">
 						<td >Booth No</td>
-						<td style="padding-left: 15px;"><s:select id="boothField_s" cssClass="selectWidth" name="booth" list="#session.boothsList_ap" listKey="id" listValue="name" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+						<td style="padding-left: 15px;"><s:select id="boothField_s" cssClass="selectWidth" name="booth" list="#session.boothsList_ap" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" value="boothId"  onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 						<td><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/></td>
 					</tr>
 					<tr>
