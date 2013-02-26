@@ -798,7 +798,7 @@ function buildCategoriesListInit(result){
 		  $(".localityallfamily").each(function (){
 		  var i=0;
 		 
-		 alert($(this).val());
+		// alert($(this).val());
 		 var optionValue=$(this).val();
 		   if(optionValue != 0){
 		 var selectid= $(this).attr("id");
