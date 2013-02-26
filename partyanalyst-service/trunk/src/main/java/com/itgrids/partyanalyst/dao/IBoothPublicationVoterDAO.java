@@ -117,8 +117,8 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender);
 	 
-	public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId);
-		 
+	 public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId);
+	 
 	 public List<Long> getVotersCountForMultipleBooths(List<Long> ids,Long publicationDateId);
 	 
 	 public List<Object[]> getGenderWiseVotersCountForWard(Long wardId,Long publicationDateId);
@@ -127,7 +127,7 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 				List<Long> boothIds, Long publicationDateId, Long startAge, Long endAge);
-	 
+	
 	 public List<BoothPublicationVoter> findVoterContactDetails(Long voterId);
 	 
 	 public List<Long> getFamilyMemberCount(String houseNo,Long boothId);
@@ -136,7 +136,21 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId, Long toPublicationdateId);
 	 
-	 public List<Long> getPreviousPublicationIds(Long publicationDateId);
+	 public List<Long> getPreviousPublicationIds(Long publicationDateId); 
+	 
+	 //start
+	  
+	 public List<Object[]>  getHamletsForConstituency(Long id);
+	 public List<Object[]>  getLocalitiesForConstituency(Long id);
+	 public List<Object[]>  getLocalitiesForMandals(Long id);
+	 public List<Object[]>  getLocalitiesForPanchayat(Long id);
+	 public List<Object[]>  getLocalitiesForBooth(Long id);
+	 public List<Object[]>  getHamletsForBooth(Long id);
+	 public List<Object[]>  getLocalitiesForHamlet(Long id);
+	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(
+				Long hamletId, Long publicationDateId , Long startAge, Long endAge); 
+	 
+	 
 	 
 	 public List<Voter> getVotersByBoothId(Long boothId);
 	 
