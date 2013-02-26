@@ -70,7 +70,7 @@ public List<Object[]> getAllCasteInfoDetails(){
 		
 	}
 	
-	/*public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
+	public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("from CasteState model where model.user.userId = :userId and model.caste.casteId =:casteId ");
@@ -81,8 +81,8 @@ public List<Object[]> getAllCasteInfoDetails(){
 		query.setParameter("casteId", casteId);
 		query.setParameter("casteCategoryId", casteCategoryId);
 		return (CasteState)query.uniqueResult();
-	}*/
-	public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
+	}
+	/*public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("from CasteState model where model.user.userId = :userId and model.caste.casteId =:casteId ");
@@ -92,5 +92,5 @@ public List<Object[]> getAllCasteInfoDetails(){
 		query.setParameter("stateId", stateId);
 		query.setParameter("casteId", casteId);
 		return (CasteState)query.uniqueResult();
-	}
+	}*/
 }
