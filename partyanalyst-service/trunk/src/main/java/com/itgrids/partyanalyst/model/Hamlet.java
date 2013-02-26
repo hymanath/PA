@@ -55,7 +55,9 @@ public class Hamlet extends BaseModel implements Serializable {
 	private Set<HamletBoothPublication> hamletBoothPublications = new HashSet<HamletBoothPublication>(0);
 	
 	private Set<Locality> Localities = new HashSet<Locality>(0);
+	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
 	
+
 	//default constructor
 	public Hamlet(){
 		
@@ -216,7 +218,15 @@ public class Hamlet extends BaseModel implements Serializable {
 	public void setLocalities(Set<Locality> localities) {
 		Localities = localities;
 	}
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hamlet")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserVoterDetails> getUservoterdetails() {
+		return uservoterdetails;
+	}
+
+	public void setUservoterdetails(Set<UserVoterDetails> uservoterdetails) {
+		this.uservoterdetails = uservoterdetails;
+	}
 	
 	
 }
