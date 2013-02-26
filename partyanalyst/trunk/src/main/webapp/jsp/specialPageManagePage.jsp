@@ -307,14 +307,14 @@ $(document).ready(function() {
 				<td class="statusData_table_data" width="100%" style="padding-top:23px">
 					<table>
 					  <tr>
-					    <td style="padding-left:0px"><b><input type="button" class="buttonStyle" value="Create New" onClick="buildCreateNewDiv()"></b></td>
+					    <td style="padding-left:0px"><b><input type="button" id="createNewTabId" class="buttonStyle" value="Create New" onClick="buildCreateNewDiv()"></b></td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Photo Gallery" type ="button" id="photoGalleryId" onClick="showPhotoGallery()"></b></td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Meta Info" id="developmentGalleryId" onClick="buildMetaInfoDiv()"></b> </td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
 						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Special Page Info" id="specialPageInfoId"  onclick="getSpecialPageInfo()"></b> </td>
-						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Special Page Highlights" id="specialPageInfoId"  onclick="buildSpecialPageHighlightsDiv()"></b> </td>
+						<td style="padding-left:15px"><b><input type="button" class="buttonStyle" value="Special Page Highlights" id="specialPageHighLightId"  onclick="buildSpecialPageHighlightsDiv()"></b> </td>
 					 </tr>
 					</table>
 				</td>
@@ -459,6 +459,7 @@ $(document).ready(function() {
 	  <script type="text/javascript">
 
 	selectedSpecialPage(${specialPageId});
+	buildCreateNewDiv();
 	  </script>
 </body>
 </html>
