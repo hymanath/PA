@@ -2322,7 +2322,7 @@ try{
 
   <tr><td><div id="showNewsCount"></div></td></tr>
   
-  <center><div id="showTypes"></div></center>
+  <center><div id="showTypes" style="margin-top: 10px;"></div></center>
   <center><div id="categoryGraphDiv" style="position:inherit;"></div></center>
   <center><div id="sourceGraphDiv" style="position:inherit;"></div></center>
   <center><div id="languageGraphDiv" style="position:inherit;"></div></center>
@@ -2345,7 +2345,7 @@ try{
    </td>
  </tr> 
   
-  <tr><td><div id="showNews" class="yui-skin-sam" style="width:970px;overflow-x:scroll;"></div></td></tr>
+  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;" ></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
            <div id="showNewsDiv"></div>
@@ -2518,27 +2518,27 @@ function buildContentDetails()
 		{
 
 
-			str+='<table style="font-size:13px;">';
+			str+='<table>';
 			str+='<tr>';
 			str+='<td>';
 
 			
 
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;<B>';
+				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
-				str+=' RegionScope</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font> &nbsp;';
+				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
 
 
 			 str+='</td>';
 
 			 str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
-				str+='<B>Source</B>: <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;<B>';
+				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].fileDate != null)
-				str+=' Date</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
 
 
 			 str+='</td>';
