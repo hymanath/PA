@@ -60,11 +60,16 @@ public class BoothDataReader {
                     String str2 = " \r\n\r\nPhoto Electoral Roll - 2013";
                     String str3 = "District\r\n:";
                     String str4 = "Roll Identification: Basic roll of  Special";
-                    sb2.delete(sb2.indexOf(str3)+str3.length()+1,sb2.indexOf(str4));
+                    
                     sb.delete(0,sb.indexOf(str1)+str1.length()+1);
                     sb.delete(sb.indexOf(str2), sb.length()-1);
                     sb.delete(0,sb.indexOf("\r\n")+2);
-                    System.out.println(sb2.toString());
+                    
+                    sb2.delete(0,sb2.indexOf(str3)+str3.length()+2);
+                    sb2.delete(sb2.indexOf(str4),sb2.length()-1);
+                    
+                    //System.out.println(sb2.toString());
+                    
                     if(sb.toString().contains("\r\n"))
                     	sb.delete(0,sb.indexOf("\r\n"));
                     
@@ -84,9 +89,10 @@ public class BoothDataReader {
                     boothVO.setPartNo(fileName[2].trim());
                     boothVO.setConstituencyId(constituencyId);
                     boothVO.setConstituencyName(fileName[1].trim());
+                    boothVO.setMandalName(sb2.toString().split("\r\n")[1]);
                     
-                    boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\n");
-                    System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters());
+                    boothSB.append("Booth - "+boothVO.getPartNo()+"\tMandal - "+boothVO.getMandalName()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\n");
+                    System.out.println("Booth - "+boothVO.getPartNo()+"\tMandal - "+boothVO.getMandalName()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters());
                     boothsInfoList.add(boothVO);
                     if (pd != null) {
                         pd.close();
