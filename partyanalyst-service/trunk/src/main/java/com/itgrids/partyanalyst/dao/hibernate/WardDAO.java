@@ -37,5 +37,39 @@ public class WardDAO extends GenericDaoHibernate<Ward, Long> implements
 		Object[] params = {wardName,townId};
 		return getHibernateTemplate().find("from Ward model where model.wardName = ? and model.township.townshipId = ?",params);
 	}
-
+	/**
+	 * @author anil
+	 * this is  method  usefull to get  wards along  with wardsnames 
+	 */
+	@SuppressWarnings("unchecked")
+	  public List<Object[]> findByWardsByAssemblyLocalElectionBodyId(Long  alebi,Long publicationId ){
+		 	
+			Object[] params = {alebi,publicationId};
+		//  System.out.println(getSession());
+		  List<Object[]> li = getHibernateTemplate().find("select distinct model.localBodyWard.constituencyId,concat(le.wardName, ' (' ,model.localBodyWard.name, ')') " +
+		  		    "from Booth model ,LocalElectionBodyWard le " +
+		 			" join model.localBody l join l.assemblyLocalElectionBody a where a.assemblyLocalElectionBodyId = ? " +
+		 			" and model.publicationDate.publicationDateId =? and model.localBodyWard.constituencyId = le.constituency.constituencyId order by le.wardName  ",params );
+			return 	li;
+	 }
+	  public List<Object[]> findByWardsByAssemblyLocalElectionBodyId1(Long  alebi,Long publicationId ){
+		 	
+			Object[] params = {alebi,publicationId};
+		//  System.out.println(getSession());
+		  List<Object[]> li = getHibernateTemplate().find(" select distinct model.constituencyId,model.name " +
+		  		    "from Booth model ,LocalElectionBodyWard le " +
+		 			" join model.localBody l join l.assemblyLocalElectionBody a where a.assemblyLocalElectionBodyId = ? " +
+		 			" and model.publicationDate.publicationDateId =? and model.localBodyWard.constituencyId = le.constituency.constituencyId order by le.wardName  ",params );
+			return 	li;
+	 }
+	 /* public List<Object[]> getLocalitiesForBooth(Long id)
+	  {
+		  List<Object[]> li = getHibernateTemplate().find(" select distinct l.localityId , l.name from Locality l1 " +
+		  		    " join model.localBody l join Booth b l.assemblyLocalElectionBody a where a.assemblyLocalElectionBodyId = ? " +
+		 			" and model.publicationDate.publicationDateId =? and model.localBodyWard.constituencyId = le.constituency.constituencyId order by le.wardName  ",params );
+			return 	li;
+		  
+		  
+	  }*/
+	 
 }
