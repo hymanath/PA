@@ -50,9 +50,19 @@ function insertProfileDiscription()
 	if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 		document.getElementById("specialPageInfoDiv").style.display = 'none' ;
 
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
+
 	document.getElementById("headingnames").innerHTML = "Event Description";
 	var str ='';
-	str += '<div id="content" style="width:650px;">';
+	str += '<div id="content" align="center" style="width:650px;">';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
@@ -517,8 +527,8 @@ function showCreateGallery(selectedId,contentType,userOption,galSelectId)
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="galDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="gallaryVisibility" id="publicId" checked="true"><b><font color="#4B74C6" style="padding-left:5px;">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="gallaryVisibility" id="privateId"><b><font color="#4B74C6" style="padding-left:5px;">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="gallaryVisibility" id="publicId" checked="true"><b><font color="#4B74C6" style="padding-left:5px;">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="gallaryVisibility" id="privateId"><b><font color="#4B74C6" style="padding-left:5px;">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	
 	str += '<table style="margin-left: auto;margin-right: auto;"><tr><td><input type="button" class="imageButton" style="height:24px;" value="Create Gallery" style="background-color:#57B731" onClick="createPopupGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectId+'\')"></td>';
 	str+=  '<td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'galleryInnerPopupDiv\')" style="background-color:#CF4740"></td></tr></table>';
@@ -858,6 +868,16 @@ if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
+
     document.getElementById("headingnames").innerHTML = "Video Gallery";
 		
 	var videoGallaryDivElmt = document.getElementById("videoGallaryDiv");
@@ -879,8 +899,8 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pVGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	
 	str += '<table><tr><td style="padding-right:5px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
@@ -914,8 +934,8 @@ function buildCreateVideoGallaryDiv(){
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pVGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	
 	str += '<table><tr><td style="padding-right:5px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
@@ -1046,8 +1066,8 @@ function buildUploadVideoDiv()
 	str +=  '';
 	str += '<td colspan="3"><div id="addMoreVideosDiv" style="width: 344px;"></div></td></tr>';
 	str += '</table>';
-	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	str +='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromSpecialPage\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str +='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
 	str += '<table style="margin-top: 27px;"><tr><td style="padding-right: 5px;"><input type="button" id="uploadVideoBtnId" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
@@ -1527,6 +1547,16 @@ if(document.getElementById("specialPageInfoDiv").style.display = 'block')
 if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
+
 	//var newsGallaryDiv = document.getElementById("newsGallaryDiv");
 	document.getElementById("headingnames").innerHTML = "News Gallery";
 	var str ='';
@@ -1544,8 +1574,8 @@ if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<table><tr><td><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></tr></td>';
-	str += '<tr><td><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font color="#4B74C6">Make This Private</font></b></input></tr></td></table>';
+	str += '<table><tr><td><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></tr></td>';
+	str += '<tr><td><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></tr></td></table>';
 	
 	str += '<table><tr><td><input type="button" class="imageButton" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 
@@ -1579,8 +1609,8 @@ if(newsGallaryDiv.style.display = 'none')
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<table><tr><td><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></tr></td>';
-	str += '<tr><td><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font color="#4B74C6">Make This Private</font></b></input></tr></td></table>';
+	str += '<table><tr><td><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></tr></td>';
+	str += '<tr><td><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></tr></td></table>';
 	
 	str += '<table><tr><td><input type="button" class="imageButton" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 
@@ -1734,11 +1764,11 @@ function  buildUploadNews()
 	
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></td>';
+	str += '       <td><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></td>';
     str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td style="margin-top:-16px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
+	str += '       <td style="margin-top:-16px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></td>';
 	str += '   </tr>';
 	str +='    <tr>';
     str +='	   <td class="tdWidth1">Location Scope<font class="requiredFont">*</font></td>';
@@ -3465,6 +3495,15 @@ document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
 	document.getElementById("headingnames").innerHTML = "Create New";
 	var createNewDivElmt = document.getElementById("createNewDiv");
 	var str ='';
@@ -4017,6 +4056,16 @@ document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
+
 	document.getElementById("headingnames").innerHTML = "Meta Info";
 	var metaInfoDivElmt = document.getElementById("metaInfoDiv");
 	var str ='';
@@ -4126,8 +4175,8 @@ function buildPhotoGallery()
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	str += '<table><tr><td style="padding-right: 5px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +='</fieldset>';
 	str+='</div>';
@@ -4158,8 +4207,8 @@ function buildPhotoGalleryDiv()
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	str += '<table><tr><td style="padding-right: 5px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +='</fieldset>';
 	str+='</div>';
@@ -4208,8 +4257,8 @@ function buildUploadPhotosDiv()
 	str += '</table>';
 	str += '     </td>';
 	str += '   </TR></table>';
-	str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 
 	str +='<input type="hidden" name="profileType" value="special_page_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempSpecialPageId+'">';
@@ -4650,6 +4699,16 @@ function showPhotoGallery()
 
 			document.getElementById("headingnames").innerHTML = "Photo Gallery";
 
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
+
 	var specialPageId = document.getElementById("specialPageId").value;
     document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
     document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
@@ -4822,8 +4881,8 @@ function updateGallary(gallaryId)
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement">'+myResults.gallaryDescription+'</textarea></td></tr></table>';
 	str +='<input type = "hidden" name = gallaryId id = gallaryId value ='+myResults.gallaryId+'>';
-	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 	str += '<table><tr><td style="padding-right: 5px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallery()" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -4961,8 +5020,8 @@ function updateFilesAndPhotosDiv(myResults,fileId)
 		str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="200"></td></tr>';
 		str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 		str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement">'+myResults.fileDescription1+'</textarea></td></tr></table>';
-		str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-		str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+		str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Visible to Public Also</font></b></input></div>';
+		str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">&nbsp;&nbsp;Make This Private</font></b></input></div>';
 		str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Update Photo" style="background-color:#57B731" onClick="updatePhoto('+fileId+','+myResults.fileTypeId+')"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="getCompleteGallaries(gGallaryId)"  style="background-color:#CF4740"></td></tr></table>';
 		str += '</fieldset>';
 		str+='</div>';
@@ -5288,6 +5347,16 @@ document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	if(document.getElementById('specialPageHighLightsDiv').style.display = 'block')
 	   document.getElementById('specialPageHighLightsDiv').style.display = 'none' ;
 	
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
+
 	var str ='';
 	document.getElementById("headingnames").innerHTML = "Manage Special Page Information";
 		
@@ -5309,8 +5378,8 @@ document.getElementById('profileManagementHeaderDiv1').style.display = 'block' ;
 	str += '<td><textarea id="specialPageDescription" cols="19" rows="3" name="description"></textarea></td></tr></table>';
 	str += '<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font></td><td class="selectWidthPadd"><input type="file" name="userImage" id="specialPageImgPath" style="margin-left: 11px;" size="25" /></td></tr>';
 	str += '<div id="specialPageImgDiv" style="margin-top:10px;"></div>';
-	str +='<div style="padding-right: 63px; margin-top: 10px; margin-bottom: 10px;"><b><font color="#4B74C6">Display in Home Page</font></b> <input type="radio" value="Yes" name="specialPageVisibility" id="specialPagePublicRadioId" checked="true" class="specialPagePrivateRadioCls">Yes</input>';
-	str += '<input type="radio" value="No" name="specialPageVisibility" id="specialPagePrivateRadioId" class="specialPagePrivateRadioCls">No</input></div>';
+	str +='<div style="padding-right: 63px; margin-top: 10px; margin-bottom: 10px;"><b><font color="#4B74C6">Display in Home Page</font></b> <input type="radio" value="Yes" name="specialPageVisibility" id="specialPagePublicRadioId" checked="true" class="specialPagePrivateRadioCls">&nbsp;&nbsp;Yes</input>';
+	str += '<input type="radio" value="No" name="specialPageVisibility" id="specialPagePrivateRadioId" class="specialPagePrivateRadioCls">&nbsp;&nbsp;No</input></div>';
 
 	str += '<table><tr><td style="padding-right:5px"><input type="button" id="specialPageButtonId" class="imageButton" value="Update" style="background-color:#57B731" onClick="createorUpdateSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearSpecialPageInfoDiv(\'specialPageInfoDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str +='<input type="hidden" value="'+specialPageId+'" name="speciPageId"/>';
@@ -5482,6 +5551,16 @@ function buildSpecialPageHighlightsDiv()
 
 	if(document.getElementById('specialPageHighLightsDiv').style.display = 'none')
 	   document.getElementById('specialPageHighLightsDiv').style.display = 'block' ;
+
+$("#createNewTabId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageInfoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#specialPageHighLightId").css({"background":"none repeat scroll 0 0 #F61D50"});
+
 
 	var specialPageHighLightsDiv = document.getElementById("specialPageHighLightsDiv");
 	var str ='';
