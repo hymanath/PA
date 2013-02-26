@@ -46,8 +46,10 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> pConstituencyList;
 	private List<SelectOptionVO> mandalList;
+	private List<SelectOptionVO> hamletsOrWards;
 	private List<SelectOptionVO> wardsOrHamletsList;
 	private List<SelectOptionVO> hamletList;
+	private List<SelectOptionVO> boothList;
 	private List<SelectOptionVO> parliamentConstituencyList;
 	private List<SelectOptionVO> problemTypes;
 	private IRegionServiceData regionServiceDataImp;
@@ -74,7 +76,23 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private Long constituencyId;
 	private ServletContext context;
 	private ProblemBeanVO problemBeanFromDB;
-	
+
+	public List<SelectOptionVO> getBoothList() {
+		return boothList;
+	}
+
+	public void setBoothList(List<SelectOptionVO> boothList) {
+		this.boothList = boothList;
+	}
+
+	public List<SelectOptionVO> getHamletsOrWards() {
+		return hamletsOrWards;
+	}
+
+	public void setHamletsOrWards(List<SelectOptionVO> hamletsOrWards) {
+		this.hamletsOrWards = hamletsOrWards;
+	}
+
 	public ProblemBeanVO getProblemBeanFromDB() {
 		return problemBeanFromDB;
 	}
@@ -401,6 +419,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		wardsOrHamletsList = new ArrayList<SelectOptionVO>();
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
 		problemSourcesList = new ArrayList<SelectOptionVO>(0);
+		boothList = new ArrayList<SelectOptionVO>(0);
 		
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
@@ -423,7 +442,12 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			{
 				String accessType =user.getAccessType();
 				Long accessValue= new Long(user.getAccessValue());
+				Long problemScopeId=problemBeanVO.getProblemScopeId();
+				Long districtId=problemBeanVO.getDistrictId();
+				Long constituencyId=problemBeanVO.getPConstituencyId();
+				Long locationId = problemBeanVO.getTehsilId();
 				
+				//Long locationId = jObj.getLong("id");
 				if("MLA".equals(accessType))
 				{
 					log.debug("Access Type = MLA ****");
@@ -464,6 +488,33 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 					stateId = accessValue;	
 					setProblemLocation(stateId);
 					 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
+					 if(problemScopeId == 4)
+						constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
+					 if(problemScopeId == 5 || problemScopeId == 7){
+							constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
+					 		mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+					 }
+					 if(problemScopeId == 6 || problemScopeId == 8){
+						 String value ="";
+						 if(problemScopeId == 6){
+							 value = ""; 
+							 mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, "RURAL");
+						 }
+						 if(problemScopeId == 8){
+							 mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, "URBAN");
+						 }
+						String locationValue = locationId.toString();
+						String locationId1 = value +locationValue;
+							constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
+					 		//mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, "URBAN");
+					 		//hamletsOrWards=getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+					 		wardsOrHamletsList = regionServiceDataImp.getHamletsOrWards(new Long(locationId1), IConstants.PRESENT_YEAR);
+					 }
+					 if(problemScopeId == 9){
+							constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
+					 		mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+					 		boothList = regionServiceDataImp.getBoothsInTehsilOrMunicipality(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+					 }
 					setScope(2l);
 					
 				}else if("DISTRICT".equals(accessType)){
@@ -584,7 +635,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.P_CONSTITUENCIES_AP, pConstituencyList);
 		session.setAttribute(ISessionConstants.MANDALS_AP, mandalList);
 		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS_AP, wardsOrHamletsList);
-		session.setAttribute(ISessionConstants.BOOTHS_AP,new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.BOOTHS_AP,boothList);
 		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
 		session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
         }catch(Exception ex){
