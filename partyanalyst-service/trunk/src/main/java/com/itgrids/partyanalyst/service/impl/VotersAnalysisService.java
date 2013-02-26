@@ -2234,6 +2234,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			 else if(type.equalsIgnoreCase("ward"))
 				 votersListOf18To25 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 						 boothsList, publicationDateId,18L,25L);
+			 else if(type.equalsIgnoreCase("hamlet"))
+				 votersListOf18To25 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
+						 boothId, publicationDateId,18L,25L);
 					 
 			
 			
@@ -2320,6 +2323,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			 else if(type.equalsIgnoreCase("ward"))
 				 votersListOf26To35 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 						 boothsList, publicationDateId,26L,35L);
+			 else if(type.equalsIgnoreCase("hamlet"))
+				 votersListOf26To35 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
+						 boothId, publicationDateId,26L,35L);
 			
 			Long maleVotersBetween26To35 = 0L;
 			Long femaleVotersBetween26To35 = 0L;
@@ -2402,6 +2408,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				 else if(type.equalsIgnoreCase("ward"))
 					 votersListOf36To45 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 							 boothsList, publicationDateId,36L,45L);
+				 else if(type.equalsIgnoreCase("hamlet"))
+					 votersListOf36To45 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
+							 boothId, publicationDateId,36L,45L);
 				
 				Long maleVotersBetween36To45 = 0L;
 				Long femaleVotersBetween36To45 = 0L;
@@ -3153,21 +3162,21 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long hamletId,Long publicationDateId){
 		
-		List<Object[]> booths = boothDAO.getBoothsInAPanchayat(hamletId, publicationDateId);
+		//List<Object[]> booths = boothDAO.getBoothsInAPanchayat(hamletId, publicationDateId);
 		List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
 		
-		for(Object[] obj:booths){
+		
 			
 			VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
 			
 			
-			getDetailsOfVotersHasAgeBetween18And25(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);
-			getDetailsOfVotersHasAgeBetween26And35(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);			
-			getDetailsOfVotersHasAgeBetween36And45(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);		
-			getDetailsOfVotersHasAgeBetween46And60(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);       
-			getDetailsOfVotersHasAgeAbove60(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);
+			getDetailsOfVotersHasAgeBetween18And25(null,null,null,hamletId, publicationDateId,voterDetailsVO,"hamlet",null);
+			getDetailsOfVotersHasAgeBetween26And35(null,null,null,hamletId, publicationDateId,voterDetailsVO,"hamlet",null);			
+			getDetailsOfVotersHasAgeBetween36And45(null,null,null,hamletId, publicationDateId,voterDetailsVO,"hamlet",null);		
+			getDetailsOfVotersHasAgeBetween46And60(null,null,null,hamletId, publicationDateId,voterDetailsVO,"hamlet",null);       
+			getDetailsOfVotersHasAgeAbove60(null,null,null,hamletId, publicationDateId,voterDetailsVO,"hamlet",null);
 			
-			voterDetailsVO.setBoothName(obj[1].toString());
+			voterDetailsVO.setBoothName(hamletId.toString());
 			Long totalVoters = 0l;
 			  if(voterDetailsVO.getTotalVotersFor18To25() != null)
 			   totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor18To25();
@@ -3197,7 +3206,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 			voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != null? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
 			boothVotersList.add(voterDetailsVO);
 			
-		}
+	
 		return boothVotersList;
 		
 	}
@@ -4627,7 +4636,6 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		
 	}
-	//save Locality details in Locality table
 	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody)
 	{
 	ResultStatus resultStatus = new ResultStatus();
@@ -4644,7 +4652,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		if(localbody != null)
 		{
 		localbody = new Long(localbody.toString().substring(1));
-		locality.setLocalElectionBody(localElectionBodyDAO.get(localbody));
+		locality.setLocalElectionBody(assemblylocalElectionBodyDAO.get(localbody).getLocalElectionBody());
 		}
 		locality.setUser(userDAO.get(userId));
 		locality.setName(name);
