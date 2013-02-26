@@ -275,7 +275,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}
 	
 	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem field is mandatory",shortCircuit=true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Problem field should not contain special characters and numbers", shortCircuit = true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Problem field should not contain special characters and numbers", shortCircuit = true)
 	public void setProblem(String problem) {
 		this.problemBeanVO.setProblem(problem);
 	}
@@ -384,7 +384,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return name;
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Complained Person Name field should not contain special characters and numbers", shortCircuit = true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Complained Person Name field should not contain special characters and numbers", shortCircuit = true)
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -393,7 +393,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return mobile;
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Mobile Number Should Not Contain Special Characters in Complained Person Details.", shortCircuit = true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Mobile Number Should Not Contain Special Characters in Complained Person Details.", shortCircuit = true)
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -401,7 +401,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getPhone() {
 		return phone;
 	}
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression ="^[0-9 ]+[0-9]*$", message = "Invalid Telephone Number", shortCircuit = true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression ="^[0-9 ]+[0-9]*$", message = "Invalid Telephone Number", shortCircuit = true)
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
