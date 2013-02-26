@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Voter;
 
 public interface IVotersAnalysisService {
 	
@@ -176,6 +177,18 @@ public interface IVotersAnalysisService {
 	public void mapVoterAsInfluencingPerson(Long influencePeopleId , Long voterId);
 	
 	public ResultStatus checkForVoter(Long voterId,String type);
-	
+    
 	public ResultStatus mapVoterDataFromOnePublicationToAnotherPublication(Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,Boolean boothCreateFlag);
+	
+	public List<Object[]>  getWardsInMuncipality(Long mincipalityId, Long PublicationId);
+	 
+	public List<Object[]>  getLocalitiesForHamlet(Long id);
+	
+	public List<SelectOptionVO> getLocalities(Long hamletId);
+	
+	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId);
+	
+	public List<SelectOptionVO> getHamlets(Long panchayatId);
+   
+	
 }
