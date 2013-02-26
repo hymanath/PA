@@ -614,7 +614,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				
 			}
 			result = userDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);	
-			candidateDetails = setFriendsListForAUser(result,loginId,status);		
+			candidateDetails = setFriendsListForAUser(result,loginId,status,null);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
 			//dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString).toString());
@@ -679,7 +679,11 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				result = userDAO.getNotConnectedUsersInSelectedLocations(loginId, locationIds, locationType, connectedAndPendingUserIdsList, retrivalCount, startIndex, nameString);
 			}
 			
-			candidateDetails = setFriendsListForAUser(result,loginId,status);		
+			if(status.equalsIgnoreCase(IConstants.NOTCONNECTED))
+			candidateDetails = setFriendsListForAUser(result,loginId,status,"DISCONNECTED");
+			
+			else
+				candidateDetails = setFriendsListForAUser(result,loginId,status,null);
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
 			dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString, connectedAndPendingUserIdsList).toString());
@@ -760,7 +764,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			dataTransferVO.setResultStatusForComments(resultStatusForSaving);
 			userIds.add(loginId);
 			result = userDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);			
-			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL);		
+			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL,null);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
 			dataTransferVO.setTotalResultsCount((userDAO.getAllUsersCountInSelectedLocations(locationIds, locationType, "")).toString());
@@ -808,7 +812,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 * @author Ravi Kiran.Y
 	 * @version 1.0,13/10/2010	
 	 */
-	public List<CandidateVO> setFriendsListForAUser(List result,Long loginId,String status){
+	public List<CandidateVO> setFriendsListForAUser(List result,Long loginId,String status,String statusValue){
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
 		List<Long> candidates = new ArrayList<Long>();
 		Map<Long, CandidateVO> userIdAndRelationShipWithLogedUser = new HashMap<Long, CandidateVO>();
@@ -872,6 +876,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					if(originalStatus.equalsIgnoreCase(IConstants.NOTCONNECTED)){
 						status = IConstants.ALL;
 					}
+					if(statusValue != "DISCONNECTED"){
 					List<Object> details = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId,status);	
 					for(int i=0;i<details.size();i++){
 						Object[] parms = (Object[])details.get(i);				
@@ -879,6 +884,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						if(userIdAndRelationShipWithLogedUser.get(userId)!=null){
 							userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());	
 						}				
+					}
 					}
 					if(userIdAndRelationShipWithLogedUser.get(loginId)!=null){
 						userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
@@ -1672,7 +1678,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	{
 		try{
 		RegistrationVO registrationVO = new RegistrationVO();
-		User user = userDAO.get(registrationId);
+		User user = userDAO.getUserByUserId(registrationId);
 		List<Long> userOpts = new ArrayList<Long>();
 		try{
 			
