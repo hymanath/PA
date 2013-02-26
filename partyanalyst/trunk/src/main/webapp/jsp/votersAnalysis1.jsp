@@ -769,6 +769,17 @@ h5{font-family : Arial;}
 .dd_menu li:hover ul li a {height:18px;color:#003366; padding:5px 0px; display:block; font-size:11px; width:208px; line-height:18px; text-indent:5px; color:#444; background:#d0e0ea; text-decoration:none; border:1px solid transparent;}
 .dd_menu li:hover ul li a:hover {height:18px; background:#c4d8e6; color:#003366; border:solid 1px #444;}
 
+#partyGraphButtonId
+{
+float: right;
+    margin-right: -494px;
+    margin-top: -24px;
+}
+.yui-skin-sam .yui-dt-liner {
+    margin: 0;
+    padding: 4px 10px;
+    width: 65px;
+}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -1036,6 +1047,14 @@ for  body3 start    result  -->
 
 <div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();">Click here for voters details</span></div>
 <div id="votersOuterDiv1" style="display:none;">
+<div id="imgDescriptionDiv" style="margin-bottom: 10px">
+<b style="margin-left: 5px">InfluencingPeople</b>:<img title="Politician" alt="Politicion" src="./images/icons/influencing.png" style="margin-bottom: 10px;
+    margin-left: 16px;"/>
+<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Politicion" src="./images/icons/cadre.png" style="margin-bottom: 10px;
+    margin-left: 16px;"/>
+<b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
+    margin-left: 16px;"/>
+</div>
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
  </div>
@@ -1241,13 +1260,7 @@ for  body3 start    result  -->
 	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
 		
 		 <div id='localCastStatsTabContent_subbody'></div>	
-		<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
-	    <div id='partyWise_header'></div>
-		
-	    <div class="partyWiseDetailsMainDiv">
-		<table style="width:100%;"><tr>
-		  <td><div id="partyWiseDetailsDiv"></div></td>
-		  <td><div id="partyWiseChatDiv"></div></td></tr></table></div><br>
+		<br>
 		
 	</div>	
 		<br><br>
@@ -1268,9 +1281,16 @@ for  body3 start    result  -->
 </div>
 
 </div>
+<div id="partyGraphDiv" style="display:none">
+<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
+	    <div id='partyWise_header'></div>
+		
+	    <div class="partyWiseDetailsMainDiv">
+		<table style="width:100%;"><tr>
+		  <td><div id="partyWiseDetailsDiv"></div></td>
+		  <td><div id="partyWiseChatDiv"></div></td></tr></table></div>
 
-
-
+</div>
 
 <!-- main div  End-->
 </div>

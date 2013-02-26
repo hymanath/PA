@@ -1427,8 +1427,12 @@
 			</div>
 		</c:if>
 		<c:if test="${windowTask == 'update_existing'}">
+			
 			<div style="text-align: center;">
-				<s:submit  value="Update" cssClass="btn btn-primary"></s:submit>
+				<c:if test="${ empty voterId}">
+				<s:submit  value="Update" cssClass="btn btn-primary"></s:submit></c:if>
+				<c:if test="${ !empty voterId}">
+				<s:submit  value="Register" cssClass="btn btn-primary"></s:submit></c:if>
 				<a href="cadreManagementAction.action" class="btn btn-primary" >Go To Cadre Management Home Page</a>
 				<a href="cadreReportAction.action" class="btn btn-primary">Go To Cadre Management Report</a>
 			</div>
