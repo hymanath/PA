@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -10,6 +12,7 @@ import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -324,6 +327,7 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 		List<String> boothErrors = new ArrayList<String>();
 		List<String> dataDuplicateErrors = new ArrayList<String>();
 		boolean isHamletExists = false;
+		final Map<Long,Long> boothAndPanchayatsMap = new HashMap<Long,Long>();
 		
 		for(Sheet sheet:sheets){
 			districtId = new Long(sheet.getCell(0,0).getContents().trim());
@@ -391,23 +395,40 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				   }
 				   HamletBoothPublication hamletBoothPublication = null;
 				   if(!isValidate){
+					 
 				     for(Booth booth:boothsList){
 				    	 
 				    	List<Panchayat> panchayatsList =  panchayatHamletDAO.getPanchayatByHamletId(hamlet.getHamletId());
 				    	
-				    	 Panchayat panchayat = panchayatsList.get(0);
-				    	 Booth boothToUpdate = boothDAO.get(booth.getBoothId());
-				    	 boothToUpdate.setPanchayat(panchayat);
-				    	 boothDAO.save(boothToUpdate);
-				    	 
-				    	  hamletBoothPublication = new HamletBoothPublication(booth,hamlet);
-					   hamletBoothPublicationDAO.save(hamletBoothPublication);
+				    	if(panchayatsList != null && panchayatsList.size() > 0)
+				    	{
+				    		boothAndPanchayatsMap.put(booth.getBoothId(), panchayatsList.get(0).getPanchayatId());
+				    		booth.setPanchayat(panchayatsList.get(0));
+					    	boothDAO.save(booth);
+				    	}
+				    	
+				    	hamletBoothPublication = new HamletBoothPublication(booth,hamlet);
+					    hamletBoothPublicationDAO.save(hamletBoothPublication);
 				     }
+				     
 				   }
 			    }
 				
 			}
 		}		
+		
+		if(!isValidate && boothAndPanchayatsMap.size() > 0)
+		{
+			villageBoothElectionDAO.flushAndclearSession();
+			transactionTemplate.execute(new TransactionCallbackWithoutResult()
+			{
+	 			public void doInTransactionWithoutResult(TransactionStatus status) {
+	    	 for(Map.Entry<Long,Long> entry : boothAndPanchayatsMap.entrySet())
+	    		 boothDAO.updatePanchayatByBoothId(entry.getKey(),entry.getValue());
+	 			}
+	 		});
+			villageBoothElectionDAO.flushAndclearSession();
+	     }
 		
 		villageBoothElectionVO.setVillageErrors(villageErrors);
 		villageBoothElectionVO.setHamletErrors(hamletErrors);
