@@ -57,6 +57,11 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	{
 		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId =?",mandalId);	
 	}
+	public List<Object> getPanchayatsBymandalId1(Long mandalId)
+	{
+		List<Object> panchayats= getHibernateTemplate().find("select model from Panchayat model where model.tehsil.tehsilId =?",mandalId);	
+	return panchayats;
+	}
 	
 	
 	/*public Long getPanchayatiesCount(Long id,String type)
