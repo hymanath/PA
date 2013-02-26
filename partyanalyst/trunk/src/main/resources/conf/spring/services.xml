@@ -1375,9 +1375,12 @@
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="localityDAO" ref="localityDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" /> 
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 		<property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
 		<property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
+		<property name="wardDAO" ref="wardDAO" />
+		<property name="assemblylocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="voterModificationTempDAO" ref="voterModificationTempDAO" />
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
 		<property name="userRelationDAO" ref="userRelationDAO" />
