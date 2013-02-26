@@ -61,7 +61,7 @@ $(document).ready(function() {
 
 	$('#scopeSelectId').change(function(){
 
-	   $('#panchayatSelectId , #boothSelectId').find('option').remove();
+	   $('#mandalSelectId, #panchayatSelectId , #boothSelectId').find('option').remove();
 	   $('#mandalSelectId , #panchayatSelectId , #boothSelectId').append('<option value="0">SELECT</option>');
 
 	});
@@ -70,6 +70,9 @@ $(document).ready(function() {
 
 function getPublicationDate()
 	{
+		if(value == null || value == '')
+			return;
+
 		$('#voterAgeInfoAjaxImg').css('display','block');
 		var value=constituencyId;
 		
@@ -87,6 +90,11 @@ function getPublicationDate()
 //Ended by sasi
 	function getVoterInfo(){
 		
+		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == null || fromPublicationDateId == ''
+		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
+			locationValue == null || locationValue == '')
+			return;
+
 		$("#voterInfoAjaxImg").css("display","block");
 	    var jObj=
 		{
@@ -106,6 +114,12 @@ function getPublicationDate()
 
 	function getAddedDeletedVoterInfoInALocation()
 	{
+
+		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == ''
+		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
+			locationValue == null || locationValue == '')
+			return;
+
 		$("#voterAgeInfoAjaxImg").css("display","block");
 		var jObj=
 		{
@@ -124,6 +138,11 @@ function getPublicationDate()
 
 	function getGenderWiseVoterModificationsBetweenPublications()
 	{
+		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == ''
+		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
+			locationValue == null || locationValue == '')
+			return;
+
 		$('#voterGenderInfoDivAjaxImg').css('display','block');
 		var jObj=
 		{
@@ -142,6 +161,12 @@ function getPublicationDate()
 
 	function getGenderWiseVoterModificationsForEachPublication()
 	{
+
+		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == ''
+		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
+			locationValue == null || locationValue == '')
+			return;
+
 		$('#genderWiseVoterModifiAjaxImg').css('display','block');
 		
 		var jObj=
@@ -693,7 +718,7 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 			toPublicationDateId		: toPblCtnId,
 			locationType			: locationScope,
 			locationValue			: locationValue1,
-			status:status,
+			status					: status,
 			task:"getAllVoterInformationInALocation"
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
