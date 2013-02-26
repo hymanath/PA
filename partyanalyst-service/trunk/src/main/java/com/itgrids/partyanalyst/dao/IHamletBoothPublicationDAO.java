@@ -10,4 +10,6 @@ public interface IHamletBoothPublicationDAO extends GenericDao<HamletBoothPublic
 	public List<Object[]> getBoothsInPanchayatByPublicationId(Long panchayatId,Long publicationDateId);
 	
 	public List<HamletBoothPublication> getHameletDetailsByBoothId(Long boothId);
+	public List<Object> getBoothsIds(Long panchayatId,Long publicationDateId);
+	public List<Object[]> getBoothsInHamlet(Long panchayatId,Long publicationDateId);
 }
