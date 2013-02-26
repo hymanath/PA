@@ -84,7 +84,7 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 	}
 	
 	public List getAssemblyLocalElectionBodyId(Long localElectionBodyId) {
-		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId from AssemblyLocalElectionBody  model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
+		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId  from AssemblyLocalElectionBody  model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
 	}
 
 	public List findByConstituencyIds(String constituencyIds) {
@@ -135,5 +135,18 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		return query.list();
 		
 		
+	}
+
+	/**
+	 * This method Is Used To get the details of the Corpration or muncipality baseg on local election body id
+	 * @author PrasadThiragabathina
+	 * @date 26/02/2013
+	 * @param Long localElectionBodyId
+	 * @return List<Object[]>
+	 */
+	public List<Object[]> getAssemblyLocalElectionBodyDetails(Long localElectionBodyId) {
+		// TODO Auto-generated method stub
+		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId ,model.localElectionBody.name,model.localElectionBody.electionType.electionType from AssemblyLocalElectionBody " +
+				" model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
 	}
 }

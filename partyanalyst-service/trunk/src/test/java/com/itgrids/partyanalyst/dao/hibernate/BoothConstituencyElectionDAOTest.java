@@ -171,21 +171,21 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(boothConstituencyElectionDAO.getElectionIdInMandal(844l,IConstants.ASSEMBLY_ELECTION_TYPE,"2009"));
 	}*/
 	
-	/*public void testGetVotersCountInAConstituency()
+	public void testGetVotersCountInAConstituency()
 	{
-		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAConstituency(38l,232l);
+		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAConstituency(18l,241l);
 		for(Object[] data:dataList){
 			System.out.println(data[0]+" - "+data[1]+" - "+data[2]+" - "+data[3]);
 		}
-	}*/
+	}
 	
-	public void testGetVotersCountInAMandal()
+	/*public void testGetVotersCountInAMandal()
 	{
 		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAMandalBooth(38l,844l,"mandal","1",null);
 		for(Object[] data:dataList){
 			System.out.println(data[0]+" - "+data[1]+" - "+data[2]+" - "+data[3]);
 		}
-	}
+	}*/
 	
 	/*public void testgetBoothIdsByLocalEleBodyId()
 	{

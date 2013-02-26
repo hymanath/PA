@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople, Long> implements IInfluencingPeopleDAO{
 
@@ -512,6 +513,21 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List<Long> getinfluencingPeopleVoterId(Long voterId) {
 		Query query = getSession().createQuery("select count(model.voter.voterId) from InfluencingPeople model where model.voter.voterId = ? ");
 		query.setParameter(0, voterId);
+		return query.list();
+	}
+	/**
+	 * This Method is used to get the details of the influencing people weather this voter addes as a influencing people r not
+	 * @author Prasad Thiragabathina
+	 * @param List<Long> voterIds
+	 * @param Long userId
+	 * @return List<Voter>
+	 */
+	public List<Long> findInfluencingPeopleDetails(List<Long> voterIds,
+			Long userId) {
+		String queryString = "select model.voter.voterId from InfluencingPeople model where model.voter.voterId in (:voterIds) and model.user.userId = :userId ";
+		Query query = getSession().createQuery(queryString);
+		query.setParameter("userId", userId);
+		query.setParameterList("voterIds", voterIds);
 		return query.list();
 	}
 	

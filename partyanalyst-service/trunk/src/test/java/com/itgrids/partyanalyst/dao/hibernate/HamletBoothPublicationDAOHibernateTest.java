@@ -20,7 +20,7 @@ public class HamletBoothPublicationDAOHibernateTest extends BaseDaoTestCase{
 
 	public void testgetHameletDetailsByBoothId()
 	{
-		List<HamletBoothPublication> list = hamletBoothPublicationDAO.getHameletDetailsByBoothId(121884l);
+		List<HamletBoothPublication> list = hamletBoothPublicationDAO.getHameletDetailsByBoothId(126973l);
 		for (HamletBoothPublication hamletBoothPublication : list) {
 			System.out.println(hamletBoothPublication.getBooth().getLocalBody());
 		}

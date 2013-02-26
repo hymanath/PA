@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -49,9 +51,20 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 		List results = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInState(1l,1l);
 		System.out.println(" Results Size :" + results.size());
 	}*/
-	public void testGetinfluencingPeopleVoterId(){
+	/*public void testGetinfluencingPeopleVoterId(){
 		List<Long> results = influencingPeopleDAO.getinfluencingPeopleVoterId(2172883l);
 		System.out.println(results);
+	}*/
+	public void testFindInfluencingPeopleDetails()
+	{
+		List<Long> voterIds = new ArrayList<Long>();
+		voterIds.add(2172793l);
+		voterIds.add(2130033l);
+		voterIds.add(2152480l);
+		voterIds.add(20l);
+		voterIds.add(210l);
+		List<Long> list = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,1l);
+		System.out.println(list.size());
 	}
 	
 }

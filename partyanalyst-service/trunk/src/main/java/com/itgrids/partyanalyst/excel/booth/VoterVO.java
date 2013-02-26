@@ -82,6 +82,8 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String type;
 	private Boolean isInfluencePerson;
 	private String influencePerson;
+	private Boolean isCadrePerson;
+	private Boolean isPoliticion;
 	public String getInfluencePerson() {
 		return influencePerson;
 	}
@@ -392,6 +394,22 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 			return 0;
 	}
 
+	public Boolean getIsCadrePerson() {
+		return isCadrePerson;
+	}
 
+	public void setIsCadrePerson(Boolean isCadrePerson) {
+		this.isCadrePerson = isCadrePerson;
+	}
+
+	public Boolean getIsPoliticion() {
+		return isPoliticion;
+	}
+
+	public void setIsPoliticion(Boolean isPoliticion) {
+		this.isPoliticion = isPoliticion;
+	}
+
+	
 	
 }

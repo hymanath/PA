@@ -6,6 +6,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Voter;
 
 public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Long> {
 	
@@ -138,5 +139,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	public List<InfluencingPeople> getInfluencePeopleBySearch(
 			InfluencingPeopleVO influencingPeopleVO, String queryString);
+	
+	public List<Long> findInfluencingPeopleDetails(List<Long> voterIds,Long userId);
 
 }

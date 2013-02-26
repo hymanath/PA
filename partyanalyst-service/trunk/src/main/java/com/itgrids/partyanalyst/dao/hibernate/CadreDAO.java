@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.Voter;
 
 
 /**
@@ -828,4 +829,21 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {cadreId, userId};
 		 return getHibernateTemplate().find("select model from Cadre model where model.cadreId = ? and model.user.userId = ?", params);
 	}
+	
+	/**
+	 * This Method Is used To Get The Details Of The Cadre People For respective Voters
+	 * @author Prasad Thiragabathina
+	 * @param List<Long> voterIds
+	 * @param Long userId
+	 * @return List<Long>
+	 */
+	public List<Long> findCadrePeopleDetails(List<Long> voterIds, Long userId) {
+		
+		String queryString = " select model.voter.voterId from Cadre model where model.voter.voterId in(:voterIds) and model.user.userId = :userId ";
+		 Query query = getSession().createQuery(queryString);
+		 query.setParameter("userId", userId);
+		 query.setParameterList("voterIds", voterIds);
+		 return query.list();
+	}
+	
 }
