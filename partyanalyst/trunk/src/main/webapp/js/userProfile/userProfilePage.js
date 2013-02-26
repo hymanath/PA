@@ -3218,18 +3218,8 @@ var jsObj=
 function iterateDistrictNames(result)
 {
 	var elmt = document.getElementById('connectDistrictSelect');
-	var option = document.createElement('option');
 	clearOptionsListForSelectElmtId('connectDistrictSelect');
-	option.value="0";
-	option.text="Select District";
-	try
-	{
-	elmt.add(option,null);	
-	}
-	catch (ex)
-	{
-		elmt.add(option);
-	}
+		
 	for(var i in result)
 	{		
 		var option=document.createElement('option');		
@@ -3244,7 +3234,6 @@ function iterateDistrictNames(result)
 		elmt.add(option);
 	}
 	}
-	$("select[name='connectDistrictSelect'] option:eq(0)").remove();
 	$('#connectDistrictSelect').val(districtId);
 }
 function iterateDetailsNames(result){
@@ -3279,6 +3268,7 @@ function iterateDetailsNames(result){
 	flag=true;
 	$('#connectConstituencySelect').val(constituencyId);	
 	}
+	
 }
 function clearOptionsListForSelectElmtId(elmtId)
 {
