@@ -28,7 +28,8 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 			<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
-
+ 
+ <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
@@ -128,6 +129,12 @@ body {
 }
 </style>
 <script type="text/javascript">
+var selectedType="";
+var selectedTypeId="";
+var publicationId="";
+var madalType="";
+var selectedLevel="";
+
 var votersLimitExist = false;
 var limit = 1000;
 var confTrue = false;
@@ -211,7 +218,9 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
     $("#multipleVoterFamiliesEditDiv").html("");
 	$("#errorMsgAlert").html("");
     var level = $("#reportLevel").val();
+	 selectedLevel=level;
 	var publicationDateId = $("#publicationDateList").val();
+	publicationId=publicationDateId;
 	var type = '';
 	var id='';
 	var flag =true;
@@ -219,6 +228,8 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 	if(level == 1){
 	type = 'constituency';
 	id = $("#constituencyList").val();
+	selectedType=type;
+	selectedTypeId=id;
 	if(id == 0 ||id == null)
 		{
 		str +='<div>Please Select Constituency</div>';
@@ -228,6 +239,13 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 	else if(level == 2){
 	type = 'mandal';
 	id = $("#mandalField").val();
+	
+	selectedType=type;
+	selectedTypeId=id.substring(1);
+	if(id.charAt(0) =="1"){
+		 selectedType = "muncipality";
+		madalType = "muncipality";
+					}
 	if(id == 0 || id == null)
 	{
 	str +='<div>Please Select Mandal</div>';
@@ -237,6 +255,8 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 	else if(level == 3){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
+	  selectedType=type;
+	  selectedTypeId=id;
 		
 	 if(id == 0 || id == null)
 			{
@@ -248,9 +268,36 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
+		 selectedType=type;
+	     selectedTypeId=id;
+		 
           if(id == 0 || id == null)
 			{
 			str +='<div>Please Select Polling Station</div>';
+			flag =false;
+			}
+	}
+	else if(level == 5){
+
+		 type = 'ward';
+		 id = $("#wardField").val();
+		 selectedType=type;
+	     selectedTypeId=id;
+          if(id == 0 || id == null)
+			{
+			str +='<div>Please Select Ward</div>';
+			flag =false;
+			}
+	}
+	else if(level == 6){
+
+		 type = 'hamlet';
+		 id = $("#hamletField").val();
+		 selectedType=type;
+	     selectedTypeId=id;
+          if(id == 0 || id == null)
+			{
+			str +='<div>Please Select Hamlet</div>';
 			flag =false;
 			}
 	}
@@ -305,8 +352,19 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 	  $('.attributeTypeClassIni').each(function() {
            if($(this).is(':checked')){
 		        var ids = ($(this).val()).split(",");
+				if(ids[0] === "locality")
+				{
+				var id2 = $("#mandalField").val();
+	       		  
+				if(type !=  "ward" && id2.charAt(0) !="1")
+				reqfieldsArr.push("Hamlet,Hamlet");
+				reqfieldsArr.push("LocalArea,LocalArea");
+		        reqfields = reqfields+","+ids[0];
+				
+				}else{
 		       reqfieldsArr.push($(this).val());
 		       reqfields = reqfields+","+ids[0];
+			   }
 		    }
           });
 		  if(reqfields.length > 0)
@@ -316,7 +374,12 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 		  selectedVotersArr = new Array();
 		  $("#topSelCount").html("Total Voters Selected For Edit : "+selectedVotersArr.length);
           $("#bottomSelCount").html("Total Voters Selected For Edit : "+selectedVotersArr.length);
+		  alert(selectedType);
+	      alert(selectedTypeId);
+	      alert(publicationId);
 	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr);
+	   //alert(reqfieldsArr);
+	
 	}else{
 	  $("#errorMsgAlert").html(str);
 	}
@@ -328,12 +391,13 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;
     
            $("#topButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');
-		   $("#bottomButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');
+		   $("#bottomButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Create Custom Groups(Cast,Party,Locaities)" onclick="openNewWindow();"/></div>');
 	    YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 			{
 			var vId = oRecord.getData("voterId");
 			var vName = oRecord.getData("name");
 			var vBoothId = oRecord.getData("boothId");
+			 
 			elLiner.innerHTML ='<a href="javascript:{};" style="cursor:pointer;" onclick="openProblemEditForm('+vId+','+vBoothId+');">'+vName+'</a>';
 				
 			}
@@ -361,10 +425,19 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
               elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+vId+"'/><input type='hidden' class='selectedBoothId' value='"+vBoothId+"'/>";			
 		  };
 		 for(var i in reqfieldsArr){
-		    YAHOO.widget.DataTable["select"+i] = function(elLiner, oRecord, oColumn, oData) 
+		 var id3 = reqfieldsArr[i].split(",");
+		    YAHOO.widget.DataTable[""+id3[0]] = function(elLiner, oRecord, oColumn, oData) 
 		  { 
-		     var ids = reqfieldsArr[oColumn.field.charAt(oColumn.field.length-1)].split(",");
-			 var val = "";
+		      //alert(elLiner);
+			    
+			    //alert(oColumn.field.charAt(oColumn.field.length-1));
+				// alert(oData);
+		   
+		   // var ids = reqfieldsArr[oColumn.field.charAt(oColumn.field.length-1)].split(",");
+          //alert(oColumn.field.charAt(oColumn.field.length-1));			
+		 var ids={};
+		 ids[0]=oColumn.field;
+		var val = "";
 			var categ = oRecord.getData("categoriesList");
 			if(ids[0] == "cast"){
 			  if(oRecord.getData("cast") != null)
@@ -372,6 +445,14 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 			}else if(ids[0] == "party"){
 			  if(oRecord.getData("party") != null)
 			  val = oRecord.getData("party");
+			}else if(ids[0] == "Hamlet"){
+			   //  alert("ok");
+			  if(oRecord.getData("hamletName") != null)
+			  val = oRecord.getData("hamletName");
+			}else if(ids[0] == "LocalArea"){
+			
+			  if(oRecord.getData("localAreaName") != null)
+			  val = oRecord.getData("localAreaName");
 			}
 		    else{
 			  for(var i in categ){
@@ -382,6 +463,7 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 			}
 			elLiner.innerHTML=val;			
 		  };
+		 
 		 }
 		var votersByLocBoothColumnDefs = [
 		{key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
@@ -411,22 +493,26 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 			votersByLocBoothColumnDefs.push(obj);
 		}
 		 for(var i in reqfieldsArr){
-		    var ids = reqfieldsArr[i].split(",");
+		    var ids1 = reqfieldsArr[i].split(",");
+		     
 		   obj = {
-				key:"select"+i, label: ""+ids[1], formatter:YAHOO.widget.DataTable["select"+i]
+				key:""+ids1[0], label: ""+ids1[1],sortable:true,formatter:YAHOO.widget.DataTable[""+ids1[0]]
 					};
 					votersByLocBoothColumnDefs.push(obj);
+					
 		 }
 		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersInfoBySearchAction.action?locationLvl="+locationLvl+"&publicationDateId="+publicationDateId+"&voterCardId="+voterCardId+"&voterName="+voterName+"&voterNameType="+voterNameType+"&guardianName="+guardianName+"&gender="+gender+"&startAge="+startAge+"&endAge="+endAge+"&id="+lId+"&selIds="+reqfields+"&task=votersData&save=&");
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
-		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party"],
+		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName"],
 		metaFields: {
 		totalRecords: "totalHousesCount" // Access to value in the server response
 		}
 		};
 
+		
+//end
 		var myConfigs = {
 		initialRequest: "sort=name&dir=asc&startIndex=0&results="+limit, // Initial request for first page of data
 		dynamicData: true, // Enables dynamic server-driven data
@@ -453,8 +539,6 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 		oPayload.totalRecords = oResponse.meta.totalRecords;
 		totalReq = oResponse.meta.totalRecords;
-		if(totalReq == null || totalReq == '')
-		 totalReq = 0;
 		$("#topCount").html("<b>Total Voters: "+totalReq+"</b>");
         $("#bottomCount").html("<b>Total Voters: "+totalReq+"</b>");
 		return oPayload;
@@ -578,7 +662,9 @@ function buildCategoriesListInit(result){
 	    str+='</tr><tr>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
-		 var x = 2;
+		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="locality,Locality"/>  Locality</td>';
+		
+		var x = 2;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
@@ -604,6 +690,8 @@ function buildCategoriesListInit(result){
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" id="allAttributeTypeAllId" class="allAttributeTypeClass" value="all" />  All</td>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="cast" />  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="party"/>  Party</td>';
+		 if( selectedLevel == 3 || selectedLevel == 4 )
+		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="Locality"/>  Locality</td>'; 
 		 var x = 3;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
@@ -625,6 +713,8 @@ function buildCategoriesListInit(result){
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" id="singleAttributeTypeId" class="singleAttributeTypeClass" value="all" />  All</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="cast" />  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="party"/>  Party</td>';
+			if( selectedLevel == 3 || selectedLevel == 4 )
+		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="Locality"/>  Locality</td>'; 
 		var x = 3;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
@@ -675,13 +765,15 @@ function buildCategoriesListInit(result){
 		   return;
 		 }
 		 ids = ids.slice(1);
+		// alert(ids);
 		 if(type == 'all'){
 		 
 		    if(selectedVotersArr.length > 500)
 			  {
-				alert(" Please select atmost 500 voters to edit");
+		   		alert(" Please select atmost 500 voters to edit");
 				  return;
 			  }
+			  alert($(".familyMemberCheck :first").val());
 		   getVotersInfoToEditAUser(ids,$(".familyMemberCheck :first").val());
 		 }else{
  	         if(selectedVotersArr.length > 30)
@@ -691,6 +783,34 @@ function buildCategoriesListInit(result){
 				  }
 		     getVotersInfoToEditAllUser(ids,selectedVotersArr);
 		 }
+		 /*  $(".localityallfamily").each(function (){
+		  setTimeout(function(){
+		 
+		 alert($(".localityallfamily").val());
+		 var selectid= $(".localityallfamily").attr("id");
+		 var locationid= $(".localityallfamily").attr("datalocationdiv");
+		 var valj= $(".localityallfamily").attr("dataj");
+		 getLocalitiesList(selectid,locationid,valj);
+		 },500);}); */
+		 var idsArray ={};
+		 if($("#singleAttributeType").is(':checked')){
+		 setTimeout(function(){
+		  $(".localityallfamily").each(function (){
+		  var i=0;
+		 
+		 alert($(this).val());
+		 var optionValue=$(this).val();
+		   if(optionValue != 0){
+		 var selectid= $(this).attr("id");
+		 var locationid= $(this).attr("datalocationdiv");
+		 var valj= $(this).attr("dataj");
+		 var optionValue=$(this).val();
+		 getLocalitiesList(selectid,locationid,valj);
+		 idsArray[i]=selectid;
+		 i++;
+		  }		  		  
+		 })},500); 
+		}
 	  }
 	  function getVotersInfoToEditAllUser(ids,votersIds){
 		var jsObj=
@@ -699,7 +819,10 @@ function buildCategoriesListInit(result){
 		            type:"getAllVoters",
 					selectedVoters:new Array(),
 					ids:ids,
-					votersIds:votersIds
+					votersIds:votersIds,
+					selectedType:selectedType,
+					selectedTypeId:selectedTypeId,
+					publicationId:publicationId
 					
 				}
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -715,7 +838,10 @@ function buildCategoriesListInit(result){
 		            type:"",
 					selectedVoters:new Array(),
 					ids:ids,
-					voterId:voterId
+					voterId:voterId,
+					selectedType:selectedType,
+					selectedTypeId:selectedTypeId,
+					publicationId:publicationId
 					
 				}
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -788,6 +914,7 @@ function callAjaxForCandSearch(jsObj,url)
     var str = "";
 	var castPresent = false;
 	var partyPresent = false;
+	var  localityPresent=false;
 	var totalCategCount = 0;
     if(results != null){
 		   str+="<fieldset>";
@@ -812,6 +939,22 @@ function callAjaxForCandSearch(jsObj,url)
 					    }
 			  str+="    </select></td></tr>";
 		   }  
+		   if(results.localityPresent){
+		      localityPresent = true;
+			  str+="<tr>";	
+		      str+="    <td><b>LocalityName:</b></td>";		  
+			  str+="    <td><select id='localityForAll'  onchange='getLocalitiesList(\"localityForAll \",\"locationdiv\",null)' >";
+				        for(var l in results.localitiesList){
+						   if(results.localitiesList[l].hampletPresent)
+						   mandalType = "mandal";
+						   else 
+						    mandalType = "muncipality";
+						 str+="<option value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
+					    }
+			  str+="    </select></td>";
+			  str+="<td><div id='locationdiv' ></td> ";
+			  str+="</tr>";                       
+		   }  
            if(results.categoriesList != null && results.categoriesList.length > 0){
 		      totalCategCount = results.categoriesList.length;
 			  for(var m in results.categoriesList){
@@ -822,17 +965,18 @@ function callAjaxForCandSearch(jsObj,url)
 						      str+="<option value="+results.categoriesList[m].category[l].id+">"+results.categoriesList[m].category[l].name+"</option>";
 						     }
 				   str+="   </select></td>";
+				    
 				   str+="   </tr>";
 			 }
 		    }   	
 		   str+="</table>";	
            str+="</fieldset>";	
-           str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForAll("+castPresent+","+partyPresent+","+totalCategCount+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+           str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForAll("+castPresent+","+partyPresent+","+localityPresent+","+totalCategCount+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 	    $("#multipleVoterFamiliesEditDiv").html(str);		   
 		}
 	   
 	}
-	 function updateAllSelectedVotersForAll(castPresent,partyPresent,count){
+	 function updateAllSelectedVotersForAll(castPresent,partyPresent,localityPresent,count){
 	     var votersEditInfo = new Array();
 		 var voterIds = '';
 		 if(selectedVotersArr.length > 500){
@@ -851,6 +995,18 @@ function callAjaxForCandSearch(jsObj,url)
 			  obj["castId"] = $("#castSelForAll").val();
 			  if(partyPresent)
 			  obj["partyId"] = $("#partySelForAll").val();
+			  if(localityPresent){
+			  var hamletId=$("#localityForAll").val();
+			  var localityId= $("#localitylocationdiv").val();
+			  	alert(mandalType);
+				if(mandalType == "muncipality" ){
+				 obj["localityHamletId"] = hamletId;
+				 obj["hamletId"] = 0;
+				 }else{
+				obj["hamletId"] = hamletId;
+			    obj["localityHamletId"] = localityId;
+			   }
+			   }
 			  if(count > 0){
 			    for(var i=0; i<count ; i++){
 				  var val1= $("#categIdSelForAll"+i).val();
@@ -868,6 +1024,7 @@ function callAjaxForCandSearch(jsObj,url)
 		    total:count,
 			partyPresent:partyPresent,
 			castPresent:castPresent,
+			localityPresent:localityPresent,
 			voterIds:voterIds,
 			selectedVoters:votersEditInfo,
 			task:"updateAllVoters"
@@ -880,7 +1037,7 @@ function callAjaxForCandSearch(jsObj,url)
 		}
 	 }
      
-	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,count){
+	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,localityPresent,count){
 	    var votersEditInfo = new Array();
      $('.familyVoterEditId').each(function(){
 	        var obj={
@@ -891,12 +1048,23 @@ function callAjaxForCandSearch(jsObj,url)
 			  obj["castId"] = $(this).closest("table").find(".castallfamily").val();
 			  if(partyPresent)
 			  obj["partyId"] = $(this).closest("table").find(".partyallfamily").val();
-			  if(count > 0){
+			   if(localityPresent)
+			  obj["hamletId"] =  $(this).closest("table").find(".localityallfamily").val();
+			 
+			 var leng = $(this).closest("table").find(".localityallfamily").length;
+			  if( $(this).closest("table").find(".localityallfamily").length )
+			  obj["localityHamletId"] =  $(this).closest("table").find(".localityFamily").val() ;
+			 else
+			  obj["localityHamletId"]= 0;
+			  
+			  
+			 if(count > 0){
 			    for(var i=0; i<count ; i++){
 				  var val1= $(this).closest("table").find(".categ"+i+"main").val();
 				  var val2= $(this).closest("table").find(".categ"+i+"ori").val();
 				  obj["categ"+i] = val1+","+val2;
 				}
+				
 			  }
 			  votersEditInfo.push(obj);
 			
@@ -917,6 +1085,7 @@ function callAjaxForCandSearch(jsObj,url)
 					total:count,
 					partyPresent:partyPresent,
 					castPresent:castPresent,
+					localityPresent:localityPresent,
 					selectedVoters:votersEditInfo,
 					task:"updateIndividuls"
 		      };
@@ -986,6 +1155,25 @@ function callAjaxForCandSearch(jsObj,url)
 				  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"partyvalid"+localid+"\",\"partyallfamily\")'><i class='icon-ok-sign'></i></a></td>";
 				   str+="   </tr>";
 				}
+				if(results.localityPresent){
+				  str+="   <tr>";
+				  str+="   <td><b>Locality Name:</b></td>";
+				
+				        str+="<td><select id='localityvalid"+localid+"' onchange='getLocalitiesList(\"localityvalid"+localid+"\",\"locationdiv"+localid+"\",\" "+j+"\")' dataj='"+j+"' datalocationdiv=\"locationdiv"+localid+"\" class='localityallfamily localityallfamily"+j+"' >";
+						 for(var l in results.localitiesList){
+						  if(voters[k].hamletId != results.localitiesList[l].id)								   
+						 str+="<option value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
+					      else{
+						  str+="<option selected='selected' value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
+						
+						 }
+					   }
+				  str+="    </select></td>";
+				  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"localityvalid"+localid+"\",\"localityallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
+				  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"localityvalid"+localid+"\",\"localityallfamily\")'><i class='icon-ok-sign'></i></a></td>";
+				  str+="<td><div id='locationdiv"+localid+"' ></td> "; 
+				   str+="   </tr>";
+				}
                  if(voters[k].categoriesList != null){
                     categCount = voters[k].categoriesList.length;
                   }				 
@@ -1018,7 +1206,7 @@ function callAjaxForCandSearch(jsObj,url)
 			}
 		 
 		}
-		 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForIndividule("+results.castPresent+","+results.partyPresent+","+categCount+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+		 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForIndividule("+results.castPresent+","+results.partyPresent+","+results.localityPresent+","+categCount+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 		 $("#multipleVoterFamiliesEditDiv").html(str);
 	   }
 	}
@@ -1030,31 +1218,66 @@ function callAjaxForCandSearch(jsObj,url)
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;"></div>
-      <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
-		<option value=1>Constituency</option>
-		<option value=2>Mandal</option>
+     <!--  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;">
+	   updations are possible only through panchayat and polling station
+	   </div> --> 
+<!--  <div id="demo1" class="yui-navset"> 
+		  <ul class="yui-nav"> 
+	        <li class="selected"><a href="#locationUpdationDiv"><em>LocationUpdation</em></a></li> 
+	        <li ><a href="#reportLevelDiv"><em>VoterSearch</em></a></li> 
+	        
+	    </ul>   
+      <div class="yui-content"> 		
+	   <div id="locationUpdationDiv" class="selectDiv">Select Updation Level<font class="requiredFont">*</font>
+	   <select id="reportLevel1" class="selectWidth" style="margin-left: 8px;width:165px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+		<option value=0>select</option>
+		<option value=5>Ward</option>
 		<option value=3>Panchayat</option>
 		<option value=4>PollingStation</option>
 		</select>
       </div>
-
+	   </div>
+	    </div> -->
+	  <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+		<option value=1>Constituency</option>
+		<option value=2>Mandal</option>
+		<option value=5>Ward</option>
+		<option value=3>Panchayat</option>
+	    <option value=6>Hamlets</option>
+        <option value=4>PollingStation</option>
+		</select>
+      </div>
+	 
+   
+	
+	
 	  <div id="ConstituencyDiv" class="selectDiv">
 	     Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;	
 	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
-		</select>		
+		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>		
 	  </div>
 	  
 	  <div id="mandalDiv" class="selectDiv" style="display:none;">
-	     Select Mandal<font class="requiredFont">*</font> <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select>
+	     Select Mandal<font class="requiredFont">*</font>
+		 <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');getPanchayatList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
+	  </div>
+	   <div id="wardDiv" class="selectDiv" style="display:none;">
+	    Select Ward<font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:70px;width:165px;"></select> 
 	  </div>
 		
 	  <div id="panchayatDiv" class="selectDiv" style="display:none;">
 	    Select Panchayat<font class="requiredFont">*</font> 	
-	    <select id="panchayatField" class="selectWidth" name="state"  style="margin-left:39px;width:165px;"></select>
+	    <select id="panchayatField" class="selectWidth" name="state" onchange="getHamletsList('hamlet','hamletField');" style="margin-left:39px;width:165px;"></select>
 	  </div>
+	   <div id="hamletDiv" class="selectDiv" style="display:none;">
+	    Select Hamlet<font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
+	 </div>
 	
 	  <div id="pollingStationDiv" class="selectDiv" style="display:none;">
 	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;width:165px;"></select>
+	  </div>
+	  <div id="localityDiv" class="selectDiv" style="display:none;">
+	   Select Locality<font class="requiredFont">*</font> <select id="localityField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
 	  </div>
 	  
 	  <div class="selectDiv">
@@ -1114,7 +1337,10 @@ function callAjaxForCandSearch(jsObj,url)
 	   <table><tr>
 	     <td style="width:165px;"><span>Total Voters To Show For Each Page</span></td>
 	     <td><select id="votersPageLimit"><option value="100">100</option><option value="200">200</option><option value="500">500</option><option value="1000">1000</option></select></td>
-	   </tr></table>
+	     <td><div id="localityUpdation"></td>
+	  </tr>
+	   
+	   </table>
 	  </div>
 	  <input style="margin-left:265px;margin-bottom:10px;" onclick="getVotersInfo();" class="btn btn-success" type="button" value="Search"/>
 	   </fieldset>
@@ -1129,9 +1355,13 @@ function callAjaxForCandSearch(jsObj,url)
 		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
 		</div>
 	  <div id="multipleVoterFamiliesEditDiv"></div>
-	  
+	 
+
 <script type="text/javascript">
   getCategoriesForAUserInital();
+ 
+	    var tabView = new YAHOO.widget.TabView('demo1'); 
+	
 </script>
 </div>
 </body>
