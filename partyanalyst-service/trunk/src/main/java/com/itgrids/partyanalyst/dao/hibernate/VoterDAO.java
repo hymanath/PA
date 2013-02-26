@@ -268,5 +268,36 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			}
 
 			
+			/*@SuppressWarnings("unchecked")
+			public List<Object> getTestVotersInfo(){
+				return getHibernateTemplate().find("select userInfo.party.shortName,v.gender," +
+				"count(model.voter.voterId),model2.party.partyId " +
+				"from Voter as v left join v.uservoterdetails as userInfo" +
+				" with userInfo.party.partyId > 1");
+			}*/
+
+			@SuppressWarnings("unchecked")
+			public List<Object> getTestVotersInfo1(){
+				return getHibernateTemplate().find("select userInfo.party.shortName,v.gender," +
+				"count(v.voterId),userInfo.party.partyId " +
+				"from Voter as v inner join v.boothPublicationVoters as BPV " +
+				"inner join v.uservoterdetails as userInfo " +
+				" where BPV.booth.publicationDate.publicationDateId = 7" +
+				" and BPV.booth.constituency.constituencyId = 232" +
+				"and userInfo.user.userId = 1 " +
+				"group by userInfo.party.partyId,v.gender order by userInfo.party.shortName");
+			}
+
+			@SuppressWarnings("unchecked")
+			public List<Object> getTestVotersInfo(){
+			return getHibernateTemplate().find("select userInfo.party.shortName,userInfo.voter.gender," +
+				"count(userInfo.voter.voterId),userInfo.party.partyId " +
+				"from UserVoterDetails as userInfo where userInfo.voter.voterId in (select BPV.voter.voterId " +
+				"from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = 7" +
+				" and BPV.booth.constituency.constituencyId = 232 ) and userInfo.user.userId = 1 " +
+				"group by userInfo.party.partyId,userInfo.voter.gender order by userInfo.party.shortName");
+			}
+
+			
 	
 }
