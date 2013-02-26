@@ -598,6 +598,16 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			  return query.list();
 			
 		}
+		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(
+				Long hamletId, Long publicationDateId , Long startAge, Long endAge) {		
+				
+			Query query = getSession().createQuery("select count(*),BPV.voter.gender from BoothPublicationVoter BPV join BPV.booth b join b.hamletBoothPublications hp where BPV.booth.publicationDate.publicationDateId = :publicationDateId  and BPV.voter.age between "+startAge+" and "+endAge+" and " +
+					"  hp.hamlet.hamletId = :hamletId  group by BPV.voter.gender  ") ;
+			query.setParameter("publicationDateId",publicationDateId);
+			query.setParameter("hamletId", hamletId);
+			  return query.list();
+			
+		}
 		
 		public List<Object[]> getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
 				Long boothId, Long publicationDateId, Long startAge, Long endAge) {
@@ -793,6 +803,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			
 			 Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
 	 			  query.setParameter("publicationDateId", publicationDateId);
+	 			 if(id != 0l)
 	 			  query.setParameter("id", id);
 	 			query.setFirstResult(startRecord);
 	 			query.setMaxResults(maxRecords);
@@ -803,6 +814,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			
 			 Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
 	 			  query.setParameter("publicationDateId", publicationDateId);
+	 			 if(id != 0l)
 	 			  query.setParameter("id", id);
 	 			return query.list();
 		}
@@ -968,7 +980,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	 * @return List<Object[]>
 	 */
 	public List<BoothPublicationVoter> findVoterContactDetails(Long voterId) {
-		
+	
 		return getHibernateTemplate().find("select model from BoothPublicationVoter model where model.voter.voterId = ? order by model.booth.publicationDate.date desc",voterId);
 	}
 	
@@ -1036,7 +1048,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		return query.list();
 		
 	}
-	
+
 	/**
 	 * This method is used to get the familey member detais based on  houseno and boothid
 	 * @author Prasad Thiragabathina
@@ -1081,8 +1093,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	public List<Voter> getVotersByBoothId(Long boothId)
 	{
 		return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model where model.booth.boothId = ? ",boothId);
-	}
-	
+	}	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId)
 	{
@@ -1092,4 +1103,118 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+	
+	
+	
+	public List<Object[]>  getLocalitiesForConstituency(Long id)
+	{
+	
+	Query query = getSession().createSQLQuery("(select l.locality_id , l.name from locality l where l.hamlet_id " +
+				"in(select h.hamlet_id from hamlet h join  panchayat_hamlet p on p.hamlet_id= h.hamlet_id  " +
+				"where   p.panchayat_id in (select p1.panchayat_id from panchayat p1 join tehsil t " +
+				"on p1.tehsil_id = t.tehsil_id where t.district_id in (select  c.district_id " +
+				"from constituency c where  c.constituency_id = :cid )))) " +
+				" union distinct " +
+				"( select l.locality_id , l.name from locality l join local_election_body l1 on " +
+				" l.local_election_body_id = l1.local_election_body_id where l1.district_id " +
+				"in (select  c.district_id from constituency c where  c.constituency_id = :cid ))").setParameter("cid", id) ;
+	 
+	List<Object[]> result = query.list();
+    return result;
+	}
+	public List<Object[]>  getHamletsForConstituency(Long id)
+	{
+	
+	Query query = getSession().createSQLQuery("select h.hamlet_id, h.hamlet_name from hamlet h " +
+			"  join  panchayat_hamlet p on p.hamlet_id= h.hamlet_id " +
+			"  where   p.panchayat_id   in (select p1.panchayat_id from panchayat p1" +
+			" join tehsil t on p1.tehsil_id = t.tehsil_id  " +
+			" where t.district_id in (select  c.district_id from constituency c" +
+			" where  c.constituency_id = :cid)  )").setParameter("cid", id) ;
+	 List<Object[]> result = query.list();
+   return result;
+	}
+	public List<Object[]>  getLocalitiesForMandals(Long id)
+	{
+	
+	Query query = getSession().createSQLQuery("( select l.locality_id , l.name from locality l where l.hamlet_id " +
+				"in( select h.hamlet_id from hamlet h join  panchayat_hamlet p on p.hamlet_id= h.hamlet_id  " +
+				"where   p.panchayat_id in (select p1.panchayat_id from panchayat p1 join tehsil t " +
+				"on p1.tehsil_id = t.tehsil_id where t. tehsil_id = :id )))" +
+				" union distinct " +
+				"( select l.locality_id , l.name from locality l join assembly_local_election_body a " +
+				"on l.local_election_body_id=  a.local_election_body_id   where a.assembly_local_election_body_id = :id )").setParameter("id", id) ;
+	 
+	List<Object[]> result = query.list();
+    return result;
+	}
+	public List<Object[]>  getLocalitiesForPanchayat(Long id){
+		
+		Query query = getSession().createQuery("select l.localityId , l.name from Locality l " +
+				" join  l.hamlet h join h.panchayathHamlets p  " +
+				"where   p.panchayat.panchayatId = :id )" ).setParameter("id", id) ;
+	 
+	List<Object[]> result = query.list();
+    return result;
+	
+	}
+public List<Object[]>  getLocalitiesForHamlet(Long id){
+		
+		Query query = getSession().createQuery("select l.localityId , l.name from Locality l " +
+				" join  l.hamlet h where   h.hamletId = :id " ).setParameter("id", id) ;
+	 
+	List<Object[]> result = query.list();
+    return result;
+	
+	}
+	
+public List<Object[]>  getLocalitiesForBooth(Long id){
+		
+	Query query = getSession().createQuery(" select  distinct l.localityId , l.name from Locality l " +
+			"where l.localElectionBody.localElectionBodyId " +
+			" in( select  distinct b.localBody.localElectionBodyId from Booth b  " +
+			"where  b.boothId = :id and  b.localBody.localElectionBodyId is not null)" ).setParameter("id", id) ;
+ List<Object[]> result = query.list();
+return result;
+	
+	}
+public List<Object[]>  getHamletsForBooth(Long id)
+{
+
+Query query = getSession().createQuery("select p.hamlet.hamletId, p.hamlet.hamletName from PanchayatHamlet p " +
+		"   join  p.panchayat p1 join p1.booths b  where b.boothId = :id " ).setParameter("id", id) ;
+ List<Object[]> result = query.list();
+return result;
+	/*Query query = getSession().createQuery("select h.hamletId, h.hamletName from Hamlet h " +
+			"  join  PanchayatHamlet p on p.hamlet.hamletId = h.hamletId " +
+			"  join  Panchayat p1 on p1.panchayatId = p.panchayatId " +
+			"  join  Booth b on   p1.tehsilId = b.tehsilId where b.boothId = :id " +
+			"  and b.localElectionBodyId is  null ").setParameter("id", id) ;
+	 List<Object[]> result = query.list();
+	return result;*/
+}
+public List<Object[]>  getLocalitiesForBooth1(Long id){
+	
+	Query query = getSession().createSQLQuery(" select  distinct l.localityId , l.name from Locality l " +
+			"where l.localElectionBody.localElectionBodyId " +
+			" = select  distinct b.local_election_body_id from Booth b  " +
+			"where  b.booth_id = :id and  b.local_election_body_id is not null" ).setParameter("id", id) ;
+ List<Object[]> result = query.list();
+return result;
+	
+	}
+
+/*
+ * 
+ * 
+ */
+	/*public List getLocalElectionBodyId(Long assemblyLocalElectionBodyId) {
+		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = ?", assemblyLocalElectionBodyId);
+	
+	}*/
+	/*
+	 * 
+	 * public List getH(Long assemblyLocalElectionBodyId) {	
+		return getHibernateTemplate().find("select t.tehsil_id from tehsil t ,t..localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = ?", assemblyLocalElectionBodyId);
+	}*/
 }
