@@ -73,6 +73,18 @@ IUserVoterDetailsDAO{
 		query.executeUpdate();
 		
 	}
+	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId,model.casteState.casteStateId = :castStateId,model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("partyId",partyId);
+		query.setParameter("castStateId",castStateId);
+		query.setParameter("localityId",localitityId);
+		query.setParameter("hamletId",hamletId);
+		
+		query.executeUpdate();
+		
+	}
 	
 	public void updateUserVoterPartyDetails(Long voterId,Long userId,Long partyId,Long castStateId){
 		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId where model.voter.voterId = :voterId and model.user.userId = :userId");
