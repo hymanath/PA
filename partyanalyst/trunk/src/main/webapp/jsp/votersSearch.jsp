@@ -664,7 +664,7 @@ function buildCategoriesListInit(result){
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="locality,Locality"/>  Locality</td>';
 		
-		var x = 2;
+		var x = 3;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
