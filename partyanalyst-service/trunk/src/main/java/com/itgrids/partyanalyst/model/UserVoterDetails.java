@@ -32,6 +32,8 @@ public class UserVoterDetails implements java.io.Serializable{
 	
 	private Locality locality;
 	
+	private Hamlet hamlet;
+	
 	public UserVoterDetails(){
 	}
 	
@@ -105,6 +107,17 @@ public class UserVoterDetails implements java.io.Serializable{
 
 	public void setLocality(Locality locality) {
 		this.locality = locality;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="hamlet_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Hamlet getHamlet() {
+		return hamlet;
+	}
+
+	public void setHamlet(Hamlet hamlet) {
+		this.hamlet= hamlet;
 	}
 	
 	
