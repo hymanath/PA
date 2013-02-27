@@ -773,7 +773,7 @@ function buildCategoriesListInit(result){
 		   		alert(" Please select atmost 500 voters to edit");
 				  return;
 			  }
-			  alert($(".familyMemberCheck :first").val());
+			 // alert($(".familyMemberCheck :first").val());
 		   getVotersInfoToEditAUser(ids,$(".familyMemberCheck :first").val());
 		 }else{
  	         if(selectedVotersArr.length > 30)
@@ -998,7 +998,7 @@ function callAjaxForCandSearch(jsObj,url)
 			  if(localityPresent){
 			  var hamletId=$("#localityForAll").val();
 			  var localityId= $("#localitylocationdiv").val();
-			  	alert(mandalType);
+			  	//alert(mandalType);
 				if(mandalType == "muncipality" ){
 				 obj["localityHamletId"] = hamletId;
 				 obj["hamletId"] = 0;
