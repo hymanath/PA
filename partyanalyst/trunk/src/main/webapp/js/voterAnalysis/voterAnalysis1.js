@@ -610,7 +610,8 @@ function buildVoterToSelectedType(result,jsObj)
 		}
 		else 
 		{
-			alert("Voter is already added as a Influencing People");
+			$('#errorMessageDiv').html('<b style="color:red">Voter is already added as a Influencing People</b>');
+			$('#errorMessageDiv').show().delay("2000").hide('slow');
 		}
 	}
 	
@@ -622,7 +623,8 @@ function buildVoterToSelectedType(result,jsObj)
 		}
 		else
 		{
-			alert("Voter is already added as a Cadre");
+			$('#errorMessageDiv').html('<b style="color:red">Voter is already added as a Cadre</b>');
+			$('#errorMessageDiv').show().delay("2000").hide('slow');
 		}
 	}
 	
@@ -634,7 +636,8 @@ function buildVoterToSelectedType(result,jsObj)
 		}
 		else
 		{
-			alert("Voter is already added as a politician");
+			$('#errorMessageDiv').html('<b style="color:red">Voter is already added as a politician</b>');
+			$('#errorMessageDiv').show().delay("2000").hide('slow');
 		}
 	}
 	
