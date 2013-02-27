@@ -186,6 +186,7 @@ h3 {
 } 
 .selectWidth{
  width:175px;
+  margin-left: -6px;
 }
 .selectWidthPadd{
 padding-left:0px;
