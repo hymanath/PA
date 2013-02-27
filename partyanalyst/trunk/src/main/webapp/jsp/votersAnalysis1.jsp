@@ -1054,6 +1054,7 @@ for  body3 start    result  -->
     margin-left: 16px;"/>
 <b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
+<div id="errorMessageDiv"></div>
 </div>
  <div id="votersInnerDiv1" style="height:500px;overflow-y:scroll;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
