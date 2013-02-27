@@ -32,6 +32,7 @@ public class VoterTemp extends BaseModel implements Serializable{
 	private String constituencyName;
 	private Long partNo;
 	private String boothName;
+	private Long serialNo;
 	
 	public VoterTemp()
 	{}
@@ -161,6 +162,15 @@ public class VoterTemp extends BaseModel implements Serializable{
 
 	public void setBoothName(String boothName) {
 		this.boothName = boothName;
+	}
+
+	@Column(name = "sno", length = 4)
+	public Long getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(Long serialNo) {
+		this.serialNo = serialNo;
 	}
 	
 
