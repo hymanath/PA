@@ -149,7 +149,8 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]>  getLocalitiesForHamlet(Long id);
 	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(
 				Long hamletId, Long publicationDateId , Long startAge, Long endAge); 
-	 
+	 public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
+				Long hamletId, Long publicationDateId , Long startAge, Long endAge);
 	 
 	 
 	 public List<Voter> getVotersByBoothId(Long boothId);
