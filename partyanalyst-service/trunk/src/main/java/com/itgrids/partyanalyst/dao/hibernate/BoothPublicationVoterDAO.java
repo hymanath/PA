@@ -1217,4 +1217,15 @@ return result;
 	 * public List getH(Long assemblyLocalElectionBodyId) {	
 		return getHibernateTemplate().find("select t.tehsil_id from tehsil t ,t..localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = ?", assemblyLocalElectionBodyId);
 	}*/
+    
+public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
+		Long hamletId, Long publicationDateId , Long startAge, Long endAge) {		
+		
+	Query query = getSession().createQuery("select count(*),uv.voter.gender from UserVoterDetails uv  where " +
+			"  uv.voter.age between "+startAge+" and "+endAge+" and uv.hamlet.hamletId = :hamletId  group by uv .voter.gender  ") ;
+	//query.setParameter("publicationDateId",publicationDateId);
+	query.setParameter("hamletId", hamletId);
+	  return query.list();
+	
+}
 }
