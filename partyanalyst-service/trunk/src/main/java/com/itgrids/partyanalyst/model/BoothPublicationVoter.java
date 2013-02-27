@@ -30,6 +30,7 @@ public class BoothPublicationVoter implements Serializable{
 	 private Voter voter;
 	 private Long boothId;
 	 private Long voterId;
+	 private Long serialNo;
 	 
 	 public BoothPublicationVoter()
 	 {}
@@ -88,6 +89,15 @@ public class BoothPublicationVoter implements Serializable{
 
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
+	}
+
+	@Column(name = "serial_no", length = 4)
+	public Long getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(Long serialNo) {
+		this.serialNo = serialNo;
 	}
 	
 	 
