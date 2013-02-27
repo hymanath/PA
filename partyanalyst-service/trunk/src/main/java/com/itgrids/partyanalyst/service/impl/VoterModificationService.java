@@ -218,7 +218,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 Long ageFrom = new Long(ages[0].trim());
 				 Long ageTo = null;
 				 if(!ages[1].trim().equalsIgnoreCase("Above"))
-					 ageTo = new Long(ages[1].trim());
+					 ageTo = Long.valueOf(ages[1].trim());
 					 
 				 List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation(locationType, locationValue, constituencyId, publicationIdsList, ageFrom, ageTo);
 				 
@@ -400,13 +400,13 @@ public class VoterModificationService implements IVoterModificationService{
 			 {
 				 if(locationType.equalsIgnoreCase(IConstants.MANDAL))
 				 {
-					 Long id = new Long(locationValue.toString().trim().substring(1));
+					 Long locationValueId = new Long(locationValue.toString().trim().substring(1));
 					 
 					 if(locationValue.toString().trim().substring(0,1).equalsIgnoreCase("2"))
-						 locationValue = id;
+						 locationValue = locationValueId;
 					 else
 					 {
-						 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id);
+						 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValueId);
 						 locationValue = (Long)list.get(0);
 						 locationType = IConstants.LOCALELECTIONBODY;
 					 }
@@ -490,7 +490,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 voter.setRelativeFirstName(params[4].toString());
 					 voter.setRelationshipType(params[5].toString());
 					 voter.setBoothId((Long)params[6]);
-					 voter.setBoothNo(new Long(params[7].toString()));
+					 voter.setBoothNo(Long.valueOf(params[7].toString()));
 					 voter.setBoothName(params[8].toString());
 					 voter.setPanchayatId((Long)params[9]);
 					 voter.setPanchayatName(params[10].toString());
