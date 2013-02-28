@@ -380,6 +380,7 @@ var votersByLocBoothColumnDefs = [
 {key:"age", label: "Age",  width:30,sortable:true},
 {key:"houseNo", label: "House No",width:50, sortable:true},
 {key:"relativeFirstName", label: "GuardName", width:100,sortable:true},
+{key:"serialNo", label:"Serial No"},
 {key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
@@ -402,7 +403,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","serialNo"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
