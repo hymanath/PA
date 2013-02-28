@@ -37,6 +37,7 @@ public class VotersInfoForMandalVO {
 	private Long reportLevelValue;
 	private Long publicationDateId;
 	private Long totalBooths = 0l;
+	private Long constituencyId;
 	
 	public Long getReportLevelId() {
 		return reportLevelId;
@@ -310,6 +311,12 @@ public class VotersInfoForMandalVO {
 	}
 	public void setTotalBooths(Long totalBooths) {
 		this.totalBooths = totalBooths;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	
