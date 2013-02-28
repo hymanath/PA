@@ -92,7 +92,7 @@ function initializeResultsTable() {
 		var boothId=oRecord.getData("boothId"); 
 		//var name = oRecord.getData("name");
 		
-		elLiner.innerHTML ='<a id="boothId" onclick=" boothDetails('+boothId+');">'+id+'</a>';
+		elLiner.innerHTML ='<a id="boothId" onclick=" boothDetails('+boothId+');" title="Click to Know the Details of Total Voters,Villages Covered and Mandal Details and Recent Election Details in this Booth">'+id+'</a>';
 		
 	}
 	
