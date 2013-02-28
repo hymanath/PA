@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
-import com.itgrids.partyanalyst.model.HamletBoothElection;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 
@@ -62,7 +61,7 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 				System.out.print("\t"+obj.toString());
 		}
 	}*/
-	public void testGetVotersCountInAPanchayat()
+	/*public void testGetVotersCountInAPanchayat()
 	{
 		List<Object[]> list = hamletBoothElectionDAO.getVotersCountInAPanchayat(38l,1l);
 		System.out.println(list.size());
@@ -71,7 +70,7 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(data[0]+" - "+data[1]+" - "+data[2]);
 		}
-	}	
+	}	*/
 	/*public void testGetBoothIdsByPanchayatId()
 	{
 		List<Long> list = hamletBoothElectionDAO.getBoothIdsByPanchayatId(1l, 116l);
@@ -102,9 +101,12 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	/*public void testFindAllElectionsHappendInAPanchayat()
+	public void testFindAllElectionsHappendInAPanchayat()
 	{
-		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAMandal(836l);
+		List<Long> constiIds = new ArrayList<Long>();
+		constiIds.add(476l);
+		constiIds.add(299l);
+		List<Object[]> list = hamletBoothElectionDAO.findAllElectionsHappendInAMandal(1007l,constiIds);
 		System.out.println(list.size());
 		
 		for(Object[] params : list)
@@ -113,7 +115,7 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}
 	
-	public void testGetBoothIdsByMandalId()
+	/*public void testGetBoothIdsByMandalId()
 	{
 		List<Long> list = hamletBoothElectionDAO.getBoothIdsByMandalId(844l, 38l);
 		System.out.println(list.size());

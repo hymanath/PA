@@ -66,6 +66,9 @@ public class VoterHouseInfoVO {
 	private boolean sortReq;
 	private String sortEle;
 	private String partyName;
+	private String queryType;
+	private Long fromSno;
+	private Long toSno;
 	
 	public String getPartyName() {
 		return partyName;
@@ -717,6 +720,30 @@ public class VoterHouseInfoVO {
 
 	public void setSortEle(String sortEle) {
 		this.sortEle = sortEle;
+	}
+
+	public String getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
+	}
+
+	public Long getFromSno() {
+		return fromSno;
+	}
+
+	public void setFromSno(Long fromSno) {
+		this.fromSno = fromSno;
+	}
+
+	public Long getToSno() {
+		return toSno;
+	}
+
+	public void setToSno(Long toSno) {
+		this.toSno = toSno;
 	}
 
 

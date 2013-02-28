@@ -418,12 +418,12 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	return query.list();
    	}
     
-    public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo,Long constituencyId){
+    public List<Object[]> getVotersCountInAMandalBooth(Long electionId,Long id,String type,String partNo,Long constituencyId,List<Long> constituencyIds){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters),count(*) from BoothConstituencyElection model " +
 				" where model.constituencyElection.election.electionId = :electionId ");
     	if(type.equalsIgnoreCase("mandal")){
-    		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.localBody is null");
+    		queryStr.append(" and model.booth.tehsil.tehsilId = :id and model.booth.localBody is null and model.booth.constituency.constituencyId in(:constituencyIds)");
     	}else if(type.equalsIgnoreCase("localElec")){
     	    queryStr.append(" and model.booth.localBody.localElectionBodyId = :id ");
     		if(constituencyId != null && constituencyId > 0l)
@@ -439,7 +439,10 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	if(type.equalsIgnoreCase("booth"))
     		query.setParameter("partNo", partNo);
     	if(type.equalsIgnoreCase("localElec") && constituencyId != null && constituencyId > 0l)
-    	    query.setParameter("constituencyId", constituencyId);	
+    	    query.setParameter("constituencyId", constituencyId);
+    	if(type.equalsIgnoreCase("mandal")){
+    		 query.setParameterList("constituencyIds", constituencyIds);
+    	}
     	return query.list();
    	}
     

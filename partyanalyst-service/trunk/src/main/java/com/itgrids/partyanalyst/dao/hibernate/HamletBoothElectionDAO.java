@@ -118,12 +118,14 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> findAllElectionsHappendInAMandal(Long mandalId)
+	public List<Object[]> findAllElectionsHappendInAMandal(Long mandalId,List<Long> constituencyIds)
 	{
 		Query query = getSession().createQuery("select distinct(HBE.boothConstituencyElection.constituencyElection.election.electionId), HBE.boothConstituencyElection.constituencyElection.election.elecSubtype from HamletBoothElection HBE,  PanchayatHamlet PH where " +
-				" HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.tehsil.tehsilId = :tehsilId and HBE.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2) order by HBE.boothConstituencyElection.constituencyElection.election.electionDate desc ");
+				" HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.tehsil.tehsilId = :tehsilId and HBE.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2) and HBE.boothConstituencyElection.constituencyElection.constituency.constituencyId in(:constituencyIds) " +
+				" order by HBE.boothConstituencyElection.constituencyElection.election.electionDate desc ");
 		
 		query.setParameter("tehsilId", mandalId);
+		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();
 	}
 	

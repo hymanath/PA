@@ -107,7 +107,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Object[]> getBoothsInAPanchayat(Long panchayatId,Long publicationDateId);
 	
-	public List<Object[]> getBoothsInAMunicipality(Long lclElecBodyId,Long publicationDateId);
+	public List<Object[]> getBoothsInAMunicipality(Long lclElecBodyId,Long publicationDateId,Long constituencyId);
 	
 	public List<Long> getStateIdByPublicationId(Long publicationDateId);
 	
@@ -118,20 +118,20 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
     public List<Object[]> getBoothsInAPanchayatForPresentElectionYear(Long panchayatId,Long year);
 
-	public List<Object[]> getBoothsCount(Long id,Long publicationDateId,String type);
+	public List<Object[]> getBoothsCount(Long id,Long publicationDateId,String type,Long constituencyId);
 	 
 	public List<Object[]> getBoothIdsByPanchayatIdsInAPublication(List<Long> panchayatIds,Long publicationDateId);
 	
 	public List<Long> checkForUrbanBooth(Long boothId,Long publicationDateId);
 	
-	public List<Object[]> getBoothIdsInLocalBodiesForAPublication(List<Long> localBodiesList, Long publicationDateId);
+	public List<Object[]> getBoothIdsInLocalBodiesForAPublication(List<Long> localBodiesList, Long publicationDateId,Long constituencyId);
 	 
 	public List<Long> getAllPublicationDetailsForConstituency(Long constituencyId);
 
 	public List<Long> getBoothIdsByPanchayatIdsListOrLocalEleBodyIdsList(String type, Long publicationDateId, List<Long> panchayatIdsList);
 	
-	public List<Object[]> getWardsByLocalElecBodyId(Long id,Long publicationDateId);
-	public List<Object[]> getWardsByLocalElecBodyIds(List<Long> ids,Long publicationDateId);
+	public List<Object[]> getWardsByLocalElecBodyId(Long id,Long publicationDateId,Long constituencyId);
+	public List<Object[]> getWardsByLocalElecBodyIds(List<Long> ids,Long publicationDateId,Long constituencyId);
 		
 	public List<Object[]> getBoothsForWard(Long wardId,Long publicationDateId);
 	
@@ -147,7 +147,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Long> getWardIdsByLocalEleBodyIdsList(List<Long> localEleBodyIds, Long publicationDateId);
 
-	public List<Long> getBoothsCountByPublicationId(String type,Long id,Long publicationDateId);
+	public List<Long> getBoothsCountByPublicationId(String type,Long id,Long publicationDateId,Long constituencyId);
 	
 	public List<Booth> getBoothByPartNoPublicationId(Long constituencyId,Long publicationId,String partNo);
 	
