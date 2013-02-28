@@ -4147,6 +4147,30 @@ public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
 	
 }
 
+public ResultStatus updateSerialNo(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		List<Object[]> list = voterDAO.getSnoFromVoterTemp(constituencyId);
+		if(list != null && list.size() > 0)
+		{
+			voterDAO.flushAndclearSession();
+			for(final Object[] params : list)
+			{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						boothPublicationVoterDAO.updateSerialNoByVoterId((Long)params[1],(Long)params[0]);
+				}});
+			}
+		}
+		return resultStatus;
+	}catch (Exception e) {
+		log.error("Exception Occured in updateSerialNo() meyhod");
+		log.error("Exception is - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
+}
 public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults)
 {
 	ResultStatus resultStatus = new ResultStatus();
@@ -4182,6 +4206,7 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					
 					boothPublicationVoter.setVoterId(voter.getVoterId());
 					boothPublicationVoter.setBoothId(boothsMap.get(voterTemp.getPartNo()));
+					boothPublicationVoter.setSerialNo(voterTemp.getSerialNo());
 					boothPublicationVoterDAO.save(boothPublicationVoter);
 					}catch (Exception e) {}
 				}
