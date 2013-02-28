@@ -141,7 +141,8 @@ var confTrue = false;
 var totalReq = 1000;
 var selectedVotersArr = new Array();
 var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName;var RvoterNameType;var RguardianName;var Rgender;var RstartAge;var RendAge;var Rreqfields;var RreqfieldsArr;
-  $(document).ready(function(){
+var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
+ $(document).ready(function(){
      $("#singleAttributeType").live("click",function(){
 	      $("#multipleVoterFamiliesEditDiv").html("");
 		 $('.allAttributeTypeClass').each(function() {
@@ -312,9 +313,13 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 	var gender = '';
 	var startAge = 0;
 	var endAge = 0;
-	
+	var fromSno = 0;
+	var toSno = 0;
+	var queryType = "and";
+	var houseNo ='';
 	voterCardId = $.trim($("#voterId").val());
 	voterName = $.trim($("#voterName").val());
+	houseNo = $.trim($("#reqHouseNo").val());
 	if($("#startWith").is(':checked')){
 	   voterNameType = 'start';
 	}else{
@@ -344,6 +349,24 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 			flag =false;
 	   }else{
 	     endAge = ageEnd;
+	   }
+	}
+	var startSno = $.trim($("#fromSno").val());
+	var endSno = $.trim($("#toSno").val());
+	if(startSno.length > 0){
+	   if(isNaN(startSno)){
+	        str +='<div>Please Enter Valid Start Sno</div>';
+			flag =false;
+	   }else{
+	     fromSno = startSno;
+	   }
+	}
+	if(endSno.length > 0){
+	   if(isNaN(endSno)){
+	        str +='<div>Please Enter Valid End Sno</div>';
+			flag =false;
+	   }else{
+	     toSno = endSno;
 	   }
 	}
 	if(flag){
@@ -377,7 +400,13 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 		  //alert(selectedType);
 	      //alert(selectedTypeId);
 	      //alert(publicationId);
-	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr);
+
+    if($("#andCondChk").is(':checked')){
+	   queryType = 'and';
+	}else {
+	   queryType = 'or';
+	}
+	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno);
 	   //alert(reqfieldsArr);
 	
 	}else{
@@ -386,9 +415,9 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
   }
   function showNewsDetails(){
   }
-  function buildVotersByLocBoothDataTable(locationLvl,lId,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr)
+  function buildVotersByLocBoothDataTable(locationLvl,lId,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno)
 	{var x = 1;
-	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;
+	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;RQueryType=queryType;RHouseNo=houseNo;RfromSno=fromSno;RtoSno=toSno;
     
            $("#topButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');
 		   $("#bottomButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Create Custom Groups(Cast,Party,Locaities)" onclick="openNewWindow();"/></div>');
@@ -492,6 +521,10 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 		    obj = {key:"relationship", label: "Relationship", sortable:true};
 			votersByLocBoothColumnDefs.push(obj);
 		}
+		if($("#serialnumbrCol").is(':checked')){
+		    obj = {key:"fromSno", label: "Serial Number", sortable:true};
+			votersByLocBoothColumnDefs.push(obj);
+		}
 		 for(var i in reqfieldsArr){
 		    var ids1 = reqfieldsArr[i].split(",");
 		     
@@ -501,11 +534,11 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 					votersByLocBoothColumnDefs.push(obj);
 					
 		 }
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersInfoBySearchAction.action?locationLvl="+locationLvl+"&publicationDateId="+publicationDateId+"&voterCardId="+voterCardId+"&voterName="+voterName+"&voterNameType="+voterNameType+"&guardianName="+guardianName+"&gender="+gender+"&startAge="+startAge+"&endAge="+endAge+"&id="+lId+"&selIds="+reqfields+"&task=votersData&save=&");
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersInfoBySearchAction.action?locationLvl="+locationLvl+"&publicationDateId="+publicationDateId+"&voterCardId="+voterCardId+"&voterName="+voterName+"&voterNameType="+voterNameType+"&guardianName="+guardianName+"&gender="+gender+"&queryType="+queryType+"&fromSno="+fromSno+"&toSno="+toSno+"&houseNo="+houseNo+"&startAge="+startAge+"&endAge="+endAge+"&id="+lId+"&selIds="+reqfields+"&task=votersData&save=&");
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
-		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName"],
+		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno"],
 		metaFields: {
 		totalRecords: "totalHousesCount" // Access to value in the server response
 		}
@@ -660,11 +693,12 @@ function buildCategoriesListInit(result){
 		str+='   <td style="padding-left:20px;"><input type="checkbox" id="gaurdianColum" />  GuardName</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" id="relationShipCol" />  Relationship</td>';
 	    str+='</tr><tr>';
+		str+='   <td style="padding-left:20px;"><input type="checkbox" id="serialnumbrCol" />  Serial Number</td>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="locality,Locality"/>  Locality</td>';
 		
-		var x = 3;
+		var x = 4;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
@@ -873,7 +907,7 @@ function callAjaxForCandSearch(jsObj,url)
 									   confTrue = true;
 									  $("#votersEditSaveAjaxImg").hide();
                                       $("#votersEditSaveButtnImg").removeAttr("disabled");
-									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr);
+									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
 									  alert("Updated Successfully");
 									  
 									  
@@ -889,7 +923,7 @@ function callAjaxForCandSearch(jsObj,url)
 									  confTrue = true;
 									  $("#votersEditSaveAjaxImg").hide();
                                       $("#votersEditSaveButtnImg").removeAttr("disabled");
-									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr)
+									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno)
 									  alert("Updated Successfully");
 									  
 								    }
@@ -1285,6 +1319,10 @@ function callAjaxForCandSearch(jsObj,url)
 	  </div>
 	  
 	  <div class="selectDiv">
+	    House No<input style="width:154px;margin-left: 102px;" type="text" id="reqHouseNo" />
+	  </div>
+	  
+	  <div class="selectDiv">
 	   Name<input style="width:154px;margin-left: 127px;" type="text" id="voterName" />
 	   <div class="row pull-right">
 	   <div class="span2">
@@ -1326,6 +1364,23 @@ function callAjaxForCandSearch(jsObj,url)
 	    </div>
 	  <div class="selectDiv">
 	   Age Between <input style="width:67px;margin-left:73px;" type="text" id="fromAge" /> <input style="width:67px;" type="text" id="toAge" />
+	  </div>
+	  <div class="selectDiv">
+	   Serial No Between <input style="width:67px;margin-left:38px;" type="text" id="fromSno" /> <input style="width:67px;" type="text" id="toSno" />
+	  </div>
+      <div class="selectDiv"> 
+	    <div class="row "style="padding: 10px 0px 0px 162px; margin-top: -22px; ">
+		   <div class="span">
+		     <label class="radio">
+	          <input type="radio" checked="true" id="andCondChk" value="allCriteria" name="queryTypeChkBox" /><b style="font-size: 12px; font-family: verdana;">All Of These Criteria</b>
+	         </label>
+		   </div>
+		   <div class="span">
+		     <label class="radio">
+	          <input type="radio" id="maleSelect" name="queryTypeChkBox"  value="oneCriteria"  /><b style="font-size: 12px; font-family: verdana;">Any One Of These Criteria </b>
+	         </label>
+		   </div>
+	    </div>
 	  </div>
 	  <div class="selectDiv">
 	   <table><tr>

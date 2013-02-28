@@ -1182,6 +1182,7 @@ function addToPolitician(voterId)
 				selectedEle:selectedEle,
 				flag:flag,
 				type:type,
+				constituencyId:$("#constituencyList").val(),
 				publicationValue : publicationValue,
 				task:"getPanchayat"
 			}
@@ -1936,6 +1937,7 @@ function getVotersCastInfo(id,publicationId,type)
 				id:id,
 				typename:typename,
 				publicationDateId:publicationId,
+				constituencyId:$("#constituencyList").val(),
 				task:"getCastInfo"
 			}
 		
@@ -1949,6 +1951,7 @@ function getVotersCastInfo(id,publicationId,type)
 				id:id,
 				typename:typename,
 				publicationDateId:publicationId,
+				constituencyId:$("#constituencyList").val(),
 				task:"getPartyInfo"
 			}
 		
@@ -1973,6 +1976,7 @@ function getPartyWiseCastInfo(){
 				id:id,
 				typename:typename,
 				publicationDateId:mainpublicationId,
+				constituencyId:$("#constituencyList").val(),
 				task:"getPartyCastInfo"
 			}
 		
@@ -2158,6 +2162,7 @@ var jsObj={
 			type:type,
 			publicationDate:year,
 			Name:Name,
+			constituencyId:$("#constituencyList").val(),
 			casteCategory:casteCategory,
 			task:"getVotersInACaste"
 
@@ -2331,6 +2336,7 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 				id:id,
 				publicationDateId:publicationDateId,
 				typename:typename,
+				constituencyId:$("#constituencyList").val(),
 				task:"importantFamiliesinfo"
 	
 			}
@@ -3228,7 +3234,7 @@ function getVoterDetailsForMandal(retrieveType){
 
 			var jsObj=
 					{
-						constituencyId:'0',
+						constituencyId:$("#constituencyList").val(),
 						publicationDateId:mainpublicationId,
 						mandalId:mandalId,
 						boothId:'0',
@@ -3242,7 +3248,7 @@ function getVoterDetailsForMandal(retrieveType){
 
 			var jsObj=
 					{
-					constituencyId:'0',
+					constituencyId:$("#constituencyList").val(),
 					mandalId:mandalId,
 					publicationDateId:mainpublicationId,
 					name:name,
@@ -3310,7 +3316,7 @@ function getVoterDetailsForPanchayat(retrieveType){
 	//errorDivEle.innerHTML='';
 		var jsObj=
 				{
-			        constituencyId:'0',
+			        constituencyId:$("#constituencyList").val(),
 					mandalId:'0',
 					boothId:'0',
 					panchayatId:mainreqid,
@@ -3333,7 +3339,7 @@ function getVoterDetailsForWard(retrieveType){
 	var name = mainname;
 	var jsObj=
 				{ 
-					constituencyId:'0',
+					constituencyId:$("#constituencyList").val(),
 					publicationDateId:mainpublicationId,
 					mandalId:'0',
 					panchayatId:mainreqid,					
@@ -3391,7 +3397,7 @@ function getVoterDetailsForBooth(retrieveType){
 	//errorDivEle.innerHTML='';
 	var jsObj=
 				{ 
-					constituencyId:'0',
+					constituencyId:$("#constituencyList").val(),
 					publicationDateId:mainpublicationId,
 					mandalId:'0',
 					panchayatId:'0',					
@@ -4414,6 +4420,7 @@ var jsObj=
 			id:id,
 			typeName:typeName,
 			publicationDateId:publicationDateId,
+			constituencyId:$("#constituencyList").val(),
 			task:"getCountForLevel"
 		}
 	
@@ -4458,6 +4465,7 @@ var jsObj=
 			id:id,
 			typeName:typeName,
 			publicationDateId:publicationId,
+			constituencyId:$("#constituencyList").val(),
 			task:"getCountForLevel"
 		}
 	

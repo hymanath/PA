@@ -1383,7 +1383,8 @@ function getCastInfoForsubLevel(id,publicationId,type)
 				type:type,	
 				id:id,
 				typeName:typeName,
-				publicationDateId:publicationId,	
+				publicationDateId:publicationId,
+				constituencyId:$("#constituencyList").val(),
 				task:"getCastInfoForsubLevels"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
