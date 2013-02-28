@@ -85,6 +85,18 @@ function initializeResultsTable() {
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 			.get("boothResultsTable"));
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	
+	YAHOO.widget.DataTable.BoothLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var id=oRecord.getData("partNo");
+		var boothId=oRecord.getData("boothId"); 
+		//var name = oRecord.getData("name");
+		
+		elLiner.innerHTML ='<a id="boothId" onclick=" boothDetails('+boothId+');">'+id+'</a>';
+		
+	}
+	
+	
 	resultsDataSource.responseSchema = {
 		fields : [ {
 			key : "partNo",parser:"number"
@@ -102,6 +114,8 @@ function initializeResultsTable() {
 			key : "pollingPercentage",parser:"number"
 		} , {
 			key : "percentage",parser:"number"
+		},{
+			key : "boothId",parser:"number"
 		} ]
 	};
 
@@ -109,6 +123,7 @@ function initializeResultsTable() {
 		key : "partNo",
 		parser:"number",
 		label : "Booth No",
+		formatter:YAHOO.widget.DataTable.BoothLink,
 		sortable : true
 	}, {
 		key : "location",
@@ -149,4 +164,11 @@ function initializeResultsTable() {
 
 	var myDataTable = new YAHOO.widget.DataTable("boothResultsMarkup",resultsColumnDefs, resultsDataSource,myConfigs);  
 
+}
+
+function boothDetails(id){
+	
+	var urlStr = contextPath+"/boothResultsForAllElectionsPopupAction.action?boothId="+id;
+	var browser1 = window.open(urlStr,"boothResultsForAllElections","scrollbars=yes,height=600,width=900,left=200,top=200");
+	browser1.focus();
 }
