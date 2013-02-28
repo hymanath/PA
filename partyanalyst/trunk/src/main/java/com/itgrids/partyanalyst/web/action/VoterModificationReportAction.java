@@ -41,6 +41,9 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
 	private List<VoterModificationGenderInfoVO> voterModificationGenderInfoVOList;
 	private List<VoterVO> voterVOs;
+	private String locationName;
+	private String fromPublicationName;
+	private String toPublicationName;
 	
 	public List<VoterVO> getVoterVOs() {
 		return voterVOs;
@@ -152,12 +155,34 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		this.voterModificationGenderInfoVOList = voterModificationGenderInfoVOList;
 	}
 	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getFromPublicationName() {
+		return fromPublicationName;
+	}
+	public void setFromPublicationName(String fromPublicationName) {
+		this.fromPublicationName = fromPublicationName;
+	}
+	public String getToPublicationName() {
+		return toPublicationName;
+	}
+	public void setToPublicationName(String toPublicationName) {
+		this.toPublicationName = toPublicationName;
+	}
 	public String execute()throws Exception
 	{
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
+		
+		locationName = voterModificationService.getLocationNameByLocationValue(locationType, locationValue);
+		fromPublicationName = voterModificationService.getPublicationNameByPublicationDateId(fromPublicationDateId);
+		toPublicationName = voterModificationService.getPublicationNameByPublicationDateId(toPublicationDateId);
 		
 		return Action.SUCCESS;
 	}

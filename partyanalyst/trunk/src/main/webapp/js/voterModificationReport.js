@@ -349,7 +349,7 @@ function showVoterInfo(results,jsObj)
 	$('#voterInfoDiv').html('');
 
 	var str = '';
-	str +='<div class="voterinfoHeading"><h2>Voters Basic Information</h2></div>';
+	str +='<div class="voterinfoHeading"><h2>Voters Basic Information In '+locationName+' '+locationType+'</h2></div>';
 	
 	if(results != null)
 	{
@@ -388,7 +388,14 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 	$('#voterAgeInfoDiv').html('');
 
 	var str = '';
-	str +='<div class="voterinfoHeading"><h2>Age Wise Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>';
+	str +='<div class="voterinfoHeading"><h2>Age Wise Newly Added / Deleted Info ';
+	if((fromPublicationName != '' || fromPublicationName != null) && (toPublicationName !='' || toPublicationName != null))
+		str +='From '+fromPublicationName+' to '+toPublicationName+'';
+	else if(fromPublicationName != '' || fromPublicationName != null)
+		str +=': '+fromPublicationName+'';
+	else if(toPublicationName != '' || toPublicationName != null)
+		str +=': '+toPublicationName+'';
+	str +='</h2></div>';
 	
 	if(results != null)
 	{
@@ -416,7 +423,7 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 
 	else 
 	{
-	  $('#voterAgeInfoDiv').html('<div class="voterinfoHeading"><h2>Age Wise Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>');
+	  $('#voterAgeInfoDiv').html('<div class="voterinfoHeading"><h2>Age Wise Newly Added / Deleted Info From '+fromPublicationName+' to '+toPublicationName+'</h2></div>');
 	  $('#voterAgeInfoDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
@@ -428,7 +435,14 @@ function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
 	$('#voterGenderInfoDiv').html('');
 	$('#voterGenderInfoDivAjaxImg').css('display','none');
 	var str = '';
-	str +='<div class="voterinfoHeading"><h2>Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>';
+	str +='<div class="voterinfoHeading"><h2>Newly Added / Deleted Info ';
+	
+	if((fromPublicationName != '' || fromPublicationName != null) && (toPublicationName !='' || toPublicationName != null))
+		str +='From '+fromPublicationName+' to '+toPublicationName+'';
+	else if(fromPublicationName != '' || fromPublicationName != null)
+		str +=': '+fromPublicationName+'';
+	else if(toPublicationName != '' || toPublicationName != null)
+		str +=': '+toPublicationName+'';
 	
 	if(results != null)
 	{
@@ -457,7 +471,7 @@ function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
 
 	else 
 	{
-	  $('#voterGenderInfoDiv').html('<div class="voterinfoHeading"><h2>Newly Added/Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>');
+	  $('#voterGenderInfoDiv').html('<div class="voterinfoHeading"><h2>Newly Added / Deleted Info From '+jsObj.fromPublicationDateId+' to '+jsObj.toPublicationDateId+'</h2></div>');
 	  $('#voterGenderInfoDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
@@ -469,7 +483,7 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 	$('#genderWiseVoterModifiAjaxImg').css('display','none');
 	var str = '';
 
-	str +='<div class="voterinfoHeading"><h2>Gender Wise Voter Modifications For Each Publication</h2></div>';
+	str +='<div class="voterinfoHeading"><h2>Gender Wise Voter Modifications Between '+fromPublicationName+' to '+toPublicationName+'</h2></div>';
 
 	if(results != null)
 	{
@@ -491,15 +505,16 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 		for(var i in results)
 		{
 		 str +='<tr>';
-		 if(results[i].previousPublicationName != null)
-		  str +='<td>'+results[i].previousPublicationName+'</td>';
-		 else
-		  str +='<td>N/A</td>';
 		 if(results[i].publicationName != null)
 			str +='<td>'+results[i].publicationName+'</td>';
 		 else
 			str +='<td>N/A</td>';
-		 str +='<td>'+results[i].addedTotal+'</td>';
+
+		 if(results[i].previousPublicationName != null)
+		  str +='<td>'+results[i].previousPublicationName+'</td>';
+		 else
+		  str +='<td>N/A</td>';
+ 		 str +='<td>'+results[i].addedTotal+'</td>';
 		 str +='<td>'+results[i].addedMale+'</td>';
 		 str +='<td>'+results[i].addedFemale+'</td>';
 		 str +='<td>'+results[i].deletedMale+'</td>';
@@ -513,7 +528,7 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 	}
 	else 
 	{
-	  $('#genderWiseVoterModifiDiv').html('<div class="voterinfoHeading"><h2>Gender Wise Voter Modifications For Each Publication</h2></div>');
+	  $('#genderWiseVoterModifiDiv').html('<div class="voterinfoHeading"><h2>Gender Wise Voter Modifications Between '+fromPublicationName+' to '+toPublicationName+'</h2></div>');
 	  $('#genderWiseVoterModifiDiv').append('<div>No Data Available.</div>');
 	  return;
 	}
