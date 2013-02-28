@@ -163,4 +163,6 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Voter> getVotersInABoothsList(List<String> partNosList, Long constituencyId, Long publicationDateId);
 	 
+	 public List getLocationNameByLocationValue(String type, Long locationValue);
+	 
 }
