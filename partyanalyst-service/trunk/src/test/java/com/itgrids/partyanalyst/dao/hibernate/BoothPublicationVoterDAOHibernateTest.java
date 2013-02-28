@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 	public class BoothPublicationVoterDAOHibernateTest  extends BaseDaoTestCase{
 	  private IBoothPublicationVoterDAO boothPublicationVoterDAO;
@@ -50,7 +51,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 	}
 		}*/
 	
-	public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
+	/*public void testGetAgewiseVoterDetailsInSpecifiedRangeByGenderAndConstituncyId(){
 		
 		List<Object[]> l = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(50819L,7L,18L,25L);
 
@@ -59,5 +60,13 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
     	  
       }		
 
-}
+}*/
+	
+	public void testGetLocationNameByLocationValue()
+	{
+		List name = boothPublicationVoterDAO.getLocationNameByLocationValue(IConstants.CONSTITUENCY, 232l);
+		System.out.println(name.get(0));
+		
+	}
+	
 	}

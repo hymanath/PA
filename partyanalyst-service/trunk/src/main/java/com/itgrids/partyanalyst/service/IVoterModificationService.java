@@ -25,6 +25,10 @@ public interface IVoterModificationService {
     public List<VoterModificationGenderInfoVO> getGenderWiseVoterModificationsForEachPublication(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId);
     
 	 public List<VoterVO> getModifiedVotersInALocationBetweenPublucations(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,String status);
+	 
+	 public String getLocationNameByLocationValue(String locationType, Long locationValue);
+	 
+	 public String getPublicationNameByPublicationDateId(Long publicationDateId);
 
     
 }

@@ -510,4 +510,46 @@ public class VoterModificationService implements IVoterModificationService{
 		 }
 	 }
 	 
+	 public String getLocationNameByLocationValue(String locationType, Long locationValue)
+	 {
+		 try{
+			 if(locationValue == null)
+				 return "";
+			 if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			 {
+				 Long id = new Long(locationType.toString().substring(1));
+				 if(locationValue.toString().substring(0,1).equalsIgnoreCase("2"))
+				 	locationValue = id;
+				 else
+				 {
+					 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id);
+					 locationValue = (Long)list.get(0);
+					 locationType = IConstants.LOCALELECTIONBODY;
+				 }
+				 
+			 }
+			 List locationNames = boothPublicationVoterDAO.getLocationNameByLocationValue(locationType, locationValue);
+			 if(locationNames != null && locationNames.size() > 0)
+				 return locationNames.get(0).toString();
+			 return "";
+		 }catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLocationNameByLocationValue() Method, Exception - "+e);
+			return null;
+		}
+	 }
+	 
+	 public String getPublicationNameByPublicationDateId(Long publicationDateId)
+	 {
+		 try{
+			 if(publicationDateId == null || publicationDateId == 0)
+				return "";
+			  return publicationDateDAO.getNamePublicationDateId(publicationDateId);
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getPublicationNameByPublicationDateId() Method, Exception - "+e);
+			 return "";
+		}
+	 }
+	 
 }
