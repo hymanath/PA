@@ -155,6 +155,12 @@ table#searchresultsTable td {
 	
 }
 
+a, .reg-form li a:hover, a.change:hover {
+    cursor: pointer;
+    outline: medium none;
+    text-decoration: none;
+}
+
 </style>
 </head>
 <body>
@@ -220,7 +226,12 @@ table#searchresultsTable td {
 			<s:iterator value="boothResult.perWiseboothResults" var="boothresult">
 				 <tr>
 			       <td><s:property value="location"/></td>
-				   <td id='partyvotesEarnedId'><a><s:property value="votesEarned"/></a></td>
+				   <s:if test="votesEarned != 0">
+						<td id='partyvotesEarnedId'><a title="Click to Know all the Booths Details"><s:property value="votesEarned"/></a></td>
+				   </s:if>
+				   <s:if test="votesEarned == 0">
+						<td id='partyvotesEarnedId'><span style="color:#3983A8;"><s:property value="votesEarned"/></span></td>
+				   </s:if>
 				   <td><s:property value="percentage"/></td>
 				 </tr>
 			</s:iterator>
@@ -253,7 +264,12 @@ table#searchresultsTable td {
 			<s:iterator value="boothResult.partyPerWiseboothResults" var="boothresult">
 				 <tr>
 			       <td><s:property value="location"/></td>
-				   <td id='pollingPercentId'><a><s:property value="votesEarned"/></a></td>
+				    <s:if test="votesEarned != 0">
+						<td id='pollingPercentId'><a title="Click to Know all the Booths Details"><s:property value="votesEarned"/></a></td>
+				   </s:if>
+				   <s:if test="votesEarned == 0">
+						<td id='pollingPercentId'><span style="color:#3983A8;"><s:property value="votesEarned"/></span></td>
+				   </s:if>
 				   <td><s:property value="percentage"/></td>
 				 </tr>
 			</s:iterator>
