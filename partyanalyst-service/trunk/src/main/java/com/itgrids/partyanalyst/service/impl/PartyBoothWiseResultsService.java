@@ -165,6 +165,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		System.out.println("In getBoothWiseResultsForParty::constituencyId, electionYear::"+constituencyId+","+electionYear);
 		List<PartyBoothPerformanceVO> boothResultsForParties = new ArrayList<PartyBoothPerformanceVO>();
 		List<Nomination> nominations  = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, constituencyId, electionYear);
+		List candidateWin=nominationDAO.findCandidateNamePartyByConstituencyAndElection(constituencyId.toString(), electionYear);
 		BoothResultVO boothResultVO = null;
 		for(Nomination nomination:nominations){
 			List<BoothResultVO> boothResultVOs = new ArrayList<BoothResultVO>();
@@ -179,6 +180,11 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			partyBoothPerformanceVO.setPercentage(nomination.getCandidateResult().getVotesPercengate());
         	partyBoothPerformanceVO.setTotalVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotes().longValue());
 			partyBoothPerformanceVO.setVotingPercentage(nomination.getConstituencyElection().getConstituencyElectionResult().getVotingPercentage());
+			partyBoothPerformanceVO.setRank(nomination.getCandidateResult().getRank());
+			partyBoothPerformanceVO.setWonCandidate(candidateWin);
+			partyBoothPerformanceVO.setMarginVotes(nomination.getCandidateResult().getMarginVotes().longValue());
+			
+			
 			List<CandidateBoothResult> candidateboothResults = new ArrayList<CandidateBoothResult>(nomination.getCandidateBoothResults());
 			System.out.println("In getBoothWiseResultsForParty::"+candidateboothResults.size());
 			for(CandidateBoothResult candidateBoothResult:candidateboothResults){
@@ -207,6 +213,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), 
 							votesEarned, totalValidVotes, percentage, "", true,pollPercent);
 				boothResultVO.setTotalBoothVoters(totalVoters);
+				boothResultVO.setBoothId(booth.getBoothId());
 				boothResultVOs.add(boothResultVO);
 			}
 			partyBoothPerformanceVO.setBoothResults(boothResultVOs);
@@ -1467,7 +1474,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				
 				List<BoothResultVO> perWiseboothResults = new ArrayList<BoothResultVO>(0);
 				BoothResultVO resultVO = null;
-				
+				Map<String,List<SelectOptionVO>> boothsMap=new HashMap<String, List<SelectOptionVO>>();
 				for(Map.Entry<String,List<BoothResultVO>> entry : resultMap.entrySet())
 				{
 					resultVO = new BoothResultVO();
@@ -1477,31 +1484,50 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					List<BoothResultVO> list = entry.getValue();
 					double total = 0.0d;
 					double earned = 0.0d;
-					
+			
+					List<SelectOptionVO> booths=new ArrayList<SelectOptionVO>();
 					if(isPollingPercentage)
 						for(BoothResultVO brVO : list)
 						{
+							SelectOptionVO boothsdtllist=new SelectOptionVO();
 							total += brVO.getTotalVoters();
 							earned += brVO.getVotesEarned();
+							boothsdtllist.setPartno(brVO.getPartNo());
+							boothsdtllist.setId(brVO.getBoothId());
+							boothsdtllist.setLocation(brVO.getLocation());
+							boothsdtllist.setVillageCovered(brVO.getVillagesCovered());
+							booths.add(boothsdtllist);
 						}
 					else
 						for(BoothResultVO brVO : list)
 						{
+							SelectOptionVO boothsdtllist=new SelectOptionVO();
 							total += brVO.getTotalBoothVoters();
 							earned += brVO.getTotalVoters();
+							boothsdtllist.setPartno(brVO.getPartNo());
+							boothsdtllist.setId(brVO.getBoothId());
+							boothsdtllist.setLocation(brVO.getLocation());
+							boothsdtllist.setVillageCovered(brVO.getVillagesCovered());
+							booths.add(boothsdtllist);
 						}
 					
-					if(list.size() > 0)
+					if(list.size() > 0){
 					resultVO.setPercentage((new BigDecimal((earned*100)/total).setScale(2,BigDecimal.ROUND_HALF_UP)).toString());
+					boothsMap.put(entry.getKey(), booths);
+					}
 					else
 					resultVO.setPercentage("--");
 					
 					perWiseboothResults.add(resultVO);
 				}
-				if(isPollingPercentage)
+				if(isPollingPercentage){
 					performanceVO.setPerWiseboothResults(perWiseboothResults);
-				else
+				    performanceVO.setBoothsMap(boothsMap);
+				}
+				else{
 					performanceVO.setPartyPerWiseboothResults(perWiseboothResults);
+					performanceVO.setBoothsMap1(boothsMap);
+				}
 			}
 		}
 		catch(Exception e){
