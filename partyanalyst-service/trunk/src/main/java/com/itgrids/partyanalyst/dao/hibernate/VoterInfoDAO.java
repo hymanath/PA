@@ -18,42 +18,46 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterInfo> getVotersCount(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public List<VoterInfo> getVotersCount(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long constituencyId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(" select model from VoterInfo model where ");
 		stringBuilder.append(" model.voterReportLevel.voterReportLevelId =:reportLevelId and model.reportLevelValue =:reportLevelValue ");
-		stringBuilder.append(" and model.publicationDate.publicationDateId =:publicationDateId ");
+		stringBuilder.append(" and model.publicationDate.publicationDateId =:publicationDateId and model.constituencyId = :constituencyId ");
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
 		
 		queryObj.setParameter("reportLevelId", reportLevelId);
 		queryObj.setParameter("reportLevelValue", reportLevelValue);
 		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("constituencyId", constituencyId);
 		return queryObj.list();
     }
 	
-	public Long getVotersCountInALocation(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public Long getVotersCountInALocation(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long constituencyId)
 	{
 		Query query = getSession().createQuery("select model.totalVoters from VoterInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
-				" model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId");
+				" model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId and model.constituencyId = :constituencyId");
 		
 		query.setParameter("reportLevelId", reportLevelId);
 		query.setParameter("reportLevelValue", reportLevelValue);
 		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		
 		return (Long)query.uniqueResult();
     }
 	
-	public List<VoterInfo> getVotersMultipleCount(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId)
+	public List<VoterInfo> getVotersMultipleCount(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId,Long constituencyId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(" select model from VoterInfo model where ");
 		stringBuilder.append(" model.voterReportLevel.voterReportLevelId =:reportLevelId and model.reportLevelValue in(:reportLevelValues) ");
-		stringBuilder.append(" and model.publicationDate.publicationDateId =:publicationDateId ");
+		stringBuilder.append(" and model.publicationDate.publicationDateId =:publicationDateId and model.constituencyId = :constituencyId ");
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
 		
 		queryObj.setParameter("reportLevelId", reportLevelId);
 		queryObj.setParameterList("reportLevelValues", reportLevelValues);
 		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("constituencyId", constituencyId);
 		return queryObj.list();
     }
 	
@@ -68,25 +72,27 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	}
 	
 	
-	public Long getTotalVotersByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public Long getTotalVotersByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long constituencyId)
 	{
 		Query queryObj = getSession().createQuery("select model.totalVoters from VoterInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.reportLevelValue =:reportLevelValue and model.publicationDate.publicationDateId =:publicationDateId ");
+				" and model.reportLevelValue =:reportLevelValue and model.publicationDate.publicationDateId =:publicationDateId  and model.constituencyId = :constituencyId ");
 		
 		queryObj.setParameter("reportLevelId", reportLevelId);
 		queryObj.setParameter("reportLevelValue", reportLevelValue);
 		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("constituencyId", constituencyId);
 		return (Long) queryObj.uniqueResult();
 	}
 	
-	public Long getFamiliesCountInALocation(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public Long getFamiliesCountInALocation(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long constituencyId)
 	{
 		Query query = getSession().createQuery("select model.totalFamilies from VoterInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
-				" model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId");
+				" model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId and model.constituencyId = :constituencyId");
 		
 		query.setParameter("reportLevelId", reportLevelId);
 		query.setParameter("reportLevelValue", reportLevelValue);
 		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
 		return (Long)query.uniqueResult();
     }
 	

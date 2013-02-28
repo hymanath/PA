@@ -271,11 +271,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	/*public void testgetBoothIdsInLocalBodiesForAPublication()
 	{
 		List<Long> localEleBodyIdsList = new ArrayList<Long>(0);
-		localEleBodyIdsList.add(83l);
-		List<Object[]> list = boothDAO.getBoothIdsInLocalBodiesForAPublication(localEleBodyIdsList,7l);
+		localEleBodyIdsList.add(117l);
+		List<Object[]> list = boothDAO.getBoothIdsInLocalBodiesForAPublication(localEleBodyIdsList,8l,341l);
 		
 		if(list != null && list.size() > 0)
 		{
+			System.out.println(list.size());
 			for(Object[] booths : list)
 				System.out.println(booths[0]+" "+booths[1]);
 		}
@@ -323,9 +324,23 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+"\t"+params[1]);
 	}*/
 	
-	public void testGetBoothByPartNoAndPublicationIdInAConstituency()
+	/*public void testGetBoothByPartNoAndPublicationIdInAConstituency()
 	{
 		Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency("1",241l,8l);
 		System.out.println(booth.getLocation());
+	}*/
+	public void testgetWardsByLocalElecBodyIds()
+	{
+		List<Long> localEleBodyIdsList = new ArrayList<Long>(0);
+		localEleBodyIdsList.add(20l);
+		List<Object[]> list = boothDAO.getWardsByLocalElecBodyIds(localEleBodyIdsList,8l,347l);
+		
+		if(list != null && list.size() > 0)
+		{
+			System.out.println(list.size());
+			for(Object[] booths : list)
+				System.out.println(booths[0]+" "+booths[1]);
+		}
+		
 	}
 }

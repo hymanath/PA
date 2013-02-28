@@ -16,13 +16,16 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterAgeInfo> getVoterAgeInfoByPublicationDateAndReportLevelId(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public List<VoterAgeInfo> getVoterAgeInfoByPublicationDateAndReportLevelId(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long constituencyId)
 	{
 		Query query = getSession().createQuery(" select model from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId order by model.voterAgeRange.voterAgeRangeId ");
+				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId and model.constituencyId = :constituencyId  " +
+				" order by model.voterAgeRange.voterAgeRangeId ");
 		query.setParameter("reportLevelId", reportLevelId);
 		query.setParameter("reportLevelValue", reportLevelValue);
 		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		
 		return query.list();
 	}
 	
@@ -61,13 +64,14 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		return  query.executeUpdate();
 	}
 	
-	public List<VoterAgeInfo> getAgewiseVoterDetailsInAllRange(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId)
+	public List<VoterAgeInfo> getAgewiseVoterDetailsInAllRange(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId,Long constituencyId)
 	{
 		Query query = getSession().createQuery(" select model from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.reportLevelValue in(:reportLevelValues) and model.publicationDate.publicationDateId = :publicationDateId  ");
+				" and model.reportLevelValue in(:reportLevelValues) and model.publicationDate.publicationDateId = :publicationDateId  and model.constituencyId = :constituencyId ");
 		query.setParameter("reportLevelId", reportLevelId);
 		query.setParameterList("reportLevelValues", reportLevelValues);
 		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
 	

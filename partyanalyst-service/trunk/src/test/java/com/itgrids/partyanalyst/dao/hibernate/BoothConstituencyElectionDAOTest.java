@@ -181,7 +181,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 	
 	/*public void testGetVotersCountInAMandal()
 	{
-		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAMandalBooth(38l,844l,"mandal","1",null);
+		List<Long> constiIds = new ArrayList<Long>();
+		constiIds.add(299l);
+		constiIds.add(476l);
+		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAMandalBooth(38l,1007l,"mandal","1",null,constiIds);
 		for(Object[] data:dataList){
 			System.out.println(data[0]+" - "+data[1]+" - "+data[2]+" - "+data[3]);
 		}

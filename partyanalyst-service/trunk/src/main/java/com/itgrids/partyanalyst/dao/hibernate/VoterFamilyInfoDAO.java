@@ -17,14 +17,15 @@ public class VoterFamilyInfoDAO extends GenericDaoHibernate<VoterFamilyInfo, Lon
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterFamilyInfo> getVoterFamilyDetails(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public List<VoterFamilyInfo> getVoterFamilyDetails(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long constituencyId)
 	{
 		Query queryObj = getSession().createQuery("select model from VoterFamilyInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId ");
+				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId = :publicationDateId and model.constituencyId = :constituencyId ");
 		
 		queryObj.setParameter("reportLevelId", reportLevelId);
 		queryObj.setParameter("reportLevelValue", reportLevelValue);
 		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("constituencyId", constituencyId);
 		return queryObj.list();
 	}
 	
@@ -51,14 +52,15 @@ public class VoterFamilyInfoDAO extends GenericDaoHibernate<VoterFamilyInfo, Lon
 		query.setParameter("publicationDateId", publicationDateId);
 		return  query.list();
 	}
-	public List<VoterFamilyInfo> getMultipleVoterFamilyDetails(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId)
+	public List<VoterFamilyInfo> getMultipleVoterFamilyDetails(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId,Long constituencyId)
 	{
 		Query queryObj = getSession().createQuery("select model from VoterFamilyInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.reportLevelValue in (:reportLevelValues) and model.publicationDate.publicationDateId = :publicationDateId ");
+				" and model.reportLevelValue in (:reportLevelValues) and model.publicationDate.publicationDateId = :publicationDateId  and model.constituencyId = :constituencyId ");
 		
 		queryObj.setParameter("reportLevelId", reportLevelId);
 		queryObj.setParameterList("reportLevelValues", reportLevelValues);
 		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("constituencyId", constituencyId);
 		return queryObj.list();
 	}
 }

@@ -23,9 +23,9 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List getVotersCountByBoothId(Long boothId);
 	public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId);
-	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId);
+	public List<Object[]> getVotersCountByPublicationId(String type,Long id,Long publicationDateId,Long constituencyId);
 	public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId);
-	public List<Object[]> getVotersCountFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId);
+	public List<Object[]> getVotersCountFromLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId,Long constituencyId);
 	public List<Object[]> getPublicationDetailsBasedOnConstituency(Long constituencyId);
 	
 	public List<Object[]> findImpFamilesBasedOnPanchayat(Long PanchayatId,Long publicationDateId);
@@ -38,9 +38,9 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public Long getVotersCountForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId);
 	
-	public List<Object[]> findAllImpFamiles(Long id,Long publicationDateId,String type,String queryString);
+	public List<Object[]> findAllImpFamiles(Long id,Long publicationDateId,String type,String queryString,Long constituencyId);
 
-	public List<Object[]> getVotersImpFamilesForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId,String queryString);
+	public List<Object[]> getVotersImpFamilesForLocalElectionBody(Long assemblyLclElecBodyId,Long publicationDateId,String queryString,Long constituencyId);
 	
 	public Long findTotalVotersCastInfoByConstituencyAndPublicationDate(Long constituencyId, Long publicationDate);
 	
@@ -58,7 +58,7 @@ public interface IBoothPublicationVoterDAO extends
 
 	public List<Object[]> getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
 			Long tehsilId, Long publicationDateId, Long startAge,
-			Long endAge);
+			Long endAge,Long constituencyId);
 	
 	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
 			Long panchayatId, Long publicationDateId , Long startAge, Long endAge);
@@ -67,7 +67,7 @@ public interface IBoothPublicationVoterDAO extends
 			Long boothId, Long publicationDateId, Long startAge, Long endAge) ;
 	
 	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForLocalElectionBodyByPublicationDateId(
-			Long localElectionBodyId, Long publicationDateId, Long startAge, Long endAge);
+			Long localElectionBodyId, Long publicationDateId, Long startAge, Long endAge,Long constituencyId);
 
 	public List<Object[]> getImpFamilesForPanchayatByPublicationId(Long panchayatId,Long publicationDateId,String queryString);
 	
@@ -109,13 +109,13 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Long> getConstituenciesIds();
 	 
-	 public List<Object[]> findVotersGenderWiseCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
+	 public List<Object[]> findVotersGenderWiseCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	 
 	 public List<Long> findFamiliesCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
 	 
-	 public List<Long> getAllImpFamilesCount(String locationType, Long locationValue,Long publicationDateId);
+	 public List<Long> getAllImpFamilesCount(String locationType, Long locationValue,Long publicationDateId,Long constituencyId);
 	 
-	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender);
+	 public Long getVotersCountInAAgeRange(String locationType, Long locationValue,Long publicationDateId,Long ageFrom, Long ageTo,String gender,Long constituencyId);
 	 
 	 public List<Object[]> getVotersDetailsForBoothForPublication(Long publicationId,String partNo,Long tehsilId);
 	 
