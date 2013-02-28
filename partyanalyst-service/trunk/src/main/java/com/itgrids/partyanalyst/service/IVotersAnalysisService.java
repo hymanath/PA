@@ -189,6 +189,8 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId);
 	
 	public List<SelectOptionVO> getHamlets(Long panchayatId);
+	
+	public ResultStatus updateSerialNo(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
    
 	
 }
