@@ -32,6 +32,7 @@ public class VoterFamilyInfo extends BaseModel implements Serializable{
 	private Double familiesPercentage;
 	private PublicationDate publicationDate;
 	private Long reportLevelValue;
+	private Long constituencyId;
 	
 	public VoterFamilyInfo(){}
 	
@@ -117,6 +118,15 @@ public class VoterFamilyInfo extends BaseModel implements Serializable{
 
 	public void setReportLevelValue(Long reportLevelValue) {
 		this.reportLevelValue = reportLevelValue;
+	}
+	
+	@Column(name = "constituency_id", length = 15)
+	public Long getConstituencyId() {
+	return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+	this.constituencyId = constituencyId;
 	}
 	
 }

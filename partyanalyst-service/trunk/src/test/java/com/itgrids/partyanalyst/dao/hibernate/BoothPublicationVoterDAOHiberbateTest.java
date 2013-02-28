@@ -2,6 +2,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -287,10 +288,22 @@ System.out.println(list.size());
 		System.out.println(list.size());
 	}*/
 
-	public void testGetBoothIdAndVoterIdByConstituencyInAPublication()
+	/*public void testGetBoothIdAndVoterIdByConstituencyInAPublication()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getPartNoAndVoterIdByConstituencyInAPublication(232l,7l);
 		System.out.println(list.size());
-	}
+	}*/
+
+   public void testGetSerialNoByVoterIdsList()
+   {
+	   List<Long> voterIdsList = new ArrayList<Long>(0);
+	   voterIdsList.add(1l);
+	   List<Object[]> list = boothPublicationVoterDAO.getSerialNoByVoterIdsList(voterIdsList);
+	   if(list != null && list.size() > 0)
+	   {
+		   for(Object[] params : list)
+			   System.out.println(params[0] +" "+params[1]);
+	   }
+   }
 	
 }

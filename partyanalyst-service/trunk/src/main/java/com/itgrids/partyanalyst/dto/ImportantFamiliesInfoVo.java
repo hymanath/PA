@@ -37,7 +37,7 @@ public class ImportantFamiliesInfoVo implements Serializable{
 	private Long publicationDateId;
 	private Double totalPercentage;
 	private Long typeId;
-	
+	private Long constituencyId;
 	
 	public Long getTypeId() {
 		return typeId;
@@ -245,6 +245,14 @@ public class ImportantFamiliesInfoVo implements Serializable{
 
 	public void setPublicationDateId(Long publicationDateId) {
 		this.publicationDateId = publicationDateId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	

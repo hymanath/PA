@@ -18,6 +18,7 @@ public class VoterAgeRangeVO implements Serializable {
 	private Double femalePercentage;
 	private String reportLevel;
 	private String publicationDate;
+	private Long constituencyId;
 	
 	public String getReportLevel() {
 		return reportLevel;
@@ -103,5 +104,12 @@ public class VoterAgeRangeVO implements Serializable {
 	public void setPublicationDate(String publicationDate) {
 		this.publicationDate = publicationDate;
 	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
 	
 }

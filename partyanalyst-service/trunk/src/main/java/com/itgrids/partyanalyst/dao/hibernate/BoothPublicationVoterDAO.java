@@ -1228,4 +1228,13 @@ public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
 	  return query.list();
 	
 }
+
+@SuppressWarnings("unchecked")
+public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList)
+{
+	Query queryObj = getSession().createQuery("select model.voter.voterId,model.serialNo from BoothPublicationVoter model where " +
+			" model.voterId.voterId in (:voterIdsList)");
+	queryObj.setParameterList("voterIdsList", voterIdsList);
+	return queryObj.list();
+}
 }
