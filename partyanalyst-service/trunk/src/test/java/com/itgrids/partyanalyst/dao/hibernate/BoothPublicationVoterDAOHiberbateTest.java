@@ -302,7 +302,14 @@ System.out.println(list.size());
 
 	public void testGetVotersInABooth()
 	{
-		List<Voter> votersList = boothPublicationVoterDAO.getVotersInABooth("194",163l,8l);
+		List<String> partNosList = new ArrayList<String>(0);
+		//partNosList.add("141");
+		//partNosList.add("142");
+		//partNosList.add("143");
+		//partNosList.add("144");
+		//partNosList.add("145");
+		partNosList.add("205");
+		List<Voter> votersList = boothPublicationVoterDAO.getVotersInABoothsList(partNosList,163l,8l);
 		List<String> houseNoList = new ArrayList<String>(0);
 		
 		int count = 0;
