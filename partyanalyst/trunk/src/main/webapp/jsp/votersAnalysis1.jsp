@@ -1019,6 +1019,21 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
   </div>
+
+  <div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">View Added / Deleted Voter info Between Publications</h4>
+	<div style="margin-top:10px;" class='breadcrumb'>
+		Previous Publication Date<font class="requiredFont">*</font> <select id="prevpublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
+		</select>
+		
+		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList">
+		</select>
+		<span class="btn" id='voterDetailedReportId'>View Detailed Report</span>
+		<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
+	</div>
+	
+	<span id="votersCountModifyAjaxDiv" style="display:none;position:absolute;top:10px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+  </div>
 <!--<div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Count Vary between Publication Dates</h4>
 	<div style="margin-top:10px;" class='breadcrumb'>
