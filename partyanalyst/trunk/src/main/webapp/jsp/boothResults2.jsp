@@ -28,6 +28,8 @@
 <script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
 <script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+
 <!-- YUI files dependencies (end) -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -165,7 +167,7 @@ table#searchresultsTable td {
 <table class="searchresultsTable" id="searchresultsTable" style="width: auto; float: left;">
 	<tr>
 		<th style="background-color:#C4DEFF;">Candidate Name</th>
-		<td style="background-color:#F8FBFF;"><s:property value="boothResult.candidateName" /><br></td>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.candidateName" /> [ Rank - <s:property value="boothResult.rank" /> ]<br></td>
 
 		<th style="background-color:#C4DEFF;">Total Votes</th>
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalVotes"/></td>
@@ -188,6 +190,18 @@ table#searchresultsTable td {
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.percentage" /></td>
 		
 	</tr>
+	
+	<s:if test="boothResult.rank != 1">
+	<tr id='wonInfo'>
+		
+		<th style="background-color:#C4DEFF;">Winning Candidate</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.wonCandidate[0][1]" /> - <s:property value="boothResult.wonCandidate[0][2]" /></td>
+
+		<th style="background-color:#C4DEFF;">Margin Votes</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.marginVotes" /></td>
+		
+	</tr>
+	</s:if>
 </table>
 </div>
 <BR><BR><BR><BR><BR><BR>
@@ -197,7 +211,21 @@ table#searchresultsTable td {
 	<tr>
 		<td>
 			<div class="boothResultHeadingDiv" style="margin-left:70px;">Polling Percentage vs Party Votes Percentage</div><br>
-			<div class="yui-skin-sam">
+			<table id="boothResultsTableId">
+				<tr> 	 	
+			       <th>Polling % Range</th>
+				   <th>Total No of Booths</th>
+				   <th>Party Votes %</th>
+				 </tr>
+			<s:iterator value="boothResult.perWiseboothResults" var="boothresult">
+				 <tr>
+			       <td><s:property value="location"/></td>
+				   <td id='partyvotesEarnedId'><a><s:property value="votesEarned"/></a></td>
+				   <td><s:property value="percentage"/></td>
+				 </tr>
+			</s:iterator>
+			</table>
+			<!--<div >
 			<display:table id="boothResultsTableId"
 				 name="${boothResult.perWiseboothResults}"
 				defaultorder="ascending" defaultsort="4"
@@ -206,15 +234,31 @@ table#searchresultsTable td {
 			<display:column style="text-align:center;" title="Polling % Range"
 					property="location" />
 			<display:column style="text-align:center;" title="Total No of Booths"
-					property="votesEarned"/>
+					property="votesEarned" href="javascript:openWin('#');" paramId="votesEarned" paramProperty="votesEarned">
+				
+			</display:column>
 			<display:column style="text-align:center;" title="Party Votes %"
 					property="percentage" />
 			</display:table>
-			</div>
+			</div>-->
 		</td>
 		<td>
 			<div class="boothResultHeadingDiv" style="margin-left:80px;">Party Votes Percentage vs Polling Percentage</div><br>
-			<div class="yui-skin-sam">
+			<table id="boothResultsTableId">
+				<tr> 	 	
+			       <th>Polling % Range</th>
+				   <th>Total No of Booths</th>
+				   <th>Polling %</th>
+				 </tr>
+			<s:iterator value="boothResult.partyPerWiseboothResults" var="boothresult">
+				 <tr>
+			       <td><s:property value="location"/></td>
+				   <td id='pollingPercentId'><a><s:property value="votesEarned"/></a></td>
+				   <td><s:property value="percentage"/></td>
+				 </tr>
+			</s:iterator>
+			</table>
+			<!--<div class="yui-skin-sam">
 			<display:table id="boothResultsTableId"
 				 name="${boothResult.partyPerWiseboothResults}"
 				defaultorder="ascending" defaultsort="4"
@@ -223,11 +267,12 @@ table#searchresultsTable td {
 			<display:column style="text-align:center;" title="Party Votes % Range"
 					property="location" />
 			<display:column style="text-align:center;" title="Total No of Booths"
-					property="votesEarned"/>
+					property="votesEarned" href="javascript:openWin('#')" paramId="votesEarned" paramProperty="votesEarned">
+			</display:column>
 			<display:column style="text-align:center;" title="Polling %"
 					property="percentage" />
 			</display:table>
-			</div>
+			</div>-->
 		</td>
 	</tr>
 </table>
@@ -240,7 +285,7 @@ table#searchresultsTable td {
 	defaultorder="ascending" defaultsort="4"
 	style="width:auto;margin-right:20px;">
 	<display:column style="text-align: center;" title="Booth No"
-		property="partNo" />
+		property="partNo"></display:column>
 	<display:column style="text-align: left;" title="Location"
 		property="location" />
 	<display:column style="text-align: left;" title="Villages Covered"
@@ -255,12 +300,90 @@ table#searchresultsTable td {
 		property="pollingPercentage" />
 	<display:column style="text-align: center;" title="Percentage"
 		property="percentage" />
+	<display:column style="text-align: center;" title="boothId"
+		property="boothId" />
 </display:table>
+
 </div>
 </div>
+<div class="modal hide fade" id="myModal" style="width:750px;">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">X</a>
+		<h4>Booths</h4>
+  </div>
+  <div class="modal-body">
+		<p style="font-size:16px;font-weight:bold;"></p>
+  </div>
+ </div>
 </div>
 <script language="javascript">
 initializeResultsTable();
+var contextPath = "<%=request.getContextPath()%>"; 
+
+//Iterating key and value of Party votes% START
+	var managersArrayForChm = new Array();
+	var finalMapForChm = new Object();
+	<c:forEach var="entry" items="${boothResult.boothsMap}">
+		managersArrayForChm = new Array();
+			<c:forEach items="${entry.value}" var="keyval">
+				//console.log('${keyval.id}'+'${keyval.location}'+'${keyval.partno}'+'${keyval.villageCovered}');
+				var boothDetail = {
+					partNo: '${keyval.partno}',
+					location: '${keyval.location}',
+					villages: '${keyval.villageCovered}',
+					boothId: '${keyval.id}'
+				};
+				managersArrayForChm.push(boothDetail);//Pushing the values into array
+			</c:forEach>
+		finalMapForChm["${entry.key}"] = managersArrayForChm;//mapping the pushed values to key
+	</c:forEach>
+//Iterating key and value of Party votes% END
+
+//Iterating key and value of Polling votes% START
+	var managersArrayForChm_polling = new Array();
+	var finalMapForChm_polling = new Object();
+	<c:forEach var="entry" items="${boothResult.boothsMap1}">
+		managersArrayForChm_polling = new Array();
+			<c:forEach items="${entry.value}" var="keyval">
+				var boothDetail_polling = {
+					partNo: '${keyval.partno}',
+					location: '${keyval.location}',
+					villages: '${keyval.villageCovered}',
+					boothId: '${keyval.id}'
+				};
+				managersArrayForChm_polling.push(boothDetail_polling);//Pushing the values into array
+			</c:forEach>
+		finalMapForChm_polling["${entry.key}"] = managersArrayForChm_polling;//mapping the pushed values to key
+	</c:forEach>
+//Iterating key and value of Polling votes% END
+
+
+$('#partyvotesEarnedId').live('click',function(){
+  var arr=finalMapForChm[$(this).prev().text()];
+  openModal(arr);
+});
+
+$('#pollingPercentId').live('click',function(){
+  var arr1=finalMapForChm_polling[$(this).prev().text()];
+  openModal(arr1);
+});
+
+function openModal(arr){
+    $('#myModal').find('p').html('');
+	var str='<div id="boothsList"><table class="table table-hover table-bordered"><thead style="background:#ECE9D8;"><tr><th style="width:72px;">Booth No</th><th>Location</th><th>Villages Covered</th></tr></thead><tbody>';
+	for (var i = 0; i < arr.length; i++) {
+		 str+='<tr><td onclick="boothDetails('+arr[i].boothId+')" title="Click to Know '+arr[i].partNo+' Booth\'s No of voters, Mandal and Villages Covered and Recent Election Results "><span class="btn" style="margin:2px;width:24px;">'+arr[i].partNo+'</span></td><td>'+arr[i].location+'</td><td>'+arr[i].villages+'</td>';
+    }
+	str+='</tbody></table></div>';
+	$('#myModal').find('p').append('<span style="color:#4F2817;">'+str+'</span>');
+	$('#myModal').modal('show');
+		
+}
+
+
+
+
+
 </script>
 
 </body>
