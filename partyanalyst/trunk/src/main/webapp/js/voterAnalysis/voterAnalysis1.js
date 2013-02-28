@@ -1435,7 +1435,7 @@ function addToPolitician(voterId)
 		var deletedCount=results.deletedCount;
 		var presPId=results.presentPublicationId;
 		var prevPId=results.previousPublicationId;
-		var url='/PartyAnalyst/voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
+		var url='voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
 		$('#detailModifiedVoters').attr('url',url);
 		
 		if(addedCount!=null){$("#addedVtrs").text(addedCount);}
@@ -1839,6 +1839,23 @@ $(document).ready(function(){
 		getPartiesList();
 	
 	});
+
+$('#publicationDateList').live('change',function(){
+	getPreAndPresentPublicationDtaeList();
+});
+
+$("#voterDetailedReportId").live("click",function(){
+	var constituencyId = $("#constituencyList").val();
+	var prevPId = $("#prevpublicationDateIdsList").val();
+	var presPId = $("#prespublicationDateIdsList").val();
+	if(presPId == 0 || presPId == "")
+		return;
+	var urlStr='voterModificationReportAction.action?constituencyId='+constituencyId+'&fromPublicationDateId='+prevPId+'&toPublicationDateId='+presPId+'&locationType='+maintype+'&locationValue='+mainreqid+'&';
+	window.open(urlStr,'_blank');
+	window.focus();
+
+});
+
 	
 });
 
@@ -6030,3 +6047,46 @@ function openCadreSearchWindow(clickedId){
   cadreWindow.focus();
 }
 //end of adding cadre to voter
+
+function getPreAndPresentPublicationDtaeList()
+{
+	
+	var selectedElmt=document.getElementById("prevpublicationDateIdsList");
+	var presentPublicationList = document.getElementById("prespublicationDateIdsList");
+
+	removeSelectElements(selectedElmt);
+	removeSelectElements(presentPublicationList);
+
+	for(var val in publicationDatesList)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=publicationDatesList[val].id;
+		opElmt.text=publicationDatesList[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+
+	for(var val in publicationDatesList)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=publicationDatesList[val].id;
+		opElmt.text=publicationDatesList[val].name;
+
+		try
+		{
+			prespublicationDateIdsList.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			prespublicationDateIdsList.add(opElmt); // IE only
+		}	
+	}
+}
+
