@@ -39,7 +39,7 @@
     border-width: 1px;
     color: #333333;
     font-family: arial,sans-serif;
-    font-size: 11px; 
+    font-size: 13px; 
     min-width: 97%;
     text-align: center;}
 
@@ -58,7 +58,14 @@
     border-width: 1px;
     padding: 8px;
 }
-
+.requiredFont{color:red}
+#headingSpanCls{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 5px 10px;
+    text-align: center;text-transform: capitalize;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport.js"></script>
@@ -71,31 +78,43 @@
 	var toPublicationDateId = "${toPublicationDateId}";
 	var locationType = "${locationType}";
 	var locationValue = "${locationValue}";
+	var locationName = '${locationName}';
+	var fromPublicationName = '${fromPublicationName}';
+	var toPublicationName = '${toPublicationName}';
  </script>
  
 </head>
 <body>
-<div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:block;width: 92%;color:#000;position:relative;margin-right:auto;margin-left:auto;">
+
+<!-- <div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:block;width: 92%;color:#000;position:relative;margin-right:auto;margin-left:auto;">
   <span id="voterAgeInfoAjaxImg" style="display:none;float: right;clear:both;">
 	   <img src="images/icons/search.gif" />
   </span>
-  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Count Vary between Publication Dates</h4>
+  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Newly Added / Deleted Voters Info Report For ${locationName} ${locationType} Between ${fromPublicationName} to ${toPublicationName}</h4>
+
 	<div style="margin-top:10px;" class='breadcrumb'>
-		Previous Publication Date<font class="requiredFont">*</font> <select id="prevpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
+	<p>Select Publications to View to Voters Modification Info</p>
+		From Publication <font class="requiredFont">*</font> <select id="prevpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
 		</select>
 		
-		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList" onChange='buildVoterDiff()'>
+		To Publication <font class="requiredFont">*</font> <select id="prespublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList" onChange='buildVoterDiff()'>
 		</select>
 		<span class="btn" onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)">View</span>
-	</div>
-	<div id='VoterDiff' style="margin-left:auto;margin-right:auto;width:400px;" class="breadcrumb">
+	</div>-->
+
+	<!-- <div id='VoterDiff' style="margin-left:auto;margin-right:auto;width:400px;" class="breadcrumb">
 		<span>Added Voters </span>-<span class='btn'> No Data</span>
 		<span>Deleted Voters </span>-<span class='btn'> No Data</span>
-	</div>
+	</div> -->
+  <!-- </div> -->
+
+   <div style="text-align: center; margin-top: 30px;">
+	<span id="headingSpanCls">Added / Deleted Voters Info Report For ${locationName} ${locationType} Between ${fromPublicationName} to ${toPublicationName}
+	</span>
   </div>
 <div id="voterModReportMainDiv">
   <div id="voterModReportInnerDiv">
-		<div id="voterInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+		<div id="voterInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;">
 			<span id="voterInfoAjaxImg" style="display:none;float: right;clear:both;">
 			   <img src="images/icons/search.gif" />
 			</span>
@@ -123,7 +142,7 @@
 	  <h4> Newly added / deleted voters information</h4>	   
 	
 
-	<div class="form-horizontal" style="margin-left:238px;">
+	<!--	<div class="form-horizontal" style="margin-left:238px;">
 
 
 
@@ -202,7 +221,7 @@
 
 	<span><a class="btn btn-primary" href="javaScript:{getAllVotersModificationDetailsBetweenPublications('search','');}" style="margin-left:180px;margin-bottom:10px;">Search</a></span>
 
-   </div>
+   </div> -->
 
 <span id="allvotersDetails" style="margin-left:400px;display:none;">
 			<img src="images/icons/goldAjaxLoad.gif"/>
