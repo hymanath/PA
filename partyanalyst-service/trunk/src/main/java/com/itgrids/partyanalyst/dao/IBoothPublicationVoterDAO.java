@@ -159,4 +159,8 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList);
 	 
+	 public Integer updateSerialNoByVoterId(Long serialNo, Long voterId);
+	 
+	 public List<Voter> getVotersInABooth(String partNo, Long constituencyId, Long publicationDateId);
+	 
 }
