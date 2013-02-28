@@ -1,9 +1,10 @@
 
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.io.Console;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -294,7 +295,54 @@ System.out.println(list.size());
 		System.out.println(list.size());
 	}*/
 
-   public void testGetSerialNoByVoterIdsList()
+	/*public void testUpdateSerialNoByVoterId()
+	{
+		System.out.println(boothPublicationVoterDAO.updateSerialNoByVoterId(1l,1l));
+	}*/
+
+	public void testGetVotersInABooth()
+	{
+		List<Voter> votersList = boothPublicationVoterDAO.getVotersInABooth("194",163l,8l);
+		List<String> houseNoList = new ArrayList<String>(0);
+		
+		int count = 0;
+		
+		Map<String,Long> houseNoMap = new HashMap<String,Long>(0); 
+		for(Voter voter : votersList)
+		{
+			if(houseNoMap.get(voter.getHouseNo()) == null)
+			{
+				houseNoMap.put(voter.getHouseNo(), 0L);
+			}
+			Long hCount = houseNoMap.get(voter.getHouseNo());
+			houseNoMap.put(voter.getHouseNo(), hCount.longValue()+1);
+		}
+		
+		for(Voter voter :votersList)
+		{
+			if(!houseNoList.contains(voter.getHouseNo()))
+			{
+				System.out.println();
+				houseNoList.add(voter.getHouseNo());
+				System.out.print("\t#"+voter.getHouseNo());
+				System.out.print("\t"+houseNoMap.get(voter.getHouseNo()));
+				count = 0;
+			}
+			
+			if(count > 0 && count % 3 == 0)
+			{
+				System.out.println();
+				System.out.print("\t#"+voter.getHouseNo());
+				System.out.print("\t"+houseNoMap.get(voter.getHouseNo()));
+			}
+			count++;
+			System.out.print("\t"+voter.getName());
+			System.out.print("\t"+voter.getGender());
+			System.out.print("\t"+voter.getAge());
+		}
+	}
+
+   /*public void testGetSerialNoByVoterIdsList()
    {
 	   List<Long> voterIdsList = new ArrayList<Long>(0);
 	   voterIdsList.add(1l);
@@ -304,6 +352,6 @@ System.out.println(list.size());
 		   for(Object[] params : list)
 			   System.out.println(params[0] +" "+params[1]);
 	   }
-   }
+   }*/
 	
 }
