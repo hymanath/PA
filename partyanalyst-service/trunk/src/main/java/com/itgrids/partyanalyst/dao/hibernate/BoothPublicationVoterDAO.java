@@ -1248,11 +1248,11 @@ public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList)
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Voter> getVotersInABooth(String partNo, Long constituencyId, Long publicationDateId)
+	public List<Voter> getVotersInABoothsList(List<String> partNosList, Long constituencyId, Long publicationDateId)
 	{
 		Query query = getSession().createQuery("select model.voter from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and " +
-				" model.booth.publicationDate.publicationDateId = :publicationDateId and model.booth.partNo = :partNo order by model.voter.houseNo ");
-		query.setParameter("partNo",partNo);
+				" model.booth.publicationDate.publicationDateId = :publicationDateId and model.booth.partNo in (:partNosList) order by model.voter.houseNo ");
+		query.setParameterList("partNosList",partNosList);
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
