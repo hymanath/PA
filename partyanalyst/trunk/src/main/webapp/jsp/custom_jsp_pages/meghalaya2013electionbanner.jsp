@@ -294,9 +294,12 @@ shall be completed</td>
 <td width="43%" valign="top" class="breadcrumb">
 <table style="padding-left:20px" width="98%" valign="top">
 <h3 style="">
-Meghalaya Assembly 2012 Live Election Analysis</h3>
+Meghalaya Assembly 2013 Live Election Analysis</h3>
 
 <tr>
+<div id="electionResultDivMain" style="padding-bottom:10px;">
+  <div id="electionResultDiv"></div>
+</div>
 <td colspan="2">
 
 <table class="breadcrumb">
@@ -512,7 +515,7 @@ function getDistrictWiseElectionResults(){
   if(districtId == 0)
      return;
   var jsObj = {
-				electionId:202,
+				electionId:225,
 	            time:new Date().getTime(),
 				districtId:districtId,
 				task:"getDistrictWiseLiveResults"
@@ -525,7 +528,7 @@ function getDistrictWiseElectionResults(){
 function getWonLeadCandidates(){
   
   var jsObj = {
-				electionId:202,
+				electionId:225,
 	            time:new Date().getTime(),
 				task:"getWonLeadResults"
 			};
@@ -549,7 +552,7 @@ function getGenderInfo(selectedYear,elecYearId)
 function getElectionInfo()
 {
 	var jsObj = {
-				electionId:202,
+				electionId:225,
 	            time:new Date().getTime(),
 				task:"getPartyElectionInfo"
 			};
@@ -781,7 +784,7 @@ function buildSpecialPageHightLights(results)
 function getSpecialPageHighLights()
 {
 var jsObj = {
-				specialPageId:"13",
+				specialPageId:"18",
 	           
 				task:"getHighLights"
 			};
@@ -790,7 +793,69 @@ var jsObj = {
 		
 	callAjax(jsObj,url);
 }
-
+function buildGujaratElectionResult(myResults)
+{
+	if(myResults!=null && myResults.electionLiveResultVOList!=null &&  myResults.electionLiveResultVOList.length>0)
+	{
+	var electionResult= '';	
+	electionResult+='<div id="gujratResultsHeader">';
+	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">';
+	electionResult+='Party Wise Results Of Meghalaya Vidhan Sabha 2013</h3>';
+	electionResult+='</div>';
+	electionResult+='<div id="GujaratResultBody" >';
+	electionResult+='<span id="gujratResultsBody1" style ="width:450px;float:left;margin:11px;">';
+	electionResult+='<table class="table table-bordered table-striped">';
+	electionResult+='<tr>';
+	electionResult+='<th>Total Seats - <font color="#05A8E9">'+myResults.totalSeats+'</font></th>';
+	electionResult+='<th> Result Known - <font color="#05A8E9">'+myResults.totalKnownCount+'</font></th>';
+	electionResult+='</tr>';
+	electionResult+='<tr>';
+	electionResult+='<th>Total Lead - <font color="#05A8E9">'+myResults.newKnownCount+'</font></th>';
+	electionResult+='<th> Won - <font color="#05A8E9">'+myResults.retainedCount+'</font></th>';
+	electionResult+='</tr>';
+	electionResult+='<table>';
+	electionResult+='</span>';
+	electionResult+='<span id="gujratResultsBody2" style ="width:450px;float:left">';
+	electionResult+='<table class="gujaratTableDiv table table-bordered table-striped">';
+	electionResult+='<tr>';
+	electionResult+='<th>party</th>';
+	electionResult+='<th>TP*</th>';
+	electionResult+='<th>Lead</th>';
+	electionResult+='<th>Won</th>';
+	electionResult+='<th>Lead/Won</th>';
+	electionResult+='</tr>';
+	for(var i=0 ; i<myResults.electionLiveResultVOList.length ; i++)
+	{
+	electionResult+='<tr>';
+	electionResult+='<th>'+myResults.electionLiveResultVOList[i].partyName+'</th>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].totalSeatsParticipated+'</td>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].leadCountInNew+'</td>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].wonCountInNew+'</td>';
+	electionResult+='<td>'+myResults.electionLiveResultVOList[i].wonOrLeadCount+'</td>';
+	electionResult+='</tr>';
+	}
+	electionResult+='</table>';
+	electionResult+='</span>';
+	electionResult+='<span  id="GujaratResultGraph" style ="width:400px;float:right;border-radius:5px;box-shadow:0px 1px 2px #aaa;margin-right:5px;padding:2px;">';
+	electionResult+='<b></b>';
+	electionResult+='</span>';
+	electionResult+='</div>';
+	document.getElementById('electionResultDiv').innerHTML = electionResult;
+	
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','Area Type');
+	data.addColumn('number','Count');
+	data.addRows(myResults.electionLiveResultVOList.length);
+	
+	for(var j=0; j<myResults.electionLiveResultVOList.length; j++)
+	{
+		data.setValue(j,0,myResults.electionLiveResultVOList[j].partyName);
+		data.setValue(j,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
+	}
+	var chart = new google.visualization.PieChart(document.getElementById('GujaratResultGraph')); 
+	chart.draw(data,{width:400, height: 250, title:'Meghalaya Vidhan Sabha Election 2013 Lead/Won Chart'});
+	}
+}
 
  getSpecialPageHighLights();
 
