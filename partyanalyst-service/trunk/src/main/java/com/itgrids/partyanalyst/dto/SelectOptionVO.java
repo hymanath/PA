@@ -16,7 +16,19 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<SelectOptionVO> selectOptionsList;
 	private List<SelectOptionVO> selectOptionsList1;
 	private boolean hampletPresent;
+	private String partno;
 	
+	
+
+
+	public String getPartno() {
+		return partno;
+	}
+
+	public void setPartno(String partno) {
+		this.partno = partno;
+	}
+
 	public String getType() {
 		return type;
 	}
