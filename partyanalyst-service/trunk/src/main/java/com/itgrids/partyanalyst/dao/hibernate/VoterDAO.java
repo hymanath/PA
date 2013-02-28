@@ -298,6 +298,10 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				"group by userInfo.party.partyId,userInfo.voter.gender order by userInfo.party.shortName");
 			}
 
-			
+			@SuppressWarnings("unchecked")
+			public List<Object[]> getSnoFromVoterTemp(Long constituencyId)
+			{
+				return getHibernateTemplate().find("select model.voterId, model2.serialNo from Voter model, VoterTemp model2 where model.voterIDCardNo = model2.voterId and model2.constituencyId = ?",constituencyId);
+			}
 	
 }
