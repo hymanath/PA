@@ -525,7 +525,7 @@ function getDistrictWiseElectionResults(){
 function getWonLeadCandidates(){
   
   var jsObj = {
-				electionId:202,
+				electionId:216,
 	            time:new Date().getTime(),
 				task:"getWonLeadResults"
 			};
@@ -549,7 +549,7 @@ function getGenderInfo(selectedYear,elecYearId)
 function getElectionInfo()
 {
 	var jsObj = {
-				electionId:202,
+				electionId:216,
 	            time:new Date().getTime(),
 				task:"getPartyElectionInfo"
 			};
@@ -781,7 +781,7 @@ function buildSpecialPageHightLights(results)
 function getSpecialPageHighLights()
 {
 var jsObj = {
-				specialPageId:"13",
+				specialPageId:"17",
 	           
 				task:"getHighLights"
 			};
