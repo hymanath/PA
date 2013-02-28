@@ -77,4 +77,6 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public List<Object> getTestVotersInfo();
 	public List<Object> getTestVotersInfo1();
 	
+	public List<Object[]> getSnoFromVoterTemp(Long constituencyId);
+	
 }
