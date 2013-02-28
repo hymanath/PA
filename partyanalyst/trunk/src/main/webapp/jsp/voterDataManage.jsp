@@ -65,6 +65,14 @@
 				<td>:</td>
 				<td><input type="text" id="maxResults"/></td>
 			</tr>
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td><input type="checkbox" id="sNOUpdateId">
+				Update Serial No</input></td>
+			</tr>
+
 		</table>
 		<p><input type="button" value="submit" id="voterDataInsertId" class="btn btn-info"/></p>
 	</center>		
@@ -206,6 +214,8 @@ function callAjax(jsObj, url){
 			var publicationDateId = $("#publicationDate_List").val();
 			var minResults = $.trim($("#minResults").val());
 			var maxResults = $.trim($("#maxResults").val());
+			var sNOUpdate = $("#sNOUpdateId").is(':checked');
+			
 			var str = '';
 			var errorEle = $(".errorMsgDiv");
 			errorEle.html('');
@@ -267,6 +277,7 @@ function callAjax(jsObj, url){
 				publicationDateId: publicationDateId,
 				startIndex : minResults,
 				maxResults : maxResults,
+				isUpdateSno: sNOUpdate,
 				task: "insertVoterData"
 				
 			}
