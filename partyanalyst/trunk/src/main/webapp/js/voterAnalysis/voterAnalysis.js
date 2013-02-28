@@ -638,6 +638,7 @@ function showImportantFamiliesDiv()
 				selected:value,
 				checkedele:checkedele,
 				selectedEle:selectedEle,
+				constituencyId:$("#constituencyList").val(),
 				flag:flag,
 				type:type,
 				publicationValue : publicationValue,

@@ -600,6 +600,16 @@ public String saveLocality()
 				searchInfo.setAge(Long.parseLong(request.getParameter("startAge")));
 			if(Long.parseLong(request.getParameter("endAge")) > 0)
 				searchInfo.setToAge(Long.parseLong(request.getParameter("endAge")));
+			if(Long.parseLong(request.getParameter("fromSno")) > 0)
+				searchInfo.setFromSno(Long.parseLong(request.getParameter("fromSno")));
+			if(Long.parseLong(request.getParameter("toSno")) > 0)
+				searchInfo.setToSno(Long.parseLong(request.getParameter("toSno")));
+			if("or".equalsIgnoreCase(request.getParameter("queryType"))){
+				searchInfo.setQueryType("or");
+			}
+			if(request.getParameter("houseNo") != null && request.getParameter("houseNo").trim().length() >0)
+				searchInfo.setHouseNo(request.getParameter("houseNo").trim());
+			
 			searchInfo.setPublicationId(Long.parseLong(request.getParameter("publicationDateId")));
 			searchInfo.setStartIndex(Integer.parseInt(request.getParameter("startIndex")));
 			searchInfo.setMaxIndex(Integer.parseInt(request.getParameter("results")));
