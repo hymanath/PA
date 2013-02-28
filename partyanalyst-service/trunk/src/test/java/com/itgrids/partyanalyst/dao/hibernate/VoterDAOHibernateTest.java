@@ -178,7 +178,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetVoterIdsByCardNos()
+	/*public void testGetVoterIdsByCardNos()
 	{
 		List<String> voterIdCardNosList = new ArrayList<String>(0);
 		voterIdCardNosList.add("1");
@@ -194,7 +194,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		
 		//List<Object[]> list = voterDAO.getVoterIdsByCardNos(voterIdCardNosList);
 		//System.out.println(list.size());
-	}
+	}*/
 //	public void testFindVoterDetailsBasedOnVoterId()
 //	{
 //		
@@ -211,5 +211,15 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> count = voterDAO.getFamilyMemberCount("0-2",121885l);
 		System.out.println(count);
 	}*/
+	
+	public void testGetSnoFromVoterTemp()
+	{
+		List<Object[]> list = voterDAO.getSnoFromVoterTemp(163l);
+		System.out.println(list.size());
+		
+		for(Object[] params :list)
+			System.out.println(params[0]+" -- "+params[1]);
+		
+	}
 		
 }
