@@ -126,6 +126,7 @@ fieldset{
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="ajaxLoad"><img src="images/icons/search.gif" /></span>
 
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="voterDataInsertBtn" />
@@ -164,6 +165,7 @@ $(document).ready(function(){
 		return;
 	  }
 	
+	 $("#ajaxLoad").css('display','block');
 	 var jsObj=
 	 {
 		selected:id,
