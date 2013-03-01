@@ -5099,6 +5099,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		    	votersList.add(voterHouseInfoVO);
 		    	
 		    }
+		    //Checking whether the voter is politician,cadre,influencing people
+		     if(voterIds != null && voterIds.size() > 0){
+		    	 getCadreInfluencingPeopleCandidateInfo(voterIds,searchInfo.getUserId(), votersMap);
+		     }
 			 if((searchInfo.isPartyPresent() || searchInfo.isCastPresent() ||searchInfo.isLocalityPresent() || (categories != null && categories.size() > 0)) && voterIds.size() >0){
 				 if(searchInfo.isPartyPresent() || searchInfo.isCastPresent() || searchInfo.isLocalityPresent() ){
 					 List<UserVoterDetails> votersPartyCastList = userVoterDetailsDAO.getAllUserVoterDetails(voterIds,searchInfo.getUserId());
@@ -10298,4 +10302,48 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 
 }
 
+		public void getCadreInfluencingPeopleCandidateInfo(List<Long> voterIdsList,Long userId,Map<Long,VoterHouseInfoVO> votersMap){
+		  try{	
+			VoterHouseInfoVO voterHouseInfoVO = null;
+			// checking for influencing people
+			List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList,userId);
+			if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+			{
+				for (Long influencingPeople : influencingPeopleList) {
+					voterHouseInfoVO = votersMap.get(influencingPeople);
+					if(voterHouseInfoVO != null)
+					{
+						voterHouseInfoVO.setIsInfluencePerson(true);
+					}
+				}
+			}
+			// checking for cadre people
+			List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIdsList,userId);
+			if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+			{
+				for (Long cadrePeople : cadrePeopleList) {
+					voterHouseInfoVO = votersMap.get(cadrePeople);
+					if(voterHouseInfoVO != null)
+					{
+						voterHouseInfoVO.setIsCadrePerson(true);
+					}
+				}
+			}
+			// checking for politician
+			List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIdsList);
+			if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+			{
+				for (Long candidatePeople : candidatePeopleList) {
+					voterHouseInfoVO = votersMap.get(candidatePeople);
+					if(voterHouseInfoVO != null)
+					{
+						voterHouseInfoVO.setIsPoliticion(true);
+					}
+				}
+			}
+		  }catch(Exception e){
+			  log.error("Exception rised in getCadreInfluencingPeopleCandidateInfo", e);
+		  }
+		}
+		
 }
