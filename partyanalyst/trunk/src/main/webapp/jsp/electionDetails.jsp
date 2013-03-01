@@ -3591,14 +3591,22 @@ $(document).ready(function() {
 
 function getStatesForAssembly()
 {
-    var jsObj =
-		{ 
-            time : new Date().getTime(),
-			task:"getAllStatesForParliamentMinisters"
-		};
+	var electionTypeVal ;
+
+	if(selectedRadio == 'Parliament')
+		electionTypeVal = 1;
+	else
+		electionTypeVal = 2;
+	var jsObj=
+		{						
+			electionType:electionTypeVal,
+			task:"getStates"
+		}
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;			callAjax1(jsObj,url);
+	var url = "getStatesForHomepage.action?"+rparam;						
+	callAjax1(jsObj,url);
+    
 }
 
 
@@ -3724,7 +3732,7 @@ function callAjax1(jsObj,url)
 										 // addState("stateListId");
 									     // buildData(myResults,"stateListId");
 									}
-									else if(jsObj.task == "getAllStatesForParliamentMinisters")
+									else if(jsObj.task == "getStates")
 									{
 
 										buildStatesData(myResults);
