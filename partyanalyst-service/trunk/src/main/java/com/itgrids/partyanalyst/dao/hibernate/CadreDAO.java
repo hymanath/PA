@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 
 
@@ -845,5 +846,40 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		 query.setParameterList("voterIds", voterIds);
 		 return query.list();
 	}
+	
+	//get CadreCount By Cadre Level
+	
+	public List<Long> getCadreCountByCadreLevel(Long userId,List<Long> locationValue,String type)
+	{
+		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			type = "MUNICIPAL-CORP-GMC";
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "BOOTH";
+		Query query = getSession().createQuery("select count(model.cadreId) from Cadre model where model.user.userId=:userId and model.cadreLevelValue in(:locationValue) and model.cadreLevel.level = :type");
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("type", type);
+		return query.list();
+		
+	}
+	
+	public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
+			Integer maxRecords)
+	{
+	
+		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			type = "MUNICIPAL-CORP-GMC";
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "BOOTH";
+		Query query = getSession().createQuery("from Cadre model where model.user.userId=:userId and model.cadreLevelValue in(:locationValue) and model.cadreLevel.level = :type");
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("type", type);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		return query.list();
+		
+	}
+	
 	
 }
