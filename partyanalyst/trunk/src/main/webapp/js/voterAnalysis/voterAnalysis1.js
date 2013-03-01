@@ -5537,7 +5537,7 @@ function showLocationsDiv(){
 	}
 	else if($('#scopeId').val() == "5" || $('#scopeId').val() == "7")
 	{
-		$('#stateSelect , #districtSelect , #constituencySelect ,#mandalSelect ,').css('display','block');
+		$('#stateSelect , #districtSelect , #constituencySelect ,#mandalSelect ').css('display','block');
 		
 		$('#wardSelect , #boothSelect').css('display','none');
 	}
