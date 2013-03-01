@@ -97,6 +97,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -9900,5 +9901,401 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		}
 
 		
+		//Influencing People  for voters Page 
+		public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount(Long userId,Long locationValue,String type,Long publicationDateId)
+		{
+		log.debug("Entered into getProblemDetailsForVoterPage().....");
+			
+			List<String> locationValues = new ArrayList<String>(0);
+			List<Long> cadreLevelValues = new ArrayList<Long>(0);
+			List<Long> politicianValues = new ArrayList<Long>(0);
+			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+			List<InfluencingPeopleBeanVO> result = new ArrayList<InfluencingPeopleBeanVO>(0);
+			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+			
+			
+		try{
+			if(type.equalsIgnoreCase("constituency"))
+			{
+				locationValues.add(locationValue.toString());
+				
+				cadreLevelValues.add(locationValue);
+				politicianValues.add(locationValue);
+			}
+			
+			else if(type.equalsIgnoreCase("mandal") )
+			{
+				if(locationValue != null && locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+				{
+					type = "MANDAL";
+					
+					locationValues.add(locationValue.toString().substring(1));
+					cadreLevelValues.add(new Long(locationValue.toString().substring(1)));
+					politicianValues.add(new Long(locationValue.toString().substring(1)));
+				}
+				else
+				{
+					type="MUNCIPALITY/CORPORATION";
+					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1).trim()));
+					 if(list != null)
+						 locationValues.add(list.get(0).toString());
+					 cadreLevelValues.add(new Long(list.get(0).toString()));
+					 politicianValues.add(new Long(list.get(0).toString()));
+				}
+				
+			}
+			
+			else if(type.equalsIgnoreCase("booth"))
+			{
+				
+				List partNo =boothDAO.getPartNoByBoothId(locationValue);
+				locationValues.add(partNo.get(0).toString());
+				cadreLevelValues.add(new Long(partNo.get(0).toString()));
+				 politicianValues.add(locationValue);
+				
+			}
+			
+			else if(type.equalsIgnoreCase("ward"))
+			{
+				locationValues.add(locationValue.toString());
+				
+				locationValue =new Long("1"+locationValue);
+				cadreLevelValues.add(locationValue);
+				politicianValues.add(locationValue);
+				
+			}
+			else if(type.equalsIgnoreCase("panchayat"))
+			{
+				
+				politicianValues.add(locationValue);
+				List<Object[]> booths = boothDAO.getBoothsInAPanchayat(locationValue,publicationDateId);
+				if(booths != null && booths.size() > 0)
+				{
+					for (Object[] booth : booths){
+						if(booth[1] != null)
+							locationValues.add(booth[1].toString());
+						
+						cadreLevelValues.add(new Long(booth[1].toString()));
+						 
+					}
+				}
+				
+				
+			}
+			if(locationValues != null)
+			{
+			List<Long> influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+		    List<Long> cadreCount = cadreDAO. getCadreCountByCadreLevel(userId,cadreLevelValues,type);
+		    
+		    List<Long> politicians = boothPublicationVoterDAO.getCandidateCount(politicianValues, publicationDateId,type);
+		    if(politicians != null && politicians.size() > 0)
+		    	influencingPeopleBeanVO.setPoliticianCount(politicians.get(0));
+		    else
+		    	influencingPeopleBeanVO.setPoliticianCount(0l);
+		   
+			 if(influencingPeopleCount != null && influencingPeopleCount.size() > 0)
+				 influencingPeopleBeanVO.setInfluencePeopleCount(new Long(influencingPeopleCount.get(0)));
+				else
+					influencingPeopleBeanVO.setInfluencePeopleCount((0l));
+			 if(cadreCount != null && cadreCount.size() > 0)
+				 influencingPeopleBeanVO.setCadreCount(new Long(cadreCount.get(0)));
+				else
+					influencingPeopleBeanVO.setCadreCount((0l));
+			 result.add(influencingPeopleBeanVO);
+			}
+			
+		   }
+		catch(Exception e)
+		{
+			
+			log.error("Exception Occured in getProblemDetailsForVoterPage() - ",e);
+		}
+		return result;
 		
+}
+		
+public List<VoterVO> getInfluencingPeopleVoterDetails(Long userId,Long locationValue,String type,String buttonName,
+	Long publicationId,Integer startIndex , Integer maxRecords)
+{
+List<String> locationValues = new ArrayList<String>(0);
+List<VoterVO> voters = new ArrayList<VoterVO>();
+List<Long> cadreLevelValues = new ArrayList<Long>(0);
+List<Long> politicianValues = new ArrayList<Long>(0);
+List<Voter> votersList = new ArrayList<Voter>();
+Long totalCount = 0L;
+List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+List<Long> values = new ArrayList<Long>(0);
+List<InfluencingPeople> influencingDetails = new ArrayList<InfluencingPeople>();
+Long Id = 0l;
+String name = null;
+try{
+	if(type.equalsIgnoreCase("constituency"))
+	{
+		
+		locationValues.add(locationValue.toString());
+		
+		Id = locationValue;
+		cadreLevelValues.add(locationValue);
+		politicianValues.add(locationValue);
+	}
+	else if(type.equalsIgnoreCase("mandal") )
+	{
+		if(locationValue != null && locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+		{
+			type = "MANDAL";
+			locationValues.add(locationValue.toString().substring(1));
+			
+			Id = new Long(locationValue.toString().substring(1));
+			cadreLevelValues.add(new Long(locationValue.toString().substring(1)));
+			politicianValues.add(new Long(locationValue.toString().substring(1)));
+		}
+		else{
+			
+			
+			type="MUNCIPALITY/CORPORATION";
+			List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1).trim()));
+			if(list != null)
+				locationValues.add(list.get(0).toString());
+			Id = (Long)list.get(0);
+			cadreLevelValues.add(new Long(list.get(0).toString()));
+			politicianValues.add(new Long(list.get(0).toString()));
+		}
+				
+	}
+	
+	else if(type.equalsIgnoreCase("booth"))
+	{
+		
+		List partNo =boothDAO.getPartNoByBoothId(locationValue);
+		locationValues.add(partNo.get(0).toString());
+		cadreLevelValues.add(new Long(partNo.get(0).toString()));
+		politicianValues.add(locationValue);
+	}
+	else if(type.equalsIgnoreCase("ward"))
+	{
+		locationValues.add(locationValue.toString());
+		
+		Id = locationValue;
+		locationValue =new Long("1"+locationValue);
+		cadreLevelValues.add(locationValue);
+		politicianValues.add(locationValue);
+		
+	}
+	else if(type.equalsIgnoreCase("panchayat"))
+	{
+		politicianValues.add(locationValue);
+		Id = locationValue;
+		List<Object[]> booths = boothDAO.getBoothsInAPanchayat(locationValue,publicationId);
+		if(booths != null && booths.size() > 0)
+		{
+			for (Object[] booth : booths){
+				if(booth[1] != null)
+					locationValues.add(booth[1].toString());
+					cadreLevelValues.add(new Long(booth[1].toString()));
+					
+				}
+		}
+				
+	}
+	if(Id > 0 && !type.equalsIgnoreCase("BOOTH") && !type.equalsIgnoreCase("panchayat"))
+	 name = (String) constituencyDAO.getNameByInfluenceScopeValue(Id,type).get(0);
+	if(type.equalsIgnoreCase("panchayat"))
+		name = panchayatDAO.get(Id).getPanchayatName().toString();
+	
+	if(buttonName.equalsIgnoreCase("InfluencePeople"))
+		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name);
+	 if(buttonName.equalsIgnoreCase("Cadre"))
+		 voters =  getCadrePeopleDetails(userId,cadreLevelValues,type,startIndex,maxRecords,name);
+	 if(buttonName.equalsIgnoreCase("Politician"))
+		 voters = getPoliticianDetails(politicianValues, type, startIndex,maxRecords,name,publicationId);
+		
+}
+
+  catch(Exception e)
+  {
+	  e.printStackTrace();
+  }
+return voters;
+
+		
+}
+
+public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name)
+{
+	List<VoterVO> voters = new ArrayList<VoterVO>();
+	List<Voter> votersList = new ArrayList<Voter>();;
+	Long totalCount = 0L;
+	List<InfluencingPeople> influencingDetails = new ArrayList<InfluencingPeople>();
+	if(locationValues != null)
+		influencingDetails =  influencingPeopleDAO.getInfluencingPeopleVoterIDs(userId,locationValues,type,startIndex, maxRecords);
+		Long count = new Long(startIndex);
+		if(influencingDetails != null)
+		{
+			//Influencing people voter Details (VoterIds not avilable) 
+			for(InfluencingPeople params : influencingDetails)
+				{
+				//Influencing people voter Details Count
+				List<Long> influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+				totalCount =new Long(influencyDetailsCount.get(0));
+				VoterVO voterVO = new VoterVO();
+				if(params.getVoter() == null)
+				{
+					voterVO.setVoterId((++count)+"");
+					voterVO.setFirstName(params.getFirstName()+" "+params.getLastName());
+					voterVO.setGender(params.getGender());
+					voterVO.setHouseNo(params.getUserAddress().getHouseNo());
+					voterVO.setCast(params.getCaste());
+					voterVO.setMobileNo(params.getPhoneNo()!=null ? params.getPhoneNo() :" ");
+					
+					if(type.equalsIgnoreCase("BOOTH"))
+					voterVO.setLocalArea("Booth " + params.getInfluencingScopeValue());	
+					
+					else
+						voterVO.setLocalArea(name);	
+						
+				}
+				//Influencing people voter Details (VoterIds avilable) 
+				if(params.getVoter() != null)
+				{
+					voterVO.setVoterIds(params.getVoter().getVoterId());
+					voterVO.setVoterId((++count)+"");
+					voterVO.setFirstName(params.getVoter().getName());
+					voterVO.setAge(params.getVoter().getAge());
+					voterVO.setGender(params.getVoter().getGender());
+					voterVO.setHouseNo(params.getVoter().getHouseNo());
+					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
+					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
+					voterVO.setCast(params.getVoter().getCast());
+					voterVO.setCastCatagery(params.getVoter().getCastCatagery());
+					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
+					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
+					if(type.equalsIgnoreCase("BOOTH"))
+						voterVO.setLocalArea("Booth " + params.getInfluencingScopeValue());	
+					else
+						voterVO.setLocalArea(name);	
+					}
+			        voters.add(voterVO);
+				}
+			if(voters != null)
+				if(voters.size() > 0)
+					voters.get(0).setTotalVoters(totalCount);
+		}
+		return voters;	
+	
+}
+
+public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name)
+{
+	List<VoterVO> voters = new ArrayList<VoterVO>();
+	List<Voter> votersList = new ArrayList<Voter>();;
+	Long totalCount = 0L;
+	List<Cadre> cadreDetails = new ArrayList<Cadre>(0);
+	if(locationValues != null)
+		cadreDetails =  cadreDAO.getCadreVoterIDs(userId,locationValues,type,startIndex, maxRecords);
+		Long count = new Long(startIndex);
+		if(cadreDetails != null)
+		{
+			//Cadre voter Details (VoterIds not avilable) 
+			for(Cadre params : cadreDetails)
+				{
+				//Cadre voter Details Count
+				List<Long> influencyDetailsCount = cadreDAO.getCadreCountByCadreLevel(userId,locationValues,type);
+				totalCount =new Long(influencyDetailsCount.get(0));
+				VoterVO voterVO = new VoterVO();
+				if(params.getVoter() == null)
+				{
+					voterVO.setVoterId((++count)+"");
+					voterVO.setFirstName(params.getFirstName()+" "+params.getLastName());
+					voterVO.setGender(params.getGender());
+					voterVO.setMobileNo(params.getMobile()!=null ? params.getMobile():" ");
+					
+					if(type.equalsIgnoreCase("BOOTH"))
+					voterVO.setLocalArea("Booth " + params.getCadreLevelValue());	
+					
+					else
+						voterVO.setLocalArea(name);	
+						
+				}
+				//Influencing people voter Details (VoterIds avilable) 
+				if(params.getVoter() != null)
+				{
+					voterVO.setVoterIds(params.getVoter().getVoterId());
+					voterVO.setVoterId((++count)+"");
+					voterVO.setFirstName(params.getVoter().getName());
+					voterVO.setAge(params.getVoter().getAge());
+					voterVO.setGender(params.getVoter().getGender());
+					voterVO.setHouseNo(params.getVoter().getHouseNo());
+					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
+					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
+					voterVO.setCast(params.getVoter().getCast());
+					voterVO.setCastCatagery(params.getVoter().getCastCatagery());
+					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
+					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
+					if(type.equalsIgnoreCase("BOOTH"))
+						voterVO.setLocalArea("Booth " + params.getCadreLevelValue());	
+					else
+						voterVO.setLocalArea(name);	
+					}
+			        voters.add(voterVO);
+				}
+			if(voters != null)
+				if(voters.size() > 0)
+					voters.get(0).setTotalVoters(totalCount);
+		}
+		return voters;	
+	
+}
+
+public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,Long publicationId)
+{
+	List<VoterVO> voters = new ArrayList<VoterVO>();
+	List<Voter> votersList = new ArrayList<Voter>();;
+	Long totalCount = 0L;
+	Long Id = locationValues.get(0);
+	List<Object[]> politicianDetails =new ArrayList<Object[]>(0);
+	if(locationValues != null)
+		politicianDetails =  boothPublicationVoterDAO.getPoliticianDetails(locationValues,publicationId,type,startIndex, maxRecords);
+		Long count = new Long(startIndex);
+		if(type.equalsIgnoreCase("booth"))
+			name ="Booth" + boothDAO.get(Id).getPartNo();
+		if(politicianDetails != null)
+		{
+			
+			for(Object[] params : politicianDetails)
+				{
+				List<Long> politicianCount = boothPublicationVoterDAO.getCandidateCount(locationValues,publicationId,type);
+				totalCount =new Long(politicianCount.get(0));
+				VoterVO voterVO = new VoterVO();
+				//Politician Details  
+				
+				
+				if(params != null)
+				{
+					voterVO.setVoterIds((Long)params[1]);
+					voterVO.setVoterId((++count)+"");
+					voterVO.setFirstName(params[0]!=null ? params[0].toString() : " ");
+					voterVO.setAge((Long) params[5]);
+					voterVO.setGender(params[2]!=null ? params[2].toString() : " ");
+					voterVO.setHouseNo(params[6]!=null ? params[6].toString() : " ");
+					voterVO.setRelativeFirstName(params[4]!=null ? params[4].toString() : " ");
+					voterVO.setRelationshipType(params[7]!=null ? params[7].toString() : " ");
+					voterVO.setCast(params[9]!=null ? params[9].toString() : " ");
+					voterVO.setCastCatagery(params[10]!=null ? params[10].toString() : " ");
+					voterVO.setVoterIDCardNo(params[8]!=null ? params[8].toString() : " ");
+					voterVO.setMobileNo(params[3]!=null ? params[3].toString() :" ");
+					voterVO.setCandidateId((Long) params[11]);
+						voterVO.setLocalArea(name);	
+					voters.add(voterVO);
+				}
+			if(voters != null)
+				if(voters.size() > 0)
+					voters.get(0).setTotalVoters(totalCount);
+		}
+  }
+		return voters;
+
+
+
+}
+
 }
