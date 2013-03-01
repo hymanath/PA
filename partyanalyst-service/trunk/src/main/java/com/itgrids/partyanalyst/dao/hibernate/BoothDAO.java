@@ -290,9 +290,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return getHibernateTemplate().find("from Booth model where model.year = 2009 and model.constituency.constituencyId =? ", constituencyId);	
 		}
 		//get Polling Stations By MandalId
-		public List<Booth> getPollingStationByMandalId(Long mandalId)
+		public List<Booth> getPollingStationByMandalId(Long mandalId, Long constituencyId)
 		{
-			return getHibernateTemplate().find("from Booth model where model.year = 2009 and model.tehsil.tehsilId =? ", mandalId);	
+			Object[] params = {mandalId, constituencyId};
+			return getHibernateTemplate().find("from Booth model where model.year = 2009 and model.tehsil.tehsilId =? and model.constituency.constituencyId = ?", params);	
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -697,5 +698,14 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		public List getPartNoByBoothId(Long boothId)
 		{
 		return getHibernateTemplate().find("select model.partNo from Booth model where model.boothId = ?",boothId);	
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsInAMandalByPublicationAndConstId(Long mandalId, Long publicationId, Long constituencyId)
+		{	
+			Object[] params = {mandalId,publicationId,constituencyId};
+			return getHibernateTemplate().find(" select model.boothId,model.partNo from Booth model where model.tehsil.tehsilId = ? and model.publicationDate.publicationDateId = ? " +
+					" and model.constituency.constituencyId = ?",params);
 		}
 }

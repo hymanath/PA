@@ -326,9 +326,9 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getPanchayatiesByMandalId(Long mandalId);
 		
-		public List<SelectOptionVO> getBoothsByMandalId(Long mandalId);
+		public List<SelectOptionVO> getBoothsByMandalId(Long mandalId, Long constituencyId);
 		
-		public List<SelectOptionVO> getBoothsInAMandalIdByPublication(Long mandalId, Long publicationId);
+		public List<SelectOptionVO> getBoothsInAMandalIdByPublication(Long mandalId, Long publicationId, Long constituencyId);
 
 		public List<SelectOptionVO> getUserAccessStates(Long userId);
 		

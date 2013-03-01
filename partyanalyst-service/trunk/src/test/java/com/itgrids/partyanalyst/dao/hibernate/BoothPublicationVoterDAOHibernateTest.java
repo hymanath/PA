@@ -64,8 +64,11 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	
 	public void testGetLocationNameByLocationValue()
 	{
-		List name = boothPublicationVoterDAO.getLocationNameByLocationValue(IConstants.CONSTITUENCY, 232l);
-		System.out.println(name.get(0));
+		List name = boothPublicationVoterDAO.getLocationNameByLocationValue(IConstants.CONSTITUENCY, 298l);
+		
+		System.out.println(name.size());
+		if(name != null && name.size() > 0)
+		  System.out.println(name.get(0));
 		
 	}
 	

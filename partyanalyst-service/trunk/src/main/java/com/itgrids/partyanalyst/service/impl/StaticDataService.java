@@ -2420,10 +2420,10 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return hamlets;
 	}
-	public List<SelectOptionVO> getBoothsByMandalId(Long mandalId)
+	public List<SelectOptionVO> getBoothsByMandalId(Long mandalId, Long constituencyId)
 	{
 		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
-		List<Booth> pollingBooths = boothDAO.getPollingStationByMandalId(mandalId); 
+		List<Booth> pollingBooths = boothDAO.getPollingStationByMandalId(mandalId,constituencyId); 
 		SelectOptionVO hamlet = null;
 		for (Booth panchayat : pollingBooths) {
 			hamlet = new SelectOptionVO(panchayat.getBoothId(),"Booth No- "+ panchayat.getPartNo().toString());
@@ -2432,11 +2432,12 @@ public class StaticDataService implements IStaticDataService {
 		return hamlets;
 	}
 	
-	public List<SelectOptionVO> getBoothsInAMandalIdByPublication(Long mandalId, Long publicationId)
+	public List<SelectOptionVO> getBoothsInAMandalIdByPublication(Long mandalId, Long publicationId, Long constituencyId)
 	{
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
 		try{
-			List<Object[]> list = boothDAO.getBoothsInAMandalByPublication(mandalId,publicationId);
+			//List<Object[]> list = boothDAO.getBoothsInAMandalByPublication(mandalId,publicationId);
+			List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstId(mandalId, publicationId, constituencyId);
 			
 			if(list != null && list.size() > 0)
 			for(Object[] params : list)
