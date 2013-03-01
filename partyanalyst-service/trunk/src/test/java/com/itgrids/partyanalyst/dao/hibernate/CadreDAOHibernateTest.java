@@ -416,7 +416,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		String roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
 		//String roleStr = "";
 		*/
-		List<Long> x = cadreDAO.findCadreForSMS(1l,"","and model.currentAddress.state.stateId = 1","","","","and (  model.firstName like 'a%' or model.middleName like 'a%' or model.lastName like 'a%' )","","",""," model.firstName ","asc",0,20);
+		/*List<Long> x = cadreDAO.findCadreForSMS(1l,"","and model.currentAddress.state.stateId = 1","","","","and (  model.firstName like 'a%' or model.middleName like 'a%' or model.lastName like 'a%' )","","",""," model.firstName ","asc",0,20);
 		
 		for(Long y:x)
 		{
@@ -425,7 +425,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(cadreDAO.get(y).getLastName());
 			System.out.println(cadreDAO.get(y).getMiddleName());
 		}
-		
+		*/
 	//	List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr);
 		//System.out.println(y.get(0).toString());
 		
@@ -487,7 +487,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(object.toString());
 		}
 	}*/
-	public void testFindCandidatePeopleDetails()
+	/*public void testFindCandidatePeopleDetails()
 	{
 		List<Long> voterIds = new ArrayList<Long>();
 		voterIds.add(2172793l);
@@ -497,6 +497,16 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		voterIds.add(210l);
 		List<Long> list = cadreDAO.findCadrePeopleDetails(voterIds,1l);
 		System.out.println(list.size());
+	}*/
+	
+	
+	public void testgetInfluencingPeopleCount() 
+	{
+		List<Long> locationValue = new ArrayList<Long>(0);
+		locationValue.add(232l);
+		
+		List<Cadre> values = cadreDAO.getCadreVoterIDs(1l,locationValue,"CONSTITUENCY",1,3);
+		System.out.println(values);
 	}
 }
 	
