@@ -1007,7 +1007,8 @@ for  body3 start    result  -->
 	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 		
 	</div>
-	
+	<div id="InfluencingPeopleAjaxImg" style="display:none;float:right;">
+	<img src="./images/icons/search.gif" /></div>
 	<div id="InfluencingPeopleCountDiv" class="widget blue whitegloss">
 	 </div>
 	<div id="influencyPopupDiv">
