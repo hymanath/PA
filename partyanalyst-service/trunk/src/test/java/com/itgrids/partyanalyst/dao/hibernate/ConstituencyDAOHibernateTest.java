@@ -350,9 +350,16 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(consti.getName());
 		}
 	}*/
-	public void testfindByStateIdForUserr(){
+	/*public void testfindByStateIdForUserr(){
 		List<Constituency> list = constituencyDAO.findByStateIdForUser(1l);
 		System.out.println(list.size());
 		
+	}*/
+	
+	public void testgetNameByInfluenceScopeValue()
+	{
+		
+		List name = constituencyDAO.getNameByInfluenceScopeValue(31805l,"WARD");
+		System.out.println(name.get(0));
 	}
 }
