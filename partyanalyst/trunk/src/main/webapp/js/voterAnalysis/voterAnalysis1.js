@@ -875,6 +875,7 @@ function addToPolitician(voterId)
 		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
 		 getProblemsByLocation(id,publicationId,type);
+		  getInfluencingPeopleCount(id,type);
 		 getCounts(id,publicationId,type);
 		 getVotersCastInfo(id,publicationId,type);
        //getCastInfoForsubLevel(id,publicationId,type);
@@ -888,7 +889,6 @@ function addToPolitician(voterId)
 		 //getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
 
 	}
-
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
 	$("#votersCountModifyAjaxDiv").css("display","block");
 	constituencyId=$('#constituencyList option:selected').val()
@@ -1406,6 +1406,19 @@ function addToPolitician(voterId)
 								else if(jsObj.task == "mapVoterAsInfluencingPerson"){
 									alert("Voter Added as influence person.");
 									$('#influencePeopleOuterDiv').dialog('close');
+								}
+								else if(jsObj.task == "addVoterToCadre"){
+									if(myResults == "notLogged"){
+									 openDialogForLoginWindow();
+									}else if(myResults == "error" || myResults == "failure"){
+									  alert("Unable to process your request,please try later.");
+									}else{
+									   alert("Voter Added To Cadre Successfully.");
+									}
+								}
+								else if(jsObj.task == "getInfluencingPeopleCount")
+								{
+									buildInfluencingPeopleCount(myResults,jsObj);
 								}
 								else if(jsObj.task == "addVoterToCadre"){
 									if(myResults == "notLogged"){
@@ -6089,4 +6102,175 @@ function getPreAndPresentPublicationDtaeList()
 		}	
 	}
 }
+
+
+function getInfluencingPeopleCount(locationValue,type)
+{
+
+	document.getElementById('InfluencingPeopleCountDiv').style.display = 'none';
+	var publicationId = $("#publicationDateList").val();
+	
+	var jObj=
+	{
+		locationValue:locationValue,
+		type : type,
+		publicationDateId:publicationId,
+		name             :mainname,
+		task:"getInfluencingPeopleCount"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getInfluencingPeopleCountAction.action?"+rparam;	
+
+	callAjax(jObj,url);
+}
+
+function buildInfluencingPeopleCount(results,jsObj)
+{
+	
+	var str='';
+	document.getElementById('InfluencingPeopleCountDiv').style.display = 'block';
+	var locationValue =jsObj.locationValue;
+	var name = jsObj.name;
+	var	typeValue = jsObj.type;
+	var	publicationDateId = jsObj.publicationDateId;
+	$("#InfluencingPeopleCountDiv").css({'width':'96%','color':'#000000'});
+	var divEle = document.getElementById('InfluencingPeopleCountDiv');
+	
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;" class="">Influencing People , Cadre , and Politicians in '+jsObj.name+'</h4><div class="widget-block breadcrumb">';
+	//str+='<div class="span11 breadcrumb"></div>';
+	//str+='<div class="widget-block breadcrumb"> ';
+	//str+='<div class="row-fluid"> ';
+	if(results != null)
+	{
+		if(results[0].influencePeopleCount > 0)
+	  str +='<a id ="InfluencingDetails" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'InfluencePeople\');"><span class="btn">'+results[0].influencePeopleCount+'</span></a><span class="help-inline f2"> Influencing People</span>';
+		else
+		str +='<a id ="InfluencingDetails"><span class="btn">'+results[0].influencePeopleCount+'</span></a><span class="help-inline f2"> Influencing People</span>';
+		if(results[0].cadreCount > 0)
+	  str +='<a id ="CadreDetails" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\');"><span class="btn">'+results[0].cadreCount+'</span></a><span class="help-inline f2"> Cadre</span>';
+		else
+		str +='<a id ="CadreDetails"><span class="btn">'+results[0].cadreCount+'</span></a><span class="help-inline f2"> Cadre</span>';
+		if(results[0].politicianCount > 0)
+	  str +='<a id ="PoliticianDetails" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Politician\');"><span class="btn">'+results[0].politicianCount+'</span></a><span class="help-inline f2"> Politician</span>';
+		else
+			str +='<a id ="PoliticianDetails"><span class="btn">'+results[0].politicianCount+'</span></a><span class="help-inline f2"> Politician</span>';
+
+	}
+	str+='</div>';
+	divEle.innerHTML=str;
+}
+
+function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDateId,btnName)
+{
+	if(btnName == "Politician")
+	{
+YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var id=oRecord.getData("candidateId");
+		var name = oRecord.getData("firstName");
+		elLiner.innerHTML ='<a id="candidateId" href="candidateElectionResultsAction.action?candidateId='+id+' ">'+name+'</a>';
+		
+	}	
+	var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "SNo"},
+{key:"firstName", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
+{key:"voterIDCardNo",label: "voter Id",sortable: true},
+{key:"gender", label: "Gender", sortable: true},
+{key:"age", label: "Age", sortable:true},
+{key:"houseNo", label: "House No", sortable:true},
+{key:"relativeFirstName", label: "GuardName", sortable:true},
+//{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"mobileNo",label:"MobileNo",sortable:true},
+{key:"localArea", label: "Location", sortable: true},
+
+//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+
+];
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getInfluencingPeopleVotersDetailsAction.action?locationValue="+mainreqid+"&type="+maintype+"&publicationDateId="+publicationDateId+"&buttonName="+btnName+"&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","candidateId"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+	}
+	if(btnName != "Politician")
+	{
+var votersByLocBoothColumnDefs = [
+{key:"voterId", label: "SNo"},
+{key:"firstName", label: "Name", sortable: true},
+{key:"voterIDCardNo",label: "voter Id",sortable: true},
+{key:"gender", label: "Gender", sortable: true},
+{key:"age", label: "Age", sortable:true},
+{key:"houseNo", label: "House No", sortable:true},
+{key:"relativeFirstName", label: "GuardName", sortable:true},
+//{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"mobileNo",label:"MobileNo",sortable:true},
+{key:"localArea", label: "Location", sortable: true}
+//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+
+];
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getInfluencingPeopleVotersDetailsAction.action?locationValue="+mainreqid+"&type="+maintype+"&publicationDateId="+publicationDateId+"&buttonName="+btnName+"&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [
+{key:"voterId", parser:"number"},
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea"],
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+}
+};
+	}
+
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=3", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 3 
+			    })  // Enables pagination
+};
+
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("InfluencingPeopleDetailsDiv",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+ $("#influencyPopupDiv").dialog({ 
+	                            title:'Voters Details',
+	                            height: 'auto',
+								width: 950,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
+
+
 

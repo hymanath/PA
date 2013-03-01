@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -79,7 +80,19 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private List<SelectOptionVO> userCategoriesList;
 	private List<InfluencingPeopleVO> influencingPeopleList;
 	private ResultStatus resultStatus;
+	private List<InfluencingPeopleBeanVO> influencingPeopleCount;
 	
+
+	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount() {
+		return influencingPeopleCount;
+	}
+
+	public void setInfluencingPeopleCount(
+			List<InfluencingPeopleBeanVO> influencingPeopleCount) {
+		this.influencingPeopleCount = influencingPeopleCount;
+	}
+
+
 	private SelectOptionVO selectOptionVO;
 	private CadreManagementService cadreManagementService;
 	
@@ -1108,4 +1121,65 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getInfluencingPeopleCountByLocation()
+	{
+	try{
+		String param;
+		param = getTask();
+		jObj = new JSONObject(param);
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
+		Long locationValue = jObj.getLong("locationValue");
+		String type = jObj.getString("type");
+		Long publicationId = jObj.getLong("publicationDateId");
+		influencingPeopleCount = votersAnalysisService.getInfluencingPeopleCount(userId,locationValue,type,publicationId);
+		
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return SUCCESS;
+	}
+	
+	public String getInfluencingPeopleVotersDetails()
+	{
+		if(log.isDebugEnabled())	
+		log.debug("Executing getVoterDetails() Method");	
+		try{
+			String param;
+			param = getTask();
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			String order = request.getParameter("dir");
+			String columnName = request.getParameter("sort");
+			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+			List<VoterVO> votersList = null;
+			constituencyManagementVO = new ConstituencyManagementVO();
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long userId =  regVO.getRegistrationID();
+			Long locationValue =request.getParameter("locationValue") != null ?Long.parseLong(request.getParameter("locationValue")):0L;
+			String type =request.getParameter("type");
+			String buttonName =request.getParameter("buttonName");
+			Long publicationId = request.getParameter("publicationDateId") != null ?Long.parseLong(request.getParameter("publicationDateId")):0L;
+			votersList = new ArrayList<VoterVO>();
+			votersList = votersAnalysisService.getInfluencingPeopleVoterDetails(
+						userId,locationValue,type,buttonName,
+						publicationId,startIndex ,maxRecords);
+
+			constituencyManagementVO.setVoterDetails(votersList);
+			if(votersList.size() > 0 )
+			constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			log.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
+			
+		}
+			
+		return Action.SUCCESS;
+}
 }

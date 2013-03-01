@@ -4513,7 +4513,7 @@
 				<param name="root">voterVOs</param>				
 			</result>	
 		</action>
-		
+				
 		<action name="addVoterToCadreAction" class="votersAnalysisAction" method="addVoterToCadre">
 			<result type="json" name="success">
 			  <param name="root">task</param>
@@ -4530,5 +4530,18 @@
 		      <param name="root">resultStatus</param>
 		    </result>
 		</action>
+		
+		<action name="getInfluencingPeopleCountAction" class="votersAnalysisAction" method="getInfluencingPeopleCountByLocation">
+		<result type="json" name="success">
+           	<param name="root">influencingPeopleCount</param>
+        </result>
+		</action>
+		<action name="getInfluencingPeopleVotersDetailsAction" class="votersAnalysisAction" method="getInfluencingPeopleVotersDetails">
+		<result type="json" name="success">
+           	<param name="root">constituencyManagementVO</param>
+        </result>
+		</action>
+		
+		
 	</package>
 </struts>      
