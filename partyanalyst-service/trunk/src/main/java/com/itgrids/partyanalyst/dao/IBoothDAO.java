@@ -79,7 +79,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public int removeMappingToLocalBody(List<Long> boothIds);
 	public List<Booth> getPollingStationByConstituencyId(Long constituencyId);
 	
-	public List<Booth> getPollingStationByMandalId(Long mandalId);
+	public List<Booth> getPollingStationByMandalId(Long mandalId, Long constituencyId);
 	
 	public List findByConstituencyAndElectionYearAndPubDtId(Long constituencyId,Long year,Long publicationDtId);
 	
@@ -166,4 +166,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public Integer updatePanchayatByBoothId(Long boothId, Long panchayatId);
 	
 	public List getPartNoByBoothId(Long partNo);
+	
+	public List<Object[]> getBoothsInAMandalByPublicationAndConstId(Long mandalId, Long publicationId, Long constituencyId);
+	
 }
