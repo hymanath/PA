@@ -171,4 +171,9 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> getCadreByCadreIdUserId(Long cadreId,Long userId);
 	
 	public List<Long> findCadrePeopleDetails(List<Long> voterIds , Long userId);
+	
+	public List<Long> getCadreCountByCadreLevel(Long userId,List<Long> locationValue,String type);
+	
+	public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
+			Integer maxRecords);
 }

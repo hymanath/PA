@@ -154,4 +154,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public List<Object[]> getConstituencyName(Long constituencyId);
 	public List<Object[]> getWardsInMuncipality(Long assemblyElectionBodyId);
+	public List getNameByInfluenceScopeValue(Long locationValue,String type);
 }
