@@ -6169,7 +6169,7 @@ YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData)
 		
 		var id=oRecord.getData("candidateId");
 		var name = oRecord.getData("firstName");
-		elLiner.innerHTML ='<a id="candidateId" href="candidateElectionResultsAction.action?candidateId='+id+' ">'+name+'</a>';
+		elLiner.innerHTML ='<a target="_blank" id="candidateId" href="candidateElectionResultsAction.action?candidateId='+id+' ">'+name+'</a>';
 		
 	}	
 	var votersByLocBoothColumnDefs = [

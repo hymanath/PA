@@ -58,7 +58,7 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
-<title>Voters analysis</title>
+<title>Voters Analysis</title>
 
 
 <style type="text/css">
