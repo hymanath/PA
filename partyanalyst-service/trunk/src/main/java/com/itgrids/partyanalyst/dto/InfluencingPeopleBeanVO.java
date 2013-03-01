@@ -52,6 +52,33 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private Long pConstituencyId;
 	private String parliamentConstName;
 	private String voterId;
+	private Long influencePeopleCount;
+	private Long cadreCount;
+	private Long politicianCount;
+	public Long getPoliticianCount() {
+		return politicianCount;
+	}
+
+	public void setPoliticianCount(Long politicianCount) {
+		this.politicianCount = politicianCount;
+	}
+
+	public Long getInfluencePeopleCount() {
+		return influencePeopleCount;
+	}
+
+	public void setInfluencePeopleCount(Long influencePeopleCount) {
+		this.influencePeopleCount = influencePeopleCount;
+	}
+
+	public Long getCadreCount() {
+		return cadreCount;
+	}
+
+	public void setCadreCount(Long cadreCount) {
+		this.cadreCount = cadreCount;
+	}
+
 	public String getWindowTask() {
 		return windowTask;
 	}
