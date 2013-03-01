@@ -127,6 +127,18 @@ body {
 #votersBySearchTabContentDiv_body table{
   width: 100%;
 }
+.dd_menu {padding:0px; margin:0; list-style-type:none;}
+.dd_menu li {float:left;display:inline;}
+.dd_menu li a {padding:0px 20px; display:block; color:#fff; text-decoration:none; font:12px arial, verdana, sans-serif; font-weight: bold;}
+.dd_menu li:hover a {text-decoration:underline;}
+
+.dd_menu ul {position:absolute; left:-9999px; top:-9999px; list-style-type:none;}
+.dd_menu li:hover {position:relative; background:none;}
+.dd_menu li:hover ul {left:-160px; top:15px; padding:3px; border:1px solid grey; width:208px;}
+.dd_menu li:hover ul li {border:none;}
+.dd_menu li:hover ul li a {height:18px;color:#003366; padding:5px 0px; display:block; font-size:11px; width:208px; line-height:18px; text-indent:5px; color:#444; background:#d0e0ea; text-decoration:none; border:1px solid transparent;}
+.dd_menu li:hover ul li a:hover {height:18px; background:#c4d8e6; color:#003366; border:solid 1px #444;}
+
 </style>
 <script type="text/javascript">
 var selectedType="";
@@ -420,6 +432,7 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;RQueryType=queryType;RHouseNo=houseNo;RfromSno=fromSno;RtoSno=toSno;
     
            $("#topButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');
+		   $("#topButtons").append('<div style="margin-bottom: 10px;margin-right: 20px;float:right;" id="imgDescriptionDiv"><b style="margin-left: 5px">InfluencingPeople</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/influencing.png" alt="Politicion" title="Politician"><b style="margin-left: 22px">Cadre</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/cadre.png" alt="Politicion" title="Cadre"><b style="margin-left: 22px">Politician</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/politican.png" alt="Politicion" title="Politician"></div>');
 		   $("#bottomButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Create Custom Groups(Cast,Party,Locaities)" onclick="openNewWindow();"/></div>');
 	    YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 			{
@@ -453,6 +466,57 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
             else
               elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+vId+"'/><input type='hidden' class='selectedBoothId' value='"+vBoothId+"'/>";			
 		  };
+		  
+		  YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
+	      {
+			var str ='';
+			var id=oRecord.getData("voterId");
+			str += '<ul class="dd_menu">';
+			str += ' <li><i class="icon-th-list"></i>';
+			str += ' <ul>';
+			str += ' <li>';
+			str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\');">Create New Cadre</a>';
+			str += ' </li>';
+			str += ' <li>';
+			str += ' <a href= "javascript:{};" onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
+			str += ' </li>';
+			str += ' <li>';
+			str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\');">Create New Influencing People</a>';
+			str += ' </li>';
+			str += ' <li>';
+			str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
+			str += ' </li>';
+			str += ' <li>';
+			str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\');">Add To Politician</a>';
+			str += ' </li>';
+			str += ' </ul>';
+			str += ' </li>';
+			str += ' </ul>';
+			elLiner.innerHTML =str;
+	     }
+		 
+        YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	    {
+			var str ='';
+			var id=oRecord.getData("voterId");
+			var isInfluencePerson=oRecord.getData("isInfluencePerson");
+			var isCadere = oRecord.getData("isCadrePerson");
+			var isPolitician = oRecord.getData("isPoliticion");
+			if(isInfluencePerson == true)
+			{
+				str+='<img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/>';
+			}
+			if(isCadere == true)
+			{
+				str+='<img title="Cadre" alt="CadrePerson" src="./images/icons/cadre.png"/>';
+			}
+			if(isPolitician == true)
+			{
+				str+='<img title="Politician" alt="Politicion" src="./images/icons/politican.png"/>';
+			}
+			elLiner.innerHTML =str;
+	    }
+		
 		 for(var i in reqfieldsArr){
 		 var id3 = reqfieldsArr[i].split(",");
 		    YAHOO.widget.DataTable[""+id3[0]] = function(elLiner, oRecord, oColumn, oData) 
@@ -494,12 +558,15 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 		  };
 		 
 		 }
+		 
 		var votersByLocBoothColumnDefs = [
-		{key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
-		
-		{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
-		{key:"houseNo", label: "House No", sortable:true,formatter:YAHOO.widget.DataTable.voterLink},
-		{key:"boothName", label: "Booth No", sortable:true}
+			{key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
+			
+			{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
+			{key:"houseNo", label: "House No", sortable:true,formatter:YAHOO.widget.DataTable.voterLink},
+			{key:"boothName", label: "Booth No", sortable:true},
+			{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+			{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 		];
 		if($("#voterIdColum").is(':checked')){
 		     obj = {key:"voterIdCardNo",label: "Voter Id",sortable: true};
@@ -538,7 +605,7 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
-		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno"],
+		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion"],
 		metaFields: {
 		totalRecords: "totalHousesCount" // Access to value in the server response
 		}
@@ -930,7 +997,28 @@ function callAjaxForCandSearch(jsObj,url)
 									else if(jsObj.task == "getCategoriesForAUserInitial")
 								    { 
 									  buildCategoriesListInit(myResults);
-								    }				
+								    }
+                                    else if(jsObj.task=="ckeckForVoterId")
+									{	
+										buildVoterToSelectedType(myResults,jsObj);
+									}
+                                    else if(jsObj.task == "addVoterToCadre"){
+										if(myResults == "notLogged"){
+										 openDialogForLoginWindow();
+										}else if(myResults == "error" || myResults == "failure"){
+										  alert("Unable to process your request,please try later.");
+										}else{
+										   alert("Voter Added To Cadre Successfully.");
+										}
+								   }else if(jsObj.task == "mapVoterAsInfluencingPerson"){
+									alert("Voter Added as influence person.");
+									$('#influencePeopleOuterDiv').dialog('close');
+								   }
+                                   else if(jsObj.task == "getInfluencingPeopleBySearch")
+                                   {
+									$('#ajaxImageDiv1').css('display','none');
+                                     buildInfluencePeopleSearchResults(myResults,jsObj.voterId);
+								   } 								   
 							}catch (e) {
 							     
 								}  
@@ -1244,6 +1332,708 @@ function callAjaxForCandSearch(jsObj,url)
 		 $("#multipleVoterFamiliesEditDiv").html(str);
 	   }
 	}
+	
+	function checkForVoter(voterId,type)
+{
+	var jsObj = {
+			voterId:voterId,
+			type : type,
+			task:"ckeckForVoterId"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "ckeckForVoterIdAction.action?"+rparam;
+	callAjaxForCandSearch(jsObj, url);
+}
+function buildVoterToSelectedType(result,jsObj)
+{
+	if(jsObj.type == "influencingPeople")
+	{
+		if(result.resultCode == 1)
+		{
+			addInfluencingPeople(jsObj.voterId);
+		}
+		else 
+		{
+			alert('Voter is already added as a Influencing People');
+		
+		}
+	}
+	
+	if(jsObj.type == "cadre")
+	{
+		if(result.resultCode == 1)
+		{
+			openRegistrationForm(jsObj.voterId);
+		}
+		else
+		{
+			alert('Voter is already added as a Cadre');
+			
+		}
+	}
+	
+	if(jsObj.type == "candidate")
+	{
+		if(result.resultCode == 1)
+		{
+		addToPolitician(jsObj.voterId);
+		}
+		else
+		{
+			alert('Voter is already added as a politician');
+			
+		}
+	}
+	
+}
+function addInfluencingPeople(voterId)
+{
+	var type='edit';
+	var urlStr = "influencingPeopleAction.action?windowTask="+type+"&voterId="+voterId;
+	var browser2 = window.open(urlStr,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+	browser2.focus();
+}
+function openRegistrationForm(voterId)
+{
+	var task = "update_existing";
+	var urlStr = "cadreRegisterPageAction.action?voterId="+voterId+"&windowTask="+task;
+	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
+	updateBrowser.focus();				
+}
+function addToPolitician(voterId)
+{
+	var urlStr = "assigningCandidatesToVoterAction.action?voterId="+voterId;
+	var browser2 = window.open(urlStr,"assigningCandidatesToVoterAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+	browser2.focus();
+}
+function mapSelectedCadreToVoter(cid,cName,voterId){
+	 var jsObj=
+		{
+			 cadreId:cid,
+			 voterId:voterId,
+			 task:"addVoterToCadre"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "addVoterToCadreAction.action?"+rparam;	
+		callAjaxForCandSearch(jsObj,url);
+}	
+function openCadreSearchWindow(clickedId){
+  
+	var cadreWindow = window.open("cadreSearchAction.action?windowTask=Search&voterId="+clickedId,"cadreSearch","scrollbars=yes,height=600,width=750,left=200,top=200");
+  cadreWindow.focus();
+}
+function showInfluencePeopleDialog(voterId){
+	$('#searchResultsDiv').html('');
+
+
+	var str='';
+
+    str+='<div>';
+	 str+='<div><span>Enter Name<span class="requiredFont">*</span> :</span><span><input id="nameId" type="text" name="name"/></span><span id="nameErrMsg" class="locationErrorMsg"></span></div>';
+	 str+='<div><span>Father Name :</span><span><input id="fatherNameId" type="text" name="name"/></span></div>';
+     
+	// str+='<h5>Select Scope</h5>';
+     str+='<div>';
+	  str+='<span>Select Scope</span>';
+	  str+='<select id="scopeId" onChange="showLocationsDiv();">';
+	        str+='<option value="0">Select</option>';
+			str+='<option value="2">STATE</option>';
+			str+='<option value="3">DISTRICT</option>';
+			str+='<option value="4">CONSTITUENCY</option>';
+			str+='<option value="5">MANDAL</option>';
+			str+='<option value="6">VILLAGE</option>';
+			str+='<option value="7">MUNCIPAL-CORP-GMC</option>';
+			str+='<option value="8">WARD</option>';
+			str+='<option value="9">BOOTH</option>';
+	  str+='</select>';
+     str+='</div>';
+
+     str+='<div id="locationsDiv" style="display:none;padding:10px;margin:5px;border:1px solid #c3c3c3;width:525px;">';
+	  str+='<div  id="regionstitleDiv" style="display:none;"><h5>Select region</h5></div>';
+
+	  str+='<div id="stateSelect" style="margin:3px;width:540px;display:none;" class="locationDivClass"><span>STATE<span class="requiredFont">*</span></span><span style="margin-left:145px;"><select id="stateSelectId"><option value="1">ANDHRA PRADESH</option></select></span></div>';
+
+	  str+='<div id="districtSelect" style="margin:3px;width:540px;display:none;" class="locationDivClass"><span>DISTRICT<span class="requiredFont">*</span></span><span style="margin-left:121px;"><select id="districtSelectId" onChange="getConstituenciesInDistrict();"><option value="0">Select</option></select></span><span id="districtErrMsg" class="locationErrorMsg" ></span></div>';
+
+	  str+='<div id="constituencySelect" style="margin:3px;width:540px;display:none;" class="locationDivClass" ><span>CONSTITUENCY<span class="requiredFont">*</span></span><span style="margin-left:69px;"><select id="constituencySelectId" onChange="getMandalsOrMuncipalities();"><option value="0">Select</option></select></span><span id="constituencyErrMsg" class="locationErrorMsg"></span></div>';
+
+	  str+='<div id="mandalSelect"  class="locationDivClass" style="margin:3px;width:540px;display:none;"><span>TEHSIL/MUNCIPALITY<span class="requiredFont">*</span></span><span style="margin-left:25px;"><select id="mandalSelectId" onChange="getHamletsOrWards();"><option value="0">Select</option></select></span><span id="tehsilOrMuncipalityErrMsg" class="locationErrorMsg"></span></div>';
+
+	  str+='<div id="wardSelect"style="margin:3px;width:540px;display:none;"  class="locationDivClass" ><span>VILLAGE/WARD/DIVISION<span class="requiredFont">*</span></span><span><select id="wardSelectId"><option value="0">Select</option></select></span><span id="villageOrWardErrMsg" class="locationErrorMsg"></span></div>';
+
+	  str+='<div id="boothSelect" class="locationDivClass" style="margin:3px;width:540px;display:none;"><span>BOOTH<span class="requiredFont">*</span></span><span style="margin-left:138px;"><select id="boothSelectId"><option value="0">Select</option></select></span><span id="boothErrMsg" class="locationErrorMsg"></span></div>';
+ 
+	str+='</div>';
+	str+='<div><a class="btn btn-primary" style="float:right;" href="javaScript:{callAjaxToSearchInfluencingPeople('+voterId+');}">Search</a></div>';
+	str+='<div id="ajaxImageDiv1" style="display:none;"><img style="margin-left:244px;" src="images/icons/ajaxImg.gif"></div>';
+
+
+	$('#influencePeopleInnerDiv').html(str);
+
+	$('#influencePeopleOuterDiv').dialog({ 
+	                            title:'Search Influence People',
+	                            height: 'auto',
+								width: 700,
+								closeOnEscape: false,
+								show: "blind",
+								hide: "explode",
+								modal: true,
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+
+
+	 getDistrictsInAState();
+
+}
+
+function buildInfluencePeopleSearchResults(results,voterId){
+	 
+    $("#searchResultsDiv").html("");
+
+	 YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var id= oRecord.getData("influencePersonId");
+
+		str+='<span><a href="javaScript:{mapAsInfluencePeople('+id+','+voterId+');}" class="btn btn-mini" ">Map to voter</a></span>';
+	
+		elLiner.innerHTML=str;
+					
+	};
+
+	
+     var influencePeopleColumnDefs =
+		                [ 
+						 {key:"firstName",label:"First Name",sortable:true},
+						 {key:"lastName",label:"Last Name",sortable:true},
+   		                 {key:"contactNumber",label:"Mobile No",sortable:true},
+		                 {key:"Select",label:"Select", formatter:YAHOO.widget.DataTable.select}
+						]; 
+
+     var myConfigs =
+		        { 
+			        paginator : new YAHOO.widget.Paginator({ 
+		              rowsPerPage    : 10
+			         }) 
+				};
+			    
+				
+	 var myDataSource = new YAHOO.util.DataSource(results);
+		 myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+		 myDataSource.responseschema = {
+						 fields : ["firstName","lastName"]
+					};
+
+	 var familesDataSource = new YAHOO.widget.DataTable("searchResultsDiv", influencePeopleColumnDefs,myDataSource, myConfigs);
+ 
+}
+
+
+function mapAsInfluencePeople(id,voterId){
+
+
+	var jsObj=
+			{
+				influencePersonId:id,
+                voterId:voterId,
+				task:"mapVoterAsInfluencingPerson"
+			}
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "mapVoterAsInfluencingPerson.action?"+rparam;						
+		callAjaxForCandSearch(jsObj,url);
+}
+
+
+function getDistrictsInAState(){
+
+	var jsObj=
+			{
+				id:1,
+				task:"districtsInState"
+			}
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationsById.action?"+rparam;						
+		callAjaxForLocations(jsObj,url);
+}
+
+function getConstituenciesInDistrict(){
+
+	var jsObj=
+			{
+				id:$('#districtSelectId').val(),
+				task:"constituenciesInDistrict"
+			}
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationsById.action?"+rparam;						
+		callAjaxForLocations(jsObj,url);
+}
+
+
+function getMandalsOrMuncipalities1(areaType){
+
+	var jsObj=
+			{
+				id:$('#constituencySelectId').val(),
+				task:"subRegionsInConstituency",
+				areaType:areaType
+			}
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationsById.action?"+rparam;						
+		callAjaxForLocations(jsObj,url);
+
+}
+
+function getHamletsOrRegions(){
+
+	var jsObj=
+			{
+				id:$('#mandalSelectId').val(),
+				task:"hamletsOrWardsInRegion"
+			}
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationsById.action?"+rparam;						
+		callAjaxForLocations(jsObj,url);
+
+}
+
+
+function getBoothsInTehsilOrMunicipality(){
+
+	var jsObj=
+			{
+				id:$('#mandalSelectId').val(),
+				constId:$('#constituencySelectId').val(),
+				task:"boothsInTehsilOrMunicipality"
+			}
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationsById.action?"+rparam;						
+		callAjaxForLocations(jsObj,url);
+
+}
+
+function callAjaxForLocations(jsObj,url)
+{
+			
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								
+								if(jsObj.task == "districtsInState")
+								{
+									buildDistricts(myResults);										
+								}
+								else if(jsObj.task == "constituenciesInDistrict")
+								{
+                                     buildConstituencies(myResults);
+								}
+								else if(jsObj.task == "subRegionsInConstituency")
+								{
+									buildMandalsOrMuncipalities(myResults);
+								}
+								else if(jsObj.task == "hamletsOrWardsInRegion")
+								{
+									buildHamletsOrWardsInRegion(myResults);
+
+								}
+								else if(jsObj.task == "boothsInTehsilOrMunicipality")
+								{
+									buildBooths(myResults);
+								}
+							}catch (e) {
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
+
+function getInfluencePeopleOfAnUser(voterId){
+
+  showInfluencePeopleDialog(voterId)
+}
+
+function buildDistricts(results)
+{
+
+	$('#districtSelectId').find('option').remove();
+	$('#districtSelectId').append('<option value="0">Select</option>');
+
+	for(var i=0;i<results.length;i++)
+		$('#districtSelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+
+}
+
+function buildConstituencies(results)
+{
+  $('#constituencySelectId').find('option').remove();
+  $('#constituencySelectId').append('<option value="0">Select</option>');
+
+  for(var i=0;i<results.length;i++)
+		$('#constituencySelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+
+}
+
+function buildMandalsOrMuncipalities(results)
+{
+ $('#mandalSelectId').find('option').remove();
+ $('#mandalSelectId').append('<option value="0">Select</option>');
+
+  for(var i=0;i<results.length;i++)
+		$('#mandalSelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+
+}
+
+
+function buildHamletsOrWardsInRegion(results){
+
+	$('#wardSelectId').find('option').remove();
+	$('#wardSelectId').append('<option value="0">Select</option>');
+
+  for(var i=0;i<results.length;i++)
+		$('#wardSelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+
+
+}
+
+function buildBooths(results){
+
+	$('#boothSelectId').find('option').remove();
+	$('#boothSelectId').append('<option value="0">Select</option>');
+
+  for(var i=0;i<results.length;i++)
+		$('#boothSelectId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+
+}
+function showLocationsDiv(){
+
+		if($('#scopeId').val() == "0")
+		{
+			$('#regionstitleDiv').css('display','none');
+			$('#locationsDiv').css('display','none');
+		}
+		else
+	    {
+			$('#regionstitleDiv').css('display','block');
+			$('#locationsDiv').css('display','block');
+		}
+
+		$('#constituencySelectId ,#mandalSelectId , #wardSelectId ,#wardSelectId,#boothSelectId').find('option').remove();
+
+		$('#constituencySelectId ,#mandalSelectId , #wardSelectId ,#wardSelectId,#boothSelectId').append('<option value="0">Select</option>');
+
+		$('#districtSelectId').val("0");
+
+	if($('#scopeId').val() == "2")
+	{
+		$('#stateSelect').css('display','block');
+		$('#districtSelect , #constituencySelect , #mandalSelect , #wardSelect , #boothSelect').css('display','none');
+		
+	}
+	else if($('#scopeId').val() == "3")
+	{
+		$('#stateSelect , #districtSelect').css('display','block');
+
+		$('#constituencySelect , #mandalSelect ,#wardSelect ,#boothSelect').css('display','none');
+		
+	}
+	else if($('#scopeId').val() == "4")
+	{
+		$('#stateSelect , #districtSelect , #constituencySelect').css('display','block');
+
+		$('#mandalSelect , #wardSelect , #boothSelect').css('display','none');
+	
+	}
+	else if($('#scopeId').val() == "5" || $('#scopeId').val() == "7")
+	{
+		$('#stateSelect , #districtSelect , #constituencySelect ,#mandalSelect').css('display','block');
+		
+		$('#wardSelect , #boothSelect').css('display','none');
+	}
+	else if( $('#scopeId').val() == "6" || $('#scopeId').val() == "8")
+	{
+		$('#stateSelect , #districtSelect , #constituencySelect , #mandalSelect , #wardSelect ').css('display','block');
+		
+		$('#boothSelect').css('display','none');
+	}
+	else if( $('#scopeId').val() == "9")
+	{
+		$('.locationDivClass').css('display','block');
+	}
+
+}
+function callAjaxToSearchInfluencingPeople(voterId)
+{
+
+	$('#districtErrMsg ,#constituencyErrMsg , #tehsilOrMuncipalityErrMsg ,#villageOrWardErrMsg , #boothErrMsg , #searchResultsDiv , #nameErrMsg').html('');
+	var isValid = true;
+
+	var scopeSelected = $('#scopeId').val();
+
+	if(scopeSelected == "3"){
+		if($('#districtSelectId').val() == "0")
+		{
+			 isValid = false; 
+			$('#districtErrMsg').html('District is required');
+		}
+
+	}
+	else if(scopeSelected == "4"){
+		if($('#districtSelectId').val() == "0")
+		{
+			$('#districtErrMsg').html('District is required');
+			 isValid = false; 
+		}
+		if($('#constituencySelectId').val() == "0")
+		{
+			$('#constituencyErrMsg').html('Constituency is required');
+			 isValid = false; 
+		}
+
+	}
+	else if(scopeSelected == "5"){
+		if($('#districtSelectId').val() == "0")
+		{
+			$('#districtErrMsg').html('District is required');
+			 isValid = false; 
+		}
+		if($('#constituencySelectId').val() == "0")
+		{
+			$('#constituencyErrMsg').html('Constituency is required');
+			 isValid = false; 
+		}
+		if($('#mandalSelectId').val() == "0")
+		{
+			$('#tehsilOrMuncipalityErrMsg').html('Mandal is required');
+			 isValid = false;
+		}
+
+	}
+	else if(scopeSelected == "6"){
+		if($('#districtSelectId').val() == "0")
+		{
+			$('#districtErrMsg').html('District is required');
+			isValid = false;
+		}
+		if($('#constituencySelectId').val() == "0")
+		{
+			$('#constituencyErrMsg').html('Constituency is required');
+			isValid = false;
+		}
+		if($('#mandalSelectId').val() == "0")
+		{
+			$('#tehsilOrMuncipalityErrMsg').html('Mandal is required');
+			isValid = false;
+		}
+		if($('#wardSelectId').val() == "0")
+		{
+			$('#villageOrWardErrMsg').html('Village is required');
+			isValid = false;
+		}
+
+	}
+	else if(scopeSelected == "7"){
+		if($('#districtSelectId').val() == "0")
+		{
+			$('#districtErrMsg').html('District is required');
+			isValid = false;
+		}
+		if($('#constituencySelectId').val() == "0")
+		{
+			$('#constituencyErrMsg').html('Constituency is required');
+			isValid = false;
+		}
+		if($('#mandalSelectId').val() == "0")
+		{
+			$('#tehsilOrMuncipalityErrMsg').html('Muncipality is required');
+			 isValid = false; 
+		}
+
+	}
+	else if(scopeSelected == "8"){
+		if($('#districtSelectId').val() == "0")
+		{
+			$('#districtErrMsg').html('District is required');
+			isValid = false;
+
+		}
+		if($('#constituencySelectId').val() == "0")
+		{
+			$('#constituencyErrMsg').html('Constituency is required');
+			 isValid = false; 
+		}
+		if($('#mandalSelectId').val() == "0")
+		{
+			$('#tehsilOrMuncipalityErrMsg').html('Muncipality is required');
+			 isValid = false; 
+		}
+		if($('#wardSelectId').val() == "0")
+		{
+			$('#villageOrWardErrMsg').html('Ward is required');
+			 isValid = false; 
+		}
+	}
+	else if(scopeSelected == "9"){
+		if($('#districtSelectId').val() == "0")
+		{
+			$('#districtErrMsg').html('District is required');
+			 isValid = false; 
+		}
+		if($('#constituencySelectId').val() == "0")
+		{
+			$('#constituencyErrMsg').html('Constituency is required');
+			 isValid = false; 
+		}
+		if($('#mandalSelectId').val() == "0")
+		{
+			$('#tehsilOrMuncipalityErrMsg').html('Muncipality is required');
+			 isValid = false; 
+		}
+		if($('#wardSelectId').val() == "0")
+		{
+			$('#villageOrWardErrMsg').html('Ward is required');
+			 isValid = false; 
+		}
+		if($('#boothSelectId').val() == "0")
+		{
+			$('#boothErrMsg').html('Booth is required');
+			 isValid = false; 
+		}
+	}
+
+	if($('#nameId').val() == "")
+	{
+		$('#nameErrMsg').html('Name is required');
+		isValid = false; 
+	}
+
+
+	if(isValid == false)	
+		isValid = true;
+	else	
+     callAjaxToSearchInfluencingPeople1(voterId);
+
+}
+
+function callAjaxToSearchInfluencingPeople1(voterId)
+{
+
+document.getElementById('ajaxImageDiv1').style.display = 'block';
+
+
+
+	var stateVal = 0;
+	var districtVal = 0;
+	var constituencyVal = 0;
+	var mandalVal = 0;
+	var muncipalityVal = 0;
+	var villageVal = 0;
+	var wardVal = 0;
+	var boothVal = 0;
+	var name="";
+	var fatherOrSpouceName = "";
+
+	name=$('#nameId').val();
+	fatherOrSpouceName = $('#fatherNameId').val();
+
+	var scopeVal = $('#scopeId').val();
+
+	if(scopeVal == "2")
+		stateVal = $('#stateSelectId').val();
+	else if (scopeVal == "3")
+	{
+	     districtVal = $('#districtSelectId').val();
+	}
+	else if (scopeVal == "4")
+	{
+	     constituencyVal = $('#constituencySelectId').val();
+	}
+	else if (scopeVal == "5" || scopeVal == "7")
+	{	
+		 var mandalTemp = $('#mandalSelectId').val();
+
+		 if(mandalTemp.substring(0,1) == "2")
+			mandalVal =  mandalTemp.substring(1);
+		 else if(mandalTemp.substring(0,1) == "1")
+			muncipalityVal =  mandalTemp.substring(1);
+    
+	}
+	else if (scopeVal == "6" || scopeVal == "8")
+	{
+
+		 var villageTemp = $('#wardSelectId').val();
+
+		 if(villageTemp.substring(0,1) == "2")
+			villageVal =  villageTemp.substring(1);
+		 else if(villageTemp.substring(0,1) == "1")
+			wardVal =  villageTemp.substring(1);
+	}
+	else if (scopeVal == "9")
+	{
+         boothVal = $('#boothSelectId').val();
+	}
+
+
+	var jsObj=
+			{   scope:scopeVal,
+				name:name,
+				state:stateVal,
+ 			    district: districtVal,
+                constituency:constituencyVal,
+                mandal:mandalVal,
+				muncipality:muncipalityVal,
+				hamlet:villageVal,
+				ward:wardVal,
+				booth:boothVal,	
+				fatherOrSpouceName:fatherOrSpouceName,
+				voterId:voterId,
+				task:"getInfluencingPeopleBySearch"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getInfluencingPeopleBySearch.action?"+rparam;						
+		callAjaxForCandSearch(jsObj,url);
+		
+
+}
+function getMandalsOrMuncipalities()
+{
+	if($('#scopeId').val() == "5" || $('#scopeId').val() == "6")
+      getMandalsOrMuncipalities1("RURAL");
+	else if($('#scopeId').val() == "7" || $('#scopeId').val() == "8")
+	 getMandalsOrMuncipalities1("URBAN");
+	else if($('#scopeId').val() == "9")
+	 getMandalsOrMuncipalities1("");
+
+}
+
+function getHamletsOrWards(){
+
+	if($('#scopeId').val() == "9"){
+ 	 getHamletsOrRegions();
+	 getBoothsInTehsilOrMunicipality();
+	}else{
+		  getHamletsOrRegions();
+  
+	}
+
+}
 </script>
 </head>
 <body>
@@ -1410,7 +2200,10 @@ function callAjaxForCandSearch(jsObj,url)
 		   <div id="impFamDtls"  class="yui-skin-sam yui-dt-sortable" style="border:1px solid black;width: -moz-fit-content;"></div>
 		</div>
 	  <div id="multipleVoterFamiliesEditDiv"></div>
-	 
+	 <div id="influencePeopleOuterDiv" style="display:none;">
+         <div id="influencePeopleInnerDiv"></div>
+         <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable"></div>
+     </div>
 
 <script type="text/javascript">
   getCategoriesForAUserInital();
