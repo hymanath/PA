@@ -187,6 +187,7 @@
 		<pattern>/righttoinformation*</pattern>
 		<pattern>/voterModificationReportAction*</pattern>
     	<pattern>/changePasswordAction*</pattern>
+    	<pattern>/localBodyElectionAction*</pattern>
     </decorator>
 
 </decorators>
