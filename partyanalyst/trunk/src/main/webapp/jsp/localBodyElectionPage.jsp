@@ -58,19 +58,19 @@
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/localBodyElection/localBodyElection.js"></script>
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
 <script type="text/javascript" src="js/jQuery/jquery.liquidcarousel.js"></script>
 
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
 
 <link  rel="stylesheet" type="text/css" href="styles/jQuery/liquidcarousel.css"/>
-<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+<!--<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 
-<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
+<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>-->
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
 <link rel="stylesheet" type="text/css" href="styles/localBodyElection/localBodyElection.css">
-
+<link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript">
 
 	google.load("elements", "1", {packages : ["newsshow"]});
@@ -96,6 +96,33 @@
 	}
 	
 </script>
+
+<style type="text/css">
+
+html {overflow-x: hidden;}
+#problemViewingFieldSet legend {line-height: 20px;}
+#localBodyElectiondiv_main{margin-top:20px;}
+input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
+#problemViewingFieldSet{border: 1px solid #D3D3D3;padding: 5px;}
+
+.productFeatureHeaderBackground_center {
+    background-image: url("images/icons/homePage_new/blue_header_center.jpg");
+    height: 40px;
+}
+
+.headerLabelSpan {
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+    left: 10px;
+    position: relative;
+    top: 10px;
+}
+#wardsElectionResults_head{margin-top: 10px;}
+#adDataMain_body{padding-right: 2px;}
+
+img{max-width:1000px;}
+</style>
 </head>
 <body>
 	<div id="localBodyElectiondiv_main">
@@ -107,12 +134,12 @@
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:554px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
+									<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
-						<div id="districtNewsDiv_outer" style="overflow:hidden;width:603px;height:135px;">
+						<div id="districtNewsDiv_outer" style="overflow:hidden;height:135px;">
 							<div id="districtNewsDiv" style="padding:10px;">
 								<table id="localBodyDetailsTable" class="datatableClass" border="1">
 									<tr>
@@ -139,13 +166,13 @@
 					</div>
 				</td>
 				<td width="35%" valign="top">
-					<div class="productFeatureMain">							
+					<div class="productFeatureMain" style="margin-left: 10px;">							
 						<div class="productFeatureHeader">
 							<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
-									<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:261px;"><span>${localBodyElectionResults.localBodyRegion} ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif" /></td>
+									<td ><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion} ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
+									<td width="115px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
@@ -165,12 +192,12 @@
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:611px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
-									<td><img  src="images/icons/districtPage/header_right.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+									<td width="8px"><img  src="images/icons/districtPage/header_right.gif" style=""/></td>
 								</tr>
 							</table>
 						</div>
-						<div id="localBodyElectionResults_body" class="productFeatureBody">
+						<div id="localBodyElectionResults_body" class="productFeatureBody" style="margin-right: 3px;">
 							<div id="localBodyElectionResults_body_chart">
 								<img width="650px" height="280px" src="charts/${localBodyElectionResults.highLevelChart}"></img>
 							</div>
@@ -211,15 +238,15 @@
                     	<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
-								<td width="98%">
+								<td width="5%"><img src="images/icons/homePage_new/blue_header_top_left.jpg" /></td>
+								<td width="90%">
 									<div class="productFeatureHeaderBackground_center">
 										<span class="headerLabelSpan">
 											Advertisements
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+								<td width="5%"><img src="images/icons/homePage_new/blue_header_top_right.jpg" /></td>
 							  </tr>
 							</table>
 						</div>
@@ -266,8 +293,8 @@
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 											<tr>
 												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-												<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:885px;"><span>${localBodyElectionResults.localBodyRegion}  Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
-												<td><img  src="images/icons/districtPage/header_right.gif"/></td>
+												<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}  Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+												<td width="4px;"><img  src="images/icons/districtPage/header_right.gif"/></td>
 											</tr>
 										</table>
 									</div>

@@ -307,7 +307,7 @@ function buildLocalElectionLevelProblemWindow(areaType)
 	var bodyElmt = document.getElementById('problemViewingDiv_Body');
 	
 	var str='';
-	str+='<fieldset id="problemViewingFieldSet" style="width:248px;margin-top:10px;">';
+	str+='<fieldset id="problemViewingFieldSet" style="margin-top:10px;">';
 	str+='<legend> View Your '+ areaType +' Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
