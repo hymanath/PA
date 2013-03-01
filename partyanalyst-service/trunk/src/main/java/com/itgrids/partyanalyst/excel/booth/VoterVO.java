@@ -39,6 +39,8 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String panchayatName;
 	private String publicationName;
 	private Long serialNo;
+	private Long candidateId;
+	
 	
 	public String getPublicationName() {
 		return publicationName;
@@ -410,6 +412,14 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	public void setIsPoliticion(Boolean isPoliticion) {
 		this.isPoliticion = isPoliticion;
 	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
 
 	public Long getSerialNo() {
 		return serialNo;
@@ -418,6 +428,8 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	public void setSerialNo(Long serialNo) {
 		this.serialNo = serialNo;
 	}
+
+	
 
 	
 	

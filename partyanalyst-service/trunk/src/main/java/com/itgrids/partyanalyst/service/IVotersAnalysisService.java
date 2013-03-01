@@ -191,6 +191,9 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getHamlets(Long panchayatId);
 	
 	public ResultStatus updateSerialNo(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
-   
+	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount(Long userId,Long locationValue,String type,Long publicationId);
+	
+	public List<VoterVO> getInfluencingPeopleVoterDetails(Long userId,Long locationValue,String type,String buttonName,
+			Long publicationId,Integer startIndex , Integer maxRecords);
 	
 }
