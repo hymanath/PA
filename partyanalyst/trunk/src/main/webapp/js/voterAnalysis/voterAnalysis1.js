@@ -1861,9 +1861,20 @@ $("#voterDetailedReportId").live("click",function(){
 	var constituencyId = $("#constituencyList").val();
 	var prevPId = $("#prevpublicationDateIdsList").val();
 	var presPId = $("#prespublicationDateIdsList").val();
+	var locationType = maintype;
+	var locationValue = mainreqid;
 	if(presPId == 0 || presPId == "")
 		return;
-	var urlStr='voterModificationReportAction.action?constituencyId='+constituencyId+'&fromPublicationDateId='+prevPId+'&toPublicationDateId='+presPId+'&locationType='+maintype+'&locationValue='+mainreqid+'&';
+	if(maintype == 'mandal')
+	{
+		if(mainreqid.substring(0,1) == "2")
+			locationType = 'mandal';
+		else 
+			locationType = 'localElectionBody';
+		
+		locationValue = mainreqid.substring(1);
+	}
+	var urlStr='voterModificationReportAction.action?constituencyId='+constituencyId+'&fromPublicationDateId='+prevPId+'&toPublicationDateId='+presPId+'&locationType='+locationType+'&locationValue='+locationValue+'&';
 	window.open(urlStr,'_blank');
 	window.focus();
 
