@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Voter;
 
 public interface IBoothPublicationVoterDAO extends
@@ -165,4 +166,9 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List getLocationNameByLocationValue(String type, Long locationValue);
 	 
+
+	 public List<Long> getCandidateCount(List<Long> locationValue,Long publicationDateId,String type);
+	 
+	 public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publicationDateId,String type,Integer startIndex,
+				Integer maxRecords);
 }

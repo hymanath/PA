@@ -136,10 +136,13 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	public List<Long> getinfluencingPeopleVoterId(Long voterId);
 	
-	
 	public List<InfluencingPeople> getInfluencePeopleBySearch(
 			InfluencingPeopleVO influencingPeopleVO, String queryString);
 	
 	public List<Long> findInfluencingPeopleDetails(List<Long> voterIds,Long userId);
-
+	
+	public List<Long> getInfluencingPeopleCountByLocation(Long userId,List<String> locationValue,String type);
+	
+	public List<InfluencingPeople> getInfluencingPeopleVoterIDs(Long userId,List<String> locationValue,String type,Integer startIndex,
+			Integer maxRecords);
 }
