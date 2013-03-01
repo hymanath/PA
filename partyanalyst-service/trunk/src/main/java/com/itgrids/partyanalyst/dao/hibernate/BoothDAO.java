@@ -678,7 +678,6 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("publicationDateId",publicationDateId);
 			return query.list();
 		}
-		
 		public List<Object[]> getBoothLocations(String partNo,Long constituencyId){
 			Query query = getSession().createQuery("select distinct model.location,model.villagesCovered,model.publicationDate.publicationDateId,model.publicationDate.date from" +
 					" Booth model where model.partNo = :partNo and model.constituency.constituencyId = :constituencyId order by model.publicationDate.date desc");
@@ -686,7 +685,6 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("partNo", partNo);
 			return query.list();
 		}
-		
 		public Integer updatePanchayatByBoothId(Long boothId, Long panchayatId)
 		{
 			Query query = getSession().createQuery("update Booth model set model.panchayat.panchayatId = :panchayatId where model.boothId = :boothId");
@@ -694,5 +692,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("panchayatId",panchayatId);
 			
 			return query.executeUpdate();
+		}
+		@SuppressWarnings("unchecked")
+		public List getPartNoByBoothId(Long boothId)
+		{
+		return getHibernateTemplate().find("select model.partNo from Booth model where model.boothId = ?",boothId);	
 		}
 }

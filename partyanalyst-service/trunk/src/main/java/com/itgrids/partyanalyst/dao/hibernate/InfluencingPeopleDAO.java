@@ -8,7 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
-import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople, Long> implements IInfluencingPeopleDAO{
 
@@ -530,6 +530,38 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		query.setParameterList("voterIds", voterIds);
 		return query.list();
 	}
+	
+	
+	public List<Long> getInfluencingPeopleCountByLocation(Long userId,List<String> locationValue,String type)
+	{
+			if(type.equalsIgnoreCase("panchayat"))
+				type = "BOOTH";
+		Query query = getSession().createQuery("select count(model.influencingPeopleId) from InfluencingPeople model where model.user.userId=:userId and model.influencingScopeValue in(:locationValue) and model.influencingScope = :type");
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("type", type);
+		return query.list();
+		
+	}
+	
+	
+	
+	public List<InfluencingPeople> getInfluencingPeopleVoterIDs(Long userId,List<String> locationValue,String type,Integer startIndex,
+			Integer maxRecords)
+	{
+	
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "BOOTH";
+		Query query = getSession().createQuery("from InfluencingPeople model where model.user.userId=:userId and model.influencingScopeValue in(:locationValue) and model.influencingScope = :type");
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		query.setParameter("type", type);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		return query.list();
+		
+	}
+	
 	
 	
 

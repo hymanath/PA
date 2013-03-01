@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1242,7 +1243,6 @@ public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
 	  return query.list();
 	
 }
-
 @SuppressWarnings("unchecked")
 public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList)
 {
@@ -1293,4 +1293,58 @@ public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList)
 		
 		return  queryObj.list();
 	}	
+public List<Long> getCandidateCount(List<Long> locationValue,Long publicationDateId,String type)
+{
+	StringBuilder query = new StringBuilder();
+	if(type.equalsIgnoreCase("CONSTITUENCY"))
+	query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId in (:locationValue)");
+	else if(type.equalsIgnoreCase("MANDAL"))
+	query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.tehsil.tehsilId in (:locationValue)");
+	else if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+	query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.localBody.localElectionBodyId in (:locationValue)");
+	else if(type.equalsIgnoreCase("panchayat"))
+		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId in (:locationValue)");
+	else if(type.equalsIgnoreCase("BOOTH"))
+		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.boothId in (:locationValue)");
+	else if(type.equalsIgnoreCase("WARD"))
+		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.localBodyWard.constituencyId =(:locationValue)");
+	query.append(" and model.booth.publicationDate.publicationDateId=:publicationDateId");
+	Query queryObj = getSession().createQuery(query.toString()) ;
+	queryObj.setParameterList("locationValue", locationValue);
+	queryObj.setParameter("publicationDateId", publicationDateId);
+	
+	
+	return queryObj.list();
+	
+}
+
+public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publicationDateId,String type,Integer startIndex,
+		Integer maxRecords)
+{
+	StringBuilder query = new StringBuilder();
+	
+	query.append("select model.voter.name,model.voter.voterId,model.voter.gender,model.voter.mobileNo,model.voter.relativeName,model.voter.age,model.voter.houseNo,model.voter.relationshipType,model.voter.voterIDCardNo,model.voter.cast,model.voter.castCatagery,model2.candidateId from BoothPublicationVoter model,Candidate model2"); 
+	if(type.equalsIgnoreCase("CONSTITUENCY"))
+	query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId in (:locationValue)");
+	else if(type.equalsIgnoreCase("MANDAL"))
+	query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.tehsil.tehsilId in (:locationValue)");
+	else if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+	query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.localBody.localElectionBodyId in (:locationValue)");
+	else if(type.equalsIgnoreCase("panchayat"))
+		query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId in (:locationValue)");
+	else if(type.equalsIgnoreCase("BOOTH"))
+		query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.boothId in (:locationValue)");
+	else if(type.equalsIgnoreCase("WARD"))
+		query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.localBodyWard.constituencyId =(:locationValue)");
+	query.append(" and model.booth.publicationDate.publicationDateId=:publicationDateId");
+	Query queryObj = getSession().createQuery(query.toString()) ;
+	queryObj.setParameterList("locationValue", locationValue);
+	queryObj.setParameter("publicationDateId", publicationDateId);
+	queryObj.setFirstResult(startIndex);
+	queryObj.setMaxResults(maxRecords);
+	
+	return queryObj.list();
+	
+}
+
 }
