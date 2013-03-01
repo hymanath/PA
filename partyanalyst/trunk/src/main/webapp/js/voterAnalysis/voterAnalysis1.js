@@ -6109,7 +6109,7 @@ function getInfluencingPeopleCount(locationValue,type)
 
 	document.getElementById('InfluencingPeopleCountDiv').style.display = 'none';
 	var publicationId = $("#publicationDateList").val();
-	
+	$("#InfluencingPeopleAjaxImg").show();
 	var jObj=
 	{
 		locationValue:locationValue,
@@ -6126,7 +6126,7 @@ function getInfluencingPeopleCount(locationValue,type)
 
 function buildInfluencingPeopleCount(results,jsObj)
 {
-	
+	$("#InfluencingPeopleAjaxImg").hide();
 	var str='';
 	document.getElementById('InfluencingPeopleCountDiv').style.display = 'block';
 	var locationValue =jsObj.locationValue;
