@@ -398,19 +398,12 @@ public class VoterModificationService implements IVoterModificationService{
 			 
 			 if(publicationDateIds != null && publicationDateIds.size() > 0)
 			 {
-				 if(locationType.equalsIgnoreCase(IConstants.MANDAL))
-				 {
-					 Long locationValueId = new Long(locationValue.toString().trim().substring(1));
-					 
-					 if(locationValue.toString().trim().substring(0,1).equalsIgnoreCase("2"))
-						 locationValue = locationValueId;
-					 else
-					 {
-						 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValueId);
-						 locationValue = (Long)list.get(0);
-						 locationType = IConstants.LOCALELECTIONBODY;
-					 }
-				 }
+				 
+				if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)|| locationType.equalsIgnoreCase("localElectionBody"))
+				{
+					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
+					locationValue = (Long)list.get(0);
+				}
 			   List<Object[]> list = voterInfoDAO.getVoterInfoByPublicationDateIds(votersAnalysisService.getReportLevelId(locationType), locationValue, publicationDateIds);
 			   if(list != null && list.size() > 0)
 			   {
@@ -515,18 +508,10 @@ public class VoterModificationService implements IVoterModificationService{
 		 try{
 			 if(locationValue == null)
 				 return "";
-			 if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			 if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
 			 {
-				 Long id = new Long(locationType.toString().substring(1));
-				 if(locationValue.toString().substring(0,1).equalsIgnoreCase("2"))
-				 	locationValue = id;
-				 else
-				 {
-					 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id);
-					 locationValue = (Long)list.get(0);
-					 locationType = IConstants.LOCALELECTIONBODY;
-				 }
-				 
+				 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
+				 locationValue = (Long)list.get(0);
 			 }
 			 List locationNames = boothPublicationVoterDAO.getLocationNameByLocationValue(locationType, locationValue);
 			 if(locationNames != null && locationNames.size() > 0)
