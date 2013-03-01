@@ -1983,9 +1983,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					Object[] params = (Object[])problems.get(i);
 					ProblemDetailsVO problem= new ProblemDetailsVO(); 
 					problem.setProblemID(params[0]!=null?(Long)params[0]:0);
-					//problem.setDescription(params[2]!=null?params[2].toString():"");
+					problem.setDescription(params[2]!=null?params[2].toString():"");
 					problem.setIdentifiedDate(params[3]!=null?sdf.format(params[3]):"");
-					problem.setIdentifiedDate(params[3]!=null?params[3].toString():"");
+					//problem.setIdentifiedDate(params[3]!=null?params[3].toString():"");
 					problemRating = problemManagementService.getAverageRatingOfAProblem((Long)params[0]);
 					problem.setAverageRating(problemRating);
 					problem.setRating(problemRating.getAvgRating());
@@ -1993,9 +1993,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					if(params[3]!=null)
 					problem.setPostedDate((Date)params[3]);
 					
-					//problem.setDefinition(params[1]!=null?params[1].toString():"");
+					problem.setDefinition(params[1]!=null?params[1].toString():"");
 					problem.setExistingFrom(params[4]!=null?sdf.format(params[4]):"");
-					problem.setExistingFrom(params[4]!=null?params[4].toString():"");
+					//problem.setExistingFrom(params[4]!=null?params[4].toString():"");
 					problem.setUserId((Long)params[10]);
 					problem.setUserImageURL(params[11] != null && params[11].toString().length() > 0 ? params[11].toString() : "human.jpg");
 					problem.setFirstName(params[12].toString());
