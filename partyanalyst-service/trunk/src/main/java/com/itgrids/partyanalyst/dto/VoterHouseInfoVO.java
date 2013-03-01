@@ -69,6 +69,9 @@ public class VoterHouseInfoVO {
 	private String queryType;
 	private Long fromSno;
 	private Long toSno;
+	private Boolean isInfluencePerson;
+	private Boolean isCadrePerson;
+	private Boolean isPoliticion;
 	
 	public String getPartyName() {
 		return partyName;
@@ -744,6 +747,30 @@ public class VoterHouseInfoVO {
 
 	public void setToSno(Long toSno) {
 		this.toSno = toSno;
+	}
+
+	public Boolean getIsInfluencePerson() {
+		return isInfluencePerson;
+	}
+
+	public void setIsInfluencePerson(Boolean isInfluencePerson) {
+		this.isInfluencePerson = isInfluencePerson;
+	}
+
+	public Boolean getIsCadrePerson() {
+		return isCadrePerson;
+	}
+
+	public void setIsCadrePerson(Boolean isCadrePerson) {
+		this.isCadrePerson = isCadrePerson;
+	}
+
+	public Boolean getIsPoliticion() {
+		return isPoliticion;
+	}
+
+	public void setIsPoliticion(Boolean isPoliticion) {
+		this.isPoliticion = isPoliticion;
 	}
 
 
