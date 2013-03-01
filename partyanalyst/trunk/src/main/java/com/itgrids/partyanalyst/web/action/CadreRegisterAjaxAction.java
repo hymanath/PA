@@ -363,14 +363,14 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 					/*//constituency
 				designationsList = staticDataService.getBoothsByConstituencyId(new Long(selectedVal));*/
 				//mandal wise polling station
-				designationsList = staticDataService.getBoothsByMandalId(new Long(selectedVal));
+				designationsList = staticDataService.getBoothsByMandalId(new Long(selectedVal),jObj.getLong("constituencyId"));
 				designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
 				}
 				
 				if(checkedVal.equalsIgnoreCase("pollingstationByPublication"))
 				{
 					if(jObj.getString("type").equalsIgnoreCase("mandal"))
-					   designationsList = staticDataService.getBoothsInAMandalIdByPublication(new Long(selectedVal),jObj.getLong("publicationValue"));
+					   designationsList = staticDataService.getBoothsInAMandalIdByPublication(new Long(selectedVal),jObj.getLong("publicationValue"),jObj.getLong("constituencyId"));
 					else
 					   designationsList = votersAnalysisService.getBoothsInMunicipality(new Long(selectedVal),jObj.getLong("publicationValue"),jObj.getLong("constituencyId"));
 					designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
