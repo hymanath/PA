@@ -267,9 +267,9 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	if(!flag1){
 	flag1=true;
 	getAllCconnectedUserDetails();
-	setTimeout("getDetailsForallDistricts()",500);	
-	setTimeout("getDetailsForallConstituencies(districtId)",750);		
-	setTimeout("getAllConnectedUsersByFilterView()",1000);
+	setTimeout("getDetailsForallDistricts()",1000);	
+	//setTimeout("getDetailsForallConstituencies(districtId)",750);		
+	//setTimeout("getAllConnectedUsersByFilterView()",1000);
 	}
 	});
 
@@ -3235,6 +3235,7 @@ function iterateDistrictNames(result)
 	}
 	}
 	$('#connectDistrictSelect').val(districtId);
+	getDetailsForallConstituencies(districtId);
 }
 function iterateDetailsNames(result){
 	var elmt = document.getElementById('connectConstituencySelect');
@@ -3268,7 +3269,7 @@ function iterateDetailsNames(result){
 	flag=true;
 	$('#connectConstituencySelect').val(constituencyId);	
 	}
-	
+	getAllConnectedUsersByFilterView();
 }
 function clearOptionsListForSelectElmtId(elmtId)
 {
