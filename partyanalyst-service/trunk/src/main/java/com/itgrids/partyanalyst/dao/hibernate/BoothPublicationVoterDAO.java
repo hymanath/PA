@@ -1279,7 +1279,7 @@ public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList)
 			stringBuilder.append("select model.booth.constituency.name from BoothPublicationVoter model where model.booth.constituency.constituencyId = ?");
 		else if(type.equalsIgnoreCase(IConstants.MANDAL))
 			stringBuilder.append("select model.booth.tehsil.tehsilName from BoothPublicationVoter model where model.booth.tehsil.tehsilId = ?");
-		else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+		else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
 			stringBuilder.append("select model.booth.localBody.name from BoothPublicationVoter model where model.booth.localBody.localElectionBodyId = ?");
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			stringBuilder.append("select model.booth.panchayat.panchayatName from BoothPublicationVoter model where model.booth.panchayat.panchayatId = ?");
