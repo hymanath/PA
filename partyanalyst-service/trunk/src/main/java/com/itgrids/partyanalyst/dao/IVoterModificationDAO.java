@@ -20,4 +20,26 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	public List<Long> getModifiedVotersByPartNo(String partNo,Long constituencyId, Long publicationDateId, String status);
 	
 	public List<Long> getModifiedVotersByConstituency(Long constituencyId, Long publicationDateId, String status);
+	
+
+	
+	public List<Object[]> getConstitunecyGenderWiseVoterModificationsForEachPublicationByMandal(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList);
+	
+	public List<Object[]> getConstitunecyGenderWiseVoterModificationsForEachPublicationByLocalElectionBody(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList);
+	
+	public List<Object[]> getMandalGenderWiseVoterModificationsForEachPublicationByPanchayat(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList);
+	
+	public List<Object[]> getLocalElectionBodyGenderWiseVoterModificationsForEachPublicationByWard(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList);
+			
+	public List<Object[]> getPanchayatGenderWiseVoterModificationsForEachPublicationByBooth(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList);
+	
+	public List<Object[]> getWardGenderWiseVoterModificationsForEachPublicationByBooth(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList);
+	
+	
 }
