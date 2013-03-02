@@ -1,21 +1,25 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
-import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -25,12 +29,23 @@ public class VoterModificationService implements IVoterModificationService{
 	private static final Logger LOG = Logger.getLogger(VoterModificationService.class);
 	
 	private IVotersAnalysisService votersAnalysisService;
+	private IRegionServiceData regionServiceData ;	
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IVoterModificationDAO voterModificationDAO;
 	private IVoterAgeRangeDAO voterAgeRangeDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IPublicationDateDAO publicationDateDAO;
+	
+	public IRegionServiceData getRegionServiceData() {
+		return regionServiceData;
+	}
+
+	public void setRegionServiceData(IRegionServiceData regionServiceData) {
+		this.regionServiceData = regionServiceData;
+	}
+
+	
 	
 	public IPublicationDateDAO getPublicationDateDAO() {
 		return publicationDateDAO;
@@ -455,6 +470,306 @@ public class VoterModificationService implements IVoterModificationService{
 			 LOG.error("Exception is - "+e);
 			 return votersList;
 		}
+	 }
+	 
+	 
+	public VoterModificationVO getSubLevelsVoterModificationDetails(
+			String locationType, Long locationValue, Long constituencyId,
+			Long fromPublicationDateId, Long toPublicationDateId)	 {
+		 VoterModificationVO voterModificationVO = new VoterModificationVO();
+		 LOG.debug("Entered into getModifiedVotersInALocationBetweenPublucations() Method");
+		 try{
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 
+			 List<SelectOptionVO> list1 = new ArrayList<SelectOptionVO>();
+			 List<SelectOptionVO> list2 = new ArrayList<SelectOptionVO>();
+			 List<Long> locationValues = new ArrayList<Long>();
+			 List<Long> localBodies = new ArrayList<Long>();
+			 List<Object[]> modifiedVoterDetails = null;
+			
+			 
+			 if(locationType.equalsIgnoreCase("constituency"))
+			 {
+				 list1 =  regionServiceData.getTehsilsInConstituency(constituencyId);
+				 list2 = regionServiceData.getLocalElectionBodiesInConstituency(constituencyId, IConstants.PRESENT_YEAR);
+				 
+				 for(SelectOptionVO selectVO:list1)			 
+					 locationValues.add(new Long(selectVO.getId().toString().substring(1)));
+				 for(SelectOptionVO selectVO:list2)			 
+					 localBodies.add(selectVO.getId());
+				 
+				modifiedVoterDetails = voterModificationDAO
+						.getConstitunecyGenderWiseVoterModificationsForEachPublicationByMandal(
+								locationValues,constituencyId, publicationIdsList);
+				processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
+				  //processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 if(localBodies != null && localBodies.size() >0)
+				 {
+				 
+					modifiedVoterDetails = voterModificationDAO
+							.getConstitunecyGenderWiseVoterModificationsForEachPublicationByLocalElectionBody(
+									localBodies, constituencyId,
+									publicationIdsList);
+				 
+					processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
+				   //processModifiedVotersDetailsForLocalElectionBody(modifiedVoterDetails,voterModificationVO);
+				 }
+				
+			 }
+			 else if(locationType.equalsIgnoreCase("mandal"))
+			 {				 
+				 list1 =  regionServiceData.getPanchayitiesInTehsil(new Long("2"+locationValue.toString()));
+				 for(SelectOptionVO selectVO:list1)			 
+					 locationValues.add(new Long(selectVO.getId().toString().substring(1)));
+				 
+				 modifiedVoterDetails = voterModificationDAO.getMandalGenderWiseVoterModificationsForEachPublicationByPanchayat( 
+							locationValues,constituencyId,publicationIdsList);
+				 
+				 processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
+				// processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 
+			 }
+			 else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+			 {
+				 list1 =  regionServiceData.getHamletsOrWards(locationValue,IConstants.PRESENT_YEAR);
+				 
+				 for(SelectOptionVO selectVO:list1)			 
+					 localBodies.add(new Long(selectVO.getId().toString().substring(1)));
+				 
+				 modifiedVoterDetails =  voterModificationDAO.getLocalElectionBodyGenderWiseVoterModificationsForEachPublicationByWard( 
+							locationValues,constituencyId,publicationIdsList);
+				 
+				 if(localBodies != null && localBodies.size() >0)
+					 processModifiedVotersDetailsForLocalBody(modifiedVoterDetails,voterModificationVO);
+				 //processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 
+			 }
+			 else if(locationType.equalsIgnoreCase("panchayat"))
+			 {
+				 list1 = regionServiceData.getBoothsInAPanchayatByPublicationId(new Long("2"+locationValue.toString()),fromPublicationDateId);
+				 
+				 for(SelectOptionVO selectVO:list1)			 
+					 locationValues.add(new Long(selectVO.getId()));
+			
+				 
+				 modifiedVoterDetails =  voterModificationDAO.getPanchayatGenderWiseVoterModificationsForEachPublicationByBooth( 
+							locationValues,constituencyId,publicationIdsList);
+				 processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
+				// processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 
+			 }
+			 else if(locationType.equalsIgnoreCase("ward"))
+			 {
+				 list1 = regionServiceData.getboothsInWard(constituencyId,locationValue,fromPublicationDateId);
+				 
+				 for(SelectOptionVO selectVO:list1)			 
+					 locationValues.add(new Long(selectVO.getId()));
+			
+				 
+				 modifiedVoterDetails =  voterModificationDAO.getWardGenderWiseVoterModificationsForEachPublicationByBooth( 
+						 locationValues,constituencyId,publicationIdsList);
+				 processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
+				 //processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 
+			 }
+			 
+			
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method");
+			 LOG.error("Exception is - "+e);
+		}
+		 
+		 
+		 return voterModificationVO;
+	 }
+	
+	
+	public void processModifiedVotersDetailsForLocalBody(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
+	 {
+		 
+		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
+		 Map<Long,VoterModificationVO> map = new HashMap<Long, VoterModificationVO>();
+		 
+		 
+		 for(Object[] obj:modifiedVoterDetails)
+		 { 
+			 VoterModificationVO voterModificationVO1 = null;
+			 
+			 if(map.get((Long)obj[3]) != null)
+				 voterModificationVO1 = map.get((Long)obj[3]);
+			 else
+				 voterModificationVO1 = new VoterModificationVO();
+			 
+			 if(obj[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+			 {				 
+				 if(obj[2].toString().equalsIgnoreCase("M"))
+					 voterModificationVO1.setMaleVotersAdded((Long)obj[1]);
+				 else if(obj[2].toString().equalsIgnoreCase("F"))
+					 voterModificationVO1.setFemaleVotersAdded((Long)obj[1]);
+				 
+			 }
+			 else if(obj[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+			 {				 
+				 if(obj[2].toString().equalsIgnoreCase("M"))
+					 voterModificationVO1.setMaleVotersDeleted((Long)obj[1]);
+				 else if(obj[2].toString().equalsIgnoreCase("F"))
+					 voterModificationVO1.setFemaleVotersDeleted((Long)obj[1]);
+				 
+			 }
+			 
+			 if(voterModificationVO1.getId() != null)
+			 {
+			  voterModificationVO1.setId((Long)obj[3]);
+			  voterModificationVO1.setName(obj[4].toString());
+			 
+			 }
+			 
+			 map.put((Long)obj[3], voterModificationVO1);
+		 }
+		 
+		 for (Map.Entry<Long, VoterModificationVO> entry : map.entrySet()) 
+			 modificationDetails.add(entry.getValue());
+		
+		 
+		 voterModificationVO.setModifiedLocalBodyVotersList(modificationDetails);
+		 
+	 }
+	 public void processModifiedVotersDetails1(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
+	 {
+		 
+		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
+		 Map<Long,VoterModificationVO> map = new HashMap<Long, VoterModificationVO>();
+		 
+		 
+		 try
+		 {
+			 
+		 
+		 for(Object[] obj:modifiedVoterDetails)
+		 { 
+			 VoterModificationVO voterModificationVO1 = null;
+			 
+			 if(map.get((Long)obj[3]) != null)
+				 voterModificationVO1 = map.get((Long)obj[3]);
+			 else
+				 voterModificationVO1 = new VoterModificationVO();
+			 
+			
+			 if(obj[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+			 {				 
+				 if(obj[2].toString().equalsIgnoreCase("M"))
+					 voterModificationVO1.setMaleVotersAdded((Long)obj[0]);
+				 else if(obj[2].toString().equalsIgnoreCase("F"))
+					 voterModificationVO1.setFemaleVotersAdded((Long)obj[0]);
+				 
+			 }
+			 else if(obj[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+			 {				 
+				 if(obj[2].toString().equalsIgnoreCase("M"))
+					 voterModificationVO1.setMaleVotersDeleted((Long)obj[0]);
+				 else if(obj[2].toString().equalsIgnoreCase("F"))
+					 voterModificationVO1.setFemaleVotersDeleted((Long)obj[0]);
+				 
+			 }
+			 
+			 if(voterModificationVO1.getId() == null)
+			 {
+			  voterModificationVO1.setId((Long)obj[3]);
+			  voterModificationVO1.setName(obj[4].toString());
+			 
+			 }
+			 
+			 map.put((Long)obj[3], voterModificationVO1);
+		 }
+		 
+		 for (Map.Entry<Long, VoterModificationVO> entry : map.entrySet())
+		 {
+			
+				 entry.getValue().setAddedCount(entry.getValue().getFemaleVotersAdded()+entry.getValue().getMaleVotersAdded());
+			 	 entry.getValue().setDeletedCount(entry.getValue().getFemaleVotersDeleted()+entry.getValue().getMaleVotersDeleted());
+			 
+			 modificationDetails.add(entry.getValue());
+		 }
+		
+		 
+		 voterModificationVO.setModifiedVotersList(modificationDetails);
+		 
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 
+		 }
+		 
+	 }
+	 
+	 
+	 public void processModifiedVotersDetails(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
+	 {
+		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
+		 
+		 Map<Long,VoterModificationVO> map = new HashMap<Long, VoterModificationVO>();
+		 
+		 for(Object[] voterDetails:modifiedVoterDetails){
+			 
+			 VoterModificationVO voterModificationVO1 = null;
+			 
+			 if(voterDetails[1].toString().equalsIgnoreCase("Added"))
+			 {	
+				 voterModificationVO1 = map.get((Long)voterDetails[2]);
+				 
+				 if(voterModificationVO1 != null)
+					 voterModificationVO1 = map.get((Long)voterDetails[2]);
+				 else 
+					 voterModificationVO1 = new VoterModificationVO();
+						 
+				 voterModificationVO1.setAddedCount((Long)voterDetails[0]);
+			 }
+			 else if(voterDetails[1].toString().equalsIgnoreCase("Deleted"))
+			 {
+				 
+                voterModificationVO1 = map.get((Long)voterDetails[2]);
+				 
+				 if(voterModificationVO1 != null)
+					 voterModificationVO1 = map.get((Long)voterDetails[2]);
+				 else 
+					 voterModificationVO1 = new VoterModificationVO();
+						 
+				 voterModificationVO1.setDeletedCount((Long)voterDetails[0]);
+			 
+			 }
+			 
+			 voterModificationVO1.setName(voterDetails[3].toString());
+			 voterModificationVO1.setId((Long)voterDetails[2]);
+			 
+			 map.put((Long)voterDetails[2], voterModificationVO1);
+			 //modificationDetails.add(voterModificationVO1);
+		 }
+		 
+		
+		 for (Map.Entry<Long, VoterModificationVO> entry : map.entrySet()) 
+			 modificationDetails.add(entry.getValue());
+		
+		 
+		 voterModificationVO.setModifiedVotersList(modificationDetails);
+	 }
+	 
+	 public void processModifiedVotersDetailsForLocalElectionBody(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
+	 {
+		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
+		 
+		 for(Object[] voterDetails:modifiedVoterDetails){
+			 
+			 VoterModificationVO voterModificationVO1 = new VoterModificationVO();
+			 
+			 if(voterDetails[0].toString().equalsIgnoreCase("Added"))
+				 voterModificationVO1.setAddedCount((Long)voterDetails[0]);
+			 else if(voterDetails[0].toString().equalsIgnoreCase("Deleted"))
+				 voterModificationVO1.setDeletedCount((Long)voterDetails[1]);
+			 
+			 voterModificationVO1.setName(voterDetails[3].toString());
+			 modificationDetails.add(voterModificationVO1);
+		 }
+		 
+		 voterModificationVO.setModifiedLocalBodyVotersList(modificationDetails);
 	 }
 	 
 	 /**
