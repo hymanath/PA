@@ -84,9 +84,9 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public Long findVotersCountByPublicationIdInALocation(String locationType,Long locationId,Long publicationDateId);
 	
-	public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
-	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	 
 	public List<Long> getVoterStateId(Long voterId);
 	
@@ -94,15 +94,15 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Voter> getVoterDetailsByCasteStateForPanchayat(Long panchayatId,Long publicationDateId,Long casteStateId);
 	
-	public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId);
+	public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
 	public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString);
 	
-	public List<Object[]> getCastWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId);
+	public List<Object[]> getCastWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	 
-	public List<Object[]> getPartyWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId); 
+	public List<Object[]> getPartyWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId); 
 	
-	public List<Object[]> getParties(Long userId,String locationType,Long locationId,Long publicationDateId);
+	public List<Object[]> getParties(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
 	public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString);
 	
