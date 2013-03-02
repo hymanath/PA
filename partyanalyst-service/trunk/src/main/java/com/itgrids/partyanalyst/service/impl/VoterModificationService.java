@@ -590,9 +590,13 @@ public class VoterModificationService implements IVoterModificationService{
 	 * @param voterModificationVO , we need to set those values to this  vo.
 	 */
 	
-	public void processModifiedVotersDetailsForLocalBody(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
-	 {
+	public void processModifiedVotersDetailsForLocalBody(
+			List<Object[]> modifiedVoterDetails,
+			VoterModificationVO voterModificationVO) throws Exception	 {
 		 
+		LOG.error("Entered in  processModifiedVotersDetailsForLocalBody service method");
+		try
+		{
 		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
 		 Map<Long,VoterModificationVO> map = new HashMap<Long, VoterModificationVO>();
 		 
@@ -638,6 +642,13 @@ public class VoterModificationService implements IVoterModificationService{
 		
 		 
 		 voterModificationVO.setModifiedLocalBodyVotersList(modificationDetails);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in processModifiedVotersDetailsForLocalBody service method");
+			throw new  Exception();
+			
+		}
 		 
 	 }
 	 public void processModifiedVotersDetails(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
