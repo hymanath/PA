@@ -28,7 +28,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("mandal"))
 			str.append(" and model2.booth.tehsil.tehsilId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" and model2.booth.pancahayat.pancahayatId = :locationValue and model2.booth.localBody is null ");
+			str.append(" and model2.booth.panchayat.pancahayatId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
@@ -131,7 +131,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("mandal"))
 			str.append(" and model2.booth.tehsil.tehsilId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" and model2.booth.pancahayat.pancahayatId = :locationValue and model2.booth.localBody is null ");
+			str.append(" and model2.booth.panchayat.panchayatId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
@@ -216,4 +216,121 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		query.setParameter("status",status);
 		return query.list();
 	}
+	
+	public List<Object[]> getConstitunecyGenderWiseVoterModificationsForEachPublicationByMandal(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
+				" model2.booth.tehsil.tehsilId,model2.booth.tehsil.tehsilName from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model2.booth.tehsil.tehsilId in(:locationValues) and model2.booth.localBody is null ");			
+		str.append(" group by model.status,model.voter.gender , model2.booth.tehsil.tehsilId ");		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+	
+		return query.list();
+	}
+	
+	
+	
+	public List<Object[]> getConstitunecyGenderWiseVoterModificationsForEachPublicationByLocalElectionBody(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
+				" model.booth.localBody.localElectionBodyId , model.booth.localBody.name from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model.booth.localBody.localElectionBodyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
+	    str.append(" group by model.publicationDate.publicationDateId,model.status,model.voter.gender,model.booth.localBody.localElectionBodyId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+	
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getMandalGenderWiseVoterModificationsForEachPublicationByPanchayat(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId)," +
+				"model.status,model.voter.gender," +
+				"model2.booth.panchayat.panchayatId ,model2.booth.panchayat.panchayatName from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model2.booth.panchayat.panchayatId in(:locationValues) and model2.booth.localBody is null  ");
+	    str.append(" group by model.status,model.voter.gender," +
+	    		"model2.booth.panchayat.panchayatId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+	
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalElectionBodyGenderWiseVoterModificationsForEachPublicationByWard(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
+				" model2.localBodyWard.constituencyId , model2.localBodyWard.name from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model2.localBodyWard.constituencyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
+	    str.append(" group by model.status,model.voter.gender," +
+	    		"model2.booth.pancahayat.pancahayatId ,model2.booth.pancahayat.pancahayatId , model2.localBodyWard.constituencyId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+		query.setParameter("constituencyId",constituencyId);
+	
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatGenderWiseVoterModificationsForEachPublicationByBooth(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
+				" model2.booth.boothId , model2.booth.partNo from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model2.booth.boothId in(:locationValues)");
+	    str.append(" group by model.status,model.voter.gender," +
+	    		"model2.booth.panchayat.panchayatId ,model2.booth.panchayat.panchayatId ,  model2.booth.boothId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+	
+		return query.list();
+	}
+	
+	public List<Object[]> getWardGenderWiseVoterModificationsForEachPublicationByBooth(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
+				" model2.booth.boothId, model2.booth.partNo from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model2.booth.boothId in(:locationValues)");
+	    str.append(" group by model.status,model.voter.gender," +
+	    		"model2.booth.panchayat.panchayatId ,model2.booth.panchayat.panchayatId ,  model2.booth.boothId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+	
+		return query.list();
+	}
+	
 }
