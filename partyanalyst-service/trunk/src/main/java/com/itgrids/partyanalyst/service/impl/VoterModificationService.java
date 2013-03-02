@@ -472,6 +472,15 @@ public class VoterModificationService implements IVoterModificationService{
 		}
 	 }
 	 
+	 /**
+	  * This method will get the subLevel voter added , deleted information
+	  * @author Samba Penugonda
+	  * @param locationType , which specifies the type of location like constituency,mandal....etc
+	  * @param constituencyId ,constitunecy id of the location
+	  * @param fromPublicationDateId , this is from PublicationDateId.
+	  * @param toPublicationDateId , this is to PublicationDateId.
+	  * @return all the sublevel voter added , deleted information for selected location
+	  */
 	 
 	public VoterModificationVO getSubLevelsVoterModificationDetails(
 			String locationType, Long locationValue, Long constituencyId,
@@ -501,8 +510,7 @@ public class VoterModificationService implements IVoterModificationService{
 				modifiedVoterDetails = voterModificationDAO
 						.getConstitunecyGenderWiseVoterModificationsForEachPublicationByMandal(
 								locationValues,constituencyId, publicationIdsList);
-				processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
-				  //processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
 				 if(localBodies != null && localBodies.size() >0)
 				 {
 				 
@@ -511,8 +519,7 @@ public class VoterModificationService implements IVoterModificationService{
 									localBodies, constituencyId,
 									publicationIdsList);
 				 
-					processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
-				   //processModifiedVotersDetailsForLocalElectionBody(modifiedVoterDetails,voterModificationVO);
+					processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
 				 }
 				
 			 }
@@ -525,8 +532,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 modifiedVoterDetails = voterModificationDAO.getMandalGenderWiseVoterModificationsForEachPublicationByPanchayat( 
 							locationValues,constituencyId,publicationIdsList);
 				 
-				 processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
-				// processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
 				 
 			 }
 			 else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
@@ -541,7 +547,6 @@ public class VoterModificationService implements IVoterModificationService{
 				 
 				 if(localBodies != null && localBodies.size() >0)
 					 processModifiedVotersDetailsForLocalBody(modifiedVoterDetails,voterModificationVO);
-				 //processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
 				 
 			 }
 			 else if(locationType.equalsIgnoreCase("panchayat"))
@@ -554,8 +559,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 
 				 modifiedVoterDetails =  voterModificationDAO.getPanchayatGenderWiseVoterModificationsForEachPublicationByBooth( 
 							locationValues,constituencyId,publicationIdsList);
-				 processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
-				// processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
 				 
 			 }
 			 else if(locationType.equalsIgnoreCase("ward"))
@@ -568,21 +572,23 @@ public class VoterModificationService implements IVoterModificationService{
 				 
 				 modifiedVoterDetails =  voterModificationDAO.getWardGenderWiseVoterModificationsForEachPublicationByBooth( 
 						 locationValues,constituencyId,publicationIdsList);
-				 processModifiedVotersDetails1(modifiedVoterDetails,voterModificationVO);
-				 //processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
+				 processModifiedVotersDetails(modifiedVoterDetails,voterModificationVO);
 				 
 			 }
-			 
 			
 		 }catch (Exception e) {
 			 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method");
 			 LOG.error("Exception is - "+e);
 		}
 		 
-		 
 		 return voterModificationVO;
 	 }
 	
+	/**
+	 * This method will process sublevel voter modification details for a selected location
+	 * @param modifiedVoterDetails , this has the voter added , deleted details
+	 * @param voterModificationVO , we need to set those values to this  vo.
+	 */
 	
 	public void processModifiedVotersDetailsForLocalBody(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
 	 {
@@ -634,7 +640,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 voterModificationVO.setModifiedLocalBodyVotersList(modificationDetails);
 		 
 	 }
-	 public void processModifiedVotersDetails1(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
+	 public void processModifiedVotersDetails(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
 	 {
 		 
 		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
@@ -699,77 +705,6 @@ public class VoterModificationService implements IVoterModificationService{
 			 
 		 }
 		 
-	 }
-	 
-	 
-	 public void processModifiedVotersDetails(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
-	 {
-		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
-		 
-		 Map<Long,VoterModificationVO> map = new HashMap<Long, VoterModificationVO>();
-		 
-		 for(Object[] voterDetails:modifiedVoterDetails){
-			 
-			 VoterModificationVO voterModificationVO1 = null;
-			 
-			 if(voterDetails[1].toString().equalsIgnoreCase("Added"))
-			 {	
-				 voterModificationVO1 = map.get((Long)voterDetails[2]);
-				 
-				 if(voterModificationVO1 != null)
-					 voterModificationVO1 = map.get((Long)voterDetails[2]);
-				 else 
-					 voterModificationVO1 = new VoterModificationVO();
-						 
-				 voterModificationVO1.setAddedCount((Long)voterDetails[0]);
-			 }
-			 else if(voterDetails[1].toString().equalsIgnoreCase("Deleted"))
-			 {
-				 
-                voterModificationVO1 = map.get((Long)voterDetails[2]);
-				 
-				 if(voterModificationVO1 != null)
-					 voterModificationVO1 = map.get((Long)voterDetails[2]);
-				 else 
-					 voterModificationVO1 = new VoterModificationVO();
-						 
-				 voterModificationVO1.setDeletedCount((Long)voterDetails[0]);
-			 
-			 }
-			 
-			 voterModificationVO1.setName(voterDetails[3].toString());
-			 voterModificationVO1.setId((Long)voterDetails[2]);
-			 
-			 map.put((Long)voterDetails[2], voterModificationVO1);
-			 //modificationDetails.add(voterModificationVO1);
-		 }
-		 
-		
-		 for (Map.Entry<Long, VoterModificationVO> entry : map.entrySet()) 
-			 modificationDetails.add(entry.getValue());
-		
-		 
-		 voterModificationVO.setModifiedVotersList(modificationDetails);
-	 }
-	 
-	 public void processModifiedVotersDetailsForLocalElectionBody(List<Object[]> modifiedVoterDetails,VoterModificationVO voterModificationVO)
-	 {
-		 List<VoterModificationVO> modificationDetails = new ArrayList<VoterModificationVO>();
-		 
-		 for(Object[] voterDetails:modifiedVoterDetails){
-			 
-			 VoterModificationVO voterModificationVO1 = new VoterModificationVO();
-			 
-			 if(voterDetails[0].toString().equalsIgnoreCase("Added"))
-				 voterModificationVO1.setAddedCount((Long)voterDetails[0]);
-			 else if(voterDetails[0].toString().equalsIgnoreCase("Deleted"))
-				 voterModificationVO1.setDeletedCount((Long)voterDetails[1]);
-			 
-			 voterModificationVO1.setName(voterDetails[3].toString());
-			 modificationDetails.add(voterModificationVO1);
-		 }
-		 
-		 voterModificationVO.setModifiedLocalBodyVotersList(modificationDetails);
 	 }
 	 
 	 /**
