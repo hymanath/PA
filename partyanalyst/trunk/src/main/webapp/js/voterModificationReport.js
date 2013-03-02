@@ -70,11 +70,11 @@ $(document).ready(function() {
 
 function getPublicationDate()
 	{
+			var value=constituencyId;
 		if(value == null || value == '')
 			return;
 
 		$('#voterAgeInfoAjaxImg').css('display','block');
-		var value=constituencyId;
 		
 		var jsObj=
 		{	
@@ -192,6 +192,7 @@ function getPublicationDate()
  		               success : function( o ) {
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
+									
 								if(jsObj.task == "getVoterInfo")
 								
 									showVoterInfo(myResults,jsObj);
@@ -219,6 +220,12 @@ function getPublicationDate()
 									buildWardsOrPanchaytis(myResults);
 								else if(jsObj.task == "boothsInWard" || jsObj.task == "getBoothsInPanchayat")
 									buildBooths(myResults);
+								else if(jsObj.task == "getSubLevelInformation");
+								{
+								buildSubLevelInformation(jsObj,myResults);
+								$('#subLevelAjaxImageDiv').css('display','none');
+								}
+									
 								
 							}catch (e) {
 							     
@@ -611,7 +618,7 @@ function callAjaxToGetBoothsInPanchayatOrWard(type)
 		{
 			id:$('#panchayatSelectId').val(),
             constId:constituencyId,
-			publicationId:$('#toPublicationDateId').val(),
+			publicationId:7,
 			task:task
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
@@ -729,8 +736,8 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 		var jObj=
 		{
 			constituencyId			: constituencyId,
-			fromPublicationDateId	: frmPblCtnId,
-			toPublicationDateId		: toPblCtnId,
+			fromPublicationDateId	: 7,
+			toPublicationDateId		: 8,
 			locationType			: locationScope,
 			locationValue			: locationValue1,
 			status					: status,
@@ -799,4 +806,73 @@ $('#voterDetails').dataTable({
 		  "aoColumns": [null,null,null,null,null,null,null
 		] 
 		});
+}
+
+
+
+function buildSubLevelInformation(jsObj,myResults)
+{
+
+
+$('#subLevelDiv').html('');
+if(myResults.modifiedVotersList.length == 0)
+	return false;
+    var str='';
+	 str+='<table class="voterInfoTable" >';
+	 str+='<thead>';
+	 str +='<tr>';
+		str +='<th rowspan="2">Sublevel Name</th>';
+		str +='<th COLSPAN="3">Added</th>';
+		str +='<th COLSPAN="3">Deleted</th>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Total</th>';
+		str +='<th>Male</th>';
+		str +='<th>Female</th>';
+		str +='<th>Total</th>';
+		str +='<th>Male</th>';
+		str +='<th>Female</th>';
+		str +='</tr>';
+     str+='</thead>';
+
+	 for(var i=0;i<myResults.modifiedVotersList.length;i++)
+ 	 {
+		 str+='<tbody>';
+		  str+='<tr>';
+		    str+='<td>'+myResults.modifiedVotersList[i].name+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].deletedCount+'</td>';
+            str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
+		  str+='</tr>';
+		 str+='</tbody>';
+
+	 }
+
+	str+='</table>';
+	
+	$('#subLevelDiv').html(str);
+}
+
+function callAjaxForSubLevelInformation()
+{
+
+	var jsObj=
+		{	
+			constituencyId:constituencyId,
+			fromPublicationDateId:fromPublicationDateId,
+			toPublicationDateId:toPublicationDateId,
+			locationType:locationType,
+			locationValue:locationValue,
+			status:"",
+			task:"getSubLevelInformation"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getSubLevelsVoterModificationDetails.action?"+rparam;	
+
+		callAjax(jsObj,url);
+		$('#subLevelAjaxImageDiv').css('display','block');
+
 }
