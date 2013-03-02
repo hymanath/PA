@@ -350,7 +350,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		for(String params : list)
 		System.out.println(params);
 	}*/
-	public void testFindLatestElectionYearByConstituencyIds()
+	/*public void testFindLatestElectionYearByConstituencyIds()
 	{
 		List<Long> constituencyId = new ArrayList<Long>(0);
 		constituencyId.add(309l);
@@ -360,5 +360,15 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			Object[] data = (Object[])list.get(i);
 		   System.out.println(data[0].toString()+"  "+data[1].toString());
 		}
+	}
+	*/
+	public void testfindAllElectionsHappendInAConstByConstIds()
+	{
+		List<Long> constituencyIdsList = new ArrayList<Long>(0);
+		constituencyIdsList.add(232l);
+		constituencyIdsList.add(495l);
+		List<Object[]> list = constituencyElectionDAO.findAllElectionsHappendInAConstByConstIds(constituencyIdsList);
+		for(Object[] params : list)
+		System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}
 }

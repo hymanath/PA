@@ -579,4 +579,15 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	query.setParameter("constituencyId", constituencyId);
     	return query.list();
     }
+	
+	public List<Object[]> getVotersCountInAConstituencyByParliamentConsId(Long electionId,Long assemblyConstituencyId, Long parliamentConstituencyId){
+    	Query query = getSession().createQuery("select sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters),count(*) from BoothConstituencyElection model " +
+				" where model.constituencyElection.election.electionId = :electionId and model.booth.constituency.constituencyId = :assemblyConstituencyId and model.constituencyElection.constituency.constituencyId = :parliamentConstituencyId");
+    	query.setParameter("electionId", electionId);
+    	query.setParameter("assemblyConstituencyId", assemblyConstituencyId);
+    	query.setParameter("parliamentConstituencyId", parliamentConstituencyId);
+    	return query.list();
+   	}
+	
+	
 }

@@ -8035,11 +8035,15 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
     	List<Long> constituencyIds = new ArrayList<Long>();
     	constituencyIds.add(constituencyId);
     	List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
+		Long parliamentConstId = 0l;
 		if(parliamentList != null && parliamentList.size() > 0)
 		{
 			Object[] ParliamentDetails = (Object[])parliamentList.get(0);
 			if((Long)ParliamentDetails[0]!= null)
+			{
 				constituencyIds.add((Long)ParliamentDetails[0]);
+				parliamentConstId = (Long)ParliamentDetails[0];
+			}
 		}
     	
     	try{
@@ -8047,7 +8051,8 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
     		String type2 = null;
     		
     		if(type.equalsIgnoreCase("constituency")){
-    			list  = constituencyElectionDAO.findAllElectionsHappendInAConstituency(id);
+    			//list  = constituencyElectionDAO.findAllElectionsHappendInAConstituency(id);
+    			list  = constituencyElectionDAO.findAllElectionsHappendInAConstByConstIds(constituencyIds);
     			
     		}else if(type.equalsIgnoreCase("mandal")){
     			if(id.toString().trim().substring(0, 1).equalsIgnoreCase("2"))
@@ -8087,7 +8092,12 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
     		
     		List<Election> electionList = electionDAO.getElectionDetailsForElections(electionIds);
     		
-    		for(Election election:electionList){    			
+    		for(Election election:electionList){
+    			if("Parliament".equalsIgnoreCase(election.getElectionScope().getElectionType().getElectionType()))
+    			  map.put(election.getElectionDate(),election);
+    		}
+    		for(Election election:electionList){
+    		   if("Assembly".equalsIgnoreCase(election.getElectionScope().getElectionType().getElectionType()))
     			map.put(election.getElectionDate(),election);
     		}
     		
@@ -8100,7 +8110,13 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				VoterVO voterVO = new VoterVO();				
 				voterVO.setElectionId(election.getElectionId());
 				voterVO.setElectionDate(election.getElectionDate());
-				voterVO.setType("Election");				
+				voterVO.setType("Election");
+				if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				 voterVO.setAssemblyConstituencyId(constituencyId);
+				else if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+					voterVO.setParliamentConstituencyId(parliamentConstId);
+				voterVO.setElectionType(election.getElectionScope().getElectionType().getElectionType());
+					
 				previousDetailsList.add(voterVO);			
 			}
     		
@@ -8388,8 +8404,11 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 List<Object[]> votersCountDetails = null;
 			
 	         try{
-					if(type.equalsIgnoreCase("constituency")){					
-						votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAConstituency(voterVO.getElectionId(), constituencyId);
+					if(type.equalsIgnoreCase("constituency")){
+						if(voterVO.getElectionType() != null && voterVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+							votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAConstituency(voterVO.getElectionId(), voterVO.getAssemblyConstituencyId());
+						else if(voterVO.getElectionType() != null && voterVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+							votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAConstituencyByParliamentConsId(voterVO.getElectionId(), constituencyId, voterVO.getParliamentConstituencyId());
 					}else if(type.equalsIgnoreCase("mandal")){
 						
 						if (mandalId.toString().substring(0, 1).trim()
