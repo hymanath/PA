@@ -234,6 +234,9 @@
   </div>
 </div>
 
+<div id="subLevelAjaxImageDiv" style="display:none;margin-left:300px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+<div id="subLevelDiv"></div>
+
 <script type="text/javascript">
 
 //Created by sasi
@@ -242,9 +245,8 @@ getVoterInfo();
 getAddedDeletedVoterInfoInALocation();
 getGenderWiseVoterModificationsBetweenPublications();
 getGenderWiseVoterModificationsForEachPublication();
-
 getAllVotersModificationDetailsBetweenPublications('default',"onload");
-
+callAjaxForSubLevelInformation();
 </script>
 </body>
 </html>
