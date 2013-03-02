@@ -66,6 +66,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+	<link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 
 	<!-- YUI Dependency files (End) -->
 
