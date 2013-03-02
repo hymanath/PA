@@ -2013,8 +2013,8 @@ function getPartyWiseCastInfo(){
   var typename=mainname;
 		var jsObj=
 			{
-				type:type,	
-				id:id,
+				type:maintype,	
+				id:mainreqid,
 				typename:typename,
 				publicationDateId:mainpublicationId,
 				constituencyId:$("#constituencyList").val(),

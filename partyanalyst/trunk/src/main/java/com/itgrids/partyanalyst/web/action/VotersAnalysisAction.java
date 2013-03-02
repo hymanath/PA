@@ -566,7 +566,7 @@ public String getVotersCastInfoByConstituency()
 		Long id = jObj.getLong("id");
 		String type = jObj.getString("type");
 		Long publicationId = jObj.getLong("publicationDateId");	
-		VoterCastInfoVO votersByCast  = votersAnalysisService.getCastWisePartyCount(userId,type,id,publicationId);
+		VoterCastInfoVO votersByCast  = votersAnalysisService.getCastWisePartyCount(userId,type,id,publicationId,jObj.getLong("constituencyId"));
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 	}
 	else if(jObj.getString("task").equalsIgnoreCase("getCastInfoForsubLevels"))
