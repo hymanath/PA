@@ -40,6 +40,10 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String publicationName;
 	private Long serialNo;
 	private Long candidateId;
+	private Long assemblyConstituencyId;
+	private Long parliamentConstituencyId;
+	private String electionType;
+
 	
 	
 	public String getPublicationName() {
@@ -428,9 +432,23 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	public void setSerialNo(Long serialNo) {
 		this.serialNo = serialNo;
 	}
-
 	
-
-	
-	
+	public Long getAssemblyConstituencyId() {
+		return assemblyConstituencyId;
+	}
+	public void setAssemblyConstituencyId(Long assemblyConstituencyId) {
+		this.assemblyConstituencyId = assemblyConstituencyId;
+	}
+	public Long getParliamentConstituencyId() {
+		return parliamentConstituencyId;
+	}
+	public void setParliamentConstituencyId(Long parliamentConstituencyId) {
+		this.parliamentConstituencyId = parliamentConstituencyId;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
 }

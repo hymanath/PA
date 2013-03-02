@@ -244,4 +244,11 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 				System.out.println(params[0]+" "+params[1]);
 	}*/
 	
+	
+	public void testgetVotersCountInAConstituencyByParliamentConsId()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getVotersCountInAConstituencyByParliamentConsId(38l, 232l, 495l);
+		
+	}
+	
 }
