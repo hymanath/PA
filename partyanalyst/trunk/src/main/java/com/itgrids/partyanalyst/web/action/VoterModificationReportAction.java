@@ -320,4 +320,32 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	}
 	
 	
+	
+	public String getSubLevelsVoterModificationDetails()
+	{
+		
+		String param ;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);		
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+		}
+		
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+		String locationType = jObj.getString("locationType");
+		Long locationValue = jObj.getLong("locationValue");
+		String status = jObj.getString("status");
+		
+		
+		
+		voterModificationVO = voterModificationService.getSubLevelsVoterModificationDetails(
+				locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		return Action.SUCCESS;
+		
+	}
+	
 }
