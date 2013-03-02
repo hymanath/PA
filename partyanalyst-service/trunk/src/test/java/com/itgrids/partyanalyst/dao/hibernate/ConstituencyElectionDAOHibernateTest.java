@@ -369,6 +369,6 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		constituencyIdsList.add(495l);
 		List<Object[]> list = constituencyElectionDAO.findAllElectionsHappendInAConstByConstIds(constituencyIdsList);
 		for(Object[] params : list)
-		System.out.println(params[0]+" "+params[1]+" "+params[2]);
+		System.out.println(params[0]+" "+params[1]);
 	}
 }

@@ -621,7 +621,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		
-		stringBuilder.append("select distinct(model.election.electionId), model.election.elecSubtype, model.constituency.constituencyId from ConstituencyElection model where " +
+		stringBuilder.append("select distinct(model.election.electionId), model.election.elecSubtype from ConstituencyElection model where " +
 				"  model.constituency.constituencyId in (:constituencyId) and model.election.electionScope.electionType.electionTypeId in(1,2)  order by model.election.electionDate desc  ");
 		
 		Query query = getSession().createQuery(stringBuilder.toString());
