@@ -1495,7 +1495,9 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 							boothsdtllist.setPartno(brVO.getPartNo());
 							boothsdtllist.setId(brVO.getBoothId());
 							boothsdtllist.setLocation(brVO.getLocation());
-							boothsdtllist.setVillageCovered(brVO.getVillagesCovered());
+							String vill_co=brVO.getVillagesCovered();
+							String villages_co=vill_co.replace("'"," ").replace("\"", " ").replace("\r", " ");
+							boothsdtllist.setVillageCovered(villages_co);
 							booths.add(boothsdtllist);
 						}
 					else
@@ -1507,7 +1509,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 							boothsdtllist.setPartno(brVO.getPartNo());
 							boothsdtllist.setId(brVO.getBoothId());
 							boothsdtllist.setLocation(brVO.getLocation());
-							boothsdtllist.setVillageCovered(brVO.getVillagesCovered());
+							String vill_co=brVO.getVillagesCovered();
+							String villages_co=vill_co.replace("'"," ").replace("\"", " ").replace("\r", "");
+							boothsdtllist.setVillageCovered(villages_co);
+							//boothsdtllist.setVillageCovered((brVO.getVillagesCovered()).replace("'"," ").replace("\"", " ").replace("\\r|\\n", ""));
 							booths.add(boothsdtllist);
 						}
 					
