@@ -29,6 +29,8 @@ public interface IVoterModificationService {
 	 public String getLocationNameByLocationValue(String locationType, Long locationValue);
 	 
 	 public String getPublicationNameByPublicationDateId(Long publicationDateId);
+	 
+	 public VoterModificationVO getSubLevelsVoterModificationDetails(String locationType, Long locationValue, Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId);
 
     
 }
