@@ -517,7 +517,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	private List<SelectOptionVO> getLocalElectionBodies(Long constituencyId, String year)
+	public  List<SelectOptionVO> getLocalElectionBodies(Long constituencyId, String year)
 	{
 		log.debug("Inside getLocalElectionBodies method in RegionServiceDataImp Class");
 		List<SelectOptionVO> localElectionBodiesList = new ArrayList<SelectOptionVO>(); 
@@ -583,7 +583,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	 return type;	
 	}
 	
-	private List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId)
+	public List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
 		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
