@@ -4542,6 +4542,11 @@
         </result>
 		</action>
 		
+		<action name="getSubLevelsVoterModificationDetails" class="voterModificationReportAction" method="getSubLevelsVoterModificationDetails">
+		 <result type="json" name="success">
+		      <param name="root">voterModificationVO</param>
+		    </result>
+		</action>
 		
 	</package>
 </struts>      
