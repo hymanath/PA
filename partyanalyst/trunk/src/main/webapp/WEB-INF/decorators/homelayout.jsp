@@ -305,7 +305,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 							</a></li>
 							<li><a href="statePageAction.action?stateId=17"><span>Meghalaya</span>
 							</a></li>
-							<li><a href="statePageAction.action?stateId=19"><span>Nagalan</span>
+							<li><a href="statePageAction.action?stateId=19"><span>Nagaland</span>
 							</a></li>
 							<li><a href="statePageAction.action?stateId=25"><span>Tripura</span>
 							</a></li>
