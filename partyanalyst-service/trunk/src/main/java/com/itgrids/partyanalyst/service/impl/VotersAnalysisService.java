@@ -1217,8 +1217,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			Long votesConsidered = 0L;
 			
 			
-			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
-			voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
+			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
+			voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 			voterCastInfoVO.setTotalCasts(voterCastInfoVO.getVoterCastInfoVOList().size());
 			voterCastInfoVO.setTotalVoters(totalVoters);
 			
@@ -1259,7 +1259,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			Long partyWisevotesConsidered = 0L;
 			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
 			
-			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId));
+			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 			for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
 				partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
 				voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
@@ -1280,11 +1280,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	}
 	
-	public List<SelectOptionVO> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	public List<SelectOptionVO> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 	{
 		List<SelectOptionVO> castCategoryWiseList = new ArrayList<SelectOptionVO>(0);
 		try{
-			List<Object[]> list = boothPublicationVoterDAO.getCastCategoryWiseVotersCountByPublicationIdInALocation(userId, locationType, locationId, publicationDateId);
+			List<Object[]> list = boothPublicationVoterDAO.getCastCategoryWiseVotersCountByPublicationIdInALocation(userId, locationType, locationId, publicationDateId,constituencyId);
 			
 			if(list != null && list.size() > 0)
 				for(Object[] params : list)
@@ -1298,11 +1298,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
-	public List<VoterCastInfoVO> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	public List<VoterCastInfoVO> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 	{
 		List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
 		try{
-			List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId);
+			List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId);
 			
 			if(list != null && list.size() > 0)
 			{
@@ -1355,11 +1355,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
-	public List<VoterCastInfoVO> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId)
+	public List<VoterCastInfoVO> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 	{
 		List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
 		try{
-			List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId);
+			List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId);
 			
 			if(list != null && list.size() > 0)
 			{
@@ -1781,7 +1781,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfoVO.setMandalName(mandalName);
 				// For Mandal
 				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
-					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"mandal",new Long(id),publicationDateId);
+					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"mandal",new Long(id),publicationDateId,constituencyId);
 					Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("mandal"),new Long(id),publicationDateId,constituencyId);
 					if(totalVoters == null)
 						totalVoters = getVotersCountByPublicationIdInALocation("mandal",new Long(id),publicationDateId);
@@ -1792,7 +1792,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				if(mandalId.substring(0, 1).toString().trim().equalsIgnoreCase("1")){
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id));
 					
-					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"localElectionBody",(Long)list.get(0),publicationDateId);
+					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"localElectionBody",(Long)list.get(0),publicationDateId,constituencyId);
 					Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("localElectionBody"),new Long(id),publicationDateId,constituencyId);
 					if(totalVoters == null)
 						totalVoters = getVotersCountByPublicationIdInALocation("localElectionBody",new Long(id),publicationDateId);
@@ -1823,7 +1823,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				String panchayatName = pancahyats.getName();
 				voterCastInfo.setMandalName(panchayatName);
 				voterCastInfo.setLocationId(panchayatId);
-				List<Object[]> panchayatCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"panchayat",panchayatId,publicationDateId);
+				List<Object[]> panchayatCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"panchayat",panchayatId,publicationDateId,null);
 				Long totalVoters = getVotersCountByPublicationIdInALocation("panchayat",panchayatId,publicationDateId);
 				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(panchayatCastDetails,totalVoters));
 				
@@ -1844,7 +1844,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfo = new VoterCastInfoVO();
 				voterCastInfo.setMandalName(ward[1] != null?ward[1].toString():"");
 				voterCastInfo.setLocationId((Long)ward[0]);
-				List<Object[]> wardCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"ward",(Long)ward[0],publicationDateId);
+				List<Object[]> wardCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"ward",(Long)ward[0],publicationDateId,null);
 				Long totalVoters = getVotersCountByPublicationIdInALocation("ward",(Long)ward[0],publicationDateId);
 				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(wardCastDetails,totalVoters));
 				
@@ -1868,7 +1868,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfo = new VoterCastInfoVO();
 				Long boothId=booths.getId();
 				//String boothPartNo = booths.getId().toString();
-				List<Object[]> boothCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"booth",boothId,publicationDateId);
+				List<Object[]> boothCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"booth",boothId,publicationDateId,null);
 				Long totalVoters = getVotersCountByPublicationIdInALocation("booth",boothId,publicationDateId);
 				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(boothCastDetails,totalVoters));
 				
@@ -5363,7 +5363,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		
 	 }
 	 
-	 public VoterCastInfoVO getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId)
+	 public VoterCastInfoVO getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 		{
 		    VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 			List<CastVO> resultList = null;
@@ -5381,9 +5381,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						locationId = (Long) list.get(0);
 					}
 				}
-				List<Object[]> castList = boothPublicationVoterDAO.getCastWiseCount(userId,locationType,locationId,publicationDateId);
-				List<Object[]> partiesList = boothPublicationVoterDAO.getPartyWiseCount(userId,locationType,locationId,publicationDateId);
-				List<Object[]> parties = boothPublicationVoterDAO.getParties(userId,locationType,locationId,publicationDateId);
+				List<Object[]> castList = boothPublicationVoterDAO.getCastWiseCount(userId,locationType,locationId,publicationDateId,constituencyId);
+				List<Object[]> partiesList = boothPublicationVoterDAO.getPartyWiseCount(userId,locationType,locationId,publicationDateId,constituencyId);
+				List<Object[]> parties = boothPublicationVoterDAO.getParties(userId,locationType,locationId,publicationDateId,constituencyId);
 				Map<String,CastVO> castsMap = new HashMap<String,CastVO>();
 				CastVO castVO = null;
 				CastVO partyVO = null;

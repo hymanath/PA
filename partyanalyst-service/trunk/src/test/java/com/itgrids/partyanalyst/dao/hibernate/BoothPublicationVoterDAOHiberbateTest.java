@@ -147,11 +147,17 @@ public void setBoothPublicationVoterDAO(
 	 //System.out.println(voter.size());
 }*/
 
-/*public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation()
+public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation()
 {
-List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(1l,"constituency",232l,6l);
-System.out.println(list.size());
-}*/
+	 System.out.println("start");
+	long startPrevElecTime = System.currentTimeMillis();
+   List<Object[]> list = boothPublicationVoterDAO.getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(1l,"constituency",232l,7l,232l);
+    System.out.println(list.size());
+     long endPrevElecTime = System.currentTimeMillis();
+     long diff = endPrevElecTime-startPrevElecTime;
+     System.out.println("time to execute Voters Cast Details in millsec :"+diff+" in seconds:"+diff/1000+"");
+
+}
 
 /*public void testgetPartyWiseCastCategoryVotersCount()
 {
@@ -300,7 +306,7 @@ System.out.println(list.size());
 		System.out.println(boothPublicationVoterDAO.updateSerialNoByVoterId(1l,1l));
 	}*/
 
-	public void testGetVotersInABooth()
+	/*public void testGetVotersInABooth()
 	{
 		List<String> partNosList = new ArrayList<String>(0);
 		//partNosList.add("141");
@@ -348,7 +354,7 @@ System.out.println(list.size());
 			System.out.print("\t"+voter.getAge());
 		}
 	}
-
+*/
    /*public void testGetSerialNoByVoterIdsList()
    {
 	   List<Long> voterIdsList = new ArrayList<Long>(0);
