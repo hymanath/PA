@@ -64,6 +64,8 @@
 
 .yui-skin-sam .yui-dt-liner {
 	padding:4px 8px;
+	max-width:350px;
+	word-wrap:break-word;
 }
 
 #boothResultsTableId th{
