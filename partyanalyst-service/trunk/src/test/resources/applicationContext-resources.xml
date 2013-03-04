@@ -341,6 +341,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterModification</value>	  
 				<value>com.itgrids.partyanalyst.model.VoterCastInfo</value>  	
 				<value>com.itgrids.partyanalyst.model.VoterPartyInfo</value>	
+				<value>com.itgrids.partyanalyst.model.VoterCastBasicInfo</value>		
 			</list>
 		</property>
 	</bean>
@@ -1757,4 +1758,8 @@
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	
+	<bean id="voterCastBasicInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCastBasicInfoDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

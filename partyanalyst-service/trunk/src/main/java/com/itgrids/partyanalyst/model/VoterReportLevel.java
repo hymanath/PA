@@ -32,7 +32,9 @@ public class VoterReportLevel extends BaseModel implements Serializable{
 	private Set<VoterInfo> voterInfos = new HashSet<VoterInfo>(0);
 	private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
 	private Set<VoterFamilyInfo> voterFamilyInfos = new HashSet<VoterFamilyInfo>(0);
-
+	private Set<VoterCastBasicInfo> voterCastBasicInfos = new HashSet<VoterCastBasicInfo>(0);
+	private Set<VoterCastInfo> voterCastInfos = new HashSet<VoterCastInfo>(0);
+	
 	public VoterReportLevel(){}
 	public VoterReportLevel(String reportLevel, Long orderNo)
 	{
@@ -91,6 +93,24 @@ public class VoterReportLevel extends BaseModel implements Serializable{
 	}
 	public void setVoterFamilyInfos(Set<VoterFamilyInfo> voterFamilyInfos) {
 		this.voterFamilyInfos = voterFamilyInfos;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voterReportLevel")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<VoterCastBasicInfo> getVoterCastBasicInfos() {
+		return voterCastBasicInfos;
+	}
+	public void setVoterCastBasicInfos(Set<VoterCastBasicInfo> voterCastBasicInfos) {
+		this.voterCastBasicInfos = voterCastBasicInfos;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voterReportLevel")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<VoterCastInfo> getVoterCastInfos() {
+		return voterCastInfos;
+	}
+	public void setVoterCastInfos(Set<VoterCastInfo> voterCastInfos) {
+		this.voterCastInfos = voterCastInfos;
 	}
 	
 		
