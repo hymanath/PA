@@ -3923,12 +3923,12 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 			}
 			if(userVoterDetails.getCasteState() != null){
 				voterHouseInfoVO.setCasteStateId(userVoterDetails.getCasteState().getCasteStateId());
-			}
+			}else
+				voterHouseInfoVO.setCasteStateId(0l);
 			if(userVoterDetails.getHamlet() !=null)
 			{
 				voterHouseInfoVO.setHamletId(userVoterDetails.getHamlet().getHamletId());
-			}else
-				voterHouseInfoVO.setCasteStateId(0l);
+			}
 			
 			
 		}else{
