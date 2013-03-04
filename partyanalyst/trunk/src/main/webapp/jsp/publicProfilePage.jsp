@@ -181,9 +181,9 @@ padding:5px 20px;
 .problemTitle{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 .friendsImgs{border: 1px solid #CDCDCD;margin-top: 10px; margin-right: 6px; background:  #00FFFF;}
 .imgLi{clear: both;
-    display: inline-table;
+     display: inline-block;
     
-    width: 74px;}
+    width: 80px;}
 	.TemplateCollection{display:none;}
 	
 	 .placeholderCenterDiv{
@@ -220,9 +220,12 @@ padding:5px 20px;
     width: auto;
 }
 .subscriptionsImgTitleDescDiv {width:100%;background:#fafafa;display:inline-block;padding:5px;margin:5px;}
-.frndName{ padding: 18px;
+
+/*.frndName{ padding: 18px;
     width: auto;
-   margin-top: -27px;
+   margin-top: -50px;
+   display:block;
+   position:relative;
 }
 .frndImg {
  width: auto;
@@ -230,7 +233,21 @@ padding:5px 20px;
 }
 .friendListTemplate1{
  display: -moz-inline-box;
+}*/
+.friendListTemplate1 {
+    display: -moz-grid-line;
 }
+
+.frndName{ 
+    width: auto;
+   margin-top: 0px;
+   display:block;
+   position:relative;
+}
+.frndImg {
+ width: auto;
+}
+
 </style>
 </head>
 <body>
@@ -351,7 +368,7 @@ padding:5px 20px;
 					<span style="font-size: 11px;margin-left: 120px;text-transform: none;cursor:pointer;" class="friendsInPP">See All</span>
 					 </c:if>
 					</h2>
-					<div class=""style="margin-left: -15px;">
+					<div class=""style="margin-left: -20px;">
 					
 					<ul>
 					<c:if test="${ empty registrationVOList }">
@@ -365,7 +382,7 @@ padding:5px 20px;
 								
 						<c:if test="${friendsDetails.userProfilePic != null && friendsDetails.userProfilePic !=''}">
 									<!--<img height="50" width="55" src="/pictures/profiles/${friendsDetails.userProfilePic}" style="clear:both;display:block;" class="thumbnail"/>-->
-									<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"> </img>
+									<img height="50" width="55" src="images/icons/indexPage/human.jpg"> </img>
 								</c:if>
 						</a>
 													
@@ -438,8 +455,8 @@ padding:5px 20px;
 
 	<div class="friendListTemplate1">
 	
-		<div class="frndImg thumbnail "></div>
-		<h6  class="frndName span2 pull-right" style="margin-top: 0px;"></h6>
+		<div class="frndImg thumbnail pull-left"></div>
+		<h6  class="frndName span2 pull-right" ></h6>
 </div>
 	</div>
 	
