@@ -318,6 +318,7 @@
 	            <value>com.itgrids.partyanalyst.model.PublicationElection</value>
 	            <value>com.itgrids.partyanalyst.model.VoterModificationTemp</value>
 	            <value>com.itgrids.partyanalyst.model.VoterModification</value>
+	            <value>com.itgrids.partyanalyst.model.VoterCastInfo</value>
 			</list>
 		</property>
 	</bean>
