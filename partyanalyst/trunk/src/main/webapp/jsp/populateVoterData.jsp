@@ -136,6 +136,30 @@ fieldset{
 	</div>
  </fieldset>
 </div>	
+
+
+<!-- voters Caste Div -->
+<div id="voterDataOuterDiv">
+<div class="headingDiv" style="width:413px;">Populate Caste Voters Data To Intermediate Tables</div>
+ <fieldset>
+    <div id="errorMsgDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="castconstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+
+		Select Publication Date<font class="requiredFont">*</font> <select id="castpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="ajaxLoad"><img src="images/icons/search.gif" /></span>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="castvoterDataInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="castvoterDataDeleteBtn" />
+			<img src="./images/icons/search.gif" style="display:none;" id="castajaxImage" />
+		</div>
+	</div>
+ </fieldset>
+</div>	
+
+
 </div>
 
 <script type="text/javascript">
@@ -177,7 +201,25 @@ $(document).ready(function(){
 
 	});
 
+	$("#constituencyList1").change(function(){
+	 var id = $("#constituencyList1").val();
+	  if(id == 0)
+	  {
+	   $("#errorMsgDiv").html('Please Select Constituency.');
+		return;
+	  }
 	
+	 $("#ajaxLoad").css('display','block');
+	 var jsObj=
+	 {
+		selected:id,
+		task:"getPublicationDateForCast"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+	});
 	$("#voterDataInsertBtn").click(function(){
 
 		var constituencyId = $("#constituencyList").val(); 
@@ -208,8 +250,35 @@ $(document).ready(function(){
 
 	});
 
-
+$("#castvoterDataInsertBtn").click(function(){
+var constituencyId = $("#castconstituencyList").val(); 
+		var publicationDateId = $("#castpublicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#casterrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#casterrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
 		
+		$("#castvoterDataInsertBtn").attr("disabled", "disabled");
+		$("#castajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"insertCastVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVotersCasteDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+	});
+	
 
 });
 
@@ -255,8 +324,14 @@ function callAjax(jsObj,url)
 								if(jsObj.task == "getPublicationDate")
 								{
 									buildPublicationDateList(myResults);
+									
 								}
-
+								else if(jsObj.task == "getPublicationDateForCast")
+								{
+									
+									buildPublicationDateList1(myResults);
+								}
+								
 								else if(jsObj.task == "insertVotersData")
 								{
 									showInsertVoterDataStatus(myResults);
@@ -313,6 +388,28 @@ function showDeleteVoterDataStatus(result)
 				return;
 		}
 	}
+	function buildPublicationDateList1(results)
+	{
+	document.getElementById('ajaxLoad').style.display = 'none';
+	var selectedElmt=document.getElementById("publicationDateList1");
+	//var selectElmt =jsObj.selectElmt;
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+}
 </script>
 </body>
 </html>
