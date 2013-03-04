@@ -142,13 +142,13 @@ fieldset{
 <div id="voterDataOuterDiv">
 <div class="headingDiv" style="width:413px;">Populate Caste Voters Data To Intermediate Tables</div>
  <fieldset>
-    <div id="errorMsgDiv"></div>
+    <div id="casterrorMsgDiv"></div>
 	<div id="ConstituencyDiv" class="selectDiv">
 		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="castconstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="castpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
-		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="ajaxLoad"><img src="images/icons/search.gif" /></span>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="castajaxLoad"><img src="images/icons/search.gif" /></span>
 
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="castvoterDataInsertBtn" />
@@ -201,15 +201,15 @@ $(document).ready(function(){
 
 	});
 
-	$("#constituencyList1").change(function(){
-	 var id = $("#constituencyList1").val();
+	$("#castconstituencyList").change(function(){
+	 var id = $("#castconstituencyList").val();
 	  if(id == 0)
 	  {
-	   $("#errorMsgDiv").html('Please Select Constituency.');
+	   $("#casterrorMsgDiv").html('Please Select Constituency.');
 		return;
 	  }
 	
-	 $("#ajaxLoad").css('display','block');
+	 $("#castajaxLoad").css('display','block');
 	 var jsObj=
 	 {
 		selected:id,
@@ -251,6 +251,7 @@ $(document).ready(function(){
 	});
 
 $("#castvoterDataInsertBtn").click(function(){
+	//alert('sdfsd');
 var constituencyId = $("#castconstituencyList").val(); 
 		var publicationDateId = $("#castpublicationDateList").val();
 		if(constituencyId == 0)
@@ -390,8 +391,8 @@ function showDeleteVoterDataStatus(result)
 	}
 	function buildPublicationDateList1(results)
 	{
-	document.getElementById('ajaxLoad').style.display = 'none';
-	var selectedElmt=document.getElementById("publicationDateList1");
+	document.getElementById('castajaxLoad').style.display = 'none';
+	var selectedElmt=document.getElementById("castpublicationDateList");
 	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
 	for(var val in results)
