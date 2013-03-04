@@ -176,5 +176,7 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List<Object[]> getVotesInfoForLocalBodyElection(Long localBodyId, Long electionId,List<Long> wardIds);
 	
 	public List<Object[]> findAllElectionsHappendInAConstByConstIds(List<Long> constituencyIdsList);
+		
+	public List<Long> checkForElectionDetails(Long constituencyId,List<Long> localElectionId);
 	
 }

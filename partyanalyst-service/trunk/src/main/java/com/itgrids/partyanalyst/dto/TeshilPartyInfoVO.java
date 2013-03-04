@@ -31,7 +31,7 @@ public class TeshilPartyInfoVO {
 	private Long partySecndPos;
 	private Long partyThirdPos;
 	private Long partyNthPos;
-	
+	private String Year;
 	private String totConstiVotesPercent;
 	private String partiPartiVotesPercent;
 	private Long totalConstiValidVotes;
@@ -225,4 +225,11 @@ public class TeshilPartyInfoVO {
 	public void setElectionTypeId(Long electionTypeId) {
 		this.electionTypeId = electionTypeId;
 	}
+	public String getYear() {
+		return Year;
+	}
+	public void setYear(String year) {
+		Year = year;
+	}
+	
 }
