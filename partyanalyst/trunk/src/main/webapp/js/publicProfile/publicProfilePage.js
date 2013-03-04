@@ -336,17 +336,17 @@ function showStreamingData(results,jsObj)
 	$("#problemsDiv").children().remove();
 	var status;
 	if(results != null && results.length > 0)
-	{
+	{		
+		$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Updates : </span></h4>');		
 		for(var i in results)
-		{
-			var postedDate = $('<div></div>');
-			$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Updates : </span></h4>');
+		{	
+			var postedDate = $('<div></div>');	
 			postedDate.append('<span>'+results[i].postedDate+'</span>');
 			postedDate.appendTo('.placeholderCenterDiv');
 			var list = results[i].problemBeanVOList;
 			for(var j in list)
 			{
-				
+							
 				if(list[j].responseType == "Problems")
 				{
 					var template = $('.problemTemplate');
@@ -356,14 +356,19 @@ function showStreamingData(results,jsObj)
 					templateClone.find('.postedPersonName').html(''+list[j].postedPersonName+' Posted');
 					templateClone.find('.problemTitle').html(''+list[j].problem+'');
 					templateClone.find('.problemDescription').html(''+list[j].description+'');
-					templateClone.find('.problemFromDate').html('Existing From: '+list[j].existingFrom+'');
-					
+					templateClone.find('.problemFromDate').html('Existing From: '+list[j].existingFrom+'');					
 					templateClone.appendTo('.placeholderCenterDiv');
 				}
-
-				
 				if(list[j].responseType == "Comments")
-				{
+				{										
+					var newDate = list[j].postDate;
+					var yearStr = newDate.substring(0,4);
+					var monStr = newDate.substring(5,7);
+					var dayStr = newDate.substring(8,10);		
+					var timeHrs = newDate.substring(11,13);	
+					var timeMin = newDate.substring(14,16);
+					var timesec = newDate.substring(17,19);
+					var UserpostDate = (yearStr+"-"+monStr+"-"+dayStr+"  "+"Time: "+timeHrs+":"+timeMin+":"+timesec);
 					var imageStr = "images/candidates/"+list[j].name;
 					var template = $('.politicalReasonsTemplate');
 					var templateClone = template.clone();
@@ -378,7 +383,7 @@ function showStreamingData(results,jsObj)
 					templateClone.find('.candidateImg').html('<img src="'+imageStr+'.jpg" onerror="setDefaultImage(this)" style="width:100px;height:100px;vertical-align:middle;"></img>');
 					templateClone.find('.politicalReaCls').html('<b>Political Reason:</b> '+list[j].problem+'');
 					templateClone.find('.politicalDescCls').html('<b>Description:</b> '+list[j].description+'');
-					templateClone.find('.polReaPostedDate').html('Posted On: '+list[j].postDate+'');
+					templateClone.find('.polReaPostedDate').html('Posted On: '+UserpostDate+'');
 					templateClone.appendTo('.placeholderCenterDiv');
 				}
 			}
