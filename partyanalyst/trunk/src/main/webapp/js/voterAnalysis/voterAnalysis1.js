@@ -373,12 +373,12 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		elLiner.innerHTML =str;
 	}
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo",width:20,},
+{key:"voterId", label: "SNo",width:15,},
 {key:"firstName", label: "Name",width:80, sortable: true},
-{key:"voterIDCardNo", label: "voter ID",sortable: true},
-{key:"gender", label: "Gender", width:50, sortable: true},
-{key:"age", label: "Age",  width:30,sortable:true},
-{key:"houseNo", label: "House No",width:50, sortable:true},
+{key:"voterIDCardNo", label: "voter ID",width:110,sortable: true},
+{key:"gender", label: "Gender", width:45, sortable: true},
+{key:"age", label: "Age",  width:15,sortable:true},
+{key:"houseNo", label: "House No",width:30, sortable:true},
 {key:"relativeFirstName", label: "GuardName", width:100,sortable:true},
 {key:"serialNo", label:"Serial No"},
 {key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
@@ -386,6 +386,7 @@ var votersByLocBoothColumnDefs = [
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+
 ];
 
 YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
@@ -524,12 +525,12 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 	};
 
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo",width:20,},
+{key:"voterId", label: "SNo",width:15,},
 {key:"firstName", label: "Name",width:80, sortable: true},
-{key:"voterIDCardNo", label: "voter ID",sortable: true},
-{key:"gender", label: "Gender", width:50, sortable: true},
-{key:"age", label: "Age",  width:30,sortable:true},
-{key:"houseNo", label: "House No",width:50, sortable:true},
+{key:"voterIDCardNo", label: "voter ID",width:110,sortable: true},
+{key:"gender", label: "Gender", width:45, sortable: true},
+{key:"age", label: "Age",  width:15,sortable:true},
+{key:"houseNo", label: "House No",width:30, sortable:true},
 {key:"relativeFirstName", label: "GuardName", width:100,sortable:true},
 {key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
@@ -813,6 +814,7 @@ function addToPolitician(voterId)
 		  $("#votersBasicInfoBtnDiv").show();
 		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 		  $("#votersShareBtn1").css('display','none');
+		  checkForLocalBodyElection();
 	   }
 	   //updated by sasi for getting ward related headings
 	   else if(type == "ward"){
@@ -1429,6 +1431,9 @@ function addToPolitician(voterId)
 									   alert("Voter Added To Cadre Successfully.");
 									}
 								}
+								else if(jsObj.task == "checkForLocalBodyElection"){
+									buildLocalBodyElectionDetails(myResults);
+								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -1582,6 +1587,7 @@ function addToPolitician(voterId)
 		str+='<td>'+results[i].candidateOppositionList[0].candidateName+'-<span>['+results[i].candidateOppositionList[0].partyShortName+']</span></td></tr>';
         }        
         str+='</tbody></table>';
+		str+='<div id="localBodyElectionDiv" style="dispaly:none;margin-bottom: -15px;margin-top: -14px;"><a href="javascript:{}" class="btn btn-info" id="showId" onclick="openNewWindowForLocalBodyElection();">All Parties Performance In Local Body Elections </a></div>';
 		str+='<span class="btn btn-info pull-right" onClick="partiesPerformancePopup()" style="margin-top:-12px;">All Parties Performance In Previous  Elections Graphically</span>'
 		str+='</div>'
         $('#constituencyResults').html(str);
@@ -6283,5 +6289,36 @@ oDT: votersByLocBoothDataTable
 };
 }
 
-
-
+/*
+	This Method is used to sean a ajax call to chech weather local election bodys are present or not on that particular constituency
+*/
+function checkForLocalBodyElection()
+{
+	var jsObj = {
+			constituencyId:$('#constituencyList').val(),
+			task:"checkForLocalBodyElection"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "localBodyElectionResultsAjaxAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+/*
+	This Method is Used To Build Local Body Election Details Button 
+*/
+function buildLocalBodyElectionDetails(myResults)
+{
+	if(myResults.resultCode == 0)
+	{
+		$('#localBodyElectionDiv').show();
+	}
+}
+/*
+	This Method Is Used To Open a New Window For Showing Local Body Election Details 
+*/
+function openNewWindowForLocalBodyElection(){
+	var constituencyId = $('#constituencyList').val();
+	var constituencyName = $('#constituencyList option:selected').text();
+	var urlStr="localBodyElectionResultsAction.action?constituencyId="+constituencyId+"&constituencyName="+constituencyName;
+	var updateBrowser = window.open(urlStr,"localBodyElectionResultsAction","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();
+}

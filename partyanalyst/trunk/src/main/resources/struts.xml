@@ -4547,6 +4547,22 @@
 		      <param name="root">voterModificationVO</param>
 		    </result>
 		</action>
-		
+		<action name="localBodyElectionResultsAction" class="localBodyElectionResultsAction">
+			<result name="success">/jsp/localBodyElectionResults.jsp</result>
+		</action>
+		<action name="localBodyElectionResultsAjaxAction" class="localBodyElectionResultsAction" method="ajaxHandler">
+		    <result type="json" name="success">
+		      <param name="root">constituencyWiseAllPartyTrends</param>
+		    </result>
+		    <result type="json" name="muncipalOrCorpDetails">
+		      <param name="root">localBodeElectionDetails</param>
+		    </result>
+		    <result type="json" name="ghmcDetails">
+		      <param name="root">muncipalityVO</param>
+		    </result>
+		     <result type="json" name="localBodyDetails">
+		      <param name="root">resultStatus</param>
+		    </result>
+		</action>
 	</package>
 </struts>      
