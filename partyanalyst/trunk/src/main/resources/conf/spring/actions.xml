@@ -1072,6 +1072,11 @@
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
+	<bean id="localBodyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.LocalBodyElectionResultsAction" singleton="false">	
+		<property name="staticDataService" ref="staticDataService" />	
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="localBodyElectionService" ref="localBodyElectionService" />		
+	</bean>
 	
 </beans>	
 	
