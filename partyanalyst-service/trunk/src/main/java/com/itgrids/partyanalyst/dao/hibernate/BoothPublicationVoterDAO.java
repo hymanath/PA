@@ -363,8 +363,8 @@ public class BoothPublicationVoterDAO extends
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
-			//str.append(" model.booth.panchayat.panchayatId = :locationId ");
+			//str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
 		else if(locationType.equalsIgnoreCase("localElectionBody"))
 			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			//str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
@@ -401,8 +401,8 @@ public class BoothPublicationVoterDAO extends
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
-			//str.append(" model.booth.panchayat.panchayatId = :locationId ");
+			//str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
 		else if(locationType.equalsIgnoreCase("localElectionBody"))
 			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			//str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
@@ -438,7 +438,8 @@ public class BoothPublicationVoterDAO extends
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" model.booth.boothId = :locationId ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
+			//str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 		else if(locationType.equalsIgnoreCase("localElectionBody"))
 			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			//str.append(" model.booth.localBody.localElectionBodyId = :locationId ");
@@ -874,8 +875,10 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.tehsil.tehsilId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.localBody is null  and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("booth"))
 				str.append(" model.booth.boothId = :locationId ");
+			/*else if(locationType.equalsIgnoreCase("panchayat"))
+				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");*/
 			else if(locationType.equalsIgnoreCase("panchayat"))
-				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+				str.append(" model.booth.panchayat.panchayatId = :locationId ");
 			else if(locationType.equalsIgnoreCase("localElectionBody"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("ward"))
@@ -916,7 +919,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			else if(locationType.equalsIgnoreCase("booth"))
 				str.append(" model.booth.boothId = :locationId ");
 			else if(locationType.equalsIgnoreCase("panchayat"))
-				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+				str.append(" model.booth.panchayat.panchayatId = :locationId ");
 			else if(locationType.equalsIgnoreCase("localElectionBody"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("ward"))
@@ -957,7 +960,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			else if(locationType.equalsIgnoreCase("booth"))
 				str.append(" model.booth.boothId = :locationId ");
 			else if(locationType.equalsIgnoreCase("panchayat"))
-				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.panchayat.panchayatId = :locationId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+				str.append(" model.booth.panchayat.panchayatId = :locationId ");
 			else if(locationType.equalsIgnoreCase("localElectionBody"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("ward"))
