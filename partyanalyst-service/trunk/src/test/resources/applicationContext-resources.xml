@@ -338,14 +338,15 @@
                 <value>com.itgrids.partyanalyst.model.NewsProblem</value>
                 <value>com.itgrids.partyanalyst.model.PublicationElection</value>
 				<value>com.itgrids.partyanalyst.model.VoterModificationTemp</value>	
-				<value>com.itgrids.partyanalyst.model.VoterModification</value>	    		
+				<value>com.itgrids.partyanalyst.model.VoterModification</value>	  
+				<value>com.itgrids.partyanalyst.model.VoterCastInfo</value>  		
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
 	
-	<bean id="voterModificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationDAO" >
+	<bean id="voterCastInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCastInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
