@@ -26,6 +26,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
@@ -452,5 +453,38 @@ public class LocalBodyElectionAction extends ActionSupport implements
 			
 		return dataset;
 	}
+	
+	public String getLocalElectionBodyResultsForAssemblyConstituencies(){
+		String param = null;
+		param = getTask();
+		String cPath = request.getContextPath(); 
+		
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		}catch (ParseException e) {
+			e.printStackTrace();
+			log.error("Exception Raised :" + e);
+		}
+		
+		List<Long> constituencyIds = new ArrayList<Long>();
+		JSONArray constituencyId = jObj.getJSONArray("constituencyId");
+		for(int i = 0; i < constituencyId.length(); i++)
+		{
+			constituencyIds.add(new Long(constituencyId.get(i).toString()));
+		}
+		Long localBodyElectionId = jObj.getLong("localBodyElectionId");
+		if(localBodyElectionId == null || localBodyElectionId.longValue() == 0){
+			teshilPartyInfoVO = new TeshilPartyInfoVO();
+			return SUCCESS;
+		}
+		teshilPartyInfoVO = localBodyElectionService.getMuncipalOrCorporationElectionsResultsForAnAssembly(localBodyElectionId, constituencyIds);
+		
+		
+		
+		return SUCCESS;
+	}
+	
 	
 }
