@@ -16,6 +16,8 @@ var constituencyPageMainObj={
 								constituencyVotersInfo:[],
 								constituencyVotersBasicInfo:[],
 								presentAssemblyCandidate:[],
+								munAssemblyConstituencyIds:[],
+								corpAssemblyConstituencyIds:[],
 								presentParliamentCandidate:[],
 								problemsInfo:[],
 								electionTrendzReportVO:{
@@ -1684,10 +1686,10 @@ function getAllMptcYears()
 
 function getMunicipalityResults()
 {
-	
-	if(document.getElementById('municipalityData_main').style.display=='none')
+
+	/*if(document.getElementById('municipalityData_main').style.display=='none')
 		document.getElementById('municipalityData_main').style.display='block';
-	
+	*/
 	if(document.getElementById('zptcPartyTrendsDetailsDiv').style.display=='block')
 		document.getElementById('zptcPartyTrendsDetailsDiv').style.display='none';
 	if(document.getElementById('mptcPartyTrendsDetailsDiv').style.display=='block')
@@ -2005,3 +2007,298 @@ function buildNews()
   var newsShow = new google.elements.NewsShow(content, options);
 }
 
+function getMunicipalityResultsForAssemblies()
+{
+	
+ var constituencyIds = new Array();
+	/*if(document.getElementById('municipalityData_main').style.display=='none')
+		document.getElementById('municipalityData_main').style.display='block';*/
+	
+	if(document.getElementById('zptcPartyTrendsDetailsDiv').style.display=='block')
+		document.getElementById('zptcPartyTrendsDetailsDiv').style.display='none';
+	if(document.getElementById('mptcPartyTrendsDetailsDiv').style.display=='block')
+		document.getElementById('mptcPartyTrendsDetailsDiv').style.display='none';
+	var lebElmt = document.getElementById("municipalitySelect");
+	if(lebElmt == null)
+		return;
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	var consIds = constituencyPageMainObj.munAssemblyConstituencyIds;
+	
+	 
+			    for(var i in consIds){
+				 constituencyIds.push(consIds[i].constituencyId);
+				}
+				 
+		var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyIds,
+			task:"municipalElectionsInfoByAssmeblyConsIds"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocalBodyConstiResultsForAssembly.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+
+function getCoroporationResultsForAssemblies()
+{
+	 var constituencyIds = new Array();
+	var lebElmt = document.getElementById("corporationSelect");
+	if(lebElmt == null)
+		return;
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	  var consIds = constituencyPageMainObj.munAssemblyConstituencyIds;
+	
+	 
+			    for(var i in consIds){
+				 constituencyIds.push(consIds[i].constituencyId);
+				}
+				 
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyIds,
+			task:"corporationElectionsInfoByAssmeblyConsIds"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocalBodyConstiResultsForAssembly.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+
+function showMuncipalDetailsForAssemblyConst(result,electionType){		
+		
+		var muncipalityDIV = '';
+		
+		if(electionType == "MUNCIPALITY"){
+
+			
+			muncipalityDIV = document.getElementById("muncipalitiesDiv1");
+			
+		}else{			
+			
+			muncipalityDIV = document.getElementById("corporationsDiv");
+		
+			
+		}	
+		
+		var listSize = result[0].totalMuncipalities-1;
+		var rvStr = '';
+		rvStr+='<table width="92%">';		
+		for(var i in result)
+		{		
+			if(i%2==0){
+				rvStr+='</tr>';
+				rvStr+='<tr>';
+			}
+			
+			if(i == listSize)
+				rvStr+='<td colspan="2" style="vertical-align: top;float:left;">';
+			else
+				rvStr+='<td  style="vertical-align: top;float:right;">';		
+			assignToPartyDataArray = new Array();
+			
+			rvStr += '<div class="localBodiesElectionHead" style="margin-top: 15px;color:#E5805C;">';
+			rvStr += '<table>';
+			rvStr += '<tr>';
+			rvStr += '<td width="10px"><img width="8" height="9" src="images/icons/indexPage/listIcon.png"></img></td>';
+			if(electionType == "MUNCIPALITY")
+				rvStr += '<td style="font-weight:bold;font-size:15px;"><u> '+result[i].muncipalityName+' '+result[i].latestMuncipalElectionYear+' Muncipality Election Details</u></td>';
+			else
+				rvStr += '<td style="font-weight:bold;font-size:15px;"><u> '+result[i].muncipalityName+' '+result[i].latestMuncipalElectionYear+' Corporation Election Details</u></td>';
+			rvStr += '</tr>';
+			rvStr += '</table>';
+			rvStr += '</div>';
+			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:95%;vertical-align:top;" >';
+			rvStr += '<table width="90%" style="width:auto;margin-left:5px;">';
+			rvStr += '<tr>';
+			if(electionType == "MUNCIPALITY")
+			rvStr += '<th align="left" style="font-family:sans-serif;color:  #72587F;font-size:13px;">Muncipality Name :</th><td class="tableTextStyle" style="font-size:13px;font-family: Comic Sans MS;" align="left">&nbsp;'+result[i].muncipalityName+'</td>'; 
+			else
+			rvStr += '<th align="left" style="font-family:sans-serif;color:  #72587F;font-size:13px;">Corporation Name :</th><td class="tableTextStyle" style="font-size:13px;font-family: Comic Sans MS;" align="left">&nbsp;'+result[i].muncipalityName+'</td>'; 
+			rvStr += '<th align="left" style="font-family:sans-serif;color:  #72587F;font-size:13px;">&nbsp;&nbsp;Total Wards :</th><td class="tableTextStyle" align="left">'+result[i].totalWards+'</td>';
+			rvStr += '</tr>';
+			rvStr += '<tr>';
+			rvStr += '<th align="left" style="font-family:sans-serif;color: #72587F;font-size:13px;">Total Voters :</th><td class="tableTextStyle" align="left">'+result[i].totalVoters+'</td>';
+			rvStr += '<th align="left" style="font-family:sans-serif;color: #72587F;font-size:13px;">&nbsp;&nbsp;Total Polled Votes :</th><td class="tableTextStyle" align="left">'+result[i].totalPolledVotes+'</td>';
+			rvStr += '</tr>';
+			rvStr += '</table>';	
+			rvStr +='<div>';
+			rvStr +='<table>';
+			rvStr +='<tr><td style="height:10px;"></td></tr>';																					
+			rvStr +='<tr>';																					
+			rvStr +='<td style="vertical-align:top;">';			
+			if(electionType == "MUNCIPALITY"){
+				rvStr +='<a href="javascript:{}" title="Click here to view '+result[i].muncipalityName+' '+result[i].latestMuncipalElectionYear+' Muncipality Election Candidate Results " onclick="redirectMuncipalityLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+','+result[i].electionTypeId+',\''+result[i].muncipalityName+'\',\'MUNCIPALITY\')"  style="text-decoration:none;color:#ffffff;background:#639CA4" class="candidateDetailsStyle">Show Candidate Details</a></td>';
+			}else{
+				rvStr +='<a href="javascript:{}" title="Click here to view '+result[i].muncipalityName+' '+result[i].latestMuncipalElectionYear+' Corporation Election Candidate Results "  onclick="redirectMuncipalityLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+','+result[i].electionTypeId+',\''+result[i].muncipalityName+'\',\'CORPORATION\' )"  style="text-decoration:none;color:#ffffff;background:#639CA4;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
+			}			
+			rvStr+='</td>';
+			rvStr +='</tr>';
+		
+			rvStr +='<tr>';
+			if(electionType == "MUNCIPALITY"){
+				rvStr +='<td style="vertical-align: top;width:430px;"> <div><div id="dataTable'+i+'" class="muncipality"></div></div></td>';
+			}else{
+				rvStr +='<td style="vertical-align: top;width:430px;"> <div><div id="corporationDataTable'+i+'" class="muncipality"></div></div></td>';
+			}
+			rvStr +='</tr>';				
+			rvStr +='</table></div>';
+			rvStr+='</td>';
+		}
+        if(electionType == "MUNCIPALITY")
+		   {		   
+		     rvStr+='<tr>';
+		     rvStr+='<td colspan="2"><div id="tabledata" style=" border: 1px solid #B7B2B2;margin-top: 5px;position:relative;"/></td>';
+		     rvStr+='</tr>';
+           }		
+		rvStr+='</table>';		
+		muncipalityDIV.innerHTML = rvStr;	
+		
+		for(var i in result)
+		{
+			var localDataArr = new Array();
+			for(var j in result[i].muncipalityVO)
+			{					
+				var muncipalObj =
+				 {		
+						partyId: result[i].muncipalityVO[j].partyId,
+						partyName:result[i].muncipalityVO[j].partyName,
+						participatedSeats:result[i].muncipalityVO[j].participatedSeats,
+						seatsWonByParty:result[i].muncipalityVO[j].seatsWonByParty,
+						percentageOfVotesWonByParty:result[i].muncipalityVO[j].percentageOfVotesWonByParty				
+				 };
+				localDataArr.push(muncipalObj);
+			}	
+			if(electionType == "MUNCIPALITY"){	
+				initializeMuncipalResultsTableForParty('dataTable'+i,localDataArr,electionType) ;
+			}else{
+				initializeMuncipalResultsTableForParty('corporationDataTable'+i,localDataArr,electionType) ;
+				
+				 
+			}
+		}
+		if(electionType == "MUNCIPALITY")
+		  buildMunicipalityGraph(result);
+	}
+
+
+
+     function buildMunicipalityGraph(result)
+	  {
+	     var partyArray = new Array();
+		for(var a in result[0].muncipalityVO)
+		 {
+		   partyArray.push(result[0].muncipalityVO[a].partyName);
+		 }
+	    for(var i in result)
+		{
+		  for(var j in result[i].muncipalityVO)
+		  {
+		     var count = 0;
+		     for(var k in partyArray)
+			  {
+			   if(partyArray[k] == result[i].muncipalityVO[j].partyName)
+			     count = count+1;
+			  }
+			  if(count == 0)
+			   partyArray.push(result[i].muncipalityVO[j].partyName);
+		  }
+		}
+		  var data = new google.visualization.DataTable();
+              data.addColumn('string', 'Municipality');
+			  for(var b in partyArray)
+              data.addColumn('number',partyArray[b]);
+           for(var d in result)
+		   {
+		      var pdata = new Array();
+			   pdata.push(result[d].muncipalityName);			  
+			  for(var c in partyArray)
+			   {			     
+			     var partyCount = 0;
+			     for(var e in result[d].muncipalityVO)
+				 {
+				   if(partyArray[c] == result[d].muncipalityVO[e].partyName)
+				   {
+				     pdata.push(result[d].muncipalityVO[e].seatsWonByParty);
+					 partyCount=partyCount+1;
+				   }
+				 }
+				 if(partyCount == 0)
+				 pdata.push(0);
+			   }
+		    data.addRow(pdata);
+		   }
+		   
+		  ctitle = 'All Parties Muncipality Wise Performance In Constituency Based On Seats Won';
+		  new google.visualization.LineChart(document.getElementById('tabledata')).
+			  draw(data, {curveType: "function",width: 880, height: 380, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'navy'}}
+			  });
+	  }
+	
+		
+
+function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
+		{
+			
+		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
+		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	    {
+		     var Party = oRecord.getData("partyName");
+		     var partyIds = oRecord.getData("partyId");
+		     if(Party != 'IND' && partyIds != null){
+			    elLiner.innerHTML ="<a title='Click here to view "+Party+" party Election results,news,photos and videos' href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		      }
+		else
+			elLiner.innerHTML =""+Party;
+	    };
+		resultsDataSourceForTehsil.responseSchema = {
+			fields : [ {
+				key : "partyName"
+			}, {
+				key : "participatedSeats"
+			}, {
+				key : "seatsWonByParty"
+			}, {
+				key : "partyId"
+			}, {
+				key : "percentageOfVotesWonByParty"
+			}]	
+		};
+		
+		var resultsColumnDefsForTehsil = [ 
+				{key:"partyName",label : "Party Name",sortable:true, formatter:YAHOO.widget.DataTable.partyLink}, 
+				{key:"participatedSeats",label : "Participated Seats",sortable:true,resizeable:true}, 
+				{key:"seatsWonByParty",label : "Seats Won",sortable:true, resizeable:true}, 
+				{key:"percentageOfVotesWonByParty",label : "Votes %", sortable:true, resizeable:true}	           
+		];
+
+						
+		var myDataTableForMuncipalParty	 = new YAHOO.widget.DataTable(divId,resultsColumnDefsForTehsil, resultsDataSourceForTehsil);
+
+		if(electionType=='CORPORATION')
+			{
+		
+		var data = new google.visualization.DataTable();
+		data.addColumn('string','partyName');
+		data.addColumn('number','seatsWonByParty');
+		data.addRows(dataSrc.length);
+		for(var j=0; j<dataSrc.length; j++)
+		{
+			
+			data.setValue(j,0,dataSrc[j].partyName);
+			data.setValue(j,1,dataSrc[j].seatsWonByParty);
+		}
+		var chart = new google.visualization.PieChart(document.getElementById('CorporationPieChartDiv'));
+	
+		chart.draw(data,{width: 350, height: 230,legend:'right',legendTextStyle:{fontSize:12},title:'All Parties Performance In District',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
+			}
+			
+	}
+	function redirectMuncipalityLink(muncipalityId,latestMuncipalElectionYear,electionTypeId,name,electionType){
+		
+		var browser4 = window.open("muncipalElectionReportAction.action?muncipalityId="+muncipalityId+"&muncipalityElectionType="+electionType+"&name="+name+"&muncipalityElectionId="+electionTypeId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
+		browser4.focus();
+	}
+
+	

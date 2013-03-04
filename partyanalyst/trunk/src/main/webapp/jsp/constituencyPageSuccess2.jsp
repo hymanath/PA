@@ -59,8 +59,10 @@
 		$(this).addClass("active activepinkdownarrow");
 	});
 	
-	showMunicipalityResults();
-	getMunicipalityResults();
+	showMunicipalityResults1();
+	//getMunicipalityResults();
+	getMunicipalityResultsForAssemblies();
+	
 
 	$("#LocalElectionsNav a").click(function(){
 		$("#LocalElectionsNav a").removeClass("active");
@@ -271,7 +273,20 @@ margin-top: 4px;
 
 /** Favorite Link Start**/
 
+.muncipality table {border-collapse:collapse;border:1px solid #d3d3d3;width:100%;margin-top:10px;}
+.muncipality table * th { background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;}
+.muncipality table * td{
+    font-weight: normal;
+    color: #676A67;
+    font: small-caption;
+    padding: 8px 8px 8px 10px;
 
+   }
+  .muncipality table * tr:nth-child(even){background:#f9f9f9;}
 .favouritelink{position:fixed;bottom:72px;right:7px;height:37px;cursor:pointer;text-decoration:none; opacity:0.84; filter: alpha(opacity = 30);
  transition: opacity .25s ease-in-out;
  z-index:999999;
@@ -294,6 +309,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 }
 .favouritelink .favouritelink-close {position:absolute;top:-12px;right:5px;}
 .favouritelink:hover .favouritelink-close {display:block}
+#mandalwisevotingTrendz{background:#fff !important;}
 /** Favorite Link End**/
 
 	  </style>
@@ -1001,12 +1017,12 @@ var queryString='';
             <h1 class="topfour"></h1><h1 class="gre-title"><span>All Urban Local Body Elections Happened In ${constituencyDetails.constituencyName} &nbsp; Constituency</span></h1>
 			 <div id="showmungracorp">
 			<ul class="mvd-fields" id="LocalElectionsNav">             
-               <li id="muncipalityDiv"><a href="javascript:{}" title="Click here to view MUNCIPALITY Elections Happened In ${constituencyDetails.constituencyName}    &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showMunicipalityResults(),getMunicipalityResults()" class="active"><strong>MUNCIPALITY</strong></a></li>			  
+               <li id="muncipalityDiv"><a href="javascript:{}" title="Click here to view MUNCIPALITY Elections Happened In ${constituencyDetails.constituencyName}    &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showMunicipalityResults1(),getMunicipalityResultsForAssemblies()" class="active"><strong>MUNCIPALITY</strong></a></li>			  
 			   <li id="greterMunicipalDiv"><a href="javascript:{}" title="Click here to view GREATER MUNICIPALCORP Elections Happened In ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showGreterElectionDetails()" style="cursor:pointer"><strong>GREATER MUNICIPALCORP</strong></a></li>
 			    <li id="corporationTabDiv"><a href="javascript:{}" title="Click here to view CORPORATION Elections Happened In ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showCorporationDetails()"  style="cursor:pointer"><strong>CORPORATION's</strong></a></li>
             </ul>
 
-			 <div id="muncipalDivBody" class="detailed-ele-inf">
+			<!-- <div id="muncipalDivBody" class="detailed-ele-inf">
 			<div id="MuncipalElectionSelectDiv" style="float:left;width:auto;margin-top:-4px;">Select Election Year:
 				<s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name"></s:select>&nbsp&nbsp
 						
@@ -1016,9 +1032,29 @@ var queryString='';
 			 <div id="showMoreMuncipalResultsDiv" style="clear:right;margin-left:3px;text-decoration: none;"></div>
 					<div id="municipalityData_main"></div>
 					
+			</div>-->
+			<div id="muncipalDivBody">
+			<div id="MuncipalElectionSelectDiv" style="float:left;width:100%;margin-top:-5px;padding-left:48px;">Select Election Year:
+				<s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name"></s:select>&nbsp&nbsp
+						
+			</div>
+			<div id="muncipalitiesDiv1" style="background:#ffffff;float:right;width:100%;"> </div>		
+			</div>
+			
 			</div>
 			<!--corporationDiv-->
-					<div id = "corporationDiv">
+			<div id = "corporationDiv">
+			<div id="corporationSelectDiv" style="float:left;width:100%;margin-top:-5px;padding-left:48px;">
+			<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
+			</div>
+			
+			<div style="width:100%;">	
+			<div id="corporationsDiv" class="span6" id="corporationsDiv" style="background: none repeat scroll 0% 0% rgb(255, 255, 255);"> </div>
+			<div id="CorporationPieChartDiv"  style="position: relative; width: 350px; height: 300px; margin-top:140px;right: 0px; bottom: 0px; margin-bottom: 0px;  display: block;" class="span4"></div>
+		</div>
+			</div>
+			<!--corporationDiv-->
+					<!--<div id = "corporationDiv">
 					
 									<div id="corporationHeadingDIV" style="display:block;clear:both;">
 									
@@ -1036,7 +1072,7 @@ var queryString='';
 									<div id="coroporationData_main">
 									
 									</div>
-								</div>
+								</div>-->
 									
 								<div id = "greaterDiv" style="display:block;clear:both;">
 									<div>
@@ -1067,6 +1103,7 @@ var queryString='';
 						</tr>
 					</table>
 				</div>-->
+				
 	
             </div>
 		   </div>
@@ -1077,7 +1114,7 @@ var queryString='';
 		
 		
 		<c:if test="${constituencyDetails.viewCompletePage}">
-			<div id="MandalwiseVotingTrendz" class="rounded">
+			<div id="MandalwiseVotingTrendz" class="rounded" >
 			  <div id="mandalwisevotingTrendz"class="trenzCss">
 				<div class="corner topLeft"></div>
 				<div class="corner topRight"></div>
@@ -1149,6 +1186,7 @@ function buildConstituencyElectionsYersForAss(optionsList)
 }
 function showUrbanDivIfPresent()
 {
+
    if(changeReq == 0)
  {
  
@@ -1161,8 +1199,9 @@ function showUrbanDivIfPresent()
  {
    $("#LocalElectionsNav a").removeClass("active");
    $("#muncipalityDiv a").addClass("active");
-    showMunicipalityResults();
+    showMunicipalityResults1();
  }
+ 
  else if(corporationPresent == false)
  {
    $("#LocalElectionsNav a").removeClass("active");
@@ -1171,10 +1210,12 @@ function showUrbanDivIfPresent()
  }
  else if(greaterPresent == false)
  {
+	 
    $("#LocalElectionsNav a").removeClass("active");
    $("#greterMunicipalDiv a").addClass("active");
     showGreterElectionDetails();	
  }
+ 
 }
 }
 
@@ -1363,6 +1404,19 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	</c:forEach>
 	</c:if>
 	
+
+
+	<c:if test="${candidateDetailsForConstituency.assemblyCandidateInfo != null}">
+	<c:forEach var="cInfo" items="${candidateDetailsForConstituency.assemblyCandidateInfo}">	
+	var candidateObj1={
+						constituencyId : '${cInfo.constituencyId}',
+						constituencyName :'${cInfo.constituencyName}</a>',
+						
+					 };		
+	
+	constituencyPageMainObj.munAssemblyConstituencyIds.push(candidateObj1);
+	</c:forEach>
+	</c:if>
 	
 	/*	Parliament Candidate Info
 		-------------------------
@@ -1852,7 +1906,7 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 								}
 								else if(jsObj.task == "greaterElectionsInfo" || jsObj.task == "getGhmcResultsBasedOnSelection")
 								{		
-													
+										
 										showGreaterInfo(myResults);
 									
 										
@@ -1866,29 +1920,30 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 									subscribeBtnBuild();
 								}
 
-
-								/*	else if(jsObj.task == "corporationElectionsInfo")
-								{	
-									if(myResults.muncipalityVO!=null){
-							totalNoOflocalElectionsBodies++;								
-										showCorporationInfo(myResults);
-									}else{
-									totalNoOflocalElectionsBodies--;
-									document.getElementById("corporationDiv").style.display = "none";
-										checkTohideLocalElectionsBodyDiv();
-									}			
-								}else if(jsObj.task == "greaterElectionsInfo" || jsObj.task == "getGhmcResultsBasedOnSelection")
-								{		
-									if(myResults.isDataExists==true){			
-										totalNoOflocalElectionsBodies++;				
-										showGreaterInfo(myResults);
-									}else{
-										totalNoOflocalElectionsBodies--;
-										document.getElementById("greaterDiv").style.display = "none";
-										checkTohideLocalElectionsBodyDiv();
-									}			
+								else if(jsObj.task  == "municipalElectionsInfoByAssmeblyConsIds") 
+							{
+								
+								if(myResults.muncipalityVO == null)
+								{
+								hideAndShowMuncipality();
 								}
-									*/
+							showMuncipalDetailsForAssemblyConst(myResults.muncipalityVO,"MUNCIPALITY");
+						
+						}
+						else if(jsObj.task  == "corporationElectionsInfoByAssmeblyConsIds")
+							{
+						 $('#CorporationPieChartDiv').hide();
+						 if(myResults.muncipalityVO == null)
+								{
+							hideAndShowCorporation();
+								}
+						if(myResults.muncipalityVO != null)
+							 $('#CorporationPieChartDiv').show();
+							showMuncipalDetailsForAssemblyConst(myResults.muncipalityVO,"CORPORATION");
+							
+						}
+					
+							
 								
 							}catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -2355,8 +2410,8 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 	
 	if(document.getElementById('mptcPartyTrendsDetailsDiv').style.display=='block')
 		document.getElementById('mptcPartyTrendsDetailsDiv').style.display='none';
-	if(document.getElementById('municipalityData_main').style.display=='block')
-		document.getElementById('municipalityData_main').style.display='none';
+	/*if(document.getElementById('municipalityData_main').style.display=='block')
+		document.getElementById('municipalityData_main').style.display='none';*/
 
 	if(document.getElementById('zptcPartyTrendsDetailsDiv').style.display=='none')
 		document.getElementById('zptcPartyTrendsDetailsDiv').style.display='block';
@@ -2380,8 +2435,8 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 		document.getElementById('mptcPartyTrendsDetailsDiv').style.display='block';
 	if(document.getElementById('zptcPartyTrendsDetailsDiv').style.display=='block')
 		document.getElementById('zptcPartyTrendsDetailsDiv').style.display='none';
-	if(document.getElementById('municipalityData_main').style.display=='block')
-		document.getElementById('municipalityData_main').style.display='none';
+	/*if(document.getElementById('municipalityData_main').style.display=='block')
+		document.getElementById('municipalityData_main').style.display='none';*/
 	
 	
 	constituencyTYPE = constituencyPageMainObj.constituencyInfo.constituencyType;
@@ -2463,7 +2518,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 	}
 
 	function buildCorpOrMunicipTable(divId, myResults, elecType,showMoreDiv){
-
+	
 	var moreElmt = document.getElementById(showMoreDiv);
 	
 	var appendingStr = '';
@@ -2683,12 +2738,19 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 		document.getElementById('mptcDivBody').style.display='block';
 		
 		}
-		function showMunicipalityResults(){
+		/*function showMunicipalityResults(){
 		
 		document.getElementById('muncipalDivBody').style.display='block';
 		document.getElementById('corporationDiv').style.display='none';
 		document.getElementById('greaterDiv').style.display='none';
 			
+		}*/
+
+		function showMunicipalityResults1()
+		{
+			document.getElementById('muncipalDivBody').style.display='block';
+			document.getElementById('corporationDiv').style.display='none';
+			document.getElementById('greaterDiv').style.display='none';
 		}
 		function redirectMptcCandidateLink(){
 			 
@@ -2709,7 +2771,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 
 
 		function redirectMuncipalityCandidateLink(muncipalityElectionType,muncipalityElectionId,muncipalityId,latestMuncipalElectionYear,name){	
-	
+		
 		var browser3 = window.open("muncipalElectionReportAction.action?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
 		browser3.focus();
 	}
@@ -3656,7 +3718,29 @@ function getVotingTrendzForElectionYears()
 	
 	}
 
+function hideAndShowMuncipality()
+{
+muncipalityPresent = true;
+document.getElementById('muncipalityDiv').innerHTML='';
+					
+document.getElementById('MuncipalElectionSelectDiv').innerHTML='';
 
+showUrbanDivIfPresent();
+}
+
+function hideAndShowCorporation()
+{
+corporationPresent = true;
+
+	
+var showDiv = document.getElementById('corporationDiv');
+		
+document.getElementById('corporationTabDiv').innerHTML='';
+showDiv.innerHTML=str;
+showDiv.style.display = "none";
+showUrbanDivIfPresent();
+
+}
 	function showCorporationInfo(myResults){
 	var str='';
 	var HeadElmt = document.getElementById('coroporationData_main');
@@ -4025,7 +4109,8 @@ function buildCensusChartForAConstituencyParl(myResults){
 	 var villageDataTable = new YAHOO.widget.DataTable("elecResDivForPal",myColumnDefs, myDataSource);
   }
   
-getCoroporationResults();
+//getCoroporationResults();
+getCoroporationResultsForAssemblies();
 showRuralDivIfPresent();
 showUrbanDivIfPresent();
 //buildPartyAdvertisiment();	
