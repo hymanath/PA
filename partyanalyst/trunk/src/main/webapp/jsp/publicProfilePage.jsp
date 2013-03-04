@@ -183,7 +183,7 @@ padding:5px 20px;
 .imgLi{clear: both;
      display: inline-block;
     
-    width: 80px;}
+    width: 80px; vertical-align: top;margin-bottom: 20px;}
 	.TemplateCollection{display:none;}
 	
 	 .placeholderCenterDiv{
@@ -389,8 +389,7 @@ padding:5px 20px;
 						<c:if test="${friendsDetails.userProfilePic == null || friendsDetails.userProfilePic == ''}">
 								<img height="50" width="55" src="/images/icons/indexPage/human.jpg" style="clear:both;display:block;" class="thumbnail"/>
 						</c:if>								
-						<span><a href="userProfile.action?profileId=${friendsDetails.registrationID}"> <b style="font-size: 13px; text-transform: capitalize;">${friendsDetails.firstName} ${friendsDetails.lastName}</b></a></span>
-						<hr style="margin-top: 30px;position: inherit;">
+						<span><a href="userProfile.action?profileId=${friendsDetails.registrationID}"> <b style="font-size: 13px; text-transform: capitalize;">${friendsDetails.firstName}&nbsp; ${friendsDetails.lastName}</b></a></span>
 					</li>
 					
 				</c:forEach>
