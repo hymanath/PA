@@ -251,15 +251,15 @@ $(document).ready(function(){
 	});
 
 $("#castvoterDataInsertBtn").click(function(){
-	//alert('sdfsd');
-var constituencyId = $("#castconstituencyList").val(); 
-		var publicationDateId = $("#castpublicationDateList").val();
-		if(constituencyId == 0)
+	
+var castconstituencyId = $("#castconstituencyList").val(); 
+		var castpublicationDateId = $("#castpublicationDateList").val();
+		if(castconstituencyId == 0)
 		{
 			$("#casterrorMsgDiv").html('Please Select Constituency.');
 			return;
 		}
-		if(publicationDateId == 0 || publicationDateId == null)
+		if(castpublicationDateId == 0 || castpublicationDateId == null)
 		{
 		  $("#casterrorMsgDiv").html('Please Select Publication Date.');
 			return;
@@ -270,8 +270,8 @@ var constituencyId = $("#castconstituencyList").val();
 		
 		var jsObj=
 		{
-		  id				  :constituencyId,
-		  publicationDateId : publicationDateId,
+		  id				  :castconstituencyId,
+		  publicationDateId : castpublicationDateId,
 		  task:"insertCastVotersData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -279,7 +279,33 @@ var constituencyId = $("#castconstituencyList").val();
 		 callAjax(jsObj,url);
 
 	});
-	
+	$("#castvoterDataDeleteBtn").click(function(){
+		var castconstituencyId = $("#castconstituencyList").val(); 
+		var castpublicationDateId = $("#castpublicationDateList").val();
+		if(castconstituencyId == 0)
+		{
+			$("#errorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(castpublicationDateId == 0 || castpublicationDateId == null)
+		{
+		  $("#casterrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#castvoterDataDeleteBtn").attr("disabled", "disabled");
+		$("#castajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :castconstituencyId,
+		  publicationDateId : castpublicationDateId,
+		  task:"deletecastVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deleteVoterscastDataFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+	});
 
 });
 
