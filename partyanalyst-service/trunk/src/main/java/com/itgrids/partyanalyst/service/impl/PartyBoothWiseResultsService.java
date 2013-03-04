@@ -1494,7 +1494,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 							earned += brVO.getVotesEarned();
 							boothsdtllist.setPartno(brVO.getPartNo());
 							boothsdtllist.setId(brVO.getBoothId());
-							boothsdtllist.setLocation(brVO.getLocation());
+							String loc=brVO.getLocation();
+							boothsdtllist.setLocation(loc.replace("'"," ").replace("\"", " ").replace("\r", ""));
 							String vill_co=brVO.getVillagesCovered();
 							String villages_co=vill_co.replace("'"," ").replace("\"", " ").replace("\r", " ");
 							boothsdtllist.setVillageCovered(villages_co);
@@ -1508,7 +1509,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 							earned += brVO.getTotalVoters();
 							boothsdtllist.setPartno(brVO.getPartNo());
 							boothsdtllist.setId(brVO.getBoothId());
-							boothsdtllist.setLocation(brVO.getLocation());
+							String loc=brVO.getLocation();
+							boothsdtllist.setLocation(loc.replace("'"," ").replace("\"", " ").replace("\r", ""));
 							String vill_co=brVO.getVillagesCovered();
 							String villages_co=vill_co.replace("'"," ").replace("\"", " ").replace("\r", "");
 							boothsdtllist.setVillageCovered(villages_co);
