@@ -34,6 +34,7 @@ public class VoterCastInfo implements Serializable {
 	private Long casteMaleVoters; 
 	private Long casteFemaleVoters;
 	private Double castePercentage;
+	private Long publicationDateId;
 	
 	/** Default Constructor */
 	
@@ -197,6 +198,15 @@ public class VoterCastInfo implements Serializable {
 
 	public void setCastePercentage(double castePercentage) {
 		this.castePercentage = castePercentage;
+	}
+
+	@Column(name = "publication_date_id")
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
 	}
 
 	
