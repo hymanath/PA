@@ -60,6 +60,11 @@ public class VoterCastInfo implements Serializable {
 		this.bcVoters =bcVoters;
 		this.scVoters = scVoters;
 		this.stVoters = stVoters;
+		this.casteStateId =casteStateId;
+		this.casteVoters = casteVoters;
+		this.casteMaleVoters = casteMaleVoters;
+		this.casteFemaleVoters = casteFemaleVoters;
+		this.castePercentage = castePercentage;
 		
 		}
 	@Id
