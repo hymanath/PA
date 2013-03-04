@@ -374,7 +374,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList = regionServiceDataImp.getSubRegionsInConstituency(new Long(selectedVal), IConstants.PRESENT_YEAR, null);
 			namesList.add(0, new SelectOptionVO(0L,"Select Mandal"));
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate"))
+		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForCast"))
 		{
 			Long selectedId = jObj.getLong("selected");
 			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
