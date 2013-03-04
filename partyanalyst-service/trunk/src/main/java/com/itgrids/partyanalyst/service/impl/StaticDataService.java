@@ -2964,6 +2964,7 @@ public class StaticDataService implements IStaticDataService {
 			for (int i = result.size() - 1; i >= 0; i--) {
 				selectOptionVO = new SelectOptionVO();
 				Object[] parms = (Object[]) result.get(i);
+				selectOptionVO.setValue(parms[0].toString());
 				selectOptionVO.setId(Long.parseLong(parms[1].toString()));
 				selectOptionVO.setName(parms[1].toString());
 				SelectOptionVO.add(selectOptionVO);
@@ -7754,6 +7755,41 @@ public class StaticDataService implements IStaticDataService {
 			return null;
 		}
 	}
+
+	/**
+	 * 
+	 * This Method is Used To Check Weather Local Body Election are Held Or Not
+	 *  On That Particular Constituency
+	 *  @author Prasad Thiragabathina
+	 * @param Long constituencyId
+	 * @param List<Long> localElectionBodyId
+	 * @return ResultStatus
+	 * @date 02/03/2013
+	 */
+	public ResultStatus checkForLocalElctionBody(Long constituencyId,
+			List<Long> localElectionBodyId) {
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			log.debug("Enterd Into the checkForLocalElctionBody() method");
+			
+			List<Long> electionDetails = constituencyElectionDAO.checkForElectionDetails(constituencyId, localElectionBodyId);
+			if(electionDetails != null && electionDetails.size() > 0)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			else
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.error("Exception raised in checkForLocalElctionBody()", e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+	}
+	
+	
 }
 
 

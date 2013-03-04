@@ -628,6 +628,26 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		query.setParameterList("constituencyId", constituencyIdsList);
 		return query.list();
 	}
+	/**
+	 * This Method is Used To Check Weather Local Body Election are Held Or Not
+	 *  On That Particular Constituency
+	 *  @author Prasad Thiragabathina
+	 * @param Long constituencyId
+	 * @param List<Long> localElectionBodyId
+	 * @return List<Long>
+	 * @date 02/03/2013
+	 */
+	public List<Long> checkForElectionDetails(Long constituencyId,
+			List<Long> localElectionIds) {
+		Object[] parms = {constituencyId};
+		String query = "select count(model.constiElecId) from ConstituencyElection model " +
+				"where model.constituency.constituencyId =(:constituencyId) and model.election.electionScope.electionType.electionTypeId in (:localElectionIds)";
+		Query queryString = getSession().createQuery(query);
+		queryString.setParameter("constituencyId", constituencyId);
+		queryString.setParameterList("localElectionIds", localElectionIds);
+		return queryString.list();
+		
+	}
 }
 
 

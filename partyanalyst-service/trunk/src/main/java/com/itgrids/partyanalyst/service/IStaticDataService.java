@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -334,4 +335,6 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getParticipatedStatesForMinisters(
 				Long electionType);
+		
+		public ResultStatus checkForLocalElctionBody(Long constituencyId,List<Long> localElectionBodyIds);
 }
