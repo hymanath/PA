@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.service.IVoterReportService;
 
 
 public class VoterReportService implements IVoterReportService{
-	private static final Logger log = Logger.getLogger(VoterReportService.class);
+	private static final Logger LOG = Logger.getLogger(VoterReportService.class);
 	
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
 	{
@@ -17,7 +17,7 @@ public class VoterReportService implements IVoterReportService{
 			
 			return voterReportVO;
 		}catch (Exception e) {
-			log.error("Exception Occured in getVoterDetailsInaLocation() method with arguements Range - " +
+			LOG.error("Exception Occured in getVoterDetailsInaLocation() method with arguements Range - " +
 					range+" Value - "+rangeValue);
 			return null;
 		}
