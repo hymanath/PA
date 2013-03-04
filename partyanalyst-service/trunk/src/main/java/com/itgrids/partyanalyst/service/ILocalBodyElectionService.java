@@ -38,4 +38,6 @@ public interface ILocalBodyElectionService {
 	public NavigationVO getLatestGHMCElectionIdAndLatestElectionYear(String electionType);
 			
 	public NavigationVO getLocalBodyElectionIdsForAConstituency(Long constituencyId,String electionType);
+	
+	public TeshilPartyInfoVO getMuncipalOrCorporationElectionsResultsForAnAssembly(Long electionId, List<Long> constituencyIds);
 }

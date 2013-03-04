@@ -756,6 +756,35 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		return teshilPartyInfoVO;
 	}
 	
+	public TeshilPartyInfoVO getMuncipalOrCorporationElectionsResultsForAnAssembly(Long electionId, List<Long> constituencyIds){
+		TeshilPartyInfoVO teshilPartyInfoVO = new TeshilPartyInfoVO();
+		Election election = electionDAO.get(electionId);
+		StringBuilder lebIds = new StringBuilder();
+		List result = null;
+		try {
+			for(Long constituencyId : constituencyIds)
+			{
+			List lebs = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
+			
+			for(Object[] values:(List<Object[]>)lebs){
+				if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(values[2].toString()))
+					lebIds.append(",").append(values[4]);
+			}
+			
+			if(lebIds.length() > 0){
+				result = nominationDAO.getLocalBodiesElecConstituenciesDetailsForAnElection(electionId, lebIds.toString().substring(1));
+				List<TeshilPartyInfoVO> allMuncipalities = staticDataService.getLocalElectionPartyDetails(result, election.getElectionYear(), 
+						election.getElectionScope().getElectionType().getElectionType());
+				teshilPartyInfoVO.setMuncipalityVO(allMuncipalities);
+			}	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return teshilPartyInfoVO;
+	}
+	
+	
 	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId,Long partyId,Long wardId){
 		List wardsInfo = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(constituencyId, IConstants.GREATER_ELECTION_TYPE);
 		ConstituencyVO constituencyVO = new ConstituencyVO();
