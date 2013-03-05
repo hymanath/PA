@@ -5,7 +5,6 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
-import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Voter;
 
 public interface IBoothPublicationVoterDAO extends
@@ -171,4 +170,22 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publicationDateId,String type,Integer startIndex,
 				Integer maxRecords);
+	 
+	 public Long getTotalVotersCountForHamlet(Long userId ,Long id,Long publicationDateId,String type);
+	 
+	public List<Object[]> getImpFamilesForHamlet(Long userId,Long hamletId,
+			Long publicationDateId, String queryString);
+	
+	public List<Object[]> getVotersCountByPublicationIdForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituency);
+	
+	public List<Object[]> findFamiliesVotersInfoForPanchayatByHamlet(List<Long> hamletIds,Long publicationDateId);
+	
+	public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndHamlet(Long userId , Long panchayatId,Long publicationDateId,String queryString);
+	
+	public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId);
+	
+	public List<Long> getVotersInHamletForUser(Long userId , Long hamletId);
+	
+	public List<Object[]> getFamilyDetailsForHamlet(Long userId , List<Long> voterIds , Long publicationDateId);
+
 }

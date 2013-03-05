@@ -14,6 +14,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.Voter;
 
 public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>{
 
@@ -36,4 +37,11 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getPartyAndCasteDetails(Long voterId,Long userId);
 	
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId);
+	
+	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId);
+	
+	public List<Voter> getVoterDetailsByHamletId(Long hamletId , Long userId);
+	
+	public List<Long> getUserHamletsByPanchayatId(Long userId , Long panchayatId);
+	
 }
