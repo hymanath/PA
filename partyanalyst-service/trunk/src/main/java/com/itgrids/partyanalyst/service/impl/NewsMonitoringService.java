@@ -1143,6 +1143,9 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    	 filesList =  getNewsCountDetailsForMuncipality(candidateIds , locationId , locationValue);
 	     else if(locationId.longValue() == 8)
 	    	 filesList =  getNewsCountDetailsForWard(candidateIds , locationId , locationValue);
+	     else if(locationId.longValue() == 6)
+	    	 filesList =  getNewsCountForAHamlet(candidateIds , locationId , locationValue);
+	    	 
 	 }catch(Exception e){
 		 e.printStackTrace();			 
 	 }
@@ -1231,6 +1234,50 @@ public List<FileVO> getNewsCountDetailsByPanchayat(List<Long> candidateIds ,Long
 		 
        return filesList;
 
+}
+
+/**
+ * This method will get the news count details for a hamlet
+ * @author Samba Penugonda
+ * @param candidateIds  , list of candidate whose news can see the logged in user
+ * @param locationId , this is the scopeId for hamlet
+ * @param locationValue , this is the hamlet id which we want new count
+ * @return news count of a hamlet by categorywise
+ */
+public List<FileVO> getNewsCountForAHamlet(
+	      List<Long> candidateIds ,Long locationId ,Long locationValue)
+{
+	log.debug("Entered into  getNewsCountForAHamlet service method");
+	 List<FileVO> filesList = null;
+	 List<Long> locationValuesList = new ArrayList<Long>();
+	 Long hamletScopeId = 6L;
+	 List<Object[]> countByCategoryList = null;
+	 
+	 
+	 try
+	 {
+		 locationValuesList.add(locationValue); 
+		 countByCategoryList =  fileGallaryDAO.getNewsCountForHamlets(candidateIds,hamletScopeId,locationValuesList);
+		 
+		 NewsCountVO newsCountVO = new NewsCountVO();
+		 
+		 newsCountVO.setCandidateIds(candidateIds);
+		 newsCountVO.setHamletScopeId(hamletScopeId);
+		 newsCountVO.setHamletIds(locationValuesList);
+		 
+		 
+		  filesList  = setNewsCountValuesToFileVO1(countByCategoryList , newsCountVO , "hamlet");
+		 
+		 
+	 }catch(Exception e)
+	 {
+		 log.error("Exception raised in getNewsCountForAHamlet service method");
+		 e.printStackTrace();
+		 return null;
+		 
+	 }
+	 return filesList;
+	
 }
 
 public List<FileVO> getNewsCountDetailsForWard(
@@ -1494,6 +1541,11 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 						
 						importanceCountList = fileGallaryDAO
 								.getNewsCountForALocationByCategoryAndImportanceForWard(
+										 categoryId ,newsCountVO );
+					}else if(type.equalsIgnoreCase("hamlet")){
+						
+						importanceCountList = fileGallaryDAO
+								.getNewsCountForALocationByCategoryAndImportanceForHamlet(
 										 categoryId ,newsCountVO );
 					}
 			
@@ -1797,6 +1849,8 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 				filesList = getNewsDetailsForMuncipality(candidateIds,fileVO);
 			else if(fileVO.getLocationId().longValue() == 8 )
 				filesList = getNewsDetailsForWard(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 6 )
+				filesList = getNewsDetailsForHamlet(candidateIds,fileVO);
 			
 		contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleriesInPopup(
 				fileVO.getContentId(),fileVO.getRequestFrom(),fileVO.getRequestPageId(),
@@ -1880,6 +1934,44 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		}
 		
 		return fileGallaryList;
+	}
+	
+	/**
+	 * This method will get the file gallaries details which the news contains for given hamlet by a category 
+	 * @param candidateIds , list of candidate ids who the logged in user has the privilise to see the news
+	 * @param fileVO , this contains all the details related to category ,  hamletscopeId and hamletId
+	 * @return all the fileGallaries of news related to the input category of a hamlet
+	 */
+	public List<FileGallary> getNewsDetailsForHamlet(List<Long> candidateIds , FileVO fileVO)
+	{
+		log.debug("Entered into the getNewsDetailsForHamlet service method");
+		
+		List<FileGallary> fileGallaryList = null;
+		List<Long> hamletIds = new ArrayList<Long>();
+		
+		try{
+			hamletIds.add(fileVO.getLocationVal());
+			
+			List<Long> wardsList = new ArrayList<Long>(); 
+			wardsList.add(fileVO.getLocationVal());
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+			newsCountVO.setCandidateIds(candidateIds);
+			newsCountVO.setHamletScopeId(6L);
+			newsCountVO.setHamletIds(hamletIds);
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			
+			 fileGallaryList = fileGallaryDAO.getNewsDetailsByForHamlets(newsCountVO);
+			
+			
+		}catch(Exception e){
+			log.error("Exception raised in getNewsDetailsForHamlet service method");
+			e.printStackTrace();
+		}
+		
+		return fileGallaryList;	
 	}
 	
 	
@@ -2141,6 +2233,8 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 				filesList = getNewsForMuncipality(candidateIds,fileVO);
 			else if(fileVO.getLocationId().longValue() == 8)
 				filesList = getNewsForWard(candidateIds,fileVO);
+			else if(fileVO.getLocationId().longValue() == 6)
+				filesList = getNewsForHamlet(candidateIds,fileVO);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2183,6 +2277,52 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		}
 		
 		return filesList;
+		
+	}
+	
+	/**
+	 * This method will get the news details for a hamlet by selected category
+	 * @param candidateIds  , list of candidate whose news can see the logged in user
+	 * @param fileVO , this contains the details like selected category ,scopeId and hamlet values
+	 * @return all the selected category news details for a hamlet
+	 */
+	public List<FileVO> getNewsForHamlet(List<Long> candidateIds , FileVO fileVO)
+	{
+		
+		log.debug("Entered into the getNewsForHamlet service method");
+		List<FileVO> filesList = null;
+		Long hamletScopeId = 6L;
+		List<Long> hamletIds = new ArrayList<Long>();
+		try
+		{
+			hamletIds.add(fileVO.getLocationVal());
+			
+			NewsCountVO newsCountVO = new NewsCountVO();
+			
+            newsCountVO.setCandidateIds(candidateIds);
+			
+			newsCountVO.setCategoryId(fileVO.getCategoryId());
+			newsCountVO.setNewsImportanceId(fileVO.getImportanceId());
+			newsCountVO.setStartIndex(fileVO.getStartIndex());
+			newsCountVO.setMaxResults(fileVO.getMaxResult());
+			newsCountVO.setHamletScopeId(hamletScopeId);
+			newsCountVO.setHamletIds(hamletIds);
+			
+			List<Object[]> fileList = null;
+			
+			 fileList = fileGallaryDAO.getNewsByHamlet(newsCountVO);
+			 
+			 filesList =  processAllFileDetails(fileVO,fileList);
+		
+		}
+		catch(Exception e)
+		{
+			log.debug("Exception raised in getNewsForHamlet service method");
+			e.printStackTrace();
+		}
+		
+		return filesList;
+		
 		
 	}
 	
