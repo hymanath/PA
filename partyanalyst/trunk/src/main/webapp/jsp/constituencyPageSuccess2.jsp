@@ -2375,9 +2375,9 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 					if(c == 1){
 					chartDiv = document.getElementById('divInteractive_Chart_1');
 					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
-					ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' &nbsp; In 2004';
+					ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
 					else
-					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' &nbsp; In 2004';
+					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
 					}
 					var chart = new google.visualization.PieChart(chartDiv);
 					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
