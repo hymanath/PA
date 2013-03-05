@@ -1430,7 +1430,7 @@ function getProblemsByLocationForHamlet(){
 
 function getProblemsByLocation(id,publicationId,type)
 {
-	alert('11');
+	
 	document.getElementById('problemsCountDiv').style.display = 'none';
 	var locationId =0;
 	
