@@ -870,23 +870,23 @@ function addToPolitician(voterId)
 		 }
 		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		  getPreviousVotersDetailsForhamlet();
-			 // getPreviousVotersDetails1();
+		  getPreviousVotersDetails1();
+		   // getPreviousVotersDetailsForhamlet();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
-		 //showNewsDetails(id,publicationId,type);
+		 showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
-		// getProblemsByLocation(id,publicationId,type);
-		getInfluencingPeopleCount(id,type);
-		// getCounts(id,publicationId,type);
-		// getVotersCastInfo(id,publicationId,type);
+		 getProblemsByLocation(id,publicationId,type);
+		  getInfluencingPeopleCount(id,type);
+		 getCounts(id,publicationId,type);
+		 getVotersCastInfo(id,publicationId,type);
        //getCastInfoForsubLevel(id,publicationId,type);
-      // getvotersBasicInfo("impFamilies",id,publicationId,type);
+       getvotersBasicInfo("impFamilies",id,publicationId,type);
 				
 		// callCorrespondingAjaxCall();
-		// getPreviousElectionVotingTrends(id,publicationId,type);
-		// callCorrespondingAjaxCall('brief');
+		 getPreviousElectionVotingTrends(id,publicationId,type);
+		 callCorrespondingAjaxCall('brief');
 		 //getElectionyearsByMandalId(id,type)
 		 var fromPublicationDateId=0;
 		 //getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
