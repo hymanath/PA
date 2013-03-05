@@ -63,6 +63,8 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
@@ -70,6 +72,7 @@ import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
+import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
@@ -185,15 +188,39 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private INominationDAO nominationDAO;
     private ICadreDAO cadreDAO;
     private ICandidateDAO candidateDAO;
-
-      
-    private IPanchayatHamletDAO    panchayatHamletDAO ;
-    
-   
+    private IPanchayatHamletDAO panchayatHamletDAO ;
     private IWardDAO wardDAO;
     private IAssemblyLocalElectionBodyDAO assemblylocalElectionBodyDAO;
-   
-    	public INominationDAO getNominationDAO() {
+    private IVoterCastInfoDAO voterCastInfoDAO;
+    private IVoterPartyInfoDAO voterPartyInfoDAO;
+    private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
+    
+    public IVoterCastBasicInfoDAO getVoterCastBasicInfoDAO() {
+		return voterCastBasicInfoDAO;
+	}
+
+	public void setVoterCastBasicInfoDAO(
+			IVoterCastBasicInfoDAO voterCastBasicInfoDAO) {
+		this.voterCastBasicInfoDAO = voterCastBasicInfoDAO;
+	}
+
+	public IVoterCastInfoDAO getVoterCastInfoDAO() {
+		return voterCastInfoDAO;
+	}
+
+	public void setVoterCastInfoDAO(IVoterCastInfoDAO voterCastInfoDAO) {
+		this.voterCastInfoDAO = voterCastInfoDAO;
+	}
+
+	public IVoterPartyInfoDAO getVoterPartyInfoDAO() {
+		return voterPartyInfoDAO;
+	}
+
+	public void setVoterPartyInfoDAO(IVoterPartyInfoDAO voterPartyInfoDAO) {
+		this.voterPartyInfoDAO = voterPartyInfoDAO;
+	}
+
+		public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
 
@@ -10374,7 +10401,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			  log.error("Exception rised in getCadreInfluencingPeopleCandidateInfo", e);
 		  }
 		}
-		
+       
 		public VotersInfoForMandalVO getVotersCountDetailsForHamlet(Long userId , String type,Long id,Long publicationDateId,String reqType){
 			
 			List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountByPublicationIdForHamlet(userId,type,id,publicationDateId,null);
@@ -10838,7 +10865,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				log.error("Exception Occured in calculatePercentage() Method, Exception is - "+e);
 			}
 		}
-		
+
 		//Updated by gayathri to get HamletLevel VotersBasicInfo
 		
 				public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId ,Long hamletId,Long userID){
@@ -10994,4 +11021,72 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					
 				}
 
+
+
+
+		
+	   public ResultStatus deleteVotersCastDataFromIntermediateTables(Long constituencyId,Long publicationDateId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				if(constituencyId != null && constituencyId > 0)
+				{
+				voterCastInfoDAO.deleteVotersCastInfoByReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+				voterCastBasicInfoDAO.deleteVotersCastInfoByReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+				}
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in deleteVotersCastDataFromIntermediateTables() Method, Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+		}
+		
+	   
+	   public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId)
+	   {
+		   ResultStatus resultStatus = new ResultStatus();
+		   try{
+		   if(constituencyId != null && constituencyId > 0)
+		   {
+			   voterPartyInfoDAO.deleteVotersPartyInfoByConstituencyId(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+		   }
+		   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		   return resultStatus;
+		   
+	   }catch(Exception e)
+	   {
+		   log.error("Exception Occured in deleteVotersPartyDataFromIntermediateTables() Method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;  
+	   }
+		
+	 }
+	   
+	   public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long publicationDateId,Long constituencyId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				
+				if(constituencyId != null && constituencyId > 0)
+				{
+					voterInfoDAO.deleteVotersInfoByConstituencyId(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+					voterFamilyInfoDAO.deleteVoterFamilyDetByConstituencyIdAndVoterAgeRange(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+					voterAgeInfoDAO.deleteVoterAgeInfoByConstituencyIdAndReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+				}
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in deleteVoterInfoFromIntermediateTablesByConstituencyId() Method, Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+		}
+
 }
+
+
