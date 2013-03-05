@@ -1389,6 +1389,9 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="cadreDAO" ref="cadreDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="voterPartyInfoDAO" ref="voterPartyInfoDAO"/>
+		<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+		<property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO"/>
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">

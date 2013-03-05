@@ -127,8 +127,41 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 				return null;
-			resultStatus = votersAnalysisService.deleteVotersDataFromIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			//resultStatus = votersAnalysisService.deleteVotersDataFromIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			resultStatus = votersAnalysisService.deleteVoterInfoFromIntermediateTablesByConstituencyId(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+					
 			return Action.SUCCESS;
 		}
 		
+		public String deleteVotersCastDataFromIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in deleteVotersCastDataFromIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return null;
+			resultStatus = votersAnalysisService.deleteVotersCastDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
+		
+		public String deleteVotersPartyDataFromIntermediateTables(){
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				Log.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception -"+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return null;
+			resultStatus = votersAnalysisService.deleteVotersPartyDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
 }
