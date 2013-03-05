@@ -432,16 +432,29 @@ public String getVoterDetails(){
 		Long boothId = request.getParameter("boothId") != null ? Long.parseLong(request.getParameter("boothId")):0L;
 		Long panchaytId = request.getParameter("panchaytId") != null? Long.parseLong(request.getParameter("panchaytId")) :0L;
 		
+		Long hamletId = 0L;
+		
+		if(request.getParameter("hamletId") != null)
+			hamletId = new Long(request.getParameter("hamletId"));
+		
 			votersList = new ArrayList<VoterVO>();
 			
-			if(boothId == 0 && panchaytId != 0)			
+			if(hamletId.longValue() != 0){
 				votersList = votersAnalysisService.getVoterDetails(
-						publicationId, null, panchaytId, startIndex,
+						publicationId, null, panchaytId,hamletId, startIndex,
 						maxRecords, order, columnName,userId);
-			else if(boothId != 0 && panchaytId == 0)
-				votersList = votersAnalysisService.getVoterDetails(
-						publicationId, boothId , null, startIndex, maxRecords,
-						order, columnName,userId);
+				
+			}else{
+			
+				if(boothId == 0 && panchaytId != 0)			
+					votersList = votersAnalysisService.getVoterDetails(
+							publicationId, null, panchaytId,null, startIndex,
+							maxRecords, order, columnName,userId);
+				else if(boothId != 0 && panchaytId == 0)
+					votersList = votersAnalysisService.getVoterDetails(
+							publicationId, boothId , null,null, startIndex, maxRecords,
+							order, columnName,userId);
+			}
 
 		
 		constituencyManagementVO.setVoterDetails(votersList);
@@ -739,6 +752,26 @@ public String getImportantFamaliesDetails(){
 		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
 	}
 	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
+	return Action.SUCCESS;
+}
+
+public String getImportantFamaliesDetailsForHamlet(){
+	String param;
+	param = getTask();
+	
+	try{
+		jObj = new JSONObject(param);	
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
+	}
+	
+	session = request.getSession();
+	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+	Long userId =  regVO.getRegistrationID();
+	
+	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamaliesDetailsForHamlet(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
 	return Action.SUCCESS;
 }
 
