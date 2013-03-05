@@ -994,10 +994,6 @@ for  body3 start    result  -->
 	 <div id="problemAjaxImg" style="display:none;float:right;">
 	<img src="./images/icons/search.gif" /></div>
 	
-	<!-- IChanged here for getting hamlet problems-->
-	<input type="button" id="hamletbutt" value="hamlet" onclick="getProblemsByLocationForHamlet()"></input>
-	<!-- End -->
-
 	<div id="problemsCountDiv" class="widget blue whitegloss">
 	
 	</div>
