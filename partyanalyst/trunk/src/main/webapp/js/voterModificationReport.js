@@ -812,7 +812,16 @@ $('#voterDetails').dataTable({
 
 function buildSubLevelInformation(jsObj,myResults)
 {
+var subLevelName = "";
 
+if(jsObj.locationType == "constituency")
+    subLevelName = "Mandal/Muncipality";
+else if(jsObj.locationType == "mandal")
+    subLevelName = "Panchayat";
+else if(jsObj.locationType == "panchayat" || jsObj.locationType == "ward")
+    subLevelName = "booth";
+else if(jsObj.locationType == "localbody" ||jsObj.locationType == "Local Election Body")
+    subLevelName = "ward";
 
 $('#subLevelDiv').html('');
 if(myResults.modifiedVotersList.length == 0)
@@ -821,7 +830,7 @@ if(myResults.modifiedVotersList.length == 0)
 	 str+='<table class="voterInfoTable" >';
 	 str+='<thead>';
 	 str +='<tr>';
-		str +='<th rowspan="2">Sublevel Name</th>';
+		str +='<th rowspan="2">'+subLevelName+'</th>';
 		str +='<th COLSPAN="3">Added</th>';
 		str +='<th COLSPAN="3">Deleted</th>';
 		str +='</tr>';
