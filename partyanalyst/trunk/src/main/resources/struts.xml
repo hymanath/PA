@@ -3786,6 +3786,14 @@
 			</result> 
 		</action>
 		
+		<action name="getImportantFamaliesDetailsForHamlet" class="votersAnalysisAction" method="getImportantFamaliesDetailsForHamlet">
+			<result type="json" name="success">
+				<param name="root">importantFamiliesInfoVo</param>				
+			</result> 
+		</action>
+		
+		
+		
 		<action name="getUserSubScriptionsAction" class="userProfileAction" method="getUserSubScription">
 			<result type="json" name="success">
 			  <param name="root">subscriptionsMainVO</param>
