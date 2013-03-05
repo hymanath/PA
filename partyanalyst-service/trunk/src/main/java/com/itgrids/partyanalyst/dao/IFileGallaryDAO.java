@@ -232,5 +232,13 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<Object[]> getNewsByWard(NewsCountVO newsCountVO);
 	
+	public List<Object[]> getNewsCountForHamlets(List<Long> candidateIds,
+			Long hamletScopeId, List<Long> hamletIds);
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForHamlet( Long categoryId , NewsCountVO newsCountVO);
+	
+	public List<Object[]> getNewsByHamlet(NewsCountVO newsCountVO);
+	
+	public List<FileGallary> getNewsDetailsByForHamlets(NewsCountVO newsCountVO);
 }
 
