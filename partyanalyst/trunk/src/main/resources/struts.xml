@@ -4577,11 +4577,31 @@
 				<param name="root">teshilPartyInfoVO</param>				
 			</result>		
 		</action>
-	<!--  updated by gayathri to get HamletLevel votersBasicInfo -->
+		<!--  updated by gayathri to get HamletLevel votersBasicInfo -->
 		<action name="getVotersCountForAllElectionsForHamlet" class="votersAnalysisAction" method="getVotersCountForAllElectionsForHamlet">
 		    <result type="json" name="success">
            		<param name="root">previousDetailsListForHamlet</param>
         	</result>		
+		</action>
+		<action name="insertVotersCastDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersCasteDataToIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		<action name="deleteVoterscastDataFromIntermediateTablesAction" class="populateVoterDataAction" method="deleteVotersCastDataFromIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		<action name="deleteVotersPartyDataFromIntermediateTablesAction" class="populateVoterDataAction" method="deleteVotersPartyDataFromIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		<action name="insertVotersPartyDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersPartyDataToIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
 		</action>
 		
 	</package>

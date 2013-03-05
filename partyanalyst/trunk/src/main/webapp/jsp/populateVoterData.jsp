@@ -66,7 +66,7 @@ fieldset{
     border: 3px solid #CFD6DF;
    
     margin-bottom: 10px;
-    padding-bottom: 76px;
+    padding-bottom: 20px;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
@@ -159,6 +159,30 @@ fieldset{
  </fieldset>
 </div>	
 
+<!-- voters Party Div -->
+<div id="voterDataOuterDiv">
+<div class="headingDiv" style="width:413px;">Populate Party Voters Data To Intermediate Tables</div>
+ <fieldset>
+    <div id="partyerrorMsgDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="partyconstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+
+		Select Publication Date<font class="requiredFont">*</font> <select id="partypublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="partyajaxLoad"><img src="images/icons/search.gif" /></span>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="partyvoterDataInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="partyvoterDataDeleteBtn" />
+			<img src="./images/icons/search.gif" style="display:none;" id="partyajaxImage" />
+		</div>
+	</div>
+ </fieldset>
+</div>	
+
+
+
+
 
 </div>
 
@@ -203,6 +227,7 @@ $(document).ready(function(){
 
 	$("#castconstituencyList").change(function(){
 	 var id = $("#castconstituencyList").val();
+	 var selectElmt = "castpublicationDateList";
 	  if(id == 0)
 	  {
 	   $("#casterrorMsgDiv").html('Please Select Constituency.');
@@ -213,7 +238,30 @@ $(document).ready(function(){
 	 var jsObj=
 	 {
 		selected:id,
+		selectElmt:selectElmt,
 		task:"getPublicationDateForCast"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+	});
+
+	$("#partyconstituencyList").change(function(){
+	 var id = $("#partyconstituencyList").val();
+	  var selectElmt = "partypublicationDateList";
+	  if(id == 0)
+	  {
+	   $("#partyerrorMsgDiv").html('Please Select Constituency.');
+		return;
+	  }
+	
+	 $("#partyajaxLoad").css('display','block');
+	 var jsObj=
+	 {
+		selected:id,
+		selectElmt:selectElmt,
+		task:"getPublicationDateForParty"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
@@ -307,6 +355,66 @@ var castconstituencyId = $("#castconstituencyList").val();
 		 callAjax(jsObj,url);
 	});
 
+
+
+$("#partyvoterDataInsertBtn").click(function(){
+	
+var partyconstituencyId = $("#partyconstituencyList").val(); 
+		var partypublicationDateId = $("#partypublicationDateList").val();
+		if(partyconstituencyId == 0)
+		{
+			$("#partyerrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(partypublicationDateId == 0 || partypublicationDateId == null)
+		{
+		  $("#partyerrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#partyvoterDataInsertBtn").attr("disabled", "disabled");
+		$("#partyajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :partyconstituencyId,
+		  publicationDateId : partypublicationDateId,
+		  task:"insertPartyVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVotersPartyDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+	});
+	$("#partyvoterDataDeleteBtn").click(function(){
+		var partyconstituencyId = $("#partyconstituencyList").val(); 
+		var partypublicationDateId = $("#partypublicationDateList").val();
+		if(partyconstituencyId == 0)
+		{
+			$("#partyerrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(partypublicationDateId == 0 || partypublicationDateId == null)
+		{
+		  $("#partyerrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#partyvoterDataDeleteBtn").attr("disabled", "disabled");
+		$("#partyajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :partyconstituencyId,
+		  publicationDateId : partypublicationDateId,
+		  task:"deletepartyVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deleteVotersPartyDataFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+	});
+
+
 });
 
 $("#voterDataDeleteBtn").click(function(){
@@ -356,17 +464,31 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getPublicationDateForCast")
 								{
 									
-									buildPublicationDateList1(myResults);
+									buildPublicationDateList1(myResults,jsObj.selectElmt);
+								}
+								else if(jsObj.task == "getPublicationDateForParty")
+								{
+									buildPublicationDateList1(myResults,jsObj.selectElmt);
 								}
 								
 								else if(jsObj.task == "insertVotersData")
 								{
 									showInsertVoterDataStatus(myResults);
 								}
+								else if(jsObj.task == "deletecastVotersData")
+								{
+									showDeleteVoterCastDataStatus(myResults);
+								}
+								else if(jsObj.task == "deletepartyVotersData")
+								{
+									showDeleteVoterPartyDataStatus(myResults);
+								}
 								else if(jsObj.task == "deleteVotersData")
 									showDeleteVoterDataStatus(myResults);
 
-								}catch (e) {
+								}
+								
+								catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
 								}  
@@ -415,10 +537,50 @@ function showDeleteVoterDataStatus(result)
 				return;
 		}
 	}
-	function buildPublicationDateList1(results)
+
+	function showDeleteVoterCastDataStatus(result)
 	{
+
+		$("#castajaxImage").css("display","none");
+		$("#castvoterDataDeleteBtn").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#casterrorMsgDiv").html("Caste Data Deleted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#casterrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
+
+	function showDeleteVoterPartyDataStatus(result)
+	{
+		$("#partyajaxImage").css("display","none");
+		$("#partyvoterDataDeleteBtn").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#partyerrorMsgDiv").html("Party Data Deleted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#partyerrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
+
+	function buildPublicationDateList1(results,selectElmt)
+	{
+	
+	if(selectElmt == "castpublicationDateList")
 	document.getElementById('castajaxLoad').style.display = 'none';
-	var selectedElmt=document.getElementById("castpublicationDateList");
+	if(selectElmt == "partypublicationDateList")
+	document.getElementById('partyajaxLoad').style.display = 'none';
+	var selectedElmt=document.getElementById(selectElmt);
 	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
 	for(var val in results)
