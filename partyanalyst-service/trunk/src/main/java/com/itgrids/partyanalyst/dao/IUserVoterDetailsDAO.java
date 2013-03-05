@@ -38,6 +38,13 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId);
 	
+	/** This Method is used to get VoterIds based on hamletId and UserId  */
+	
+
+	  public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId);
+	
+	
+	
 	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId);
 	
 	public List<Voter> getVoterDetailsByHamletId(Long hamletId , Long userId);
