@@ -4215,7 +4215,7 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					
 					voter = voterDAO.save(voter);
 					
-					boothPublicationVoter.setVoterId(voter.getVoterId());
+					boothPublicationVoter.setVoter(voter);
 					boothPublicationVoter.setBoothId(boothsMap.get(voterTemp.getPartNo()));
 					boothPublicationVoter.setSerialNo(voterTemp.getSerialNo());
 					boothPublicationVoterDAO.save(boothPublicationVoter);
@@ -4336,7 +4336,7 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 						try{
 						BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
 						boothPublicationVoter.setBoothId(toBoothId);
-						boothPublicationVoter.setVoterId(voterId);
+						//boothPublicationVoter.setVoterId(voterId);
 						boothPublicationVoterDAO.save(boothPublicationVoter);
 						}catch (Exception e) {}
 					}
@@ -8600,7 +8600,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 							if(boothId != null)
 							{
 							boothPublicationVoter.setBoothId(boothId);
-							boothPublicationVoter.setVoterId(voter.getVoterId());
+							//boothPublicationVoter.setVoterId(voter.getVoterId());
 							boothPublicationVoterDAO.save(boothPublicationVoter);
 							}
 							
