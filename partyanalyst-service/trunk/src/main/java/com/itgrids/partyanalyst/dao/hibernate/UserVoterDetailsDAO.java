@@ -6,8 +6,8 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
-import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class UserVoterDetailsDAO extends GenericDaoHibernate<UserVoterDetails, Long> implements 
 IUserVoterDetailsDAO{
@@ -138,5 +138,47 @@ IUserVoterDetailsDAO{
 		return getHibernateTemplate().find("select model.casteState.caste.casteId," +
 				" model.casteState.caste.casteName,model.party.partyId,model.party.shortName " +
 				"from UserVoterDetails model where model.voter.voterId = ? and model.user.userId = ? ",param);
+	}
+	
+	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId)
+	{
+		
+		Query query = getSession().createQuery("select model.voter.gender , count(*) from UserVoterDetails model " +
+				"where model.hamlet.hamletId = ? group by model.voter.gender ");
+		
+		query.setParameter(0, hamletId);
+		
+		return query.list();
+		
+		
+	}
+	
+	
+	public List<Voter> getVoterDetailsByHamletId(Long hamletId , Long userId)
+	{
+		
+		Query query = getSession().createQuery("select model.voter from UserVoterDetails model where" +
+				" model.hamlet.hamletId = ? and model.user.userId = ?");
+		
+		query.setParameter(0, hamletId);
+		query.setParameter(1, userId);
+		
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> getUserHamletsByPanchayatId(Long userId , Long panchayatId)
+	{
+		
+		
+		Query query = getSession().createQuery("select distinct model.hamlet.hamletId from UserVoterDetails model, PanchayatHamlet model1" +
+				" where model.user.userId = :userId and model.hamlet.hamletId = model1.hamlet.hamletId and " +
+				" model1.panchayat.panchayatId = :panchayatId");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("panchayatId", panchayatId);
+		
+		return query.list();
 	}
 }

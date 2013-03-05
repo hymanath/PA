@@ -2625,5 +2625,101 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		
 		
 	}
+	
+	
+	public List<Object[]> getNewsCountForHamlets(List<Long> candidateIds,
+			Long hamletScopeId, List<Long> hamletIds)
+	{
+		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
+				"model.file.category.categoryId from FileGallary model " +
+				" where model.gallary.candidate.candidateId in(:candidateIds) " +
+				" and model.file.regionScopes.regionScopesId =:hamletScopeId and" +
+				" model.file.locationValue in( :hamletIds) group by model.file.category.categoryId");
+	
+	query.setParameterList("candidateIds", candidateIds);
+	query.setParameter("hamletScopeId", hamletScopeId);
+	query.setParameterList("hamletIds", hamletIds);
+	
+	return query.list();
+		
+		
+	}
+	
+
+	public List<FileGallary> getNewsDetailsByForHamlets(NewsCountVO newsCountVO)
+	{
+
+		
+		Query query = getSession()
+				.createQuery(
+						"select model from FileGallary model where model.gallary.candidate.candidateId " +
+						"in(:candidateIds) and" +
+						" ( model.file.regionScopes.regionScopesId = :hamletScopeId and " +
+						" model.file.locationValue in( :hamletIds))"+						
+					    " and model.file.category.categoryId = :categoryId " +
+					    " and model.file.newsImportance.newsImportanceId = :newsImportanceId" +
+					    " order by model.createdDate desc");
+		
+		
+		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
+		query.setParameter("hamletScopeId", newsCountVO.getHamletScopeId());
+		query.setParameterList("hamletIds", newsCountVO.getHamletIds());
+		query.setParameter("categoryId", newsCountVO.getCategoryId());
+		query.setParameter("newsImportanceId", newsCountVO.getNewsImportanceId());		
+	
+		return query.list();
+	}
+	
+	public List<Object[]> getNewsByHamlet(NewsCountVO newsCountVO)
+	{
+		
+
+		
+		Query query = getSession()
+				.createQuery(
+						"select model.file,model.fileGallaryId,model.isPrivate from FileGallary model where " +
+						" model.gallary.candidate.candidateId in(:candidateIds) and" +
+						" (model.file.regionScopes.regionScopesId = :hamletScopeId and " +
+						" model.file.locationValue in( :hamletIds))"+
+					    " and model.file.category.categoryId = :categoryId " +
+					    " and model.file.newsImportance.newsImportanceId = :newsImportanceId" +
+					    " order by model.createdDate desc");
+		
+		
+		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
+		query.setParameter("hamletScopeId", newsCountVO.getHamletScopeId());
+		query.setParameterList("hamletIds", newsCountVO.getHamletIds());
+		query.setParameter("categoryId", newsCountVO.getCategoryId());
+		query.setParameter("newsImportanceId", newsCountVO.getNewsImportanceId());
+		
+		query.setFirstResult(newsCountVO.getStartIndex());
+		query.setMaxResults(newsCountVO.getMaxResults());
+		
+	
+		return query.list();
+	}
+	
+	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForHamlet( Long categoryId , NewsCountVO newsCountVO)
+	{
+		Query query = getSession().createQuery(
+				        " select model.file.newsImportance.newsImportanceId,model.file.newsImportance.importance," +
+						" count(*) from FileGallary model where model.gallary.candidate.candidateId in(:candidateIds)" +
+					    " and "+
+					    " ( model.file.regionScopes.regionScopesId = :hamletScopeId and " +
+					    " model.file.locationValue in( :hamletIds))"+
+		                " and model.file.category.categoryId = :categoryId " +
+		                " group by model.file.newsImportance.newsImportanceId");
+		
+		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
+		query.setParameter("hamletScopeId", newsCountVO.getHamletScopeId());
+		query.setParameterList("hamletIds", newsCountVO.getHamletIds());		
+		query.setParameter("categoryId", categoryId);
+		
+		return query.list();
+		
+	
+	}
+
+	
    
 }
