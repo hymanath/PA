@@ -496,12 +496,13 @@ public String getVoterDetails(){
 			jObj = new JSONObject(param);
 			constituencyId = jObj.getLong("constituencyId");
 			
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 		}
 		
-		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId);
+		   votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
 		return Action.SUCCESS;
 	}
 	
@@ -786,7 +787,7 @@ public String getImportantFamaliesDetailsForHamlet(){
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	Long userId =  regVO.getRegistrationID();
 	
-	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamaliesDetailsForHamlet(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
+	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamaliesDetailsForPanchayatByHamlet(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
 	return Action.SUCCESS;
 }
 
@@ -800,7 +801,7 @@ public String getVotersFamilyDetails(){
 		Long userId =  regVO.getRegistrationID();
 		
 		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
-		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"));
+		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"));
 		else
 			//votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
 			votersFamilyInfo = votersAnalysisService.getFamilyInformation(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId);
