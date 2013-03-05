@@ -204,5 +204,8 @@ public interface IVotersAnalysisService {
 			Long publicationId,Integer startIndex , Integer maxRecords);
 	
 	public ImportantFamiliesInfoVo getImportantFamaliesDetailsForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
+	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId);
+	public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId);
+	public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long publicationDateId,Long constituencyId);
 	
 }

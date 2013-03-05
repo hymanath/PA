@@ -75,4 +75,16 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		return query.list();
 	}
 	
+	public Integer deleteVoterAgeInfoByConstituencyIdAndReportLevelValue(Long reportLevelId,Long constituencyId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery(" delete from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId =:reportLevelId " +
+				" and model.constituencyId=:constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+		
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		
+		return  query.executeUpdate();
+	}
+	
 }

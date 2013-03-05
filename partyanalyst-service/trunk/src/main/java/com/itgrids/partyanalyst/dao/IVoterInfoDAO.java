@@ -23,4 +23,6 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	
 	public List<Object[]> getVoterInfoByPublicationDateIds(Long reportLevelId, Long reportLevelValue, List<Long> publicationDateIds);
 	
+	public Integer deleteVotersInfoByConstituencyId(Long reportLevelId, Long constituencyId, Long publicationDateId);
+	
 }
