@@ -10838,4 +10838,160 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				log.error("Exception Occured in calculatePercentage() Method, Exception is - "+e);
 			}
 		}
+		
+		//Updated by gayathri to get HamletLevel VotersBasicInfo
+		
+				public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId ,Long hamletId,Long userID){
+					log.debug("Entered into the getPreviousVotersCountDetailsForHamlet service method");	
+					List<VotersInfoForMandalVO> votersInfoForMandalVOListHamlet = new ArrayList<VotersInfoForMandalVO>();
+
+					try{
+						List<VoterVO> previousDetailsListHamlet = null;
+						previousDetailsListHamlet =  getAllPublicationsForHamlet(constituencyId);
+							
+						
+						VotersInfoForMandalVO votersInfoForMandalVOHamlet = null;
+						// For getting VotersDetails For HamletLevel
+						List<Object> votersIdList =  userVoterDetailsDAO.getVoterIdsBasedOnHamletId(hamletId,userID);
+							for(VoterVO voterVO:previousDetailsListHamlet){
+							 if(voterVO.getType().equalsIgnoreCase("Publication")){
+								 if(votersIdList != null && votersIdList.size()>0){
+								 votersInfoForMandalVOHamlet = getVoterDetailsByVoterIdForHamlet(voterVO,votersIdList);
+								 }
+								
+						    }
+									if(votersInfoForMandalVOListHamlet.size() > 0){
+								
+								VotersInfoForMandalVO previousResults = votersInfoForMandalVOListHamlet.get(votersInfoForMandalVOListHamlet.size()-1);
+								VotersInfoForMandalVO currentResult = votersInfoForMandalVOHamlet;
+								
+								if(currentResult.getTotalMaleVoters() != null){							
+									votersInfoForMandalVOHamlet.setMaleVotersDiff(Long.parseLong(currentResult.getTotalMaleVoters()) - Long.parseLong(previousResults.getTotalMaleVoters()));
+								}else{
+									if(previousResults.getTotalMaleVoters() != null)
+										votersInfoForMandalVOHamlet.setMaleVotersDiff(Long.parseLong("0") - Long.parseLong(previousResults.getTotalMaleVoters()));
+									else
+										votersInfoForMandalVOHamlet.setMaleVotersDiff(Long.parseLong(previousResults.getTotalMaleVoters()));
+		                        }
+								
+								if(currentResult.getTotalFemaleVoters() != null){							
+									votersInfoForMandalVOHamlet.setFemaleVotersDiff(Long.parseLong(currentResult.getTotalFemaleVoters()) - Long.parseLong(previousResults.getTotalFemaleVoters()));
+								}else{
+									
+									if(previousResults.getTotalFemaleVoters() != null)
+										votersInfoForMandalVOHamlet.setFemaleVotersDiff(Long.parseLong("0") - Long.parseLong(previousResults.getTotalFemaleVoters()));
+									else
+										votersInfoForMandalVOHamlet.setFemaleVotersDiff(Long.parseLong(previousResults.getTotalFemaleVoters()));
+										
+		                        }
+								
+								if(votersInfoForMandalVOHamlet.getTotVoters() != null){
+									votersInfoForMandalVOHamlet.setTotalVotersDiff(currentResult.getTotVoters().longValue() - previousResults.getTotVoters().longValue());
+								}else{
+									if(previousResults.getTotVoters() != null)
+										votersInfoForMandalVOHamlet.setTotalVotersDiff(Long.parseLong("0") - previousResults.getTotVoters().longValue());
+									else
+										votersInfoForMandalVOHamlet.setTotalVotersDiff(previousResults.getTotVoters().longValue());
+
+
+								}//else recent
+							}//if parent
+							
+									 if(votersInfoForMandalVOHamlet !=null && votersInfoForMandalVOHamlet.isDatapresent()){			
+									votersInfoForMandalVOListHamlet.add(votersInfoForMandalVOHamlet);
+								}
+							}//for
+							}//try 
+					 catch(Exception e){
+						log.error("Exception raised in getPreviousVotersCountDetailsForHamlet service method");
+						e.printStackTrace();
+					}
+				
+				return votersInfoForMandalVOListHamlet;
+				}	
+				/** This Method is Used to get VotersBasicInfo For HamletLevel */
+			public  VotersInfoForMandalVO	getVoterDetailsByVoterIdForHamlet(VoterVO voterVO,List<Object> voterIdList){
+					
+				 log.debug("Entered into the getVoterDetailsByVoterIdForHamlet service method");
+		         
+		         VotersInfoForMandalVO votersInfoForMandalVO = null;
+		         try{
+		        	 List<Object[]> VotersCont = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(voterVO.getPublicationDateId(),voterIdList);
+		        	 Long maleVotersCount = 0l;
+		     		Long femaleVotersCount = 0l;
+		     		Long totalCount = 0l;
+		     		
+		     		if(VotersCont !=null){
+		     	   for(Object[] votersCount : VotersCont){
+		     		  
+		     		  if(votersCount[0] != null){
+		     			  if(votersCount[1].equals("F"))
+		   	    		femaleVotersCount = (Long)votersCount[0];
+		     			  else
+		     				 maleVotersCount = (Long)votersCount[0];
+		   	    	}
+		     	    	
+		     	    		totalCount = femaleVotersCount + maleVotersCount;
+		     	   }
+		     	}
+		     		votersInfoForMandalVO = new VotersInfoForMandalVO();
+		     	    votersInfoForMandalVO.setTotalMaleVoters(maleVotersCount.toString());
+		     	    votersInfoForMandalVO.setTotalFemaleVoters(femaleVotersCount.toString());
+		     	    votersInfoForMandalVO.setTotVoters(new BigDecimal(totalCount.longValue()));
+		     	    
+		     	    
+		     	    
+		     	   String maleVoters = votersInfoForMandalVO.getTotalMaleVoters();
+					String femaleVoters = votersInfoForMandalVO.getTotalFemaleVoters();
+					
+					if(maleVoters == null || femaleVoters == null ||(maleVoters.equalsIgnoreCase("0") && femaleVoters.equalsIgnoreCase("0")))
+						votersInfoForMandalVO.setDatapresent(false);
+					
+					votersInfoForMandalVO.setIsPublication("true");
+					votersInfoForMandalVO.setPublicationDate(voterVO.getPublicationDate().toString());
+					votersInfoForMandalVO.setElectinYear(voterVO.getPublicationDate().getYear()+1900);
+		        	 
+		         }catch(Exception e){
+						log.error("Exception raised in getVoterDetailsByVoterIdForHamlet service method");
+						e.printStackTrace();
+					}
+					
+				return votersInfoForMandalVO;	
+				}
+				
+				
+				/** This Method is used to get PublicationsDateId For Hamlet */
+				public List<VoterVO> getAllPublicationsForHamlet(Long constituencyId){
+					log.debug("Entered into the getAllPublicationsForHamlet service method");
+					
+					List<VoterVO> previousDetailsListForHamlet = new ArrayList<VoterVO>();
+					VoterVO voterVO = null;
+					
+					try{
+						
+						//For getting publicationIds Based on constituencyId
+						
+						List<Long>  publicationIdsListForHamlet = boothDAO
+								.getAllPublicationDetailsForConstituency(constituencyId);	
+								
+						for(Long publicationId:publicationIdsListForHamlet){
+							voterVO = new VoterVO();
+							PublicationDate publicationDate = publicationDAO.get(publicationId);
+							
+							voterVO.setPublicationDateId(publicationDate.getPublicationDateId());
+							voterVO.setElectionDate(publicationDate.getDate());
+							voterVO.setPublicationDate(publicationDate.getDate());
+						    voterVO.setType("Publication");				 
+						    previousDetailsListForHamlet.add(voterVO);
+						}
+							Collections.sort(previousDetailsListForHamlet);
+					}catch(Exception e){
+						log.error("Exception raised in getAllPublicationsForHamlet service method");
+						e.printStackTrace();
+					}
+					
+					return previousDetailsListForHamlet;
+					
+				}
+
 }
