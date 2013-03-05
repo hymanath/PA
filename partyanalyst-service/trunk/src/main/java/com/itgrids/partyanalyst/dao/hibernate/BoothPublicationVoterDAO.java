@@ -471,7 +471,7 @@ public class BoothPublicationVoterDAO extends
 		  query.setParameter("panchayatId", panchayatId);
 		  return query.list();
 	}*/
-	
+		
 	public List<Object[]> getVotersCountForPanchayatByPublicationId(Long panchayatId,Long publicationDateId){
 		Query query = getSession().createQuery("select count(*),BPV.voter.gender from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				" BPV.booth.panchayat.panchayatId = :panchayatId group by BPV.voter.gender ") ;
@@ -1338,6 +1338,24 @@ public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
 	  return query.list();
 	
 }
+
+/** This Method is used to get VotersCount by using VoterIds and PublicationDateIds */
+
+public List<Object[]> getVotersBasedOnVoterIdsAndPublication(
+		 Long publicationDateId , List<?> voterIds) {		
+		
+		
+	Query query = getSession().createQuery("select count(distinct b.voter.voterId),b.voter.gender " +
+			" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+			"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+							"group by b.voter.gender   ") ;
+	query.setParameter("publicationDateId",publicationDateId);
+	query.setParameterList("voterIds", voterIds);	
+	  return query.list();
+	
+}
+
+
 @SuppressWarnings("unchecked")
 public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList)
 {
