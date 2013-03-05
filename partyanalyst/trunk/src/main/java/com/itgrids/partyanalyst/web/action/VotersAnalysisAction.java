@@ -767,7 +767,11 @@ public String getImportantFamaliesDetails(){
 		e.printStackTrace();
 		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
 	}
-	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
+	
+	session = request.getSession();
+	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+	Long userId =  regVO.getRegistrationID();
+	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
 	return Action.SUCCESS;
 }
 
