@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><c:out value="${localBodyElectionResults.localBodyRegion}" /> Local Body Elections</title>
+<title><c:out value="${localBodyElectionResults.localBodyRegion}" />&nbsp; Local Body Elections</title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -134,31 +134,31 @@ img{max-width:1000px;}
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp;&nbsp; ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
 									<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
 						<div id="districtNewsDiv_outer" style="overflow:hidden;height:135px;">
 							<div id="districtNewsDiv" style="padding:10px;">
-								<table id="localBodyDetailsTable" class="datatableClass" border="1">
+								<table id="localBodyDetailsTable" class="datatableClass" style="font-family: verdana;" border="1">
 									<tr>
 										<th>${localBodyElectionResults.localBodyElectionType} Name</th>										
-										<td>${localBodyElectionResults.localBodyRegion}</td>
+										<td><b>${localBodyElectionResults.localBodyRegion}</b></td>
 										<th>Total Wards</th>										
-										<td>${localBodyElectionResults.totalWards}</td>
+										<td><b>${localBodyElectionResults.totalWards}</b></td>
 									</tr>
 									<tr>
 										<th>District</th>										
-										<td>${localBodyElectionResults.district}</td>
+										<td><b>${localBodyElectionResults.district}</b></td>
 										<th>State</th>										
-										<td>${localBodyElectionResults.state}</td>
+										<td><b>${localBodyElectionResults.state}</b></td>
 									</tr>
 									<tr>										
 										<th>Total Votes</th>										
-										<td>${localBodyElectionResults.totalVotes}</td>
+										<td><b>${localBodyElectionResults.totalVotes}</b></td>
 										<th>Valid Votes</th>										
-										<td>${localBodyElectionResults.totValidVotes}</td>
+										<td><b>${localBodyElectionResults.totValidVotes}</b></td>
 									</tr>									
 								</table>
 							</div>
@@ -171,7 +171,7 @@ img{max-width:1000px;}
 							<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif" /></td>
-									<td ><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion} ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
+									<td ><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp;&nbsp; ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
 									<td width="115px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
@@ -192,7 +192,7 @@ img{max-width:1000px;}
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp; ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
 									<td width="8px"><img  src="images/icons/districtPage/header_right.gif" style=""/></td>
 								</tr>
 							</table>
@@ -293,7 +293,7 @@ img{max-width:1000px;}
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 											<tr>
 												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-												<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}  Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+												<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp; Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
 												<td width="4px;"><img  src="images/icons/districtPage/header_right.gif"/></td>
 											</tr>
 										</table>
