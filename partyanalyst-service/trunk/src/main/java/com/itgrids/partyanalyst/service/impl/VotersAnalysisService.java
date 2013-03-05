@@ -3296,7 +3296,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 	}*/
 	
 	//Retrieving important families information
-	public ImportantFamiliesInfoVo getImportantFamiliesInfo(String type,Long id,Long publicationDateId,Long constituencyId){	
+	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId , String type,Long id,Long publicationDateId,Long constituencyId){	
 		try{
 			if(type.equalsIgnoreCase("constituency")){
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamilyDetailsForConstituency(type, id, publicationDateId);
@@ -3315,6 +3315,12 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
 				if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
+				return importantFamiliesInfoVo;
+			}
+			else if(type.equalsIgnoreCase("hamlet")){
+				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
+				if(!importantFamiliesInfoVo.isDataPresent())
+					importantFamiliesInfoVo = getImportantFamiliesForhamlet(userId , type,id,publicationDateId,"main",constituencyId);
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
@@ -3485,6 +3491,23 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 			 return importantFamiliesInfoVo;
 		}
 		
+	}
+	
+	
+	public ImportantFamiliesInfoVo getImportantFamiliesForhamlet(Long userId ,String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
+		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setType("Hamlet");
+		//importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
+		importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
+		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,id,publicationDateId,"hamlet"));
+		
+		/*VotersInfoForMandalVO votersInfoForBooth = getVotersCountForHamlet(type, id, publicationDateId, exeType);
+		importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForBooth.getTotalMaleVoters());
+		importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForBooth.getTotalFemaleVoters());
+		importantFamiliesInfoVo.setUnKnowVoters(votersInfoForBooth.getUnKnowVoters());
+		*/
+		 getImpFamilesInfoForHamlet(userId,type,id,publicationDateId,importantFamiliesInfoVo,"",exeType,null,constituencyId);
+		 return importantFamiliesInfoVo;
 	}
 	
 	public ImportantFamiliesInfoVo getImportantFamiliesForBooth(String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
@@ -10523,8 +10546,6 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return null;
 			}
 		}
-		
-		
 		
 		
 		public ImportantFamiliesInfoVo getImportantFamiliesForPanchayt(Long userId , String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
