@@ -29,7 +29,7 @@ public interface IVotersAnalysisService {
 	
 	public VoterCastInfoVO getVotersCastDetails(Long id,Long publicationDateId,String type);
 	
-	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId,Long constituencyId);
+	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId,Long constituencyId,String requestFor);
 	
 	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId);
 	
@@ -38,7 +38,7 @@ public interface IVotersAnalysisService {
 	public ImportantFamiliesInfoVo getImportantFamiliesInfo(String type,Long id,Long publicationDateId,Long constituencyId);
 	
 	//public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long id, Long publicationDateId,String checkedEle);
-	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle);
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle,String buildType);
 	
 	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo);
 	
@@ -203,7 +203,7 @@ public interface IVotersAnalysisService {
 	public List<VoterVO> getInfluencingPeopleVoterDetails(Long userId,Long locationValue,String type,String buttonName,
 			Long publicationId,Integer startIndex , Integer maxRecords);
 	
-	public ImportantFamiliesInfoVo getImportantFamaliesDetailsForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
+	public ImportantFamiliesInfoVo getImportantFamaliesDetailsForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
 	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId);
 	public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId);
 	public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long publicationDateId,Long constituencyId);
