@@ -104,7 +104,7 @@
 {
 width:146px;
 }
-.LEGEND
+LEGEND
 {
 	font-family : Arial;
 }
