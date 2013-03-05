@@ -1257,7 +1257,21 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					locationId = (Long) list.get(0);
 				}
 			}
-			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
+			Long totalVoters = 0L;
+			
+			 totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
+			
+			if(locationType.equalsIgnoreCase("hamlet")){
+				
+				List<Long> hamlets = new ArrayList<Long>();
+				hamlets.add(locationId);
+			List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				
+		    List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+		   if(countList != null && countList.size() >0)
+			 totalVoters = countList.get(0);
+			}
+						
 			Long votesConsidered = 0L;
 			
 			
