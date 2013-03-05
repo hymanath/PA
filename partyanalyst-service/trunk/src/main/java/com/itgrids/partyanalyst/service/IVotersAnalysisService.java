@@ -22,7 +22,7 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> publicationDetailsBasedOnConstituency(Long constituencyId);
 	
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
-			Long panchayatId ,Integer startIndex , Integer maxRecords , String order,
+			Long panchayatId ,Long hamletId , Integer startIndex , Integer maxRecords , String order,
 			String columnName,Long userId);
 	
 	public List<Long> getImpFamiles(Long id,Long publicationDateId,String name);
@@ -195,5 +195,7 @@ public interface IVotersAnalysisService {
 	
 	public List<VoterVO> getInfluencingPeopleVoterDetails(Long userId,Long locationValue,String type,String buttonName,
 			Long publicationId,Integer startIndex , Integer maxRecords);
+	
+	public ImportantFamiliesInfoVo getImportantFamaliesDetailsForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
 	
 }
