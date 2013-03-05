@@ -181,16 +181,26 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getImpFamilesForHamlet(Long userId,Long hamletId,
 			Long publicationDateId, String queryString);
 	
-	public List<Object[]> getVotersCountByPublicationIdForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituency);
+	public List<Object[]> getVotersCountByPublicationIdForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituency);
 	
 	public List<Object[]> findFamiliesVotersInfoForPanchayatByHamlet(List<Long> hamletIds,Long publicationDateId);
 	
-	public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndHamlet(Long userId , Long panchayatId,Long publicationDateId,String queryString);
+	//public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndHamlet(Long userId , Long panchayatId,Long publicationDateId,String queryString);
 	
-	public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId);
+	//public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId);
 	
 	public List<Long> getVotersInHamletForUser(Long userId , Long hamletId);
 	
 	public List<Object[]> getFamilyDetailsForHamlet(Long userId , List<Long> voterIds , Long publicationDateId);
+	
+	public List<Object[]> getVotersCountForHamlet(Long hamletId, Long userId , Long publicationDateId);
+	
+	public List<Long > getVoterIdsForuserByHamletIds(Long userId,List<Long> hamletIds);
+	
+	public List<Object[]> getAllVoterDetailsByPublicationAndVoterId(Long publicationDateId , List<Long> voterIds);
+	
+	public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId , List<Long> voterIds);
+	
+	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds);
 
 }

@@ -783,6 +783,19 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	}
 	
 	
+	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds)
+	{
+		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
+				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.voter.gender,model.voter.age,model.booth.partNo from BoothPublicationVoter model where  " +
+				" model.voter.voterId in (:voterIds) order by model.voter.voterId");
+		
+		query.setParameterList("voterIds", voterIds);
+		
+		return query.list();
+		
+	}
+	
 	public List<Object[]> findFamiliesVotersInfoForPanchayatByHamlet(List<Long> hamletIds,Long publicationDateId) {
 
      String queryString = "select model.voter.name,model.voter.houseNo," +
@@ -1460,11 +1473,12 @@ public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publica
 	
 }
 
-public List<Object[]> getVotersCountByPublicationIdForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId){
+public List<Object[]> getVotersCountByPublicationIdForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId){
 	
 	  String queryString = "select count(*),model.voter.gender from BoothPublicationVoter model," +
-	  		"UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and " +
-	  		"model.booth.publicationDate.publicationDateId = :publicationDateId " +
+	  		"UserVoterDetails model2 , PanchayatHamlet model3 where model.voter.voterId = model2.voter.voterId and " +
+	  		"model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+	  		" model3.hamlet.hamletId = model2.hamlet.hamletId "+
 	  		"and model.booth.panchayat.panchayatId =:id " +
 	  		//"and model.booth.constituency.constituencyId = :constituencyId) " +
 	  		"and model2.user.userId = :userId" +
@@ -1478,13 +1492,68 @@ public List<Object[]> getVotersCountByPublicationIdForHamlet(Long userId,String 
 		return queryObj.list();
 	}
 
-public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId)
+public List<Long > getVoterIdsForuserByHamletIds(Long userId,List<Long> hamletIds)
+{
+	
+	Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where " +
+			" model.user.userId = :userId and model.hamlet.hamletId in(:hamletIds)");
+	
+	
+	query.setParameter("userId", userId);
+	query.setParameterList("hamletIds", hamletIds);
+	
+	return query.list();
+}
+
+public List<Object[]> getAllVoterDetailsByPublicationAndVoterId(Long publicationDateId , List<Long> voterIds)
+{
+	
+	
+	Query query = getSession().createQuery("select count(*),model.voter.gender from BoothPublicationVoter model" +
+			" where model.voter.voterId in(:voterIds) and model.booth.publicationDate.publicationDateId = :publicationDateId " +
+			"group by model.voter.gender ");
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameterList("voterIds", voterIds);
+	
+	return query.list();
+}
+
+public List<Object[]> getVotersCountByPublicationIdForPanchayatByHamlets(Long userId,String type,List<Long> hamletIds,Long publicationDateId,Long constituencyId){
+	
+	Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where " +
+			" model.user.userId = :userId and model.hamlet.hamletId = :hamletId");
+	
+	
+	query.setParameter("userId", userId);
+	query.setParameterList("hamletId", hamletIds);
+	
+	/*
+	  String queryString = "select count(*),model.voter.gender from BoothPublicationVoter model," +
+	  		"UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and " +
+	  		"model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+	  		" model2.hamlet" +
+	  	
+	  		"and model2.user.userId = :userId" +
+	  		" group by model.voter.gender ";
+		
+		Query queryObj = getSession().createQuery(queryString) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("id", id);
+		//queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("userId",userId);
+		return queryObj.list();*/
+	
+	return null;
+	}
+
+/*public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId)
 {
 	
 	String queryString = "select count(*) from BoothPublicationVoter model , UserVoterDetails model1 " +
 			" where model.voter.voterId  = model1.voter.voterId , model1.user.userId = :userId" +
 			" model.booth.publicationDate.publicationDateId = :publicationDateId and " +
-			"model1.hamlet.hamletId = :id";
+			"model2.hamlet.hamletId = :id";
 	
 	Query query = getSession().createQuery(queryString);
 	
@@ -1494,7 +1563,7 @@ public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationD
 	
 	return (Long)query.uniqueResult();
 	
-}
+}*/
 
 
 public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId,String type){
@@ -1504,7 +1573,7 @@ public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationD
 			"BoothPublicationVoter model1 " +
 			" where model.voter.voterId = model1.voter.voterId and " +
 			" model1.booth.publicationDate.publicationDateId = :publicationDateId" +
-			" and model.user.userId = :userId and model1.booth.panchayat.panchayatId = :id");
+			" and model.user.userId = :userId and model.hamlet.hamletId = :id");
 	
 	
 	
@@ -1517,11 +1586,29 @@ public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationD
 }
 
 
+//
+
+
+public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId , List<Long> voterIds)
+{
+	
+	Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.houseNo from BoothPublicationVoter model " +
+			"where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			"model.voter.voterId in(:voterIds)  group by model.voter.houseNo");
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameterList("voterIds", voterIds);
+	
+	return query.list();
+}
+
+
 public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndHamlet(Long userId , Long panchayatId,Long publicationDateId,String queryString){
 	StringBuilder query = new StringBuilder();
 	query.append("select count(model.voter.voterId),model.voter.houseNo from BoothPublicationVoter model ," +
-			"UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
+			"UserVoterDetails model1 ,PanchayatHamlet model2 where model.voter.voterId = model1.voter.voterId and " +
 			" model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			" model2.hamlet.hamletId = model1.hamlet.hamletId and " +
 			" model1.user.userId = :userId and " +
 			" model.booth.panchayat.panchayatId = :panchayatId  group by model1.hamlet.hamletId,model.voter.houseNo ") ;
 	if(queryString != null)
@@ -1584,4 +1671,21 @@ public List<Long> getVotersInHamletForUser(Long userId , Long hamletId)
 	
 }
 
+
+
+public List<Object[]> getVotersCountForHamlet(Long hamletId, Long userId , Long publicationDateId)
+{
+	
+	
+	Query query = getSession().createQuery("select count(*),model.voter.gender from BoothPublicationVoter model," +
+			"UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId " +
+			" and model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			" model1.user.userId = :userId and model1.hamlet.hamletId = :hamletId");
+	
+	 query.setParameter("hamletId", hamletId);
+	 query.setParameter("publicationDateId", publicationDateId);
+	 query.setParameter("userId", userId);
+	 
+	 return query.list();
+}
 }

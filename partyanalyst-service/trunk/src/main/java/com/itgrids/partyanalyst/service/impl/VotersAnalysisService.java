@@ -941,7 +941,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
 	}
 
-	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId,Long constituencyId){
+	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId,Long constituencyId,String resultFor){
 		try{
 			List<Election> electionIds = getPrevElections(publicationDateId);
 			if(type.equalsIgnoreCase("constituency")){
@@ -968,13 +968,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				return votersInfoForMandalVO;
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
-				//VotersInfoForMandalVO votersInfoForMandalVO = getVotersBasicInfoForPanchayat(id, publicationDateId, "main",constituencyId);
-				VotersInfoForMandalVO votersInfoForMandalVO = getVotersBasicInfoForPanchayat1(id, publicationDateId, "main",constituencyId);
 				
-				/*if(!votersInfoForMandalVO.isDatapresent())
-				 votersInfoForMandalVO = getVotersCountForPanchayat(id,publicationDateId,"main");
-				getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"panchayat",constituencyId);
-				getBoothsComparisionInfo(electionIds,id,publicationDateId,votersInfoForMandalVO);*/
+				VotersInfoForMandalVO votersInfoForMandalVO  =new  VotersInfoForMandalVO();
+				
+				if(resultFor.equalsIgnoreCase("booth")){
+				
+				 votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId(IConstants.BOOTH), id, publicationDateId,"booth-"+boothDAO.get(id).getPartNo(),"main",constituencyId);
+				if(!votersInfoForMandalVO.isDatapresent())
+				  votersInfoForMandalVO = getVotersCountForBooth(type,id,publicationDateId,"main");
+				getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"booth",constituencyId);
+				}else if(resultFor.equalsIgnoreCase("hamlet")){
+					 votersInfoForMandalVO = getVotersBasicInfoForPanchayat1(id, publicationDateId, "main",constituencyId);
+
+				}
+				
 				return votersInfoForMandalVO;
 			}
 			else if(type.equalsIgnoreCase("ward")){
@@ -3558,7 +3565,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle)
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle , String buildType)
 	{
 		List voters = null;
 		List<Long> voterIdsList = new ArrayList<Long>(0);
@@ -3566,11 +3573,31 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 		SelectOptionVO caste = null;
 		if(checkedEle.equalsIgnoreCase("panchayat"))
 		{
-			voters = boothPublicationVoterDAO.findFamiliesVotersInfoForPanchayat(id,publicationDateId);
+			
+			
+			if(buildType.equalsIgnoreCase("hamlet"))
+			{
+				List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
+				
+				List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				
+				voters = boothPublicationVoterDAO.getVoterDetailsByVoterIds(voterIds);
+			}
+			else				
+			 voters = boothPublicationVoterDAO.findFamiliesVotersInfoForPanchayat(id,publicationDateId);
 		}
 		if(checkedEle.equalsIgnoreCase("pollingstation"))
 		{
 			voters = boothPublicationVoterDAO.findFamiliesVotersInfoForBooth(id,publicationDateId);
+		}
+		if(checkedEle.equalsIgnoreCase("hamlet"))
+		{
+			List<Long> hamlets = new ArrayList<Long>();
+			 hamlets.add(id);
+			 
+			List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+			
+			voters = boothPublicationVoterDAO.getVoterDetailsByVoterIds(voterIds);
 		}
 		Map<Long,Map<String, List<VoterVO>>> boothMap = new HashMap<Long,Map<String, List<VoterVO>>>();
 		Map<String, List<VoterVO>> voterByHouseNoMap = null;
@@ -10404,7 +10431,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
        
 		public VotersInfoForMandalVO getVotersCountDetailsForHamlet(Long userId , String type,Long id,Long publicationDateId,String reqType){
 			
-			List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountByPublicationIdForHamlet(userId,type,id,publicationDateId,null);
+			List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountForHamlet(id,userId,publicationDateId);
 			
 			if((!votersCountList.isEmpty() && votersCountList.get(0)[1] != null) || reqType.equalsIgnoreCase("sub")){
 			   return populateDataToVotersInfoForMandalVO(votersCountList,id,hamletDAO.get(id).getHamletName(),"Hamlet");
@@ -10415,24 +10442,6 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			   }
 		}
 		
-		public ImportantFamiliesInfoVo getImportantFamaliesDetailsForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId)
-		{
-			try
-			{	
-				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamiliesForHamlet(
-						userId,type, id, publicationDateId, "main", constituencyId);
-				
-			        importantFamiliesInfoVo.setDataPresent(true);
-				     return importantFamiliesInfoVo;
-				
-			}
-			catch(Exception e)
-			{	
-				log.error("Exception rised in getImportantFamiliesInfo method : ",e);
-				e.printStackTrace();
-				return null;
-			}
-		}
 		
 		public void getImpFamilesInfoForHamlet(Long userId , String type,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo,String queryToexe,String exeType,List<Long> ids,Long constituencyId){
 			
@@ -10496,42 +10505,60 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		    return count;
 		}
 		
+		public ImportantFamiliesInfoVo getImportantFamaliesDetailsForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId)
+		{
+			try
+			{	
+				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamiliesForPanchayt(
+						userId,type, id, publicationDateId, "main", constituencyId);
+				
+			        importantFamiliesInfoVo.setDataPresent(true);
+				     return importantFamiliesInfoVo;
+				
+			}
+			catch(Exception e)
+			{	
+				log.error("Exception rised in getImportantFamiliesInfo method : ",e);
+				e.printStackTrace();
+				return null;
+			}
+		}
 		
 		
-		public ImportantFamiliesInfoVo getImportantFamiliesForHamlet(Long userId , String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
+		
+		
+		public ImportantFamiliesInfoVo getImportantFamiliesForPanchayt(Long userId , String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
 			
 			ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
 			importantFamiliesInfoVo.setType("Panchayat");
 			importantFamiliesInfoVo.setName(panchayatDAO.get(id).getPanchayatName());
 			
-			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,id,publicationDateId,"hamlet"));
+			//importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,id,publicationDateId,"hamlet"));
 			
 			
-			VotersInfoForMandalVO votersInfoForHamlet = getVotersCountForHamlet(userId,type, id, publicationDateId, exeType,constituencyId);
+			VotersInfoForMandalVO votersInfoForHamlet = getVotersCountForPanchayatByHamlet(userId,type, id, publicationDateId, exeType,constituencyId);
 			importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForHamlet.getTotalMaleVoters());
 			importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForHamlet.getTotalFemaleVoters());
 			importantFamiliesInfoVo.setUnKnowVoters(votersInfoForHamlet.getUnKnowVoters());
 			
 			getImpFamilesForPanchayatByHamlet(userId,id,publicationDateId,importantFamiliesInfoVo);
-			
-			List<Long> hamletIds = new  ArrayList<Long>();
-			
 			List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
-			 
-			//List<Object[]> booths=	hamletBoothPublicationDAO.getBoothsInHamlet(id, publicationDateId);
-			
 			
 			for(Long  hamletId:hamlets)			
 				 importantFamiliesInfoVo.getSubList().add(getImportantFamiliesDetailsForHamlet(userId , "hamlet",hamletId,publicationDateId,"sub",constituencyId));
 			
-			
-			// getImpFamilesInfoForHamlet(userId,type,id,publicationDateId,importantFamiliesInfoVo,"",exeType,hamletIds,null);
 			 return importantFamiliesInfoVo;
 		}
 		
-		public VotersInfoForMandalVO getVotersCountForHamlet(Long userId,String type,Long id,Long publicationDateId,String reqType,Long constituencyId){
+		public VotersInfoForMandalVO getVotersCountForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,String reqType,Long constituencyId){
 			
-			List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountByPublicationIdForHamlet(userId,type,id,publicationDateId,constituencyId);
+			List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
+			
+			List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+			
+			List<Object[]> votersCountList = boothPublicationVoterDAO.getAllVoterDetailsByPublicationAndVoterId(publicationDateId,voterIds);
+			
+			//List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountByPublicationIdForPanchayatByHamlets(userId,type,hamlets,publicationDateId,constituencyId);
 			
 			if((!votersCountList.isEmpty() && votersCountList.get(0)[1] != null) || reqType.equalsIgnoreCase("sub")){
 			   return populateDataToVotersInfoForMandalVO(votersCountList,id,panchayatDAO.get(id).getPanchayatName(),"Panchayat");
@@ -10695,8 +10722,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		public void getImpFamilesForPanchayatByHamlet(Long userId,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo){
 			List<Object[]>  impFamilesList = null;
 			
+			List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
 			
-				impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndHamlet(userId,id,publicationDateId,null);
+             List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+			
+			impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
+			
+			
+			
+			//	impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndHamlet(userId,id,publicationDateId,null);
 				
 			
 			Long below3 = 0l;
