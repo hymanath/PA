@@ -157,6 +157,11 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId);
 	 
+	
+
+	 public List<Object[]> getVotersBasedOnVoterIdsAndPublication(
+	 		 Long publicationDateId , List<?> voterIds);
+	 
 	 public List<Object[]> getSerialNoByVoterIdsList(List<Long> voterIdsList);
 	 
 	 public Integer updateSerialNoByVoterId(Long serialNo, Long voterId);
