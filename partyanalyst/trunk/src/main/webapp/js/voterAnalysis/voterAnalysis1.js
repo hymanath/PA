@@ -2386,6 +2386,7 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 				year:publicationYear,
 				typename:typename,
 				constituencyId:$("#constituencyList").val(),
+                buildType:"booth",
 				task:"votersbasicinfo"
 	
 			}
@@ -2426,7 +2427,28 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	}
 }
 
-function getImpFamiliesVotersToShow(){
+
+function getImpFamiliesVotersForHamlet()
+{
+	var jsObj1=
+			{
+					
+				type:"hamlet",
+				id:1,
+				publicationDateId:7,
+				typename:"",
+				constituencyId:$("#constituencyList").val(),
+				task:"importantFamiliesinfo"
+	
+			}
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			var url1 = "getImportantFamaliesDetailsForHamlet.action?"+rparam1;						
+		callAjax(jsObj1,url1);
+
+
+}
+
+/*function getImpFamiliesVotersToShow(){
     $("#impFamilesAllInfoPopUp").dialog({
             modal: true,
             title: "<b>Voters Details</b>",
@@ -2456,7 +2478,35 @@ function getImpFamiliesVotersToShow(){
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2);
 	}
-}
+}*/
+
+function getImpFamiliesVotersToShow(){
+
+	var buildType = "hamlet";
+    $("#impFamilesAllInfoPopUp").dialog({
+            modal: true,
+            title: "<b>Voters Details</b>",
+			width: 970,
+            height: 600
+           
+        });
+   
+	    var jsObj2=
+			{
+					
+				type:"panchayat",
+				id:1,
+				publicationDateId:7,
+				typename:impFamltypename,
+				buildType:buildType,
+				task:"gettotalimpfamlies"
+	
+			}
+	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+		callAjax(jsObj2,url2);
+	}
+
 function getvotersFamileyInfo(buttonType,voterBasicInfoFor)
 { 
  $('#imgDiv').show();
