@@ -140,6 +140,17 @@ IUserVoterDetailsDAO{
 				"from UserVoterDetails model where model.voter.voterId = ? and model.user.userId = ? ",param);
 	}
 	
+	
+	/** This Method is used to get VoterIds based on hamletId and UserId  */
+	
+
+	  public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
+{
+	Object[] param = {hamletId,userId};
+	return getHibernateTemplate().find("select distinct model.voter.voterId " +
+						"from UserVoterDetails model  where  model.hamlet.hamletId = ? and model.user.userId = ? ",param);
+}
+	
 	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId)
 	{
 		
