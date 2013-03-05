@@ -31,7 +31,7 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 			List<Object[]> list = userVoterDetailsDAO.getCasteByVoterId(1l, voterIDs);
 			System.out.println(list.size());
 		}*/
-		public void testGetPartyAndCasteDetails()
+		/*public void testGetPartyAndCasteDetails()
 		{
 			
 			List<Object[]> list = userVoterDetailsDAO.getPartyAndCasteDetails(26438l, 1l);
@@ -41,6 +41,7 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 				System.out.println(objects[2]);
 				System.out.println(objects[3]);
 			}
-		}
-
+		}*/
+		
+		
 }
