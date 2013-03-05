@@ -870,22 +870,23 @@ function addToPolitician(voterId)
 		 }
 		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		  getPreviousVotersDetails1();
+		  getPreviousVotersDetailsForhamlet();
+			 // getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
-		 showNewsDetails(id,publicationId,type);
+		 //showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
-		 getProblemsByLocation(id,publicationId,type);
-		  getInfluencingPeopleCount(id,type);
-		 getCounts(id,publicationId,type);
-		 getVotersCastInfo(id,publicationId,type);
+		// getProblemsByLocation(id,publicationId,type);
+		getInfluencingPeopleCount(id,type);
+		// getCounts(id,publicationId,type);
+		// getVotersCastInfo(id,publicationId,type);
        //getCastInfoForsubLevel(id,publicationId,type);
-       getvotersBasicInfo("impFamilies",id,publicationId,type);
+      // getvotersBasicInfo("impFamilies",id,publicationId,type);
 				
 		// callCorrespondingAjaxCall();
-		 getPreviousElectionVotingTrends(id,publicationId,type);
-		 callCorrespondingAjaxCall('brief');
+		// getPreviousElectionVotingTrends(id,publicationId,type);
+		// callCorrespondingAjaxCall('brief');
 		 //getElectionyearsByMandalId(id,type)
 		 var fromPublicationDateId=0;
 		 //getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
@@ -910,7 +911,7 @@ function addToPolitician(voterId)
 	}
 	
 	function getPreviousVotersDetails1(){
-
+		
 		$("#votersBasicInfoDiv").html("");
         $("#votersBasicInfoSubChartDiv").html("");
         $("#votersBasicInfoSubDiv").html("");
@@ -940,9 +941,31 @@ function addToPolitician(voterId)
 			getPrevioesVotersDetailsForWard();
 		}
 	}
+	//updated by gayathri to get hamlet basic info
+	function getPreviousVotersDetailsForhamlet(){
+		//alert('11111');
+		
+	var jsObj=
+					{					
+						constituencyId:$('#constituencyList').val(),
+						mandalId:0,
+						boothId:0,
+						panchayatId:0,
+						hamletId:7,
+						type:"hamlet",
+						task:"getVotersCountForAllElectionsForHamlet"
+					};
+						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountForAllElectionsForHamlet.action?"+rparam;
 
+			callAjax(jsObj,url);
+
+	  $('#basicDetailsAjax').css('display','block');
+	
+	
+	}
 	function getPrevioesVotersDetailsForConstituency(){
-
+	
 		var jsObj=
 					{					
 						constituencyId:constituencyId,
@@ -1418,9 +1441,19 @@ function addToPolitician(voterId)
 									   alert("Voter Added To Cadre Successfully.");
 									}
 								}
+								
+								else if(jsObj.task == "getVotersCountForAllElectionsForHamlet"){
+									$('#basicDetailsAjax').css('display','none');
+									hideAjaxImgDiv('ajaxImageDiv');
+									buildPreviousVotersDetails(myResults,jsObj);
+								}
 								else if(jsObj.task == "getInfluencingPeopleCount")
 								{
 									buildInfluencingPeopleCount(myResults,jsObj);
+									}
+									
+									else if(jsObj.task == "checkForLocalBodyElection"){
+									buildLocalBodyElectionDetails(myResults);
 								}
 								else if(jsObj.task == "addVoterToCadre"){
 									if(myResults == "notLogged"){
@@ -1431,9 +1464,7 @@ function addToPolitician(voterId)
 									   alert("Voter Added To Cadre Successfully.");
 									}
 								}
-								else if(jsObj.task == "checkForLocalBodyElection"){
-									buildLocalBodyElectionDetails(myResults);
-								}
+									
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -1453,7 +1484,7 @@ function addToPolitician(voterId)
 		var deletedCount=results.deletedCount;
 		var presPId=results.presentPublicationId;
 		var prevPId=results.previousPublicationId;
-		var url='voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
+		var url='/PartyAnalyst/voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
 		$('#detailModifiedVoters').attr('url',url);
 		
 		if(addedCount!=null){$("#addedVtrs").text(addedCount);}
@@ -1587,7 +1618,7 @@ function addToPolitician(voterId)
 		str+='<td>'+results[i].candidateOppositionList[0].candidateName+'-<span>['+results[i].candidateOppositionList[0].partyShortName+']</span></td></tr>';
         }        
         str+='</tbody></table>';
-		str+='<div id="localBodyElectionDiv" style="dispaly:none;margin-bottom: -15px;margin-top: -14px;"><a href="javascript:{}" class="btn btn-info" id="showId" onclick="openNewWindowForLocalBodyElection();">All Parties Performance In Local Body Elections </a></div>';
+        str+='<div id="localBodyElectionDiv" style="dispaly:none;margin-bottom: -15px;margin-top: -14px;"><a href="javascript:{}" class="btn btn-info" id="showId" onclick="openNewWindowForLocalBodyElection();">All Parties Performance In Local Body Elections </a></div>';
 		str+='<span class="btn btn-info pull-right" onClick="partiesPerformancePopup()" style="margin-top:-12px;">All Parties Performance In Previous  Elections Graphically</span>'
 		str+='</div>'
         $('#constituencyResults').html(str);
@@ -1857,7 +1888,7 @@ $(document).ready(function(){
 		getParliamentConstituencyId();
 		getPartiesList();
 	
-	});
+	});	
 
 $('#publicationDateList').live('change',function(){
 	getPreAndPresentPublicationDtaeList();
@@ -4696,12 +4727,12 @@ var jsObj=
 
 function buildPreviousVotersDetails(myResults,jsObj){
 
-
+			//alert('result');
 			//$('#votersTitle').html(mainname);
 
 				
 
-			if(myResults.length == 0){
+			if(myResults.length == 0  ){
 				$('#votersBasicInfoDiv1').html("<span style='margin-left:15px;color:red;'> No  Data Available</span>");
 			return false;
 			}
@@ -4712,7 +4743,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			str+='<table id="voterBasicInfoTable" class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 			 str+='<thead class="info"><tr>';
 			  str+='<th>Year</th>';
-			 if(jsObj.type != "booth")
+			 if(jsObj.type != "booth" && jsObj.type != "hamlet")
 			  str+='<th>Booths</th>';
 		      str+='<th>Total</th>';
 		 	  str+='<th>Male</th>';
@@ -4731,7 +4762,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			    str+='<td><span title='+myResults[i-1].electionDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(E)<b></td>';
 			  else 
 				str+='<td><span title='+myResults[i-1].publicationDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(P)<b></td>';
-              if(jsObj.type != "booth")
+              if(jsObj.type != "booth" && jsObj.type != "hamlet")
 			  str+='<td>'+myResults[i-1].totalBooths+'</td>';
 		      str+='<td>'+myResults[i-1].totVoters+'</td>';
 		 	  str+='<td>'+myResults[i-1].totalMaleVoters+'</td>';
