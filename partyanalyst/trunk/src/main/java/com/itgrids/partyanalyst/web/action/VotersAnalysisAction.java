@@ -96,6 +96,20 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private SelectOptionVO selectOptionVO;
 	private CadreManagementService cadreManagementService;
 	
+	private List<VotersInfoForMandalVO> previousDetailsListForHamlet;
+	
+	
+	
+
+	public List<VotersInfoForMandalVO> getPreviousDetailsListForHamlet() {
+		return previousDetailsListForHamlet;
+	}
+
+	public void setPreviousDetailsListForHamlet(
+			List<VotersInfoForMandalVO> previousDetailsListForHamlet) {
+		this.previousDetailsListForHamlet = previousDetailsListForHamlet;
+	}
+
 	public List<InfluencingPeopleVO> getInfluencingPeopleList() {
 		return influencingPeopleList;
 	}
@@ -895,6 +909,11 @@ public String getProblemsByLocation()
 		
 		if(jObj.getString("task").equalsIgnoreCase("getProblemsByLocation"))
 		 problemDetails = problemManagementService.getProblemDetailsForVoterPage(userId,locationId,locationValue);
+		
+		//I Had changed here for getting hamlets problems
+		if(jObj.getString("task").equalsIgnoreCase("getProblemsByLocationForHamlet"))
+			problemDetails = problemManagementService.getProblemDetailsForVoterPage(userId,locationId,locationValue);	
+			
 		 if(jObj.getString("task").equalsIgnoreCase("getProblemDetailsByLocation"))
 		 {
 			 Long informationsrcId = jObj.getLong("srcId");
@@ -1155,6 +1174,47 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
+	// updated by gayathri to get HamletLevel VotersBasicInfo
+	
+	public  String getVotersCountForAllElectionsForHamlet(){
+		
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return ERROR;
+		Long userID = user.getRegistrationID();
+		String param;
+		param = getTask();
+	
+		try{
+		jObj = new JSONObject(param);	
+		
+		}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+		}
+	
+	
+	Long constituencyId = jObj.getLong("constituencyId");
+	Long mandalId = jObj.getLong("mandalId");
+	Long panchayatId = jObj.getLong("panchayatId");
+	Long boothId = jObj.getLong("boothId");
+	//Long publicationId = jObj.getLong("publicationId");
+	Long hamletId = jObj.getLong("hamletId");
+	
+	
+	
+	previousDetailsListForHamlet = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(
+			 constituencyId,mandalId, panchayatId, boothId,hamletId,userID);
+	
+	  // votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
+
+	
+	return Action.SUCCESS;
+	
+	}
+	
+	
 	public String getInfluencingPeopleCountByLocation()
 	{
 	try{
@@ -1215,4 +1275,5 @@ return Action.SUCCESS;
 			
 		return Action.SUCCESS;
 }
+
 }
