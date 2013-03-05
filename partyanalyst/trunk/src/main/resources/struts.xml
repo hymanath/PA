@@ -4577,8 +4577,12 @@
 				<param name="root">teshilPartyInfoVO</param>				
 			</result>		
 		</action>
-		
-		
+	<!--  updated by gayathri to get HamletLevel votersBasicInfo -->
+		<action name="getVotersCountForAllElectionsForHamlet" class="votersAnalysisAction" method="getVotersCountForAllElectionsForHamlet">
+		    <result type="json" name="success">
+           		<param name="root">previousDetailsListForHamlet</param>
+        	</result>		
+		</action>
 		
 	</package>
 </struts>      
