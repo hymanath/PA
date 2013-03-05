@@ -2229,7 +2229,7 @@ function showMuncipalDetailsForAssemblyConst(result,electionType){
 		    data.addRow(pdata);
 		   }
 		   
-		  ctitle = 'All Parties Muncipality Wise Performance In Constituency Based On Seats Won';
+		  ctitle = 'All Parties Muncipality Wise Performance In '+constituencyName+' Constituency Based On Seats Won';
 		  new google.visualization.LineChart(document.getElementById('tabledata')).
 			  draw(data, {curveType: "function",width: 880, height: 380, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'navy'}}
 			  });
@@ -2291,7 +2291,7 @@ function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
 		}
 		var chart = new google.visualization.PieChart(document.getElementById('CorporationPieChartDiv'));
 	
-		chart.draw(data,{width: 350, height: 230,legend:'right',legendTextStyle:{fontSize:12},title:'All Parties Performance In District',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
+		chart.draw(data,{width: 350, height: 230,legend:'right',legendTextStyle:{fontSize:12},title:'All Parties Performance In '+constituencyName+' Constituency',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
 			}
 			
 	}
