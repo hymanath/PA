@@ -189,6 +189,8 @@
 		<pattern>/voterModificationReportAction*</pattern>
     	<pattern>/changePasswordAction*</pattern>
     	<pattern>/localBodyElectionAction*</pattern>
+    	<pattern>/sendUpdatesBySMSAction*</pattern>
+    	<pattern>/voterEditDataAction*</pattern>
     </decorator>
 
 </decorators>
