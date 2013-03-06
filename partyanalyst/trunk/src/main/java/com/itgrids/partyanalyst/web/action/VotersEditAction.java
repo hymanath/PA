@@ -741,9 +741,18 @@ public String saveLocality()
 							voterHouseInfoVO.setCategoriesList(categoriesList);
 						}
 						String type = null;
-						if(castPresent && partyPresent && localityPresent){
+						if((castPresent && partyPresent && localityPresent))
+							{
 							type ="all";
-						}else if(castPresent){
+						}
+						else if(partyPresent && localityPresent  )
+						
+						type="partyLocality";
+						else if (castPresent && partyPresent)
+						type="partyCast";
+						else if (castPresent && localityPresent)
+						type="castLocality";
+						else if(castPresent){
 							type ="cast";
 						}else if(partyPresent){
 							type ="party";
@@ -804,7 +813,14 @@ public String saveLocality()
 						String type = null;
 						if(castPresent && partyPresent && localityPresent){
 							type ="all";
-						}else if(castPresent){
+						}	else if(partyPresent && localityPresent  )
+							
+							type="partyLocality";
+							else if (castPresent && partyPresent)
+							type="partyCast";
+							else if (castPresent && localityPresent)
+							type="castLocality";
+						else if(castPresent){
 							type ="cast";
 						}else if(partyPresent)
 							type ="party";
