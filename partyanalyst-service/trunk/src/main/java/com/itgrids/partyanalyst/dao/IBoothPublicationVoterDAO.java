@@ -150,12 +150,16 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(
 				Long hamletId, Long publicationDateId , Long startAge, Long endAge); 
 	 public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
-				Long hamletId, Long publicationDateId , Long startAge, Long endAge);
+				Long hamletId, Long publicationDateId , Long startAge, Long endAge,Long userId);
 	 
 	 
 	 public List<Voter> getVotersByBoothId(Long boothId);
 	 
 	 public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId);
+  
+	 public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId);
+	 public List<Object[]> getVotersBasedOnVoterIdsAndPublication(
+			 Long publicationDateId , Long startAge, Long endAge, List<?> voterIds);
 	 
 	
 
@@ -205,5 +209,5 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Long> getTotalVotersCountForHamletByVoterIds(List<Long> voterIds,Long publicationDateId);
 
-
+	
 }
