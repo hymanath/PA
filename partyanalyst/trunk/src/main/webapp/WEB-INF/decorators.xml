@@ -149,6 +149,7 @@
 		<pattern>/sendUpdatesByemailAction*</pattern>
 		<pattern>/missingVotersSearchAction*</pattern>
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
+    	<pattern>/sendUpdatesBySMSAction*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
@@ -189,7 +190,6 @@
 		<pattern>/voterModificationReportAction*</pattern>
     	<pattern>/changePasswordAction*</pattern>
     	<pattern>/localBodyElectionAction*</pattern>
-    	<pattern>/sendUpdatesBySMSAction*</pattern>
     	<pattern>/voterEditDataAction*</pattern>
     </decorator>
 
