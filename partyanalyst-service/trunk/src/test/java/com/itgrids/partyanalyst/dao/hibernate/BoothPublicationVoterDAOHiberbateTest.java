@@ -9,6 +9,7 @@ import java.util.Map;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -366,23 +367,51 @@ public void setBoothPublicationVoterDAO(
 			   System.out.println(params[0] +" "+params[1]);
 	   }
    }*/
+/*public void testgetCadreMobileDetails(){
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	   voterIdsList.add(315l);
+	List list=boothPublicationVoterDAO.getCadreMobileDetails(1l,voterIdsList,"Constituency");
 	
-	/*public void testGetBoothPublicationVoterIdsByVoterIdsList()
-	{
-		List<Long> voterIdsList = new ArrayList<Long>(0);
-		voterIdsList.add(1l);
-		voterIdsList.add(2l);
-		List<Long> list = boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(voterIdsList,8l);
-		
-		System.out.println(list.size());
-		
-	}*/
+	System.out.println(list.size());
+}*/
+/*
+public void testgetInfluencePeopleMobileDetails(){
+	List<String> voterIdsList = new ArrayList<String>(0);
+	   voterIdsList.add("1013");
+	List list=boothPublicationVoterDAO.getInfluencePeopleMobileDetails(1l,voterIdsList,"Mandal");
+	
+	System.out.println(list.size());
+}*/
 
-	public void testDeleteByIdsList()
-	{
-		List<Long> voterIdsList = new ArrayList<Long>(0);
-		voterIdsList.add(1l);
-		System.out.println(boothPublicationVoterDAO.deleteByIdsList(voterIdsList));
-		
-	}
+/*public void testgetVoterMobileDetails(){
+	
+	List list=boothPublicationVoterDAO.getVoterMobileDetails(1l,121896l,"Booth");
+	System.out.println(list.size());
+	System.out.println(list.get(0));
+	System.out.println(list.get(1));
+	System.out.println(list.get(2));
+}*/
+public void testgetLatestpublicationDate(){
+	Long val=boothPublicationVoterDAO.getLatestpublicationDate();
+	System.out.println("value is:"+val);
+}
+
+/*public void testGetBoothPublicationVoterIdsByVoterIdsList()
+{
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	voterIdsList.add(1l);
+	voterIdsList.add(2l);
+	List<Long> list = boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(voterIdsList,8l);
+	
+	System.out.println(list.size());
+	
+}*/
+
+public void testDeleteByIdsList()
+{
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	voterIdsList.add(1l);
+	System.out.println(boothPublicationVoterDAO.deleteByIdsList(voterIdsList));
+	
+}
 }
