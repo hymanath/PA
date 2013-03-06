@@ -3697,7 +3697,8 @@ function callAjaxorVoterDetails(jsObj,url){
                             // buildAgeWiseVoterAnalysisChart(myResults,jsObj);
                            
 							if(jsObj.type != "booth" && jsObj.type!= "hamlet" ){
-							if(myResults.boothVotersDetails.length!=0){
+							if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward")
+							 {if(myResults.boothVotersDetails.length!=0){
 								buildAgewiseDetails(myResults,jsObj);
 								buildAgeAndGenderWiseDetails(myResults,jsObj);
 								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj);
@@ -3710,6 +3711,11 @@ function callAjaxorVoterDetails(jsObj,url){
 									width: 440,
 									height: 100
 								});}
+							  }else{
+							    buildAgewiseDetails(myResults,jsObj);
+								buildAgeAndGenderWiseDetails(myResults,jsObj);
+								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj);
+							  }
 							}
 					  }
 						 // $("#processingDialogOuterDiv").dialog('close');
