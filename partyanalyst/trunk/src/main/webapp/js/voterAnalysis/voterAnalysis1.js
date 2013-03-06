@@ -6851,9 +6851,9 @@ function loadMyTabs()
     // set current tab
     var navitem = container.querySelector(".tabs ul li");
     //store which tab we are on
-	console.log(navitem);
+	//console.log(navitem);
     var ident = navitem.id.split("_")[1];
-	console.log(ident);
+	//console.log(ident);
     navitem.parentNode.setAttribute("data-current",ident);
     //set current tab with class of activetabheader
     navitem.setAttribute("class","tabActiveHeader");
