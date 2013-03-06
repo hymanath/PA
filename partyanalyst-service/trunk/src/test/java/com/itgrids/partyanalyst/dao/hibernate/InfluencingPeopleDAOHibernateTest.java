@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.hibernate.Query;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
@@ -54,7 +55,7 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	/*public void testGetinfluencingPeopleVoterId(){
 		List<Long> results = influencingPeopleDAO.getinfluencingPeopleVoterId(2172883l);
 		System.out.println(results);
-	}*/
+	}
 	public void testFindInfluencingPeopleDetails()
 	{
 		List<Long> voterIds = new ArrayList<Long>();
@@ -65,6 +66,12 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 		voterIds.add(210l);
 		List<Long> list = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,1l);
 		System.out.println(list.size());
-	}
+	}*/
 	
+	
+public void testgetVotersMobileDetailsByConstituencyId(){
+		
+		List list =influencingPeopleDAO.getVotersMobileDetailsByConstituencyId(1l,"1013","MANDAL");
+		System.out.println(list);
+	}
 }
