@@ -47,6 +47,9 @@
 
 	<!-- YUI Dependency files (End) -->
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+      <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
+	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script>
+
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
    
@@ -62,7 +65,24 @@
 
 
 <style type="text/css">
+.wid
+{
+width: 194px !important;
+word-wrap: break-word;
+height: 34px;
+}
+.marg1
+{
+margin-top: 5px !important;
+font-size:11px;
+color:#0088CC;
+font-family:icon;
+}
 
+.marg
+{
+margin-top: 3px !important;
+}
 .locationErrorMsg{
 	color:red;
 }
@@ -780,6 +800,82 @@ float: right;
     padding: 4px 10px;
     width: 65px;
 }
+/* start anil*/
+ #tabContainer {
+	/*width:300px;
+	padding:15px;
+	background-color:#2e2e2e;*/
+	-moz-border-radius: 4px;
+	border-radius: 4px; 
+} 
+
+.tabs{
+	height:30px;
+}
+
+.tabs > ul{
+	font-size: 1em;
+	list-style:none;
+}
+
+.tabs > ul > li{
+	margin:0 2px 0 0;
+	padding:7px 10px;
+	display:block;
+	float:left;
+	color:#FFF;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	border-top-left-radius:4px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px; 
+	background: #C9C9C9; /* old browsers */
+	background: -moz-linear-gradient(top, #0C91EC 0%, #257AB6 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0C91EC), color-stop(100%,#257AB6)); /* webkit */
+}
+
+.tabs > ul > li:hover{
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); /* webkit */
+	cursor:pointer;
+	color: #333;
+}
+#tabHeader_1
+{
+margin-left:10px;
+}
+
+.tabs > ul > li.tabActiveHeader{
+	/* background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); */ /* webkit */
+	cursor:pointer;
+	color: #333;
+}
+/*
+.tabscontent {
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px; 
+	padding:10px 10px 25px;
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #FFFFFF 90%, #e4e9ed 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(90%,#FFFFFF), color-stop(100%,#e4e9ed)); /* webkit */
+	margin:0;
+	color:#333;
+}*/
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -925,7 +1021,38 @@ for  body3 start    result  -->
 
 
 <!-- Right Nav -->
-<div class="span6 rightNav">
+<div id="tabContainer"  >
+  <div class="tabs">
+      <ul>
+	     <li id="tabHeader_1"  >
+           
+			     <p>Hamlets(s)</p>
+			   <!--  <ul id="rightNav-Booths-list" class="anils"></ul> -->
+	      
+       </li>
+	  
+	  <li id="tabHeader_2" >
+      
+			<p>Booth(s)</p>
+			 <!--  <ul id="rightNav-Booths-list" class="anils"></ul> -->
+	
+	</li>
+
+     </ul>
+  </div>
+</div>
+ <div class="tabscontent">
+ <div class="span6 rightNav" id="tabpage_1">
+ <ul id="rightNav-Booths-list1" class="anils"></ul>
+ </div>
+ <div class="span6 rightNav" id="tabpage_2">
+ <ul id="rightNav-Booths-list2" class="anils"></ul>
+ </div>
+ </div>
+ <!--<div class="span6 rightNav" id="tabpage_3">
+ <ul id="rightNav-Booths-list"></ul>
+ </div> -->
+ <div class="span6 rightNav" id="forHide">
 	<div class="rightNav-Booths">
 			<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>
 			<ul id="rightNav-Booths-list"></ul>
@@ -1315,7 +1442,7 @@ for  body3 start    result  -->
 		  <td><div id="partyWiseChatDiv"></div></td></tr></table></div>
 
 </div>
-
+<div id="NoResultsDialogue"><span style="display:none;">No Data Found</span></div>
 <!-- main div  End-->
 </div>
 <script type="text/javascript">
