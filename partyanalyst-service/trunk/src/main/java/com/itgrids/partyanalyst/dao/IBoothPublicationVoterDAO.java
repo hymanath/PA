@@ -208,6 +208,9 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds);
 	
 	public List<Long> getTotalVotersCountForHamletByVoterIds(List<Long> voterIds,Long publicationDateId);
-
 	
+	public List<Long> getBoothPublicationVoterIdsByVoterIdsList(List<Long> voterIdsList, Long publicationDateId);
+	
+	public Integer deleteByIdsList(List<Long> idsList);
+
 }
