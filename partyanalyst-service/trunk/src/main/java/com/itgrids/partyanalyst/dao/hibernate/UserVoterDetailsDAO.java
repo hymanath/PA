@@ -64,11 +64,34 @@ IUserVoterDetailsDAO{
 	}*/
 	
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId){
+	
 		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId,model.casteState.casteStateId = :castStateId where model.voter.voterId = :voterId and model.user.userId = :userId");
 		query.setParameter("voterId",voterId);
 		query.setParameter("userId",userId);
 		query.setParameter("partyId",partyId);
 		query.setParameter("castStateId",castStateId);
+		
+		query.executeUpdate();
+		
+	}
+	public void updateUserVoterDetails2(Long voterId,Long userId,Long partyId,Long localitityId,Long hamletId){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId,model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("partyId",partyId);
+		query.setParameter("localityId",localitityId);
+		query.setParameter("hamletId",hamletId);
+		
+		query.executeUpdate();
+		
+	}
+	public void updateUserVoterDetails3(Long voterId,Long userId,Long castStateId,Long localitityId,Long hamletId){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.casteState.casteStateId = :castStateId,model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("castStateId",castStateId);
+		query.setParameter("localityId",localitityId);
+		query.setParameter("hamletId",hamletId);
 		
 		query.executeUpdate();
 		
@@ -81,6 +104,23 @@ IUserVoterDetailsDAO{
 		query.setParameter("castStateId",castStateId);
 		query.setParameter("localityId",localitityId);
 		query.setParameter("hamletId",hamletId);
+		
+		query.executeUpdate();
+		
+	}
+	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId,Long publicationId){
+		Query query = getSession().createQuery("update UserVoterDetails model set " +
+				"model.party.partyId = :partyId,model.casteState.casteStateId = :castStateId, " +
+				"model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId, " +
+				"model.publicationDate.publicationDateId = :publicationDateId " +
+				"where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("partyId",partyId);
+		query.setParameter("castStateId",castStateId);
+		query.setParameter("localityId",localitityId);
+		query.setParameter("hamletId",hamletId);
+		query.setParameter("publicationDateId",publicationId);
 		
 		query.executeUpdate();
 		
@@ -139,17 +179,18 @@ IUserVoterDetailsDAO{
 				" model.casteState.caste.casteName,model.party.partyId,model.party.shortName " +
 				"from UserVoterDetails model where model.voter.voterId = ? and model.user.userId = ? ",param);
 	}
+	public List<Object[]> getHamletsIdsForUser(Long panchayatId , Long userId) {
+		Object[] param = {panchayatId,userId};
+		return getHibernateTemplate().find("select distinct model.hamlet.hamletId,model.hamlet.hamletName " +
+							"from UserVoterDetails model join model.hamlet.panchayathHamlets p  where  p.panchayat.panchayatId = ? and model.user.userId = ? ",param);
+	}
+	public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
+	{
+		Object[] param = {hamletId,userId};
+		return getHibernateTemplate().find("select distinct model.voter.voterId " +
+							"from UserVoterDetails model  where  model.hamlet.hamletId = ? and model.user.userId = ? ",param);
+	}
 	
-	
-	/** This Method is used to get VoterIds based on hamletId and UserId  */
-	
-
-	  public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
-{
-	Object[] param = {hamletId,userId};
-	return getHibernateTemplate().find("select distinct model.voter.voterId " +
-						"from UserVoterDetails model  where  model.hamlet.hamletId = ? and model.user.userId = ? ",param);
-}
 	
 	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId)
 	{
