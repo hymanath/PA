@@ -1077,6 +1077,13 @@
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="localBodyElectionService" ref="localBodyElectionService" />		
 	</bean>
-	
+	<bean id="sendUpdatesBySMSAction" class="com.itgrids.partyanalyst.web.action.SendUpdatesBySMSAction" singleton="false">
+	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+	<property name="staticDataService" ref="staticDataService" />
+	<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	<property name="cadreManagementService" ref="cadreManagementService" />
+	<property name="sendUpdatesService" ref="sendUpdatesService" />
+	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	</bean>
 </beans>	
 	
