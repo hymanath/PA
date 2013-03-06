@@ -14,10 +14,18 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.ISendUpdatesService;
 import com.itgrids.partyanalyst.service.ISmsService;
@@ -34,7 +42,45 @@ public class SendUpdatesService implements ISendUpdatesService{
 	private VelocityEngine  velocityEngine;
 	private IMailService mailService;
 	private String templateVM;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private CadreManagementService cadreManagementService;
+	private SmsResultVO smsResultVO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IBoothDAO boothDAO;
 	
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+	public SmsResultVO getSmsResultVO() {
+		return smsResultVO;
+	}
+	public void setSmsResultVO(SmsResultVO smsResultVO) {
+		this.smsResultVO = smsResultVO;
+	}
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
 	public VelocityEngine getVelocityEngine() {
 		return velocityEngine;
 	}
@@ -182,6 +228,26 @@ public class SendUpdatesService implements ISendUpdatesService{
 	}
 		}
 
+	public List<SelectOptionVO> getBoothsForWardId(Long wardId,Long publicationDateId){
+	
+		List<Object[]> boothsList = boothDAO.getBoothsForWard(wardId,publicationDateId);
+		List<SelectOptionVO> booths = new ArrayList<SelectOptionVO>();
+		SelectOptionVO option = null;
+		for(Object[] booth:boothsList){
+			option = new SelectOptionVO();
+			option.setId((Long)booth[0]);
+			option.setName(booth[1]!=null?booth[1].toString():"");
+			booths.add(option);
+		}
+		return booths;
+
+	}
+	
+	public Long getLatestPublicationDateId(){
+		Long publicationDateId = boothPublicationVoterDAO.getLatestpublicationDate();
+		return publicationDateId;
+		
+	}
 	
 	public List<RegistrationVO>  getUsersForSendingEmails(Long selectedState,Long selectedDistrict,Long selectedConstituency,Long userType,Long locationScope){
 		log.debug("Entered into getAllUsersForSendSms() method of SendUpdatesService");
@@ -226,5 +292,84 @@ public class SendUpdatesService implements ISendUpdatesService{
 		
 		
 	}
+	
+	public ResultStatus sendSMSToSelectedPeople(Long userId,String scope, Long scopeId, String content,String type)
+	{	
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+		    List<String> locationValues = new ArrayList<String>(0);
+		    List<Long> cadreLevelValues = new ArrayList<Long>(0);
+			
+		    if(scope.equalsIgnoreCase("Constituency")){
+		    	scope = "Constituency";
+		    	cadreLevelValues.add(scopeId);
+		    	locationValues.add(scopeId.toString());
+		    }
+			
+				if(scope.equalsIgnoreCase("Mandal")){
+					if(scopeId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						scope = "mandal";
+						scopeId = new Long(scopeId.toString().substring(1));
+						cadreLevelValues.add(scopeId);
+						locationValues.add(scopeId.toString());
+					}
+					else if(scopeId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(scopeId.toString().substring(1)));
+						scopeId =(Long)listId.get(0); 
+						scope = "MUNCIPALITY/CORPORATION";
+						cadreLevelValues.add(scopeId);
+						locationValues.add(scopeId.toString());
+					}
+				}
+				if(scope.equalsIgnoreCase("Panchayat")){
+					if(scopeId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						cadreLevelValues.add(scopeId);
+						locationValues.add(scopeId.toString());
+						 scope="ward";
+						// scopeId = new Long(scopeId.toString().substring(1));
+					}
+					List<Object[]> booths = boothDAO.getBoothsByPanchayatId(scopeId);
+					if(booths != null && booths.size() > 0)
+					{
+						for (Object[] booth : booths){
+							if(booth[1] != null)
+								locationValues.add(booth[1].toString());
+							
+							cadreLevelValues.add(new Long(booth[1].toString()));
+						}
+					}
+						
+				}
+				if(scope.equalsIgnoreCase("Booth")){
+					scope = "Booth";
+			    	cadreLevelValues.add(scopeId);
+			    	locationValues.add(scopeId.toString());
+					
+				}
+				List mobileNumbersList = null;
+				List<SmsVO> smsvo = new ArrayList<SmsVO>(0);	
+			if(type.equals("cadre"))
+				mobileNumbersList = boothPublicationVoterDAO.getCadreMobileDetails(userId,cadreLevelValues,scope);
+			if(type.equals("influence"))
+				mobileNumbersList = boothPublicationVoterDAO.getInfluencePeopleMobileDetails(userId,locationValues,scope);
+			if(type.equals("voter"))
+				mobileNumbersList = boothPublicationVoterDAO.getVoterMobileDetails(userId,scopeId,scope);
+			if(mobileNumbersList != null && mobileNumbersList.size()>0)
+				for(int i=0;i<mobileNumbersList.size() ; i++)
+				{
+				SmsVO smsvo1 = new SmsVO(); 
+				smsvo1.setMobileNO(mobileNumbersList.get(i).toString());
+				smsvo.add(smsvo1);
+				}
+				smsResultVO = cadreManagementService.sendSMSToSelectedCadre(userId, "NO", true,content, smsvo);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
 		
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in sendSMSToSelectedPeople() Method, Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
+ }
 }
