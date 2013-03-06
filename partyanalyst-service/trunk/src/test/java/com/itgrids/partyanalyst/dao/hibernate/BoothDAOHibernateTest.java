@@ -241,12 +241,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(data.get(0));
 	}*/
 	
-	/*public void testgetPanchayatiesCount()
+public void testgetBoothsInAMunicipality()
 	{
-	List<Object[]> list = boothDAO.getBoothsInAMunicipality(20l,7l);
+	List<Object[]> list = boothDAO.getBoothsInAMunicipality(2l,8l,253l);
 	System.out.println(list.size());
 	}
-	*/
+
 	
 	/*public void testgetBoothIdsByPanchayatIds()
 	{
@@ -300,7 +300,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(ward[0]+"   "+ward[1].toString());
 	}*/
 	
-	
+	public void testgetBoothsForWard()
+	{
+		
+		List<Object[]> l = boothDAO.getBoothsForWard(31234l, 8l);
+		for(Object[] ward:l)
+			System.out.println(ward[0]+"   "+ward[1].toString());
+	}	
+
 	/*public void testgetWardIdsByLocalEleBodyIdsList()
 	{
 		List<Long> localEleBodyIds = new ArrayList<Long>(0);
@@ -342,7 +349,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(booths[0]+" "+booths[1]);
 		}
 		
-	}*/
+	}
 	
 	public void testGetBoothsInAMandalByPublicationAndConstId()
 	{
@@ -350,5 +357,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		if(list != null && list.size() > 0)
 			for(Object[] params : list)
 				System.out.println(params[0]+" "+params[1]);
-	}
+	}*/
+	
+	/*public void testgetBoothsByPanchayatId()
+	{
+		List<Object[]> list = boothDAO.getBoothsByPanchayatId(1l);
+		if(list != null && list.size() > 0)
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+	}*/
+	
 }
