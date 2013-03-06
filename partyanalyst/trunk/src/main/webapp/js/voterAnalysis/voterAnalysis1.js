@@ -5518,12 +5518,13 @@ buildType="hamlet";
 $("#tabHeader_2").live("click",function(){
 buildType="booth";
  $("#tabpage_2").css({ display: "block" });
- if( maintype == "panchayat" )
+ if( maintype == "panchayat" ){
 	 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 
 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	 getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");			
+	 getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
+ }
 });
 
 /** END FUNCTIONS FOR NAVIGATIONS **/
