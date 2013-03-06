@@ -3520,9 +3520,67 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 		importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForBooth.getTotalFemaleVoters());
 		importantFamiliesInfoVo.setUnKnowVoters(votersInfoForBooth.getUnKnowVoters());
 		*/
-		 getImpFamilesInfoForHamlet(userId,type,id,publicationDateId,importantFamiliesInfoVo,"",exeType,null,constituencyId);
+		 getImpFamilesInfoDetailsForHamlet(userId,id,publicationDateId,importantFamiliesInfoVo);
 		 return importantFamiliesInfoVo;
 	}
+	
+	public void getImpFamilesInfoDetailsForHamlet(Long userId,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo){
+		List<Object[]>  impFamilesList = null;
+		
+		List<Long> hamlets = new ArrayList<Long>();
+		hamlets.add(id);
+		
+         List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+		
+		impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
+		
+		
+		
+		//	impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndHamlet(userId,id,publicationDateId,null);
+			
+		
+		Long below3 = 0l;
+		Long between4To6 = 0l;
+		Long between7To10 = 0l;
+		Long above10 = 0l;
+		Long count = 0l;
+		Long above10Count = 0l;
+		Long between7T10Count = 0l;
+		Long between4To6Count = 0l;
+		Long below3Count = 0l;
+		for (Object[] impFamiles : impFamilesList) {
+			count = (Long) impFamiles[0];	
+			if(count.longValue() > 10){
+				above10 = above10+1;
+				above10Count = count + above10Count;
+			}
+			else if(count.longValue() < 10 && count.longValue() >= 7){
+				between7To10 = between7To10+1;
+				between7T10Count = count + between7T10Count;
+			}
+			else if(count.longValue() < 7 && count.longValue() >=4){
+				between4To6 = between4To6 + 1;
+				between4To6Count = count + between4To6Count;	
+			}
+			else{
+				below3 = below3 + 1;
+				below3Count = count + below3Count;
+			}
+		}
+		
+		importantFamiliesInfoVo.setAbove10(above10);
+		importantFamiliesInfoVo.setAbove10Popul(above10Count);
+		importantFamiliesInfoVo.setBetwn7to10(between7To10);
+		importantFamiliesInfoVo.setBetwn7to10Popul(between7T10Count);
+		importantFamiliesInfoVo.setBetwn4to6Popul(between4To6Count);
+		importantFamiliesInfoVo.setBetwn4to6(between4To6);
+		importantFamiliesInfoVo.setBelow3(below3);
+		importantFamiliesInfoVo.setBelow3Popul(below3Count);
+		importantFamiliesInfoVo.setTotalFamalies(above10+between7To10+between4To6+below3);
+		importantFamiliesInfoVo.setTotalVoters(above10Count+between7T10Count+between4To6Count+below3Count);
+		calculatePercentage(importantFamiliesInfoVo);
+	}
+	
 	
 	public ImportantFamiliesInfoVo getImportantFamiliesForBooth(String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
