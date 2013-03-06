@@ -4521,7 +4521,7 @@
 				<param name="root">voterVOs</param>				
 			</result>	
 		</action>
-				
+
 		<action name="addVoterToCadreAction" class="votersAnalysisAction" method="addVoterToCadre">
 			<result type="json" name="success">
 			  <param name="root">task</param>
@@ -4538,7 +4538,7 @@
 		      <param name="root">resultStatus</param>
 		    </result>
 		</action>
-		
+				
 		<action name="getInfluencingPeopleCountAction" class="votersAnalysisAction" method="getInfluencingPeopleCountByLocation">
 		<result type="json" name="success">
            	<param name="root">influencingPeopleCount</param>
@@ -4604,5 +4604,20 @@
         	</result>
 		</action>
 		
+		<action name="sendUpdatesBySMSAction" class="sendUpdatesBySMSAction">
+		    <result name="success">/jsp/sendUpdatesBySMS.jsp</result>
+		</action>
+		<action name="getPanchayatByMandalAction" class="sendUpdatesBySMSAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">designationsList</param>				
+			</result>		
+		</action>
+		 <action name="sendSMSAjaxAction" class="sendUpdatesBySMSAction" method="sendSMS"> 
+              <result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>       		
+        </action>  
+        
+     
 	</package>
 </struts>      
