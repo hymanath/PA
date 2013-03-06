@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SmsVO implements Serializable {
 
@@ -12,7 +13,15 @@ public class SmsVO implements Serializable {
 	private Long cadreId;
 	private String cadreName;
 	private String mobileNO;
+	private List<SmsVO> smslist;
 	
+	
+	public List<SmsVO> getSmslist() {
+		return smslist;
+	}
+	public void setSmslist(List<SmsVO> smslist) {
+		this.smslist = smslist;
+	}
 	//Getters and Setters
 	public Long getCadreId() {
 		return cadreId;
