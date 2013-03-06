@@ -566,6 +566,20 @@ public interface IConstants {
 	public static final int LARGE_WIDTH   = 320;
 	public static final int LARGE_HEIGHT  = 240;
 	
+	public static final long AGE18  = 18l;
+	public static final long AGE25  = 25l;
+	public static final long AGE26  = 26l;
+	public static final long AGE35  = 35l;
+	public static final long AGE36  = 36l;
+	public static final long AGE45  = 45l;
+	public static final long AGE46  = 46l;
+	public static final long AGE60  = 60l;
+	public static final long AGE61  = 60l;
+	public static final long AGE160  = 160l;
+	
+	
+	
+	
 	
 	public static final String GALLARY_PDF_FILES= "gallary_pdf_files";
 	
