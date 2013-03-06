@@ -3332,9 +3332,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByHamletId(Long ham
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("hamlet")){
-				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
-				if(!importantFamiliesInfoVo.isDataPresent())
-					importantFamiliesInfoVo = getImportantFamiliesForhamlet(userId , type,id,publicationDateId,"main",constituencyId);
+				/*ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
+				if(!importantFamiliesInfoVo.isDataPresent())*/
+				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamiliesForhamlet(userId , type,id,publicationDateId,"main",constituencyId);
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
