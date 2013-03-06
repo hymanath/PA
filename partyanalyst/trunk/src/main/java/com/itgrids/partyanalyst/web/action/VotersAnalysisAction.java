@@ -82,7 +82,9 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private ResultStatus resultStatus;
 	private List<InfluencingPeopleBeanVO> influencingPeopleCount;
 	
-
+	private SelectOptionVO selectOptionVO;
+	private CadreManagementService cadreManagementService;
+	
 	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount() {
 		return influencingPeopleCount;
 	}
@@ -92,9 +94,6 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		this.influencingPeopleCount = influencingPeopleCount;
 	}
 
-
-	private SelectOptionVO selectOptionVO;
-	private CadreManagementService cadreManagementService;
 	
 	private List<VotersInfoForMandalVO> previousDetailsListForHamlet;
 	
@@ -768,7 +767,9 @@ public String getImportantFamaliesDetails(){
 		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
 	}
 	
+	
 	session = request.getSession();
+	
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	Long userId =  regVO.getRegistrationID();
 	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
@@ -805,8 +806,10 @@ public String getVotersFamilyDetails(){
 		Long userId =  regVO.getRegistrationID();
 		
 		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
-		   votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"));
-		else
+		 
+			votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"));
+			 //votersFamilyInfo=new  ArrayList<VoterHouseInfoVO>();
+				else
 			//votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
 			votersFamilyInfo = votersAnalysisService.getFamilyInformation(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId);
 	}catch(Exception e){
@@ -939,13 +942,19 @@ return Action.SUCCESS;
 }
 
 	public String getAgewiseVoterDetails(){
-	
-	
+	 Long userId1 =null;
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		else  
+			userId1= user.getRegistrationID();
 		String param;
 		param = getTask();
 		constituencyManagementVO = new ConstituencyManagementVO();
 		
 		try{
+			
 		jObj = new JSONObject(param);
 		
 		Long constituencyId = Long.parseLong(jObj.getString("constituencyId"));
