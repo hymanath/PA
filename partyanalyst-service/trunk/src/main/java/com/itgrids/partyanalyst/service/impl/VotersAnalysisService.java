@@ -1316,7 +1316,23 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 			}
 			Long partyWisevotesConsidered = 0L;
-			Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
+			
+			
+			Long totalVoters = 0L;
+			
+			if(locationType.equalsIgnoreCase("hamlet")){
+				
+				 List<Long> hamlets = new ArrayList<Long>();
+				  hamlets.add(locationId);
+			  List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				
+		       List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+		      if(countList != null && countList.size() >0)
+			  totalVoters = countList.get(0);
+			}
+			else
+			 totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
+			
 			
 			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 			for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
