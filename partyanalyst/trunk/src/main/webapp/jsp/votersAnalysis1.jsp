@@ -7,7 +7,7 @@
 <html>
 <head>
 
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -47,8 +47,8 @@
 
 	<!-- YUI Dependency files (End) -->
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-      <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
-	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script>
+   <%--  <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
+	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script> --%>
 
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
