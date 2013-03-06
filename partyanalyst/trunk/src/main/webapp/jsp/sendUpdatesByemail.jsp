@@ -29,7 +29,6 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	<script src="js/sendUpdatesByEmail.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script src="js/cleditor/jquery.cleditor.min.js"></script>
 <script src="js/sendUpdatesByEmail.js"></script>
 <link rel="stylesheet" type="text/css" href="css/cleditor/jquery.cleditor.css">
 	<!-- YUI Skin Sam -->
@@ -61,7 +60,6 @@
 </script>
 </head>
 <body>
-<s:if test="#session.USER !=null">
 <s:if test="#session.USER.isAdmin == 'true'">
 <div style="width:998px;background:#ffffff;margin-left:auto;margin-right:auto;">
 <br>
@@ -132,12 +130,7 @@
 	-->
 	<div id="errorDiv" style="margin-left:372px;">
 	</div>
-	</s:if>
-<s:else>
-<%
-	response.sendRedirect("userEntitlementAction.action");
-%>
-</s:else>
+	
 </s:if>
 <s:else>
 <%
