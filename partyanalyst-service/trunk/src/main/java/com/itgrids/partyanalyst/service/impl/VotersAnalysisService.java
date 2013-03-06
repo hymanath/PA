@@ -96,6 +96,7 @@ import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
+import com.itgrids.partyanalyst.excel.booth.BoothVoterVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -4540,21 +4541,21 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 			List<Long> deletedVoterIdsList = voterModificationDAO.getModifiedVotersByConstituency(constituencyId,fromPublicationDateId,IConstants.STATUS_DELETED);
 			List<Object[]> votersAndPartNosList = boothPublicationVoterDAO.getPartNoAndVoterIdByConstituencyInAPublication(constituencyId, fromPublicationDateId);
 			
-			Map<String,List<Long>> votersAndPartNosMap = new HashMap<String, List<Long>>(0);
+			Map<String,List<BoothVoterVO>> votersAndPartNosMap = new HashMap<String, List<BoothVoterVO>>(0);
 			
 			for(Object[] params : votersAndPartNosList)
 			{
-				List<Long> vIdsList = votersAndPartNosMap.get(params[0].toString());
+				List<BoothVoterVO> vIdsList = votersAndPartNosMap.get(params[0].toString());
 				if(vIdsList == null)
 				{
-					vIdsList = new ArrayList<Long>(0);
+					vIdsList = new ArrayList<BoothVoterVO>(0);
 					votersAndPartNosMap.put(params[0].toString(),vIdsList);
 				}
-				vIdsList.add((Long)params[1]);
+				vIdsList.add(new BoothVoterVO((Long)params[0],(Long)params[1]));
 				votersAndPartNosMap.put(params[0].toString(),vIdsList);
 			}
 			
-			for(Map.Entry<String,List<Long>> entry : votersAndPartNosMap.entrySet())
+			for(Map.Entry<String,List<BoothVoterVO>> entry : votersAndPartNosMap.entrySet())
 			{
 				Long toBoothId = null;
 				for(Object[] params : list2)
@@ -4564,23 +4565,30 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					break;
 				}
 				
-				for(Long voterId : entry.getValue())
+				for(BoothVoterVO boothVoterVO : entry.getValue())
 				{
-					if(!addedVoterIdsList.contains(voterId))
+					if(!addedVoterIdsList.contains(boothVoterVO.getVoterId()))
 					{
 						try{
 						BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
 						boothPublicationVoter.setBoothId(toBoothId);
-						//boothPublicationVoter.setVoterId(voterId);
+						boothPublicationVoter.setVoter(voterDAO.get(boothVoterVO.getVoterId()));
+						boothPublicationVoter.setSerialNo(boothVoterVO.getSerialNo());
 						boothPublicationVoterDAO.save(boothPublicationVoter);
 						}catch (Exception e) {}
 					}
-					if(deletedVoterIdsList.contains(voterId))
-						deletedVoterIdsList.remove(voterId);
+					if(deletedVoterIdsList.contains(boothVoterVO.getVoterId()))
+						deletedVoterIdsList.remove(boothVoterVO.getVoterId());
 				}
 				voterDAO.flushAndclearSession();
 			}
 			
+			if(deletedVoterIdsList != null && deletedVoterIdsList.size() > 0)
+			{
+				List<Long> bPVIDSList =  boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(deletedVoterIdsList,fromPublicationDateId);
+				int deleted = boothPublicationVoterDAO.deleteByIdsList(bPVIDSList);
+				log.info(deleted+" Voters Deleted ");
+			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			resultStatus.setMessage("Voter Data Mapped Successfully");
 			return resultStatus;
