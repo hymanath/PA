@@ -210,5 +210,5 @@ public interface IVotersAnalysisService {
 	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId);
 	public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId);
 	public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long publicationDateId,Long constituencyId);
-	
+	public List<SelectOptionVO> getBoothsByPanchayatId(Long id,Long publicationDateId);
 }
