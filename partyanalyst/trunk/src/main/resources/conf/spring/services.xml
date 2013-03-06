@@ -1267,6 +1267,9 @@
 		<property name="velocityEngine" ref="velocityEngine"></property>
 		<property name="templateVM" value="mailFromAdmin.vm"></property>
 		<property name="mailService" ref="mailService" />
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="boothDAO" ref="boothDAO"/>
 	</bean>
 	
 	<bean name="completeProblemDetailsService" class="com.itgrids.partyanalyst.service.impl.CompleteProblemDetailsService">
