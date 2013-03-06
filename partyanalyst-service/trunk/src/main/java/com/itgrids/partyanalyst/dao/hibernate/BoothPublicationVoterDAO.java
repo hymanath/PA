@@ -1220,7 +1220,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId)
 	{
-		Query query = getSession().createQuery("select model.booth.partNo,model.voter.voterId from BoothPublicationVoter model where " +
+		Query query = getSession().createQuery("select model.booth.partNo,model.voter.voterId,model.serialNo from BoothPublicationVoter model where " +
 				" model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
@@ -1670,7 +1670,23 @@ public List<Long> getVotersInHamletForUser(Long userId , Long hamletId)
 	return query.list();
 	
 }
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothPublicationVoterIdsByVoterIdsList(List<Long> voterIdsList, Long publicationDateId)
+	{
+		Query query = getSession().createQuery(" Select model.boothPublicationVoterId from BoothPublicationVoter model where model.voter.voterId in(:voterIdsList) and " +
+				" model.booth.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameterList("voterIdsList",voterIdsList);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
+	public Integer deleteByIdsList(List<Long> idsList)
+	{
+		Query query = getSession().createQuery(" delete from BoothPublicationVoter model where model.boothPublicationVoterId in (:idsList)");
+		query.setParameterList("idsList", idsList);
+		return query.executeUpdate();
+	}
 
 
 public List<Object[]> getVotersCountForHamlet(Long hamletId, Long userId , Long publicationDateId)
