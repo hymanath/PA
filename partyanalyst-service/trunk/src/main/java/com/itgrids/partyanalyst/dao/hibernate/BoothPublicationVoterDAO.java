@@ -1701,4 +1701,43 @@ public List<Long> getTotalVotersCountForHamletByVoterIds(List<Long> voterIds,Lon
   
   return query.list();
 }
+public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
+		Long hamletId, Long publicationDateId , Long startAge, Long endAge, Long userId) {		
+		
+		
+	Query query = getSession().createQuery("select count(distinct uv.voter.voterId),uv.voter.gender " +
+			"from UserVoterDetails uv ,BoothPublicationVoter b where  uv.voter.voterId = b.voter.voterId  " +
+			"  and uv.user.userId =:userId  and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+					" and uv.hamlet.hamletId = :hamletId and uv.voter.age between "+startAge+" and "+endAge+"  " +
+							"group by uv.voter.gender   ") ;
+	query.setParameter("publicationDateId",publicationDateId);
+	query.setParameter("hamletId", hamletId);
+	query.setParameter("userId", userId);
+	  return query.list();
+	
+}
+public List<Object[]> getVotersBasedOnVoterIdsAndPublication(
+		 Long publicationDateId , Long startAge, Long endAge, List<?> voterIds) {		
+		
+		
+	Query query = getSession().createQuery("select count(distinct b.voter.voterId),b.voter.gender " +
+			" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+			"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+					" and  b.voter.age between :startAge and :endAge  " +
+							"group by b.voter.gender   ") ;
+	query.setParameter("publicationDateId",publicationDateId);
+	query.setParameterList("voterIds", voterIds);
+	query.setParameter("startAge", startAge);
+	query.setParameter("endAge", endAge);
+	
+	  return query.list();
+	
+}
+public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
+{
+	Object[] param = {hamletId,userId};
+	return getHibernateTemplate().find("select distinct model.voter.voterId " +
+						"from UserVoterDetails model  where  model.hamlet.hamletId = ? and model.user.userId = ? ",param);
+}
+
 }
