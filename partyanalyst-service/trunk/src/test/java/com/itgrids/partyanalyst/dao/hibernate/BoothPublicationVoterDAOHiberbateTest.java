@@ -147,7 +147,7 @@ public void setBoothPublicationVoterDAO(
 	 //System.out.println(voter.size());
 }*/
 
-public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation()
+/*public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation()
 {
 	 System.out.println("start");
 	long startPrevElecTime = System.currentTimeMillis();
@@ -157,7 +157,7 @@ public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocati
      long diff = endPrevElecTime-startPrevElecTime;
      System.out.println("time to execute Voters Cast Details in millsec :"+diff+" in seconds:"+diff/1000+"");
 
-}
+}*/
 
 /*public void testgetPartyWiseCastCategoryVotersCount()
 {
@@ -367,4 +367,22 @@ public void testgetPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocati
 	   }
    }*/
 	
+	/*public void testGetBoothPublicationVoterIdsByVoterIdsList()
+	{
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		voterIdsList.add(1l);
+		voterIdsList.add(2l);
+		List<Long> list = boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(voterIdsList,8l);
+		
+		System.out.println(list.size());
+		
+	}*/
+
+	public void testDeleteByIdsList()
+	{
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		voterIdsList.add(1l);
+		System.out.println(boothPublicationVoterDAO.deleteByIdsList(voterIdsList));
+		
+	}
 }
