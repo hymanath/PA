@@ -14,11 +14,8 @@
 	
 <script>
 var locationDetails={
-						
-							constituencyArr:[],
-						
-						};
-
+					 	constituencyArr:[],
+					};
 <c:forEach var="constituency"  items="${userAccessConstituencyList}" >
 	var ob={
 				id:'${constituency.id}',
@@ -64,9 +61,8 @@ var locationDetails={
 	border: 1px lightBlue solid ;
 	width: 920px; 
 	height: 600px;
-	margin-left: 40px;
+	margin-left: 100px;
 	margin-bottom: 15px;
-	margin-top: 20px;
 	background-color:white;
 	font-weight:bold;
 	border-radius: 5px 5px 5px 5px;
@@ -84,7 +80,9 @@ var locationDetails={
 	#tableRowS,#tableRowC,#tableRowM,#tableRowP,#tableRowB{
 	margin-left: -10px
 	}
-	
+	#radioLabel{
+	font-weight:bold;
+	}
 	</style>
 </head>
 <body>
@@ -117,16 +115,15 @@ var locationDetails={
 <div id="showScopeSubs1" style="margin-bottom: 10px;"></div>
 <div id="showScopeSubs2" style="margin-bottom: 10px;"></div>
 <div id="showScopeSubs3" style="margin-bottom: 10px;"></div>	
-
 <br>
 <fieldset>
-<div id="rButtonsDiv" align="center" style="font-weight: bold;height: 30px;"> 
+<div id="rButtonsDiv" align="center" style="font-weight: bold;"> 
 	<input type="radio" name="voterType" value="cadre" id="cadreIds"  checked = "true"/> 
-	Cadre People
+	<label for="cadreIds" id="radioLabel">Cadre People</label>
 	<input type="radio" name="voterType" value="influence" id="influenceId"/> 
-	Influence People
+	<label for="influenceId" id="radioLabel">Influence People</label>	
 	<input type="radio" name="voterType" value="voter" id="votersId"/> 
-	Voters	
+	<label for="votersId" id="radioLabel">Voters</label>		
  </div>
 </fieldset>
 <fieldset>
