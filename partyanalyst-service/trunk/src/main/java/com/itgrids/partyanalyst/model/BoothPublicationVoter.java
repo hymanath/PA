@@ -25,7 +25,7 @@ public class BoothPublicationVoter implements Serializable{
 	
 	 private static final long serialVersionUID = 1L;
 	 
-	 private Long BoothPublicationVoterId;	
+	 private Long boothPublicationVoterId;	
 	 private Booth booth;	
 	 private Voter voter;
 	 private Long boothId;
@@ -44,10 +44,10 @@ public class BoothPublicationVoter implements Serializable{
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 @Column(name="booth_publication_voter_id", unique=true, nullable=false)
 	 public Long getBoothPublicationVoterId() {
-			return BoothPublicationVoterId;
+			return boothPublicationVoterId;
 	}
 	public void setBoothPublicationVoterId(Long boothPublicationVoterId) {
-		BoothPublicationVoterId = boothPublicationVoterId;
+		this.boothPublicationVoterId = boothPublicationVoterId;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
