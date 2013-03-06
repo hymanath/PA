@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +30,7 @@ public class VoterCastInfo extends BaseModel implements Serializable {
 	private VoterReportLevel voterReportLevel;
 	private Long reportLevelValue;
 	private Long userId;
-	private Long casteStateId;
+	private CasteState casteState;
 	private Long casteVoters;
 	private Long casteMaleVoters; 
 	private Long casteFemaleVoters;
@@ -46,14 +47,14 @@ public class VoterCastInfo extends BaseModel implements Serializable {
 	
 	/** default constructor */
 	public VoterCastInfo(Long voterCastInfoId,VoterReportLevel voterReportLevel,Long reportLevelValue, Long userId,
-	   Long casteStateId,Long casteVoters,Long casteMaleVoters, 
+			CasteState casteState,Long casteVoters,Long casteMaleVoters, 
 	   Long casteFemaleVoters,Double castePercentage, Long publicationDateId, Constituency constituency) {
 		
 		this.voterCastInfoId = voterCastInfoId;
 		this.voterReportLevel = voterReportLevel;
 		this.reportLevelValue = reportLevelValue;
 		this.userId = userId;
-		this.casteStateId =casteStateId;
+		this.casteState = casteState;
 		this.casteVoters = casteVoters;
 		this.casteMaleVoters = casteMaleVoters;
 		this.casteFemaleVoters = casteFemaleVoters;
@@ -101,13 +102,16 @@ public class VoterCastInfo extends BaseModel implements Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "caste_state_id", length = 15)
-	public Long getCasteStateId() {
-		return casteStateId;
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="caste_state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
 	}
 
-	public void setCasteStateId(Long casteStateId) {
-		this.casteStateId = casteStateId;
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
 	}
 
 	@Column(name = "caste_voters", length = 15)
