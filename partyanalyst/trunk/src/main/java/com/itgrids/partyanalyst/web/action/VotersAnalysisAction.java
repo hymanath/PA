@@ -969,11 +969,18 @@ return Action.SUCCESS;
 		List<VotersDetailsVO> boothVotersDetails = null;
 		//VOTER DETAILS OVERVIEW FOR CONSTITUENCY OR MANDAL
 		
-		List<VotersDetailsVO> votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
+		List<VotersDetailsVO> votersDeatailsForConstituency =null;
+		
+		if(type.equalsIgnoreCase("hamlet"))
+			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,"hamlet");	
+		else{
+			
+		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
 		panchayatId , boothId, publicationDateId,type);
 		if(votersDeatailsForConstituency == null || votersDeatailsForConstituency.size() == 0)
 		votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,
 		panchayatId , boothId, publicationDateId,type);
+		}
 		
 		if(type.equalsIgnoreCase("constituency")){
 		
