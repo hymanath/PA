@@ -191,11 +191,14 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getHamlets(Long panchayatId);
 	//Updated by gayathri to get HamletLevel VotersBasicInfo
 	
-	public  VotersInfoForMandalVO	getVoterDetailsByVoterIdForHamlet(VoterVO voterVO,List<Object> voterIdList);
-	
-	public List<VoterVO> getAllPublicationsForHamlet(Long constituencyId);
-	
-	 public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId,Long hamletId,Long userID);
+		public  VotersInfoForMandalVO	getVoterDetailsByVoterIdForHamlet(VoterVO voterVO,List<Object> voterIdList);
+		
+		public List<VoterVO> getAllPublicationsForHamlet(Long constituencyId);
+		
+		 public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId,Long hamletId,Long userID);
+		
+	public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId);
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId);
 	
 	public ResultStatus updateSerialNo(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
 	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount(Long userId,Long locationValue,String type,Long publicationId);
