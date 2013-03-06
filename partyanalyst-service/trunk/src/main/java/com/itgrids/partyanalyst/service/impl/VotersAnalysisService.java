@@ -4596,7 +4596,9 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					if(deletedVoterIdsList.contains(boothVoterVO.getVoterId()))
 						deletedVoterIdsList.remove(boothVoterVO.getVoterId());
 				}
+				try{
 				voterDAO.flushAndclearSession();
+				}catch(Exception e){}
 			}
 			
 			if(deletedVoterIdsList != null && deletedVoterIdsList.size() > 0)
