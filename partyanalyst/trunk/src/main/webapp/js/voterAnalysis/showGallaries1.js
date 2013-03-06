@@ -159,11 +159,7 @@ function callAjaxToShowProblemDetails(jObj,url){
 				       myResults = YAHOO.lang.JSON.parse(o.responseText);
 
 					   if(jObj.task == "getProblemsByLocation")
-                          buildProblemsCountByLocation(myResults,jObj);		
-					   //I changed Here
-					   if(jObj.task == "getProblemsByLocationForHamlet")
-	                          buildProblemsCountByLocation(myResults,jObj);	
-					   //end
+                          buildProblemsCountByLocation(myResults,jObj);					  
 					/* else if(jObj.task == "getProblemDetailsByLocation")
 						buildProblemDetailsByStatus(myResults,jObj);*/
 					  
@@ -803,6 +799,8 @@ $('#newsDisplayDiv').html('');
 		locationId = 5;
 	else if(type == "ward")
         locationId = 8;
+		else if(type == "hamlet")
+        locationId = 6;
 newsString = mainname+" News";
 
   if(locationValue == 0 || locationId == 0 || locationValue == null || locationValue == "null" || locationId == null || locationId == "null")
@@ -1348,8 +1346,6 @@ function incrementStartEndIndexes(importanceId,categoryId){
 
 function buildProblemsCountByLocation(results,jsObj)
 {
-
-	//alert('22');
 		$("#problemAjaxImg").hide();
 	document.getElementById('problemsCountDiv').style.display = 'inline-block';
 	var str='';
@@ -1404,33 +1400,8 @@ function buildProblemsCountByLocation(results,jsObj)
 	divEle.innerHTML=str;
 	
 }
-//Modified For Getting Hamlet Problems
-
-function getProblemsByLocationForHamlet(){
-//alert('hamlet');
-	document.getElementById('problemsCountDiv').style.display = 'none';
-
-	$("#problemAjaxImg").show();
-	var jObj=
-	{
-		locationValue:42,
-		locationId:10,
-		//publicationId:0,
-		type :"hamlet",
-		task:"getProblemsByLocationForHamlet"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
-	var url = "getProblemsByLocation.action?"+rparam;	
-
-	callAjaxToShowProblemDetails(jObj,url);
-
-
-}
-
-
 function getProblemsByLocation(id,publicationId,type)
 {
-	
 	document.getElementById('problemsCountDiv').style.display = 'none';
 	var locationId =0;
 	
@@ -1459,7 +1430,8 @@ function getProblemsByLocation(id,publicationId,type)
 	}
 	else if(type == "ward")
 		locationId = 8;
-	
+   else if(type == "hamlet")
+        locationId = 10;
 	
 	$("#problemAjaxImg").show();
 	var jObj=
@@ -1479,7 +1451,7 @@ function getProblemsByLocation(id,publicationId,type)
 
 function getProblemDtailsByStatus(locationId,locationValue,status,srcId,title)
 {
-	//alert('33');
+
 var jObj=
 	{
 		locationValue:locationValue,
@@ -1522,7 +1494,7 @@ var jObj=
 
 function buildProblemDetailsByStatus(result)
 {
-	//alert('44');
+	
 	var str='';
 	var title = "New";
 	$("#problemPopUp").dialog({ 
