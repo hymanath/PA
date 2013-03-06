@@ -564,6 +564,15 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	
 	
 	
+	public List getVotersMobileDetailsByConstituencyId(Long userId,String locationValue,String type)
+	{
+	Query query = getSession().createQuery("select model.phoneNo from InfluencingPeople model where model.user.userId=:userId and model.influencingScopeValue =:locationValue and model.influencingScope = :type");
+	query.setParameter("locationValue", locationValue);
+	query.setParameter("userId", userId);
+	query.setParameter("type", type);
+	return query.list();
+
+	}
 
 		
 }
