@@ -4567,7 +4567,7 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					vIdsList = new ArrayList<BoothVoterVO>(0);
 					votersAndPartNosMap.put(params[0].toString(),vIdsList);
 				}
-				vIdsList.add(new BoothVoterVO((Long)params[0],(Long)params[1]));
+				vIdsList.add(new BoothVoterVO((Long)params[1],(Long)params[2]));
 				votersAndPartNosMap.put(params[0].toString(),vIdsList);
 			}
 			
