@@ -37,6 +37,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getPartyAndCasteDetails(Long voterId,Long userId);
 	
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId);
+	public List<Object[]> getHamletsIdsForUser(Long panchayatId , Long userId);
+    
+
+	
 	
 	/** This Method is used to get VoterIds based on hamletId and UserId  */
 	
@@ -50,5 +54,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Voter> getVoterDetailsByHamletId(Long hamletId , Long userId);
 	
 	public List<Long> getUserHamletsByPanchayatId(Long userId , Long panchayatId);
-	
+	public void updateUserVoterDetails2(Long voterId,Long userId,Long partyId,Long localitityId,Long hamletId);
+	public void updateUserVoterDetails3(Long voterId,Long userId,Long castStateId,Long localitityId,Long hamletId);
 }
