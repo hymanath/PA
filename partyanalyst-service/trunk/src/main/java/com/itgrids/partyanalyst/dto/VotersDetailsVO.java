@@ -109,6 +109,21 @@ public class VotersDetailsVO implements Serializable{
 	private int totalNoOfWards;
 	private int totalNoOfHamlets;
 	
+	private String hamletName;
+	private Long userId;
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getHamletName() {
+		return hamletName;
+	}
+	public void setHamletName(String hamletName) {
+		this.hamletName = hamletName;
+	}
 	public int getTotalNoOfHamlets() {
 		return totalNoOfHamlets;
 	}
