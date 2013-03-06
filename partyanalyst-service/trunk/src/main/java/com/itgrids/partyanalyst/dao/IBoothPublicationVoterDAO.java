@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Voter;
 
@@ -213,4 +214,8 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public Integer deleteByIdsList(List<Long> idsList);
 
+	 public List getCadreMobileDetails(Long userId,List<Long> scopeId,String scope);
+	 public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,String scope);
+	 public List getVoterMobileDetails(Long userId,Long scopeId,String scope);
+	 public Long getLatestpublicationDate();
 }
