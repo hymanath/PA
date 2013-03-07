@@ -969,15 +969,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				return votersInfoForMandalVO;
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
-				
+			
 				VotersInfoForMandalVO votersInfoForMandalVO  =new  VotersInfoForMandalVO();
 				
 				if(resultFor.equalsIgnoreCase("booth")){
 				
 				 votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId(IConstants.BOOTH), id, publicationDateId,"booth-"+boothDAO.get(id).getPartNo(),"main",constituencyId);
 				if(!votersInfoForMandalVO.isDatapresent())
-				  votersInfoForMandalVO = getVotersCountForBooth(type,id,publicationDateId,"main");
-				getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"booth",constituencyId);
+					 votersInfoForMandalVO = getVotersCountForPanchayat(id,publicationDateId,"main");
+					 getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"panchayat",constituencyId);
+				getBoothsComparisionInfo(electionIds,id,publicationDateId,votersInfoForMandalVO);
 				}else if(resultFor.equalsIgnoreCase("hamlet")){
 					 votersInfoForMandalVO = getVotersBasicInfoForPanchayat1(id, publicationDateId, "main",constituencyId);
 
