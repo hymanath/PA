@@ -757,7 +757,7 @@ function showAllVoterInformationInALocation(results){
 
 $('#titleDiv').html(titleString);
 	var str='';
-	str+='<div  class="widget blue whitegloss" style="margin:5px;"></div>';
+	str+='<div  class="whitegloss" style="margin:5px;"></div>';
 str+='<div>';
 
  str+='<table id="voterDetails" class="gridtable1">';
