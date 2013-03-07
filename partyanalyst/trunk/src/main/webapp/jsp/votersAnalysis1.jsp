@@ -1164,7 +1164,7 @@ for  body3 start    result  -->
 		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList">
 		</select>
 		<span class="btn" id='voterDetailedReportId'>View Detailed Report</span>
-		<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
+	<div id="errorMsgDiv"></div>	<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
 	</div>
 	
 	<span id="votersCountModifyAjaxDiv" style="display:none;position:absolute;top:10px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
