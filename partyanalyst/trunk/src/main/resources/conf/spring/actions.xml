@@ -1053,6 +1053,7 @@
 	</bean>
 	<bean id="populateVoterDataAction" class="com.itgrids.partyanalyst.web.action.PopulateVoterDataAction">
 	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	<property name="voterReportService" ref="voterReportService" />
 	
 	</bean>
 	<bean id="missingVotersSearchAction" class="com.itgrids.partyanalyst.web.action.MissingVotersAction">
