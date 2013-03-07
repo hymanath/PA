@@ -1776,7 +1776,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			return totalCasts;
 			
 		}
-		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId)
+		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType)
 		
 		{
 			VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
@@ -1805,8 +1805,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			}
 			if(type.equalsIgnoreCase("panchayat"))
 			{
+			
+				
+				if(buildType.equalsIgnoreCase("booth")){
+			
 				List<SelectOptionVO> booths = getBoothsByPanchayatId(id,publicationDateId);
 				mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
+				
+				}else if (buildType.equalsIgnoreCase("hamlet")){
+					
+					List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
+					mandalCasts = getVotersCastInfoForMultipleHamlets(hamlets,publicationDateId,userId);
+				}
+				
 				
 			}
 			if(type.equalsIgnoreCase("ward"))
@@ -1930,6 +1941,44 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		return wardsList;
 	}
+	
+	
+		public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId)
+		{
+			VoterCastInfoVO voterCastInfo = null;
+			
+			List<VoterCastInfoVO> boothInfo = new ArrayList<VoterCastInfoVO>();
+			if(hamlets != null)
+			{
+				for(Long hamletId :hamlets)
+				{
+					voterCastInfo = new VoterCastInfoVO();
+					//Long hamletId=booths.getId();
+					//String boothPartNo = booths.getId().toString();
+					
+				List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				
+				List<Object[]> hamletCastDetails = boothPublicationVoterDAO
+						.getCastAndGenderWiseVotersCountByPublicationIdInALocation(
+								userId, "hamlet", hamletId, publicationDateId,
+								null);
+				
+				Long totalVoters = boothPublicationVoterDAO
+						.getTotalVotersCountForHamlet(userId, hamletId,
+								publicationDateId, "hamlet");
+				voterCastInfo
+						.setVoterCastInfoVO(calculatePercentageForUserCast(
+								hamletCastDetails, totalVoters));
+
+			
+				voterCastInfo.setMandalName(hamletDAO.get(hamletId).getHamletName());
+				voterCastInfo.setLocationId(hamletId);
+				boothInfo.add(voterCastInfo);
+				}
+			}
+			return boothInfo;
+			
+		}
 
 	//getting SubLevel Data For Booths
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleBooths(List<SelectOptionVO> boothsList,Long publicationDateId,Long userId)

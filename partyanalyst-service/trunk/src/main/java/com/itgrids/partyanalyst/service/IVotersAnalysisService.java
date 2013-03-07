@@ -31,7 +31,7 @@ public interface IVotersAnalysisService {
 	
 	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId,Long constituencyId,String requestFor);
 	
-	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId);
+	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType);
 	
 	public List<VotersDetailsVO> getVotersDetailsByAgewise(Long constituencyId, Long tehsilId,Long panchayatId,Long boothId,
 			 Long publicationDateId , String type);
