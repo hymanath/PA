@@ -1935,10 +1935,38 @@ $("#voterDetailedReportId").live("click",function(){
 	var constituencyId = $("#constituencyList").val();
 	var prevPId = $("#prevpublicationDateIdsList").val();
 	var presPId = $("#prespublicationDateIdsList").val();
+	var presPidDate=$("#prespublicationDateIdsList :selected").text();
+	var prevPidDate=$("#prevpublicationDateIdsList :selected").text();
+	
+	var dateArrayprev = prevPidDate.split("-");
+	var dateprev=new Date(dateArrayprev[2], dateArrayprev[1]-1, dateArrayprev[0]);
+	var dateArraypres = presPidDate.split("-");
+	var datepres=new Date(dateArraypres[2], dateArraypres[1]-1, dateArraypres[0]);
+	
+	
 	var locationType = maintype;
 	var locationValue = mainreqid;
-	if(presPId == 0 || presPId == "")
+	
+	$('#errorMsgDiv').html('');
+	if(presPId == 0 || presPId == ""){
+		$("#errorMsgDiv").html("<span>Invalid Present Publication Date</span><br>");
 		return;
+	}
+	if(prevPId==0){
+		$("#errorMsgDiv").html("<span>Invalid Previous Publication Date</span><br>");
+		return;
+	}
+	
+	if(presPId==prevPId){
+		$("#errorMsgDiv").html("<span>Previous and Present Publication Date should not be same</span><br>");
+		return;
+	}
+	
+	
+	if(dateprev > datepres){
+		$("#errorMsgDiv").html("<span>Previous Publication Date should not be Greater Than Present Publication Date</span><br>");
+		return;
+	}
 	if(maintype == 'mandal')
 	{
 		if(mainreqid.substring(0,1) == "2")
