@@ -1585,6 +1585,12 @@ public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationD
 
 }
 
+public List findVotersCastInfoByBoothIdAndPublicationDateForHamlet(Long hamletId, Long publicationDateId){
+	Object[] params = {hamletId, publicationDateId};
+	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.boothId= ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast", params);
+}	
+
+
 
 //
 
