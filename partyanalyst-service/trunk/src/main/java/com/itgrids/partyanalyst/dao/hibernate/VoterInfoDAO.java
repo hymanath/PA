@@ -109,11 +109,10 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		return query.list();
 	}
 	
-	public Integer deleteVotersInfoByConstituencyId(Long reportLevelId, Long constituencyId, Long publicationDateId)
+	public Integer deleteVotersInfoByConstituencyId(Long constituencyId, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("delete from VoterInfo model where model.constituencyId=:constituencyId and model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.publicationDate.publicationDateId = :publicationDateId ");
-		query.setParameter("reportLevelId", reportLevelId);
+		Query query = getSession().createQuery("delete from VoterInfo model where model.constituencyId=:constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationDateId", publicationDateId);
 		return query.executeUpdate();
