@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.model.VoterPartyInfo;
 
 public interface IVoterPartyInfoDAO extends GenericDao<VoterPartyInfo, Long>{
 	
-	public Integer deleteVotersPartyInfoByConstituencyId(Long reportLevelId, Long constituencyId, 
+	public Integer deleteVotersPartyInfoByConstituencyId(Long constituencyId, 
 			Long publicationDateId);
 }

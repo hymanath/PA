@@ -7,6 +7,6 @@ import com.itgrids.partyanalyst.model.VoterCastInfo;
 
 public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	
-	public Integer deleteVotersCastInfoByReportLevelValue(Long reportLevelId, Long reportLevelValue, 
+	public Integer deleteVotersCastInfoByReportLevelValue(Long reportLevelValue, 
 			Long publicationDateId);
 }
