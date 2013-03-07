@@ -603,7 +603,8 @@ public String getVotersCastInfoByConstituency()
 		String id = jObj.getString("id");
 		String type = jObj.getString("type");
 		String publicationId = jObj.getString("publicationDateId");
-		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"));
+		String buildType = jObj.getString("buildType");
+		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"),buildType);
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 	
 		
