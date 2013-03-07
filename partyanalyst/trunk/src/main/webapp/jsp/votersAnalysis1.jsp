@@ -74,9 +74,9 @@ height: 34px;
 .marg1
 {
 margin-top: 5px !important;
-font-size:11px;
+font-size:12px;
 color:#0088CC;
-font-family:icon;
+font-family:Arial;
 }
 
 .marg
@@ -853,10 +853,10 @@ margin-left:10px;
 }
 
 .tabs > ul > li.tabActiveHeader{
-	/* background: #FFFFFF; /* old browsers */
-	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	 background: #FFFFFF; /* old browsers */
+	/*background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); */ /* webkit */
-	cursor:pointer;
+     	cursor:pointer;
 	color: #333;
 }
 /*
