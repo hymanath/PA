@@ -118,6 +118,8 @@ import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
+import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
+import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
@@ -1943,44 +1945,44 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
-		public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId)
+	{
+		VoterCastInfoVO voterCastInfo = null;
+		
+		List<VoterCastInfoVO> boothInfo = new ArrayList<VoterCastInfoVO>();
+		if(hamlets != null)
 		{
-			VoterCastInfoVO voterCastInfo = null;
-			
-			List<VoterCastInfoVO> boothInfo = new ArrayList<VoterCastInfoVO>();
-			if(hamlets != null)
+			for(Long hamletId :hamlets)
 			{
-				for(Long hamletId :hamlets)
-				{
-					voterCastInfo = new VoterCastInfoVO();
-					//Long hamletId=booths.getId();
-					//String boothPartNo = booths.getId().toString();
-					
-				List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				voterCastInfo = new VoterCastInfoVO();
+				//Long hamletId=booths.getId();
+				//String boothPartNo = booths.getId().toString();
 				
-				List<Object[]> hamletCastDetails = boothPublicationVoterDAO
-						.getCastAndGenderWiseVotersCountByPublicationIdInALocation(
-								userId, "hamlet", hamletId, publicationDateId,
-								null);
-				
-				Long totalVoters = boothPublicationVoterDAO
-						.getTotalVotersCountForHamlet(userId, hamletId,
-								publicationDateId, "hamlet");
-				voterCastInfo
-						.setVoterCastInfoVO(calculatePercentageForUserCast(
-								hamletCastDetails, totalVoters));
+			List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+			
+			List<Object[]> hamletCastDetails = boothPublicationVoterDAO
+					.getCastAndGenderWiseVotersCountByPublicationIdInALocation(
+							userId, "hamlet", hamletId, publicationDateId,
+							null);
+			
+			Long totalVoters = boothPublicationVoterDAO
+					.getTotalVotersCountForHamlet(userId, hamletId,
+							publicationDateId, "hamlet");
+			voterCastInfo
+					.setVoterCastInfoVO(calculatePercentageForUserCast(
+							hamletCastDetails, totalVoters));
 
 			
-				voterCastInfo.setMandalName(hamletDAO.get(hamletId).getHamletName());
-				voterCastInfo.setLocationId(hamletId);
-				boothInfo.add(voterCastInfo);
-				}
+			voterCastInfo.setMandalName(hamletDAO.get(hamletId).getHamletName());
+			voterCastInfo.setLocationId(hamletId);
+			boothInfo.add(voterCastInfo);
 			}
-			return boothInfo;
-			
 		}
+		return boothInfo;
+		
+	}
 
-	//getting SubLevel Data For Booths
+//getting SubLevel Data For Booths
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleBooths(List<SelectOptionVO> boothsList,Long publicationDateId,Long userId)
 	{
 		VoterCastInfoVO voterCastInfo = null;
@@ -2654,16 +2656,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 						 boothsList, publicationDateId,46L,60L);
 			/* else if(type.equalsIgnoreCase(IConstants.HAMLET))
-				 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
-						 panchayatId, publicationDateId,IConstants.AGE46,IConstants.AGE60,boothId);*/
-				else if(type.equalsIgnoreCase(IConstants.HAMLET) && boothsList !=null && boothsList.size()>0 )
-				 {				
-					votersListOf46To60 =boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId, IConstants.AGE46,IConstants.AGE60, boothsList);
-					 }
-				 else return;
-			
-			
-			
+			 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
+					 panchayatId, publicationDateId,IConstants.AGE46,IConstants.AGE60,boothId);*/
+			else if(type.equalsIgnoreCase(IConstants.HAMLET) && boothsList !=null && boothsList.size()>0 )
+			 {				
+				votersListOf46To60 =boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId, IConstants.AGE46,IConstants.AGE60, boothsList);
+				 }
+			 else return;
+		
+		
+		
 			Long maleVotersBetween46To60 = 0L;
 			Long femaleVotersBetween46To60 = 0L;
 			Long unKnownVotersBetween46To60 = 0L;
@@ -11475,8 +11477,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			try{
 				if(constituencyId != null && constituencyId > 0)
 				{
-				voterCastInfoDAO.deleteVotersCastInfoByReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
-				voterCastBasicInfoDAO.deleteVotersCastInfoByReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+				voterCastInfoDAO.deleteVotersCastInfoByReportLevelValue(constituencyId, publicationDateId);
+				voterCastBasicInfoDAO.deleteVotersCastInfoByReportLevelValue(constituencyId, publicationDateId);
 				}
 					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				return resultStatus;
@@ -11496,7 +11498,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		   try{
 		   if(constituencyId != null && constituencyId > 0)
 		   {
-			   voterPartyInfoDAO.deleteVotersPartyInfoByConstituencyId(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+			   voterPartyInfoDAO.deleteVotersPartyInfoByConstituencyId(constituencyId, publicationDateId);
 		   }
 		   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		   return resultStatus;
@@ -11517,7 +11519,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				
 				if(constituencyId != null && constituencyId > 0)
 				{
-					voterInfoDAO.deleteVotersInfoByConstituencyId(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+					voterInfoDAO.deleteVotersInfoByConstituencyId(constituencyId, publicationDateId);
 					voterFamilyInfoDAO.deleteVoterFamilyDetByConstituencyIdAndVoterAgeRange(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
 					voterAgeInfoDAO.deleteVoterAgeInfoByConstituencyIdAndReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
 				}
@@ -11531,6 +11533,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			}
 		}
 
+	   
 }
 
 

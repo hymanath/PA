@@ -210,5 +210,8 @@ public interface IVotersAnalysisService {
 	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId);
 	public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId);
 	public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long publicationDateId,Long constituencyId);
+	public List<VoterCastInfoVO> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
+	//public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId);
 	public List<SelectOptionVO> getBoothsByPanchayatId(Long id,Long publicationDateId);
+	public List<VoterCastInfoVO> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 }

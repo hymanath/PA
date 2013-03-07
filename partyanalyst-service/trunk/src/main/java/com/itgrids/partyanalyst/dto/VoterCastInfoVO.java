@@ -31,8 +31,19 @@ public class VoterCastInfoVO {
 	private String partyName;
 	
 	private Long partyId;
-
+	private Long reportLevelId;
 	
+	private Long reportLevelValue;
+	private Long publicationDateId;
+    private Long userId;
+    
+    private Double castePercentage;
+    
+    private Long casteAssignedVoters;
+    private Long casteNotAssignedVoters;
+    
+    private Double partyPercentage;
+
 
 	public VoterCastInfoVO(){
 		
@@ -46,8 +57,70 @@ public class VoterCastInfoVO {
 		this.castVOs = castVOs;
 	}
 	
+	
+	public Double getPartyPercentage() {
+		return partyPercentage;
+	}
+
+	public void setPartyPercentage(Double partyPercentage) {
+		this.partyPercentage = partyPercentage;
+	}
+
+	public Long getCasteAssignedVoters() {
+		return casteAssignedVoters;
+	}
+
+	public void setCasteAssignedVoters(Long casteAssignedVoters) {
+		this.casteAssignedVoters = casteAssignedVoters;
+	}
+
+	public Long getCasteNotAssignedVoters() {
+		return casteNotAssignedVoters;
+	}
+
+	public void setCasteNotAssignedVoters(Long casteNotAssignedVoters) {
+		this.casteNotAssignedVoters = casteNotAssignedVoters;
+	}
+
+	public Double getCastePercentage() {
+		return castePercentage;
+	}
+
+	public void setCastePercentage(Double castePercentage) {
+		this.castePercentage = castePercentage;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
+	}
 
 
+	public Long getReportLevelId() {
+		return reportLevelId;
+	}
+
+	public void setReportLevelId(Long reportLevelId) {
+		this.reportLevelId = reportLevelId;
+	}
 
 	public int getTotalCasts() {
 		return totalCasts;
