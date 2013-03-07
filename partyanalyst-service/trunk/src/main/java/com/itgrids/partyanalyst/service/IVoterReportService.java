@@ -1,8 +1,12 @@
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
 
 public interface IVoterReportService {
 	
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue);
+	
+	public ResultStatus insertVotersPartyDataToIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId);
+	
 }
