@@ -323,7 +323,7 @@ var castconstituencyId = $("#castconstituencyList").val();
 		  task:"insertCastVotersData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		 var url = "insertVotersCasteDataToIntermediateTablesAction.action?"+rparam;	
+		 var url = "insertVotersCastDataToIntermediateTablesAction.action?"+rparam;	
 		 callAjax(jsObj,url);
 
 	});

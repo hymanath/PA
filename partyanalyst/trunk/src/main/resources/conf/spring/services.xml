@@ -6,6 +6,14 @@
 <beans>
 	
 	<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
+	<property name="voterPartyInfoDAO" ref="voterPartyInfoDAO"/>
+		<property name="votersAnalysisService" ref="votersAnalysisService"/>
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -18,7 +26,7 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
-	</bean>
+		</bean>
 	
 	<bean name="userEntitlementService" class="com.itgrids.partyanalyst.service.impl.UserEntitlementService" >
 		<property name="entitlementDAO" ref="entitlementDAO" />

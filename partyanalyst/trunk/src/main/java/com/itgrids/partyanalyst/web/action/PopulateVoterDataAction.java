@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,6 +26,16 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> constituencyList;
 	private ResultStatus resultStatus;
 	
+	private IVoterReportService voterReportService;
+	
+	
+	
+	public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
+	}
 	public List<SelectOptionVO> getConstituencyList() {
 		return constituencyList;
 	}
@@ -115,6 +126,44 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			return Action.SUCCESS;
 		}
 		
+		/*public String insertVotersCasteDataToIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			Long userId =  regVO.getRegistrationID();
+			resultStatus = votersAnalysisService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			return Action.SUCCESS;
+			
+		}*/
+		
+		
+		public String insertVotersPartyDataToIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			Long userId =  regVO.getRegistrationID();
+			resultStatus = voterReportService.insertVotersPartyDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			return Action.SUCCESS;
+			
+		}
 		public String deleteVotersDataFromIntermediateTables()
 		{
 			try{
