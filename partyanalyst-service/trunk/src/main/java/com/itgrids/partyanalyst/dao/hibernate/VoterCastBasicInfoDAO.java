@@ -13,11 +13,10 @@ public class VoterCastBasicInfoDAO extends GenericDaoHibernate<VoterCastBasicInf
 	public VoterCastBasicInfoDAO() {
 		super(VoterCastBasicInfo.class);
 	}
-	public Integer deleteVotersCastInfoByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId)
+	public Integer deleteVotersCastInfoByReportLevelValue(Long reportLevelValue, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("delete from VoterCastBasicInfo model where model.constituency.constituencyId=:reportLevelValue and model.voterReportLevel.voterReportLevelId = :reportLevelId " +
-				" and model.publicationDateId = :publicationDateId ");
-		query.setParameter("reportLevelId", reportLevelId);
+		Query query = getSession().createQuery("delete from VoterCastBasicInfo model where model.constituency.constituencyId=:reportLevelValue and model.publicationDateId = :publicationDateId ");
+		
 		query.setParameter("reportLevelValue", reportLevelValue);
 		query.setParameter("publicationDateId", publicationDateId);
 		return query.executeUpdate();	
