@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 
 public interface IConstituencyPageService {
@@ -131,4 +132,6 @@ public interface IConstituencyPageService {
 	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInPanchayatsGroupByMandal(Long tehsilId, Long electionId);
 	
 	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituencyForCensus(Long constituencyId,String electionYear,String electionType,Boolean includeOthers);
+	
+	public String getLocalBodyElectionTypeByConstituencyId(Long constituencyId);
 }

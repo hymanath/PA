@@ -9889,7 +9889,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			try{
 				
 				StringBuffer queryString = new StringBuffer();
-				queryString.append("select model from InfluencingPeople model where model.user.userId = :userId and  model.voter is null and ");
+				queryString.append("select model from InfluencingPeople model where model.user.userId = :userId  and ");
 				
 				
 				if(influencingPeopleVO.getPersonName() != null && !influencingPeopleVO.getPersonName().equalsIgnoreCase("")){
