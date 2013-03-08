@@ -8,6 +8,8 @@ import com.itgrids.partyanalyst.model.VoterModificationInfo;
 
 public interface IVoterModificationInfoDAO extends GenericDao<VoterModificationInfo, Long>{
 	
+	public Long getVoterModificationInfoIdByReportLevelValue(Long reportLevelId, Long reportLevelValue, Long publicationDateId,Long voterStatusId, Long constituencyId);
+	
 	public List<Object[]> getVoterModificationReportDetailsByReportLevelId(
 			Long reportLevelId, List<Long> reportLevelValues,
 			Long constituencyId,List<Long> publicationIdsList);
