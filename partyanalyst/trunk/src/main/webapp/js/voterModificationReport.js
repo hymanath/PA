@@ -824,9 +824,10 @@ else if(jsObj.locationType == "localbody" ||jsObj.locationType == "Local Electio
     subLevelName = "ward";
 
 $('#subLevelDiv').html('');
-if(myResults.modifiedVotersList.length == 0)
+if(myResults.modifiedVotersList.length == 0 && myResults.modifiedLocalBodyVotersList.length == 0 && myResults.modifiedVotersList != null && myResults.modifiedLocalBodyVotersList != null)
 	return false;
-    var str='';
+
+var str='';
 	 str+='<table class="voterInfoTable" >';
 	 str+='<thead>';
 	 str +='<tr>';
@@ -843,10 +844,11 @@ if(myResults.modifiedVotersList.length == 0)
 		str +='<th>Female</th>';
 		str +='</tr>';
      str+='</thead>';
+	  str+='<tbody>';
 
 	 for(var i=0;i<myResults.modifiedVotersList.length;i++)
  	 {
-		 str+='<tbody>';
+		
 		  str+='<tr>';
 		    str+='<td>'+myResults.modifiedVotersList[i].name+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
@@ -856,9 +858,23 @@ if(myResults.modifiedVotersList.length == 0)
             str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
 		  str+='</tr>';
-		 str+='</tbody>';
-
 	 }
+
+	 if(myResults.modifiedLocalBodyVotersList != "null" && myResults.modifiedLocalBodyVotersList != null)
+	  for(var i=0;i<myResults.modifiedLocalBodyVotersList.length;i++)
+ 	 {
+		
+		  str+='<tr>';
+		    str+='<td>'+myResults.modifiedLocalBodyVotersList[i].name+'</td>';
+		    str+='<td>'+myResults.modifiedLocalBodyVotersList[i].addedCount+'</td>';
+		    str+='<td>'+myResults.modifiedLocalBodyVotersList[i].maleVotersAdded+'</td>';
+		    str+='<td>'+myResults.modifiedLocalBodyVotersList[i].femaleVotersAdded+'</td>';
+		    str+='<td>'+myResults.modifiedLocalBodyVotersList[i].deletedCount+'</td>';
+            str+='<td>'+myResults.modifiedLocalBodyVotersList[i].maleVotersDeleted+'</td>';
+		    str+='<td>'+myResults.modifiedLocalBodyVotersList[i].femaleVotersDeleted+'</td>';
+		  str+='</tr>';
+	 }
+	  str+='</tbody>';
 
 	str+='</table>';
 	
