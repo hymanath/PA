@@ -1348,11 +1348,22 @@ function addToPolitician(voterId)
 										buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 										impFamilesVariableDescription();
 									  }
+
+									  if(myResults.subListForHamlets != null && myResults.subListForHamlets.length > 0)
+									  {
+										  buildImpFamilesForHamletChart(myResults);
+                                        buildTableForImpFamilesForHamlets(myResults.subListForHamlets,myResults.name,myResults.type);
+										//buildTableForImpFamilesByHamlet(myResults.subList,myResults.name,myResults.type);
+										//impFamilesVariableDescription();
+									  }
 								   }
+
+								   
+								   
 								}
 								else if(jsObj.task == "gettotalimpfamlies"  )
 								{   $("#impFamPancBothDtlsAgxImg").hide();
-								    buildFamilyMembers(myResults,jsObj.publicationDateId,jsObj.type);
+								    buildFamilyMembers(myResults,jsObj,jsObj.type);
 								}
                                 else if(jsObj.task == "getVotersInAFamily")
 								{
@@ -2495,12 +2506,12 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 			}
 	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 			
-			var url1 ="";
+			//var url1 ="";
 
-          if(buildType == "hamlet" && type== 'panchayat')
+          /*if(buildType == "hamlet" && type== 'panchayat')
             url1 = "getImportantFamaliesDetailsForHamlet.action?"+rparam1;
-             else
-         url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+             else*/
+         var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
 			//var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;						
 		callAjax(jsObj1,url1);
 
@@ -2561,10 +2572,39 @@ function getImpFamiliesVotersForHamlet()
 	}
 }*/
 
+function impFamilesAllInfoForHamletPopUp(){
+	$('#impFamPancBothDtlsAgxImgForHamlet').show();
+    $("#impFamilesAllInfoForHamletPopUp").dialog({
+            modal: true,
+            title: "<b>Voters Details</b>",
+			width: 970,
+            height: 600
+           
+        });
+		 
+		 var jsObj2=
+			{
+					
+				type:"panchayat",
+				id:1,
+				publicationDateId:mainpublicationId,
+				typename:impFamltypename,
+				buildType:"hamlet",
+				task:"gettotalimpfamlies"
+	
+			}
+	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+		callAjax(jsObj2,url2); 
+		}
+
+
 function getImpFamiliesVotersToShow(){
-    /*  if(buildType == "booth" && maintype == "panchayat" )
-	 getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat"); */
-      
+	$('#impFamPancBothDtlsAgxImg').show();
+     if(buildType == "hamlet" && maintype == "panchayat" ){
+	 //getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat"); */
+      impFamilesAllInfoForHamletPopUp();
+   }else{
 	 //var buildType = "hamlet";
 	//getImpFamiliesVotersForHamlet();
     $("#impFamilesAllInfoPopUp").dialog({
@@ -2605,7 +2645,7 @@ function getImpFamiliesVotersToShow(){
 			}
 	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
-		callAjax(jsObj2,url2);  //}
+		callAjax(jsObj2,url2);  }
 	}
 
 function getvotersFamileyInfo(buttonType,voterBasicInfoFor)
@@ -3140,7 +3180,8 @@ function buildPartyWisePiechart(myResults,jsObj)
 			};  
 
 		}
-  function  buildFamilyMembers(result,publicationDateId,type){
+  function  buildFamilyMembers(result,jsObj,type){
+	var publicationDateId =   jsObj.publicationDateId;
  //debugger;
  //alert("ok");
 	 impFamiliesEditArray = new Array();
@@ -3196,10 +3237,18 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+=' </table>';
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
-	  $("#impFamPancBothDtls").html(str);
+
+		  if(jsObj.buildType =="hamlet")
+	       {
+			  $('#impFamPancBothDtlsAgxImgForHamlet').html(str);
+			  $('#impFamPancBothDtlsAgxImgForHamle').hide();
+	      }
+		  else
+	       $("#impFamPancBothDtls").html(str);
 	  
 	  	$('#impfamilydatatable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
+		"bDestroy": true,
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
@@ -3272,6 +3321,68 @@ function clearAllCheckBoxes()
 		$(this).attr("checked",false);
 	});
 	
+}//
+
+function buildTableForImpFamilesForHamlets(impFamilesData,name,type)
+{
+	
+  var impFamiList = new Array();
+  for(var i in impFamilesData){
+     var data={};
+	 
+	 data["name"] = impFamilesData[i].name;  
+	 data["below3"] = impFamilesData[i].below3;
+	 data["below3perc"] = impFamilesData[i].below3perc;
+	 data["betwn4to6"] = impFamilesData[i].betwn4to6;
+	 data["betwn4to6perc"] = impFamilesData[i].betwn4to6perc;
+	 data["betwn7to10"] = impFamilesData[i].betwn7to10;
+	 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
+	 data["above10"] = impFamilesData[i].above10;
+	 data["above10perc"] = impFamilesData[i].above10perc;
+	 data["totalVoters"] =  impFamilesData[i].totalVoters;
+	 data["totalFemaleVoters"] = impFamilesData[i].totalFemaleVoters;
+	 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
+	 impFamiList.push(data);
+  }
+  var reqtytle ="Name";
+  for(var t in impFamilesData){
+     if(impFamilesData[t].type != null)
+	   reqtytle = impFamilesData[t].type;
+  }
+  $("#impFamilesBasicSubDetailsForHamletTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
+  
+  var impFamilesColumnDefs = [
+    {key:"name", label: ""+reqtytle+"", sortable: true},
+	{key:"totalVoters", label:"Total",sortable: true},
+	{key:"totalMaleVoters", label:"Male Voters",sortable: true},
+	{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
+    {key:"below3", label: "<3", formatter:"number", sortable: true},
+    {key:"below3perc", label: "<3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"betwn4to6", label: "4 to 6", formatter:"number", sortable: true},
+    {key:"betwn4to6perc", label: "4 to 6%", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"betwn7to10", label: "7 to 10", formatter:"number", sortable: true},
+    {key:"betwn7to10perc", label: "7 to 10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+    {key:"above10", label: ">10", formatter:"number",sortable:true},
+    {key:"above10perc", label: ">10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
+  ];
+var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
+impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+impFamilesDataSource.responseSchema = {
+fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
+};
+var myConfigs = {
+};
+var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetailsForHamlet", impFamilesColumnDefs,
+impFamilesDataSource, myConfigs);
+return {
+oDS: impFamilesDataSource,
+oDT: impFamilesDataTable
+};
+if(type == "constituency" || type == "Mandal/Tehsil")
+	{
+	$("#NoteDiv").css("display","block"); 
+	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	}
 }
 function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
@@ -3423,6 +3534,30 @@ function impFamilesStaticTable(myresults,jsObj)
 	$("#NoteDiv").css("display","block"); 
 	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 	}
+}
+function buildImpFamilesForHamletChart(chartInfo)
+{
+
+	console.log(chartInfo);
+// Create the data table.
+	var ImpFamwiseAjaxDiv =  document.getElementById('ImpFamwiseAjaxDiv');
+	hideAjaxImgDiv('ImpFamwiseAjaxDiv');
+	var data = google.visualization.arrayToDataTable([
+			  ['Task', 'Percentage'],
+			  ['Families Below 3 Voters',  chartInfo.below3perc],
+			  ['Families Between 4-6 Voters', chartInfo.betwn4to6perc],
+			  ['Families Between 7-10 Voters',  chartInfo.betwn7to10perc],
+			  ['Families Above 10 Voters', chartInfo.above10perc]
+			]);
+
+	// Set chart options
+	var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+	var options = {'title':title,
+	'width':800,
+	'height':280};
+	// Instantiate and draw our chart, passing in some options.
+	var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoForHamletSubChartDiv'));
+	chart.draw(data, options);
 }
 
 function buildImpFamilesChart(chartInfo)
@@ -5570,7 +5705,7 @@ buildType="hamlet";
 	  $("#impFamiliesMoreInfoButn").attr("value","View Hamlet Wise Family Details");
        $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
-	 getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
 	 }
 });
 $("#tabHeader_2").live("click",function(){
@@ -5581,7 +5716,7 @@ buildType="booth";
 
 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	 getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
  }
 });
 
