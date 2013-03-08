@@ -3487,8 +3487,14 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForPanchayat(id,publicationDateId,"","main",constituencyId);
-				//if(!importantFamiliesInfoVo.isDataPresent())
+				if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForPanchayat1(userId ,id,publicationDateId,"","main",constituencyId);
+				
+				List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
+				
+				for(Long  hamletId:hamlets)			
+					 importantFamiliesInfoVo.getSubListForHamlets().add(getImportantFamiliesDetailsForHamlet(userId , "hamlet",hamletId,publicationDateId,"sub",constituencyId));
+				
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("ward")){
@@ -3764,12 +3770,6 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		     for(Object[] booth : boothsList){
 		    	 importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForBooth("booth",(Long)booth[0],publicationDateId,"sub",constituencyId));
 		     }
-		     
-			List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
-			
-			for(Long  hamletId:hamlets)			
-				 importantFamiliesInfoVo.getSubListForHamlets().add(getImportantFamiliesDetailsForHamlet(userId , "hamlet",hamletId,publicationDateId,"sub",constituencyId));
-			
 		 }
 		 return importantFamiliesInfoVo;
 	}
