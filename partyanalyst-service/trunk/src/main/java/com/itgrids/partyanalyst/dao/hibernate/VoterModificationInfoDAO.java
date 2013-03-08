@@ -30,4 +30,25 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		query.setParameter("publicationId", publicationId);
 		return query.list();
 	}
+	public List<Object[]> getVoterModificationReportDetailsByReportLevelId(
+			Long reportLevelId, List<Long> reportLevelValues,
+			Long constituencyId ,List<Long> publicationIdsList)	{
+		
+		
+		Query query = getSession()
+				.createQuery(
+						"select model.totalVoters , model.maleVoters , model.femaleVoters , " +
+						"model.reportLevelValue ,model.voterStatus.status " +
+						"from VoterModificationInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
+						"model.reportLevelValue in(:reportLevelValues) and " +
+						"model.constituencyId = :constituencyId");
+		
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameterList("reportLevelValues", reportLevelValues);
+		query.setParameter("constituencyId", constituencyId);
+		
+		
+		return query.list();
+		
+	}
 }

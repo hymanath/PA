@@ -578,6 +578,15 @@ public interface IConstants {
 	public static final long AGE160  = 160l;
 	
 	
+	public static final long CONSTITUENCY_REPORT_LEVEL_ID = 1L;
+	public static final long MANDAL_REPORT_LEVEL_ID = 2L;
+	public static final long PANCHAYAT_REPORT_LEVEL_ID = 3L;
+	public static final long BOOTH_REPORT_LEVEL_ID = 4L;
+	public static final long LOCALELECTIONBODY_REPORT_LEVEL_ID = 5L;
+	public static final long WARD_REPORT_LEVEL_ID = 6L;
+	
+	
+	
 	
 	
 	
