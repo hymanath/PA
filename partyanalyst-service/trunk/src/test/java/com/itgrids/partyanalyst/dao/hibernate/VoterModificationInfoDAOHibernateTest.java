@@ -20,7 +20,6 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 	{
 		voterModificationInfoDAO.getAll();
 	}*/
-	
 	public void test1()
 	{
 		List<Long> list1 = new ArrayList<Long>();
@@ -32,5 +31,11 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> list1 = new ArrayList<Long>();
 		list1.add(1l);
 		voterModificationInfoDAO.getGenderWiseVoterModificationsForEachPublication(1l,2l,3l,list1);
+	}
+	public void testgetVoterModificationInfoIdByReportLevelValue()
+	{
+		Long id = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(1l, 232l, 7l, 1l, 232l);
+		System.out.println(id); 
+		
 	}
 }
