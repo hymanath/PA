@@ -1428,6 +1428,8 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="voterReportLevelDAO" ref="voterReportLevelDAO"/>
+		<property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO"></property>
 	</bean>
 	
 	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">

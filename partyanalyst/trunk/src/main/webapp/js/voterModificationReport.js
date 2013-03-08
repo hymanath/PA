@@ -220,7 +220,7 @@ function getPublicationDate()
 									buildWardsOrPanchaytis(myResults);
 								else if(jsObj.task == "boothsInWard" || jsObj.task == "getBoothsInPanchayat")
 									buildBooths(myResults);
-								else if(jsObj.task == "getSubLevelInformation");
+								else if(jsObj.task == "getSubLevelInformation")
 								{
 								buildSubLevelInformation(jsObj,myResults);
 								$('#subLevelAjaxImageDiv').css('display','none');
