@@ -93,8 +93,10 @@ fieldset{
  font-size:12px;
  }
 #voterDataInsertDiv{text-align: center; margin-top: 50px;}
-#errorMsgDiv{font-size: 14px;
-        margin-left: 52px;color:red;}
+#errorMsgDiv,#votermodificationerrorMsgDiv
+	{
+	font-size: 14px;
+    margin-left: 52px;color:red;}
 		#ajaxImage{display: block;
     margin-left: 480px;
     margin-top: -22px;}
@@ -181,6 +183,34 @@ fieldset{
 </div>	
 
 
+<!-- End -->
+
+
+<!-- voters Modification Info Div -->
+<div id="voterDataOuterDiv">
+<div class="headingDiv" style="width:450px;">Populate voters Modification Info To Intermediate Tables</div>
+ <fieldset>
+    <div id="votermodificationerrorMsgDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votermodificationconstiId" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+
+		Select Publication Date<font class="requiredFont">*</font> <select id="votermodificationpublicationList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="votermodificationajaxLoad"><img src="images/icons/search.gif" /></span>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="votermodificationDataInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="votermodificationvoterDataDeleteBtn" />
+			<img src="./images/icons/search.gif" style="display:none;" id="votermodificationajaxImage" />
+		</div>
+	</div>
+ </fieldset>
+</div>	
+
+
+<!-- End -->
+
+
 
 
 
@@ -262,6 +292,28 @@ $(document).ready(function(){
 		selected:id,
 		selectElmt:selectElmt,
 		task:"getPublicationDateForParty"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+	});
+
+	$("#votermodificationconstiId").change(function(){
+	 var id = $("#votermodificationconstiId").val();
+	 var selectElmt = "votermodificationpublicationList";
+	  if(id == 0)
+	  {
+	   $("#votermodificationerrorMsgDiv").html('Please Select Constituency.');
+		return;
+	  }
+	
+	 $("#votermodificationajaxLoad").css('display','block');
+	 var jsObj=
+	 {
+		selected:id,
+		selectElmt:selectElmt,
+		task:"getPublicationDateForModification"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
@@ -414,7 +466,65 @@ var partyconstituencyId = $("#partyconstituencyList").val();
 		 callAjax(jsObj,url);
 	});
 
+$("#votermodificationDataInsertBtn").click(function(){
+	
+		var votermodificationconstiId = $("#votermodificationconstiId").val(); 
+		var publicationDateId = $("#votermodificationpublicationList").val();
+		if(votermodificationconstiId == 0)
+		{
+			$("#votermodificationerrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#votermodificationerrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#votermodificationDataInsertBtn").attr("disabled", "disabled");
+		$("#votermodificationajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :votermodificationconstiId,
+		  publicationDateId : publicationDateId,
+		  task:"insertVoterModificationData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVoterModificationDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
 
+	});
+
+	$("#votermodificationvoterDataDeleteBtn").click(function(){
+		var votermodificationconstiId = $("#votermodificationconstiId").val(); 
+		var publicationDateId = $("#votermodificationpublicationList").val();
+		if(votermodificationconstiId == 0)
+		{
+			$("#votermodificationerrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#votermodificationerrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#votermodificationvoterDataDeleteBtn").attr("disabled", "disabled");
+		$("#votermodificationajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :votermodificationconstiId,
+		  publicationDateId : publicationDateId,
+		  task:"deletevotermodification"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deletevotermodificationFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+	});
+
+	
 });
 
 $("#voterDataDeleteBtn").click(function(){
@@ -470,7 +580,10 @@ function callAjax(jsObj,url)
 								{
 									buildPublicationDateList1(myResults,jsObj.selectElmt);
 								}
-								
+								else if(jsObj.task == "getPublicationDateForModification")
+								{
+									buildPublicationDateList1(myResults,jsObj.selectElmt);
+								}
 								else if(jsObj.task == "insertVotersData")
 								{
 									showInsertVoterDataStatus(myResults);
@@ -580,8 +693,9 @@ function showDeleteVoterDataStatus(result)
 	document.getElementById('castajaxLoad').style.display = 'none';
 	if(selectElmt == "partypublicationDateList")
 	document.getElementById('partyajaxLoad').style.display = 'none';
+	if(selectElmt == "votermodificationpublicationList")
+    document.getElementById('votermodificationajaxLoad').style.display = 'none';
 	var selectedElmt=document.getElementById(selectElmt);
-	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
 	for(var val in results)
 	{
