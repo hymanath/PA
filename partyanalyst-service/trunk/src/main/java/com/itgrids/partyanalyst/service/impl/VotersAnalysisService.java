@@ -3687,12 +3687,12 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		
          List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
 		
-		impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
-		
-		hamletVotersCountByGender = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(publicationDateId,voterIds);
-		
-		
-		
+         impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
+ 		
+ 		hamletVotersCountByGender = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(publicationDateId,voterIds);
+ 		
+ 		
+ 		
 		//	impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndHamlet(userId,id,publicationDateId,null);
 			
 		
@@ -11585,7 +11585,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			}
 		}
 
-	   
+	  
 }
 
 
