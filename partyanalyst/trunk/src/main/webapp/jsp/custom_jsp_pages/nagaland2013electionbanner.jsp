@@ -294,12 +294,30 @@ shall be completed</td>
 <td width="43%" valign="top" class="breadcrumb">
 <table style="padding-left:20px" width="98%" valign="top">
 <h3 style="">
-Nagaland Assembly 2013 Live Election Analysis</h3>
+Nagaland Assembly Election Analysis</h3>
 
 <tr>
 <div id="electionResultDivMain" style="padding-bottom:10px;">
   <div id="electionResultDiv"></div>
 </div>
+<tr>
+	<td>
+		<table class="table table-bordered table-hover">
+			<thead>
+			<tr><th>PARTY</th><th>2013</th><th>2008</th><th>CHANGE</th></tr>
+			</thead>
+			<tbody>
+			<tr><td>NPF</td><td>38</td><td>26</td><td>+12</td></tr>
+			<tr><td>BJP</td><td>1</td><td>2</td><td>-1</td></tr>
+			<tr><td>NCP</td><td>4</td><td>2</td><td>+2</td></tr>
+			<tr><td>INC</td><td>8</td><td>24</td><td>-16</td></tr>
+			<tr><td>OTHERS</td><td>8</td><td>6</td><td>+2</td></tr>
+			</tbody>
+		</table>
+		<span style="color:red;">*</span> For 59 constituencies only </br>
+		<span style="color:red;">*</span> Change compared to 2008 Election Results
+	</td>
+</tr>
 <td colspan="2">
 
 <table class="breadcrumb">
