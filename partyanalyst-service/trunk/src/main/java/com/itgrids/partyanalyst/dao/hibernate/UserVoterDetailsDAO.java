@@ -110,7 +110,7 @@ IUserVoterDetailsDAO{
 	}
 	public void updateUserVoterDetailsForLocality(Long voterId,Long userId,Long localitityId, Long hamletId){
 		Query query = getSession().createQuery("update UserVoterDetails model set " +
-				"model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId, " +
+				"model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId " +
 				"where model.voter.voterId = :voterId and model.user.userId = :userId");
 		query.setParameter("voterId",voterId);
 		query.setParameter("userId",userId);
