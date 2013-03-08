@@ -212,6 +212,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Long> getBoothPublicationVoterIdsByVoterIdsList(List<Long> voterIdsList, Long publicationDateId);
 	
+	public List<Object[]> getVotersBasedOnVoterIdsAndPublicationAndGender(Long publicationDateId , List<?> voterIds);
 	public Integer deleteByIdsList(List<Long> idsList);
 
 	 public List getCadreMobileDetails(Long userId,List<Long> scopeId,String scope);
