@@ -294,12 +294,32 @@ shall be completed</td>
 <td width="43%" valign="top" class="breadcrumb">
 <table style="padding-left:20px" width="98%" valign="top">
 <h3 style="">
-Meghalaya Assembly 2013 Live Election Analysis</h3>
+Meghalaya Assembly Election Analysis</h3>
 
 <tr>
 <div id="electionResultDivMain" style="padding-bottom:10px;">
   <div id="electionResultDiv"></div>
 </div>
+<tr>
+	<td>
+		<table class="table table-bordered table-hover">
+			<thead>
+			<tr><th>PARTY</th><th>2013</th><th>2008</th><th>CHANGE</th></tr>
+			</thead>
+			<tbody>
+			<tr><td>INC</td><td>29</td><td>25</td><td>+4</td></tr>
+			<tr><td>NCP</td><td>2</td><td>11</td><td>-9</td></tr>
+			<tr><td>NPP</td><td>2</td><td>--</td><td>--</td></tr>
+			<tr><td>HSPDP</td><td>4</td><td>2</td><td>+2</td></tr>
+			<tr><td>UDP</td><td>8</td><td>14</td><td>-6</td></tr>
+			<tr><td>OTHERS</td><td>15</td><td>7</td><td>+8</td></tr>
+			</tbody>
+		</table>
+		<span style="color:red;">*</span>In 2008 only 59 constituencies are there.</br>
+		<span style="color:red;">*</span> Change compared to 2008 Election Results
+	</td>
+</tr>
+
 <td colspan="2">
 
 <table class="breadcrumb">
