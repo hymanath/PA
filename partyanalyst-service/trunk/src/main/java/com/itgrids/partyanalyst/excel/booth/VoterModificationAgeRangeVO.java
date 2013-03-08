@@ -13,6 +13,7 @@ public class VoterModificationAgeRangeVO implements Serializable{
 	private Long addedFemale = 0L;
 	private Long deletedMale = 0L;
 	private Long deletedFemale = 0L;
+	private Long reportLevelValue;
 	
 	public String getRange() {
 		return range;
@@ -55,6 +56,12 @@ public class VoterModificationAgeRangeVO implements Serializable{
 	}
 	public void setDeletedFemale(Long deletedFemale) {
 		this.deletedFemale = deletedFemale;
+	}
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
 	}
 	
 	
