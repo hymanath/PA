@@ -3487,7 +3487,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForPanchayat(id,publicationDateId,"","main",constituencyId);
-				if(!importantFamiliesInfoVo.isDataPresent())
+				//if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForPanchayat1(userId ,id,publicationDateId,"","main",constituencyId);
 				return importantFamiliesInfoVo;
 			}
