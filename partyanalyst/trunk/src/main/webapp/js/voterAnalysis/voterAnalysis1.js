@@ -3538,7 +3538,7 @@ function impFamilesStaticTable(myresults,jsObj)
 function buildImpFamilesForHamletChart(chartInfo)
 {
 
-	console.log(chartInfo);
+	//console.log(chartInfo);
 // Create the data table.
 	var ImpFamwiseAjaxDiv =  document.getElementById('ImpFamwiseAjaxDiv');
 	hideAjaxImgDiv('ImpFamwiseAjaxDiv');
