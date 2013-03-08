@@ -16,6 +16,9 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -45,9 +48,28 @@ public class VoterReportService implements IVoterReportService{
 	private IVoterReportLevelDAO voterReportLevelDAO;
 	private IVotersAnalysisService votersAnalysisService;
 	
+	private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
+	
+	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	
 
-	
+	public IVoterModificationInfoDAO getVoterModificationInfoDAO() {
+		return voterModificationInfoDAO;
+	}
+
+	public void setVoterModificationInfoDAO(
+			IVoterModificationInfoDAO voterModificationInfoDAO) {
+		this.voterModificationInfoDAO = voterModificationInfoDAO;
+	}
+
+	public IVoterModificationAgeInfoDAO getVoterModificationAgeInfoDAO() {
+		return voterModificationAgeInfoDAO;
+	}
+
+	public void setVoterModificationAgeInfoDAO(
+			IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO) {
+		this.voterModificationAgeInfoDAO = voterModificationAgeInfoDAO;
+	}
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -327,6 +349,30 @@ public class VoterReportService implements IVoterReportService{
 				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				  return resultStatus;
 			}
+		  }
+		  
+		 public ResultStatus deletevotermodificationFromIntermediateTables(Long constituencyId,Long publicationId)
+		  {
+			  ResultStatus resultStatus = new ResultStatus();
+				try{
+					
+					if(constituencyId != null && constituencyId > 0)
+					{
+						List<Long> voterModificationInfoIds = voterModificationInfoDAO.getVoterModificationInfoIds(constituencyId, publicationId);
+						if(voterModificationInfoIds != null && voterModificationInfoIds.size() > 0)
+						voterModificationAgeInfoDAO.deleteVoterModicationAgeInfoById(voterModificationInfoIds);
+						voterModificationInfoDAO.deletevotermodificationInfoByConstituencyId(constituencyId,publicationId);
+						
+						
+					}
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					return resultStatus;
+				}catch (Exception e) {
+					e.printStackTrace();
+					
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					return resultStatus;
+				}  
 		  }
 	
 }

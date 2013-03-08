@@ -9,4 +9,6 @@ public interface IVoterReportService {
 	
 	public ResultStatus insertVotersPartyDataToIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId);
 	
+	public ResultStatus deletevotermodificationFromIntermediateTables(Long constituencyId,Long publicationId);
+	
 }
