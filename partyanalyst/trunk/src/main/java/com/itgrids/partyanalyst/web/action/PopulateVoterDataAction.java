@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IVoterReportService;
+import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,7 +26,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private IVotersAnalysisService votersAnalysisService;
 	private List<SelectOptionVO> constituencyList;
 	private ResultStatus resultStatus;
-	
+	private IVoterModificationService voterModificationService;
+
 	private IVoterReportService voterReportService;
 	
 	
@@ -96,6 +98,13 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			this.votersAnalysisService = votersAnalysisService;
 		}
 
+		public IVoterModificationService getVoterModificationService() {
+			return voterModificationService;
+		}
+		public void setVoterModificationService(
+				IVoterModificationService voterModificationService) {
+			this.voterModificationService = voterModificationService;
+		}
 		public String execute()
 		{
 			
@@ -228,6 +237,23 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			if(user == null)
 				return null;
 			resultStatus = voterReportService.deletevotermodificationFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
+		
+		public String insertVoterModificationDataToIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in insertGenderWiseVoterModifInfoInVoterModificationInfoTable() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return null;
+			
+			resultStatus = voterModificationService.insertGenderWiseVoterModifInfoInVoterModificationInfoTable(jObj.getLong("id"), jObj.getLong("publicationDateId"));
 			return Action.SUCCESS;
 		}
 }
