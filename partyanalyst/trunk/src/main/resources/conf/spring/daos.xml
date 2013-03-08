@@ -1111,5 +1111,8 @@
 	<bean id="voterCastBasicInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCastBasicInfoDAO">
 	    <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	<bean id="voterModificationAgeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationAgeInfoDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 	
 </beans>		
