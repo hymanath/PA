@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -22,6 +25,9 @@ import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
+import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
@@ -29,6 +35,8 @@ import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
+import com.itgrids.partyanalyst.model.VoterModificationAgeInfo;
+import com.itgrids.partyanalyst.model.VoterModificationInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -53,6 +61,8 @@ public class VoterModificationService implements IVoterModificationService{
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IVoterReportLevelDAO voterReportLevelDAO;
 	private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
+	private TransactionTemplate transactionTemplate = null;
+	private IVoterStatusDAO voterStatusDAO;
 	
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
@@ -174,12 +184,28 @@ public class VoterModificationService implements IVoterModificationService{
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
+	public IVoterStatusDAO getVoterStatusDAO() {
+		return voterStatusDAO;
+	}
+
+	public void setVoterStatusDAO(IVoterStatusDAO voterStatusDAO) {
+		this.voterStatusDAO = voterStatusDAO;
+	}
+
 	public IVoterReportLevelDAO getVoterReportLevelDAO() {
 		return voterReportLevelDAO;
 	}
 
 	public void setVoterReportLevelDAO(IVoterReportLevelDAO voterReportLevelDAO) {
 		this.voterReportLevelDAO = voterReportLevelDAO;
+	}
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 
 	public IVoterModificationAgeInfoDAO getVoterModificationAgeInfoDAO() {
@@ -1188,4 +1214,383 @@ public class VoterModificationService implements IVoterModificationService{
 			return reportLevelId;
 		}
 	 }
+	 
+	public ResultStatus insertGenderWiseVoterModifInfoInVoterModificationInfoTable(Long constituencyId, Long publicationDateId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+			 List<Long> constituencyIdsList = new ArrayList<Long>(0);
+			 List<Long> mandalIdsList = new ArrayList<Long>(0);
+			 List<Long> panchayatIdsList = new ArrayList<Long>(0);
+			 List<Long> localEleBodyIdsList = new ArrayList<Long>(0);
+			 List<Long> boothIdsList = new ArrayList<Long>(0);
+			 List<Long> wardIdsList = new ArrayList<Long>(0);
+			 List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>(0);
+			 
+			 constituencyIdsList.add(constituencyId);
+			 
+			 List<SelectOptionVO> mandalsList = regionServiceData.getSubRegionsInConstituency(constituencyId,IConstants.PRESENT_YEAR, null);
+			 if(mandalsList == null || mandalsList.size() == 0)
+				  return null;
+			  
+			  for(SelectOptionVO selectOptionVO : mandalsList)
+			  {
+				  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
+					  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
+				  else
+					  localEleBodyIdsList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+			  }
+			  List<Object[]> list = null;
+			  if(mandalIdsList != null && mandalIdsList.size() >0){ 
+				   list = panchayatDAO.getPanchayatIdsByMandalIdsList(mandalIdsList);
+			  }
+			 if(list != null && list.size() > 0)
+			  {
+				 for(Object[] params : list)
+					 panchayatIdsList.add((Long)params[0]);
+			  }
+			 
+			 
+			 List<Object[]> list2 = null;
+			  if(panchayatIdsList.size() > 0)
+				  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
+			  
+			  if(list2 != null && list2.size() > 0)
+			  {
+				  for(Object[] params : list2)
+					  boothIdsList.add((Long)params[0]);
+			  }
+			  
+			  
+			  if(localEleBodyIdsList.size() > 0)
+			  {
+				  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localEleBodyIdsList,publicationDateId,constituencyId);
+				  
+				  if(list3 != null && list3.size() > 0)
+				  {
+					  for(Object[] params : list3)
+						  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+				  }
+				  
+			  }
+			  
+			  for(SelectOptionVO selectOptionVO : boothsList)
+				  if(!boothIdsList.contains(selectOptionVO.getId()))
+					  boothIdsList.add(selectOptionVO.getId());
+			  
+			  /*for(Long boothId :boothIdsList)
+			  {
+				  SelectOptionVO selectOptionVO = null;
+				  for(SelectOptionVO optionVO : boothsList)
+				  if(optionVO.getId().equals(boothId))
+				  {
+					  selectOptionVO = optionVO;
+					  break;
+				  }
+			}*/
+			  
+			  if(localEleBodyIdsList != null && localEleBodyIdsList.size() >0){
+				  
+					List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(
+							localEleBodyIdsList, publicationDateId,constituencyId);
+					
+					if(wards != null && wards.size() >0){
+						for(Object[] ward:wards)
+						if(ward[0] != null){
+							wardIdsList.add((Long)ward[0]);
+						}		
+					}
+					  
+				  }
+				  
+			  if(constituencyIdsList != null && constituencyIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("constituency", constituencyIdsList, constituencyId, publicationDateId);
+			  
+			  if(mandalIdsList != null && mandalIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("mandal", mandalIdsList, constituencyId, publicationDateId);
+			  
+			  if(localEleBodyIdsList != null && localEleBodyIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("localElectionBody", localEleBodyIdsList, constituencyId, publicationDateId);
+			  
+			  if(panchayatIdsList != null && panchayatIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("panchayat", panchayatIdsList, constituencyId, publicationDateId);
+			  
+			  if(boothIdsList != null && boothIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("booth", boothIdsList, constituencyId, publicationDateId);
+			  
+			  if(wardIdsList != null && wardIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("ward", wardIdsList, constituencyId, publicationDateId);
+			  
+			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 return resultStatus;
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in insertGenderWiseVoterModifInfoInVoterModificationInfoTable() Method, Exception - "+e);
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 return resultStatus;
+		}
+	 }
+	 
+	 public ResultStatus saveGenderWiseVoterModifInfoInIntermediateTables(String locationType, List<Long> locationValuesList, Long constituencyId, Long publicationDateId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+			 
+			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId);
+			 saveGenderWiseVoterModifInfoInVoterModificationInfoTable(modificationGenderInfoVO,constituencyId,publicationDateId,locationType);
+			 
+			 List<VoterModificationAgeRangeVO> ageRangeVOs = getVotersAddedAndDeletedCountAgeWiseByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId);
+			 saveAgeWiseAddedAndDeletedVotersCountInVoterAgeInfo(ageRangeVOs,constituencyId, publicationDateId,locationType);
+			 
+			
+			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 return resultStatus;
+		 }catch (Exception e) {
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 LOG.error("Exception Occured in saveGenderWiseVoterModifInfoInIntermediateTables() Method, Exception - "+e);
+			 return resultStatus;
+		}
+		 
+	 }
+	 
+	 public List<VoterModificationGenderInfoVO> getGenderWiseVoterModificationsByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId)
+	 {
+		 LOG.debug("Entered into getGenderWiseVoterModificationsByPublicationId() Method");
+		 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>(0);
+		 try{
+			 StringBuilder queryStr = new StringBuilder();
+			 queryStr.append(" select count(model.voter.voterId),model.status,model.voter.gender ");
+			 
+			 if(locationType.equalsIgnoreCase("constituency"))
+				 queryStr.append(" ,model2.booth.constituency.constituencyId ");
+				else if(locationType.equalsIgnoreCase("mandal"))
+					queryStr.append(", model2.booth.tehsil.tehsilId ");
+				else if(locationType.equalsIgnoreCase("panchayat"))
+					queryStr.append(" ,model2.booth.panchayat.panchayatId ");
+				else if(locationType.equalsIgnoreCase("booth"))
+					queryStr.append(" ,model2.booth.boothId ");
+				else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+					queryStr.append(" ,model2.booth.localBody.localElectionBodyId ");
+				else if(locationType.equalsIgnoreCase("ward"))
+					queryStr.append(" ,model2.localBodyWard.constituencyId ");
+				
+			 
+			 List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId,queryStr.toString());
+			 
+			
+			 
+			 if(list != null && list.size() > 0)
+			 {
+				 VoterModificationGenderInfoVO genderInfoVO = new VoterModificationGenderInfoVO();
+				 for(Object[] params : list)
+				 {
+					 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+					 {
+						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							 genderInfoVO.setAddedMale((Long)params[0]);
+						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 genderInfoVO.setAddedFemale((Long)params[0]);
+						 
+						 genderInfoVO.setAddedTotal(genderInfoVO.getAddedMale() + genderInfoVO.getAddedFemale());
+					 }
+					 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+					 {
+						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							 genderInfoVO.setDeletedMale((Long)params[0]);
+						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 genderInfoVO.setDeletedFemale((Long)params[0]);
+						 genderInfoVO.setDeletedTotal(genderInfoVO.getDeletedMale() + genderInfoVO.getDeletedFemale());
+					 }
+					 
+					genderInfoVO.setReportLevelValue((Long)params[3]);
+					
+				 }
+				 result.add(genderInfoVO);
+			 }
+			 
+			 return result;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+			 LOG.error("Exception is - "+e);
+			 return result;
+		 }
+	 }
+	 
+	 public ResultStatus saveGenderWiseVoterModifInfoInVoterModificationInfoTable(final List<VoterModificationGenderInfoVO> modificationGenderInfoVO,final Long constituencyId,final Long publicationDateId,final String locationType)
+	 {
+		 LOG.info("Entred into saveVotersDataInVoterAgeInfoTable() Method ");
+		  ResultStatus resultStatus = new ResultStatus();
+		  try{
+			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+						 if(modificationGenderInfoVO != null && modificationGenderInfoVO.size() > 0)
+						 {
+							 for(VoterModificationGenderInfoVO genderInfoVO : modificationGenderInfoVO)
+							 { 
+							 
+								 VoterModificationInfo voterModificationInfo = new VoterModificationInfo();
+								 voterModificationInfo.setConstituencyId(constituencyId);
+								 voterModificationInfo.setVoterReportLevel(voterReportLevelDAO.get(votersAnalysisService.getReportLevelId(locationType)));
+								 voterModificationInfo.setReportLevelValue(genderInfoVO.getReportLevelValue());
+								 voterModificationInfo.setPublicationDate(publicationDateDAO.get(publicationDateId));
+								 if(genderInfoVO.getAddedTotal() != null && genderInfoVO.getAddedTotal() > 0)
+								 {
+									 voterModificationInfo.setTotalVoters(genderInfoVO.getAddedTotal());
+									 voterModificationInfo.setMaleVoters(genderInfoVO.getAddedMale());
+									 voterModificationInfo.setFemaleVoters(genderInfoVO.getAddedFemale());
+									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_ADDED)));
+									 voterModificationInfoDAO.save(voterModificationInfo);
+								 
+								 }
+							 
+								 if(genderInfoVO.getDeletedTotal() != null && genderInfoVO.getDeletedTotal() > 0)
+								 {
+									 voterModificationInfo.setTotalVoters(genderInfoVO.getDeletedTotal());
+									 voterModificationInfo.setMaleVoters(genderInfoVO.getDeletedMale());
+									 voterModificationInfo.setFemaleVoters(genderInfoVO.getDeletedFemale());
+									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_DELETED)));
+									 voterModificationInfoDAO.save(voterModificationInfo);
+								 }
+								
+							 }
+							 
+						 }
+						
+					}});
+			 // voterModificationInfoDAO.flushAndclearSession();
+			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			  return resultStatus;
+		  }catch (Exception e) {
+			  LOG.error("Exception Occured in saveVotersDataInVoterAgeInfoTable() Method, Exception - "+e);
+			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			  return resultStatus;
+		}
+	 }
+	 
+	 
+	 //AgeWise
+	 
+	 
+	 public List<VoterModificationAgeRangeVO> getVotersAddedAndDeletedCountAgeWiseByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId)
+	 {
+		 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseByPublicationId() Method");
+		 List<VoterModificationAgeRangeVO> result = new ArrayList<VoterModificationAgeRangeVO>(0);
+		 try{
+			 List<String> ageRanges = voterAgeRangeDAO.getAllVoterAgeRanges();
+			 VoterModificationAgeRangeVO voterModificationAgeRangeVO = null;
+			 
+			 for(String ageRange : ageRanges)
+			 {
+				 try{
+				 voterModificationAgeRangeVO = new VoterModificationAgeRangeVO();
+				 voterModificationAgeRangeVO.setRange(ageRange);
+				 String[] ages = ageRange.split("-");
+				 Long ageFrom = new Long(ages[0].trim());
+				 Long ageTo = null;
+				 if(!ages[1].trim().equalsIgnoreCase("Above"))
+					 ageTo = Long.valueOf(ages[1].trim());
+					 
+				 StringBuilder queryStr = new StringBuilder();
+				 queryStr.append(" select count(model.voter.voterId),model.status,model.voter.gender ");
+				 
+				 if(locationType.equalsIgnoreCase("constituency"))
+					 queryStr.append(" ,model2.booth.constituency.constituencyId ");
+					else if(locationType.equalsIgnoreCase("mandal"))
+						queryStr.append(" ,model2.booth.tehsil.tehsilId ");
+					else if(locationType.equalsIgnoreCase("panchayat"))
+						queryStr.append(" ,model2.booth.panchayat.panchayatId ");
+					else if(locationType.equalsIgnoreCase("booth"))
+						queryStr.append(" ,model2.booth.boothId ");
+					else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+						queryStr.append(" ,model.booth.localBody.localElectionBodyId ");
+					else if(locationType.equalsIgnoreCase("ward"))
+						queryStr.append(" ,model2.localBodyWard.constituencyId ");
+				 
+				 List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(locationType, locationValuesList, constituencyId, publicationDateId, ageFrom, ageTo,queryStr.toString());
+				 
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params :list)
+					 {
+						 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+								 voterModificationAgeRangeVO.setAddedMale((Long)params[0]);
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+								 voterModificationAgeRangeVO.setAddedFemale((Long)params[0]);
+							 
+						 }
+						 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED));
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+								 voterModificationAgeRangeVO.setDeletedMale((Long)params[0]);
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+								 voterModificationAgeRangeVO.setDeletedFemale((Long)params[0]);
+						 }
+						 voterModificationAgeRangeVO.setAddedCount(voterModificationAgeRangeVO.getAddedMale() + voterModificationAgeRangeVO.getAddedFemale());
+						 voterModificationAgeRangeVO.setDeletedCount(voterModificationAgeRangeVO.getDeletedMale() + voterModificationAgeRangeVO.getDeletedFemale());
+						 voterModificationAgeRangeVO.setReportLevelValue((Long)params[3]);
+					 }
+					 
+					 
+				 }
+				 result.add(voterModificationAgeRangeVO);
+				 }catch (Exception e) {}
+			 }
+			 return result; 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+			 LOG.error("Exception is - "+e);
+			 return result; 
+		 }
+	 }
+
+	public ResultStatus saveAgeWiseAddedAndDeletedVotersCountInVoterAgeInfo(final List<VoterModificationAgeRangeVO> ageRangeVOs,final Long constituencyId,final Long publicationDateId,final String locationType)
+	{
+		LOG.info("Entred into saveAgeWiseAddedAndDeletedVotersCountInVoterAgeInfo() Method ");
+		  ResultStatus resultStatus = new ResultStatus();
+		  try{
+			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+						 if(ageRangeVOs != null && ageRangeVOs.size() > 0)
+						 {
+							 for(VoterModificationAgeRangeVO ageRangeVO : ageRangeVOs)
+							 {
+								 
+								     Long addedVoterModificationId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_ADDED), constituencyId);
+								     Long deletedVoterModificationId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_DELETED), constituencyId);
+								     VoterModificationAgeInfo voterModificationAgeInfo = new VoterModificationAgeInfo();
+								     voterModificationAgeInfo.setVoterAgeRangeId(voterAgeRangeDAO.getVoterAgeRangeIdByType(ageRangeVO.getRange()));
+								     if(addedVoterModificationId != null && ageRangeVO.getAddedCount() != null && ageRangeVO.getAddedCount() > 0)
+								     {
+								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getAddedCount());
+								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getAddedMale());
+								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getAddedFemale());
+								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(addedVoterModificationId));
+									     voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+								     }
+								     
+								     if(deletedVoterModificationId != null && ageRangeVO.getDeletedCount() != null && ageRangeVO.getDeletedCount() > 0)
+								     {
+								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getDeletedCount());
+								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getDeletedMale());
+								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getDeletedFemale());
+								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(deletedVoterModificationId));
+								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+								     }
+							 }
+						 }
+						 	
+					}});
+				 // voterModificationInfoDAO.flushAndclearSession();
+				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				  return resultStatus;
+			  }catch (Exception e) {
+				  LOG.error("Exception Occured in saveAgeWiseAddedAndDeletedVotersCountInVoterAgeInfo() Method, Exception - "+e);
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  return resultStatus;
+			}
+	}
 }
