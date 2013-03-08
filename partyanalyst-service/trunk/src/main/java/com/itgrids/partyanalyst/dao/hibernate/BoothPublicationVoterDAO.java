@@ -1764,6 +1764,22 @@ public List<Object[]> getVotersBasedOnVoterIdsAndPublication(
 	  return query.list();
 	
 }
+
+public List<Object[]> getVotersBasedOnVoterIdsAndPublicationAndGender(
+		Long publicationDateId , List<?> voterIds) {		
+		
+		
+	Query query = getSession().createQuery("select count(distinct b.voter.voterId),b.voter.gender " +
+			" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+			"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+					" group by b.voter.gender") ;
+	query.setParameter("publicationDateId",publicationDateId);
+	query.setParameterList("voterIds", voterIds);
+	
+	return query.list();
+	
+}
+
 public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
 {
 	Object[] param = {hamletId,userId};
