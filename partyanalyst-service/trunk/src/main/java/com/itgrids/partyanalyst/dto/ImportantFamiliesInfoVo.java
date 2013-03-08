@@ -29,6 +29,7 @@ public class ImportantFamiliesInfoVo implements Serializable{
 	private String type;
 	private boolean dataPresent = true;
 	private List<ImportantFamiliesInfoVo> subList = new ArrayList<ImportantFamiliesInfoVo>();
+	private List<ImportantFamiliesInfoVo> subListForHamlets = new ArrayList<ImportantFamiliesInfoVo>();
 	private String totalMaleVoters;
 	private String totalFemaleVoters;
 	private String unKnowVoters;
@@ -38,6 +39,14 @@ public class ImportantFamiliesInfoVo implements Serializable{
 	private Double totalPercentage;
 	private Long typeId;
 	private Long constituencyId;
+	
+	public List<ImportantFamiliesInfoVo> getSubListForHamlets() {
+		return subListForHamlets;
+	}
+
+	public void setSubListForHamlets(List<ImportantFamiliesInfoVo> subListForHamlets) {
+		this.subListForHamlets = subListForHamlets;
+	}
 	
 	public Long getTypeId() {
 		return typeId;
