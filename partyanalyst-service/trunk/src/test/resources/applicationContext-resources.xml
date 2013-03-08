@@ -343,6 +343,8 @@
 				<value>com.itgrids.partyanalyst.model.VoterPartyInfo</value>	
 				<value>com.itgrids.partyanalyst.model.VoterCastBasicInfo</value>
 				<value>com.itgrids.partyanalyst.model.VoterModificationAgeInfo</value>		
+				<value>com.itgrids.partyanalyst.model.VoterStatus</value>
+				<value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
 			</list>
 		</property>
 	</bean>
@@ -1766,4 +1768,19 @@
 	<bean id="voterModificationAgeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationAgeInfoDAO">
 	     <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="voterStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterStatusDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterModificationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationInfoDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterModificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	
 </beans>
