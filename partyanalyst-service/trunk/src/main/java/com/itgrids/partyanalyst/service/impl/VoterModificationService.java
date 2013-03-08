@@ -755,7 +755,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 for(SelectOptionVO selectVO:list2)			 
 					 localBodies.add(selectVO.getId());
 				 
-				 
+				 if(locationValues != null && locationValues.size() >0)
 				 subLevelDetails = voterModificationInfoDAO
 						.getVoterModificationReportDetailsByReportLevelId(
 								IConstants.MANDAL_REPORT_LEVEL_ID,
@@ -773,7 +773,7 @@ public class VoterModificationService implements IVoterModificationService{
 				}else
 					processModifiedVotersDetailsFromIntermediateTables(subLevelDetails,voterModificationVO,"mandal","false");
 
-				 
+				 if(localBodies != null && localBodies.size() > 0)
 				 subLevelDetails = voterModificationInfoDAO
 							.getVoterModificationReportDetailsByReportLevelId(
 									IConstants.LOCALELECTIONBODY_REPORT_LEVEL_ID,
