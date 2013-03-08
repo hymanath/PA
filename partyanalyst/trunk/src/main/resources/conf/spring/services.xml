@@ -1416,6 +1416,12 @@
 		<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"/>
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 		<property name="regionServiceData" ref="regionServiceDataImp"></property>
+		<property name="voterModificationInfoDAO" ref="voterModificationInfoDAO"/>
+        <property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	</bean>
 	
 	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
