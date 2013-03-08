@@ -4,13 +4,19 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "voter_modification_age_info")
@@ -18,7 +24,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class VoterModificationAgeInfo implements Serializable{
 	
 	private Long voterModificationAgeInfoId;
-	private Long voterModificationInfoId;
+	private VoterModificationInfo voterModificationInfo;
 	private Long voterAgeRangeId;
 	private Long totalVoters;
 	private Long maleVoters;
@@ -32,12 +38,12 @@ public class VoterModificationAgeInfo implements Serializable{
 	}
 	
 	//Full Constructor
-	public VoterModificationAgeInfo(Long voterModificationAgeInfoId,Long voterModificationInfoId,
+	public VoterModificationAgeInfo(Long voterModificationAgeInfoId,VoterModificationInfo voterModificationInfo,
 			                         Long voterAgeRangeId,Long totalVoters,Long maleVoters,Long femaleVoters)
 	{
 		
 		this.voterModificationAgeInfoId = voterModificationAgeInfoId;
-		this.voterModificationInfoId = voterModificationAgeInfoId;
+		this.voterModificationInfo = voterModificationInfo;
 		this.voterAgeRangeId =voterAgeRangeId;
 		this.totalVoters =totalVoters;
 		this.maleVoters=maleVoters;
@@ -54,13 +60,17 @@ public class VoterModificationAgeInfo implements Serializable{
 	public void setVoterModificationAgeInfoId(Long voterModificationAgeInfoId) {
 		this.voterModificationAgeInfoId = voterModificationAgeInfoId;
 	}
-	@Column(name = "voter_modification_info_id", length = 15)
-	public Long getVoterModificationInfoId() {
-		return voterModificationInfoId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "voter_modification_info_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterModificationInfo getVoterModificationInfo() {
+		return voterModificationInfo;
 	}
 
-	public void setVoterModificationInfoId(Long voterModificationInfoId) {
-		this.voterModificationInfoId = voterModificationInfoId;
+	public void setVoterModificationInfo(VoterModificationInfo voterModificationInfo) {
+		this.voterModificationInfo = voterModificationInfo;
 	}
 	@Column(name="voter_age_range_id",length = 15)
 	public Long getVoterAgeRangeId() {
