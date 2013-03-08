@@ -294,14 +294,31 @@ shall be completed</td>
 <td width="43%" valign="top" class="breadcrumb">
 <table style="padding-left:20px" width="98%" valign="top">
 <h3 style="">
-Tripura Assembly 2013 Live Election Analysis</h3>
+Tripura Assembly Election Analysis</h3>
 
 <tr>
 <div id="electionResultDivMain" style="padding-bottom:10px;">
   <div id="electionResultDiv"></div>
 </div>
-<td colspan="2">
+<tr>
+	<td>
+		<table class="table table-bordered table-hover">
+			<thead>
+			<tr><th>PARTY</th><th>2013</th><th>2008</th><th>CHANGE</th></tr>
+			</thead>
+			<tbody>
+			<tr><td>CPI</td><td>1</td><td>1</td><td>--</td></tr>
+			<tr><td>INC</td><td>10</td><td>10</td><td>--</td></tr>
+			<tr><td>CPM</td><td>49</td><td>46</td><td>+3</td></tr>
+			<tr><td>OTHERS</td><td>0</td><td>3</td><td>-3</td></tr>
+			</tbody>
+		</table>
+		<span style="color:red;">*</span> Change is compared to 2008 Election results
+		
+	</td style="margin-bottom:20px;">
+</tr>
 
+<td colspan="2">
 <table class="breadcrumb">
 <tr><th colspan="5">
 <h4>View Party Previous Performances From 1983 - 2008</h4>
@@ -480,11 +497,10 @@ CPM</a>
 </div>
 </td>
 </tr>
+
 </table>
 </td>
 </tr>
-
-
 </table>
 </td></tr>
 </table>
