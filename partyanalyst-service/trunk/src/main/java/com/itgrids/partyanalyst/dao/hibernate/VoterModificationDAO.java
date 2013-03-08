@@ -333,4 +333,81 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		return query.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGenderWiseVoterModificationByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId, String queryString)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(queryString );
+		str.append("  from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId = :publicationDateId ");
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+			str.append(" and model2.booth.constituency.constituencyId in (:locationValuesList) ");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			str.append(" and model2.booth.tehsil.tehsilId in (:locationValuesList) and model2.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			str.append(" and model2.booth.panchayat.panchayatId in (:locationValuesList) and model2.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("booth"))
+			str.append(" and model2.booth.boothId in (:locationValuesList) ");
+		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+			str.append(" and model2.booth.localBody.localElectionBodyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
+		else if(locationType.equalsIgnoreCase("ward"))
+			str.append(" and model2.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
+		
+		str.append(" group by model.status,model.voter.gender ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("locationValuesList",locationValuesList);
+		
+		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body") ||
+				locationType.equalsIgnoreCase("ward"))
+			query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId,Long ageFrom, Long ageTo, String queryStr)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(queryStr);
+		str.append("  from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId = :publicationDateId and ");
+		
+		if(ageTo == null)
+			str.append(" model.voter.age > :ageFrom ");
+		else
+			str.append(" model.voter.age between :ageFrom and :ageTo ");
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+			str.append(" and model2.booth.constituency.constituencyId in (:locationValuesList) ");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			str.append(" and model2.booth.tehsil.tehsilId in (:locationValuesList) and model2.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			str.append(" and model2.booth.panchayat.panchayatId in (:locationValuesList) and model2.booth.localBody is null ");
+		else if(locationType.equalsIgnoreCase("booth"))
+			str.append(" and model2.booth.boothId in (:locationValuesList) ");
+		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+			str.append(" and model.booth.localBody.localElectionBodyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
+		else if(locationType.equalsIgnoreCase("ward"))
+			str.append(" and model2.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
+		
+		str.append(" group by model.status,model.voter.gender");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("locationValuesList",locationValuesList);
+		query.setParameter("ageFrom",ageFrom);
+		
+		if(ageTo != null)
+			query.setParameter("ageTo",ageTo);
+		
+		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body") ||
+				locationType.equalsIgnoreCase("ward"))
+			query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
 }
