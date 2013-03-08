@@ -438,7 +438,7 @@ public class VoterReportService implements IVoterReportService{
 					  List<Long>panchayatIdsList = new ArrayList<Long>(0);
 					  List<Long> localBodiesList = new ArrayList<Long>(0);
 					  List<Long> boothIdsList = new ArrayList<Long>(0);
-					  InsertVoterCasteInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,publicationDateId,reportLevelValue,userId);
+					 // InsertVoterCasteInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,publicationDateId,reportLevelValue,userId);
 					  InsertVoterCasteBasicInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,publicationDateId,reportLevelValue,userId);
 					  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
 					  
@@ -464,13 +464,13 @@ public class VoterReportService implements IVoterReportService{
 					 
 					  for(Long mandalId : mandalIdsList)
 					  {
-						 InsertVoterCasteInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue, publicationDateId,reportLevelValue,userId);
+						// InsertVoterCasteInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue, publicationDateId,reportLevelValue,userId);
 						 InsertVoterCasteBasicInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue,userId);
 					  }
 					  
 					  for(SelectOptionVO selectOptionVO : panchayatsList)
 					  {
-						 InsertVoterCasteInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
+						 //InsertVoterCasteInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
 						 InsertVoterCasteBasicInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
 						  panchayatIdsList.add(selectOptionVO.getId());
 					  }
@@ -504,7 +504,7 @@ public class VoterReportService implements IVoterReportService{
 					  {
 						  for(Long localBodyId : localBodiesList)
 						  {
-							 InsertVoterCasteInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue, publicationDateId,reportLevelValue,userId);
+							 //InsertVoterCasteInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue, publicationDateId,reportLevelValue,userId);
 							  InsertVoterCasteBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,publicationDateId,reportLevelValue,userId);
 						  }
 						  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
@@ -518,8 +518,8 @@ public class VoterReportService implements IVoterReportService{
 					  }
 		              for(SelectOptionVO selectOptionVO:wardsList){
 						  
-		            	  InsertVoterCasteInfoForALocation(
-								  IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
+		            	/* InsertVoterCasteInfoForALocation(
+								  IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);*/
 		            	  InsertVoterCasteBasicInfoForALocation(IConstants.WARD,new Long(selectOptionVO.getId()),publicationDateId,reportLevelValue,userId);
 						 
 					  }
@@ -536,7 +536,7 @@ public class VoterReportService implements IVoterReportService{
 							  selectOptionVO = optionVO;
 							  break;
 						  }
-						  InsertVoterCasteInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
+						  //InsertVoterCasteInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
 						  InsertVoterCasteBasicInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
 						  
 					  }
@@ -549,7 +549,7 @@ public class VoterReportService implements IVoterReportService{
 				  }
 			}
 		   
-		   public ResultStatus InsertVoterCasteInfoForALocation(String locationType, Long locationValue, Long parentLocationId, Long publicationDateId,Long constituencyId,Long userId)
+		  /* public ResultStatus InsertVoterCasteInfoForALocation(String locationType, Long locationValue, Long parentLocationId, Long publicationDateId,Long constituencyId,Long userId)
 			  {
 				
 				  ResultStatus resultStatus = new ResultStatus();
@@ -584,7 +584,7 @@ public class VoterReportService implements IVoterReportService{
 					  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 					  return resultStatus;
 				  }
-			  }
+			  }*/
 			 
 			public ResultStatus saveVotersDataInVoterCasteInfoTable(final VoterCastInfoVO votersInfo)
 			{
@@ -660,7 +660,15 @@ public class VoterReportService implements IVoterReportService{
 						  votersInfo.setCasteNotAssignedVoters(totalVoters - votesConsidered);
 						  votersInfo.setLocationId(constituencyId);
 						  votersInfo.setUserId(userId);
+						  
+						  votersInfo.setFemaleVoters(voters.getFemaleVoters());
+						  votersInfo.setMaleVoters(voters.getMaleVoters());
+						  votersInfo.setCasteStateId(voters.getCasteStateId());
+						  votersInfo.setTotalVoters(voters.getTotalVoters());
+						  votersInfo.setCastePercentage(Double.parseDouble(voters.getVotesPercent()));
+						  
 						  saveVotersDataInVoterCasteBasicInfoTable(votersInfo,selectoptionList);
+						  saveVotersDataInVoterCasteInfoTable(votersInfo);
 					  }
 					}
 					  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
