@@ -388,7 +388,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			namesList.add(0, new SelectOptionVO(0L,"Select Mandal"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForCast")
-				||jObj.getString("task").equalsIgnoreCase("getPublicationDateForParty"))
+				||jObj.getString("task").equalsIgnoreCase("getPublicationDateForParty")
+				||jObj.getString("task").equalsIgnoreCase("getPublicationDateForModification"))
 		{
 			Long selectedId = jObj.getLong("selected");
 			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
