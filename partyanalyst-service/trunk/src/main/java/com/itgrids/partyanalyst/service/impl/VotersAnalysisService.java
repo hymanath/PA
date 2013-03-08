@@ -2656,16 +2656,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForWardByPublicationDateId(
 						 boothsList, publicationDateId,46L,60L);
 			/* else if(type.equalsIgnoreCase(IConstants.HAMLET))
-			 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
-					 panchayatId, publicationDateId,IConstants.AGE46,IConstants.AGE60,boothId);*/
-			else if(type.equalsIgnoreCase(IConstants.HAMLET) && boothsList !=null && boothsList.size()>0 )
-			 {				
-				votersListOf46To60 =boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId, IConstants.AGE46,IConstants.AGE60, boothsList);
-				 }
-			 else return;
-		
-		
-		
+				 votersListOf46To60 = boothPublicationVoterDAO.getVotersCountInSpecifiedRangeForHamletByPublicationId(
+						 panchayatId, publicationDateId,IConstants.AGE46,IConstants.AGE60,boothId);*/
+				else if(type.equalsIgnoreCase(IConstants.HAMLET) && boothsList !=null && boothsList.size()>0 )
+				 {				
+					votersListOf46To60 =boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId, IConstants.AGE46,IConstants.AGE60, boothsList);
+					 }
+				 else return;
+			
+			
+			
 			Long maleVotersBetween46To60 = 0L;
 			Long femaleVotersBetween46To60 = 0L;
 			Long unKnownVotersBetween46To60 = 0L;
@@ -4370,7 +4370,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 			   }else if(partyCast.equalsIgnoreCase("cast")){
 				   userVoterDetailsDAO.updateUserVoterCastDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
 			   }else if(partyCast.equalsIgnoreCase("localityPresent")  ){
-				   userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId);
+				   userVoterDetailsDAO.updateUserVoterDetailsForLocality(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),localitityId,hamletId);
 				    }
 			}else{
 				    Long locality = voterHouseInfoVO.getLocalitityId();
@@ -5867,7 +5867,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							}
 						}
 					 if(type.equalsIgnoreCase("constituency"))
-					 {
+					 {      int totalHamlets=0;
 								namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
 								mandalList = getMandals(namesList);
 								muncipalityList = getMuncipalities(namesList);
@@ -5891,7 +5891,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									}
 									//each panchayat boothList
 									if(panchayatList1!=null && panchayatList1.size() > 0){
-										int totalWards=0;
+										
 									for(SelectOptionVO panchayats : panchayatList1)
 									{   
 										hamlets=      getHamletsForPanchayat((Long)panchayats.getId(), publicationDateId);
@@ -5899,7 +5899,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										 if(hamlets  != null && hamlets.size() >0)
 										 {
 											    panchayats.setSelectOptionsList1(hamlets);	
-												totalWards = totalWards +hamlets.size();
+											    totalHamlets = totalHamlets +hamlets.size();
 												panchayats.setValue(new Long(hamlets.size()).toString()); 
 											 
 										 }										 
@@ -5910,8 +5910,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										 }
 										 else
 											 panchayats.setValue("0");
-									 }if(totalWards>0)
-											votersDetailsVO.setTotalNoOfHamlets(totalWards);
+									 }if(totalHamlets>0)
+											votersDetailsVO.setTotalNoOfHamlets(totalHamlets);
 								}
 									
 									
@@ -5972,6 +5972,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							}
 						
 					 }
+					 if(type.equalsIgnoreCase("panchayat"))
+							 {
+						List<Object> count=  panchayatHamletDAO.getHamletsCountOfAPanchayat(id);
+						  int counts= count.size();
+						if(count != null && counts>0 )
+						votersDetailsVO.setTotalNoOfHamlets(counts);
+							 }
 					List<Object[]> booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId);
 					if(booths != null && booths.size() > 0)
 					{
