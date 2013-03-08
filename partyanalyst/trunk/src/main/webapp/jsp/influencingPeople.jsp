@@ -522,15 +522,39 @@ function validationCheck()
 		$('#errorDiv').html('<div>Please enter the first name</div>');
 		return false;
 	}
+	if(firstName.length > 0)
+	{
+		if(/[^a-z A-Z]/.test(firstName))
+		{
+		$('#errorDiv').html('First Name Accepts only Characters');
+		return false;
+		}
+	}
 	if(lastName == '')
 	{
 		$('#errorDiv').html('<div>Please enter the last name</div>');
 		return false;
 	}
+	if(lastName.length > 0)
+	{
+		if(/[^a-z A-Z]/.test(lastName))
+		{
+		$('#errorDiv').html('Last Name Accepts only Characters');
+		return false;
+		}
+	}
 	if(fatherName == '')
 	{
 		$('#errorDiv').html('<div>Please enter the father or spouse name</div>');
 		return false;
+	}
+	if(fatherName.length > 0)
+	{
+		if(/[^a-z A-Z]/.test(fatherName))
+		{
+		$('#errorDiv').html('Father/Spouse Name Name Accepts only Characters');
+		return false;
+		}
 	}
 	/*if(genderMale == false && genderFemale == false)
 	{
@@ -681,11 +705,17 @@ function validationCheck()
 	}
 
 refreshParent();
+refreshingParentWindow();
 }
 function setTimer()
 {	
 	$("#successMsg").delay("2000");
 	$("#successMsg").hide("slow");
+}
+function refreshingParentWindow()
+{
+	setTimeout(window.opener.refreshingchildWindowWindow(),18000);
+    return false;
 }
 </script>
 
@@ -695,9 +725,14 @@ function setTimer()
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
 					<c:if test="${windowTask == 'edit'}">
+					<c:if test="${ !empty voterId}">
+					<TD><div class="addInfluencingHeader"><span style="margin-top:2px;">Add To Influencing People</span></div></TD>
+					</c:if>
+					<c:if test="${ empty voterId}">
 						<TD>
 						<div class="addInfluencingHeader"><span style="margin-top:2px;">Edit Influencing People </span></div>
 						</TD>
+					</c:if>
 					</c:if>
 					<c:if test="${windowTask != 'edit'}">
 						<TD>
@@ -915,11 +950,28 @@ function setTimer()
 <s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/>
 <s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /> 
 <s:hidden id="voterId" name="voterId" value="%{voterId}" /> 
+	
+	<c:if test="${windowTask == 'edit'}">
+		<c:if test="${ !empty voterId}">
+			<div id="saveDiv" align="center">
+			<s:submit cssClass="button" value="Save" name="Save" ></s:submit>
+			<input type="button" value="Exit" class="button" />
+			</div>
+		</c:if>
+		<c:if test="${ empty voterId}">
+		<div id="saveDiv" align="center">
+		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
+		<input type="button" value="Exit" class="button" onClick="refreshParentWindow();"/>
+		</div>
+		</c:if>
+	</c:if>
+	<c:if test="${windowTask == 'new'}">
+		<div id="saveDiv" align="center">
+		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
+		<input type="button" value="Exit" class="button" onClick="refreshParentWindow();"/>
+		</div>
+	</c:if>
 
-<div id="saveDiv" align="center">
-	<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-	<input type="button" value="Exit" class="button" onClick="refreshParentWindow();"/>
-</div>
 <!--<div id="exitDiv" align="center">
 	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 
 </div>  -->

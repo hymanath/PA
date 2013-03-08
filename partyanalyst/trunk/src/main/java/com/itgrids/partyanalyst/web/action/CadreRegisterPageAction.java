@@ -89,6 +89,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private Long voterId;
 	private IPartyStrengthService partyStrengthService;
 	private IVotersAnalysisService votersAnalysisService;
+	private String name;
 	public List<SelectOptionVO> getBloodGroupTypes() {
 		return bloodGroupTypes;
 	}
@@ -422,6 +423,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	public void setVotersAnalysisService(
 			IVotersAnalysisService votersAnalysisService) {
 		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String execute(){

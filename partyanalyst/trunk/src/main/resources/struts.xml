@@ -4573,6 +4573,9 @@
 		     <result type="json" name="localBodyDetails">
 		      <param name="root">resultStatus</param>
 		    </result>
+		     <result type="json" name="localBodyAreaType">
+		      <param name="root">areaType</param>
+		    </result>
 		</action>
 		<action name="getLocalBodyConstiResultsForAssembly" class="localBodyElectionAction" method="getLocalElectionBodyResultsForAssemblyConstituencies">
 			<result type="json" name="success">

@@ -9,43 +9,23 @@
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script>  
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 	
 	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script>  
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/json/json-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script>  
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>   
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
-	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<!-- Skin CSS files resize.css must load before layout.css -->  
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-
 	<!-- YUI Dependency files (End) -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Assign Candidates To Voter</title>
+<title>ASSIGN ${name} To POLITICAN,INFLUENCING PEOPLE,CADRE</title>
 <style type="text/css">
  .buttonStyle {
 	-moz-border-radius:5px 5px 5px 5px;
@@ -89,6 +69,7 @@ width:591px;
 }
 .f3 {
     border: 2px solid #CFD6DF;
+    font-family: verdana;
     margin-bottom: 10px;
     margin-left: 9px;
     padding-bottom: 10px;
@@ -155,6 +136,7 @@ input, button, select, textarea {
 }
 </style>
 <script type="text/javascript">
+var name = '${name}';
 /*
 	This is a Method used for Ajax Action
 */
@@ -222,13 +204,13 @@ function showAssemblyData()
    str+='   <tr>';
    str+='     <td><span>State</span></td>';
    str+='     <td>';
-   str+='       <select id="stateSelect"  onchange="clearAll(\'constituencySelect\');getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,\'constituency\')" style="margin-left: 13px;" />';
+   str+='       <select id="stateSelect"  onchange="clearAll(\'constituencySelect\');getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,\'constituency\')" style="margin-left: 13px;font-family: verdana;font-size: 15px;"/>';
    str+='     </td>';
    str+='   </tr>';
    str+='   <tr>';
    str+='     <td><span>Constituency</span></td>';
    str+='     <td>';
-   str+='       <select id="constituencySelect" style="margin-left: 13px;"/>';
+   str+='       <select id="constituencySelect" style="margin-left: 13px;font-family: verdana;font-size: 15px;"/>';
    str+='     </td>';
    str+='   </tr>';
    str+=' <table>';
@@ -503,7 +485,7 @@ function getCandidatesBySearchCriteria()
 				var familesDataSource = new YAHOO.widget.DataTable("showSearchResultsDiv", votersResultColumnDefs,myDataSource, myConfigs);
      document.getElementById("showHideSearchResultsDiv").style.display='block';	
 		var str='';
-		str+='            <input type="button" class="buttonStyle" value="Save" onclick="assignCandidateToUser();" >';
+		str+='            <input type="button" class="buttonStyle" value="Save" onclick="validationCkeck();" >';
 		str+='         </td>';
 		str+='         <td>';
 		str+='            <input type="button" class="buttonStyle" value="Cancel" onclick="clearSearchResults();" >';
@@ -525,6 +507,20 @@ function getCandidatesBySearchCriteria()
  /*
 	This Method is Used To Make A Ajax Call To Save The Candidate Details
  */
+ function validationCkeck()
+ {
+	var str = '';
+	var isChecked = $('.selectedValue').is(':checked');
+	if(isChecked == false)
+	{
+		str+='<font color="Red">Please Select Candidate To Assign </font>';
+		document.getElementById("showAssignCandidateErrorDiv").innerHTML=str;
+	}
+	else
+	{
+		assignCandidateToUser();
+	}
+ }
  function assignCandidateToUser()
  { 
  $('#errorDiv').hide();
@@ -544,6 +540,11 @@ function getCandidatesBySearchCriteria()
 	 var url = "saveCandidateDetailsAction.action?"+rparam;						
 	 callAjax(jsObj,url);   
  }
+ function refreshingParentWindow()
+ {
+	window.opener.refreshingchildWindowWindow();
+    return false;
+ }
  /*
 	This Method Is Used To Make Sure That Weather The Data Save Or Not
  */
@@ -562,6 +563,7 @@ function getCandidatesBySearchCriteria()
    document.getElementById("showAssignCandidateErrorDiv").innerHTML=str;
    }
    getCandidatesBySearchCriteria();
+   refreshingParentWindow();
  }
  /*
 	This Method Is User To Clear The showSearchResultsDiv When Clear Button is Clicked
@@ -575,7 +577,7 @@ function getCandidatesBySearchCriteria()
 </script>
 </head>
 <body >
-    <div id="mainDiv"align="center" >Assign Candidates To Voter</div> 
+    <div id="mainDiv"align="center" >ASSIGN ${name} TO POLITICAN</div> 
 	<table>
             <tr><td><div id="userErrorMessageDiv" /></td></tr>
     </table>
@@ -584,7 +586,7 @@ function getCandidatesBySearchCriteria()
 <div id="addCandidateDiv"  align="center">	
   <fieldset class="f3">
    <legend class="span12" style="color: blue;
-    font-weight: bold">Search Candidate</legend> 
+    font-size: 13px;">SEARCH AND SELECT POLITICAN TO MAP FOR ${name}</legend> 
 	<div id="errorDiv" style="color:red"></div>   
    <table class="textAlignStyle">
       <tr>
@@ -626,7 +628,7 @@ function getCandidatesBySearchCriteria()
    <div id="showHideSearchResultsDiv"  style="display:none;" >
    <fieldset class="f3">
      <legend class="span12" style="color: blue;
-    font-weight: bold">Search Results</legend>
+    font-size: 15px;font-family: verdana;">Search Results</legend>
      <table>
 	    <tr>
 	        <td><div id="showAssignCandidateErrorDiv" /></td>

@@ -74,8 +74,10 @@ public class LocalBodyElectionResultsAction extends ActionSupport implements Ser
 	 private String constituencyName;
 	 private LocalBodyElectionResultsVO localBodyElectionResultsVO;
 	 private List<TeshilPartyInfoVO> muncipalityVO;
-	 private String localBodyDetails;
+	 private String localBodyDetails,localBodyAreaType;
 	 private List<TeshilPartyInfoVO> constituencyWiseAllPartyTrends ;
+	 private String areaType;
+	 private List<SelectOptionVO> greaterElections;
 	 public String getMptcElectionType() {
 		return mptcElectionType;
 	}
@@ -390,6 +392,25 @@ public class LocalBodyElectionResultsAction extends ActionSupport implements Ser
 		this.muncipalOrCorpDetails = muncipalOrCorpDetails;
 	}
 
+	
+
+	public String getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+
+	
+	public List<SelectOptionVO> getGreaterElections() {
+		return greaterElections;
+	}
+
+	public void setGreaterElections(List<SelectOptionVO> greaterElections) {
+		this.greaterElections = greaterElections;
+	}
+
 	public String execute() {
 		
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
@@ -489,10 +510,16 @@ public class LocalBodyElectionResultsAction extends ActionSupport implements Ser
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			ghmcElectionDetail=  localBodyElectionService.getLocalBodyElectionIdsForAConstituency(constituencyId, IConstants.GREATER_ELECTION_TYPE);
+			try {
+				greaterElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.GREATER_ELECTION_TYPE, 1l,constityencyIds);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*ghmcElectionDetail=  localBodyElectionService.getLocalBodyElectionIdsForAConstituency(constituencyId, IConstants.GREATER_ELECTION_TYPE);
 			if(ghmcElectionDetail != null){
 			 ghmcElection = ghmcElectionDetail.getMessageTypes();
-			}
+			}*/
 		return Action.SUCCESS;
 		
 	}
@@ -565,6 +592,11 @@ public class LocalBodyElectionResultsAction extends ActionSupport implements Ser
 				localBodyElecionIds.add(7l);
 				resultStatus = staticDataService.checkForLocalElctionBody(constituencyId,localBodyElecionIds);
 				return "localBodyDetails";
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getLocalBodyElectionType"))
+			{
+				areaType = constituencyPageService.getLocalBodyElectionTypeByConstituencyId(jObj.getLong("constituencyId")); 
+				return "localBodyAreaType";
 			}
 				
 		} catch (Exception e) {
