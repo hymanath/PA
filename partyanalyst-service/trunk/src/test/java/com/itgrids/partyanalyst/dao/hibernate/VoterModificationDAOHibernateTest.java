@@ -69,9 +69,55 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetModifiedVotersByPartNo()
+	/*public void testGetModifiedVotersByPartNo()
 	{
 		List<Long> list = voterModificationDAO.getModifiedVotersByPartNo("1",241l,8l,IConstants.STATUS_ADDED);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetGenderWiseVoterModificationByPublicationId()
+	{
+		List<Long> locationValuesList = new ArrayList<Long>(0);
+		locationValuesList.add(1l);
+		String locationType = "panchayat";
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(model.voter.voterId),model.status,model.voter.gender ");
+		 
+		 if(locationType.equalsIgnoreCase("constituency"))
+			 queryStr.append(" ,model2.booth.constituency.constituencyId ");
+			else if(locationType.equalsIgnoreCase("mandal"))
+				queryStr.append(", model2.booth.tehsil.tehsilId ");
+			else if(locationType.equalsIgnoreCase("panchayat"))
+				queryStr.append(" ,model2.booth.panchayat.panchayatId ");
+			else if(locationType.equalsIgnoreCase("booth"))
+				queryStr.append(" ,model2.booth.boothId ");
+			else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+				queryStr.append(" ,model.booth.localBody.localElectionBodyId ");
+			else if(locationType.equalsIgnoreCase("ward"))
+				queryStr.append(" ,model2.localBodyWard.constituencyId ");
+		
+		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, 232l, 7l,queryStr.toString());
+		
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]); 
+				
+		}
 	}
+	
+	
+	/*public void testGetAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation()
+	{
+		List<Long> locationValuesList = new ArrayList<Long>(0);
+		locationValuesList.add(232l);
+		List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation("constituency", locationValuesList, 232l, 7l, 18l, 25l);
+		
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[1]);
+		}
+	}*/
 }
