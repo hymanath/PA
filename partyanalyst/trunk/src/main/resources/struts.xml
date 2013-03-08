@@ -159,7 +159,9 @@
 			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
+			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
 			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
+			<result type="redirect" name="VOTER_SEARCH_AND_EDIT">votersSearchAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
