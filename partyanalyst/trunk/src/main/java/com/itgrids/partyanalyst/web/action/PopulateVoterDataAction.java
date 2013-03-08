@@ -126,7 +126,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			return Action.SUCCESS;
 		}
 		
-		/*public String insertVotersCasteDataToIntermediateTables()
+		public String insertVotersCasteDataToIntermediateTables()
 		{
 			try{
 				jObj = new JSONObject(getTask());
@@ -140,10 +140,10 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			if(regVO == null)
 				return null;
 			Long userId =  regVO.getRegistrationID();
-			resultStatus = votersAnalysisService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
 			return Action.SUCCESS;
 			
-		}*/
+		}
 		
 		
 		public String insertVotersPartyDataToIntermediateTables()

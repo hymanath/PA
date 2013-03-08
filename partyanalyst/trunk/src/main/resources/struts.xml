@@ -4585,11 +4585,11 @@
            		<param name="root">previousDetailsListForHamlet</param>
         	</result>		
 		</action>
-		<!-- <action name="insertVotersCastDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersCasteDataToIntermediateTables">
+		 <action name="insertVotersCastDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersCasteDataToIntermediateTables">
 		<result type="json" name="success">
            		<param name="root">resultStatus</param>
         	</result>
-		</action> -->
+		</action>
 		<action name="deleteVoterscastDataFromIntermediateTablesAction" class="populateVoterDataAction" method="deleteVotersCastDataFromIntermediateTables">
 		<result type="json" name="success">
            		<param name="root">resultStatus</param>
