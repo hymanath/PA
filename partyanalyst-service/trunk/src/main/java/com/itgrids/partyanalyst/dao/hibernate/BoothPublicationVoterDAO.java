@@ -1648,13 +1648,22 @@ public List<Object[]> getImpFamilesForHamlet(Long userId,Long hamletId,Long publ
 	
 }
 
-public List<Object[]> getFamilyDetailsForHamlet(Long userId , List<Long> voterIds , Long publicationDateId)
+public List<Object[]> getFamilyDetailsForHamlet(Long userId , List<Long> voterIds , Long publicationDateId,String queryString)
 {
-	Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.houseNo from " +
+	
+	StringBuffer queryStr = new StringBuffer();
+	
+	queryStr.append("select count(model.voter.voterId),model.voter.houseNo from " +
 			"BoothPublicationVoter model ,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
 			" model1.user.userId = :userId and " +
 			" model.voter.voterId in(:voterIds) and model.booth.publicationDate.publicationDateId = :publicationDateId" +
-			" group  by model.voter.houseNo");
+			" group  by model.voter.houseNo ");
+	
+	if(queryString != null && !queryString.equalsIgnoreCase(""))
+		queryStr.append(queryString);
+		
+		
+	Query query = getSession().createQuery(queryStr.toString());
 	
 	query.setParameterList("voterIds", voterIds);
 	query.setParameter("publicationDateId", publicationDateId);

@@ -196,7 +196,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Long> getVotersInHamletForUser(Long userId , Long hamletId);
 	
-	public List<Object[]> getFamilyDetailsForHamlet(Long userId , List<Long> voterIds , Long publicationDateId);
+	public List<Object[]> getFamilyDetailsForHamlet(Long userId , List<Long> voterIds , Long publicationDateId,String queryString);
 	
 	public List<Object[]> getVotersCountForHamlet(Long hamletId, Long userId , Long publicationDateId);
 	
