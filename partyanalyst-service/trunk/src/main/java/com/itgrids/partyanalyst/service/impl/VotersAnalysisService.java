@@ -3680,6 +3680,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 	
 	public void getImpFamilesInfoDetailsForHamlet(Long userId,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo){
 		List<Object[]>  impFamilesList = null;
+		List<Object[]> hamletVotersCountByGender = null;
 		
 		List<Long> hamlets = new ArrayList<Long>();
 		hamlets.add(id);
@@ -3687,6 +3688,8 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
          List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
 		
 		impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
+		
+		hamletVotersCountByGender = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(publicationDateId,voterIds);
 		
 		
 		
@@ -3721,7 +3724,21 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				below3Count = count + below3Count;
 			}
 		}
+		//object processing
 		
+		 if(hamletVotersCountByGender != null && hamletVotersCountByGender.size() > 0)
+		   {
+			   for(Object[] params : hamletVotersCountByGender){
+				   String gender=params[1].toString();
+				   if(gender.equalsIgnoreCase("M")){
+					   importantFamiliesInfoVo.setTotalMaleVoters(params[0].toString());
+				   }
+				   else{
+					   importantFamiliesInfoVo.setTotalFemaleVoters(params[0].toString());
+				   }
+			   }
+			   
+		   }
 		importantFamiliesInfoVo.setAbove10(above10);
 		importantFamiliesInfoVo.setAbove10Popul(above10Count);
 		importantFamiliesInfoVo.setBetwn7to10(between7To10);
@@ -5974,10 +5991,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 }
 					 if(type.equalsIgnoreCase("panchayat"))
 							 {
-						List<Object> count=  panchayatHamletDAO.getHamletsCountOfAPanchayat(id);
+		/*				List<Object> count=  panchayatHamletDAO.getHamletsCountOfAPanchayat(id);
 						  int counts= count.size();
 						if(count != null && counts>0 )
-						votersDetailsVO.setTotalNoOfHamlets(counts);
+						votersDetailsVO.setTotalNoOfHamlets(counts);*/
 							 }
 					List<Object[]> booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId);
 					if(booths != null && booths.size() > 0)
