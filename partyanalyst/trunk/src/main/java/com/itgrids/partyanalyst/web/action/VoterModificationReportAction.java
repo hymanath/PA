@@ -242,7 +242,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		String locationType = jObj.getString("locationType");
 		Long locationValue = jObj.getLong("locationValue");
 		
-		voterModificationAgeRangeVOList = voterModificationService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		voterModificationAgeRangeVOList = voterModificationService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
 		return Action.SUCCESS;
 	}
 	
@@ -263,7 +263,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		String locationType = jObj.getString("locationType");
 		Long locationValue = jObj.getLong("locationValue");
 		
-		voterModificationGenderInfoVO = voterModificationService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		voterModificationGenderInfoVO = voterModificationService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
 		return Action.SUCCESS;
 	}
 	
@@ -284,7 +284,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		String locationType = jObj.getString("locationType");
 		Long locationValue = jObj.getLong("locationValue");
 		
-		voterModificationGenderInfoVOList = voterModificationService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+		voterModificationGenderInfoVOList = voterModificationService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
 		return Action.SUCCESS;
 	}
 	
