@@ -16,6 +16,11 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="voterModificationInfoDAO" ref="voterModificationInfoDAO"/>
 		<property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="voterInfoDAO" ref="voterInfoDAO" />
+		<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+		<property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO"/>
+		<property name="casteStateDAO" ref="casteStateDAO" />
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
