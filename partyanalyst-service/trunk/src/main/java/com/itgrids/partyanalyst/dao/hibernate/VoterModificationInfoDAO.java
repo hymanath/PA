@@ -51,4 +51,26 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getGenderWiseVoterModificationsBetweenPublications(Long locationLvl,Long locationValue,Long constituencyId,List<Long> publicationIdsList){
+		Query query = getSession().createQuery("select  sum(model.maleVoters), sum(model.femaleVoters),model.voterStatus.status from VoterModificationInfo model where " +
+				" model.voterReportLevel.voterReportLevelId = :locationLvl and model.reportLevelValue = :locationValue and model.constituencyId = :constituencyId " +
+				" and model.publicationDate.publicationDateId in(:publicationIdsList) group by model.voterStatus.status");
+		query.setParameter("locationLvl", locationLvl);
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("publicationIdsList", publicationIdsList);
+		return query.list();
+	}
+	
+	public List<Object[]> getGenderWiseVoterModificationsForEachPublication(Long locationLvl,Long locationValue,Long constituencyId,List<Long> publicationIdsList){
+		Query query = getSession().createQuery("select  sum(model.maleVoters), sum(model.femaleVoters),model.voterStatus.status,model.publicationDate.publicationDateId,model.publicationDate.name from " +
+				" VoterModificationInfo model where model.voterReportLevel.voterReportLevelId = :locationLvl and model.reportLevelValue = :locationValue and model.constituencyId = :constituencyId " +
+				" and model.publicationDate.publicationDateId in(:publicationIdsList) group by model.publicationDate.publicationDateId,model.voterStatus.status");
+		query.setParameter("locationLvl", locationLvl);
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("publicationIdsList", publicationIdsList);
+		return query.list();
+	}
 }

@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
@@ -13,8 +16,21 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 		this.voterModificationInfoDAO = voterModificationInfoDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		voterModificationInfoDAO.getAll();
+	}*/
+	
+	public void test1()
+	{
+		List<Long> list1 = new ArrayList<Long>();
+		list1.add(1l);
+		voterModificationInfoDAO.getGenderWiseVoterModificationsBetweenPublications(1l,2l,3l,list1);
+	}
+	public void test2()
+	{
+		List<Long> list1 = new ArrayList<Long>();
+		list1.add(1l);
+		voterModificationInfoDAO.getGenderWiseVoterModificationsForEachPublication(1l,2l,3l,list1);
 	}
 }

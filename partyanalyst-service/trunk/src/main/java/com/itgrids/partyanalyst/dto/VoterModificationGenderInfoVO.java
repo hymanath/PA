@@ -16,6 +16,7 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	private Long deletedTotal = 0L;
 	private Long deletedMale = 0L;
 	private Long deletedFemale = 0L;
+	private boolean dataPresent;
 	
 	public String getPreviousPublicationName() {
 		return previousPublicationName;
@@ -77,6 +78,12 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	}
 	public void setDeletedFemale(Long deletedFemale) {
 		this.deletedFemale = deletedFemale;
+	}
+	public boolean isDataPresent() {
+		return dataPresent;
+	}
+	public void setDataPresent(boolean dataPresent) {
+		this.dataPresent = dataPresent;
 	}
 	
 }
