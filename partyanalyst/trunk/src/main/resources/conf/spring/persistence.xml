@@ -322,6 +322,8 @@
 	            <value>com.itgrids.partyanalyst.model.VoterPartyInfo</value>	            
 	            <value>com.itgrids.partyanalyst.model.VoterCastBasicInfo</value>
 	            <value>com.itgrids.partyanalyst.model.VoterModificationAgeInfo</value>
+	            <value>com.itgrids.partyanalyst.model.VoterStatus</value>
+	            <value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
 			</list>
 			
 		</property>
