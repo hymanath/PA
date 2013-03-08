@@ -4626,6 +4626,11 @@
         	</result>
 		</action>
 
+		<action name="deletevotermodificationFromIntermediateTablesAction" class="populateVoterDataAction" method="deletevotermodificationFromIntermediateTables">
+		<result type="json" name="success">
+        <param name="root">resultStatus</param>
+           </result>
+		</action>
 		
         
         </package>

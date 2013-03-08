@@ -597,10 +597,16 @@ function callAjax(jsObj,url)
 									showDeleteVoterPartyDataStatus(myResults);
 								}
 								else if(jsObj.task == "deleteVotersData")
+								{
 									showDeleteVoterDataStatus(myResults);
 
 								}
-								
+
+								else if(jsObj.task == "deletevotermodification")
+								{
+									showdeletevotermodificationStatus(myResults);
+								}
+							}
 								catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -685,7 +691,23 @@ function showDeleteVoterDataStatus(result)
 				return;
 		}
 	}
+	function showdeletevotermodificationStatus(result)
+	{
+		$("#votermodificationajaxImage").css("display","none");
+		$("#votermodificationvoterDataDeleteBtn").removeAttr("disabled");
 
+		if(result.resultCode == 0)
+		{
+			$("#votermodificationerrorMsgDiv").html("Voter modification Data Deleted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#votermodificationerrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+
+	}
 	function buildPublicationDateList1(results,selectElmt)
 	{
 	
