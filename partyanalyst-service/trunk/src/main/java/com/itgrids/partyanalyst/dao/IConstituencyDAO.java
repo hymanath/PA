@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 
 /**
@@ -155,4 +156,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Object[]> getConstituencyName(Long constituencyId);
 	public List<Object[]> getWardsInMuncipality(Long assemblyElectionBodyId);
 	public List getNameByInfluenceScopeValue(Long locationValue,String type);
+	
+	public String getLocalBodyElectionTypeByConstituencyId(Long constituencyId);
 }

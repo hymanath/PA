@@ -215,15 +215,18 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 
 	
-/*	@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")
 	public void testGetProblemHistoryIdByHamletIds(){
 		List<Long> list = new ArrayList<Long>();
-		list.add(new Long(1));
-		list.add(new Long(2));
-	
-		List list1 = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(list,IConstants.HAMLET_LEVEL);
+		list.add(110l);
+		/*list.add(256l);
+		list.add(276l);
+		list.add(258l);
+		list.add(275l);
+		list.add(255l);*/
+		List list1 = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(list,IConstants.MUNICIPAL_CORP_GMC,"true");
 		System.out.println(list1.size());
-	}*/
+	}
 	
 	/*public void testGetByLocations(){
 		List<Long> list = new ArrayList<Long>();
@@ -625,7 +628,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetProblemDetailsForAFreeUser()
+	/*public void testGetProblemDetailsForAFreeUser()
 	{
 		ProblemSearchVO problemSearchVO = new ProblemSearchVO();
 		
@@ -648,7 +651,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 		
-	}
+	}*/
 }	
 
 

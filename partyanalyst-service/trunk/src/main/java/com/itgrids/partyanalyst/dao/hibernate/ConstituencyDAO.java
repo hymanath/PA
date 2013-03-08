@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		implements IConstituencyDAO {
@@ -513,5 +514,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("locationValue", locationValue);
 		return queryObject.list();	
+	}
+
+	public String getLocalBodyElectionTypeByConstituencyId(
+			Long constituencyId) {
+		String query = "select model.areaType from Constituency model where model.constituencyId = :constituencyId";
+		Query queryBuilder = getSession().createQuery(query);
+		queryBuilder.setParameter("constituencyId", constituencyId);
+		return (String) queryBuilder.uniqueResult();
 	}
 }

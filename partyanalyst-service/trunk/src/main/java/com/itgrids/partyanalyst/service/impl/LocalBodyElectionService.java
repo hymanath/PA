@@ -248,7 +248,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			localBodyElectionResultVO.setLocalBodyId(localBodyId);
 			localBodyElectionResultVO.setLocalBodyElectionTypeId(electionType.getElectionTypeId());
 			localBodyElectionResultVO.setLocalBodyElectionType(electionType.getElectionType());
-			localBodyElectionResultVO.setLocalBodyRegion(localElectionBody.getName());
+			localBodyElectionResultVO.setLocalBodyRegion(localElectionBody.getName().toUpperCase());
 			
 			//Local Body Election Info
 			if(electionId != null && !electionId.equals(0L)){

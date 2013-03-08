@@ -4899,5 +4899,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			return null;
 		}		
 	}
+
+	public String getLocalBodyElectionTypeByConstituencyId(
+			Long constituencyId) {
+		SelectOptionVO selectOptionVO = null;
+	    String electionTypes = constituencyDAO.getLocalBodyElectionTypeByConstituencyId(constituencyId);		
+		return electionTypes;
+	}
 	
 }

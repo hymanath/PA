@@ -171,10 +171,10 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetLocalBodyElections(){
-		List elections = constituencyElectionDAO.getLocalBodyElectionsInAState(488L, 1L);
+		List elections = constituencyElectionDAO.getLocalBodyElectionsInAState(122l, 1L);
 		if(elections !=  null){
 			for(int i=0;i<elections.size();i++){
 				Object[] params = (Object[])elections.get(i);
@@ -183,7 +183,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	
-	public void testGetReservationZoneForAConstituency(){
+	/*public void testGetReservationZoneForAConstituency(){
 		//List list = constituencyElectionDAO.getLatestReservationZone(21l,IConstants.ELECTION_SUBTYPE_MAIN);
 		List<Long> constituencyIds = new ArrayList<Long>(0);
 		constituencyIds.add(8436l);		
@@ -362,7 +362,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	*/
-	public void testfindAllElectionsHappendInAConstByConstIds()
+	/*public void testfindAllElectionsHappendInAConstByConstIds()
 	{
 		List<Long> constituencyIdsList = new ArrayList<Long>(0);
 		constituencyIdsList.add(232l);
@@ -370,5 +370,5 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		List<Object[]> list = constituencyElectionDAO.findAllElectionsHappendInAConstByConstIds(constituencyIdsList);
 		for(Object[] params : list)
 		System.out.println(params[0]+" "+params[1]);
-	}
+	}*/
 }
