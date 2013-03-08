@@ -16,7 +16,8 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	private Long deletedTotal = 0L;
 	private Long deletedMale = 0L;
 	private Long deletedFemale = 0L;
-	private boolean dataPresent;
+	private boolean dataPresent;	
+	private Long reportLevelValue;
 	
 	public String getPreviousPublicationName() {
 		return previousPublicationName;
@@ -84,6 +85,13 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	}
 	public void setDataPresent(boolean dataPresent) {
 		this.dataPresent = dataPresent;
+	}
+	
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
 	}
 	
 }
