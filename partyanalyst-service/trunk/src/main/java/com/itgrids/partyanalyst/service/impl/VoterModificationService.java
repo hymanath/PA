@@ -1335,13 +1335,15 @@ public class VoterModificationService implements IVoterModificationService{
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
 		 try{
-			 
-			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId);
+			 for(Long locationVal:locationValuesList){
+				 List<Long> value = new ArrayList<Long>();
+				 value.add(locationVal);
+			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, value, constituencyId, publicationDateId);
 			 saveGenderWiseVoterModifInfoInVoterModificationInfoTable(modificationGenderInfoVO,constituencyId,publicationDateId,locationType);
 			 
-			 List<VoterModificationAgeRangeVO> ageRangeVOs = getVotersAddedAndDeletedCountAgeWiseByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId);
+			 List<VoterModificationAgeRangeVO> ageRangeVOs = getVotersAddedAndDeletedCountAgeWiseByPublicationId(locationType, value, constituencyId, publicationDateId);
 			 saveAgeWiseAddedAndDeletedVotersCountInVoterAgeInfo(ageRangeVOs,constituencyId, publicationDateId,locationType);
-			 
+			 }
 			
 			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			 return resultStatus;
