@@ -327,25 +327,25 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 	{
 		var str ='';
 		var id=oRecord.getData("voterIds");
+		var name = oRecord.getData("firstName");
 		var influencePerson=oRecord.getData("influencePerson");
-
 		str += '<ul class="dd_menu">';
 		str += ' <li><i class="icon-th-list"></i>';
 		str += ' <ul>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\');">Create New Cadre</a>';
+		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\',\''+name+'\');">Create New Cadre</a>';
 		str += ' </li>';
 		str += ' <li>';
 		str += ' <a href= "javascript:{};" onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
 		str += ' </li>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\');">Create New Influencing People</a>';
+		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\',\''+name+'\');">Create New Influencing People</a>';
 		str += ' </li>';
 		str += ' <li>';
 		str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
 		str += ' </li>';
 		str += ' <li>';
-		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\');">Add To Politician</a>';
+		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
 		str += ' </li>';
 		str += ' </ul>';
 		str += ' </li>';
@@ -464,25 +464,26 @@ YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
 {
 var str ='';
 var id=oRecord.getData("voterIds");
+var name = oRecord.getDate("firstName");
 var influencePerson=oRecord.getData("influencePerson");
 
 str += '<ul class="dd_menu">';
 str += ' <li><i class="icon-th-list"></i>';
 str += ' <ul>';
 str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\');">Create New Cadre</a>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\',\''+name+'\');">Create New Cadre</a>';
 str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};"  onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
 str += ' </li>';
 str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\');">Create New Influencing People</a>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\',\''+name+'\');">Create New Influencing People</a>';
 str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
 str += ' </li>';
 str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\');">Add To Politician</a>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
 str += ' </li>';
 str += ' </ul>';
 str += ' </li>';
@@ -592,11 +593,12 @@ oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
 };
 }	
-function checkForVoter(voterId,type)
+function checkForVoter(voterId,type,name)
 {
 	var jsObj = {
 			voterId:voterId,
 			type : type,
+			name : name,
 			task:"ckeckForVoterId"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -609,7 +611,7 @@ function buildVoterToSelectedType(result,jsObj)
 	{
 		if(result.resultCode == 1)
 		{
-			addInfluencingPeople(jsObj.voterId);
+			addInfluencingPeople(jsObj.voterId,jsObj.name);
 		}
 		else 
 		{
@@ -622,7 +624,7 @@ function buildVoterToSelectedType(result,jsObj)
 	{
 		if(result.resultCode == 1)
 		{
-			openRegistrationForm(jsObj.voterId);
+			openRegistrationForm(jsObj.voterId,jsObj.name);
 		}
 		else
 		{
@@ -635,7 +637,7 @@ function buildVoterToSelectedType(result,jsObj)
 	{
 		if(result.resultCode == 1)
 		{
-		addToPolitician(jsObj.voterId);
+		addToPolitician(jsObj.voterId,jsObj.name);
 		}
 		else
 		{
@@ -645,23 +647,23 @@ function buildVoterToSelectedType(result,jsObj)
 	}
 	
 }
-function addInfluencingPeople(voterId)
+function addInfluencingPeople(voterId,name)
 {
 	var type='edit';
-	var urlStr = "influencingPeopleAction.action?windowTask="+type+"&voterId="+voterId;
+	var urlStr = "influencingPeopleAction.action?windowTask="+type+"&voterId="+voterId+"&name="+name;
 	var browser2 = window.open(urlStr,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 	browser2.focus();
 }
-function openRegistrationForm(voterId)
+function openRegistrationForm(voterId,name)
 {
 	var task = "update_existing";
-	var urlStr = "cadreRegisterPageAction.action?voterId="+voterId+"&windowTask="+task;
+	var urlStr = "cadreRegisterPageAction.action?voterId="+voterId+"&windowTask="+task+"&name="+name;
 	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
 	updateBrowser.focus();				
 }
-function addToPolitician(voterId)
+function addToPolitician(voterId,name)
 {
-	var urlStr = "assigningCandidatesToVoterAction.action?voterId="+voterId;
+	var urlStr = "assigningCandidatesToVoterAction.action?voterId="+voterId+"&name="+name;
 	var browser2 = window.open(urlStr,"assigningCandidatesToVoterAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 	browser2.focus();
 }

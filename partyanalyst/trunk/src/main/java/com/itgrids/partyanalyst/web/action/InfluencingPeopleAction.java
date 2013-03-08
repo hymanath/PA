@@ -69,6 +69,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private Long pConstituencyId;
 	private String position;
 	private String message;
+	private String name;
 	private IVotersAnalysisService votersAnalysisService;
 	public String getMessage() {
 		return message;
@@ -330,6 +331,13 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	public void setVotersAnalysisService(
 			IVotersAnalysisService votersAnalysisService) {
 		this.votersAnalysisService = votersAnalysisService;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String execute() throws Exception {
 		

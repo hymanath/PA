@@ -78,7 +78,7 @@
     border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
-    width: 982px;
+    width: 974px;
 	overflow-x: scroll;
 	display:none;
   }
@@ -228,6 +228,7 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 	   });
   });
   function getVotersInfo(){
+	$('#errorMessageDiv').hide();
     $("#multipleVoterFamiliesEditDiv").html("");
 	$("#errorMsgAlert").html("");
     var level = $("#reportLevel").val();
@@ -639,8 +640,34 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 		oPayload.totalRecords = oResponse.meta.totalRecords;
 		totalReq = oResponse.meta.totalRecords;
-		$("#topCount").html("<b>Total Voters: "+totalReq+"</b>");
-        $("#bottomCount").html("<b>Total Voters: "+totalReq+"</b>");
+		if(totalReq == null)
+		{
+			$('#votersBySearchTabContentDiv_body').hide();
+			$('#imgDescriptionDiv').hide();
+			$('#topSelCount').hide();
+			$('#topCount').hide();
+			$('#bottomCount').hide();
+			$('#bottomSelCount').hide();
+			$('#topButtons').hide();
+			$('#bottomButtons').hide();
+			$('#categoriesDiv').hide();
+			$('#errorMessageDiv').show().html('No Data Avalible For Given Search Details');
+		}
+		else
+		{
+			$('#votersBySearchTabContentDiv_body').show();
+			$('#imgDescriptionDiv').show();
+			$('#topSelCount').show();
+			$('#bottomSelCount').show();
+			$('#topButtons').show();
+			$('#bottomButtons').show();
+			$('#categoriesDiv').show();
+			$('#topCount').show();
+			$('#bottomCount').show();
+			$("#topCount").html("<b>Total Voters: "+totalReq+"</b>");
+			$("#bottomCount").html("<b>Total Voters: "+totalReq+"</b>");
+		}
+        
 		return oPayload;
 		}
 
@@ -1392,19 +1419,22 @@ function addInfluencingPeople(voterId)
 	var urlStr = "influencingPeopleAction.action?windowTask="+type+"&voterId="+voterId;
 	var browser2 = window.open(urlStr,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 	browser2.focus();
+	//buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
 }
 function openRegistrationForm(voterId)
 {
 	var task = "update_existing";
 	var urlStr = "cadreRegisterPageAction.action?voterId="+voterId+"&windowTask="+task;
 	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
-	updateBrowser.focus();				
+	updateBrowser.focus();		
+	//buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);	
 }
 function addToPolitician(voterId)
 {
 	var urlStr = "assigningCandidatesToVoterAction.action?voterId="+voterId;
 	var browser2 = window.open(urlStr,"assigningCandidatesToVoterAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 	browser2.focus();
+	//buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
 }
 function mapSelectedCadreToVoter(cid,cName,voterId){
 	 var jsObj=
@@ -2034,6 +2064,10 @@ function getHamletsOrWards(){
 	}
 
 }
+function refreshingchildWindowWindow()
+{
+	buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
+}
 </script>
 </head>
 <body>
@@ -2191,7 +2225,7 @@ function getHamletsOrWards(){
 	   </fieldset>
 	   <div id="topButtons"></div>
 	   <div><span id="topCount"></span><span id="topSelCount"></span></div>
-	   <div  id="votersBySearchTabContentDiv_body"   class="yui-skin-sam yui-dt-sortable"></div>
+	   <div  id="votersBySearchTabContentDiv_body"   class="yui-skin-sam yui-dt-sortable"></div><div id="errorMessageDiv" style="display:none;font-weight:bold;color:red" align="center"></div>
 	   <div><span id="bottomCount"></span><span id="bottomSelCount"></span></div>
 	   <div id="categoriesDiv"></div>
 	   <div id="bottomButtons"></div>

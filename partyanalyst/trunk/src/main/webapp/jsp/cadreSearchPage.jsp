@@ -324,9 +324,18 @@ function setCadreIdToProblem()
 	<div id="cadreSearchHeading"><center>
         <table border="0" cellpadding="0" cellspacing="0">          
           <tr>
-            <td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
-            <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">Cadre 
+            <td><img src="images/icons/constituencyManagement/left_blue_main.png"/>
+			</td>
+			<c:if test="${windowTask == 'Sms'}">
+            <td><div id="headerImageCenterDiv">
+			<span id="headerImageCenterSpan">Cadre 
 			SMS</span></div></td>
+			</c:if>
+			<c:if test="${windowTask == 'Search'}">
+            <td><div id="headerImageCenterDiv">
+			<span id="headerImageCenterSpan">Cadre 
+			Search</span></div></td>
+			</c:if>
             <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
           </tr>
         </table>    	

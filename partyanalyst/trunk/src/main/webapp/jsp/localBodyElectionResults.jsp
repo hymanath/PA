@@ -10,36 +10,16 @@
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script>  	
+	<script src="js/yahoo/layout-min.js"></script>  
 	<script type="text/javascript" src="js/json/json-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script>  
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<!-- Skin CSS files resize.css must load before layout.css -->   
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-
 	<!-- YUI Dependency files (End) -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${constituencyName} CONSTITUENCY Local Body Elections Results</title>
@@ -99,6 +79,16 @@ table {
 	color: highlight;
 	margin-left:16px;
 }
+#corpDetails,#muncipalDetails
+{
+    clear: both;
+    color: highlight;
+    font-family: serif;
+    font-size: 16px;
+    margin: -25px -20px 0 16px;
+    padding: 10px 10px 10px 20px;
+    text-align: start;
+}
 .electionResultsTable
 {
 	margin-left: 76px;
@@ -133,19 +123,18 @@ table {
 }
 #headingDiv
 {
-	color: brown;
+	color: black;
     font-family: Tahoma;
     font-size: 17px;
     margin-bottom: 16px;
     margin-left: 91px;
 }
-#mptcTableDiv, #zptcTableDiv, #muncipalTableDiv, #corpTableDiv, #ghmcTableDiv 
+#mptcTableDiv, #zptcTableDiv, #muncipalTableDiv, #corpTableDiv
 {
     background-color: #F5F6F6;
     color: #000000;
     font-family: Helvetica;
     font-size: 13px;
-    font-weight: bold;
     margin-left: 39px;
     padding: 10px;
     text-align: center;
@@ -177,10 +166,48 @@ table {
 {
 	margin-bottom: 10px;
 }
+#ghmcMainDiv
+{
+	border: 1px solid #A1A1A1;
+    margin-left: 40px;
+    width: 980px;
+	display:none;
+    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 17px;
+	margin-bottom: 15px;
+	
+}
+#ghmcTableDiv
+{
+    background-color: #F5F6F6;
+    color: #000000;
+    font-family: Helvetica;
+    font-size: 13px;
+    margin-left: 39px;
+    padding: 10px;
+    text-align: center;
+    width: 896px;
+}
+.yui-skin-sam .yui-pg-container {
+    display: block;
+    margin: 6px 0 6px 278px;
+    white-space: nowrap;
+	
+}
+.yui-skin-sam .yui-dt-paginator {
+    display: block;
+    margin: 6px 0;
+    white-space: nowrap;
+	margin-left: auto;
+}
+
 </style>
 <script type="text/javascript">
 var constituencyId = '${constituencyId}';
 var constituencyName = '${constituencyName}';
+$(document).ready(function(){
+getLocalBodyElectionType();
+});
 /*
 This Method is Used To Sead a Ajax Call For Retriving MPTC LocalBody Election Details
 */
@@ -248,10 +275,11 @@ function getGhmcPartyDetails()
 	var jsObj = {
 			stateId : 1,
 			localBodyElectionId:localBodyElectionId,
-			task:"getghmcElectionResults"
+			constituencyId:constituencyId,
+			task:"greaterElectionsInfo"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "localBodyElectionResultsAjaxAction.action?"+rparam;
+	var url = "getGreaterConstiResults.action?"+rparam;
 	callAjax(jsObj, url);
 }
 /*
@@ -267,6 +295,20 @@ function checkForLocalBodyElection()
 	var url = "localBodyElectionResultsAjaxAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
+/*
+	This Method is used to get the Local Body Election Area type Ex:-(RURAL,URBAn,RURAL-URBAN)
+*/
+function getLocalBodyElectionType()
+{
+	var jsObj = {
+			constituencyId:constituencyId,
+			task:"getLocalBodyElectionType"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "localBodyElectionResultsAjaxAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
 /*
 	This Method Is Used To Build a Table For All MPTC Details 
 */
@@ -340,8 +382,13 @@ function buildDataTableForZptc(myResults)
 */
 function buildDataTableForMuncipal(myResults)
 {	$('#muncipalMainDiv').show();
+	$('#muncipalDetails').show();
 	if(myResults.muncipalityDetails != null)
 	{
+			var muncipalName = myResults.muncipalityDetails[0].muncipalityName;
+		    var totWards = myResults.muncipalityDetails[0].totalWards;
+			var totalVoters = myResults.muncipalityDetails[0].totalVoters;
+			var totalPolledVotes = myResults.muncipalityDetails[0].totalPolledVotes;
 		for(var i in myResults.muncipalityDetails)
 		{
 			if(myResults.muncipalityDetails[i].muncipalityVO != null && myResults.muncipalityDetails[i].muncipalityVO.length > 0)
@@ -367,7 +414,10 @@ function buildDataTableForMuncipal(myResults)
 		var str='';
 		str+='<input type="button" class="muncipalOrCorpButton" value="SHOW RESULTS" onClick="redirectMuncipalityCandidateLink(\'MUNCIPALITY\','+myResults.muncipalityDetails[i].electionTypeId+','+myResults.muncipalityDetails[i].muncipalityId+','+myResults.muncipalityDetails[i].latestMuncipalElectionYear+',\''+myResults.muncipalityDetails[i].muncipalityName+'\')";></input>';
 		divEle.innerHTML = str;
-	
+		$('#muncipalName').html(muncipalName);
+		$('#muncipalTotWards').html(totWards);
+		$('#muncipalTotVoters').html(totalVoters);
+		$('#muncipalPolledVotes').html(totalPolledVotes);
 	}
 	else
 	{
@@ -379,10 +429,15 @@ function buildDataTableForMuncipal(myResults)
 */
 function buildDataTableForCorp(myResults)
 {	$('#corpMainDiv').show();
+	$('#corpDetails').show();
 	if(myResults.corprationDetails != null)
 	{
 		for(var i in myResults.corprationDetails)
 		{
+			var corpname = myResults.corprationDetails[0].muncipalityName;
+		    var totWards = myResults.corprationDetails[0].totalWards;
+			var totalVoters = myResults.corprationDetails[0].totalVoters;
+			var totalPolledVotes = myResults.corprationDetails[0].totalPolledVotes;
 			if(myResults.corprationDetails[i].muncipalityVO != null && myResults.corprationDetails[i].muncipalityVO.length > 0)
 			{
 				var corpColumnDefs =
@@ -406,6 +461,10 @@ function buildDataTableForCorp(myResults)
 		var str='';
 		str+='<input type="button" class="muncipalOrCorpButton" value="SHOW RESULTS" onClick="redirectMuncipalityCandidateLink(\'Corporation\','+myResults.corprationDetails[i].electionTypeId+','+myResults.corprationDetails[i].muncipalityId+','+myResults.corprationDetails[i].latestMuncipalElectionYear+',\''+myResults.corprationDetails[i].muncipalityName+'\')";></input>';
 		divEle.innerHTML = str;
+		$('#corpName').html(corpname);
+		$('#corpTotWards').html(totWards);
+		$('#corpTotVoters').html(totalVoters);
+		$('#corpPolledVotes').html(totalPolledVotes);
 	}
 	else
 	{
@@ -419,27 +478,38 @@ function buildDataTableForGhmc(myResults)
 {	
 	$('#ghmcMainDiv').show();
 	
-	if(myResults != null && myResults.length > 0)
+	if(myResults.localElectionsInfo != null)
 	{
-		
-		var ghmcColumnDefs =
-							[ 
-							 {key:"partyName",label:"Party",sortable:true},
-							 {key:"participatedSeats",label:"Participated Seats",sortable:true},
-							 {key:"partyWonSeats",label:"Won",sortable:true},
-							 {key:"partiPartiVotesPercent",label:"Voting%",sortable:true}
-							]; 
-			var myConfigsForghmc = {
-			paginator : new YAHOO.widget.Paginator({
-				rowsPerPage: 15 
-			})
-			};		
-			var myDataSource = new YAHOO.util.DataSource(myResults);
-			myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
-			myDataSource.responseschema = {
-							 fields : ["partyName","participatedSeats","partyWonSeats","partiPartiVotesPercent"]
-						};
-		
+		for(var i in myResults.localElectionsInfo)
+		{
+			if(myResults.localElectionsInfo[i].wardwiseResultsForParty != null && myResults.localElectionsInfo[i].wardwiseResultsForParty.length > 0)
+			{
+				var ghmcColumnDefs =
+								[ 
+								 {key:"constituencyName",label:"Ward",sortable:true},
+								 {key:"partyName",label:"Party",sortable:true},
+								 {key:"candidateName",label:"Candidate",sortable:true},
+								 {key:"votesEarned",label:"Votes Gained",sortable:true},
+								 {key:"votesPercentage",label:"Voting%",sortable:true},
+								 {key:"rank",label:"Rank",sortable:true,width:50},
+								 {key:"totalVotes",label:"Total Voters",sortable:true}
+								]; 
+				var myConfigsForghmc = {
+				paginator : new YAHOO.widget.Paginator({
+					rowsPerPage: 15 
+				})
+				};		
+				var myDataSource = new YAHOO.util.DataSource(myResults.localElectionsInfo[i].wardwiseResultsForParty);
+				myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+				myDataSource.responseschema = {
+								 fields : ["constituencyName","partyName","candidateName","votesEarned","votesPercentage","rank","totalVotes"]
+							};
+			}
+		}
+		var divEle = document.getElementById('ghmcButtonDiv');
+		var str='';
+		str+='<input type="button" class="muncipalOrCorpButton" value="SHOW RESULTS" onClick="redirectMuncipalityCandidateLink(\''+myResults.localElectionsInfo[i].electionType+'\','+myResults.localElectionsInfo[i].electionTypeId+','+myResults.localElectionsInfo[i].id+','+myResults.localElectionsInfo[i].electionYear+',\''+myResults.localElectionsInfo[i].name+'\')";></input>';
+		divEle.innerHTML = str;
 		 var familesDataSource = new YAHOO.widget.DataTable("ghmcTableDiv", ghmcColumnDefs,myDataSource,myConfigsForghmc);
 		$('#mptcMainDiv').hide();
 		$('#zptcMainDiv').hide(); 
@@ -477,10 +547,14 @@ function callAjax(jsObj,url)
 							{
 								buildDataTableForCorp(myResults);
 							}	
-							else if(jsObj.task=="getghmcElectionResults")
+							else if(jsObj.task=="greaterElectionsInfo")
 							{
 								buildDataTableForGhmc(myResults);
-							}						
+							}	
+							else if(jsObj.task=="getLocalBodyElectionType")
+							{
+								checkingForAreaType(myResults);
+							}							
 							}catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
 							}  
@@ -524,30 +598,57 @@ function redirectMptcCandidateLink()
 		var browser2 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		browser2.focus();
 }
-$(document).ready(function(){
-<s:if test="zptcElection != null && zptcElection.size() > 0">
-  getZptcPartyDetails();
-</s:if>
-<s:if test="mptcElection != null && mptcElection.size() > 0">
-getMptcPartyDetails();
-</s:if>
-<s:if test="muncipalElection != null && muncipalElection.size() > 0">
-getMuncipalityPartyDetails();
-</s:if> 
-<s:if test="corpElection != null && corpElection.size() > 0">
-getCorpPartyDetails();
-</s:if> 
-<s:if test="ghmcElection != null && ghmcElection.size() > 0">
-getGhmcPartyDetails();
-</s:if>
-});
-
+/*
+	Thia Method is Used To Check The Condition For Displaying the details Local Body Election Details Based On Area Type
+*/
+function checkingForAreaType(myResults)
+{
+	if(myResults == 'RURAL')
+	{
+		<s:if test="zptcElection != null && zptcElection.size() > 0">
+		getZptcPartyDetails();
+		</s:if>
+		<s:if test="mptcElection != null && mptcElection.size() > 0">
+		getMptcPartyDetails();
+		</s:if>
+	}
+	else if(myResults == 'URBAN')
+	{
+		<s:if test="muncipalElection != null && muncipalElection.size() > 0">
+		getMuncipalityPartyDetails();
+		</s:if> 
+		<s:if test="corpElection != null && corpElection.size() > 0">
+		getCorpPartyDetails();
+		</s:if> 
+		<s:if test="greaterElections != null && greaterElections.size() > 0">
+		getGhmcPartyDetails();
+		</s:if>
+	}
+	else if(myResults == 'RURAL-URBAN')
+	{
+		<s:if test="zptcElection != null && zptcElection.size() > 0">
+		getZptcPartyDetails();
+		</s:if>
+		<s:if test="mptcElection != null && mptcElection.size() > 0">
+		getMptcPartyDetails();
+		</s:if>
+		<s:if test="muncipalElection != null && muncipalElection.size() > 0">
+		getMuncipalityPartyDetails();
+		</s:if> 
+		<s:if test="corpElection != null && corpElection.size() > 0">
+		getCorpPartyDetails();
+		</s:if> 
+		<s:if test="ghmcElection != null && ghmcElection.size() > 0">
+		getGhmcPartyDetails();
+		</s:if>
+	}
+}
 </script>
 </head>
 
 <body>
 
-<div id="headingDiv">${constituencyName} CONSTITUENCY LOCAL BODY ELECTION RESULTS</div>
+<div id="headingDiv" align="center">${constituencyName} CONSTITUENCY LOCAL BODY ELECTION RESULTS</div>
 <div id="mainDiv" style="margin-left: -25px;">
 
 <div id="zptcMainDiv" class="bordeDiv">
@@ -556,8 +657,8 @@ getGhmcPartyDetails();
 <h4 id="zptcHeading" class ="electionResults">ZPTC ELECTION RESULTS :
 <div id="zptcElectionYear" class="localBodyElectionYearSelect">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="zptcElectionYear" id="zptcElectionYear" list="zptcElection" listKey="id" listValue="name" onChange="getZptcPartyDetails();"/></div>
 </br>
-<div style="width:1000px" id="zptcSeats" style="display:none;">Total Seats : <span><font id="totalZptcSeats" style="dispaly:none;"></font>
-<input type="button" class="showResultButton" value="SHOW RESULTS" onClick="redirectMptcCandidateLink();"></input>
+<div style="width:1000px" id="zptcSeats" style="display:none;color: brown;">Total Seats : <span><font id="totalZptcSeats" style="dispaly:none;"></font>
+<input type="button" class="showResultButton" value="SHOW RESULTS" onClick="redirectZptcCandidateLink();"></input>
 </div>
 </s:if></h4>
 </div>
@@ -571,7 +672,7 @@ getGhmcPartyDetails();
 <h4 id="mptcHeading" class ="electionResults" >MPTC ELECTION RESULTS :
 <div id="mptcYearSelectId" class="localBodyElectionYearSelect">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="mptcElectionYear" id="mptcElectionYear" list="mptcElection" listKey="id" listValue="name" onChange="getMptcPartyDetails();"/></div>
 </br>
-<div style="width:1000px" id="mptcSeats" style="display:none;">Total Seats : <font id="totalmptcSeats" style="dispaly:none;"></font>
+<div style="width:1000px" id="mptcSeats" style="display:none;color: brown;">Total Seats : <font id="totalmptcSeats" style="dispaly:none;"></font>
 <input type="button" class="showResultButton" value="SHOW RESULTS" onClick="redirectMptcCandidateLink();"></input>
 </div>
 </s:if></h4>
@@ -586,6 +687,17 @@ getGhmcPartyDetails();
 <h4 id="muncipalHeading" class ="electionResults">MUNCIPALITY ELECTION RESULTS :
 <div id="muncipalYearSelectId" class="localBodyElectionYearSelect">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="muncipalElectionYear" id="muncipalElectionYear" list="muncipalElection" listKey="id" listValue="name" onChange="getMuncipalityPartyDetails();"/></div>
 </s:if></h4>
+</br>
+<div id="muncipalDetails" style="display:none;">
+<span id="muncipalityName"><b>Muncipality Name :</b> </span><font id="muncipalName" style="dispaly:none;"></font>
+<span id="muncipalTotalWards" style="float: right;
+    margin-right: 148px;"><b>Total Wards :</b><font id="muncipalTotWards" style="dispaly:none;"></font></span>
+</br>
+<span id="muncipalTotalVoters"><b>Total Voters : </b></span><font id="muncipalTotVoters" style="dispaly:none;"></font>
+<span id="muncipalTotalPolledVoters" style="float: right;
+    margin-right: 144px;"><b>Total Polled Votes : </b><font id="muncipalPolledVotes" style="dispaly:none;"></font>
+</span>
+</div>
 <div id="muncipalButtonDiv"></div>
 </div>
 <div id="muncipalTableDiv" class="electionResultsTable yui-skin-sam yui-dt-sortable yui-dt"></div>
@@ -598,6 +710,17 @@ getGhmcPartyDetails();
 <h4 id="corpHeading" class ="electionResults" >CORPORATION ELECTION RESULTS :
 <div id="corpYearSelectId" class="localBodyElectionYearSelect">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="corpElectionYear" id="corpElectionYear" list="corpElection" listKey="id" listValue="name" onChange="getCorpPartyDetails();"/></div>
 </s:if></h4>
+</br>
+<div id="corpDetails" style="display:none;">
+<span id="corporationName"><b>Corporation Name :</b> </span><font id="corpName" style="dispaly:none;"></font>
+<span id="corpTotalWards" style="float: right;
+    margin-right: 148px;"><b>Total Wards :</b><font id="corpTotWards" style="dispaly:none;"></font></span>
+</br>
+<span id="corpTotalVoters"><b>Total Voters : </b></span><font id="corpTotVoters" style="dispaly:none;"></font>
+<span id="corpTotalPolledVoters" style="float: right;
+    margin-right: 144px;"><b>Total Polled Votes : </b><font id="corpPolledVotes" style="dispaly:none;"></font>
+</span>
+</div>
 <div id="corpButtonDiv"></div>
 </div>
 <div id="corpTableDiv" class="electionResultsTable yui-skin-sam yui-dt-sortable yui-dt"></div>
@@ -606,10 +729,12 @@ getGhmcPartyDetails();
 
 <div id="ghmcMainDiv" class="bordeDiv">
 <div id="ghmcDiv" style="margin-left: 42px;">
-<s:if test="ghmcElection != null && ghmcElection.size() > 0">
-<h4 id="ghmcHeading" class ="electionResults" >GHMC ELECTION RESULTS : 
-<div style="visibility: hidden">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="ghmcElectionYear" id="ghmcElectionYear" list="ghmcElection" listKey="id" listValue="name"/>
-</s:if></div></h4>
+<s:if test="greaterElections != null && greaterElections.size() > 0">
+<h4 id="ghmcHeading" class ="electionResults" style=" width:300px" >GHMC ELECTION RESULTS :</h4> 
+<div id="ghmcYearDiv" align="center" style="margin-top: -30px; margin-bottom: 17px; margin-left: 90px;">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="ghmcElectionYear" id="ghmcElectionYear" list="greaterElections" listKey="id" listValue="name"/>
+</s:if>
+<div id="ghmcButtonDiv" style="margin-left:-113px;margin-top:-22px;"></div>
+</div>
 </div>
 <div id="ghmcTableDiv" class="electionResultsTable yui-skin-sam yui-dt-sortable yui-dt">
 <div class="errorMsgDiv"></div>

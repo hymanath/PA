@@ -103,7 +103,7 @@ html {overflow-x: hidden;}
 #problemViewingFieldSet legend {line-height: 20px;}
 #localBodyElectiondiv_main{margin-top:20px;}
 input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
-#problemViewingFieldSet{border: 1px solid #D3D3D3;padding: 5px;}
+#problemViewingFieldSet{border: 1px solid #D3D3D3;padding: 5px;width:258px;height: 229px;}
 
 .productFeatureHeaderBackground_center {
     background-image: url("images/icons/homePage_new/blue_header_center.jpg");
@@ -120,8 +120,16 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
 }
 #wardsElectionResults_head{margin-top: 10px;}
 #adDataMain_body{padding-right: 2px;}
+.yellow:before {
+    background: none repeat scroll 0 0 #FDE498;
+    content: " ";
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: -5px;
+    width: 45px;
+}
 
-img{max-width:1000px;}
 </style>
 </head>
 <body>
@@ -233,9 +241,25 @@ img{max-width:1000px;}
 						</div>
 					</div>
 				</td>	
-				<td width="30%" rowspan="2" valign="top">
-					<div id="adDataDiv_main">
-                    	<div id="adDataMain_header">
+				<td width="30%" rowspan="2" valign="top" style="width:500px">
+				<div id="adDataDiv_main" style="border: 1px lightgray solid;width:272px;
+				">
+				<div class="widget yellow explore-info">
+				<div class="widget-block" style=" display: inline-block;margin-bottom: 13px;margin-left: 12px;margin-top: 7px;padding: 2px;width: 266px;">
+				<img src="images/RightPlace.gif"><a alt="Explore About PartyAnalyst Image" class="btn btn-small btn-warning pull-right inline" href="viewFeaturesAction.action" style=" margin-left: -61px;margin-top: 43px;position: absolute;">Explore!</a>
+				</div></div>
+
+				<div class="widget green voters-pulse-home">
+				<div class="widget-block" style=" display: inline-block;margin-bottom: 13px;margin-left: 12px;margin-top: 7px;padding: 2px;width: 266px;">
+				<img alt="voters pulse Image" src="images/voters_pulse.gif">
+				<a href="VotersPulse.action" style="margin-left: -68px;margin-top: 67px;position: absolute;" class="btn btn-success btn-small">View Now</a></div>
+				</div>
+				<div class="widget red explore-info">
+				<div class="widget-block" style=" display: inline-block;margin-bottom: 13px;margin-left: 12px;margin-top: 7px;padding: 2px;width: 266px;">
+				<img style="opacity: 0.8;" src="images/RIT_Act_Tham.gif"><a alt="Right To Information  Image" class="btn btn-small btn-primary pull-right inline" href="righttoinformation.action" style="margin-left: -45px;margin-top: 46px;position: absolute;">R T I</a>
+				
+				</div></div>
+                    	<!--<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td width="5%"><img src="images/icons/homePage_new/blue_header_top_left.jpg" /></td>
@@ -273,7 +297,7 @@ img{max-width:1000px;}
 									</div>
 								</div>													
 							</div>							
-						</div>						
+						</div>-->						
                     </div>  
                     <div id="problemViewingDiv">
 						<div id="problemViewingDiv_Head"></div>

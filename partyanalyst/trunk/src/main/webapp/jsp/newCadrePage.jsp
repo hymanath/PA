@@ -629,6 +629,9 @@
     {
 		var fname = $('#firstNameField').val();
 		var lname = $('#lastNameField').val();
+		var fmyFirstPerson = $('#firstFamilyMemberNameId').val();
+		var fmySecondPerson = $('#secondFamilyMemberNameId').val();
+		var fmyThirdPerson = $('#thirdFamilyMemberNameId').val();
 		var gender= $('input[name=gender]:checked');
 		var genderLength = $(gender).size();
 		var state = $('#stateField').val();
@@ -646,10 +649,45 @@
 			$('#errorDiv').html('<div>Please enter the first name</div>')
 			return false;
 		}
+		if(fname.length > 0)
+		{
+			if(/[^a-z A-Z]/.test(fname)){
+			$('#errorDiv').html('Name Accepts only Characters');
+			return false;
+			}
+		}
 		if(lname == '')
 		{
 			$('#errorDiv').html('<div>Please enter the lat name</div>')
 			return false;
+		}
+		if(lname.length > 0)
+		{
+			if(/[^a-z A-Z]/.test(lname)){
+			$('#errorDiv').html('Name Accepts only Characters');
+			return false;
+			}
+		}
+		if(fmyFirstPerson.length > 0)
+		{
+			if(/[^a-z A-Z]/.test(fmyFirstPerson)){
+			$('#errorDiv').html('First Person Name In Famile Accepts only Characters');
+			return false;
+			}
+		}
+		if(fmySecondPerson.length > 0)
+		{
+			if(/[^a-z A-Z]/.test(fmySecondPerson)){
+			$('#errorDiv').html('Second Person Name In Famile Accepts only Characters');
+			return false;
+			}
+		}
+		if(fmyThirdPerson.length > 0)
+		{
+			if(/[^a-z A-Z]/.test(fmyThirdPerson)){
+			$('#errorDiv').html('Third Person Name In Famile Accepts only Characters');
+			return false;
+			}
 		}
 		if(genderLength == 0)
 		{
@@ -701,6 +739,7 @@
 			$('#errorDiv').html('<div>Please select the Cadre Level Value</div>')
 			return false;
 		}
+		refreshingParentWindow();
 		/*
 		if(cadreLevel == 2)
 		{
@@ -758,9 +797,16 @@
          return false;
 	   }
 	   else
+	   {
 	     return true;
+	   }
 	
     }
+function refreshingParentWindow()
+ {
+	setTimeout(window.opener.refreshingchildWindowWindow(),18000);
+    return false;
+ }
 </script>
 <style type="text/css">
 .calendarWidth
@@ -1432,7 +1478,7 @@
 				<c:if test="${ empty voterId}">
 				<s:submit  value="Update" cssClass="btn btn-primary"></s:submit></c:if>
 				<c:if test="${ !empty voterId}">
-				<s:submit  value="Register" cssClass="btn btn-primary"></s:submit></c:if>
+				<s:submit  value="Register" cssClass="btn btn-primary" ></s:submit></c:if>
 				<a href="cadreManagementAction.action" class="btn btn-primary" >Go To Cadre Management Home Page</a>
 				<a href="cadreReportAction.action" class="btn btn-primary">Go To Cadre Management Report</a>
 			</div>

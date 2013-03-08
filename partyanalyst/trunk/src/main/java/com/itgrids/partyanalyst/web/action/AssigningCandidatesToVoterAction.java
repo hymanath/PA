@@ -37,6 +37,7 @@ public class AssigningCandidatesToVoterAction extends ActionSupport implements S
 	private ICandidateDetailsService candidateDetailsService;
 	private ResultStatus resultStatus;
 	private Long voterId;
+	private String name;
 	private CandidateDetailsVO candidateDetailsVO;
 	public void setServletResponse(HttpServletResponse response) {
 		this.response = response;	
@@ -84,6 +85,13 @@ public class AssigningCandidatesToVoterAction extends ActionSupport implements S
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String execute()
 	{
