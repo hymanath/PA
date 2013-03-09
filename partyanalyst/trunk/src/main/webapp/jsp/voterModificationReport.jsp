@@ -66,6 +66,14 @@
     font-weight: bold;
     padding: 5px 10px;
     text-align: center;text-transform: capitalize;}
+#voterDetails.dataTable tr.odd {background-color: #FFF !important;}
+#voterDetails.dataTable tr.even td.sorting_1 {background:#DBEBFF !important;}
+#voterDetails.dataTable tr.odd td.sorting_1{background:#FFF !important;}
+#voterDetails.dataTable td {padding: 7px 10px;}
+#voterDetails{border:1px solid #000;}
+#voterDetails.dataTable thead th {background: none repeat scroll 0 0 #DBEBFF;padding: 10px 18px 10px 10px;}
+#voterDetails.dataTable tr.even{background:#DBEBFF !important;}
+#voterDetails_info , #voterDetails_paginate { margin-bottom: 14px;margin-top: 10px;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport.js"></script>
