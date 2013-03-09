@@ -588,6 +588,11 @@ function callAjax(jsObj,url)
 								{
 									showInsertVoterDataStatus(myResults);
 								}
+
+								else if(jsObj.task == "insertCastVotersData")
+								{
+									showinsertCastVotersDataStatus(myResults);
+								}
 								else if(jsObj.task == "deletecastVotersData")
 								{
 									showDeleteVoterCastDataStatus(myResults);
@@ -644,7 +649,23 @@ function callAjax(jsObj,url)
 		}
 	}
 
-
+function showinsertCastVotersDataStatus(result)
+{
+$("#castajaxImage").css("display","none");
+		$("#castvoterDataInsertBtn").removeAttr("disabled");
+		//document.getElementById('constituencyList').selectedIndex = 0;
+		//document.getElementById('publicationDateList').selectedIndex = 0;
+		if(result.resultCode == 0)
+		{
+			$("#casterrorMsgDiv").html("Caste Voters Data Inserted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#casterrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+}
 function showDeleteVoterDataStatus(result)
 	{
 		$("#ajaxImage").css("display","none");
