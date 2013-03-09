@@ -1157,6 +1157,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 voter.setStatus(params[11].toString());
 					 voter.setPublicationDateId((Long)params[12]);
 					 voter.setPublicationName(params[13].toString());
+					 voter.setHouseNo(params[14] != null ? params[14].toString() : "");
 					 votersList.add(voter);
 				 }catch (Exception e) {
 					 LOG.error("Exception is - "+e);
