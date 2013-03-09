@@ -11564,7 +11564,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 	 }
 	   
-	   public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long publicationDateId,Long constituencyId)
+	   public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long constituencyId,Long publicationDateId)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			try{
