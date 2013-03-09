@@ -231,6 +231,10 @@
 
    </div> -->
 
+   <div id="subLevelAjaxImageDiv" style="display:none;margin-left:400px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+<div id="subLevelDiv" style="margin:30px 0px 30px 0px;"></div>
+
+
 <span id="allvotersDetails" style="margin-left:400px;display:none;">
 			<img src="images/icons/goldAjaxLoad.gif"/>
 			</span>
@@ -242,8 +246,6 @@
   </div>
 </div>
 
-<div id="subLevelAjaxImageDiv" style="display:none;margin-left:300px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-<div id="subLevelDiv"></div>
 
 <script type="text/javascript">
 
