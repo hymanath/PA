@@ -11572,8 +11572,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				if(constituencyId != null && constituencyId > 0)
 				{
 					voterInfoDAO.deleteVotersInfoByConstituencyId(constituencyId, publicationDateId);
-					voterFamilyInfoDAO.deleteVoterFamilyDetByConstituencyIdAndVoterAgeRange(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
-					voterAgeInfoDAO.deleteVoterAgeInfoByConstituencyIdAndReportLevelValue(getReportLevelId(IConstants.CONSTITUENCY), constituencyId, publicationDateId);
+					voterFamilyInfoDAO.deleteVoterFamilyDetByConstituencyId(constituencyId, publicationDateId);
+					voterAgeInfoDAO.deleteVoterAgeInfoByConstituencyId(constituencyId, publicationDateId);
 				}
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				return resultStatus;

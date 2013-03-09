@@ -20,4 +20,6 @@ public interface IVoterAgeInfoDAO extends GenericDao<VoterAgeInfo, Long>{
 	public List<VoterAgeInfo> getAgewiseVoterDetailsInAllRange(Long reportLevelId, Set<Long> reportLevelValue, Long publicationDateId,Long constituencyId);
 	
 	public Integer deleteVoterAgeInfoByConstituencyIdAndReportLevelValue(Long reportLevelId,Long constituencyId, Long publicationDateId);
+	
+	public Integer deleteVoterAgeInfoByConstituencyId(Long constituencyId, Long publicationDateId);
 }
