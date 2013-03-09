@@ -754,7 +754,6 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 
 function showAllVoterInformationInALocation(results){
 	
-
 $('#titleDiv').html(titleString);
 	var str='';
 	str+='<div  class="whitegloss" style="margin:5px;"></div>';
@@ -766,13 +765,14 @@ str+='<div>';
    str+='<th>NAME</th>';
    str+='<th>GENDER</th>';
    str+='<th>AGE</th>';
+   str+='<th>House No</th>';
    str+='<th>STATUS</th>';
    //str+='<th>RELATION</th>';
    //str+='<th>RELATION TYPE</th>';
    str+='<th>BOOTH</th>';
   // str+='<th>LOCATION</th>';
    str+=' <th>PANCHAYAT</th>';
-   str+='<th>PUBLICATION</th>';
+   
   str+='</tr>';
   str+='</thead>';
  str+='<tbody>';
@@ -783,12 +783,13 @@ str+='<div>';
 		  str+='<td>'+results[i].firstName+'</td>';
 		  str+='<td style="text-align:center;">'+results[i].gender+'</td>';
 		  str+='<td style="text-align:center;">'+results[i].age+'</td>';
+		   str+='<td style="text-align:center;">'+results[i].houseNo+'</td>';
 		  str+='<td style="text-align:center;">'+results[i].status+'</td>';
 		//  str+='<td>'+results[i].relativeFirstName+'</td>';
 		 // str+='<td>'+results[i].relationshipType+'</td>';
 		  str+='<td>'+results[i].boothName+'</td>';
 		  str+='<td>'+results[i].panchayatName+'</td>';
-		  str+='<td style="text-align:center;">'+results[i].publicationDateId+'</td>';
+		 
 		 str+='</tr>';
 	 }
   
