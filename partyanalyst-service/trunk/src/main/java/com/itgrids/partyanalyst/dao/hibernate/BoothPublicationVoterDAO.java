@@ -922,7 +922,10 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("ward"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBodyWard.constituencyId = :locationId  and model3.publicationDate.publicationDateId = :publicationDateId ) ");
-			
+			else if(locationType.equalsIgnoreCase("hamlet"))
+				str.append("model2.hamlet.hamletId = :locationId ");
+
+				
 			str.append("group by model2.casteState.caste.casteName order by model2.casteState.caste.casteName ");
 			Query query =getSession().createQuery(str.toString());
 			query.setParameter("userId", userId);
@@ -963,6 +966,9 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("ward"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBodyWard.constituencyId = :locationId  and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+			else if(locationType.equalsIgnoreCase("hamlet"))
+				str.append("model2.hamlet.hamletId = :locationId ");
+			
 			
 			str.append("group by model2.casteState.caste.casteName,model2.party.partyId order by model2.casteState.caste.casteName,model2.party.shortName ");
 			Query query =getSession().createQuery(str.toString());
@@ -1004,6 +1010,9 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId = :locationId and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("ward"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBodyWard.constituencyId = :locationId  and model3.publicationDate.publicationDateId = :publicationDateId ) ");
+			else if(locationType.equalsIgnoreCase("hamlet"))
+				str.append(" model2.hamlet.hamletId = :locationId");
+			
 			
 			Query query =getSession().createQuery(str.toString());
 			query.setParameter("userId", userId);
