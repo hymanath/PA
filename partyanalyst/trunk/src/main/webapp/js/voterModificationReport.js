@@ -810,7 +810,6 @@ $('#voterDetails').dataTable({
 }
 
 
-
 function buildSubLevelInformation(jsObj,myResults)
 {
 var subLevelName = "";
@@ -829,21 +828,17 @@ if(myResults.modifiedVotersList.length == 0 && myResults.modifiedLocalBodyVoters
 	return false;
 
 var str='';
-	 str+='<table class="voterInfoTable" >';
+	 str+='<table class="voterInfoTable" id="subLevelVotersTable">';
 	 str+='<thead>';
 	 str +='<tr>';
-		str +='<th rowspan="2">'+subLevelName+'</th>';
-		str +='<th COLSPAN="3">Added</th>';
-		str +='<th COLSPAN="3">Deleted</th>';
-		str +='</tr>';
-		str +='<tr>';
-		str +='<th>Total</th>';
-		str +='<th>Male</th>';
-		str +='<th>Female</th>';
-		str +='<th>Total</th>';
-		str +='<th>Male</th>';
-		str +='<th>Female</th>';
-		str +='</tr>';
+		str +='<th>'+subLevelName+'</th>';
+		str +='<th>Total Voters Added</th>';
+		str +='<th>Male Voters Added</th>';
+		str +='<th>Female Voters  Added</th>';
+		str +='<th>Total Voters  Deleted</th>';
+		str +='<th>Male Voters  Deleted</th>';
+		str +='<th>Female Voters  Deleted</th>';		
+	str +='</tr>';
      str+='</thead>';
 	  str+='<tbody>';
 
@@ -851,7 +846,7 @@ var str='';
  	 {
 		
 		  str+='<tr>';
-		    str+='<td>'+myResults.modifiedVotersList[i].name+'</td>';
+		    str+='<td style="text-align:left;">'+myResults.modifiedVotersList[i].name+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
@@ -879,7 +874,17 @@ var str='';
 
 	str+='</table>';
 	
+	
 	$('#subLevelDiv').html(str);
+
+	$('#subLevelVotersTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength":50,
+		"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null,null
+		] 
+		});
 }
 
 function callAjaxForSubLevelInformation()
