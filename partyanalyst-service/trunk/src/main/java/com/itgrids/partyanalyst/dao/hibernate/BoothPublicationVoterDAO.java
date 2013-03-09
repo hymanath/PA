@@ -1810,10 +1810,10 @@ public List getCadreMobileDetails(Long userId,List<Long> scopeId,String scope)
 @SuppressWarnings("unchecked")
 public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,String scope)
 {	
-	if(scope == "Panchayat")
+	if(scope.equalsIgnoreCase("Panchayat"))
 		scope="Booth";
 	if(scope.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
-		scope = "MUNICIPAL-CORP-GMC";
+		scope="MUNICIPAL-CORP-GMC";
 
 	Query query=getSession().createQuery("select distinct(model.phoneNo) from InfluencingPeople model " +
 				"where model.user.userId = :userId and model.influencingScope = :scope and model.influencingScopeValue in(:scopeId)");
