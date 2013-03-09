@@ -369,6 +369,15 @@ public class MissedVotersFinder {
                         			voterInfo.setGuardianName(arr[6].trim()+" "+arr[7].trim());
                         	}
                         	
+                        	if(voterInfo.getGuardianName().contains("Husband's Name:"))
+                        		voterInfo.setGuardianName(voterInfo.getGuardianName().replaceAll("Husband's Name:",""));
+                        	else if(voterInfo.getGuardianName().contains("Father's Name:"))
+                        		voterInfo.setGuardianName(voterInfo.getGuardianName().replaceAll("Father's Name:",""));
+                        	else if(voterInfo.getGuardianName().contains("Mother's Name:"))
+                        		voterInfo.setGuardianName(voterInfo.getGuardianName().replaceAll("Mother's Name:",""));
+                        	else if(voterInfo.getGuardianName().contains("Other's Name:"))
+                        		voterInfo.setGuardianName(voterInfo.getGuardianName().replaceAll("Other's Name:",""));
+                        	
                         	missedList.add(voterInfo);
                     		}catch (Exception e) {
                     			e.printStackTrace();
