@@ -220,11 +220,18 @@ function displayPartyPositions(jsObj,data)
 	var divElmtHead = document.getElementById("labelHead");	
 	rank = jsObj.positionValue;
 	if(rank==-1)
-		rank = 'N';
+	 rank = 'N';
+	if(rank!=1)
+	{
 	divElmtHead.innerHTML=" "+'${stateData.party}'+" In position : "+rank+" And Its Opposition Party Details";
-
+	}
+	
+	if(rank==1 || rank == 'N')
+	{
+	divElmtHead.innerHTML=" "+'${stateData.party}'+" Party In position : "+rank+" ";
+	}
+	
 	divElmt.style.display = 'block';
-
 	var str='';
 	str+='<table id="partyPositionTable"  class="partyPerformanceReportTable" border="1">';	
 	for(var i in data)
