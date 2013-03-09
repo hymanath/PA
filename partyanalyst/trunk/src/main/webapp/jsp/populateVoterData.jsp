@@ -201,7 +201,7 @@ fieldset{
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="votermodificationDataInsertBtn" />
 			<input type="button" class="btn btn-info" value="Delete Existing Data" id="votermodificationvoterDataDeleteBtn" />
-			<img src="./images/icons/search.gif" style="display:none;" id="votermodificationajaxImage" />
+			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="votermodificationajaxImage" />
 		</div>
 	</div>
  </fieldset>
@@ -482,7 +482,7 @@ $("#votermodificationDataInsertBtn").click(function(){
 		}
 		
 		$("#votermodificationDataInsertBtn").attr("disabled", "disabled");
-		$("#votermodificationajaxImage").css("display","block");
+		$("#votermodificationajaxImage").css("display","inline-block");
 		
 		var jsObj=
 		{
@@ -511,7 +511,7 @@ $("#votermodificationDataInsertBtn").click(function(){
 		}
 		
 		$("#votermodificationvoterDataDeleteBtn").attr("disabled", "disabled");
-		$("#votermodificationajaxImage").css("display","block");
+		$("#votermodificationajaxImage").css("display","inline-block");
 		
 		var jsObj=
 		{
@@ -605,6 +605,11 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "deletevotermodification")
 								{
 									showdeletevotermodificationStatus(myResults);
+								}
+
+								else if(jsObj.task == "insertVoterModificationData")
+								{
+									showVoterModificationDataStatus(myResults);
 								}
 							}
 								catch (e) {
@@ -734,6 +739,23 @@ function showDeleteVoterDataStatus(result)
 			selectedElmt.add(opElmt); // IE only
 		}	
 	}
+}
+
+function showVoterModificationDataStatus(result)
+{
+	$("#votermodificationerrorMsgDiv").html('');
+	$("#votermodificationDataInsertBtn").removeAttr("disabled");
+		$("#votermodificationajaxImage").css("display","none");
+		if(result.resultCode == 0)
+		{
+			$("#votermodificationerrorMsgDiv").html("Voters Data Inserted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#votermodificationerrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
 }
 </script>
 </body>
