@@ -75,7 +75,7 @@ public class ReadVoterDataFromPdf {
     			stmt.executeUpdate(insertQuery);
     			}catch(Exception e)
     			{
-    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+")");
+    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+") In Booth - "+info.getBoothNo());
     				System.out.println("Exception is -"+e);
     			}
     		}
@@ -89,7 +89,7 @@ public class ReadVoterDataFromPdf {
     		try {
 				conn.close();
 			} catch (SQLException e) {
-				
+				e.printStackTrace();
 			}
     	}
     }
@@ -105,7 +105,7 @@ public class ReadVoterDataFromPdf {
         //Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\n([A-Z\\d]*)\\nElector's Name:\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\nHouse No:\\n([A-Za-z\\.\\s\\n]*)\\n([A-Za-z\\.\\s]*)\\n([0-9\\-_/A-Za-z]*)\\n([\\s0-9]*)\\n([\\s0-9a-zA-Z]*)\\n");
        /* This Pattern will use full for 2013 */
        // Pattern p = Pattern.compile("Age:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\r\\n");
-        Pattern p = Pattern.compile("([\\s0-9a-zA-Z]*)\\r\\nElector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\,\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([a-zA-Z]*)\\r\\n");
+        Pattern p = Pattern.compile("([\\s0-9a-zA-Z]*)\\r\\nElector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([a-zA-Z]*)\\r\\n");
        // Pattern newp = Pattern.compile("([\\s0-9a-zA-Z\\s]*)\\r\\nAge:\\sSex:\\s([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\?\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\s]*)\\r\\n([\\s0-9]*)\\r\\n");
         //Pattern p = Pattern.compile("Elector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s]*)Father's Name:\\r\\n([\\s0-9]*)\\r\\n([\\s0-9a-zA-Z]*)\\s([a-zA-Z]*)\\r\\n");
         
@@ -150,7 +150,10 @@ public class ReadVoterDataFromPdf {
                         i++;
                         voter = new VoterInfo();
                         // group() method refers to the next number that follows the pattern we have specified.
-                        voter.setAge(m.group(7).replaceAll("\\r\\n","").trim());
+                        String age = m.group(7).replaceAll("\\r\\n","").trim();
+                        if(age.contains(" "))
+                        	age = age.substring(0,age.indexOf(" "));
+                        voter.setAge(age.trim());
                         voter.setSex(m.group(8).replaceAll("\\r\\n","").trim());
                         voter.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
                         voter.setGuardianRelation(m.group(5).substring(0, m.group(5).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
@@ -223,6 +226,8 @@ public class ReadVoterDataFromPdf {
     		
     		str = str.replaceAll(" Male", "\r\nMale");
     		str = str.replaceAll(" Female", "\r\nFemale");
+    		str = str.replaceAll(" '", " ");
+    		str = str.replaceAll("' ", " ");
     		
     		return new StringBuilder(str);
     	}catch (Exception e) {
