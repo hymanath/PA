@@ -3943,7 +3943,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
     
 	str+='<tr>';
 	str+='<th>Total Voters</th>';
-	str+='<th>Total Petcentage</th>';
+	str+='<th>Total Percentage</th>';
 	str+='<th>Voters</th>';
 	str+='<th>Percentage</th>';
 	str+='<th>Voters</th>';
