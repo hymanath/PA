@@ -117,7 +117,7 @@
   <!-- </div> -->
 
    <div style="text-align: center; margin-top: 30px;">
-	<span id="headingSpanCls">Added / Deleted Voters Info Report For ${locationName} &nbsp; ${locationType} Between ${fromPublicationName} to ${toPublicationName}
+	<span id="headingSpanCls">Added / Deleted Voters Info Report For ${locationName} &nbsp;${locationType} Between ${fromPublicationName} to ${toPublicationName}
 	</span>
   </div>
 <div id="voterModReportMainDiv">
@@ -247,7 +247,6 @@
 
 <script type="text/javascript">
 
-//Created by sasi
 getPublicationDate();
 getVoterInfo();
 getAddedDeletedVoterInfoInALocation();
