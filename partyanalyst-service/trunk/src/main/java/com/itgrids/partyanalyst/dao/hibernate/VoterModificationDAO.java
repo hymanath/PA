@@ -85,7 +85,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
 		str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.location, model2.booth.panchayat.panchayatId, model2.booth.panchayat.panchayatName, ");
-		str.append(" model.status, model.publicationDate.publicationDateId,model.publicationDate.name ");
+		str.append(" model.status, model.publicationDate.publicationDateId,model.publicationDate.name,model.voter.houseNo ");
 		str.append(" from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
 		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
