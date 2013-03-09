@@ -483,7 +483,9 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 			str += 'Won/Lead &nbsp;&nbsp;&nbsp;&nbsp;: '+myResults[i].wonOrLeadCount+'<br>';
 			str += 'Retained &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: '+myResults[i].retainedCount+'<br>';
 			str += 'Gained &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: '+myResults[i].wonFromOtherPartiesCount+'<br>';
-			str += 'Lost Seats &nbsp;&nbsp;: '+lostSeatsCount+'';
+			var newConsi = myResults[i].wonOrLeadCount - (myResults[i].retainedCount + myResults[i].wonFromOtherPartiesCount);
+			str +='New Constituencies :'+newConsi+' ';
+			str += '<br>Lost Seats &nbsp;&nbsp;: '+lostSeatsCount+'';
 			str += '</td>';
 			str += '<td align="left">';
 			
