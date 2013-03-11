@@ -14,8 +14,11 @@
 	
 <script>
 var locationDetails={
-					 	constituencyArr:[],
-					};
+						
+							constituencyArr:[],
+						
+						};
+
 <c:forEach var="constituency"  items="${userAccessConstituencyList}" >
 	var ob={
 				id:'${constituency.id}',
@@ -61,7 +64,7 @@ var locationDetails={
 	border: 1px lightBlue solid ;
 	width: 920px; 
 	height: 600px;
-	margin-left: 100px;
+	margin-left: 70px;
 	margin-bottom: 15px;
 	background-color:white;
 	font-weight:bold;
@@ -115,6 +118,7 @@ var locationDetails={
 <div id="showScopeSubs1" style="margin-bottom: 10px;"></div>
 <div id="showScopeSubs2" style="margin-bottom: 10px;"></div>
 <div id="showScopeSubs3" style="margin-bottom: 10px;"></div>	
+
 <br>
 <fieldset>
 <div id="rButtonsDiv" align="center" style="font-weight: bold;"> 
