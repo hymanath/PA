@@ -1340,6 +1340,10 @@ public class VoterModificationService implements IVoterModificationService{
 				 List<Long> value = new ArrayList<Long>();
 				 value.add(locationVal);
 			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, value, constituencyId, publicationDateId);
+			 
+			 if(modificationGenderInfoVO == null || modificationGenderInfoVO.size() == 0)
+				 modificationGenderInfoVO =  setDefaultValuesForGenderwiseVoterModification(locationVal);
+				 
 			 saveGenderWiseVoterModifInfoInVoterModificationInfoTable(modificationGenderInfoVO,constituencyId,publicationDateId,locationType);
 			 
 			 List<VoterModificationAgeRangeVO> ageRangeVOs = getVotersAddedAndDeletedCountAgeWiseByPublicationId(locationType, value, constituencyId, publicationDateId);
@@ -1380,7 +1384,7 @@ public class VoterModificationService implements IVoterModificationService{
 			 
 			 List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId,queryStr.toString());
 			 
-			
+				
 			 
 			 if(list != null && list.size() > 0)
 			 {
@@ -1437,7 +1441,7 @@ public class VoterModificationService implements IVoterModificationService{
 								 voterModificationInfo.setVoterReportLevel(voterReportLevelDAO.get(votersAnalysisService.getReportLevelId(locationType)));
 								 voterModificationInfo.setReportLevelValue(genderInfoVO.getReportLevelValue());
 								 voterModificationInfo.setPublicationDate(publicationDateDAO.get(publicationDateId));
-								 if(genderInfoVO.getAddedTotal() != null && genderInfoVO.getAddedTotal() > 0)
+								 if(genderInfoVO.getAddedTotal() != null)
 								 {
 									 voterModificationInfo.setTotalVoters(genderInfoVO.getAddedTotal());
 									 voterModificationInfo.setMaleVoters(genderInfoVO.getAddedMale());
@@ -1447,7 +1451,7 @@ public class VoterModificationService implements IVoterModificationService{
 								 
 								 }
 							 
-								 if(genderInfoVO.getDeletedTotal() != null && genderInfoVO.getDeletedTotal() > 0)
+								 if(genderInfoVO.getDeletedTotal() != null)
 								 {
 									 voterModificationInfo.setTotalVoters(genderInfoVO.getDeletedTotal());
 									 voterModificationInfo.setMaleVoters(genderInfoVO.getDeletedMale());
@@ -1538,6 +1542,9 @@ public class VoterModificationService implements IVoterModificationService{
 					 
 					 
 				 }
+				 if(list == null || list.size() == 0)
+					 voterModificationAgeRangeVO.setReportLevelValue(locationValuesList.get(0).longValue());
+				 
 				 result.add(voterModificationAgeRangeVO);
 				 }catch (Exception e) {}
 			 }
@@ -1566,7 +1573,7 @@ public class VoterModificationService implements IVoterModificationService{
 								     Long deletedVoterModificationId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_DELETED), constituencyId);
 								     VoterModificationAgeInfo voterModificationAgeInfo = new VoterModificationAgeInfo();
 								     voterModificationAgeInfo.setVoterAgeRangeId(voterAgeRangeDAO.getVoterAgeRangeIdByType(ageRangeVO.getRange()));
-								     if(addedVoterModificationId != null && ageRangeVO.getAddedCount() != null && ageRangeVO.getAddedCount() > 0)
+								     if(addedVoterModificationId != null && ageRangeVO.getAddedCount() != null)
 								     {
 								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getAddedCount());
 								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getAddedMale());
@@ -1575,7 +1582,7 @@ public class VoterModificationService implements IVoterModificationService{
 									     voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
 								     }
 								     
-								     if(deletedVoterModificationId != null && ageRangeVO.getDeletedCount() != null && ageRangeVO.getDeletedCount() > 0)
+								     if(deletedVoterModificationId != null && ageRangeVO.getDeletedCount() != null)
 								     {
 								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getDeletedCount());
 								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getDeletedMale());
@@ -1596,4 +1603,26 @@ public class VoterModificationService implements IVoterModificationService{
 				  return resultStatus;
 			}
 	}
+	
+	public List<VoterModificationGenderInfoVO> setDefaultValuesForGenderwiseVoterModification(Long locationVal)
+	{
+		List<VoterModificationGenderInfoVO> genderInfoVOs = new ArrayList<VoterModificationGenderInfoVO>(0);
+		try{
+			 VoterModificationGenderInfoVO genderInfoVO = new VoterModificationGenderInfoVO();
+			 genderInfoVO.setAddedTotal(0l);
+			 genderInfoVO.setAddedMale(0l);
+			 genderInfoVO.setAddedFemale(0l);
+			 genderInfoVO.setDeletedMale(0l);
+			 genderInfoVO.setDeletedFemale(0l);
+			 genderInfoVO.setDeletedTotal(0l);
+			 genderInfoVO.setReportLevelValue(locationVal);
+			 genderInfoVOs.add(genderInfoVO);
+			return genderInfoVOs;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setDefaultValuesForGenderwiseVoterModification() Method, Exception - "+e);
+			return genderInfoVOs;
+		}
+	}
+	 
 }
