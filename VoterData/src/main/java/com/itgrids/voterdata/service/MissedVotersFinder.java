@@ -92,8 +92,8 @@ public class MissedVotersFinder {
                     boothVO.setConstituencyName(fileName[1].trim());
                     boothVO.setEndingSerialNo(Integer.valueOf(voters[2].trim()));
                     
-                    boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\n");
-                    System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters());
+                    boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tSerial No - "+boothVO.getEndingSerialNo()+"\n");
+                    System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tSerial No - "+boothVO.getEndingSerialNo());
                     ResultSet rs = stmt.executeQuery("select sno from voter_temp where constituency_id = '"+constituencyId+"'" +
                     		" and booth_id = '"+boothVO.getPartNo()+"'");
                     while(rs.next())
