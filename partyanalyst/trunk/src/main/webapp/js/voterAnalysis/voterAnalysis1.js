@@ -2587,7 +2587,7 @@ function impFamilesAllInfoForHamletPopUp(){
 		 var jsObj2=
 			{
 					
-				type:type,
+				type:impFamltype,
 				id:mainreqid,
 				publicationDateId:mainpublicationId,
 				typename:impFamltypename,
