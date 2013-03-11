@@ -5836,6 +5836,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				 {
 					 Long reportLevelId = 0l;
 					 try{
+						 if(type.equalsIgnoreCase("localElectionBody"))
+							 type = IConstants.LOCALELECTIONBODY;
+						 
 						 reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
 						 return reportLevelId;
 					 }catch (Exception e) {
