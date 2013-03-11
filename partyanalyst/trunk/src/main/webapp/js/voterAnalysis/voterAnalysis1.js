@@ -5985,16 +5985,17 @@ function showInfluencePeopleDialog(voterId){
 
 
 	var str='';
-
-    str+='<div>';
-	 str+='<div><span>Enter Name<span class="requiredFont">*</span> :</span><span><input id="nameId" type="text" name="name"/></span><span id="nameErrMsg" class="locationErrorMsg"></span></div>';
-	 str+='<div><span>Father Name :</span><span><input id="fatherNameId" type="text" name="name"/></span></div>';
-     
+    str+='<form class="form-horizontal">';
+   str+='<div class="control-group">';
+	 str+='<label class="control-label" style="font-size: 15px;">Enter Name :</label><div class="controls"><input id="nameId" type="text" name="name"/></div><span id="nameErrMsg" class="locationErrorMsg"></span></div>';
+	 str+='<div class="control-group"><label class="control-label" style="font-size: 15px;">Father Name :</label><div class="controls"><input id="fatherNameId" type="text" name="name"/></div></div>';
+    
 	// str+='<h5>Select Scope</h5>';
-     str+='<div>';
-	  str+='<span>Select Scope</span>';
-	  str+='<select id="scopeId" onChange="showLocationsDiv();">';
-	        str+='<option value="0">Select</option>';
+    str+='<div class="control-group">';
+	  str+='<label class="control-label" style="font-size: 15px;">Select Scope</label>';
+	  str+='<div class="controls">';
+	  str+='<select id="scopeId" onChange="showLocationsDiv();" style="font-size:14px;font-family:helvetica;width:185px;">';
+	        str+='<option value="0" >Select</option>';
 			str+='<option value="2">STATE</option>';
 			str+='<option value="3">DISTRICT</option>';
 			str+='<option value="4">CONSTITUENCY</option>';
@@ -6004,24 +6005,26 @@ function showInfluencePeopleDialog(voterId){
 			str+='<option value="8">WARD</option>';
 			str+='<option value="9">BOOTH</option>';
 	  str+='</select>';
-     str+='</div>';
+	  str+='</div>';
+    str+='</div>';
 
-     str+='<div id="locationsDiv" style="display:none;padding:10px;margin:5px;border:1px solid #c3c3c3;width:525px;">';
+    str+='<div id="locationsDiv" style="display:none;padding:10px;margin:5px;border:1px solid #c3c3c3;width:525px;">';
 	  str+='<div  id="regionstitleDiv" style="display:none;"><h5>Select region</h5></div>';
 
-	  str+='<div id="stateSelect" style="margin:3px;width:540px;display:none;" class="locationDivClass"><span>STATE<span class="requiredFont">*</span></span><span style="margin-left:145px;"><select id="stateSelectId"><option value="1">ANDHRA PRADESH</option></select></span></div>';
+	  str+='<div id="stateSelect" style="display:none;" class="locationDivClass "><div class="control-group"><label class="control-label" style="font-size: 12px;width: 59px;">STATE</label><div class="controls"><select id="stateSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="1">ANDHRA PRADESH</option></select></div></div></div>';
 
-	  str+='<div id="districtSelect" style="margin:3px;width:540px;display:none;" class="locationDivClass"><span>DISTRICT<span class="requiredFont">*</span></span><span style="margin-left:121px;"><select id="districtSelectId" onChange="getConstituenciesInDistrict();"><option value="0">Select</option></select></span><span id="districtErrMsg" class="locationErrorMsg" ></span></div>';
+	  str+='<div id="districtSelect" style="display:none;" class="locationDivClass control-group"><label class="control-label" style="font-size: 12px;width: 78px;">DISTRICT</label><div class="controls"><select id="districtSelectId" onChange="getConstituenciesInDistrict();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="districtErrMsg" class="locationErrorMsg" ></span></div>';
 
-	  str+='<div id="constituencySelect" style="margin:3px;width:540px;display:none;" class="locationDivClass" ><span>CONSTITUENCY<span class="requiredFont">*</span></span><span style="margin-left:69px;"><select id="constituencySelectId" onChange="getMandalsOrMuncipalities();"><option value="0">Select</option></select></span><span id="constituencyErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="constituencySelect" style="display:none;" class="locationDivClass control-group" ><label class="control-label" style="font-size: 12px; width: 114px;">CONSTITUENCY</label><div class="controls"><select id="constituencySelectId" onChange="getMandalsOrMuncipalities();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="constituencyErrMsg" class="locationErrorMsg"></span></div>';
 
-	  str+='<div id="mandalSelect"  class="locationDivClass" style="margin:3px;width:540px;display:none;"><span>TEHSIL/MUNCIPALITY<span class="requiredFont">*</span></span><span style="margin-left:25px;"><select id="mandalSelectId" onChange="getHamletsOrWards();"><option value="0">Select</option></select></span><span id="tehsilOrMuncipalityErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="mandalSelect"  class="locationDivClass control-group" style="display:none;"><label class="control-label" style="font-size: 12px; width: 141px;">TEHSIL/MUNCIPALITY</label><div class="controls"><select id="mandalSelectId" onChange="getHamletsOrWards();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="tehsilOrMuncipalityErrMsg" class="locationErrorMsg"></span></div>';
 
-	  str+='<div id="wardSelect"style="margin:3px;width:540px;display:none;"  class="locationDivClass" ><span>VILLAGE/WARD/DIVISION<span class="requiredFont">*</span></span><span><select id="wardSelectId"><option value="0">Select</option></select></span><span id="villageOrWardErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="wardSelect"style="display:none;"  class="locationDivClass control-group" ><label class="control-label" style="font-size: 12px;">VILLAGE/WARD/DIVISION</label><div class="controls"><select id="wardSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="villageOrWardErrMsg" class="locationErrorMsg"></span></div>';
 
-	  str+='<div id="boothSelect" class="locationDivClass" style="margin:3px;width:540px;display:none;"><span>BOOTH<span class="requiredFont">*</span></span><span style="margin-left:138px;"><select id="boothSelectId"><option value="0">Select</option></select></span><span id="boothErrMsg" class="locationErrorMsg"></span></div>';
- 
+	  str+='<div id="boothSelect" class="locationDivClass control-group" style="display:none;"><label class="control-label" style="font-size: 12px; width: 59px;">BOOTH</label><div class="controls"><select id="boothSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="boothErrMsg" class="locationErrorMsg"></span></div>';
+
 	str+='</div>';
+	  str+='</form >';
 	str+='<div><a class="btn btn-primary" style="float:right;" href="javaScript:{callAjaxToSearchInfluencingPeople('+voterId+');}">Search</a></div>';
 	str+='<div id="ajaxImageDiv1" style="display:none;"><img style="margin-left:244px;" src="images/icons/ajaxImg.gif"></div>';
 
