@@ -98,7 +98,7 @@ public class Voter extends BaseModel implements Serializable {
 		this.voterId = voterId;
 	}
 
-	@Column(name = "house_no", length = 50)
+	@Column(name = "house_no", length = 100)
 	public String getHouseNo() {
 		return houseNo;
 	}
