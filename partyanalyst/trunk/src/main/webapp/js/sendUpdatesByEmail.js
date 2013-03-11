@@ -50,10 +50,12 @@
 	{	
 		var textAreaElmt;
 		var str ='';
+		var txtElmtValue;
 		var subject=$('#subject').val();
 		 textAreaElmt=$('#descriptionForEmail').val();
 		if(textAreaElmt){
-			var txtElmtValue = textAreaElmt;
+			// txtElmtValue =  textAreaElmt;
+			 txtElmtValue = removeAllUnwantedCharacters(textAreaElmt);
 		}
 		var errorElmt = document.getElementById("errorDiv1");
 		if(subject.length != '0')
@@ -185,7 +187,7 @@ function callAjaxForEmail(jsObj,url)
 								//alert( "Failed to load result" + o.status + " " + o.statusText);
 							 }
 				   };
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 function  getDetailsForStates(){
 	var jsObj=
