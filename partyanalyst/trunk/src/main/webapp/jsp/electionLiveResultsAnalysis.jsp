@@ -478,30 +478,31 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 
 			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
 			str += '<td><a href="partyPageAction.action?partyId='+myResults[i].partyId+'" style="color:#05A8E9">'+myResults[i].partyName+'</a></td>';
-			str += '<td align="left" width="130">';
-			str += 'Participated : '+myResults[i].totalSeatsParticipated+'<br>';
-			str += 'Won/Lead &nbsp;&nbsp;&nbsp;&nbsp;: '+myResults[i].wonOrLeadCount+'<br>';
-			str += 'Retained &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: '+myResults[i].retainedCount+'<br>';
-			str += 'Gained &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: '+myResults[i].wonFromOtherPartiesCount+'<br>';
+			str += '<td align="left" width="169">';
+			str +='<table width="100">';
+			str += '<tr><td align="left" width="60">Participated </td><td width="10">: </td><td align="right" width="30">'+myResults[i].totalSeatsParticipated+'</td></tr>';
+			str += '<tr><td align="left" width="60">Won/Lead </td><td  width="10">:</td><td align="right" width="30"> '+myResults[i].wonOrLeadCount+'</td></tr>';
+			str += '<tr><td align="left" width="60">Retained </td><td  width="10">:</td><td align="right" width="30">'+myResults[i].retainedCount+'</td></tr>';
+			str += '<tr><td align="left" width="60">Gained </td><td width="10">:</td><td align="right" width="30"> '+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
 			var newConsi = myResults[i].wonOrLeadCount - (myResults[i].retainedCount + myResults[i].wonFromOtherPartiesCount);
-			str +='New Constituencies :'+newConsi+' ';
-			str += '<br>Lost Seats &nbsp;&nbsp;: '+lostSeatsCount+'';
-			str += '</td>';
-			str += '<td align="left">';
+			str +='<tr><td align="left" width="60">Won in New Ac*/Pc*</td><td width="10">:</td><td align="right" width="30">'+newConsi+' </td></tr>';
+			str += '<tr><td align="left" width="60">Lost Seats</td><td width="10">:</td><td align="right" width="30"> '+lostSeatsCount+'';
+			str += '</td></tr></table></td>';
+			str += '<td align="left"><table width="80">';
 			
 			for(var j in myResults[i].wonFromOtherParties)
 			{
-				str += ''+myResults[i].wonFromOtherParties[j].name +' : '+myResults[i].wonFromOtherParties[j].id+'<br>';
+				str += '<tr><td align="left" width="40">'+myResults[i].wonFromOtherParties[j].name +'</td><td width="10"> :</td><td align="right" width="30"> '+myResults[i].wonFromOtherParties[j].id+'</td></tr>';
 			}
-			str += '</td>';
+			str += '</td></table>';
 
-			str += '<td align="left">';
+			str += '<td align="left"><table width="80">';
 			
 			for(var j=0;j<myResults[i].lostSeatsInPrevWonToOtherParties.length;j++)
 			{
-				str += ''+myResults[i].lostSeatsInPrevWonToOtherParties[j].name +' : '+myResults[i].lostSeatsInPrevWonToOtherParties[j].id+'<br>';
+				str += '<tr><td align="left" width="40">'+myResults[i].lostSeatsInPrevWonToOtherParties[j].name +' </td><td width="10">:</td><td align="right" width="30"> '+myResults[i].lostSeatsInPrevWonToOtherParties[j].id+'</td></tr>';
 			}
-			str += '</td>';
+			str += '</td></table>';
 
 			str += '<td><div id="wonFromOtherPartiesGraphdiv_'+myResults[i].partyName+'"/></td>';
 

@@ -164,7 +164,7 @@ select
 		position:relative;
 		top:8px;
 		left:10px;
-		//color:#4B74C6;
+		/*color:#4B74C6;*/
 		color:white;
 		font-weight:bold;
 	}
@@ -247,13 +247,16 @@ select
 	function getCensusDetails()
 	{
 		
+		$("#censusReporterror_Div").html("");
 		var censusElmt = document.getElementById("censusSelect");
 		var yearElmt = document.getElementById("yearSelect");
 		var errorElmt = document.getElementById("censusReporterror_Div");
+		var stateElmt = document.getElementById("stateList");
+		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
 		
-		if(censusValue == 0 || yearValue == 'Select Year')
+		if(censusValue == 'Select' || yearValue == 'Select Year')
 		{
 			errorElmt.innerHTML = "Please Select State";
 			return;
@@ -733,6 +736,16 @@ select
 		
 		var str = '';
 		//str += '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body\')">View Party wise Results By Census Percentage Range</a></div>';
+		if(results[0].totalConstituencies == 0)
+		{
+		$("#censusPopulationRange_selectParty").css("display","none");
+		
+	$("#censusPopulationRange_body1").html('<div style="font-size: 14px;text-align:center;">No Data Available</div>');
+		
+		}
+		else
+		{
+		$("#censusPopulationRange_selectParty").css("display","block");
 		str += '<div id="censusPopulationRange_body">';
 		str += '<table id="censusPopulationRange_body_table_outer" border="0">';
 		str += '<tr>';
@@ -777,7 +790,7 @@ select
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
-
+		}
 		elmt.innerHTML = str;
 		var countStr = '';
 		countStr += '<b>Total Number of Constituencies Considered: </B>';
@@ -1545,7 +1558,7 @@ select
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
-								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">Party Wise Performance</span></div></td>
+								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span" style="color:#000;">Party Wise Performance</span></div></td>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>								
 							</tr>
 						</table>
@@ -1568,7 +1581,7 @@ select
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
-								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">Constituency Wise Performance</span></div></td>
+								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span" style="color:#000;">Constituency Wise Performance</span></div></td>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>
 							</tr>							
 						</table>
