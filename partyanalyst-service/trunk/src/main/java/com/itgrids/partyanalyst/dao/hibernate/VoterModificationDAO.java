@@ -135,7 +135,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
-			str.append(" model.booth.localBody.localElectionBodyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
+			str.append(" and model.booth.localBody.localElectionBodyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.localBodyWard.constituencyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		
