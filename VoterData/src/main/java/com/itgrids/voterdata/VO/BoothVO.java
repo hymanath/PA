@@ -11,6 +11,7 @@ public class BoothVO {
 	private int missedVotes = 0;
 	private int maleVoters = 0;
 	private int femaleVoters = 0;
+	private int endingSerialNo = 0;
 	private List<Integer> missedVotesList;
 	private boolean isVotesMissed = false;
 	private String fileName;
@@ -94,6 +95,12 @@ public class BoothVO {
 	}
 	public void setMissedVotesList(List<Integer> missedVotesList) {
 		this.missedVotesList = missedVotesList;
+	}
+	public int getEndingSerialNo() {
+		return endingSerialNo;
+	}
+	public void setEndingSerialNo(int endingSerialNo) {
+		this.endingSerialNo = endingSerialNo;
 	}
 	
 }
