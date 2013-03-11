@@ -101,7 +101,7 @@ public class VoterTemp extends BaseModel implements Serializable{
 		this.age = age;
 	}
 
-	@Column(name = "house_no", length = 45)
+	@Column(name = "house_no", length = 100)
 	public String getHouseNo() {
 		return houseNo;
 	}
