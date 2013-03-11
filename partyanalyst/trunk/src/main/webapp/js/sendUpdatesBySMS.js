@@ -1,5 +1,8 @@
 	
-	var CLICKTYPE="Sms";
+	var scope = $('#listValue').val();
+	var errDivValue = '';
+	var flag = false;
+	
 	function populateLocations(val)
 	{				
 	$('#tableRowC').remove();
@@ -17,7 +20,7 @@
 	var value = val;
 		if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
 		{	
-			var str ='';
+			var str =''; 
 			str +='<table>';
 			str +='<tr id="tableRowC">';
 			str +='<td class="tdWidth1">Assembly Constituency : <font id="requiredValue" class="requiredFont">*</font></td>';
@@ -62,9 +65,12 @@
 	{ 
 		$('#tableRowB').remove();
 		addCssStyle();
-		$('#errorMsgDiv').html('&nbsp;');		
+		$('#errorMsgDiv').html('&nbsp;');	
+		var scope = $('#listValue').val();	
+		if(scope=="Panchayat"){
 		var selectedElmt=document.getElementById("panchayatList");
 		removeSelectElements(selectedElmt);
+		}
 		var constituencyID = document.getElementById("userAccessConstituencyList");
 		var name=constituencyID.options[constituencyID.selectedIndex].name;
 		var value=constituencyID.options[constituencyID.selectedIndex].value;
@@ -214,7 +220,7 @@
 			}	
 		}
 	}
-	var errDivValue = '';
+	
 	function buildBoothsList(results,jsObj)
 	{
 	$('#successMsgDiv').html('&nbsp;');
@@ -267,7 +273,7 @@
 			selectedElmt.remove(i);
 		}
 	}
-	var flag = false;
+	
 	function handleSubmit()
 	{		
 		var scope = $('#listValue').val();
@@ -287,8 +293,8 @@
 			return false;
 		}	
 		
-		var smsContent = trim($('#smstxt').val());
-		if(errDivValue !='' ){
+		var smsContent = trim($('#smstxt').val());			
+		if( scope=="Booth" && errDivValue !='' ){
 		$('#errorMsgDiv').html('Booths are not Available, So You are not allow to send SMS, Based on Booth Wise');
 		return false;
 		}
