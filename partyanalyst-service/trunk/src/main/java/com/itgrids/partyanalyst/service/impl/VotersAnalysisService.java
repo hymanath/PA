@@ -4542,6 +4542,19 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 		{
 			Date d1 = new Date(); 
 			List<VoterTemp> voterTempData = voterTempDAO.getVotersInAConstituency(constituencyId,startIndex,max);
+			List<String> voterIdsCardNosList = new ArrayList<String>(0);
+			Map<String,Long> voterIdsCardNosMap = null;
+			
+			if(voterTempData == null || voterTempData.size() == 0)
+			{
+				return resultStatus;
+			}
+			for(VoterTemp voterTemp : voterTempData)
+			{
+				voterIdsCardNosList.add(voterTemp.getVoterId());
+			}
+			
+			voterIdsCardNosMap = getVoterIdsAndCardNosMap(voterIdsCardNosList);
 			
 			if(voterTempData != null && voterTempData.size() > 0)
 			{
@@ -4551,8 +4564,11 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				for(VoterTemp voterTemp : voterTempData)
 				{
 					try{
-					voter = new Voter();
-					boothPublicationVoter = new BoothPublicationVoter();
+					if(voterIdsCardNosMap.get(voterTemp.getVoterId()) == null)
+						voter = new Voter();
+					else
+						voter = voterDAO.get(voterIdsCardNosMap.get(voterTemp.getVoterId()));
+					
 					voter.setVoterIDCardNo(voterTemp.getVoterId());
 					voter.setName(voterTemp.getName());
 					voter.setHouseNo(voterTemp.getHouseNo());
@@ -4561,9 +4577,9 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
 					voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
 					voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					
 					voter = voterDAO.save(voter);
 					
+					boothPublicationVoter = new BoothPublicationVoter();
 					boothPublicationVoter.setVoter(voter);
 					boothPublicationVoter.setBoothId(boothsMap.get(voterTemp.getPartNo()));
 					boothPublicationVoter.setSerialNo(voterTemp.getSerialNo());
@@ -4592,6 +4608,27 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 		return resultStatus;
 	}
 }
+	
+	public Map<String,Long> getVoterIdsAndCardNosMap(List<String> voterIdsCardNosList)
+	{
+		Map<String,Long> voterIdsCardNosMap = new HashMap<String, Long>(0);
+		try{
+			List<Object[]> list = voterDAO.getVoterIdsByCardNos(voterIdsCardNosList);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					if(voterIdsCardNosMap.get(params[1].toString()) == null)
+						voterIdsCardNosMap.put(params[1].toString(), (Long)params[0]);
+				}
+			}
+			return voterIdsCardNosMap;
+		}catch (Exception e) {
+			log.error("Exception Occured in getVoterIdsAndCardNosMap() Method - "+e);
+			return voterIdsCardNosMap;
+		}
+	}
 	/**
 	 * This method will Map the Voter Data From One Publication To Another Publication 
 	 * @param Long Constituency Id
@@ -4690,8 +4727,6 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 						boothPublicationVoterDAO.save(boothPublicationVoter);
 						}catch (Exception e) {}
 					}
-					if(deletedVoterIdsList.contains(boothVoterVO.getVoterId()))
-						deletedVoterIdsList.remove(boothVoterVO.getVoterId());
 				}
 				try{
 				voterDAO.flushAndclearSession();
@@ -9672,6 +9707,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 								 voterModification.setVoterId(voterId);
 								 voterModification.setPublicationDateId(publicationDateId);
 								 voterModification.setStatus(voterVO2.getStatus());
+								 voterModification.setConstituencyId(constituencyId);
 								 voterModificationDAO.save(voterModification);
 							 }
 						 }
