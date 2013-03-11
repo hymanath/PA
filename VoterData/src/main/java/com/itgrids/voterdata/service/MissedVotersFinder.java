@@ -90,6 +90,7 @@ public class MissedVotersFinder {
                     boothVO.setPartNo(fileName[2].trim());
                     boothVO.setConstituencyId(constituencyId);
                     boothVO.setConstituencyName(fileName[1].trim());
+                    boothVO.setEndingSerialNo(Integer.valueOf(voters[2].trim()));
                     
                     boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\n");
                     System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters());
@@ -98,7 +99,7 @@ public class MissedVotersFinder {
                     while(rs.next())
                     	snoList.add(rs.getInt("sno"));
                     
-                    for(int i=1;i<=boothVO.getTotalVoters();i++)
+                    for(int i=1;i<=boothVO.getEndingSerialNo();i++)
                     	if(!snoList.contains(i))
                     	{
                     		missedVoters.add(i);
@@ -106,7 +107,7 @@ public class MissedVotersFinder {
                     	}
                     
                     boothVO.setInsertedVotes(snoList.size());
-                    boothVO.setMissedVotes(boothVO.getTotalVoters() - boothVO.getInsertedVotes());
+                    boothVO.setMissedVotes(boothVO.getEndingSerialNo() - boothVO.getInsertedVotes());
                     boothVO.setMissedVotesList(missedVoters);
                     
                     if(missedVoters.size() > 0)
