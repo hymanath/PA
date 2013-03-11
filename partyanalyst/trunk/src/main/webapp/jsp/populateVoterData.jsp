@@ -468,6 +468,7 @@ var partyconstituencyId = $("#partyconstituencyList").val();
 
 $("#votermodificationDataInsertBtn").click(function(){
 	
+	$("#votermodificationerrorMsgDiv").html('');
 		var votermodificationconstiId = $("#votermodificationconstiId").val(); 
 		var publicationDateId = $("#votermodificationpublicationList").val();
 		if(votermodificationconstiId == 0)
