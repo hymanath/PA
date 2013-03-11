@@ -241,12 +241,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(data.get(0));
 	}*/
 	
-public void testgetBoothsInAMunicipality()
+/*public void testgetBoothsInAMunicipality()
 	{
 	List<Object[]> list = boothDAO.getBoothsInAMunicipality(2l,8l,253l);
 	System.out.println(list.size());
 	}
-
+*/
 	
 	/*public void testgetBoothIdsByPanchayatIds()
 	{
@@ -300,13 +300,13 @@ public void testgetBoothsInAMunicipality()
 			System.out.println(ward[0]+"   "+ward[1].toString());
 	}*/
 	
-	public void testgetBoothsForWard()
+	/*public void testgetBoothsForWard()
 	{
 		
 		List<Object[]> l = boothDAO.getBoothsForWard(31234l, 8l);
 		for(Object[] ward:l)
 			System.out.println(ward[0]+"   "+ward[1].toString());
-	}	
+	}	*/
 
 	/*public void testgetWardIdsByLocalEleBodyIdsList()
 	{
@@ -366,5 +366,12 @@ public void testgetBoothsInAMunicipality()
 			for(Object[] params : list)
 				System.out.println(params[0]+" "+params[1]);
 	}*/
+	
+	public void testgetBoothsInAPanchayatByPublicationId()
+	{
+		List<Object[]> list = boothDAO.getBoothsInAPanchayatByPublicationId(1407l, 7l);
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]);
+	}
 	
 }
