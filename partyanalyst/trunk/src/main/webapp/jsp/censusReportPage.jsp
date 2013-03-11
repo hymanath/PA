@@ -697,6 +697,7 @@ select
 
 	function buildPopulationRange(jsObj,results)
 	{
+		
 		$('#censusPopulationRange1').css('display','none');
 		$('#censusPopulationRange').css('display','none');
 		var rangeElmt = document.getElementById("censusPopulationRange1");
@@ -736,16 +737,6 @@ select
 		
 		var str = '';
 		//str += '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body\')">View Party wise Results By Census Percentage Range</a></div>';
-		if(results[0].totalConstituencies == 0)
-		{
-		$("#censusPopulationRange_selectParty").css("display","none");
-		
-	$("#censusPopulationRange_body1").html('<div style="font-size: 14px;text-align:center;">No Data Available</div>');
-		
-		}
-		else
-		{
-		$("#censusPopulationRange_selectParty").css("display","block");
 		str += '<div id="censusPopulationRange_body">';
 		str += '<table id="censusPopulationRange_body_table_outer" border="0">';
 		str += '<tr>';
@@ -756,7 +747,8 @@ select
 		str += '<th width="40px">Total Seats</th>';
 		str += '<th width="60px">Polling %</th>';
 		str += '</tr>';	
-		str += '</table>';		
+		str += '</table>';
+		
 		for(var i=0; i<results.length; i++)
 		{
 			if(i==5)
@@ -790,13 +782,14 @@ select
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
-		}
 		elmt.innerHTML = str;
+		
+		
 		var countStr = '';
 		countStr += '<b>Total Number of Constituencies Considered: </B>';
 		countStr += ''+results[0].totalConstituencies+'';
 		censusPopulationRange_footerEl.innerHTML = countStr;		
-
+		
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
         data.addColumn('number', 'Constituencies');
