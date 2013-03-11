@@ -2587,7 +2587,7 @@ function impFamilesAllInfoForHamletPopUp(){
 		 var jsObj2=
 			{
 					
-				type:impFamltype,
+				type:"panchayat",
 				id:mainreqid,
 				publicationDateId:mainpublicationId,
 				typename:impFamltypename,
