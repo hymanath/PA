@@ -2601,15 +2601,15 @@ function impFamilesAllInfoForHamletPopUp(){
 		}
 
 
-function getImpFamiliesVotersToShow(){
+/*function getImpFamiliesVotersToShow(){
 	$('#impFamPancBothDtlsAgxImg').show();
      if(buildType == "hamlet" && maintype == "panchayat" ){
 	 //getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat"); */
-      impFamilesAllInfoForHamletPopUp();
-   }else{
+     // impFamilesAllInfoForHamletPopUp();
+  // }else{
 	 //var buildType = "hamlet";
 	//getImpFamiliesVotersForHamlet();
-    $("#impFamilesAllInfoPopUp").dialog({
+   /* $("#impFamilesAllInfoPopUp").dialog({
             modal: true,
             title: "<b>Voters Details</b>",
 			width: 970,
@@ -2634,7 +2634,7 @@ function getImpFamiliesVotersToShow(){
 		callAjax(jsObj1,url1);
    
          }else {	 */   
-		 var jsObj2=
+		/* var jsObj2=
 			{
 					
 				type:"panchayat",
@@ -2648,7 +2648,7 @@ function getImpFamiliesVotersToShow(){
 	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2);  }
-	}
+	}*/
 
 function getvotersFamileyInfo(buttonType,voterBasicInfoFor)
 { 
