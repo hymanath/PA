@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -64,12 +65,15 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	
 	public void testGetLocationNameByLocationValue()
 	{
-		List name = boothPublicationVoterDAO.getLocationNameByLocationValue(IConstants.CONSTITUENCY, 298l);
+	/*	List name = boothPublicationVoterDAO.getLocalitiesForBooth(122094l, 1l);
 		
 		System.out.println(name.size());
 		if(name != null && name.size() > 0)
-		  System.out.println(name.get(0));
+		  System.out.println(name.get(0));*/
+		List l=new ArrayList<Long>();
+		l.add(42l);
 		
+		List name = boothPublicationVoterDAO.getCandidateCount(l,7l, "hamlet");
 	}
 	
 	}

@@ -21,16 +21,33 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 		System.out.println(object);
 	}*/
 		
-		/*public void testgetCasteByVoterId()
+		public void testgetCasteByVoterId()
 		{
 			List<Long> voterIDs = new ArrayList<Long>();
 			voterIDs.add(459028l);
 			voterIDs.add(459029l);
 			//voterIDs.add(459030l);
-			
-			List<Object[]> list = userVoterDetailsDAO.getCasteByVoterId(1l, voterIDs);
+			List<?> anil=	userVoterDetailsDAO.getVotersIdsByHamletId(42l,1l);
+			 List<?> hh =              userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(7l,anil);
+			 List<Object[]> list = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(hh);
 			System.out.println(list.size());
+			for (Object[] objects : list) {
+				System.out.println(objects[0]+"---"+objects[1]+"---"+"---"+objects[2]+"--");
+				//System.out.println(objects[1]);
+				//System.out.println(objects[2]);
+			}
+	/*	List<?> anil=	userVoterDetailsDAO.getVotersIdsByHamletId(42l,1l);
+		 List<?> hh =              userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(7l,anil);
+		 List<Object[]> list = userVoterDetailsDAO.getLocalityIdsForUser(42l, 1l,hh);
+			 for (Object[] objects : list) {
+	           int length=objects.length;
+			for(;;)
+			{	
+			 System.out.println(objects[--length]+"\t");
+			 if(length==0)break;
+			}
 		}*/
+		}
 		/*public void testGetPartyAndCasteDetails()
 		{
 			
