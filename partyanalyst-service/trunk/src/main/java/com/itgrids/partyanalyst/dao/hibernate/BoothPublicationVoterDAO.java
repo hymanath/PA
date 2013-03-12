@@ -1331,6 +1331,15 @@ public List<Object[]>  getLocalitiesForHamlet(Long id){
     return result;
 	
 	}
+public List<Object[]>  getLocalitiesForHamlet(Long id,Long userId){
+	
+	Query query = getSession().createQuery("select distinct l.localityId , l.name from Locality l " +
+			" join  l.hamlet h where   h.hamletId = :id and l.user.userId = :userId" ).setParameter("id", id).setParameter("userId", userId) ;
+ 
+List<Object[]> result = query.list();
+return result;
+
+}
 	
 public List<Object[]>  getLocalitiesForBooth(Long id){
 		
@@ -1338,6 +1347,16 @@ public List<Object[]>  getLocalitiesForBooth(Long id){
 			"where l.localElectionBody.localElectionBodyId " +
 			" in( select  distinct b.localBody.localElectionBodyId from Booth b  " +
 			"where  b.boothId = :id and  b.localBody.localElectionBodyId is not null)" ).setParameter("id", id) ;
+ List<Object[]> result = query.list();
+return result;
+	
+	}
+public List<Object[]>  getLocalitiesForBooth(Long id,Long userId){
+	
+	Query query = getSession().createQuery(" select  distinct l.localityId , l.name from Locality l " +
+			"where l.localElectionBody.localElectionBodyId " +
+			" in( select  distinct b.localBody.localElectionBodyId from Booth b  " +
+			"where  b.boothId = :id and  b.localBody.localElectionBodyId is not null) and l.user.userId = :userId"  ).setParameter("id", id).setParameter("userId", userId) ;
  List<Object[]> result = query.list();
 return result;
 	
@@ -1357,6 +1376,7 @@ return result;
 	 List<Object[]> result = query.list();
 	return result;*/
 }
+
 public List<Object[]>  getLocalitiesForBooth1(Long id){
 	
 	Query query = getSession().createSQLQuery(" select  distinct l.localityId , l.name from Locality l " +
@@ -1475,6 +1495,10 @@ public List<Long> getCandidateCount(List<Long> locationValue,Long publicationDat
 		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.boothId in (:locationValue)");
 	else if(type.equalsIgnoreCase("WARD"))
 		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.localBodyWard.constituencyId =(:locationValue)");
+	else if(type.equalsIgnoreCase("hamlet"))
+		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2,UserVoterDetails model3 where model3.voter.voterId = model.voter.voterId and model.voter.voterId = model2.voter.voterId and " +
+				"model3.hamlet.hamletId in (:locationValue) ");
+	
 	query.append(" and model.booth.publicationDate.publicationDateId=:publicationDateId");
 	Query queryObj = getSession().createQuery(query.toString()) ;
 	queryObj.setParameterList("locationValue", locationValue);
@@ -1957,6 +1981,38 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		query.setParameter("fromPubliationId", fromPubliationId);
 		query.setParameter("toPublicationId", toPublicationId);
 		return query.list();
+	}	
+	public List<Object[]> getVotersBasedOnVoterIdsAndPublication1(
+			 Long publicationDateId , Long startAge, Long endAge, List<?> voterIds) {		
+			
+			
+		Query query = getSession().createQuery("select " +
+				"SUM( CASE WHEN b.voter.age between :startAge1 and :endAge1 THEN 1 ELSE 0 END) as 18251ge ," +
+				"SUM( CASE WHEN b.voter.age between :startAge2 and :endAge2 THEN 1 ELSE 0 END) as 26to35age " +
+				" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+						" and  b.voter.age between :startAge and :endAge  " +
+								"group by b.voter.gender   ") ;
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("startAge", startAge);
+		query.setParameter("endAge", endAge);
+		
+		  return query.list();
+		
 	}
-	
+	public List<Object[]> getVoterIdsBasedOnVoterIdsAndPublication(
+			 Long publicationDateId , List<?> voterIds) {		
+			
+			
+		Query query = getSession().createQuery("select distinct b.voter.voterId " +
+				" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " 
+								) ;
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("voterIds", voterIds);	
+		  return query.list();
+		
+	}
+
 }

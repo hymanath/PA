@@ -110,7 +110,7 @@ IUserVoterDetailsDAO{
 	}
 	public void updateUserVoterDetailsForLocality(Long voterId,Long userId,Long localitityId, Long hamletId){
 		Query query = getSession().createQuery("update UserVoterDetails model set " +
-				"model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId " +
+				"model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId  " +
 				"where model.voter.voterId = :voterId and model.user.userId = :userId");
 		query.setParameter("voterId",voterId);
 		query.setParameter("userId",userId);
@@ -229,7 +229,6 @@ IUserVoterDetailsDAO{
 		
 		return query.list();
 	}
-	
 	public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId)
 	{
 		Query query = getSession().createQuery("select count(*) from UserVoterDetails model where model.hamlet.hamletId = :hamletId and" +
@@ -307,6 +306,109 @@ IUserVoterDetailsDAO{
 		query.setParameter("casteStateId", casteStateId);
 		
 		return query.list();
+		
+	}
+	
+	
+	
+	public List<Long> getLocalitiesByHamletId(Long userId , Long hamletId)
+	{
+		
+		
+		Query query = getSession().createQuery("select distinct model.hamlet.hamletId from UserVoterDetails model, PanchayatHamlet model1" +
+				" where model.user.userId = :userId and model.hamlet.hamletId = model1.hamlet.hamletId and " +
+				" model1.panchayat.panchayatId = :panchayatId");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("panchayatId", hamletId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getVotersCountByGenderForLocalAreas(List<?> voterIds)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.locality.name," +
+				"SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+				"SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount " +
+				" from UserVoterDetails model  " +
+		        " join model.locality " +
+				"where model.voter.voterId in(:voterIds)    group by model.locality.name ");
+		
+		query.setParameterList("voterIds", voterIds);
+		
+		return query.list();
+		
+		
+	}
+	/* test method by anil*/
+	public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds) {
+		Object[] param = {voterIds};
+		return getHibernateTemplate().findByNamedParam("select distinct model.locality.localityId,model.locality.name ," +
+				"count( distinct model.voter.voterId), " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+				" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F'  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				
+				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +		
+				" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " +	
+				" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " +
+				" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " +
+				" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " +
+				
+				"from UserVoterDetails model  where  model.voter.voterId in(:ids) " +
+							" and model.locality.localityId is not null group by model.locality.localityId order by model.locality.name","ids",voterIds);
+	}
+	
+	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId)
+	{
+		
+		Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where" +
+				" model.hamlet.hamletId = ? and model.user.userId = ? ");
+		
+		query.setParameter(0, hamletId);
+		query.setParameter(1, userId);
+	
+		
+		
+		//return query.list();
+		
+		return query.list();
+			
+	}
+	public List<?> getVoterIdsBasedOnVoterIdsAndPublication(
+			 Long publicationDateId , List<?> voterIds) {		
+			
+			
+		Query query = getSession().createQuery("select distinct b.voter.voterId " +
+				" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " 
+								) ;
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("voterIds", voterIds);	
+		  return query.list();
 		
 	}
 }
