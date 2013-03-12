@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -1833,6 +1834,46 @@ public List<Object[]> getVotersBasedOnVoterIdsAndPublicationAndGender(
 	
 }
 
+//Have update this logic of this query till that alternative is there -- sasi
+public List<Object[]> getVotersListInPanchayat(Long publicationDateId,Long panchayatId,Long userId){
+	List<Long> votersList = new ArrayList<Long>();
+	Query query1=getSession().createQuery("select "+
+			" SUM( CASE when u.hamlet.hamletId is not NULL THEN 1 else 0 END ) as result1 ,"+
+			" SUM( CASE when u.hamlet.hamletId is NULL THEN 1 else 0 END) as result2 from BoothPublicationVoter b,UserVoterDetails u  "+
+			" where b.voter.voterId=u.voter.voterId and b.booth.publicationDate.publicationDateId = :publicationDateId "+
+			" and b.booth.panchayat.panchayatId= :panchayatId");
+/*	Query query1=getSession().createQuery("select  count (distinct b.voter.voterId) from BoothPublicationVoter b,UserVoterDetails u  "+
+	"where b.voter.voterId=u.voter.voterId and b.booth.publicationDate.publicationDateId = :publicationDateId "+
+			"and b.booth.panchayat.panchayatId= :panchayatId and u.hamlet.hamletId is not Null");
+*/	/*Query query1=getSession().createQuery("select distinct (b.voter.voterId) from BoothPublicationVoter b join  booth bo where bo.panchayat.panchayatId =:panchayatId  and  "+
+			" b.booth.publicationDate.publicationDateId = :publicationDateId group by bo.panchayat.panchayatId");*/
+	query1.setParameter("panchayatId",panchayatId);
+	query1.setParameter("publicationDateId",publicationDateId);
+	//query1.setParameter("userId", userId);
+	votersList=query1.list();
+	
+	return query1.list();
+	
+}
+/*public List<Object> getUnassignedVotersInPanchayat(List<?> votersList,Long userId){
+	Query query =getSession().createQuery("select count(distinct u.voter.voterId) from UserVoterDetails u where " +
+			" u.voter.voterId in (:votersList) and u.user.userId = :userId group by u.user.userId") ;
+	query.setParameterList("votersList",votersList);
+	query.setParameter("userId", userId);
+	return query.list();
+}*/
+
+public List<Object[]> getUnassignedVotersInPanchayat(Long userId){ 
+	Query query =getSession().createQuery("select "+
+			" SUM( CASE when u.hamlet.hamletId is not NULL THEN 1 else 0 END ) as result1 ,"+
+			" SUM( CASE when u.hamlet.hamletId is NULL THEN 1 else 0 END) as result2 from UserVoterDetails u"+
+			" where u.user.userId = :userId");
+	query.setParameter("userId", userId);
+	return query.list();
+	
+}
+
+
 public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
 {
 	Object[] param = {hamletId,userId};
@@ -1898,6 +1939,17 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		Query queryObj = getSession().createQuery("select distinct model.booth.publicationDate.publicationDateId from BoothPublicationVoter model where " +
 				" model.booth.publicationDate.publicationDateId = (select max(model1.publicationDateId) from PublicationDate model1)");
 		return (Long)queryObj.uniqueResult();
+	}
+	
+	public List<Object[]> getAssignedAndUnassignedVtrsOfLclBdy(Long hamletId,Long userId){ 
+		Query query =getSession().createQuery("select "+
+				" SUM( CASE when u.locality.localityId is not NULL THEN 1 else 0 END ) as result1 ,"+
+				" SUM( CASE when u.locality.localityId is NULL THEN 1 else 0 END) as result2 from UserVoterDetails u"+
+				" where u.hamlet.hamletId = :hamletId and u.user.userId = :userId");
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		return query.list();
+		
 	}
 	
 }
