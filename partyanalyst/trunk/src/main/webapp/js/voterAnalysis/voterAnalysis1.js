@@ -895,7 +895,7 @@ function addToPolitician(voterId,name)
 			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
-		 $("#votersHeaderDiv3").hide();
+		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		 //--
 		 getPreviousVotersDetails1();
@@ -1357,7 +1357,7 @@ function addToPolitician(voterId,name)
 									  if(myResults.subListForHamlets != null && myResults.subListForHamlets.length > 0)
 									  {
 										  buildImpFamilesForHamletChart(myResults);
-                                        buildTableForImpFamilesForHamlets(myResults.subListForHamlets,myResults.name,myResults.type);
+                                        buildTableForImpFamilesForHamlets(myResults.subListForHamlets,myResults.name,myResults.type,myResults);
 										//buildTableForImpFamilesByHamlet(myResults.subList,myResults.name,myResults.type);
 										//impFamilesVariableDescription();
 									  }
@@ -3379,9 +3379,41 @@ function clearAllCheckBoxes()
 	
 }//
 
-function buildTableForImpFamilesForHamlets(impFamilesData,name,type)
+function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 {
+//Updated by sasi for assigned and unassigned voters count
+	if(type=="Panchayat"){
+		if(buildType=="hamlet"){
+			
+			var totalvoter=results.assignedVotersByUser+results.unassignedVotersByUser;
+			strl ='';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
+			strl += '<tbody><td>'+totalvoter+'</td><td>'+results.assignedVotersByUser+'</td><td>'+results.unassignedVotersByUser+'</td></tbody>';
+			
+			strl += '</table>';
+			$("#assigAndUnassig").html(strl);
+			}
+			else{
+			$("#assigAndUnassig").html('');
+			}
+		}
+		else if(type=="Hamlet"){
+			
+			var totalvoterlclbdis=results.assignedVotersForLocalBodies+results.unassignedVotersForLocalBodies;
+			strl ='';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
+			strl += '<tbody><td>'+totalvoterlclbdis+'</td><td>'+results.assignedVotersForLocalBodies+'</td><td>'+results.unassignedVotersForLocalBodies+'</td></tbody>';
+			
+			strl += '</table>';
+			$("#assigAndUnassig").html(strl);
+		}
+		
+		else{
+			$("#assigAndUnassig").html('');
+		}
 	
+	//Updated by sasi for assigned and unassigned voters count
+
   var impFamiList = new Array();
   for(var i in impFamilesData){
      var data={};
@@ -3405,7 +3437,7 @@ function buildTableForImpFamilesForHamlets(impFamilesData,name,type)
      if(impFamilesData[t].type != null)
 	   reqtytle = impFamilesData[t].type;
   }
-  $("#impFamilesBasicSubDetailsForHamletTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
+  $("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"</h4>");
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+reqtytle+"", sortable: true},
@@ -4632,7 +4664,6 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	}
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
-		
 		$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
 		$("#votersBasicInfoSubDiv").css('border','1px solid black');
 		$("#votersBasicInfoMsgDiv").html('');
@@ -4647,7 +4678,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			str += '<span>UnKnown Voters : '+votersbasicinfo.unKnowVoters+'</span>';
 		
 		str += '</b></div></div></br></br>';
-        if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
+		if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
 		    var prevElecInfo = votersbasicinfo.previousElectInfoList;
 			str += '<table class="votersPrevCountTableDiv" style="margin-bottom:5px;font-family:verdana;">';
 			str += '  <tr>';
@@ -4727,8 +4758,42 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			   str +='</div>';
 			}
 		}
-
-			//$("#votersBasicInfoDiv").html(str);
+		
+		
+		if(jsObj.type=="panchayat"){
+		if(buildType=="hamlet"){
+			var totalvoter=votersbasicinfo.assignedVotersByUser+votersbasicinfo.unassignedVotersByUser;
+			strl ='';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
+			strl += '<tbody><td>'+totalvoter+'</td><td>'+votersbasicinfo.assignedVotersByUser+'</td><td>'+votersbasicinfo.unassignedVotersByUser+'</td></tbody>';
+			
+			strl += '</table>';
+			$("#assAndUnass").html(strl);
+			}
+			else{
+			$("#assAndUnass").html('');
+			}
+		}
+		else{
+			$("#assAndUnass").html('');
+		}
+		
+		if(jsObj.type=="hamlet"){
+			var totalvoterlclbds=votersbasicinfo.assignedVotersForLocalBodies+votersbasicinfo.unassignedVotersForLocalBodies;
+			strl ='';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
+			strl += '<tbody><td>'+totalvoterlclbds+'</td><td>'+votersbasicinfo.assignedVotersForLocalBodies+'</td><td>'+votersbasicinfo.unassignedVotersForLocalBodies+'</td></tbody>';
+			
+			strl += '</table>';
+			$("#assAndUnass").html(strl);
+			
+		}
+		else{
+			$("#assAndUnass").html('');
+		}
+		
+		
+		//$("#votersBasicInfoDiv").html(str);
 			if(jsObj.type != "booth"){
 			  $("#votersBasicInfoSubChartDiv").css("border","1px solid black"); 
 	          $("#votersBasicInfoSubDiv").css("border","1px solid black");
