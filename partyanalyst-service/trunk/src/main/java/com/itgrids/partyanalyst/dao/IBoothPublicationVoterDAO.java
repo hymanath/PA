@@ -148,6 +148,7 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]>  getLocalitiesForBooth(Long id);
 	 public List<Object[]>  getHamletsForBooth(Long id);
 	 public List<Object[]>  getLocalitiesForHamlet(Long id);
+	 public List<Object[]>  getLocalitiesForHamlet(Long id,Long userId);
 	 public List<Object[]> getVotersCountDetailsInSpecifiedRangeForHamletByPublicationId(
 				Long hamletId, Long publicationDateId , Long startAge, Long endAge); 
 	 public List<Object[]> getVotersCountInSpecifiedRangeForHamletByPublicationId(
@@ -232,4 +233,6 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Voter> getVoterDetailsByCasteStateForPanchayatByHamlet(List<Long> voterIds,Long publicationDateId);
 	 public List<Object[]> getConstituenciesToMapPublicationData(Long fromPubliationId,Long toPublicationId);
+	 
+	 public List<Object[]>  getLocalitiesForBooth(Long id,Long userId);
 }
