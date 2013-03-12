@@ -426,8 +426,24 @@ public class BoothPublicationVoterDAO extends
 		}
 		return query.list();
 	}
-	//Party Wise getCastAndGenderWiseVotersCountByPublicationIdInALocation
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		str.append(" model2.hamlet.hamletId = :hamletId and ");	
+		str.append(" model2.locality.localityId = :localityId ");	
+		str.append(" group by model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
+		
+		Query query = getSession().createQuery(str.toString()) ;
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("localityId", localityId);
+		
+		return query.list();
+	}	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 	{
