@@ -1972,7 +1972,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				//Long hamletId=booths.getId();
 				//String boothPartNo = booths.getId().toString();
 				
-			List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+			//List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
 			
 			List<Object[]> hamletCastDetails = boothPublicationVoterDAO
 					.getCastAndGenderWiseVotersCountByPublicationIdInALocation(
