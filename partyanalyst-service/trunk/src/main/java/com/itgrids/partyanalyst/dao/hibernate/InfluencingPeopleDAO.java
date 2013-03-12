@@ -536,6 +536,9 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	{
 			if(type.equalsIgnoreCase("panchayat"))
 				type = "BOOTH";
+			if(type.equalsIgnoreCase("hamlet"))
+				type =IConstants.VILLAGE;
+			
 		Query query = getSession().createQuery("select count(model.influencingPeopleId) from InfluencingPeople model where model.user.userId=:userId and model.influencingScopeValue in(:locationValue) and model.influencingScope = :type");
 		query.setParameterList("locationValue", locationValue);
 		query.setParameter("userId", userId);

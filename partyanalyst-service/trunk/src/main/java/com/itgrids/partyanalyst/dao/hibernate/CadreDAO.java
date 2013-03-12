@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 /**
@@ -855,6 +856,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 			type = "MUNICIPAL-CORP-GMC";
 		if(type.equalsIgnoreCase("panchayat"))
 			type = "BOOTH";
+		if(type.equalsIgnoreCase("hamlet"))
+			type =IConstants.VILLAGE;
 		Query query = getSession().createQuery("select count(model.cadreId) from Cadre model where model.user.userId=:userId and model.cadreLevelValue in(:locationValue) and model.cadreLevel.level = :type");
 		query.setParameterList("locationValue", locationValue);
 		query.setParameter("userId", userId);
