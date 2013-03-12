@@ -185,6 +185,7 @@ public interface IVotersAnalysisService {
 	public List<Object[]>  getLocalitiesForHamlet(Long id);
 	
 	public List<SelectOptionVO> getLocalities(Long hamletId);
+	public List<SelectOptionVO> getLocalities(Long hamletId,Long userId);
 	
 	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId);
 	
@@ -216,5 +217,7 @@ public interface IVotersAnalysisService {
 	public List<VoterCastInfoVO> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	public List<SelectOptionVO> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
-	public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId);
+    public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId);
+    
+    public List<VotersDetailsVO> getAgewiseVotersDetailsForLocalAreaByHamletId(Long hamletId,Long publicationDateId,Long userId);
 }
