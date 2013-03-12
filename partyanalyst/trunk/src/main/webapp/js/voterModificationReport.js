@@ -524,7 +524,7 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
  		 str +='<td>'+results[i].addedTotal+'</td>';
 		 str +='<td>'+results[i].addedMale+'</td>';
 		 str +='<td>'+results[i].addedFemale+'</td>';
-		 str +='<td>'+results[i].deletedMale+'</td>';
+		 str +='<td>'+results[i].deletedTotal+'</td>';
 		 str +='<td>'+results[i].deletedMale+'</td>';
 		 str +='<td>'+results[i].deletedFemale+'</td>';
 		 str +='</tr>';
