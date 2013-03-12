@@ -8,7 +8,6 @@
 <title>Send Updates to user emails</title>
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
-<script src="js/cleditor/jquery.cleditor.min.js"></script>
 <!--<SCRIPT type="text/javascript" src="js/AddNewProblem/addFileInput.js"></SCRIPT>-->
 <LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
@@ -28,8 +27,9 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+	<script src="js/cleditor/jquery.cleditor.min.js"></script>
 	<script src="js/sendUpdatesByEmail.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
 <script src="js/sendUpdatesByEmail.js"></script>
 <link rel="stylesheet" type="text/css" href="css/cleditor/jquery.cleditor.css">
 	<!-- YUI Skin Sam -->
