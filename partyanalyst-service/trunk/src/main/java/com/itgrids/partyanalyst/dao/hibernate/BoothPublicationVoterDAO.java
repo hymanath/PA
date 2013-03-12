@@ -1858,60 +1858,33 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	@SuppressWarnings("unchecked")
 	public List getVoterMobileDetails(Long userId,Long scopeId,String scope)
 	{	
-		Query query=null;
-		if(scope == "Constituency"){
-			query=getSession().createQuery("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.booth.constituency.constituencyId = :scopeId and model1.voter.mobileNo !='' and " +
-					 "model2.voter.voterId = model1.voter.voterId ");
-			query.setParameter("scopeId", scopeId);
-			query.setParameter("userId", userId);
-		}
-		if(scope == "MANDAL"){
-			
-			query=getSession().createQuery("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.booth.tehsil.tehsilId = :scopeId and model1.voter.mobileNo !='' and " +
-					 "model2.voter.voterId = model1.voter.voterId ");
-			query.setParameter("scopeId", scopeId);
-			query.setParameter("userId", userId);
-			
-		}
-		if(scope == "MUNCIPALITY/CORPORATION"){
-			
-			query=getSession().createQuery("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.booth.localBody.localElectionBodyId = :scopeId and model1.voter.mobileNo !='' and " +
-					 "model2.voter.voterId = model1.voter.voterId ");
-			query.setParameter("scopeId", scopeId);
-			query.setParameter("userId", userId);
-		}
-		if(scope == "Panchayat"){
-			
-			query=getSession().createQuery("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.booth.panchayat.panchayatId = :scopeId and model1.voter.mobileNo !='' and " +
-					 "model2.voter.voterId = model1.voter.voterId ");
-			query.setParameter("scopeId", scopeId);
-			query.setParameter("userId", userId);
-		}
-		if(scope == "ward"){
-			query=getSession().createQuery("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.booth.localBodyWard.constituencyId = :scopeId and model1.voter.mobileNo !='' and " +
-					 "model2.voter.voterId = model1.voter.voterId ");
-			query.setParameter("scopeId", scopeId);
-			query.setParameter("userId", userId);
-			
-		}
-		if(scope == "Booth"){
-			query=getSession().createQuery("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.booth.boothId = :scopeId and model1.voter.mobileNo !='' and " +
-					 "model2.voter.voterId = model1.voter.voterId ");
-			query.setParameter("scopeId", scopeId);
-			query.setParameter("userId", userId);
-			
-		}
-		return query.list();
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
+					 "where model2.user.userId = :userId and model1.voter.mobileNo !='' and " +
+					 "model2.voter.voterId = model1.voter.voterId "); 
+		if(scope.equalsIgnoreCase("Constituency"))
+			query.append(" and model1.booth.constituency.constituencyId = :scopeId ");
+		if(scope.equalsIgnoreCase("MANDAL"))
+			query.append(" and model1.booth.tehsil.tehsilId = :scopeId");
+		if(scope.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			query.append(" and model1.booth.localBody.localElectionBodyId = :scopeId");
+		if(scope.equalsIgnoreCase("Panchayat"))
+			query.append(" and model1.booth.panchayat.panchayatId = :scopeId");
+		if(scope.equalsIgnoreCase("ward"))
+			query.append(" and model1.booth.localBodyWard.constituencyId = :scopeId");
+		if(scope.equalsIgnoreCase("Booth"))
+			query.append(" and model1.booth.boothId = :scopeId ");
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("scopeId", scopeId);
+		queryObj.setParameter("userId", userId);
+		
+		return queryObj.list();
 	}
 	public Long getLatestpublicationDate(){
 		Query queryObj = getSession().createQuery("select distinct model.booth.publicationDate.publicationDateId from BoothPublicationVoter model where " +
 				" model.booth.publicationDate.publicationDateId = (select max(model1.publicationDateId) from PublicationDate model1)");
 		return (Long)queryObj.uniqueResult();
 	}
+	
 }
