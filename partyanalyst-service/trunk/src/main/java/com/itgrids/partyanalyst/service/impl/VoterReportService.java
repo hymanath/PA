@@ -60,6 +60,7 @@ public class VoterReportService implements IVoterReportService{
 	private IVoterCastInfoDAO voterCastInfoDAO;
 	private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
 	private IVoterInfoDAO voterInfoDAO;
+	private IVoterModificationDAO voterModificationDAO;
 	
 
 	public IVoterCastInfoDAO getVoterCastInfoDAO() {
@@ -196,7 +197,14 @@ public class VoterReportService implements IVoterReportService{
 		public void setVoterReportLevelDAO(IVoterReportLevelDAO voterReportLevelDAO) {
 			this.voterReportLevelDAO = voterReportLevelDAO;
 		}
+		public IVoterModificationDAO getVoterModificationDAO() {
+				return voterModificationDAO;
+			}
 	
+			public void setVoterModificationDAO(IVoterModificationDAO voterModificationDAO) {
+				this.voterModificationDAO = voterModificationDAO;
+			}
+
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
 	{
 		try{
@@ -726,5 +734,24 @@ public class VoterReportService implements IVoterReportService{
 						}
 					  }
 		   
+				  public ResultStatus deleteVoterModifiedData(Long constituencyId,Long publicationDateId)
+				  {
+					LOG.info(" Entered into deleteVoterModifiedData() method"); 
+					ResultStatus resultStatus = new ResultStatus();
+					try{
+						if(constituencyId != null && constituencyId > 0)
+						{
+						voterModificationDAO.deleteVoterModifiedDataByCOnstituencyId(constituencyId, publicationDateId);
+						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						}
+						
+					}
+					catch(Exception e)
+					{
+					LOG.error("Exception Occured in deleteVoterModifiedData()", e);	
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					}
+					return resultStatus;
+				  }
 	
 }

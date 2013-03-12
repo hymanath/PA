@@ -45,5 +45,7 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	
 	public List<Object[]> getGenderWiseVoterModificationByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId, String queryString);
 	
+	public Integer deleteVoterModifiedDataByCOnstituencyId(Long constituencyId,Long publicationDateId);
+	
 	
 }
