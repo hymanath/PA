@@ -294,4 +294,19 @@ IUserVoterDetailsDAO{
 		return (Long)queryObj.uniqueResult();
 		
 	}
+	
+	public List<Long> getVoterIdsForuserByHamletIdsByCaste(Long userId ,Long hamletId,Long casteStateId)
+	{
+		
+		Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where " +
+				" model.user.userId = :userId and model.hamlet.hamletId =:hamletId and model.casteState.casteStateId = :casteStateId ");
+		
+		
+		query.setParameter("userId", userId);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("casteStateId", casteStateId);
+		
+		return query.list();
+		
+	}
 }

@@ -222,4 +222,6 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Long > getVoterIdsForuserByHamletForLocalities(Long userId,Long hamletIds);
 	 
 	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId);
+	
+	public List<Voter> getVoterDetailsByCasteStateForPanchayatByHamlet(List<Long> voterIds,Long publicationDateId);
 }

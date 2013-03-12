@@ -2267,7 +2267,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		  return voterCasteDetailsMap;
 	  }
 	
-	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type)
+	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId)
 	{
 		
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
@@ -2279,7 +2279,18 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		else
 		{
-		list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId);
+			
+			if(buildType.equalsIgnoreCase("booth"))
+		      list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId);
+			else{	
+				
+				List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
+
+			    list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			  
+			}
+
+				
 		}
 		VoterHouseInfoVO voterHouseInfoVO = null;
 		long sno = 1;
