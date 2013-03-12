@@ -206,7 +206,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId , List<Long> voterIds);
 	
-	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds);
+	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId);
 	
 	public List<Long> getTotalVotersCountForHamletByVoterIds(List<Long> voterIds,Long publicationDateId);
 	
@@ -219,4 +219,5 @@ public interface IBoothPublicationVoterDAO extends
 	 public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,String scope);
 	 public List getVoterMobileDetails(Long userId,Long scopeId,String scope);
 	 public Long getLatestpublicationDate();
+	 public List<Long > getVoterIdsForuserByHamletForLocalities(Long userId,Long hamletIds);
 }
