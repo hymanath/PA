@@ -832,16 +832,16 @@ function addToPolitician(voterId,name)
 		  $("#votersBasicInfoBtnDiv").hide();
 		  
 	   }else if(type == "hamlet"){
-	    //$("#impFamiliesMoreInfoButn").hide();
-		$("#impFamiliesMoreInfoButn").show();
-			      $("#impFamiliesMoreInfoButn").attr("value","View Locality Wise Family Details");
-		 $("#ageLink").html("");
-		 $("#impFamiliesMoreInfoButn").html("");
+	
+		// $("#cnstHeading").html();
+		 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
+         	$("#impFamiliesMoreInfoButn").show();
+		 $("#impFamiliesMoreInfoButn").attr("value","View Locality Wise Family Details");
 		 $("#previousEleVotingTrendsDiv").css('display','none');
 		 //$("#impFamiliesMoreInfoButn").css('display','none');
 		 $("#InfluencingPeopleCountDiv").css('display','none');
 		  $("#votersCountVaryDiv").css('display','none');
-		 $("#votersShareBtn1").css('display','none');
+	
 		 $("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" Hamlet in "+publicationYear+" ");
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
@@ -895,9 +895,9 @@ function addToPolitician(voterId,name)
 			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
-		  $("#votersHeaderDiv3").hide();
+		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		  //--
+		 //--
 		 getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
@@ -908,7 +908,7 @@ function addToPolitician(voterId,name)
 		//--
 		getProblemsByLocation(id,publicationId,type);
 		 //--
-		 if(type != "hamlet")
+		// if(type != "hamlet")
 		 getInfluencingPeopleCount(id,type);
 		//-- 
 		getCounts(id,publicationId,type);
@@ -2224,6 +2224,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
 		else if(type =="hamlet")
 		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Ward</h4>';
+			
 		
 		str+='<thead>';
 		str+='<tr>';
@@ -2237,7 +2238,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		if(type =="ward")
 		str +='<th>Booth</th>';
 		if(type =="hamlet")
-		str +='<th>Locality</th>';
+	    str +='<th>Locality</th>';
 
 		str +='<th>Caste</th>';
 		str+='<th>Caste Category</th>';
@@ -2267,7 +2268,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		else if(type =="panchayat" && buildType == "hamlet")
 		{
-		console.log(constMgmtMainObj.castStatssubArray[i]);
+	  //	console.log(constMgmtMainObj.castStatssubArray[i]);
 		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
@@ -3956,8 +3957,9 @@ function callAjaxorVoterDetails(jsObj,url){
                             // buildAgeWiseVoterAnalysisChart(myResults,jsObj);
                            
 							if(jsObj.type != "booth" && jsObj.type!= "hamlet" ){
-							if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward")
-							 {if(myResults.boothVotersDetails.length!=0){
+							if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward"|| jsObj.type == "hamletLocalArea")
+							 {
+							 if(myResults.boothVotersDetails!=null && myResults.boothVotersDetails.length!=0){
 								buildAgewiseDetails(myResults,jsObj);
 								buildAgeAndGenderWiseDetails(myResults,jsObj);
 								buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj);
@@ -4039,9 +4041,11 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	//str+='<th>Percentage</th>';
 	str+='</tr>';
 	str+='</thead><tbody>';
-	if(result.votersDetailsVO == null ||result.votersDetailsVO.length ==0 )
-	str='<span style="color:green">No Data Found</span>'
-
+	if(result.votersDetailsVO == null ||result.votersDetailsVO.length ==0 ){
+	str='<span style="color:red">No Data Available</span>';
+	//$("#ageLink").hide();
+	return;
+}
 	for(var i in result.votersDetailsVO){
 
 	
@@ -4146,6 +4150,10 @@ function buildAgewiseDetails(results , obj){
 		innerResults = results.boothVotersDetails;
 		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
 	}
+	else if(type="hamlet" && obj.type == "hamletLocalArea"){
+		innerResults = results.boothVotersDetails;
+		noteString = "LocalArea wise voter age details of "+obj.name+" in "+publicationYear;
+	}
 
 	if(innerResults.length == 0){
 		return false;
@@ -4170,6 +4178,8 @@ function buildAgewiseDetails(results , obj){
 	   str+='<th rowspan="2">Ward</th>';
 	else if(type == "ward")
 	   str+='<th rowspan="2">Booth No</th>';
+	   else if(type="hamlet" && obj.type == "hamletLocalArea")
+	   str+='<th rowspan="2">LocalArea</th>';
 	str+='<th  rowspan="2">Total Voters</th>';
 	str+='<th colspan="2">18-25</th>';
 	str+='<th colspan="2">26-35</th>';
@@ -4209,7 +4219,10 @@ for(var i=0;i<innerResults.length;i++){
 	 str+='<td>'+innerResults[i].boothName+'</td>';
     else if(type == "ward")
 	 str+='<td>'+innerResults[i].boothName+'</td>';
-
+      else if(type="hamlet" && obj.type == "hamletLocalArea")
+	   str+='<td>'+innerResults[i].localityName+'</td>';
+	   
+	   
 	str+='<td>'+innerResults[i].totalVoters+'</td>';
 	str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
 	str+='<td>'+innerResults[i].votersPercentFor18To25+'</td>';
@@ -4262,6 +4275,10 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		innerResults = results.boothVotersDetails;
 	   	noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
+		else if(type="hamlet" && obj.type == "hamletLocalArea"){
+		innerResults = results.boothVotersDetails;
+		noteString = "LocalArea wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	}
 	if(innerResults.length == 0){
 		return false;
 	}
@@ -4286,6 +4303,9 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	   str+='<th rowspan="2">Ward</th>';
 	else if(type == "ward")
 	   str+='<th rowspan="2">Booth No</th>';
+	    else if(type="hamlet" && obj.type == "hamletLocalArea")
+	   str+='<th rowspan="2">LocalArea</th>';
+	   
 	str+='<th colspan="2">18-25</th>';
 	str+='<th colspan="2">26-35</th>';
 	str+='<th colspan="2">36-45</th>';
@@ -4322,6 +4342,8 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].boothName+'</td>';
     else if(type == "ward")
 	str+='<td>'+innerResults[i].boothName+'</td>';
+	 else if(type="hamlet" && obj.type == "hamletLocalArea")
+	   str+='<td>'+innerResults[i].localityName+'</td>';
 	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
 
@@ -4466,6 +4488,10 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		innerResults = results.boothVotersDetails;
 		noteString = "Booth wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
+	else if(type="hamlet" && obj.type == "hamletLocalArea"){
+		innerResults = results.boothVotersDetails;
+		noteString = "LocalArea wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+	}
 
 	if(innerResults.length == 0){
 		return false;
@@ -4491,6 +4517,9 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	   str+='<th rowspan="2">Ward</th>';
 	else if(type == "ward")
 	   str+='<th rowspan="2">Booth</th>';  
+	       else if(type="hamlet" && obj.type == "hamletLocalArea")
+	   str+='<th rowspan="2">LocalArea</th>';
+	   
 	str+='<th colspan="3">18-25</th>';
 	str+='<th colspan="3">26-35</th>';
 	str+='<th colspan="3">36-45</th>';
@@ -4532,6 +4561,8 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].boothName+'</td>';
 	else if(type == "ward")
 	str+='<td>'+innerResults[i].boothName+'</td>';
+	 else if(type="hamlet" && obj.type == "hamletLocalArea")
+	   str+='<td>'+innerResults[i].localityName+'</td>';
 
     str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
 	str+='<td>'+innerResults[i].maleVotersPercentFor18To25+'</td>';
@@ -4664,6 +4695,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	}
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
+		
 		$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
 		$("#votersBasicInfoSubDiv").css('border','1px solid black');
 		$("#votersBasicInfoMsgDiv").html('');
@@ -4678,7 +4710,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			str += '<span>UnKnown Voters : '+votersbasicinfo.unKnowVoters+'</span>';
 		
 		str += '</b></div></div></br></br>';
-		if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
+        if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
 		    var prevElecInfo = votersbasicinfo.previousElectInfoList;
 			str += '<table class="votersPrevCountTableDiv" style="margin-bottom:5px;font-family:verdana;">';
 			str += '  <tr>';
@@ -5093,7 +5125,7 @@ areatype=results[0].areaType;
 		  $('#votersShareBtn1').css('display','block');
 		  var btnAgeLnk='View '+area+' Wise Age Details';
 		  var btnFmlyLnk='View '+area+' Wise Family Details' ;
-		  
+		  if(jsObj.type=maintype){
 		  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">'+btnAgeLnk+'</a>');
 		  /* if(maintype == "hamlet"){
 		   $("#impFamiliesMoreInfoButn").css('display','none');
@@ -5101,6 +5133,7 @@ areatype=results[0].areaType;
 		  else{ */
 			$("#impFamiliesMoreInfoButn").attr("value",btnFmlyLnk);
 		 //}
+		 }
 		   
 //console.log(resultDataForNav);
 var str = '';
@@ -5386,7 +5419,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		$('#votersShareBtn').live("click",function(){
 
 			$('#votersInfoAjaxImg').css("display","block");
-			getvotersBasicInfo("voters",mainreqid,$("#publicationDateList").val(),maintype);
+			getvotersBasicInfo("voters",mainreqid,mainpublicationId,maintype);
 			
 		});
 
@@ -5757,7 +5790,7 @@ mainpublicationId = $("#publicationDateList").val();
 maintype = 'panchayat';
 mainname = $(this).closest("a").attr("name-panchayat");
 scrollToNewsDiv();
-
+$("#tabHeader_2").trigger("click");
 getAllTabs(panchayatid,$("#publicationDateList").val(),'panchayat');
 //alert("SHOW Panchayat DATA");
 //getvotersSubBasicInfo(panchayatid,"panchayat-name","panchayat");
@@ -5825,6 +5858,7 @@ buildType="hamlet";
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
 	 }
+
 });
 $("#tabHeader_2").live("click",function(){
 buildType="booth";
@@ -5853,6 +5887,10 @@ mainpublicationId = $("#publicationDateList").val();
 maintype = 'booth';
 mainname = $(obj).closest("a").attr("name-booth");
 scrollToNewsDiv();
+$(obj).closest("li").siblings().find('a').removeClass("btn-primary");
+
+$(obj).closest("a").addClass("btn-primary");
+
 getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 
 }
@@ -5860,6 +5898,12 @@ function buildForHamlets(obj)
 { 
 $(obj).find("input").attr("checked",true);
 var mandalid=$(obj).closest("a").attr("data-mandalid");
+$(".wid").removeClass("btn-primary");
+$(obj).closest("a").addClass("btn-primary");
+$(".marg1").removeClass("mybtn");
+$(obj).siblings().addClass("mybtn");
+
+
 var levelId =6;
 var panchayatid=$(obj).closest("a").attr("data-panchayatid");
 var boothid=$(obj).closest("a").attr("data-hamletid");
@@ -5870,6 +5914,14 @@ mainname = $(obj).closest("a").attr("name-hamlet");
 scrollToNewsDiv();
 //alert(mainreqid+maintype+mainname);
  //$("#votersShareBtn1").hide();
+ 
+	 	 $("#votersShareBtn1").css('display','block');
+	   $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
+      $("#votersShareBtn1").html("");      
+	  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>LocalArea Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know LocalArea Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+       $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
+	
 getAllTabs(boothid,mainpublicationId,maintype);
 
 }
@@ -6986,6 +7038,42 @@ function openNewWindowForLocalBodyElection(){
 	updateBrowser.focus();
 }
 
+
+
+function getVotersCastInfoTest(id,publicationId,type)
+	{
+  
+		var jsObj=
+			{
+				type:"hamlet",	
+				id:10,
+				//typename:typename,
+				publicationDateId:7,
+					constituencyId:232,
+				task:"getCastInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+		var jsObj1=
+			{
+				type:"hamlet",	
+				id:10,
+				//typename:typename,
+				publicationDateId:7,
+				constituencyId:232,
+				task:"getPartyInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj1,url);
+}
+
+
+
 function buildVotersByLocHamletTestDataTable(publicationId,hamletId)
 {
 
@@ -7164,6 +7252,11 @@ function loadMyTabs()
 function getVoterDetailsForHamlet(retrieveType){
    $("#AgeWiseNoteDiv").css("display","none"); 
 	$("#AgeWiseNoteDiv").html("");
+	var myType;
+	if(retrieveType == "all")
+	 myType="hamletLocalArea";
+	else
+	 myType="hamlet";
 	var name = mainname;
 	var jsObj=
 				{ 
@@ -7174,7 +7267,7 @@ function getVoterDetailsForHamlet(retrieveType){
 					boothId:'0',
 					name:name,
 					retrieveType:retrieveType,
-					type:"hamlet",
+					type:myType,
 				};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -7191,6 +7284,17 @@ function showMyTabs()
 {
  $("#tabContainer").css({ display: "block" });
  $(".tabscontent").css({ display: "block" });
+
+}
+function ageBlockValidation(type)
+{
+
+if(type!="hamlet")
+     if(maintype != type)
+      return;
+	  else
+	    if(type != "hamletLocalArea")
+		return;
 
 }
 
