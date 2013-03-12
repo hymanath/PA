@@ -101,7 +101,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
 			str.append(" model.booth.localBody.localElectionBodyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		else if(locationType.equalsIgnoreCase("ward"))
-			str.append(" and model2.localBodyWard.constituencyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
+			str.append(" and model2.booth.localBodyWard.constituencyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		
 		if(status != null && !status.equalsIgnoreCase(IConstants.ALL))
 			str.append(" and model.status = :status ");
@@ -392,7 +392,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
 			str.append(" and model.booth.localBody.localElectionBodyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
 		else if(locationType.equalsIgnoreCase("ward"))
-			str.append(" and model2.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
+			str.append(" and model2.booth.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
 		
 		str.append(" group by model.status,model.voter.gender");
 		
