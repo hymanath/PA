@@ -1527,6 +1527,8 @@ public class VoterModificationService implements IVoterModificationService{
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setAddedFemale((Long)params[0]);
 							 
+							 voterModificationAgeRangeVO.setAddedCount(voterModificationAgeRangeVO.getAddedMale() + voterModificationAgeRangeVO.getAddedFemale());
+						
 						 }
 						 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED));
 						 {
@@ -1534,9 +1536,11 @@ public class VoterModificationService implements IVoterModificationService{
 								 voterModificationAgeRangeVO.setDeletedMale((Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setDeletedFemale((Long)params[0]);
+							 
+							 voterModificationAgeRangeVO.setDeletedCount(voterModificationAgeRangeVO.getDeletedMale() + voterModificationAgeRangeVO.getDeletedFemale());
 						 }
-						 voterModificationAgeRangeVO.setAddedCount(voterModificationAgeRangeVO.getAddedMale() + voterModificationAgeRangeVO.getAddedFemale());
-						 voterModificationAgeRangeVO.setDeletedCount(voterModificationAgeRangeVO.getDeletedMale() + voterModificationAgeRangeVO.getDeletedFemale());
+						
+						
 						 voterModificationAgeRangeVO.setReportLevelValue((Long)params[3]);
 					 }
 					 
