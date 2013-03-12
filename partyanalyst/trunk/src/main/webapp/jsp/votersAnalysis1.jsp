@@ -65,6 +65,11 @@
 
 
 <style type="text/css">
+.mybtn
+{
+color:#FFFFFF !important;
+}
+
 .wid
 {
 width: 194px !important;
@@ -1026,14 +1031,14 @@ for  body3 start    result  -->
       <ul>
 	     <li id="tabHeader_1"  >
            
-			      <h5 class="breadcrumb" style="margin-bottom:0px;color: #2A4F97;">Hamlets(s)</h5>
+			     <p>Hamlet(s)</p>
 			   <!--  <ul id="rightNav-Booths-list" class="anils"></ul> -->
 	      
        </li>
 	  
 	  <li id="tabHeader_2" >
       
-			<h5 class="breadcrumb" style="margin-bottom:0px;color: #2A4F97;">Booth(s)</h5>
+			<p>Booth(s)</p>
 			 <!--  <ul id="rightNav-Booths-list" class="anils"></ul> -->
 	
 	</li>
