@@ -38,7 +38,39 @@ public class VotersInfoForMandalVO {
 	private Long publicationDateId;
 	private Long totalBooths = 0l;
 	private Long constituencyId;
+	private Long assignedVotersByUser;
+	private Long unassignedVotersByUser;
+	private Long assignedVotersForLocalBodies;
+	private Long unassignedVotersForLocalBodies;
 	
+	
+		
+	
+	public Long getAssignedVotersForLocalBodies() {
+		return assignedVotersForLocalBodies;
+	}
+	public void setAssignedVotersForLocalBodies(Long assignedVotersForLocalBodies) {
+		this.assignedVotersForLocalBodies = assignedVotersForLocalBodies;
+	}
+	public Long getUnassignedVotersForLocalBodies() {
+		return unassignedVotersForLocalBodies;
+	}
+	public void setUnassignedVotersForLocalBodies(
+			Long unassignedVotersForLocalBodies) {
+		this.unassignedVotersForLocalBodies = unassignedVotersForLocalBodies;
+	}
+	public Long getAssignedVotersByUser() {
+		return assignedVotersByUser;
+	}
+	public void setAssignedVotersByUser(Long assignedVotersByUser) {
+		this.assignedVotersByUser = assignedVotersByUser;
+	}
+	public Long getUnassignedVotersByUser() {
+		return unassignedVotersByUser;
+	}
+	public void setUnassignedVotersByUser(Long unassignedVotersByUser) {
+		this.unassignedVotersByUser = unassignedVotersByUser;
+	}
 	public Long getReportLevelId() {
 		return reportLevelId;
 	}
