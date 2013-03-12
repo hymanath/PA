@@ -189,7 +189,7 @@ IUserVoterDetailsDAO{
 	}
 	
 	
-	public List<Object[]> getVotersCountByGenderForHamlet(Long userId , Long hamletId)
+	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId , Long userId)
 	{
 		Query query = getSession().createQuery("select model.voter.gender , count(*) from UserVoterDetails model " +
 				"where model.hamlet.hamletId = ? and model.user.userId =? group by model.voter.gender ");
