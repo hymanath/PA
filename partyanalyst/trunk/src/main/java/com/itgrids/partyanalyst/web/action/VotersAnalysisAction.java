@@ -373,7 +373,11 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	{
 		String param;
 		param = getTask();
-
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return ERROR;
+		Long userID = user.getRegistrationID();
 		try{
 			jObj = new JSONObject(param);	
 			
@@ -497,22 +501,15 @@ public String getVoterDetails(){
 		String param;
 		param = getTask();
 		Long constituencyId = null;
-
-		HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-		return ERROR;
-		Long loggedUserId = user.getRegistrationID();
-		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
 		try{
 			jObj = new JSONObject(param);
 			constituencyId = jObj.getLong("constituencyId");
 			
-			session = request.getSession();
-			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			Long userId =  regVO.getRegistrationID();
 			
-			 votersInfo = votersAnalysisService.getVotersCount(loggedUserId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
+			 votersInfo = votersAnalysisService.getVotersCount(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
 
 			
 		}catch (Exception e) {
@@ -994,7 +991,8 @@ return Action.SUCCESS;
 		
 		if(type.equalsIgnoreCase("hamlet"))
 			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,"hamlet");	
-		else{
+		else 
+			if(!type.equalsIgnoreCase("hamletLocalArea")){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
 		panchayatId , boothId, publicationDateId,type);
@@ -1019,8 +1017,7 @@ return Action.SUCCESS;
 		constituencyManagementVO.setPanchayatVotersDetails(panchatyVotersDetails);
 		}
 		else if (type.equalsIgnoreCase("panchayat")){
-		
-			   String buildType = jObj.getString("buildType");
+		       String buildType = jObj.getString("buildType");
 			   if(buildType.equalsIgnoreCase("booth")){
 			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type,constituencyId);
 			if(boothVotersDetails == null || boothVotersDetails.size() == 0)
@@ -1030,13 +1027,14 @@ return Action.SUCCESS;
 				constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 				}
 		
-		/*else if (type.equalsIgnoreCase("hamlet1")){
+	      else if (type.equalsIgnoreCase("hamletLocalArea")){
 			
-			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type,constituencyId);
-			if(boothVotersDetails == null || boothVotersDetails.size() == 0)
-			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForBoothsByPanchayatId(panchayatId,publicationDateId);
+			//boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type,constituencyId);
+			//if(boothVotersDetails == null || boothVotersDetails.size() == 0)
+			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForLocalAreaByHamletId(panchayatId,publicationDateId,userId1);
+		
 			constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
-			}*/
+			}
 		else if (type.equalsIgnoreCase("ward")){
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByWardId(panchayatId,publicationDateId,constituencyId);
 		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
