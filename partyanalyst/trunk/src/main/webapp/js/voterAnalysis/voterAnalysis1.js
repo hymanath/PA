@@ -2224,7 +2224,6 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
 		else if(type =="hamlet")
 		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Ward</h4>';
-			
 		
 		str+='<thead>';
 		str+='<tr>';
@@ -2238,7 +2237,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		if(type =="ward")
 		str +='<th>Booth</th>';
 		if(type =="hamlet")
-	    str +='<th>Locality</th>';
+		str +='<th>Locality</th>';
 
 		str +='<th>Caste</th>';
 		str+='<th>Caste Category</th>';
@@ -2265,6 +2264,11 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		{
 		
 		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'booth\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else if(type =="panchayat" && buildType == "hamlet")
+		{
+		console.log(constMgmtMainObj.castStatssubArray[i]);
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
 		{
@@ -2333,6 +2337,7 @@ var jsObj={
 			type:type,
 			publicationDate:year,
 			Name:Name,
+            buildType:buildType,
 			constituencyId:$("#constituencyList").val(),
 			casteCategory:casteCategory,
 			task:"getVotersInACaste"
@@ -6919,42 +6924,6 @@ function openNewWindowForLocalBodyElection(){
 	var updateBrowser = window.open(urlStr,"localBodyElectionResultsAction","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
-
-
-
-function getVotersCastInfoTest(id,publicationId,type)
-	{
-  
-		var jsObj=
-			{
-				type:"hamlet",	
-				id:10,
-				//typename:typename,
-				publicationDateId:7,
-					constituencyId:232,
-				task:"getCastInfo"
-			}
-		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
-		callAjax(jsObj,url);
-		
-		var jsObj1=
-			{
-				type:"hamlet",	
-				id:10,
-				//typename:typename,
-				publicationDateId:7,
-				constituencyId:232,
-				task:"getPartyInfo"
-			}
-		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
-			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
-		callAjax(jsObj1,url);
-}
-
-
 
 function buildVotersByLocHamletTestDataTable(publicationId,hamletId)
 {
