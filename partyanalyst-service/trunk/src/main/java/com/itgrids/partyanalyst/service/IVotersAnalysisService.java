@@ -215,4 +215,6 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getBoothsByPanchayatId(Long id,Long publicationDateId);
 	public List<VoterCastInfoVO> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	public List<SelectOptionVO> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
+	
+	public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId);
 }
