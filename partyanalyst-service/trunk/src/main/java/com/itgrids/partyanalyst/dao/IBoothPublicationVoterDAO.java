@@ -213,6 +213,13 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Long> getBoothPublicationVoterIdsByVoterIdsList(List<Long> voterIdsList, Long publicationDateId);
 	
 	public List<Object[]> getVotersBasedOnVoterIdsAndPublicationAndGender(Long publicationDateId , List<?> voterIds);
+	
+	public List<Object[]> getUnassignedVotersInPanchayat(Long userId);
+	
+	public List<Object[]> getVotersListInPanchayat(Long publicationDateId,Long panchayatId,Long userId);
+	
+	public List<Object[]> getAssignedAndUnassignedVtrsOfLclBdy(Long hamletId,Long userId);
+	
 	public Integer deleteByIdsList(List<Long> idsList);
 
 	 public List getCadreMobileDetails(Long userId,List<Long> scopeId,String scope);
