@@ -3696,7 +3696,13 @@ var jsObj=
 
 	}
 	function getLocalitiesList(selectboxId,divId,familyId)
-	{    var optionValue="";
+	{   
+		if(isMuncipality)
+		{
+			$('#localitylocationdiv').hide();
+			return;
+		}
+		var optionValue="";
 		showNewsDetails();
 		//var reportLevel = $("#reportLevel").val();
 	//	var localityId=document.getElementById(selectboxId);
