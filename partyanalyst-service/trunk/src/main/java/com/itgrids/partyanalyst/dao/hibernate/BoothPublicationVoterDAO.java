@@ -1951,5 +1951,12 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 		
 	}
+	public List<Object[]> getConstituenciesToMapPublicationData(Long fromPubliationId,Long toPublicationId)
+	{
+		Query query =getSession().createQuery("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId =:fromPubliationId and model.booth.publicationDate.publicationDateId !=:toPublicationId");
+		query.setParameter("fromPubliationId", fromPubliationId);
+		query.setParameter("toPublicationId", toPublicationId);
+		return query.list();
+	}
 	
 }

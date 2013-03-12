@@ -11833,6 +11833,31 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return resultStatus;
 			}
 		}
+	   
+	   public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId)
+	   {
+		   List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
+		   SelectOptionVO selectOptionVO = null;
+		   try{
+			  List<Object[]> list = boothPublicationVoterDAO.getConstituenciesToMapPublicationData(fromPublicationId,toPublicationId);
+			  if(list != null && list.size() > 0)
+			  {
+			  for(Object[] params : list)
+			  {
+			  if(params[0] != null)
+			  selectOptionVO = new SelectOptionVO((Long)params[0],params[1].toString()); 
+			 
+			  constituencies.add(selectOptionVO);
+			 
+			  }
+		  }
+		   }
+		   catch(Exception e)
+		   {
+			  e.printStackTrace();
+		   }
+		return constituencies;
+	   }
 
 	  
 }
