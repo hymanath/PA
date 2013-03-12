@@ -897,7 +897,7 @@ function addToPolitician(voterId,name)
 		 }
 		  $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		 //--
+		  //--
 		 getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
@@ -4759,7 +4759,6 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			}
 		}
 		
-		
 		if(jsObj.type=="panchayat"){
 		if(buildType=="hamlet"){
 			var totalvoter=votersbasicinfo.assignedVotersByUser+votersbasicinfo.unassignedVotersByUser;
@@ -4774,11 +4773,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			$("#assAndUnass").html('');
 			}
 		}
-		else{
-			$("#assAndUnass").html('');
-		}
-		
-		if(jsObj.type=="hamlet"){
+				
+		else if(jsObj.type=="hamlet"){
 			var totalvoterlclbds=votersbasicinfo.assignedVotersForLocalBodies+votersbasicinfo.unassignedVotersForLocalBodies;
 			strl ='';
 			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
