@@ -832,11 +832,13 @@ function addToPolitician(voterId,name)
 		  $("#votersBasicInfoBtnDiv").hide();
 		  
 	   }else if(type == "hamlet"){
-	    $("#impFamiliesMoreInfoButn").hide();
+	    //$("#impFamiliesMoreInfoButn").hide();
+		$("#impFamiliesMoreInfoButn").show();
+			      $("#impFamiliesMoreInfoButn").attr("value","View Locality Wise Family Details");
 		 $("#ageLink").html("");
 		 $("#impFamiliesMoreInfoButn").html("");
 		 $("#previousEleVotingTrendsDiv").css('display','none');
-		 $("#impFamiliesMoreInfoButn").css('display','none');
+		 //$("#impFamiliesMoreInfoButn").css('display','none');
 		 $("#InfluencingPeopleCountDiv").css('display','none');
 		  $("#votersCountVaryDiv").css('display','none');
 		 $("#votersShareBtn1").css('display','none');
@@ -1347,6 +1349,7 @@ function addToPolitician(voterId,name)
 									buildImpFamilesChart(myResults);
 								    if(myResults.subList != null && myResults.subList.length > 0)
 									  {
+
 										buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 										impFamilesVariableDescription();
 									  }
@@ -2587,7 +2590,7 @@ function impFamilesAllInfoForHamletPopUp(){
 		 var jsObj2=
 			{
 					
-				type:"panchayat",
+				type:maintype,
 				id:mainreqid,
 				publicationDateId:mainpublicationId,
 				typename:impFamltypename,
@@ -2652,35 +2655,10 @@ function impFamilesAllInfoForHamletPopUp(){
 
 function getImpFamiliesVotersToShow(){
 
-
 	$('#impFamPancBothDtlsAgxImg').show();
-     if(buildType == "hamlet" && maintype == "panchayat" ){
+     if((buildType == "hamlet" && maintype == "panchayat")  || maintype == "hamlet"){
       impFamilesAllInfoForHamletPopUp();
    }else{
-	
-    /*$("#impFamilesAllInfoPopUp").dialog({
-            modal: true,
-            title: "<b>Voters Details</b>",
-			width: 970,
-            height: 600
-           
-        });
-		
-		 var jsObj2=
-			{
-					
-				type:"panchayat",
-				id:mainreqid,
-				publicationDateId:mainpublicationId,
-				typename:impFamltypename,
-				buildType:buildType,
-				task:"gettotalimpfamlies"
-	
-			}
-	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
-			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
-		callAjax(jsObj2,url2); */
-
 		
     $("#impFamilesAllInfoPopUp").dialog({
             modal: true,
@@ -3455,6 +3433,7 @@ if(type == "constituency" || type == "Mandal/Tehsil")
 function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
 	
+
   var impFamiList = new Array();
   for(var i in impFamilesData){
      var data={};
@@ -3517,8 +3496,8 @@ if(type == "constituency" || type == "Mandal/Tehsil")
 
 function impFamilesStaticTable(myresults,jsObj)
 {
-	if(jsObj.type=="hamlet")
-	$('#impFamiliesMoreInfoButn').hide();
+	//if(jsObj.type=="hamlet")
+	//$('#impFamiliesMoreInfoButn').hide();
 	
 	
 	
