@@ -989,6 +989,25 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 				return votersInfoForMandalVO;
 			}
+			else if(type.equalsIgnoreCase("hamlet")){
+
+				VotersInfoForMandalVO votersInfoForMandalVO =new VotersInfoForMandalVO();
+
+
+
+				//getVoterDetailsForLocalAreasInHamlet(id, votersInfoForMandalVO,publicationDateId,userId);
+				List<Object[]> objlist=boothPublicationVoterDAO.getAssignedAndUnassignedVtrsOfLclBdy(id,userId);
+				if(objlist != null && objlist.size() > 0)
+				   {
+					   for(Object[] params : objlist){
+						   votersInfoForMandalVO.setAssignedVotersForLocalBodies((Long) params[0]);
+						   votersInfoForMandalVO.setUnassignedVotersForLocalBodies((Long) params[1]);
+						   
+					   }
+				   }
+
+				return votersInfoForMandalVO;
+				}
 			else if(type.equalsIgnoreCase("ward")){
 				VotersInfoForMandalVO votersInfoForMandalVO = getVotersBasicInfoForWard(id, publicationDateId, "main",constituencyId);
 				if(!votersInfoForMandalVO.isDatapresent())
@@ -2033,18 +2052,18 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 							.getTotalVotersCountForHamlet(userId, hamletId,
 									publicationDateId, "hamlet");
 					voterCastInfo
-							.setVoterCastInfoVO(calculatePercentageForUserCast(
-									hamletCastDetails, totalVoters));
+					.setVoterCastInfoVO(calculatePercentageForUserCast(
+							hamletCastDetails, totalVoters));
 
-					
-					voterCastInfo.setMandalName(locality.getName());
-					voterCastInfo.setLocationId(hamletId);
-					localityInfo.add(voterCastInfo);
-				}
-			}
-			return localityInfo;
 			
+			voterCastInfo.setMandalName(locality.getName());
+			voterCastInfo.setLocationId(hamletId);
+			localityInfo.add(voterCastInfo);
 		}
+	}
+	return localityInfo;
+	
+}
 
 //getting SubLevel Data For Booths
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleBooths(List<SelectOptionVO> boothsList,Long publicationDateId,Long userId)
@@ -3558,6 +3577,20 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				/*ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
 				if(!importantFamiliesInfoVo.isDataPresent())*/
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamiliesForhamlet(userId , type,id,publicationDateId,"main",constituencyId);
+				
+				//updated by sasi -- Start
+								
+				List<Object[]> objlist=boothPublicationVoterDAO.getAssignedAndUnassignedVtrsOfLclBdy(id,userId);
+				if(objlist != null && objlist.size() > 0)
+				   {
+					   for(Object[] params : objlist){
+						   importantFamiliesInfoVo.setAssignedVotersForLocalBodies((Long) params[0]);
+						   importantFamiliesInfoVo.setUnassignedVotersForLocalBodies((Long) params[1]);
+						   
+					   }
+				   }
+				//updated by sasi -- End	
+				
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
@@ -3566,6 +3599,18 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 					importantFamiliesInfoVo = getImportantFamiliesForPanchayat1(userId ,id,publicationDateId,"","main",constituencyId);
 				
 				List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
+				
+				//updated by sasi -- Start
+				List<Object[]> assignedAndUnAssignedVotersOfUser=boothPublicationVoterDAO.getVotersListInPanchayat(publicationDateId,id,userId);
+				if(assignedAndUnAssignedVotersOfUser != null && assignedAndUnAssignedVotersOfUser.size() > 0)
+				   {
+					   for(Object[] params : assignedAndUnAssignedVotersOfUser){
+						   importantFamiliesInfoVo.setAssignedVotersByUser((Long) params[0]);
+						   importantFamiliesInfoVo.setUnassignedVotersByUser((Long) params[1]);
+						   
+					   }
+				   }
+				//updated by sasi -- End			
 				
 				for(Long  hamletId:hamlets)			
 					 importantFamiliesInfoVo.getSubListForHamlets().add(getImportantFamiliesDetailsForHamlet(userId , "hamlet",hamletId,publicationDateId,"sub",constituencyId));
@@ -3742,7 +3787,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		importantFamiliesInfoVo.setType("Hamlet");
 		importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
 		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,id,publicationDateId,"hamlet"));
-	
+		
 		List<Object[]> localitiesList = localityDAO.getAllLocalitiesForHamlet(userId,id);
 		
 		
@@ -11296,12 +11341,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 		public VotersInfoForMandalVO getVotersBasicInfoForPanchayat1(Long userId , Long id,Long publicationDateId,String reqType ,Long constituencyId){
 			try{
+				VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+				//votersInfoForMandalVO.setDatapresent(false);
+				//VotersInfoForMandalVO votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId("Panchayat"), id, publicationDateId, panchayatDAO.get(id).getPanchayatName(), "Panchayat",constituencyId);
 				
-				VotersInfoForMandalVO votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId("Panchayat"), id, publicationDateId, panchayatDAO.get(id).getPanchayatName(), "Panchayat",constituencyId);
 				if(reqType.equalsIgnoreCase("main")){
-					if(!votersInfoForMandalVO.isDatapresent())
+					if(votersInfoForMandalVO.isDatapresent())
 					{
-					  //getVotersCountForMultipleBooths(id,publicationDateId,votersInfoForMandalVO);
+					  
+						//getVotersCountForMultipleBooths(id,publicationDateId,votersInfoForMandalVO);
 					  //calculatePercentage(votersInfoForMandalVO);
 						/*List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(id,publicationDateId);
 						Map<Long,String> boothIds = new HashMap<Long,String>();
@@ -11313,7 +11361,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				*/	
 					
 						votersInfoForMandalVO.setDatapresent(true);
-					getVoterDetailsForHamletsInPanchayat(userId,id,votersInfoForMandalVO);
+					getVoterDetailsForHamletsInPanchayat(userId,id,votersInfoForMandalVO,publicationDateId);
 					
 					
 					}
@@ -11329,7 +11377,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			}
 		}
 		
-		public void getVoterDetailsForHamletsInPanchayat(Long userId , Long panchayatId,VotersInfoForMandalVO votersInfoForMandalVO1)
+		public void getVoterDetailsForHamletsInPanchayat(Long userId , Long panchayatId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId)
 		{
 			
 			
@@ -11384,8 +11432,19 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					votersInfoForMandalVOList.add(votersInfoForMandalVO);
 			}
 			
+			List<Object[]> assignedAndUnAssignedVotersOfUser=boothPublicationVoterDAO.getVotersListInPanchayat(publicationDateId,panchayatId,userId);
+			if(assignedAndUnAssignedVotersOfUser != null && assignedAndUnAssignedVotersOfUser.size() > 0)
+			   {
+				   for(Object[] params : assignedAndUnAssignedVotersOfUser){
+					   votersInfoForMandalVO1.setAssignedVotersByUser((Long) params[0]);
+					   votersInfoForMandalVO1.setUnassignedVotersByUser((Long) params[1]);
+					   
+				   }
+			   }
+			
+			
 			votersInfoForMandalVO1.setVotersInfoForMandalVOList(votersInfoForMandalVOList);
-			  calculatePercentage1(votersInfoForMandalVO1);
+			calculatePercentage1(votersInfoForMandalVO1);
 		}
 		
 		public void calculatePercentage1(VotersInfoForMandalVO votersInfoForMandalVO)
