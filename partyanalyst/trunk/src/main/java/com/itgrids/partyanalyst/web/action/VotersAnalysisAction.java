@@ -416,6 +416,11 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		 namesList = votersAnalysisService.getLocalities(selectedId);
 			//namesList.add(0, new SelectOptionVO(0L,"Select"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getConstituencies"))
+		{
+			
+			namesList = votersAnalysisService.getConstituenciesToMapPublicationData(jObj.getLong("fromPublication"),jObj.getLong("toPublication"));
+		}
 			
 		return Action.SUCCESS;
 	}
@@ -488,30 +493,30 @@ public String getVoterDetails(){
 		
 	}
 		
-	public String getVotersCount(){
-		String param;
-		param = getTask();
-		Long constituencyId = null;
-		try{
-			jObj = new JSONObject(param);
-			constituencyId = jObj.getLong("constituencyId");
-			
-			session = request.getSession();
-			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			Long userId =  regVO.getRegistrationID();
-			
-			 votersInfo = votersAnalysisService.getVotersCount(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
+   public String getVotersCount(){
+	String param;
+	param = getTask();
+	Long constituencyId = null;
+	try{
+		jObj = new JSONObject(param);
+		constituencyId = jObj.getLong("constituencyId");
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
+		
+		 votersInfo = votersAnalysisService.getVotersCount(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
 
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
-		}
-		return Action.SUCCESS;
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 	}
-	
-	
-	
+	return Action.SUCCESS;
+}
+
+
+
 	public String getVotersCountForAllElections(){
 		
 		String param;

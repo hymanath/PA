@@ -69,8 +69,8 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td><input type="checkbox" id="sNOUpdateId">
-				Update Serial No</input></td>
+				<!--<td><input type="checkbox" id="sNOUpdateId">
+				Update Serial No</input></td>-->
 			</tr>
 
 		</table>
@@ -96,7 +96,7 @@
 			<tr>
 				<th>To Publication </th>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getConstituenciesToMapPublicationData();"></s:select></td>
 			</tr>
 
 			<tr>
@@ -106,7 +106,7 @@
 				<!-- <s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="mapVoterConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select> -->
 
 				<select id="mapVoterConstituencyId" class="selectBoxWidth" name="constituenciesList">
-				<option value="0">Select</option>
+				<!--<option value="0">Select</option>
 				<option value="223">KANDUKUR</option>
 				<option value="231">GUDUR</option>
 				<option value="232">KAVALI</option>
@@ -129,7 +129,7 @@
 				<option value="356">VISAKHAPATNAM NORTH</option>
 				<option value="357">VISAKHAPATNAM WEST</option>
 				<option value="358">GAJUWAKA</option>
-				<option value="368">BHIMILI</option>
+				<option value="368">BHIMILI</option>-->
 				</select>
 				</td>
 			</tr>
@@ -165,7 +165,9 @@
 				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="publicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
 			</tr>
 		</table>
-		<p><input type="button" value="Submit" id="voterChangesButtonId" class="btn btn-info" onClick="insertVoterModifiedData()"/><div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
+		<p style="margin-left:64px;"><input type="button" value="Submit" id="voterChangesButtonId" class="btn btn-info" onClick="insertVoterModifiedData()"/>
+		<input type="button" value="Delete" id="voterChangesButtonId" class="btn btn-info" onClick="deleteVoterModifiedData()"/>
+		<div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
 	</center>		
 	</div>
 	</fieldset>
@@ -192,6 +194,10 @@ function callAjax(jsObj, url){
 							{
 								showModifiedVotersInsertDataStatus(myResults);
 							}
+							else if(jsObj.task == "getConstituencies")
+							{
+								buildConstituencies(myResults);
+							}
 							
 						}
 						catch(e)
@@ -214,7 +220,7 @@ function callAjax(jsObj, url){
 			var publicationDateId = $("#publicationDate_List").val();
 			var minResults = $.trim($("#minResults").val());
 			var maxResults = $.trim($("#maxResults").val());
-			var sNOUpdate = $("#sNOUpdateId").is(':checked');
+			//var sNOUpdate = $("#sNOUpdateId").is(':checked');
 			
 			var str = '';
 			var errorEle = $(".errorMsgDiv");
@@ -277,7 +283,7 @@ function callAjax(jsObj, url){
 				publicationDateId: publicationDateId,
 				startIndex : minResults,
 				maxResults : maxResults,
-				isUpdateSno: sNOUpdate,
+				//isUpdateSno: sNOUpdate,
 				task: "insertVoterData"
 				
 			}
@@ -338,16 +344,12 @@ function callAjax(jsObj, url){
 		var topublicationDateId = $("#topublicationDateId").val();
 		
         var boothCreateflag = $("#checkedID").attr('checked');
-		
+		alert(constituencyId);
 		var str = '';
 			var errorEle = $(".errorMsgDiv1");
 			errorEle.html('');
-			if(constituencyId == 0 || constituencyId == '')
-			{
-				errorEle.html('Please Select Constituency');
-				return;
-			}
-			else if(frompublicationDateId == 0 || frompublicationDateId== '')
+			
+			 if(frompublicationDateId == 0 || frompublicationDateId== '')
 			{
 				errorEle.html('Please Select From Publication Date');
 				return;
@@ -355,6 +357,11 @@ function callAjax(jsObj, url){
 			else if(topublicationDateId == 0 || topublicationDateId== '')
 			{
 				errorEle.html('Please Select To Publication Date');
+				return;
+			}
+			else if(constituencyId == 0 || constituencyId == '' || constituencyId == null)
+			{
+				errorEle.html('Please Select Constituency');
 				return;
 			}
 			
@@ -406,6 +413,79 @@ function callAjax(jsObj, url){
 		}
 	}
 
+	function deleteVoterModifiedData()
+	{
+		$("#errorMsgDivId").html('');
+		var constituencyId =$("#constituencySelectId").val();
+		var publicationDateId = $("#publicationDateId").val();
+		if(constituencyId == 0)
+		{
+		$("#errorMsgDivId").html("Please Select Constituency");
+		return;
+		}
+		else if(publicationDateId == 0)
+		{
+		$("#errorMsgDivId").html("Please Select Publication Date");
+		return;
+		}
+	var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"deletecastVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deleteVoterModifiedDataAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+	}
+
+function getConstituenciesToMapPublicationData()
+{
+
+	var fromPublication =$("#frompublicationDateId").val();
+	var toPublication = $("#topublicationDateId").val();
+	var jsObj=
+		{
+		  fromPublication:fromPublication,
+		  toPublication : toPublication,
+		  task:"getConstituencies"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+}
+
+function buildConstituencies(results)
+{
+	
+	var selectedElmt = document.getElementById("mapVoterConstituencyId");
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+}
+
+function removeSelectElements(selectedElmt)
+	{
+		var len = selectedElmt.length;
+		for(var i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}
+	}
 </script>
 </body>
 </html>

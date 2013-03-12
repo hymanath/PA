@@ -175,9 +175,9 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		
 		if(jObj.getString("task").equalsIgnoreCase("insertVoterData"))
 		{
-			if(jObj.getBoolean("isUpdateSno"))
+			/*if(jObj.getBoolean("isUpdateSno"))
 				resultStatus = votersAnalysisService.updateSerialNo(jObj.getLong("constituencyId"),null,null,null);
-			else
+			else*/
 				resultStatus = votersAnalysisService.insertVoterData(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("insertVoterModificationData"))
