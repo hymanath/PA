@@ -189,16 +189,15 @@ IUserVoterDetailsDAO{
 	}
 	
 	
-	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId)
+	public List<Object[]> getVotersCountByGenderForHamlet(Long userId , Long hamletId)
 	{
-		
 		Query query = getSession().createQuery("select model.voter.gender , count(*) from UserVoterDetails model " +
-				"where model.hamlet.hamletId = ? group by model.voter.gender ");
+				"where model.hamlet.hamletId = ? and model.user.userId =? group by model.voter.gender ");
 		
 		query.setParameter(0, hamletId);
+		query.setParameter(1, userId);
 		
 		return query.list();
-		
 		
 	}
 	
@@ -229,5 +228,48 @@ IUserVoterDetailsDAO{
 		query.setParameter("panchayatId", panchayatId);
 		
 		return query.list();
+	}
+	
+	public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId)
+	{
+		Query query = getSession().createQuery("select count(*) from UserVoterDetails model where model.hamlet.hamletId = :hamletId and" +
+				" model.user.userId = :userId and model.locality.localityId = :localityId");
+		
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("localityId", id);
+		query.setParameter("userId", userId);
+		
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> getVoterIdsBasedOnHamletAndLocality(Long hamletId ,Long localityId , Long userId)
+	{
+		
+		
+		Query query = getSession().createQuery("select distinct model.voter.voterId " +
+							"from UserVoterDetails model  where  model.hamlet.hamletId = ? " +
+							"and model.locality.localityId = ? and model.user.userId = ? ");
+		
+		query.setParameter(0, hamletId);
+		query.setParameter(1, localityId);
+		query.setParameter(2, userId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getVotersCountByGenderForLocalityInHamlet(Long userId , Long hamletId , Long localityId)
+	{
+		Query query = getSession().createQuery("select count(*),model.voter.gender   from UserVoterDetails model " +
+				"where model.hamlet.hamletId = ? and model.user.userId =? and model.locality.localityId = ? " +
+				"group by model.voter.gender ");
+		
+		query.setParameter(0, hamletId);
+		query.setParameter(1, userId);
+		query.setParameter(2, localityId);
+		
+		return query.list();
+		
 	}
 }
