@@ -112,6 +112,14 @@ public class VotersDetailsVO implements Serializable{
 	private String hamletName;
 	private Long userId;
 	
+	private String localityName;
+	
+	public String getLocalityName() {
+		return localityName;
+	}
+	public void setLocalityName(String localityName) {
+		this.localityName = localityName;
+	}
 	public Long getUserId() {
 		return userId;
 	}
