@@ -227,7 +227,12 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 	     }
 	   });
   });
+  var isMuncipality;
   function getVotersInfo(){
+	isMuncipality=false;
+	if($('#mandalField').val().slice(0,1)==1){
+		isMuncipality=true;
+	}
 	$('#errorMessageDiv').hide();
     $("#multipleVoterFamiliesEditDiv").html("");
 	$("#errorMsgAlert").html("");
