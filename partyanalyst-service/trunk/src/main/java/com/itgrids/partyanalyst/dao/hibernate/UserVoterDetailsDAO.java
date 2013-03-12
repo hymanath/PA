@@ -272,4 +272,26 @@ IUserVoterDetailsDAO{
 		return query.list();
 		
 	}
+	
+	
+	public Long getTotalVotersCountInALocality(Long userId ,Long hamletId,Long localityId,Long publicationDateId)
+	{
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select count(model.voter.voterId) from UserVoterDetails model , " +
+				"BoothPublicationVoter model1 " +
+				" where model.voter.voterId = model1.voter.voterId and " +
+				" model1.booth.publicationDate.publicationDateId = :publicationDateId" +
+				" and model.user.userId = :userId and model.hamlet.hamletId = :hamletId");
+		
+		
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("hamletId", hamletId);
+		queryObj.setParameter("userId", userId);
+		return (Long)queryObj.uniqueResult();
+		
+	}
 }

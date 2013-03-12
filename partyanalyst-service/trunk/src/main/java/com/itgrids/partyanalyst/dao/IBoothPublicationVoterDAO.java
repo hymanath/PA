@@ -220,4 +220,6 @@ public interface IBoothPublicationVoterDAO extends
 	 public List getVoterMobileDetails(Long userId,Long scopeId,String scope);
 	 public Long getLatestpublicationDate();
 	 public List<Long > getVoterIdsForuserByHamletForLocalities(Long userId,Long hamletIds);
+	 
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId);
 }
