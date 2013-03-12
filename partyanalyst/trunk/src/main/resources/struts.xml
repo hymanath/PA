@@ -4635,6 +4635,12 @@
            </result>
 		</action>
 		
-        
-        </package>
+		<action name="deleteVoterModifiedDataAction" class="populateVoterDataAction" method="deleteVoterModifiedData">
+		<result type="json" name="success">
+        <param name="root">resultStatus</param>
+           </result>
+		</action>
+		
+		
+		</package>
 </struts>      

@@ -734,7 +734,19 @@ select
 			if(spanElmt)
 				spanElmt.innerHTML = hStr;
 		}
-		
+		if(results[0].totalConstituencies == 0)
+		{
+			$("#censusPopulationRange_body_head1").html('<div style="margin-top: 10px; text-align: center; font-size: 14px; font-family: verdana; margin-bottom: 10px;">No Data Available</div>');
+			$("#censusPopulationRange_selectParty").css("display","none");
+			$("#censusPopulationRange_body_body1").css("display","none");
+			$("#censusPopulationRange_footer1").css("display","none");
+		}
+		else
+		{
+			$("#censusPopulationRange_body_head1").html('');
+			$("#censusPopulationRange_selectParty").css("display","block");
+			$("#censusPopulationRange_body_body1").css("display","block");
+			$("#censusPopulationRange_footer1").css("display","block");
 		var str = '';
 		//str += '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body\')">View Party wise Results By Census Percentage Range</a></div>';
 		str += '<div id="censusPopulationRange_body">';
@@ -784,7 +796,7 @@ select
 		str += '</div>';
 		elmt.innerHTML = str;
 		
-		
+		}
 		var countStr = '';
 		countStr += '<b>Total Number of Constituencies Considered: </B>';
 		countStr += ''+results[0].totalConstituencies+'';
