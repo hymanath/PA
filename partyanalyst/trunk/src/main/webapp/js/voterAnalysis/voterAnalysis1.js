@@ -2222,6 +2222,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
 		else if(type =="ward")
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		else if(type =="hamlet")
+		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Ward</h4>';
+			
 		
 		str+='<thead>';
 		str+='<tr>';
@@ -2234,6 +2237,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>Booth</th>';
 		if(type =="ward")
 		str +='<th>Booth</th>';
+		if(type =="hamlet")
+	    str +='<th>Locality</th>';
 
 		str +='<th>Caste</th>';
 		str+='<th>Caste Category</th>';
