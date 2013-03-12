@@ -49,7 +49,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	
 	
-	public List<Object[]> getVotersCountByGenderForHamlet(Long hamletId);
+	public List<Object[]> getVotersCountByGenderForHamlet(Long userId , Long hamletId);
 	
 	public List<Voter> getVoterDetailsByHamletId(Long hamletId , Long userId);
 	
@@ -57,4 +57,9 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public void updateUserVoterDetails2(Long voterId,Long userId,Long partyId,Long localitityId,Long hamletId);
 	public void updateUserVoterDetails3(Long voterId,Long userId,Long castStateId,Long localitityId,Long hamletId);
 	public void updateUserVoterDetailsForLocality(Long voterId,Long userId,Long localitityId, Long hamletId);
+	
+	public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
+	
+	public List<Object[]> getVotersCountByGenderForLocalityInHamlet(Long userId , Long hamletId , Long localityId);
+	public List<Long> getVoterIdsBasedOnHamletAndLocality(Long hamletId ,Long localityId , Long userId);
 }
