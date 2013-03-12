@@ -2,17 +2,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
-import com.itgrids.partyanalyst.dto.SmsVO;
-import com.itgrids.partyanalyst.model.BoothPublicationVoter;
-import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase{
 	
@@ -391,10 +386,76 @@ public void testgetInfluencePeopleMobileDetails(){
 	System.out.println(list.get(1));
 	System.out.println(list.get(2));
 }*/
-public void testgetLatestpublicationDate(){
-	Long val=boothPublicationVoterDAO.getLatestpublicationDate();
-	System.out.println("value is:"+val);
-}
+/*public void testgetLatestpublicationDate(){
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	   voterIdsList.add(995l);
+	   voterIdsList.add(996l);
+	   voterIdsList.add(997l);
+	   voterIdsList.add(998l);
+	   voterIdsList.add(999l);
+	List<Object[]> list=boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(7l,voterIdsList);
+		Iterator it=val.iterator();
+	while(it.hasNext())
+		System.out.println(it.next().toString());
+	  if(list != null && list.size() > 0)
+	   {
+		   for(Object[] params : list)
+			   System.out.println(params[0] +" "+params[1]);
+	   }
+	
+}*/
+
+/*public void tests(){
+
+	//List<?> list1=boothPublicationVoterDAO.getVotersListInPanchayat(7l,1l);
+	//List<?> list1 = null;
+		Iterator it=val.iterator();
+	while(it.hasNext())
+		System.out.println(it.next().toString());
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	   voterIdsList.add(995l);
+	   voterIdsList.add(996l);
+	   voterIdsList.add(997l);
+	   voterIdsList.add(998l);
+	   voterIdsList.add(999l);
+	
+	List<Object[]> list=boothPublicationVoterDAO.getVotersListInPanchayat(7l,1l,1l);
+	 if(list != null && list.size() > 0)
+	   {
+		   for(Object[] params : list)
+			   System.out.println(params[0]+" "+params[1]);
+	   }
+	
+	
+}*/
+
+
+
+
+/*public void tests(){
+
+	//List<?> list1=boothPublicationVoterDAO.getVotersListInPanchayat(7l,1l);
+	List<?> list1 = null;
+		Iterator it=val.iterator();
+	while(it.hasNext())
+		System.out.println(it.next().toString());
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	   voterIdsList.add(995l);
+	   voterIdsList.add(996l);
+	   voterIdsList.add(997l);
+	   voterIdsList.add(998l);
+	   voterIdsList.add(999l);
+	
+	List<Object[]> list= boothPublicationVoterDAO.getUnassignedVotersInPanchayat(1l);
+	 if(list != null && list.size() > 0)
+	   {
+		   for(Object[] params : list)
+			   System.out.println(params[0].toString()+" "+params[1].toString());
+	   }
+	
+	
+}*/
+
 
 /*public void testGetBoothPublicationVoterIdsByVoterIdsList()
 {
@@ -407,11 +468,22 @@ public void testgetLatestpublicationDate(){
 	
 }*/
 
-public void testDeleteByIdsList()
+/*public void testDeleteByIdsList()
 {
 	List<Long> voterIdsList = new ArrayList<Long>(0);
 	voterIdsList.add(1l);
 	System.out.println(boothPublicationVoterDAO.deleteByIdsList(voterIdsList));
 	
+}*/
+
+public void tests(){
+	List<Object[]> objlist=boothPublicationVoterDAO.getAssignedAndUnassignedVtrsOfLclBdy(42l,1l);
+	if(objlist != null && objlist.size() > 0)
+	   {
+		   for(Object[] params : objlist)
+			   System.out.println(params[0].toString()+" "+params[1].toString());
+	   }
+	
 }
+	
 }
