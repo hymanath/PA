@@ -493,30 +493,39 @@ public String getVoterDetails(){
 		
 	}
 		
-   public String getVotersCount(){
-	String param;
-	param = getTask();
-	Long constituencyId = null;
-	try{
-		jObj = new JSONObject(param);
-		constituencyId = jObj.getLong("constituencyId");
-		
-		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
-		
-		 votersInfo = votersAnalysisService.getVotersCount(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
+	public String getVotersCount(){
+		String param;
+		param = getTask();
+		Long constituencyId = null;
 
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return ERROR;
+		Long loggedUserId = user.getRegistrationID();
 		
-	}catch (Exception e) {
-		e.printStackTrace();
-		log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+		try{
+			jObj = new JSONObject(param);
+			constituencyId = jObj.getLong("constituencyId");
+			
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long userId =  regVO.getRegistrationID();
+			
+			 votersInfo = votersAnalysisService.getVotersCount(loggedUserId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
+
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+		}
+		
+		// votersInfo = votersAnalysisService.getVotersCount(loggedUserId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
+		return Action.SUCCESS;
 	}
-	return Action.SUCCESS;
-}
-
-
-
+	
+	
+	
 	public String getVotersCountForAllElections(){
 		
 		String param;
