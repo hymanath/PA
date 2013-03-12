@@ -29,7 +29,7 @@ public interface IVotersAnalysisService {
 	
 	public VoterCastInfoVO getVotersCastDetails(Long id,Long publicationDateId,String type);
 	
-	public VotersInfoForMandalVO getVotersCount(String type,Long id,Long publicationDateId,Long constituencyId,String requestFor);
+	public VotersInfoForMandalVO getVotersCount(Long userId , String type,Long id,Long publicationDateId,Long constituencyId,String requestFor);
 	
 	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType);
 	
