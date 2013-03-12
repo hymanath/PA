@@ -783,14 +783,16 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	}
 	
 	
-	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds)
+	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId)
 	{
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
 				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
 				" model.voter.gender,model.voter.age,model.booth.partNo from BoothPublicationVoter model where  " +
-				" model.voter.voterId in (:voterIds) order by model.voter.voterId");
+				" model.voter.voterId in (:voterIds) and model.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" order by model.voter.voterId");
 		
 		query.setParameterList("voterIds", voterIds);
+		query.setParameter("publicationDateId", publicationDateId);
 		
 		return query.list();
 		
@@ -1510,6 +1512,19 @@ public List<Long > getVoterIdsForuserByHamletIds(Long userId,List<Long> hamletId
 	
 	query.setParameter("userId", userId);
 	query.setParameterList("hamletIds", hamletIds);
+	
+	return query.list();
+}
+
+public List<Long > getVoterIdsForuserByHamletForLocalities(Long userId,Long hamletId)
+{
+	
+	Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where " +
+			" model.user.userId = :userId and model.hamlet.hamletId =:hamletId and model.locality.localityId is not null");
+	
+	
+	query.setParameter("userId", userId);
+	query.setParameter("hamletId", hamletId);
 	
 	return query.list();
 }
