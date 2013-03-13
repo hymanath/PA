@@ -629,12 +629,21 @@ public String getVotersCastInfoByConstituency()
 	else if(jObj.getString("task").equalsIgnoreCase("getVotersInACaste"))
 	{
 		constituencyManagementVO = new ConstituencyManagementVO();
+		Long hamletId = 0L;
 		String id=jObj.getString("id");
 		String publicationDateId = jObj.getString("publicationDateId");
 		String casteStateId=jObj.getString("caste");
 		String type = jObj.getString("type");
 		String buildType = jObj.getString("buildType");
-		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),new Long(casteStateId),type,buildType,userId);
+		
+		try
+		{
+			hamletId=jObj.getLong("hamletId");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),new Long(casteStateId),type,buildType,userId,hamletId);
 		constituencyManagementVO.setVotersByHouseNos(votersByHouseNos);
 		
 		
