@@ -42,6 +42,8 @@ import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+import java.util.Collections;
+
 public class VoterModificationService implements IVoterModificationService{
 
 	private static final Logger LOG = Logger.getLogger(VoterModificationService.class);
@@ -1533,8 +1535,8 @@ public class VoterModificationService implements IVoterModificationService{
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setDeletedFemale((Long)params[0]);
 						 }
-						
-						voterModificationAgeRangeVO.setReportLevelValue((Long)params[3]);
+							
+							voterModificationAgeRangeVO.setReportLevelValue((Long)params[3]);
 					 }
 					voterModificationAgeRangeVO.setAddedCount(voterModificationAgeRangeVO.getAddedMale() + voterModificationAgeRangeVO.getAddedFemale());
 					voterModificationAgeRangeVO.setDeletedCount(voterModificationAgeRangeVO.getDeletedMale() + voterModificationAgeRangeVO.getDeletedFemale());
@@ -1630,5 +1632,289 @@ public class VoterModificationService implements IVoterModificationService{
 			return null;
 		}
 	}
+	 
+	
+	public VoterModificationVO getSubLevelsVoterModificationDetailsByLocationValue(
+			String locationType, Long locationValue, Long constituencyId,
+			Long fromPublicationDateId, Long toPublicationDateId)	 {
+		 VoterModificationVO voterModificationVO = new VoterModificationVO();
+		 LOG.debug("Entered into getSubLevelsVoterModificationDetailsByLocationValue() Method");
+		 try{
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<SelectOptionVO> locationValuesList = new ArrayList<SelectOptionVO>(0);
+			 
+			 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 {
+				 List<SelectOptionVO> mandalsList = regionServiceData.getSubRegionsInConstituency(constituencyId,IConstants.PRESENT_YEAR, null);
+				 if(mandalsList == null || mandalsList.size() == 0)
+					  return null;
+				 
+				 List<Long> mandalIdsList = new ArrayList<Long>(0);
+				 List<Long> localEleBodyIdsList = new ArrayList<Long>(0);
+				 
+				  for(SelectOptionVO selectOptionVO : mandalsList)
+				  {
+					  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
+						  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
+					  else
+						  localEleBodyIdsList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+				  }
+				  
+				  if(mandalIdsList != null && mandalIdsList.size() > 0)
+					 locationValuesList.add(new SelectOptionVO(mandalIdsList, "mandal"));
+				  
+				  if(localEleBodyIdsList != null && localEleBodyIdsList.size() > 0)
+					locationValuesList.add(new SelectOptionVO(localEleBodyIdsList, IConstants.LOCALELECTIONBODY));
+				
+			 }
+			 
+			 else if(locationType.equalsIgnoreCase("mandal"))
+			 {
+				 List<Long> panchayatIdsList = panchayatDAO.getPanchayatIdsListByMandalId(locationValue);
+				 if(panchayatIdsList != null && panchayatIdsList.size() > 0)
+					locationValuesList.add(new SelectOptionVO(panchayatIdsList, "panchayat"));
+				
+			 }
+			 else if(locationType.equalsIgnoreCase("panchayat") || locationType.equalsIgnoreCase("ward"))
+			 {
+				// List<String> partNoList = boothDAO.getPartNoByPanchayatIdAndPublicationDateIdsList(locationValue, publicationIdsList, constituencyId, locationType);
+				 
+				 List<Long> boothIdsList = boothDAO.getBoothIdsByPanchayatIdAndPublicationDateIdsList(locationValue, publicationIdsList, constituencyId, locationType);
+				 if(boothIdsList != null && boothIdsList.size() > 0)
+					 locationValuesList.add(new SelectOptionVO(boothIdsList, "booth"));
+			 }
+			 
+			 else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
+			 {
+				
+				 locationValue = getLocalElectionBodyIdByAssemblyLocalElectionBodyId(new Long(locationValue.toString().substring(1)));
+				 
+				 List<Long> wardIdsList =  boothDAO.getWardsByLocalElecBodyIdAndPublicationIdsList(locationValue, publicationIdsList, constituencyId); 
+				 if(wardIdsList != null && wardIdsList.size() > 0)
+				    locationValuesList.add(new SelectOptionVO(wardIdsList, "ward"));
+			 }
+			 
+			 if(locationValuesList != null && locationValuesList.size() > 0)
+				 voterModificationVO = getVoterModificationSubLevelsData(locationValuesList, constituencyId, publicationIdsList);
+				  
+			
+			
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getSubLevelsVoterModificationDetailsByLocationValue() Method");
+			 LOG.error("Exception is - "+e);
+		}
+		 
+		 return voterModificationVO;
+	 }
+	
+	 public VoterModificationVO getVoterModificationSubLevelsData(List<SelectOptionVO> selectOptionVOList, Long constituencyId, List<Long> publicationIdsList)
+	 {
+		 VoterModificationVO voterModificationVO = new VoterModificationVO();
+		 List<VoterModificationVO> voterModificationVOsList = new ArrayList<VoterModificationVO>(0);
+		 try{
+			 
+			 if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+			 {
+				 for(SelectOptionVO optionVO : selectOptionVOList)
+					 getVoterModificationDataByPublicationDateList(optionVO, constituencyId, publicationIdsList, voterModificationVOsList);
+					 
+			 }
+			 voterModificationVO.setModifiedVotersList(voterModificationVOsList);
+			 return voterModificationVO;
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getVoterModificationSubLevelsData() Method, Exception - "+e);
+			 return voterModificationVO;
+		}
+	 }
+
+	 
+	 public String getVoterModificationSublevelQueryString(String locationType)
+	 {
+		 try{
+			 StringBuilder stringBuilder = new StringBuilder();
+			 stringBuilder.append(" select count(model.voter.voterId),model.status,model.voter.gender,"); 
+			 
+			 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				 stringBuilder.append(" model2.booth.constituency.constituencyId, model2.booth.constituency.name ");
+			 
+			 else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+				 stringBuilder.append(" model2.booth.tehsil.tehsilId,model2.booth.tehsil.tehsilName ");
+			 
+			 else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
+				 stringBuilder.append(" model2.booth.localBody.localElectionBodyId,model2.booth.localBody.name ");
+			 
+			 else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				 stringBuilder.append(" model2.booth.panchayat.panchayatId,model2.booth.panchayat.panchayatName ");
+			 
+			 else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+				 stringBuilder.append(" model2.booth.boothId,model2.booth.partNo ");
+			 
+			 else if(locationType.equalsIgnoreCase(IConstants.WARD))
+				 stringBuilder.append(" model2.booth.localBodyWard.constituencyId,model2.booth.localBodyWard.name ");
+			
+			 return stringBuilder.toString();
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getVoterModificationSublevelQueryString() method, Exception - "+e);
+			 return "";
+		}
+	 }
+	 
+	 public void getVoterModificationDataByPublicationDateList(SelectOptionVO optionVO, Long constituencyId,List<Long> publicationIdsList, List<VoterModificationVO> voterModificationVOsList)
+	 {
+		 try{
+			 if(optionVO != null)
+			 {
+				 List<Object[]> list  = null;
+				  list = voterModificationInfoDAO.getVoterModificationGenderDetailsByLocationValuesList(optionVO.getLocationValuesList(), publicationIdsList, constituencyId, votersAnalysisService.getReportLevelId(optionVO.getType()));
+				 if(list != null && list.size() > 0)
+					 getVotermodificationDetailsFromVoterModifInfoTable(list, voterModificationVOsList,optionVO);
+				 else
+				 {
+					 String queryString = getVoterModificationSublevelQueryString(optionVO.getType());
+					 list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(constituencyId, publicationIdsList, optionVO.getLocationValuesList(), optionVO.getType(), queryString);
+					 getVotermodificationDetailsFromVoterModificationTable(list, voterModificationVOsList, optionVO);
+				 }
+					
+				 
+			 }
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getVoterModificationDataByPublicationDateList() Method, Exception - +e");
+			 
+		}
+	 }
+	 
+	 
+	 public void getVotermodificationDetailsFromVoterModifInfoTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOs, SelectOptionVO optionVO)
+	 {
+		 try{
+			 
+			 if(voterModifDetails != null && voterModifDetails.size() > 0)
+			 {
+				 List<Long> locationIds = optionVO.getLocationValuesList();
+				 
+				 for(Long id : locationIds)
+				 {
+					 VoterModificationVO modificationVO = new VoterModificationVO();
+					 for(Object[] params : voterModifDetails)
+					 {
+						if(id.equals(params[4]))
+						{
+						 if(params[3].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						 {
+							 modificationVO.setMaleVotersAdded((Long)params[1]);
+							 modificationVO.setFemaleVotersAdded((Long)params[2]);
+							 modificationVO.setAddedCount((Long)params[0]);
+						 }
+						 else if(params[3].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+						 {
+							 modificationVO.setMaleVotersDeleted((Long)params[1]);
+							 modificationVO.setFemaleVotersDeleted((Long)params[2]);
+							 modificationVO.setDeletedCount((Long)params[0]);
+						 }
+						 
+						 if(modificationVO.getId() == null)
+						 {
+							   modificationVO.setId((Long)params[4]);
+							    if(optionVO.getType().equalsIgnoreCase(IConstants.CONSTITUENCY))
+								 modificationVO.setName(constituencyDAO.get((Long)params[4]).getName());
+							    else if(optionVO.getType().equalsIgnoreCase("mandal"))
+								 modificationVO.setName(tehsilDAO.get((Long)params[4]).getTehsilName());
+								else if(optionVO.getType().equalsIgnoreCase("panchayat"))
+								 modificationVO.setName(panchayatDAO.get((Long)params[4]).getPanchayatName());
+								else if(optionVO.getType().equalsIgnoreCase("ward"))
+								 modificationVO.setName(constituencyDAO.get((Long)params[4]).getName());
+								else if(optionVO.getType().equalsIgnoreCase("booth"))
+								 modificationVO.setName("BOOTH - "+boothDAO.get((Long)params[4]).getPartNo());
+								else if(optionVO.getType().equalsIgnoreCase("localElectionBody") || optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+								 modificationVO.setName(localElectionBodyDAO.get((Long)params[4]).getName()+" MUNCIPALITY");
+								 
+							
+						 }
+						 
+						
+					   }
+					 }
+					 voterModificationVOs.add(modificationVO);
+				 }
+				 
+			 }
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModifInfoTable() Method, Exception - +e");
+		}
+	 }
+	 
+	 
+	 public void getVotermodificationDetailsFromVoterModificationTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOsList, SelectOptionVO optionVO)
+	 {
+		 try{
+			 
+			 if(voterModifDetails != null && voterModifDetails.size() > 0)
+			 {
+				 List<String> locationNamesList = new ArrayList<String>(0);
+				 
+				for(Object[] params: voterModifDetails)
+				{
+					if(!locationNamesList.contains(params[4]))
+						locationNamesList.add(params[4].toString());
+				}
+				Collections.sort(locationNamesList);
+				
+				for(String locationName : locationNamesList)
+				{
+					VoterModificationVO modificationVO = new VoterModificationVO();
+					
+					for(Object[] params : voterModifDetails)
+					 {
+						if(locationName.equalsIgnoreCase(params[4].toString()))
+						{
+							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 modificationVO.setMaleVotersAdded((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 modificationVO.setFemaleVotersAdded((Long)params[0]);
+								 
+								 modificationVO.setAddedCount(modificationVO.getMaleVotersAdded()+modificationVO.getFemaleVotersAdded());
+							 
+							 }
+							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 modificationVO.setMaleVotersDeleted((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 modificationVO.setFemaleVotersDeleted((Long)params[0]);
+								 
+								 modificationVO.setDeletedCount(modificationVO.getMaleVotersDeleted()+modificationVO.getFemaleVotersDeleted());
+							 }
+						 
+							 if(optionVO.getType() != null && optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
+								modificationVO.setName("Booth No- "+params[4].toString());
+							 else
+								 modificationVO.setName(params[4].toString());
+							 
+							 	modificationVO.setId((Long)params[3]);
+						}
+					 }
+					
+					 voterModificationVOsList.add(modificationVO);
+				}
+				 
+			 }
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModificationTable() Method, Exception -" +e);
+			 
+			 
+		}
+	 }
 	 
 }

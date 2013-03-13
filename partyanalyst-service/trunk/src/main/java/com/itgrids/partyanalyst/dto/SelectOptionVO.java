@@ -17,7 +17,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<SelectOptionVO> selectOptionsList1;
 	private boolean hampletPresent;
 	private String partno;
-	
+	private List<Long> locationValuesList;
 	
 
 
@@ -64,6 +64,12 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		this.id = id;
 		this.name = name;
 		this.url = url;
+	}
+	
+	public SelectOptionVO(List<Long> locationValuesList, String type)
+	{
+		this.locationValuesList = locationValuesList;
+		this.type = type;
 	}
 	
 	public String getName() {
@@ -144,4 +150,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	public void setHampletPresent(boolean hampletPresent) {
 		this.hampletPresent = hampletPresent;
 	}
+
+	public List<Long> getLocationValuesList() {
+		return locationValuesList;
+	}
+
+	public void setLocationValuesList(List<Long> locationValuesList) {
+		this.locationValuesList = locationValuesList;
+	}
+	
+	
 }
