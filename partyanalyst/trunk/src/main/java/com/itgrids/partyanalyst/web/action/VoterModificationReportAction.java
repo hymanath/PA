@@ -37,6 +37,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private Long fromPublicationDateId;
 	private Long toPublicationDateId;
 	private Long locationValue;
+	private Long localElectionBodyId;
 	private String locationType;
 	private IVoterModificationService voterModificationService;
 	private List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList;
@@ -182,6 +183,12 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	public void setToPublicationName(String toPublicationName) {
 		this.toPublicationName = toPublicationName;
 	}
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
 	public String execute()throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -189,7 +196,9 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		if(user == null)
 			return ERROR;
 		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
-			locationValue = staticDataService.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(locationValue);
+		{
+			localElectionBodyId = voterModificationService.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(locationValue);
+		}
 		
 		locationName = voterModificationService.getLocationNameByLocationValue(locationType, locationValue);
 		fromPublicationName = voterModificationService.getPublicationNameByPublicationDateId(fromPublicationDateId);
