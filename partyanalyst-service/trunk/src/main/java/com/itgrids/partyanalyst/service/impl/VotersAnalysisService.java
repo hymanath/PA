@@ -6175,10 +6175,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 }
 					 if(type.equalsIgnoreCase("panchayat"))
 							 {
-		/*				List<Object> count=  panchayatHamletDAO.getHamletsCountOfAPanchayat(id);
+					List<Object> count=  panchayatHamletDAO.getHamletsCountOfAPanchayat(id);
 						  int counts= count.size();
 						if(count != null && counts>0 )
-						votersDetailsVO.setTotalNoOfHamlets(counts);*/
+						votersDetailsVO.setTotalNoOfHamlets(Integer.parseInt(count.get(0).toString()));
 							 }
 					List<Object[]> booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId);
 					if(booths != null && booths.size() > 0)
