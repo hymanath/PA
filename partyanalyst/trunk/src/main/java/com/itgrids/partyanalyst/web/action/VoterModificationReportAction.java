@@ -195,7 +195,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
-		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
 		{
 			localElectionBodyId = voterModificationService.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(locationValue);
 		}
@@ -362,7 +362,10 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		
 		
 		
-		voterModificationVO = voterModificationService.getSubLevelsVoterModificationDetails(
+		/*voterModificationVO = voterModificationService.getSubLevelsVoterModificationDetails(
+				locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);*/
+		
+		voterModificationVO = voterModificationService.getSubLevelsVoterModificationDetailsByLocationValue(
 				locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 		return Action.SUCCESS;
 		
