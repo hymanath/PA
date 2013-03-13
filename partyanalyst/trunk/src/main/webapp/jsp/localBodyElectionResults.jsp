@@ -67,25 +67,23 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-.electionResults
-{
-	clear: both;
-    margin: 0 -20px;
+.electionResults {
+    clear: both;
+    color: sienna;
+    font-family: verdana;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 -17px;
     padding: 10px 10px 10px 20px;
     text-align: start;
-    font-size: 16px;
-    font-weight: bolder;
-    font-family: serif;
-	color: highlight;
-	margin-left:16px;
+    width: 600px;
 }
-#corpDetails,#muncipalDetails
-{
+#corpDetails, #muncipalDetails {
     clear: both;
-    color: highlight;
-    font-family: serif;
-    font-size: 16px;
-    margin: -25px -20px 0 16px;
+    color: sienna;
+    font-family: verdana;
+    font-size: 15px;
+    margin: -25px -20px 0 -18px;
     padding: 10px 10px 10px 20px;
     text-align: start;
 }
@@ -101,10 +99,9 @@ table {
     margin-right: 68px;
     position: relative;
 }
-.localBodyElectionYearSelect
-{
-	margin-left: 291px;
-    margin-top: -21px;
+.localBodyElectionYearSelect {
+    margin-left: 326px;
+    margin-top: -17px;
 }
 .errorMsgDiv
 {
@@ -116,7 +113,7 @@ table {
 {	
 	display:none;
 	border: 1px solid #A1A1A1;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
     margin-bottom: 17px;
     margin-left: 32px;
 	margin-bottom: 15px;
@@ -152,10 +149,10 @@ table {
 }
 .yui-skin-sam .yui-dt-liner 
 {
-    color: highlight;
+    color: ButtonText;
     margin: 0;
     padding: 7px 10px;
-    text-align: justify;
+    text-align: center;
     width: 116px;
 }
 .muncipalOrCorpButton
@@ -187,6 +184,7 @@ table {
     padding: 10px;
     text-align: center;
     width: 896px;
+	display:none;
 }
 .yui-skin-sam .yui-pg-container {
     display: block;
@@ -477,6 +475,7 @@ function buildDataTableForCorp(myResults)
 function buildDataTableForGhmc(myResults)
 {	
 	$('#ghmcMainDiv').show();
+	$('#ghmcTableDiv').show();
 	
 	if(myResults.localElectionsInfo != null)
 	{
@@ -657,7 +656,7 @@ function checkingForAreaType(myResults)
 <h4 id="zptcHeading" class ="electionResults">ZPTC ELECTION RESULTS :
 <div id="zptcElectionYear" class="localBodyElectionYearSelect">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="zptcElectionYear" id="zptcElectionYear" list="zptcElection" listKey="id" listValue="name" onChange="getZptcPartyDetails();"/></div>
 </br>
-<div style="width:1000px" id="zptcSeats" style="display:none;color: brown;">Total Seats : <span><font id="totalZptcSeats" style="dispaly:none;"></font>
+<div style="width:607px;" id="zptcSeats" style="display:none;color: brown;">Total Seats : <font id="totalZptcSeats" style="dispaly:none;"></font>
 <input type="button" class="showResultButton" value="SHOW RESULTS" onClick="redirectZptcCandidateLink();"></input>
 </div>
 </s:if></h4>
@@ -672,7 +671,7 @@ function checkingForAreaType(myResults)
 <h4 id="mptcHeading" class ="electionResults" >MPTC ELECTION RESULTS :
 <div id="mptcYearSelectId" class="localBodyElectionYearSelect">Select Year : <s:select theme="simple" cssClass="selectBoxWidth" label="Select Year" name="mptcElectionYear" id="mptcElectionYear" list="mptcElection" listKey="id" listValue="name" onChange="getMptcPartyDetails();"/></div>
 </br>
-<div style="width:1000px" id="mptcSeats" style="display:none;color: brown;">Total Seats : <font id="totalmptcSeats" style="dispaly:none;"></font>
+<div style="width:620px" id="mptcSeats" style="display:none;color: brown;">Total Seats : <font id="totalmptcSeats" style="dispaly:none;"></font>
 <input type="button" class="showResultButton" value="SHOW RESULTS" onClick="redirectMptcCandidateLink();"></input>
 </div>
 </s:if></h4>
