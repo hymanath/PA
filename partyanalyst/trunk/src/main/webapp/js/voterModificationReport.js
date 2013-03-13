@@ -87,14 +87,14 @@ function getPublicationDate()
 		
 		callAjax(jsObj,url);
 	}
-//Ended by sasi
+
 	function getVoterInfo(){
 		
 		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == null || fromPublicationDateId == ''
 		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
 			locationValue == null || locationValue == '')
 			return;
-
+		
 		$("#voterInfoAjaxImg").css("display","block");
 	    var jObj=
 		{
@@ -114,11 +114,14 @@ function getPublicationDate()
 
 	function getAddedDeletedVoterInfoInALocation()
 	{
+		var locationVal = locationValue;
 
 		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == ''
 		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
 			locationValue == null || locationValue == '')
 			return;
+		if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;
 
 		$("#voterAgeInfoAjaxImg").css("display","block");
 		var jObj=
@@ -127,7 +130,7 @@ function getPublicationDate()
 			fromPublicationDateId	: fromPublicationDateId,
 			toPublicationDateId		: toPublicationDateId,
 			locationType			: locationType,
-			locationValue			: locationValue,
+			locationValue			: locationVal,
 			task:"getAddedOrDeletedVoterInfoInALocation"
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
@@ -138,10 +141,13 @@ function getPublicationDate()
 
 	function getGenderWiseVoterModificationsBetweenPublications()
 	{
+		var locationVal = locationValue;
 		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == ''
 		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
 			locationValue == null || locationValue == '')
 			return;
+		if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;
 
 		$('#voterGenderInfoDivAjaxImg').css('display','block');
 		var jObj=
@@ -150,7 +156,7 @@ function getPublicationDate()
 			fromPublicationDateId	: fromPublicationDateId,
 			toPublicationDateId		: toPublicationDateId,
 			locationType			: locationType,
-			locationValue			: locationValue,
+			locationValue			: locationVal,
 			task:"getNewlyAddedOrDeletedVoterInfo"
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
@@ -161,6 +167,7 @@ function getPublicationDate()
 
 	function getGenderWiseVoterModificationsForEachPublication()
 	{
+		var locationVal = locationValue;
 
 		if(constituencyId == null || constituencyId == '' || fromPublicationDateId == ''
 		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
@@ -169,13 +176,16 @@ function getPublicationDate()
 
 		$('#genderWiseVoterModifiAjaxImg').css('display','block');
 		
+		if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;
+
 		var jObj=
 		{
 			constituencyId			: constituencyId,
 			fromPublicationDateId	: fromPublicationDateId,
 			toPublicationDateId		: toPublicationDateId,
 			locationType			: locationType,
-			locationValue			: locationValue,
+			locationValue			: locationVal,
 			task:"getGenderWiseVoterModifiForEachPublic"
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
@@ -212,7 +222,6 @@ function getPublicationDate()
 								{
 									showAllVoterInformationInALocation(myResults);
 									$('#allvotersDetails').css('display','none');
-
 								}
 								else if(jsObj.task == "subRegionsInConstituency")
 									buildMandalOrMuncipalities(myResults);
@@ -732,7 +741,10 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 
 	}
 	$('#allvotersDetails').css('display','block');
-		//$('#voterGenderInfoDivAjaxImg').css('display','block');
+		
+		if(locationType == 'localElectionBody')
+			locationValue1 = localElectionBodyId;
+
 		var jObj=
 		{
 			constituencyId			: constituencyId,
@@ -750,56 +762,48 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 }
 
 
-
-
-function showAllVoterInformationInALocation(results){
+function showAllVoterInformationInALocation(results)
+{
 	
-$('#titleDiv').html(titleString);
+	$('#titleDiv').html(titleString);
 	var str='';
 	str+='<div  class="whitegloss" style="margin:5px;"></div>';
-str+='<div>';
+	
+	str+='<div>';
+	str+='<table id="voterDetails" class="gridtable1">';
+	str+='<thead>';
+	str+='<tr>';
+	str+='<th>NAME</th>';
+	str+='<th>GENDER</th>';
+	str+='<th>AGE</th>';
+	str+='<th>House No</th>';
+	str+='<th>STATUS</th>';
+	str+='<th>BOOTH</th>';
+	str+=' <th>Places Covered</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
 
- str+='<table id="voterDetails" class="gridtable1">';
- str+='<thead>';
-  str+='<tr>';
-   str+='<th>NAME</th>';
-   str+='<th>GENDER</th>';
-   str+='<th>AGE</th>';
-   str+='<th>House No</th>';
-   str+='<th>STATUS</th>';
-   //str+='<th>RELATION</th>';
-   //str+='<th>RELATION TYPE</th>';
-   str+='<th>BOOTH</th>';
-  // str+='<th>LOCATION</th>';
-   str+=' <th>PANCHAYAT</th>';
-   
-  str+='</tr>';
-  str+='</thead>';
- str+='<tbody>';
-
-	 for(var i in results){
-
-		 str+='<tr>';
-		  str+='<td>'+results[i].firstName+'</td>';
-		  str+='<td style="text-align:center;">'+results[i].gender+'</td>';
-		  str+='<td style="text-align:center;">'+results[i].age+'</td>';
-		   str+='<td style="text-align:center;">'+results[i].houseNo+'</td>';
-		  str+='<td style="text-align:center;">'+results[i].status+'</td>';
-		//  str+='<td>'+results[i].relativeFirstName+'</td>';
-		 // str+='<td>'+results[i].relationshipType+'</td>';
-		  str+='<td>'+results[i].boothName+'</td>';
-		  str+='<td>'+results[i].panchayatName+'</td>';
-		 
-		 str+='</tr>';
-	 }
+	for(var i in results)
+	{
+		str+='<tr>';
+		str+='<td>'+results[i].firstName+'</td>';
+		str+='<td style="text-align:center;">'+results[i].gender+'</td>';
+		str+='<td style="text-align:center;">'+results[i].age+'</td>';
+		str+='<td style="text-align:center;">'+results[i].houseNo+'</td>';
+		str+='<td style="text-align:center;">'+results[i].status+'</td>';
+		str+='<td>'+results[i].boothName+'</td>';
+		str+='<td>'+results[i].panchayatName+'</td>';
+	 	str+='</tr>';
+	}
   
-  str+='</tbody>';
- str+='</table>';
-str+='</div>';
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
 
-$('#allVoterDetailsForALocation').html(str);
+	$('#allVoterDetailsForALocation').html(str);
 
-$('#voterDetails').dataTable({
+	$('#voterDetails').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength":50,
 		"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
@@ -889,6 +893,9 @@ var str='';
 
 function callAjaxForSubLevelInformation()
 {
+	var locationVal = locationValue;
+	if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;
 
 	var jsObj=
 		{	
@@ -896,7 +903,7 @@ function callAjaxForSubLevelInformation()
 			fromPublicationDateId:fromPublicationDateId,
 			toPublicationDateId:toPublicationDateId,
 			locationType:locationType,
-			locationValue:locationValue,
+			locationValue:locationVal,
 			status:"",
 			task:"getSubLevelInformation"
 		};
