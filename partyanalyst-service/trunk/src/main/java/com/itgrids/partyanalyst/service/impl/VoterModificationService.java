@@ -1151,13 +1151,12 @@ public class VoterModificationService implements IVoterModificationService{
 					 voter.setRelationshipType(params[5].toString());
 					 voter.setBoothId((Long)params[6]);
 					 voter.setBoothNo(Long.valueOf(params[7].toString()));
-					 voter.setBoothName(params[8].toString());
-					 voter.setPanchayatId((Long)params[9]);
-					 voter.setPanchayatName(params[10].toString());
-					 voter.setStatus(params[11].toString());
-					 voter.setPublicationDateId((Long)params[12]);
-					 voter.setPublicationName(params[13].toString());
-					 voter.setHouseNo(params[14] != null ? params[14].toString() : "");
+					 voter.setBoothName("Booth-"+params[7].toString());
+					 voter.setPanchayatName(params[8].toString());
+					 voter.setStatus(params[9].toString());
+					 voter.setPublicationDateId((Long)params[10]);
+					 voter.setPublicationName(params[11].toString());
+					 voter.setHouseNo(params[12] != null ? params[12].toString() : "");
 					 votersList.add(voter);
 				 }catch (Exception e) {
 					 LOG.error("Exception is - "+e);
@@ -1620,6 +1619,15 @@ public class VoterModificationService implements IVoterModificationService{
 			e.printStackTrace();
 			LOG.error("Exception Occured in setDefaultValuesForGenderwiseVoterModification() Method, Exception - "+e);
 			return genderInfoVOs;
+		}
+	}
+	
+	public Long getLocalElectionBodyIdByAssemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId)
+	{
+		try{
+			return assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(assemblyLocalElectionBodyId);
+		}catch (Exception e) {
+			return null;
 		}
 	}
 	 
