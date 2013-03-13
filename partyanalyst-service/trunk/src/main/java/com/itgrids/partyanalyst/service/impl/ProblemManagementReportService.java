@@ -1526,6 +1526,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProbSource(values[4].toString());
 				//problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[5].toString());
+				problemBeanVO.setProblemId((Long)values[0]);
 				problemBeanVO.setExistingFrom(DateService.timeStampConversionToDDMMYY(values[6].toString()));
 				problems.add(problemBeanVO);
 			}
