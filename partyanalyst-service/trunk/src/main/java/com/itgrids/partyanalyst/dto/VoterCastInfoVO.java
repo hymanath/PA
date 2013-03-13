@@ -43,7 +43,16 @@ public class VoterCastInfoVO {
     private Long casteNotAssignedVoters;
     
     private Double partyPercentage;
+    private Long hamletId;
 
+
+	public Long getHamletId() {
+		return hamletId;
+	}
+
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
 
 	public VoterCastInfoVO(){
 		
