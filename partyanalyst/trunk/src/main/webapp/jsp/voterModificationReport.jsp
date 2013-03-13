@@ -86,6 +86,7 @@
 	var toPublicationDateId = "${toPublicationDateId}";
 	var locationType = "${locationType}";
 	var locationValue = "${locationValue}";
+	var localElectionBodyId = "${localElectionBodyId}";
 	var locationName = '${locationName}';
 	var fromPublicationName = '${fromPublicationName}';
 	var toPublicationName = '${toPublicationName}';
