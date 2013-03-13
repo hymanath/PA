@@ -574,7 +574,7 @@ public interface IConstants {
 	public static final long AGE45  = 45l;
 	public static final long AGE46  = 46l;
 	public static final long AGE60  = 60l;
-	public static final long AGE61  = 60l;
+	public static final long AGE61  = 61l;
 	public static final long AGE160  = 160l;
 	
 	public static final String HAMLETLOCALAREA = "hamletLocalArea";
