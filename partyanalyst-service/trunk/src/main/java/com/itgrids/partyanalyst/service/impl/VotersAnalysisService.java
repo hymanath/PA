@@ -6143,7 +6143,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								}
 								
 				 }
-					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody") && !type.equalsIgnoreCase("ward"))
+					
+					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody") && !type.equalsIgnoreCase("ward") && !type.equalsIgnoreCase("hamlet"))
 					 {
 						    List<Object[]> panchayatiesList1 = null;
 						    try{
@@ -6180,6 +6181,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						if(count != null && counts>0 )
 						votersDetailsVO.setTotalNoOfHamlets(Integer.parseInt(count.get(0).toString()));
 							 }
+					 
+					 if(!type.equalsIgnoreCase("hamlet")){
 					List<Object[]> booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId);
 					if(booths != null && booths.size() > 0)
 					{
@@ -6193,6 +6196,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						votersDetailsVO.setTotalBooths(new Long(boothsList.size()));
 						votersDetailsVO.setBoothsList(boothsList);
 					}
+					 }
 					if(type.equalsIgnoreCase("localElectionBody"))
 					{
 						//getCount for wards
