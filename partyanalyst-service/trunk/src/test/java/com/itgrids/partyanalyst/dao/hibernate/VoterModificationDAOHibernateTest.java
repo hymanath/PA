@@ -54,11 +54,11 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	/*public void testGetModifiedVotersInALocationBetweenPublucations()
+	public void testGetModifiedVotersInALocationBetweenPublucations()
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
-		List<Object[]> list = voterModificationDAO.getModifiedVotersInALocationBetweenPublucations("constituency",241l,241l, publicationIdsList, "All");
+		List<Object[]> list = voterModificationDAO.getModifiedVotersInALocationBetweenPublucations("localElectionBody",83l,232l, publicationIdsList, "All");
 		
 		System.out.println(list.size());
 		for(Object[] params : list)
@@ -67,7 +67,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
-	}*/
+	}
 	
 	/*public void testGetModifiedVotersByPartNo()
 	{
@@ -75,7 +75,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetGenderWiseVoterModificationByPublicationId()
+	/*public void testGetGenderWiseVoterModificationByPublicationId()
 	{
 		List<Long> locationValuesList = new ArrayList<Long>(0);
 		locationValuesList.add(1l);
@@ -106,7 +106,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 				
 		}
 	}
-	
+	*/
 	
 	/*public void testGetAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation()
 	{
