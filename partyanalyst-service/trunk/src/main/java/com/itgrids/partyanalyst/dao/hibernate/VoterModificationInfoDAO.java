@@ -89,4 +89,22 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		return (Long) queryObj.uniqueResult();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterModificationGenderDetailsByLocationValuesList(List<Long> locationValuesList, List<Long> publicationIdsList, Long constituencyId, Long reportLevelId)
+	{
+		Query queryObj = getSession().createQuery(" select model.totalVoters, model.maleVoters, model.femaleVoters, model.voterStatus.status,model.reportLevelValue from " +
+				" VoterModificationInfo model where model.reportLevelValue in (:reportLevelValue) and model.voterReportLevel.voterReportLevelId = :voterReportLevelId " +
+				" and model.constituencyId =:constituencyId and model.publicationDate.publicationDateId in(:publicationDateId) " +
+				" ");
+		
+		queryObj.setParameterList("reportLevelValue", locationValuesList);
+		queryObj.setParameterList("publicationDateId", publicationIdsList);
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("voterReportLevelId", reportLevelId);
+		
+		return queryObj.list();
+	}
+	
+	
 }

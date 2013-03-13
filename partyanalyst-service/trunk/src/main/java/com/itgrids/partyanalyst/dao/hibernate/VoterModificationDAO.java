@@ -419,4 +419,99 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		
 	}
 	
+	
+	
+	public List<Object[]> getConstitunecyGenderWiseVoterModificationsForEachPublicationByLocalElectionBody1(
+			List<Long> locationValues,Long constituencyId,List<Long> publicationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
+				" model.booth.localBody.localElectionBodyId , model.booth.localBody.name from VoterModification model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" and model.booth.localBody.localElectionBodyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
+	    str.append(" group by model.publicationDate.publicationDateId,model.status,model.voter.gender,model.booth.localBody.localElectionBodyId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameterList("locationValues",locationValues);
+	
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSublevelVoterModificationDetails(Long constituencyId, List<Long> publicationIdsList, Long locationValue, String type, String queryStr)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(queryStr.toString());
+		stringBuilder.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 stringBuilder.append(" model2.booth.constituency.constituencyId = :locationValue ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.MANDAL))
+			 stringBuilder.append(" model2.booth.tehsil.tehsilId = :locationValue ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
+			 stringBuilder.append(" model2.booth.localBody.localElectionBodyId = :locationValue ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			 stringBuilder.append(" model2.booth.panchayat.panchayatId = :locationValue ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			 stringBuilder.append(" model2.booth.partNo = :locationValue ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.WARD))
+			 stringBuilder.append(" model2.booth.localBodyWard.constituencyId = :locationValue ");
+		stringBuilder.append("group by model.publicationDate.publicationDateId,model.status,model.voter.gender ");
+		
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		
+		queryObj.setParameterList("publicationIdsList", publicationIdsList);
+		queryObj.setParameter("locationValue", locationValue);
+		
+		
+		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSublevelVoterModificationDetailsByLocationValues(Long constituencyId, List<Long> publicationIdsList, List<Long> locationValuesList, String type, String queryStr)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(queryStr.toString());
+		stringBuilder.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 stringBuilder.append(" model2.booth.constituency.constituencyId in(:locationValuesList) group by model2.booth.constituency.constituencyId ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.MANDAL))
+			 stringBuilder.append(" model2.booth.tehsil.tehsilId in(:locationValuesList) group by model2.booth.tehsil.tehsilId ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
+			 stringBuilder.append(" model2.booth.localBody.localElectionBodyId in(:locationValuesList) group by model2.booth.localBody.localElectionBodyId ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			 stringBuilder.append(" model2.booth.panchayat.panchayatId in(:locationValuesList) group by model2.booth.panchayat.panchayatId ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			 stringBuilder.append(" model2.booth.boothId in(:locationValuesList) group by model2.booth.boothId ");
+		 
+		 else if(type.equalsIgnoreCase(IConstants.WARD))
+			 stringBuilder.append(" model2.booth.localBodyWard.constituencyId in(:locationValuesList) group by model2.booth.localBodyWard.constituencyId ");
+		
+		stringBuilder.append(" , model.publicationDate.publicationDateId,model.status,model.voter.gender ");
+		
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		
+		queryObj.setParameterList("publicationIdsList", publicationIdsList);
+		queryObj.setParameterList("locationValuesList", locationValuesList);
+		
+		
+		return queryObj.list();
+	}
+	
+	
 }
