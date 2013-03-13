@@ -1527,7 +1527,12 @@ public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publica
 		query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.boothId in (:locationValue)");
 	else if(type.equalsIgnoreCase("WARD"))
 		query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.localBodyWard.constituencyId =(:locationValue)");
+	else if(type.equalsIgnoreCase("hamlet"))
+		query.append(" , UserVoterDetails model3 where model3.voter.voterId = model.voter.voterId and model.voter.voterId = model2.voter.voterId and " +
+				"model3.hamlet.hamletId in (:locationValue) ");
+	
 	query.append(" and model.booth.publicationDate.publicationDateId=:publicationDateId");
+	
 	Query queryObj = getSession().createQuery(query.toString()) ;
 	queryObj.setParameterList("locationValue", locationValue);
 	queryObj.setParameter("publicationDateId", publicationDateId);
