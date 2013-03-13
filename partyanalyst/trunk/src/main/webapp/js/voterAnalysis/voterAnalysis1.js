@@ -832,7 +832,7 @@ function addToPolitician(voterId,name)
 		  $("#votersBasicInfoBtnDiv").hide();
 		  
 	   }else if(type == "hamlet"){
-	
+		   $("#votersBasicInfoBtnDiv").show();
 		// $("#cnstHeading").html();
 		 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
          	$("#impFamiliesMoreInfoButn").show();
@@ -2271,7 +2271,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else if(type =="hamlet")
-		{console.log(constMgmtMainObj.castStatssubArray[i]);
+		{
+		
 		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
