@@ -101,9 +101,14 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println(value);
 	}*/
 	
-	public void testGetLocalElecBodyName()
+	/*public void testGetLocalElecBodyName()
 	{
 		List<Object[]> value = assemblyLocalElectionBodyDAO.getLocalElecBodyName("108");
 		System.out.println(value.size());
+	}*/
+	
+	public void testGetLocalElectionBodyIdByAssemblyLocalElectionBodyId()
+	{
+		System.out.println(assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(123l));
 	}
 }
