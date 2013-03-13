@@ -721,4 +721,59 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 		}
 		
+		@SuppressWarnings("unchecked")
+		public List<String> getPartNoByPanchayatIdAndPublicationDateIdsList(Long locationValue, List<Long> publicationDateIdsList, Long constituencyId, String type)
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("select model.partNo from Booth model where model.publicationDate.publicationDateId in (:publicationDateIdsList)  ");
+			if(type.equalsIgnoreCase("panchayat"))
+				stringBuilder.append(" and model.panchayat.panchayatId = :locationValue ");
+			else if(type.equalsIgnoreCase("ward"))
+				stringBuilder.append(" and model.localBodyWard.constituencyId = :locationValue and model.constituency.constituencyId = :constituencyId  ");
+			
+				Query queryObj = getSession().createQuery(stringBuilder.toString());
+				
+				queryObj.setParameter("locationValue", locationValue);
+				queryObj.setParameterList("publicationDateIdsList", publicationDateIdsList);
+				if(type.equalsIgnoreCase("ward"))
+					queryObj.setParameter("constituencyId", constituencyId);
+				
+			return queryObj.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getWardsByLocalElecBodyIdAndPublicationIdsList(Long locationValue, List<Long> publicationDateIdsList, Long constituencyId){
+			
+
+			StringBuilder query = new StringBuilder();
+			query.append("select distinct model.localBodyWard.constituencyId from Booth model where model.publicationDate.publicationDateId in (:publicationDateIdsList) and ");
+			query.append(" model.localBody.localElectionBodyId = :locationValue and model.constituency.constituencyId = :constituencyId and model.localBodyWard.constituencyId != null ");
+			Query queryObj = getSession().createQuery(query.toString()) ;
+			queryObj.setParameterList("publicationDateIdsList", publicationDateIdsList);
+			queryObj.setParameter("locationValue", locationValue);
+			queryObj.setParameter("constituencyId", constituencyId);
+			return queryObj.list();
+			
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getBoothIdsByPanchayatIdAndPublicationDateIdsList(Long locationValue, List<Long> publicationDateIdsList, Long constituencyId, String type)
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("select model.boothId from Booth model where model.publicationDate.publicationDateId in (:publicationDateIdsList)  ");
+			if(type.equalsIgnoreCase("panchayat"))
+				stringBuilder.append(" and model.panchayat.panchayatId = :locationValue ");
+			else if(type.equalsIgnoreCase("ward"))
+				stringBuilder.append(" and model.localBodyWard.constituencyId = :locationValue and model.constituency.constituencyId = :constituencyId  ");
+			
+				Query queryObj = getSession().createQuery(stringBuilder.toString());
+				
+				queryObj.setParameter("locationValue", locationValue);
+				queryObj.setParameterList("publicationDateIdsList", publicationDateIdsList);
+				if(type.equalsIgnoreCase("ward"))
+					queryObj.setParameter("constituencyId", constituencyId);
+				
+			return queryObj.list();
+		}
 }
