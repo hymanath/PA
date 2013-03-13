@@ -1343,7 +1343,7 @@ function addToPolitician(voterId,name)
 								}								
 								else if(jsObj.task == "importantFamiliesinfo")
 								{ 
-								  if(myResults != null){
+								  if(myResults != null && jsObj.task == maintype){
 								    $("#votersDiv1").show();
 								    impFamilesStaticTable(myResults,jsObj);
 									buildImpFamilesChart(myResults);
@@ -3974,7 +3974,8 @@ function callAjaxorVoterDetails(jsObj,url){
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);
 					  
 					  if(jsObj.retrieveType == "brief"){
-							buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
+						  if(jsObj.type == maintype || jsObj.type == "hamletLocalArea" )
+						  buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
 					  }else if(jsObj.retrieveType == "all"){
 
 						 // buildVoterDetailsTable(myResults,jsObj.type);
