@@ -47,7 +47,7 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 	}
 	}*/
 	
-	public void testgetPanchayatsBymandalId()
+	/*public void testgetPanchayatsBymandalId()
 	{
 		List<Object> list = panchayatDAO.getPanchayatsBymandalId1(295l);
 		List<Hamlet> lis=new ArrayList<Hamlet>();
@@ -60,7 +60,7 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		  lis.add(ph.getHamlet());}
 		//PanchayatHamlet p1=(PanchayatHamlet) h.iterator()
 		System.out.println(list.size());
-	}
+	}*/
 
 	/*public void testgetPanchayatiesCount()
 	{
@@ -96,5 +96,13 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> panchayatIdsList = panchayatDAO.getPanchayatIdsBytehsilIdsList(mandalIdsList);
 		System.out.println(panchayatIdsList);
 	}*/
+	
+	public void testgetPanchayatIdsListByMandalId()
+	{
+		List<Long> list = panchayatDAO.getPanchayatIdsListByMandalId(836l);
+		for(Long id : list)
+			System.out.println(id);
+		
+	}
 	
 }
