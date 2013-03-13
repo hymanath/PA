@@ -1687,7 +1687,7 @@ public class VoterModificationService implements IVoterModificationService{
 			 else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
 			 {
 				
-				 locationValue = getLocalElectionBodyIdByAssemblyLocalElectionBodyId(new Long(locationValue.toString().substring(1)));
+				 //locationValue = getLocalElectionBodyIdByAssemblyLocalElectionBodyId(new Long(locationValue.toString().substring(1)));
 				 
 				 List<Long> wardIdsList =  boothDAO.getWardsByLocalElecBodyIdAndPublicationIdsList(locationValue, publicationIdsList, constituencyId); 
 				 if(wardIdsList != null && wardIdsList.size() > 0)
