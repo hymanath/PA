@@ -1,17 +1,25 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -35,6 +43,8 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
 	private List<SelectOptionVO> boothsList;
 	private ResultStatus storeVoter;
+	private List<String> votercardIds;
+	private List<Long> serialNos;
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -98,6 +108,24 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 		this.storeVoter = storeVoter;
 	}
 
+	
+	public List<String> getVotercardIds() {
+		return votercardIds;
+	}
+
+	public void setVotercardIds(List<String> votercardIds) {
+		this.votercardIds = votercardIds;
+	}
+
+	
+	public List<Long> getSerialNos() {
+		return serialNos;
+	}
+
+	public void setSerialNos(List<Long> serialNos) {
+		this.serialNos = serialNos;
+	}
+
 	public String execute() {
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
@@ -135,19 +163,60 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 			boothsList = votersAnalysisService.getBoothsForConstituencyAndPublication(constituencyId,publicationId);
 			return "boothsList";
 		}
-		if(jObj.getString("task").equalsIgnoreCase("saveVoterDetails"))
+		else if(jObj.getString("task").equalsIgnoreCase("saveVoterDetails"))
 		{
-			String name = jObj.getString("name");
-			String voterCardNo = jObj.getString("voterCardNo");
-			String houseNo = jObj.getString("houseNo");
-			String gaurdian = jObj.getString("gaurdian");
-			String relationShip = jObj.getString("relationShip");
-			String gender = jObj.getString("gender");
-			String mobileNo = jObj.getString("mobileNo");
-			Long age = jObj.getLong("age");
+			JSONArray jsonArray = jObj.getJSONArray("voterInfo");
 			Long boothId = jObj.getLong("boothId");
-			storeVoter = votersAnalysisService.saveVoters(name,voterCardNo,houseNo,gaurdian,relationShip,gender,mobileNo,age,boothId);
+			Long sno = null;
+			Map<String , VoterVO> votersMap = new HashMap<String, VoterVO>();
+			//VoterVO  voterVo = new ArrayList<VoterVO>();
+			for (int i = 0 ; i< jsonArray.length(); i++)
+			{
+				VoterVO voterDetails = new VoterVO();
+				JSONObject jSONObject= jsonArray.getJSONObject(i);
+				String name = jSONObject.getString("name");	
+				String gender = jSONObject.getString("gender");
+				Long age = jSONObject.getLong("age");
+				String voterId = jSONObject.getString("voterId");
+				String houseNo = jSONObject.getString("houseNo");
+				String gurdianName = jSONObject.getString("gurdianName");
+				String relationType = jSONObject.getString("relationType");
+				String serialNo = jSONObject.getString("serialNo");
+				if(serialNo != null && serialNo.trim().length() > 0)
+				{
+					sno = Long.valueOf(serialNo);
+				}
+				voterDetails.setFirstName(name);
+				voterDetails.setGender(gender);
+				voterDetails.setAge(age);
+				voterDetails.setVoterIDCardNo(voterId);
+				voterDetails.setHouseNo(houseNo);
+				voterDetails.setRelationshipType(relationType);
+				voterDetails.setSerialNo(sno);
+				voterDetails.setRelativeFirstName(gurdianName);
+				//voterVo.add(voterDetails);
+				votersMap.put(voterId, voterDetails);
+			}
+			votercardIds = votersAnalysisService.storeVoterDetails(votersMap,boothId);
 			return "storeVoter";
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("checkForVoterId"))
+		{
+			storeVoter = votersAnalysisService.checkForVoterId(jObj.getString("voterId"));
+			return "storeVoter";
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("checkForSerialNos")){
+			JSONArray jsonArray = jObj.getJSONArray("serialNoList");
+			Long boothId = jObj.getLong("boothId"); 
+			List<Long> snos = new ArrayList<Long>();
+			for (int i = 0 ; i< jsonArray.length(); i++)
+			{
+				JSONObject jSONObject= jsonArray.getJSONObject(i);
+				Long serialNo = jSONObject.getLong("serialNo");
+				snos.add(serialNo);
+			}
+			serialNos = votersAnalysisService.checkForSerialNos(snos,boothId);
+			return "serialNo";
 		}
 		return Action.SUCCESS;
 		

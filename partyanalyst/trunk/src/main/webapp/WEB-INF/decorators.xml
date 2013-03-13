@@ -147,7 +147,7 @@
 		<pattern>/createThumbNailsAction*</pattern>
 		<pattern>/generatePdfForGallaryAction*</pattern>
 		<pattern>/sendUpdatesByemailAction*</pattern>
-		<pattern>/missingVotersSearchAction*</pattern>
+		<!-- <pattern>/missingVotersSearchAction*</pattern> -->
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
     	<pattern>/sendUpdatesBySMSAction*</pattern>
     </decorator>
@@ -191,6 +191,7 @@
     	<pattern>/changePasswordAction*</pattern>
     	<pattern>/localBodyElectionAction*</pattern>
     	<pattern>/voterEditDataAction*</pattern>
+    	<pattern>/missingVotersSearchAction*</pattern>
     </decorator>
 
 </decorators>

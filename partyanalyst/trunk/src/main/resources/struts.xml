@@ -4393,7 +4393,10 @@
            		<param name="root">boothsList</param>
            	</result>
            	 <result type="json" name="storeVoter">
-           		<param name="root">storeVoter</param>
+           		<param name="root">votercardIds</param>
+           	</result>
+           	 <result type="json" name="serialNo">
+           		<param name="root">serialNos</param>
            	</result>
 		</action>
 		<action name="getElectionyearsByMandalIdAction" class="votersAnalysisAction" method="getElectionYearsByMandalId">
