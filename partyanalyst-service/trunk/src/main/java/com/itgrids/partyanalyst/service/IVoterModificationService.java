@@ -35,5 +35,7 @@ public interface IVoterModificationService {
 	 public String getPublicationNameByPublicationDateId(Long publicationDateId);
 	 
 	 public ResultStatus insertGenderWiseVoterModifInfoInVoterModificationInfoTable(Long constituencyId, Long publicationDateId);
+	 
+	 public Long getLocalElectionBodyIdByAssemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId);
     
 }
