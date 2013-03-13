@@ -84,7 +84,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
-		str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.location, model2.booth.panchayat.panchayatId, model2.booth.panchayat.panchayatName, ");
+		str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.villagesCovered, ");
 		str.append(" model.status, model.publicationDate.publicationDateId,model.publicationDate.name,model.voter.houseNo ");
 		str.append(" from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
@@ -99,7 +99,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
-			str.append(" model.booth.localBody.localElectionBodyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
+			str.append(" and model2.booth.localBody.localElectionBodyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.booth.localBodyWard.constituencyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		
