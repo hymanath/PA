@@ -1064,6 +1064,7 @@
 	
 	<bean id="voterModificationReportAction" class="com.itgrids.partyanalyst.web.action.VoterModificationReportAction" singleton="false">			
 	  <property name="voterModificationService" ref="voterModificationService" />
+	  <property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="assigningCandidatesToVoterAction" class="com.itgrids.partyanalyst.web.action.AssigningCandidatesToVoterAction">
