@@ -17,6 +17,8 @@ import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
+import com.itgrids.partyanalyst.service.impl.StaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -44,7 +46,14 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private String locationName;
 	private String fromPublicationName;
 	private String toPublicationName;
+	private StaticDataService staticDataService;
 	
+	public StaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(StaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 	public List<VoterVO> getVoterVOs() {
 		return voterVOs;
 	}
@@ -179,6 +188,8 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
+		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+			locationValue = staticDataService.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(locationValue);
 		
 		locationName = voterModificationService.getLocationNameByLocationValue(locationType, locationValue);
 		fromPublicationName = voterModificationService.getPublicationNameByPublicationDateId(fromPublicationDateId);
