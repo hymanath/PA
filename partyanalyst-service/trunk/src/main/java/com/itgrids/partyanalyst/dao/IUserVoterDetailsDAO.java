@@ -71,4 +71,7 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	public List<?> getVoterIdsBasedOnVoterIdsAndPublication(
 			 Long publicationDateId , List<?> voterIds);
 	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId);
+	
+	public List<Long> getVoterIdsByLocalityForUser(Long localisyId,Long hamletId,Long userId,Long casteStateId);
+	
 }

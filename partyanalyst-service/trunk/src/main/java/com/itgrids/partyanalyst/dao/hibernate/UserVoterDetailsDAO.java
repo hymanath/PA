@@ -411,4 +411,22 @@ IUserVoterDetailsDAO{
 		  return query.list();
 		
 	}
+	
+	public List<Long> getVoterIdsByLocalityForUser(Long localityId,Long hamletId,Long userId,Long casteStateId)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.voter.voterId from UserVoterDetails model" +
+				" where model.locality.localityId = :localityId and " +
+				"model.hamlet.hamletId = :hamletId and model.user.userId = :userId and model.casteState.casteStateId = :casteStateId");
+		
+		query.setParameter("localityId", localityId);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		query.setParameter("casteStateId", casteStateId);
+		
+		return query.list();
+		
+	}
+	
+	
 }

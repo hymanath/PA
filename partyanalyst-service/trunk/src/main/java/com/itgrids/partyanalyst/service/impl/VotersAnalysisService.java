@@ -2061,7 +2061,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 			
 			voterCastInfo.setMandalName(locality.getName());
-			voterCastInfo.setLocationId(hamletId);
+			voterCastInfo.setLocationId(locality.getId());
+			voterCastInfo.setHamletId(hamletId);
 			localityInfo.add(voterCastInfo);
 		}
 	}
@@ -2290,7 +2291,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		  return voterCasteDetailsMap;
 	  }
 	
-	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId)
+	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId,Long hamletId)
 	{
 		
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
@@ -2298,7 +2299,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
 		if(type.equalsIgnoreCase("booth"))
 		{
-		list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
+		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
+		}else if(type.equalsIgnoreCase("locality"))
+		{
+			
+			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsByLocalityForUser(id,hamletId,userId,casteStateId);
+			
+			list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			
 		}
 		else
 		{
