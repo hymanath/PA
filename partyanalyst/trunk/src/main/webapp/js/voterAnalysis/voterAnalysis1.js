@@ -3426,8 +3426,8 @@ function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 			
 			var totalvoterlclbdis=results.assignedVotersForLocalBodies+results.unassignedVotersForLocalBodies;
 			strl ='';
-			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
-			strl += '<tbody><td>'+totalvoterlclbdis+'</td><td>'+results.assignedVotersForLocalBodies+'</td><td>'+results.unassignedVotersForLocalBodies+'</td></tbody>';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
+			strl += '<tbody><td style="text-align:center;">'+totalvoterlclbdis+'</td><td style="text-align:center;">'+results.assignedVotersForLocalBodies+'</td><td style="text-align:center;">'+results.unassignedVotersForLocalBodies+'</td></tbody>';
 			
 			strl += '</table>';
 			$("#assigAndUnassig").html(strl);
@@ -4833,8 +4833,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		else if(jsObj.type=="hamlet"){
 			var totalvoterlclbds=votersbasicinfo.assignedVotersForLocalBodies+votersbasicinfo.unassignedVotersForLocalBodies;
 			strl ='';
-			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th>Total Voters</th><th>Assigned by User</th><th>UnAssigned Voters</th></thead>';
-			strl += '<tbody><td>'+totalvoterlclbds+'</td><td>'+votersbasicinfo.assignedVotersForLocalBodies+'</td><td>'+votersbasicinfo.unassignedVotersForLocalBodies+'</td></tbody>';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
+			strl += '<tbody><td style="text-align:center;">'+totalvoterlclbds+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersForLocalBodies+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersForLocalBodies+'</td></tbody>';
 			
 			strl += '</table>';
 			$("#assAndUnass").html(strl);
