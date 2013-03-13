@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
@@ -140,7 +141,7 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> getBoothsForConstituencyAndPublication(Long constituencyId,Long publicationId);
 	
-	public ResultStatus saveVoters(String name,String voterCardNo,String houseNo,String gaurdian,String relationShip,String gender,String mobileNo,Long age,Long boothId);
+	public ResultStatus saveVoters(String name,String voterCardNo,String houseNo,String gaurdian,String relationShip,String gender,Long serianNo,Long age,Long boothId);
 	
 	public Long getParliamentConstituencyId(String type, Long id, Long year);
 		
@@ -220,4 +221,10 @@ public interface IVotersAnalysisService {
     public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId);
     
     public List<VotersDetailsVO> getAgewiseVotersDetailsForLocalAreaByHamletId(Long hamletId,Long publicationDateId,Long userId);
+    
+	public List<String> storeVoterDetails(Map<String , VoterVO> votersMap , Long boothId);
+	
+	public ResultStatus checkForVoterId(String voetrCardId);
+	
+	public List<Long> checkForSerialNos(List<Long> serialNos , Long boothId);
 }

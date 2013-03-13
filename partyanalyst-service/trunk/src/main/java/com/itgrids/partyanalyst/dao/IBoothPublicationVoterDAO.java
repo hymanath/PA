@@ -229,10 +229,12 @@ public interface IBoothPublicationVoterDAO extends
 	 public Long getLatestpublicationDate();
 	 public List<Long > getVoterIdsForuserByHamletForLocalities(Long userId,Long hamletIds);
 	 
-	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId);
-	
-	public List<Voter> getVoterDetailsByCasteStateForPanchayatByHamlet(List<Long> voterIds,Long publicationDateId);
-	 public List<Object[]> getConstituenciesToMapPublicationData(Long fromPubliationId,Long toPublicationId);
-	 
-	 public List<Object[]>  getLocalitiesForBooth(Long id,Long userId);
+		public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId);
+		
+		public List<Voter> getVoterDetailsByCasteStateForPanchayatByHamlet(List<Long> voterIds,Long publicationDateId);
+		 public List<Object[]> getConstituenciesToMapPublicationData(Long fromPubliationId,Long toPublicationId);
+		 
+		 public List<Object[]>  getLocalitiesForBooth(Long id,Long userId);
+		 
+	public List<Long> checkForSerialNosDao(List<Long> serialNos , Long boothId);
 }

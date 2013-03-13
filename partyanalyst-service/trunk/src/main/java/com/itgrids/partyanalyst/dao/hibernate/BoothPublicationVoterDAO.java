@@ -2020,4 +2020,19 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 	}
 
+	/**
+	 * This Method Is used To Check For Serial No For Voter In The Given Booth No
+	 * @param List<Long> serialNos
+	 * @param Long boothId
+	 * @return List<Long>
+	 * @date 13/03/2013
+	 */
+	public List<Long> checkForSerialNosDao(List<Long> serialNos, Long boothId) {
+		
+		String query = "select model.serialNo from BoothPublicationVoter model where model.serialNo in (:serialNos) and model.boothId = :boothId";
+		Query queryString = getSession().createQuery(query);
+		queryString.setParameterList("serialNos", serialNos);
+		queryString.setParameter("boothId", boothId);
+		return queryString.list();
+	}
 }
