@@ -338,5 +338,4 @@ public interface IStaticDataService {
 		
 		public ResultStatus checkForLocalElctionBody(Long constituencyId,List<Long> localElectionBodyIds);
 		
-		public Long getLocalElectionBodyIdByAssemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId);
 }
