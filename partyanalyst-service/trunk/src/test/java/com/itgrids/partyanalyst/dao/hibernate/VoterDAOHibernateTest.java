@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -212,7 +214,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(count);
 	}*/
 	
-	public void testGetSnoFromVoterTemp()
+	/*public void testGetSnoFromVoterTemp()
 	{
 		List<Object[]> list = voterDAO.getSnoFromVoterTemp(163l);
 		System.out.println(list.size());
@@ -220,6 +222,17 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] params :list)
 			System.out.println(params[0]+" -- "+params[1]);
 		
+	}*/
+	public void testCheckForVoterCardId()
+	{
+		Set<String> voterIds = new HashSet<String>();
+		voterIds.add("q12");
+		voterIds.add("q23");
+		voterIds.add("q34");
+		voterIds.add("hjjj78");
+		voterIds.add("q45");
+		List<String> list = voterDAO.checkForVoterCardId(voterIds);
+		System.out.println(list);		
 	}
 		
 }

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -302,6 +303,19 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			public List<Object[]> getSnoFromVoterTemp(Long constituencyId)
 			{
 				return getHibernateTemplate().find("select model.voterId, model2.serialNo from Voter model, VoterTemp model2 where model.voterIDCardNo = model2.voterId and model2.constituencyId = ?",constituencyId);
+			}
+
+			/**
+			    * This Method Is Used to Store Missing Voters
+			    * @param Set<String> voterCardIds
+			    * @return  List<String>
+			    * @date 13/03/2013
+			    */
+			public List<String> checkForVoterCardId(Set<String> voterCardIds) {
+				String query = "select model.voterIDCardNo from Voter model where model.voterIDCardNo in (:voterIds)";
+				Query queryString = getSession().createQuery(query);
+				queryString.setParameterList("voterIds", voterCardIds);
+				return queryString.list();
 			}
 	
 }

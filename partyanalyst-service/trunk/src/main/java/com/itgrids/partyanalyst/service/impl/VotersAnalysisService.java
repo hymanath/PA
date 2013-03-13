@@ -9120,7 +9120,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		 */
 		public ResultStatus saveVoters(final String name, final String voterCardNo,
 				final String houseNo, final String gaurdian, final String relationShip,
-				final String gender, final String mobileNo, final Long age,final Long boothId) {
+				final String gender, final Long serialNo, final Long age,final Long boothId) {
 				
 			  log.info("Entered into saveVoters Method...");
 			  ResultStatus resultStatus = new ResultStatus();
@@ -9144,13 +9144,14 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 							voter.setRelationshipType(relationShip);
 							voter.setGender(gender);
 							voter.setAge(age);
-							voter.setMobileNo(mobileNo);
+							//voter.setMobileNo(serialNo);
 							//voterDAO.save(voter);
 							BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
 							if(boothId != null)
 							{
 							boothPublicationVoter.setBoothId(boothId);
-							//boothPublicationVoter.setVoterId(voter.getVoterId());
+							boothPublicationVoter.setSerialNo(serialNo);
+							boothPublicationVoter.setVoter(voter);
 							boothPublicationVoterDAO.save(boothPublicationVoter);
 							}
 							
@@ -12159,7 +12160,105 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			votersInfoForMandalVO1.setVotersInfoForMandalVOList(votersInfoForMandalVOList);
 			  calculatePercentage1(votersInfoForMandalVO1);
 		}
-	  
+		   /**
+		    * This Method Is Used to Store Missing Voters
+		    * @param Map<String , VoterVO> voterMap
+		    * @param Long boothId
+		    * @return  List<String>
+		    * @date 13/03/2013
+		    */
+		public List<String> storeVoterDetails(final Map<String , VoterVO> voterMap, final Long boothId) {
+			 log.info("Entered into saveVoters Method...");
+			 List<String> voters = null;
+			  try{		
+				  if(voterMap !=null && voterMap.size() > 0)
+				  {
+					  voters  = voterDAO.checkForVoterCardId(voterMap.keySet());
+					 if(voters != null && voters.size() > 0)
+					 {
+						 for (String voterKey : voters) {
+							 
+							 voterMap.remove(voterKey);
+						}  
+					 }
+					 if(voterMap != null && voterMap.size() > 0)
+					 {
+					 for (final String key : voterMap.keySet()) {
+
+						transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+						protected void doInTransactionWithoutResult(TransactionStatus status) 
+						{ 
+						VoterVO voterVO =  voterMap.get(key);
+						 Voter voter = new Voter();
+						 voter.setName(voterVO.getFirstName());
+						 voter.setAge(voterVO.getAge());
+						 voter.setVoterIDCardNo(voterVO.getVoterIDCardNo());
+						 voter.setHouseNo(voterVO.getHouseNo());
+						 voter.setGender(voterVO.getGender());
+						 voter.setRelationshipType(voterVO.getRelationshipType());
+						 voter.setRelativeName(voterVO.getRelativeFirstName());
+						 BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
+							if(boothId != null)
+							{
+								boothPublicationVoter.setBoothId(boothId);
+								boothPublicationVoter.setSerialNo(voterVO.getSerialNo());
+								boothPublicationVoter.setVoter(voter);
+								boothPublicationVoterDAO.save(boothPublicationVoter);
+							}
+						}
+						
+						});
+				  
+				  	
+				}	
+		
+				  }
+				  }
+					
+			  }catch (Exception e) {
+				  e.printStackTrace();
+				  log.error("Exception Occured in saveVoters Method, Exception - "+e);
+			}
+		  
+			return voters;
+		}
+
+		/**
+		 * This Method Is used To Check Weather Voters Is Avaliable Or Nor For The Given Voter Id
+		 * @param String voetrCardId
+		 * @return ResultStatus
+		 * @date 13/03/2013
+		 */
+		public ResultStatus checkForVoterId(String voetrCardId) {
+			ResultStatus resultStatus = new ResultStatus();
+			if(voetrCardId != null)
+			{
+				List<Voter> voters = voterDAO.getVoterByVoterCardNo(voetrCardId);
+				if(voters != null && voters.size() > 0)
+				 {
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				 }
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+			}
+			return resultStatus;
+		}
+
+		/**
+		 * This Method Is used To Check For Serial No For Voter In The Given Booth No
+		 * @param List<Long> serialNos
+		 * @param Long boothId
+		 * @return List<Long>
+		 * @date 13/03/2013
+		 */
+		public List<Long> checkForSerialNos(List<Long> serialNos, Long boothId) {
+			List<Long> snos = null;
+			snos = boothPublicationVoterDAO.checkForSerialNosDao(serialNos,boothId);
+			return snos;
+		} 
+		
 }
 
 

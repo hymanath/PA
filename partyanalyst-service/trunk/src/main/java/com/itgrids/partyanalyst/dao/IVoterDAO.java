@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -78,5 +79,7 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public List<Object> getTestVotersInfo1();
 	
 	public List<Object[]> getSnoFromVoterTemp(Long constituencyId);
+	
+	public List<String> checkForVoterCardId(Set<String> voterCardIds);
 	
 }
