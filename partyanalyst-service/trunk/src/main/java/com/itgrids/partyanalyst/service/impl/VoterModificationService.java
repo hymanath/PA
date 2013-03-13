@@ -1510,7 +1510,7 @@ public class VoterModificationService implements IVoterModificationService{
 					else if(locationType.equalsIgnoreCase("booth"))
 						queryStr.append(" ,model2.booth.boothId ");
 					else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
-						queryStr.append(" ,model.booth.localBody.localElectionBodyId ");
+						queryStr.append(" ,model2.booth.localBody.localElectionBodyId ");
 					else if(locationType.equalsIgnoreCase("ward"))
 						queryStr.append(" ,model2.booth.localBodyWard.constituencyId ");
 				 
