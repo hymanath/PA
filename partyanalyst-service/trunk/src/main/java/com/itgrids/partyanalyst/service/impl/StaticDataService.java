@@ -7789,6 +7789,14 @@ public class StaticDataService implements IStaticDataService {
 		return resultStatus;
 	}
 	
+	public Long getLocalElectionBodyIdByAssemblyLocalElectionBodyId(Long assemblyLocalElectionBodyId)
+	{
+		try{
+			return assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(assemblyLocalElectionBodyId);
+		}catch (Exception e) {
+			return null;
+		}
+	}
 	
 }
 
