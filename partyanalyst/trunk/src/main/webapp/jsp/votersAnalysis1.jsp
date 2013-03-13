@@ -1089,8 +1089,9 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoMsgDiv"></div>
 	<div id="votersBasicInfoSubChartDiv"></div>
 	</br>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
 	<div id="assAndUnass"></div>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
+	
 </div>
  
   
@@ -1317,10 +1318,10 @@ for  body3 start    result  -->
 
        <div id="impFamilesAllInfoForHamletPopUp" style="display:none;">
         <div id ="impFamilesBasicInfoForHamletSubChartDiv" style="border:1px solid black"></div>
+		<div id = "assigAndUnassig"></div>
 		<div id ="impFamilesBasicSubDetailsForHamletTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
 		<div id ="impFamilesBasicSubDetailsForHamlet" style="border:1px solid black"></div>
 		<div id="descriptionDiv" ></div>
-		<div id = "assigAndUnassig"></div>
 		<div id="impFamPancBothDtlsAgxImgForHamlet" style="display:none;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		<div id="impFamPancBothDtlsForHamlet"></div>
 	   </div>
