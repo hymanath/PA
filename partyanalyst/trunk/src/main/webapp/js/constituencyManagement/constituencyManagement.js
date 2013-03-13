@@ -403,7 +403,7 @@ function initializeResultsTable(divId, problemDetails, caption) {
 
 
 function buildProblemsDetailsDT(results) {
-		var problemsArr = new Array();
+	var problemsArr = new Array();
 		
 		for(var i in results){
 			var problem = {
@@ -415,6 +415,7 @@ function buildProblemsDetailsDT(results) {
 					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
 					status:results[i].status,
 					problemSource:results[i].probSource,
+					problemLocationId:results[i].problemLocationId,
 					//more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
 					more:'<a href="completeProblemDetailsAction.action?problemId='+results[i].problemId+'">More Info</a>'
 

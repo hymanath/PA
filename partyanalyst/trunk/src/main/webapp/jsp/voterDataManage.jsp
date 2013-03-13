@@ -139,7 +139,7 @@
 				
 				Create Booth if not Available</div>
 			
-			<p><input type="button" value="Submit" onclick="InsertmapVoterData();" id="mapVoterButtonId" class="btn btn-info" /><div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
+			<p><input type="button" value="Submit" onclick="InsertmapVoterData();" id="mapVoterButtonId" class="btn btn-info" /><span id="mapajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
 				</center>
 	</div>
 </fieldset>
@@ -166,8 +166,8 @@
 			</tr>
 		</table>
 		<p style="margin-left:64px;"><input type="button" value="Submit" id="voterChangesButtonId" class="btn btn-info" onClick="insertVoterModifiedData()"/>
-		<input type="button" value="Delete" id="voterChangesButtonId" class="btn btn-info" onClick="deleteVoterModifiedData()"/>
-		<div id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></div></p>
+		<input type="button" value="Delete" id="voterDeleteButtonId" class="btn btn-info" style="margin-top:7px;" onClick="deleteVoterModifiedData()"/>
+		<span id="ajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
 	</center>		
 	</div>
 	</fieldset>
@@ -197,6 +197,10 @@ function callAjax(jsObj, url){
 							else if(jsObj.task == "getConstituencies")
 							{
 								buildConstituencies(myResults);
+							}
+							else if(jsObj.task == "deleteVoterModifiedData")
+							{
+								showdeleteVoterModifiedDataStatus(myResults);
 							}
 							
 						}
@@ -309,12 +313,12 @@ function callAjax(jsObj, url){
 		var flag = false;
 		if(constituencyId == 0)
 		{
-			errorStr += 'Please Select Constituency<BR>';
+			errorStr += '<font color="red">Please Select Constituency</font><BR>';
 			flag = true;
 		}
 		if(publicationDateId == 0)
 		{
-			errorStr += 'Please Select Publication Date<BR>';
+			errorStr += '<font color="red">Please Select Publication Date</font><BR>';
 			flag = true;
 		}
 		if(flag)
@@ -324,7 +328,8 @@ function callAjax(jsObj, url){
 		}
 		
 		errorDivEle.innerHTML = '';
-		document.getElementById("ajaxImgDivId").style.display = 'block';
+		
+		$("#ajaxImgDivId").css({'display':'block','display':'inline'});
 		var jsObj=
 		{				
 			constituencyId		: constituencyId,
@@ -344,7 +349,7 @@ function callAjax(jsObj, url){
 		var topublicationDateId = $("#topublicationDateId").val();
 		
         var boothCreateflag = $("#checkedID").attr('checked');
-		alert(constituencyId);
+		
 		var str = '';
 			var errorEle = $(".errorMsgDiv1");
 			errorEle.html('');
@@ -382,7 +387,8 @@ function callAjax(jsObj, url){
 	function showModifiedVotersInsertDataStatus(results)
 	{
 		$(".errorMsgDiv").html('');
-		document.getElementById("ajaxImgDivId").style.display = 'none';
+		
+		$("#ajaxImgDivId").css("display","none");
 		if(results.resultCode == 0)
 		{
 			document.getElementById('constituencySelectId').selectedIndex = 0;
@@ -420,19 +426,21 @@ function callAjax(jsObj, url){
 		var publicationDateId = $("#publicationDateId").val();
 		if(constituencyId == 0)
 		{
-		$("#errorMsgDivId").html("Please Select Constituency");
+		$("#errorMsgDivId").html("Please Select Constituency").css("color","red");;
 		return;
 		}
 		else if(publicationDateId == 0)
 		{
-		$("#errorMsgDivId").html("Please Select Publication Date");
+		$("#errorMsgDivId").html("Please Select Publication Date").css("color","red");;
 		return;
 		}
+		$("#ajaxImgDivId").css({'display':'block','display':'inline'});
+		$("#voterDeleteButtonId").attr("disabled", "disabled");
 	var jsObj=
 		{
 		  id				  :constituencyId,
 		  publicationDateId : publicationDateId,
-		  task:"deletecastVotersData"
+		  task:"deleteVoterModifiedData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		 var url = "deleteVoterModifiedDataAction.action?"+rparam;	
@@ -445,6 +453,7 @@ function getConstituenciesToMapPublicationData()
 
 	var fromPublication =$("#frompublicationDateId").val();
 	var toPublication = $("#topublicationDateId").val();
+	$("#mapajaxImgDivId").css({'display':'block','display':'inline'});
 	var jsObj=
 		{
 		  fromPublication:fromPublication,
@@ -458,7 +467,7 @@ function getConstituenciesToMapPublicationData()
 
 function buildConstituencies(results)
 {
-	
+	$("#mapajaxImgDivId").css("display","none");
 	var selectedElmt = document.getElementById("mapVoterConstituencyId");
 	removeSelectElements(selectedElmt);
 	for(var val in results)
@@ -484,6 +493,23 @@ function removeSelectElements(selectedElmt)
 		for(var i=len-1;i>=0;i--)
 		{
 			selectedElmt.remove(i);
+		}
+	}
+
+	function showdeleteVoterModifiedDataStatus(result)
+	{
+		$("#ajaxImgDivId").css("display","none");
+		$("#voterDeleteButtonId").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#errorMsgDivId").html("Voters Modification Data Deleted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#errorMsgDivId").html("Error Occured try Again.").css("color","red");
+				return;
 		}
 	}
 </script>

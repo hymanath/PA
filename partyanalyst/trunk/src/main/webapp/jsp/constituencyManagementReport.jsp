@@ -349,7 +349,8 @@
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
 						status:'${prob.status}',
-						probSource:'${prob.probSource}' 
+						probSource:'${prob.probSource}',
+						problemId:'${prob.problemId}',
 					  };
 			  problemMgmtObj.initialProblems.push(problemInfo);
 		</c:forEach>
@@ -1111,7 +1112,7 @@
 				$("#tabs").tabs();
 			}
 		);
-
+	
 	</script>
 	
 </body>
