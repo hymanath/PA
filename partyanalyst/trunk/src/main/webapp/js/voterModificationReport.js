@@ -231,8 +231,9 @@ function getPublicationDate()
 									buildBooths(myResults);
 								else if(jsObj.task == "getSubLevelInformation")
 								{
-								buildSubLevelInformation(jsObj,myResults);
 								$('#subLevelAjaxImageDiv').css('display','none');
+								buildSubLevelInformation(jsObj,myResults);
+								
 								}
 									
 								
@@ -896,6 +897,9 @@ function callAjaxForSubLevelInformation()
 	var locationVal = locationValue;
 	if(locationType == 'localElectionBody')
 			locationVal = localElectionBodyId;
+
+	if(locationType == "booth")
+		return;
 
 	var jsObj=
 		{	
