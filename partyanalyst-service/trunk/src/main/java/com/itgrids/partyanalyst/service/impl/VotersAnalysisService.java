@@ -10714,10 +10714,23 @@ try{
 		}
 				
 	}
-	if(Id > 0 && !type.equalsIgnoreCase("BOOTH") && !type.equalsIgnoreCase("panchayat"))
+
+	else if(type.equalsIgnoreCase("hamlet"))
+	{
+		politicianValues.add(locationValue);
+		Id = locationValue;
+		
+		locationValues.add(locationValue.toString());
+		cadreLevelValues.add(locationValue);
+					
+					
+	}
+	if(Id > 0 && !type.equalsIgnoreCase("BOOTH") && !type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("hamlet"))
 	 name = (String) constituencyDAO.getNameByInfluenceScopeValue(Id,type).get(0);
 	if(type.equalsIgnoreCase("panchayat"))
 		name = panchayatDAO.get(Id).getPanchayatName().toString();
+	if(type.equalsIgnoreCase("hamlet"))
+		name = hamletDAO.get(Id).getHamletName().toString();
 	
 	if(buttonName.equalsIgnoreCase("InfluencePeople"))
 		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name);
