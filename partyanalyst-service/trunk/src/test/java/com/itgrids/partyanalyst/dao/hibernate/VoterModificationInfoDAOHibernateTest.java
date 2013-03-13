@@ -20,7 +20,7 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 	{
 		voterModificationInfoDAO.getAll();
 	}*/
-	public void test1()
+	/*public void test1()
 	{
 		List<Long> list1 = new ArrayList<Long>();
 		list1.add(1l);
@@ -37,5 +37,26 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 		Long id = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(1l, 232l, 7l, 1l, 232l);
 		System.out.println(id); 
 		
+	}*/
+	
+	public void testgetVoterModificationGenderDetailsByLocationValuesList()
+	{
+		List<Long> publicationIdsList = new ArrayList<Long>(0);
+		publicationIdsList.add(8l);
+		List<Long> locationValuesList = new ArrayList<Long>(0);
+		locationValuesList.add(1007l);
+		locationValuesList.add(999l);
+		locationValuesList.add(1024l);
+		locationValuesList.add(10212l);
+		locationValuesList.add(1025l);
+		locationValuesList.add(1008l);
+		
+		List<Object[]> list = voterModificationInfoDAO.getVoterModificationGenderDetailsByLocationValuesList(locationValuesList, publicationIdsList, 299l, 3l);
+		
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
 	}
 }
