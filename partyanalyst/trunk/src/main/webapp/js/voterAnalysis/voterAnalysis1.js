@@ -2268,8 +2268,11 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		else if(type =="panchayat" && buildType == "hamlet")
 		{
-	  //	console.log(constMgmtMainObj.castStatssubArray[i]);
 		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else if(type =="hamlet")
+		{console.log(constMgmtMainObj.castStatssubArray[i]);
+		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
 		{
@@ -2315,6 +2318,26 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	}
 	}	
 	}
+
+
+function getVotersInACasteForLocality(id , publicationDateId , hamletId , casteStateId,casteCategory)
+{
+	var jsObj={
+			id:id,
+			publicationDateId:publicationDateId,
+			caste:casteStateId,
+			hamletId:mainreqid,
+			type:"locality",
+            buildType:"",
+			task:"getVotersInACaste"
+
+		}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
+	callAjax(jsObj,url);
+
+}
 function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
 {
 $("#localCastStatsVotersTitle").html("");
