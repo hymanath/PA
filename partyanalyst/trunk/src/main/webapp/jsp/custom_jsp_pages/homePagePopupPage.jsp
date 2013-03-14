@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
@@ -149,9 +151,12 @@ Get the complete picture of your constituency to strategize or to understand the
 
 <a  class="alert alert-info span3 btn green"  title3="you may like different pages in Party Analyst, just add and view them in a single click." ><h4>Ease of Access</h4></a>
 
-<div class="alert alert-info">
-Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.action" class="btn btn-primary">Register Now</a> Already Registered, <a href="loginInputAction.action" class="btn btn-primary">Login</a> and Explore Now.
-</div>
+<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+	<div class="alert alert-info">
+	Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.action" class="btn btn-primary">Register Now</a> Already Registered, <a href="loginInputAction.action" class="btn btn-primary">Login</a> and Explore Now.
+	</div>
+</c:if>
+
  </div>
  
  </div>
