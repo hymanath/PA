@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,7 @@ import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionGoverningBody;
 import com.itgrids.partyanalyst.model.KeyCandidate;
@@ -726,12 +728,27 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 						electionLiveResultVO = getPartiesLostInfo(electionId,prevElectionId,electionLiveResultVO,isPartial);
 				}
 			}
-			return resultList;
+			Collections.sort(resultList,sortData);
+			List<ElectionLiveResultVO> resultList1 = resultList;
+			Collections.reverse(resultList1);
+			return resultList1;
 		}catch (Exception e){
 			log.error("Exception occured in getPartiesGainAndLossInfo() Method, Exception is - "+e);
 			return null;
 		}
 	}
+	
+	public static Comparator<ElectionLiveResultVO> sortData = new Comparator<ElectionLiveResultVO>()
+		    {
+		   
+		        public int compare(ElectionLiveResultVO resultList1, ElectionLiveResultVO resultList2)
+		        {
+		            return (resultList1.getWonOrLeadCount()).compareTo(resultList2.getWonOrLeadCount());
+		        	
+		        }
+		    };
+		    
+		
 	
 	public Long getPreviousElectionId(Long electionId)
 	{
