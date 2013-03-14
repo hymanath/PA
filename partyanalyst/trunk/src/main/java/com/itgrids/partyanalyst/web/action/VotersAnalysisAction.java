@@ -592,7 +592,7 @@ public String getVotersCastInfoByConstituency()
 		
 		//VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetails(new Long(id), new Long(publicationId),type);
 		
-		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastWiseDetailsInALocation(userId,type,id,publicationId,jObj.getLong("constituencyId"));
+		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastWiseDetailsInALocation(userId,type,id,publicationId,jObj.getLong("constituencyId"),jObj.getString("queryType"));
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 	}
 	else if(jObj.getString("task").equalsIgnoreCase("getPartyInfo"))
@@ -601,7 +601,7 @@ public String getVotersCastInfoByConstituency()
 		Long id = jObj.getLong("id");
 		String type = jObj.getString("type");
 		Long publicationId = jObj.getLong("publicationDateId");
-	VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersPartyDetailsInALocation(userId,type,id,publicationId,jObj.getLong("constituencyId"));
+	VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersPartyDetailsInALocation(userId,type,id,publicationId,jObj.getLong("constituencyId"),jObj.getString("queryType"));
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 	}
 	else if(jObj.getString("task").equalsIgnoreCase("getPartyCastInfo"))
@@ -620,7 +620,7 @@ public String getVotersCastInfoByConstituency()
 		String type = jObj.getString("type");
 		String publicationId = jObj.getString("publicationDateId");
 		String buildType = jObj.getString("buildType");
-		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"),buildType);
+		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"),buildType,jObj.getString("queryType"));
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 	
 		

@@ -1405,6 +1405,10 @@ for  body3 start    result  -->
 	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
+	<div style="float:right;">
+	   <div id="permanentlyUpdateButtonDiv" ><input type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Cast And Party Info" class="btn btn-info" /></div>
+	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Cast And Party Info" class="btn btn-info" /></div>
+	</div>
 	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
 	
 	<div id='localCastStatsTabContent_header' style="width:48%;float:left;"></div>
@@ -1429,7 +1433,7 @@ for  body3 start    result  -->
 	  <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
 	</div>
 	<div id="castPartyPopupDiv" style="display:none"> 
-	
+	 <div id="getLatestCastsSubcategoryWise"  style="float:right;"><input type="button" onclick="getLatestCastsSubcategoryWise();" value="Get Updated Cast Info" class="btn btn-info" /></div>
 	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
 		
 		 <div id='localCastStatsTabContent_subbody'></div>	
@@ -1542,12 +1546,7 @@ function getCastInfoForsubLevel(id,publicationId,type)
 		{
 		flag =false;
 		}*/
-		if(type == "mandal"){
-
-		 if(locationValue.charAt(0) == "1"){
-			 return;
-		  }
-		}
+		
 		if(true)
 		{
 		var jsObj=
@@ -1558,6 +1557,7 @@ function getCastInfoForsubLevel(id,publicationId,type)
 				publicationDateId:publicationId,
 				constituencyId:$("#constituencyList").val(),
                 buildType:buildType,
+                queryType:"sub",
 				task:"getCastInfoForsubLevels"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);

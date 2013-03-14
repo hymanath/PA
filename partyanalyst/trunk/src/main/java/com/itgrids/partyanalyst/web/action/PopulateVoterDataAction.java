@@ -203,7 +203,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 				return null;
-			resultStatus = votersAnalysisService.deleteVotersCastDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"));
+			Long userId =  user.getRegistrationID();
+			resultStatus = votersAnalysisService.deleteVotersCastDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 			return Action.SUCCESS;
 		}
 		
@@ -219,7 +220,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user == null)
 				return null;
-			resultStatus = votersAnalysisService.deleteVotersPartyDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"));
+			Long userId =  user.getRegistrationID();
+			resultStatus = votersAnalysisService.deleteVotersPartyDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 			return Action.SUCCESS;
 		}
 		
@@ -272,5 +274,27 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				return null;
 			resultStatus = voterReportService.deleteVoterModifiedData(jObj.getLong("id"),jObj.getLong("publicationDateId"));
 			return Action.SUCCESS;	
+		}
+		
+		public String insertVotersCasteAndPartyDataToIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				Log.error("Exception Occured in insertVotersCasteAndPartyDataToIntermediateTables() Method, Exception - ",e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			Long userId =  regVO.getRegistrationID();
+			resultStatus = votersAnalysisService.deleteVotersCastDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
+			resultStatus = votersAnalysisService.deleteVotersPartyDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
+			resultStatus = voterReportService.insertVotersPartyDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			return Action.SUCCESS;
+			
 		}
 }
