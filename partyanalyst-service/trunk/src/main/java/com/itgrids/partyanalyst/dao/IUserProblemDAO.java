@@ -185,4 +185,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 
 	 public Long getCountOfNewlyPostedProblemsByPublicUser(Date currentDate);
 	 
+	 public List getProblemDetailsByLocationValuesList(List<Long> locationValuesList, String problemScope, String visibilityType);
+	 
 }

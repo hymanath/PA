@@ -389,9 +389,21 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	/*
 */
 	
-	public void testgetAllPublicProblemsByLocation()
+	/*public void testgetAllPublicProblemsByLocation()
 	{
 		//List<Long> problemIds = userProblemDAO.getAllPublicProblemsByLocation(1l,4l,232l,"PROGRESS");
 		 //System.out.println(problemIds);
+	}*/
+	
+	
+	public void testgetProblemDetailsByLocationValuesList()
+	{
+		List<Long> locationValuesList = new ArrayList<Long>(0);
+		locationValuesList.add(83l);
+		
+		List list = userProblemDAO.getProblemDetailsByLocationValuesList(locationValuesList, "MUNICIPAL-CORP-GMC", IConstants.PUBLIC);
+		
+		 System.out.println(list.size());
+		
 	}
 }

@@ -2406,7 +2406,9 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInAWard(List<Long> locationIds, String locationType) {			
-			List<Object> wardResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);	
+			//List<Object> wardResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);	
+			
+			List<Object> wardResult = userProblemDAO.getProblemDetailsByLocationValuesList(locationIds, locationType, IConstants.PUBLIC);
 			return wardResult;
 		}
 
@@ -2468,7 +2470,10 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInALocalElectionBody(List<Long> locationIds, String locationType) {
-			List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
+			//List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
+			
+			List<Object> localElectionBodyResult = userProblemDAO.getProblemDetailsByLocationValuesList(locationIds, locationType, IConstants.PUBLIC);
+			
 			if(localElectionBodyResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
 				List<Long> listOfwards = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIds);
 				if(listOfwards!=null && listOfwards.size()!=0){
