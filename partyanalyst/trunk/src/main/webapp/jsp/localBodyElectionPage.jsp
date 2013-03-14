@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><c:out value="${localBodyElectionResults.localBodyRegion}" />&nbsp; Local Body Elections</title>
+<title><c:out value="${localBodyElectionResults.localBodyRegion}" />&nbsp;Local Body Elections</title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -103,7 +103,7 @@ html {overflow-x: hidden;}
 #problemViewingFieldSet legend {line-height: 20px;}
 #localBodyElectiondiv_main{margin-top:20px;}
 input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
-#problemViewingFieldSet{border: 1px solid #D3D3D3;padding: 5px;width:258px;height: 229px;}
+#problemViewingFieldSet{border: 1px solid #D3D3D3;padding: 5px;width:258px;}
 
 .productFeatureHeaderBackground_center {
     background-image: url("images/icons/homePage_new/blue_header_center.jpg");
@@ -129,6 +129,8 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
     top: -5px;
     width: 45px;
 }
+.localEleBodyLinks{color:#222;}
+.localEleBodyLinks:hover{text-decoration:none}
 
 </style>
 </head>
@@ -142,7 +144,7 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp;&nbsp; ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}&nbsp; ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
 									<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
@@ -152,15 +154,15 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
 								<table id="localBodyDetailsTable" class="datatableClass" style="font-family: verdana;" border="1">
 									<tr>
 										<th>${localBodyElectionResults.localBodyElectionType} Name</th>										
-										<td><b>${localBodyElectionResults.localBodyRegion}</b></td>
+										<td><a class="localEleBodyLinks" href="localBodyElectionAction.action?stateId=${localBodyElectionResults.stateId}&localBodyElectionTypeId=${localBodyElectionResults.localBodyElectionTypeId}&localBodyId=${localBodyElectionResults.localBodyId}"><b>${localBodyElectionResults.localBodyRegion}</b></a></td>
 										<th>Total Wards</th>										
 										<td><b>${localBodyElectionResults.totalWards}</b></td>
 									</tr>
 									<tr>
 										<th>District</th>										
-										<td><b>${localBodyElectionResults.district}</b></td>
+										<td><a class="localEleBodyLinks" href="districtPageAction.action?districtId=${localBodyElectionResults.districtId}&districtName=${localBodyElectionResults.district}" ><b>${localBodyElectionResults.district}</b></a></td>
 										<th>State</th>										
-										<td><b>${localBodyElectionResults.state}</b></td>
+										<td><a class="localEleBodyLinks"href="statePageAction.action?stateId=${localBodyElectionResults.stateId}"><b>${localBodyElectionResults.state}</b></a></td>
 									</tr>
 									<tr>										
 										<th>Total Votes</th>										
@@ -179,7 +181,7 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
 							<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif" /></td>
-									<td ><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp;&nbsp; ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
+									<td ><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion}&nbsp; ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
 									<td width="115px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
@@ -317,7 +319,7 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 											<tr>
 												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-												<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion} &nbsp; Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+												<td><div class="districtPageRoundedHeaders_center" style="padding:11px;"><span>${localBodyElectionResults.localBodyRegion}&nbsp; Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
 												<td width="4px;"><img  src="images/icons/districtPage/header_right.gif"/></td>
 											</tr>
 										</table>
