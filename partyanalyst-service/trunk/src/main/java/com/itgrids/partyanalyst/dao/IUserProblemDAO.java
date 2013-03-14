@@ -183,4 +183,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 
 	 public List<Long> getAllProblemsBySource(Long locationValue,Long userId,Long locationId,Long sourceId,Integer startIndex,Integer maxIndex);
 	 
+	 public Long getCountOfNewlyPostedProblemsByPublicUser(Date currentDate);
+	 
 }
