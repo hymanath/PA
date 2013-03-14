@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
@@ -18,11 +25,15 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VoterPartyInfo implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6412765242809838912L;
 	private Long voterPartyInfoId;
-	private Long reportLevelId;
+	private VoterReportLevel voterReportLevel;
 	private Long reportLevelValue;
 	private Long userId;
-	private Long partyId;
+	private Party party;
 	private Long partyVoters;
 	private Long partyMaleVoters;
 	private Long partyFemaleVoters;
@@ -39,15 +50,15 @@ public class VoterPartyInfo implements Serializable{
 	}
 //Full Constructor
 	
-	public VoterPartyInfo( Long voterPartyInfoId, Long reportLevelId,Long reportLevelValue,Long userId,
-			 			Long partyId,Long partyVoters, Long partyMaleVoters,Long partyFemaleVoters,
+	public VoterPartyInfo( Long voterPartyInfoId,VoterReportLevel voterReportLevel,Long reportLevelValue,Long userId,
+			            Party party,Long partyVoters, Long partyMaleVoters,Long partyFemaleVoters,
 			 			Double partyPercentage,Long constituencyId, Long publicationDateId)
 	{
 		this.voterPartyInfoId = voterPartyInfoId;
-		this.reportLevelId = reportLevelId;
+		this.voterReportLevel = voterReportLevel;
 		this.reportLevelValue = reportLevelValue;
 		this.userId =userId;
-		this.partyId = partyId;
+		this.party = party;
 		this.partyVoters =partyVoters;
 		this.partyMaleVoters = partyMaleVoters;
 		this.partyFemaleVoters = partyFemaleVoters;
@@ -67,14 +78,16 @@ public class VoterPartyInfo implements Serializable{
 		this.voterPartyInfoId = voterPartyInfoId;
 	}
 
-	@Column(name = "report_level_id", length = 15)
-	public Long getReportLevelId() {
-		return reportLevelId;
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "report_level_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterReportLevel getVoterReportLevel() {
+		return voterReportLevel;
 	}
 
-
-	public void setReportLevelId(Long reportLevelId) {
-		this.reportLevelId = reportLevelId;
+	public void setVoterReportLevel(VoterReportLevel voterReportLevel) {
+		this.voterReportLevel = voterReportLevel;
 	}
 
 	@Column(name = "report_level_value", length = 15)
@@ -97,14 +110,16 @@ public class VoterPartyInfo implements Serializable{
 		this.userId = userId;
 	}
 
-	@Column(name = "party_id", length = 15)
-	public Long getPartyId() {
-		return partyId;
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "party_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Party getParty() {
+		return party;
 	}
 
-
-	public void setPartyId(Long partyId) {
-		this.partyId = partyId;
+	public void setParty(Party party) {
+		this.party = party;
 	}
 
 	@Column(name = "party_voters", length = 15)

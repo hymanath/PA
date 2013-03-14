@@ -76,10 +76,6 @@ import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CadreDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CandidateDAO;
-import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -98,7 +94,6 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.BoothVoterVO;
-import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
@@ -107,9 +102,9 @@ import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PublicationDate;
@@ -119,8 +114,6 @@ import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
-import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
-import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
@@ -129,6 +122,7 @@ import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.social.service.ISocialService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -198,6 +192,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterCastInfoDAO voterCastInfoDAO;
     private IVoterPartyInfoDAO voterPartyInfoDAO;
     private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
+    private IVoterReportService voterReportService;
     
     public IVoterCastBasicInfoDAO getVoterCastBasicInfoDAO() {
 		return voterCastBasicInfoDAO;
@@ -604,7 +599,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setUserRelationDAO(IUserRelationDAO userRelationDAO) {
 		this.userRelationDAO = userRelationDAO;
 	}
- //  @Override
+	
+   public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
+	}
+
+	//  @Override
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId, Long hamletId,Integer startIndex , Integer maxRecords , String order,
 			String columnName,Long userId) {
@@ -1279,7 +1283,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
-	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
+	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType)
 	{
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		String locationType1 = locationType;
@@ -1300,8 +1304,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 			}
 			Long totalVoters = 0L;
-			
-			 totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
+			Long reportLvlId = getReportLevelId(locationType1);
+			 totalVoters = voterInfoDAO.getVotersCountInALocation(reportLvlId,locationId,publicationDateId,constituencyId);
+			if(totalVoters == null){
+				totalVoters  = getVotersCountByPublicationIdInALocation(locationType,locationId,publicationDateId);
+			}
+			 Long votesConsidered = 0L;
 			
 			if(locationType.equalsIgnoreCase("hamlet")){
 				
@@ -1314,11 +1322,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			 totalVoters = countList.get(0);
 			}
 						
-			Long votesConsidered = 0L;
+			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !"hamlet".equalsIgnoreCase(locationType1))
+				   voterReportService.getVotersCastWiseDetailsInALocationFromIntermediateTable(userId, reportLvlId, locationId, publicationDateId, constituencyId, voterCastInfoVO);
+				
+				if("main".equalsIgnoreCase(queryType) || "booth".equalsIgnoreCase(locationType1) || "hamlet".equalsIgnoreCase(locationType1)){
+				   voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
+				   voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
+				}
 			
-			
-			voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
-			voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 			voterCastInfoVO.setTotalCasts(voterCastInfoVO.getVoterCastInfoVOList().size());
 			voterCastInfoVO.setTotalVoters(totalVoters);
 			
@@ -1336,7 +1347,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	}
 	
-	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
+	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType)
 	{
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		String locationType1 = locationType;
@@ -1357,9 +1368,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 			}
 			Long partyWisevotesConsidered = 0L;
-			
-			
-			Long totalVoters = 0L;
+			Long reportLvlId = getReportLevelId(locationType1);
+			Long totalVoters = 0l;//voterInfoDAO.getVotersCountInALocation(reportLvlId,locationId,publicationDateId,constituencyId);
 			
 			if(locationType.equalsIgnoreCase("hamlet")){
 				
@@ -1372,15 +1382,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			  totalVoters = countList.get(0);
 			}
 			else
-			 totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(locationType1),locationId,publicationDateId,constituencyId);
+			 totalVoters = voterInfoDAO.getVotersCountInALocation(reportLvlId,locationId,publicationDateId,constituencyId);
 			
-			
-			voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
-			for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
-				partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
-				voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
-				voterCastInfoVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
-			return voterCastInfoVO;
+			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !"hamlet".equalsIgnoreCase(locationType1)){
+				voterReportService.getPartyNGenderWiseVotersCountByPublIdInALocFromIntermedTable(userId, reportLvlId, locationId, publicationDateId, constituencyId, voterCastInfoVO);
+			   }
+			   if("main".equalsIgnoreCase(queryType) || "booth".equalsIgnoreCase(locationType1) || "hamlet".equalsIgnoreCase(locationType1) ){
+				  voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
+			   }
+			    for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
+				 partyWisevotesConsidered = partyWisevotesConsidered + partyWisecastInfoVO.getTotalVoters();
+				 voterCastInfoVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
+				 voterCastInfoVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
+				return voterCastInfoVO;
 		}catch (Exception e) {
 			log.error("Exception Occured in getVotersCastWiseDetailsInALocation() Method, Exception is - "+e);
 			return voterCastInfoVO;
@@ -1816,7 +1830,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			return totalCasts;
 			
 		}
-		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType)
+		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType,String queryType)
 		
 		{
 			VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
@@ -1826,9 +1840,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			if(type.equalsIgnoreCase("constituency"))
 			{
 				List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
-				
-				mandalCasts = getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId,userId,constituencyId);
-				
+				if(!"main".equalsIgnoreCase(queryType)){
+					   mandalCasts = voterReportService.getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId,userId,constituencyId);
+					}
+				if("main".equalsIgnoreCase(queryType)){
+					   mandalCasts = getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId,userId,constituencyId);
+					}
 			}
 			
 			if(type.equalsIgnoreCase("mandal"))
@@ -1836,11 +1853,29 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 				{
 				   List<SelectOptionVO> panchayatList= staticDataService.getPanchayatiesByMandalId(new Long(id.toString().substring(1)));
-				   mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId,userId);
+				   if(!"main".equalsIgnoreCase(queryType)){
+					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(panchayatList,publicationDateId,userId,constituencyId,getReportLevelId("Panchayat"));
+					}
+				   if("main".equalsIgnoreCase(queryType)){
+				       mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId,userId);
+					}    
 				}else{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
 					List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
-					mandalCasts = getVotersCastInfoForMultipleWards(wardsList,publicationDateId,userId);
+					if(!"main".equalsIgnoreCase(queryType)){
+						List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
+						SelectOptionVO optionVO = null;
+						for(Object[] ward:wardsList){
+							optionVO = new SelectOptionVO();
+							optionVO.setName(ward[1] != null?ward[1].toString():"");
+							optionVO.setId((Long)ward[0]);
+							wards.add(optionVO);
+						}
+					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(wards,publicationDateId,userId,constituencyId,getReportLevelId("Ward"));
+					}
+					if("main".equalsIgnoreCase(queryType)){
+					   mandalCasts = getVotersCastInfoForMultipleWards(wardsList,publicationDateId,userId);
+					}
 				}				
 			}
 			if(type.equalsIgnoreCase("panchayat"))
@@ -1850,7 +1885,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				if(buildType.equalsIgnoreCase("booth")){
 			
 				List<SelectOptionVO> booths = getBoothsByPanchayatId(id,publicationDateId);
-				mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
+				   /*if(!"main".equalsIgnoreCase(queryType)){
+					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(booths,publicationDateId,userId,constituencyId,getReportLevelId(IConstants.BOOTH));
+					}
+				   if("main".equalsIgnoreCase(queryType) || mandalCasts.size() == 0){*/
+					   mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
+					//}
 				
 				}else if (buildType.equalsIgnoreCase("hamlet")){
 					
@@ -1871,8 +1911,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					option.setName(booth[1]!=null?booth[1].toString():"");
 					booths.add(option);
 				}
-				mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
-				
+				/*if(!"main".equalsIgnoreCase(queryType)){
+					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(booths,publicationDateId,userId,constituencyId,getReportLevelId(IConstants.BOOTH));
+					}
+				if("main".equalsIgnoreCase(queryType) || mandalCasts.size() == 0){*/
+					   mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
+					//}
 			}
 			if(type.equalsIgnoreCase("hamlet"))
 			{
@@ -5962,7 +6006,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				}
 				List<Object[]> castList = boothPublicationVoterDAO.getCastWiseCount(userId,locationType,locationId,publicationDateId,constituencyId);
 				List<Object[]> partiesList = boothPublicationVoterDAO.getPartyWiseCount(userId,locationType,locationId,publicationDateId,constituencyId);
-				List<Object[]> parties = boothPublicationVoterDAO.getParties(userId,locationType,locationId,publicationDateId,constituencyId);
+				//List<Object[]> parties = boothPublicationVoterDAO.getParties(userId,locationType,locationId,publicationDateId,constituencyId);
 				Map<String,CastVO> castsMap = new HashMap<String,CastVO>();
 				CastVO castVO = null;
 				CastVO partyVO = null;
@@ -5971,12 +6015,14 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						castVO = castsMap.get(castInfo[0].toString());
 					}else{
 						castVO = new CastVO();
-						Map<String,CastVO> partiesMap = new HashMap<String,CastVO>();
-						for(Object[] party:parties){
+						Map<Long,CastVO> partiesMap = new HashMap<Long,CastVO>();
+						for(Object[] party:partiesList){
+						  if(partiesMap.get((Long)party[3]) == null){
 							partyVO = new CastVO();
-							partyVO.setPartyId((Long)party[1]);
-							partyVO.setPartyName(party[0].toString());
-							partiesMap.put(party[0].toString(),partyVO);
+							partyVO.setPartyId((Long)party[3]);
+							partyVO.setPartyName(party[1].toString());
+							partiesMap.put((Long)party[3],partyVO);
+						  }
 						}
 						castVO.setPartiesMap(partiesMap);
 						castsMap.put(castInfo[0].toString(), castVO);
@@ -5990,7 +6036,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				for(Object[] party : partiesList){
 					CastVO cast = castsMap.get(party[0].toString());
 					if(cast != null){
-						CastVO partyVo = cast.getPartiesMap().get(party[1].toString());
+						CastVO partyVo = cast.getPartiesMap().get((Long)party[3]);
 						if(partyVo != null){
 							partyVo.setPartyCount((Long)party[2]);
 							cast.setPartyCount(cast.getPartyCount()+(Long)party[2]);
@@ -12041,68 +12087,68 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 
 
 		
-	   public ResultStatus deleteVotersCastDataFromIntermediateTables(Long constituencyId,Long publicationDateId)
-		{
-			ResultStatus resultStatus = new ResultStatus();
-			try{
-				if(constituencyId != null && constituencyId > 0)
+				public ResultStatus deleteVotersCastDataFromIntermediateTables(Long constituencyId,Long publicationDateId,Long userId)
 				{
-				voterCastInfoDAO.deleteVotersCastInfoByReportLevelValue(constituencyId, publicationDateId);
-				voterCastBasicInfoDAO.deleteVotersCastInfoByReportLevelValue(constituencyId, publicationDateId);
+					ResultStatus resultStatus = new ResultStatus();
+					try{
+						if(constituencyId != null && constituencyId > 0)
+						{
+						voterCastInfoDAO.deleteVotersCastInfoByReportLevelValue(constituencyId, publicationDateId,userId);
+						voterCastBasicInfoDAO.deleteVotersCastInfoByReportLevelValue(constituencyId, publicationDateId,userId);
+						}
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						return resultStatus;
+						
+					}catch (Exception e) {
+						e.printStackTrace();
+						log.error("Exception Occured in deleteVotersCastDataFromIntermediateTables() Method, Exception - "+e);
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						return resultStatus;
+					}
 				}
-					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				return resultStatus;
 				
-			}catch (Exception e) {
-				e.printStackTrace();
-				log.error("Exception Occured in deleteVotersCastDataFromIntermediateTables() Method, Exception - "+e);
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				return resultStatus;
-			}
-		}
-		
-	   
-	   public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId)
-	   {
-		   ResultStatus resultStatus = new ResultStatus();
-		   try{
-		   if(constituencyId != null && constituencyId > 0)
-		   {
-			   voterPartyInfoDAO.deleteVotersPartyInfoByConstituencyId(constituencyId, publicationDateId);
-		   }
-		   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		   return resultStatus;
-		   
-	   }catch(Exception e)
-	   {
-		   log.error("Exception Occured in deleteVotersPartyDataFromIntermediateTables() Method, Exception - "+e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			return resultStatus;  
-	   }
-		
-	 }
-	   
-	   public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long constituencyId,Long publicationDateId)
-		{
-			ResultStatus resultStatus = new ResultStatus();
-			try{
+			   
+			   public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId,Long userId)
+			   {
+				   ResultStatus resultStatus = new ResultStatus();
+				   try{
+				   if(constituencyId != null && constituencyId > 0)
+				   {
+					   voterPartyInfoDAO.deleteVotersPartyInfoByConstituencyId(constituencyId, publicationDateId,userId);
+				   }
+				   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				   return resultStatus;
+				   
+			   }catch(Exception e)
+			   {
+				   log.error("Exception Occured in deleteVotersPartyDataFromIntermediateTables() Method, Exception - "+e);
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					return resultStatus;  
+			   }
 				
-				if(constituencyId != null && constituencyId > 0)
+			 }
+			   
+			   public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long constituencyId,Long publicationDateId)
 				{
-					voterInfoDAO.deleteVotersInfoByConstituencyId(constituencyId, publicationDateId);
-					voterFamilyInfoDAO.deleteVoterFamilyDetByConstituencyId(constituencyId, publicationDateId);
-					voterAgeInfoDAO.deleteVoterAgeInfoByConstituencyId(constituencyId, publicationDateId);
+					ResultStatus resultStatus = new ResultStatus();
+					try{
+						
+						if(constituencyId != null && constituencyId > 0)
+						{
+							voterInfoDAO.deleteVotersInfoByConstituencyId(constituencyId, publicationDateId);
+							voterFamilyInfoDAO.deleteVoterFamilyDetByConstituencyId(constituencyId, publicationDateId);
+							voterAgeInfoDAO.deleteVoterAgeInfoByConstituencyId(constituencyId, publicationDateId);
+						}
+						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						return resultStatus;
+					}catch (Exception e) {
+						e.printStackTrace();
+						log.error("Exception Occured in deleteVoterInfoFromIntermediateTablesByConstituencyId() Method, Exception - "+e);
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						return resultStatus;
+					}
 				}
-				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				return resultStatus;
-			}catch (Exception e) {
-				e.printStackTrace();
-				log.error("Exception Occured in deleteVoterInfoFromIntermediateTablesByConstituencyId() Method, Exception - "+e);
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				return resultStatus;
-			}
-		}
-	
+			
        public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId)
 	   {
 		   List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();

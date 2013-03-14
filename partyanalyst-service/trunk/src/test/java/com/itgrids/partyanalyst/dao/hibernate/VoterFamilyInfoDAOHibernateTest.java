@@ -6,7 +6,6 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
-import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 
 public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 

@@ -237,4 +237,8 @@ public interface IBoothPublicationVoterDAO extends
 		 public List<Object[]>  getLocalitiesForBooth(Long id,Long userId);
 		 
 	public List<Long> checkForSerialNosDao(List<Long> serialNos , Long boothId);
+	 
+	 public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(Long userId,String locationType,List<Long> locationId,Long publicationDateId,Long constituencyId);
+	 
+	 public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(Long userId,String locationType,List<Long> locationIds,Long publicationDateId,Long constituencyId);
 }

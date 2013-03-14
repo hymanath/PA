@@ -44,7 +44,7 @@ public class VoterCastInfoVO {
     
     private Double partyPercentage;
     private Long hamletId;
-
+    private boolean dataPresent;
 
 	public Long getHamletId() {
 		return hamletId;
@@ -314,6 +314,14 @@ public class VoterCastInfoVO {
 
 	public void setPartyId(Long partyId) {
 		this.partyId = partyId;
+	}
+
+	public boolean isDataPresent() {
+		return dataPresent;
+	}
+
+	public void setDataPresent(boolean dataPresent) {
+		this.dataPresent = dataPresent;
 	}
 
 	

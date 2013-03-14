@@ -67,6 +67,7 @@ public class Scheduler {
 	}
 	
 	public void sendDailyUpdates(){
+		log.info("Enter into sendDailyUpdates()  for schedule jobs run ");
 	   try{
 		 userDAO.getTotalUsersCount();
 	   }catch(Exception e){

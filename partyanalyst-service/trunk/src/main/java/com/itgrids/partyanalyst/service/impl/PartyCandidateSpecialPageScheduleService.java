@@ -127,6 +127,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	
 	public void sendUpdates(){
+		log.info("Enter into sendUpdates() for schedule jobs run ");
 	  if(IConstants.DEFAULT_SCHEDULER_UPDATES_SEVER.equalsIgnoreCase("server")){
 		DailyUpdatesVO dailyUpdatesVO = new DailyUpdatesVO();
 		DateUtilService dateUtilService = new DateUtilService();
@@ -142,6 +143,9 @@ public class PartyCandidateSpecialPageScheduleService implements
 			startTime = calendar.getTime();
 		}
 		
+		log.info("start time "+startTime);
+		log.info("end time "+endTime);
+		
 		dailyUpdatesVO.setAll(true);
 		dailyUpdatesVO.setFrom(startTime);
 		dailyUpdatesVO.setTo(endTime);
@@ -151,6 +155,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		jobRunDetails.setEndTime(dateUtilService.getCurrentDateAndTime());
 		jobRunDetails.setJob(jobDAO.get(IJobConstants.PARTY_CANDIDATE_SPECIALPAGE_UPDATES));
 		jobRunDetailsDAO.save(jobRunDetails);
+		log.info(" sendUpdates() method execution completed  ");
 	  }else{
 		  System.out.println("job will not run in local host");
 	  }
@@ -158,6 +163,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	public void sendMailsToAllSubscriders(DailyUpdatesVO dailyUpdatesVO)
 	{
+		log.info("sendMailsToAllSubscriders() Execution started");
 		Map<Long,EmailNotificationVO> allSubscribersData = new HashMap<Long,EmailNotificationVO>();
 		try
 		{
@@ -169,13 +175,16 @@ public class PartyCandidateSpecialPageScheduleService implements
 		if(dailyUpdatesVO.isSpecialPageSelected() || dailyUpdatesVO.isAll()) 
 		 getDaillyUpdatesForSpecialPageSubscribers(dailyUpdatesVO.getFrom(),dailyUpdatesVO.getTo(),allSubscribersData,dailyUpdatesVO.getSpecialPageIdsList());
 		sendAllMails(allSubscribersData,dailyUpdatesVO);
-	
+		log.info("sendMailsToAllSubscriders() Execution without exception");
 		}
+		
 		catch(Exception e){
 			log.error("Exception Rised in sendMailsToAllSubscriders : ", e);
 		}
+		log.info("sendMailsToAllSubscriders() Execution completed");
 	}
 	public void sendAllMails(Map<Long,EmailNotificationVO> allSubscribersData,DailyUpdatesVO dailyUpdatesVO){
+		log.info("sendAllMails() Execution started");
 		EmailNotificationVO emailNotificationVO = null;
 		EmailNotificationVO updatesFrom = new EmailNotificationVO();
 		Map<String,String> userDetails = new HashMap<String,String>();
@@ -202,7 +211,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		}
 		sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
 		sendMailToMeForTesting(updatesFrom,userDetails,dailyUpdatesVO);
-		
+		log.info("sendAllMails() Execution completed");
 	}
 	
 	private void sendMailToAdmin(final EmailNotificationVO updatesFrom,final Map<String,String> userDetails,final DailyUpdatesVO dailyUpdatesVO){
@@ -262,7 +271,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		}
 	
 	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
-	{
+	{log.info("getDaillyUpdatesForCandidatePageSubscribers() Execution started");
 		Set<Long> usersIds = new HashSet<Long>();
 		usersIds.add(1l);
 		usersIds.add(411l);
@@ -280,8 +289,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 		try
 		{
 			  //getting all candidate subscribed details
-		      List<Object[]> subscriberDetailsList = candidateSubscriptionsDAO.getAllSubscriberDetails();
-		      
+			List<Object[]> subscriberDetailsList = new ArrayList<Object[]>();
+			 try{
+		       subscriberDetailsList = candidateSubscriptionsDAO.getAllSubscriberDetails();
+			 }catch(Exception e){
+				 log.error("Exception occured while getting  subscriberDetailsList for candidates : ", e);
+			 }
 		      for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
 		    	 if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) && usersIds.contains((Long)subscriberDetail[2])){
@@ -313,13 +326,29 @@ public class PartyCandidateSpecialPageScheduleService implements
 		    	}
 		       }
 		      if(!candidateIds.isEmpty()){
-		       //getting all photo gallery updates for all candidates 
-		       List<FileGallary> photosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"photos");
-		       //getting all news gallery updates for all candidates
-		       List<FileGallary> newsList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"news");
-		       //getting all video gallery updates for all candidates 
-		       List<FileGallary> videosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"videos");
-		       Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
+		       
+		    	  List<FileGallary> photosList = new ArrayList<FileGallary>();
+		    	  List<FileGallary> newsList = new ArrayList<FileGallary>();
+		    	  List<FileGallary> videosList = new ArrayList<FileGallary>();
+		    	//getting all photo gallery updates for all candidates 
+		       try{
+		        photosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"photos");
+		       }catch(Exception e){
+						 log.error("Exception occured while getting  photosList for Candidates: ", e);
+					 }
+		        //getting all news gallery updates for all candidates
+		       try{
+		        newsList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"news");
+		       }catch(Exception e){
+					 log.error("Exception occured while getting  newsList for Candidates: ", e);
+				 }
+		        //getting all video gallery updates for all candidates 
+		       try{
+		        videosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"videos");
+		       }catch(Exception e){
+					 log.error("Exception occured while getting  videosList for Candidates: ", e);
+				 }
+		        Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
 		       Map<Long,Long> newsGallaryIds = new HashMap<Long,Long>();
 		       Map<Long,Long> videoGallaryIds = new HashMap<Long,Long>();
 		       Long gallaryId = null;
@@ -394,12 +423,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 		catch(Exception e){
 			log.error("Exception Rised in getDaillyUpdatesForCandidatePageSubscribers : ", e);
 		}
-		
+		log.info("getDaillyUpdatesForCandidatePageSubscribers() Execution completed");
 	}
 	
 	
 	private void getDaillyUpdatesForPartyPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
-	{
+	{log.info("getDaillyUpdatesForPartyPageSubscribers() Execution started");
 		Set<Long> usersIds = new HashSet<Long>();
 		usersIds.add(1l);
 		usersIds.add(411l);
@@ -416,8 +445,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 		try
 		   {
 			//getting all party page subscribed details
-			 List<Object[]> subscriberDetailsList = partySubscriptionsDAO.getAllSubscriberDetails();
-		     
+			List<Object[]> subscriberDetailsList = new ArrayList<Object[]>();
+			try{
+			  subscriberDetailsList = partySubscriptionsDAO.getAllSubscriberDetails();
+		   }catch(Exception e){
+				 log.error("Exception occured while getting  subscriberDetailsList for party : ", e);
+			 }
 			 for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
 				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) && usersIds.contains((Long)subscriberDetail[2])){
@@ -450,12 +483,27 @@ public class PartyCandidateSpecialPageScheduleService implements
 		       }
 			 if(!partyIds.isEmpty()){
 			   //getting all photo gallery updates for all parties 
-			 List<Object[]> photosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"photos");
-			   //getting all news gallery updates for all parties 
-			 List<Object[]> newsList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"news");
-			   //getting all video gallery updates for all parties 
-			 List<Object[]> videosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"videos");
-			   Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
+				 List<Object[]> photosList = new ArrayList<Object[]>();
+				 List<Object[]> newsList = new ArrayList<Object[]>();
+				 List<Object[]> videosList = new ArrayList<Object[]>();
+			 try{
+			 photosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"photos");
+			 }catch(Exception e){
+				 log.error("Exception occured while getting  photosList for party : ", e);
+			 }
+			 //getting all news gallery updates for all parties 
+			 try{
+				 newsList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"news");
+		   }catch(Exception e){
+				 log.error("Exception occured while getting  newsList for party : ", e);
+			 }
+			 //getting all video gallery updates for all parties 
+			 try{
+				 videosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"videos");
+			 }catch(Exception e){
+				 log.error("Exception occured while getting  videosList for party : ", e);
+			 }
+			 Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
 		       Map<Long,Long> newsGallaryIds = new HashMap<Long,Long>();
 		       Map<Long,Long> videoGallaryIds = new HashMap<Long,Long>();
 		       Long gallaryId = null;
@@ -530,11 +578,11 @@ public class PartyCandidateSpecialPageScheduleService implements
 		catch(Exception e){
 			log.error("Exception Rised in getDaillyUpdatesForPartyPageSubscribers : ", e);
 		}
-		
+		log.info("getDaillyUpdatesForPartyPageSubscribers() Execution completed");
 	}
 	
 	private void getDaillyUpdatesForSpecialPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
-	{
+	{log.info("getDaillyUpdatesForSpecialPageSubscribers() Execution started");
 		Set<Long> usersIds = new HashSet<Long>();
 		usersIds.add(1l);
 		usersIds.add(411l);
@@ -551,8 +599,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 		try
 		   {
 			 //getting all special page subscribed details
-			List<Object[]> subscriberDetailsList = specialPageSubscriptionsDAO.getAllSubscriberDetails();
-		
+			List<Object[]> subscriberDetailsList = new ArrayList<Object[]>();
+			try{
+			 subscriberDetailsList = specialPageSubscriptionsDAO.getAllSubscriberDetails();
+		   }catch(Exception e){
+				 log.error("Exception occured while getting  subscriberDetailsList for specialPage : ", e);
+			 }
 			for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
 				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0]))  && usersIds.contains((Long)subscriberDetail[2])){
@@ -584,10 +636,25 @@ public class PartyCandidateSpecialPageScheduleService implements
 				}
 		       }
 		  if(!specialPageIds.isEmpty()){
-			List<Object[]> photosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"photos");
-			List<Object[]> newsList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"news");
-			List<Object[]> videosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"videos");
-			   Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
+			  List<Object[]> photosList = new ArrayList<Object[]>();
+			  List<Object[]> newsList = new ArrayList<Object[]>();
+			  List<Object[]> videosList = new ArrayList<Object[]>();
+			 try{
+			 photosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"photos");
+		  }catch(Exception e){
+				 log.error("Exception occured while getting  photosList for specialPage : ", e);
+			 }
+			 try{
+			 newsList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"news");
+		   }catch(Exception e){
+				 log.error("Exception occured while getting  newsList for specialPage : ", e);
+			 }
+			 try{
+			 videosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"videos");
+			}catch(Exception e){
+				 log.error("Exception occured while getting  videosList for specialPage : ", e);
+			 }
+			Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
 		       Map<Long,Long> newsGallaryIds = new HashMap<Long,Long>();
 		       Map<Long,Long> videoGallaryIds = new HashMap<Long,Long>();
 		       Long gallaryId = null;
@@ -663,7 +730,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		catch(Exception e){
 			log.error("Exception Rised in getDaillyUpdatesForSpecialPageSubscribers : ", e);   
 		}
-
+		log.info("getDaillyUpdatesForSpecialPageSubscribers() Execution completed");
 	}
 	/*private void getAllMailingDetails(List<EmailDetailsVO> emailDetailsVOList,Map<String,List<EmailNotificationVO>> emailMap,String type)
 	{

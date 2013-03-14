@@ -8,4 +8,6 @@ public interface IVoterReportLevelDAO extends GenericDao<VoterReportLevel, Long>
 
 	public Long getReportLevelIdByType(String type);
 	
+	public VoterReportLevel getReportLevelByType(String type);
+	
 }
