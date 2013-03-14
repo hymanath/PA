@@ -1343,7 +1343,7 @@ function addToPolitician(voterId,name)
 								}								
 								else if(jsObj.task == "importantFamiliesinfo")
 								{ 
-								  if(myResults != null && jsObj.task == maintype){
+								  if(myResults != null && jsObj.type == maintype){
 								    $("#votersDiv1").show();
 								    impFamilesStaticTable(myResults,jsObj);
 									buildImpFamilesChart(myResults);
