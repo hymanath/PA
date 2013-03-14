@@ -4711,19 +4711,20 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				{
 					try{
 					if(voterIdsCardNosMap.get(voterTemp.getVoterId()) == null)
+					{
 						voter = new Voter();
+						voter.setVoterIDCardNo(voterTemp.getVoterId());
+						voter.setName(voterTemp.getName());
+						voter.setHouseNo(voterTemp.getHouseNo());
+						voter.setRelativeName(voterTemp.getGuardianName());
+						voter.setRelationshipType(voterTemp.getRelationShip());
+						voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
+						voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
+						voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						voter = voterDAO.save(voter);
+					}
 					else
 						voter = voterDAO.get(voterIdsCardNosMap.get(voterTemp.getVoterId()));
-					
-					voter.setVoterIDCardNo(voterTemp.getVoterId());
-					voter.setName(voterTemp.getName());
-					voter.setHouseNo(voterTemp.getHouseNo());
-					voter.setRelativeName(voterTemp.getGuardianName());
-					voter.setRelationshipType(voterTemp.getRelationShip());
-					voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
-					voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
-					voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					voter = voterDAO.save(voter);
 					
 					boothPublicationVoter = new BoothPublicationVoter();
 					boothPublicationVoter.setVoter(voter);
@@ -4833,8 +4834,8 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 			}
 			
 			list2 = boothDAO.getBoothIdsAndPartNosOfAConstituencyInAPublication(constituencyId,toPublicationDateId);
-			List<Long> addedVoterIdsList = voterModificationDAO.getModifiedVotersByConstituency(constituencyId,fromPublicationDateId,IConstants.STATUS_ADDED);
-			List<Long> deletedVoterIdsList = voterModificationDAO.getModifiedVotersByConstituency(constituencyId,fromPublicationDateId,IConstants.STATUS_DELETED);
+			Map<Long,List<Long>> addedVoterIdsMap = getModifiedVotersMapByStatusInAConstituency(constituencyId,fromPublicationDateId,IConstants.STATUS_ADDED);
+			Map<Long,List<Long>> deletedVoterIdsMap = getModifiedVotersMapByStatusInAConstituency(constituencyId,fromPublicationDateId,IConstants.STATUS_DELETED);
 			List<Object[]> votersAndPartNosList = boothPublicationVoterDAO.getPartNoAndVoterIdByConstituencyInAPublication(constituencyId, fromPublicationDateId);
 			
 			Map<String,List<BoothVoterVO>> votersAndPartNosMap = new HashMap<String, List<BoothVoterVO>>(0);
@@ -4863,7 +4864,8 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				
 				for(BoothVoterVO boothVoterVO : entry.getValue())
 				{
-					if(!addedVoterIdsList.contains(boothVoterVO.getVoterId()))
+					if(!(addedVoterIdsMap.get(Long.valueOf(entry.getKey())) != null && 
+							addedVoterIdsMap.get(Long.valueOf(entry.getKey())).contains(boothVoterVO.getVoterId())))
 					{
 						try{
 						BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
@@ -4879,11 +4881,16 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				}catch(Exception e){}
 			}
 			
-			if(deletedVoterIdsList != null && deletedVoterIdsList.size() > 0)
+			if(deletedVoterIdsMap.size() > 0)
 			{
-				List<Long> bPVIDSList =  boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(deletedVoterIdsList,fromPublicationDateId);
-				int deleted = boothPublicationVoterDAO.deleteByIdsList(bPVIDSList);
-				log.info(deleted+" Voters Deleted ");
+				for(Map.Entry<Long,List<Long>> entry : deletedVoterIdsMap.entrySet())
+				{
+					try{
+						List<Long> bPVIDSList =  boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(entry.getKey().toString(),entry.getValue(),fromPublicationDateId);
+						if(bPVIDSList != null && bPVIDSList.size() > 0)
+							boothPublicationVoterDAO.deleteByIdsList(bPVIDSList);
+					}catch (Exception e) {}
+				}
 			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			resultStatus.setMessage("Voter Data Mapped Successfully");
@@ -4897,6 +4904,29 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 		}
 	}
 	
+	public Map<Long,List<Long>> getModifiedVotersMapByStatusInAConstituency(Long constituencyId, Long publicationDateId, String status)
+	{
+		Map<Long,List<Long>> resultMap = new HashMap<Long, List<Long>>(0);
+		try{
+			List<Object[]> list = voterModificationDAO.getModifiedVotersByConstituency(constituencyId,publicationDateId,status);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					List<Long> voterIdsList = resultMap.get((Long)params[1]);
+					if(voterIdsList == null)
+						voterIdsList = new ArrayList<Long>(0);
+					voterIdsList.add((Long)params[0]);
+					resultMap.put((Long)params[1], voterIdsList);
+				}
+			}
+			return resultMap;
+		}catch(Exception e){
+			log.error(e);
+			return resultMap;
+		}
+	}
 	public Booth copyBoothObject(Booth booth)
 	{
 		try{
@@ -9841,6 +9871,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						 voterVO = new VoterVO();
 						 voterVO.setVoterIDCardNo(params[0].toString());
 						 voterVO.setStatus(params[1].toString());
+						 voterVO.setPartNo((Long)params[2]);
 						 votersList.add(voterVO);
 						 voterIdCardNosList.add(params[0].toString());
 					 }
@@ -9857,6 +9888,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 								 VoterModification voterModification = new VoterModification();
 								 voterModification.setVoterId(voterId);
 								 voterModification.setPublicationDateId(publicationDateId);
+								 voterModification.setPartNo(voterVO2.getPartNo());
 								 voterModification.setStatus(voterVO2.getStatus());
 								 voterModification.setConstituencyId(constituencyId);
 								 voterModificationDAO.save(voterModification);
