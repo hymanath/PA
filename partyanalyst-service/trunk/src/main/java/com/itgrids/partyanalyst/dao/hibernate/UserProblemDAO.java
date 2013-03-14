@@ -1278,5 +1278,13 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		return query.list();
 	}
+
+	public Long getCountOfNewlyPostedProblemsByPublicUser(Date currentDate)
+	{
+		Query query = getSession().createQuery("select count(model.problem.problemId) from UserProblem model where Date(model.problem.updatedTime) = ? and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.visibility.type ='"+IConstants.PUBLIC+"' ");
+		query.setParameter(0, currentDate);
+		return (Long)query.uniqueResult();
+		
+	}
 	
 }
