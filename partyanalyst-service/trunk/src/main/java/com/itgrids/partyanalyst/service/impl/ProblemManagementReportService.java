@@ -1831,7 +1831,7 @@ public class ProblemManagementReportService implements
 				
 				//SimpleDateFormat yearFormatSdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 				if(choice.equalsIgnoreCase(IConstants.NEW))
-					isApproved = IConstants.FALSE;
+					isApproved = IConstants.TRUE;
 				else if(choice.equalsIgnoreCase(IConstants.APPROVED))
 					isApproved = IConstants.TRUE;
 				else if(choice.equalsIgnoreCase(IConstants.REJECTED))
@@ -1935,7 +1935,7 @@ public class ProblemManagementReportService implements
 				//list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,getUserSelectedChoice(type));
 				
 				if(choice.equalsIgnoreCase(IConstants.NEW))
-					isApproved = IConstants.FALSE;
+					isApproved = IConstants.TRUE;
 				else if(choice.equalsIgnoreCase(IConstants.APPROVED))
 					isApproved = IConstants.TRUE;
 				else if(choice.equalsIgnoreCase(IConstants.REJECTED))
@@ -3587,7 +3587,8 @@ public Date getCurrentDateAndTime(){
 	    		if(log.isDebugEnabled())
 	    			log.debug("Entered into getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService");
 	    		//Count of newly Posted problems by free user.
-	    		Long countofNewlyProblems = problemDAO.getCountOfNewlyPostedProblemsByFreeUser(getCurrentDateAndTime());
+	    		/*Long countofNewlyProblems = problemDAO.getCountOfNewlyPostedProblemsByFreeUser(getCurrentDateAndTime());*/
+	    		Long countofNewlyProblems = userProblemDAO.getCountOfNewlyPostedProblemsByPublicUser(getCurrentDateAndTime());
 	    		//Count of newly Posted images by free user.
 	    		Long countofNewlyImages = problemFilesDAO.getCountOfNewlyPostedImagesByFreeUser(getCurrentDateAndTime());
 	    		//count of newly posted comments by free user.
