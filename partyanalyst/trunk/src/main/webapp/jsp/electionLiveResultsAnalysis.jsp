@@ -485,7 +485,12 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 			str += '<tr><td align="left" width="60">Retained </td><td  width="10">:</td><td align="right" width="30">'+myResults[i].retainedCount+'</td></tr>';
 			str += '<tr><td align="left" width="60">Gained </td><td width="10">:</td><td align="right" width="30"> '+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
 			var newConsi = myResults[i].wonOrLeadCount - (myResults[i].retainedCount + myResults[i].wonFromOtherPartiesCount);
-			str +='<tr><td align="left" width="60">Won in New Ac*/Pc*</td><td width="10">:</td><td align="right" width="30">'+newConsi+' </td></tr>';
+			str +='<tr>';
+			if ($("#assemblyId").is(":checked"))
+			str +='<td align="left" width="60">Won in New Ac*</td>';
+			else
+			str +='<td align="left" width="60">Won in New Pc*</td>';
+			str +='<td width="10">:</td><td align="right" width="30">'+newConsi+' </td></tr>';
 			str += '<tr><td align="left" width="60">Lost Seats</td><td width="10">:</td><td align="right" width="30"> '+lostSeatsCount+'';
 			str += '</td></tr></table></td>';
 			str += '<td align="left"><table width="80">';
