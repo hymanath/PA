@@ -464,7 +464,7 @@ YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
 {
 var str ='';
 var id=oRecord.getData("voterIds");
-var name = oRecord.getDate("firstName");
+var name = oRecord.getData("firstName");
 var influencePerson=oRecord.getData("influencePerson");
 
 str += '<ul class="dd_menu">';
