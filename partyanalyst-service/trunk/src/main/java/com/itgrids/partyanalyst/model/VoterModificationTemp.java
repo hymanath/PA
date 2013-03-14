@@ -91,7 +91,7 @@ public class VoterModificationTemp extends BaseModel implements Serializable{
 		this.costituencyName = costituencyName;
 	}
 
-	@Column(name="part_no")
+	@Column(name="booth_id")
 	public Long getPartNo() {
 		return partNo;
 	}
