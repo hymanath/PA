@@ -217,6 +217,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 .subscribedLink{color:red;font-weight:bold;}
 .modal{width:400px;left:60%;}
 .modal.fade.in { top: 70%;}
+#sendMessageButtonId {
+    margin-left: 327px;
+    margin-top: 0px;
+    padding: 3px;
+}
+#connectMessageText, #connectUserMsg {
+    background: none repeat scroll 0 0 transparent !important;
+    height: 60px;
+    width: 357px;
+}
 </style>
 </head>
 <body>
