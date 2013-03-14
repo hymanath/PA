@@ -1547,7 +1547,8 @@ function showMailPopup(id,name,type)
 			autoOpen: true,
 			show: "blind",
 			width: 400,
-			minHeight:250,
+			height: 180,
+			//minHeight:50,
 			modal: true,
 			hide: "explode"
 		});
