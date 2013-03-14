@@ -46,7 +46,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 }
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved)
+	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved, String problemStatus)
 	{
 		StringBuilder conditionQuery = new StringBuilder();
 		conditionQuery.append("select model.problem.problemId,model.problem.description,model.problem.isApproved,model.problem.identifiedOn,model.user.firstName,model.user.lastName,model.problem.title ");
@@ -60,6 +60,9 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		 if(isApproved != null)
 			conditionQuery.append(" and model.problem.isApproved =:isApproved ");
 		
+		 if(problemStatus != null)
+			 conditionQuery.append(" and model.problem.problemStatus.status =:problemStatus "); 
+			 
 		Query queryObject = getSession().createQuery(conditionQuery.toString());
 		
 		if(firstDate != null)
@@ -69,8 +72,11 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		    queryObject.setParameter("endDate", lastDate);
 		
 		 if(isApproved != null)
-		    queryObject.setParameter("isApproved", isApproved);   
-		
+		    queryObject.setParameter("isApproved", isApproved); 
+		 
+		 if(problemStatus != null)
+			 queryObject.setParameter("problemStatus", problemStatus);
+			 
 		queryObject.setParameter("status", "Public");
 		queryObject.setParameter("isDelete", "false");
 		return queryObject.list();	
@@ -1304,4 +1310,43 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		queryObj.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
 		return queryObj.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getLatestProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved, String problemStatus)
+	{
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append("select model.problem.problemId,model.problem.description,model.problem.isApproved,model.problem.identifiedOn,model.user.firstName,model.user.lastName,model.problem.title ");
+		conditionQuery.append(" from UserProblem model where  model.visibility.type =:status and model.problem.isDelete =:isDelete ");
+		if(firstDate != null)
+			conditionQuery.append(" and date(model.problem.insertedTime) >=:initialDate ");
+		
+		 if(lastDate != null)
+			conditionQuery.append(" and date(model.problem.insertedTime) <=:endDate ");
+		
+		 if(isApproved != null)
+			conditionQuery.append(" and model.problem.isApproved =:isApproved ");
+		
+		 if(problemStatus != null)
+			 conditionQuery.append(" and model.problem.problemStatus.status = :problemStatus");
+		 
+		Query queryObject = getSession().createQuery(conditionQuery.toString());
+		
+		if(firstDate != null)
+		    queryObject.setParameter("initialDate", firstDate);
+		
+	    if(lastDate != null)
+		    queryObject.setParameter("endDate", lastDate);
+		
+		 if(isApproved != null)
+		    queryObject.setParameter("isApproved", isApproved);   
+		
+		 if(problemStatus != null)
+			 queryObject.setParameter("problemStatus", problemStatus);
+		 
+		queryObject.setParameter("status", "Public");
+		queryObject.setParameter("isDelete", "false");
+		return queryObject.list();	
+	}
+	
 }
