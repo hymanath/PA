@@ -25,6 +25,7 @@ display: inline-block;
 font-size: 13px;
 line-height: 18px;
 padding: 4px;
+width: 100px;
 }
 input, button, select, textarea {
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -56,6 +57,7 @@ font-size: 15px;
 border: 1px solid #CFD6DF;
 margin:40px;
 margin-top:15px;
+padding: 10px;
 }
 #errmsg{
 font-size:15px;
@@ -71,6 +73,20 @@ font-size:15px;
 color:blue;
 margin-left: 70px;
 font-weight:bold;
+}
+.table th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    font-weight: bold;
+    text-align: center;
+}
+.female
+{
+	margin-left:10px;
+}
+#genderMale,#genderFemale
+{
+	margin-left: 3px;
+    margin-top: -2px;
 }
 </style>
 <script type="text/javascript">
@@ -499,7 +515,7 @@ function appendAnotherVoterForm()
 	rowLength = $('#noOfVoters option:selected').text();
 	var divEle = document.getElementById('voterForm');
 	var str = '';
-	str+='<table border=1>';
+	str+='<table  class="table table-bordered table-hover">';
 	str+='<tr>';
 	//str+='<th>SNO</th>';
 	str+='<th>NAME</th>';
@@ -516,15 +532,15 @@ function appendAnotherVoterForm()
 	{
 	str+='<tr class="voterEnterForm" id="voterdetailsRow_'+i+'">';
 	//str+='<td align="center">'+i+'</td>';
-	str+='<td><input id="voterName" class="name" style="width: 100px;height: 24px;"></input></td>';
+	str+='<td><input id="voterName" class="name" style="width: 100px;height: 24px;" type="text"></input></td>';
 	str+='<td>';
-	str+='M <input type="radio" id="genderMale" name="gender_'+i+'" class="gender" checked= "true"  value="male"></input>';
-	str+='F <input type="radio" id="genderFemale" name="gender_'+i+'" class="gender" value="female"></input>';
+	str+='<span class="male">MALE</span><input type="radio" id="genderMale" name="gender_'+i+'" class="gender" checked= "true"  value="male"></input>';
+	str+='<span class="female" >FEMALE</span><input type="radio" id="genderFemale" name="gender_'+i+'" class="gender" value="female"></input>';
 	str+='</td>';
-	str+='<td><input id="voterAge" class="voterAge"  style="width:30px;height:24px;" onKeyUp="checkForValideAge();"></input></td>';
-	str+='<td><input id="voterId"  class="voterId" style="width:100px;height:24px;" onKeyUp="checkForDuplicateVoters();"></input></td>';
-	str+='<td><input id="voterHNo"  class="houseNo" style="width:40px;height:24px;"></input></td>';
-	str+='<td><input id="voterGName"  class="guardianName" style="width:100px;height:24px;"></input></td>';
+	str+='<td><input id="voterAge" class="voterAge"  style="width:30px;height:24px;" onKeyUp="checkForValideAge();" type="text"></input></td>';
+	str+='<td><input id="voterId" type="text" class="voterId" style="width:84px;height:24px;" onKeyUp="checkForDuplicateVoters();" ></input></td>';
+	str+='<td><input id="voterHNo"  type="text" class="houseNo" style="width:40px;height:24px;"></input></td>';
+	str+='<td><input id="voterGName"  type="text" class="guardianName" style="width:100px;height:24px;"></input></td>';
 	str+='<td><select id="voterRelation"  class="relationType"  style="height:30px;">';
 	str+='<option value="0"> Select Relationship</option>';
 	str+='<option value="1"> Father </option>';
@@ -532,7 +548,7 @@ function appendAnotherVoterForm()
 	str+='<option value="3"> Husband </option>';
 	str+='<option value="4"> Others </option>';
 	str+='</select></td>';
-	str+='<td><input id="voterSNo"  class="serialNo" style="width:40px;height:24px;" onKeyUp="checkForDuplicateSerialNos();"></input></td>';
+	str+='<td><input id="voterSNo"  type="text" class="serialNo" style="width:40px;height:24px;" onKeyUp="checkForDuplicateSerialNos();"></input></td>';
 	str+='<td align="center"><img alt="deleteImg" src="images/icons/delete.png" id="deleteImg_'+i+'" class="deleteImg"></img></td>';
 	str+='</tr>';
 	str+='<div id="appendVoterForm"></div>';
@@ -745,7 +761,7 @@ No Of Voters : <font class="requiredFont" style="color:red;font-size:large;">*</
 </div>
 <div></div>
 <div id="errorMsgDiv"  align="center"  style="margin-top: 10px;">&nbsp;</div>
-<div id="voterForm" style="display:none;" align="center"></div>
+<div id="voterForm"  align="center"></div>
 <!--<div>
 <input type="button" value="Add More" style=" width: 70px;float: right;margin-top: -24px;margin-right: 79px;display:none;" id="addMoreButton" onClick="appendAnotherVoterForm();">
 </input>
