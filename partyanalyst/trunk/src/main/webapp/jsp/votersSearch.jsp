@@ -927,7 +927,7 @@ function buildCategoriesListInit(result){
 		 },500);}); */
 		 var idsArray ={};
 		 if($("#singleAttributeType").is(':checked')){
-		 setTimeout(function(){
+		 /*setTimeout(function(){
 		  $(".localityallfamily").each(function (){
 		  var i=0;
 		 
@@ -942,7 +942,7 @@ function buildCategoriesListInit(result){
 		 idsArray[i]=selectid;
 		 i++;
 		  }		  		  
-		 })},500); 
+		 })},500);*/ 
 		}
 	  }
 	  function getVotersInfoToEditAllUser(ids,votersIds){
@@ -1314,13 +1314,23 @@ function callAjaxForCandSearch(jsObj,url)
 				  str+="   <td><b>Locality Name:</b></td>";
 				
 				        str+="<td><select id='localityvalid"+localid+"' onchange='getLocalitiesList(\"localityvalid"+localid+"\",\"locationdiv"+localid+"\",\" "+j+"\")' dataj='"+j+"' datalocationdiv=\"locationdiv"+localid+"\" class='localityallfamily localityallfamily"+j+"' >";
+						var selectedValue = 0;
 						 for(var l in results.localitiesList){
 						  if(voters[k].hamletId != results.localitiesList[l].id)								   
 						 str+="<option value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
 					      else{
+							  selectedValue = results.localitiesList[l].id;
 						  str+="<option selected='selected' value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
 						
 						 }
+                      
+
+                   if(selectedValue !=0){
+					   getLocalitiesList1("localityvalid"+localid,"locationdiv"+localid,j,selectedValue);
+					   selectedValue = 0;
+				   }
+
+                    // idsArray[i]=selectid;
 					   }
 				  str+="    </select></td>";
 				  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"localityvalid"+localid+"\",\"localityallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";

@@ -3695,9 +3695,71 @@ var jsObj=
 	divEle1.innerHTML = str;
 
 	}
+
+
+	function getLocalitiesList1(selectboxId,divId,familyId,selectedValue)
+	{ 
+if(isMuncipality)
+		{
+			$('#localitylocationdiv').hide();
+			return;
+		}
+		var optionValue="";
+		showNewsDetails();
+		//var reportLevel = $("#reportLevel").val();
+	//	var localityId=document.getElementById(selectboxId);
+	  try{
+	    var localityId =$("#"+selectboxId+"");
+		//var name=localityId.options[localityId.selectedIndex].name;
+		//var value=$("#"+selectboxId+"").val();
+		
+		var type = "locality";
+		var localityDiv=divId;
+		var publicationValue = $('#publicationDateList').val();
+		var alertEl = document.getElementById("AlertMsg");
+		alertEl.innerHTML = '';
+		var family="false";
+	  if(familyId != null )
+	   {
+	   family="true";
+	   }
+	  
+		 if(selectedValue == 0)
+		{ 
+		 if($("#singleAttributeType").is(':checked'))
+		 $(this).closest("table").find(".localityFamily").val(0) ;
+	    else	
+		var localityId= $("#localitylocationdiv").val(0);
+			//alertEl.innerHTML ='<P>Please Select Mandal</P>';
+			return;
+		}
+		var jsObj=
+			{
+					
+				selected:selectedValue,
+				divToBuild:localityDiv,
+				selectBoxId:selectboxId,
+				familyType: family,
+				familyId: familyId,
+			
+				type:type,
+				publicationValue : publicationValue,
+				task:"getLocalities"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		}catch(e){
+		return;
+		}
+		
+	}
+
+
 	function getLocalitiesList(selectboxId,divId,familyId)
-	{   
-		if(isMuncipality)
+	{ 
+if(isMuncipality)
 		{
 			$('#localitylocationdiv').hide();
 			return;
@@ -3754,7 +3816,8 @@ var jsObj=
 		
 	}
 	function populatedataTodiv(results,jobj)
-	{    
+	{   
+		
 	
 	var str="";
 	               str+="<table>";	
@@ -3784,6 +3847,3 @@ var jsObj=
 	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
-	
-	
-	
