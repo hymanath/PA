@@ -43,6 +43,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long assemblyConstituencyId;
 	private Long parliamentConstituencyId;
 	private String electionType;
+	private Long partNo;
 
 	
 	
@@ -450,5 +451,13 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	}
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
+	}
+
+	public Long getPartNo() {
+		return partNo;
+	}
+
+	public void setPartNo(Long partNo) {
+		this.partNo = partNo;
 	}
 }
