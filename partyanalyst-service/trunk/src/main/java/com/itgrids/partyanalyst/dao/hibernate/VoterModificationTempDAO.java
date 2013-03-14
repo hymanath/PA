@@ -17,7 +17,7 @@ public class VoterModificationTempDAO extends GenericDaoHibernate<VoterModificat
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVoterIDAndStatusFromVoterModificationTempByConstituencyId(Long constituencyId)
 	{
-		return getHibernateTemplate().find("select model.voterId,model.status from VoterModificationTemp model where model.constituencyId = ?",constituencyId);
+		return getHibernateTemplate().find("select model.voterId,model.status,model.partNo from VoterModificationTemp model where model.constituencyId = ?",constituencyId);
 	}
 	
 	@SuppressWarnings("unchecked")
