@@ -1286,5 +1286,22 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return (Long)query.uniqueResult();
 		
 	}
-	
+
+	public List getProblemDetailsByLocationValuesList(List<Long> locationValuesList, String problemScope, String visibilityType)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getCommonDataForAllProblems());
+		
+		stringBuilder.append(" where model.problem.regionScopes.scope =:problemScope and model.problem.impactLevelValue in (:locationValuesList) " +
+				" and model.visibility.type = :type and model.problem.isDelete =:isDelete order by date(model.updatedTime) ");
+		
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		
+		queryObj.setParameterList("locationValuesList", locationValuesList);
+		queryObj.setParameter("problemScope", problemScope);
+		queryObj.setParameter("type", visibilityType);
+		queryObj.setParameter("isDelete", IConstants.FALSE);
+		queryObj.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
+		return queryObj.list();
+	}
 }
