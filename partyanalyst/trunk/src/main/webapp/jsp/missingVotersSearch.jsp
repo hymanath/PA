@@ -534,8 +534,8 @@ function appendAnotherVoterForm()
 	//str+='<td align="center">'+i+'</td>';
 	str+='<td><input id="voterName" class="name" style="width: 100px;height: 24px;" type="text"></input></td>';
 	str+='<td>';
-	str+='<span class="male">MALE</span><input type="radio" id="genderMale" name="gender_'+i+'" class="gender" checked= "true"  value="male"></input>';
-	str+='<span class="female" >FEMALE</span><input type="radio" id="genderFemale" name="gender_'+i+'" class="gender" value="female"></input>';
+	str+='<input type="radio" id="genderMale" name="gender_'+i+'" class="gender" checked= "true"  value="male"></input><span class="male" style="margin-left:10px">MALE</span>';
+	str+='<input type="radio" id="genderFemale" name="gender_'+i+'" class="gender" value="female"></input><span class="female" >FEMALE</span>';
 	str+='</td>';
 	str+='<td><input id="voterAge" class="voterAge"  style="width:30px;height:24px;" onKeyUp="checkForValideAge();" type="text"></input></td>';
 	str+='<td><input id="voterId" type="text" class="voterId" style="width:84px;height:24px;" onKeyUp="checkForDuplicateVoters();" ></input></td>';
