@@ -1770,12 +1770,14 @@ public List<Long> getVotersInHamletForUser(Long userId , Long hamletId)
 }
 	
 	@SuppressWarnings("unchecked")
-	public List<Long> getBoothPublicationVoterIdsByVoterIdsList(List<Long> voterIdsList, Long publicationDateId)
+	public List<Long> getBoothPublicationVoterIdsByVoterIdsList(String partNo,List<Long> voterIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery(" Select model.boothPublicationVoterId from BoothPublicationVoter model where model.voter.voterId in(:voterIdsList) and " +
+		Query query = getSession().createQuery(" Select model.boothPublicationVoterId from BoothPublicationVoter model where " +
+				" model.booth.partNo = :partNo and model.voter.voterId in(:voterIdsList) and " +
 				" model.booth.publicationDate.publicationDateId = :publicationDateId ");
 		query.setParameterList("voterIdsList",voterIdsList);
 		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("partNo",partNo);
 		return query.list();
 	}
 	
