@@ -805,7 +805,19 @@ function addToPolitician(voterId,name)
             $("#selectedBoothInfo").hide('');			
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
-	   $("#votersDiv4").show();  
+	   $("#votersDiv4").show();
+       if(type == "booth" || type == "hamlet"){
+         $("#casteRefreshButtonDiv").hide();
+		  
+       }else{
+         $("#casteRefreshButtonDiv").show();
+		 
+       }
+       if(type == "booth" || type == "hamlet" || type == "panchayat" || type == "ward"){
+          $("#getLatestCastsSubcategoryWise").hide();
+	   }else{
+	       $("#getLatestCastsSubcategoryWise").show();
+	   }
 	   if(type == "booth"){
 	     getBoothInfo();
 	     $("#ageLink").hide();  
@@ -1517,6 +1529,9 @@ function addToPolitician(voterId,name)
 								}else if(jsObj.task == "importantFamiliesinfo1")
 								{ //console.log("insideTask");
 								 buildFamilyMembersForAnil(myResults,jsObj.publicationDateId,jsObj.type);
+								}else if(jsObj.task == "insertCastAndPartyVotersData"){
+								    $("#permanentlyUpdateDiv").removeAttr("disabled");
+								    getVotersCastInfo(mainreqid,mainpublicationId,maintype);
 								}
 									
 							}catch (e) {
@@ -2104,6 +2119,7 @@ function getVotersCastInfo(id,publicationId,type)
 				typename:typename,
 				publicationDateId:publicationId,
 				constituencyId:$("#constituencyList").val(),
+				queryType:"sub",
 				task:"getCastInfo"
 			}
 		
@@ -2118,6 +2134,7 @@ function getVotersCastInfo(id,publicationId,type)
 				typename:typename,
 				publicationDateId:publicationId,
 				constituencyId:$("#constituencyList").val(),
+				queryType:"sub",
 				task:"getPartyInfo"
 			}
 		
@@ -2208,9 +2225,10 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		   }
 		 }
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
-		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0)
+		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
+		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
 		  return;
-		  
+		}  
 		if(type != 'booth')
 		{
 		str +='<table id="subLevelTable">';
@@ -7076,6 +7094,7 @@ function getVotersCastInfoTest(id,publicationId,type)
 				//typename:typename,
 				publicationDateId:7,
 					constituencyId:232,
+					queryType:"sub",
 				task:"getCastInfo"
 			}
 		
@@ -7090,6 +7109,7 @@ function getVotersCastInfoTest(id,publicationId,type)
 				//typename:typename,
 				publicationDateId:7,
 				constituencyId:232,
+				queryType:"sub",
 				task:"getPartyInfo"
 			}
 		
@@ -7324,5 +7344,85 @@ if(type!="hamlet")
 
 }
 
+function getUpdatedCastePartyInfo(){
+    $("#localCastStatsTabContent_header").html("");
+    $("#localCastStatsTabContentTitle").html("");
+    $("#localCastStatsTabContent_body").html("");
+	$("#localCastDetailsDiv").html("");
+	$("#partyBasicInfoStatsTab").html("");
+	$("#partyWiselocalcastDiv").html("");
+  var typename=mainname;
+  var castewiseAjaxDiv =  document.getElementById('castewiseAjaxDiv');
+		showAjaxImgDiv('castewiseAjaxDiv');
+		var jsObj=
+			{
+				type:maintype,	
+				id:mainreqid,
+				typename:typename,
+				publicationDateId:mainpublicationId,
+				constituencyId:$("#constituencyList").val(),
+				queryType:"main",
+				task:"getCastInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+		var jsObj1=
+			{
+				type:maintype,	
+				id:mainreqid,
+				typename:typename,
+				publicationDateId:mainpublicationId,
+				constituencyId:$("#constituencyList").val(),
+				queryType:"main",
+				task:"getPartyInfo"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj1,url);
+}
+function getLatestCastsSubcategoryWise(){
+  $("#voterCasteAjaxImg").css("display","block");
+  $("#localCastStatsTabContent_subbody").html("");
+  var jsObj=
+		{		
+				type:maintype,	
+				id:mainreqid,
+				typeName:mainname,
+				publicationDateId:mainpublicationId,
+				constituencyId:$("#constituencyList").val(),
+                buildType:buildType,
+                queryType:"main",
+				task:"getCastInfoForsubLevels"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+}
 
-//end of adding cadre to voter
+function permanentlyUpdateCastePartyInfo(){
+        var r=confirm("This Process Will Take Some Time. Do You Want To Proceed ?")
+      if (r==true)
+       {
+	    $("#permanentlyUpdateDiv").attr("disabled", "disabled");
+	    $("#localCastStatsTabContent_header").html("");
+        $("#localCastStatsTabContentTitle").html("");
+        $("#localCastStatsTabContent_body").html("");
+	    $("#localCastDetailsDiv").html("");
+	    $("#partyBasicInfoStatsTab").html("");
+	    $("#partyWiselocalcastDiv").html("");
+		showAjaxImgDiv('castewiseAjaxDiv');
+		var jsObj=
+		{
+		  id				:$("#constituencyList").val(),
+		  publicationDateId :$("#publicationDateList").val(),
+		  task:"insertCastAndPartyVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVotersCasteAndPartyDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+	  }
+}

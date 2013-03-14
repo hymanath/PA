@@ -23,7 +23,7 @@
 		<property name="casteStateDAO" ref="casteStateDAO" />
 		<property name="voterReportLevelDAO" ref="voterReportLevelDAO" />
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
-		
+		<property name="partyDAO" ref="partyDAO" />
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -1413,6 +1413,7 @@
 		<property name="voterPartyInfoDAO" ref="voterPartyInfoDAO"/>
 		<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
 		<property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO"/>
+		<property name="voterReportService" ref="voterReportService"/>
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">

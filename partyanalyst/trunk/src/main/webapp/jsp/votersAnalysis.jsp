@@ -923,7 +923,8 @@ function getCastInfoForsubLevel()
 				id:id,
 				validflag:validflag,
 				typeName:typeName,
-				publicationDateId:publicationDateId,	
+				publicationDateId:publicationDateId,
+				queryType:"sub",
 				task:"getCastInfoForsubLevels"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
