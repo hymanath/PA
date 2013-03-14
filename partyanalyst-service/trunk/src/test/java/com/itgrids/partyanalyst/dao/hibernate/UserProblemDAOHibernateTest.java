@@ -396,7 +396,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testgetProblemDetailsByLocationValuesList()
+	/*public void testgetProblemDetailsByLocationValuesList()
 	{
 		List<Long> locationValuesList = new ArrayList<Long>(0);
 		locationValuesList.add(83l);
@@ -405,5 +405,12 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		
 		 System.out.println(list.size());
 		
+	}*/
+	
+	
+	public void testGetLatestProblemsOfCurrentDateByFreeUser()
+	{
+		List<Object> list = userProblemDAO.getLatestProblemsOfCurrentDateByFreeUser(new Date(), new Date(), "true", "new");
+		System.out.println(list.size());
 	}
 }

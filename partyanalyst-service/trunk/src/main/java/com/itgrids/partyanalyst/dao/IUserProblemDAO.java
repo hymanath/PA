@@ -39,7 +39,7 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Long> getUserProblemIdByUserIdAndProblemId(Long userId, Long problemId);
 	
 	
-	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved);
+	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved, String problemStatus);
 
 	public List<Object[]> getProblemPostedUserDetails();
 	
@@ -186,5 +186,7 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 public Long getCountOfNewlyPostedProblemsByPublicUser(Date currentDate);
 	 
 	 public List getProblemDetailsByLocationValuesList(List<Long> locationValuesList, String problemScope, String visibilityType);
+	 
+	 public List<Object> getLatestProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved, String problemStatus);
 	 
 }

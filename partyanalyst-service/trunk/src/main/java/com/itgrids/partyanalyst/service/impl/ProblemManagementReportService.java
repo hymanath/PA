@@ -1824,6 +1824,7 @@ public class ProblemManagementReportService implements
 			List<Object> list = null;
 			NavigationVO navigationVO = null;	
 			String isApproved = null;
+			String problemStatus = null;
 			try{
 				Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN);
 				Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN);
@@ -1831,14 +1832,19 @@ public class ProblemManagementReportService implements
 				
 				//SimpleDateFormat yearFormatSdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 				if(choice.equalsIgnoreCase(IConstants.NEW))
+				{
+					problemStatus = "NEW";
 					isApproved = IConstants.TRUE;
+				}
 				else if(choice.equalsIgnoreCase(IConstants.APPROVED))
 					isApproved = IConstants.TRUE;
 				else if(choice.equalsIgnoreCase(IConstants.REJECTED))
 					isApproved = IConstants.REJECTED;
-				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(firstDate,secondDate,isApproved);
+				list = userProblemDAO.getLatestProblemsOfCurrentDateByFreeUser(firstDate, secondDate, isApproved, problemStatus);
+				//list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(firstDate,secondDate,isApproved);
+				
 				//navigationVO = generateVoContainingAllApprovalProblems(list);
-				navigationVO = 	displayPostedProblemOnAdmin(list);	
+				navigationVO = 	displayPostedProblemOnAdmin(list,choice);	
 				return navigationVO;
 			}catch(Exception e){				
 				return navigationVO;
@@ -1862,15 +1868,15 @@ public class ProblemManagementReportService implements
 			Date todayDate = dateUtilService.getCurrentDateAndTime();
 			try{
 				//list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(todayDate,status,type);
-				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(todayDate,null,"false");
+				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(todayDate,null,"false", null);
 				//navigationVO = generateVoContainingAllApprovalProblems(list);
-				navigationVO = 	displayPostedProblemOnAdmin(list);			
+				navigationVO = 	displayPostedProblemOnAdmin(list,IConstants.APPROVED);			
 				return navigationVO;
 			}catch(Exception e){
 				return navigationVO;
 			}	
 		}
-		public NavigationVO displayPostedProblemOnAdmin(List<Object> list){
+		public NavigationVO displayPostedProblemOnAdmin(List<Object> list, String choice){
 			List<ProblemBeanVO> problemBeanVO = null;
 			NavigationVO carryingObject = null;
 			ResultStatus resultStatus = new ResultStatus();
@@ -1887,12 +1893,16 @@ public class ProblemManagementReportService implements
 						resultStorage.setProblemHistoryId((Long)parms[0]);
 						problemDesc = parms[1].toString(); 						
 						resultStorage.setDescription(problemDesc.length()>35 ? problemDesc.substring(0,35).concat("..."):problemDesc);
-						if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.FALSE))
+					/*  if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.FALSE))
 						    resultStorage.setIsApproved(IConstants.NEW);
 						if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.TRUE))
 						    resultStorage.setIsApproved(IConstants.APPROVED);
 						if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.REJECTED))
-							resultStorage.setIsApproved(IConstants.REJECTED);
+							resultStorage.setIsApproved(IConstants.REJECTED);*/
+						
+						
+						resultStorage.setIsApproved(choice != null ?choice.toString():" ");
+						
 						
 						resultStorage.setPostedDate(parms[3].toString());
 						resultStorage.setName(parms[4].toString()+" "+parms[5].toString());
@@ -1930,19 +1940,23 @@ public class ProblemManagementReportService implements
 			List<Object> list = null;
 			NavigationVO navigationVO = null;	
 			String isApproved = null;
+			String problemStatus = null;
 			try{
 				
 				//list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,getUserSelectedChoice(type));
 				
 				if(choice.equalsIgnoreCase(IConstants.NEW))
+				{
 					isApproved = IConstants.TRUE;
+					problemStatus = "NEW";
+				}
 				else if(choice.equalsIgnoreCase(IConstants.APPROVED))
 					isApproved = IConstants.TRUE;
 				else if(choice.equalsIgnoreCase(IConstants.REJECTED))
 					isApproved = IConstants.REJECTED;
-				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(date,null,isApproved);
+				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(date,null,isApproved, problemStatus);
 				//navigationVO = generateVoContainingAllApprovalProblems(list);
-				navigationVO = 	displayPostedProblemOnAdmin(list);
+				navigationVO = 	displayPostedProblemOnAdmin(list, choice);
 				
 				return navigationVO;
 			}catch(Exception e){
