@@ -6,7 +6,6 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
-import com.itgrids.partyanalyst.model.VoterAgeInfo;
 
 public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 	

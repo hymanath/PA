@@ -32,7 +32,7 @@ public interface IVotersAnalysisService {
 	
 	public VotersInfoForMandalVO getVotersCount(Long userId , String type,Long id,Long publicationDateId,Long constituencyId,String requestFor);
 	
-	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType);
+	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType,String queryType);
 	
 	public List<VotersDetailsVO> getVotersDetailsByAgewise(Long constituencyId, Long tehsilId,Long panchayatId,Long boothId,
 			 Long publicationDateId , String type);
@@ -73,7 +73,7 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> getConstituenciesList();
 	
-	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
+	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType);
 	
 	public List<SelectOptionVO> getcastCategoryGroups();
 	
@@ -151,7 +151,7 @@ public interface IVotersAnalysisService {
 	
 	public VoterCastInfoVO getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
-	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
+	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType);
 	
 	public ResultStatus moveVotersModificationDataFromTempToMainTable(Long constituencyId,Long publicationDateId);
 	
@@ -209,8 +209,8 @@ public interface IVotersAnalysisService {
 			Long publicationId,Integer startIndex , Integer maxRecords);
 	
 	public ImportantFamiliesInfoVo getImportantFamaliesDetailsForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
-	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId);
-	public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId);
+	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId,Long userId);
+	public ResultStatus deleteVotersPartyDataFromIntermediateTables(Long constituencyId,Long publicationDateId,Long userId);
 	public ResultStatus deleteVoterInfoFromIntermediateTablesByConstituencyId(Long constituencyId,Long publicationDateId);
 	public List<VoterCastInfoVO> getCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	//public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId);

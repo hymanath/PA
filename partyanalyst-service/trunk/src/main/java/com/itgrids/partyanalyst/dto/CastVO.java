@@ -31,7 +31,7 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private List<CastVO> partiesList;
 	
-	private Map<String,CastVO> partiesMap;
+	private Map<Long,CastVO> partiesMap;
 	
 	private Long partyNotAssigCount = 0l;
 	
@@ -147,11 +147,11 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 		this.partiesList = partiesList;
 	}
 
-	public Map<String, CastVO> getPartiesMap() {
+	public Map<Long, CastVO> getPartiesMap() {
 		return partiesMap;
 	}
 
-	public void setPartiesMap(Map<String, CastVO> partiesMap) {
+	public void setPartiesMap(Map<Long, CastVO> partiesMap) {
 		this.partiesMap = partiesMap;
 	}
 
