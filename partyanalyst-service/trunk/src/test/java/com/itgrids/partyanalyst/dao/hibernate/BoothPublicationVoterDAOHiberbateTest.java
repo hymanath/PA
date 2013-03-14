@@ -457,16 +457,22 @@ public void testgetInfluencePeopleMobileDetails(){
 }*/
 
 
-/*public void testGetBoothPublicationVoterIdsByVoterIdsList()
+public void testGetBoothPublicationVoterIdsByVoterIdsList()
 {
 	List<Long> voterIdsList = new ArrayList<Long>(0);
-	voterIdsList.add(1l);
-	voterIdsList.add(2l);
-	List<Long> list = boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(voterIdsList,8l);
+	voterIdsList.add(22326l);
+	voterIdsList.add(22327l);
+	voterIdsList.add(22328l);
+	voterIdsList.add(22329l);
+	voterIdsList.add(22330l);
+	List<Long> list = boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList("1",voterIdsList,8l);
 	
 	System.out.println(list.size());
 	
-}*/
+	for(Long bpvIds : list)
+		System.out.println(bpvIds);
+	
+}
 
 /*public void testDeleteByIdsList()
 {
@@ -476,7 +482,7 @@ public void testgetInfluencePeopleMobileDetails(){
 	
 }*/
 
-public void tests(){
+/*public void tests(){
 	List<Object[]> objlist=boothPublicationVoterDAO.getAssignedAndUnassignedVtrsOfLclBdy(42l,1l);
 	if(objlist != null && objlist.size() > 0)
 	   {
@@ -484,6 +490,6 @@ public void tests(){
 			   System.out.println(params[0].toString()+" "+params[1].toString());
 	   }
 	
-}
+}*/
 	
 }
