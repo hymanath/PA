@@ -66,4 +66,19 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
     public void saveAllObjects(List<VoterCastInfo> voterCastInfos){
     	getHibernateTemplate().saveOrUpdateAll(voterCastInfos);
     }
+    
+     public Long  getVotersCastCount(Long levelId,Long levelValue,Long constituencyId,Long publicationId,Long userId){
+		
+		Query query = getSession().createQuery("select sum(model.casteVoters) from VoterCastInfo model where model.voterReportLevel.voterReportLevelId = :levelId and " +
+				"model.reportLevelValue = :levelValue and model.constituency.constituencyId = :constituencyId and model.publicationDateId = :publicationId " +
+				" and model.userId = :userId ");
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		
+		return (Long)query.uniqueResult();
+	}
 }

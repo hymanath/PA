@@ -1625,7 +1625,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 
-	public VoterCastInfoVO calculatePercentageForUserCast(List params,Long totalcount)
+	public VoterCastInfoVO calculatePercentageForUserCast(List params,Long totalcount,Long totalSubCount)
 	{
 	VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 	SortedMap<String,CastVO> castsMap = new TreeMap<String,CastVO>();
@@ -1699,9 +1699,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	// Calculate Percentage
 	for(int i=0;i<castVOs.size();i++)
 	{
-		String castPercentage = "0";
+		String castPercentage = "0.00";
 		if(totalcount > 0)
-		   castPercentage = new BigDecimal((castVOs.get(i).getCastCount()*100.0)/totalcount).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+		   castPercentage = new BigDecimal((castVOs.get(i).getCastCount()*(100.0))/totalcount.doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
 		castVOs.get(i).setCastPercentage(castPercentage);
 		
 		
@@ -1710,7 +1710,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	TotalCasts = removeCastNoneElements(castVOs1);
 	voterCastInfoVO.setTotalCasts(TotalCasts);
-	voterCastInfoVO.setTotalVoters(totalcount);
+	voterCastInfoVO.setTotalVoters(totalSubCount);
 	voterCastInfoVO.setTotalCastKnownVoters(totalVoters);
 	
 	
@@ -1844,7 +1844,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					   mandalCasts = voterReportService.getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId,userId,constituencyId);
 					}
 				if("main".equalsIgnoreCase(queryType)){
-					   mandalCasts = getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId,userId,constituencyId);
+					Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, type, id, publicationDateId, constituencyId);
+					   mandalCasts = getVotersCastInfoForMultipleMandal(mandalsList,publicationDateId,userId,constituencyId,castCount);
 					}
 			}
 			
@@ -1857,7 +1858,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(panchayatList,publicationDateId,userId,constituencyId,getReportLevelId("Panchayat"));
 					}
 				   if("main".equalsIgnoreCase(queryType)){
-				       mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId,userId);
+					   Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, type, id, publicationDateId, constituencyId);
+				       mandalCasts = getVotersCastInfoForMultiplePanchayats(panchayatList,publicationDateId,userId,castCount,constituencyId);
 					}    
 				}else{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
@@ -1874,14 +1876,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(wards,publicationDateId,userId,constituencyId,getReportLevelId("Ward"));
 					}
 					if("main".equalsIgnoreCase(queryType)){
-					   mandalCasts = getVotersCastInfoForMultipleWards(wardsList,publicationDateId,userId);
+						Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, "localElectionBody", id, publicationDateId, constituencyId);
+					   mandalCasts = getVotersCastInfoForMultipleWards(wardsList,publicationDateId,userId,castCount,constituencyId);
 					}
 				}				
 			}
 			if(type.equalsIgnoreCase("panchayat"))
 			{
 			
-				
+				Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, type, id, publicationDateId, constituencyId);
 				if(buildType.equalsIgnoreCase("booth")){
 			
 				List<SelectOptionVO> booths = getBoothsByPanchayatId(id,publicationDateId);
@@ -1889,19 +1892,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(booths,publicationDateId,userId,constituencyId,getReportLevelId(IConstants.BOOTH));
 					}
 				   if("main".equalsIgnoreCase(queryType) || mandalCasts.size() == 0){*/
-					   mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
+					   mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId,castCount, constituencyId);
 					//}
 				
 				}else if (buildType.equalsIgnoreCase("hamlet")){
 					
 					List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
-					mandalCasts = getVotersCastInfoForMultipleHamlets(hamlets,publicationDateId,userId);
+					mandalCasts = getVotersCastInfoForMultipleHamlets(hamlets,publicationDateId,userId,castCount);
 				}
 				
 				
 			}
 			if(type.equalsIgnoreCase("ward"))
 			{
+				Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, type, id, publicationDateId, constituencyId);
 				List<Object[]> boothsList = boothDAO.getBoothsForWard(id,publicationDateId);
 				List<SelectOptionVO> booths = new ArrayList<SelectOptionVO>();
 				SelectOptionVO option = null;
@@ -1915,11 +1919,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(booths,publicationDateId,userId,constituencyId,getReportLevelId(IConstants.BOOTH));
 					}
 				if("main".equalsIgnoreCase(queryType) || mandalCasts.size() == 0){*/
-					   mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId);
+					   mandalCasts = getVotersCastInfoForMultipleBooths(booths,publicationDateId,userId,castCount,constituencyId);
 					//}
 			}
 			if(type.equalsIgnoreCase("hamlet"))
 			{
+				Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, type, id, publicationDateId, constituencyId);
 				//List<Object[]> boothsList = boothDAO.getBoothsForWard(id,publicationDateId);
 				List<Object[]> localitiesList = localityDAO.getAllLocalitiesForHamlet(userId, id);
 				List<SelectOptionVO> localities = new ArrayList<SelectOptionVO>();
@@ -1930,7 +1935,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					option.setName(booth[1]!=null?booth[1].toString():"");
 					localities.add(option);
 				}
-				mandalCasts = getVotersCastInfoForMultipleLocalities(localities,publicationDateId,userId,id);
+				mandalCasts = getVotersCastInfoForMultipleLocalities(localities,publicationDateId,userId,id,castCount);
 				
 			}
 			return mandalCasts;
@@ -1953,7 +1958,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 	//getting All Mandals For Constituency
 		
-	public List<VoterCastInfoVO> getVotersCastInfoForMultipleMandal(List<SelectOptionVO> mandalList,Long publicationDateId,Long userId,Long constituencyId)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleMandal(List<SelectOptionVO> mandalList,Long publicationDateId,Long userId,Long constituencyId,Long totalVoters)
 	{
 		VoterCastInfoVO voterCastInfoVO = null;
 		List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
@@ -1968,10 +1973,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				// For Mandal
 				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
 					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"mandal",new Long(id),publicationDateId,constituencyId);
-					Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("mandal"),new Long(id),publicationDateId,constituencyId);
-					if(totalVoters == null)
-						totalVoters = getVotersCountByPublicationIdInALocation("mandal",new Long(id),publicationDateId);
-					voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForUserCast(mandalCastDetails,totalVoters));
+					Long totalSubVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("mandal"),new Long(id),publicationDateId,constituencyId);
+					if(totalSubVoters == null)
+						totalSubVoters = getVotersCountByPublicationIdInALocation("mandal",new Long(id),publicationDateId);
+					voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForUserCast(mandalCastDetails,totalVoters,totalSubVoters));
 					//voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByMandalAndPublicationDate(new Long(id),publicationDateId)));
 				}
 				//Muncipality
@@ -1979,10 +1984,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id));
 					
 					List<Object[]> mandalCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"localElectionBody",(Long)list.get(0),publicationDateId,constituencyId);
-					Long totalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("localElectionBody"),new Long(id),publicationDateId,constituencyId);
-					if(totalVoters == null)
-						totalVoters = getVotersCountByPublicationIdInALocation("localElectionBody",new Long(id),publicationDateId);
-				voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForUserCast(mandalCastDetails,totalVoters));
+					Long totalSubVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("localElectionBody"),new Long(id),publicationDateId,constituencyId);
+					if(totalSubVoters == null)
+						totalSubVoters = getVotersCountByPublicationIdInALocation("localElectionBody",new Long(id),publicationDateId);
+				voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForUserCast(mandalCastDetails,totalVoters,totalSubVoters));
 				//voterCastInfoVO.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.getVotersCastInfoFromLocalElectionBody(new Long(id),publicationDateId))); 
 				}
 				mandalCasts.add(voterCastInfoVO);
@@ -1996,7 +2001,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 //getting All Panchayaties For Mandal
 	
-	public List<VoterCastInfoVO> getVotersCastInfoForMultiplePanchayats(List<SelectOptionVO> panchayatList,Long publicationDateId,Long userId)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultiplePanchayats(List<SelectOptionVO> panchayatList,Long publicationDateId,Long userId,Long totalVoters,Long constituencyId)
 	{
 		VoterCastInfoVO voterCastInfo = null;
 		List<VoterCastInfoVO> panchayatsList = new ArrayList<VoterCastInfoVO>();
@@ -2010,8 +2015,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfo.setMandalName(panchayatName);
 				voterCastInfo.setLocationId(panchayatId);
 				List<Object[]> panchayatCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"panchayat",panchayatId,publicationDateId,null);
-				Long totalVoters = getVotersCountByPublicationIdInALocation("panchayat",panchayatId,publicationDateId);
-				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(panchayatCastDetails,totalVoters));
+				Long totalSubVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("Panchayat"),panchayatId,publicationDateId,constituencyId);
+				 if(totalSubVoters == null)
+				  totalSubVoters = getVotersCountByPublicationIdInALocation("panchayat",panchayatId,publicationDateId);
+				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(panchayatCastDetails,totalVoters,totalSubVoters));
 				
 				//voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(new Long(panchayatId),publicationDateId)));
 				panchayatsList.add(voterCastInfo);
@@ -2019,7 +2026,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		return panchayatsList;
 	}
-	public List<VoterCastInfoVO> getVotersCastInfoForMultipleWards(List<Object[]> wardList,Long publicationDateId,Long userId)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleWards(List<Object[]> wardList,Long publicationDateId,Long userId,Long totalVoters,Long constituencyId)
 	{
 		VoterCastInfoVO voterCastInfo = null;
 		List<VoterCastInfoVO> wardsList = new ArrayList<VoterCastInfoVO>();
@@ -2031,8 +2038,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfo.setMandalName(ward[1] != null?ward[1].toString():"");
 				voterCastInfo.setLocationId((Long)ward[0]);
 				List<Object[]> wardCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"ward",(Long)ward[0],publicationDateId,null);
-				Long totalVoters = getVotersCountByPublicationIdInALocation("ward",(Long)ward[0],publicationDateId);
-				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(wardCastDetails,totalVoters));
+				Long totalSubVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("Ward"),(Long)ward[0],publicationDateId,constituencyId);
+				if(totalSubVoters != null)
+				totalSubVoters = getVotersCountByPublicationIdInALocation("ward",(Long)ward[0],publicationDateId);
+				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(wardCastDetails,totalVoters,totalSubVoters));
 				
 				//voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByPanchayatAndPublicationDate(new Long(panchayatId),publicationDateId)));
 				wardsList.add(voterCastInfo);
@@ -2042,7 +2051,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
-	public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId,Long totalVoters)
 	{
 		VoterCastInfoVO voterCastInfo = null;
 		
@@ -2062,12 +2071,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 							userId, "hamlet", hamletId, publicationDateId,
 							null);
 			
-			Long totalVoters = boothPublicationVoterDAO
+			Long totalSubVoters = boothPublicationVoterDAO
 					.getTotalVotersCountForHamlet(userId, hamletId,
 							publicationDateId, "hamlet");
 			voterCastInfo
 					.setVoterCastInfoVO(calculatePercentageForUserCast(
-							hamletCastDetails, totalVoters));
+							hamletCastDetails, totalVoters,totalSubVoters));
 
 			
 			voterCastInfo.setMandalName(hamletDAO.get(hamletId).getHamletName());
@@ -2080,7 +2089,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	//getting SubLevel Data For Booths
-		public List<VoterCastInfoVO> getVotersCastInfoForMultipleLocalities(List<SelectOptionVO> localitiesList,Long publicationDateId,Long userId,Long hamletId)
+		public List<VoterCastInfoVO> getVotersCastInfoForMultipleLocalities(List<SelectOptionVO> localitiesList,Long publicationDateId,Long userId,Long hamletId,Long totalVoters)
 		{
 			VoterCastInfoVO voterCastInfo = null;
 			
@@ -2096,12 +2105,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 							.getCastAndGenderWiseVotersCountByPublicationIdForLocality(
 									userId, localityId, hamletId, publicationDateId);
 					
-					Long totalVoters = boothPublicationVoterDAO
+					Long totalSubVoters = boothPublicationVoterDAO
 							.getTotalVotersCountForHamlet(userId, hamletId,
 									publicationDateId, "hamlet");
 					voterCastInfo
 					.setVoterCastInfoVO(calculatePercentageForUserCast(
-							hamletCastDetails, totalVoters));
+							hamletCastDetails, totalVoters,totalSubVoters));
 
 			
 			voterCastInfo.setMandalName(locality.getName());
@@ -2115,7 +2124,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 }
 
 //getting SubLevel Data For Booths
-	public List<VoterCastInfoVO> getVotersCastInfoForMultipleBooths(List<SelectOptionVO> boothsList,Long publicationDateId,Long userId)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleBooths(List<SelectOptionVO> boothsList,Long publicationDateId,Long userId,Long totalVoters,Long constituencyId)
 	{
 		VoterCastInfoVO voterCastInfo = null;
 		
@@ -2128,8 +2137,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				Long boothId=booths.getId();
 				//String boothPartNo = booths.getId().toString();
 				List<Object[]> boothCastDetails = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,"booth",boothId,publicationDateId,null);
-				Long totalVoters = getVotersCountByPublicationIdInALocation("booth",boothId,publicationDateId);
-				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(boothCastDetails,totalVoters));
+				Long totalSubVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId("booth"),boothId,publicationDateId,constituencyId);
+				if(totalSubVoters == null)
+				totalSubVoters = getVotersCountByPublicationIdInALocation("booth",boothId,publicationDateId);
+				voterCastInfo.setVoterCastInfoVO(calculatePercentageForUserCast(boothCastDetails,totalVoters,totalSubVoters));
 				
 				//voterCastInfo.setVoterCastInfoVO(calculatePercentageForCast(boothPublicationVoterDAO.findVotersCastInfoByBoothIdAndPublicationDate(new Long(boothId),publicationDateId)));
 				voterCastInfo.setMandalName(booths.getName());
