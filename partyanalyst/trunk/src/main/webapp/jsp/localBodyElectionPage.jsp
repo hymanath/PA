@@ -180,7 +180,7 @@ input[type="radio"], input[type="checkbox"] {margin: 0px 4px 0;}
 						<div class="productFeatureHeader">
 							<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
-									<td width="30px"><img src="images/icons/districtPage/header_left.gif" /></td>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif" style="max-width:none;"/></td>
 									<td ><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion}&nbsp; ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
 									<td width="115px"><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
