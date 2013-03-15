@@ -147,7 +147,7 @@ function callAjaxForEmail(jsObj,url)
 						try
 						{
 							myResults = YAHOO.lang.JSON.parse(o.responseText);
-							if(jsObj.task == 'getStateNames')
+							if(jsObj.task == 'getStatesAjaxAction')
 							{
 								iterateStateNames(myResults);
 							}	
@@ -190,12 +190,19 @@ function callAjaxForEmail(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 function  getDetailsForStates(){
-	var jsObj=
+	/* var jsObj=
 		{		
 				task:"getStateNames"
 		}	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "sendUpdatesByemailsAction.action?"+rparam;						
+		var url = "sendUpdatesByemailsAction.action?"+rparam;	 */	
+var jsObj=
+		{		
+				electionType :'Assembly',		
+				task:"getStatesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getStatesAjaxAction.action?"+rparam;		
 		callAjaxForEmail(jsObj,url);			
 }
 function  getDetailsForallDistricts(stateId){
