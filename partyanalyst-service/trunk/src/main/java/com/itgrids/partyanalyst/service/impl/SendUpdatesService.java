@@ -363,6 +363,7 @@ public class SendUpdatesService implements ISendUpdatesService{
 				}
 				smsResultVO = cadreManagementService.sendSMSToSelectedCadre(userId, "NO", true,content, smsvo);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				resultStatus.setResultState(smsResultVO.getTotalSmsSent());
 				return resultStatus;
 		
 	}catch (Exception e) {
