@@ -213,7 +213,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 					designationsList.add(0,new SelectOptionVO(0l,"Select Booth"));
 				}
 				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){//if mandal select
-					designationsList = votersAnalysisService.getBoothsByPanchayatId(new Long(locationId.toString().substring(1)),publicationDateId);
+					designationsList = votersAnalysisService.getBoothsByPanchayatId(locationId,publicationDateId);
 					if(designationsList.size()>0)
 					designationsList.add(0,new SelectOptionVO(0l,"Select Booth"));
 				}
