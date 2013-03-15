@@ -73,5 +73,8 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId);
 	
 	public List<Long> getVoterIdsByLocalityForUser(Long localisyId,Long hamletId,Long userId,Long casteStateId);
-	
+	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds);
+	public List<Object> getHamletsIdsForUserByPanchayat(Long panchayatId , Long userId );
+	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds);
+
 }
