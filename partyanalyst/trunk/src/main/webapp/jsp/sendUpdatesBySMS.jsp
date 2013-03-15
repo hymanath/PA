@@ -34,7 +34,7 @@ var locationDetails={
     border: 1px solid #CCCCCC;
     width: 250px;
 	}
-	select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,#fromDate,#toDate {
+	select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{
 		border-radius: 4px 4px 4px 4px;
 		color: #000000;
 		display: inline-block;
@@ -47,7 +47,7 @@ var locationDetails={
 		 border: 1px solid lightBlue;
 	}
 	.tdWidth1,#tdWidth{
-	width: 175px;
+	width: 180px;
 	}
 	#smstxt{
 	width: 500px;
@@ -61,6 +61,7 @@ var locationDetails={
 	font-size:large;
 	}	
 	#mainDiv{
+	font-family: serif verdana sans-serif;
 	border: 1px lightBlue solid ;
 	width: 920px; 
 	height: 600px;
@@ -68,10 +69,11 @@ var locationDetails={
 	margin-bottom: 15px;
 	background-color:white;
 	font-weight:bold;
+	font-size:15px;
 	border-radius: 5px 5px 5px 5px;
 	}	
 	textarea {    
-	border: 1px solid lightblue!important	
+	border: 3px solid lightblue!important	
 	}
 	#sendButton{
 	width:100px;
@@ -81,22 +83,66 @@ var locationDetails={
 	color:#ffffff;
 	}
 	#tableRowS,#tableRowC,#tableRowM,#tableRowP,#tableRowB{
-	margin-left: -10px
+	margin-left: -10px;
 	}
 	#radioLabel{
 	font-weight:bold;
 	}
+	label{
+	display: inline !important;
+	}
+	#titleHeading{
+	font-family: verdana sans-serif serif;
+	margin-top: 30px;
+	width: 920px; 
+	margin-left: 73px;
+	color:white;
+	background:none repeat scroll 0 0 #06ABEA;
+	margin-top: 30px; 
+	margin-bottom: 5px;
+	font-weight:bold;
+	font-size:18px;
+	border-radius: 5px 5px 5px 5px;
+	}
+	#errorMsgDiv{
+	font-weight: bold;
+	color: red; 
+	float: left; 
+	font-size:15px;
+	width: 815px;
+	}
+	#successMsgDiv{
+	font-family: sans-serif verdana serif;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-left: -68px;	
+	color: green; 
+	float: left; 
+	width: 820px;
+	font-size:15px;
+	}
+	
+	#imageForMail{
+	display:none;
+	width: 820px;
+	font-weight:bold;
+	color: #0174DF;
+	font-size:small;
+	margin-top: 15px; 
+	margin-bottom: -20px;
+	font-size: 15px; 
+	}
 	</style>
 </head>
 <body>
+<div id="titleHeading" align="center">SEND UPDATES TO THE PEOPLE BY SMS </div>
 <div id="mainDiv" align="center" >
-<h4 align="center" style="height: 30px;margin-top: 10px;"> SEND UPDATES TO THE PEOPLE BY SMS </h4>
-<div id="imageForMail"  class = "span3"  style="display:none;width: 820px;font-weight:bold;color: #0174DF;font-size:small;">
-	<font  style="font-size:small;">Sending SMS, please wait...</font>
+<div id="imageForMail"  class = "span3"  >
+	<font style="margin-left: -190px;">Sending SMS, please wait...</font>
 	<img src="/images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
 </div>
-<div id="successMsgDiv" style="font-weight: normal; color: rgb(1, 116, 223); float: left; width: 820px;">&nbsp;</div>
-<div id="errorMsgDiv" style="font-weight: bold; color: red; float: left; width: 815px;">&nbsp;</div>
+<div id="successMsgDiv">&nbsp;</div>
+<div id="errorMsgDiv" >&nbsp;</div>
 <br>
 <table>
 	<tr id="tableRowS">
@@ -107,7 +153,7 @@ var locationDetails={
 			<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)">
 			<option value="0"> Select Scope </option>
 			<option value="Constituency"> Constituency </option>
-			<option value="Mandal"> Mandal / Muncipality / Corp</option>
+			<option value="Mandal"> Mandal / Muncipality / Corp / GHMC </option>
 			<option value="Panchayat"> Panchayath / Ward </option>
 			<option value="Booth"> Booth </option>
 			</select>
@@ -121,12 +167,12 @@ var locationDetails={
 
 <br>
 <fieldset>
-<div id="rButtonsDiv" align="center" style="font-weight: bold;"> 
-	<input type="radio" name="voterType" value="cadre" id="cadreIds"  checked = "true"/> 
-	<label for="cadreIds" id="radioLabel">Cadre People</label>
-	<input type="radio" name="voterType" value="influence" id="influenceId"/> 
-	<label for="influenceId" id="radioLabel">Influence People</label>	
-	<input type="radio" name="voterType" value="voter" id="votersId"/> 
+<div id="rButtonsDiv" align="center" style="font-weight: bold;height:30px;"> 
+	<input type="radio" name="voterType" value="cadre" id="cadreIds"  checked = "true" style="margin-top: 0px;margin-left: -10px;"/> 
+	<label for="cadreIds" id="radioLabel">Cadre </label>
+	<input type="radio" name="voterType" value="influence" id="influenceId" style="margin-top: 0px;margin-left: 15px;"/> 
+	<label for="influenceId" id="radioLabel">Influencing People</label>	
+	<input type="radio" name="voterType" value="voter" id="votersId" style="margin-top: 0px;margin-left: 15px;"/> 
 	<label for="votersId" id="radioLabel">Voters</label>		
  </div>
 </fieldset>
@@ -136,10 +182,10 @@ var locationDetails={
  </div>
 </fieldset>
 <fieldset>
-<div id="limitDiv" align="center"> 
-	<span id="maxcount" style="margin-left: 65px;font-weight:bold">300 
+<div id="limitDiv" align="center" style="font-size: 16px;"> 
+	<span id="maxcount" style="font-weight:bold">300 
 	</span><span style="font-weight:normal">chars remaining... </span>
-	<span style="margin-left: 100px;font-weight:normal">Should not exceed 300 chars</span>
+	<span style="font-weight: normal; margin-left: 200px;">Should not exceed 300 chars</span>
  </div>
 </fieldset>
 <fieldset>
