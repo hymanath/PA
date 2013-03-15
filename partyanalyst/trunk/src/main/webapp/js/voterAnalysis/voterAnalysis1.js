@@ -853,7 +853,8 @@ function addToPolitician(voterId,name)
 		 //$("#impFamiliesMoreInfoButn").css('display','none');
 		 $("#InfluencingPeopleCountDiv").css('display','none');
 		  $("#votersCountVaryDiv").css('display','none');
-	
+	        $("#votersDiv1").show();
+		 $("#votersDiv1").css('display','block');
 		 $("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" Hamlet in "+publicationYear+" ");
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
@@ -1318,7 +1319,12 @@ function addToPolitician(voterId,name)
 									buildPublicationDateList(myResults);
 								}
 								else if(jsObj.task == "votersbasicinfo")
-								{
+								{    if(jsObj.type=="panchayat")
+								 {
+								 
+								   if(jsObj.buildType != buildType )
+								   return;
+								 }
 								    if(myResults != null)
 									  buildVotersBasicInfo(myResults,jsObj);
 									else{
@@ -1360,7 +1366,7 @@ function addToPolitician(voterId,name)
 								    impFamilesStaticTable(myResults,jsObj);
 									buildImpFamilesChart(myResults);
 								    if(myResults.subList != null && myResults.subList.length > 0)
-									  {
+							  		  {
 
 										buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 										impFamilesVariableDescription();
@@ -1371,7 +1377,7 @@ function addToPolitician(voterId,name)
 										  buildImpFamilesForHamletChart(myResults);
                                         buildTableForImpFamilesForHamlets(myResults.subListForHamlets,myResults.name,myResults.type,myResults);
 										//buildTableForImpFamilesByHamlet(myResults.subList,myResults.name,myResults.type);
-										//impFamilesVariableDescription();
+										impFamilesVariableDescription1();
 									  }
 								   }
 
@@ -1379,7 +1385,23 @@ function addToPolitician(voterId,name)
 								   
 								}
 								else if(jsObj.task == "gettotalimpfamlies"  )
-								{   $("#impFamPancBothDtlsAgxImg").hide();
+								{   
+								$("#impFamPancBothDtlsAgxImg").hide();
+								      if(myResults == null ){
+									  $("#impFamilesBasicSubDetailsForHamletTitle").html("");
+                                       $("#impFamilesBasicSubDetailsForHamlet").html("");
+								       //  $("#descriptionDiv").html("");
+									   
+									 //    $("#descriptionInnerDiv").hide();
+									      $("#descriptionDiv1 > .descriptionInnerDiv").css('display','none');
+									  	  $("#impFamilesBasicInfoForHamletSubChartDiv").html("");
+                                          $("#assigAndUnassig").html("");
+                                          $("#impFamilesBasicSubDetailsForHamletTitle").html("");
+										$("#impFamPancBothDtlsAgxImgForHamlet").html("");
+									  return;
+									  }
+									//  impFamilesVariableDescription();
+									  $(".descriptionInnerDiv").css('display','block');
 								    buildFamilyMembers(myResults,jsObj,jsObj.type);
 								}
                                 else if(jsObj.task == "getVotersInAFamily")
@@ -2707,10 +2729,16 @@ function impFamilesAllInfoForHamletPopUp(){
 	}*/
 
 function getImpFamiliesVotersToShow(){
+ //$(".descriptionInnerDiv").css('display','block');
+    // hideBoothDivs();
+	
+  $("#descriptionDiv").show();
 
 	$('#impFamPancBothDtlsAgxImg').show();
      if((buildType == "hamlet" && maintype == "panchayat")  || maintype == "hamlet"){
       impFamilesAllInfoForHamletPopUp();
+	  	 hideHamletDivs();
+
    }else{
 		
     $("#impFamilesAllInfoPopUp").dialog({
@@ -4834,34 +4862,34 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			}
 		}
 		
-        if(jsObj.type=="panchayat"){
-    		if(buildType=="hamlet"){
-    			var totalvoter=votersbasicinfo.assignedVotersByUser+votersbasicinfo.unassignedVotersByUser;
-    			strl ='';
+		if(jsObj.type=="panchayat"){
+		if(buildType=="hamlet"){
+			var totalvoter=votersbasicinfo.assignedVotersByUser+votersbasicinfo.unassignedVotersByUser;
+			strl ='';
     			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
     			strl += '<tbody><td style="text-align:center;">'+totalvoter+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersByUser+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersByUser+'</td></tbody>';
-    			
-    			strl += '</table>';
-    			$("#assAndUnass").html(strl);
-    			}
-    			else{
-    			$("#assAndUnass").html('');
-    			}
-    		}
-    				
-    		else if(jsObj.type=="hamlet"){
-    			var totalvoterlclbds=votersbasicinfo.assignedVotersForLocalBodies+votersbasicinfo.unassignedVotersForLocalBodies;
-    			strl ='';
-    			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
-    			strl += '<tbody><td style="text-align:center;">'+totalvoterlclbds+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersForLocalBodies+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersForLocalBodies+'</td></tbody>';
-    			
-    			strl += '</table>';
-    			$("#assAndUnass").html(strl);
-    			
-    		}
-    		else{
-    			$("#assAndUnass").html('');
-    		}
+			
+			strl += '</table>';
+			$("#assAndUnass").html(strl);
+			}
+			else{
+			$("#assAndUnass").html('');
+			}
+		}
+				
+		else if(jsObj.type=="hamlet"){
+			var totalvoterlclbds=votersbasicinfo.assignedVotersForLocalBodies+votersbasicinfo.unassignedVotersForLocalBodies;
+			strl ='';
+			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
+			strl += '<tbody><td style="text-align:center;">'+totalvoterlclbds+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersForLocalBodies+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersForLocalBodies+'</td></tbody>';
+			
+			strl += '</table>';
+			$("#assAndUnass").html(strl);
+			
+		}
+		else{
+			$("#assAndUnass").html('');
+		}
 		
 		
 		//$("#votersBasicInfoDiv").html(str);
@@ -5463,6 +5491,9 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		$('#votersShareBtn').live("click",function(){
 
 			$('#votersInfoAjaxImg').css("display","block");
+			 $("#assAndUnass").html('');
+			 $("#votersBasicInfoSubDiv").html('');
+			 $("#votersBasicInfoSubChartDiv").html('');
 			getvotersBasicInfo("voters",mainreqid,mainpublicationId,maintype);
 			
 		});
@@ -7341,6 +7372,38 @@ if(type!="hamlet")
 	  else
 	    if(type != "hamletLocalArea")
 		return;
+
+}
+function hideBoothDivs()
+{
+//$("#impFamilesBasicInfoSubChartDiv").html("");
+//$("#impFamilesBasicSubDetailsTitle").html("");
+//$("#descriptionDiv").html("");
+$("#impFamPancBothDtls").html("");
+ 
+}
+function hideHamletDivs()
+{
+//$("#impFamilesBasicInfoForHamletSubChartDiv").html("");
+//$("#assigAndUnassig").html("");
+//$("#impFamilesBasicSubDetailsForHamletTitle").html("");
+//$("#impFamilesBasicSubDetailsForHamlet").html("");
+//$("#descriptionDiv").html("");
+//$("#impFamPancBothDtlsAgxImgForHamlet").html("");
+}
+function impFamilesVariableDescription1()
+{ 
+ $('#descriptionDiv1').html('');
+  var div = $('<div class="descriptionInnerDiv"></div>');
+  div.append('<span> <b>3 -</b> Families Below 3 Voters</span>');
+  div.append('<span> <b>3% -</b> Families Below 3% Voters</span>');
+  div.append('<span> <b>4 to 6 -</b> Families Between 4 to 6 Voters</span>');
+  div.append('<span> <b>4 to 6 % -</b> Families Between 4-6 % Voters</span>');
+  div.append('<span> <b>7 to 10 -</b> Families Between 7 to 10 Voters</span>');
+  div.append('<span> <b>7 to 10 % -</b> Families Between 7-10 % Voters</span>');
+  div.append('<span> <b>10 - </b> Families Above 10 Voters</span>');
+  div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
+  $("#descriptionDiv1").append(div).css("display","block");
 
 }
 
