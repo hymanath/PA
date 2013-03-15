@@ -100,7 +100,7 @@
 		<pattern>/constituencyPageAction*</pattern>
 		<pattern>/electionResultsUpdateAction*</pattern>
 		<pattern>/electionLiveResultsAnalysisAction*</pattern>
-		<pattern>/districtPageAction*</pattern>
+		<!-- <pattern>/districtPageAction*</pattern> -->
 		<pattern>/assignCandidateToElectionAction*</pattern>
 		<pattern>/assignKeyCandidateAction*</pattern>
 		<pattern>/cncSearchResultsAction*</pattern>
@@ -149,8 +149,8 @@
 		<pattern>/sendUpdatesByemailAction*</pattern>
 		<!-- <pattern>/missingVotersSearchAction*</pattern> -->
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
-    	<pattern>/sendUpdatesBySMSAction*</pattern>
-    </decorator>
+		<pattern>/sendUpdatesBySMSAction*</pattern>
+	 </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
     	<pattern>/homePage*</pattern>
@@ -192,6 +192,7 @@
     	<pattern>/localBodyElectionAction*</pattern>
     	<pattern>/voterEditDataAction*</pattern>
     	<pattern>/missingVotersSearchAction*</pattern>
+    	<pattern>/districtPageAction*</pattern>
     </decorator>
 
 </decorators>
