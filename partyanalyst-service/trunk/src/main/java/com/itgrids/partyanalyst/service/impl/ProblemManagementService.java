@@ -7153,6 +7153,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				result.setIsApproved(problemDetails.getProblem().getIsApproved());
 				result.setTotalResultsCount(getProblemsCount().toString());
 				result.setAverageRating(getAverageRatingOfAProblem(problemId));
+				if(problemDetails.getProblem().getInformationSource() != null)
+				result.setProblemSourceScope(problemDetails.getProblem().getInformationSource().getInformationSource().toString());
 				result.setUserImageURL(userDAO.getUserProfileImageNameByUserId(problemDetails.getUser().getUserId()));
 				
 				switch (result.getProblemImpactLevelId().intValue()) {

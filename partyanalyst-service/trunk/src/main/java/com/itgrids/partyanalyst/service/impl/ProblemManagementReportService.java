@@ -3647,5 +3647,81 @@ public Date getCurrentDateAndTime(){
 	    	}
 	    	return problemBeanVO;
 		}
-
+		
+		public List<ProblemBeanVO> getRecentProblemsForUser(Long userId,Long statusId)
+		{
+			List<ProblemBeanVO> problemsList = new ArrayList<ProblemBeanVO>();
+			ProblemBeanVO problemBeanVO = null;
+			int startIndex = 0;
+			int maxIndex = 3;
+			try{
+				List<UserProblem> newProblems = new ArrayList<UserProblem>();
+				newProblems = userProblemDAO.getLatestProblemsForUser(userId,statusId,startIndex,maxIndex);
+			if(newProblems != null && newProblems.size() > 0 )
+				for(UserProblem list : newProblems)
+				{
+						problemBeanVO = problemManagementService.getProblemCompleteInfo(list.getProblem().getProblemId());
+									 
+						int regionScope = problemBeanVO.getProblemImpactLevelId().intValue();
+						
+						if(regionScope == 4)
+							problemBeanVO.setUrl("constituencyPageAction.action?constituencyId="+problemBeanVO.getProblemImpactLevelValue()+"");
+						else if(regionScope == 3)
+							problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemImpactLevelValue()+"&districtName="+problemBeanVO.getProblemLocation()+"");
+			            else if(regionScope == 2)
+			             	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemImpactLevelValue()+"");
+						
+						problemsList.add(problemBeanVO);
+				}
+				
+				
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return problemsList;
+		}
+		
+		public List<ProblemBeanVO> getProblemsByStatusAndBetweenDates(Long userId,Long statusId,String fromDate, String toDate)
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
+			List<ProblemBeanVO> problemsList = new ArrayList<ProblemBeanVO>();
+			ProblemBeanVO problemBeanVO = null;
+			List<Long> problemIds = new ArrayList<Long>();
+			try{
+				
+				if(statusId.equals(0L))
+				problemIds = userProblemDAO.getProblemsByBetweenDates(userId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)),sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+				else
+				 problemIds = userProblemDAO.getProblemsByStatusAndBetweenDates(userId,statusId,sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)),sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+			
+			if(problemIds != null && problemIds.size() > 0)
+			{
+				for(Long problemId : problemIds)
+				{
+						problemBeanVO = problemManagementService.getProblemCompleteInfo(problemId);
+									 
+						int regionScope = problemBeanVO.getProblemImpactLevelId().intValue();
+						
+						if(regionScope == 4)
+							problemBeanVO.setUrl("constituencyPageAction.action?constituencyId="+problemBeanVO.getProblemImpactLevelValue()+"");
+						else if(regionScope == 3)
+							problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemImpactLevelValue()+"&districtName="+problemBeanVO.getProblemLocation()+"");
+			            else if(regionScope == 2)
+			             	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemImpactLevelValue()+"");
+						
+						problemsList.add(problemBeanVO);
+				}
+				
+				
+			}
+			
+		}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return problemsList;
+		}
 }
