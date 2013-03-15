@@ -1415,7 +1415,7 @@ for  body3 start    result  -->
 	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	<div style="float:right;">
-	   <div id="permanentlyUpdateButtonDiv" ><input type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Cast And Party Info" class="btn btn-info" /></div>
+	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Cast And Party Info" class="btn btn-info" /></div>
 	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Cast And Party Info" class="btn btn-info" /></div>
 	</div>
 	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
