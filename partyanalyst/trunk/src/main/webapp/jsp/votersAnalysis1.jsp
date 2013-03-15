@@ -65,6 +65,14 @@
 
 
 <style type="text/css">
+#emprtyData
+{
+
+color:red;
+
+}
+
+
 .mybtn
 {
 color:#FFFFFF !important;
@@ -1315,13 +1323,14 @@ for  body3 start    result  -->
 	   
 	   
 	   </div>
-
+             
        <div id="impFamilesAllInfoForHamletPopUp" style="display:none;">
         <div id ="impFamilesBasicInfoForHamletSubChartDiv" style="border:1px solid black"></div>
+			<div id ="emprtyData"></div>
 		<div id = "assigAndUnassig"></div>
 		<div id ="impFamilesBasicSubDetailsForHamletTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
 		<div id ="impFamilesBasicSubDetailsForHamlet" style="border:1px solid black"></div>
-		<div id="descriptionDiv" ></div>
+		<div id="descriptionDiv1" ></div>
 		<div id="impFamPancBothDtlsAgxImgForHamlet" style="display:none;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		<div id="impFamPancBothDtlsForHamlet"></div>
 	   </div>
