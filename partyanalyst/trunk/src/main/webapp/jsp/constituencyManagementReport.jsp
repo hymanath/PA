@@ -89,7 +89,7 @@
 	}
 	.problemsStatsTable
 	{
-		margin-left: 9px;
+		margin-left: 0px;
 	}
 
 	.betweenDates
@@ -345,7 +345,7 @@
 						problem:'${prob.problem}', 
 					  	description:'${prob.description}',
 						existingFrom:'${prob.existingFrom}',
-						hamlet:'${prob.hamlet}',
+						hamlet:'${prob.problemLocation}',
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
 						status:'${prob.status}',
