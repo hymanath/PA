@@ -678,7 +678,9 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		//String accessType = jObj.getString("accessType");
 		//Long accessValue = jObj.getLong("accessValue");
 		
-		problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(user.getRegistrationID(),fromDate, toDate, statusId, accessType, accessValue);
+		//problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(user.getRegistrationID(),fromDate, toDate, statusId, accessType, accessValue);
+		
+		problemBean = problemManagementReportService.getProblemsByStatusAndBetweenDates(user.getRegistrationID(),statusId,fromDate,toDate);
 		return SUCCESS;
 		
 	}
