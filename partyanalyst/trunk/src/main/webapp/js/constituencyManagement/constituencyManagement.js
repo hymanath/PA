@@ -403,8 +403,7 @@ function initializeResultsTable(divId, problemDetails, caption) {
 
 
 function buildProblemsDetailsDT(results) {
-	alert('jk');
-	alert(results[0].problemLocation);
+	
 	var problemsArr = new Array();
 		
 		for(var i in results){
