@@ -11756,10 +11756,18 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			//List<Object[]> booths = boothDAO.getBoothsInAPanchayat(panchayatId, publicationDateId);
 			                        
 		   // List<Object[]> hamlets =  userVoterDetailsDAO.getHamletsIdsForUser(hamletId, userId);
+			
+			 List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+			
 			List<?> voterIds=	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId);
-			 List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
-		    List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
-		    List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+			   if(voterIds == null || voterIds.size()==0)
+				   return new ArrayList<VotersDetailsVO>();
+			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
+			if(filter == null || filter.size()==0)
+				   return new ArrayList<VotersDetailsVO>();
+			
+			List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
+		   
 			
 			//Long [] hamlets =(Long[]) hamlets;
 			 if(hamlets ==null ||hamlets.size()==0 )
@@ -12196,11 +12204,19 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 		public void getVoterDetailsForLocalAreasInHamlet(Long hamletId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId, Long userId)
 		{  
-			
-					List<?> voterIds=	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId);
-			 List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
-			
 			List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>();
+			   
+			
+			
+			   List<?> voterIds=	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId);
+			   
+			   if(voterIds == null || voterIds.size()==0)
+				   return ;
+					
+					List<?> filter =   userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
+					if(filter == null || filter.size()==0)
+						   return ;
+			
 			List<Long> hamletIds = new ArrayList<Long>();
 			
 			
