@@ -37,6 +37,7 @@ public class VoterCastInfo extends BaseModel implements Serializable {
 	private Double castePercentage;
 	private Long publicationDateId;
 	private Constituency constituency;
+	private Double subLeveCastePercentage;
 	
 	/** Default Constructor */
 	
@@ -169,6 +170,15 @@ public class VoterCastInfo extends BaseModel implements Serializable {
 
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+
+	@Column(name = "sub_leve_caste_percentage")
+	public Double getSubLeveCastePercentage() {
+		return subLeveCastePercentage;
+	}
+
+	public void setSubLeveCastePercentage(Double subLeveCastePercentage) {
+		this.subLeveCastePercentage = subLeveCastePercentage;
 	}
 
 	

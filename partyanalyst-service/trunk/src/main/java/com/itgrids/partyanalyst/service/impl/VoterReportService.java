@@ -429,35 +429,46 @@ public class VoterReportService implements IVoterReportService{
 				
 				  ResultStatus resultStatus = new ResultStatus();
 				  try{
-					  List<Long> mandalIdsList = new ArrayList<Long>(0);
-					  List<Long> wardsList = new ArrayList<Long>(0);
-					  List<Long>panchayatIdsList = new ArrayList<Long>(0);
-					  List<Long> localBodiesList = new ArrayList<Long>(0);
+					  Map<Long,Long> mandalIdsList = new HashMap<Long,Long>(0);
+					  Map<Long,Long> wardsList = new HashMap<Long,Long>(0);
+					  Map<Long,Long> panchayatIdsList = new HashMap<Long,Long>(0);
+					  Map<Long,Long> localBodiesList = new HashMap<Long,Long>(0);
 					  Set<Long> boothIdsList = new HashSet<Long>(0);
-					  List<Long> constituencyIds = new ArrayList<Long>();
-					  constituencyIds.add(reportLevelValue);
+					  Map<Long,Long> constituencyIds = new HashMap<Long,Long>();
+					  constituencyIds.put(reportLevelValue,1l);
 					  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.CONSTITUENCY,constituencyIds,publicationDateId,reportLevelValue);
 					  //InsertVoterCasteBasicInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,publicationDateId,reportLevelValue,userId);
 					  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
 					  
 					  if(mandalsList == null || mandalsList.size() == 0)
 						  return null;
-					  
+					  Long totalVoters = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY), reportLevelValue, reportLevelValue, publicationDateId, userId);
 					  for(SelectOptionVO selectOptionVO : mandalsList)
 					  {
 						  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
-							  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
+							  mandalIdsList.put(new Long(selectOptionVO.getId().toString().substring(1)),totalVoters);
 						  else
-							  localBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+							  localBodiesList.put((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0),totalVoters);
 					  }
 					  List<Object[]> list = null;
 					  if(mandalIdsList != null && mandalIdsList.size() >0){ 
-						   list = panchayatDAO.getPanchayatIdsByMandalIdsList(mandalIdsList);
+						  List<Long> ids = new ArrayList<Long>();
+						  ids.addAll(mandalIdsList.keySet());
+						   list = panchayatDAO.getPanchayatIdsByMandalIdsList(ids);
 					  }
 					 if(list != null && list.size() > 0)
 					  {
-						 for(Object[] params : list)
-						   panchayatIdsList.add((Long)params[0]);
+						 Map<Long,Long> mandalTotalVotersMap = new HashMap<Long,Long>();
+						 for(Object[] params : list){
+							 Long total = mandalTotalVotersMap.get((Long)params[1]);
+						    if(total == null){
+						    	total = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId(IConstants.MANDAL), (Long)params[1], reportLevelValue, publicationDateId, userId);
+						    	if(total == null)
+						    		total = 0l;
+						    	mandalTotalVotersMap.put((Long)params[1],total);
+						    }
+						   panchayatIdsList.put((Long)params[0],total);
+						 }
 					  }
 					 
 					  if(mandalIdsList != null && mandalIdsList.size() >0)
@@ -469,7 +480,7 @@ public class VoterReportService implements IVoterReportService{
 					  
 					  if(panchayatIdsList != null && panchayatIdsList.size() > 0)
 					     saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.PANCHAYAT,panchayatIdsList,publicationDateId,reportLevelValue);
-					  List<Object[]> list2 = null;
+					 /* List<Object[]> list2 = null;
 					  if(panchayatIdsList.size() > 0)
 						  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
 					  
@@ -477,19 +488,28 @@ public class VoterReportService implements IVoterReportService{
 					  {
 						  for(Object[] params : list2)
 							  boothIdsList.add((Long)params[0]);
-					  }
+					  }*/
 					  
 					   // List<Long> wardsList = new ArrayList<Long>();
 					  if(localBodiesList != null && localBodiesList.size() >0){
-						  
+						  List<Long> ids = new ArrayList<Long>();
+						  ids.addAll(localBodiesList.keySet());
 						List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(
-								localBodiesList, publicationDateId,reportLevelValue);
+								ids, publicationDateId,reportLevelValue);
 						
 						if(wards != null && wards.size() >0){
-							
-							for(Object[] ward:wards)
+							Map<Long,Long> lclBdyTotalVotersMap = new HashMap<Long,Long>();
+							for(Object[] ward:wards)	
 							if(ward[0] != null){
-								wardsList.add((Long)ward[0]);
+								Long total = lclBdyTotalVotersMap.get((Long)ward[1]);
+							    if(total == null){
+							    	//total = voterInfoDAO.getVotersCountInALocation(votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY),(Long)ward[1],publicationDateId,reportLevelValue);
+							    	total = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY), (Long)ward[1], reportLevelValue, publicationDateId, userId);
+							    	if(total == null)
+							    		total = 0l;
+							    	lclBdyTotalVotersMap.put((Long)ward[1],total);
+							    }	
+								wardsList.put((Long)ward[0],total);
 							}		
 						}
 						  
@@ -497,13 +517,13 @@ public class VoterReportService implements IVoterReportService{
 					 if(localBodiesList.size() > 0)
 					  {
 						  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.LOCALELECTIONBODY,localBodiesList,publicationDateId,reportLevelValue);
-						  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
+						 /* List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
 						  
 						  if(list3 != null && list3.size() > 0)
 						  {
 							  for(Object[] params : list3)
 								  boothIdsList.add((Long)params[0]); 
-						  }
+						  }*/
 						  
 					  }
 		              if(wardsList != null && wardsList.size() > 0){
@@ -890,7 +910,7 @@ public class VoterReportService implements IVoterReportService{
 							castVO.setMalevoters(voterCastInfo.getCasteMaleVoters());
 							castVO.setFemalevoters(voterCastInfo.getCasteFemaleVoters());
 							castVO.setCasteCategoryName(voterCastInfo.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName());
-							castVO.setCastPercentage(voterCastInfo.getCastePercentage().toString());
+							castVO.setCastPercentage(voterCastInfo.getSubLeveCastePercentage().toString());
 							castVOs.add(castVO);
 						}
 						
@@ -1014,7 +1034,7 @@ public class VoterReportService implements IVoterReportService{
 						}
 					}
 					
-					public void saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(Long userId,String locationType,List<Long> locationIds,Long publicationDateId,Long constituencyId)
+					public void saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(Long userId,String locationType,Map<Long,Long> locationIds,Long publicationDateId,Long constituencyId)
 					{
 						List<VoterCastInfo> resultList = new ArrayList<VoterCastInfo>();
 						Map<Long,VoterCastBasicInfo> casteBasicInfoMap = new HashMap<Long,VoterCastBasicInfo>();
@@ -1022,14 +1042,16 @@ public class VoterReportService implements IVoterReportService{
 						Constituency constituency = constituencyDAO.get(constituencyId);
 						Map<Long,Map<Long,VoterCastInfo>> locationsMap = new HashMap<Long,Map<Long,VoterCastInfo>>();
 						try{
-							List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(userId,locationType,locationIds,publicationDateId,constituencyId);
+							List<Long> ids = new ArrayList<Long>();
+							ids.addAll(locationIds.keySet());
+							List<Object[]> list = boothPublicationVoterDAO.getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(userId,locationType,ids,publicationDateId,constituencyId);
 							String location = locationType;
 							if("localElectionBody".equalsIgnoreCase(location)){
 								location = "Local Election Body";
 							}
 							VoterReportLevel voterReportLevel = voterReportLevelDAO.getReportLevelByType(location);
 							
-							for(Long id:locationIds){
+							for(Long id:ids){
 								Long totalVoters = voterInfoDAO.getVotersCountInALocation(voterReportLevel.getVoterReportLevelId(),id,publicationDateId,constituencyId);
 								if(totalVoters == null)
 									totalVoters = 0l;
@@ -1119,6 +1141,7 @@ public class VoterReportService implements IVoterReportService{
 										casteMap = locationsMap.get(locationKey);
 										
 										Long locationCount = locationTotalCount.get(locationKey);
+										Long parentCount =  locationIds.get(locationKey);
 										if(casteMap.size() > 0){
 											voterCastBasicInfo = casteBasicInfoMap.get(locationKey);
 											voterCastBasicInfo.setTotalCastes(new Long(casteMap.size()));
@@ -1136,11 +1159,19 @@ public class VoterReportService implements IVoterReportService{
 												if(voterCastInfo.getCasteVoters() == null)
 													voterCastInfo.setCasteVoters(0l);
 												String percentage = "0.00";
+												String subLvlpercentage = "0.00";
 												try{
-													percentage = (new BigDecimal(voterCastInfo.getCasteVoters()*(100.0)/locationCount.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+												   if(voterCastInfo.getCasteVoters() != null){
+													 if(locationCount != null && locationCount > 0l)
+													   percentage = (new BigDecimal(voterCastInfo.getCasteVoters()*(100.0)/locationCount.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+													 if(parentCount != null && parentCount > 0l)
+													   subLvlpercentage = (new BigDecimal(voterCastInfo.getCasteVoters()*(100.0)/parentCount.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+													}
 												}catch (Exception e) {}
 												finally{
 													voterCastInfo.setCastePercentage(Double.parseDouble(percentage));
+													if(!"constituency".equalsIgnoreCase(locationType))
+													   voterCastInfo.setSubLeveCastePercentage(Double.parseDouble(subLvlpercentage));
 												}
 											}
 										}
