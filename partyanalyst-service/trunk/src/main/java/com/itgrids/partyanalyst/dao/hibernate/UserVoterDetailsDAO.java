@@ -427,6 +427,85 @@ IUserVoterDetailsDAO{
 		return query.list();
 		
 	}
-	
+	//for age wise voters aniltest2 method
+	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds) {
+		Object[] param = {voterIds};
+		return getHibernateTemplate().findByNamedParam("select " +
+				"count( distinct model.voter.voterId), " +
+								
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount1 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount2 , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount3 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun4 , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount5 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount6 , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun11 , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount7 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount8 , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as malecoun12 , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount9 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount10 , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun13 , " +
+				
+				
+				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +		
+				" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " +	
+				" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " +
+				" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " +
+				" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " +
+				
+				"from UserVoterDetails model  where  model.voter.voterId in(:ids) " ,"ids",voterIds);
+							
+	}
+	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds) {
+		Object[] param = {voterIds};
+		return getHibernateTemplate().findByNamedParam("select distinct model.hamlet.hamletId,model.hamlet.hamletName ," +
+				"count( distinct model.voter.voterId), " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+				" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F'  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun , " +
+				
+				
+				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +		
+				" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " +	
+				" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " +
+				" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " +
+				" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " +
+				
+				"from UserVoterDetails model  where  model.voter.voterId in(:ids) " +
+							" and model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName","ids",voterIds);
+	}
+	public List<Object> getHamletsIdsForUserByPanchayat(Long panchayatId , Long userId ) {
+		Object[] param = {panchayatId,userId};
+		return getHibernateTemplate().find("select distinct model.voter.voterId " +
+							"from UserVoterDetails model join model.hamlet.panchayathHamlets p  where  p.panchayat.panchayatId = ? and model.user.userId = ?  ",param);
+	}
 	
 }
