@@ -13,7 +13,7 @@
 	var scope = $('#listValue').val();
 	$('#listValue').css("border","1px solid lightBlue");
 	if(scope == '0'){
-			$('#errorMsgDiv').html('Please Select Scope Value');
+			$('#errorMsgDiv').html('<span style="margin-left: -165px;"> Please Select Scope Value </span> ');
 			$('#listValue').css("border","1px solid IndianRed");
 			return false;
 	}	
@@ -21,7 +21,7 @@
 		if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
 		{	
 			var str =''; 
-			str +='<table>';
+			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowC">';
 			str +='<td class="tdWidth1">Assembly Constituency : <font id="requiredValue" class="requiredFont">*</font></td>';
 			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="getMandalList(this.options[this.selectedIndex].value);">';
@@ -63,14 +63,16 @@
 	}
 	function getMandalList(selectElmt)
 	{ 
-		$('#tableRowB').remove();
-		addCssStyle();
+		$('#tableRowB').remove();		
 		$('#errorMsgDiv').html('&nbsp;');	
 		var scope = $('#listValue').val();	
-		if(scope=="Panchayat"){
+		if(scope=="Panchayat" || scope=="Booth"){
 		var selectedElmt=document.getElementById("panchayatList");
+		var selectedElmts=document.getElementById("mandalList")
 		removeSelectElements(selectedElmt);
-		}
+		removeSelectElements(selectedElmts);
+		}	
+		addCssStyle();		
 		var constituencyID = document.getElementById("userAccessConstituencyList");
 		var name=constituencyID.options[constituencyID.selectedIndex].name;
 		var value=constituencyID.options[constituencyID.selectedIndex].value;
@@ -80,7 +82,8 @@
 		{
 		$('#errorMsgDiv').html('Please Select Constituency');
 			return false;
-		}				
+		}
+				
 		var jsObj=
 			{
 			selected:value,
@@ -94,8 +97,14 @@
 
 	function getPanchayatList(checkedele,selectedEle)
 	{
-		addCssStyle();	
-		$('#errorMsgDiv').html('&nbsp;');		
+		$('#tableRowB').remove();
+		$('#errorMsgDiv').html('&nbsp;');	
+		var scope = $('#listValue').val();	
+		if(scope=="Panchayat" || scope=="Booth"){
+		var selectedElmt=document.getElementById("panchayatList");
+		removeSelectElements(selectedElmt);
+		}	
+		addCssStyle();				
 		var mandalId=document.getElementById("mandalList");
 		var name=mandalId.options[mandalId.selectedIndex].name;
 		var value1=mandalId.options[mandalId.selectedIndex].value;	
@@ -134,7 +143,7 @@
 	function getBoothList(selectElmt)
 	{	$('#tableRowB').remove();
 		addCssStyle();	
-		$('#errorMsgDiv').html('&nbsp;');
+		$('#errorMsgDiv').html('&nbsp;');		
 		var scopeValue = $('#listValue').val();
 		if(scopeValue == 'Booth'){
 		$('#successMsgDiv').html('Please Wait for Booth Details...');
@@ -226,7 +235,7 @@
 	$('#successMsgDiv').html('&nbsp;');
 	$('#sendButton').show();
 	if(results.length == '0' || results.length == '1'){
-	errDivValue = 'Booths are not Available';
+	errDivValue = '<span style="margin-left: -170px;"> Booths are not Available </span>';
 	$('#errorMsgDiv').html(''+errDivValue+'');
 	return false;
 	}
@@ -276,9 +285,10 @@
 	
 	function handleSubmit()
 	{		
+		$('#successMsgDiv').html('&nbsp');
 		var scope = $('#listValue').val();
 		if(scope == '0'){
-			$('#errorMsgDiv').html('Please Select Scope Value');
+			$('#errorMsgDiv').html('<span style="margin-left: -165px;"> Please Select Scope Value </span> ');
 			$('#listValue').css("border","1px solid IndianRed");
 			return false;
 		}
@@ -288,19 +298,19 @@
 		var boothValues = $('#boothList').val();
 
 		if(scopeIdVal == '0' || mandalValues == '0' || panchayatValues == '0'  || boothValues == '0'){
-			$('#errorMsgDiv').html('Please Select All Scope Related Elements');				
+			$('#errorMsgDiv').html('<span style="margin-left: -60px;"> Please Select All Scope Related Elements </span> ');				
 			addCssStyle();
 			return false;
 		}	
 		
 		var smsContent = trim($('#smstxt').val());			
 		if( scope=="Booth" && errDivValue !='' ){
-		$('#errorMsgDiv').html('Booths are not Available, So You are not allow to send SMS, Based on Booth Wise');
+		$('#errorMsgDiv').html('<span style="font-size: 15px; margin-left: 200px;"> Booths are not Available, So You are not allow to send SMS, Based on Booth Wise</span>');
 		return false;
 		}
 		if(smsContent.length == '0'){
 		$('#smstxt').css("border","1px solid IndianRed");
-		$('#errorMsgDiv').html('Message should not be Empty');
+		$('#errorMsgDiv').html('<span style="font-size: 15px; margin-left: -140px;"> Message should not be Empty<span>');
 		return false;
 		}
 		
@@ -381,11 +391,12 @@
 								}
 								if(jsObj.task == "sendSMSForCadreIds")
 								{ 
-									flag = false;
+									if(myResults != null){	
+									flag=false;										
 									$('#imageForMail').hide();
-									if(!($("#cadreIds").is(":checked")))
-										$('input:radio[name=voterType]')[0].checked = true;
-									$('#successMsgDiv').html('Messages Sent Successfully');	
+									$('#successMsgDiv').html(myResults.resultState+'  Messages Sent Successfully');
+									}
+									
 								}
 							}catch (e) { 
 							     $("#votersEditSaveAjaxImg").hide();
@@ -418,13 +429,12 @@
 		}
 		if(mandalValues == '0'){
 				$('#mandalList').css("border","1px solid IndianRed");
-				$('#panchayatList').css("border","1px solid IndianRed");
 		}
 		if(panchayatValues == '0'){
 				$('#panchayatList').css("border","1px solid IndianRed");
 		}
 		if(boothValues == '0'){
-				$('#errorMsgDiv').html('Please Select Booth');
+				$('#errorMsgDiv').html('<span style="margin-left: -190px;">Please Select Booth </span>');
 				$('#boothList').css("border","1px solid IndianRed");
 		}		
 	}
