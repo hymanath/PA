@@ -1415,8 +1415,8 @@ for  body3 start    result  -->
 	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	<div style="float:right;">
-	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Cast And Party Info" class="btn btn-info" /></div>
-	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Cast And Party Info" class="btn btn-info" /></div>
+	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Caste And Party Info" class="btn btn-info" /></div>
+	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Caste And Party Info" class="btn btn-info" /></div>
 	</div>
 	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
 	
@@ -1438,7 +1438,7 @@ for  body3 start    result  -->
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 	<div style="clear:both;">
-	  <span id="castPartyNewPopupShowBtn"><input type="button" class="btn btn-info" value="View Casts Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
+	  <span id="castPartyNewPopupShowBtn"><input type="button" class="btn btn-info" value="View Castes Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
 	  <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
 	</div>
 	<div id="castPartyPopupDiv" style="display:none"> 
