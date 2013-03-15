@@ -345,7 +345,7 @@ BJP</a>
 </th>
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}"> 
-<a href="partyResultsAction.action??selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Nagaland&electionType=2&reportLevel=State&stateSelectName=19&partySelectName=362&__checkbox_alliances=true&submitButton=Submit" class="btn">INC</a>
+<a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Nagaland&electionType=2&reportLevel=State&stateSelectName=19&partySelectName=362&__checkbox_alliances=true&submitButton=Submit" class="btn">INC</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
 <a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')" class="btn">
