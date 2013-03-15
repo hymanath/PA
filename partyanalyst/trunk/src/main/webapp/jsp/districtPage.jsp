@@ -34,6 +34,7 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+ <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <!-- JQuery files (End) -->
 
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
@@ -52,6 +53,12 @@
 
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<link rel="stylesheet" type="text/css" href="styles/connectPeople/ConnectStyle.css">
+
+	
+	
+ <link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
+<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" /> 
+
 	<style type="text/css">
 	
 	#mp_body {border-bottom: 1px solid #D3D3D3;border-collapse: collapse;border-left: 1px solid #D3D3D3;border-right: 1px solid #D3D3D3;width: 96.3%;}	
@@ -140,7 +147,9 @@ background:white;border-radius:50%; margin:0px 10px;}
 	background-color: #ffffff;
    }
    .main-title-sec {
-    width: 980px;
+    width: 986px;
+	margin-top: 30px;
+	margin-left:13px;
   }
   .connect-people-sec {
     width: 331px;
@@ -188,8 +197,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 .favouritelink .favouritelink-close {position:absolute;top:-12px;right:5px;}
 .favouritelink:hover .favouritelink-close {display:block}
 /** Favorite Link End**/
-
-
+#zptcElectionYears,#mptcElectionYears{width:95px}
+#mptcInfoDivBody,#zptcInfoDivBody{margin-right: 10px;}
 </style>
 <!--[if IE]>
 <style>
@@ -676,7 +685,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 		var muncipalityDiv='';		
 		muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//muncipalityDiv+='<td><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 955px; height: 18px;border-radius: 6px 6px 0 0;padding-bottom:7px;margin-top:-34px;background:#7AC77F;">';
+		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 960px; height: 18px;border-radius: 6px 6px 0 0;padding-bottom:7px;margin-top:0px;background:#7AC77F;">';
 		muncipalityDiv+='<a class="districtPage_headerAnc" href="javascript:{}" style="color:#ffffff;font-family: arial;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		muncipalityDiv+='</div></td>';
 		//muncipalityDiv+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>';	
@@ -981,7 +990,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 			selectLabel.innerHTML = labelStr;
 
 		var dataStr = '';
-		dataStr += '<select onchange="getAllElections(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)">';		
+		dataStr += '<select onchange="getAllElections(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)" style="margin-bottom: 12px;">';		
 		for(var i in result)
 		{
 			/*if(result[i].name == 'Assembly'){
@@ -1539,7 +1548,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 		graphDivStr += '<table>';
 		graphDivStr += '<tr>';
 		//graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
-		graphDivStr += '<td><div id="graphElectionTypeLabel" style="margin-top:15px;margin-left: 212px;"></div></td>';
+		graphDivStr += '<td><div id="graphElectionTypeLabel" style="margin-top:0px;margin-left: 212px;"></div></td>';
 		graphDivStr += '<td><div id="graphElectionTypeSelect" style="margin-top:13px;"></div></td>';		
 		graphDivStr += '</tr>';
 		graphDivStr += '<tr>';
@@ -1754,7 +1763,7 @@ var queryString='';
       </div>
   <div id="inner-content-mainsec" style="margin-left:auto;margin-right:auto;float:none;">
 		
-		<div class="cd-left-sec" style="width:618px;background:#ffffff;margin-left: 10px;">
+		<div class="cd-left-sec" style="width:618px;background:#ffffff;margin-left: 10px;padding-top: 0px;">
         <div class="cd-mid-cont-sec" style="padding-bottom:9px;">
 
      
@@ -1855,7 +1864,7 @@ var queryString='';
 
  <!--CD SUB RIGHT SECTION START-->
         
-        <div class="cd-sub-right-sec" style="border-top-width:0px;float:left;margin-left:32px;">
+        <div class="cd-sub-right-sec" style="float: left; border-top-width: 0px; margin-left: 19px;padding-right: 14px; padding-left: 10px;width:319px;">
      
             
             <!--CONNECT PEOPLE SECTION START-->
@@ -1962,10 +1971,10 @@ var queryString='';
 <div id="detailedChartDiv" style="width:980px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;"> 
 	
 	<div id="partiesPerformanceGraphDistrict">
-		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width:980px;float:left;clear: both;margin-left:1px;background:#ffffff;">
+		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width:983px;float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
-			<h3 style="margin-top:4px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
+			<h3 style="margin-top:4px;font-weight:bold;font-family:verdana;font-size:18px;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
 				<div id="allElectionResultsInDT"  class="allianceListDiv" style="margin-top:-36px;padding-top:18px;">
 					<div id="allElectionResultsInDT_head" style="clear:both;"></div>
 					<div id="allElectionResultsInDT_body"></div>
@@ -2112,7 +2121,7 @@ var queryString='';
 			<tr>
 				<td align="left">
 					<div id="muncipalitiesDivHead" style="text-align:left;" onclick="hideMuncipalitiesDiv()"></div>
-					<div id="muncipalitiesDiv" style="background:#ffffff;width:98%;"></div>
+					<div id="muncipalitiesDiv" style="background:#ffffff;width:100%;"></div>
 				</td>
 			</tr>
 		</table>
@@ -2134,7 +2143,7 @@ var queryString='';
 								<tr>
 									<!--<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>-->	
-										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:506px;padding:9px;height:18px;border-radius: 4px 4px 0 0;padding-bottom:7px;margin-top:12px;background:#72CAED;">
+										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:510px;padding:9px;height:18px;border-radius: 4px 4px 0 0;padding-bottom:7px;margin-top:12px;background:#72CAED;">
 											<span style="font-family: arial;">Total Number of ZPTC's : </span>
 											<span id="totalZptcCountResultDiv"></span>
 										</div>
