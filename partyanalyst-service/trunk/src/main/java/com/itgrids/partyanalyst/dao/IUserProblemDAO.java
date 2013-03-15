@@ -188,5 +188,10 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 public List getProblemDetailsByLocationValuesList(List<Long> locationValuesList, String problemScope, String visibilityType);
 	 
 	 public List<Object> getLatestProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved, String problemStatus);
+	 public List<UserProblem> getLatestProblemsForUser(Long userId,Long statusId,Integer startIndex,Integer maxIndex);
+	 
+	 public List<Long> getProblemsByStatusAndBetweenDates(Long userId,Long statusId, Date fromDate, Date toDate);
+	 
+	 public List<Long> getProblemsByBetweenDates(Long userId,Date fromDate, Date toDate);
 	 
 }

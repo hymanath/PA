@@ -110,4 +110,10 @@ public interface IProblemManagementReportService {
 	public ResultStatus sendEmailToConnectedUsersAfterProblemAdded(ProblemBeanVO problemBeanVO);
 	
 	public Date getCurrentDateAndTime();
+	
+	//public LocationwiseProblemStatusInfoVO getRecentProblemsForUser(Long userId,Long statusId,int limit);
+	
+	public List<ProblemBeanVO> getRecentProblemsForUser(Long userId,Long statusId);
+	
+	public List<ProblemBeanVO> getProblemsByStatusAndBetweenDates(Long userId,Long statusId,String fromDate, String toDate);
 }

@@ -1349,4 +1349,41 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return queryObject.list();	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<UserProblem> getLatestProblemsForUser(Long userId,Long statusId,Integer startIndex,Integer maxIndex)
+	{
+		Query query = getSession().createQuery("from UserProblem model where model.user.userId=:userId and model.problem.problemStatus.problemStatusId =:statusId and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) order by model.updatedTime desc");
+		query.setParameter("statusId", statusId);
+		query.setParameter("userId", userId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Long> getProblemsByStatusAndBetweenDates(Long userId,Long statusId, Date fromDate, Date toDate)
+	{
+		Query query = getSession().createQuery("select model.userProblemId from UserProblem model where date(model.updatedTime) >=:fromDate and date(model.updatedTime) <=:toDate and " +
+					" model.user.userId =:userId and model.problem.problemStatus.problemStatusId =:statusId and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') order by model.updatedTime desc");
+		query.setParameter("userId", userId);
+		query.setParameter("statusId", statusId);
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getProblemsByBetweenDates(Long userId,Date fromDate, Date toDate)
+	{
+		Query query = getSession().createQuery("select model.userProblemId from UserProblem model where date(model.updatedTime) >=:fromDate and date(model.updatedTime) <=:toDate and " +
+					" model.user.userId =:userId and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') order by model.updatedTime desc");
+		query.setParameter("userId", userId);
+		
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		return query.list();
+		
+	}
+	
+	
 }
