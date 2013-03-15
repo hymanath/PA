@@ -345,7 +345,7 @@
 						problem:'${prob.problem}', 
 					  	description:'${prob.description}',
 						existingFrom:'${prob.existingFrom}',
-						hamlet:'${prob.problemLocation}',
+						problemLocation:'${prob.problemLocation}',
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
 						status:'${prob.status}',

@@ -403,14 +403,17 @@ function initializeResultsTable(divId, problemDetails, caption) {
 
 
 function buildProblemsDetailsDT(results) {
+	alert('jk');
+	alert(results[0].problemLocation);
 	var problemsArr = new Array();
 		
 		for(var i in results){
+			
 			var problem = {
 					problem:results[i].problem, 
 				  	description:results[i].description,
 					existingFrom:results[i].existingFrom,
-					hamlet:results[i].hamlet,
+					problemLocation:results[i].problemLocation,
 					problemSourceScope:results[i].problemSourceScope,
 					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
 					status:results[i].status,
@@ -418,7 +421,7 @@ function buildProblemsDetailsDT(results) {
 					problemLocationId:results[i].problemLocationId,
 					//more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
 					more:'<a href="completeProblemDetailsAction.action?problemId='+results[i].problemId+'">More Info</a>'
-
+					
 					
 			};
 			
@@ -443,7 +446,7 @@ function buildProblemsDetailsDT(results) {
 			        					label : localizationObj.existingFrom,
 			        					sortable : true
 			        				}, {
-			        					key : "hamlet",
+			        					key : "problemLocation",
 			        					label : "Location",
 			        					sortable : true
 			        				}, {
@@ -468,7 +471,7 @@ function buildProblemsDetailsDT(results) {
 			        		probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 			        		probDTDataSource.responseSchema = {
 			        			fields : [ "problem", "description", "existingFrom", 
-			        			           "hamlet", "problemSourceScope", "problemAmdProblemSourceId", 
+			        			           "problemLocation", "problemSourceScope", "problemAmdProblemSourceId", 
 			        			           "status" , "more"]
 			        		};
 			        		
