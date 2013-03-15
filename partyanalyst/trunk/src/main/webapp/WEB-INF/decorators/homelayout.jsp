@@ -103,6 +103,7 @@ margin:-1px 0px 0px 0px ;
 .follow-us-top{width:72px;margin:0px;display:inline-block;}
 .follow-us-top h5{margin:0px;display:inline-block;color:#80D1F1;font-size: 12px;}
 .lr-sec{padding:14px 5px 5px;}
+#menu ul.menu li{z-index: 999;}
 </style>
 <decorator:head/>
 </head>
