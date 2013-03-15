@@ -591,6 +591,11 @@ public interface IConstants {
 	
 	
 	public static final String GALLARY_PDF_FILES= "gallary_pdf_files";
+	public static final String AGE18to25  = "18-25";
+	public static final String AGE26to35  = "26-35";
+	public static final String AGE36to45  = "36-45";
+	public static final String AGE45to60 = "46-60";
+	public static final String Above60  = "Above60";
 	
 	
 	
