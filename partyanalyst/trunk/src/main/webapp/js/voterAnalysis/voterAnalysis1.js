@@ -1387,7 +1387,7 @@ function addToPolitician(voterId,name)
 								else if(jsObj.task == "gettotalimpfamlies"  )
 								{   
 								$("#impFamPancBothDtlsAgxImg").hide();
-								      if(myResults == null ){
+								      if(myResults == null || myResults.length == 0 ){
 									  $("#impFamilesBasicSubDetailsForHamletTitle").html("");
                                        $("#impFamilesBasicSubDetailsForHamlet").html("");
 								       //  $("#descriptionDiv").html("");
