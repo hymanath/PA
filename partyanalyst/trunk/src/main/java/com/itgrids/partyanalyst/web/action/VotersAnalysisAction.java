@@ -483,7 +483,7 @@ public String getVoterDetails(){
 		
 		constituencyManagementVO.setVoterDetails(votersList);
 		
-		if(votersList.size() > 0 )
+		if(votersList !=null && votersList.size() > 0 )
 		constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
 		
 	}catch(Exception e){
@@ -997,6 +997,7 @@ return Action.SUCCESS;
 		//VOTER DETAILS OVERVIEW FOR CONSTITUENCY OR MANDAL
 		
 		List<VotersDetailsVO> votersDeatailsForConstituency =null;
+		
 		
 		if(type.equalsIgnoreCase("hamlet"))
 			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,"hamlet");	
