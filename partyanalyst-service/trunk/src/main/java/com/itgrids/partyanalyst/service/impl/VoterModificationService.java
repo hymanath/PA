@@ -1822,17 +1822,35 @@ public class VoterModificationService implements IVoterModificationService{
 						 {
 							   modificationVO.setId((Long)params[4]);
 							    if(optionVO.getType().equalsIgnoreCase(IConstants.CONSTITUENCY))
-								 modificationVO.setName(constituencyDAO.get((Long)params[4]).getName());
+							    {
+								  modificationVO.setName(constituencyDAO.get((Long)params[4]).getName());
+								  modificationVO.setLocationType("constituency");
+							    }
 							    else if(optionVO.getType().equalsIgnoreCase("mandal"))
-								 modificationVO.setName(tehsilDAO.get((Long)params[4]).getTehsilName());
+							    {
+							      modificationVO.setLocationType("mandal");
+								  modificationVO.setName(tehsilDAO.get((Long)params[4]).getTehsilName());
+							    }
 								else if(optionVO.getType().equalsIgnoreCase("panchayat"))
-								 modificationVO.setName(panchayatDAO.get((Long)params[4]).getPanchayatName());
+								{
+								  modificationVO.setLocationType("panchayat");	
+								  modificationVO.setName(panchayatDAO.get((Long)params[4]).getPanchayatName());
+								}
 								else if(optionVO.getType().equalsIgnoreCase("ward"))
-								 modificationVO.setName(constituencyDAO.get((Long)params[4]).getName());
+								{
+								  modificationVO.setLocationType("ward");
+								  modificationVO.setName(constituencyDAO.get((Long)params[4]).getName());
+								}
 								else if(optionVO.getType().equalsIgnoreCase("booth"))
-								 modificationVO.setName("BOOTH - "+boothDAO.get((Long)params[4]).getPartNo());
+								{
+								  modificationVO.setLocationType("booth");
+								  modificationVO.setName("BOOTH - "+boothDAO.get((Long)params[4]).getPartNo());
+								}
 								else if(optionVO.getType().equalsIgnoreCase("localElectionBody") || optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
-								 modificationVO.setName(localElectionBodyDAO.get((Long)params[4]).getName()+" MUNCIPALITY");
+								{
+								  modificationVO.setLocationType("localElectionBody");
+								  modificationVO.setName(localElectionBodyDAO.get((Long)params[4]).getName()+" MUNCIPALITY");
+								}
 								 
 							
 						 }
