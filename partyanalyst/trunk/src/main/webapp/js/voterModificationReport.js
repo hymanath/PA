@@ -120,8 +120,8 @@ function getPublicationDate()
 		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
 			locationValue == null || locationValue == '')
 			return;
-		if(locationType == 'localElectionBody')
-			locationVal = localElectionBodyId;
+		/* if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;*/
 
 		$("#voterAgeInfoAjaxImg").css("display","block");
 		var jObj=
@@ -146,8 +146,8 @@ function getPublicationDate()
 		|| toPublicationDateId == null || toPublicationDateId == '' || locationType == '' || locationType == null || 
 			locationValue == null || locationValue == '')
 			return;
-		if(locationType == 'localElectionBody')
-			locationVal = localElectionBodyId;
+		/* if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;*/
 
 		$('#voterGenderInfoDivAjaxImg').css('display','block');
 		var jObj=
@@ -176,8 +176,8 @@ function getPublicationDate()
 
 		$('#genderWiseVoterModifiAjaxImg').css('display','block');
 		
-		if(locationType == 'localElectionBody')
-			locationVal = localElectionBodyId;
+		/* if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;*/
 
 		var jObj=
 		{
@@ -686,7 +686,7 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 			return;
 		}
 			
-		$('#mainDiv').css('display','block');
+		$('#mainDiv').css('display','inline-block');
 		$('#allVoterDetailsForALocation').html('');
 		
    var locationScope = "";
@@ -752,8 +752,8 @@ function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatu
 	}
 	$('#allvotersDetails').css('display','block');
 		
-		if(locationType == 'localElectionBody')
-			locationValue1 = localElectionBodyId;
+		/* if(locationType == 'localElectionBody')
+			locationValue1 = localElectionBodyId;*/
 
 		var jObj=
 		{
@@ -869,7 +869,7 @@ var str='';
  	 {
 		
 		  str+='<tr>';
-		    str+='<td style="text-align:left;">'+myResults.modifiedVotersList[i].name+'</td>';
+		    str+='<td style="text-align:left;"><a href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].name+'</a></td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
@@ -913,8 +913,8 @@ var str='';
 function callAjaxForSubLevelInformation()
 {
 	var locationVal = locationValue;
-	if(locationType == 'localElectionBody')
-			locationVal = localElectionBodyId;
+	/* if(locationType == 'localElectionBody')
+			locationVal = localElectionBodyId;*/
 
 	if(locationType == "booth")
 	{
@@ -938,4 +938,12 @@ function callAjaxForSubLevelInformation()
 		callAjax(jsObj,url);
 		$('#subLevelAjaxImageDiv').css('display','block');
 
+}
+
+function openNewWindow(locationType, locationId)
+{
+  var urlStr ='voterModificationReportAction.action?constituencyId='+constituencyId+'&fromPublicationDateId='+fromPublicationDateId+'&toPublicationDateId='+toPublicationDateId+'&locationType='+locationType+'&locationValue='+locationId+'&';
+
+  var updateBrowser = window.open(urlStr,'',"scrollbars=yes,height=600,width=750,left=200,top=200", '_blank');	
+	updateBrowser.focus();
 }
