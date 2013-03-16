@@ -21,6 +21,8 @@ var reqfields = "";
 var reqfieldsArr = new Array();
 var boothsLoc = new Array();
 var buildType = "hamlet";
+var assemblyLocalEleBodyId;
+
 function populate(id,boothId,publicationId,houseNo){
      if($('#'+id).is(':checked')){
 	   var obj={
@@ -939,6 +941,10 @@ function addToPolitician(voterId,name)
 		 var fromPublicationDateId=0;
 		 //getModifiedVotersCountBetweenPublications(type,id,fromPublicationDateId,publicationId);
 
+		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
+			getAssemblyLocalEleBodyId();
+		
+
 	}
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
 	$("#votersCountModifyAjaxDiv").css("display","block");
@@ -1555,6 +1561,9 @@ function addToPolitician(voterId,name)
 								    $("#permanentlyUpdateDiv").removeAttr("disabled");
 								    getVotersCastInfo(mainreqid,mainpublicationId,maintype);
 								}
+
+								else if(jsObj.task == "getAssemblyLocalEleBodyId")
+									assemblyLocalEleBodyId = myResults;
 									
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -2024,11 +2033,17 @@ $("#voterDetailedReportId").live("click",function(){
 	if(maintype == 'mandal')
 	{
 		if(mainreqid.substring(0,1) == "2")
+		{
 			locationType = 'mandal';
+			locationValue = mainreqid.substring(1);
+		}
 		else 
+		{
 			locationType = 'localElectionBody';
+			locationValue = assemblyLocalEleBodyId;
+		}
 		
-		locationValue = mainreqid.substring(1);
+		
 	}
 	var urlStr='voterModificationReportAction.action?constituencyId='+constituencyId+'&fromPublicationDateId='+prevPId+'&toPublicationDateId='+presPId+'&locationType='+locationType+'&locationValue='+locationValue+'&';
 	window.open(urlStr,'_blank');
@@ -7494,4 +7509,17 @@ function permanentlyUpdateCastePartyInfo(){
 		 var url = "insertVotersCasteAndPartyDataToIntermediateTablesAction.action?"+rparam;	
 		 callAjax(jsObj,url);
 	  }
+}
+
+function getAssemblyLocalEleBodyId()
+{
+	var id = mainreqid.substring(1);
+    var jsObj=
+		{
+		  localEleBodyId  :id,
+		  task            :"getAssemblyLocalEleBodyId"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "getAssemblyLocalEleBodyIdByLocalEleBodyIdAction.action?"+rparam;	
+		 callAjax(jsObj,url);
 }
