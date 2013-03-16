@@ -4650,5 +4650,11 @@
         	</result>
 		</action>
 		
+		<action name="getAssemblyLocalEleBodyIdByLocalEleBodyIdAction" class="votersAnalysisAction" method="getAssemblyLocalEleBodyIdByLocalEleBodyId">
+		   <result type="json" name="success">
+              <param name="root">assemblyLocalEleBodyId</param>
+           </result>
+		</action>
+		
 		</package>
 </struts>      

@@ -995,7 +995,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />	
-		
+		<property name="voterModificationService" ref="voterModificationService" />
 	</bean>
 	
 	<bean id="publicProfileAction" class="com.itgrids.partyanalyst.web.action.PublicProfileAction">

@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -84,6 +85,9 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private SelectOptionVO selectOptionVO;
 	private CadreManagementService cadreManagementService;
+	private Long assemblyLocalEleBodyId;
+	private IVoterModificationService voterModificationService;
+	
 	
 	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount() {
 		return influencingPeopleCount;
@@ -351,6 +355,22 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
+	}
+	
+	public Long getAssemblyLocalEleBodyId() {
+		return assemblyLocalEleBodyId;
+	}
+	public void setAssemblyLocalEleBodyId(Long assemblyLocalEleBodyId) {
+		this.assemblyLocalEleBodyId = assemblyLocalEleBodyId;
+	}
+
+	public IVoterModificationService getVoterModificationService() {
+		return voterModificationService;
+	}
+
+	public void setVoterModificationService(
+			IVoterModificationService voterModificationService) {
+		this.voterModificationService = voterModificationService;
 	}
 
 	public String execute() throws Exception
@@ -1332,4 +1352,24 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 }
 
+	public String getAssemblyLocalEleBodyIdByLocalEleBodyId()
+	{
+		try{
+			
+			 String param = getTask();
+			jObj = new JSONObject(param);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			assemblyLocalEleBodyId = voterModificationService.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(jObj.getLong("localEleBodyId"));
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAssemblyLocalEleBodyIdByLocalEleBodyId() Method,Exception is- "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
