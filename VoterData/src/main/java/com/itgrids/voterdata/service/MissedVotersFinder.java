@@ -379,6 +379,9 @@ public class MissedVotersFinder {
                         	else if(voterInfo.getGuardianName().contains("Other's Name:"))
                         		voterInfo.setGuardianName(voterInfo.getGuardianName().replaceAll("Other's Name:",""));
                         	
+                        	if(voterInfo.getHouseNumber().contains("'"))
+                        		voterInfo.setHouseNumber(voterInfo.getHouseNumber().replaceAll("'",""));
+                        	
                         	missedList.add(voterInfo);
                     		}catch (Exception e) {
                     			e.printStackTrace();
