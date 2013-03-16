@@ -220,8 +220,9 @@ function getPublicationDate()
 										showGenderWiseVoterModifiForEachPublic(myResults,jsObj);
 								else if(jsObj.task == "getAllVoterInformationInALocation")
 								{
-									showAllVoterInformationInALocation(myResults);
 									$('#allvotersDetails').css('display','none');
+									showAllVoterInformationInALocation(myResults);
+									
 								}
 								else if(jsObj.task == "subRegionsInConstituency")
 									buildMandalOrMuncipalities(myResults);
@@ -678,6 +679,14 @@ function getAllVotersModificationDetailsBetweenPublications(type,loadingstatus)
 var titleString = "";
 function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatus)
 	{
+		
+		if(locationType == 'constituency')
+		{
+			$('#mainDiv').css('display','none');
+			return;
+		}
+			
+		$('#mainDiv').css('display','block');
 		$('#allVoterDetailsForALocation').html('');
 		
    var locationScope = "";
@@ -824,15 +833,24 @@ if(jsObj.locationType == "constituency")
 else if(jsObj.locationType == "mandal")
     subLevelName = "Panchayat";
 else if(jsObj.locationType == "panchayat" || jsObj.locationType == "ward")
-    subLevelName = "booth";
+    subLevelName = "Booth";
 else if(jsObj.locationType == "localbody" ||jsObj.locationType == "Local Election Body")
-    subLevelName = "ward";
+    subLevelName = "Ward";
 
-$('#subLevelDiv').html('');
+if(myResults.modifiedVotersList == null || myResults.modifiedVotersList.length == 0)
+{
+	$('#subLevelsMainDiv').css('display','none');
+	return;
+}
+
+	$('#subLevelsMainDiv').css('display','inline-block');
+	$('#subLevelDiv').html('');
 if(myResults.modifiedVotersList.length == 0 && myResults.modifiedLocalBodyVotersList.length == 0 && myResults.modifiedVotersList != null && myResults.modifiedLocalBodyVotersList != null)
 	return false;
 
 var str='';
+
+	str +='<h4>'+subLevelName+' Wise Newly added / deleted voters info</h4>';
 	 str+='<table class="voterInfoTable" id="subLevelVotersTable">';
 	 str+='<thead>';
 	 str +='<tr>';
@@ -899,7 +917,10 @@ function callAjaxForSubLevelInformation()
 			locationVal = localElectionBodyId;
 
 	if(locationType == "booth")
+	{
+		$("#subLevelsMainDiv").css('display','none')
 		return;
+	}
 
 	var jsObj=
 		{	

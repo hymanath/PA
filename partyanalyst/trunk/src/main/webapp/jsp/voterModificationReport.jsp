@@ -74,6 +74,9 @@
 #voterDetails.dataTable thead th {background: none repeat scroll 0 0 #DBEBFF;padding: 10px 18px 10px 10px;}
 #voterDetails.dataTable tr.even{background:#DBEBFF !important;}
 #voterDetails_info , #voterDetails_paginate { margin-bottom: 14px;margin-top: 10px;}
+#subLevelVotersTable_wrapper{padding-top: 15px;}
+#genderWiseVoterModifiMainDiv{padding-bottom: 15px;}
+#subLevelVotersTable_info,#subLevelVotersTable_paginate{margin-top: 5px;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport.js"></script>
@@ -117,7 +120,7 @@
 	</div> -->
   <!-- </div> -->
 
-   <div style="text-align: center; margin-top: 30px;">
+   <div style="text-align: center; margin-top: 30px;width:998px;">
 	<span id="headingSpanCls">Added / Deleted Voters Info Report For ${locationName} &nbsp;${locationType} Between ${fromPublicationName} to ${toPublicationName}
 	</span>
   </div>
@@ -144,11 +147,16 @@
 			<div id="genderWiseVoterModifiDiv"></div>
 		</div>
 
+		<div id="subLevelsMainDiv" class="widget blue whitegloss" style="margin-top: 20px; display: inline-block; position: relative; color: #000; width: 96%;">
+		   <div id="subLevelDiv" style="margin:5px 0px 30px 0px;"></div>
+		   <div id="subLevelAjaxImageDiv" style="display:none;margin-left:400px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+		</div>
+
 
         <div id="mainDiv" class="widget blue whitegloss" style="margin-top:20px;display:inline-block;width: 96%;color:#000;position:relative;">
 
 	
-	  <h4> Newly added / deleted voters information</h4>	   
+	  <h4> Newly added / deleted voters info</h4>	   
 	
 
 	<!--	<div class="form-horizontal" style="margin-left:238px;">
@@ -232,8 +240,8 @@
 
    </div> -->
 
-   <div id="subLevelAjaxImageDiv" style="display:none;margin-left:400px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-<div id="subLevelDiv" style="margin:30px 0px 30px 0px;"></div>
+   <!-- <div id="voterDetailsAjaxImageDiv" style="display:none;margin-left:400px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+<div id="subLevelDiv" style="margin:30px 0px 30px 0px;"></div> -->
 
 
 <span id="allvotersDetails" style="margin-left:400px;display:none;">
