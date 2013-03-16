@@ -149,8 +149,7 @@
 		<pattern>/sendUpdatesByemailAction*</pattern>
 		<!-- <pattern>/missingVotersSearchAction*</pattern> -->
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
-		<pattern>/sendUpdatesBySMSAction*</pattern>
-	 </decorator>
+    </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
     	<pattern>/homePage*</pattern>
@@ -193,6 +192,7 @@
     	<pattern>/voterEditDataAction*</pattern>
     	<pattern>/missingVotersSearchAction*</pattern>
     	<pattern>/districtPageAction*</pattern>
-    </decorator>
+    	<pattern>/sendUpdatesBySMSAction*</pattern>
+    	 </decorator>
 
 </decorators>
