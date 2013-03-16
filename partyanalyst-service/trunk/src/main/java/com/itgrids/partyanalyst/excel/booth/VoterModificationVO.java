@@ -18,7 +18,7 @@ public class VoterModificationVO implements Serializable{
 	private Long femaleVotersAdded = 0L;
 	private Long maleVotersDeleted = 0L;
 	private Long femaleVotersDeleted = 0L;
-	
+	private String locationType;
 	
 
 	public Long getMaleVotersDeleted() {
@@ -117,4 +117,14 @@ public class VoterModificationVO implements Serializable{
 			List<VoterModificationVO> modifiedLocalBodyVotersList) {
 		this.modifiedLocalBodyVotersList = modifiedLocalBodyVotersList;
 	}
+
+	public String getLocationType() {
+		return locationType;
+	}
+
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+	
+	
 }
