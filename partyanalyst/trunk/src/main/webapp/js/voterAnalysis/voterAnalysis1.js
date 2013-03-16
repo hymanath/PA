@@ -216,7 +216,7 @@ function updateAllSelectedVoters(){
 			
 			if(isNaN(mobile)) {
 			
-			$errorDiv.text("Enter valid").css("color", "red");
+			$errorDiv.text("Enter valid MobileNo").css("color", "red");
 			
 			flag =false;
 			return;
@@ -225,7 +225,7 @@ function updateAllSelectedVoters(){
 			
 			else if(!(mobile.length == 0 || (mobile.length >=10 && mobile.length<=12)))
 			{
-			$errorDiv.text("Enter valid").css("color", "red");
+			$errorDiv.text("Enter valid MobileNo").css("color", "red");
 			flag =false;
 			return;
 			}
@@ -5088,7 +5088,13 @@ function showPreviousEleVotingTrends(results,jsObj)
 					str +='<td>'+results[j].polledVotes+'</td>';
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
 					  for(var k in partyVotesEarnedVOs)
+					{
+						 
+						  if(partyVotesEarnedVOs[k].votesEarned == 0)
+						 str +='<td style="text-align:center">-</td>';
+						  else
 				         str +='<td>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+					}
 						
 					     str +='</tr>';
 		 			
