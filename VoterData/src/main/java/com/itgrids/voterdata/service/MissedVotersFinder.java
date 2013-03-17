@@ -388,6 +388,39 @@ public class MissedVotersFinder {
                     		}
                         }
                     }
+                    else if(IConstants.PATTERN == 4)
+                    {
+                    	Pattern p = Pattern.compile("Age:\\r\\nHouse No:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nElector's Name:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\nSex:\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\(\\)\\/\\*\\,\\:\\;\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([\\s0-9]*)\\r\\n");
+                    	Matcher m = p.matcher(sb);
+                    	while (m.find()) 
+                        {
+                    		if(boothVO.getMissedVotesList().contains(new Long(m.group(7).replaceAll("\\r\\n","").trim()).intValue()))
+                    		{
+	                    		VoterInfo voterInfo = new VoterInfo();
+	                    		voterInfo.setsNo(new Long(m.group(7).replaceAll("\\r\\n","").trim()));
+	                        	voterInfo.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
+	                        	voterInfo.setGuardianRelation(m.group(1).replaceAll("\\r\\n","").trim().replaceAll("'s Name:",""));
+	                        	voterInfo.setAge(m.group(6).replaceAll("\\r\\n","").trim());
+	                        	voterInfo.setHouseNumber(m.group(5).replaceAll("\\r\\n","").trim());
+	                        	voterInfo.setBoothNo(boothVO.getPartNo());
+	                        	voterInfo.setBoothName(boothVO.getName());
+	                        	voterInfo.setConstituencyId(boothVO.getConstituencyId());
+	                        	voterInfo.setConstituency(boothVO.getConstituencyName());
+	                        	voterInfo.setVoterName(m.group(3).replaceAll("\\r\\n","").trim());
+	                        	voterInfo.setGuardianName(m.group(4).replaceAll("\\r\\n","").trim());
+	                        	
+	                        	if(voterInfo.getHouseNumber().equalsIgnoreCase(voterInfo.getGuardianName()))
+	                        		voterInfo.setHouseNumber("0-00");
+	                        	
+	                        	String sex = "Male";
+	                        	if(voterInfo.getGuardianRelation().equals("Husband"))
+	                        		sex = "Female";
+	                        	voterInfo.setSex(sex);
+	                        	missedList.add(voterInfo);
+                    		}
+                    		
+                        }
+                    }
                     
                     pd.close();
     				
