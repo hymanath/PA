@@ -854,16 +854,24 @@ var str='';
 	 str+='<table class="voterInfoTable" id="subLevelVotersTable">';
 	 str+='<thead>';
 	 str +='<tr>';
-		str +='<th>'+subLevelName+'</th>';
-		str +='<th>Total Voters Added</th>';
-		str +='<th>Male Voters Added</th>';
-		str +='<th>Female Voters  Added</th>';
-		str +='<th>Total Voters  Deleted</th>';
+		str +='<th rowSpan="2">'+subLevelName+'</th>';
+		str +='<th colspan="2">Total Voters</th>';
+		str +='<th colspan="2">Male Voters </th>';
+		str +='<th colspan="2">Female Voters</th>';
+		/*str +='<th>Total Voters  Deleted</th>';
 		str +='<th>Male Voters  Deleted</th>';
-		str +='<th>Female Voters  Deleted</th>';		
+		str +='<th>Female Voters  Deleted</th>';*/		
 	str +='</tr>';
-     str+='</thead>';
-	  str+='<tbody>';
+	str +='<tr>';
+		str +='<th>Added</th>';
+		str +='<th>Deleted</th>';
+		str +='<th>Added</th>';
+		str +='<th>Deleted</th>';
+		str +='<th>Added</th>';
+		str +='<th>Deleted</th>';		
+	str +='</tr>';
+    str+='</thead>';
+	 str+='<tbody>';
 
 	 for(var i=0;i<myResults.modifiedVotersList.length;i++)
  	 {
@@ -875,10 +883,10 @@ var str='';
 			 str+='<td style="text-align:left;"><a class="voterInfoLinksCLS" title="Click Here to View '+myResults.modifiedVotersList[i].name+' '+myResults.modifiedVotersList[i].locationType+' wise Added / Deleted Voters Info " href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].name+'</a></td>'; 
 
 		    str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
-		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
-		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].deletedCount+'</td>';
-            str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+            str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
 		  str+='</tr>';
 	 }
