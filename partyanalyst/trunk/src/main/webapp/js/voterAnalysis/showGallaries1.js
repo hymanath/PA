@@ -1045,11 +1045,9 @@ var noNews = false;
 	else if(categoryId == 4)
 		categoryStr+="Political Movements - Opp Parties";
 	else if(categoryId == 5)
-		categoryStr+="Candidate Positive News";
-	else if(categoryId == 6)
-		categoryStr+="Candidate Negative News";
-	else if(categoryId == 7)
 		categoryStr+="Events";
+	else if(categoryId == 6)
+		categoryStr+="Profile News";
 	 categoryStr+='</font>';
 
 	 categoryStr+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
