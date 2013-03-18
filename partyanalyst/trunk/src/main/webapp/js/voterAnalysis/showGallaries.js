@@ -872,12 +872,10 @@ function getNews1(importanceId , categoryId , count){
 	else if(categoryId == 4)
 		categoryStr+="Political Movements - Opp Parties";
 	else if(categoryId == 5)
-		categoryStr+="Candidate Positive News";
-	else if(categoryId == 6)
-		categoryStr+="Candidate Negative News";
-	else if(categoryId == 7)
 		categoryStr+="Events";
-	 categoryStr+='</font>';
+	else if(categoryId == 6)
+		categoryStr+="Profile News";
+	categoryStr+='</font>';
 	
 
     displayStr='';
