@@ -216,6 +216,22 @@ IUserVoterDetailsDAO{
 		
 	}
 	
+	 public List<?> getVotersDetailsByHamletPublication(Long hamletId,Long userID, Integer startIndex,
+				Integer maxRecords, String order, String columnName) {  
+		 
+			String queryString = "select model.voter.voterId from UserVoterDetails model " +
+					"where model.hamlet.hamletId = ? and model.user.userId = ? order by model.voter."+columnName+" "+order;
+
+			Query query = getSession().createQuery(queryString);
+
+			query.setParameter(0, hamletId);
+			query.setParameter(1, userID);
+			query.setFirstResult(startIndex);
+			query.setMaxResults(maxRecords);
+
+			return query.list();
+		 
+	 }  
 	public List<Long> getUserHamletsByPanchayatId(Long userId , Long panchayatId)
 	{
 		
@@ -411,6 +427,19 @@ IUserVoterDetailsDAO{
 		  return query.list();
 		
 	}
+	public List<?> getVotersBasedOnVoterIdsAndPublication(
+			 Long publicationDateId , List<?> voterIds) {		
+			
+			
+		Query query = getSession().createQuery("select distinct b.voter " +
+				" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " 
+								) ;
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("voterIds", voterIds);	
+		  return query.list();
+		
+	}
 	
 	public List<Long> getVoterIdsByLocalityForUser(Long localityId,Long hamletId,Long userId,Long casteStateId)
 	{
@@ -507,5 +536,20 @@ IUserVoterDetailsDAO{
 		return getHibernateTemplate().find("select distinct model.voter.voterId " +
 							"from UserVoterDetails model join model.hamlet.panchayathHamlets p  where  p.panchayat.panchayatId = ? and model.user.userId = ?  ",param);
 	}
+	 public List<?> getVotersCountByHamlet(Long hamletId,Long userID)
+				 {  
+		 
+			String queryString = "select count (distinct model.voter.voterId) from UserVoterDetails model " +
+					"where model.hamlet.hamletId = ? and model.user.userId = ? group by model.hamlet.hamletId ";
+
+			Query query = getSession().createQuery(queryString);
+
+			query.setParameter(0, hamletId);
+			query.setParameter(1, userID);
+			
+
+			return query.list();
+		 
+	 }  
 	
 }
