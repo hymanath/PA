@@ -1,10 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.model.VoterModificationAgeInfo;
 import com.itgrids.partyanalyst.model.VoterModificationInfo;
@@ -41,8 +42,6 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
-
-import java.util.Collections;
 
 public class VoterModificationService implements IVoterModificationService{
 
@@ -1743,7 +1742,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 stringBuilder.append(" model2.booth.tehsil.tehsilId,model2.booth.tehsil.tehsilName ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
-				 stringBuilder.append(" model2.booth.localBody.localElectionBodyId,model2.booth.localBody.name ");
+				 stringBuilder.append(" model2.booth.localBody.localElectionBodyId,model2.booth.localBody.name,model2.booth.localBody.electionType.electionType ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				 stringBuilder.append(" model2.booth.panchayat.panchayatId,model2.booth.panchayat.panchayatName ");
@@ -1848,10 +1847,10 @@ public class VoterModificationService implements IVoterModificationService{
 								}
 								else if(optionVO.getType().equalsIgnoreCase("localElectionBody") || optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
 								{
-								  modificationVO.setLocationType("localElectionBody");
-								  modificationVO.setName(localElectionBodyDAO.get((Long)params[4]).getName()+" MUNCIPALITY");
-								}
-								 
+									modificationVO.setLocationType("localElectionBody");
+									LocalElectionBody localElectionBody = localElectionBodyDAO.get((Long)params[4]);
+									modificationVO.setName(localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType());
+								} 
 							
 						 }
 						 
@@ -1915,6 +1914,8 @@ public class VoterModificationService implements IVoterModificationService{
 						 
 							 if(optionVO.getType() != null && optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
 								modificationVO.setName("Booth No- "+params[4].toString());
+							 else if(optionVO.getType() != null && (optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || optionVO.getType().equalsIgnoreCase("localElectionBody")))
+								 modificationVO.setName(params[4].toString()+" "+params[5].toString());
 							 else
 								 modificationVO.setName(params[4].toString());
 							 

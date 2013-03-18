@@ -30,15 +30,15 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
 	}*/
 	
-	/*public void testGetAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
+	public void testGetAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
-		List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",232l,232l, publicationIdsList, 18l, 25l);
+		List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("booth",122099l,232l, publicationIdsList, 26l, 35l);
 		System.out.println(list.size());
 		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
-	}*/
+	}
 	
 	/*public void testGetGenderWiseVoterModificationsBetweenPublications()
 	{
@@ -54,7 +54,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetModifiedVotersInALocationBetweenPublucations()
+	/*public void testGetModifiedVotersInALocationBetweenPublucations()
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
@@ -67,7 +67,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
-	}
+	}*/
 	
 	/*public void testGetModifiedVotersByPartNo()
 	{
@@ -121,7 +121,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetSublevelVoterModificationDetailsByLocationValues()
+	/*public void testgetSublevelVoterModificationDetailsByLocationValues()
 	{
 		List<Long> publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
@@ -140,5 +140,5 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
  		List<Object[]> list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(299l, publicationIdsList, locationValuesList, "mandal", queryStr);
 		
 		System.out.println(list.size());
-	}
+	}*/
 }
