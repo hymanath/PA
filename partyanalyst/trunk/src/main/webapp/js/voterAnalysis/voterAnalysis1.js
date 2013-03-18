@@ -4100,16 +4100,16 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	else 
 		noteString = $('#pollingStationField :selected').text();
 
-	$('#voterDetailsNote').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
+	$('#voterDetailsNote').html('<h4 style="color:#E36A30;margin-left: 4px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
 	//$('#voterDetailsNote1').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
 
 
 	var str='';
-	str+='<table  class="table table-bordered table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
+	str+='<table class="table table-bordered table-hover" id="ageWiseDetailsTable" style="width: 104%; max-width: 104%; margin: 1px -18px;" >';
 	
 	str+='<thead class="info">'
 	str+='<tr>'
-	str+='<th rowspan="2">Age Range</th>';
+	str+='<th rowspan="2" id="ageRangeId">Age Range</th>';
 	str+='<th colspan="2">Total Voters</th>';
 	str+='<th colspan="2">Male</th>';
 	str+='<th colspan="2">Female</th>';
@@ -4173,9 +4173,24 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	str+='</table>';
 
 	$('#tableDiv').html(str);
+	
+	$('#ageWiseDetailsTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		//"iDisplayLength":50,
+		//"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
+		//"bFilter": false,"bInfo": false
+		  //"aoColumns": [null,null,null,null,null,null,null] 
+		});
 	$('#tableDiv1').html(str);
-
-
+	
+	/*$('#ageWiseDetailsTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		//"iDisplayLength":50,
+		//"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
+		//"bFilter": false,"bInfo": false
+		//  "aoColumns": [null,null,null,null,null,null,null] 
+		});
+		//$('#ageRangeId').css('width','-4px');*/
 	if(retrieveType == "all"){
 		$('#tableDiv').css('display','block');
 		$('#voterDetailsNote').css('display','block');
@@ -4245,11 +4260,11 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgewiseDetailsNote').html('<h4 style="color:#E36A30;margin-left: 4px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
-	str+='<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
-
+	str+='<table border="1"  class="table table-hover table-bordered" id="mandalWiseVoterAgeTable" style="width: 104%; max-width: 104%; margin: 1px -18px 1px 10px;">';
+	str+='<thead class="info">';
 	str+='<tr>';
 	if(type == "constituency")
 	   str+='<th rowspan="2">Mandal Name</th>';
@@ -4285,6 +4300,8 @@ function buildAgewiseDetails(results , obj){
 	str+='<th>Voters</th>';
 	str+='<th>%</th>';
 	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
 //if(innerResults == null ||innerResults.length )
 //str = 'No Data Found';
 //else
@@ -4323,11 +4340,18 @@ for(var i=0;i<innerResults.length;i++){
 	str+='</tr>';
   }
 }
+str+='</tbody>';
 str+='</table>';
 
 
 $('#agewiseDetails').html(str);
-
+$('#mandalWiseVoterAgeTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		//"iDisplayLength":50,
+		//"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
+		//"bFilter": false,"bInfo": false
+		  //"aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null] 
+		});
 }
 
 function buildAgeAndGenderWiseDetails(results , obj){
@@ -4369,12 +4393,12 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:#E36A30;margin-left: 4px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
-	str+='	<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
-
+	str+='	<table border="1" style="width: 104%; max-width: 104%; margin: 1px -18px 1px 10px;" class="table table-hover table-bordered" id="mandalWiseAgeAndGenderTable">';
+	str+='<thead class="info">';
 	str+='<tr>';
 	if(type == "constituency")
 	   str+='<th rowspan="2">Mandal Name</th>';
@@ -4411,7 +4435,8 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
 	str+='</tr>';
-
+	str+='</thead>';
+	str+='<tbody>';
 for(var i=0;i<innerResults.length;i++){
   if(innerResults[i].totalMaleVotesFor18To25 != null){
 	str+='<tr>';
@@ -4448,9 +4473,17 @@ for(var i=0;i<innerResults.length;i++){
 	str+='</tr>';
   }
 }
+   str+='</tbody>';
    str+='</table>';
 
 $('#ageAndgenderWiseDetails').html(str);
+$('#mandalWiseAgeAndGenderTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		//"iDisplayLength":50,
+		//"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
+		//"bFilter": false,"bInfo": false
+		  //"aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null] 
+		});
 }
 
 /*function buildAgeAndGenderWiseDetails(results , type){
@@ -4548,8 +4581,6 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
      var type = obj.type;
 	var innerResults;
 	var noteString;
-
-
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
 		noteString = "Mandal wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
@@ -4583,12 +4614,12 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:#E36A30;margin-left: 4px;;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
-	str+='	<table border="1" style="margin-top:20px;min-width:97%;" class="table table-hover table-bordered">';
-
+	str+='	<table border="1" id="mandalWiseAgePercentageTable"        style="width: 104%; max-width: 104%; margin: 1px -18px 1px 10px;" class="table table-hover table-bordered">';
+	str+='<thead class="info">';
 	str+='<tr>';
 	if(type == "constituency")
 	   str+='<th rowspan="2">Mandal Name</th>';
@@ -4630,7 +4661,8 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
 	str+='</tr>';
-
+	str+='</thead>';
+	str+='<tbody>';
 for(var i=0;i<innerResults.length;i++){
  if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
@@ -4673,10 +4705,18 @@ for(var i=0;i<innerResults.length;i++){
 	str+='</tr>';
   }
 }
+   str+='</tbody>';
    str+='</table>';
 
 $('#voterAgeAngGenderwiseDetailsInPercent').html(str);
 
+$('#mandalWiseAgePercentageTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		//"iDisplayLength":50,
+		//"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
+		//"bFilter": false,"bInfo": false
+		  //"aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null] 
+		});
 
 if(obj.retrieveType == "all"){
 	$('#tableDiv').css('display','block');
@@ -4701,7 +4741,6 @@ if(obj.retrieveType == "all"){
 
      });
 }
-
 
 
 
