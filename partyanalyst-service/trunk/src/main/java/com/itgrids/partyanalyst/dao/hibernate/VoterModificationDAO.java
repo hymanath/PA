@@ -53,7 +53,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" and model2.booth.constituency.constituencyId = :locationValue ");
@@ -124,7 +124,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.publicationDate.publicationDateId,count(model.voter.voterId),model.status,model.voter.gender,model.publicationDate.name from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" and model2.booth.constituency.constituencyId = :locationValue ");
@@ -156,7 +156,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select count(model.voter.voterId),model.status from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
 		
 		if(ageTo == null)
 			str.append(" model.voter.age > :ageFrom ");
@@ -196,7 +196,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	public List<Long> getModifiedVotersByPartNo(String partNo,Long constituencyId, Long publicationDateId, String status)
 	{
 		Query query = getSession().createQuery(" select distinct model.voter.voterId from VoterModification model, BoothPublicationVoter model2 where " +
-				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo and " +
 				" model2.booth.constituency.constituencyId = :constituencyId and model2.booth.partNo = :partNo and model.status = :status ");
 		query.setParameter("partNo",partNo);
 		query.setParameter("constituencyId",constituencyId);
@@ -209,7 +209,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	public List<Object[]> getModifiedVotersByConstituency(Long constituencyId, Long publicationDateId, String status)
 	{
 		Query query = getSession().createQuery(" select model.voter.voterId,model.partNo from VoterModification model, BoothPublicationVoter model2 where " +
-				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo and " +
 				" model2.booth.constituency.constituencyId = :constituencyId and model.status = :status ");
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
@@ -224,7 +224,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
 				" model2.booth.tehsil.tehsilId,model2.booth.tehsil.tehsilName from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model2.booth.tehsil.tehsilId in(:locationValues) and model2.booth.localBody is null ");			
 		str.append(" group by model.status,model.voter.gender , model2.booth.tehsil.tehsilId ");		
 		Query query = getSession().createQuery(str.toString());
@@ -243,7 +243,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
 				" model.booth.localBody.localElectionBodyId , model.booth.localBody.name from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model.booth.localBody.localElectionBodyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
 	    str.append(" group by model.publicationDate.publicationDateId,model.status,model.voter.gender,model.booth.localBody.localElectionBodyId");
 		
@@ -263,7 +263,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 				"model.status,model.voter.gender," +
 				"model2.booth.panchayat.panchayatId ,model2.booth.panchayat.panchayatName from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model2.booth.panchayat.panchayatId in(:locationValues) and model2.booth.localBody is null  ");
 	    str.append(" group by model.status,model.voter.gender," +
 	    		"model2.booth.panchayat.panchayatId");
@@ -282,7 +282,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
 				" model2.localBodyWard.constituencyId , model2.localBodyWard.name from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model2.localBodyWard.constituencyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
 	    str.append(" group by model.status,model.voter.gender," +
 	    		"model2.booth.panchayat.panchayatId , model2.localBodyWard.constituencyId");
@@ -302,7 +302,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
 				" model2.booth.boothId , model2.booth.partNo from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model2.booth.boothId in(:locationValues)");
 	    str.append(" group by model.status,model.voter.gender," +
 	    		"model2.booth.panchayat.panchayatId ,model2.booth.panchayat.panchayatId ,  model2.booth.boothId");
@@ -321,7 +321,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
 				" model2.booth.boothId, model2.booth.partNo from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model2.booth.boothId in(:locationValues)");
 	    str.append(" group by model.status,model.voter.gender," +
 	    		"model2.booth.panchayat.panchayatId ,model2.booth.panchayat.panchayatId ,  model2.booth.boothId");
@@ -340,7 +340,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		StringBuilder str = new StringBuilder();
 		str.append(queryString );
 		str.append("  from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId = :publicationDateId ");
+		str.append(" model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" and model2.booth.constituency.constituencyId in (:locationValuesList) ");
@@ -374,7 +374,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		StringBuilder str = new StringBuilder();
 		str.append(queryStr);
 		str.append("  from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId = :publicationDateId and ");
+		str.append(" model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo and ");
 		
 		if(ageTo == null)
 			str.append(" model.voter.age > :ageFrom ");
@@ -428,7 +428,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" select count(model.voter.voterId),model.status,model.voter.gender," +
 				" model.booth.localBody.localElectionBodyId , model.booth.localBody.name from VoterModification model, BoothPublicationVoter model2 ");
 		str.append(" where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		str.append(" and model.booth.localBody.localElectionBodyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
 	    str.append(" group by model.publicationDate.publicationDateId,model.status,model.voter.gender,model.booth.localBody.localElectionBodyId");
 		
@@ -446,7 +446,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(queryStr.toString());
 		stringBuilder.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
+		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
 		
 		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			 stringBuilder.append(" model2.booth.constituency.constituencyId = :locationValue ");
@@ -482,7 +482,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(queryStr.toString());
 		stringBuilder.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
+		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
 		
 		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			 stringBuilder.append(" model2.booth.constituency.constituencyId in(:locationValuesList) group by model2.booth.constituency.constituencyId ");
