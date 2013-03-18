@@ -20,15 +20,15 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		voterModificationDAO.getAll();
 	}*/
 	
-	/*public void testGetAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
+	public void testGetAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
 	{	
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		 publicationIdsList.add(8l);
-		List<Object[]> list = voterModificationDAO.getAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",241l,241l,publicationIdsList);
+		List<Object[]> list = voterModificationDAO.getAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",299l,299l,publicationIdsList);
 		System.out.println(list.size());
 		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
-	}*/
+	}
 	
 	public void testGetAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
 	{
