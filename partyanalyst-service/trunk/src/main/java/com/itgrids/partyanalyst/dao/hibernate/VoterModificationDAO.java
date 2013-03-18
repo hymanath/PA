@@ -21,7 +21,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select count(model.voter.voterId),model.status from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
+		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" and model2.booth.constituency.constituencyId = :locationValue ");
