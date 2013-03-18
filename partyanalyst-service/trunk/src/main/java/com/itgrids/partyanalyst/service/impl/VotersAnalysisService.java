@@ -628,14 +628,17 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			if(hamletId != null && hamletId.longValue() != 0)
 			{
-				votersList = userVoterDetailsDAO.getVoterDetailsByHamletId(hamletId, userId);
+				List<?> votersList1 = userVoterDetailsDAO.getVotersDetailsByHamletPublication(hamletId, userId,startIndex,maxRecords,order,columnName);
+				 votersList =( List<Voter>)userVoterDetailsDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId,votersList1);
+				 totalCount=(Long) userVoterDetailsDAO.getVotersCountByHamlet(hamletId,userId).get(0);
 			}
 			else
 			{
 				if(boothId != null && panchayatId == null){
-					 votersList = boothPublicationVoterDAO
+					votersList = boothPublicationVoterDAO
 							.getVotersDetailsByBoothId( boothId ,startIndex, maxRecords, order, columnName);
-					 
+					
+							  
 					 totalCount = (Long) boothPublicationVoterDAO.getVotersCountByBoothId(boothId).get(0);
 					 
 				}else if(boothId == null && panchayatId != null){
