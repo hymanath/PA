@@ -20,7 +20,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		voterModificationDAO.getAll();
 	}*/
 	
-	public void testGetAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
+	/*public void testGetAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
 	{	
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		 publicationIdsList.add(8l);
@@ -28,13 +28,30 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
-	}
+	}*/
 	
 	public void testGetAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
+		List<Object[]> list = null;
 		publicationIdsList.add(8l);
-		List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("booth",122099l,232l, publicationIdsList, 26l, 35l);
+		list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",299l,299l,publicationIdsList,18l,25l);
+		System.out.println(list.size());
+		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
+		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
+		list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",299l,299l,publicationIdsList,26l,35l);
+		System.out.println(list.size());
+		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
+		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
+		list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",299l,299l,publicationIdsList,36l,45l);
+		System.out.println(list.size());
+		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
+		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
+		list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",299l,299l,publicationIdsList,46l,60l);
+		System.out.println(list.size());
+		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
+		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
+		list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation("constituency",299l,299l,publicationIdsList,60l,null);
 		System.out.println(list.size());
 		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
@@ -44,7 +61,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
-		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationsBetweenPublications("constituency",241l,241l, publicationIdsList);
+		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationsBetweenPublications("constituency",299l,299l, publicationIdsList);
 		System.out.println(list.size());
 		for(Object[] params : list)
 		{
