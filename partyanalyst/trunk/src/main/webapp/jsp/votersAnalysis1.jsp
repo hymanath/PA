@@ -61,6 +61,11 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+
+
 <title>Voters Analysis</title>
 
 
@@ -452,9 +457,9 @@ width: 860px;}
 	color:red;
 	font-size:13px;
 }
-.noteDiv{
-   margin-bottom: -21px;
-   margin-top: 15px;
+.noteDiv {
+    margin-bottom: 18px;
+    margin-top: 29px;
 }
 #impfamilydatatable th{
   padding:5px;
@@ -771,12 +776,6 @@ h5{font-family : Arial;}
     padding: 3px 15px;}
 		
 	#votersInfoAjaxImg{right:2px;bottom:16px;position:absolute;}
-	
-	
-.ui-widget {
-    font-family: arial;
-    font-size: 1.2em;
-}
 
 #voterAgeAngGenderwiseDetailsNoteInPercent .table th, .table td{padding:6px;}
 
@@ -889,6 +888,16 @@ margin-left:10px;
 	margin:0;
 	color:#333;
 }*/
+.dataTables_length
+{
+	margin-left:16px;
+}
+.table-bordered {
+    border-collapse: separate;
+}
+.ui-widget {
+    font-family: verdana;
+}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -1273,9 +1282,8 @@ for  body3 start    result  -->
 	<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
 
 	<div id="voterAgeAngGenderwiseDetailsInPercent" style="padding:4px;" class="voterDetails"></div>
-	<div id="AgeWiseNoteDiv" style="border: 1px solid #d3d3d3;padding:5px;margin-left:45px;width:851px;"></div>
-
-	
+	<div id="AgeWiseNoteDiv" style="border: 1px solid #D3D3D3;
+    display: block;margin-bottom: 14px;margin-left: 9px;    margin-top: 33px;padding: 19px;width: 851px;"></div>
   </div>
 </div> </div><!-- Hidden Popup-->
 
