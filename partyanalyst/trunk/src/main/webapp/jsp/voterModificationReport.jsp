@@ -77,6 +77,7 @@
 #subLevelVotersTable_wrapper{padding-top: 15px;}
 #genderWiseVoterModifiMainDiv{padding-bottom: 15px;}
 #subLevelVotersTable_info,#subLevelVotersTable_paginate{margin-top: 5px;}
+.voterInfoLinksCLS:hover{text-decoration:none;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport.js"></script>
