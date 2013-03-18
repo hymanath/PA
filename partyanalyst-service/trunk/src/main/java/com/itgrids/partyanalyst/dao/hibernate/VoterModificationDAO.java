@@ -28,7 +28,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("mandal"))
 			str.append(" and model2.booth.tehsil.tehsilId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" and model2.booth.panchayat.pancahayatId = :locationValue and model2.booth.localBody is null ");
+			str.append(" and model2.booth.panchayat.panchayatId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
@@ -60,7 +60,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("mandal"))
 			str.append(" and model2.booth.tehsil.tehsilId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" and model2.booth.pancahayat.pancahayatId = :locationValue and model2.booth.localBody is null ");
+			str.append(" and model2.booth.panchayat.panchayatId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
@@ -168,7 +168,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("mandal"))
 			str.append(" and model2.booth.tehsil.tehsilId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" and model2.booth.pancahayat.pancahayatId = :locationValue and model2.booth.localBody is null ");
+			str.append(" and model2.booth.panchayat.panchayatId = :locationValue and model2.booth.localBody is null ");
 		else if(locationType.equalsIgnoreCase("booth"))
 			str.append(" and model2.booth.boothId = :locationValue ");
 		else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
@@ -285,7 +285,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) ");
 		str.append(" and model2.localBodyWard.constituencyId in(:locationValues) and model2.booth.constituency.constituencyId = :constituencyId ");
 	    str.append(" group by model.status,model.voter.gender," +
-	    		"model2.booth.pancahayat.pancahayatId ,model2.booth.pancahayat.pancahayatId , model2.localBodyWard.constituencyId");
+	    		"model2.booth.panchayat.panchayatId , model2.localBodyWard.constituencyId");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("publicationIdsList",publicationIdsList);
