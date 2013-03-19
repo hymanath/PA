@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
@@ -127,7 +128,7 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 	
 	
 	
-	public void testgetUserStatus()
+	/*public void testgetUserStatus()
 	{
 		List<Object[]> list = customMessageDAO.getUserStatus(1l, 807l);
 		if(list != null && list.size() > 0)
@@ -145,6 +146,16 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 			for(Object[] params : list)
 				System.out.println(params[0]);
 		}
+	}*/
+	
+	public void test()
+	{
+		List<Long> senderId =new ArrayList<Long>();
+		senderId.add(1l);
+		String messageType = IConstants.FREE_USER;
+		List<Object> list =customMessageDAO.getAllMessagesForUser(senderId,messageType);
+		System.out.println(list.size());
 	}
+	
 	
 }

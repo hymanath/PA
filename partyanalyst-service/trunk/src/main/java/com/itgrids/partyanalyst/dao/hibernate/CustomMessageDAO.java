@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.model.CustomMessage;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> implements
@@ -79,7 +80,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		query.append(" select model.subject, model.sender.userId, model.sender.firstName, model.sender.lastName, ");
 		query.append(" model.sender.state.stateName, model.sender.district.districtName, model.sender.constituency.name, " +
 				"model.customMessageId, model.status, model.sentDate, model.recepient.userId,model.sender.profileImg from CustomMessage");//7,8,9
-		query.append(" model where model.messageType.messageType = ? and model.recepient.userId in (:senderId)");
+		query.append(" model where model.messageType.messageType = ? and model.recepient.userId in (:senderId) and (model.isRecepientDeleted is null  or model.isRecepientDeleted = '"+IConstants.FALSE+"') ");
 		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) ");
 		query.append(" and model.sender.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
 		query.append(" order by model.customMessageId desc ");
@@ -95,7 +96,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		query.append(" select model.subject, model.recepient.userId, model.recepient.firstName, model.recepient.lastName, ");
 		query.append(" model.recepient.state.stateName, model.recepient.district.districtName, model.recepient.constituency.name, " +
 				"model.customMessageId, model.status, model.sentDate, model.sender.userId ,model.recepient.profileImg from CustomMessage");//7,8,9
-		query.append(" model where model.messageType.messageType = ? and model.sender.userId in (:senderId)");
+		query.append(" model where model.messageType.messageType = ? and model.sender.userId in (:senderId) and (model.isSenderDeleted is null or model.isSenderDeleted ='"+IConstants.FALSE+"')");
 		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) ");
 		query.append(" and model.sender.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
 		query.append(" order by model.customMessageId desc ");
@@ -251,5 +252,28 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		query.setParameter(0, profileId);
 		query.setParameter(1, userId);
 		return query.list();
+	}
+	
+	public Integer updateIsRecePient(Long userId,Long senderId,Long typeId,Long customMessageId)
+	{
+		
+		Query query = getSession().createQuery("update CustomMessage model set model.isRecepientDeleted ='true' where model.recepient.userId = :userId and model.sender.userId = :senderId and model.messageType.messageTypeId =:typeId and model.customMessageId=:customMessageId");
+		
+		query.setParameter("userId",userId);
+		query.setParameter("senderId",senderId);
+	    query.setParameter("typeId",typeId);
+	    query.setParameter("customMessageId", customMessageId);
+		return query.executeUpdate();
+	}
+	
+	public Integer updateIsSender(Long userId,Long senderId,Long typeId,Long customMessageId)
+	{
+		Query query = getSession().createQuery("update CustomMessage model set model.isSenderDeleted ='true' where model.sender.userId = :userId and model.recepient.userId = :senderId and model.messageType.messageTypeId =:typeId and model.customMessageId=:customMessageId");
+		
+		query.setParameter("userId",userId);
+		query.setParameter("senderId",senderId);
+	    query.setParameter("typeId",typeId);
+	    query.setParameter("customMessageId", customMessageId);
+		return query.executeUpdate();
 	}
 }

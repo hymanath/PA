@@ -30,5 +30,9 @@ public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 	public List<Object[]> getUserStatus(Long profileId, Long userId);
 	
 	public List<Object[]> getUserConnectStatus(Long profileId, Long userId);
+	
+	public Integer updateIsRecePient(Long userId,Long senderId,Long typeId,Long customMessageId);
+	
+	public Integer updateIsSender(Long userId,Long senderId,Long typeId,Long customMessageId);
 
 }
