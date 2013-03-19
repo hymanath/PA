@@ -1236,7 +1236,7 @@
     	<property name="cronExpression" value="0 0 14 * * ?" />
 	</bean>
 	
-	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<!--<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendDailyUpdates" />
 	</bean>
@@ -1254,14 +1254,14 @@
 	<bean name="secondCronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDaySecondBatchJobForUpdates" />
     	<property name="cronExpression" value="00 00 02 * * ?" />
-	</bean>
+	</bean>-->
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
             <ref bean="cronTriggerForEveryDayJob" />
-            <ref bean="cronTriggerForUpdates" />
-            <ref bean="secondCronTriggerForUpdates" />
+            <!--<ref bean="cronTriggerForUpdates" />
+            <ref bean="secondCronTriggerForUpdates" />-->
         </list>
     	</property>
 	</bean>
