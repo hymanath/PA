@@ -80,7 +80,7 @@
 .voterInfoLinksCLS:hover{text-decoration:none;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
-<script type="text/javascript" src="js/voterModificationReport.js"></script>
+<script type="text/javascript" src="js/voterModificationReport/voterModificationReport.js"></script>
 
 
  <script type="text/javascript">
