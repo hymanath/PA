@@ -797,7 +797,6 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		}else if(jObj.getString("type").equalsIgnoreCase("Connect")){
 			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds,IConstants.FRIEND_REQUEST,message,senderName);
 		}
-	
 		
 		return Action.SUCCESS;
 	}
@@ -1152,4 +1151,28 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return path;
 	}
 	
+	
+	public String deleteMessageFromInbox()
+	{
+		String param;
+		param = getTask();
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		if(user == null)
+		{
+			return IConstants.NOT_LOGGED_IN;
+		}
+		Long userId = user.getRegistrationID();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(jObj.getString("type").equalsIgnoreCase("Message"))
+		resultStatus = ananymousUserService.deleteMessageFromInbox(userId,jObj.getLong("senderId"),IConstants.COMMENTS,jObj.getLong("customMessageId"),jObj.getString("btnName"));
+		return Action.SUCCESS;
+		
+	}
 }

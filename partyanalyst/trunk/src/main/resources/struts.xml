@@ -2056,6 +2056,11 @@
 				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
+		<action name="deleteMessageFromInboxAction" class="connectPeopleAction" method="deleteMessageFromInbox">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
 		
 		<action name="getLocalUserGroupsAction" class="initailConstituencyManagementAction" method="getLocalUserGroups">
 			<result type="json" name="success">
