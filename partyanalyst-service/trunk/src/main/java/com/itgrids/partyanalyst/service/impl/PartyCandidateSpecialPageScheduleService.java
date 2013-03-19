@@ -15,6 +15,13 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.hibernate.exception.JDBCConnectionException;
+import org.quartz.CronTrigger;
+import org.quartz.Job;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.Scheduler;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -43,7 +50,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IJobConstants;
 
 public class PartyCandidateSpecialPageScheduleService implements
-		IPartyCandidateSpecialPageScheduleService {
+		IPartyCandidateSpecialPageScheduleService,Job{
 	
 	private static final Logger log = Logger.getLogger(PartyCandidateSpecialPageScheduleService.class);
 	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
@@ -69,6 +76,22 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	public void setCandidateSubscriptionsDAO(
 			ICandidateSubscriptionsDAO candidateSubscriptionsDAO) {
+	  try{
+		JobDetail job = new JobDetail();
+		job.setName("11:30 PM JOB");
+		job.setJobClass(PartyCandidateSpecialPageScheduleService.class);
+		CronTrigger trigger = new CronTrigger();
+		trigger.setName("11:30 PM TRIGGER");
+    	trigger.setCronExpression("00 00 13 * * ?");
+ 
+    	Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+    	scheduler.start();
+    	scheduler.scheduleJob(job, trigger);
+    	
+	  }catch(Exception e){
+		  log.error("Exception rised while calling quartz job at 11:30 PM ",e);
+	  }
+    	
 		this.candidateSubscriptionsDAO = candidateSubscriptionsDAO;
 	}
 	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
@@ -76,6 +99,23 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	public void setPartySubscriptionsDAO(
 			IPartySubscriptionsDAO partySubscriptionsDAO) {
+		
+		     try{
+				JobDetail job = new JobDetail();
+				job.setName("12:30 PM JOB");
+				job.setJobClass(PartyCandidateSpecialPageScheduleService.class);
+				CronTrigger trigger = new CronTrigger();
+				trigger.setName("12:30 PM TRIGGER");
+		    	trigger.setCronExpression("00 00 02 * * ?");
+		 
+		    	Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+		    	scheduler.start();
+		    	scheduler.scheduleJob(job, trigger);
+		    	
+			  }catch(Exception e){
+				  log.error("Exception rised while calling quartz job at 12:30 PM ",e);
+			  }
+		
 		this.partySubscriptionsDAO = partySubscriptionsDAO;
 	}
 	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
@@ -126,6 +166,14 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	public void setJobDAO(IJobDAO jobDAO) {
 		this.jobDAO = jobDAO;
+	}
+	
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		 
+		log.info("job executed started");
+		sendUpdates();
+		log.info("job executed completed");	
+		 
 	}
 	
 	public void sendUpdates(){
