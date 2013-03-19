@@ -657,8 +657,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	<div class="templateDivMsg templateholder templateMessage" >
 			<div class="white-gloss readMsg popover-title" style="padding:2px;height:30px;">
 				<div class="imgClass"></div>
-				<span class="messageFrom" style="cursor: pointer;"></span>
-				<span class="dateAndTimeReceived"></span>
+				<div class="toggleDiv" style="width:100%;">
+				<span class="messageFrom" style="cursor: pointer;width:27%;"></span>
+				
+				<span class="dateAndTimeReceived" style="float:left;width:32%;"></span>
+				</div>
+				<span class="delete"></span>
+				
 				
 			</div>
 			<input type="hidden" class="msgid">

@@ -10,6 +10,26 @@ var jcrop_api;
 var flag=false;
 var flag1=false;
 $("document").ready(function(){
+
+	
+$('#connectMessageText').live("keyup",function() {
+
+	var limitFieldElmt = document.getElementById('connectMessageText');
+	var limitCountElmt = document.getElementById('maxcount');
+	var limitNum = 300;
+
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+
+});
+
+
 	setInterval("callForEveryFiveMins()", 10*60*60*5);
     $("#subscriptionsStreamingMore").live("click",function(){
 	  getSubscriptionDetails("old");
@@ -748,7 +768,8 @@ $(".unreadfont").live("click",function(){
   
 	});
 	
-	$(".readMsg").live("click",function(){
+	$(".toggleDiv").live("click",function(){
+		
 		$(this).closest(".templateMessage").find(".msgbox").toggle('slow');
 	});
 	
@@ -1052,6 +1073,11 @@ function callAjax1(jsObj,url){
 							{
 								iterateDetailsNames(results);
 							}
+
+					else if(jsObj.task == 'deleteMessageFromInbox')
+					{
+						showDeleteMessagesStatus(results,jsObj);
+					}
 			}catch (e) {  
                   $("#subscriptionsStreamingAjaxImg").hide();			
 			   	//alert("Invalid JSON result" + e);   
@@ -1304,6 +1330,8 @@ function getStatesInPs()
 
 
 function updatedInfo(results){
+$("#Inbox").trigger("click");
+
 	return;
 }
 function getFriendsListForUser(results)
@@ -1346,7 +1374,7 @@ function getFriendsListForUser(results)
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
+		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message" class="btn btn-mini"></a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 
@@ -1446,6 +1474,7 @@ function showRequestedMessagesForAUser(results)
 {
 	inboxCount=results.unreadMsgCount;
 	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
@@ -1456,7 +1485,8 @@ function showRequestedMessagesForAUser(results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html("No messages has been sent to you.");
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$(".placeholderCenterDiv").html("No messages has been sent to you.");
 		return;
 	}
 		
@@ -1481,8 +1511,11 @@ function showRequestedMessagesForAUser(results)
 		else{
 				templateClone.find('.imgClass').html('<img height="30" width="30" src="images/icons/indexPage/human.jpg"/>');
 			}
+			
+			
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
-			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"><i class=" icon-repeat"></i> Reply</a>');
+			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" href="#" class="btn" style="color:black;" name="Inbox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'Inbox\','+results.candidateVO[i].costumMessageId+')">Delete</a>');
+			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"> Reply</a>');
 			
 			/*templateClone.find(".reply").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')" class="btn" title="reply">Reply</a>');
 			
@@ -1498,7 +1531,7 @@ function showSentBoxMessagesForAUser(results)
 {
 	
 	$("#headerDiv").html('');
-	
+	$(".placeholderCenterDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
@@ -1509,7 +1542,8 @@ function showSentBoxMessagesForAUser(results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html("No messages has been sent by you.");
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$(".placeholderCenterDiv").html("No messages has been sent by you.");
 		return;
 	}
 		
@@ -1524,6 +1558,7 @@ function showSentBoxMessagesForAUser(results)
 		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
 			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
 			//templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" href="#" name ="sentBox" class="btn" style="color:black;" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')">Delete</a>');
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			if(results.candidateVO[i].profileImg!=""){
 			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
@@ -1537,7 +1572,23 @@ function showSentBoxMessagesForAUser(results)
 		}
 }
 
-
+function deleteMail(senderId,type,btnName,customMessageId)
+{
+if (confirm("Are you sure you wato to Delete"))
+	{
+var jsObj ={
+				loginUserId:loginUserId,
+				senderId:senderId,
+				type:type,
+				customMessageId:customMessageId,
+				btnName:btnName,
+				task:"deleteMessageFromInbox"
+			 };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "deleteMessageFromInboxAction.action?"+rparam;					
+	callAjax1(jsObj,url);
+	}
+}
 
 function showMailPopup(id,name,type)
 {
@@ -1556,8 +1607,10 @@ function showMailPopup(id,name,type)
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'></label>");
-		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'></textarea><br>");
-		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		
+		var button = $("<div id='remainChars'><span id='maxcount'>300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		//var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..' onkeyup='limitText('connectMessageText','maxcount',200)'></textarea><br>");
+		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..' ></textarea><br>");
 		div.append(errorDiv);
 		div.append(label);
 		div.append(textarea);
@@ -1565,7 +1618,22 @@ function showMailPopup(id,name,type)
 		$('#allConnectedUsersDisplay_main').append(div);
 
 }
+function limitText(limitField, limitCount, limitNum)
+{	
+	alert('jkdsf');
+	
+	var limitFieldElmt = document.getElementById(limitField);
+	var limitCountElmt = document.getElementById(limitCount);
 
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+}
 function sendMessageToConnectedUser(userId,type)
 {	
 	var connectMsg = $.trim($("#connectMessageText").val());
@@ -3032,7 +3100,7 @@ function displayLocationScope(id){
 		$("#Constituencydiv").css("display","block");
 		
 	}
-	if(id == 'Special Page'){
+	if(id == 'SpecialPage'){
 		$("#specialDiv").css("display","block");
 		$("#Statediv").css("display","none");
 		$("#Districtdiv").css("display","none");
@@ -3069,7 +3137,7 @@ var str='';
 str+='<input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State"/> State';
 str+=' <input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District"/> District';
 str+='  <input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency"/>  Constituency';
-str+=' <input type="radio" id="Special Page" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page"/> Special Page';
+str+=' <input type="radio" id="SpecialPage" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page"/> Special Page';
 str+='  <div id="electionTypes" style="display: none;"><input type="radio" id="Assembly" name="typeRadio"  value="Assembly" checked="checked"/> Assembly ';
 str+=' <input type="radio" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</div>';
 str+='<div id="Statediv" style="display:none;"> Select State:<select id="stateList" name="stateList" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
@@ -3140,7 +3208,7 @@ var jsObj=
 }
 
 function showSelectBoxForSpecialPages(results){
-	debugger;
+	
 	var elmt = document.getElementById("specialPageList");
 	
 	if( !elmt || results == null)
@@ -3351,6 +3419,15 @@ function getAllConnectedDistrictWise1UsersByFilterView(locationType,userId)
 			}
 		});
 		custom_paginator.initialize();	
+}
+
+function showDeleteMessagesStatus(results,jsObj)
+{
+
+if(jsObj.btnName == 'Inbox')
+$("#Inbox").trigger("click");
+	else
+$("#SentBox").trigger("click");
 }
 
 // ending ----------You May Know Module (See All) updated by Srishailam------
