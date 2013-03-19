@@ -108,7 +108,7 @@
 	#allElectionResultsInDT_body
 	{
 	width:975px;
-	margin-top:-7px;
+	margin-top:-10px;
 	}
 
 	#zptc_body,#mptc_body
@@ -147,9 +147,11 @@ background:white;border-radius:50%; margin:0px 10px;}
 	background-color: #ffffff;
    }
    .main-title-sec {
-    width: 986px;
+    width: 982px;
 	margin-top: 30px;
-	margin-left:13px;
+	margin-left:auto;
+	margin-right:auto;
+	float:none;
   }
   .connect-people-sec {
     width: 331px;
@@ -1974,7 +1976,7 @@ var queryString='';
 		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width:983px;float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
-			<h3 style="margin-top:4px;font-weight:bold;font-family:verdana;font-size:18px;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
+			<h3 style="margin-top:0px;font-weight:bold;font-family:verdana;font-size:18px;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
 				<div id="allElectionResultsInDT"  class="allianceListDiv" style="margin-top:-36px;padding-top:18px;">
 					<div id="allElectionResultsInDT_head" style="clear:both;"></div>
 					<div id="allElectionResultsInDT_body"></div>
