@@ -460,7 +460,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 							<li> 
 						<c:choose>
 							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
-								<a id="dashBoardId" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+							<a id="dashBoardId" href="<c:out value="${pageContext.request.contextPath}" />/userProfile.action" >
 										<span id="dashBoardSpanId" >DASHBOARD</span>
 									</a> 
 							</c:when>
