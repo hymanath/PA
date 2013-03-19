@@ -2343,6 +2343,7 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 	Long unreadMsgCount= 0l;
 	String message,data;
 	try{
+		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:MM");
 		List<Object> result = customMessageDAO.getAllMessagesForUser(userId,messageType);
 		if(result!=null && result.size()!=0){
 			totalMsgCount = new Long(result.size());
@@ -2384,7 +2385,7 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 					unreadMsgCount++;
 				
 				candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
-				candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversion(parms[9].toString()):"");
+				candidateResults.setPostedDate(parms[9]!=null?dateFormat.format((Date)parms[9]):"");
 				candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
 				String profileImg=(parms[11]!=null)?parms[11].toString():"";
 				candidateResults.setProfileImg(profileImg);
@@ -3017,6 +3018,31 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 		return null;
 		
 	}
+}
+/** This method is used to delete Inboxmsgs,SentBoxmsgs **/
+public ResultStatus deleteMessageFromInbox(Long userId,Long senderId,String type,Long customMessageId,String btnName)
+
+{
+	ResultStatus resultStatus = new ResultStatus();
+	try
+	{
+		
+		if(type.equalsIgnoreCase(IConstants.COMMENTS));
+		{
+		Long typeId = 5l;
+		if(btnName.equalsIgnoreCase("sentBox"))
+		customMessageDAO.updateIsSender(userId, senderId, typeId,customMessageId);
+		else
+		 customMessageDAO.updateIsRecePient(userId, senderId, typeId,customMessageId);
+		}
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	}
+	return resultStatus;
 }
 
 }

@@ -24,6 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name= "custom_message")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CustomMessage extends BaseModel implements Serializable {
+	
 
 	/**
 	 * 
@@ -37,6 +38,8 @@ public class CustomMessage extends BaseModel implements Serializable {
     private MessageType messageType;
     private User sender;
     private User recepient;
+    private String isSenderDeleted;
+    private String isRecepientDeleted;
 	
 	//Default Constructor
 	public CustomMessage(){		
@@ -127,6 +130,22 @@ public class CustomMessage extends BaseModel implements Serializable {
 
 	public void setRecepient(User recepient) {
 		this.recepient = recepient;
+	}
+	@Column(name="is_sender_deleted")
+	public String getIsSenderDeleted() {
+		return isSenderDeleted;
+	}
+
+	public void setIsSenderDeleted(String isSenderDeleted) {
+		this.isSenderDeleted = isSenderDeleted;
+	}
+	@Column(name="is_recepient_deleted")
+	public String getIsRecepientDeleted() {
+		return isRecepientDeleted;
+	}
+
+	public void setIsRecepientDeleted(String isRecepientDeleted) {
+		this.isRecepientDeleted = isRecepientDeleted;
 	}
 	
 }

@@ -94,4 +94,6 @@ public interface IAnanymousUserService {
 	
 	public String saveUserFavouriteLink(Long userId , String link,String pageTitle, String queryString , String environment);
 	
+	public ResultStatus deleteMessageFromInbox(Long userId,Long senderId,String type,Long customMessageId,String btnName);
+	
 }	
