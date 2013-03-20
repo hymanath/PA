@@ -301,6 +301,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
 					<li><a href="javascript:{}" class="ImportantDates"><i class="icon-calendar"></i><i class="icon-chevron-right"></i> Important Dates</a></li>
 					<li><a  href="javascript:{}" class="problemsLink"><i class="icon-exclamation-sign"></i><i class="icon-chevron-right"></i> Problems</a><input type="hidden" value="Total" class="problemTypeVariable"/></li>
+
 					</ul>
 				</div>
 				
@@ -317,7 +318,36 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
 					<c:if test="${hasNewsMonitoring == true}">
 					<li class="active"><a href="javascript:{}" class="active" onclick="getNews('byTodayDate','getCount','','','','','','','')" id="customerNews"><i class="icon-file"></i><i class="icon-chevron-right"></i> News</a></li>
+					</c:if>
 					
+					<c:if test="${hasSubUserEntitlement}">
+					<li><a href="subUserRegPageAction.action?registrationType=subUser" id="FavouriteLinks" target="_blank"><i class="icon-user"></i><i class="icon-chevron-right"></i> Add Sub User</a></li>
+					</c:if>
+					
+					<c:if test="${hasCallCenterEntitlment}">
+					<li><a href="callCenterAction.action" id="callCenter" target="_blank"><img src="images/icons/callCenter.png" style="width:20px;"><i class="icon-chevron-right"></i> Call Center</a></li>
+					</c:if>
+					
+					<c:if test="${hasProfileManagement}">
+					<li><a href="profileManagePageAction.action" id="manageProfile" target="_blank"><img src="images/icons/profile.png" style="width:20px;"><i class="icon-chevron-right"></i> Manage Profiles</a></li>
+					</c:if>
+					
+					<c:if test="${hasNewsMonitoring == true}">
+					<li><a href="newsDisplayAction.action" id="newsAnalysis" target="_blank"><img src="images/graph.png" style="width:20px;"></i><i class="icon-chevron-right"></i> News Analyse</a></li>
+					</c:if>
+					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
+					<li><a href="javascript:{}" id="announcements"><i class="icon-bullhorn"></i><i class="icon-chevron-right"></i> Announcements</a></li>
+					<li><a href="userGroupAction.action" id="userGroups" target="_blank"><img src="images/icons/indexPage/group_icon.png" style="width:20px;"><i class="icon-chevron-right"></i> User Groups</a></li>
+					
+					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>
+					
+					<li ><a href="javascript:{}" id="cadreInfoLink" onClick="getCadresInfo();"><i class="icon-user"></i><i class="icon-chevron-right"></i> Cadre Info</a></li>
+					<li><a href="cadreManagementAction.action#cadreManagementMainDiv" class="ImportantEvents" target="_blank"><i class="icon-calendar"></i><i class="icon-chevron-right"></i> Important Events</a></li>
+					</c:if>
+					<c:if test="${hasNewsMonitoring == true}">
+					<li><a href="newsDisplayAction.action" class="accessNewsArticles" target="_blank"><i class="icon-file"></i><i class="icon-chevron-right"></i> Access News Articles</a></li>
+					
+					<li><a href="generatePdfForGallaryAction.action" class="accessNewsArticles" target="_blank"><i class="icon-film"></i><i class="icon-chevron-right"></i> Generate Pdf For Gallery</a></li>
 					</c:if>
 					
 					</ul>
@@ -386,6 +416,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				
 	<!--PRASAD-->
 						</div>
+						<div id="caderInfo"></div>
+						
+						<div id="announcementsDiv" style="display:none;">
+						<div id="addNewAnnouncement"><a onclick="openNewAnnouncementPopup()" href="javascript:{}">Add New Announcement</a></div>
+						<div id="viewAllAnnouncements"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
+						
+						</div>
+						
 						<div class="FavoriteLinksDiv breadcrumb  ">
 							
 							<div class="stateDivMain ">
@@ -405,7 +443,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading specialPageDivheading specialPageHeadingCls"></div>
 						        <div class="specialPageDivInnerFav"></div>
 							</div>
-
+				
 						</div>
 				</div>
 
