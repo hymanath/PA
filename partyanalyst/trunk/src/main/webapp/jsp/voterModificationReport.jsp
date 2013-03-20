@@ -132,12 +132,7 @@
 			   <img src="images/icons/search.gif" />
 			</span>
 		</div>
-		<div id="voterAgeInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
-			<span id="voterAgeInfoAjaxImg" style="display:none;float: right;clear:both;">
-			   <img src="images/icons/search.gif" />
-			</span>
-		</div>
-		
+				
 		<div id="voterGenderInfoMainDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
 			<img src="images/icons/search.gif" style="display:none;float: right;clear:both;" id="voterGenderInfoDivAjaxImg"/>
 			<div id="voterGenderInfoDiv"></div>
@@ -147,6 +142,13 @@
 			<img src="images/icons/search.gif" style="display:none;float: right;clear:both;" id="genderWiseVoterModifiAjaxImg"/>
 			<div id="genderWiseVoterModifiDiv"></div>
 		</div>
+		
+		<div id="voterAgeInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+			<span id="voterAgeInfoAjaxImg" style="display:none;float: right;clear:both;">
+			   <img src="images/icons/search.gif" />
+			</span>
+		</div>
+
 
 		<div id="subLevelsMainDiv" class="widget blue whitegloss" style="margin-top: 20px; display: inline-block; position: relative; color: #000; width: 96%;">
 		   <div id="subLevelDiv" style="margin:5px 0px 30px 0px;"></div>
