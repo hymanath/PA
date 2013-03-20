@@ -1545,7 +1545,7 @@ function showRequestedMessagesForAUser(results)
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			//templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" href="#" class="btn" style="color:black;" name="Inbox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'Inbox\','+results.candidateVO[i].costumMessageId+')">Delete</a>');
 
-			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="Inbox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'Inbox\','+results.candidateVO[i].costumMessageId+')"><img src="images/crossout.jpg" width="14" height="15"/></a>');
+			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="Inbox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'Inbox\','+results.candidateVO[i].costumMessageId+')"><img class="deleteImg" id="deleteImg_1" src="images/icons/delete.png" alt="deleteImg" width="13" height="13"></a>');
 			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"> Reply</a>');
 			
 			/*templateClone.find(".reply").html('<a href="javascript:{}" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')" class="btn" title="reply">Reply</a>');
@@ -1590,7 +1590,7 @@ function showSentBoxMessagesForAUser(results)
 			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
 			//templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
 			//templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" href="#" name ="sentBox" class="btn" style="color:black;" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')">Delete</a>');
-			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="sentBox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')"><img src="images/crossout.jpg" width="14" height="15"/></a>');
+			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="sentBox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')"><img class="deleteImg" id="deleteImg_1" src="images/icons/delete.png" alt="deleteImg" width="13" height="13"></a>');
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
 			if(results.candidateVO[i].profileImg!=""){
 			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
