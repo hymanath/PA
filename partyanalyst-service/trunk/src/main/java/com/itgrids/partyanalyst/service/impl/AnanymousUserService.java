@@ -2343,7 +2343,7 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 	Long unreadMsgCount= 0l;
 	String message,data;
 	try{
-		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:MM");
+		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SS");
 		List<Object> result = customMessageDAO.getAllMessagesForUser(userId,messageType);
 		if(result!=null && result.size()!=0){
 			totalMsgCount = new Long(result.size());

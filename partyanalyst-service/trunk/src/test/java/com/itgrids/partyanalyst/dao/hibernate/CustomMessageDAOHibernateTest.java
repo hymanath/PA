@@ -151,9 +151,9 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 	public void test()
 	{
 		List<Long> senderId =new ArrayList<Long>();
-		senderId.add(1l);
-		String messageType = IConstants.FREE_USER;
-		List<Object> list =customMessageDAO.getAllMessagesForUser(senderId,messageType);
+		senderId.add(611l);
+		String messageType = IConstants.COMMENTS;
+		List<Object> list =customMessageDAO.getAllSentMessagesForUser(senderId,messageType);
 		System.out.println(list.size());
 	}
 	
