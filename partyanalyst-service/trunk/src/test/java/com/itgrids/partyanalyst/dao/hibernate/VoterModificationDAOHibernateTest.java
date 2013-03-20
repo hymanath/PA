@@ -92,15 +92,15 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testGetGenderWiseVoterModificationByPublicationId()
+	public void testGetGenderWiseVoterModificationByPublicationId()
 	{
 		List<Long> locationValuesList = new ArrayList<Long>(0);
-		locationValuesList.add(1l);
-		String locationType = "panchayat";
+		locationValuesList.add(232l);
+		String locationType = "localElectionBody";
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count(model.voter.voterId),model.status,model.voter.gender ");
+		queryStr.append(" select count(distinct model.voter.voterId),model.status,model.voter.gender ");
 		 
-		 if(locationType.equalsIgnoreCase("constituency"))
+		 if(locationType.equalsIgnoreCase("panchayat"))
 			 queryStr.append(" ,model2.booth.constituency.constituencyId ");
 			else if(locationType.equalsIgnoreCase("mandal"))
 				queryStr.append(", model2.booth.tehsil.tehsilId ");
@@ -113,17 +113,37 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			else if(locationType.equalsIgnoreCase("ward"))
 				queryStr.append(" ,model2.localBodyWard.constituencyId ");
 		
-		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, 232l, 7l,queryStr.toString());
+		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, 232l, 83l,queryStr.toString());
 		
 		System.out.println(list.size());
 		if(list != null && list.size() > 0)
 		{
+			Long addedTotal = 0l;
+			Long deletedTot = 0l;
 			for(Object[] params : list)
-				System.out.println(params[0]); 
+			{
+				if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+				 {
+					 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+						 System.out.println("Added male : "+(Long)params[0]);
+					 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+						 System.out.println("added female :"+(Long)params[0]);
+					 System.out.println(addedTotal += (Long)params[0]); 
+					 
+				 }
+				 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+				 {
+					 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+						 System.out.println("deleted male : "+(Long)params[0]);
+					 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+						 System.out.println("deleted female : "+(Long)params[0]);
+					 System.out.println(deletedTot += (Long)params[0]); 
+				 }
+			}
+				
 				
 		}
 	}
-	*/
 	
 	/*public void testGetAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation()
 	{

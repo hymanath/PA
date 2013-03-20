@@ -1770,7 +1770,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 List<Object[]> list  = null;
 				  list = voterModificationInfoDAO.getVoterModificationGenderDetailsByLocationValuesList(optionVO.getLocationValuesList(), publicationIdsList, constituencyId, votersAnalysisService.getReportLevelId(optionVO.getType()));
 				 if(list != null && list.size() > 0)
-					 getVotermodificationDetailsFromVoterModifInfoTable(list, voterModificationVOsList,optionVO);
+					 getVotermodificationDetailsFromVoterModifInfoTable(list, voterModificationVOsList,optionVO,publicationIdsList,constituencyId);
 				 else
 				 {
 					 String queryString = getVoterModificationSublevelQueryString(optionVO.getType());
@@ -1789,7 +1789,7 @@ public class VoterModificationService implements IVoterModificationService{
 	 }
 	 
 	 
-	 public void getVotermodificationDetailsFromVoterModifInfoTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOs, SelectOptionVO optionVO)
+	 public void getVotermodificationDetailsFromVoterModifInfoTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOs, SelectOptionVO optionVO, List<Long> publicationIdsList, Long constituencyId)
 	 {
 		 try{
 			 
@@ -1853,8 +1853,9 @@ public class VoterModificationService implements IVoterModificationService{
 								} 
 							
 						 }
-						 
 						
+						 modificationVO.setSelectOptionVOsList(getTotalVotersByPublicationIdsList(publicationIdsList, votersAnalysisService.getReportLevelId(optionVO.getType()), (Long)params[4], constituencyId));
+						 
 					   }
 					 }
 					 voterModificationVOs.add(modificationVO);
@@ -1935,5 +1936,25 @@ public class VoterModificationService implements IVoterModificationService{
 			 
 		}
 	 }
+	 
+	 
+	 public List<SelectOptionVO> getTotalVotersByPublicationIdsList(List<Long> publicationDateIdsList, Long reportLevelId, Long locationValue, Long constituencyId)
+	 {
+		 try{
+			 
+			 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			 
+			List<Object[]> list = voterInfoDAO.getTotalVotersByPublicationDateIdsList(publicationDateIdsList, reportLevelId, locationValue, constituencyId);
+			 if(list != null && list.size() > 0)
+				 for(Object[] params : list)
+					 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			 
+			 return selectOptionVOList;
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getTotalVotersByPublicationIdsList() method, Exception - "+e);
+			 return null;
+		}
+	}
 	 
 }
