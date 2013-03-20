@@ -720,7 +720,7 @@ function buildProblemViewingWindow()
 	if(constituencyPageMainObj.problemsInfo.length == 0)
 	{
 		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
-		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+		str+='<span><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></span>';
 		str+='<span> No problems has been posted </span>';
 		str+='</div>';
 	}
@@ -734,7 +734,7 @@ function buildProblemViewingWindow()
 			str+='<table>';
 			str+='	<tr>';
 			str+='		<td width="80%">';
-			str+='			<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+			str+='			<span><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='			<span>';
 			str+='				<a class="districtAnc" href="completeProblemDetailsAction.action?problemId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
 			str+='		</td>';
