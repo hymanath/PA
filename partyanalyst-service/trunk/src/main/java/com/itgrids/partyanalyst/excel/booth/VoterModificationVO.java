@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.excel.booth;
 import java.io.Serializable;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+
 public class VoterModificationVO implements Serializable{
 
 	private static final long serialVersionUID = 8698571252742085313L;
@@ -19,6 +21,7 @@ public class VoterModificationVO implements Serializable{
 	private Long maleVotersDeleted = 0L;
 	private Long femaleVotersDeleted = 0L;
 	private String locationType;
+	private List<SelectOptionVO> selectOptionVOsList;
 	
 
 	public Long getMaleVotersDeleted() {
@@ -124,6 +127,14 @@ public class VoterModificationVO implements Serializable{
 
 	public void setLocationType(String locationType) {
 		this.locationType = locationType;
+	}
+
+	public List<SelectOptionVO> getSelectOptionVOsList() {
+		return selectOptionVOsList;
+	}
+
+	public void setSelectOptionVOsList(List<SelectOptionVO> selectOptionVOsList) {
+		this.selectOptionVOsList = selectOptionVOsList;
 	}
 	
 	
