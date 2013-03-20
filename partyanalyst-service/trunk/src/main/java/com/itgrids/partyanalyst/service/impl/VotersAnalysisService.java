@@ -2233,6 +2233,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 		    	voterHouseInfoVO.setBoothId(boothId);
 		    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
+		    	voterHouseInfoVO.setBoothName(boothDAO.getPartNoByBoothId(voterHouseInfoVO.getBoothId()).get(0).toString());
 		    	VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
 		    	
 		    	setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
@@ -12675,6 +12676,24 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				
 			}
 		
+			
+		}
+		
+		public List<VoterHouseInfoVO> getVotersFamilyDetailsByConstituencyId(Long frompublicationId,Long toPublicationId,Long partNo,String hno,Long userId)
+		{
+			
+			List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
+			List<Long> publicationId = boothPublicationVoterDAO.getVoterPublicationIdsBetweenTwoPublications(frompublicationId,toPublicationId);
+			
+			try{
+				
+				resultList = getFamilyInformation(partNo, publicationId.get(0),hno,userId);
+			}
+			catch(Exception e)
+			{
+				log.error("Exception Occured in getVotersFamilyDetailsByConstituencyId() - method" +e);
+			}
+			return resultList;
 			
 		}
 }
