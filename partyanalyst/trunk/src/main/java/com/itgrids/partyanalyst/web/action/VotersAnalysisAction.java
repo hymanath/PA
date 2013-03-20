@@ -1370,6 +1370,23 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getVotersFamilyDetailsByConstituencyId(){
+		try{
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long userId =  regVO.getRegistrationID();
+			
+			votersFamilyInfo = votersAnalysisService.getVotersFamilyDetailsByConstituencyId(jObj.getLong("fromPublication"),jObj.getLong("ToPublication"),jObj.getLong("partNo"),jObj.getString("hno"),userId);
+			
+		}catch(Exception e){
+			log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
+		}
+		
+		return SUCCESS;
+	}
+
 	
 }

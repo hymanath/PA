@@ -698,7 +698,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				<div class="toggleDiv" style="width:100%;">
 				<span class="messageFrom" style="cursor: pointer;width:40%;"></span>
 				
-				<span class="dateAndTimeReceived" style="float:left;width:35%;"></span>
+				<span class="dateAndTimeReceived" style="float:left;width:40%;"></span>
 				</div>
 				<span class="delete" style="float:right;"></span>
 				

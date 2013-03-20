@@ -78,6 +78,30 @@
 #genderWiseVoterModifiMainDiv{padding-bottom: 15px;}
 #subLevelVotersTable_info,#subLevelVotersTable_paginate{margin-top: 5px;}
 .voterInfoLinksCLS:hover{text-decoration:none;}
+
+#voterimpFamDtls table{ border: 1px solid #D3D3D3;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 100%;margin-top:10px;}
+#voterimpFamDtls table tr:nth-child(even){background:#EdF5FF;}
+
+#voterimpFamDtls table th a{color:#333333;text-align:center;}
+#voterimpFamDtls table th{background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;}
+	#voterimpFamDtls table td{color: #676A67;
+    font: small-caption;
+    padding: 8px 8px 8px 10px;}
+
+	.ui-widget-header {
+    background: none repeat scroll 0 0 #4285F4;
+    color: #FFFFFF;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport/voterModificationReport.js"></script>
@@ -257,8 +281,9 @@
 
   </div>
 </div>
-
-
+<div id="voterimpFamDtlsOuterPopUp">
+ <div id="voterimpFamDtls" class="yui-skin-sam yui-dt-sortable"></div>
+ </div>
 <script type="text/javascript">
 
 getPublicationDate();

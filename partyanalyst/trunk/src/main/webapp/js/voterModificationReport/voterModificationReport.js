@@ -236,6 +236,12 @@ function getPublicationDate()
 								buildSubLevelInformation(jsObj,myResults);
 								
 								}
+
+								else if(jsObj.task == "getVotersInAFamilyByConstituencyId")
+								{
+									buildFamilyInfo(myResults,jsObj.partNo);
+								}
+									
 									
 								
 							}catch (e) {
@@ -800,7 +806,7 @@ function showAllVoterInformationInALocation(results)
 		str+='<td>'+results[i].firstName+'</td>';
 		str+='<td style="text-align:center;">'+results[i].gender+'</td>';
 		str+='<td style="text-align:center;">'+results[i].age+'</td>';
-		str+='<td style="text-align:center;">'+results[i].houseNo+'</td>';
+		str+='<td style="text-align:center;"><a onclick="getVotersInAFamilyByPublication('+results[i].boothId+','+fromPublicationDateId+','+toPublicationDateId+',\''+results[i].houseNo+'\')">'+results[i].houseNo+'</a></td>';
 		str+='<td style="text-align:center;">'+results[i].status+'</td>';
 		str+='<td>'+results[i].boothName+'</td>';
 		str+='<td>'+results[i].panchayatName+'</td>';
@@ -967,4 +973,73 @@ function openNewWindow(locationType, locationId)
 
   var updateBrowser = window.open(urlStr,'',"scrollbars=yes,height=600,width=750,left=200,top=200", '_blank');	
 	updateBrowser.focus();
+}
+
+function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,hNo){
+    var jsObj=
+			{
+					
+				hno:hNo,
+				fromPublication:fromPublication,
+				ToPublication:ToPublication,
+				partNo:partNo,
+				task:"getVotersInAFamilyByConstituencyId"
+	
+			}
+	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersInAFamilyByConstituencyId.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+function buildFamilyInfo(results,partNo)
+{
+	
+	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var id=oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		var name = oRecord.getData("name");
+		elLiner.innerHTML ='<a id="openProblemEditFormId" onclick=" openProblemEditForm('+id+','+boothId+');">'+name+'</a>';
+		
+	}
+	  YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var name = oData;
+		var id= oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+id+"'/><input type='hidden' class='selectedBoothId' value='"+boothId+"'/>";
+					
+	  };
+     var votersResultColumnDefs = [ 		    	             
+		    	           // {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
+							//{key:"sNo", label: "SNo", sortable: true},
+		    	           	{key:"name", label: "Name", sortable: true},
+							{key:"gender", label: "Gender", sortable: true},
+		    				{key:"age", label: "Age",sortable:true},
+							{key:"houseNo", label: "House No",sortable:true},
+							{key:"gaurdian", label: "Guardian Name",sortable:true},
+							{key:"relationship", label: "Relationship",sortable:true},
+							{key:"boothName",label:"Booth",sortable:true},
+							{key:"mobileNo",label:"MobileNo",sortable:true}
+						]; 
+
+    var myConfigs = { 
+			    
+				};
+	var myDataSource = new YAHOO.util.DataSource(results);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : ["name","gender","age","houseNo","gaurdian","relationship","voterId","boothName"]
+					};
+
+		var familesDataSource = new YAHOO.widget.DataTable("voterimpFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
+    $("#voterimpFamDtlsOuterPopUp").dialog({
+            modal: true,
+            title: "<b>Voters Details</b>",
+			width: 910,
+            height: 450
+           
+        });
 }
