@@ -696,11 +696,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 			<div class="white-gloss readMsg popover-title" style="padding:2px;height:30px;">
 				<div class="imgClass"></div>
 				<div class="toggleDiv" style="width:100%;">
-				<span class="messageFrom" style="cursor: pointer;width:27%;"></span>
+				<span class="messageFrom" style="cursor: pointer;width:40%;"></span>
 				
-				<span class="dateAndTimeReceived" style="float:left;width:32%;"></span>
+				<span class="dateAndTimeReceived" style="float:left;width:35%;"></span>
 				</div>
-				<span class="delete"></span>
+				<span class="delete" style="float:right;"></span>
 				
 				
 			</div>
