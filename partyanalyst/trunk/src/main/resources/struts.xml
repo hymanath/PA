@@ -4660,6 +4660,13 @@
               <param name="root">assemblyLocalEleBodyId</param>
            </result>
 		</action>
+			<action name="getVotersInAFamilyByConstituencyId" class="votersAnalysisAction" method="getVotersFamilyDetailsByConstituencyId">
+			<result type="json" name="success">
+				<param name="root">votersFamilyInfo</param>				
+			</result> 
+		</action>
+		
+		
 		
 		</package>
 </struts>      
