@@ -62,6 +62,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getLatestFriendsListAction.action?"+rparam;
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 		
 	});
@@ -73,7 +74,8 @@ $('#connectMessageText').live("keyup",function() {
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getReqMessagesForUserAction.action?"+rparam;	
-		$("#impdatesDiv").hide();		
+		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();		
 		callAjax1(jsObj,url);
 		
 	});
@@ -84,6 +86,7 @@ $('#connectMessageText').live("keyup",function() {
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
 		$("#impdatesDiv").show();
+		$("#announcementsDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
 		var date = new Date();
 		var month = date.getMonth();
@@ -91,7 +94,14 @@ $('#connectMessageText').live("keyup",function() {
 		var year = date.getFullYear();	
 		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 	});
-	
+	$("#announcements").click(function(){
+		clearAllSubscriptionDivs();
+		clearAllFavoriteLinkDivs();
+		$("#announcementsDiv").show();
+		$("#impdatesDiv").hide();
+		$(".placeholderCenterDiv").children().remove();
+		$('#headerDiv').html('<b>Announcements</b>');
+	});
 	$("#settings").click(function(){
 	     $("#subscriptionsStreamingMoreDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
@@ -109,6 +119,7 @@ $('#connectMessageText').live("keyup",function() {
 		//$("#headerDiv").append("<ul id='accountStngs'><li><span style='font-weight:bold;'>Settings</span></li><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
 		$("#headerDiv").append(str);
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 	});
 	
 	$(".messagesLink").click(function(){
@@ -117,6 +128,7 @@ $('#connectMessageText').live("keyup",function() {
 		if($("#headerDiv").find("#Inbox").length<1) {
 		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active' ><a id='Inbox' href='' >Inbox</a></li><li><a id='SentBox' href=''>Sent</a></li></ul>"); }
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		$("#Inbox").trigger("click");
 
 				
@@ -134,6 +146,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getAllRequestMessagesForAUserAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
 
@@ -155,6 +168,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getAllSentMessagesForAUserAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
 	
@@ -166,6 +180,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getSpecialPageAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
 	
@@ -179,6 +194,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getFavouriteLinksAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
 
@@ -194,6 +210,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getUserSubScriptionsAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 
 	});
@@ -216,7 +233,8 @@ $('#connectMessageText').live("keyup",function() {
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";
-	$("#impdatesDiv").hide();	
+	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();	
 	callAjax1(jsObj,url);
 	});
 
@@ -235,7 +253,8 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";
-	$("#impdatesDiv").hide();	
+	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();	
 	callAjax1(jsObj,url);
 	});
 
@@ -258,6 +277,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
 	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();
 	callAjax1(jsObj,url);
 	});
 
@@ -278,6 +298,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
 	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();
 	callAjax1(jsObj,url);
 	});
 
@@ -333,6 +354,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		div.append(connectedPersonId);
 		$('#allConnectedUsersDisplay_main').append(div);
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
 	});
 
 
@@ -368,7 +390,8 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserAction.action?"+rparam;					
 	callAjax1(jsObj,url);
-	$("#impdatesDiv").hide();	
+	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();	
 		
 	});
 
@@ -408,6 +431,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var url = "connectToUserSetAction.action?"+rparam;					
 	callAjax1(jsObj,url);			
 	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();
 	});
 	
 //change Password
@@ -439,6 +463,7 @@ $(".changePwdLink").live("click",function(){
 		div.append('<input class="btn-info btn-small" id="cancelButtonID" type="button" value="No"></input>');
 		elmt.append(div);
 		$("#impdatesDiv").hide();
+		$("#announcementsDiv").hide();
   });
 
    $("#cancelButtonID").live("click",function(){
@@ -1073,11 +1098,14 @@ function callAjax1(jsObj,url){
 							{
 								iterateDetailsNames(results);
 							}
-
-					else if(jsObj.task == 'deleteMessageFromInbox')
-					{
-						showDeleteMessagesStatus(results,jsObj);
-					}
+							else if(jsObj.task == 'deleteMessageFromInbox')
+							{
+								showDeleteMessagesStatus(results,jsObj);
+							}
+							else if(jsObj.task == "getCadreInfo")
+							{
+								buildCadreInfoTable(results);
+							}
 			}catch (e) {  
                   $("#subscriptionsStreamingAjaxImg").hide();			
 			   	//alert("Invalid JSON result" + e);   
@@ -1895,6 +1923,7 @@ custom_paginator.paginator({
 	});
 	custom_paginator.initialize();
 	$("#impdatesDiv").hide();
+	$("#announcementsDiv").hide();
 	
 }
 function selectedStatusValue(){
@@ -2555,6 +2584,10 @@ function clearAllSubscriptionDivs()
 	$("#userConstituencySubscriptionsDiv").children().remove();
 	$("#userPartyUnSubscriptionsDiv").children().remove();
 	$("#userPartyUnSubscriptionsDiv").html('');
+	$("#caderInfo").html('');
+	$("#caderInfo").children().remove();
+	//$("#announcementsDiv").html('');
+	//$("#announcementsDiv").children().remove();
 
 }
 
@@ -3434,4 +3467,81 @@ $("#Inbox").trigger("click");
 $("#SentBox").trigger("click");
 }
 
+
+
 // ending ----------You May Know Module (See All) updated by Srishailam------
+
+function getCadresInfo()
+{
+		$('#announcementsDiv').hide();
+		$("#impdatesDiv").hide();
+	  var jsObj = 
+		{
+			task:"getCadreInfo"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getDashBoardInformationAction.action?"+rparam;
+		callAjax1(jsObj,url);
+}
+
+function buildCadreInfoTable(results)
+{	
+	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
+	$(".placeholderCenterDiv").children().remove();
+	$('#placeholderCenterDivId').html('');
+	$('#headerDiv').html('');
+	$('.FavoriteLinksDiv').html('');
+	$('#headerDiv').html('<b>Cadre Information</b>');
+	var str='';
+	
+	$("#cadresDiv_main").css("style","display");
+	$("#cadresDiv_main").css("box-shadow","0 0 1px rgba(0, 0, 0, 0.5), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.09)");
+
+    str+='<div id="cadresDiv_head">';
+    str+='	<table><tr>';
+	str+='		<td><img src="images/icons/indexPage/group_icon.png"/></span></td>';
+	str+='		<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Cadres Info</span></td>';
+	str+='	</tr></table>';
+	str+='</div>';
+	str+='<div id="cadresDiv_body" style="margin-bottom: -14px;">';
+	str+='	<span class="dashBoardCenterContentBody" style="color:#4B74C6"></span>';
+	if(results.cadresByCadreLevel !=null)
+	{
+	  $.each(results.cadresByCadreLevel,function(key,value)
+		{
+			str+='	<ul class="dashBoardContentList">';
+	
+			str+='		<li>'+key+'   Level Cadres - '+value+' </li>';
+		
+			str+='	</ul>';
+		});
+	
+	str+='</div> ';
+	str+='<div id="cadresDiv_footer" style="text-align:right;margin: 10px;margin-right: 94px;">';
+	str+='	<span class="dashBoardLinks">';
+	str+='		<a href="cadreManagementAction.action#regionLevelCadreDivHead" class="indexPageAnc" style="font-size: 13px;" target="_blank">View All</a>';
+	str+='	</span>';
+	
+    str+='</div>';
+	}
+	else
+	{
+		$("#caderInfo").css("padding","20px");
+		$("#cadresDiv_body").css("margin","0px");
+		str+= '<div id="div_body">';
+		str+= '	<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  0  Cadres</span>';
+	}
+	 str+='</div>';
+	$("#caderInfo").html(str);
+}
+function openNewAnnouncementPopup()
+{
+	var newAnnouncementBrowser = window.open("newAnnouncementAction.action?windowTask=new","addNewAnnouncement","scrollbars=yes,height=550,width=500,left=200,top=200");
+	newAnnouncementBrowser.focus();
+}
+function openEditAnnouncement()
+{
+	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=750,width=1000,left=10,top=10");
+	editAnnouncementbrowser.focus();
+}
