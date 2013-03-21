@@ -885,6 +885,13 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				" and model.booth.boothId = ? and model.voter.houseNo = ?",params) ;
      }
 	
+	public List<Voter> findFamiliesInfoBypartNo(String partNo,Long publicationDateId,String houseNo,Long constituencyId) {
+		Object[] params = {publicationDateId,partNo,houseNo,constituencyId};
+		return getHibernateTemplate().find("select model.voter from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? " +
+				" and model.booth.partNo = ? and model.voter.houseNo = ? and model.booth.constituency.constituencyId = ? ",params) ;
+     }
+		
+	
 	//caste Info For Municipality
 	public List getVotersCastInfoFromLocalElectionBody(Long lclElecBodyId,Long publicationDateId)
 	{
