@@ -145,9 +145,9 @@
 	</div> -->
   <!-- </div> -->
 
-   <div style="text-align: center; margin-top: 30px;width:998px;">
-	<span id="headingSpanCls">Added / Deleted Voters Info Report For ${locationName} &nbsp;${locationType} Between ${fromPublicationName} to ${toPublicationName}
-	</span>
+   <div class="btn btn-info" style="text-align: center; margin-top: 30px;width:998px;">
+	<span style="color:#3F3F3F;"><h3>Added / Deleted Voters Info Report For ${locationName} ${locationType}</h3></span>
+	<span><h5 style="font-size: 16px;padding:10px;"> Between <span style="border-bottom:1px solid;">  ${fromPublicationName}</span> To <span style="border-bottom:1px solid"> ${toPublicationName}</span></h5></span>
   </div>
 <div id="voterModReportMainDiv">
   <div id="voterModReportInnerDiv">
