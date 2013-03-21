@@ -806,7 +806,7 @@ function showAllVoterInformationInALocation(results)
 		str+='<td>'+results[i].firstName+'</td>';
 		str+='<td style="text-align:center;">'+results[i].gender+'</td>';
 		str+='<td style="text-align:center;">'+results[i].age+'</td>';
-		str+='<td style="text-align:center;"><a onclick="getVotersInAFamilyByPublication('+results[i].boothId+','+fromPublicationDateId+','+toPublicationDateId+',\''+results[i].houseNo+'\')">'+results[i].houseNo+'</a></td>';
+		str+='<td style="text-align:center;"><a style="cursor:pointer;" onclick="getVotersInAFamilyByPublication('+results[i].boothNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+results[i].houseNo+'\')">'+results[i].houseNo+'</a></td>';
 		str+='<td style="text-align:center;">'+results[i].status+'</td>';
 		str+='<td>'+results[i].boothName+'</td>';
 		str+='<td>'+results[i].panchayatName+'</td>';
@@ -975,7 +975,7 @@ function openNewWindow(locationType, locationId)
 	updateBrowser.focus();
 }
 
-function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,hNo){
+function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,constituencyId,hNo){
     var jsObj=
 			{
 					
@@ -983,6 +983,7 @@ function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,hN
 				fromPublication:fromPublication,
 				ToPublication:ToPublication,
 				partNo:partNo,
+				constituencyId:constituencyId,
 				task:"getVotersInAFamilyByConstituencyId"
 	
 			}
