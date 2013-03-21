@@ -776,4 +776,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				
 			return queryObj.list();
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List getBoothIdByPartNo(String partNo)
+		{
+		return getHibernateTemplate().find("select model.boothId from Booth model where model.partNo = ?",partNo);	
+		}
+		
 }

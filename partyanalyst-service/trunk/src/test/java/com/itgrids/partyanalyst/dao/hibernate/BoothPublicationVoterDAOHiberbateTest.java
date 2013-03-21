@@ -8,6 +8,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase{
 	
@@ -457,7 +458,7 @@ public void testgetInfluencePeopleMobileDetails(){
 }*/
 
 
-public void testGetBoothPublicationVoterIdsByVoterIdsList()
+/*public void testGetBoothPublicationVoterIdsByVoterIdsList()
 {
 	List<Long> voterIdsList = new ArrayList<Long>(0);
 	voterIdsList.add(22326l);
@@ -472,7 +473,7 @@ public void testGetBoothPublicationVoterIdsByVoterIdsList()
 	for(Long bpvIds : list)
 		System.out.println(bpvIds);
 	
-}
+}*/
 
 /*public void testDeleteByIdsList()
 {
@@ -491,5 +492,11 @@ public void testGetBoothPublicationVoterIdsByVoterIdsList()
 	   }
 	
 }*/
+
+public void test()
+{
+	 List<Voter> values = boothPublicationVoterDAO.findFamiliesInfoBypartNo("25",8l,"4-65",299l);
+	 System.out.println(values.size());
+}
 	
 }

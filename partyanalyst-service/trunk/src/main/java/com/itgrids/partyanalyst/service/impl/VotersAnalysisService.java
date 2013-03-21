@@ -12679,7 +12679,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 		}
 		
-		public List<VoterHouseInfoVO> getVotersFamilyDetailsByConstituencyId(Long frompublicationId,Long toPublicationId,Long partNo,String hno,Long userId)
+		public List<VoterHouseInfoVO> getVotersFamilyDetailsByConstituencyId(Long frompublicationId,Long toPublicationId,Long partNo,String hno,Long userId,Long constituencyId)
 		{
 			
 			List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
@@ -12687,7 +12687,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			try{
 				
-				resultList = getFamilyInformation(partNo, publicationId.get(0),hno,userId);
+				resultList = getFamilyInformationByPartNo(partNo, publicationId.get(0),hno,userId,constituencyId);
 			}
 			catch(Exception e)
 			{
@@ -12696,6 +12696,66 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			return resultList;
 			
 		}
+		
+		//This method is used get VoterDetails by partno and houseno
+		public List<VoterHouseInfoVO> getFamilyInformationByPartNo(Long partNo, Long publicationDateId,String houseNo,Long userId,Long constituencyId)
+		{		
+			log.debug("Entered into the getFamilyInformation method");
+			
+			List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();		
+			
+			try{
+			
+				VoterHouseInfoVO voterHouseInfoVO = null;
+				List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfoBypartNo(partNo.toString(), publicationDateId, houseNo,constituencyId);
+			    long sno = 1;
+			    
+			    List<Long> voterIds = new ArrayList<Long>();
+			    for(Voter voter : votersInfoList)
+			    	voterIds.add(voter.getVoterId());
+			    
+			    List<Object[]> votersCategoriesList = 
+						 voterCategoryValueDAO.getVoterCategoryValuesForVoters(userId,voterIds);
+				 
+			    
+			   Map<Long, VoterHouseInfoVO> voterCastePartyDetails =  getUserCasteAndSelectedPartyVoters(voterIds,userId);
+			    	
+				for(Voter voter : votersInfoList){
+			    	voterHouseInfoVO = new VoterHouseInfoVO();
+			    	voterHouseInfoVO.setsNo(sno);
+			    	voterHouseInfoVO.setName(voter.getName());
+			    	voterHouseInfoVO.setGender(voter.getGender());
+			    	voterHouseInfoVO.setAge(voter.getAge());
+			    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
+			    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
+			    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+			    	
+			    	voterHouseInfoVO.setCast(voter.getCast());
+			    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
+			    	voterHouseInfoVO.setVoterId(voter.getVoterId());
+			    	voterHouseInfoVO.setBoothId((Long)boothDAO.getBoothIdByPartNo(partNo.toString()).get(0));
+			    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
+			    	voterHouseInfoVO.setBoothName(partNo.toString());
+			    	VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
+			    	
+			    	setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
+			    	setCastePartyDetails(voterHouseInfoVO,voterCastPartyVO);
+			    	
+			    
+			    	voterHouseInfoVOList.add(voterHouseInfoVO);
+			    	//getUserCasteAndSelectedParty(voterHouseInfoVO , voter.getVoterId(),userId);
+			    	
+			    	
+			    	sno = sno+1;
+		    }
+			
+			}catch(Exception e){
+				log.error("Exception raised in getFamilyInformation method");
+				e.printStackTrace();
+			}
+			return voterHouseInfoVOList;
+		}
+		
 }
 
 
