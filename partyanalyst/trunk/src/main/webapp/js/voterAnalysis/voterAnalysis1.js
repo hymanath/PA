@@ -4100,12 +4100,12 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	else 
 		noteString = $('#pollingStationField :selected').text();
 
-	$('#voterDetailsNote').html('<h4 style="color:#E36A30;margin-left: 4px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
+	$('#voterDetailsNote').html('<h4 style="color:#3F3939;margin-left: 4px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4>');
 	//$('#voterDetailsNote1').html('<h5 style="color:#E36A30;margin-left:40px;font-family: Verdana;">'+noteString+" "+"voters details"+' in '+publicationYear+'</h5>');
 
 
 	var str='';
-	str+='<table class="table table-bordered table-hover" id="ageWiseDetailsTable" style="width: 104%; max-width: 104%; margin: 1px -18px;" >';
+	str+='<table class="table table-bordered table-hover" id="ageWiseDetailsTable" style="width: 103%; max-width: 103%; margin: 1px -18px;" >';
 	
 	str+='<thead class="info">'
 	str+='<tr>'
@@ -4260,7 +4260,7 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<h4 style="color:#E36A30;margin-left: 4px;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgewiseDetailsNote').html('<h4 style="color:#3F3939;margin-left: 4px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 	str+='<table border="1"  class="table table-hover table-bordered" id="mandalWiseVoterAgeTable" style="width: 104%; max-width: 104%; margin: 1px -18px 1px 10px;">';
@@ -4343,8 +4343,8 @@ for(var i=0;i<innerResults.length;i++){
 str+='</tbody>';
 str+='</table>';
 
-
 $('#agewiseDetails').html(str);
+
 $('#mandalWiseVoterAgeTable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		//"iDisplayLength":50,
@@ -4393,7 +4393,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:#E36A30;margin-left: 4px;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<h4 style="color:#3F3939;margin-left: 4px;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
@@ -4614,7 +4614,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:#E36A30;margin-left: 4px;;font-family: Verdana;">'+noteString+'</h4>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<h4 style="color:#3F3939;margin-left: 4px;;font-family: Verdana;">'+noteString+'</h4>');
 
 	var str='';
 
