@@ -1268,23 +1268,30 @@ for  body3 start    result  -->
 	<br><br>
 	<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
 
-	<div id="voterDetailsNote" class="noteDiv" style="display:none;"></div>
+	<div class="thumbnail" style="margin:15px 10px;">
+	<div id="voterDetailsNote" class="noteDiv thumbnail breadcrumb" style="display:none;text-align:center;"></div>
+	<div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
+	</div>
 
-	<div id="tableDiv" style="margin-left:20px;padding:10px;display:none;" class="voterDetails"></div>
+	<div class="thumbnail" style="margin:15px 10px;">
+	<div id="voterAgewiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;color:#3F3636;"></div>
+	<div id="agewiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"></div>
+	</div>
+	
+	<div class="thumbnail" style="margin:15px 10px;">
+	<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>
+	<div id="ageAndgenderWiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"> </div>
+	</div>
 
-	<div id="voterAgewiseDetailsNote" class="noteDiv"></div>
-	<div id="agewiseDetails" style="padding:5px;" class="voterDetails"></div>
-
-	<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv"></div>
-	<div id="ageAndgenderWiseDetails" style="padding:4px;" class="voterDetails"> </div>
-
-
-	<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv"></div>
-
-	<div id="voterAgeAngGenderwiseDetailsInPercent" style="padding:4px;" class="voterDetails"></div>
+	<div class="thumbnail" style="margin:15px 10px;">
+	<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>
+	<div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails"></div>
+	</div>
+	
 	<div id="AgeWiseNoteDiv" style="border: 1px solid #D3D3D3;
     display: block;margin-bottom: 14px;margin-left: 9px;    margin-top: 33px;padding: 19px;width: 851px;"></div>
-  </div>
+
+</div>
 </div> </div><!-- Hidden Popup-->
 
 <!-- for  body 4 end    result  -->
