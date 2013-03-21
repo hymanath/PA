@@ -1378,8 +1378,9 @@ return Action.SUCCESS;
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			Long userId =  regVO.getRegistrationID();
+			Long constituencyId = jObj.getLong("constituencyId");
 			
-			votersFamilyInfo = votersAnalysisService.getVotersFamilyDetailsByConstituencyId(jObj.getLong("fromPublication"),jObj.getLong("ToPublication"),jObj.getLong("partNo"),jObj.getString("hno"),userId);
+			votersFamilyInfo = votersAnalysisService.getVotersFamilyDetailsByConstituencyId(jObj.getLong("fromPublication"),jObj.getLong("ToPublication"),jObj.getLong("partNo"),jObj.getString("hno"),userId,constituencyId);
 			
 		}catch(Exception e){
 			log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
