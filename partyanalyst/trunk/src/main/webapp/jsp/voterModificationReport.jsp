@@ -179,12 +179,12 @@
 		   <div id="subLevelAjaxImageDiv" style="display:none;margin-left:400px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		</div>
 
-
+		
         <div id="mainDiv" class="widget blue whitegloss" style="margin-top:20px;display:inline-block;width: 96%;color:#000;position:relative;">
 
 	
 	  <h4> Newly added / deleted voters info</h4>	   
-	
+	<span style="float:right;"><img id="popupAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/></span>
 
 	<!--	<div class="form-horizontal" style="margin-left:238px;">
 
