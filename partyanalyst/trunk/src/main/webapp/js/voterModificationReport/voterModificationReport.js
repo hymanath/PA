@@ -976,6 +976,7 @@ function openNewWindow(locationType, locationId)
 }
 
 function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,constituencyId,hNo){
+	$("#popupAjaxImage").show();
     var jsObj=
 			{
 					
@@ -995,7 +996,7 @@ function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,co
 
 function buildFamilyInfo(results,partNo)
 {
-	
+		$("#popupAjaxImage").hide();
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
