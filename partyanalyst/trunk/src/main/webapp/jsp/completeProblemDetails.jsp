@@ -28,9 +28,6 @@
     <link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
 	<title>Problem Details</title>
 <style>
-#floatingDiv_absolute_main{
-position:fixed !important;
-}
 .commentSection{display:inline-block;clear:both;width:100%;position:relative;}
 .commentSection a{position:absolute;right:4px;bottom:1px;width:70px;}
 .button {
