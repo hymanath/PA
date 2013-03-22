@@ -269,7 +269,8 @@
 					}
 					if(jsObj.task =="getConstituenciesMatchingCriteria" || jsObj.task =="getConstituenciesByDistrictMatchingCriteria")
 					{
-						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
+						//if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
+						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null){
 							showRequiredConstituencies(results);
 							showRequiredConstituenciesErrorMessage(results);
 							
@@ -913,11 +914,15 @@
 	function showRequiredConstituencies(results)
 	{
 
+		var elmet = document.getElementById('required_const_body');
+			elmet.style.display = 'none';
 		var count = document.getElementById("requiredConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
+		//countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : 0 </b>';
-		count.innerHTML = countElmt;
+		count.innerHTML = countElmt;	
+			$('#noDataDiv').css('display','block');
 	}
 
 	function showRequiredConstituenciesErrorMessage(results){
@@ -958,67 +963,85 @@
 		var partiesArray = new Array();
 		var columnDataArray = new Array();
 		var allParties = results.allPartiesDetails.allPartiesData;
+		var partySelected = $("#partySelect option:selected").text();
 
-		var resultsObj = {
-			key: "constituencyName"							
-		};
-		partiesArray.push(resultsObj);
-		
-		var columnObj ={
-			key : "constituencyName",
-			label : "Constituency Name",
-			sortable : true,
-			resizeable:true
-		};
-		columnDataArray.push(columnObj);
-		
-		for(var i=0;i<allParties.length;i++){
 			var resultsObj = {
-					key: allParties[i].name							
+				key: "constituencyName"							
 			};
 			partiesArray.push(resultsObj);
-
-			var allColumnObj ={
-				key : allParties[i].name,
-				label : allParties[i].name,
-				sortable : true,
-				resizeable:true
-			};
-			columnDataArray.push(allColumnObj);
-		}
-
-		//if(type=="others"){
-			var resultsWithOthers = {
-				key: "others"							
-			};
-			partiesArray.push(resultsWithOthers);
 			
-			var columnObjWithOthers ={
-				key : "others",
-				label : "Others *",
+			var columnObj ={
+				key : "constituencyName",
+				label : "Constituency Name",
 				sortable : true,
 				resizeable:true
 			};
-			columnDataArray.push(columnObjWithOthers);
-		//}
+			columnDataArray.push(columnObj);			
 		
-		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get(tableId));
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+			for(var i=0;i<allParties.length;i++){
+				var resultsObj = {
+							key: allParties[i].name							
+					};
+					partiesArray.push(resultsObj);
+					if(partySelected == 'All Parties'){			
+						var allColumnObj ={
+							key : allParties[i].name,
+							label : allParties[i].name,
+							sortable : true,
+							resizeable:true
+						};
+						columnDataArray.push(allColumnObj);						
+					}
+					else{
+						if(allParties[i].name == partySelected){
+								var allColumnObj ={
+									key : allParties[i].name,
+									label : "Won Seats",
+									sortable : true,
+									resizeable:true
+								};
+								columnDataArray.push(allColumnObj);
+							}						
+					}
+				}
+				
+				if(partySelected == 'All Parties'){
+				//if(type=="others"){
+								var resultsWithOthers = {
+									key: "others"							
+								};
+								partiesArray.push(resultsWithOthers);
+								
+								var columnObjWithOthers ={
+									key : "others",
+									label : "Others *",
+									sortable : true,
+									resizeable:true
+								};
+								columnDataArray.push(columnObjWithOthers);
+							//}
+				
+				}
+			
+			var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+					.get(tableId));
+			resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 
-		resultsDataSource.responseSchema = {
-			fields : partiesArray
-		};
+			resultsDataSource.responseSchema = {
+				fields : partiesArray
+			};
+		
+			var resultsColumnDefs = columnDataArray;
+			
+			var paginatorConfig = {
+			paginator : new YAHOO.widget.Paginator({
+				rowsPerPage: 10
+			})
+			};
+			
+			var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	
-		var resultsColumnDefs = columnDataArray;
 		
-		var paginatorConfig = {
-	    paginator : new YAHOO.widget.Paginator({
-	        rowsPerPage: 10
-	    })
-		};
-		
-		var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}
 
 	
@@ -1233,6 +1256,17 @@
 
 	function getConstituenciesByDistrict()
 	{
+		$('#searchByConstituencyData').val('');
+		$('#districtErrDiv').html('');
+		$('#ConstituencyErrDiv').html('');
+		var name = $('#searchByDistrictData').val();
+		
+		if(name.length >0){
+			if(/[^a-zA-Z]/.test(name)){
+			$('#districtErrDiv').html('Search By District Accepts only Characters');			
+			return false;
+			}
+		}
 		matchingCriteria = "DISTRICT";
 		
 		var imgDiv = document.getElementById("searchByDistrictDataIMG");
@@ -1257,7 +1291,17 @@
 	}
 
 	function getConstituencies()
-	{
+	{	
+		$('#searchByDistrictData').val('');
+		$('#districtErrDiv').html('');
+		$('#ConstituencyErrDiv').html('');
+		var name = $('#searchByConstituencyData').val();
+		if(name.length >0){
+			if(/[^a-zA-Z]/.test(name)){
+			$('#ConstituencyErrDiv').html('Search By Constituency Accepts only Characters');
+			return false;
+			}
+		}
 		matchingCriteria = "CONSTITUENCY";
 		
 		var searchByConstituencyDataImgDiv = document.getElementById("searchByConstituencyDataIMG");
@@ -1282,20 +1326,28 @@
 	}
 
 	function buildSearchCriteria(selectedElectionType)
-	{
+	{		
 		var searchByDist = document.getElementById("searchByDistrict");
 		var searchByDistStr = '';
 		searchByDistStr += '	<table>';
 		searchByDistStr += 			'<tr>';		
 		if(selectedElectionType!="Parliament"){
-			searchByDistStr += '<td style="color:#FBAD2B;font-weight:bold;">Search By District';
+			searchByDistStr += '<td style="color:#FBAD2B;font-weight:bold;">Search By District : '; 
 			searchByDistStr += '<input id="searchByDistrictData" title="Enter District Name" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
 			searchByDistStr += '<td><img style="display:none;" id="searchByDistrictDataIMG" src="images/icons/search.gif"/></td>';
 		//	searchByDistStr += '<td style="color:red;font-weight: bold;"> (or) </td>';
 		}		
-		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency';
+		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency : ';
 		searchByDistStr += 			'	<input id="searchByConstituencyData" title="Enter Constituency Name" type="text" onkeyup="getConstituencies()"></input></td>';
 		searchByDistStr += 			'	<td><img style="display:none;" id="searchByConstituencyDataIMG" src="images/icons/search.gif"/></input></td>';
+		searchByDistStr += 			'</tr>';
+		searchByDistStr += 			'<tr>';
+		searchByDistStr += 			'<td> <div id="districtErrDiv" style="color:red;font-weight:bold;font-size:13px;"></div>';
+		searchByDistStr += 			'</td>';
+		searchByDistStr += 			'<td>';
+		searchByDistStr += 			'</td>';
+		searchByDistStr += 			'<td <div id="ConstituencyErrDiv" style="color:red;font-weight:bold;font-size:13px;"></div>';
+		searchByDistStr += 			'</td>';
 		searchByDistStr += 			'</tr>';
 		searchByDistStr += '</table>';
 
@@ -1348,13 +1400,15 @@
 		}
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : '+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
+		document.getElementById('required_const_body').style.display = 'block';
 	}
 
 	function buildDefaultDetailsForNewConstituencies(results)
 	{
+		var sri = 0; // sri value created by srishailam
 	   var partyOverViewDiv = document.getElementById("partyOverViewDetailsForNewConstituencies");
 	   var overViewStr='';
-	   overViewStr+='<table>';
+	   overViewStr+='<table  class="table table-bordered table-striped">';
 	   var partyOverViewDetails = results.partyOverView;
 	   overViewStr+='	<tr>';
 	   var leng = 0;
@@ -1365,23 +1419,35 @@
 		
 	   for(var k=0;k<leng;k++)
 	   {   
-		   overViewStr+='		<td> </td>';
-		   overViewStr+='		<td style="padding-left:1px;padding-right:10px;color:#247CD4;font-weight:bold;font-size:12px;""> Party </td>';
-		   overViewStr+='		<td style="font-weight:bold;color:darkgreen;font-size:12px;"> Seats Won </td>';
+		 //  overViewStr+='		<td style="background:lightGrey;"> </td>';
+		   overViewStr+='		<td style="background:lightGrey;"><span style="color:#247CD4;font-weight:bold;font-size:12px;"> Party </span></td>';
+		   overViewStr+='<td style="background:lightGrey;"> <span style="font-weight:bold;color:darkgreen;font-size:12px;"> Won Seats </span> </td>';
 	   }
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
 	   for(var m=0;m<partyOverViewDetails.length;m++)
-	   {		   
-			   overViewStr+='		<td style="font-weight:bold;"><img src="images/icons/districtPage/listIcon.png" ></td>';
-		 	   overViewStr+='		<td align="center" style="color:red;font-size:10px;">'+partyOverViewDetails[m].name+'</td>';
-		 	   overViewStr+='		<td align="center" style="color: green;font-size:10px;">'+partyOverViewDetails[m].id+'</td>';
-		   if((m+1)%3==0){			  	 	 
+	   {
+		// overViewStr+='		<td style="font-weight:bold;width: 10px;padding-left: 10px;padding-right: 10px;"><img src="images/icons/districtPage/listIcon.png" ></td>';		 	
+		 	   overViewStr+='		<td> <span style="color:red;font-size:10px;">'+partyOverViewDetails[m].name+'</span></td>';
+		 	   overViewStr+='<td align="center"> <span style="color:green;font-size:10px;">'+partyOverViewDetails[m].id+'</span></td>';		
+		   if((m+1)%3==0){	
+				sri = 0;
 		  	   overViewStr+='	</tr>';
 		  	   overViewStr+='	<tr>';		
 		   } 
+		   sri = sri+1;
+		}
+		if(sri == 2){
+		overViewStr+='	<td style="text-align: center;font-weight:bold;"> - </td>';
+		overViewStr+='	<td style="font-weight:bold;"> - </td>';	
+		overViewStr+='	<td style="text-align: center;font-weight:bold;"> - </td>';
+		overViewStr+='	<td style="font-weight:bold;"> - </td>';			   
+		}
+		if(sri == 3){
+		overViewStr+='	<td style="text-align: center;font-weight:bold;"> - </td>';
+		overViewStr+='	<td style="font-weight:bold;"> - </td>';			   
 		}
 	   overViewStr+='	</tr>';
 	   overViewStr+='</table>';
@@ -1450,7 +1516,7 @@
 		var data = results.remainingConstituenciesInfo.partiesStrengthsInfoVO;
 
 		var partiesData = results.remainingConstituenciesInfo;
-
+		
 		var str='';
 		//str+='<b style="color:green;font-weight:bold;font-size:12px;"> Remaining Constituencies Details </b>';
 		str+='<div id="dataTableMainDiv_remainingConstituencies">';
@@ -1494,7 +1560,10 @@
 	}
 
 	function validateAndForwardToAction()
-	{		
+	{	
+		$('#searchByDistrictData').val('');
+		$('#searchByConstituencyData').val('');		
+		$('#noDataDiv').css('display','none');
 		var electionTypeSelect = document.getElementById("electionTypeSelect").value;
 		var stateSelect = document.getElementById("stateSelect").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
@@ -1658,6 +1727,7 @@
 									</tr>
 								</table>
 							</div>
+							<div id="noDataDiv" style="display:none;font-weight:bold;font-size:13px;border: 2px solid #CFD6DF;color:red;"><span style="margin-left:40px"> No Data Avaialable </span></div>
 							<div id="required_const_body">
 									<div id="newConstAncSpan" class="mandalNamesDiv">		
 									<table>		
@@ -1754,7 +1824,6 @@
 			</div>
 		</div>		
 	</div>
-		
 <script type="text/javascript">
 	populateDefaultDetails();
 	getStatesOfAp('Assembly');
@@ -1762,7 +1831,6 @@
 	getDefaultParties();
 	buildSearchCriteria('Assembly');
 	//validateAndForwardToAction();
-	
 </script>
 
 </body>
