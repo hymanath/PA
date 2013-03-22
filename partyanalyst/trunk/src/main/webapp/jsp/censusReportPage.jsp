@@ -289,7 +289,7 @@ select
 		}
 		if(censusValue == '0')
 		{
-				errorElmt.innerHTML = '<span style="color:highlight;"> Please Select Census Type </span>';
+				errorElmt.innerHTML = ' Please Select Census Type ';
 				return;
 		}
 		
