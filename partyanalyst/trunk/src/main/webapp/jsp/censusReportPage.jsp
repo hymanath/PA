@@ -57,13 +57,13 @@ input[type="radio"], input[type="checkbox"] {
     float: none;
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: -15px;
     margin-left: auto;
     margin-right: auto;
     padding: 3px;
     text-align: center;
     width: 200px;
-   
+	margin-top: 30px; 
 }
 #censusReport_body_heading
 {
@@ -218,7 +218,15 @@ select
 	var resultsP;
 	var checkedRadioName;
     google.load("visualization", "1", {packages:["corechart"]});
-	
+	$(document).ready(function(){
+	document.getElementById("districtList").disabled= true;
+		$('#stRadioId').click(function(){
+			document.getElementById("districtList").disabled= true;
+		});
+		$('#diRadioId').click(function(){
+			document.getElementById("districtList").disabled= false;
+		});
+	});
 	function showAjaxImage()
 	{
 		var ajaxImageDivEle = document.getElementById("ajaxImageDiv");
@@ -246,41 +254,53 @@ select
 
 	function getCensusDetails()
 	{
-		
+		changeCensusType();
 		$("#censusReporterror_Div").html("");
 		var censusElmt = document.getElementById("censusSelect");
+		var yearElmts = document.getElementById("yearSelect").value;
 		var yearElmt = document.getElementById("yearSelect");
 		var errorElmt = document.getElementById("censusReporterror_Div");
 		var stateElmt = document.getElementById("stateList");
+		var districtElmt = document.getElementById("districtList");
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
+		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
+		var diRadioEle = document.getElementById("diRadioId");
+		var stRadioEle = document.getElementById("stRadioId");		
+		errorElmt.innerHTML = "";
 		
-		if(censusValue == 'Select' || yearValue == 'Select Year')
-		{
-			errorElmt.innerHTML = "Please Select State";
-			return;
-		}
 		if(stateId == 0)
 		{
 			errorElmt.innerHTML = "Please Select State";
 			return;
 		}
-		else
-			errorElmt.innerHTML = "";
-
-		showAjaxImage();
-		var stateElmt = document.getElementById("stateList");
-		var districtElmt = document.getElementById("districtList");
+		if(diRadioEle.checked == true){
+			if(districtId == 0)
+			{
+				errorElmt.innerHTML = "Please Select District";
+				return;
+			}
+		}
+		if(yearElmts == '0')
+		{
+			errorElmt.innerHTML = "Please Select Year";
+			return;
+		}
+		if(censusValue == '0')
+		{
+				errorElmt.innerHTML = '<span style="color:highlight;"> Please Select Census Type </span>';
+				return;
+		}
 		
+		showAjaxImage();
+		var stateElmt = document.getElementById("stateList");		
 		var reportLevel = '';
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
-		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
-		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
+		var stateId = stateElmt.options[stateElmt.selectedIndex].value;		
 		var stateName = stateElmt.options[stateElmt.selectedIndex].text;
 		var districtName = districtElmt.options[districtElmt.selectedIndex].text;
 		var stRadioEle = document.getElementById("stRadioId");
-		var diRadioEle = document.getElementById("diRadioId");
 		var partyResultsPerformance_mainEl =  document.getElementById("partyResultsPerformance_main");
 		partyResultsPerformance_mainEl.style.display = 'none';
 		if(stRadioEle.checked == true)
@@ -288,14 +308,6 @@ select
 		else if(diRadioEle.checked == true)
 			reportLevel = diRadioEle.value;			
 		
-		if(stateId == 0)
-		{
-			errorElmt.innerHTML = "Please Select State";
-			return;
-		}
-		else
-			errorElmt.innerHTML = "";
-
 		var jsObj=
 		{
 				stateId		: stateId,
@@ -677,11 +689,14 @@ select
 
 	function getLatestElectionYears()
 	{
+		$('#censusSelect').val(0);
 		var stateLitsEle = document.getElementById("stateList");
 		var stateId = stateLitsEle.options[stateLitsEle.selectedIndex].value;
-
-		if(stateId == 0)
+		$("#censusReporterror_Div").html('');
+		if(stateId == 0){
+			$("#censusReporterror_Div").html('Please select State');
 			return;
+		}
 		
 		var jsObj=
 		{
@@ -779,7 +794,7 @@ select
 			str += '<tr>';
 			str += '<th width="80px">'+results[i].range+'</th>';
 			if(results[i].count != 0)
-				str += '<td width="50px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')" title="Click Here To View Election Results of All Parties in '+results[i].count+' Constituencies Having '+jsObj.censusText+' Between '+results[i].range+'">'+results[i].count+'</a></td>';
+				str += '<td width="50px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\');scrollToPartyResultsPerformanceDiv()" title="Click Here To View Election Results of All Parties in '+results[i].count+' Constituencies Having '+jsObj.censusText+' Between '+results[i].range+'">'+results[i].count+'</a></td>';
 			else
 				str += '<td width="50px">'+results[i].count+'</td>';
 
@@ -819,7 +834,9 @@ select
 		callAjaxForPartiesSelectBox('censusPopulationRange_selectParty');
 
 	}
-
+	function scrollToPartyResultsPerformanceDiv(){
+		$('html,body').animate({scrollTop: $("#partyResultsPerformance_body").offset().top}, 2000);
+	}
 	function callAjaxForPartiesSelectBox(divId){
 		var stateEle = document.getElementById("stateList");
 		var stateId = stateEle.options[stateEle.selectedIndex].value;
@@ -952,7 +969,8 @@ select
 
 		
 	function viewPerformanceGraph(index,censusType,censusTypeId,year)
-	{		
+	{	
+		myCount = 0;	
 		var elmt = document.getElementById("partyResultsPerformance_main");
 		if(elmt && elmt.style.display == "none")
 			elmt.style.display = "block";
@@ -1065,7 +1083,8 @@ select
 		checkedRadioName = checkedValue;
 		
 	}
-	
+	// myCount used to stop refresh districts everyTime  Updated By Srishailam
+	var myCount =0;
 	function showSelectOptions(value)
 	{
 	//alert(value);
@@ -1081,6 +1100,7 @@ select
 		else if(value == "district")
 		{
 		//alert("2");
+			myCount = myCount+1;
 			districtSpanElmt.style.display = 'block';
 			partiesSpanElmt.style.display = 'none';
 		}
@@ -1110,28 +1130,30 @@ select
 		
 		if(!optionsElmt || !partyWiseElmt || !constituencyWiseElmt || !graphDivElmt)
 			return;
-
-		var optionStr = '';
-		optionStr += '<table width="100%">';
-		optionStr += '<tr>';
-		optionStr += '<th valign="top">Select options to change view </th>';
-		optionStr += '<td ><input name="partyResultsRadio" onclick="showSelectOptions(this.value)" type="radio"  value="all" checked="checked" id="allCheckId"/> All </td>';
-		optionStr += '<td><input name="partyResultsRadio" type="radio" value="district" id="districtCheckId" onclick="showSelectOptions(this.value)"/> District </td>';
-		optionStr += '<td valign="top"><div id="district_select" style="display:none;"><select id="district_selectElmt" multiple="multiple" size="3">';
-		for(var i=0; i<results.districts.length; i++)
-			optionStr += '<option value="'+results.districts[i].id+'">'+results.districts[i].name+'</option>';
-		optionStr += '</select></div></td>';
-		optionStr += '<td ><input name="partyResultsRadio" type="radio" value="parties" id="partyCheckId" onclick="showSelectOptions(this.value)"/> Parties </td>';
-		optionStr += '<td valign="top"><div id="parties_select" style="display:none;"><select id="parties_selectElmt" multiple="multiple" size="3">';
-		for(var i=0; i<results.parties.length; i++)
-			optionStr += '<option value="'+results.parties[i].id+'">'+results.parties[i].name+'</option>';
-		optionStr += '</select></div></td>';
-		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.censusTypeId+'\',\''+jsObj.range+'\')" style="color:#FFF; font-weight: bold; padding-left: 10px; padding-right: 10px; border-radius: 5px 5px 5px 5px; background:#4B74C6"></td>';
-		optionStr += '</tr>';
-		optionStr += '</table>';
-		optionStr += '<div id="partyResultsTable_errorDiv" style="color:red;font-size:11px;"></div>';
-		optionsElmt.innerHTML = optionStr;
 		
+		var optionStr = '';
+		if(myCount == '0')
+			{
+			optionStr += '<table width="100%">';
+			optionStr += '<tr>';
+			optionStr += '<th valign="top">Select options to change view </th>';
+			optionStr += '<td ><input name="partyResultsRadio" onclick="showSelectOptions(this.value)" type="radio"  value="all" checked="checked" id="allCheckId"/> All </td>';
+			optionStr += '<td><input name="partyResultsRadio" type="radio" value="district" id="districtCheckId" onclick="showSelectOptions(this.value)"/> District </td>';	
+			optionStr += '<td valign="top"><div id="district_select" style="display:none;"><select id="district_selectElmt" multiple="multiple" size="3">';
+			for(var i=0; i<results.districts.length; i++)
+				optionStr += '<option value="'+results.districts[i].id+'">'+results.districts[i].name+'</option>';
+			optionStr += '</select></div></td>';		
+			optionStr += '<td ><input name="partyResultsRadio" type="radio" value="parties" id="partyCheckId" onclick="showSelectOptions(this.value)"/> Parties </td>';
+			optionStr += '<td valign="top"><div id="parties_select" style="display:none;"><select id="parties_selectElmt" multiple="multiple" size="3">';
+			for(var i=0; i<results.parties.length; i++)
+				optionStr += '<option value="'+results.parties[i].id+'">'+results.parties[i].name+'</option>';
+			optionStr += '</select></div></td>';
+			optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.censusTypeId+'\',\''+jsObj.range+'\')" style="color:#FFF; font-weight: bold; padding-left: 10px; padding-right: 10px; border-radius: 5px 5px 5px 5px; background:#4B74C6"></td>';
+			optionStr += '</tr>';
+			optionStr += '</table>';
+			optionStr += '<div id="partyResultsTable_errorDiv" style="color:red;font-size:11px;"></div>';
+			optionsElmt.innerHTML = optionStr;
+		}
 		var str = '';
 		str += '<table border="0" id="partyResultsTable">';
          for(var j in results.constituenciesResults)
@@ -1411,25 +1433,36 @@ select
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-
-	function hideDistrictSelect()
-	{
-		$("#stateList").val(0);
-		document.getElementById("districtList").disabled= true; 
-	}
 	
 	function showDistrictSelect()
-	{
-		document.getElementById("districtList").disabled= false; 
+	{	
+		$('#censusReporterror_Div').html('');
+		var districtListValues = document.getElementById("districtList");
+		removeSelectElements(districtListValues)
+		$("#stateList").val(0);		 
+		$("#districtList").val(0);		 
+		$("#yearSelect").val(0);
+		$("#censusSelect").val(0);
+		changeCensusType();
 	}
 	function changeCensusType()
 	{
 		$('#censusPopulationRange1').css('display','none');
 		$('#censusPopulationRange').css('display','none');
 		$('#censusPopulationRange_selectParty').css('display','none');
-		$('#partyResultsPerformance_main').css('display','none');
-		$('#censusSelect').val(0);
+		$('#partyResultsPerformance_main').css('display','none');		
 	}
+	
+	function removeSelectElements(selectedElmt)
+	{
+		var len = selectedElmt.length;
+		for(var i=len-1;i>0;i--)
+		{
+			selectedElmt.remove(i);
+		}
+	}
+	
+	
 </script>
 </head>
 <body>
@@ -1447,7 +1480,7 @@ select
 				<table cellpadding="2" >
 				<tr>
 				   <th>Please Select Report Level :&nbsp;&nbsp;</th>
-					<td><input  id="stRadioId" type="radio" name="location" value="state" onclick="hideDistrictSelect()" checked="checked"></input></td>
+					<td><input  id="stRadioId" type="radio" name="location" value="state" onclick="showDistrictSelect()" checked="checked"></input></td>
 					<th>State Wise Report</th>
 					<td><input  id="diRadioId" type="radio" name="location" value="district" onclick="showDistrictSelect()" style="margin-left: 15px;"></input></td>
 					<th>District Wise Report</th>
@@ -1458,7 +1491,7 @@ select
 			<tr>
 				<th>State</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLatestElectionYears();changeCensusType();getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');getLatestElectionYears();changeCensusType();validate();"/>	
 				</td>
 
 				<th>District</th>
@@ -1481,7 +1514,7 @@ select
 				</td>
 			</tr>
 		</table>
-		<div id="censusReporterror_Div"></div>
+		<div id="censusReporterror_Div" style="color:red;font-weight:bold;font-size:13px;"></div>
 		</div>
 		<div id="ajaxImageDiv" style="display:none;"></div>
 		</div>
@@ -1563,7 +1596,7 @@ select
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
-								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span" style="color:#000;">Party Wise Performance</span></div></td>
+								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span" style="color: Navy;font-size: 13px;">Party Wise Performance</span></div></td>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>								
 							</tr>
 						</table>
@@ -1586,7 +1619,7 @@ select
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
-								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span" style="color:#000;">Constituency Wise Performance</span></div></td>
+								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span" style="color: Navy;font-size: 13px;">Constituency Wise Performance</span></div></td>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>
 							</tr>							
 						</table>
@@ -1598,18 +1631,10 @@ select
 				</div>
 			</div>
 		</div>
-		
-		
-		
-		
-		
-		
-		
 	 </div>
   </div>
 	<script>
-	hideDistrictSelect();
-	
+	showDistrictSelect();
 	</script>
 </body>
 </html>
