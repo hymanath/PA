@@ -116,6 +116,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
     width: 55%;
     margin: 38px;
 }*/
+
+hr
+{
+    border: 1px solid #C0C0C0;
+}
 </style>
 </head>
 <body>
@@ -483,7 +488,7 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 			str += '<tr><td align="left" width="60">Participated </td><td width="10">: </td><td align="right" width="30">'+myResults[i].totalSeatsParticipated+'</td></tr>';
 			str += '<tr><td align="left" width="60">Won/Lead </td><td  width="10">:</td><td align="right" width="30"> '+myResults[i].wonOrLeadCount+'</td></tr>';
 			str += '<tr><td align="left" width="60">Retained </td><td  width="10">:</td><td align="right" width="30">'+myResults[i].retainedCount+'</td></tr>';
-			str += '<tr><td align="left" width="60">Gained </td><td width="10">:</td><td align="right" width="30"> '+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
+			str += '<tr><td align="left" width="60" style="color:green;">Gained </td><td width="10" style="color:green;">:</td><td align="right" width="30" style="color:green;"> '+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
 			var newConsi = myResults[i].wonOrLeadCount - (myResults[i].retainedCount + myResults[i].wonFromOtherPartiesCount);
 			str +='<tr>';
 			if ($("#assemblyId").is(":checked"))
@@ -491,22 +496,30 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 			else
 			str +='<td align="left" width="60">Won in New Pc*</td>';
 			str +='<td width="10">:</td><td align="right" width="30">'+newConsi+' </td></tr>';
-			str += '<tr><td align="left" width="60">Lost Seats</td><td width="10">:</td><td align="right" width="30"> '+lostSeatsCount+'';
+			str += '<tr><td align="left" width="60" style="color:red;">Lost Seats</td><td width="10" style="color:red;">:</td><td align="right" width="30" style="color:red;"> '+lostSeatsCount+'';
 			str += '</td></tr></table></td>';
 			str += '<td align="left"><table width="80">';
 			
 			for(var j in myResults[i].wonFromOtherParties)
 			{
-				str += '<tr><td align="left" width="40">'+myResults[i].wonFromOtherParties[j].name +'</td><td width="10"> :</td><td align="right" width="30"> '+myResults[i].wonFromOtherParties[j].id+'</td></tr>';
+				str += '<tr><td align="left" width="40" style="color:green">'+myResults[i].wonFromOtherParties[j].name +'</td><td width="10" style="color:green"> :</td><td align="right" width="30" style="color:green"> '+myResults[i].wonFromOtherParties[j].id+'</td></tr>';
+				
 			}
+			if(myResults[i].wonFromOtherPartiesCount > 0)
+			str+='<tr><td colspan="10"><div style="margin-top:-18px;margin-bottom:-18px;"><hr/></div></td></tr>';
+			str +='<tr><td style="color:green"> Total</td><td style="color:green"> - </td><td align="right" style="color:green">'+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
+			
 			str += '</td></table>';
 
 			str += '<td align="left"><table width="80">';
 			
 			for(var j=0;j<myResults[i].lostSeatsInPrevWonToOtherParties.length;j++)
 			{
-				str += '<tr><td align="left" width="40">'+myResults[i].lostSeatsInPrevWonToOtherParties[j].name +' </td><td width="10">:</td><td align="right" width="30"> '+myResults[i].lostSeatsInPrevWonToOtherParties[j].id+'</td></tr>';
+				str += '<tr><td align="left" width="40" style="color:red">'+myResults[i].lostSeatsInPrevWonToOtherParties[j].name +' </td><td width="10" style="color:red">:</td><td align="right" width="30" style="color:red"> '+myResults[i].lostSeatsInPrevWonToOtherParties[j].id+'</td></tr>';
 			}
+			if(lostSeatsCount > 0)
+			str+='<tr><td colspan="10"><div style="margin-top:-18px;margin-bottom:-18px;"><hr/></div></td></tr>';
+			str +='<tr> <td style="color:red"> Total</td><td style="color:red"> - </td><td align="right" style="color:red">'+lostSeatsCount+'</td></tr>'
 			str += '</td></table>';
 
 			str += '<td><div id="wonFromOtherPartiesGraphdiv_'+myResults[i].partyName+'"/></td>';
