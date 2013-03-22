@@ -42,9 +42,9 @@
            result="exception" />
     </global-exception-mappings>
     
-      	<action name="index" class="indexAction">
-			<result name="success">/jsp/index.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
+      	<action name="userProfile" class="userProfileAction">
+			<result name="success">/jsp/userProfilePage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=userProfile</result>
 		</action>
 		<action name="getDashBoardInformationAction" class="indexAction" method="indexPageAjaxCallHandler">
 			<result type="json" name="success">
@@ -114,7 +114,7 @@
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
-			<result type="redirect" name="PARTY_ANALYST_USER">index.action?changedUserName=true</result>
+			<result type="redirect" name="PARTY_ANALYST_USER">userProfile.action?changedUserName=true</result>
 			<result type="redirect" name="FREE_USER">userProfile.action?changedUserName=true
 			</result>
 			<result type="redirect" name="constituencyProblemManagement">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
