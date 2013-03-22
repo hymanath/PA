@@ -910,7 +910,7 @@ function updateResultsStatewise(distName,results)
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
 <TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:7px;"/></TD><TD valign="top">
-<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${selectedYear}</DIV></c:if>
+<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName}  ${electionType} Election Results ${selectedYear}</DIV></c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${selectedYear} ${electionType} Election Results </DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:7px;" border="none"/>
 </TD>
 </TR>
