@@ -3872,7 +3872,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
 		importantFamiliesInfoVo.setType("Hamlet");
 		importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
-		importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,id,publicationDateId,"hamlet"));
+		//importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,id,publicationDateId,"hamlet"));
 		
 		List<Object[]> localitiesList = localityDAO.getAllLocalitiesForHamlet(userId,id);
 		
@@ -3896,7 +3896,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		
          impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
  		
- 		hamletVotersCountByGender = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(publicationDateId,voterIds);
+ 		//hamletVotersCountByGender = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(publicationDateId,voterIds);
  		
  		
  		
@@ -3912,6 +3912,8 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		Long between7T10Count = 0l;
 		Long between4To6Count = 0l;
 		Long below3Count = 0l;
+		Long totalMaleVoters=0l;
+		Long totalFemaleVoters=0l;
 		for (Object[] impFamiles : impFamilesList) {
 			count = (Long) impFamiles[0];	
 			if(count.longValue() > 10){
@@ -3930,10 +3932,12 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				below3 = below3 + 1;
 				below3Count = count + below3Count;
 			}
+			totalMaleVoters += (Long) impFamiles[2];	
+			totalFemaleVoters += (Long) impFamiles[3];	
 		}
 		//object processing
 		
-		 if(hamletVotersCountByGender != null && hamletVotersCountByGender.size() > 0)
+		/* if(hamletVotersCountByGender != null && hamletVotersCountByGender.size() > 0)
 		   {
 			   for(Object[] params : hamletVotersCountByGender){
 				   String gender=params[1].toString();
@@ -3945,7 +3949,11 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				   }
 			   }
 			   
-		   }
+		   }*/
+		
+		 importantFamiliesInfoVo.setTotalFemaleVoters(totalMaleVoters.toString());
+		   importantFamiliesInfoVo.setTotalMaleVoters(totalFemaleVoters.toString());
+
 		importantFamiliesInfoVo.setAbove10(above10);
 		importantFamiliesInfoVo.setAbove10Popul(above10Count);
 		importantFamiliesInfoVo.setBetwn7to10(between7To10);
