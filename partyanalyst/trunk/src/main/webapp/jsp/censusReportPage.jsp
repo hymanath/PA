@@ -270,18 +270,20 @@ select
 		var stRadioEle = document.getElementById("stRadioId");		
 		errorElmt.innerHTML = "";
 		
+		if(diRadioEle.checked == true){
+			if(stateId == 0 || districtId == 0)
+			{
+				errorElmt.innerHTML = "Please Select State and District";
+				return;
+			}
+		}
+		
 		if(stateId == 0)
 		{
 			errorElmt.innerHTML = "Please Select State";
 			return;
 		}
-		if(diRadioEle.checked == true){
-			if(districtId == 0)
-			{
-				errorElmt.innerHTML = "Please Select District";
-				return;
-			}
-		}
+		
 		if(yearElmts == '0')
 		{
 			errorElmt.innerHTML = "Please Select Year";
