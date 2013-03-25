@@ -1139,9 +1139,9 @@ function displayNewsByImportance(jObj,results){
      str+='</span>';
 
 	 if(results[i].locationScopeValue != "MUNICIPAL-CORP-GMC")
-	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">'+results[i].locationScopeValue.toLowerCase()+'</span></span>';
+	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;font-weight:bold;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">'+results[i].locationScopeValue.toLowerCase()+'</span></span>';
 	 else
- 	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">Muncipality</span></span>';
+ 	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;font-weight:bold;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">Muncipality</span></span>';
 	str+='</div>';
 
 	str+='<div style="float: right; height: 50px; width: 178px; ">';
