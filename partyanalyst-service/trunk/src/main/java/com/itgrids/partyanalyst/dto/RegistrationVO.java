@@ -59,6 +59,8 @@ public class RegistrationVO extends BaseDTO{
     private List<String> userRoles = new ArrayList<String>(0);
 	private String freeuser;
 	private Long constituencyId;
+	private List<SelectOptionVO> userAccessVoterConstituencies = new ArrayList<SelectOptionVO>();
+	
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
@@ -406,6 +408,15 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setUserRoles(List<String> userRoles) {
 		this.userRoles = userRoles;
+	}
+
+	public List<SelectOptionVO> getUserAccessVoterConstituencies() {
+		return userAccessVoterConstituencies;
+	}
+
+	public void setUserAccessVoterConstituencies(
+			List<SelectOptionVO> userAccessVoterConstituencies) {
+		this.userAccessVoterConstituencies = userAccessVoterConstituencies;
 	}
 	
 }
