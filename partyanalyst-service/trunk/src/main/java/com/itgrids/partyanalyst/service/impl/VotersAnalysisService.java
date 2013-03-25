@@ -4629,6 +4629,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				}
 			}
 		}
+		voterDAO.flushAndclearSession();
 	}
 	catch (Exception e) {
 		log.error("Exception rised in updateVoterDetails : ",e);
