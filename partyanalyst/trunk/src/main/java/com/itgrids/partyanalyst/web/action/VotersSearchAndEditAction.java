@@ -122,20 +122,24 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 		
 		
 		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return INPUT;
 		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_SEARCH_AND_EDIT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
 			return ERROR;
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-		return ERROR;
-		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
-		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
-		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		constituencyList = user.getUserAccessVoterConstituencies();
+		if(constituencyList == null || constituencyList.isEmpty()){
+			Long userID = user.getRegistrationID();
+			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+			user.setUserAccessVoterConstituencies(constituencyList);
+		}
 		return SUCCESS;
 		
 	}
