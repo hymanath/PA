@@ -752,7 +752,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(); 
 			
 		SelectOptionVO selectOptionVO = null;
-		List<Object[]> publicationDetails = boothPublicationVoterDAO.getPublicationDetailsBasedOnConstituency(constituencyId);
+		//List<Object[]> publicationDetails = boothPublicationVoterDAO.getPublicationDetailsBasedOnConstituency(constituencyId);
+		
+		List<Object[]> publicationDetails = voterInfoDAO.getPublicationDetailsBasedOnConstituencyId(constituencyId);
 		
 		if(publicationDetails != null && publicationDetails.size() > 0)
 		{
