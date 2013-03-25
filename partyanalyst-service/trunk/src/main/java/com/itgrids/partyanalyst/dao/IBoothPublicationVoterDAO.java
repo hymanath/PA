@@ -243,6 +243,9 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(Long userId,String locationType,List<Long> locationIds,Long publicationDateId,Long constituencyId);
 	 
 	 public Long getTotalCastCountInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
-	 
+		
 	 public List<Voter> findFamiliesInfoBypartNo(String partNo,Long publicationDateId,String houseNo,Long constituencyId);
+	 public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId);
+
+
 }
