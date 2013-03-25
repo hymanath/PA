@@ -312,6 +312,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 #mandalwisevotingTrendz{background:#fff !important;}
 /** Favorite Link End**/
 
+#MandalwiseVotingTrendz{width:998px;margin-left:auto;margin-right:auto;float:none;}
+#elecResDiv caption{border-radius:3px;}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -488,12 +490,12 @@ var queryString='';
 						    </tr>
 						  </table>
 						</td>
-						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view   ${constituencyDetails.constituencyName}  &nbsp; parliamentary constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a></div></td>
+						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view ${constituencyDetails.constituencyName}&nbsp;parliamentary constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a></div></td>
 				     </tr>
 				    </table>
                   </div>
             </c:if>
-			<c:if test="${constituencyDetails.constituencyType == 'Parliament'}"><a href="javascript:{}" title="Click here to View  ${constituencyDetails.constituencyName}  &nbsp; Parliamentary constituency participated Candidates Affidavit Summary" style="float:right;" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a> 
+			<c:if test="${constituencyDetails.constituencyType == 'Parliament'}"><a href="javascript:{}" title="Click here to View  ${constituencyDetails.constituencyName}&nbsp;Parliamentary constituency participated Candidates Affidavit Summary" style="float:right;" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a> 
 					<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
 								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
 
@@ -549,7 +551,7 @@ var queryString='';
 						    </tr>
 						  </table>
 						</td>
-						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view ${constituencyDetails.constituencyName} &nbsp; Assembly constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyId},'${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyType}','${candidateDetailsForConstituency.assemblyCandidateInfo[0].latestElecYear}')"><strong>View Results</strong></a></div></td>
+						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view ${constituencyDetails.constituencyName}&nbsp;Assembly constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyId},'${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyType}','${candidateDetailsForConstituency.assemblyCandidateInfo[0].latestElecYear}')"><strong>View Results</strong></a></div></td>
 				     </tr>
 				    </table>
                   </div>
@@ -562,7 +564,7 @@ var queryString='';
 
 			<div id="candidatesAffidavitSummary" class="cas-view">
 			<c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-				<a href="javascript:{}" title="Click here to View  ${constituencyDetails.constituencyName}  &nbsp; Assembly constituency participated Candidates Affidavit Summary" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a></li>
+				<a href="javascript:{}" title="Click here to View  ${constituencyDetails.constituencyName}&nbsp;Assembly constituency participated Candidates Affidavit Summary" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a></li>
 			<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
 								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
 
@@ -608,7 +610,7 @@ var queryString='';
 						    </tr>
 						  </table>
 						</td>
-						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view  ${parliament.name}  parliamentry constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a></div></td>
+						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view ${parliament.name}  parliamentry constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a></div></td>
 				     </tr>
 				    </table>
                   </div>
@@ -639,7 +641,7 @@ var queryString='';
 		
             
             <p class="detailed-ele-inf" style="display:block;margin-top:15px"> <span class="fleft" style="font-weight:bold;color:#C20000;font-size: 14px;">${constituencyDetails.constituencyName}  &nbsp;${constituencyDetails.constituencyType}  Constituency Detailed Election Information</span>
-			<span id="minusPlusDiv"><a title="Click here to View ${constituencyDetails.constituencyName}   &nbsp; ${constituencyDetails.constituencyType} Constituency Detailed Election Information" onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;cursor: pointer;"/><b> Click Here To View</b></a></span></p>
+			<span id="minusPlusDiv"><a title="Click here to View ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Detailed Election Information" onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;cursor: pointer;"/><b> Click Here To View</b></a></span></p>
 			<div id="detailedElectionInfoDiv_Body" style="display: block;"></div>
           </div>
           
@@ -650,36 +652,36 @@ var queryString='';
           
           <div class="cl-sub-fields-sec" id="hidemandDIV">
 		    <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-            <h1 class="topthree"></h1><h1 class="pur-title"><span>Mandals Wise Voters Details Of ${constituencyDetails.constituencyName}  &nbsp; Assembly Constituency</span></h1>
+            <h1 class="topthree"></h1><h1 class="pur-title"><span>Mandals Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Assembly Constituency</span></h1>
 			</c:if>
 			<c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
-			 <h1 class="topthree"></h1><h1 class="pur-title"><span>Assembly Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Parliament Constituency</span></h1>
+			 <h1 class="topthree"></h1><h1 class="pur-title"><span>Assembly Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Parliament Constituency</span></h1>
 			</c:if>
             <ul class="mvd-fields" id="MandalsDelimit">
 			 <div id="allDIV">
 			  <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-              <li><a href="javascript:{}" title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Assembly After Delimitation" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
-              <li><a href="javascript:{}" title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Assembly Before Delimitation" onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
+              <li><a href="javascript:{}" title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Assembly After Delimitation" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
+              <li><a href="javascript:{}" title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Assembly Before Delimitation" onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
 			  </c:if>
 			  <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
-			   <li><a href="javascript:{}" title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Parliament After Delimitation" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Assemblies After Delimitation</strong></a></li>
-              <li><a href="javascript:{}" title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Parliament Before Delimitation" onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Assemblies Before Delimitation</strong></a></li>			  
+			   <li><a href="javascript:{}" title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Parliament After Delimitation" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Assemblies After Delimitation</strong></a></li>
+              <li><a href="javascript:{}" title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Parliament Before Delimitation" onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Assemblies Before Delimitation</strong></a></li>			  
 			  </c:if>
 			 </div>
 			 <div id="oneDIV" style="display:none;">
 			 <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-			   <li><a href="javascript:{}"  title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Assembly After Delimitation"  class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
+			   <li><a href="javascript:{}"  title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Assembly After Delimitation"  class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
 			 </c:if>
 			 <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
-			   <li><a href="javascript:{}"  title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Parliament After Delimitation"  class="active" style="cursor:pointer"><strong>Assemblies After Delimitation</strong></a></li>
+			   <li><a href="javascript:{}"  title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Parliament After Delimitation"  class="active" style="cursor:pointer"><strong>Assemblies After Delimitation</strong></a></li>
 			 </c:if>
 			</div>
 			 <div id="twoDIV" style="display:none;">
 			 <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-			   <li><a href="javascript:{}"  title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Assembly Before Delimitation"  class="active" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
+			   <li><a href="javascript:{}"  title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Assembly Before Delimitation"  class="active" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
 			 </c:if>
 			 <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
-			   <li><a href="javascript:{}"  title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} &nbsp; Parliament Before Delimitation"  class="active" style="cursor:pointer"><strong>Assemblies Before Delimitation</strong></a></li>
+			   <li><a href="javascript:{}"  title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName}&nbsp;Parliament Before Delimitation"  class="active" style="cursor:pointer"><strong>Assemblies Before Delimitation</strong></a></li>
 			 </c:if>
 			 </div>
 			  
@@ -715,13 +717,13 @@ var queryString='';
 
 
 		  <div class="cl-sub-fields-sec ale-sec" id="hideAllRuralLocalElections">
-            <h1 class="toptwo"></h1><h1 class="blu-title" ><span>All Rural Local Body Elections Happened In ${constituencyDetails.constituencyName} &nbsp; Constituency</span></h1>
+            <h1 class="toptwo"></h1><h1 class="blu-title" ><span>All Rural Local Body Elections Happened In ${constituencyDetails.constituencyName}&nbsp; Constituency</span></h1>
 		   <div id="showmptcZptc">
 			  <ul class="mvd-fields" id="LocalElectionsNavNew">             
 
-                <li id="ZptcDiv"> <a href="javascript:{}" title="Click here to view ZPTC Elections Happened In ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showZptcPartyDetails()" style="cursor:pointer"><strong>ZPTC's</strong></a></li>			  
+                <li id="ZptcDiv"> <a href="javascript:{}" title="Click here to view ZPTC Elections Happened In ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showZptcPartyDetails()" style="cursor:pointer"><strong>ZPTC's</strong></a></li>			  
 			  
-                <li id="mptcDiv"><a href="javascript:{}" title="Click here to view MPTC Elections Happened In ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showMptcPartyDetails()" style="cursor:pointer"><strong>MPTC's</strong></a></li>           
+                <li id="mptcDiv"><a href="javascript:{}" title="Click here to view MPTC Elections Happened In ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showMptcPartyDetails()" style="cursor:pointer"><strong>MPTC's</strong></a></li>           
              </ul>
 
             <div id="zptcDivBody" class="detailed-ele-inf">
@@ -740,7 +742,7 @@ var queryString='';
 						
 			 </div>
 			<div id="mptcDivBody" class="detailed-ele-inf">
-				<div id="mptcheadDiv" style="color: #5CB275;text-decoration: none;display:block;clear:both;padding:10px;font-weight:bold;">Detailed View of ${constituencyDetails.constituencyName}  &nbsp; Mptc Election Results</div>
+				<div id="mptcheadDiv" style="color: #5CB275;text-decoration: none;display:block;clear:both;padding:10px;font-weight:bold;">Detailed View of ${constituencyDetails.constituencyName}&nbsp;Mptc Election Results</div>
 			<div id="mptcElectionIdsSelectDiv"></div>
 				<div id="mptcCandidateLink"></div>
 				<div id="countMptcDiv">
@@ -780,7 +782,7 @@ var queryString='';
 
 		
 		<c:if test="${constituencyDetails.hasAnalize}">
-			<input title="Click Here To Get ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency Voting Trendz" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;" value="${constituencyDetails.constituencyName} &nbsp; Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
+			<input title="Click Here To Get ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Voting Trendz" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;" value="${constituencyDetails.constituencyName}&nbsp;Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
 		</c:if>
 	
 	</div>
@@ -978,7 +980,7 @@ var queryString='';
 					Unsubscribe to stop<br/>
 					updates of<br />
 					<span class="li-red">
-					${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency</span><br/>
+					${constituencyDetails.constituencyName}&nbsp;${constituencyDetails.constituencyType} Constituency</span><br/>
 					<input class="unsubscribebtn" type="button" onclick=
 					"unsubscriptionDetails()" value="UNSUBSCRIBE"/>
 					</s:if>
@@ -986,7 +988,7 @@ var queryString='';
 					<s:else>
 					Subscribe and get <br/>
 					updates of<br />
-					<span class="li-red">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>
+					<span class="li-red">${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency</span><br/>
 					<input  class="subscribebtn" type="button" onclick=
 					"subscriptionDetails()" value="SUBSCRIBE"/>
 					</s:else>
@@ -1014,11 +1016,11 @@ var queryString='';
       </div>
       
 	   <div class="cl-sub-fields-sec ale-sec" id="hideAllUrbanLocalElections" style="margin-top:20px;margin-left:5px;width:968px;">
-            <h1 class="topfour"></h1><h1 class="gre-title"><span>All Urban Local Body Elections Happened In ${constituencyDetails.constituencyName} &nbsp; Constituency</span></h1>
+            <h1 class="topfour"></h1><h1 class="gre-title"><span>All Urban Local Body Elections Happened In ${constituencyDetails.constituencyName}&nbsp; Constituency</span></h1>
 			 <div id="showmungracorp">
 			<ul class="mvd-fields" id="LocalElectionsNav">             
-               <li id="muncipalityDiv"><a href="javascript:{}" title="Click here to view MUNCIPALITY Elections Happened In ${constituencyDetails.constituencyName}    &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showMunicipalityResults1(),getMunicipalityResultsForAssemblies()" class="active"><strong>MUNCIPALITY</strong></a></li>			  
-			   <li id="greterMunicipalDiv"><a href="javascript:{}" title="Click here to view GREATER MUNICIPALCORP Elections Happened In ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showGreterElectionDetails()" style="cursor:pointer"><strong>GREATER MUNICIPALCORP</strong></a></li>
+               <li id="muncipalityDiv"><a href="javascript:{}" title="Click here to view MUNCIPALITY Elections Happened In ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" onclick="showMunicipalityResults1(),getMunicipalityResultsForAssemblies()" class="active"><strong>MUNCIPALITY</strong></a></li>			  
+			   <li id="greterMunicipalDiv"><a href="javascript:{}" title="Click here to view GREATER MUNICIPALCORP Elections Happened In ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showGreterElectionDetails()" style="cursor:pointer"><strong>GREATER MUNICIPALCORP</strong></a></li>
 			    <li id="corporationTabDiv"><a href="javascript:{}" title="Click here to view CORPORATION Elections Happened In ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" onclick="showCorporationDetails()"  style="cursor:pointer"><strong>CORPORATION's</strong></a></li>
             </ul>
 
@@ -2523,7 +2525,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 	
 	var appendingStr = '';
 	for(var i in myResults.muncipalityVO){
-		appendingStr += '<a href="javascript:{}" title="Click here to View ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency '+elecType+'\'s Election Results" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.muncipalityVO[i].electionTypeId+','+ myResults.muncipalityVO[i].muncipalityId+','+myResults.muncipalityVO[i].latestMuncipalElectionYear+',\''+myResults.muncipalityVO[i].muncipalityName+'\')" style="text-decoration:none;" class="candidateDetailsStyle">Show Results</a>';
+		appendingStr += '<a href="javascript:{}" title="Click here to View ${constituencyDetails.constituencyName}&nbsp;${constituencyDetails.constituencyType} Constituency '+elecType+'\'s Election Results" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.muncipalityVO[i].electionTypeId+','+ myResults.muncipalityVO[i].muncipalityId+','+myResults.muncipalityVO[i].latestMuncipalElectionYear+',\''+myResults.muncipalityVO[i].muncipalityName+'\')" style="text-decoration:none;" class="candidateDetailsStyle">Show Results</a>';
 	}	
 	moreElmt.innerHTML = appendingStr;
 	
@@ -2568,7 +2570,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 	chartResultDiv.innerHTML = chart;
 	
 	detailsDIV += '<table><tr>';
-	detailsDIV += '<td><div><a href="javascript:{}" title="Click here to view All Parties performance in different elections of ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart">Detailed Chart</a></div></td>';
+	detailsDIV += '<td><div><a href="javascript:{}" title="Click here to view All Parties performance in different elections of ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart">Detailed Chart</a></div></td>';
 	
 	details.innerHTML = detailsDIV;
 	document.getElementById('constituencyPageElectionInfoDiv_Body').style.display='none';
@@ -2582,14 +2584,14 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 		var minusPlusDivElmt = document.getElementById("minusPlusDiv");
 		var elecStr = '';
 		var str = '';
-			str+='<a style="cursor:pointer;" title="Click here to Hide ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency Detailed Election Information" onclick="hideDetailedElectionResultDiv(\'detailedElectionInfoDiv_Body\')"> <img src="images/minus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/> <b>&nbsp;Click here to Hide</b></a></span>';
+			str+='<a style="cursor:pointer;" title="Click here to Hide ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Detailed Election Information" onclick="hideDetailedElectionResultDiv(\'detailedElectionInfoDiv_Body\')"> <img src="images/minus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/> <b>&nbsp;Click here to Hide</b></a></span>';
 		minusPlusDivElmt.innerHTML = str;
 
 		for(var i in constituencyPageMainObj.constituencyElectionInfo)
 		{
 			var data = constituencyPageMainObj.constituencyElectionInfo[i];
 			var info = constituencyPageMainObj.constituencyInfo;
-			elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" title="Click here to view ${constituencyDetails.constituencyName} &nbsp; '+info.constituencyType+' constituency Election Results in '+data.year+'"  onmouseover="addCss(this.id);" onmouseout="removeCss(this.id);" onclick="showDetailedElectionResult(this.id)">';
+			elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" title="Click here to view ${constituencyDetails.constituencyName}&nbsp;'+info.constituencyType+' constituency Election Results in '+data.year+'"  onmouseover="addCss(this.id);" onmouseout="removeCss(this.id);" onclick="showDetailedElectionResult(this.id)">';
 			elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
 			elecStr+='<span id=""> <b> In '+data.year+' - '+data.candidateName+' - ' +data.partyShortName+ ' Won with  '+data.votesMargin+' Majority Of Votes On '+ data.oppositionCandInfo[0].candidateName+ ' - ' +data.oppositionCandInfo[0].partyShortName+ ''
 			 '</b></span>';		
@@ -2609,7 +2611,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 		var minusPlusDivElmt = document.getElementById("minusPlusDiv");
 		var str = '';
 
-		str+='<a title="Click here to View ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency Detailed Election Information" style="cursor:pointer;" onclick="detailedElectionResult()"> <img  src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;cursor: pointer;"/><b>&nbsp;Click here to View</b></a></span>';
+		str+='<a title="Click here to View ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Detailed Election Information" style="cursor:pointer;" onclick="detailedElectionResult()"> <img  src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;cursor: pointer;"/><b>&nbsp;Click here to View</b></a></span>';
 
 		minusPlusDivElmt.innerHTML = str;
 		}
@@ -3252,6 +3254,7 @@ function removeCensusNotAvailableErrorMessage()
 		return;
 	if('${constituencyDetails.constituencyType}' == 'Assembly'){
 		//headingDiv.innerHTML = ' Mandal Wise Voting Trendz ';
+	str +='<h1 class="topfour"></h1>';
 	str +='<h1 class="gre-title">';
 	str +='<span>Mandal Wise Voting Trendz</span>';
 		str +='</h1>';
@@ -3765,7 +3768,7 @@ showUrbanDivIfPresent();
 	var elecType= "Greater Municipal Corp";
 	var appendingStr = '';
 	for(var i in myResults.localElectionsInfo){
-		appendingStr += '<a href="javascript:{}" title="Click here to View ${constituencyDetails.constituencyName} &nbsp; ${constituencyDetails.constituencyType} Constituency Greater Municipality Corporation Candidates Election Results" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.localElectionsInfo[i].electionTypeId+','+ myResults.localElectionsInfo[i].id+','+myResults.localElectionsInfo[i].electionYear+',\''+myResults.localElectionsInfo[i].name+'\')" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+		appendingStr += '<a href="javascript:{}" title="Click here to View ${constituencyDetails.constituencyName}&nbsp;${constituencyDetails.constituencyType} Constituency Greater Municipality Corporation Candidates Election Results" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.localElectionsInfo[i].electionTypeId+','+ myResults.localElectionsInfo[i].id+','+myResults.localElectionsInfo[i].electionYear+',\''+myResults.localElectionsInfo[i].name+'\')" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	}	
 	moreElmt.innerHTML = appendingStr;
 	
