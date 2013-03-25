@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.model.VoterInfo;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implements IVoterInfoDAO{
 
@@ -131,4 +132,17 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		
 		return queryObj.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId)
+	{
+		Query queryObj = getSession().createQuery("select distinct model.publicationDate.publicationDateId,model.publicationDate.date from VoterInfo model where " +
+				" model.constituencyId =:constituencyId and model.voterReportLevel.reportLevel =:reportLevel order by model.publicationDate.date desc ");
+		
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("reportLevel", IConstants.CONSTITUENCY);
+		return queryObj.list();
+	}
+
+
 }
