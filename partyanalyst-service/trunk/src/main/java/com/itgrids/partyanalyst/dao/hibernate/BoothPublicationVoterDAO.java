@@ -1726,7 +1726,10 @@ public List findVotersCastInfoByBoothIdAndPublicationDateForHamlet(Long hamletId
 public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId , List<Long> voterIds)
 {
 	
-	Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.houseNo from BoothPublicationVoter model " +
+	Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.houseNo, " +
+			" SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+			" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount  " +
+			"from BoothPublicationVoter model " +
 			"where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
 			"model.voter.voterId in(:voterIds)  group by model.voter.houseNo");
 	
@@ -2191,5 +2194,11 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 			query.setParameter("constituencyId", constituencyId);
 		}
 		return query.list();
+	}
+	public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select distinct model.booth.publicationDate.publicationDateId , DATE_FORMAT( model.booth.publicationDate.date ,'%d-%m-%Y ')  " +
+				"    from BoothPublicationVoter model join model.booth.constituency c join model.booth.publicationDate p where " +
+				" c.constituencyId = ? order by p.year desc)",constituencyId);
 	}
 }
