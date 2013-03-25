@@ -760,7 +760,7 @@ legend
 				<table cellspacing="0" cellpadding="0" border="0" style="margin-left:30px;">
 				<tbody><tr>
 					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo1.png"></td>
-					<td valign="top"><div class="mainHeading" id="mainHead"> Panchayat Wise ${electionType} ${electionYear } Results In ${mandalName} Mandal</div></td>
+					<td valign="top"><div class="mainHeading" id="mainHead"> Panchayat Wise ${electionType} &nbsp;${electionYear } Results In ${mandalName} Mandal</div></td>
 					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo2.png"></td>
 				</tr>
 				</tbody></table>
