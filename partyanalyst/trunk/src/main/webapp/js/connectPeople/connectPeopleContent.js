@@ -43,7 +43,7 @@ connectDivId = divId;
 
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
-	bodyStr+='<span><img height="20" width="25" src="/images/icons/constituencyPage/groups.png"></img></span>';
+	bodyStr+='<span><img height="20" width="25" src="images/icons/constituencyPage/groups.png" style="margin-top: -15px;"></img></span>';
 	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from '+locationName+' Constituency</span>';
 	bodyStr+='</div>';
 	bodyStr+='<div id="connectedPersonsDiv">';
@@ -58,10 +58,10 @@ connectDivId = divId;
 		bodyStr+='<tr>';
 		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="images/icons/constituencyPage/human1.png"/></a></span></td>';
 		else
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'" onerror="setDefaultImg(this)"/></span></td>';
-		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">'+connectedPeopleData[i].candidateName+'</span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'" onerror="setDefaultImg(this)"/></a></span></td>';
+		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank">'+connectedPeopleData[i].candidateName+'</a></span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
 		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass" style="margin-right:94px;">';
@@ -381,47 +381,60 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 }
 
 function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,locationId,locationType,locationName)
-{	
-	var str = '';	
-	str += '<table width="100%">';
-	str += '<tr>';
-	str += '<td width="75%">';
-	str += '<div class="connectPeople_body_name">'+userName+'</div><div class="connectPeople_body_constituency">'+constituency+'</div>';
-	str += '</td>';
-	str += '<td rowspan="2" align="center" width="25%">';
-	str += '<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">';
-	str	+= '<div id="connectButtonDiv"><input type="button" class="connectButton" onclick="doConnectPeople(\''+userId+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" value="Connect"/></div>';
-	str += '</td>';
-	str += '</tr>';
-	str += '<tr>';
-	str += '<td width="75%"><fieldset id="connectUserMsgFieldSet"><legend>Message</legend>';
-	str += '<textarea id="connectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="38" style="background:none;"></textarea>';
-	str +='<div id="limitDiv">';
-	str +='<table style="width:100%;"><tr>';
-	str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars" style="margin-top: 4px;"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
-	str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
-	str +='</tr></table>';
-	str +='</div>';	
-	str += '</fieldset></td>';
-	str += '</tr>';
-	str += '</table>';
-	str	+= '<div id="connectStatus"></div>';	
-	str	+= '</div>';
-	
-	$( "#connectPeoplePopup" ).dialog({
-			title:"Connect To "+userName,
-			autoOpen: false,
-			show: "blind",
-			width: 500,
-			minHeight:300,
-			modal: true,
-			hide: "explode"
-		});
-	
-	var elmt = document.getElementById("allConnectedUsersDisplay_main");
-	if(elmt)
-		elmt.innerHTML = str;
-	$( "#connectPeoplePopup" ).dialog("open");
+{
+	if(userLoginId != null && userLoginId.length > 0)
+	{
+		var str = '';	
+		str += '<table width="100%">';
+		str += '<tr>';
+		str += '<td width="75%">';
+		str += '<div class="connectPeople_body_name">'+userName+'</div><div class="connectPeople_body_constituency">'+constituency+'</div>';
+		str += '</td>';
+		str += '<td rowspan="2" align="center" width="25%">';
+		str += '<img height="100" width="95" src="images/icons/indexPage/human.jpg">';
+		str	+= '<div id="connectButtonDiv"><input type="button" class="connectButton" onclick="doConnectPeople(\''+userId+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" value="Connect"/></div>';
+		str += '</td>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<td width="75%"><fieldset id="connectUserMsgFieldSet"><legend>Message</legend>';
+		str += '<textarea id="connectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="38" style="background:none;"></textarea>';
+		str +='<div id="limitDiv">';
+		str +='<table style="width:100%;"><tr>';
+		str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars" style="margin-top: 4px;"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+		str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
+		str +='</tr></table>';
+		str +='</div>';	
+		str += '</fieldset></td>';
+		str += '</tr>';
+		str += '</table>';
+		str	+= '<div id="connectStatus"></div>';	
+		str	+= '</div>';
+		
+		$( "#connectPeoplePopup" ).dialog({
+				title:"Connect To "+userName,
+				autoOpen: false,
+				show: "blind",
+				width: 500,
+				minHeight:300,
+				modal: true,
+				hide: "explode"
+			});
+		
+		var elmt = document.getElementById("allConnectedUsersDisplay_main");
+		if(elmt)
+			elmt.innerHTML = str;
+		$( "#connectPeoplePopup" ).dialog("open");
+	}
+	else{
+		$('#Not_connectPeople_body_name').css("display","block");
+		$('#Not_connectPeople_body_name').dialog({
+				title:"Connect To People ",
+				show: "blind",
+				width: 500,
+				minHeight:100,
+				modal: true
+			});
+	}
 }
 
 function doConnectPeople(connectUserId,userLoginId,locationId,locationType,locationName)
@@ -988,14 +1001,13 @@ var str = '';
 		str += '<table width="100%">';
 		str += '<tr>';
 
-		var imageStr = "pictures/profiles/"+users[i].image;
-      
+		var imageStr = "pictures/profiles/"+users[i].id+".jpeg";
 		if(users[i].image == null)
-			str += '<td valign="top" width="15%"><img height="45" width="50" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="/images/icons/indexPage/human.jpg"></a></td>';
 		else
-			str += '<td valign="top" width="15%"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImg(this)"></td>';		
+			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImg(this)"></a></td>';		
 		str += '<td valign="top" width="55%">';
-		str += '<div class="connectPeople_body_name">'+users[i].candidateName+'</div>';
+		str += '<div class="connectPeople_body_name"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank">'+users[i].candidateName+'</a></div>';
 		str += '<div><span class="connectPeople_body_constituency">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
 		str += '</td>';
 		str += '<td valign="middle" width="30%" align="right">';
