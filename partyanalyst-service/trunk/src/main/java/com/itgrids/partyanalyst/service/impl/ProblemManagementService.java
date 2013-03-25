@@ -8484,7 +8484,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			
 			Date eDate = sdf.parse(problemBeanVO.getExistingFrom());
 			
-			problem.setIdentifiedOn(fileDate);
+			//problem.setIdentifiedOn(fileDate);
+			problem.setIdentifiedOn(new Date());
 			problem.setExistingFrom(eDate);
 			
 			problem.setProblemStatus(problemStatusDAO.get(1L));
