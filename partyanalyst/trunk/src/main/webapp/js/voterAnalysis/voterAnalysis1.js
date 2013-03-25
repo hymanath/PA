@@ -376,7 +376,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		elLiner.innerHTML =str;
 	}
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo",width:15,},
+{key:"voterId", label: "SNo",width:15,sortable: true},
 {key:"firstName", label: "Name",width:80, sortable: true},
 {key:"voterIDCardNo", label: "voter ID",width:110,sortable: true},
 {key:"gender", label: "Gender", width:45, sortable: true},
@@ -384,10 +384,10 @@ var votersByLocBoothColumnDefs = [
 {key:"houseNo", label: "House No",width:30, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
 {key:"serialNo", label:"Serial No"},
-{key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
-{key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
+{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
 ];
@@ -529,17 +529,17 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 	};
 
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo",width:15,},
+{key:"voterId", label: "SNo",width:15,sortable: true},
 {key:"firstName", label: "Name",width:80, sortable: true},
 {key:"voterIDCardNo", label: "voter ID",width:110,sortable: true},
 {key:"gender", label: "Gender", width:45, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
 {key:"houseNo", label: "House No",width:30, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
-{key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
-{key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
+{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
 ];
@@ -7040,19 +7040,19 @@ YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData)
 		
 	}	
 	var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
-{key:"voterIDCardNo",label: "voter Id",sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", sortable:true},
-//{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true},
-{key:"localArea", label: "Location", sortable: true},
-
-//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
-
+	{key:"voterId", label: "SNo",width:20,sortable: true},
+	{key:"firstName", label: "Name",width:80, sortable: true},
+	{key:"voterIDCardNo", label: "voter ID",sortable: true},
+	{key:"gender", label: "Gender", width:50, sortable: true},
+	{key:"age", label: "Age",  width:30,sortable:true},
+	{key:"houseNo", label: "House No",width:60, sortable:true},
+	{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+	//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+	//{key:"relationshipType", label: "Relationship", sortable:true},
+	{key:"mobileNo",label:"MobileNo",sortable:true},
+	{key:"localArea", label: "Location", sortable: true},
+	//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
+	//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 ];
 var votersByLocBoothDataSource = new YAHOO.util.DataSource("getInfluencingPeopleVotersDetailsAction.action?locationValue="+mainreqid+"&type="+maintype+"&publicationDateId="+publicationDateId+"&buttonName="+btnName+"&");
 votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
@@ -7069,17 +7069,19 @@ totalRecords: "voterDetailsCount" // Access to value in the server response
 	if(btnName != "Politician")
 	{
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo"},
-{key:"firstName", label: "Name", sortable: true},
-{key:"voterIDCardNo",label: "voter Id",sortable: true},
-{key:"gender", label: "Gender", sortable: true},
-{key:"age", label: "Age", sortable:true},
-{key:"houseNo", label: "House No", sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", sortable:true},
-//{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true},
-{key:"localArea", label: "Location", sortable: true}
-//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+{key:"voterId", label: "SNo",width:20,sortable: true},
+	{key:"firstName", label: "Name",width:80, sortable: true},
+	{key:"voterIDCardNo", label: "voter ID",sortable: true},
+	{key:"gender", label: "Gender", width:50, sortable: true},
+	{key:"age", label: "Age",  width:30,sortable:true},
+	{key:"houseNo", label: "House No",width:60, sortable:true},
+	{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+	//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+	//{key:"relationshipType", label: "Relationship", sortable:true},
+	{key:"mobileNo",label:"MobileNo",sortable:true},
+	{key:"localArea", label: "Location", sortable: true},
+	//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
+	//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
 ];
 var votersByLocBoothDataSource = new YAHOO.util.DataSource("getInfluencingPeopleVotersDetailsAction.action?locationValue="+mainreqid+"&type="+maintype+"&publicationDateId="+publicationDateId+"&buttonName="+btnName+"&");
@@ -7281,17 +7283,17 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 	};
 
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo",width:20,},
+{key:"voterId", label: "SNo",width:20,sortable: true},
 {key:"firstName", label: "Name",width:80, sortable: true},
 {key:"voterIDCardNo", label: "voter ID",sortable: true},
 {key:"gender", label: "Gender", width:50, sortable: true},
 {key:"age", label: "Age",  width:30,sortable:true},
 {key:"houseNo", label: "House No",width:50, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
-{key:"Type", label: "Type", sortable: true,width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
-{key:"Actions", label: "Actions", sortable: true,formatter:YAHOO.widget.DataTable.ActionLink}
+{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
 ];
@@ -7561,4 +7563,9 @@ function getAssemblyLocalEleBodyId()
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		 var url = "getAssemblyLocalEleBodyIdByLocalEleBodyIdAction.action?"+rparam;	
 		 callAjax(jsObj,url);
+}
+
+function refreshingchildWindowWindow()
+{
+	getVotersData();
 }

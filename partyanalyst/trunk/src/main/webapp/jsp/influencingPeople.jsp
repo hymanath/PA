@@ -485,6 +485,13 @@ function hideText(){
 	}
 
 }
+$(document).ready(function(){
+	var successMsg = '${successMsg}';
+	if(successMsg.trim().length > 0)
+	{
+		refreshingParentWindow();
+	}
+});
 function refreshParent()
 {
 	<c:if test="${ empty voterId}">
@@ -705,8 +712,9 @@ function validationCheck()
 	}
 
 refreshParent();
-refreshingParentWindow();
+
 }
+
 function setTimer()
 {	
 	$("#successMsg").delay("2000");
@@ -714,7 +722,7 @@ function setTimer()
 }
 function refreshingParentWindow()
 {
-	setTimeout(window.opener.refreshingchildWindowWindow(),18000);
+	window.opener.refreshingchildWindowWindow();
     return false;
 }
 </script>
