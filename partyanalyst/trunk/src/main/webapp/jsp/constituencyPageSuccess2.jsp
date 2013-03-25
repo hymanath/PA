@@ -311,6 +311,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 .favouritelink:hover .favouritelink-close {display:block}
 #mandalwisevotingTrendz{background:#fff !important;}
 /** Favorite Link End**/
+#a1,#a2,#a3,#a4,#a5,#a6,#a7,#a8,#a9,#a10{
+margin-left: 10px;
+}
 
 #MandalwiseVotingTrendz{width:998px;margin-left:auto;margin-right:auto;float:none;}
 #elecResDiv caption{border-radius:3px;}
@@ -838,6 +841,7 @@ var queryString='';
 
 			   <div id="connectPeoplePopup_outer" class="yui-skin-sam">
 			<div id="connectPeoplePopup"><div id="allConnectedUsersDisplay_main"></div></div>
+			<div id="Not_connectPeople_body_name" style="font-size:13px;font-weight:bold;display:none;"> Please Login To Connect With Your Constituency People...</div>
 			</div>
 				 </div>
               </div>
