@@ -69,6 +69,30 @@
 	
 <style type="text/css">
 
+
+table.gridtable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#000;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #DBEBFF;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
 #contenttable{
  margin-left: auto;
     margin-right: auto;
@@ -342,6 +366,7 @@ width:100%;
     color: #669900;
     font-size: 15px;
     font-weight: bold;
+	font-family:sans-serif
 }
 #headingtable{
 font-size: 13px;
@@ -1483,17 +1508,18 @@ No Data Aailable
 <tr><td align="center" id="mandalDivHeadstyle"><br>
 
 
-<u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u>
+<h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
 </td></tr></table>
 <div id="boothResultsDiv">
 
  
 	<div id="mandalCensusDiv">
-		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
+		<div id="mandalCensusDivHead" style="margin:10px 0px 10px 0px;font-family:sans-serif;"><u><h4><c:out value="${mandalInfoVO.mandalName}"/> &nbsp;Tehsil / Mandal &nbsp; Census &nbsp; Information</h4></u></div>
 		
 		
 		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
-		<table class="censusInfoTable" style="border:1px solid #ADADAD;">		
+		<!--<table class="censusInfoTable" style="border:1px solid #ADADAD;">		-->
+		<table class="gridtable" style="border:1px solid #ADADAD;">
 				<tr>
 					<th></th>
 					<th>Population</th>
