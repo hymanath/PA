@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
@@ -88,7 +89,15 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private Long assemblyLocalEleBodyId;
 	private IVoterModificationService voterModificationService;
 	
+    private EntitlementsHelper entitlementsHelper;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount() {
 		return influencingPeopleCount;
 	}
@@ -378,13 +387,22 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
-		return ERROR;
-		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
-		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
-		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		return INPUT;
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
+			return ERROR;
+		constituencyList = user.getUserAccessVoterConstituencies();
+		if(constituencyList == null || constituencyList.isEmpty()){
+			Long userID = user.getRegistrationID();
+			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+			user.setUserAccessVoterConstituencies(constituencyList);
+		}
 		return SUCCESS;
 		
 	}

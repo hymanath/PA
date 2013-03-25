@@ -996,6 +996,7 @@
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />	
 		<property name="voterModificationService" ref="voterModificationService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="publicProfileAction" class="com.itgrids.partyanalyst.web.action.PublicProfileAction">
