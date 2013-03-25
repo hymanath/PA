@@ -818,7 +818,7 @@ function buildCategoriesListInit(result){
 	  }
 	function buildCategoriesList(result){
 	  var str ='';
-	   str+='<div><input type="radio" id="allAttributeType" name="attributeType" checked="checked" /> Select Attributes for all voters to update<span style=" color: #000000;"> (Hint: Please select atmost 500 voters to edit)<span></div>';
+	   str+='<div><input type="radio" id="allAttributeType" name="attributeType" checked="checked" /> Select Attributes for all voters to update<span style=" color: #000000;"> (Hint: Please select atmost 1000 voters to edit)<span></div>';
 	   str+='<table style="margin-left:5px;margin-bottom:5px;color:#000000;"><tr>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" id="allAttributeTypeAllId" class="allAttributeTypeClass" value="all" />  All</td>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="cast" />  Caste</td>';
@@ -841,7 +841,7 @@ function buildCategoriesListInit(result){
 		  str+='</tr>';
 		}
 	   str+='</table>';
-	   str+='<div><input type="radio" id="singleAttributeType" name="attributeType" /> Select Attributes for each voter to update<span style=" color: #000000;"> (Hint: Please select atmost 30 voters to edit)</span></div>';
+	   str+='<div><input type="radio" id="singleAttributeType" name="attributeType" /> Select Attributes for each voter to update<span style=" color: #000000;"> (Hint: Please select atmost 500 voters to edit)</span></div>';
 	   str+='<table style="margin-left:5px;margin-bottom:5px;color:#000000;"><tr>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" id="singleAttributeTypeId" class="singleAttributeTypeClass" value="all" />  All</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="cast" />  Caste</td>';
@@ -901,17 +901,17 @@ function buildCategoriesListInit(result){
 		// alert(ids);
 		 if(type == 'all'){
 		 
-		    if(selectedVotersArr.length > 500)
+		    if(selectedVotersArr.length > 1000)
 			  {
-		   		alert(" Please select atmost 500 voters to edit");
+		   		alert(" Please select atmost 1000 voters to edit");
 				  return;
 			  }
 			 // alert($(".familyMemberCheck :first").val());
 		   getVotersInfoToEditAUser(ids,$(".familyMemberCheck :first").val());
 		 }else{
- 	         if(selectedVotersArr.length > 30)
+ 	         if(selectedVotersArr.length > 500)
 				  {
-					alert(" Please select atmost 30 voters to edit");
+					alert(" Please select atmost 500 voters to edit");
 					  return;
 				  }
 		     getVotersInfoToEditAllUser(ids,selectedVotersArr);
@@ -958,11 +958,32 @@ function buildCategoriesListInit(result){
 					publicationId:publicationId
 					
 				}
-	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				$("#getAllVoterFamiliesForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+				var uploadHandler = {
+				   success : function( o ) {
+					          var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+					          showUpdatedStatusForAllVotersSelect(uploadResult);
+						}									
+			};
+
+		
+		YAHOO.util.Connect.setForm('getAllVoterFamiliesForEditForm',false);
+		YAHOO.util.Connect.asyncRequest('POST','getVotersInfoForEditBySearchAction.action?save=',uploadHandler);
+			
+	   /*var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVotersInfoForEditBySearchAction.action?"+rparam+"&save=";						
-		callAjaxForCandSearch(jsObj,url);
+		callAjaxForCandSearch(jsObj,url);*/
 
      }
+	 
+	 function showUpdatedStatusForAllVotersSelect(result){
+	        $("#getAllVoterFamiliesForEditFormValues").val("");
+	        if(result == "notLogged"){
+			 openDialogForLoginWindow();
+			  }else{
+				buildVotersInFamilyForSelectedEdit(result);
+			  } 
+	 }
 	 
 	  function getVotersInfoToEditAUser(ids,voterId){
 		var jsObj=
@@ -1133,8 +1154,8 @@ function callAjaxForCandSearch(jsObj,url)
 	 function updateAllSelectedVotersForAll(castPresent,partyPresent,localityPresent,count){
 	     var votersEditInfo = new Array();
 		 var voterIds = '';
-		 if(selectedVotersArr.length > 500){
-	     alert("Please select atmost 500 voters to edit");
+		 if(selectedVotersArr.length > 1000){
+	     alert("Please select atmost 1000 voters to edit");
 		 return;
 	     }
 	       for(var i in selectedVotersArr){
@@ -1183,14 +1204,36 @@ function callAjaxForCandSearch(jsObj,url)
 			selectedVoters:votersEditInfo,
 			task:"updateAllVoters"
 		  };
-		  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		  $("#getSelectedVoterFamiliesForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+			  var uploadHandler = {
+				success: function(o) {
+					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+					showSelectedUpdatedStatus(uploadResult);
+				}
+			};
+
+		
+		  YAHOO.util.Connect.setForm('getSelectedVoterFamiliesForEditForm',false);
+		  YAHOO.util.Connect.asyncRequest('POST','getVotersInfoForEditBySearchAction.action?save=',uploadHandler);
+			  
+		  /*var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		  var url = "getVotersInfoForEditBySearchAction.action?"+rparam+"&save=";		  
-		  callAjaxForCandSearch(jsObj,url);
+		  callAjaxForCandSearch(jsObj,url);*/
 		}else{
 		  alert("Please select voters to edit");
 		}
 	 }
      
+	 function showSelectedUpdatedStatus(uploadResult){
+	        $("#getSelectedVoterFamiliesForEditFormValues").val("");
+	        confTrue = true;
+		    $("#votersEditSaveAjaxImg").hide();
+            $("#votersEditSaveButtnImg").removeAttr("disabled");
+		    buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
+		    alert("Updated Successfully");
+	 }
+	 
 	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,localityPresent,count){
 	    var votersEditInfo = new Array();
      $('.familyVoterEditId').each(function(){
@@ -1223,8 +1266,8 @@ function callAjaxForCandSearch(jsObj,url)
 			  votersEditInfo.push(obj);
 			
         });
-			if(votersEditInfo.length > 30){
-			 alert("Please select atmost 30 voters to edit");
+			if(votersEditInfo.length > 500){
+			 alert("Please select atmost 500 voters to edit");
 			 return;
 		    }
 			if(votersEditInfo.length == 0){
@@ -1243,12 +1286,32 @@ function callAjaxForCandSearch(jsObj,url)
 					selectedVoters:votersEditInfo,
 					task:"updateIndividuls"
 		      };
-		  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			  $("#saveAllVotersFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+			  var uploadHandler = {
+				success: function(o) {
+					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+					showUpdatedStatus(uploadResult);
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('saveAllVotersForm',false);
+		YAHOO.util.Connect.asyncRequest('POST','getVotersInfoForEditBySearchAction.action?save=',uploadHandler);
+			  
+		  /*var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		  var url = "getVotersInfoForEditBySearchAction.action?"+rparam+"&save=";		  
-		  callAjaxForCandSearch(jsObj,url);
+		  callAjaxForCandSearch(jsObj,url);*/
 		}
 	 }
-	 
+	 function showUpdatedStatus(uploadResult){
+	    $("#saveAllVotersFormValues").val("");
+	    confTrue = true;
+		$("#votersEditSaveAjaxImg").hide();
+        $("#votersEditSaveButtnImg").removeAttr("disabled");
+		buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno)
+		alert("Updated Successfully");
+	 }
 	 function buildVotersInFamilyForSelectedEdit(results){
 	   var localid = 0;
 	   var categCount = 0;
@@ -2253,7 +2316,15 @@ function refreshingchildWindowWindow()
          <div id="influencePeopleInnerDiv"></div>
          <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable"></div>
      </div>
-
+     <form id="saveAllVotersForm" method="post" action="getVotersInfoForEditBySearchAction.action" name="saveAllVotersForm">
+	   <input type="hidden" name="task" id="saveAllVotersFormValues" />
+	 </form>
+	 <form id="getAllVoterFamiliesForEditForm" method="post" action="getVotersInfoForEditBySearchAction.action" name="getAllVoterFamiliesForEditForm">
+	   <input type="hidden" name="task" id="getAllVoterFamiliesForEditFormValues" />
+	 </form>
+	 <form id="getSelectedVoterFamiliesForEditForm" method="post" action="getVotersInfoForEditBySearchAction.action" name="getSelectedVoterFamiliesForEditForm">
+	   <input type="hidden" name="task" id="getSelectedVoterFamiliesForEditFormValues" />
+	 </form>
 <script type="text/javascript">
   getCategoriesForAUserInital();
  
