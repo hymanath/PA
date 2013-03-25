@@ -37,7 +37,8 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 	public List findElectionsForElectionType(Long electionTypeId){
 		return getHibernateTemplate().find("select distinct model.boothConstituencyElection.constituencyElection.election.electionId, " +
 				"model.boothConstituencyElection.constituencyElection.election.electionYear from VillageBoothElection model where " +
-				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId = ?", electionTypeId);
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId = ? " +
+				" order by model.boothConstituencyElection.constituencyElection.election.electionYear desc", electionTypeId);
 	}
 	
 	public List findTownsBoothIdsInTehsilForElection(String townshipIds, Long electionId){

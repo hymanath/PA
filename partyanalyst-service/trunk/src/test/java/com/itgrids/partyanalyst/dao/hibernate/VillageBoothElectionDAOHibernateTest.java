@@ -26,10 +26,16 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]);
 	}*/
 	
-	/*public void testFindElectionsForElectionType(){
+	public void testFindElectionsForElectionType(){
 		List list = villageBoothElectionDAO.findElectionsForElectionType(1l);
 		System.out.println(list.size());
-	}*/
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : (List<Object[]>)list)
+				System.out.println(params[0]+" "+params[1]);
+		}
+		
+	}
 	/*public void testGetAll(){
 		List<VillageBoothElection> list = villageBoothElectionDAO.getAll();
 		assertEquals(list.size() >= 0, true);
@@ -80,13 +86,13 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		if(list != null && list.size() > 0)
 			System.out.println(list.get(0));
 	}*/
-	public void testFindElectionsForElectionTypeConstiId()
+	/*public void testFindElectionsForElectionTypeConstiId()
 	{
 		List<Object[]> list = villageBoothElectionDAO.findElectionsForElectionTypeConstiId(2l,232l);
 		
 		if(list != null && list.size() > 0)
 			for(Object[] year:list)
 			System.out.println(year[0].toString()+" "+year[1].toString());
-	}
+	}*/
 	
 }
