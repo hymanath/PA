@@ -133,7 +133,7 @@ legend
 				<c:forEach var="electionsList" varStatus="status" items="${boothPanelVO.elections}">
 					<TD valign="top">
 						<FIELDSET>
-							<LEGEND>${electionsList.constituencyName} ${electionsList.electionTypeYear}</LEGEND>
+							<LEGEND>${electionsList.constituencyName}  &nbsp;${electionsList.electionTypeYear} </LEGEND>
 							<DIV id="div_${status.index}" class="boothDatatable"></DIV>
 													
 						</FIELDSET>
