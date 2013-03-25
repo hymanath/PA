@@ -109,6 +109,10 @@
    overflow: visible;
     padding:0px;
 }
+
+.newLink{color:#000000;}
+.newLink:hover{color:#000000;text-decoration:none;}
+
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -308,7 +312,7 @@ Quick Links</h2>
 							<s:if test="resultMap != null && resultMap.size() > 0"> 
 							<s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
 								<li>
-									<h4><s:property value="fileTitle1"/></h4>
+									<a href="#" class="newLink"><h4 class="headMore" title='<s:property value="fileTitle1"/>'><s:property value="fileTitle1"/></h4></a>
 									<div class="row-fluid m-l15px" style="position:relative;">
 									<s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
 										<!--<a class="thumbnail span4" href="#">
@@ -324,7 +328,7 @@ Quick Links</h2>
 										</c:if>
 										
 										<p class="span6 more"><s:property value="description"/></p>
-										<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;" >
+										<a class="readMoreHref" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;" >
 									</s:if>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
@@ -336,7 +340,7 @@ Quick Links</h2>
 											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span6 more"><s:property value="description"/></p>
-										<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;">
+										<a class="readMoreHref" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' class="pull-right round-link" style="position:absolute;bottom:5px;right:20px;">
 									</s:if>
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
@@ -347,7 +351,7 @@ Quick Links</h2>
 											<a class="thumbnail span4" style="height:120px;" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span6 more" ><s:property value="description"/></p>
-										<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' style="position:absolute;bottom:5px;right:20px;" class="pull-left round-link">
+										<a class="readMoreHref" href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' style="position:absolute;bottom:5px;right:20px;" class="pull-left round-link">
 									</s:if>
 									Read Now &rarr;
 									</a>
@@ -715,6 +719,8 @@ getProblemDetails();
  $(document).ready(function() {
     
     var ellipsestext = "...";
+	var ellipsetext = ".."
+	
     $('#my-jqCarousel-news .more').each(function() {
 		var showChar = 170;
         var content = $(this).html();
@@ -729,6 +735,25 @@ getProblemDetails();
         }
  
     });   
+	
+	$('#my-jqCarousel-news .readMoreHref').each(function(index,value) {
+		$('#my-jqCarousel-news .newLink').eq(index).attr('href',$(this).attr('href'));
+	});
+	
+	$('#my-jqCarousel-news .headMore').each(function(index,value) {
+	 	var showChar = 50;
+        var content = $(this).html();
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+			var html = c + ellipsetext;
+ 
+            $(this).html(html);
+        }
+ 
+    }); 
+	
 	
 	 $('#my-jqCarousel-3 .caption').each(function() {
 		
