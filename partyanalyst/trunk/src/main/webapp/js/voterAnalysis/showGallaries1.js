@@ -1229,6 +1229,7 @@ function changeToProblem(contentId){
 	var str='';
 	str+='<div>';
 	str+='<div id="errorDiv"></div>';
+	str+='<div id="successMsgDiv"></div>';
 	str+='<span>Existing From:<input type="text" name="date" class="dateField" id="existingFrom" readonly/></span>';
 	//str+='<span>Visibility:<input type="text" id="visibility"></input></span>';
 	str+='<span style="float:left;margin:6px;">Visibility:</span>&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -1302,9 +1303,17 @@ function callAjaxToConvertNewsToProblem(jObj,url){
 					try {
 						
 				         myResults = YAHOO.lang.JSON.parse(o.responseText);
-                          alert("News successfully added as problem ");	
+                          //alert("News successfully added as problem ");
+						  var cssObj = {    
+				           'font-weight' : 'bold',
+				           'color' : 'green'
+			              }
+						 $('#successMsgDiv').text("News successfully added as problem").css(cssObj).show().delay(2000).fadeOut(400);
+                          setTimeout(function(){
+                                 $("#problemOuterDiv").dialog('close');
+                      }, 2000);
 
-						 $("#problemOuterDiv").dialog('close');
+						
 						 $('#notAdded'+myResults.contentId).css('display','none');
  						 $('#added'+myResults.contentId).css('display','block');
 						 $('#added'+myResults.contentId).html('<span>Added as problem&nbsp;<a href="javaScript:{showProblemDetails('+myResults.problemId+')}"><img src="images/icons/details.png"></img></a></span>');
