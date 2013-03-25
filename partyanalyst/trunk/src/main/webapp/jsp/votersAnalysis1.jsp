@@ -1495,6 +1495,12 @@ for  body3 start    result  -->
 <div id="NoResultsDialogue"><span style="display:none;">No Data Found</span></div>
 <!-- main div  End-->
 </div>
+<form id="getAllVoterFamiliesForEditForm" method="post" action="getMultipleFamilesInfoForEditAction.action" name="getAllVoterFamiliesForEditForm">
+	   <input type="hidden" name="task" id="getAllVoterFamiliesForEditFormValues" />
+</form>
+<form id="getAllVoterFamiliesInfoForEditForm" method="post" action="getMultipleFamilesInfoForEditAction.action" name="getAllVoterFamiliesInfoForEditForm">
+	   <input type="hidden" name="task" id="getAllVoterFamiliesInfoForEditFormValues" />
+</form>
 <script type="text/javascript">
 //Created by sasi to open new window
 	$('#detailModifiedVoters').click(function(){
