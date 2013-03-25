@@ -1149,12 +1149,12 @@ function displayNewsByImportance(jObj,results){
 
 	     if(results[i].isProblem == "false"){
 	       str+='<a id=notAdded'+results[i].contentId+' style="float: right; color: green;" href="javaScript:{changeToProblem('+results[i].contentId+')}">Post as problem</a>';
-   		   str+='<span style="margin-left:18px;" id=added'+results[i].contentId+'> <a   title="Click here to see problem details" style="float:right;color:red;display:none;" href="javaScript:{}">&nbsp;&nbsp;<img src="images/icons/details.png"></img></a></span>';
+   		   str+='<span style="margin-left:18px;" id=added'+results[i].contentId+'> <a   title="Click here to view  problem details" style="float:right;color:red;display:none;" href="javaScript:{}">&nbsp;&nbsp;<img src="images/icons/details.png"></img></a></span>';
 
 		 }else{
 		   str+='<a  style="display:none;" id=notAdded'+results[i].contentId+' style="float:right;color:red;" href="javaScript:{changeToProblem('+results[i].contentId+')}" style="color:green;">Make it as problem</a>';
 
-		   str+='<a  id=added'+results[i].contentId+' title="Click here to see problem details" style="float:right;color:red;" href="javaScript:{showProblemDetails('+results[i].problemId+');}" style="color:green;">Added as problem &nbsp;<img src="images/icons/details.png"></img></a>';
+		   str+='<a  id=added'+results[i].contentId+' title="Click here to view problem details" style="float:right;color:red;" href="javaScript:{showProblemDetails('+results[i].problemId+');}" style="color:green;">Added as problem &nbsp;<img src="images/icons/details.png"></img></a>';
 
 
 		 }
@@ -1232,8 +1232,8 @@ function changeToProblem(contentId){
 	str+='<span>Existing From:<input type="text" name="date" class="dateField" id="existingFrom" readonly/></span>';
 	//str+='<span>Visibility:<input type="text" id="visibility"></input></span>';
 	str+='<span style="float:left;margin:6px;">Visibility:</span>&nbsp;&nbsp;&nbsp;&nbsp;';
-	str+='<div><label style="float:left;margin:6px;"><input style="margin:0px;" checked type="radio" name="visibility" value="private"/> Private </label>';
-	str+='<label style="float:left;margin:6px;"><input style="margin:0px;" type="radio" name="visibility" value="public"/> Public </label></div>';
+	str+='<div><label title="This problem is not visible to public" style="float:left;margin:6px;"><input style="margin:0px;" checked type="radio" name="visibility" value="private"/> Private </label>';
+	str+='<label title="This problem is  visible to public" style="float:left;margin:6px;"><input style="margin:0px;" type="radio" name="visibility" value="public"/> Public </label></div>';
 	str+='</div>';
 
 
