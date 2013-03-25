@@ -1117,7 +1117,7 @@ function displayNewsByImportance(jObj,results){
   for(var i=0;i<results.length;i++){
 	  var description=results[i].description;
 
-  str+='<div style="height:38px;margin-bottom:4px;"  class="alert alert-info">';
+  str+='<div style="height:50px;margin-bottom:4px;"  class="alert alert-info">';
 
     str+='<div style="height: 50px; float: left; width: 480px;">';
 	 str+='<span style="color:black">';
@@ -1139,9 +1139,9 @@ function displayNewsByImportance(jObj,results){
      str+='</span>';
 
 	 if(results[i].locationScopeValue != "MUNICIPAL-CORP-GMC")
-	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:15px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">'+results[i].locationScopeValue.toLowerCase()+'</span></span>';
+	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">'+results[i].locationScopeValue.toLowerCase()+'</span></span>';
 	 else
- 	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:15px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">Muncipality</span></span>';
+ 	  str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">Muncipality</span></span>';
 	str+='</div>';
 
 	str+='<div style="float: right; height: 50px; width: 178px; ">';
@@ -1250,7 +1250,7 @@ function changeToProblem(contentId){
 								maxWidth : 850,
 								overlay: { opacity: 0.5, background: 'black'},
 	                             buttons: {
- 							   "Save":function() {callAjaxToChangeToProblem(contentId)},
+ 							   "Add":function() {callAjaxToChangeToProblem(contentId)},
 							   "Close":function() {$(this).dialog("close")}
 								   }	
 
