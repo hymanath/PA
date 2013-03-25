@@ -127,6 +127,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String defaultDist;
 	private String defaultConst;
 	
+	private String successMsg;
+	
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
 	private Long bloodGroup;
@@ -400,8 +402,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getStrCadreLevelValue();
 	}	
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Cadre Level Value is Mandatory",shortCircuit=true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Cadre Level Value")
+	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Cadre Level Value is Mandatory",shortCircuit=true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Cadre Level Value")
 	public void setCadreLevelValue(String cadreLevelValue) {
 		this.cadreInfo.setStrCadreLevelValue(cadreLevelValue);
 	}	
@@ -878,6 +880,15 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setVoterId(voterId);
 	}
 
+	
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
+
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();
@@ -890,6 +901,12 @@ public class CadreRegisterAction extends ActionSupport implements
 		cadreInfo.setAccessType(regVO.getAccessType());
 		
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
+		
+		
+		if(rs != null && rs.getResultCode() == 0)
+		{
+			setSuccessMsg("savedSuccessfully");
+		}
 		
 		if (rs.getExceptionEncountered() == null)
 		{
@@ -1015,7 +1032,12 @@ public class CadreRegisterAction extends ActionSupport implements
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		String familyMbrsCount = cadreInfo.getNoOfFamilyMembers().trim(); 
-		String votersCount = cadreInfo.getNoOfVoters().trim();	
+		String votersCount = cadreInfo.getNoOfVoters().trim();
+		//System.out.println(cadreInfo.getMemberType());
+		if(cadreInfo.getMemberType().equalsIgnoreCase("Active") && cadreInfo.getStrCadreLevelValue().isEmpty())
+		{
+			addFieldError("cadreLevelValue","Please Select The Cadre Level Value");
+		}
 		if(cadreInfo.getDobOption() != null)
 		{
 			if(cadreInfo.getDobOption().equalsIgnoreCase("Date Of Birth") && cadreInfo.getDateOfBirth() != null && cadreInfo.getDobOption().isEmpty())

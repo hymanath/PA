@@ -423,7 +423,7 @@
         	<result name="input">/jsp/influencingPeople.jsp</result>
          	<result name="success">/jsp/influencingPeople.jsp</result>
          	<result name="error">/jsp/influencingPeopleErrorPage.jsp</result>
-         	<result name="editData" type="redirect">influencingPeopleAction.action?windowTask=new&amp;influencingPersonId=0&amp;message=update</result>
+         	<result name="editData" type="redirect">influencingPeopleAction.action?windowTask=new&amp;influencingPersonId=0&amp;message=update&amp;successMsg=successMsg</result>
         </action>
         <action name="influencingPeopleAddPositionAjax" class="influencingPeopleAction" method="ajaxCallHandler">
 			<result name="success" type="json" >

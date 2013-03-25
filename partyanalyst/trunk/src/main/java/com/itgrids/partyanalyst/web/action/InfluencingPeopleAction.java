@@ -70,6 +70,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private String position;
 	private String message;
 	private String name;
+	private String successMsg;
 	private IVotersAnalysisService votersAnalysisService;
 	public String getMessage() {
 		return message;
@@ -339,6 +340,13 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
 	public String execute() throws Exception {
 		
 		session = request.getSession();
@@ -510,7 +518,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		session.setAttribute(ISessionConstants.OCCUPATIONS, occupationsList);
 		session.setAttribute(ISessionConstants.GENDERS, gender);
 	
-			
+		successMsg = request.getParameter("successMsg");
 		return Action.SUCCESS;
 	}
 	

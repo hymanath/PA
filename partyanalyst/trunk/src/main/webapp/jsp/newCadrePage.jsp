@@ -644,6 +644,7 @@
 		var casteCategory = $('input[name=socialStatus]:checked');
 		var casteCategoryLength = $(casteCategory).size();
 		var cadreLevel = $('#scopeLevel').val();
+		var memberTypeActive = $('#memberTypeActive').is(":checked");
 		if(fname == '')
 		{
 			$('#errorDiv').html('<div>Please enter the first name</div>')
@@ -734,17 +735,18 @@
 			$('#errorDiv').html('<div>Please select the Caste Category</div>')
 			return false;
 		}
+		if(memberTypeActive == true)
+		{
 		if(cadreLevel == 0)
 		{
 			$('#errorDiv').html('<div>Please select the Cadre Level Value</div>')
 			return false;
 		}
-		refreshingParentWindow();
-		/*
+		
 		if(cadreLevel == 2)
 		{
 			var stateName = $('#stateField_s').val();
-			if(stateName == 0)
+			if(stateName == 0 || stateName == null)
 			{
 			$('#errorDiv').html('<div>Please select the State</div>')
 			return false;
@@ -753,7 +755,7 @@
 		if(cadreLevel == 3)
 		{
 			var distName = $('#districtField_s').val();
-			if(distName == 0)
+			if(distName == 0 || distName == null)
 			{
 			$('#errorDiv').html('<div>Please select the District</div>')
 			return false;
@@ -762,7 +764,7 @@
 		if(cadreLevel == 4)
 		{
 			var constName = $('#constituencyField_s').val();
-			if(constName == 0)
+			if(constName == 0 || constName == null)
 			{
 			$('#errorDiv').html('<div>Please select the Constituency</div>')
 			return false;
@@ -771,22 +773,24 @@
 		if(cadreLevel == 5 || cadreLevel == 7 || cadreLevel==9)
 		{
 			var mandalName = $('#mandalField_s').val();
-			if(mandalName == 0)
+			if(mandalName == 0 || mandalName == null)
 			{
 			$('#errorDiv').html('<div>Please select the Mandal/Municipality/Corp/GMC </div>')
 			return false;
 			}
 		}
-		if(cadreLevel == 6 cadreLevel == 8)
+		if(cadreLevel == 6 || cadreLevel == 8)
 		{
 			var vilName = $('#hamletField_s').val();
-			if(vilName == 0)
+			if(vilName == 0 || vilName == null)
 			{
 			$('#errorDiv').html('<div>Please select the Village/Ward/Division</div>')
 			return false;
 			}
-		}*/
+		}
+		}
 	   //alert("Please Select Valid Location");
+	   //refreshingParentWindow();
 		var memberTypeNormal = document.getElementById('memberTypeNormal');
 		if(memberTypeNormal.checked)
 		{
@@ -802,6 +806,13 @@
 	   }
 	
     }
+$(document).ready(function(){
+	var successMsg = '${successMsg}';
+	if(successMsg.trim().length > 0)
+	{
+		refreshingParentWindow();
+	}
+});
 function refreshingParentWindow()
  {
 	setTimeout(window.opener.refreshingchildWindowWindow(),18000);

@@ -30,6 +30,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private Long pConstituencyId;
 	private String editData;
 	private String id;
+	private String successMsg;
 	private InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
 	
 	
@@ -423,6 +424,16 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	{
 		this.influencingPeopleBeanVO.setVoterId(voterId);
 	}
+	
+	
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
+
 	public String execute() throws Exception{
 		
 		session = request.getSession();
@@ -481,6 +492,11 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 						
 		InfluencingPeopleBeanVO result = influencingPeopleService.saveInfluencePeopleInfo(influencingPeopleBeanVO);
 		
+		if(result != null && result.getResultCode() == 0)
+		{
+			setSuccessMsg("savedSuccessfully");
+			//System.out.println(successMsg);
+		}
 		if(result.getExceptionEncountered() != null){			
 			return ERROR;
 		}
