@@ -44,8 +44,8 @@ function populate(id,boothId,publicationId,houseNo){
 
 function editSelectedFamilies(){
   if(impFamiliesEditArray.length > 0){
-   if(impFamiliesEditArray.length > 5){
-      alert("Please select atmost 5 families to edit");
+   if(impFamiliesEditArray.length > 30){
+      alert("Please select atmost 30 families to edit");
       return;
    }
    totalCategories = 0;
@@ -88,9 +88,30 @@ function getAllVoterFamiliesForEdit(){
 			selectedVoters:impFamiliesEditInfo,
 			task:"allFamiliesEditInfo"
 		  };
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		  $("#getAllVoterFamiliesInfoForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+			  var uploadHandler = {
+				success: function(o) {
+					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+					showAllVoterSelectedUpdatedStatus(uploadResult);
+				}
+			};
+
+		
+		  YAHOO.util.Connect.setForm('getAllVoterFamiliesInfoForEditForm',false);
+		  YAHOO.util.Connect.asyncRequest('POST','getMultipleFamilesInfoForEditAction.action?save=',uploadHandler);
+		/*var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getMultipleFamilesInfoForEditAction.action?"+rparam+"&save=";	
-		callAjax(jsObj,url);
+		callAjax(jsObj,url);*/
+	}
+}
+
+function showAllVoterSelectedUpdatedStatus(myResults){
+    $("#getAllVoterFamiliesInfoForEditFormValues").val("");
+    if(myResults == "notLogged"){
+	 openDialogForLoginWindow();
+	}else{
+	    buildVotersInFamilyForEdit(myResults);
 	}
 }
 
@@ -125,7 +146,7 @@ function buildVotersInFamilyForEdit(results){
 			  str+="   <tr><td><b>RelationShip:</b></td><td>"+voters[k].relationship+"</td></tr>";
 			  str+="   <tr><td><b>Age:</b></td><td>"+voters[k].age+"</td></tr>";
 			  str+="   <tr><td><b>Gender:</b></td><td>"+voters[k].gender+"</td></tr>";
-			  str+="   <tr><td><b>MobileNo:</b></td><td><input type='text' id='mobileNo' class='mobileNo' value="+voters[k].mobileNo+"></input></td></tr>";
+			  str+="   <tr><td><b>MobileNo:</b></td><td><input type='text' id='mobileNo' class='mobileNo' style='width:136px;' value="+voters[k].mobileNo+"></input></td></tr>";
 			  
 
 			  str+="   <tr>";	
@@ -271,11 +292,35 @@ function updateAllSelectedVoters(){
 			selectedVoters:votersEditInfo,
 			task:"allFamiliesEditInfoSave"
 		  };
-		  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		  $("#getAllVoterFamiliesForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+			  var uploadHandler = {
+				success: function(o) {
+					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+					showSelectedUpdatedStatus(uploadResult);
+				}
+			};
+
+		
+		  YAHOO.util.Connect.setForm('getAllVoterFamiliesForEditForm',false);
+		  YAHOO.util.Connect.asyncRequest('POST','getMultipleFamilesInfoForEditAction.action?save=',uploadHandler);
+		  /*var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		  var url = "getMultipleFamilesInfoForEditAction.action?"+rparam+"&save=";		  
-		  callAjax(jsObj,url);
+		  callAjax(jsObj,url);*/
 		}
 		}
+}
+function showSelectedUpdatedStatus(myResults){
+     $("#getAllVoterFamiliesForEditFormValues").val("");
+     $("#votersEditSaveAjaxImg").hide();
+	 $("#votersEditSaveButtnImg").removeAttr("disabled");
+	if(myResults == true){
+	  alert("Voters Information Updated SuccessFully");
+	}else if(myResults == "notLogged"){
+	  openDialogForLoginWindow();
+	}else if(myResults == "exception"){
+	  alert("Unable To Updated Voters Information Please Try Again");
+	}
 }
 
 function showReportLevel(value)
@@ -3337,7 +3382,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	   name = $("#pollingStationField option:selected").text();
 	 }
       var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
-	      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
+	      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
           str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
 		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
           str+='  <thead>';
@@ -3377,7 +3422,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	 }
           str+='  </tbody>';
           str+=' </table>';
-		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 5 families to edit</b></div>';
+		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
 
 		  if(jsObj.buildType =="hamlet")
