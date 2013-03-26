@@ -960,6 +960,12 @@ function callAjaxToShowNewsDetails(jObj,url){
 
 function  buildProblemsCount(results){
 
+	if(results.length == 0)
+       $('#newsCountDiv').hide();
+	else
+		$('#newsCountDiv').show();
+
+
 
 	$('#newsCountDiv').html('');
 	$('#newsDisplayDiv').html('');
