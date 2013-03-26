@@ -40,7 +40,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
-//	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/constituencyPage/cp-thumb.jpg"></img></span>';
+//	bodyStr+='<span><img height="20" width="25" src="images/constituencyPage/cp-thumb.jpg"></img></span>';
 	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from this district </span>';
 	bodyStr+='</div>';
 	bodyStr+='<div id="connectedPersonsDiv">';
@@ -53,9 +53,9 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 		bodyStr+='<td>';
 		bodyStr+='<table width="100%">';
 		bodyStr+='<tr>';
-		/*bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';*/
+		/*bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="images/icons/constituencyPage/human1.png"/></span></td>';*/
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/constituencyPage/cp-thumb.jpg"/></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="images/constituencyPage/cp-thumb.jpg"/></span></td>';
 		else
 			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'"/></span></td>';
 		bodyStr+='<td align="left"><span class="cp-fields-sec">'+connectedPeopleData[i].candidateName+'</span></td>';
@@ -124,7 +124,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	str += '<div class="connectPeople_body_name">'+userName+'</div><div class="connectPeople_body_constituency">'+constituency+'</div>';
 	str += '</td>';
 	str += '<td rowspan="2" align="center" width="25%">';
-	str += '<img height="100" width="95" src="/PartyAnalyst/images/icons/indexPage/human.jpg">';
+	str += '<img height="100" width="95" src="images/icons/indexPage/human.jpg">';
 	str	+= '<div id="connectButtonDiv"><input type="button" class="connectButton" onclick="doConnectPeople(\''+userId+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" value="Connect"/></div>';
 	str += '</td>';
 	str += '</tr>';
@@ -532,7 +532,7 @@ function buildAllConnectUserString(users)
 		var imageStr = "pictures/profiles/"+users[i].image;
       
 		if(users[i].image == null)
-			str += '<td valign="top" width="15%"><img height="45" width="50" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+			str += '<td valign="top" width="15%"><img height="45" width="50" src="images/icons/indexPage/human.jpg"></td>';
 		else
 			str += '<td valign="top" width="15%"><img height="45" width="50" src="'+imageStr+'"></td>';		
 		str += '<td valign="top" width="55%">';
@@ -575,7 +575,7 @@ function buildAllConnectUserString(users)
 
 
 
-		/*str += '<td rowspan="2" width="20%"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		/*str += '<td rowspan="2" width="20%"><img height="50" width="55" src="images/icons/indexPage/human.jpg"></td>';
 		str += '<td width="80%"><div class="connectPeople_body_name">'+users[i].candidateName+'</div></td>';				
 		if(users[i].status == "NOT CONNECTED")
 			str += '<td rowspan="2" width="10%"><input type="checkbox" name="connectUserCheck" value="'+users[i].id+'"/></td>';

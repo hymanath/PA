@@ -282,7 +282,7 @@ function getFriendsListForUser(results)
 		str += '<div>';
 		str += '<table style="Verdana,Arial,sans-serif;font-size:12px;">';
 		str += '<tr>';
-		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		str += '<td rowspan="3"><img height="50" width="55" src="images/icons/indexPage/human.jpg"></td>';
 		str += '<td valign="top">'+results.connectedPeople[i].candidateName+'</td>';
 		str += '</tr>';
 		str += '<tr>';		
@@ -390,9 +390,9 @@ function buildConnectionsContentForUser()
 		str += '<table style="Verdana,Arial,sans-serif;font-size:12px;">';
 		str += '<tr>';
 	
-		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></td>';
+		str += '<td rowspan="3"><img height="50" width="55" src="pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></td>';
 	
-		//str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/human.jpg"></td>';
+		//str += '<td rowspan="3"><img height="50" width="55" src="pictures/profiles/human.jpg"></td>';
 		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
 		str += '</tr>';
 		str += '<tr>';		
@@ -657,7 +657,7 @@ function showAllRequestMessagesForUser(results){
 		str += '<tr>';
 		str+='<td>';
 		str+='<div id="userFriendRequestInfo">';
-		str+='<img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></div></td>';
+		str+='<img height="40" width="35" src="images/icons/constituencyPage/human1.png"/></span></div></td>';
 		str += '<td colspan="3">';
 		str +='<table><tr><td><div>'+results.friendRequest[i].message+'</div></td></tr></table></td>';
 		str += '</tr>';
@@ -1122,14 +1122,14 @@ function buildQuickRegionAccessContent()
 	cStr += '<th style="font-size:12px;">From '+districtName+' District</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a id="connCnt" href="javascript:{}" onclick="showAllConnectPeopleWindowOfDistrict(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
-	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
+	cStr += '<td><img width="25" height="20" src="images/icons/constituencyPage/groups.png"></td>';
 	cStr += '</tr>';	
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
 	cStr += '<th style="font-size:12px;">From '+constituencyName+' Constituency</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
-	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
+	cStr += '<td><img width="25" height="20" src="images/icons/constituencyPage/groups.png"></td>';
 	cStr += '</tr>';
 	cStr += '</table>';
 	cStr += '</div>';
@@ -1158,7 +1158,7 @@ function buildPeopleYouMayKnowContent()
 	for(var i=0; i<arrData.length && i<3; i++)
 	{
 		str += '	<tr>';
-		str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		str += '	<td rowspan="3"><img height="50" width="55" src="images/icons/indexPage/human.jpg"></td>';
 		str += '	<td colspan="2" style="font-weight:bold;">'+arrData[i].candidateName+'</td>';
 		str += '	</tr>';
 		str += '	<tr>';	
