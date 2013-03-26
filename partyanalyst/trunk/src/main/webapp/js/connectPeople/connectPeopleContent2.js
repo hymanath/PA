@@ -55,10 +55,10 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 		bodyStr+='<tr>';
 		/*bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="images/icons/constituencyPage/human1.png"/></span></td>';*/
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="images/constituencyPage/cp-thumb.jpg"/></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"  onerror="setImage(this)"/></a></span></td>';
 		else
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'"/></span></td>';
-		bodyStr+='<td align="left"><span class="cp-fields-sec">'+connectedPeopleData[i].candidateName+'</span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"/></a></span></td>';
+		bodyStr+='<td align="left"><span class="cp-fields-sec"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank">'+connectedPeopleData[i].candidateName+'</a></span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
 		bodyStr+='<td align="right"><span class="view-all">';
@@ -532,12 +532,12 @@ function buildAllConnectUserString(users)
 		var imageStr = "pictures/profiles/"+users[i].image;
       
 		if(users[i].image == null)
-			str += '<td valign="top" width="15%"><img height="45" width="50" src="images/icons/indexPage/human.jpg"></td>';
+			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="images/icons/indexPage/human.jpg"/></a></td>';
 		else
-			str += '<td valign="top" width="15%"><img height="45" width="50" src="'+imageStr+'"></td>';		
+			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="'+imageStr+'"/></a></td>';		
 		str += '<td valign="top" width="55%">';
-		str += '<div class="connectPeople_body_name">'+users[i].candidateName+'</div>';
-		str += '<div><span class="connectPeople_body_constituency">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
+		str += '<div class="connectPeople_body_name"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank">'+users[i].candidateName+'</a></div>';
+		str += '<div><span class="connectPeople_body_constituency" style="text-transform: capitalize;">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
 		str += '</td>';
 		str += '<td valign="middle" width="30%" align="right">';
 		if(users[i].status == "NOT CONNECTED")
