@@ -5499,7 +5499,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			return false;
 			}
 			$('#votersBasicInformationDiv').show();
-			$('#votersInfoMoreShowHide').show();
+			//$('#votersInfoMoreShowHide').show();
 			
 			
          
@@ -5584,8 +5584,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 
 
 			$('#votersBasicInfoDiv1').html(str);
-
-		     //$('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
+			//$('#voterBasicInfoTable tr').eq(1).css('font-weight','bold');
 
 		}
 		function getElectionyearsByMandalId(id,type)
@@ -5860,7 +5859,6 @@ function buildPreviousVotersDetails(myResults,jsObj){
 })(jQuery);
 var showflag=true;
 $(document).ready(function(){
-
 
 // Menu Show Events...
 $("#ShowMenu").click(function(){
