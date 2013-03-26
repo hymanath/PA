@@ -62,6 +62,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getLatestFriendsListAction.action?"+rparam;
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 		
@@ -75,6 +76,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getReqMessagesForUserAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();		
 		callAjax1(jsObj,url);
 		
@@ -86,6 +88,7 @@ $('#connectMessageText').live("keyup",function() {
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
 		$("#impdatesDiv").show();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
 		var date = new Date();
@@ -99,8 +102,18 @@ $('#connectMessageText').live("keyup",function() {
 		clearAllFavoriteLinkDivs();
 		$("#announcementsDiv").show();
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$(".placeholderCenterDiv").children().remove();
 		$('#headerDiv').html('<b>Announcements</b>');
+	});
+	$(".ImportantEvents").click(function(){
+		clearAllSubscriptionDivs();
+		clearAllFavoriteLinkDivs();
+		$("#announcementsDiv").hide();
+		$("#impdatesDiv").hide();
+		$('#impEvents').show();
+		$(".placeholderCenterDiv").children().remove();
+		getUserImpEvents();
 	});
 	$("#settings").click(function(){
 	     $("#subscriptionsStreamingMoreDiv").hide();
@@ -119,6 +132,7 @@ $('#connectMessageText').live("keyup",function() {
 		//$("#headerDiv").append("<ul id='accountStngs'><li><span style='font-weight:bold;'>Settings</span></li><li class='btn'><a href='freeUserRegistration.action'><span class='icon-pencil'></span>  Edit Profile</a></li><li class='btn'><a href='javascript:{}' class='changePwdLink'><span class='icon-hand-right'></span> Change Password</a></li><li class='btn'><a href='javascript:{}' class='editPictureLink'><span class='icon-user'></span> Edit Picture</a></li><li class='btn'><a href='javascript:{getUserSettingsDetails();}' class='editSettingsLink'><span class='icon-thumbs-up'></span> Edit View Settings</a></li><li class='btn'><a href='javascript:{}' class='editCoverImgLink'><span class='icon-user'></span> Upload CoverImage</a></li></ul>");
 		$("#headerDiv").append(str);
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 	});
 	
@@ -128,6 +142,7 @@ $('#connectMessageText').live("keyup",function() {
 		if($("#headerDiv").find("#Inbox").length<1) {
 		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active' ><a id='Inbox' href='' >Inbox</a></li><li><a id='SentBox' href=''>Sent</a></li></ul>"); }
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		$("#Inbox").trigger("click");
 
@@ -146,6 +161,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getAllRequestMessagesForAUserAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
@@ -153,6 +169,7 @@ $('#connectMessageText').live("keyup",function() {
 	$('.linkDiv').live("click",function(){
 		$(this).remove();
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 	});
 	
 	
@@ -168,6 +185,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getAllSentMessagesForAUserAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
@@ -180,6 +198,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getSpecialPageAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
@@ -194,6 +213,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getFavouriteLinksAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 	});
@@ -210,6 +230,7 @@ $('#connectMessageText').live("keyup",function() {
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getUserSubScriptionsAction.action?"+rparam;	
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
 
@@ -234,6 +255,7 @@ $('#connectMessageText').live("keyup",function() {
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";
 	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
 	$("#announcementsDiv").hide();	
 	callAjax1(jsObj,url);
 	});
@@ -254,6 +276,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedReasonsUserProfileAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";
 	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
 	$("#announcementsDiv").hide();	
 	callAjax1(jsObj,url);
 	});
@@ -277,6 +300,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
 	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
 	$("#announcementsDiv").hide();
 	callAjax1(jsObj,url);
 	});
@@ -298,6 +322,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	var url = "getPostedProblemsUserProfileAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
 	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
 	$("#announcementsDiv").hide();
 	callAjax1(jsObj,url);
 	});
@@ -354,6 +379,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		div.append(connectedPersonId);
 		$('#allConnectedUsersDisplay_main').append(div);
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 	});
 
@@ -392,6 +418,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var url = "connectToUserAction.action?"+rparam;					
 	callAjax1(jsObj,url);
 	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
 	$("#announcementsDiv").hide();	
 		
 	});
@@ -433,6 +460,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	var url = "connectToUserSetAction.action?"+rparam;					
 	callAjax1(jsObj,url);			
 	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
 	$("#announcementsDiv").hide();
 	});
 	
@@ -465,6 +493,7 @@ $(".changePwdLink").live("click",function(){
 		div.append('<input class="btn-info btn-small" id="cancelButtonID" type="button" value="No"></input>');
 		elmt.append(div);
 		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
   });
 
@@ -1095,7 +1124,11 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task == 'getDistrictNames')
 							{
 								iterateDistrictNames(results);
-							}		
+							}
+				 else if(jsObj.task == 'getUserImportantEvents')
+						    {
+								buildUserImpEvents(results);
+						    }							
 					else if(jsObj.task == 'getConstituencyNames')
 							{
 								iterateDetailsNames(results);
@@ -2588,6 +2621,8 @@ function clearAllSubscriptionDivs()
 	$("#userPartyUnSubscriptionsDiv").html('');
 	$("#caderInfo").html('');
 	$("#caderInfo").children().remove();
+	$("#impEvents").html('');
+	$("#impEvents").children().remove();
 	//$("#announcementsDiv").html('');
 	//$("#announcementsDiv").children().remove();
 
@@ -3497,8 +3532,8 @@ function buildCadreInfoTable(results)
 	$('#headerDiv').html('<b>Cadre Information</b>');
 	var str='';
 	
-	$("#cadresDiv_main").css("style","display");
-	$("#cadresDiv_main").css("box-shadow","0 0 1px rgba(0, 0, 0, 0.5), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.09)");
+	//$("#cadresDiv_main").css("style","display");
+	//$("#cadresDiv_main").css("box-shadow","0 0 1px rgba(0, 0, 0, 0.5), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.09)");
 
     str+='<div id="cadresDiv_head">';
     str+='	<table><tr>';
@@ -3546,4 +3581,64 @@ function openEditAnnouncement()
 {
 	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=750,width=1000,left=10,top=10");
 	editAnnouncementbrowser.focus();
+}
+
+function getUserImpEvents()
+{
+ 
+		var jsObj = {
+			task:"getUserImportantEvents"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getDashBoardInformationAction.action?"+rparam;
+		callAjax1(jsObj ,url);
+}
+
+
+
+function buildUserImpEvents(results)
+{
+	var str='';
+	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
+	$(".placeholderCenterDiv").children().remove();
+	$('#placeholderCenterDivId').html('');
+	$('#headerDiv').html('');
+	$('.FavoriteLinksDiv').html('');
+	$('#headerDiv').html('<b>Important Events</b>');
+	str+='<div id="impEventsDiv_head">';
+	str+='<table><tr>';
+	str+='<td><img src="images/icons/indexPage/cal.png"/></span></td>';
+	str+='<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Today \'s Event</span></td>';
+	str+='</tr></table>';
+	str+='</div>';
+	
+	if(results.userEvents.length!=0)
+	{
+	  for(var i in results.userEvents)
+	   {
+		str+='	<ul class="dashBoardContentList">';
+	    	str+='<li>'+results.userEvents[i].eventDisplayTitle+'</li>	';
+		str+='</ul>';
+	  }
+		
+	
+	str+='</div>';
+	str+='<div id="impEventsDiv_footer" style="text-align:right">';
+	str+='	<span class="dashBoardLinks">';
+	str+='		<a href="cadreManagementAction.action#yui-gen3" class="indexPageAnc" target="_blank">View All</a>';
+	str+='	</span>';
+	str+='</div>';
+	}
+	else
+	{
+		$("#impEvents").css("padding","20px");
+		str+='<div id="impEventsDiv_body">';
+		str+='<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  '+results.userEvents.length+'  event(s) scheduled today</span>';
+		str+='	<span class="dashBoardLinks" >';
+		str+='		<a href="cadreManagementAction.action?eventScope=createEvent" title="Click Here To Create Important Events" class="indexPageAnc" onclick="" style="margin-left: 61px;font-size: 14px;" target="_blank">Create</a>';
+		str+='	</span>';
+	}
+	str+='</div>';
+	$("#impEvents").html(str);
 }
