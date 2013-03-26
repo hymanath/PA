@@ -736,7 +736,7 @@ function buildProblemViewingWindow()
 			str+='		<td width="80%">';
 			str+='			<span><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='			<span>';
-			str+='				<a class="districtAnc" href="completeProblemDetailsAction.action?problemId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
+			str+='				<a class="districtAnc" style="font-size:14px;font-family:Verdana;text-transform: capitalize;" href="completeProblemDetailsAction.action?problemId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
 			str+='		</td>';
 			str+='		<td width="10%"><img width="20" height="20" title="Accepted Votes" src="images/icons/accept.png"/></td><td style="font-weight:bold;font-size:13px">'+data.acceptedCount+'</td>';	
 			str+='      <td><img width="20" height="20" src="images/icons/reject.png" title="Rejected Votes"/></td><td style="font-weight:bold;font-size:13px">'+data.rejectedCount+'</td>';		
