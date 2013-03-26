@@ -420,7 +420,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  if(type.equalsIgnoreCase("constituency"))
 				  str.append(" model.constituency.constituencyId = :id ");
 			  else if(type.equalsIgnoreCase("mandal"))
-				  str.append(" model.tehsil.tehsilId = :id and model.localBody is null ");
+				  str.append(" model.tehsil.tehsilId = :id and model.localBody is null and model.constituency.constituencyId = :constituencyId ");
 			  else if(type.equalsIgnoreCase("localElectionBody"))
 				  str.append(" model.localBody.localElectionBodyId = :id and model.constituency.constituencyId = :constituencyId ");
 			  else if(type.equalsIgnoreCase("panchayat"))
@@ -430,7 +430,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  Query query =getSession().createQuery(str.toString());
 			  query.setParameter("id",id);
 			  query.setParameter("publicationDateId",publicationDateId);
-			  if(type.equalsIgnoreCase("localElectionBody"))
+			  if(type.equalsIgnoreCase("localElectionBody") || type.equalsIgnoreCase("mandal"))
 				  query.setParameter("constituencyId",constituencyId);
 			return query.list();
 			  
