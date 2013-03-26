@@ -35,7 +35,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	{
 		contentStr+='<TR>';
 		contentStr+='<TD align="left" class="commentsInputTd">Reasons*</TD>';	
-		contentStr+='<TD class="commentsInputTd" align="left"><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
+		contentStr+='<TD class="commentsInputTd" align="left" ><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
 		contentStr+='<OPTION id="0" >Select Reason</OPTION>';
 		contentStr+='</SELECT></TD>';
 		contentStr+='</TR>';
@@ -62,12 +62,14 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TD align="left" class="commentsInputTd" valign="top">Posted By*</TD>';	
-	contentStr+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText"/></TD>';
+	contentStr+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText" value="'+loggedUser+'" readonly="readonly" on/></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';
 	contentStr+='</DIV>';
 	contentStr+='</FIELDSET>';	
+	
 	contentStr+='<DIV style="text-align:right;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Post"/>';
+	contentStr+='<span id="AjaxDiv" style="display:none;float:right;"><img alt="Processing Image" src="./images/icons/search.gif"></span>';
 	contentStr+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel(\''+task+'\',\''+status+'\')" value="Exit"/></DIV>';
 	contentStr+='</div>';
 	contentStr+='</div>';

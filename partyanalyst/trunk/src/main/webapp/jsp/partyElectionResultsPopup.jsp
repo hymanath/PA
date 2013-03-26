@@ -91,6 +91,56 @@
 .yui-skin-sam .yui-h-slider {		
 	width:110px;
 }
+/*#previousComments > table{
+	background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+    max-width: 100%;
+	}
+#previousComments > table{
+	 border-collapse: collapse;
+    border-color: #666666;
+    border-width: 1px;
+    color: #333333;
+    font-family: verdana,arial,sans-serif;
+    font-size: 11px;
+    margin-top: 10px;
+}
+#previousComments > table th {
+    background-color: #C4DEFF;
+    color: #1031B6;
+    font-weight: bold;
+    height: 30px;
+    text-align: center;
+}
+*/
+
+
+#previousComments > table {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+	margin-top:10px;
+}
+#previousComments > table th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+#previousComments > table td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #5B5B5B;
+	background-color: #ffffff;
+}
+
+
 </style>
 
 <SCRIPT type="text/javascript">
@@ -110,6 +160,8 @@ var labelResources = { <%
 		String votesEarned = rb.getString("votesEarned");
 		
 %>}
+var loggedUser='${sessionScope.USER.firstName}';
+
 var hidden=1;
 function incrementHidden()
 {
@@ -146,7 +198,7 @@ function callAjax(param,jsObj,url){
 								}
 								if(jsObj.task == "addNewComment")
 								{
-									updatePreviousCommentsDataTable(myResults);
+									updatePreviousCommentsDataTablePopup(myResults);
 								}
 								if(jsObj.task == "getElectionsYears")
 								{
@@ -168,7 +220,52 @@ function callAjax(param,jsObj,url){
 	               };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}	
+}
+ function updatePreviousCommentsDataTablePopup(results)
+{
+	var dtArray = new Array();
+	var commentVal = document.getElementById("commentText"); 
+	var postedByVal = document.getElementById("commentPostedByText"); 
+	var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+	var previousCommentsEl = document.getElementById("previousComments");
+		 
+	$("#AjaxDiv").css('display','none');
+	if(previousCommentsEl.innerHTML == 'No Previous Reasons')
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+
+		dtArray.push(newCommentDataObj);
+		buildPreviousCommentsDataTable(dtArray);		
+		
+	} else
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+		
+		previousCommentsDataTable.addRow(newCommentDataObj,0);
+	}
+	commentVal.value='';
+	postedByVal.value='';
+	commentCategoryEl.selectedIndex='0';
+	backtopage();
+	
+}
+function backtopage() {
+
+   location.reload(); 
+}
+
 </SCRIPT>
 </HEAD>
 <BODY>
@@ -435,6 +532,7 @@ function callAjax(param,jsObj,url){
 		}	
 		if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
 		{
+			$("#AjaxDiv").css('display','block');
 			var jsObj={
 					electionId: electionId,
 					electionType: electionType,
