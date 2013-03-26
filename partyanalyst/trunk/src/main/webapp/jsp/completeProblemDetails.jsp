@@ -1871,16 +1871,17 @@ function displayDateText(type, args, obj) {
         </div>
 		
         </s:if>
-		<!---
+		
 		 <s:if test="completeProblemDetailsVO.isPublic != 'true' ">
 	   
    <div class="pull-right" style="margin-left: 0px; margin-right: 47px; margin-top: -22px;">
         <div class="btn-group dropup inline" style="display:inline-block;width:100px;">
-          <button class="btn btn-primary" style="background:red;" href="javascript:{}" rel="tooltip" data-original-title="Connect"><i class="icon-share icon-white"></i> Private</button>
-		  </div>
+         <a title="This problem is private to you"><button class="btn btn-primary" href="javascript:{}" rel="tooltip" data-original-title="Connect"><i class="icon-share icon-white"></i> Private</button></a>
+		
+ 		  </div>
 		  </div>
         </s:if>
-		-->
+		
 		  <div class="row m-t10">
             <div class="span5"><h5>${completeProblemDetailsVO.problemCompleteLoc}</h5></div>
           </div>
