@@ -2340,6 +2340,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>Booth</th>';
 		if(type =="hamlet")
 	    str +='<th>Locality</th>';
+		if(type =="booth")
+	    str +='<th>Hamlet</th>';
 
 		str +='<th>Caste</th>';
 		str+='<th>Caste Category</th>';
