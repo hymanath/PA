@@ -2229,7 +2229,7 @@ function getVotersCastInfo(id,publicationId,type)
 function getPartyWiseCastInfo(){
   $("#partyWiseLocalCastStatsTab").dialog({
             modal: true,
-            title: "<b>Cast V/s Party Analysis</b>",
+            title: "<b>Caste V/s Party Analysis</b>",
 			width: 970,
             height: 500
            
@@ -2316,7 +2316,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		//{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
-		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+'Constituency</h4>';
+		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
 		else if(type == "mandal")
 		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
 		else if(type =="panchayat")
@@ -3123,7 +3123,7 @@ function buildCastInfoData(myresults,jsObj)
 	   if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	       var result = myresults.voterCastInfodetails.castVOs;
 		   var str ='<div>';
-		      str+='<div id="partyWiseLocalCastStatsTabTitle" style="width:409px;"><h2 id="subHeading" >Cast V/s Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
+		      str+='<div id="partyWiseLocalCastStatsTabTitle" style="width:409px;"><h2 id="subHeading" >Caste V/s Party analysis of '+jsObj.typename+' in '+publicationYear+'</h2></div>';
 		      str+=' <table id="partyWiseCastJqTable" cellpadding="0" cellspacing="0" border="0" width="100%">';
 			  str+='  <thead>';
 			  str+='   <tr>';
