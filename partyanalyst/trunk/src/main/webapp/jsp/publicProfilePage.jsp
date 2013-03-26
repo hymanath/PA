@@ -308,7 +308,7 @@ padding:5px 20px;
 					</c:if>
 					
 					
-					<!--<a class='btn btn-success btn-mini pull-right' href="/PartyAnalyst/userProfile.action">My Profile</a>-->
+					<!--<a class='btn btn-success btn-mini pull-right' href="userProfile.action">My Profile</a>-->
 				</div>
 			
 				

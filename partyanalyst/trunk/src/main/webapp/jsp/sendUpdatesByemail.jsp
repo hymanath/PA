@@ -117,7 +117,7 @@
 	<div style="height:30px"> 
 	<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;font-size:small;margin-left:400px">
 		<font  style="font-size:small;">Sending Mail, please wait...</font>
-		<img src="../PartyAnalyst/images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
+		<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
 	</div>
 	</div>
 	<div align="center">

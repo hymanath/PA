@@ -499,7 +499,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 								<a href="userProfile.action?profileId=${connectedPeoples.id}" class="thumbnail">
 								 <c:if test="${connectedPeoples.image != null && connectedPeoples.image !=''}">
 									<img height="50" width="55" src="/pictures/profiles/${connectedPeoples.image}" />-->
-									<!--<img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg" /> -->
+									<!--<img height="50" width="55" src="images/icons/indexPage/human.jpg" /> -->
 								<!-- </c:if>
 								<c:if test="${connectedPeoples.image == null || connectedPeoples.image == ''}">
 									<img height="50" width="55" src="/images/icons/indexPage/human.jpg" />

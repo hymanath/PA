@@ -340,7 +340,7 @@ setTimeout("getPartyName()",1000);
 		<div style="height:45px">
 		<div id="LoadingImage"  style="display: none;height:30px">
 		    Your Request has been Processing...
-		<img src="../PartyAnalyst/images/icons/search.gif" style="margin-top: -118px; margin-left: 10px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/>
+		<img src="images/icons/search.gif" style="margin-top: -118px; margin-left: 10px; border-top-width: 0px; padding-top: 127px; padding-bottom: 19px;"/>
 		</div></div>
 			
 	</div>
