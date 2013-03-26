@@ -338,4 +338,6 @@ public interface IStaticDataService {
 		
 		public ResultStatus checkForLocalElctionBody(Long constituencyId,List<Long> localElectionBodyIds);
 		
+		public List<SelectOptionVO> getElectionIdsAndYearsInTehsil(Long electionType,Long tehsilId);
+		
 }

@@ -790,6 +790,24 @@ public class StaticDataService implements IStaticDataService {
 
 		return years;
 	}
+	
+	public List<SelectOptionVO> getElectionIdsAndYearsInTehsil(Long electionType,Long tehsilId)
+	{
+		List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> elections = villageBoothElectionDAO.findElectionsForElectionTypeInAtehsil(electionType,tehsilId);
+			
+			if(elections != null && elections.size() > 0)
+			for(Object[] election : elections) 
+				years.add(new SelectOptionVO((Long) election[0], election[1].toString()));
+			return years;	
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured - ",e);
+			return years;
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,
