@@ -27,9 +27,9 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<script src="js/cleditor/jquery.cleditor.min.js"></script>
 	<script src="js/sendUpdatesByEmail.js"></script>
-	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="js/cleditor/jquery.cleditor.min.js"></script>
 <script src="js/sendUpdatesByEmail.js"></script>
 <link rel="stylesheet" type="text/css" href="css/cleditor/jquery.cleditor.css">
 	<!-- YUI Skin Sam -->
@@ -64,6 +64,7 @@
 <s:if test="#session.USER.isAdmin == 'true'">
 <div style="width:998px;background:#ffffff;margin-left:auto;margin-right:auto;">
 <br>
+
 <div class="questionHeader">
 <span style="margin-top:2px;">Send Updates to User E-mails</span>
 </div><br>
@@ -108,6 +109,11 @@
 		<div id="table">
 		</div>
 	</div>
+
+	<form name="sendUpdateEmailform" action="sendEmailForSelectedUsersAction.action" enctype="multipart/form-data"  method="post" id="sendUpdateEmailform">
+	<input type="hidden" id="descId" name="description" />
+	<input type="hidden" id="userIds" name="userIds" />
+	
 	<div style="height:30px"> 
 	<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;font-size:small;margin-left:400px">
 		<font  style="font-size:small;">Sending Mail, please wait...</font>
@@ -116,7 +122,7 @@
 	</div>
 	<div align="center">
 	<div id="errorDiv1" style="color:red"></div>
-	<div id="subjectDiv" style="margin-left: -50px; margin-top: 15px;"><span style="font-weight: bold;">Subject:</span><input type="text" id="subject" style="width: 617px;"/></div><br>
+	<div id="subjectDiv" style="margin-left: -50px; margin-top: 15px;"><span style="font-weight: bold;">Subject:</span><input type="text" id="subject" name="subject" style="width: 617px;"/></div><br>
 	
 	<textarea id="descriptionForEmail" style="width:618px;height:92px;margin:2px 0px 0px 20px;" ></textarea>
 	</div>
@@ -125,11 +131,13 @@
 		<!--
 		<input type="button" value="Preview" onClick="showPreview();" style="width: 80px; height: 25px;"/> -->
 </div>
+</form>
 <!--
 	<div id="previewDiv" style="background-color:#fff;border:1px solid #e5e5e5;padding:20px;">${specilaPageText}
 	</div> 
 	-->
 	<div id="errorDiv" style="margin-left:372px;">
+	
 	</div>
 	
 </s:if>
