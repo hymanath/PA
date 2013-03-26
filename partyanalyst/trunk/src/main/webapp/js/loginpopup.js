@@ -27,7 +27,7 @@ str+='<input id="signin" class="submitButton btn btn btn-primary" type="submit" 
 str+='</div>';
 str+='<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">';
 str+='<font  style="font-size:small;">Sending Your Request. Please wait...</font>';
-str+='<img src="../PartyAnalyst/images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>';
+str+='<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>';
 str+='</div>';
 str+='</form><br><br>';
 str+='</div>';
