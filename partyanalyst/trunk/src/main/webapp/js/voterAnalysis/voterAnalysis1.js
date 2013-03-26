@@ -3036,6 +3036,11 @@ function buildCastInfoData(myresults,jsObj)
 	var totalMale = result.maleVoters;
 	var totalFemale = result.femaleVoters;
 	var voters = '';
+	if(totalVoters == 0){
+		$('#votersMainOuterDiv2').hide();
+		return false;
+	}
+	$('#votersMainOuterDiv2').show();
 	if(result.maleVoters > 0){
 	    $("#castPartyPopupShowBtn").show();
 		$("#partyBasicInfoStatsTabNewTitle").html("<div id='partyDiv'><h2 id='subHeading'>Party Wise Voters Details</h2><input type='button' value='Graphical Representation Of Party Wise Voters Details' class='btn btn-info pull-right' onClick='showPartyWiseDetailsInGraph()' id='partyGraphButtonId'/></div>");
