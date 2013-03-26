@@ -1630,7 +1630,7 @@ function addToPolitician(voterId,name)
 		var deletedCount=results.deletedCount;
 		var presPId=results.presentPublicationId;
 		var prevPId=results.previousPublicationId;
-		var url='/PartyAnalyst/voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
+		var url='voterModificationReportAction.action?toPublicationDateId='+presPId+'&fromPublicationDateId='+prevPId+'&constituencyId='+jsObj.constituencyId+'&locationType='+jsObj.locationType+'&locationValue='+jsObj.locationValue;
 		$('#detailModifiedVoters').attr('url',url);
 		
 		if(addedCount!=null){$("#addedVtrs").text(addedCount);}
