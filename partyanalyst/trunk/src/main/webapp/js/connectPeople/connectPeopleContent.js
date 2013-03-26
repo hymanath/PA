@@ -20,6 +20,10 @@ function setDefaultImg(img){
 	img.src="images/icons/connectPeople/member.png";
 }
 
+function setMemberImg(img){
+	img.src="images/icons/constituencyPage/human1.png";
+}
+
 function buildConnectUsersContent(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId){
 connectDivId = divId;
 	connectUserLoginStatus = userLoginStatus;
@@ -58,10 +62,10 @@ connectDivId = divId;
 		bodyStr+='<tr>';
 		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="images/icons/constituencyPage/human1.png"/></a></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"  onerror="setMemberImg(this)"/></a></span></td>';
 		else
-			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'" onerror="setDefaultImg(this)"/></a></span></td>';
-		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank">'+connectedPeopleData[i].candidateName+'</a></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg" onerror="setDefaultImg(this)"/></a></span></td>';
+		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank" style="text-transform: capitalize;">'+connectedPeopleData[i].candidateName+'</a></span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
 		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass" style="margin-right:94px;">';
@@ -426,15 +430,19 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 		$( "#connectPeoplePopup" ).dialog("open");
 	}
 	else{
-		$('#Not_connectPeople_body_name').css("display","block");
+	ifNotLogin();
+	}
+}
+
+function ifNotLogin(){
+$('#Not_connectPeople_body_name').css("display","block");
 		$('#Not_connectPeople_body_name').dialog({
 				title:"Connect To People ",
 				show: "blind",
 				width: 500,
-				minHeight:100,
+				inHeight:200,
 				modal: true
-			});
-	}
+		});
 }
 
 function doConnectPeople(connectUserId,userLoginId,locationId,locationType,locationName)
@@ -983,15 +991,22 @@ function hideConfirmDiv()
 
 function showConfirmDiv(name,id)
 {
-	var elmt = document.getElementById("allConnectPeople_footer");
-	var spanElmt = document.getElementById("allConnectPeople_footer_span");
+	if(LoginUserID !=null && LoginUserID != '' && LoginUserID.length >0)
+	{
+		var elmt = document.getElementById("allConnectPeople_footer");
+		var spanElmt = document.getElementById("allConnectPeople_footer_span");
 
-	if(elmt)
-		$("#allConnectPeople_footer").slideDown();
-	connectRequestedUserId = id;
-	if(spanElmt)
-		spanElmt.innerHTML = name; 
+		if(elmt)
+			$("#allConnectPeople_footer").slideDown();
+		connectRequestedUserId = id;
+		if(spanElmt)
+			spanElmt.innerHTML = name; 
+	}
+	else{
+	ifNotLogin();
+	}
 }
+
 
 function buildAllConnectUserString(users){
 var str = '';
@@ -1001,14 +1016,14 @@ var str = '';
 		str += '<table width="100%">';
 		str += '<tr>';
 
-		var imageStr = "pictures/profiles/"+users[i].id+".jpeg";
+		var imageStr = "pictures/profiles/"+users[i].image;
 		if(users[i].image == null)
-			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="/images/icons/indexPage/human.jpg"></a></td>';
+			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="images/icons/indexPage/human.jpg"></a></td>';
 		else
 			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImg(this)"></a></td>';		
 		str += '<td valign="top" width="55%">';
-		str += '<div class="connectPeople_body_name"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank">'+users[i].candidateName+'</a></div>';
-		str += '<div><span class="connectPeople_body_constituency">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
+		str += '<div class="connectPeople_body_name"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank" style="text-transform: capitalize;">'+users[i].candidateName+'</a></div>';
+		str += '<div><span class="connectPeople_body_constituency" style="text-transform: capitalize;">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
 		str += '</td>';
 		str += '<td valign="middle" width="30%" align="right">';
 		if(users[i].status == "NOT CONNECTED")
