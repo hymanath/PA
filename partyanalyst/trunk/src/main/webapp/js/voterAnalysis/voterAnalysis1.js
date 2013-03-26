@@ -888,8 +888,8 @@ function addToPolitician(voterId,name)
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
-		  $("#votersBasicInfoBtnDiv").hide();
-		  
+		  $("#votersBasicInfoBtnDiv").show();
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	   }else if(type == "hamlet"){
 		   $("#votersBasicInfoBtnDiv").show();
 		// $("#cnstHeading").html();
@@ -2312,8 +2312,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
 		  return;
 		}  
-		if(type != 'booth')
-		{
+		//if(type != 'booth')
+		//{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
 		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+'Constituency</h4>';
@@ -2417,7 +2417,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	$('#subLevelTable tr').removeClass("odd");
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1");
-	}
+	//}
 	}	
 	}
 
@@ -2594,6 +2594,8 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	errorDivEle.innerHTML = str;*/
 	if(true)
 	{
+	if(type == "booth")
+	buildType="hamlet";
 	//errorDivEle.innerHTML = '';		
 	 impFamltype = type;
      impFamlId = id;
