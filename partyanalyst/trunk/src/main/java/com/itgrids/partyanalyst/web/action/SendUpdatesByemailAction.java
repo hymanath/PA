@@ -44,29 +44,52 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 	private JSONObject jObj;
 	private String task=null;
 	private ResultStatus resultstatus;
-	private List<String>  userEmailId;
-	private String textArea;
-	private String subject;
+	//private List<String>  userEmailId;
+	//private String textArea;
+	//private String subject;
 	private	List<SelectOptionVO> list;
     private List<RegistrationVO> regVoForEmail;
 	private ISocialService socialService;
     private IRegionServiceData regionServiceDataImp;
     private String result;
     
+    private String description;
+    private String userIds;
+    private String subject;
+    
+    
 	
-    public String getSubject() {
+  public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getUserIds() {
+		return userIds;
+	}
+	public void setUserIds(String userIds) {
+		this.userIds = userIds;
+	}
+	public String getSubject() {
 		return subject;
 	}
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
+	/*  public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}*/
 	public String getResult() {
 		return result;
 	}
 	public void setResult(String result) {
 		this.result = result;
 	}
-	public List<String> getUserEmailId() {
+	/*public List<String> getUserEmailId() {
 		return userEmailId;
 	}
 	public void setUserEmailId(List<String> userEmailId) {
@@ -77,7 +100,7 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 	}
 	public void setTextArea(String textArea) {
 		this.textArea = textArea;
-	}
+	}*/
 
 	
 
@@ -212,19 +235,48 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 				regVoForEmail=sendUpdatesService.getUsersForSendingEmails(jObj.getLong("selectedState"),jObj.getLong("selectedDistrict"),jObj.getLong("selectedConstituency"),jObj.getLong("userType"),jObj.getLong("locationScope"));
 			}
 			
-			else if(jObj.getString("task").equalsIgnoreCase("sendEmailsForUserIds")){
+			/*else if(jObj.getString("task").equalsIgnoreCase("sendEmailsForUserIds")){
 				userEmailId=new ArrayList<String>();
 				textArea=jObj.getString("txtAreaValue");
 				subject=jObj.getString("subject");
 				JSONArray values = jObj.getJSONArray("selectedElmts");
 				for (int i = 0; i < values.length(); i++) {
 					userEmailId.add(values.getString(i));
+				}*/
+			/*else {
+				List<String> userEmailIdsList = new ArrayList<String>();
+				String[] strArr = null;
+				userIds = userIds.substring(0,userIds.length()-1);
+				strArr = userIds.split(",");
+				
+				for(String emailStr : strArr){
+					userEmailIdsList.add(emailStr);
 				}
 				
-				result=sendUpdatesService.sendEmailsFromAdminToUsers(userEmailId,textArea,subject);
+				result=sendUpdatesService.sendEmailsFromAdminToUsers(userEmailIdsList,description,subject);
 				
-			}
+			}*/
 		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String ajaxForSendingEmail(){
+		try {
+		List<String> userEmailIdsList = new ArrayList<String>();
+		String[] strArr = null;
+		userIds = userIds.substring(0,userIds.length()-1);
+		strArr = userIds.split(",");
+		
+		for(String emailStr : strArr){
+			userEmailIdsList.add(emailStr);
+		}
+		
+		result=sendUpdatesService.sendEmailsFromAdminToUsers(userEmailIdsList,description,subject);
+		
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
