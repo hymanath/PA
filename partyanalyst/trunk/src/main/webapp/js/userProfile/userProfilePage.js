@@ -1198,16 +1198,17 @@ $('.specialPageDivheading').children().remove();
 var constituency = false;
 var state = false;
 var district = false;
+var specialpage = false;
 
 if(results == null || results.lenght == 0)
 {
-	$("#headerDiv").html('No Favourite Links has been added.<br>');
-	$("#headerDiv").append('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+	$("#headerDiv").html('<h5>No Favourite Links has been added.</h5><br>');
+	$("#headerDiv").append('<h5 style="margin-top: -14px;"><small style="font-size:14px;color: #373737;">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" class="btn btn-info pull-right" style="margin-top: -30px; margin-right: -8px;" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 	return;
 }
 
 //$("#headerDiv").html('<span btn="info" onClick="savefavouriteLink()">Add</span> <br> <select id="specialPageSelectBox" name="specialPage"></select>');
-$("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+$("#headerDiv").html('<h5 style="margin-top:-3px;margin-left:2px;" ><small style="font-size:14px;color: #373737;">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" class="btn btn-info pull-right" style="margin-top:-33px;" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
@@ -1226,7 +1227,7 @@ $("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Spec
 				if(i ==0 && constituency == true)
 				{
 					
-					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls">Constituency</a></div>');
+					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls" style="font-size: 16px;padding:7px;">Constituency</a></div>');
 					$('.constituencyDivheading').append(div);
 				}
 
@@ -1259,8 +1260,8 @@ $("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Spec
 					$('.stateDivheading').html('<span class="stateHeadingCls">State</span>');
 				
 		    if(results[j].favouriteLinkType == "state"){
-
-				$('.stateDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">State</span>');
+         
+				$('.stateDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls" style="font-size: 16px;padding:7px;">State</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1291,7 +1292,7 @@ $("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Spec
 		    if(results[k].favouriteLinkType == "district"){
 
 
-				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">District</span>');
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls" style="font-size: 16px;padding:7px;">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1317,12 +1318,12 @@ $("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Spec
 			for(var m in results){
 
 				if(m == 0 && specialpage == true)
-					$('.specialPageDivheading').html('<span class="specialPageHeadingCls">SpecialPage</span>');
+					$('.specialPageDivheading').html('<span class="specialPageHeadingCls" >SpecialPage</span>');
 				
 		    if(results[m].favouriteLinkType == "specialpage"){
 
 
-				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls">SpecialPage</span>');
+				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls" style="font-size: 16px;padding:7px;">SpecialPage</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -3171,22 +3172,25 @@ $('#Parliament').live('click',function(){
 function openPopupForFavouriteLinks(){
 
 var str=''; 
-str+='<input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State"/> State';
-str+=' <input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District"/> District';
-str+='  <input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency"/>  Constituency';
-str+=' <input type="radio" id="SpecialPage" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page"/> Special Page';
-str+='  <div id="electionTypes" style="display: none;"><input type="radio" id="Assembly" name="typeRadio"  value="Assembly" checked="checked"/> Assembly ';
-str+=' <input type="radio" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</div>';
-str+='<div id="Statediv" style="display:none;"> Select State:<select id="stateList" name="stateList" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
-str+=' <div id="Districtdiv" style="display: none;"> Select District:<select id="districtList" name="districtList"> <option value="0"> Select District </option> </select> </div>';
-str+='<div id="Constituencydiv" style="display: none;">	Select Constituency:<select id="constituencyList" name="constituencyList"></select> </div>';
-str+='<div id="specialDiv" style="display: none;">Select Special Page:<select id="specialPageList" name="specialPageList"></select></div>';
-str+='<span btn="info" onClick="savefavouriteLink()" id="addFav" style="display:none;">Add</span>';
+str+='<label class="radio inline"><input type="radio" style="margin-top: -5px;" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State" /> State</label>';
+str+=' <label class="radio inline"><input type="radio" id="District" style="margin-top: -5px;" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District" /> District</label>';
+str+='  <label class="radio inline"><input type="radio" id="Constituency" style="margin-top: -5px;" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency" />  Constituency</label>';
+str+=' <label class="radio inline"><input type="radio" id="SpecialPage" style="margin-top: -5px;" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page" /> Special Page</label>';
 
+str+='  <div id="electionTypes"  style="display: none;text-align: center;"><label class="radio inline"><input type="radio" id="Assembly" style="margin-top: -5px;" name="typeRadio"  value="Assembly" checked="checked"/>  Assembly </label>';
+str+=' <label class="radio inline"><input type="radio" style="margin-top: -5px;" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</label></div>';
+str+='<form class="form-horizontal" style="margin-top: 12px;">';
+str+='<div id="Statediv" class="control-group" style="display:none;"><label class="control-label" style="font-size: 14px;"> Select State:</label><select id="stateList" name="stateList" style="margin-left: 4px;" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
+str+=' <div id="Districtdiv" class="control-group" style="display: none;"> <label class="control-label" style="font-size: 14px;">Select District:</label><select id="districtList"  style="margin-left: 4px;" name="districtList"> <option value="0"> Select District </option> </select> </div>';
+str+='<div id="Constituencydiv" class="control-group" style="display: none;"><label class="control-label" style="font-size: 14px;">	Select Constituency:</label><select id="constituencyList"  style="margin-left: 4px;" name="constituencyList"></select> </div>';
+str+='<div id="specialDiv" class="control-group" style="display: none;"><label class="control-label" style="font-size: 14px;">Select Special Page:</label><select id="specialPageList" style="margin-left: 4px;" name="specialPageList"></select></div>';
+str+='<span btn="info" onClick="savefavouriteLink()" id="addFav" style="display:none;">Add</span>';
+str+='</form>';
 $("#addPopupForFavouriteLinks").html(str);
 	
 	$("#addPopupForFavouriteLinks").dialog({
 			title:"Add Your FavouriteLinks ",
+			 
 			autoOpen: true,
 			show: "blind",
 			width: 450,
@@ -3196,7 +3200,8 @@ $("#addPopupForFavouriteLinks").html(str);
 			buttons: { "Add": function() { $('#addFav').trigger('click'); } } 
 		});
 
-}	
+}
+	
 function getLocalitiesUnderState(){
 var id=$('#stateList').val();
 getDistrictsInState(id);
