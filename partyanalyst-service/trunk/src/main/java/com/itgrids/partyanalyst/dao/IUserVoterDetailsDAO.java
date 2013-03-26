@@ -80,5 +80,7 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 				Integer maxRecords, String order, String columnName);
 	 public List<?> getVotersBasedOnVoterIdsAndPublication(Long publicationDateId , List<?> voterIds);
 	 public List<?> getVotersCountByHamlet(Long hamletId,Long userID);
-
+	 
+	 public List<Object[]> getTotalVotersCountInABooth(Long userId ,Long boothId,Long publicationDateId);
+	 public List<Long> getUserHamletsByBoothId(Long userId , Long boothId , Long pubId);
 }
