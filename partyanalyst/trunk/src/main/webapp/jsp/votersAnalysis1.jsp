@@ -1458,7 +1458,7 @@ for  body3 start    result  -->
 	  <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
 	</div>
 	<div id="castPartyPopupDiv" style="display:none"> 
-	 <div id="getLatestCastsSubcategoryWise"  style="float:right;"><input type="button" onclick="getLatestCastsSubcategoryWise();" value="Get Updated Cast Info" class="btn btn-info" /></div>
+	 <div id="getLatestCastsSubcategoryWise"  style="float:right;"><input type="button" onclick="getLatestCastsSubcategoryWise();" value="Get Updated Caste Info" class="btn btn-info" /></div>
 	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
 		
 		 <div id='localCastStatsTabContent_subbody'></div>	
