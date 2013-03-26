@@ -73,7 +73,8 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		List l=new ArrayList<Long>();
 		l.add(42l);
 		
-		List name = boothPublicationVoterDAO.getPoliticianDetails(l,7l, "hamlet",0,3);
+		Long name = boothPublicationVoterDAO.getTotalVotersCountForHamletByBooth(1l,30l,8l,"",123020l);
+	  System.out.println(name);
 	}
 	
 	}
