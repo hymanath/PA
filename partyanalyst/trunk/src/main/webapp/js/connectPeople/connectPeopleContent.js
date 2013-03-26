@@ -47,10 +47,10 @@ connectDivId = divId;
 
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
-	bodyStr+='<span><img height="20" width="25" src="images/icons/constituencyPage/groups.png" style="margin-top: -15px;"></img></span>';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from '+locationName+' Constituency</span>';
+	//bodyStr+='<span><img height="20" width="25" src="images/icons/constituencyPage/groups.png" style="margin-top: -15px;"></img></span>';
+	bodyStr+='<h4 style="font-weight:normal; text-align:center;font-size:16px;padding:5px;"> '+connectedPeopleData.length+' people connected from <br/> '+locationName+' Constituency</h4>';
 	bodyStr+='</div>';
-	bodyStr+='<div id="connectedPersonsDiv">';
+	bodyStr+='<div id="connectedPersonsDiv"  class="btn" style="font-size:13px;font-family:verdana;text-transform:capitalize;">';
 	bodyStr+='<table width="100%">';
 	for(var i =0; i<connectedPeopleData.length; i++)
 	{
@@ -58,7 +58,7 @@ connectDivId = divId;
 			break;
 		bodyStr+='<tr>';
 		bodyStr+='<td>';
-		bodyStr+='<table width="100%">';
+		bodyStr+='<table width="100%" class="btn">';
 		bodyStr+='<tr>';
 		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
@@ -70,7 +70,7 @@ connectDivId = divId;
 		bodyStr+='<tr>';	
 		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass" style="margin-right:94px;">';
 		if(userLoginStatus == "false")
-			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a>';
+			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'"><i class="icon-plus-sign opacityFilter-50"></i></a>';
 		else
 		{
 			if(connectedPeopleData[i].status == "LOGGED_USER")
@@ -78,7 +78,7 @@ connectDivId = divId;
 			else if(connectedPeopleData[i].status == "NOT CONNECTED")
 			{
 				bodyStr+='<font color="#7F5A22" style="padding-right:10px;">Not Connected</font>';
-				bodyStr+='- <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" style="margin-left:auto;">Connect</a>';
+				bodyStr+='- <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" style="margin-left:auto;"><i class="icon-plus-sign opacityFilter-50" title="Connect Now" rel="tooltip"></i></a>';
 			}
 			else if(connectedPeopleData[i].status == "CONNECTED")
 				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Connected</font>';
@@ -110,7 +110,7 @@ connectDivId = divId;
 	}
 	loginUserId=userLoginId;
 
-	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
+	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc btn">View All People</a> </span>';
 
 	bodyStr+='</td>';
 	bodyStr+='</tr></table>';
@@ -440,7 +440,7 @@ $('#Not_connectPeople_body_name').css("display","block");
 				title:"Connect To People ",
 				show: "blind",
 				width: 500,
-				inHeight:200,
+				minHeight:200,
 				modal: true
 		});
 }
@@ -539,7 +539,7 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 			title:"People Connected to "+locationName+" "+locationType,
 			autoOpen: false,
 			show: "blind",
-			width: 700,
+			width: 510,
 			minHeight:400,
 			modal: true,
 			hide: "explode"
@@ -1023,34 +1023,41 @@ var str = '';
 			str += '<td valign="top" width="15%"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank"><img height="45" width="50" src="'+imageStr+'" onerror="setDefaultImg(this)"></a></td>';		
 		str += '<td valign="top" width="55%">';
 		str += '<div class="connectPeople_body_name"><a href="userProfile.action?profileId='+users[i].id+'" target="_blank" style="text-transform: capitalize;">'+users[i].candidateName+'</a></div>';
-		str += '<div><span class="connectPeople_body_constituency" style="text-transform: capitalize;">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
+		str += '<div><span class="connectPeople_body_constituency" style="text-transform:capitalize;font-size:15px;font-family:arial;">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
 		str += '</td>';
-		str += '<td valign="middle" width="30%" align="right">';
+		str += '<td valign="middle" width="30%" align="center">';
 		if(users[i].status == "NOT CONNECTED")
 		{
 			str += '<table border="0" cellpadding="0" cellspacing="0">';
 			str += '<tr>';
-			str += '<td><div id="connectPeopleButtonLeftDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_left.png"/></div></td>';
+			//str += '<td><div id="connectPeopleButtonLeftDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_left.png"/></div></td>';
+			str += '<td><div id="connectPeopleButtonLeftDivId_'+users[i].id+'"></div></td>';
 			if(userLoginStatus == "false"){
-				str += '<td><div class="allConnectPeople_Head_botton_center_div"><a style="color:white;" class="allConnectPeople_Head_botton_center_span" href=connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a></div></td>';
+				str += '<td ><div class="allConnectPeople_Head_botton_center_div" style="background:none;margin-right:25px;"><a style="color:white;" class="allConnectPeople_Head_botton_center_span" href=connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'"><i class="icon-plus-sign opacityFilter-50"></i></a></div></td>';
 			}
 			else{
-				str += '<td><div id="connectPeopleButtonDivId_'+users[i].id+'" class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></td>';
+				str += '<td ><div id="connectPeopleButtonDivId_'+users[i].id+'" class="allConnectPeople_Head_botton_center_div" style="background:none;margin-right:25px;"><span class="allConnectPeople_Head_botton_center_span" title="Connect Now" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')"><i class="icon-plus-sign opacityFilter-50"></i></span></div></td>';
 			}
-			str += '<td><div id="connectPeopleButtonRightDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_right.png"/></div></td>';
+			//str += '<td><div id="connectPeopleButtonRightDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_right.png"/></div></td>';
+			str += '<td><div id="connectPeopleButtonRightDivId_'+users[i].id+'"></div></td>';
 			str += '</tr>';
 			str += '</table>';
 		}
 		else if(users[i].status == "PENDING" || users[i].status == "LOGGED_USER")
 		{
+		if(users[i].status == "PENDING"){
+			str += '<div title="Request Pending"><i class="icon-adjust opacityFilter-50" style="margin-right:5px;"></i></div>';
+		}
+		else{
 			str += '<div>'+users[i].status+'</div>';
+			}
 		}
 		else 
 		{
 			str += '<span class="connectPeople_body_status">';
-			str += '<a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">';
-			str += '	<img title="Send Message" width="22" height="20" style="border:none;" src="images/icons/candidatePage/contact.png">';
-			str += '</a>';
+			str += '<a style="margin-right:5px;" title="Send Message" href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">';
+			//str += '	<img title="Send Message" width="22" height="20" style="border:none;" src="images/icons/candidatePage/contact.png">';
+			str += '<i class="icon-envelope opacityFilter-50"></i></a>';
 			str += '</span>';
 			str += '<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>';
 		}
