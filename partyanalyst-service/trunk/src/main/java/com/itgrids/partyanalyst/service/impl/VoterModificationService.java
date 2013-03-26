@@ -281,7 +281,11 @@ public class VoterModificationService implements IVoterModificationService{
 	 {
 		 LOG.debug("Entered into getVoterPublicationIdsBetweenTwoPublications() Method");
 		 try{
-			 return boothPublicationVoterDAO.getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
+			 List<Long> temp = new ArrayList<Long>(0);
+			 temp.add(7L);
+			 temp.add(8L);
+			 //return boothPublicationVoterDAO.getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
+			 return temp;
 		 }catch (Exception e) {
 			 LOG.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublications() Method");
 			 LOG.error("Exception is - "+e);
@@ -300,7 +304,10 @@ public class VoterModificationService implements IVoterModificationService{
 	 {
 		 LOG.debug("Entered into getPreviousPublicationId() Method");
 		 try{
-			 return boothPublicationVoterDAO.getPreviousPublicationIds(publicationDateId);
+			 List<Long> temp = new ArrayList<Long>(0);
+			 temp.add(7L);
+			// return boothPublicationVoterDAO.getPreviousPublicationIds(publicationDateId);
+			 return temp;
 		 }catch (Exception e) {
 			 LOG.error("Exception Occured in getPreviousPublicationId() Method");
 			 LOG.error("Exception is - "+e);
