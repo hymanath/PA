@@ -1412,6 +1412,7 @@ function addToPolitician(voterId,name)
 								}								
 								else if(jsObj.task == "importantFamiliesinfo")
 								{ 
+									$('#votersDiv1').hide();
 								  if(myResults != null && jsObj.type == maintype){
 								    $("#votersDiv1").show();
 								    impFamilesStaticTable(myResults,jsObj);
@@ -4131,6 +4132,13 @@ function callAjaxorVoterDetails(jsObj,url){
 
 function buildVoterDetailsTable(result,type,retrieveType){
 
+	if(result.votersDetailsVO.length == 0){
+		$('#votersDiv4').hide();
+		return false;
+	}
+	else
+		$('#votersDiv4').show();
+
 	var noteString = '';
 
 	if(type == "constituency")
@@ -5469,9 +5477,10 @@ function buildPreviousVotersDetails(myResults,jsObj){
 
 			//$('#votersTitle').html(mainname);
 
-				
 
 			if(myResults.length == 0){
+				$('#votersInfoMoreShowHide').hide();
+				$('#votersBasicInformationDiv').hide();
 				$('#votersBasicInfoDiv1').html("<span style='margin-left:15px;color:red;'> No  Data Available</span>");
 			return false;
 			}
@@ -5480,6 +5489,8 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			
 			return false;
 			}
+			$('#votersBasicInformationDiv').show();
+			$('#votersInfoMoreShowHide').show();
 			
 			
          
