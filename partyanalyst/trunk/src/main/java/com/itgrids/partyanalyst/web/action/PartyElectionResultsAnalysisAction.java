@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -17,6 +18,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -31,6 +33,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(PartyElectionResultsAnalysisAction.class);
 	private HttpServletRequest request;	
+	private HttpSession session;
 	private ServletContext context;
 	private IAnalysisReportService analysisReportService; 
 	private List<ElectionBasicCommentsVO> electionBasicCommentsVOList;
@@ -59,6 +62,14 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private List<CandidateCommentsVO> candidateComments;
 	
 	
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
 
 	public List<CandidateCommentsVO> getCandidateComments() {
 		return candidateComments;
@@ -469,7 +480,10 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		session = request.getSession();
 		
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
 		Long partyId = new Long(jObj.getString("partyId"));
 		Long electionId = new Long(jObj.getString("electionId"));
 		String resultStatus = jObj.getString("resultStatus");
@@ -492,7 +506,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		else if(resultStatus.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		electionResultPartyVO = analysisReportService.getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex,stateId,districtId);
+		electionResultPartyVO = analysisReportService.getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex,stateId,districtId,userId);
 			
 		return Action.SUCCESS;
 	}
