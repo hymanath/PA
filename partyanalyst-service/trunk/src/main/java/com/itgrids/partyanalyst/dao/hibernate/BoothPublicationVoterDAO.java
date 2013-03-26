@@ -431,7 +431,7 @@ public class BoothPublicationVoterDAO extends
 	public Long getTotalCastCountInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model2.casteState.casteStateId) from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append("select count( model2.casteState.casteStateId) from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
@@ -2200,5 +2200,42 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return getHibernateTemplate().find("select distinct model.booth.publicationDate.publicationDateId , DATE_FORMAT( model.booth.publicationDate.date ,'%d-%m-%Y ')  " +
 				"    from BoothPublicationVoter model join model.booth.constituency c join model.booth.publicationDate p where " +
 				" c.constituencyId = ? order by p.year desc)",constituencyId);
+	}
+	public Long getTotalVotersCountForHamletByBooth(Long userId , Long id,Long publicationDateId,String type , Long boothId){
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select count( distinct model.voter.voterId) from UserVoterDetails model , " +
+				"BoothPublicationVoter model1 " +
+				" where model.voter.voterId = model1.voter.voterId and " +
+				" model1.booth.publicationDate.publicationDateId = :publicationDateId" +
+				" and model.user.userId = :userId and " +
+				" model1.booth.boothId = :boothId and "+
+				"model.hamlet.hamletId = :id");
+		
+		
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("id", id);
+		queryObj.setParameter("userId", userId);
+		queryObj.setParameter("boothId", boothId);
+		return (Long)queryObj.uniqueResult();
+
+	}
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocationByBooth(Long userId,String locationType,Long locationId,Long publicationDateId,Long boothId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		str.append("  model.booth.boothId= :boothId and ");
+		str.append("  model2.hamlet.hamletId= :locationId  ");
+		str.append(" group by model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
+		
+		Query query = getSession().createQuery(str.toString()) ;
+		query.setParameter("userId", userId);
+		query.setParameter("locationId", locationId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("boothId", boothId);
+		return query.list();
 	}
 }
