@@ -29,4 +29,6 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	
 	public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId);
 	
+	public List<Long> getConstituencyIds();
+	
 }
