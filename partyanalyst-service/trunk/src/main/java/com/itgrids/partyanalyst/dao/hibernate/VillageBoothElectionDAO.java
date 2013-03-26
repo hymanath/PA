@@ -107,6 +107,15 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 				" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? order by " +
 				" model.boothConstituencyElection.constituencyElection.election.electionYear desc", params);
 	}
+	
+	
+	public List<Object[]> findElectionsForElectionTypeInAtehsil(Long electionTypeId,Long tehsilId){
+		Object[] params = {electionTypeId,tehsilId};
+		return getHibernateTemplate().find("select distinct model.boothConstituencyElection.constituencyElection.election.electionId, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear from VillageBoothElection model where " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.boothConstituencyElection.booth.tehsil.tehsilId = ?" +
+				" order by model.boothConstituencyElection.constituencyElection.election.electionYear desc", params);
+	}
 }
 
 		
