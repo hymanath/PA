@@ -1221,7 +1221,7 @@ for  body3 start    result  -->
 
 <div id="votersOuterDiv1" style="display:none;">
 <div id="imgDescriptionDiv" style="margin-bottom: 10px">
-<b style="margin-left: 5px">InfluencingPeople</b>:<img title="Politician" alt="Politicion" src="./images/icons/influencing.png" style="margin-bottom: 10px;
+<b style="margin-left: 5px">Influencing People</b>:<img title="Politician" alt="Politicion" src="./images/icons/influencing.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
 <b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Politicion" src="./images/icons/cadre.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
