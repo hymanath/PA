@@ -314,8 +314,8 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	}
 	});
 
+
 	$(".connectLink").live("click",function(){
-		
 		$("#allConnectedUsersDisplay_main").children().remove();			
 		var userId = $(this).closest("div").find(".userId").val();
 		var userName = $(this).closest("div").find(".userName").val();
@@ -339,9 +339,9 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var Name=$(userName);
 		var constituencyName = $(constituencyName);
 		var message = $("<label class='messageLabel'></label>");
-		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'></textarea>");
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 327px; height:102px;'></textarea>");
 		var image = $('<img height="80" width="80" src="images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
-		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:12px;"/>');
+		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:0px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
@@ -368,6 +368,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var locationId = constituencyId;
 		var locationName = constituencyName;
 		var userId = loginUserId;
+		 
 		 if(connectUserMsg.length > 200)
 		{
 			$("#errorMsgDiv").html('<font style="color:red">Message Should be lessthan 200 characters.</font>');
@@ -375,7 +376,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		}
 		
 		disableButton("connectPeopleLink");
-		$("#connectPeoplePopup").dialog('close');
+		//$("#connectPeoplePopup").dialog('close');
 		var jsObj ={
 				
 				locationId:locationId,			
@@ -407,6 +408,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var connectUserLoginId = loginUserId;
 		var users = new Array();
 		users.push(connectUserId);
+
 
 		 if(connectMsg.length > 200)
 		{
@@ -1198,17 +1200,16 @@ $('.specialPageDivheading').children().remove();
 var constituency = false;
 var state = false;
 var district = false;
-var specialpage = false;
 
 if(results == null || results.lenght == 0)
 {
-	$("#headerDiv").html('<h5>No Favourite Links has been added.</h5><br>');
-	$("#headerDiv").append('<h5 style="margin-top: -14px;"><small style="font-size:14px;color: #373737;">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" class="btn btn-info pull-right" style="margin-top: -30px; margin-right: -8px;" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+	$("#headerDiv").html('No Favourite Links has been added.<br>');
+	$("#headerDiv").append('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 	return;
 }
 
 //$("#headerDiv").html('<span btn="info" onClick="savefavouriteLink()">Add</span> <br> <select id="specialPageSelectBox" name="specialPage"></select>');
-$("#headerDiv").html('<h5 style="margin-top:-3px;margin-left:2px;" ><small style="font-size:14px;color: #373737;">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" class="btn btn-info pull-right" style="margin-top:-33px;" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+$("#headerDiv").html('<span>Add Your Interested State/District/Constituency/Special Pages</span><input type="button" class="btn btn-inverse pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
@@ -1227,7 +1228,7 @@ $("#headerDiv").html('<h5 style="margin-top:-3px;margin-left:2px;" ><small style
 				if(i ==0 && constituency == true)
 				{
 					
-					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls" style="font-size: 16px;padding:7px;">Constituency</a></div>');
+					var div = $('<div class="constituencyHeadingDiv"><a href="javaScript:{}" class="label label-info constituencyHeadingCls">Constituency</a></div>');
 					$('.constituencyDivheading').append(div);
 				}
 
@@ -1260,8 +1261,8 @@ $("#headerDiv").html('<h5 style="margin-top:-3px;margin-left:2px;" ><small style
 					$('.stateDivheading').html('<span class="stateHeadingCls">State</span>');
 				
 		    if(results[j].favouriteLinkType == "state"){
-         
-				$('.stateDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls" style="font-size: 16px;padding:7px;">State</span>');
+
+				$('.stateDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">State</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1292,7 +1293,7 @@ $("#headerDiv").html('<h5 style="margin-top:-3px;margin-left:2px;" ><small style
 		    if(results[k].favouriteLinkType == "district"){
 
 
-				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls" style="font-size: 16px;padding:7px;">District</span>');
+				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1318,12 +1319,12 @@ $("#headerDiv").html('<h5 style="margin-top:-3px;margin-left:2px;" ><small style
 			for(var m in results){
 
 				if(m == 0 && specialpage == true)
-					$('.specialPageDivheading').html('<span class="specialPageHeadingCls" >SpecialPage</span>');
+					$('.specialPageDivheading').html('<span class="specialPageHeadingCls">SpecialPage</span>');
 				
 		    if(results[m].favouriteLinkType == "specialpage"){
 
 
-				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls" style="font-size: 16px;padding:7px;">SpecialPage</span>');
+				$('.specialPageDivheading').html('<a href="javaScript:{}" class="label label-info specialPageHeadingCls">SpecialPage</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
 
@@ -1404,12 +1405,11 @@ function getFriendsListForUser(results)
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message To '+results.connectedPeople[i].candidateName+'" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
+		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message" class="btn btn-mini"></a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 
 }
-    
 
 function buildAllSubscriptions(results,place){
    if(results != null && results.length > 0){
@@ -1886,7 +1886,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
 				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
 			
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message To '+results.candidateVO[i].candidateName+'"><i class="icon-envelope opacityFilter-50"></i></a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
 			
 			templateClone.appendTo(".placeholderCenterDiv");
 		}	
@@ -2008,7 +2008,7 @@ function selectedStatusValue(){
 				}
 				
 			}
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message To '+results.candidateVO[i].candidateName+'" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');	
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');	
 
 			templateClone.appendTo(".placeholderCenterDiv");						
 		}
@@ -2138,7 +2138,7 @@ function showAllPostedProblems(jsObj,results)
 	}
 	
 }
-
+//changed for alignment
 function connectToSelectedPerson(id,name)
 {
 	$("#allConnectedUsersDisplay_main").children().remove();			
@@ -2154,22 +2154,22 @@ function connectToSelectedPerson(id,name)
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			minHeight:250,
+			minHeight:235,
 			modal: true,
 			hide: "explode"
 		});
-
+		
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
-		var Name=$("<label>"+userName+"</label>");
-		var message = $("<label class='messageLabel'>Message</label>");
-		var textArea = $("<textarea id='connectUserMsg'></textarea>");
-		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
-		var connectBtn = $('<input type="button" class="btn" name="connectDistrictPeopleLink" value="Connect" id="connectDistrictPeopleLink"/>');
+		/*var Name=$("<label>"+userName+"</label>");
+		var message = $("<label class='messageLabel'>Message</label>");*/
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 354px; height: 74px;'></textarea>");
+		var image = $('<img height="100" width="95" style="margin-bottom: 11px;" src="images/icons/indexPage/human.jpg">');
+		var connectBtn = $('<input type="button" class="btn" name="connectDistrictPeopleLink" style="float: right" value="Connect" id="connectDistrictPeopleLink"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
-		div.append(Name);
-		div.append(message);
+		/*div.append(Name);
+		div.append(message);*/
 		div.append(textArea);
 		div.append(image);
 		div.append(connectBtn);
@@ -3173,25 +3173,22 @@ $('#Parliament').live('click',function(){
 function openPopupForFavouriteLinks(){
 
 var str=''; 
-str+='<label class="radio inline"><input type="radio" style="margin-top: -5px;" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State" /> State</label>';
-str+=' <label class="radio inline"><input type="radio" id="District" style="margin-top: -5px;" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District" /> District</label>';
-str+='  <label class="radio inline"><input type="radio" id="Constituency" style="margin-top: -5px;" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency" />  Constituency</label>';
-str+=' <label class="radio inline"><input type="radio" id="SpecialPage" style="margin-top: -5px;" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page" /> Special Page</label>';
-
-str+='  <div id="electionTypes"  style="display: none;text-align: center;"><label class="radio inline"><input type="radio" id="Assembly" style="margin-top: -5px;" name="typeRadio"  value="Assembly" checked="checked"/>  Assembly </label>';
-str+=' <label class="radio inline"><input type="radio" style="margin-top: -5px;" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</label></div>';
-str+='<form class="form-horizontal" style="margin-top: 12px;">';
-str+='<div id="Statediv" class="control-group" style="display:none;"><label class="control-label" style="font-size: 14px;"> Select State:</label><select id="stateList" name="stateList" style="margin-left: 4px;" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
-str+=' <div id="Districtdiv" class="control-group" style="display: none;"> <label class="control-label" style="font-size: 14px;">Select District:</label><select id="districtList"  style="margin-left: 4px;" name="districtList"> <option value="0"> Select District </option> </select> </div>';
-str+='<div id="Constituencydiv" class="control-group" style="display: none;"><label class="control-label" style="font-size: 14px;">	Select Constituency:</label><select id="constituencyList"  style="margin-left: 4px;" name="constituencyList"></select> </div>';
-str+='<div id="specialDiv" class="control-group" style="display: none;"><label class="control-label" style="font-size: 14px;">Select Special Page:</label><select id="specialPageList" style="margin-left: 4px;" name="specialPageList"></select></div>';
+str+='<input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State"/> State';
+str+=' <input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District"/> District';
+str+='  <input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency"/>  Constituency';
+str+=' <input type="radio" id="SpecialPage" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Special Page"/> Special Page';
+str+='  <div id="electionTypes" style="display: none;"><input type="radio" id="Assembly" name="typeRadio"  value="Assembly" checked="checked"/> Assembly ';
+str+=' <input type="radio" id="Parliament"  name="typeRadio" value="Parliament"/> Parliament</div>';
+str+='<div id="Statediv" style="display:none;"> Select State:<select id="stateList" name="stateList" onChange="getLocalitiesUnderState()";> <option value="0"> Select State</option> </select></div>';
+str+=' <div id="Districtdiv" style="display: none;"> Select District:<select id="districtList" name="districtList"> <option value="0"> Select District </option> </select> </div>';
+str+='<div id="Constituencydiv" style="display: none;">	Select Constituency:<select id="constituencyList" name="constituencyList"></select> </div>';
+str+='<div id="specialDiv" style="display: none;">Select Special Page:<select id="specialPageList" name="specialPageList"></select></div>';
 str+='<span btn="info" onClick="savefavouriteLink()" id="addFav" style="display:none;">Add</span>';
-str+='</form>';
+
 $("#addPopupForFavouriteLinks").html(str);
 	
 	$("#addPopupForFavouriteLinks").dialog({
 			title:"Add Your FavouriteLinks ",
-			 
 			autoOpen: true,
 			show: "blind",
 			width: 450,
@@ -3201,8 +3198,7 @@ $("#addPopupForFavouriteLinks").html(str);
 			buttons: { "Add": function() { $('#addFav').trigger('click'); } } 
 		});
 
-}
-	
+}	
 function getLocalitiesUnderState(){
 var id=$('#stateList').val();
 getDistrictsInState(id);
