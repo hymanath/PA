@@ -342,10 +342,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>
 					
 					<li ><a href="javascript:{}" id="cadreInfoLink" onClick="getCadresInfo();"><i class="icon-user"></i><i class="icon-chevron-right"></i> Cadre Info</a></li>
-					<li><a href="cadreManagementAction.action#cadreManagementMainDiv" class="ImportantEvents" target="_blank"><i class="icon-calendar"></i><i class="icon-chevron-right"></i> Important Events</a></li>
+					<li><a href="javascript:{}" class="ImportantEvents"><i class="icon-calendar"></i><i class="icon-chevron-right"></i> Important Events</a></li>
 					</c:if>
 					<c:if test="${hasNewsMonitoring == true}">
-					<li><a href="newsDisplayAction.action" class="accessNewsArticles" target="_blank"><i class="icon-file"></i><i class="icon-chevron-right"></i> Access News Articles</a></li>
+					<!--<li><a href="newsDisplayAction.action" class="accessNewsArticles" target="_blank"><i class="icon-file"></i><i class="icon-chevron-right"></i> Access News Articles</a></li>-->
 					
 					<li><a href="generatePdfForGallaryAction.action" class="accessNewsArticles" target="_blank"><i class="icon-film"></i><i class="icon-chevron-right"></i> Generate Pdf For Gallery</a></li>
 					</c:if>
@@ -417,10 +417,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	<!--PRASAD-->
 						</div>
 						<div id="caderInfo"></div>
-						
-						<div id="announcementsDiv" style="display:none;">
+						<div id="impEvents"></div>
+						<div id="announcementsDiv" style="display:none;display: inline-block;">
 						<div id="addNewAnnouncement"><a onclick="openNewAnnouncementPopup()" href="javascript:{}">Add New Announcement</a></div>
-						<div id="viewAllAnnouncements"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
+						<div id="viewAllAnnouncements" style="margin-left: 313px;"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
 						
 						</div>
 						
