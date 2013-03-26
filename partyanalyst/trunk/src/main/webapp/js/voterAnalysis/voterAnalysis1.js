@@ -3389,7 +3389,7 @@ function buildPartyWisePiechart(myResults,jsObj)
      if(type == "panchayat"){
 	    name = $("#panchayatField option:selected").text();
 	 }else{
-	  type = "";
+	  //type = "";
 	   name = $("#pollingStationField option:selected").text();
 	 }
       var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
@@ -3436,7 +3436,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
 
-		  if(jsObj.buildType =="hamlet")
+		  if(jsObj.buildType =="hamlet" && type == "panchayat" )
 	       {
 			  $('#impFamPancBothDtlsAgxImgForHamlet').html(str);
 			  $('#impFamPancBothDtlsAgxImgForHamle').hide();
