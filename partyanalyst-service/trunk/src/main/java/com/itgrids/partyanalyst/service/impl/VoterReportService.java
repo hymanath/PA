@@ -456,6 +456,12 @@ public class VoterReportService implements IVoterReportService{
 						  ids.addAll(mandalIdsList.keySet());
 						   list = panchayatDAO.getPanchayatIdsByMandalIdsList(ids);
 					  }
+					  if(mandalIdsList != null && mandalIdsList.size() >0)
+					  {
+						// InsertVoterCasteInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue, publicationDateId,reportLevelValue,userId);
+						 //InsertVoterCasteBasicInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue,userId);
+						  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.MANDAL,mandalIdsList,publicationDateId,reportLevelValue);
+					  }
 					 if(list != null && list.size() > 0)
 					  {
 						 Map<Long,Long> mandalTotalVotersMap = new HashMap<Long,Long>();
@@ -471,12 +477,7 @@ public class VoterReportService implements IVoterReportService{
 						 }
 					  }
 					 
-					  if(mandalIdsList != null && mandalIdsList.size() >0)
-					  {
-						// InsertVoterCasteInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue, publicationDateId,reportLevelValue,userId);
-						 //InsertVoterCasteBasicInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue,userId);
-						  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.MANDAL,mandalIdsList,publicationDateId,reportLevelValue);
-					  }
+					  
 					  
 					  if(panchayatIdsList != null && panchayatIdsList.size() > 0)
 					     saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.PANCHAYAT,panchayatIdsList,publicationDateId,reportLevelValue);
