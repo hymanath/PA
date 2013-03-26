@@ -2794,8 +2794,9 @@ function getImpFamiliesVotersToShow(){
 	
   $("#descriptionDiv").show();
 
-	$('#impFamPancBothDtlsAgxImg').show();
+	
      if((buildType == "hamlet" && maintype == "panchayat")  || maintype == "hamlet"){
+	 $('#impFamPancBothDtlsAgxImg').show();
       impFamilesAllInfoForHamletPopUp();
 	  	 hideHamletDivs();
 
