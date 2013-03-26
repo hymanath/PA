@@ -50,6 +50,52 @@
 	{	
 		var textAreaElmt;
 		var str ='';
+		for(var i in selectedElmts){
+            str += selectedElmts[i]+",";
+		}
+		var txtElmtValue;
+		var subject=$('#subject').val();
+		textAreaElmt=$('#descriptionForEmail').val();
+		if(textAreaElmt){
+			// txtElmtValue =  textAreaElmt;
+			 txtElmtValue = removeAllUnwantedCharacters(textAreaElmt);
+		}
+		var errorElmt = document.getElementById("errorDiv1");
+		if(subject.length != '0')
+			subject.innerHTML = '';
+		if(subject.length == '0')
+			return errorElmt.innerHTML = 'Subject should not be empty';
+		if(textAreaElmt.length != '0')
+			errorElmt.innerHTML = '';
+		if(textAreaElmt.length == '0')
+				return errorElmt.innerHTML = 'Message should not be empty';
+         
+		 $("#descId").val(txtElmtValue);
+		 $("#userIds").val(str);
+		 
+
+		var sendEmailHandler = {
+				success: function(o) {
+					var myResults = YAHOO.lang.JSON.parse(o.responseText);
+					if(myResults == "success"){
+					$("#errorDiv1").html('');
+					$('#imageForMail').hide();
+					$('#errorDiv1').html('<font style="color:blue;">Mail Sent Successfully</font>');
+					$('#subject').val('');
+					$('#descriptionForEmail').val("");
+					var editor = $("#descriptionForEmail").cleditor()[0];
+					editor.updateFrame();
+				}
+			}
+      };
+	YAHOO.util.Connect.setForm('sendUpdateEmailform',false);
+	YAHOO.util.Connect.asyncRequest('POST','sendEmailForSelectedUsersAction.action',sendEmailHandler);
+	$('#imageForMail').show();
+	}
+	/*function sendEmail(selectedElmts)
+	{	
+		var textAreaElmt;
+		var str ='';
 		var txtElmtValue;
 		var subject=$('#subject').val();
 		 textAreaElmt=$('#descriptionForEmail').val();
@@ -78,7 +124,7 @@
 		var url = "sendEmailForSelectedUsersAction.action?"+rparam;						
 		callAjaxForEmail(jsObj,url);
 		$('#imageForMail').show();
-	}
+	}*/
 function showPreview()
 	{
 	$('#previewDiv').html($('#descriptionForEmail').val());
@@ -164,7 +210,7 @@ function callAjaxForEmail(jsObj,url)
 								$("#commentsData_outer").show();
 								printUserDetatils(myResults);							
 							}	
-							else if(jsObj.task == 'sendEmailsForUserIds'){
+							/*else if(jsObj.task == 'sendEmailsForUserIds'){
 								if(myResults=="success"){
 								$("#errorDiv1").html('');
 								$('#imageForMail').hide();
@@ -175,7 +221,7 @@ function callAjaxForEmail(jsObj,url)
 								editor.updateFrame();
 
 								}
-							}		
+							}*/		
 						}
 						catch(e)
 						{   
