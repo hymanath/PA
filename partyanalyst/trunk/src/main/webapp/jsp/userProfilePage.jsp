@@ -424,7 +424,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						
 						</div>
 						
-						<div class="FavoriteLinksDiv breadcrumb  ">
+						<div class="FavoriteLinksDiv breadcrumb whitegloss ">
 							
 							<div class="stateDivMain ">
 								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
