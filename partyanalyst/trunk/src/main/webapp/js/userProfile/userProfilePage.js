@@ -1438,7 +1438,7 @@ function getFriendsListForUser(results)
 		templateClone.find('.constituencyName').html(''+results.connectedPeople[i].constituencyName+'');
 		templateClone.find('.districtName').html(''+results.connectedPeople[i].district+'');
 		templateClone.find('.stateName').html(''+results.connectedPeople[i].state+'');
-		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message" class="btn btn-mini"></a>');
+		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message To '+results.connectedPeople[i].candidateName+'" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
 
@@ -1919,7 +1919,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 			else if(results.candidateVO[i].status != null && results.candidateVO[i].status == "PENDING")
 				templateClone.find('.connectCls').html('<a rel="tooltip"  href="javascript:{}" title="Pending" class="btn btn-mini" ><i class="icon-adjust opacityFilter-50"></i></a>');
 			
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message"><i class="icon-envelope opacityFilter-50"></i></a>');
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" rel="tooltip" class="btn btn-mini" title="Send Message To '+results.candidateVO[i].candidateName+'"><i class="icon-envelope opacityFilter-50"></i></a>');
 			
 			templateClone.appendTo(".placeholderCenterDiv");
 		}	
@@ -2041,7 +2041,7 @@ function selectedStatusValue(){
 				}
 				
 			}
-			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');	
+			templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.candidateVO[i].id+'\',\''+results.candidateVO[i].candidateName+'\',\'Message\')" title="Send Message To '+results.candidateVO[i].candidateName+'" rel="tooltip" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');	
 
 			templateClone.appendTo(".placeholderCenterDiv");						
 		}
