@@ -554,5 +554,14 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		queryObj.setMaxResults(maxIndex);
 		return queryObj.list();
 	}
+	
+	
+	public List getAllPostedCommentsOfUserForANomination(Long electionId,
+			Long constituencyId, Long candidateId,Long userId) {
+		Object[] params = {electionId, constituencyId, candidateId,userId};
+		return getHibernateTemplate().find("select model.commentCategoryCandidateId, model.severity from CommentCategoryCandidate model where " +
+				"model.nomination.constituencyElection.election.electionId = ? and model.nomination.constituencyElection.constituency.constituencyId = ? " +
+				"and model.nomination.candidate.candidateId = ? and model.user.userId = ?", params);
+	}
 		
 }
