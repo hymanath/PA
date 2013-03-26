@@ -645,6 +645,8 @@
 		var casteCategoryLength = $(casteCategory).size();
 		var cadreLevel = $('#scopeLevel').val();
 		var memberTypeActive = $('#memberTypeActive').is(":checked");
+		var windowTask = '${windowTask}';
+		var voterId = '${voterId}';
 		if(fname == '')
 		{
 			$('#errorDiv').html('<div>Please enter the first name</div>')
@@ -735,7 +737,7 @@
 			$('#errorDiv').html('<div>Please select the Caste Category</div>')
 			return false;
 		}
-		if(memberTypeActive == true)
+		if(memberTypeActive == true && windowTask == 'new' || memberTypeActive == true && voterId.length > 0)
 		{
 		if(cadreLevel == 0)
 		{
