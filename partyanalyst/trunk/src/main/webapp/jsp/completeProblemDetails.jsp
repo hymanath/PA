@@ -183,8 +183,9 @@ table {
 border: 1px solid #CCCCCC;
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 2px 2px #DDDDDD;
-    margin: 6px 5px;
+    margin: 6px 0px 5px 0px;
     padding: 10px;
+	clear:both;
 }
 .problemFileTitleCLs{margin-top: 20px;margin-left: 15px;color:#000;}
 .problemFileEditBtn{margin-top: 18px; margin-right: 37px; float: right;}
@@ -285,6 +286,12 @@ var problemDetailsInEdit = null;
   }
 	function showtotalImages(result){
 	result = result.problemFiles;
+	if(result == '')
+	{
+	 document.getElementById("moreimags").style.display="none";
+	 $( "#gallaryOutrDiv" ).dialog("close");
+	 return;
+	 }
 	  $( "#gallaryOutrDiv" ).dialog({
 		title:"Problem Related Files",
 		autoOpen: true,
@@ -553,7 +560,7 @@ function uploadFormValidation()
 	cadreInputIdEle.value = cadreId;
     
 	$( "#selectedCadreDivouter").dialog({
-		title:"",
+		title:"Problem Assigned To Cadre",
 		autoOpen: true,
 		show: "blind",
 		width: 580,
@@ -564,10 +571,11 @@ function uploadFormValidation()
 	var cadreDetailsDivEle = document.getElementById("selectedCadreDiv");
 	var cadreVar ='';
 	cadreVar +='<table align="center">';
-	cadreVar +='<tr><th>Selected Cadre is :</th>';
-	cadreVar +='<th>';
+	cadreVar +='<tr><td>Selected Cadre is :</td>';
+	cadreVar +='<td style="font-weight:bold;">';
 	cadreVar += cadreName;
-	cadreVar +='</th>';
+	cadreVar +='</td>';
+	cadreVar +='<td></td>';
 	cadreVar +='<td><input type="button" style="width:108px;height:25px;" value="Show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Proceed" class="button" onclick="addCadreToProblemAndSendingSMS(\''+cadreId+'\')"/></td>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Cancel" class="button" onclick="clearCadreDiv()"/></td></tr>';
@@ -640,7 +648,7 @@ function handleDepartmentChange(type)
 	var elmt = document.getElementById("departmentPanel_content");
 	getProblemDepartments(0,'getProblemResolvingDeptScopes');
 	$( "#departmentPanel_main" ).dialog({
-		title:"",
+		title:"Problem Assigned To Department",
 		autoOpen: true,
 		show: "blind",
 		width: 550,
@@ -1194,7 +1202,9 @@ function showProblemUpdateStatus(result)
 }
 
 function buildcomments(myResults){
+
   if(myResults != null && myResults.length >0){
+	  $("#postedcomments").css('display','block');
     var str='';
 	  str+='<ul>';
 	for(var i in myResults){
@@ -1314,7 +1324,7 @@ function sendSMSToCadre(cadreId)
 function openCadreSmsPopup(cadreId,pHistoryId)
 {
 	$("#departmentPanel_main" ).dialog({
-		title:"<font color='#ffffff'>Sending SMS To Cadre About Problem</font>",
+		title:"<font color='#000000'>Send SMS To Cadre About Problem</font>",
 		autoOpen: true,
 		show: "blind",
 		width: 500,
@@ -1832,6 +1842,7 @@ function displayDateText(type, args, obj) {
 	   <div class="pull-right" style="margin-left: 0px; margin-right: 47px; margin-top: -22px;">
         <div class="btn-group dropup inline" style="display:inline-block;width:100px;">
           <button class="btn btn-primary"><i class="icon-share icon-white"></i> Share</button>
+
           <button data-toggle="dropdown" class="btn dropdown-toggle btn-primary"><span class="caret"></span></button>
           <ul class="dropdown-menu pull-right">
             <li><div style="padding-left:15px;"><a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a></div></li>
@@ -1860,7 +1871,16 @@ function displayDateText(type, args, obj) {
         </div>
 		
         </s:if>
-		
+		<!---
+		 <s:if test="completeProblemDetailsVO.isPublic != 'true' ">
+	   
+   <div class="pull-right" style="margin-left: 0px; margin-right: 47px; margin-top: -22px;">
+        <div class="btn-group dropup inline" style="display:inline-block;width:100px;">
+          <button class="btn btn-primary" style="background:red;" href="javascript:{}" rel="tooltip" data-original-title="Connect"><i class="icon-share icon-white"></i> Private</button>
+		  </div>
+		  </div>
+        </s:if>
+		-->
 		  <div class="row m-t10">
             <div class="span5"><h5>${completeProblemDetailsVO.problemCompleteLoc}</h5></div>
           </div>
@@ -2095,12 +2115,12 @@ function displayDateText(type, args, obj) {
 </div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
-			<div id="errormsgdiv" class="errorClass"></div>
+			<div id="errormsgdiv" class="errorClass" style="display:none;"></div>
 		<h3>Comments:</h3>
-		 <div class="commentSection"><div>
-		 <textarea class="textareaid" id="commenttext" style="width:104%;"></textarea></div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-bottom:-31px;margin-right:-44px;margin-top: 4px;width: 21px;" class="pull-right btn btn-info">Post</a></div>
+		 <div class="commentSection">
+		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><a href="javascript:{}" onclick="postCommentForProblem()" class="pull-right btn btn-info" style="margin-top:4px;margin-bottom:4px;">Post</a>
 		 <div id="abusedErrorDiv" style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;"></div>
-         <div id="postedcomments"></div>	
+         <div id="postedcomments" style="display:none;"></div>	
 		</div>
 		</s:if>
 		<s:else>
