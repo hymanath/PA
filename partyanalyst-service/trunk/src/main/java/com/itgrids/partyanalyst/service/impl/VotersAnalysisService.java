@@ -7401,7 +7401,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		{
 			List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);;
 			try{
-				List<Long> constituencyIds = boothPublicationVoterDAO.getConstituenciesIds(); 
+				List<Long> constituencyIds =  voterInfoDAO.getConstituencyIds();
 				if(userAccessConstituencyList != null && userAccessConstituencyList.size() > 0 && constituencyIds != null)
 				{
 					for(SelectOptionVO selectOptionVO : userAccessConstituencyList)
@@ -7418,7 +7418,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				return constituencyList;
 			}
 		}
-		
+	  
+	  
 		public List<SelectOptionVO> getAllElectionsInAConsti(Long electionTypeId,Long constiId){
 			List<SelectOptionVO> options = new ArrayList<SelectOptionVO>();
 			SelectOptionVO selectOptionVO = null;
