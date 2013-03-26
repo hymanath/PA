@@ -551,5 +551,55 @@ IUserVoterDetailsDAO{
 			return query.list();
 		 
 	 }  
+	 public List<Object[]> getTotalVotersCountInABooth(Long userId ,Long boothId,Long publicationDateId)
+		{
+			
+			StringBuilder query = new StringBuilder();
+			
+			query.append("select distinct model.hamlet.hamletName , " +
+					"SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+					"SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount " +
+					"from UserVoterDetails model , " +
+					"BoothPublicationVoter model1 " +
+					   " join model.hamlet " +
+					" where model.voter.voterId = model1.voter.voterId and " +
+					" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
+					" model1.booth.boothId = :boothId " +
+					"and model.user.userId = :userId " +
+					"group by model.hamlet.hamletName ");
+			
+			
+			
+			Query queryObj = getSession().createQuery(query.toString()) ;
+			queryObj.setParameter("publicationDateId", publicationDateId);
+			queryObj.setParameter("boothId", boothId);
+			queryObj.setParameter("userId", userId);
+			return queryObj.list();
+			
+			/*Query query = getSession().createQuery("select distinct model.locality.name," +
+					"SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+					"SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount " +
+					" from UserVoterDetails model  " +
+			        " join model.locality " +
+					"where model.voter.voterId in(:voterIds)    group by model.locality.name ");*/
+			
+		}
+		public List<Long> getUserHamletsByBoothId(Long userId , Long boothId , Long pubId)
+		{
+			
+			
+			Query query = getSession().createQuery("select distinct model.hamlet.hamletId from UserVoterDetails model," +
+					"BoothPublicationVoter model1 "+					
+					" where model.user.userId = :userId and model.voter.voterId = model1.voter.voterId and " +
+					" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
+					"model.hamlet.hamletId is not null and "+
+					" model1.booth.boothId = :boothId");
+			
+			query.setParameter("userId", userId);
+			query.setParameter("boothId", boothId);
+			query.setParameter("publicationDateId", pubId);
+			
+			return query.list();
+		}
 	
 }
