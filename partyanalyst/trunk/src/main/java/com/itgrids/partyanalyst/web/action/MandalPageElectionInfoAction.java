@@ -356,6 +356,26 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		return SUCCESS;
 	}
 	
+	public String getElectionIdsAndYearsInTehsil()
+	{
+		if(task != null)
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getElectionYearsInTehsil") || jObj.getString("task").equalsIgnoreCase("getElectionYearsInPanchayat")){
+				System.out.println("For Districts Of State");
+				electionSelectVO = staticDataService.getElectionIdsAndYearsInTehsil(jObj.getLong("electionTypeId"),jObj.getLong("mandalId"));
+				electionSelectVO.add(0,new SelectOptionVO(0l,"Select Year"));
+			}
+		}
+		return SUCCESS;
+	}
+	
 	public String getTownshipDetails(){
 		if(task != null){
 			try{

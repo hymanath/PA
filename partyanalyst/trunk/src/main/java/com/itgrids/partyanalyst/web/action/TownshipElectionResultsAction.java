@@ -201,11 +201,17 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		String cPath = request.getContextPath();
 		Long mandalId = new Long(request.getParameter("mandalId"));
 		Long electionId = new Long(request.getParameter("electionId"));
+		Long electionTypeId = 0l;
 		electionType = request.getParameter("electionType");
 		electionYear = request.getParameter("electionYear");
 		mandalName = request.getParameter("mandalName");
 		tehsilId = mandalId;
 		electId = electionId;
+		if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+			electionTypeId= 1l;
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			electionTypeId = 2l;
+			
 		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);
 		
 		if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
@@ -213,8 +219,9 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		else
 			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
 		
-		allElectionYears = staticDataService.getAllElectionYearsBasedOnElectionType(electionType);
-		 
+		//allElectionYears = staticDataService.getAllElectionYearsBasedOnElectionType(electionType);
+		allElectionYears = staticDataService.getElectionIdsAndYearsInTehsil(electionTypeId,tehsilId);
+		
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
 			String chartName = null;
 			String chartPath = "";

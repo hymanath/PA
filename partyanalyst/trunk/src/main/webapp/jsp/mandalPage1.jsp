@@ -590,7 +590,9 @@ function getMoreResults(elecYear,elecType,constiId)
 		revenueInfo += '<div id="revenueVillagesMainDiv">';
 		revenueInfo += '<table>';
 		revenueInfo += '<tr><td>Election Type:</td>';
-		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'village\')" class = "selectWidth">';
+		//revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'village\')" class = "selectWidth">';
+		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYearsInMandal(this.options[this.selectedIndex].value,\'village\')" class = "selectWidth">';
+		
 		revenueInfo += '<option value="0">Select </option>';
 		revenueInfo += '<option value="1">Parliament</option>';
 		revenueInfo += '<option value="2">Assembly</option>';
@@ -608,6 +610,27 @@ function getMoreResults(elecYear,elecType,constiId)
 		
 		return revenueInfo;
 	}
+function getElectionYearsInMandal(id,name){
+
+
+		var task;
+		if(name == 'panchayat')
+			task = 'getElectionYearsInPanchayat';
+		else
+			task = 'getElectionYearsInTehsil';
+		var mandalId = ${mandalId};
+		var jsObj=
+			{
+					electionTypeId:id,
+					mandalId : mandalId,
+					task:task,
+                    					
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getElectionYearsForMandalAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}
 
 	function buildPanchayatInfoTab(){
 		var panchayatInfo = '';
@@ -618,7 +641,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		panchayatInfo += '<div id="panchayatMainDiv">';
 		panchayatInfo += '<table>';
 		panchayatInfo += '<tr><td>Election Type:</td>';
-		panchayatInfo += '<td><select id="electionTypeSelectId" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'panchayat\')" class = "selectWidth">';
+		panchayatInfo += '<td><select id="electionTypeSelectId" onchange = "getElectionYearsInMandal(this.options[this.selectedIndex].value,\'panchayat\')" class = "selectWidth">';
 		panchayatInfo += '<option value="0">Select </option>';
 		panchayatInfo += '<option value="1">Parliament</option>';
 		panchayatInfo += '<option value="2">Assembly</option>';
@@ -750,6 +773,14 @@ function getMoreResults(elecYear,elecType,constiId)
 								if(jsObj.task == "getElectionYears")
 								{								
 									showElectionYearTextBox(resultVO);				
+								}
+								if(jsObj.task == "getElectionYearsInTehsil")
+								{
+									showElectionYearTextBox(resultVO);	
+								}
+								if(jsObj.task == "getElectionYearsInPanchayat")
+								{
+									showElectionYearTextBoxForPanchayat(resultVO);	
 								}
 								if(jsObj.task == "getElectionYearsForPanchayat")
 								{								

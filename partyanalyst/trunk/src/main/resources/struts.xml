@@ -4667,7 +4667,11 @@
 				<param name="root">votersFamilyInfo</param>				
 			</result> 
 		</action>
-		
+		<action name="getElectionYearsForMandalAjaxAction" class="mandalPageElectionInfoAction" method="getElectionIdsAndYearsInTehsil">
+			<result type="json" name="success">
+           		<param name="root">electionSelectVO</param>
+        	</result>
+		</action>
 		
 		
 		</package>

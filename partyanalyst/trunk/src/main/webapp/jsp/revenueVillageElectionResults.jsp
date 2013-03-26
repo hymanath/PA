@@ -750,6 +750,7 @@ legend
 			}
 			
 			function getRevenueVillageElectionResults(selectedYear,electionId){
+				
 				var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+mandalName+"&electionType="+electionType+"&electionYear="+selectedYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 				brow1.focus();
 			}	
@@ -779,7 +780,8 @@ legend
 		<tr>
 			<td id="labelRadio">Select Election Year</td>
 			<td>		
-				<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name" onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>			
+			<s:select id="selectPartyPPR" theme="simple"  name="selectParty" headerKey="0" headerValue ="Select Year" list="allElectionYears" listKey="id" listValue="name"  onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>	
+				
 			</td>
 			<td>
 				<table border="0" cellspacing="0" cellpadding="0" style="margin-left:50px;">
