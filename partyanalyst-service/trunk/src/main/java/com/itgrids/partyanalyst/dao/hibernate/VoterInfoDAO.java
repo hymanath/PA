@@ -143,6 +143,12 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		queryObj.setParameter("reportLevel", IConstants.CONSTITUENCY);
 		return queryObj.list();
 	}
-
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituencyIds()
+	{
+		Query query = getSession().createQuery("select distinct model.constituencyId from VoterInfo model where model.voterReportLevel.reportLevel =:reportLevel ");
+		query.setParameter("reportLevel", IConstants.CONSTITUENCY);
+		return query.list();
+	}
 
 }
