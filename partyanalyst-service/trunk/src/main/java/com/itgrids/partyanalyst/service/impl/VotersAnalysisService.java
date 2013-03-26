@@ -974,10 +974,18 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				return votersInfoForMandalVO;
 			}
 			else if(type.equalsIgnoreCase("booth")){
-				VotersInfoForMandalVO votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId(IConstants.BOOTH), id, publicationDateId,"booth-"+boothDAO.get(id).getPartNo(),"main",constituencyId);
+				VotersInfoForMandalVO  votersInfoForMandalVO = null;
+				if(resultFor.equalsIgnoreCase("hamlet"))
+				{
+					votersInfoForMandalVO  =new  VotersInfoForMandalVO();
+					
+					getVoterDetailsForHamletsInBooth(id, votersInfoForMandalVO,publicationDateId,userId);
+				}else{
+				votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId(IConstants.BOOTH), id, publicationDateId,"booth-"+boothDAO.get(id).getPartNo(),"main",constituencyId);
 				if(!votersInfoForMandalVO.isDatapresent())
 				  votersInfoForMandalVO = getVotersCountForBooth(type,id,publicationDateId,"main");
 				getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"booth",constituencyId);
+				}
 				return votersInfoForMandalVO;
 			}
 			else if(type.equalsIgnoreCase("panchayat")){
@@ -1903,7 +1911,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}else if (buildType.equalsIgnoreCase("hamlet")){
 					
 					List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
-					mandalCasts = getVotersCastInfoForMultipleHamlets(hamlets,publicationDateId,userId,castCount);
+					mandalCasts = getVotersCastInfoForMultipleHamlets(hamlets,publicationDateId,userId,castCount,IConstants.HAMLET,0l);
 				}
 				
 				
@@ -1941,6 +1949,17 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					localities.add(option);
 				}
 				mandalCasts = getVotersCastInfoForMultipleLocalities(localities,publicationDateId,userId,id,castCount);
+				
+			}
+			if(type.equalsIgnoreCase("booth"))
+			{
+				
+				
+				Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, type, id, publicationDateId, constituencyId);
+				List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByBoothId(userId ,id,publicationDateId );
+				mandalCasts = getVotersCastInfoForMultipleHamlets(hamlets,publicationDateId,userId,castCount,IConstants.BOOTH,id);
+			
+				
 				
 			}
 			return mandalCasts;
@@ -2056,7 +2075,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	}
 	
 	
-	public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId,Long totalVoters)
+	public List<VoterCastInfoVO> getVotersCastInfoForMultipleHamlets(List<Long> hamlets,Long publicationDateId,Long userId,Long totalVoters,String type , Long boothId)
 	{
 		VoterCastInfoVO voterCastInfo = null;
 		
@@ -2068,17 +2087,27 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterCastInfo = new VoterCastInfoVO();
 				//Long hamletId=booths.getId();
 				//String boothPartNo = booths.getId().toString();
-				
+				List<Object[]> hamletCastDetails=null;
+				Long totalSubVoters=0l;
 			//List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
-			
-			List<Object[]> hamletCastDetails = boothPublicationVoterDAO
+				if(type.equalsIgnoreCase("booth")){
+					 hamletCastDetails = boothPublicationVoterDAO
+					.getCastAndGenderWiseVotersCountByPublicationIdInALocationByBooth(
+							userId,"booth", hamletId, publicationDateId,
+							boothId);
+					 totalSubVoters = boothPublicationVoterDAO.getTotalVotersCountForHamletByBooth(userId,hamletId,publicationDateId,"",boothId);
+					 
+				}
+					else if(type.equalsIgnoreCase("hamlet")){
+			         hamletCastDetails = boothPublicationVoterDAO
 					.getCastAndGenderWiseVotersCountByPublicationIdInALocation(
-							userId, "hamlet", hamletId, publicationDateId,
+							userId,"hamlet", hamletId, publicationDateId,
 							null);
-			
-			Long totalSubVoters = boothPublicationVoterDAO
+		
+			 totalSubVoters = boothPublicationVoterDAO
 					.getTotalVotersCountForHamlet(userId, hamletId,
-							publicationDateId, "hamlet");
+							publicationDateId,"hamlet");
+					}
 			voterCastInfo
 					.setVoterCastInfoVO(calculatePercentageForUserCast(
 							hamletCastDetails, totalVoters,totalSubVoters));
@@ -2092,6 +2121,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		return boothInfo;
 		
 	}
+
 	
 	//getting SubLevel Data For Booths
 		public List<VoterCastInfoVO> getVotersCastInfoForMultipleLocalities(List<SelectOptionVO> localitiesList,Long publicationDateId,Long userId,Long hamletId,Long totalVoters)
@@ -12766,6 +12796,53 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				e.printStackTrace();
 			}
 			return voterHouseInfoVOList;
+		}
+		
+		public void getVoterDetailsForHamletsInBooth(Long boothId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId, Long userId)
+		{  
+			
+			
+			List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>();
+			   
+			
+			
+			List<Object[]> hamletsList =	userVoterDetailsDAO.getTotalVotersCountInABooth(userId,boothId,publicationDateId);
+					
+			//int totalFemaleVoters = 0;
+			//int totalMaleVoters = 0;
+			//int totalUnknownVoters = 0;
+			int totalVoters = 0;
+		
+			for(Object[] obj:hamletsList)
+			{
+				
+				VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+				
+			//	List<Object[]> hamletDetails = userVoterDetailsDAO.getVotersCountByGenderForHamlet((Long)obj[0]);
+				
+				
+				totalVoters =Integer.parseInt(obj[1].toString()) + Integer.parseInt(obj[2].toString());
+					
+				//}
+				
+				votersInfoForMandalVO.setTotVoters(new BigDecimal(totalVoters));
+				votersInfoForMandalVO.setTotalVoters(totalVoters+"") ;
+				votersInfoForMandalVO.setTotalMaleVoters(obj[2].toString());
+				votersInfoForMandalVO.setTotalFemaleVoters(obj[1].toString());
+				votersInfoForMandalVO.setTotalVotersPercentage("0.00");
+				//votersInfoForMandalVO.setUnKnowVoters(totalUnknownVoters.toString());
+				votersInfoForMandalVO.setType("Hamlet");
+				votersInfoForMandalVO.setName(obj[0].toString());
+				
+				
+				if(totalVoters  == 0)
+					votersInfoForMandalVO.setDatapresent(false);
+				else
+					votersInfoForMandalVOList.add(votersInfoForMandalVO);
+			}
+			
+			votersInfoForMandalVO1.setVotersInfoForMandalVOList(votersInfoForMandalVOList);
+			  calculatePercentage1(votersInfoForMandalVO1);
 		}
 		
 }
