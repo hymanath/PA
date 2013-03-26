@@ -1171,7 +1171,7 @@ for  body3 start    result  -->
   	</div>
 
 	
-   <div  class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
+   <div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
