@@ -33,11 +33,11 @@ public interface IAnalysisReportService {
  	
  	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(Long electionId,Long partyId,String category,Long stateId,Long districtId);
  	
- 	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds,Long partyId);
+ 	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds,Long partyId,Long userId);
  	
  	public List<ElectionBasicCommentsVO> getCandidateCommentsFromNominationIds(Long partyId,List<Long> nominationIds,Long categoryTypeId);
  	
- 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long stateId,Long districtId);
+ 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long stateId,Long districtId,Long userId);
  	
  	public List<ElectionBasicCommentsVO> getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long categoryTypeId);
  	

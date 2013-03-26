@@ -1144,7 +1144,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(
-			List<Long> nominationIds,Long partyId) {
+			List<Long> nominationIds,Long partyId,Long userId) {
 		log.debug("Inside getCandidateResultsInAnElectionFromNominationIds Method..... ");
 		
 		ElectionResultPartyVO electionResultPartyVO = null;
@@ -1176,14 +1176,17 @@ public class AnalysisReportService implements IAnalysisReportService {
                     }
 					
 					Long commentsCount = new Long(0);
-					List commentCount = commentCategoryCandidateDAO.getCommentsCountForACandidateFromNominationId(nomination.getNominationId());
-					if(commentCount != null && commentCount.size() > 0){
-						Object params = (Object)commentCount.get(0);
+					
+					List comments = commentCategoryCandidateDAO.getAllPostedCommentsOfUserForANomination(electionId,nomination.getConstituencyElection().getConstituency().getConstituencyId(),nomination.getCandidate().getCandidateId(),userId);
+					//List commentCount = commentCategoryCandidateDAO.getCommentsCountForACandidateFromNominationId(nomination.getNominationId());
+					/*if(comments != null && comments.size() > 0){
+						Object params = (Object)comments.get(0);
 						Long countVal = (Long)params;
 						if(countVal != null)
 							commentsCount = countVal;
-					}
-					candidateElectionResultVO.setUserComments(commentsCount);
+					}*/
+					candidateElectionResultVO.setUserComments(new Long(comments.size()));
+					
 					candidateElectionResultVOList.add(candidateElectionResultVO);
 				}
 			}
@@ -1202,7 +1205,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(java.lang.Long, java.lang.Long, java.lang.String, java.lang.Long)
 	 */
 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(
-			Long electionId, Long partyId, String category, Long position,Long stateId,Long districtId) {
+			Long electionId, Long partyId, String category, Long position,Long stateId,Long districtId,Long userId) {
 		
 		log.debug("Inside getElectionResultsForAnPartyInAnElectionForParticularVotesMargin Method..... ");
 		
@@ -1216,7 +1219,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				 marginNominationIds = nominationIds.get(position);
 			 
 			 if(marginNominationIds != null && marginNominationIds.size() > 0){
-				 electionResultPartyVO = getCandidateResultsInAnElectionFromNominationIds(marginNominationIds,partyId);
+				 electionResultPartyVO = getCandidateResultsInAnElectionFromNominationIds(marginNominationIds,partyId,userId);
 			 }
 		 }catch(Exception ex){
 			 ex.printStackTrace();

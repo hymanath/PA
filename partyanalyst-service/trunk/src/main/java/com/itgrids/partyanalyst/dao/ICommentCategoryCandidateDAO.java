@@ -117,4 +117,7 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	
 	public List getPostedPoliticalReasonsByUserId(Long userId,int startIndex,int maxIndex);
 	
+	public List getAllPostedCommentsOfUserForANomination(Long electionId,
+			Long constituencyId, Long candidateId,Long userId);
+	
 }
