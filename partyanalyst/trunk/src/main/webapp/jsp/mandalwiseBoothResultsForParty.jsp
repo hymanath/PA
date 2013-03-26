@@ -440,7 +440,7 @@ function redirectRevenueVillageLink(mandalId,mandalName,partyName)
 															</TR>
 															<c:forEach var="rangesList" varStatus="status3" items="${constitueciesList.partyResultsInVotesMarginVO}">				
 															<TR>
-																<TD align="center" class="middle"><img height="5" width="5" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></TD>
+																<TD align="center" class="middle"><img height="5" width="5" src="images/icons/constituencyPage/bullet_blue.png"></TD>
 																<TD align="center" class="middle">${rangesList.marginValue1} - ${rangesList.marginValue2}</TD>
 																<c:if test="${rangesList.resultsCount != '0'}">																	
 																	<TD align="center" class="edge"><A class="anchorColor" href="javascript:{}" onclick="showBoothResults(${status0.index},${status1.index},${status2.index},${status3.index})">${rangesList.resultsCount}</A></TD>
