@@ -315,7 +315,7 @@ function buildLocalElectionLevelProblemWindow(areaType)
 	if(problemsInfo.length == 0)
 	{
 		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
-		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+		str+='<span><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></span>';
 		str+='<span STYLE="font-size:13px;color:#222;"> No problems has been posted </span>';
 		str+='</div>';
 	}
@@ -325,7 +325,7 @@ function buildLocalElectionLevelProblemWindow(areaType)
 		{
 			var data = problemsInfo[i];			
 			str+='<div class="problemDataDivClass">';
-			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+			str+='<span><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='<span><a style="margin-left: 5px;color: #222222;font-size: 13px;" class="districtAnc" href="completeProblemDetailsAction.action?problemId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
 			str+='</div>';
 		}

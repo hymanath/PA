@@ -610,7 +610,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		for(var i in results.analysisCategoryBasicResultVO)
 		{
 			contentStr+='<tr>';
-			contentStr+='<td width="10%" align="left"><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></td>';
+			contentStr+='<td width="10%" align="left"><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></td>';
 			contentStr+='<td width="50%" align="left"> '+results.analysisCategoryBasicResultVO[i].categoryType+' </td>';
 			contentStr+='<td align="left" width="20%"> <a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></td>';
 			contentStr+='<td width="15%" align="left"> '+results.analysisCategoryBasicResultVO[i].categoryScore+' </td>';
@@ -762,7 +762,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 			for(var i in results.analysisCategoryBasicResultVO)
 			{    
 			contentStr+='			<TR>';
-			contentStr+='				<td width="10%" align="left"><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></td>';
+			contentStr+='				<td width="10%" align="left"><img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png"></img></td>';
 			contentStr+='				<TD style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TD>';
 			contentStr+='				<TD style="width:20%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
 			contentStr+='				<td width="15%" align="left"> '+results.analysisCategoryBasicResultVO[i].categoryScore+' </td>';

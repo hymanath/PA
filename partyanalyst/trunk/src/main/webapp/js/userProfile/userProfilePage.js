@@ -1623,7 +1623,7 @@ function showSentBoxMessagesForAUser(results)
 		templateClone.find(".reply").remove();
 		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
 			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
-			//templateClone.find('.imgClass').html('<img height="45" width="45" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/>');
+			//templateClone.find('.imgClass').html('<img height="45" width="45" src="images/icons/indexPage/human.jpg"/>');
 			//templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" href="#" name ="sentBox" class="btn" style="color:black;" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')">Delete</a>');
 			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="sentBox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')"><img class="deleteImg" id="deleteImg_1" src="images/icons/delete.png" alt="deleteImg" width="13" height="13"></a>');
 			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
@@ -2265,7 +2265,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 	for(i in data)
 	{
 		var status;
-		var imageStr = "/PartyAnalyst/images/candidates/"+data[i].candidate;
+		var imageStr = "images/candidates/"+data[i].candidate;
 		var postedByImg="pictures/profiles/"+data[i].imgURL;
 		
 		var template = $('.politicalReasonsTemplate');
@@ -2282,7 +2282,7 @@ function showAllPostedReasonsForUserProfile(jsObj,results)
 		templateClone.find('.politicalReaCls').html('<b>Political Reason:</b> '+data[i].commentCategory+'');
 		
 		if(data[i].imgURL == null)
-			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/member.jpg"/></a>');
+			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="50" width="55" src="images/icons/indexPage/member.jpg"/></a>');
 		else
 			templateClone.find('.postedBy').html('<a href="userProfile.action?profileId='+data[i].userId+'"><img height="30" width="30"  class="thumbnail" src="'+postedByImg+'"></img></a>');
 			
