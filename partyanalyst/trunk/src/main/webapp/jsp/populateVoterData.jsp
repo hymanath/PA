@@ -124,7 +124,7 @@ fieldset{
  <fieldset>
     <div id="errorMsgDiv"></div>
 	<div id="ConstituencyDiv" class="selectDiv">
-		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="voterDataConstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
@@ -234,6 +234,31 @@ function populateVoterData()
 }
 
 $(document).ready(function(){
+
+	$('#errorMsgDiv').html('');
+	$('#voterDataConstituencyList').change(function(){
+
+	   var constituencyId = $('#voterDataConstituencyList').val();
+	   if(constituencyId == 0)
+	   {
+		 $('#errorMsgDiv').html('Please Select Constituency.');
+		 return;
+	   }
+	   $('#ajaxLoad').css('display','block');
+	  var jsObj=
+		{
+				
+			id:constituencyId,
+			task:"getPublicationList"
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPublicationListForVoterDataAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+
+	});
+
 
   $("#constituencyList").change(function(){
 	 var id = $("#constituencyList").val();
@@ -617,6 +642,9 @@ function callAjax(jsObj,url)
 								{
 									showVoterModificationDataStatus(myResults);
 								}
+
+								else if(jsObj.task == "getPublicationList")
+									buildPublicationList(myResults);
 							}
 								catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
@@ -745,6 +773,29 @@ function showDeleteVoterDataStatus(result)
 	if(selectElmt == "votermodificationpublicationList")
     document.getElementById('votermodificationajaxLoad').style.display = 'none';
 	var selectedElmt=document.getElementById(selectElmt);
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+}
+
+
+function buildPublicationList(results)
+{
+	$('#ajaxLoad').css('display','none');
+	var selectedElmt = document.getElementById("publicationDateList");
 	removeSelectElements(selectedElmt);
 	for(var val in results)
 	{
