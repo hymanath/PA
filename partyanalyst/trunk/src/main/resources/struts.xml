@@ -4690,6 +4690,11 @@
         	</result>
 		</action>
 		
+		<action name="getPublicationListForVoterDataAction" class="populateVoterDataAction" method="getPublicationListForVoterData">
+		  <result type="json" name="success">
+           		<param name="root">publicationNamesList</param>
+        	</result>
+		</action>
 		
 		</package>
 </struts>      

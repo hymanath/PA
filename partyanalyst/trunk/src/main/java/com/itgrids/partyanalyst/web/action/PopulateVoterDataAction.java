@@ -29,7 +29,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private IVoterModificationService voterModificationService;
 
 	private IVoterReportService voterReportService;
-	
+	private List<SelectOptionVO> publicationNamesList;
 	
 	
 	public IVoterReportService getVoterReportService() {
@@ -104,6 +104,13 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 		public void setVoterModificationService(
 				IVoterModificationService voterModificationService) {
 			this.voterModificationService = voterModificationService;
+		}
+		
+		public List<SelectOptionVO> getPublicationNamesList() {
+			return publicationNamesList;
+		}
+		public void setPublicationNamesList(List<SelectOptionVO> publicationNamesList) {
+			this.publicationNamesList = publicationNamesList;
 		}
 		public String execute()
 		{
@@ -296,5 +303,25 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
 			return Action.SUCCESS;
 			
+		}
+		
+		
+		public String getPublicationListForVoterData()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in getPublicationListForVoterData() method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			
+			publicationNamesList = votersAnalysisService.getPublicationListForVoterData(jObj.getLong("id"));
+			publicationNamesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
+			
+			return Action.SUCCESS;
 		}
 }
