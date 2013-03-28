@@ -75,7 +75,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetPublicationListFromVoterInfoByConstituencyId()
+	/*public void testGetPublicationListFromVoterInfoByConstituencyId()
 	{
 		List<Object[]> list = voterInfoDAO.getPublicationDetailsBasedOnConstituencyId(7l);
 		if(list != null && list.size() > 0)
@@ -84,5 +84,22 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params[0]+" "+params[1]);
 		}
 		
+	}*/
+	
+	/*public void testGetVoterPublicationIdsBetweenTwoPublications()
+	{
+		List<Long> list = voterInfoDAO.getVoterPublicationIdsBetweenTwoPublications(7l, 8l);
+		if(list != null && list.size() > 0)
+		  for(Long id : list)
+			  System.out.println(id);
+	}*/
+	
+	public void testgetPreviousPublicationIds()
+	{
+		List<Long> list = voterInfoDAO.getPreviousPublicationIds(8l);
+		
+		if(list != null && list.size() > 0)
+			for(Long id : list)
+				System.out.println(id);
 	}
 }
