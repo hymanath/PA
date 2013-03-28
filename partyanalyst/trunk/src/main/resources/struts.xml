@@ -4180,7 +4180,7 @@
 			</result>
 		</action>
 		
-		<action name="sendEmailForSelectedUsersAction" class="sendUpdatesByemailAction" method="callAjaxforSendemails">
+		<action name="sendEmailForSelectedUsersAction" class="sendUpdatesByemailAction" method="ajaxForSendingEmail">
 			<result type="json" name="success">
 			<param name="root">result</param>
 			</result>
@@ -4618,7 +4618,7 @@
            		<param name="root">resultStatus</param>
         	</result>
 		</action>
-		
+			
 		<action name="sendUpdatesBySMSAction" class="sendUpdatesBySMSAction">
 		    <result name="success">/jsp/sendUpdatesBySMS.jsp</result>
 		</action>
@@ -4632,6 +4632,23 @@
            		<param name="root">result</param>
         	</result>       		
         </action>  
+        
+        <action name="voterEditDataAction" class="sendUpdatesBySMSAction">
+		    <result name="success">/jsp/voterEditData.jsp</result>
+		</action>
+        
+        <action name="getVoterDetailsForEditAction" class="sendUpdatesBySMSAction" method="updateVoterDetails">
+		     <result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		
+		
+		 <action name="getVotersDetailsAction" class="sendUpdatesBySMSAction" method="getVoterDetailsBasedOnBoothId">
+		     <result type="json" name="success">
+           		<param name="root">constituencyManagementVO</param>
+        	</result>
+		</action>
         
         <action name="insertVoterModificationDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVoterModificationDataToIntermediateTables">
 		<result type="json" name="success">
