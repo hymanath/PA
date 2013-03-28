@@ -62,9 +62,9 @@ connectDivId = divId;
 		bodyStr+='<tr>';
 		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"  onerror="setMemberImg(this)"/></a></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="45" width="50" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"  onerror="setMemberImg(this)"/></a></span></td>';
 		else
-			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg" onerror="setDefaultImg(this)"/></a></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="45" width="50" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg" onerror="setDefaultImg(this)"/></a></span></td>';
 		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank" style="text-transform: capitalize;">'+connectedPeopleData[i].candidateName+'</a></span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
