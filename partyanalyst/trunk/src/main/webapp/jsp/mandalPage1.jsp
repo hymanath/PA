@@ -1528,18 +1528,17 @@ function getElectionYearsInMandal(id,name){
 	</script>
 </head>
 <body> 
-<c:if test='${empty mandalInfoVO}'>
-<div id="mainDiv">
-No Data Aailable
-</div>
-</c:if>
-<c:if test='${not empty mandalInfoVO}'>
+
+<table width="100%" border="0"> 
+<tr><td><%@ include file="navigator.jsp" %></td></tr></table>
+
+<div id="censusDetailsDiv" style="width:100%">
 <table width="100%" border="0">
-<tr><td><%@ include file="navigator.jsp" %></td></tr>
+
 <tr><td align="center" id="mandalDivHeadstyle"><br>
 
 
-<h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
+<h3 ><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
 </td></tr></table>
 <div id="boothResultsDiv">
 
@@ -1549,7 +1548,7 @@ No Data Aailable
 		
 		
 		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
-		<!--<table class="censusInfoTable" style="border:1px solid #ADADAD;">		-->
+		
 		<table class="gridtable" style="border:1px solid #ADADAD;">
 				<tr>
 					<th></th>
@@ -1591,7 +1590,8 @@ No Data Aailable
 		</div>
 		
 	</div>
-	</c:if>
+	</div>
+	</div>
 	<br/><br/>
 	<div id="villageCensusDiv" style="display: none;">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
@@ -1622,18 +1622,29 @@ No Data Aailable
 		</div>
 	</div>
 	
-	<div id="mandalPageTab" class="yui-skin-sam" style="margin-left: -10px;
-    width: 905px;"></div>
+	<div id="mandalPageTab" class="yui-skin-sam" style="margin-left: 14px;
+    width: 960px;"></div>
 	
 	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
 
 <script type="text/javascript">
-
-if(allZPTCMPTCElecInfo != "")
+function hidecensusData()
 {
-buildTabNavigator();
+	$("#censusDetailsDiv").css("display","none");
 }
+function showcensusData()
+{
+	$("#censusDetailsDiv").css("display","block");
+}
+
+	<c:if test='${mandalInfoVO == null}'>
+hidecensusData();
+</c:if>
+<c:if test='${not empty mandalInfoVO}'>
+showcensusData();
+	</c:if>
+	buildTabNavigator();
 	showMPTCZPTCResults();
 	showElectionResultsInPopup();
 	buildCensusDataTable();
