@@ -1552,7 +1552,8 @@ function getCalender()
             changeMonth: true,
             changeYear: true,
 			dateFormat: 'dd/mm/yy',
-			maxDate: new Date()
+			maxDate: new Date(),
+			yearRange: "-100:+0",
         }).datepicker("show");
 }
 function displayTheDateText(type, args, obj) {
