@@ -31,4 +31,8 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	
 	public List<Long> getConstituencyIds();
 	
+	public List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId, Long toPublicationDateId);
+	
+	public List<Long> getPreviousPublicationIds(Long publicationDateId);
+	
 }

@@ -150,5 +150,28 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		query.setParameter("reportLevel", IConstants.CONSTITUENCY);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId, Long toPublicationDateId)
+	{
+		Query queryObj = getSession().createQuery("select distinct model.publicationDate.publicationDateId from VoterInfo model where " +
+				" model.publicationDate.date between (select model2.date from PublicationDate model2 where model2.publicationDateId = :fromPublicationDateId) " +
+				" and (select model3.date from PublicationDate model3 where model3.publicationDateId = :toPublicationDateId ) order by model.publicationDate.date desc ");
+		
+		queryObj.setParameter("fromPublicationDateId", fromPublicationDateId);
+		queryObj.setParameter("toPublicationDateId", toPublicationDateId);
+		return queryObj.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPreviousPublicationIds(Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.publicationDate.publicationDateId from VoterInfo model " +
+				" where model.publicationDate.date < (select model2.date from PublicationDate model2 where model2.publicationDateId = :publicationDateId) " +
+				" order by model.publicationDate.date desc ");
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 
 }
