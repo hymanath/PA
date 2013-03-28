@@ -662,6 +662,7 @@ if(!elmt)
 	return;
 
 var str = '';
+str += '<div id="errorMsgDiv" style="text-align:right;padding:10px;color:red;"></div>';
 str += '<DIV id="problemAssigningDiv">';
 str += '<TABLE>';
 str += '	<tr>';
@@ -752,8 +753,8 @@ str += '	</tr>';
 str += '</table>';
 str += '</DIV>';
 
-str += '<div id="errorMsgDiv" style="text-align:right;padding:10px;color:red;">';
-str += '</div>';
+//str += '<div id="errorMsgDiv" style="text-align:right;padding:10px;color:red;">';
+//str += '</div>';
 
 str += '<div id="departmentAssignedStatusDiv"></div>';
 str += '<div style="text-align:right;padding:10px;">';
@@ -793,13 +794,13 @@ function populateDeptLocations(index)
 		row3El.style.display = '';
 		row4El.style.display = '';
 	}
-	if(index >= 7)
+	if(index >= 7 || index >= 6)
 	{
 		row5El.style.display = '';
 	}
 
 }
-function saveDepartmentToProblem(type)
+/* function saveDepartmentToProblem(type)
 {
     $("#departmentPanel_main").dialog("close");
 	var errorDiv = document.getElementById("errorMsgDiv");
@@ -839,6 +840,59 @@ function saveDepartmentToProblem(type)
 		errorDiv.innerHTML = "";
 	}
 
+	var jsObj =
+		{
+			pHistoryId:'${completeProblemDetailsVO.problemId}',
+			deptScopeId:deptScopeElmtValue,
+			deptId:deptNameElmtValue,
+			regionId:regionElmtValue,
+			status:type,
+			task:"changeDepartmentForProblem"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProblemDepartmentAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+	
+}*/
+
+function saveDepartmentToProblem(type)
+{
+
+	$('#errorMsgDiv').html('');
+
+	var deptNameElmtValue = $('#deptId').val();
+	var deptScopeElmtValue = $('#resolvingDeptScopeId').val();
+	var regionElmtValue ;
+
+	if(deptScopeElmtValue == "0")
+	{
+		$('#errorMsgDiv').html("Please select Dept Scope");
+		return;
+	}
+	else if(deptNameElmtValue == "0")
+	{
+		$('#errorMsgDiv').html("Please select Department");
+		return;
+	}
+	
+	if(deptScopeElmtValue == "1")
+		regionElmtValue = $("#StateId").val();
+	else if(deptScopeElmtValue == "2")
+		regionElmtValue = $("#DistrictId").val();
+	else if(deptScopeElmtValue == "3" || deptScopeElmtValue == "4" || deptScopeElmtValue == "5")
+		regionElmtValue = $("#MandalId").val();
+	else if(deptScopeElmtValue == "6" || deptScopeElmtValue == "7")
+		regionElmtValue = $("#VillageId").val();
+	
+	if(regionElmtValue == '0' || regionElmtValue == null || regionElmtValue == '')
+	{
+		$('#errorMsgDiv').html("Please Select Resolving Department Area");
+		return;
+	}
+	
+	
+	$("#departmentPanel_main").dialog("close");
 	var jsObj =
 		{
 			pHistoryId:'${completeProblemDetailsVO.problemId}',
