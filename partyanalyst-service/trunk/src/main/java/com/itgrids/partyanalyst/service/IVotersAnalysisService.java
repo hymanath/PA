@@ -229,4 +229,7 @@ public interface IVotersAnalysisService {
 	public List<Long> checkForSerialNos(List<Long> serialNos , Long boothId);
 	
 	public List<VoterHouseInfoVO> getVotersFamilyDetailsByConstituencyId(Long frompublicationId,Long toPublicationId,Long partNo,String hno,Long userId,Long constituencyId);
+	
+	public List<SelectOptionVO> getPublicationListForVoterData(Long constituencyId);
+	
 }
