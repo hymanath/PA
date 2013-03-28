@@ -12845,6 +12845,35 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			  calculatePercentage1(votersInfoForMandalVO1);
 		}
 		
+		public List<SelectOptionVO> getPublicationListForVoterData(Long constituencyId)
+		{
+			List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			
+			try{
+				List<Object[]> publicationDetails = boothPublicationVoterDAO.getPublicationDetailsBasedOnConstituency(constituencyId);
+				if(publicationDetails != null && publicationDetails.size() > 0)
+				{
+					for(Object[] param : publicationDetails)
+					{
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						Date date = (Date)param[1];
+						selectOptionVO.setId((Long)param[0]);
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(date);
+						selectOptionVO.setName(calendar.get(Calendar.DAY_OF_MONTH)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.YEAR));
+						selectOptionVOList.add(selectOptionVO);
+					}
+				}
+				
+				return selectOptionVOList;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getPublicationListForVoterData() Method, Exception - "+e);
+				return selectOptionVOList;
+			}
+		}
+		
+		
 }
 
 
