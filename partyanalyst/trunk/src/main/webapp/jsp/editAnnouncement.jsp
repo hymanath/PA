@@ -31,7 +31,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-
+<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
 
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
@@ -361,6 +361,26 @@ function openAnnouncementForm(id)
 	updateBrowser.focus();	
 }
 
+function getCalenderForFromDate()
+{
+	$('#fromDateField').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd/mm/yy',
+			maxDate: new Date(),
+			yearRange: "-100:+0",
+        }).datepicker("show");
+}
+function getCalenderFortoDate()
+{
+	$('#toDateField').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd/mm/yy',
+			maxDate: new Date(),
+			yearRange: "-100:+0",
+        }).datepicker("show");
+}
 
 </script>
 <body>
@@ -371,9 +391,10 @@ function openAnnouncementForm(id)
 
 $(function()
 {
-	$("#fromDateField").datepicker();
-	$("#toDateField").datepicker();
+	//$("#fromDateField").datepicker();
+	//$("#toDateField").datepicker();
 });
+
 </script>
 
 	<div id="announcementSearchHeading"><center>
@@ -390,14 +411,15 @@ $(function()
      <div id="announcementSearchMain">
         
              <table width="100%" class="annSearchInputTable">	
-				<tr>
-				  <td class="tdClass">From Date </td>
-				   <td><s:textfield id="fromDateField"  name="fromDate" readonly="true" onfocus="showCalendar(this.id)" size="16" theme="simple" /> </td>
-                </tr>
-				<tr>
-				   <td class="tdClass">To Date </td>
-                   <td><s:textfield id="toDateField"  name="toDate" size="16"  readonly="true" onfocus="showCalendar(this.id)" theme="simple"/> </td>
-				</tr>
+				<TR>
+					<TD class="tdClass">From Date <font class="requiredFont"> * </font> </TD>       
+					<TD><s:textfield id="fromDateField"  name="fromDate" readonly="true" onfocus="getCalenderForFromDate()" theme="simple" size="20" class="dateSelection"/></TD>
+				</TR>
+	 
+				<TR>
+					<TD class="tdClass">To Date <font class="requiredFont"> * </font></TD>
+					<TD><s:textfield id="toDateField"  name="toDate" size="20"  readonly="true" onfocus="getCalenderFortoDate()" theme="simple" class="dateSelection"/></TD>
+				</TR>
 			 </table>
 			  <table width="100%" class="annSearchInputTable">
 	           <TR>
