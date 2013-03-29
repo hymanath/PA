@@ -512,6 +512,55 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		
 		return queryObj.list();
 	}
+	public List<Object[]> getAllSelectedVotersDetails(Long constituencyId, List<Long> publicationIdsList, Long locationValue, String type, String queryStr){
+		
+	     StringBuffer str = new StringBuffer();
+	     
+	       /* str.append(" select model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
+			str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.villagesCovered, ");
+			str.append(" model.status, model.publicationDate.publicationDateId,model.publicationDate.name,model.voter.houseNo ");
+			str.append(" from VoterModification model, BoothPublicationVoter model2 ");
+			str.append(" where model.voter.voterId = model2.voter.voterId and ");
+			str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
+	     */
+	     
+			str.append(" select model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
+			str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.villagesCovered, ");
+			str.append(" model.status, model.publicationDate.publicationDateId,model.publicationDate.name,model.voter.houseNo,model.voter.voterIDCardNo,model.voter.houseNo,model2.booth.villagesCovered ");
+			str.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+			str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
+			
+			/*str.append(" select count(model.voter.voterId),model.status,model.voter.gender from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+			str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
+			
+			*/
+	     if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))     
+	    	 str.append(" model.constituency.constituencyId  = :locationValue ");
+	    	 //str.append(" model2.constituency.constituency.constituencyId  = :locationValue)");
+	     else if(type.equalsIgnoreCase(IConstants.MANDAL))
+	    	 str.append(" model2.booth.tehsil.tehsilId = :locationValue ");
+	     else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
+	    	 str.append(" model2.booth.localBody.localElectionBodyId = :locationValue ");
+	     else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+	    	 str.append(" model2.booth.panchayat.panchayatId = :locationValue ");
+	     else if(type.equalsIgnoreCase(IConstants.BOOTH))
+	    	 str.append(" model2.booth.boothId = :locationValue ");
+	     else if(type.equalsIgnoreCase(IConstants.WARD))
+			 str.append(" model2.booth.localBodyWard.constituencyId = :locationValue ");
+	     
+	     str.append(queryStr);
+	     
+	     Query query = getSession().createQuery(str.toString());
+	     
+	     query.setParameter("locationValue", locationValue);
+	     query.setParameterList("publicationIdsList", publicationIdsList);
+	     
+	     //query.setFirstResult(0);
+	     //query.setMaxResults(100);
+			
+			return query.list();
+			
+		}
 	
 	
 }
