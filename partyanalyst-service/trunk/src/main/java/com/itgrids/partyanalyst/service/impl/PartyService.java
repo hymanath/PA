@@ -735,6 +735,7 @@ public class PartyService implements IPartyService {
 		positionDetail.setPercentageOfVotesPolled(new BigDecimal(votingPercentage).setScale (2,BigDecimal.ROUND_HALF_UP));// voting percentage for the constituency
 		positionDetail.setPresentElectionVotes(Math.round(totalVotes));
 		positionDetail.setRank(((Long)partyNominationWhoWonOrLost[9]).intValue());
+		positionDetail.setMarginVotesPercentage(partyNominationWhoWonOrLost[12] != null ? new BigDecimal(partyNominationWhoWonOrLost[12].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString():"0.00");
 		log.debug("getConstituencyPositionDetails...end");
 		return positionDetail;
 	}

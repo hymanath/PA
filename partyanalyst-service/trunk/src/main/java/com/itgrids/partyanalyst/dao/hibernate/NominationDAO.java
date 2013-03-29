@@ -2220,7 +2220,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.name, model.party.shortName, model.party.longName, " +//4,5,6
 				"model.candidate.lastname, model.candidateResult.votesEarned, model.candidateResult.rank, " +//7,8,9
 				"model.constituencyElection.constituencyElectionResult.totalVotes, " +//10
-				"model.constituencyElection.constituencyElectionResult.validVotes from Nomination model where " +//11
+				"model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.marginVotesPercentage from Nomination model where " +//11
 				"model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and " +
 				"model.constituencyElection.election.electionYear = ? and  " +
 				"model.constituencyElection.constituency.state.country.countryId = ?", params);
@@ -2233,7 +2233,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.name, model.party.shortName, model.party.longName, " +
 				"model.candidate.lastname, model.candidateResult.votesEarned, model.candidateResult.rank, " +
 				"model.constituencyElection.constituencyElectionResult.totalVotes, " +
-				"model.constituencyElection.constituencyElectionResult.validVotes from Nomination model where " +
+				"model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.marginVotesPercentage from Nomination model where " +
 				"model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and " +
 				"model.constituencyElection.election.electionYear = ? and  " +
 				"model.constituencyElection.constituency.state.stateId = ?", params);
@@ -2246,7 +2246,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.name, model.party.shortName, model.party.longName, " +
 				"model.candidate.lastname, model.candidateResult.votesEarned, model.candidateResult.rank, " +
 				"model.constituencyElection.constituencyElectionResult.totalVotes, " +
-				"model.constituencyElection.constituencyElectionResult.validVotes from Nomination model where " +
+				"model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.marginVotesPercentage from Nomination model where " +
 				"model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and " +
 				"model.constituencyElection.election.electionYear = ? and  " +
 				"model.constituencyElection.constituency.district.districtId = ?", params);
