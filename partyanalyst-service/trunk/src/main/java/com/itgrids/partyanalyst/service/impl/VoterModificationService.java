@@ -1968,5 +1968,105 @@ public class VoterModificationService implements IVoterModificationService{
 			 return null;
 		}
 	}
+	 public List<VoterVO> getSelectedVotersDetails(VoterModificationVO voterModificationVO)
+	 {
+		 LOG.debug("Entered into the getSelectedVotersDetails service method");
+		 
+		 List<VoterVO> voterDetails = new ArrayList<VoterVO>();
+		 
+		 try
+		 {
+		 
+		 List<Long> publicationIdsList = new ArrayList<Long>(0);
+		 if(voterModificationVO.getPreviousPublicationId() == null || voterModificationVO.getPreviousPublicationId() == 0 || voterModificationVO.getPreviousPublicationId().equals(voterModificationVO.getPresentPublicationId()))
+		 {
+			 publicationIdsList.add(voterModificationVO.getPresentPublicationId());
+			 Long previousPublicationId = 0L;
+			 List<Long> idslist = getPreviousPublicationIds(voterModificationVO.getPresentPublicationId());
+			 if(idslist != null && idslist.size() > 0)
+				 previousPublicationId = idslist.get(0); 
+			 voterModificationVO.setPreviousPublicationId(previousPublicationId);
+		 }
+		 else
+		 {
+			 publicationIdsList = getVoterPublicationIdsBetweenTwoPublications(voterModificationVO.getPreviousPublicationId(),voterModificationVO.getPresentPublicationId());
+			 publicationIdsList.remove(voterModificationVO.getPreviousPublicationId());
+		 }
+		 
+		 
+		 Long constituencyId = voterModificationVO.getConstituencyId();
+		 Long locationValue = voterModificationVO.getLocationValue();
+		 String type = voterModificationVO.getLocationType();
+		 String isForGender = voterModificationVO.getIsForGender();
+		 String status = voterModificationVO.getStatus();
+		 
+		 StringBuffer queryStr = new StringBuffer();
+		 
+		 if(isForGender.equalsIgnoreCase("true")){
+			 
+			 if(!voterModificationVO.getGender().equalsIgnoreCase("TOTAL"))
+			   queryStr.append("and model.voter.gender = '"+voterModificationVO.getGender()+"'");
+			 
+		 }
+		 else{
+			 
+			 Long ageRangeId = voterModificationVO.getAgeRangeId();
+			 
+			 if(ageRangeId.longValue() == 1)
+				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 25");
+			 else if(ageRangeId.longValue() == 2)
+				 queryStr.append("and model.voter.age >= 26 and  model.voter.age <= 35");
+			 else if(ageRangeId.longValue() == 3)
+				 queryStr.append("and model.voter.age >= 36 and  model.voter.age <= 45");
+			 else if(ageRangeId.longValue() == 4)
+				 queryStr.append("and model.voter.age >= 46 and  model.voter.age <= 60");
+			 else if(ageRangeId.longValue() == 5)
+				 queryStr.append("and model.voter.age > 60");
+			 
+		 }
+		 queryStr.append(" and model.status = '"+status+"'");
+		 
+		 
+		List<Object[]> votersList =  voterModificationDAO.getAllSelectedVotersDetails(constituencyId, publicationIdsList,locationValue,type,queryStr.toString());
+		
+		
+		
+		   for(Object[] params:votersList){
+			
+			   VoterVO voterVO = new VoterVO();
+			   
+			   voterVO.setVoterId(params[0].toString());
+			   voterVO.setFirstName(params[1].toString());
+			   voterVO.setGender(params[2].toString());
+			   voterVO.setAge((Long)params[3]);
+			   if(params[4] != null)
+			   voterVO.setRelativeFirstName(params[4].toString());
+			   if(params[5] != null)
+			   voterVO.setRelationshipType(params[5].toString());
+			   if(params[6] != null)
+			   voterVO.setBoothId((Long)params[6]);
+			   if(params[7] != null){
+			   voterVO.setBoothNo(Long.valueOf(params[7].toString()));
+			   voterVO.setBoothName("Booth-"+params[7].toString());
+			   }
+			   
+			   if(params[8] != null)
+			   voterVO.setPanchayatName(params[8].toString());
+			   voterVO.setStatus(params[9].toString());
+			   voterVO.setPublicationDateId((Long)params[10]);
+			   voterVO.setPublicationName(params[11].toString());
+			   voterVO.setHouseNo(params[12] != null ? params[12].toString() : "");
+			   voterVO.setVoterIDCardNo(params[13].toString());
+			   voterVO.setHouseNo(params[14].toString());
+			   voterVO.setVillagesCovered(params[15].toString());
+			   voterDetails.add(voterVO);
+				 
+		  }
+		 }catch(Exception e){
+			 LOG.error("Exception raised in  the getSelectedVotersDetails service method");
+			 e.printStackTrace();			 
+		 }
+		   return voterDetails;		 
+	 }
 	 
 }
