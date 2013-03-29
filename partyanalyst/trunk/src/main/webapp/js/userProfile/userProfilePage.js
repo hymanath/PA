@@ -11,7 +11,7 @@ var flag=false;
 var flag1=false;
 $("document").ready(function(){
 
-	
+	$('#announcementsDiv').hide();
 $('#connectMessageText').live("keyup",function() {
 
 	var limitFieldElmt = document.getElementById('connectMessageText');
@@ -1463,6 +1463,11 @@ function buildAllSubscriptions(results,place){
 		  templateClone.prependTo("#subscriptionsStreamingData");		 
 	}
   }
+  else
+  {
+	$(subscriptionsStreamingMore).hide();
+	$("#headerDiv").html('<b style="color:blue">No Subscriptions Are Avalible Please Select Subscriptions</b>');
+  }
 }
 
 function callForEveryFiveMins(){
@@ -1740,7 +1745,8 @@ function showMessageSentConfirmation(results)
 	{
 		$("#connectMessageText").val('');
 		$("#ErrorMsgDivId").html('<font color="green">Message Sent Successfully..</font>');
-		setTimeout('self.close();',2000);
+		//setTimeout('self.close();',2000);
+		setTimeout("$('#connectPeoplePopup').dialog('close')",800);
 		
 	}
 	else
