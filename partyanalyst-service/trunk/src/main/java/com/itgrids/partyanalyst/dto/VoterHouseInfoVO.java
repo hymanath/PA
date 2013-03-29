@@ -72,7 +72,16 @@ public class VoterHouseInfoVO {
 	private Boolean isInfluencePerson;
 	private Boolean isCadrePerson;
 	private Boolean isPoliticion;
+	private Long subLocalityId;
 	
+	public Long getSubLocalityId() {
+		return subLocalityId;
+	}
+
+	public void setSubLocalityId(Long subLocalityId) {
+		this.subLocalityId = subLocalityId;
+	}
+
 	public String getPartyName() {
 		return partyName;
 	}
