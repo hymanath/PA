@@ -47,7 +47,7 @@
 	<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 	
 	<LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
-
+	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
 
 <!-- JQuery files (End) -->
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
@@ -433,12 +433,12 @@ callAjax(jsObj,url);
 <Table style="margin-top:15px;">
     <TR>
 		<TD class="tdClass">From Date <font class="requiredFont"> * </font> </TD>       
-        <TD><s:textfield id="fromDateField"  name="fromDate" readonly="true" onfocus="showCalendar(this.id)" theme="simple" size="20"/></TD>
+        <TD><s:textfield id="fromDateField"  name="fromDate" readonly="true" onfocus="getCalenderForFromDate()" theme="simple" size="20" class="dateSelection"/></TD>
     </TR>
 	 
     <TR>
 		<TD class="tdClass">To Date <font class="requiredFont"> * </font></TD>
-		<TD><s:textfield id="toDateField"  name="toDate" size="20"  readonly="true" onfocus="showCalendar(this.id)" theme="simple"/></TD>
+		<TD><s:textfield id="toDateField"  name="toDate" size="20"  readonly="true" onfocus="getCalenderFortoDate()" theme="simple" class="dateSelection"/></TD>
     </TR>
 </Table>
 
@@ -460,13 +460,33 @@ callAjax(jsObj,url);
 executeOnLoad();
 $(function()
 {
-	$("#fromDateField").datepicker();
-	$("#toDateField").datepicker();
+	//$("#fromDateField").datepicker();
+	//$("#toDateField").datepicker();
 });
 
 if(windowTask == 'new')
 {
 	getAllConstituenciesInStateByType(2,1,'constituency');
+}
+function getCalenderForFromDate()
+{
+	$('#fromDateField').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd/mm/yy',
+			maxDate: new Date(),
+			yearRange: "-100:+0",
+        }).datepicker("show");
+}
+function getCalenderFortoDate()
+{
+	$('#toDateField').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd/mm/yy',
+			maxDate: new Date(),
+			yearRange: "-100:+0",
+        }).datepicker("show");
 }
 </script>
 </body>
