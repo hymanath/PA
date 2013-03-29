@@ -1957,7 +1957,7 @@ function contactLinkInHomePage(){
 
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ stack: false,
-							    height: 230,
+							    height: 250,
 								width: 800,
 								modal: true,
 								position: [170,150],
@@ -1991,10 +1991,12 @@ str+='<table style="margin-left:17px">';
 str+='<tr>';
 str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
 str+='<tr><td>Hyderabad.<br></td></tr>';
-str+='<tr><td>Phone: +91 40 4012 4153<br></td></tr>';
-str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Phone<span style="margin-left:17px">: +91 40 4012 4153</span><br></td></tr>';
+str+='<tr><td>Mobiles<span style="margin-left:8px">: +91 92468 27788</span><br></td></tr>';
+str+='<tr><td><span style="margin-left:63px">: +91 92468 37788</span><br></td></tr>';
+str+='<tr><td><span style="margin-left:63px">: +91 96766 96760</span><br></td></tr>';
 str+='<tr><td>Enquires: customer.servies@partyanalyst.com<br></td></tr>';
-str+='<tr><td>Demo: sales@partyanalyst.com<br></td></tr>';
+str+='<tr><td>Demo<span style="margin-left:18px">: sales@partyanalyst.com</span><br></td></tr>';
 str+='</table>';
 str+='</td>';
 str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				

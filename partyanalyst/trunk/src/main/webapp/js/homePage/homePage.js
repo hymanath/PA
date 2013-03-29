@@ -2040,7 +2040,7 @@ function contactLinkInHomePage(){
 
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ stack: false,
-							    height: 230,
+							    height: 250,
 								width: 800,
 								modal: true,
 								position: [170,150],
@@ -2075,7 +2075,9 @@ str+='<tr>';
 str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
 str+='<tr><td>Hyderabad.<br></td></tr>';
 str+='<tr><td>Phone: +91 40 4012 4153<br></td></tr>';
-str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Mobiles: +91 92468 27788<br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 92468 37788</span><br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 96766 96760</span><br></td></tr>';
 str+='<tr><td>Enquires: customer.servies@partyanalyst.com<br></td></tr>';
 str+='<tr><td>Demo: sales@partyanalyst.com<br></td></tr>';
 str+='</table>';
@@ -2098,7 +2100,7 @@ function contactForSupportLinkInHomePage(){
 
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ stack: false,
-							    height: 220,
+							    height: 250,
 								width: 800,
 								modal: true,
 								position: [170,150],
@@ -2133,7 +2135,9 @@ str+='<tr>';
 str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
 str+='<tr><td>Hyderabad.<br></td></tr>';
 str+='<tr><td>Phone: +91 40 4012 4153<br></td></tr>';
-str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Mobiles: +91 92468 27788<br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 92468 37788</span><br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 96766 96760</span><br></td></tr>';
 str+='<tr><td>Email: customer.services@partyanalyst.com<br></td></tr>';
 str+='</table>';
 str+='</td>';
@@ -2154,7 +2158,7 @@ function contactForDemoLinkInHomePage(){
 
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ stack: false,
-							    height: 220,
+							    height: 250,
 								width: 700,
 								modal: true,
 								position: [170,150],
@@ -2189,7 +2193,9 @@ str+='<tr>';
 str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
 str+='<tr><td>Hyderabad.<br></td></tr>';
 str+='<tr><td>Phone: +91 40 4012 4153<br></td></tr>';
-str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Mobiles: +91 92468 27788<br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 92468 37788</span><br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 96766 96760</span><br></td></tr>';
 str+='<tr><td>Email: sales@partyanalyst.com<br></td></tr>';
 str+='</table>';
 str+='</td>';
@@ -2244,7 +2250,9 @@ str+='<table style="margin-left:17px">';
 str+='<tr>';
 str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
 str+='<tr><td>Hyderabad.<br></td></tr>';
-str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Mobiles: +91 92468 27788<br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 92468 37788</span><br></td></tr>';
+str+='<tr><td><span style="margin-left:55px">: +91 96766 96760</span><br></td></tr>';
 str+='<tr><td>Email: info@partyanalyst.com or a.dakavaram@itgrids.com<br></td></tr>';
 str+='</table>';
 str+='</td>';
