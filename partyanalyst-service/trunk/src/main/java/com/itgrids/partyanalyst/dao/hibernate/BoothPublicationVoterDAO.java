@@ -2238,4 +2238,16 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		query.setParameter("boothId", boothId);
 		return query.list();
 	}
+	
+	 public List<Object[]> getVoterPersonalDetailsByVoterIdAndPuclicationId(Long voterId,Long publicationDateId){
+			
+			Query queryObject = getSession().createQuery("select model.voter , model.serialNo from  BoothPublicationVoter" +
+					" model where model.voter.voterId = ? and " +
+					"model.booth.publicationDate.publicationDateId = ?");
+			
+			queryObject.setParameter(0, voterId);
+			queryObject.setParameter(1, publicationDateId);
+		
+			return queryObject.list();
+		}
 }
