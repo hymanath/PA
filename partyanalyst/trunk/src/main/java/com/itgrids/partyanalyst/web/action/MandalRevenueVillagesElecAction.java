@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,8 +41,10 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private MandalVO mandalVO;
 	private String tehsilId;
 	private String tehsilName;
-	private String chartPath; 
+	private String chartPath;
+	private String resultType;
 	private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
+	private IConstituencyPageService constituencyPageService;
 
 	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
 		return townshipBoothDetailsVO;
@@ -128,15 +132,39 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		this.includeAlliance = includeAlliance;
 	}
 
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
+	}
+
+	public String getResultType() {
+		return resultType;
+	}
+
+	public void setResultType(String resultType) {
+		this.resultType = resultType;
+	}
+
 	public String execute(){
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(new Long(tehsilId));
 		String cPath = request.getContextPath();
 		String chartLocation="";
 		if(parties != null){
-			List<PartyResultVO> partiesResults = biElectionPageService.
-			findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
-			
-			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+".png";
+			List<PartyResultVO> partiesResults = null;
+			if("panchayat".equalsIgnoreCase(resultType)){
+			 partiesResults = constituencyPageService.
+					findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
+			}else{
+			 partiesResults = biElectionPageService.
+					findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
+			}		
+			request.setAttribute("checkedType",resultType);
+			long  dt = new Date().getTime();
+			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+""+dt+".png";
 			if(cPath.contains("PartyAnalyst"))
 	            chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
 			else
@@ -159,10 +187,17 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
 		String cPath = request.getContextPath();
 		String chartPath="";
-		townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
-	
+		if("panchayat".equalsIgnoreCase(resultType)){
+			String elecId = staticDataService.getLatestAssemblyElectionId();
+			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandal(tehsilId,elecId,constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(tehsilId,new Long(elecId.trim())).get(0).getRevenueVillageElectionVO());	
+		}else{			
+			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);	
+		}
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
+			long  dt = new Date().getTime();
+			chartName = dt+chartName;
+			townshipBoothDetailsVO.get(i).setChartName(chartName);
 			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
 			if(cPath.contains("PartyAnalyst"))
 			    chartPath = context.getRealPath("/") + "charts\\" + chartName;

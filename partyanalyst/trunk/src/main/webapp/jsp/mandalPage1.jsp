@@ -946,7 +946,7 @@ function getElectionYearsInMandal(id,name){
 		
 		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
 		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
-		
+		electionId = $("#electionYearSelect").val();
 		var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal,"brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
@@ -955,7 +955,7 @@ function getElectionYearsInMandal(id,name){
 		
 		var typeVal = ""+ptypeSelectElmt.options[ptypeSelectElmt.selectedIndex].text;
 		var yearVal = ""+pyearSelectElmt.options[pyearSelectElmt.selectedIndex].text;
-		
+		electionId = $("#electionYearSelectId").val();
 		var brow1 = window.open("<s:url action="panchayatWiseElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
