@@ -4696,5 +4696,11 @@
         	</result>
 		</action>
 		
+		<action name="getSelectedGenderBasedVoterDetails" class="voterModificationReportAction" method="getSelectedVoterDetails">
+		<result type="json" name="success">
+				<param name="root">voterVOs</param>				
+			</result> 
+		</action>
+		
 		</package>
 </struts>      
