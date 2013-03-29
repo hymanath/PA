@@ -32,6 +32,7 @@ public class ConstituencyPositionDetailVO implements Serializable{
 	private int oppositePartyRank;
 	private String partyName;  
 	private BigDecimal percentageDiffBetweenTop2;
+	private String marginVotesPercentage;
 	
 	
 	public double getPresentElectionVotes(){
@@ -180,6 +181,14 @@ public class ConstituencyPositionDetailVO implements Serializable{
 
 	public Long getConstituencyId() {
 		return constituencyId;
+	}
+
+	public String getMarginVotesPercentage() {
+		return marginVotesPercentage;
+	}
+
+	public void setMarginVotesPercentage(String marginVotesPercentage) {
+		this.marginVotesPercentage = marginVotesPercentage;
 	}
 
 }
