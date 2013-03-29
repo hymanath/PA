@@ -1,7 +1,8 @@
 var scopeId = 0; //selected scopeId
 
 $(document).ready(function() {
-
+        $('#example').dataTable();
+		
 
 		$('#scopeSelectId').change(function(){
 
@@ -241,6 +242,12 @@ function getPublicationDate()
 								{
 									buildFamilyInfo(myResults,jsObj.partNo);
 								}
+								else if(jsObj.task == "getGenderBasedVoterDetails")
+								{
+									setTimeout($.unblockUI, 200);
+									buildGenderOrAddedVotersTable(myResults,jsObj);
+									
+								}
 									
 									
 								
@@ -256,7 +263,97 @@ function getPublicationDate()
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
+//
+function buildGenderOrAddedVotersTable(myResults,jsObj){
+var title='';
+$('#GenderOrAddedVotersTable').html('');
+var str='';
+var booth='';
+str+='<table id="dt"><thead><tr>';
 
+if(jsObj.locationType!='booth'){
+	str+='<th>BoothNo</th>';}
+
+str+='<th>Name</th><th>Age</th>';
+
+
+if(jsObj.forGender=='true'){
+	if(jsObj.gender=='TOTAL'){
+		str+='<th>Gender</th>';
+	}
+}
+else
+	str+='<th>Gender</th>';
+
+//str+='<th>Guardian</th><th>RelationShip</th></tr></thead><tbody>';
+str+='<th>House No</th><th>Village</th></tr></thead><tbody>';
+for(var i in myResults){
+booth=myResults[0].boothNo; 
+
+if(jsObj.locationType!='booth'){
+
+str+='<tr><td>'+myResults[i].boothNo+'</td>';}
+
+str+='<td>'+myResults[i].firstName+'</td><td>'+myResults[i].age+'</td>';
+
+if(jsObj.forGender=='true'){
+	if(jsObj.gender=='TOTAL'){
+		str+='<td class="center">'+myResults[i].gender+'</td>';
+	}
+}
+else
+	str+='<td class="center">'+myResults[i].gender+'</td>';
+
+
+//str+='<td>'+myResults[i].relativeFirstName+'</td><td>'+myResults[i].relationshipType+'</td></tr>';
+str+='<td><a style="cursor:pointer;" onclick="getVotersInAFamilyByPublication('+myResults[i].boothNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+myResults[i].houseNo+'\')">'+myResults[i].houseNo+'</a></td><td>'+myResults[i].villagesCovered+'</td></tr>';
+}
+str+='</tbody></table>';
+$('#GenderOrAddedVotersTable').html(str);
+
+if(jsObj.forGender=='false'){
+	var range='';
+	switch (jsObj.ageRangeId) {
+		case 1: range="18-25";break;
+		case 2: range="26-35";break;
+		case 3: range="36-45";break;
+		case 4: range="46-60";break;
+		case 5: range="60-Above";break;
+	}
+	
+	title= range+" Age "+jsObj.status+" Voters Details";
+}
+
+else{
+	if(jsObj.gender=='TOTAL')
+		gend='Total';
+		
+	else
+		gend=(jsObj.gender=='M')?"Male":"Female";
+	
+	title= gend+" Voters "+jsObj.status+" Details";
+	
+	if(jsObj.locationType=='booth'){
+		title=gend+" Voters "+jsObj.status+" Details in Booth - "+booth;
+	}
+}
+
+
+$('#GenderOrAddedVotersPopup').dialog({ 
+	title:title,
+	height: 'auto',
+	width: 950,
+	show: "blind",
+	modal: true,
+	overlay: { opacity: 0.5, background: 'black'},
+	buttons: {
+	   "Close":function() {$(this).dialog("close")}
+	}	
+});
+
+$('#dt').dataTable();
+}
+//
 //Created by sasi for populating the selectbox for publication
 function buildSelectBoxes(results,jsObj){
 	$("#voterAgeInfoAjaxImg").css("display","none");
@@ -264,7 +361,7 @@ function buildSelectBoxes(results,jsObj){
 		removeSelectElements(selectedElmt);
 		
 		for(var val in results)
-		{
+		{ 
 		
 			var opElmt = document.createElement('option');
 			opElmt.value=results[val].id;
@@ -421,9 +518,10 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 		str +=': '+toPublicationName+'';
 	str +='</h2></div>';
 	
+	
 	if(results != null)
 	{
-		
+		if(jsObj.locationType=='constituency'){
 		str +='<table id="voterAgeInfoTab" border="1" class="table table-bordered table-hover">';
 		str +='<tr>';
 		str +='<th>Age Range</th>';
@@ -443,8 +541,36 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 		
 		str +='</table>';
 		$('#voterAgeInfoDiv').html(str);
+		}
+		else{
+		str +='<table id="voterAgeInfoTab" border="1" class="table table-bordered table-hover">';
+		str +='<tr>';
+		str +='<th>Age Range</th>';
+		 var range ="";
+		for(var i in results){
+		  str +='<td>'+results[i].range+'</td>';
+		 range = results[i].range;
+		}
+		 
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Added</th>';
+		;
+		for(var i in results){
+		 str +='<td><a href="javaScript:{getVoterDetailsByAge(\''+results[i].range+'\',\'Added\');}">'+results[i].addedCount+'</a></td>';
+		}
+		str +='</tr>';
+		str +='<tr>';
+		str +='<th>Deleted</th>';
+		for(var i in results)
+		 str +='<td><a href="javaScript:{getVoterDetailsByAge(\''+results[i].range+'\',\'Deleted\');}">'+results[i].deletedCount+'</a></td>';
+		str +='</tr>';
+		
+		str +='</table>';
+		$('#voterAgeInfoDiv').html(str);
+		
+		}
 	}
-
 	else 
 	{
 	  $('#voterAgeInfoDiv').html('<div class="voterinfoHeading"><h2>Age Wise Newly Added / Deleted Info From '+fromPublicationName+' to '+toPublicationName+'</h2></div>');
@@ -884,8 +1010,9 @@ var str='';
 	str +='</tr>';
     str+='</thead>';
 	 str+='<tbody>';
-
-	 for(var i=0;i<myResults.modifiedVotersList.length;i++)
+    
+	if(jsObj.locationType == "constituency"){
+	for(var i=0;i<myResults.modifiedVotersList.length;i++)
  	 {
 		var publicationList = myResults.modifiedVotersList[i].selectOptionVOsList; 
 		  str+='<tr>';
@@ -904,6 +1031,33 @@ var str='';
             str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
 		  str+='</tr>';
+	 }
+	}
+	 
+	 else{
+	for(var i=0;i<myResults.modifiedVotersList.length;i++)
+ 	 {
+		var publicationList = myResults.modifiedVotersList[i].selectOptionVOsList; 
+
+		var locationType1 = myResults.modifiedVotersList[i].locationType;
+		var locationId1 =  myResults.modifiedVotersList[i].id;
+		  str+='<tr>';
+		  if(myResults.modifiedVotersList[i].locationType == 'localElectionBody')
+		    str+='<td style="text-align:left;"><a class="voterInfoLinksCLS" title="Click Here to View '+myResults.modifiedVotersList[i].name+' wise Added / Deleted Voters Info " href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].name+'</a></td>';
+		  else
+			 str+='<td style="text-align:left;"><a class="voterInfoLinksCLS" title="Click Here to View '+myResults.modifiedVotersList[i].name+' '+myResults.modifiedVotersList[i].locationType+' wise Added / Deleted Voters Info " href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].name+'</a></td>'; 
+		
+			for(var k in publicationList)
+			  str +='<td>'+publicationList[k].id+'</td>';
+		
+		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Added\')}">'+myResults.modifiedVotersList[i].addedCount+'</a></td>';
+		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Deleted\')}">'+myResults.modifiedVotersList[i].deletedCount+'</td>';
+		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Added\')}">'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Deleted\')}">'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+            str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Added\')}">'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
+		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Deleted\')}">'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
+		  str+='</tr>';
+	 }
 	 }
 
 	 if(myResults.modifiedLocalBodyVotersList != "null" && myResults.modifiedLocalBodyVotersList != null)
@@ -1045,3 +1199,62 @@ function buildFamilyInfo(results,partNo)
            
         });
 }
+function getVoterDetailsForGender(locationId1,locationType1,gender,status)
+{
+$.blockUI({ message: '<h4><img src="./images/icons/search.gif" />  Request Processing...</h4>' }); 
+	var jObj=
+	{
+			locationType:locationType1,
+		    locationValue:locationId1,
+			constituencyId:constituencyId,
+			fromPublicationDateId:fromPublicationDateId,
+			toPublicationDateId:toPublicationDateId,
+			forGender:"true",
+			status:status,
+			ageRangeId:"0",
+			gender:gender,	 
+			task:"getGenderBasedVoterDetails"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getSelectedGenderBasedVoterDetails.action?"+rparam;	
+
+	callAjax(jObj,url);
+
+
+}
+
+function getVoterDetailsByAge(range,status)
+{
+$.blockUI({ message: '<h4><img src="./images/icons/search.gif"/> Request Processing...</h4>' }); 
+	 var ageRangeId = 0;
+	 if(range == "18-25")
+		  ageRangeId = 1;
+	 else if (range == "26-35")
+		 ageRangeId = 2;
+	 else if (range == "36-45")
+		 ageRangeId = 3;
+	 else if (range == "46-60")
+		 ageRangeId = 4;
+	 else 
+		 ageRangeId = 5
+ 
+
+	var jObj=
+	{
+			locationType:locationType,
+		    locationValue:locationValue,
+			constituencyId:constituencyId,
+			fromPublicationDateId:fromPublicationDateId,
+			toPublicationDateId:toPublicationDateId,
+			forGender:"false",
+			status:status,
+			ageRangeId:ageRangeId,
+			gender:'M',	 
+			task:"getGenderBasedVoterDetails"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getSelectedGenderBasedVoterDetails.action?"+rparam;	
+
+	callAjax(jObj,url);
+}
+
