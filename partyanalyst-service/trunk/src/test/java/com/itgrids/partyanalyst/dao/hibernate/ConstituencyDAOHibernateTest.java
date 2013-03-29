@@ -124,12 +124,13 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-/*
+
 	public void testConstituencyDetails(){
-		 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(11010l);
-		 Assert.assertEquals(1, result.size());	
+		 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(40043l);
+		
+		// Assert.assertEquals(1, result.size());	
 		}
-	
+	/*
 	public void testFindByLocalElectionBodyAndElectionScope(){
 		List<Constituency> list = constituencyDAO.findByLocalElectionBodyAndElectionScope(1l, "Ward-1");
 		assertEquals(1, list.size());
@@ -362,9 +363,9 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		List name = constituencyDAO.getNameByInfluenceScopeValue(31805l,"WARD");
 		System.out.println(name.get(0));
 	}*/
-	public void testGetLocalBodyElectionTypeByConstituencyId()
+	/*public void testGetLocalBodyElectionTypeByConstituencyId()
 	{
 		String list = constituencyDAO.getLocalBodyElectionTypeByConstituencyId(232l);
 		System.out.println(list);
-	}
+	}*/
 }
