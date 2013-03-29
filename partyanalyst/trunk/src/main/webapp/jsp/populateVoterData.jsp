@@ -347,7 +347,7 @@ $(document).ready(function(){
 	});
 	$("#voterDataInsertBtn").click(function(){
 
-		var constituencyId = $("#constituencyList").val(); 
+		var constituencyId = $("#voterDataConstituencyList").val(); 
 		var publicationDateId = $("#publicationDateList").val();
 		if(constituencyId == 0)
 		{
@@ -555,7 +555,7 @@ $("#votermodificationDataInsertBtn").click(function(){
 
 $("#voterDataDeleteBtn").click(function(){
 	
-        var constituencyId = $("#constituencyList").val(); 
+        var constituencyId = $("#voterDataConstituencyList").val(); 
 		var publicationDateId = $("#publicationDateList").val();
 		if(constituencyId == 0)
 		{
