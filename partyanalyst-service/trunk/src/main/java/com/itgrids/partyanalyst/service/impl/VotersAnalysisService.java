@@ -4483,6 +4483,27 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	
   }
   
+  public void getVoterBasicInfo1(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long publicationDateId){
+		//List<Voter> voterDetails = voterDAO.getVoterPersonalDetailsByVoterId(voterId);
+		  List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterPersonalDetailsByVoterIdAndPuclicationId(voterId, publicationDateId);
+		if(voterDetails != null && voterDetails.size() >0)
+		{
+			Voter voterInfo =(Voter) voterDetails.get(0)[0];
+			Long serialNo = (Long) voterDetails.get(0)[1];
+			
+		 voterHouseInfoVO.setName(voterInfo.getName());
+		 voterHouseInfoVO.setVoterId(voterInfo.getVoterId());
+		 voterHouseInfoVO.setGender(voterInfo.getGender());
+		 voterHouseInfoVO.setAge(voterInfo.getAge());
+		 voterHouseInfoVO.setHouseNo(voterInfo.getHouseNo());
+		 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
+		 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
+		 voterHouseInfoVO.setFromSno(serialNo);
+		
+		}
+		
+	  }
+  
 public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO){
 	  
 	  List<Long> stateIdsList = boothPublicationVoterDAO.getVoterStateId(voterId);
@@ -4540,6 +4561,9 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 				voterHouseInfoVO.setHamletId(userVoterDetails.getHamlet().getHamletId());
 			}else
 				voterHouseInfoVO.setCasteStateId(0l);
+			
+			if(userVoterDetails.getLocality() != null)
+				voterHouseInfoVO.setSubLocalityId(userVoterDetails.getLocality().getLocalityId());
 			
 			
 		}else{
@@ -6831,7 +6855,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 	    	
 		 	     voterHouseInfoVO = new VoterHouseInfoVO();
 		 	     
-		 	     getVoterBasicInfo(voterHouseInfoVO,voter.getVoterId());
+		 	     getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId());
 		 	   
 		 	     
 		 	    voterByHouseNoMap = boothMap.get(voter.getBoothId());
