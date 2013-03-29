@@ -5445,7 +5445,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 
 	 }
 	 
-	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId){
+	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId){
 		 List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 		
 		 try{
@@ -6270,7 +6270,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									int totalWards=0;
 								for(SelectOptionVO localbody : muncipalityList)
 								{
-									localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId);
+									localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId);
 									if(localbody1 ==null ||localbody1.size()<=0 )
 									localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
 									if(localbody1!= null && localbody1.size() > 0)
