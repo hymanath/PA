@@ -41,5 +41,7 @@ public interface IVoterModificationService {
 	 public VoterModificationVO getSubLevelsVoterModificationDetailsByLocationValue(
 				String locationType, Long locationValue, Long constituencyId,
 				Long fromPublicationDateId, Long toPublicationDateId);
+	 
+	 public List<VoterVO> getSelectedVotersDetails(VoterModificationVO voterModificationVO);
     
 }
