@@ -121,6 +121,7 @@
 
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
+var loggedUser='${sessionScope.USER.firstName}';
 var partyId = '${partyId}';
 var electionType = '${electionType}';
 var electionYear = '${electionYear}';
@@ -168,7 +169,7 @@ function callAjax(param,jsObj,url){
 								}
 								else if(jsObj.task == "addNewComment")
 								{								
-									updatePreviousCommentsDataTable(myResults);
+								updatePreviousCommentsDataTableInPopup(myResults);
 								}
 								else if(jsObj.task == "getMainPartyCategoryComments")
 								{									
@@ -411,6 +412,7 @@ function getCommentsClassifications(rank)
 		}
 		if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
 		{
+			$("#AjaxDiv").css('display','block');
 			var jsObj={
 					electionId: electionId,
 					electionType: electionType,
@@ -572,7 +574,46 @@ function getCommentsClassifications(rank)
 	{
 		getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
 	}
-	
+	 function updatePreviousCommentsDataTableInPopup(results)
+{
+
+	var dtArray = new Array();
+	var commentVal = document.getElementById("commentText"); 
+	var postedByVal = document.getElementById("commentPostedByText"); 
+	var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+	var previousCommentsEl = document.getElementById("previousComments");
+		 
+	$("#AjaxDiv").css('display','none');
+	if(previousCommentsEl.innerHTML == 'No Previous Reasons')
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+
+		dtArray.push(newCommentDataObj);
+		buildPreviousCommentsDataTable(dtArray);		
+		
+	} else
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+		
+		previousCommentsDataTable.addRow(newCommentDataObj,0);
+	}
+	commentVal.value='';
+	//postedByVal.value='';
+	commentCategoryEl.selectedIndex='0';
+}
+
 	
 </SCRIPT>
 </BODY>
