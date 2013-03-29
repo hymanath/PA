@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -9,13 +11,13 @@ import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.model.Ward;
 
 public class WardDAOHibernateTest extends BaseDaoTestCase {
-	/*private IWardDAO wardDAO;
-	Ward w = new Ward(new Long(2),null,"qqq",new Long(100));
+	private IWardDAO wardDAO;
+	//Ward w = new Ward(new Long(2),null,"qqq",new Long(100));
 
 	public void setWardDAO(IWardDAO wardDAO) {
 		this.wardDAO = wardDAO;
 	}
-	//@Test
+	/*//@Test
 	public void testFindByWardName(){
 		Ward w = wardDAO.findByWardName("aaa").get(0);
 		Assert.assertEquals(new Long(1), w.getWardId());
@@ -36,8 +38,18 @@ public class WardDAOHibernateTest extends BaseDaoTestCase {
 		setComplete();
 	}*/
 	
-	@Test
+	/*@Test
 	public void test(){
 		Assert.assertEquals(1, 1);
+	}*/
+	
+	public void testgetWardsListByLocalEleBodyIdAndConstituencyId()
+	{
+		List<Object[]> list = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(20l, 8l, 347l);
+		if(list!= null && list.size() > 0)
+		{
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
+		}
 	}
 }
