@@ -47,7 +47,7 @@ public class WardDAOHibernateTest extends BaseDaoTestCase {
 	public void test(){
 		Assert.assertEquals(1, 1);
 	}*/
-	
+	/*
 	public void testgetWardsListByLocalEleBodyIdAndConstituencyId()
 	{
 		List<Object[]> list = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(20l, 8l, 347l);
@@ -63,5 +63,5 @@ public class WardDAOHibernateTest extends BaseDaoTestCase {
 		for(Object[] params : list){
 		System.out.println(params[1]);
 		}
-	}
+	}*/
 }

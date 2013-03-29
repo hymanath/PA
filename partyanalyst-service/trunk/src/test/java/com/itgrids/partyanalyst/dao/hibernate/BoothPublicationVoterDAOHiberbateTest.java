@@ -432,14 +432,14 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	 * 
 	 * }
 	 */
-	public void testgetVIdsAndSerialNoByBoothId() {
+	/*public void testgetVIdsAndSerialNoByBoothId() {
 		List<Object[]> objlist = boothPublicationVoterDAO
 				.getVIdsAndSerialNoByBoothId(122995l, 19l, 25l);
 		if (objlist != null && objlist.size() > 0) {
 			for (Object[] params : objlist)
 				System.out.println(params[1].toString());
 		}
-	}
+	}*/
 
 	/*public void testcheckSerialNoandVoterIdDuplicates() {
 		
