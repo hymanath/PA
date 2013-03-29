@@ -3697,7 +3697,7 @@ var jsObj=
 	}
 
 
-	function getLocalitiesList1(selectboxId,divId,familyId,selectedValue)
+	function getLocalitiesList1(selectboxId,divId,familyId,selectedValue,subLocalityId)
 	{ 
 if(isMuncipality)
 		{
@@ -3741,7 +3741,7 @@ if(isMuncipality)
 				selectBoxId:selectboxId,
 				familyType: family,
 				familyId: familyId,
-			
+				subLocalityId:subLocalityId,			
 				type:type,
 				publicationValue : publicationValue,
 				task:"getLocalities"
@@ -3816,17 +3816,19 @@ if(isMuncipality)
 		
 	}
 	function populatedataTodiv(results,jobj)
-	{   
-		
+	{ 	
 	
-	var str="";
+	   var str="";
 	               str+="<table>";	
 	               str+="<tr>";	
 		      str+="    <td><b>SubLocalityName:</b></td>";		  
 			  str+="    <td><select id='locality"+jobj.divToBuild+"' class='localityFamily'>";
 				        for(var val in results){
-						
-						 str+="<option value="+results[val].id+">"+results[val].value+"</option>";
+
+							if(jobj.subLocalityId ==  results[val].id)
+								str+="<option selected value="+results[val].id+">"+results[val].value+"</option>";
+                            else						
+ 						        str+="<option value="+results[val].id+">"+results[val].value+"</option>";
 					    }
 			  str+="    </select></td>";
 			  

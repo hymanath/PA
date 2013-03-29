@@ -1313,6 +1313,7 @@ function callAjaxForCandSearch(jsObj,url)
 		alert("Updated Successfully");
 	 }
 	 function buildVotersInFamilyForSelectedEdit(results){
+
 	   var localid = 0;
 	   var categCount = 0;
 	   var str = "";
@@ -1327,16 +1328,17 @@ function callAjaxForCandSearch(jsObj,url)
 			   var voters = family[j].votersList;
 			   str+="<fieldset>";
 			   str+="<table style='width:900px;'>";
-			   var k = 0;		   
+			   var k = 0;			   
 			   for(k in voters){
 				   if(voters[k].categoriesList != null){
 					  totalCategories = voters[k].categoriesList.length;
 				   }
 				   localid = localid+1;
 				  if(k == 0)
-				  str+="<tr>";	
+				  str+="<tr>";
 				  str+="<td  style='width:300px;padding-top:20px;'>";
 				  str+="<table>";
+				  str+="   <tr><td><b>Serial Number:  </b></td><td>"+voters[k].fromSno+"</td></tr>";
 				  str+="   <tr><td><b>Voter Name:</b></td><td>"+voters[k].name+"<input type='hidden' class='familyVoterEditId' value='"+voters[k].voterId+"' /></td></tr>";
 				  str+="   <tr><td><b>Guardian Name:  </b></td><td>"+voters[k].gaurdian+"</td></tr>";
 				  str+="   <tr><td><b>RelationShip:</b></td><td>"+voters[k].relationship+"</td></tr>";
@@ -1389,7 +1391,7 @@ function callAjaxForCandSearch(jsObj,url)
                       
 
                    if(selectedValue !=0){
-					   getLocalitiesList1("localityvalid"+localid,"locationdiv"+localid,j,selectedValue);
+					   getLocalitiesList1("localityvalid"+localid,"locationdiv"+localid,j,selectedValue,voters[k].subLocalityId);
 					   selectedValue = 0;
 				   }
 
