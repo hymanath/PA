@@ -44,9 +44,25 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long parliamentConstituencyId;
 	private String electionType;
 	private Long partNo;
+	private List<Long> numbers;
+	private Long sNo;
+	
+	public Long getsNo() {
+		return sNo;
+	}
 
-	
-	
+	public void setsNo(Long sNo) {
+		this.sNo = sNo;
+	}
+
+	public List<Long> getNumbers() {
+		return numbers;
+	}
+
+	public void setNumbers(List<Long> numbers) {
+		this.numbers = numbers;
+	}
+
 	public String getPublicationName() {
 		return publicationName;
 	}
