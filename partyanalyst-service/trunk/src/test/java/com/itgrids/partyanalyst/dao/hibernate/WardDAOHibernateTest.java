@@ -12,12 +12,17 @@ import com.itgrids.partyanalyst.model.Ward;
 
 public class WardDAOHibernateTest extends BaseDaoTestCase {
 	private IWardDAO wardDAO;
-	//Ward w = new Ward(new Long(2),null,"qqq",new Long(100));
 
 	public void setWardDAO(IWardDAO wardDAO) {
 		this.wardDAO = wardDAO;
 	}
-	/*//@Test
+	/*Ward w = new Ward(new Long(2),null,"qqq",new Long(100));
+
+	public void setWardDAO(IWardDAO wardDAO) {
+		this.wardDAO = wardDAO;
+	}*/
+	/*
+	//@Test
 	public void testFindByWardName(){
 		Ward w = wardDAO.findByWardName("aaa").get(0);
 		Assert.assertEquals(new Long(1), w.getWardId());
@@ -50,6 +55,13 @@ public class WardDAOHibernateTest extends BaseDaoTestCase {
 		{
 			for(Object[] params : list)
 				System.out.println(params[0]+" "+params[1]);
+		}
+		
+	public void testfindByWardsByAssemblyLocalElectionBodyId(){
+		List<Object[]> list = wardDAO.findByWardsByAssemblyLocalElectionBodyId(31l,8l);
+		System.out.println(list.size());
+		for(Object[] params : list){
+		System.out.println(params[1]);
 		}
 	}
 }
