@@ -23,6 +23,70 @@ public class VoterModificationVO implements Serializable{
 	private String locationType;
 	private List<SelectOptionVO> selectOptionVOsList;
 	
+	private Long locationId;
+	private Long locationValue;
+	private Long constituencyId;
+	private String isForGender;
+	private String status;
+	private String gender;
+	private Long ageRangeId;
+	
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getIsForGender() {
+		return isForGender;
+	}
+
+	public void setIsForGender(String isForGender) {
+		this.isForGender = isForGender;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Long getAgeRangeId() {
+		return ageRangeId;
+	}
+
+	public void setAgeRangeId(Long ageRangeId) {
+		this.ageRangeId = ageRangeId;
+	}
 
 	public Long getMaleVotersDeleted() {
 		return maleVotersDeleted;
