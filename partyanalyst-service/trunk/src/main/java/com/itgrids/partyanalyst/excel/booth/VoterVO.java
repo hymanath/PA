@@ -46,7 +46,17 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long partNo;
 	private List<Long> numbers;
 	private Long sNo;
+	private String villagesCovered;
 	
+		
+	public String getVillagesCovered() {
+		return villagesCovered;
+	}
+
+	public void setVillagesCovered(String villagesCovered) {
+		this.villagesCovered = villagesCovered;
+	}
+
 	public Long getsNo() {
 		return sNo;
 	}
@@ -62,7 +72,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	public void setNumbers(List<Long> numbers) {
 		this.numbers = numbers;
 	}
-
+	
 	public String getPublicationName() {
 		return publicationName;
 	}
