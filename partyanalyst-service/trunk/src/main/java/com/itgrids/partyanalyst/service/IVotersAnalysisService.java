@@ -232,4 +232,5 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> getPublicationListForVoterData(Long constituencyId);
 	
+	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId);
 }
