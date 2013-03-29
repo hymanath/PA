@@ -36,7 +36,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+    <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -103,7 +103,12 @@
 		}
 	</style>
 	<script type="text/javascript">
-	
+	$(document).ready(function(){
+	  var checkedType = '${checkedType}';
+	  if(checkedType == "panchayat"){
+	     $("#panchayatChk").attr("checked","checked");
+	  }
+	});
 		function buildVotesPolledDataTable() {
 			var resultsDataSourceForTehsil = new YAHOO.util.DataSource(YAHOO.util.Dom
 					.get("votesPolledTable"));
@@ -116,18 +121,29 @@
 					parser:YAHOO.util.DataSourceBase.parseNumber
 				}]
 			};
-	
-			var resultsColumnDefsForTehsil = [  {
+	        if('${checkedType}' == "panchayat"){
+				var resultsColumnDefsForTehsil = [  {
+					key : "townshipName",
+					label : "Panchayat Name",
+					sortable : true
+				},{
+					key : "percentageOfValidVotes",
+					label : "Votes %",
+					sortable : true,
+					formatter:YAHOO.widget.DataTable.formatFloat
+				}];	
+		    }else{
+              var resultsColumnDefsForTehsil = [  {
 				key : "townshipName",
 				label : "Township Name",
 				sortable : true
-			},{
+			   },{
 				key : "percentageOfValidVotes",
 				label : "Votes %",
 				sortable : true,
 				formatter:YAHOO.widget.DataTable.formatFloat
-			}];	
-			
+			  }];	
+            }		   
 			var myDataTableForTehsil = new YAHOO.widget.DataTable("votesPolledDtTableDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);			
 		}
 
@@ -182,6 +198,10 @@
 	<c:if test="${! empty mandalVO}">
 		<s:form action="mandalRevenueVillagesElecViewAction" name="MandalRevenueVillagesElecViewAction" method="GET" enctype="multipart/form-data">
 			<table id="partiesTrendzInputTable">
+			    <tr>
+					<th align="left">Show Result : </th>
+					<th colspan="2" align="left"><input type="radio" value="revenueVillage" name="resultType" checked="checked">Revenue Villages Wise <input type="radio" id="panchayatChk" value="panchayat" name="resultType" > Panchayat Wise</th>
+				</tr>
 				<tr>
 					<th align="left">Parties : </th>
 					<th colspan="2" align="left"><s:checkboxlist theme="simple" list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></th>
@@ -198,7 +218,7 @@
 							<s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b>
 							<input type="button" style="margin-left:0px" class="button" onclick="checkAllBoxes()" value="Select All"/>
 							<input type="button" style="margin-left:0px" class="button" onclick="UncheckAllBoxes()" value="DeSelect All"/>
-							<s:submit theme="simple" cssClass="button" label="View Chart" /></td>
+							<s:submit theme="simple" cssClass="button" label="View Chart" />
 					</td>
 					
 				</tr>

@@ -613,7 +613,8 @@
 	
 	<bean id="mandalRevenueVillagesElecAction" class="com.itgrids.partyanalyst.web.action.MandalRevenueVillagesElecAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />		
-		<property name="biElectionPageService" ref="biElectionPageService" />					
+		<property name="biElectionPageService" ref="biElectionPageService" />
+		<property name="constituencyPageService" ref="constituencyPageService" />							
 	</bean>
 	
 	<bean id="byeElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ByeElectionResultsAnalysisAction" singleton="false">
@@ -1088,6 +1089,10 @@
 	<property name="cadreManagementService" ref="cadreManagementService" />
 	<property name="sendUpdatesService" ref="sendUpdatesService" />
 	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	</bean>
+	
+	<bean id="dailyUpdatesSendAction" class="com.itgrids.partyanalyst.web.action.DailyUpdatesSendAction" singleton="false">	
+		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService" />
 	</bean>
 </beans>	
 	

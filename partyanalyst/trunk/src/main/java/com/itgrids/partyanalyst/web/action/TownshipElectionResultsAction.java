@@ -201,6 +201,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		String cPath = request.getContextPath();
 		Long mandalId = new Long(request.getParameter("mandalId"));
 		Long electionId = new Long(request.getParameter("electionId"));
+		request.setAttribute("electionId", electionId);
 		Long electionTypeId = 0l;
 		electionType = request.getParameter("electionType");
 		electionYear = request.getParameter("electionYear");
@@ -221,7 +222,18 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		
 		//allElectionYears = staticDataService.getAllElectionYearsBasedOnElectionType(electionType);
 		allElectionYears = staticDataService.getElectionIdsAndYearsInTehsil(electionTypeId,tehsilId);
-		
+		boolean isDefaltData = false;
+		for(SelectOptionVO selectOptionVO:allElectionYears){
+			if(selectOptionVO.getId().longValue() == 0l){
+				isDefaltData = true;
+			}
+		}
+		if(!isDefaltData){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(0l);
+			selectOptionVO.setName("Select Year");
+			allElectionYears.add(0, selectOptionVO);
+		}
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
 			String chartName = null;
 			String chartPath = "";
@@ -249,7 +261,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        constituencyObj.setChartPath(chartName);
 		}
 		
-		createPieChartsForTownshipVotingTrends(new Long(tehsilId),null);	
+		createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionId.toString());	
 		return SUCCESS;
 	}
 	

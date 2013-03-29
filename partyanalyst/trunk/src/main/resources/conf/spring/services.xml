@@ -318,6 +318,7 @@
 		<property name="panchayatDAO" ref="panchayatDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+		<property name="partyDAO" ref="partyDAO" />
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
@@ -1236,32 +1237,32 @@
     	<property name="cronExpression" value="0 0 14 * * ?" />
 	</bean>
 	
-	<!--<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="scheduler" />
+	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="dailyUpdatesSendAction" />
 	  	<property name="targetMethod" value="sendDailyUpdates" />
 	</bean>
 	
 	<bean name="cronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayBatchJobForUpdates" />
-    	<property name="cronExpression" value="00 00 13 * * ?" />
+    	<property name="cronExpression" value="00 15 * * * ?" />
 	</bean>
 	
-	<bean name="everyDaySecondBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="scheduler" />
+	<!--<bean name="everyDaySecondBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="dailyUpdatesSendAction" />
 	  	<property name="targetMethod" value="sendDailyUpdates" />
 	</bean>
 	
 	<bean name="secondCronTriggerForUpdates" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDaySecondBatchJobForUpdates" />
-    	<property name="cronExpression" value="00 00 02 * * ?" />
-	</bean>-->
+    	<property name="cronExpression" value="00 25 09 * * ?" />
+	</bean>  -->
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
             <ref bean="cronTriggerForEveryDayJob" />
-            <!--<ref bean="cronTriggerForUpdates" />
-            <ref bean="secondCronTriggerForUpdates" />-->
+            <ref bean="cronTriggerForUpdates" />
+            <!--<ref bean="secondCronTriggerForUpdates" />-->
         </list>
     	</property>
 	</bean>

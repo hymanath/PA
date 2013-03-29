@@ -780,7 +780,7 @@ legend
 		<tr>
 			<td id="labelRadio">Select Election Year</td>
 			<td>		
-			<s:select id="selectPartyPPR" theme="simple"  name="selectParty" headerKey="0" headerValue ="Select Year" list="allElectionYears" listKey="id" listValue="name"  onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>	
+			<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name"  onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>	
 				
 			</td>
 			<td>
