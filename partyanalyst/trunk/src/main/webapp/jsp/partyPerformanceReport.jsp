@@ -99,6 +99,8 @@ var labelResources = { <%
 	String totalSeatsWon =  pprRb.getString("totalSeatsWon");
 	String votesPcntGained =  pprRb.getString("votesPcntGained");
 	String diffVotesPctn =  pprRb.getString("diffVotesPctn");
+	String mv = pprRb.getString("mv");
+	String mvDef = pprRb.getString("mvDef");
 %> }
 function showBand(divtag)
 { 
@@ -381,7 +383,8 @@ function buildPartyPositionDataTable(info,rank)
 				{key:"candidateName",label : "<%=candidate%>", sortable:true, resizeable:true}, 
 				{key:"mainParty",label : "<%=party%>", sortable:true, resizeable:true}, 
 				{key:"percentageOfVotes",label : "<%=v%>", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
+				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true},
+				{key:"marginVotesPercentage",label:"<%=mv%>",sortable:true},
 	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
 	            {key:"moreDetails",label : "", sortable:true, resizeable:true}
@@ -394,7 +397,7 @@ function buildPartyPositionDataTable(info,rank)
 			fields : [
 						{key : "constituencyName"}, {key : "candidateName"}, {key : "mainParty"}, {key : "percentageOfVotes",parser:"number"},
 						{key :"oppositionPartyPercentageOfVotes",parser:"number"},{key : "oppositionParty"}, {key : "oppositionPartyCandidate"},
-						{key : "moreDetails"}
+						{key : "moreDetails"},{key : "marginVotesPercentage"}
 					 ]
 	        };
 			
@@ -414,7 +417,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold;font-size:11px;'> *<%=mainParty%></font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * <%=allianceParty%></font><Br><font style='font-size:11px;'> <%=v%>=<%=votesPercentage%>, <%=opv%>=<%=opvDef%>, <%=op%>=<%=opDef%>, <%=opc%>=<%=opcDef%></font></div>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold;font-size:11px;'> *<%=mainParty%></font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * <%=allianceParty%></font><Br><font style='font-size:11px;'> <%=v%>=<%=votesPercentage%>, <%=opv%>=<%=opvDef%>, <%=op%>=<%=opDef%>, <%=opc%>=<%=opcDef%>, <%=mv%>=<%=mvDef%></font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
@@ -617,32 +620,32 @@ function buildPartyPositionDataTable(info,rank)
 			
 			str+='<tr>';
 			if(i == 0)
-				str+='<td align="center" style="color:#FF0000">'+arr[i].partyName+'*</td>';
+				str+='<td align="center"><span style="color:#FF0000">'+arr[i].partyName+'*</span></td>';
 			else
 			    str+='<td align="center">'+arr[i].partyName+'</td>';
 			str+='<td align="center">'+arr[i].constituency+'</td>';
 			if(arr[i].seats == 0)
-				str+='<td align="center" style="color:#539E41;font-weight:bold;">'+arr[i].seats+'</td>';
+				str+='<td align="center" style="font-weight:bold;"><span style="color:#539E41;">'+arr[i].seats+'</span></td>';
 			else
 			   str+='<td align="center"><a href="javascript:{}" style="color:#539E41;" onclick="getPartyPositionDetails(1,\''+arr[i].partyId+'\')">'+arr[i].seats+'</a></td>';
 
 			if(arr[i].secondPos == 0)
-               str+='<td align="center" style="color:#C44C50;font-weight:bold;">'+arr[i].secondPos+'</td>';
+               str+='<td align="center" style="font-weight:bold;"><span style="color:#C44C50;">'+arr[i].secondPos+'</span></td>';
 			else
 			   str+='<td align="center"><a href="javascript:{}" style="color:#E8A0A5;font-weight:bold;" onclick="getPartyPositionDetails(2,\''+arr[i].partyId+'\')">'+arr[i].secondPos+'</td>';
 
 			if(arr[i].thirdPos == 0)
-               str+='<td align="center" style="color:#FF979E;font-weight:bold;">'+arr[i].thirdPos+'</td>';
+               str+='<td align="center" style="font-weight:bold;"><span style="color:#FF979E;">'+arr[i].thirdPos+'</span></td>';
 			else
                str+='<td align="center"><a style="color:#FF979E;font-weight:bold;" href="javascript:{}" onclick="getPartyPositionDetails(3,\''+arr[i].partyId+'\')">'+arr[i].thirdPos+'</td>';
 
 			if(arr[i].fourthPos == 0)
-               str+='<td align="center" style="color:#FF7F87;font-weight:bold;">'+arr[i].fourthPos+'</td>';
+               str+='<td align="center" style="font-weight:bold;"><span style="color:#FF7F87;">'+arr[i].fourthPos+'</span></td>';
 			else
 			   str+='<td align="center"><a href="javascript:{}" style="color:#FF7F87;font-weight:bold;" onclick="getPartyPositionDetails(4,\''+arr[i].partyId+'\')">'+arr[i].fourthPos+'</td>';
 
 			if(arr[i].nthPos == 0)
-                str+='<td align="center" style="color:#FF1515;font-weight:bold;">'+arr[i].nthPos+'</td>';
+                str+='<td align="center"><span style="color:#FF1515;font-weight:bold;">'+arr[i].nthPos+'</span></td>';
 			else
 		    	str+='<td align="center"><a href="javascript:{}" style="color:#FF1515;font-weight:bold;" onclick="getPartyPositionDetails(-1,\''+arr[i].partyId+'\')">'+arr[i].nthPos+'</td>';
 		    str+='<td align="center">'+arr[i].votesPercent+'</td>';
@@ -1729,7 +1732,9 @@ function callMarginVotes(partyId)
 									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 									oppositionParty:"${performance.oppositeParty}",
 									oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
+									marginVotesPercentage:"${performance.marginVotesPercentage}",
 									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">Details</A>'
+									
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
 		</c:forEach>
@@ -1750,6 +1755,7 @@ function callMarginVotes(partyId)
 									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 									oppositionParty:"${performance.oppositeParty}",
 									oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
+									marginVotesPercentage:"${performance.marginVotesPercentage}",
 									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">Details</A>'
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
