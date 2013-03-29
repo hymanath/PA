@@ -5452,8 +5452,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			
 		 //	List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId);
 		//List<Object[]> wards =  constituencyDAO.getWardsInMuncipality(lclElecBodyId);
-	List<Object[]> wards = wardDAO.findByWardsByAssemblyLocalElectionBodyId(lclElecBodyId, publicationDateId);
-	 for(Object[] ward:wards){
+	//List<Object[]> wards = wardDAO.findByWardsByAssemblyLocalElectionBodyId(lclElecBodyId, publicationDateId);
+	
+		List<Object[]> wards = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(lclElecBodyId, publicationDateId,constituencyId);		 
+			 for(Object[] ward:wards){
 		 SelectOptionVO  selectOptionVO = new SelectOptionVO();
 		
 		 selectOptionVO.setId((Long)ward[0]);
