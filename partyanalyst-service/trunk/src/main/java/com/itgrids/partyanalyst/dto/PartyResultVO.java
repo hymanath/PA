@@ -40,6 +40,7 @@ public class PartyResultVO {
 	String electionYear;
 	private Long totalSeatsParticipated;
 	private Integer totalSeatsOwn;
+	private List<Long> boothIds;
 	
 	
 	private List<SelectOptionVO> votesRange;
@@ -238,4 +239,11 @@ public class PartyResultVO {
 		this.totalSeatsParticipated = totalSeatsParticipated;
 	}
 	
+	public List<Long> getBoothIds() {
+		return boothIds;
+	}
+
+	public void setBoothIds(List<Long> boothIds) {
+		this.boothIds = boothIds;
+	}
 }

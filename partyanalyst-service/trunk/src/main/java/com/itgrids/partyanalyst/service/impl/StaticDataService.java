@@ -6086,8 +6086,10 @@ public class StaticDataService implements IStaticDataService {
 		try {
 
 			// Making DAO call to get Total Valid Votes in mandal.
-
-			elections = getLatestAssemblyElectionId();
+            if(electionIds != null && electionIds.trim().length() > 0)
+            	elections = electionIds;
+            else
+			    elections = getLatestAssemblyElectionId();
 			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,elections);
 			for (int i = 0; i < mandalResult.size(); i++) {
 				Object[] parms = (Object[]) mandalResult.get(i);
@@ -6250,8 +6252,10 @@ public class StaticDataService implements IStaticDataService {
 		String mandalName = "";
 		String elections = null;
 		try {
-
-			elections = getLatestAssemblyElectionId();
+			if(electionIds != null && electionIds.trim().length() > 0)
+            	elections = electionIds;
+            else
+			    elections = getLatestAssemblyElectionId();
 			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,elections);
 			
 			for(Object[] params : mandalResult)
