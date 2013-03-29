@@ -134,4 +134,6 @@ public interface IConstituencyPageService {
 	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituencyForCensus(Long constituencyId,String electionYear,String electionType,Boolean includeOthers);
 	
 	public String getLocalBodyElectionTypeByConstituencyId(Long constituencyId);
+	
+	public List<PartyResultVO> findPanchayatsWiseResultsInElectionsOfMandal(Long tehsilId, String parties,String elections, Boolean includeAlliance);
 }

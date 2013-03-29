@@ -166,5 +166,9 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List getValidVotesByEleTypeAndConstituencyId(String type, Long id, Long constituencyId, String year);
 	
 	public List<Long> getPartyIdsListByEleIdAndYearAndConstId(Long id, Long electionId, String year);
+	
+	public List<Object[]> findBoothResultsForBoothsAndElectionForParties(List<Long> boothslist, Long electionId,List<Long> partyIds);
+	
+	public Long findBoothResultsForBoothsAndElectionForPartiesWithAlliance(List<Long> boothslist, Long electionId,List<Long> partyIds);
 		
 }

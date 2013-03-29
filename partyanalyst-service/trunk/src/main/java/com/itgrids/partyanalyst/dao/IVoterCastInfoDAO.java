@@ -20,4 +20,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	public void saveAllObjects(List<VoterCastInfo> voterCastInfos);
 	
 	public Long  getVotersCastCount(Long levelId,Long levelValue,Long constituencyId,Long publicationId,Long userId);
+	
+	public void flushAndclearSession();
 }

@@ -81,4 +81,9 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		
 		return (Long)query.uniqueResult();
 	}
+     
+     public void flushAndclearSession(){
+			getSession().flush();
+			getSession().clear();
+		}
 }

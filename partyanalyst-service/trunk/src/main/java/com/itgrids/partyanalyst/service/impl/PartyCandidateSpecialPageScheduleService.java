@@ -15,13 +15,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.hibernate.exception.JDBCConnectionException;
-import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.Scheduler;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -50,7 +43,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IJobConstants;
 
 public class PartyCandidateSpecialPageScheduleService implements
-		IPartyCandidateSpecialPageScheduleService,Job{
+		IPartyCandidateSpecialPageScheduleService {
 	
 	private static final Logger log = Logger.getLogger(PartyCandidateSpecialPageScheduleService.class);
 	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
@@ -76,22 +69,6 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	public void setCandidateSubscriptionsDAO(
 			ICandidateSubscriptionsDAO candidateSubscriptionsDAO) {
-	  try{
-		JobDetail job = new JobDetail();
-		job.setName("11:30 PM JOB");
-		job.setJobClass(PartyCandidateSpecialPageScheduleService.class);
-		CronTrigger trigger = new CronTrigger();
-		trigger.setName("11:30 PM TRIGGER");
-    	trigger.setCronExpression("00 00 13 * * ?");
- 
-    	Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-    	scheduler.start();
-    	scheduler.scheduleJob(job, trigger);
-    	
-	  }catch(Exception e){
-		  log.error("Exception rised while calling quartz job at 11:30 PM ",e);
-	  }
-    	
 		this.candidateSubscriptionsDAO = candidateSubscriptionsDAO;
 	}
 	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
@@ -99,23 +76,6 @@ public class PartyCandidateSpecialPageScheduleService implements
 	}
 	public void setPartySubscriptionsDAO(
 			IPartySubscriptionsDAO partySubscriptionsDAO) {
-		
-		     try{
-				JobDetail job = new JobDetail();
-				job.setName("12:30 PM JOB");
-				job.setJobClass(PartyCandidateSpecialPageScheduleService.class);
-				CronTrigger trigger = new CronTrigger();
-				trigger.setName("12:30 PM TRIGGER");
-		    	trigger.setCronExpression("00 00 02 * * ?");
-		 
-		    	Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-		    	scheduler.start();
-		    	scheduler.scheduleJob(job, trigger);
-		    	
-			  }catch(Exception e){
-				  log.error("Exception rised while calling quartz job at 12:30 PM ",e);
-			  }
-		
 		this.partySubscriptionsDAO = partySubscriptionsDAO;
 	}
 	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
@@ -168,14 +128,6 @@ public class PartyCandidateSpecialPageScheduleService implements
 		this.jobDAO = jobDAO;
 	}
 	
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		 
-		log.info("job executed started");
-		sendUpdates();
-		log.info("job executed completed");	
-		 
-	}
-	
 	public void sendUpdates(){
 		log.info("Enter into sendUpdates() for schedule jobs run ");
 	   if(IConstants.DEFAULT_SCHEDULER_UPDATES_SEVER.equalsIgnoreCase("server")){
@@ -186,7 +138,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		try{
 		 dates = jobRunDetailsDAO.getStartTime();
 		}catch(Exception e){
-			log.error("Exception rised in  sendUpdates() while executing jobRunDetailsDAO.getStartTime() ");
+			log.error("Exception rised in  sendUpdates() while executing jobRunDetailsDAO.getStartTime() ",e);
 		}
 		if(dates != null && !dates.isEmpty())
 			startTime = dates.get(0);
@@ -264,7 +216,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 				log.error("Exception rised in sendAllMails ",e);
 			}
 		}
-		sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
+		//sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
 		sendMailToMeForTesting(updatesFrom,userDetails,dailyUpdatesVO);
 		log.info("sendAllMails() Execution completed");
 	}
@@ -328,15 +280,16 @@ public class PartyCandidateSpecialPageScheduleService implements
 	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{log.info("getDaillyUpdatesForCandidatePageSubscribers() Execution started");
 		Set<Long> usersIds = new HashSet<Long>();
-		usersIds.add(1l);
+		usersIds.add(1234l);
 		usersIds.add(411l);
+		//usersIds.add(411l);
 		usersIds.add(487l);
-		usersIds.add(754l);
+		/*usersIds.add(754l);
 		usersIds.add(771l);
 		usersIds.add(958l);
 		usersIds.add(2032l);
 		usersIds.add(1201l);
-		usersIds.add(2032l);
+		usersIds.add(2032l);*/
 		Map<Long,EmailNotificationVO> candidateIdMap = new HashMap<Long,EmailNotificationVO>();
 		Set<Long> candidateIds = new HashSet<Long>();
 		EmailNotificationVO emailNotificationVO = null;
@@ -571,13 +524,14 @@ public class PartyCandidateSpecialPageScheduleService implements
 	private void getDaillyUpdatesForPartyPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{log.info("getDaillyUpdatesForPartyPageSubscribers() Execution started");
 		Set<Long> usersIds = new HashSet<Long>();
-		usersIds.add(1l);
+		usersIds.add(1234l);
 		usersIds.add(411l);
+		//usersIds.add(411l);
 		usersIds.add(487l);
-		usersIds.add(754l);
+		/*usersIds.add(754l);
 		usersIds.add(771l);
 		usersIds.add(958l);
-		usersIds.add(2032l);
+		usersIds.add(2032l);*/
 		Map<Long,EmailNotificationVO> partyIdMap = new HashMap<Long,EmailNotificationVO>();
 		Set<Long> partyIds = new HashSet<Long>();
 		EmailNotificationVO emailNotificationVO = null;
@@ -806,14 +760,15 @@ public class PartyCandidateSpecialPageScheduleService implements
 	private void getDaillyUpdatesForSpecialPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{log.info("getDaillyUpdatesForSpecialPageSubscribers() Execution started");
 		Set<Long> usersIds = new HashSet<Long>();
-		usersIds.add(1l);
+		usersIds.add(1234l);
 		usersIds.add(411l);
+		//usersIds.add(411l);
 		usersIds.add(487l);
-		usersIds.add(754l);
+		/*usersIds.add(754l);
 		usersIds.add(771l);
 		usersIds.add(958l);
 		usersIds.add(2032l);
-		usersIds.add(2032l);
+		usersIds.add(2032l);*/
 		Map<Long,EmailNotificationVO> specialPageIdMap = new HashMap<Long,EmailNotificationVO>();		
 		Set<Long> specialPageIds = new HashSet<Long>();
 		EmailNotificationVO emailNotificationVO = null;
