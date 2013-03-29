@@ -319,7 +319,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<c:if test="${hasNewsMonitoring == true}">
 					<li class="active"><a href="javascript:{}" class="active" onclick="getNews('byTodayDate','getCount','','','','','','','')" id="customerNews"><i class="icon-file"></i><i class="icon-chevron-right"></i> News</a></li>
 					</c:if>
-					
+					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
+					<li><a href="javascript:{}" id="announcements"><i class="icon-bullhorn"></i><i class="icon-chevron-right"></i> Announcements</a></li>
+					</c:if>
 					<c:if test="${hasSubUserEntitlement}">
 					<li><a href="subUserRegPageAction.action?registrationType=subUser" id="FavouriteLinks" target="_blank"><i class="icon-user"></i><i class="icon-chevron-right"></i> Add Sub User</a></li>
 					</c:if>
@@ -336,7 +338,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<li><a href="newsDisplayAction.action" id="newsAnalysis" target="_blank"><img src="images/graph.png" style="width:20px;"></i><i class="icon-chevron-right"></i> News Analyse</a></li>
 					</c:if>
 					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
-					<li><a href="javascript:{}" id="announcements"><i class="icon-bullhorn"></i><i class="icon-chevron-right"></i> Announcements</a></li>
 					<li><a href="userGroupAction.action" id="userGroups" target="_blank"><img src="images/icons/indexPage/group_icon.png" style="width:20px;"><i class="icon-chevron-right"></i> User Groups</a></li>
 					
 					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>
@@ -416,14 +417,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				
 	<!--PRASAD-->
 						</div>
+						<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
 						<div id="caderInfo"></div>
 						<div id="impEvents"></div>
-						<div id="announcementsDiv" style="display:none;display: inline-block;">
+						<div id="announcementsDiv" style="display: inline-block;">
 						<div id="addNewAnnouncement"><a onclick="openNewAnnouncementPopup()" href="javascript:{}">Add New Announcement</a></div>
 						<div id="viewAllAnnouncements" style="margin-left: 313px;"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
-						
 						</div>
-						
+						</c:if>
 						<div class="FavoriteLinksDiv breadcrumb whitegloss">
 							
 							<div class="stateDivMain ">
