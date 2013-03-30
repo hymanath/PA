@@ -399,6 +399,31 @@ public class RegistrationService implements IRegistrationService{
 			registrationVO.setPartyShortName(registration.getParty().getShortName());
 		}
 		*/
+		
+		User user = userDAO.get(registrationId);
+		registrationVO.setRegistrationID(user.getUserId());
+		
+		registrationVO.setUserName(user.getUserName());
+		registrationVO.setPassword(user.getPassword());
+		registrationVO.setGender(user.getGender());
+		registrationVO.setEmail(user.getEmail());
+		registrationVO.setPhone(user.getPhone());
+		registrationVO.setMobile(user.getMobile());
+		registrationVO.setAddress(user.getAddress());
+		if(user.getDateOfBirth()!=null){
+		registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(user.getDateOfBirth().toString()));
+		}
+		registrationVO.setAccessType(user.getAccessType());
+		registrationVO.setAccessValue(user.getAccessValue());
+		registrationVO.setFirstName(user.getFirstName());
+		registrationVO.setLastName(user.getLastName());
+		registrationVO.setUserType(user.getUserType());
+		
+		if(user.getParty() != null){
+			registrationVO.setParty(user.getParty().getPartyId());
+			registrationVO.setPartyShortName(user.getParty().getShortName());
+		}
+		
 		return registrationVO;
 	}
 	public ResultStatus checkForUserNameAvalilability(String userName){
