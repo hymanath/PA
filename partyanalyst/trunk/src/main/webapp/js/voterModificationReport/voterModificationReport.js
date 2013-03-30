@@ -240,6 +240,7 @@ function getPublicationDate()
 
 								else if(jsObj.task == "getVotersInAFamilyByConstituencyId")
 								{
+									setTimeout($.unblockUI, 200);
 									buildFamilyInfo(myResults,jsObj.partNo);
 								}
 								else if(jsObj.task == "getGenderBasedVoterDetails")
@@ -290,9 +291,10 @@ str+='<th>House No</th><th>Village</th></tr></thead><tbody>';
 for(var i in myResults){
 booth=myResults[0].boothNo; 
 
+str+='<tr id="checkForEmpty">';
 if(jsObj.locationType!='booth'){
 
-str+='<tr><td>'+myResults[i].boothNo+'</td>';}
+str+='<td>'+myResults[i].boothNo+'</td>';}
 
 str+='<td>'+myResults[i].firstName+'</td><td>'+myResults[i].age+'</td>';
 
@@ -306,7 +308,7 @@ else
 
 
 //str+='<td>'+myResults[i].relativeFirstName+'</td><td>'+myResults[i].relationshipType+'</td></tr>';
-str+='<td><a style="cursor:pointer;" onclick="getVotersInAFamilyByPublication('+myResults[i].boothNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+myResults[i].houseNo+'\')">'+myResults[i].houseNo+'</a></td><td>'+myResults[i].villagesCovered+'</td></tr>';
+str+='<td><a style="cursor:pointer;color:#3392C2;" onclick="getVotersInAFamilyByPublication('+myResults[i].boothNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+myResults[i].houseNo+'\')">'+myResults[i].houseNo+'</a></td><td>'+myResults[i].villagesCovered+'</td></tr>';
 }
 str+='</tbody></table>';
 $('#GenderOrAddedVotersTable').html(str);
@@ -557,13 +559,26 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 		str +='<th>Added</th>';
 		;
 		for(var i in results){
+		
+		if(results[i].addedCount!=0)
 		 str +='<td><a href="javaScript:{getVoterDetailsByAge(\''+results[i].range+'\',\'Added\');}">'+results[i].addedCount+'</a></td>';
+		 
+		else
+		 str +='<td>'+results[i].addedCount+'</td>';
+		 
 		}
+
 		str +='</tr>';
 		str +='<tr>';
 		str +='<th>Deleted</th>';
 		for(var i in results)
+		{
+		if(results[i].deletedCount!=0)
 		 str +='<td><a href="javaScript:{getVoterDetailsByAge(\''+results[i].range+'\',\'Deleted\');}">'+results[i].deletedCount+'</a></td>';
+		
+		else
+		 str +='<td>'+results[i].deletedCount+'</td>';
+		}
 		str +='</tr>';
 		
 		str +='</table>';
@@ -932,7 +947,7 @@ function showAllVoterInformationInALocation(results)
 		str+='<td>'+results[i].firstName+'</td>';
 		str+='<td style="text-align:center;">'+results[i].gender+'</td>';
 		str+='<td style="text-align:center;">'+results[i].age+'</td>';
-		str+='<td style="text-align:center;"><a style="cursor:pointer;" onclick="getVotersInAFamilyByPublication('+results[i].boothNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+results[i].houseNo+'\')">'+results[i].houseNo+'</a></td>';
+		str+='<td style="text-align:center;"><a style="cursor:pointer;color:#63AABF"  title="Click Here to know All the Family Members In this House" onclick="getVotersInAFamilyByPublication('+results[i].boothNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+results[i].houseNo+'\')">'+results[i].houseNo+'</a></td>';
 		str+='<td style="text-align:center;">'+results[i].status+'</td>';
 		str+='<td>'+results[i].boothName+'</td>';
 		str+='<td>'+results[i].panchayatName+'</td>';
@@ -1050,12 +1065,37 @@ var str='';
 			for(var k in publicationList)
 			  str +='<td>'+publicationList[k].id+'</td>';
 		
+		
+		if(myResults.modifiedVotersList[i].addedCount!=0)
 		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Added\')}">'+myResults.modifiedVotersList[i].addedCount+'</a></td>';
-		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Deleted\')}">'+myResults.modifiedVotersList[i].deletedCount+'</td>';
-		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Added\')}">'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+		else
+			str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
+		    
+		if(myResults.modifiedVotersList[i].deletedCount!=0)
+			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Deleted\')}">'+myResults.modifiedVotersList[i].deletedCount+'</td>';
+		else
+			str+='<td>'+myResults.modifiedVotersList[i].deletedCount+'</td>';
+			 
+		if(myResults.modifiedVotersList[i].maleVotersAdded!=0)	 
+			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Added\')}">'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+		else
+			str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+			
+		if(myResults.modifiedVotersList[i].maleVotersDeleted!=0)	
 		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Deleted\')}">'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+		else
+			str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+			
+		if(myResults.modifiedVotersList[i].femaleVotersAdded!=0)
             str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Added\')}">'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
+		else
+			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
+		
+		if(myResults.modifiedVotersList[i].femaleVotersDeleted!=0)
 		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Deleted\')}">'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
+		else
+			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
+			
 		  str+='</tr>';
 	 }
 	 }
@@ -1130,7 +1170,10 @@ function openNewWindow(locationType, locationId)
 }
 
 function getVotersInAFamilyByPublication(partNo,fromPublication,ToPublication,constituencyId,hNo){
-	$("#popupAjaxImage").show();
+
+	$.blockUI({ message: '<h4><img src="./images/icons/search.gif" />  Request Processing...</h4>',baseZ: 5000 }); 
+
+//	$("#popupAjaxImage").show();
     var jsObj=
 			{
 					
