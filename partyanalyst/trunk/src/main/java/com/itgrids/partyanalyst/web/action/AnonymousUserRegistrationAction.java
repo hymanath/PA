@@ -452,7 +452,9 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
             if(savedSuccessfully)
             {	
-				//regVO = loginService.checkForValidUser(userName, password);
+            	SelectOptionVO optionVO = loginService.getUserNameAndPWDByUserId(registrationId);
+            	
+				regVO = loginService.checkForValidUser(optionVO.getName(), optionVO.getUrl());
 				HttpSession session = request.getSession();			
 				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
 				//regVO.setUserStatus(IConstants.FREE_USER);
