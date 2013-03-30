@@ -139,6 +139,71 @@ body {
 .dd_menu li:hover ul li a {height:18px;color:#003366; padding:5px 0px; display:block; font-size:11px; width:208px; line-height:18px; text-indent:5px; color:#444; background:#d0e0ea; text-decoration:none; border:1px solid transparent;}
 .dd_menu li:hover ul li a:hover {height:18px; background:#c4d8e6; color:#003366; border:solid 1px #444;}
 
+
+
+#voterEditDetailsShowDIV table td{ padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#voterEditDetailsShowDIV table td{padding-right:3px !important;}
+#voterEditDetailsShowDIV table th{
+				padding:5px !important;
+
+			}
+#voterEditDetailsShowDIV{
+		font-family : arial;
+		font-size: 13px;
+		margin-top: 20px;
+		padding: 10px 10px 10px 15px;
+		
+		}
+#voterEditDetailsShowDIV table tr:nth-child(even){background:#EdF5FF;}
+
+		#voterDetailsDiv table th a{
+			color:#333333;
+
+		}
+	#voterEditDetailsShowDIV table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+	#voterEditDetailsShowDIV table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;
+	width:100%;background:#EdF5FF;padding:8px;padding-left:10px;font-weight:normal;
+	font:small-caption;color: #676A67;}
+
+	input[type="text"]{
+		border-radius: 4px 4px 4px 4px;
+		color: #000000;
+		display: inline-block;
+		font-size: 13px;
+		line-height: 18px;
+		padding: 4px;
+	}
+		#voterDetailsJqTable{
+		border: 1px lightBlue solid ;
+		width: 120px; 
+		height: auto;
+		margin-left: 151px;
+		margin-bottom: 15px;
+		background-color:white;
+		font-weight:bold;
+		border-radius: 5px 5px 5px 5px;
+		}	
+		.textClass{
+			width: 100px; 
+			height: 11px;
+		
+		}
+
+		.textClass1{
+			width: 44px; 
+			height: 11px;
+		
+		}
 </style>
 <script type="text/javascript">
 var selectedType="";
@@ -155,6 +220,32 @@ var selectedVotersArr = new Array();
 var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName;var RvoterNameType;var RguardianName;var Rgender;var RstartAge;var RendAge;var Rreqfields;var RreqfieldsArr;
 var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
  $(document).ready(function(){
+	$('.genderClass').live("keyup",function() {
+		$("#statusMsgDiv").html('');
+		var tal = $(this).val();
+		if(isNaN(tal)) {
+		}
+		else
+		{
+			$("#statusMsgDiv").html('Gender must be Character only');
+			return false;
+		}
+	});
+
+	$(".numericClass").live('keydown',function (event) {
+    var num = event.keyCode;
+    if ((num > 95 && num < 106) || (num > 36 && num < 41) || num == 9) {
+        return;
+    }
+    if (event.shiftKey || event.ctrlKey || event.altKey) {
+        event.preventDefault();
+    } else if (num != 46 && num != 8) {
+        if (isNaN(parseInt(String.fromCharCode(event.which)))) {
+            event.preventDefault();
+        }
+    }
+});
+
      $("#singleAttributeType").live("click",function(){
 	      $("#multipleVoterFamiliesEditDiv").html("");
 		 $('.allAttributeTypeClass').each(function() {
@@ -437,7 +528,15 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
 	{var x = 1;
 	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;RQueryType=queryType;RHouseNo=houseNo;RfromSno=fromSno;RtoSno=toSno;
     
-           $("#topButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');
+          /* $("#topButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><input class="btn" type="button" value="Edit Voter\'s Basic Info" style="margin-bottom:15px;margin-left: 10px;" onClick="getAllVoterFamiliesForEditWithSelection1();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');*/
+		 $("#topButtons").html('<input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input>');
+		if(isAdmin != null && isAdmin == 'true')
+		{
+			
+		  $("#topButtons").append('<input class="btn" type="button" value="Edit Voter\'s Basic Info" style="margin-bottom:15px;margin-left: 10px;" onClick="getAllVoterFamiliesForEditWithSelection1();"></input>');
+		}
+
+		$("#topButtons").append('<img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif">');
 		   $("#topButtons").append('<div style="margin-bottom: 10px;margin-right: 20px;float:right;" id="imgDescriptionDiv"><b style="margin-left: 5px">Influencing People</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/influencing.png" alt="Politicion" title="Politician"><b style="margin-left: 22px">Cadre</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/cadre.png" alt="Politicion" title="Cadre"><b style="margin-left: 22px">Politician</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/politican.png" alt="Politicion" title="Politician"></div>');
 		   $("#bottomButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Create Custom Groups(Cast,Party,Locaities)" onclick="openNewWindow();"/></div>');
 	    YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
@@ -1071,7 +1170,22 @@ function callAjaxForCandSearch(jsObj,url)
                                    {
 									$('#ajaxImageDiv1').css('display','none');
                                      buildInfluencePeopleSearchResults(myResults,jsObj.voterId);
-								   } 								   
+								   } 	
+									else if(jsObj.task == "getAllVotersDetails")
+                                   {
+									buildVoterEditInfoSearchResults(myResults);
+								   }
+								   else if(jsObj.task == "allVotersSearchInfo")
+									{
+									   if(myResults.numbers == null){
+											$("#statusMsgDiv").html('Updated Successfully').css('color','green');
+											return false;
+										}
+										if(myResults.numbers != null){
+											$("#statusMsgDiv").html('Please select Unique SerialNo Ranges').css("color","red");
+											return false;
+										}
+									}
 							}catch (e) {
 							     
 								}  
@@ -2148,6 +2262,310 @@ function refreshingchildWindowWindow()
 {
 	buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
 }
+
+function getAllVoterFamiliesForEditWithSelection1(){
+$("#imgDiv").show().css("display","inline-block");
+		  if(selectedVotersArr.length == 0){
+		    alert("Please select voters to edit");
+			return;
+		  }
+		 if(selectedVotersArr.length > 20)
+		  {
+			alert(" Please select atmost 20 voters to edit");
+			return;
+		  }
+		var jsObj=
+				{
+					task:"getAllVotersDetails",
+					selectedVoters:new Array(),
+					votersIds:selectedVotersArr,
+					publicationId:publicationId
+				}
+	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersInfoForEditAction.action?"+rparam;						
+		callAjaxForCandSearch(jsObj,url);
+}
+function buildVoterEditInfoSearchResults(result){
+	$("#imgDiv").hide();
+var str='';
+	$("#voterDetailsPopUp").dialog({ 
+	                            title:"<span style='margin-left:10px;'>Voter's Details Updation</span>",
+	                            height: 'auto',
+								width: 1050,
+								closeOnEscape: false,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 850,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+     });
+	 var divEle = document.getElementById("voterEditDetailsShowDIV");
+	if(result != null)
+	{
+	str +='<div>';
+	str+='<div align="center" id="VoterDetailsTitle" style="width:auto;"><h3 id="subHeading" >Voter Details </h3></div>';
+	str +='<div id="statusMsgDiv" style="width:300px;clear:both;"></div>';
+	str+=' <table id="voterDetailsJqTable" cellpadding="0" cellspacing="0" border="0"  width="100%">';
+	str+='<thead>';
+		str+='<tr>';
+			  str+='     <th>SNo</th>';
+  			  str+='     <th>Name</th>';
+			  str+='     <th>VoterIdCardNo</th>';
+			  str+='     <th>Gender</th>';
+			  str+='     <th>Age</th>';
+			  str+='     <th>House No</th>';
+			  str+='     <th>Guardian Name</th>';
+			  str+='     <th>Relationship</th>';
+			  str+='     <th>Serial No</th>';
+			  str+='     <th>Mobile No</th>';
+		str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	
+for(var i in result){
+
+		str+='<tr id=\"'+i+'\" class="textClass">';
+		str +='<td>'+result[i].count+'</td>';
+		str +='<td class="textClass"><input type="text" name="firstName" class="textClass nameClass" value="'+result[i].name+'"/></td>';
+		str +='<td class="textClass"><input type="text" name="voterIDCardNo" class="textClass VidCardClass" value="'+result[i].voterIdCardNo+'"/></td>';
+		str +='<td class="textClass"><input type="text" maxlength="1" name="gender" class="textClass1  genderClass" value="'+result[i].gender+'"/></td>';
+		str +='<td class="textClass"><input type="text" maxlength="3" name="age" class="textClass1 ageClass numericClass" value="'+result[i].age+'"/></td>';
+		str +='<td class="textClass"><input type="text" name="houseNo" class="textClass1 houseNoClass" value="'+result[i].houseNo+'"/></td>';
+		str +='<td class="textClass"><input type="text" name="relativeFirstName" class="textClass rNameClass" value="'+result[i].gaurdian+'"/></td>';
+		str +='<td class="textClass"><select name="relationshipType" class="textClass rTypeClass"  style="height:30px;font-size: 13px;">';
+		if(result[i].relationship == "Father"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father" selected="selected"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}else if(result[i].relationship == "Mother"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother" selected="selected"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}else if(result[i].relationship == "Husband"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband" selected="selected"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}else if(result[i].relationship == "Spouse"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse" selected="selected"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}
+		else if(result[i].relationship == "Son"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son" selected="selected"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}
+		else if(result[i].relationship == "Daughter"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter" selected="selected"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}
+		else if(result[i].relationship == "Brother"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother" selected="selected"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}
+		else if(result[i].relationship == "Sister"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister" selected="selected"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}
+		else if(result[i].relationship == "Child"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child" selected="selected"> Child </option>';
+		str+='<option value="Others"> Others </option>';
+		str+='</select></td>';
+		}else if(result[i].relationship == "Others"){
+		str+='<option value="0"> Select Relationship</option>';
+		str+='<option value="Father"> Father </option>';
+		str+='<option value="Mother"> Mother </option>';
+		str+='<option value="Husband"> Husband </option>';
+		str+='<option value="Spouse"> Spouse </option>';
+		str+='<option value="Son"> Son </option>';
+		str+='<option value="Daughter"> Daughter </option>';
+		str+='<option value="Brother"> Brother </option>';
+		str+='<option value="Sister"> Sister </option>';
+		str+='<option value="Child"> Child </option>';
+		str+='<option value="Others" selected="selected"> Others </option>';
+		str+='</select></td>';
+		}
+		str +='<td class="textClass"><input type="text" name="serialNo" id=serial'+i+' class="textClass1 serialNoClass numericClass" value="'+result[i].sNo+'"/></td>';
+		str +='<td class="textClass"><input type="text" name="mobileNo" class="textClass mobileNoClass numericClass" value="'+result[i].mobileNo+'"/></td>';
+		str +='<td style="padding-left: 0px;display:none"><input type="hidden" name="voterIds" class="textClass voterIdsClass" value="'+result[i].voterId+'"/></td>';
+		str +='<td style="padding-left: 0px;display:none"><input type="hidden" name="boothIds" class="textClass boothIdsClass" value="'+result[i].boothId+'"/></td>';
+		str+='</tr>';
+	
+	}
+	str+='</tbody>';
+	str+='</table>';
+	str+='<input type="button" value="Save" id="save"  style="margin-left: 460px;" class="btn-info btn-small"  onclick="updateVoterSearchDetails()"/>';
+	str+='</div>';
+	}
+	
+	 divEle.innerHTML = str;
+}
+function updateVoterSearchDetails(){
+	$('#statusMsgDiv').html('');
+	var votersEditInfo = new Array();
+	var flag = true;
+$('#voterDetailsJqTable tr').each(function() {
+		var firstName = $(this).closest("tr").find(".nameClass").val();
+		var voterIDCardNo = $(this).closest("tr").find(".VidCardClass").val();
+		var gender = $(this).closest("tr").find(".genderClass").val();
+		var age = $(this).closest("tr").find(".ageClass").val();
+		var houseNo = $(this).closest("tr").find(".houseNoClass").val();
+		var relativeFirstName = $(this).closest("tr").find(".rNameClass").val();
+		var relationshipType = $(this).closest("tr").find(".rTypeClass").val();
+		var serialNo = $(this).closest("tr").find(".serialNoClass").val();
+		var mobileNo = $(this).closest("tr").find(".mobileNoClass").val();
+		var voterIds = $(this).closest("tr").find(".voterIdsClass").val();
+		var boothIds = $(this).closest("tr").find(".boothIdsClass").val();
+
+ var obj={
+					 firstName:firstName,
+					 voterIDCardNo:voterIDCardNo,
+					 gender:gender,
+					 age:age,
+					 houseNo:houseNo,
+					 relativeFirstName:relativeFirstName,
+					 relationshipType:relationshipType,
+					 serialNo:serialNo,
+					 mobileNo:mobileNo,
+					 voterIds:voterIds,
+					 boothIds:boothIds,
+			   }
+						if(typeof(obj.serialNo) != 'undefined'){
+							 if(obj.firstName!=null && obj.voterIDCardNo !=null && obj.gender !=null && obj.age !=null && obj.houseNo !=null && obj.relativeFirstName !=null && obj.relationshipType !=null && obj.serialNo !=null && obj.voterIds!=null && obj.boothIds !=null  && obj.firstName != "" && obj.voterIDCardNo != "" && obj.gender != "" && obj.age  != "" && obj.houseNo != ""  && obj.relativeFirstName != ""  && obj.relationshipType  != ""  && obj.serialNo  != ""  && obj.voterIds != "" && obj.boothIds != "")
+							{
+								  if(!($.trim(mobileNo).length == 0 || ($.trim(mobileNo).length >=10 && $.trim(mobileNo).length<=12)))
+									{
+									$('#statusMsgDiv').html("Enter valid MobileNo").css("color","red");
+									flag =false;
+									return;
+									}
+									votersEditInfo.push(obj);
+							}
+							 else{
+								 $('#statusMsgDiv').html("Fields data can't be empty").css("color","red");
+									flag = false;
+							}
+						}
+ })
+
+	 if(flag == false)
+		return;
+	  var $current =$(".serialNoClass");
+     var flag = true;
+    $('input[name^="serial"]').each(function() {
+        if ($(this).val() == $current.val() && $(this).attr('id') != $current.attr('id'))
+        {
+          flag = false;
+        }
+    });
+	
+    if(flag == false)
+	{
+	$('#statusMsgDiv').html('Please enter unique serial No');
+	  	return;
+	}
+	if(flag == true)
+	{
+	$('#statusMsgDiv').html('');
+	 var jsObj=
+		  {
+			selectedVoters:votersEditInfo,
+			task:"allVotersSearchInfo"
+		  }
+		  	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVoterSearchDetailsForEditAction.action?"+rparam;						
+			callAjaxForCandSearch(jsObj,url);
+	}
+}
 </script>
 </head>
 <body>
@@ -2303,6 +2721,14 @@ function refreshingchildWindowWindow()
 	  </div>
 	  <input style="margin-left:265px;margin-bottom:10px;" onclick="getVotersInfo();" class="btn btn-success" type="button" value="Search"/>
 	   </fieldset>
+	   
+	 <div id="voterDetailsPopUp">
+	
+	 <div id="voterEditDetailsShowDIV">
+		
+	
+	 </div>
+	</div>
 	   <div id="topButtons"></div>
 	   <div><span id="topCount"></span><span id="topSelCount"></span></div>
 	   <div  id="votersBySearchTabContentDiv_body"   class="yui-skin-sam yui-dt-sortable"></div><div id="errorMessageDiv" style="display:none;font-weight:bold;color:red" align="center"></div>
@@ -2329,7 +2755,8 @@ function refreshingchildWindowWindow()
 	 </form>
 <script type="text/javascript">
   getCategoriesForAUserInital();
- 
+ var isAdmin = '${isAdmin}';
+
 	    var tabView = new YAHOO.widget.TabView('demo1'); 
 	
 </script>
