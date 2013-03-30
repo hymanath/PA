@@ -1008,19 +1008,19 @@ if(results == null || results.length == 0){
 		str+='<div class="row-fluid" style="text-align:center;margin-top:10px;margin-bottom:10px;">';
 
 		if(results[i].highImpactCount != null)
-			str+='<div class="span4"><span class="btn btn-danger">'+results[i].highImpactCount+'</span>'+'<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">High</a></div>';
+			str+='<div class="span4"><a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;color:#FFF;"><span class="btn btn-danger">'+results[i].highImpactCount+'</span></a>'+'<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">High</a></div>';
 		else
-			str+='<div class="span4"><span class="btn btn-danger">0</span>'+'<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">High</a></div>';
+			str+='<div class="span4"><a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;color:#FFF;"><span class="btn btn-danger">0</span></a>'+'<a href="javaScript:{getNews1(3,'+categoryId+','+results[i].highImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">High</a></div>';
 			
 		if(results[i].mediumImpactCount != null)
-			str+='<div class="span4"><span class="btn btn-info">'+results[i].mediumImpactCount+'</span>'+'<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">Medium</a></div>';
+			str+='<div class="span4"><a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;color:#FFF;"><span class="btn btn-info">'+results[i].mediumImpactCount+'</span></a>'+'<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">Medium</a></div>';
 		else
-			str+='<div class="span4"><span class="btn btn-info">0</span>'+'<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">Medium</a></div>';
+			str+='<div class="span4"><a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;color:#FFF;"><span class="btn btn-info">0</span></a>'+'<a href="javaScript:{getNews1(2,'+categoryId+','+results[i].mediumImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;">Medium</a></div>';
 			
 		if(results[i].lowImpactCount != null)
-			str+='<div class="span4"><span class="btn">'+results[i].lowImpactCount+'</span>'+'<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;" >Low</a></div>';
+			str+='<div class="span4"><a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;color:#000;"><span class="btn">'+results[i].lowImpactCount+'</span></a>'+'<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}" style="clear:both;display:inline-block;width:100%;text-align:center;" >Low</a></div>';
 		else
-			str+='<div class="span4"><span class="btn">0</span>'+'<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}"  style="clear:both;display:inline-block;width:100%;text-align:center;">Low</a></div>';
+			str+='<div class="span4"><a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}"  style="clear:both;display:inline-block;width:100%;text-align:center;color:#000;"><span class="btn">0</span></a>'+'<a href="javaScript:{getNews1(1,'+categoryId+','+results[i].lowImpactCount+');}"  style="clear:both;display:inline-block;width:100%;text-align:center;">Low</a></div>';
 			
 		str+='</div>';
 		str+='</div>';
