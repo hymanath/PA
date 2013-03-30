@@ -1328,11 +1328,12 @@ function editNewsDetails(fileId){
 	str+='<div>';
 	str += '<fieldset>';
 	
-	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"  style="padding-left:40px;" /></td></tr></table>';
-	str += '<table>';
+	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"/></td></tr></table>';
+	str += '<table style="display:-moz-inline-box;">';
 	str+='<tr>';
 	str+='<td class="tdWidth">Select News Gallery<font class="requiredFont">*</font></td>';
 	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryId" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
+	str +='<td>gallaryName - CandidateName</td>';
 	str+='</tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
