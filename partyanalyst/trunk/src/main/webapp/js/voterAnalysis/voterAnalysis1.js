@@ -6182,7 +6182,7 @@ scrollToNewsDiv();
              astr += "<div id='sses2'>";
              astr += "<ul>";
             astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
-            astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info "+mainname+"</a></li>";
+            astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "</div>";
 			astr += "</div>";
