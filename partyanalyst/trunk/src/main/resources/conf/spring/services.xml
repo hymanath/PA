@@ -6,7 +6,9 @@
 <beans>
 	
 	<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
-	<property name="voterPartyInfoDAO" ref="voterPartyInfoDAO"/>
+		<property name="voterPartyInfoDAO" ref="voterPartyInfoDAO"/>
+		<property name="voterDAO" ref="voterDAO" />
+		<property name="wardDAO" ref="wardDAO" />
 		<property name="votersAnalysisService" ref="votersAnalysisService"/>
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
