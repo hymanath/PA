@@ -400,7 +400,7 @@ function getCommentsClassifications(rank)
 			
 		}
 		
-		if(commentCategoryId == '' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
+		if(commentCategoryId == '' || commentCategoryId == 'Select Reason' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
 		{
 			alertMessageEl.innerHTML = 'Please Fill Mandatory Fields!';
 			return;		
