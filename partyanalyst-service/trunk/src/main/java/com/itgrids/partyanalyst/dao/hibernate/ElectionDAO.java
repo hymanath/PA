@@ -735,4 +735,10 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 	}
 	
+	public List getCountOfElectionYearsForAssembly(Long stateId,String electionType,String elecSubType){
+		Object[] params = {stateId, electionType,elecSubType,"0"};
+		return getHibernateTemplate().find("select count(model) from Election model " +
+				"where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and model.elecSubtype = ? and (model.isPartial is null or model.isPartial = ?)", params);
+	}
+	
 }
