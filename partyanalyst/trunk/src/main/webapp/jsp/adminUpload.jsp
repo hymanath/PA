@@ -503,7 +503,15 @@
 										</a>
 									</span><br>
 									</fieldset></td>
-								<td></td>
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Voter Edit Menu</legend>
+									<span class="fontStyle">
+										Voter's Edit Form:&nbsp;
+										<a class="alinkstyle" href="<s:url action="voterEditDataAction"/>"> Voter's Edit Form
+										</a>
+									</span><br>
+									</fieldset></td>
 								<td></td>
 								</tr>
 						</table>
