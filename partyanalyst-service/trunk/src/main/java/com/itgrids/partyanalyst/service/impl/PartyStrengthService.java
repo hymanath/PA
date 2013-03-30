@@ -514,7 +514,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  		try{
  			
  			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
- 				 allYears = electionDAO.getCountOfElectionYears(stateId,electionType,IConstants.ELECTION_SUBTYPE_MAIN);
+ 				 allYears = electionDAO.getCountOfElectionYearsForAssembly(stateId,electionType,IConstants.ELECTION_SUBTYPE_MAIN);
  			}else{
  				 allYears = electionDAO.getCountOfElectionYearsForParliament(stateId,electionType,IConstants.ELECTION_SUBTYPE_MAIN);
  			}	 		
