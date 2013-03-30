@@ -30,6 +30,7 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 	private IVotersAnalysisService votersAnalysisService;
 	
 	private EntitlementsHelper entitlementsHelper;
+	private String isAdmin ;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -114,13 +115,16 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 		this.request = arg0; 
 	}
 	
-	
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	public String execute() throws Exception
 	{
-		
-		
-		
-		
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
@@ -130,6 +134,10 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
 			return ERROR;
+		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
+				isAdmin = "true";
+			
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
