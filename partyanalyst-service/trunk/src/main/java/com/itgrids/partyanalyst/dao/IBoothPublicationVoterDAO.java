@@ -245,6 +245,14 @@ public interface IBoothPublicationVoterDAO extends
 	 public Long getTotalCastCountInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 		
 	 public List<Voter> findFamiliesInfoBypartNo(String partNo,Long publicationDateId,String houseNo,Long constituencyId);
+		
+	public List<Object[]> getVIdsAndSerialNoByBoothId(Long boothId,Long startIndex,Long endIndex);
+	
+	public Integer updateSerialNoByVIdBId(Long serialNo, Long voterId,Long boothId);
+	
+	public List<Long> checkSerialNoandVoterIdDuplicates(Long serialNo, Long voterId,Long boothId);
+	
+	public List<BoothPublicationVoter> getAllVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId);
 	 public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId);
 
 	 public Long getTotalVotersCountForHamletByBooth(Long userId , Long id,Long publicationDateId,String type , Long boothId);
