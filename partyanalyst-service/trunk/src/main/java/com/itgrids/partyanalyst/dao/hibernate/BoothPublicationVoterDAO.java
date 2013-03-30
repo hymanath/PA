@@ -2032,6 +2032,20 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 		
 	}
+
+	/** This Method is Used to get voterIds and serialno from booth_publication_voter based on booth_id */
+	public List<Object[]> getVIdsAndSerialNoByBoothId(Long boothId,Long startIndex,Long endIndex){
+
+	Query query = getSession().createQuery("select model.voter.voterId,model.serialNo from BoothPublicationVoter model " +
+	"where model.booth.boothId =:boothId and model.serialNo >= :startIndex and model.serialNo <= :endIndex");
+
+	query.setParameter("boothId", boothId);
+	query.setParameter("startIndex", startIndex);
+	query.setParameter("endIndex", endIndex);
+	return query.list();
+
+
+	}
 	public List<Object[]> getConstituenciesToMapPublicationData(Long fromPubliationId,Long toPublicationId)
 	{
 		Query query =getSession().createQuery("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId =:fromPubliationId and model.booth.publicationDate.publicationDateId !=:toPublicationId");
@@ -2284,6 +2298,39 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 		query.setParameter("hamletId", hamletId);
 		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
+
+	
+	public Integer updateSerialNoByVIdBId(Long serialNo, Long voterId,Long boothId)
+	{
+		Query query = getSession().createQuery("update BoothPublicationVoter model set model.serialNo = :serialNo where model.voter.voterId = :voterId and model.booth.boothId = :boothId");
+				
+		query.setParameter("serialNo",serialNo);
+		query.setParameter("voterId",voterId);
+		query.setParameter("boothId",boothId);
+		return query.executeUpdate();
+	}
+	
+	public List<Long> checkSerialNoandVoterIdDuplicates(Long serialNo, Long voterId,Long boothId)
+	{
+		Query query = getSession().createQuery("select model.serialNo from BoothPublicationVoter model where model.voter.voterId != :voterId and model.booth.boothId = :boothId and model.serialNo = :serialNo");
+		query.setParameter("serialNo",serialNo);
+		query.setParameter("voterId",voterId);
+		query.setParameter("boothId",boothId);
+		return query.list();
+	}
+	
+	public List<BoothPublicationVoter> getAllVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("from BoothPublicationVoter model where  " +
+				" model.voter.voterId in (:voterIds) and model.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" order by model.voter.voterId");
+		
+		query.setParameterList("voterIds", voterIds);
 		query.setParameter("publicationDateId", publicationDateId);
 		
 		return query.list();
