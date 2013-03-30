@@ -24,16 +24,18 @@ public interface IVoterReportService {
 	public void  getVotersCastWiseDetailsInALocationFromIntermediateTable(Long userId,Long reportLvlId,Long locationId,Long publicationDateId,Long constituencyId,VoterCastInfoVO voterCastInfoVO);
 		
 	/** This Method is used to get voterInfo by using boothId */
-	//public List<VoterVO> getVoterDetailsForAdminEdit(Long boothId,Long userId,Long startIndex,Long endIndex);
+	public List<VoterVO> getVoterDetailsForAdminEdit(Long boothId,Long userId,Long startIndex,Long endIndex);
 	public void getPartyNGenderWiseVotersCountByPublIdInALocFromIntermedTable(Long userId,Long reportLvlId,Long levelValue,Long publicationDateId,Long constituencyId,VoterCastInfoVO mainVO);
 	
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleMandal(List<SelectOptionVO> mandalsList,Long publicationDateId,Long userId,Long constituencyId);
 	
 	public List<VoterCastInfoVO> getVotersCastInfoForMultipleValues(List<SelectOptionVO> subList,Long publicationDateId,Long userId,Long constituencyId,Long locationLvl);
 	
-	  //public VoterVO saveVoterDetailsList(List<VoterVO> voterIds,Long userId,Long boothId);
+	public VoterVO saveVoterDetailsList(List<VoterVO> voterIds,Long userId,Long boothId);
 	  
-	  //public List<VoterHouseInfoVO> getVoterInfoByBIdandVId(List<VoterHouseInfoVO> votersList,Long publicationDateId);
+	public List<VoterHouseInfoVO> getVoterInfoByBIdandVId(List<VoterHouseInfoVO> votersList,Long publicationDateId);
 	  
-		//public VoterVO saveVoterSearchDetailsList(List<VoterVO> voterIds,Long userId);
+	public VoterVO saveVoterSearchDetailsList(List<VoterVO> voterIds,Long userId);
+		
+	public List<SelectOptionVO> getWardsInMunicipality(Long lclElecBodyId,Long publicationDateId);
 }
