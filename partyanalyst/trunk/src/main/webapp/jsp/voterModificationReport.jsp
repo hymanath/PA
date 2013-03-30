@@ -285,6 +285,7 @@
 <div id="voterimpFamDtlsOuterPopUp">
  <div id="voterimpFamDtls" class="yui-skin-sam yui-dt-sortable"></div>
  </div>
+ <div id="GenderOrAddedVotersPopup"><div id="GenderOrAddedVotersTable"><div></div>
 <script type="text/javascript">
 
 getPublicationDate();
