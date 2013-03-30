@@ -2267,6 +2267,7 @@ function getAllVoterFamiliesForEditWithSelection1(){
 $("#imgDiv").show().css("display","inline-block");
 		  if(selectedVotersArr.length == 0){
 		    alert("Please select voters to edit");
+		    $("#imgDiv").hide();
 			return;
 		  }
 		 if(selectedVotersArr.length > 20)
