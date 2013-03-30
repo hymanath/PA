@@ -4689,7 +4689,12 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				{
 					selectOptionVO = new SelectOptionVO();
 					selectOptionVO.setId((Long)params[0]);
-					selectOptionVO.setName(params[1].toString());
+					if(params[2] == null)
+					params[2] = "";
+					if(params[3] == null)
+						params[3] = "";
+					
+					selectOptionVO.setName(params[1].toString()+" - "+params[2].toString()+" "+params[3].toString());
 					gallarySelectList.add(selectOptionVO);
 				}
 			}

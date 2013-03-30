@@ -46,7 +46,7 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 	{
 		
 		
-		Query query = getSession().createQuery("select distinct model.gallaryId,model.name from Gallary model where model.candidate.candidateId in(:candidateIds) and model.contentType.contentType = :contentType and model.isDelete = 'false' order by model.name asc");
+		Query query = getSession().createQuery("select distinct model.gallaryId,model.name,model.candidate.firstname,model.candidate.lastname from Gallary model where model.candidate.candidateId in(:candidateIds) and model.contentType.contentType = :contentType and model.isDelete = 'false' order by model.name asc");
 		
 		query.setParameterList("candidateIds", candidateIds);
 		query.setParameter("contentType", contentType);
