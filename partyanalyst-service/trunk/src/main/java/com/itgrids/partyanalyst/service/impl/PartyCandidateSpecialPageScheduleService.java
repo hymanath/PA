@@ -216,7 +216,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 				log.error("Exception rised in sendAllMails ",e);
 			}
 		}
-		//sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
+		sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
 		sendMailToMeForTesting(updatesFrom,userDetails,dailyUpdatesVO);
 		log.info("sendAllMails() Execution completed");
 	}
@@ -279,12 +279,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private void getDaillyUpdatesForCandidatePageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{log.info("getDaillyUpdatesForCandidatePageSubscribers() Execution started");
-		Set<Long> usersIds = new HashSet<Long>();
+	/*Set<Long> usersIds = new HashSet<Long>();
 		usersIds.add(1234l);
 		usersIds.add(411l);
 		//usersIds.add(411l);
 		usersIds.add(487l);
-		/*usersIds.add(754l);
+		usersIds.add(754l);
 		usersIds.add(771l);
 		usersIds.add(958l);
 		usersIds.add(2032l);
@@ -304,15 +304,19 @@ public class PartyCandidateSpecialPageScheduleService implements
 				jdbcExceptionOccured = false;
 			 try{
 				 //getting all candidate subscribed details
+			  log.info("getting  subscriberDetailsList for candidates started ");
 		       subscriberDetailsList = candidateSubscriptionsDAO.getAllSubscriberDetails();
+		      log.info("getting  subscriberDetailsList for candidates executed successfully ");
 			 }
 			 catch(DataAccessResourceFailureException jdbcExe){
 				 jdbcExceptionOccured = true;
 				 log.error("DataAccessResourceFailureException occured while getting  subscriberDetailsList for candidates for "+count+" time : ", jdbcExe);
+				 Thread.sleep(1000);
 			 }
 			 catch(JDBCConnectionException jdbcExe){
 				 jdbcExceptionOccured = true;
 				 log.error("JDBCConnectionException occured while getting  subscriberDetailsList for candidates for "+count+" time : ", jdbcExe);
+				 Thread.sleep(1000);
 			 }catch(Exception e){
 				 log.error("Exception occured while getting  subscriberDetailsList for candidates : ", e);
 			 }
@@ -328,7 +332,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			}
 		      for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-		    	 if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) && usersIds.contains((Long)subscriberDetail[2])){
+		    	 if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0]))){
 		    	 // adding all candidates to set
 			     candidateIds.add((Long)subscriberDetail[0]);
 			     //for each candidate creating one EmailNotificationVO to set all updates related to him to this VO for ex: news , photos,videos updates
@@ -365,15 +369,19 @@ public class PartyCandidateSpecialPageScheduleService implements
 				   jdbcExceptionOccured = false;	
 			       try{
 			    	 //getting all photo gallery updates for all candidates 
-			        photosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"photos");
+			    	   log.info("getting  photosList for Candidates started ");
+			           photosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"photos");
+			           log.info("getting  photosList for Candidates executed successfully ");
 			       }
 			       catch(DataAccessResourceFailureException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("DataAccessResourceFailureException occured while getting  photosList for candidates for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 					 }
 			       catch(JDBCConnectionException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("JDBCConnectionException occured while getting photosList for candidates for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				   }
 			       catch(Exception e){
 					 log.error("Exception occured while getting  photosList for Candidates: ", e);
@@ -386,15 +394,19 @@ public class PartyCandidateSpecialPageScheduleService implements
 				   jdbcExceptionOccured = false;	  
 			       try{
 			    	 //getting all news gallery updates for all candidates
-			        newsList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"news");
+			    	   log.info("getting  newsList for Candidates started ");
+			            newsList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"news");
+			           log.info("getting  newsList for Candidates executed successfully ");
 			       }
 			       catch(DataAccessResourceFailureException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("DataAccessResourceFailureException occured while getting  newsList for candidates for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				   }
 			        catch(JDBCConnectionException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("JDBCConnectionException occured while getting newsList for candidates for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				   }catch(Exception e){
 						 log.error("Exception occured while getting  newsList for Candidates: ", e);
 				   }
@@ -406,15 +418,19 @@ public class PartyCandidateSpecialPageScheduleService implements
 				   jdbcExceptionOccured = false; 
 			       try{
 			    	 //getting all video gallery updates for all candidates 
-			        videosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"videos");
+			    	log.info("getting  videosList for Candidates started ");
+			          videosList = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(startDate,endDate,candidateIds,"videos");
+			        log.info("getting  videosList for Candidates executed successfully ");
 			        }
 			        catch(DataAccessResourceFailureException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("DataAccessResourceFailureException occured while getting videosList for candidates for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 					 }
 			        catch(JDBCConnectionException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("JDBCConnectionException occured while getting videosList for candidates for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				    }catch(Exception e){
 						 log.error("Exception occured while getting  videosList for Candidates: ", e);
 				    }
@@ -523,12 +539,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private void getDaillyUpdatesForPartyPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{log.info("getDaillyUpdatesForPartyPageSubscribers() Execution started");
-		Set<Long> usersIds = new HashSet<Long>();
+	/*Set<Long> usersIds = new HashSet<Long>();
 		usersIds.add(1234l);
 		usersIds.add(411l);
 		//usersIds.add(411l);
 		usersIds.add(487l);
-		/*usersIds.add(754l);
+		usersIds.add(754l);
 		usersIds.add(771l);
 		usersIds.add(958l);
 		usersIds.add(2032l);*/
@@ -546,13 +562,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 				jdbcExceptionOccured = false;
 				try{
 					//getting all party page subscribed details
-				  subscriberDetailsList = partySubscriptionsDAO.getAllSubscriberDetails();
+					log.info("getting  subscriberDetailsList for party  started ");
+				     subscriberDetailsList = partySubscriptionsDAO.getAllSubscriberDetails();
+				    log.info("getting  subscriberDetailsList for party executed successfully ");
 			   }catch(DataAccessResourceFailureException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("DataAccessResourceFailureException occured while getting subscriberDetailsList for party for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			   }catch(JDBCConnectionException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("JDBCConnectionException occured while getting  subscriberDetailsList for party for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			   }catch(Exception e){
 					 log.error("Exception occured while getting  subscriberDetailsList for party : ", e);
 			   }
@@ -569,7 +589,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			
 			 for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) && usersIds.contains((Long)subscriberDetail[2])){
+				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) ){
 		    	 // adding all parties to set
 				 partyIds.add((Long)subscriberDetail[0]);
 			     //for each party creating one EmailNotificationVO to set all updates related to party to this VO for ex: news , photos,videos updates
@@ -607,13 +627,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 					 jdbcExceptionOccured = false;
 					 try{
 					 //getting all photo gallery updates for all parties 
-					 photosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"photos");
+						 log.info("getting  photosList for party started ");
+					      photosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"photos");
+					    log.info("getting  photosList for party executed successfully ");
 					 }catch(DataAccessResourceFailureException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("DataAccessResourceFailureException occured while getting photosList for party for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 					 }catch(JDBCConnectionException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("JDBCConnectionException occured while getting photosList for party for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				     }catch(Exception e){
 						 log.error("Exception occured while getting  photosList for party : ", e);
 					 }
@@ -626,13 +650,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 					 jdbcExceptionOccured = false;
 					 try{
 						//getting all news gallery updates for all parties 
+						 log.info("getting  newsList for party started ");
 						 newsList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"news");
+						 log.info("getting  newsList for party executed successfully ");
 				     }catch(DataAccessResourceFailureException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("DataAccessResourceFailureException occured while getting newsList for party for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 					 }catch(JDBCConnectionException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("JDBCConnectionException occured while getting newsList for party for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				     }catch(Exception e){
 						 log.error("Exception occured while getting  newsList for party : ", e);
 					 }
@@ -645,13 +673,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 					 jdbcExceptionOccured = false; 
 					 try{
 						//getting all video gallery updates for all parties
+						 log.info("getting  videosList for party started ");
 						 videosList = fileGallaryDAO.getPartyGallaryDetailsForSubscribers(startDate,endDate,partyIds,"videos");
+						 log.info("getting  videosList for party executed successfully ");
 					 }catch(DataAccessResourceFailureException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("DataAccessResourceFailureException occured while getting videosList for party for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 					 }catch(JDBCConnectionException jdbcExe){
 						 jdbcExceptionOccured = true;
 						 log.error("JDBCConnectionException occured while getting videosList for party for "+count+" time : ", jdbcExe);
+						 Thread.sleep(1000);
 				     }catch(Exception e){
 						 log.error("Exception occured while getting  videosList for party : ", e);
 					 }
@@ -759,12 +791,12 @@ public class PartyCandidateSpecialPageScheduleService implements
 	
 	private void getDaillyUpdatesForSpecialPageSubscribers(Date startDate,Date endDate,Map<Long,EmailNotificationVO> allSubscribersData,List<Long> ids)
 	{log.info("getDaillyUpdatesForSpecialPageSubscribers() Execution started");
-		Set<Long> usersIds = new HashSet<Long>();
+	/*Set<Long> usersIds = new HashSet<Long>();
 		usersIds.add(1234l);
 		usersIds.add(411l);
 		//usersIds.add(411l);
 		usersIds.add(487l);
-		/*usersIds.add(754l);
+		usersIds.add(754l);
 		usersIds.add(771l);
 		usersIds.add(958l);
 		usersIds.add(2032l);
@@ -782,13 +814,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 				jdbcExceptionOccured = false; 
 				try{
 				 //getting all special page subscribed details
-				 subscriberDetailsList = specialPageSubscriptionsDAO.getAllSubscriberDetails();
+					log.error("getting subscriberDetailsList for specialPage started ");
+				     subscriberDetailsList = specialPageSubscriptionsDAO.getAllSubscriberDetails();
+				    log.error("getting subscriberDetailsList for specialPage executed successfully ");
 			    }catch(DataAccessResourceFailureException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("DataAccessResourceFailureException occured while getting subscriberDetailsList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			    }catch(JDBCConnectionException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("JDBCConnectionException occured while getting  subscriberDetailsList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 				}catch(Exception e){
 					 log.error("Exception occured while getting  subscriberDetailsList for specialPage : ", e);
 				}
@@ -805,7 +841,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			
 			for(Object[] subscriberDetail : subscriberDetailsList)
 		       {
-				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0]))  && usersIds.contains((Long)subscriberDetail[2])){
+				if((ids == null || ids.isEmpty() || ids.contains((Long)subscriberDetail[0])) ){
 		    	 // adding all special pages to set
 				 specialPageIds.add((Long)subscriberDetail[0]);
 			     //for each special page creating one EmailNotificationVO to set all updates related to special page to this VO for ex: news , photos,videos updates
@@ -842,13 +878,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 			  for(int count = 0 ; count<5 ; count++){
 				 jdbcExceptionOccured = false;	 
 				 try{
-				  photosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"photos");
+					 log.error(" getting  photosList for specialPage started");
+				       photosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"photos");
+				      log.error(" getting  photosList for specialPage executed successfully");
 			     }catch(DataAccessResourceFailureException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("DataAccessResourceFailureException occured while getting photosList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			     }catch(JDBCConnectionException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("JDBCConnectionException occured while getting photosList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			     }catch(Exception e){
 					 log.error("Exception occured while getting  photosList for specialPage : ", e);
 				 }
@@ -860,13 +900,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 			  for(int count = 0 ; count<5 ; count++){
 				 jdbcExceptionOccured = false;	  
 				 try{
-				  newsList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"news");
+					 log.error(" getting  newsList for specialPage started");
+				      newsList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"news");
+				     log.error(" getting  newsList for specialPage executed successfully");
 			     }catch(DataAccessResourceFailureException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("DataAccessResourceFailureException occured while getting newsList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			     }catch(JDBCConnectionException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("JDBCConnectionException occured while getting newsList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			     }catch(Exception e){
 					 log.error("Exception occured while getting  newsList for specialPage : ", e);
 				 }
@@ -878,13 +922,17 @@ public class PartyCandidateSpecialPageScheduleService implements
 			  for(int count = 0 ; count<5 ; count++){
 				 jdbcExceptionOccured = false;	
 				 try{
-				  videosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"videos");
+					 log.error(" getting  videosList for specialPage started");
+				      videosList = fileGallaryDAO.getSpecialPageGallaryDetailsForSubscribers(startDate,endDate,specialPageIds,"videos");
+				     log.error(" getting  videosList for specialPage executed successfully");
 				 }catch(DataAccessResourceFailureException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("DataAccessResourceFailureException occured while getting videosList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			     }catch(JDBCConnectionException jdbcExe){
 					 jdbcExceptionOccured = true;
 					 log.error("JDBCConnectionException occured while getting videosList for specialPage for "+count+" time : ", jdbcExe);
+					 Thread.sleep(1000);
 			     }catch(Exception e){
 					 log.error("Exception occured while getting  videosList for specialPage : ", e);
 				 }
