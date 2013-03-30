@@ -1089,6 +1089,9 @@
 	<property name="cadreManagementService" ref="cadreManagementService" />
 	<property name="sendUpdatesService" ref="sendUpdatesService" />
 	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	<property name="voterReportService" ref="voterReportService" />
+	<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="dailyUpdatesSendAction" class="com.itgrids.partyanalyst.web.action.DailyUpdatesSendAction" singleton="false">	
