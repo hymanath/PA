@@ -1,3 +1,7 @@
+
+
+
+
 var constMgmtMainObj={
 							
 							castStatsArray:[],
@@ -883,13 +887,16 @@ function addToPolitician(voterId,name)
 			$("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 			$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 			$("#votersBasicInfoBtnDiv").show();
-			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+			
+		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+	   
+	   
 	   }
 	   else if(type == "booth"){
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		  $("#votersBasicInfoBtnDiv").show();
-		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	   }else if(type == "hamlet"){
 		   $("#votersBasicInfoBtnDiv").show();
 		// $("#cnstHeading").html();
@@ -905,6 +912,7 @@ function addToPolitician(voterId,name)
 		 $("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" Hamlet in "+publicationYear+" ");
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
+		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Cast Info of '+mainname+'" class="btn btn-info">');
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
@@ -955,6 +963,11 @@ function addToPolitician(voterId,name)
 			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
+		 if(type != "hamlet")
+		 {
+		 $("#castTab").html('');
+		 }
+		
 		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
 		 //--
@@ -1231,7 +1244,20 @@ function addToPolitician(voterId,name)
 
 	function ShowCastPartyPopupDiv(){
 	
-	 getCastInfoForsubLevel(mainreqid,$("#publicationDateList").val(),maintype);
+	 getCastInfoForsubLevel(mainreqid,$("#publicationDateList").val(),maintype,"");
+
+	    $("#castPartyPopupDiv").dialog({
+            modal: true,
+            title: "<b>Voters Details - Caste Wise</b>",
+			width: 980,
+            height: 600
+           
+        });
+		$("#voterCasteAjaxImg").css("display","block");
+	}
+	function ShowCastSubLevelPopupDiv(resultFor){
+	
+	 getCastInfoForsubLevel(mainreqid,$("#publicationDateList").val(),maintype,resultFor);
 
 	    $("#castPartyPopupDiv").dialog({
             modal: true,
@@ -2273,6 +2299,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		var	subLevelcastInfo = new Array();
 		var cast = myresults.castVosList;
 		var typeName=jsObj.typeName;
+		var res=jsObj.resultFor;
 		for(var i in cast)
 		{
 		if(cast[i].voterCastInfoVO != null)
@@ -2323,9 +2350,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
 		else if(type =="ward")
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
-		else if(type =="hamlet")
-		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Ward</h4>';
-			
+		else if(type =="hamlet"){
+		   if(res == "booth")
+		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Hamlet</h4>';
+		else
+		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+			}
 		
 		str+='<thead>';
 		str+='<tr>';
@@ -2339,7 +2369,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		if(type =="ward")
 		str +='<th>Booth</th>';
 		if(type =="hamlet")
+		{ if(res == "booth")
+		str +='<th>Booth</th>';
+		else
 	    str +='<th>Locality</th>';
+		
+		}
 		if(type =="booth")
 	    str +='<th>Hamlet</th>';
 
@@ -2594,16 +2629,26 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 		flag = false;
 	}
 	errorDivEle.innerHTML = str;*/
+	var hresult="";
 	if(true)
 	{
 	if(type == "booth")
 	buildType="hamlet";
+	
 	//errorDivEle.innerHTML = '';		
 	 impFamltype = type;
      impFamlId = id;
      impFamlpublicationDateId = publicationDateId;
      impFamltypename = typename;
-	 
+	 if(type == "hamletBooth"){
+	 hresult="booth";
+	type="hamlet";
+	
+	}
+	if(type == "hamletLocal"){
+	type="hamlet";
+	hresult="localArea";
+	}
    if(buttonType == "voters"){
 	  showAjaxImgDiv('ajaxImageDiv');
 	var jsObj=
@@ -2616,6 +2661,7 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 				typename:typename,
 				constituencyId:$("#constituencyList").val(),
                 buildType:buildType,
+				resultFor:hresult,
 				task:"votersbasicinfo"
 	
 			}
@@ -3400,6 +3446,11 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+='   <tr>';
 		  str+='     <th>Select</th>';
          // str+='     <th>SNo</th>';
+		 if(type == "panchayat" && jsObj.buildType =="hamlet" )
+		  str+='     <th>Hamlet</th>';
+		   if(type == "hamlet" )
+		  str+='     <th>LocalArea</th>';
+		  
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
@@ -3418,6 +3469,11 @@ function buildPartyWisePiechart(myResults,jsObj)
 	      str +='   <tr>';
 		  str +='		<td><input class="impFamilMulSel" id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
          // str +='		<td>'+sno+'</td>';
+		  if(type == "panchayat" && jsObj.buildType =="hamlet" )
+		  str +='		<td>'+result[i].hamletName+'</td>';
+		    if(type == "hamlet" )
+		  str +='		<td>'+result[i].localAreaName+'</td>';
+		  
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
@@ -3436,7 +3492,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
 
-		  if(jsObj.buildType =="hamlet" && type == "panchayat" )
+		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet"))
 	       {
 			  $('#impFamPancBothDtlsAgxImgForHamlet').html(str);
 			  $('#impFamPancBothDtlsAgxImgForHamle').hide();
@@ -4842,6 +4898,9 @@ chart.draw(data, options);
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 { 
+      $("#votersBasicInfoSubChartDiv").html('');
+	  $("#votersBasicInfoSubDiv").html('');
+	  
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	hideAjaxImgDiv('ajaxImageDiv');
 	$("#votersInfoAjaxImg").css("display","none");
@@ -4994,7 +5053,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			}
 		}
 				
-		else if(jsObj.type=="hamlet"){
+		else if(jsObj.type=="hamlet" && jsObj.resultFor == "localArea"){
 			var totalvoterlclbds=votersbasicinfo.assignedVotersForLocalBodies+votersbasicinfo.unassignedVotersForLocalBodies;
 			strl ='';
 			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
@@ -6116,11 +6175,23 @@ scrollToNewsDiv();
  
 	 	 $("#votersShareBtn1").css('display','block');
 	   $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
-      $("#votersShareBtn1").html("");      
-	  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>LocalArea Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know LocalArea Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+      $("#votersShareBtn1").html("");  
+ 		var astr="";
+			 astr += "<div id='tabsForLocal'  class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
+             astr += "<div id='sse2'>";
+             astr += "<div id='sses2'>";
+             astr += "<ul>";
+            astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+            astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info "+mainname+"</a></li>";
+            astr += "</ul>";
+			astr += "</div>";
+			astr += "</div>";
+			astr += "</div>";
+			$("#votersShareBtn1").html(astr);	  
+	  //$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>LocalArea Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know LocalArea Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
-	
+		mybuildMenu();
 getAllTabs(boothid,mainpublicationId,maintype);
 
 }
@@ -7633,3 +7704,137 @@ function refreshingchildWindowWindow()
 {
 	getVotersData();
 }
+
+
+var rebound = 20; //set it to 0 if rebound effect is not prefered
+    var slip, rak;
+
+function mybuildMenu(){
+
+ var m = document.getElementById('sses2');
+            if (!m) return;
+		//	debugger;
+            var ul = m.getElementsByTagName("ul")[0];
+            m.style.width = ul.offsetWidth + 1 + "px";
+            var items = m.getElementsByTagName("li");
+            var a = m.getElementsByTagName("a");
+
+            slip = document.createElement("li");
+            slip.className = "highlight";
+            ul.appendChild(slip);
+
+            var url = document.location.href.toLowerCase();
+            rak = -1;
+            var nLength = -1;
+            for (var i = 0; i < a.length; i++) {
+                if (url.indexOf(a[i].href.toLowerCase()) != -1 && a[i].href.length > nLength) {
+                    rak = i;
+                    nLength = a[i].href.length;
+                }
+            }
+
+            if (rak == -1 && /:\/\/(?:www\.)?[^.\/]+?\.[^.\/]+\/?$/.test) {
+                for (var i = 0; i < a.length; i++) {
+                    if (a[i].getAttribute("maptopuredomain") == "true") {
+                        rak = i;
+                        break;
+                    }
+                }
+                if (rak == -1 && a[0].getAttribute("maptopuredomain") != "false")
+                    rak = 0;
+            } 
+            if (rak > -1) {
+                slip.style.width = items[rak].offsetWidth + "px";
+                //slip.style.left = items[rak].offsetLeft + "px";
+                mymove(items[rak]); //comment out this line and uncomment the line above to disable initial animation
+            }
+            else {
+                slip.style.visibility = "hidden";
+            }
+
+            for (var i = 0; i < items.length - 1; i++) {
+                items[i].onmouseover = function () {
+                    if (rak == -1) slip.style.visibility = "visible";
+                    if (this.offsetLeft != slip.offsetLeft) {
+                        mymove(this);
+                    }
+                }
+            }
+
+            m.onmouseover = function () {
+                if (slip.t2)
+                    slip.t2 = clearTimeout(slip.t2);
+            };
+
+            m.onmouseout = function () {
+                if (rak > -1 && items[rak].offsetLeft != slip.offsetLeft) {
+                    slip.t2 = setTimeout(function () { mymove(items[rak]); }, 50);
+                }
+                if (rak == -1) slip.t2 = setTimeout(function () { slip.style.visibility = "hidden"; }, 50);
+            }
+}
+function mymove(target)
+{
+ clearInterval(slip.timer);
+            var direction = (slip.offsetLeft < target.offsetLeft) ? 1 : -1;
+         slip.timer = setInterval(function () { mymv(target, direction); }, 15);
+
+}
+function mymv(target, direction) {
+          if (direction == 1) {
+                if (slip.offsetLeft - rebound < target.offsetLeft)
+                    this.mychangePosition(target, 1);
+                else {
+                    clearInterval(slip.timer);
+                    slip.timer = setInterval(function () {
+                        myrecoil(target, 1);
+                    }, 15);
+                }
+            }
+            else {
+                if (slip.offsetLeft + rebound > target.offsetLeft)
+                    this.mychangePosition(target, -1);
+                else {
+                    clearInterval(slip.timer);
+                    slip.timer = setInterval(function () {
+                        myrecoil(target, -1);
+                    }, 15);
+                }
+            }
+            this.mychangeWidth(target);
+			}
+			
+ function myrecoil(target, direction) {
+            if (direction == -1) {
+                if (slip.offsetLeft > target.offsetLeft) {
+                    slip.style.left = target.offsetLeft + "px";
+                    clearInterval(slip.timer);
+                }
+                else slip.style.left = slip.offsetLeft + 2 + "px";
+            }
+            else {
+                if (slip.offsetLeft < target.offsetLeft) {
+                    slip.style.left = target.offsetLeft + "px";
+                    clearInterval(slip.timer);
+                }
+                else slip.style.left = slip.offsetLeft - 2 + "px";
+            }
+        }
+		
+		function mychangePosition(target, direction) {
+            if (direction == 1) {
+                //following +1 will fix the IE8 bug of x+1=x, we force it to x+2
+                slip.style.left = slip.offsetLeft + Math.ceil(Math.abs(target.offsetLeft - slip.offsetLeft + rebound) / 10) + 1 + "px";
+            }
+            else {
+                //following -1 will fix the Opera bug of x-1=x, we force it to x-2
+                slip.style.left = slip.offsetLeft - Math.ceil(Math.abs(slip.offsetLeft - target.offsetLeft + rebound) / 10) - 1 + "px";
+            }
+        }
+		function mychangeWidth(target) {
+            if (slip.offsetWidth != target.offsetWidth) {
+                var diff = slip.offsetWidth - target.offsetWidth;
+                if (Math.abs(diff) < 4) slip.style.width = target.offsetWidth + "px";
+                else slip.style.width = slip.offsetWidth - Math.round(diff / 3) + "px";
+            }
+        }
