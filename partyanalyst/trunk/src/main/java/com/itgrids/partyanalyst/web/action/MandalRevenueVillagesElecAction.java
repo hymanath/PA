@@ -158,13 +158,13 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			if("panchayat".equalsIgnoreCase(resultType)){
 			 partiesResults = constituencyPageService.
 					findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
+			 chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+"P.png";
 			}else{
 			 partiesResults = biElectionPageService.
 					findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
+			 chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+"RV.png";
 			}		
 			request.setAttribute("checkedType",resultType);
-			long  dt = new Date().getTime();
-			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+""+dt+".png";
 			if(cPath.contains("PartyAnalyst"))
 	            chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
 			else
@@ -195,9 +195,13 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		}
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
-			long  dt = new Date().getTime();
-			chartName = dt+chartName;
-			townshipBoothDetailsVO.get(i).setChartName(chartName);
+			if("panchayat".equalsIgnoreCase(resultType)){
+				chartName = "P"+chartName;
+				townshipBoothDetailsVO.get(i).setChartName(chartName);
+			}else{
+				chartName = "RV"+chartName;
+				townshipBoothDetailsVO.get(i).setChartName(chartName);
+			}
 			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
 			if(cPath.contains("PartyAnalyst"))
 			    chartPath = context.getRealPath("/") + "charts\\" + chartName;
