@@ -428,4 +428,10 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return getHibernateTemplate().find("select count(*) from User model");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserNameAndPwdByUserId(Long userId)
+	{
+		return getHibernateTemplate().find("select model.userName, model.password from User model where model.userId = ? ", userId);
+	}
+	
 }

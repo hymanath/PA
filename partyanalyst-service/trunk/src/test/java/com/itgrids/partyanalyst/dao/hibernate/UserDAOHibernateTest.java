@@ -9,6 +9,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.User;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
@@ -274,7 +275,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testgetAllUsersInSelectedLocations()
+	/*public void testgetAllUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(10l);
@@ -311,5 +312,12 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}
+	*/
 	
+	public void testGetUserNameAndPWDByUserId()
+	{
+		List<Object[]> list = userDAO.getUserNameAndPwdByUserId(1l);
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]);
+	}
 }
