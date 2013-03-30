@@ -318,4 +318,21 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				return queryString.list();
 			}
 	
+			/** This Method is used to get voterInfo based on voterIds for AdminEdit */
+			public List<Voter> getVoterInfoByVoterId(List<Long> voterIds){
+				String queryString = "select model from Voter model " +
+						"where model.voterId in (:voterIds)";
+				Query query = getSession().createQuery(queryString);
+
+				query.setParameterList("voterIds", voterIds);
+				return query.list();
+			}
+
+			public Voter getVoterByVoterID(Long voterID)
+			{
+				Query query = getSession().createQuery("select model from Voter model where model.voterId = :voterID");
+				query.setParameter("voterID", voterID);
+				return (Voter)query.uniqueResult();
+			}
+
 }
