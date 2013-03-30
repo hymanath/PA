@@ -345,6 +345,7 @@
 						problem:'${prob.problem}', 
 					  	description:'${prob.description}',
 						existingFrom:'${prob.existingFrom}',
+						postedDate:'${prob.postedDate}',
 						problemLocation:'${prob.problemLocation}',
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',

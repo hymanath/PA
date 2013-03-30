@@ -369,6 +369,11 @@ function initializeResultsTable(divId, problemDetails, caption) {
 		key : "existingFrom",
 		label : localizationObj.existingFrom
 		},
+		{
+		key : "existingFrom",
+		label : localizationObj.existingFrom
+		},
+		
 			 {
 		key : "status",
 		label : localizationObj.status,
@@ -412,6 +417,7 @@ function buildProblemsDetailsDT(results) {
 					problem:results[i].problem, 
 				  	description:results[i].description,
 					existingFrom:results[i].existingFrom,
+					postedDate:results[i].postedDate,
 					problemLocation:results[i].problemLocation,
 					problemSourceScope:results[i].problemSourceScope,
 					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
@@ -444,7 +450,13 @@ function buildProblemsDetailsDT(results) {
 			        					key : "existingFrom",
 			        					label : localizationObj.existingFrom,
 			        					sortable : true
-			        				}, {
+			        				}, 
+										{
+			        					key : "postedDate",
+			        					label : localizationObj.postedDate,
+			        					sortable : true
+			        				},	
+										{
 			        					key : "problemLocation",
 			        					label : "Location",
 			        					sortable : true
@@ -469,7 +481,7 @@ function buildProblemsDetailsDT(results) {
 			        		var probDTDataSource = new YAHOO.util.DataSource(problemsArr);
 			        		probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 			        		probDTDataSource.responseSchema = {
-			        			fields : [ "problem", "description", "existingFrom", 
+			        			fields : [ "problem", "description", "existingFrom", "postedDate",
 			        			           "problemLocation", "problemSourceScope", "problemAmdProblemSourceId", 
 			        			           "status" , "more"]
 			        		};
