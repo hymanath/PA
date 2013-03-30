@@ -282,7 +282,9 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 			type.add(IConstants.PARLIAMENT_ELECTION_TYPE);
 		}
 		
+		states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		
+		session.setAttribute("states", states);
 		session.setAttribute("type", type);
 		session.setAttribute("userType", userType);
 		session.setAttribute("gender", gender);
