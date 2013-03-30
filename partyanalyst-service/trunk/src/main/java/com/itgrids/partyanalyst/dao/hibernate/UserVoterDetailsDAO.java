@@ -601,5 +601,50 @@ IUserVoterDetailsDAO{
 			
 			return query.list();
 		}
+		 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long hamleId,Long publicationDateId)
+			{
+				
+				StringBuilder query = new StringBuilder();
+				
+				query.append("select distinct concat('Booth-',model1.booth.partNo) , " +
+						"SUM( CASE WHEN model1.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
+						"SUM( CASE WHEN model1.voter.gender='M' THEN 1 ELSE 0 END) as malecount " +
+						"from UserVoterDetails model , " +
+						"BoothPublicationVoter model1 " +
+						   " join model1.booth " +
+						" where model.voter.voterId = model1.voter.voterId and " +
+						" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
+						" model.hamlet.hamletId = :hamletId " +
+						"and model.user.userId = :userId " +
+						"group by model1.booth.partNo ");
+				
+				
+				
+				Query queryObj = getSession().createQuery(query.toString()) ;
+				queryObj.setParameter("publicationDateId", publicationDateId);
+				queryObj.setParameter("hamletId", hamleId);
+				queryObj.setParameter("userId", userId);
+				return queryObj.list();
+		
+				
+			}
+			public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId)
+			{
+				
+				
+				Query query = getSession().createQuery("select distinct model1.booth.boothId" +
+						" from UserVoterDetails model," +
+						"BoothPublicationVoter model1 "+					
+						" where model.user.userId = :userId and model.voter.voterId = model1.voter.voterId and " +
+						" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
+						"model.hamlet.hamletId is not null and "+
+						" model.hamlet.hamletId = :hamletId");
+				
+				query.setParameter("userId", userId);
+				query.setParameter("hamletId", hamletId);
+				query.setParameter("publicationDateId", pubId);
+				
+				return query.list();
+			}
 	
 }

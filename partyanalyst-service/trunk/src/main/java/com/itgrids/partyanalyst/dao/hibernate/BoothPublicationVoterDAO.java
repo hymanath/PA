@@ -840,10 +840,12 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	
 	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId)
 	{
+		
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
-				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.voter.cast,model.booth.boothId ,model.voter.voterId , " +
 				" model.voter.gender,model.voter.age,model.booth.partNo from BoothPublicationVoter model where  " +
-				" model.voter.voterId in (:voterIds) and model.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" model.booth.publicationDate.publicationDateId =:publicationDateId and  " +
+				" model.voter.voterId in(:voterIds) "+
 				" order by model.voter.voterId");
 		
 		query.setParameterList("voterIds", voterIds);
@@ -2250,4 +2252,41 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 			return queryObject.list();
 		}
+	
+	
+	public List<Object[]> getVoterDetailsByPanchayatIds(Long panchayatId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
+				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.voter.gender,model.voter.age,model.booth.partNo,model1.hamlet.hamletName  from BoothPublicationVoter model , UserVoterDetails model1 , " +
+				"PanchayatHamlet model2 where  " +
+				"model1.hamlet.hamletId = model2.hamlet.hamletId and "+
+				" model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
+				"model2.panchayat.panchayatId = :panchayatId and model1.user.userId = :userId "+
+				" order by model1.hamlet.hamletName");
+		
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
+	public List<Object[]> getVoterDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
+				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.voter.gender,model.voter.age,model.booth.partNo,model1.locality.name  from BoothPublicationVoter model , UserVoterDetails model1  " +
+				" where  " +
+				" model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
+				"model1.hamlet.hamletId = :hamletId and model1.user.userId = :userId "+
+				" order by model1.hamlet.hamletName");
+		
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
 }
