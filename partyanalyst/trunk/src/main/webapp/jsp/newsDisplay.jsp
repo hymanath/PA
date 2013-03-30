@@ -2400,13 +2400,13 @@ function getVideoDetails(contentId)
 	$.fx.speeds._default = 1000;
 	  $("#showContentDiv").dialog({ stack: false,
 								height: 'auto',
-								width: 950,
+								width:1000,
 								closeOnEscape: true,
 								position:[30,30],
 								show: "blind",
 								hide: "explode",
 								modal: true,
-								maxWidth : 950,
+								maxWidth : 1000,
 								minHeight: 650,
 								title:'News Gallery',
 								overlay: { opacity: 0.5, background: 'black'},
@@ -2496,7 +2496,7 @@ function buildContentDetails()
 
 	str += '<Div><center>';
 	str += '<div class="main-title-sec" style="clear:both;">';
-	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
+	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:900px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
 
 	
 	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
@@ -2518,30 +2518,31 @@ function buildContentDetails()
 		{
 
 
-			str+='<table>';
+			str+='<table style="display: -moz-inline-box;">';
 			str+='<tr>';
 			str+='<td>';
 
 			
 
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+				str+='<B>CategoryType</B>:<font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font>';
+			 str+='</td>';
 
+			str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
-				str+=' RegionScope  </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
-
-
+				str+='<B>Region Scope</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'</font>';
 			 str+='</td>';
 
 			 str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
-				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
-
-			if(result.relatedGalleries[0].filesList[i].fileDate != null)
-				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
-
-
+				str+='<B>Source</B>:<font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font>';
 			 str+='</td>';
+
+			 str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].fileDate != null)
+				str+='<B>Date</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+			 str+='</td>';
+			
 			 str+='<td>';
            
 				//str+='<a href="javaScript:{}"><i class="icon-tag"></i></a>';
@@ -2688,7 +2689,7 @@ function buildContentDetails()
 				   str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[result.relatedGalleries[0].filesList.length-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 				}
 			  }
-			str += '<td><div class="popupcontainer" id="nextPartImage" style="width:700px;text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+			str += '<td><div class="popupcontainer" id="nextPartImage" style="width:780px;text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
 
 
 
@@ -2816,7 +2817,7 @@ function buildContentDetails()
 
 		str += '<Div><center>';
 		str += '<div class="main-title-sec" style="clear:left;">';
-		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' galleries</div><div class="main-bbg"/></div>';
+		str += '<div class="main-mbg" style="width:900px;border-radius:0px 0px 0px 0px;">Other '+galType+' galleries</div><div class="main-bbg"/></div>';
 		
 		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
