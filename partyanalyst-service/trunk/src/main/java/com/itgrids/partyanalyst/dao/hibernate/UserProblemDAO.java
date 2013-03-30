@@ -1352,7 +1352,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	@SuppressWarnings("unchecked")
 	public List<UserProblem> getLatestProblemsForUser(Long userId,Long statusId,Integer startIndex,Integer maxIndex)
 	{
-		Query query = getSession().createQuery("from UserProblem model where model.user.userId=:userId and model.problem.problemStatus.problemStatusId =:statusId and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) order by model.updatedTime desc");
+		Query query = getSession().createQuery("from UserProblem model where model.user.userId=:userId and model.problem.problemStatus.problemStatusId =:statusId and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) order by model.problem.updatedTime desc");
 		query.setParameter("statusId", statusId);
 		query.setParameter("userId", userId);
 		query.setFirstResult(startIndex);
@@ -1363,7 +1363,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	public List<Long> getProblemsByStatusAndBetweenDates(Long userId,Long statusId, Date fromDate, Date toDate)
 	{
 		Query query = getSession().createQuery("select model.userProblemId from UserProblem model where date(model.updatedTime) >=:fromDate and date(model.updatedTime) <=:toDate and " +
-					" model.user.userId =:userId and model.problem.problemStatus.problemStatusId =:statusId and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') order by model.updatedTime desc");
+					" model.user.userId =:userId and model.problem.problemStatus.problemStatusId =:statusId and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') order by model.problem.updatedTime desc");
 		query.setParameter("userId", userId);
 		query.setParameter("statusId", statusId);
 		query.setParameter("fromDate", fromDate);
@@ -1376,7 +1376,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	public List<Long> getProblemsByBetweenDates(Long userId,Date fromDate, Date toDate)
 	{
 		Query query = getSession().createQuery("select model.userProblemId from UserProblem model where date(model.updatedTime) >=:fromDate and date(model.updatedTime) <=:toDate and " +
-					" model.user.userId =:userId and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') order by model.updatedTime desc");
+					" model.user.userId =:userId and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') order by model.problem.updatedTime desc");
 		query.setParameter("userId", userId);
 		
 		query.setParameter("fromDate", fromDate);
