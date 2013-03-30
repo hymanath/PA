@@ -322,6 +322,10 @@ margin-left: 10px;
 .detailedChartBtn:hover{color:#FFF;}
 .detailedChartBtn{font-weight:bold;}
 #resultsDataTableDiv{font-family:arial;}
+#elecResDiv > table * td,#elecResDiv > table * th {height:22px;}
+#censusSelectDiv, #electionIdsSelectDiv{font-family:verdana;font-size: 11px;}
+#elecResDiv caption{ margin-left: 350px !important;}
+#labelRadioDiv{font-family:verdana;font-size:11px;}
 	  </style>
 	  </head>
 	<div class="clear"></div>
