@@ -453,7 +453,7 @@ function buildProblemsDetailsDT(results) {
 			        				}, 
 										{
 			        					key : "postedDate",
-			        					label : localizationObj.postedDate,
+			        					label : "Posted Date",
 			        					sortable : true
 			        				},	
 										{
