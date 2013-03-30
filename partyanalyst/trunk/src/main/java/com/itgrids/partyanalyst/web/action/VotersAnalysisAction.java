@@ -545,9 +545,16 @@ public String getVoterDetails(){
 		try{
 			jObj = new JSONObject(param);
 			constituencyId = jObj.getLong("constituencyId");
+		
+			String res=	jObj.getString("buildType");
+		String type=jObj.getString("type");
+		
+		if(type.equalsIgnoreCase("hamlet"))
+		{
+			res=jObj.getString("resultFor");
+		}
 			
-			
-			 votersInfo = votersAnalysisService.getVotersCount(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
+			 votersInfo = votersAnalysisService.getVotersCount(userId,type,jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,res);
 
 			
 		}catch (Exception e) {
@@ -653,11 +660,22 @@ public String getVotersCastInfoByConstituency()
 	}
 	else if(jObj.getString("task").equalsIgnoreCase("getCastInfoForsubLevels"))
 	{
+
 		constituencyManagementVO = new ConstituencyManagementVO();
 		String id = jObj.getString("id");
 		String type = jObj.getString("type");
 		String publicationId = jObj.getString("publicationDateId");
 		String buildType = jObj.getString("buildType");
+	
+		
+		
+		if(type.equalsIgnoreCase("hamlet"))
+		{
+			String res=jObj.getString("resultFor");
+			if(res.equalsIgnoreCase("booth"))
+				buildType=res;
+			else buildType="localArea";
+		}
 		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"),buildType,jObj.getString("queryType"));
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 	
@@ -857,6 +875,7 @@ public String getImportantFamaliesDetailsForHamlet(){
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	Long userId =  regVO.getRegistrationID();
 	
+	
 	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamaliesDetailsForPanchayatByHamlet(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
 	return Action.SUCCESS;
 }
@@ -872,7 +891,7 @@ public String getVotersFamilyDetails(){
 		
 		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
 		 
-			votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"));
+			 votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"));
 			 //votersFamilyInfo=new  ArrayList<VoterHouseInfoVO>();
 				else
 			//votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
