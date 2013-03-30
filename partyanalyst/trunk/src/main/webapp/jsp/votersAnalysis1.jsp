@@ -899,6 +899,67 @@ margin-left:10px;
     font-family: verdana;
 }
 </style>
+<style>
+
+
+
+#sse2
+{
+    /*You can decorate the menu's container, such as adding background images through this block*/
+    background-color: #0088CC;
+    height: 38px;
+    padding: 15px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+#sses2
+{
+    margin:0 auto;/*This will make the menu center-aligned. Removing this line will make the menu align left.*/
+}
+#sses2 ul 
+{ 
+    position: relative;
+    list-style-type: none;
+    float:left;
+    padding:0;margin:0;
+}
+#sses2 li
+{
+    float:left;
+    list-style-type: none;
+    padding:0;margin:0;background-image:none;
+}
+/*CSS for background bubble*/
+#sses2 li.highlight
+{
+    background: #003366 url("./styles/images/rak.gif") no-repeat center bottom;; 
+    top:0px;
+    height:30px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    z-index: 1;
+    position: absolute;
+    overflow:hidden;
+}
+#sses2 li a
+{
+    height:30px;
+    padding-top: 8px;
+    margin: 0 20px;/*used to adjust the distance between each menu item. Now the distance is 20+20=40px.*/
+    color: #fff;
+    font: normal 14px arial;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    position: relative;
+    z-index: 2;
+}
+</style>
+
+</SCRIPT>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
 	var votersLimitExist = false;
@@ -1442,7 +1503,11 @@ for  body3 start    result  -->
 		<div id="localCastChatDiv"></div>
 	</div>
 	
-	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div><hr>
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
+	<div id='castTab'></div>
+	<div id='localityTab'></div>
+
+	<hr>
 	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
 	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
 	<div id="partyWiselocalcastDiv" style="margin-top:20px;margin-bottom:50px;"></div>
@@ -1508,7 +1573,7 @@ for  body3 start    result  -->
 		window.open($(this).attr('url'));		
 	});
 
-function getCastInfoForsubLevel(id,publicationId,type)
+function getCastInfoForsubLevel(id,publicationId,type,resultFor)
 	{
 	document.getElementById('localCastStatsVotersTitle').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody').innerHTML='';
@@ -1588,6 +1653,7 @@ function getCastInfoForsubLevel(id,publicationId,type)
 				publicationDateId:publicationId,
 				constituencyId:$("#constituencyList").val(),
                 buildType:buildType,
+				resultFor:resultFor,
                 queryType:"sub",
 				task:"getCastInfoForsubLevels"				
 		};
