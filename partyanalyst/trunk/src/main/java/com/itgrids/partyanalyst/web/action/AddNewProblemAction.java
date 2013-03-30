@@ -498,9 +498,11 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 						 String value ="";
 						 if(problemScopeId == 6){
 							 value = ""; 
+							 if(constituencyId != null)
 							 mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, "RURAL");
 						 }
 						 if(problemScopeId == 8){
+							 if(constituencyId != null)
 							 mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, "URBAN");
 						 }
 						String locationValue = locationId.toString();
