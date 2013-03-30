@@ -85,5 +85,9 @@ public class WardDAO extends GenericDaoHibernate<Ward, Long> implements
 		  
 		  
 	 }
-	 
+	  public List<Object[]> findWardsByAssemblyLocalElectionBodyId(Long  alebi,Long publicationId ){
+		  Object[] params = {alebi,publicationId};
+		  List<Object[]> li = getHibernateTemplate().find(" ");
+		  return 	li;
+	  }
 }
