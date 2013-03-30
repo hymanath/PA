@@ -187,11 +187,11 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
 		String cPath = request.getContextPath();
 		String chartPath="";
+		String elecId = staticDataService.getLatestAssemblyElectionId();
 		if("panchayat".equalsIgnoreCase(resultType)){
-			String elecId = staticDataService.getLatestAssemblyElectionId();
 			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandal(tehsilId,elecId,constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(tehsilId,new Long(elecId.trim())).get(0).getRevenueVillageElectionVO());	
 		}else{			
-			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);	
+			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,elecId);	
 		}
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
