@@ -587,4 +587,22 @@ public class LoginService implements ILoginService{
 			return registrationVO;
 		}
 	}
+	
+	public SelectOptionVO getUserNameAndPWDByUserId(Long userId)
+	{
+		SelectOptionVO selectOptionVO = new SelectOptionVO();
+		try{
+			List<Object[]> list = userDAO.getUserNameAndPwdByUserId(userId);
+			if(list != null && list.size() > 0)
+			{
+				selectOptionVO.setName(list.get(0)[0].toString());
+				selectOptionVO.setUrl(list.get(0)[1].toString());
+			}
+			return selectOptionVO;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getUserNameAndPWDByUserId() Method, Exception - "+e);
+			return selectOptionVO;
+		}
+	}
 }

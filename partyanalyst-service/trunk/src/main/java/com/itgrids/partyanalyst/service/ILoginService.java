@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 
 public interface ILoginService {
@@ -25,4 +26,7 @@ public interface ILoginService {
 	public String checkUserCurrentPassword(String crntpassword,String userName);
 	
 	public RegistrationVO getUserBasicDetails(Long userId);
+	
+	public SelectOptionVO getUserNameAndPWDByUserId(Long userId);
+	
 }
