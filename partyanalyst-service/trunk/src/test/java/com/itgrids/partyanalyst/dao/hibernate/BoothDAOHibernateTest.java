@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDAOHibernateTest extends BaseDaoTestCase{
@@ -241,12 +242,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(data.get(0));
 	}*/
 	
-/*public void testgetBoothsInAMunicipality()
+	/*public void testgetPanchayatiesCount()
 	{
-	List<Object[]> list = boothDAO.getBoothsInAMunicipality(2l,8l,253l);
+	List<Object[]> list = boothDAO.getBoothsInAMunicipality(20l,7l);
 	System.out.println(list.size());
 	}
-*/
+	*/
 	
 	/*public void testgetBoothIdsByPanchayatIds()
 	{
@@ -314,6 +315,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(ward[0]+"   "+ward[1].toString());
 	}	*/
 
+	
 	/*public void testgetWardIdsByLocalEleBodyIdsList()
 	{
 		List<Long> localEleBodyIds = new ArrayList<Long>(0);
@@ -355,9 +357,9 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(booths[0]+" "+booths[1]);
 		}
 		
-	}
+	}*/
 	
-	public void testGetBoothsInAMandalByPublicationAndConstId()
+/*	public void testGetBoothsInAMandalByPublicationAndConstId()
 	{
 		List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstId(844l,7l, 232l);
 		if(list != null && list.size() > 0)
@@ -365,14 +367,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	/*public void testgetBoothsByPanchayatId()
+	public void testString()
 	{
-		List<Object[]> list = boothDAO.getBoothsByPanchayatId(1l);
-		if(list != null && list.size() > 0)
-			for(Object[] params : list)
-				System.out.println(params[0]+" "+params[1]);
-	}*/
-	
+		Booth booth = boothDAO.get(3489l);
+		String vill=booth.getVillagesCovered();
+        String vill1=vill.replace("'"," ").replace("\"", " ").replace("\r", "");
+	System.out.println(vill1);
+		
+	}
 	/*public void testgetBoothsInAPanchayatByPublicationId()
 	{
 		List<Object[]> list = boothDAO.getBoothsInAPanchayatByPublicationId(1407l, 7l);
@@ -404,5 +406,6 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(wardIds.size());
 		
 	}*/
+	
 	
 }
