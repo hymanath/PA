@@ -29,6 +29,9 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Revenue Villages Wise Election Results</title>
 
@@ -217,12 +220,45 @@ legend
 </style>
 
 <link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
-
+  
 <script type="text/javascript">
+
+google.load("visualization", "1", {packages:["corechart"]});
+</script>
+<script type="text/javascript">
+var votingData = [];
+var linechartData = [];
+// Pie chart
+<c:forEach var="status" items="${townshipBoothDetailsVO[0].townshipVotingTrends}">
+			var obj =	{
+							townshipName:'${status.townshipName}',
+							percentage:${status.percentageOfValidVotes},
+							title:'${townshipBoothDetailsVO[0].chartTitle}'
+						};
+			votingData.push(obj);
+		</c:forEach>
+//Line chart
+<c:forEach var="data" items="${townshipWiseElectionResults[0].revenueVillageElectionVO}">
+<c:forEach var="data2" items="${data.partyElectionResultVOs}">
+<c:forEach var="data1" items="${townshipWiseElectionResults[0].candidateNamePartyAndStatus}">
+
+var obj = {
+	townshipName : '${data.townshipName}',
+	partyName	 : '${data1.party}',
+	votesPercentage :${data2.votesPercentage}
+};
+
+linechartData.push(obj);
+</c:forEach>
+</c:forEach>
+</c:forEach>
+
+
 			var mandalId = "${tehsilId}" ;
 			var mandalName = "${mandalName}";
 			var electionType = "${electionType}";
-			
+			var electionId = "${electionId}";
+			var electionYear = "${electionYear}";
 			function getTownshipwisePartiesVotesShare(rank)
 			{
 				var jsObj=
@@ -253,7 +289,9 @@ legend
 					rvStr += '<table width="100%" border="0">';
 					rvStr += '<tr>';
 					rvStr += '<td style="vertical-align:top;" align="left">';
-					rvStr += '<img width="750" src="charts/${constiElec.chartPath}"/>';
+					//rvStr += '<img width="750" src="charts/${constiElec.chartPath}"/>';
+
+					rvStr+='<div id="lineChartDiv"></div>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '<tr>';
@@ -268,6 +306,7 @@ legend
 					rvStr += '	<div style="height: 40px; background-image: url(\'images/icons/tv9Icons/header_body_blue.png\');"><span style="color:#0C2640; font-size: 20px; font-weight: bold; position: relative; top: 7px;">All Parties Performance In Revenue Villages </span></div></td>';
 					rvStr += '	<td><img src="images/icons/tv9Icons/right_blue_main.png"></td>';
 					rvStr += '</table>';
+					
 
 					
 					rvStr += '<div id="votesPollingInMandalDIV" style="margin-top:40px;">';
@@ -297,7 +336,8 @@ legend
 				    rvStr += '<table>';	
 				    rvStr += '<tr>';		
 				    rvStr += '<td align="left">';	
-				    rvStr += '<img src="charts/${votesPollingInMandal.chartName}">';	
+				   // rvStr += '<img src="charts/${votesPollingInMandal.chartName}">';	
+					rvStr+='<div id="chartDiv"></div>';
 				    rvStr += '</td>';		
 				    rvStr += '</tr>';		
 				    rvStr += '</table>';								
@@ -330,7 +370,7 @@ legend
 					rvStr += '</div></div>';
 					
 					rvStr += '<br/><br/>';
-
+					
 					rvStr += '<div id="candidateDetails" class="yui-skin-sam">';
 					rvStr += '<table align="left" width="50%" border="0">';
 					rvStr += '	<tr>';
@@ -479,9 +519,13 @@ legend
 										{
 											buildVillagewiseVotesShare(jsObj,resultVO);
 										}
+										else if(jsObj.task == "getAllPartiesDetailsAjax")
+									{
+										showAllPartiesResultsChart(resultVO);
+									}
 															
 								}catch (e)  {   
-								   	//alert("Invalid JSON result" + e);   
+								   	alert("Invalid JSON result" + e);   
 								}  
 			               },
 			               scope : this,
@@ -812,13 +856,124 @@ legend
 
 
 <script type="text/javascript">
+
+
+	function displayVotesPollingGraph()
+	{
+	
+	var result = votingData;
+	var ctitle = result[0].title;
+	var data = new google.visualization.DataTable();
+		data.addColumn('string','townshipName');
+		data.addColumn('number','percentage');
+				
+		data.addRows(result.length);
+
+		for(var j=0; j<result.length; j++)
+				{
+					
+					data.setValue(j,0,result[j].townshipName);
+					data.setValue(j,1,result[j].percentage);
+					
+				}
+					var chart = new google.visualization.PieChart(document.getElementById('chartDiv'));
+			
+		chart.draw(data,{width: 400, height: 280,legend:'right', 
+		legendTextStyle:{fontSize:12},title:ctitle,titleTextStyle:{fontName:'verdana',fontSize:9}});
+}
+//All Parties Performance In Different Elections Linechart
+	function showAllPartiesResultsChart(result)
+	{
+		
+
+	var chartResultDiv = document.getElementById("lineChartDiv");
+	var chartColumns = result[0].candidateNamePartyAndStatus;
+	var chartRows =result[0].revenueVillageElectionVO; 
+	var constituencyName = result[0].constituencyName;
+    var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'party');
+ 
+     var partiesArray = new Array();
+
+	
+     //for chart columns
+	 for(var i in chartColumns)
+	 {
+		if(chartColumns[i].party == "IND")
+	   var colData = chartColumns[i].party +"["+chartColumns[i].rank+"]" ;
+	  if(chartColumns[i].party != "IND")
+		var colData = chartColumns[i].party;
+	 
+	   data.addColumn('number', colData);
+		if(chartColumns[i].party == "IND")
+	   partiesArray.push(chartColumns[i].party +[chartColumns[i].rank]);
+		if(chartColumns[i].party != "IND")
+		partiesArray.push(chartColumns[i].party);
+	 }
+     //data.addRows(chartRows.length);
+      //for chart rows
+	  for(var j in chartRows)
+	  {
+		  
+		  var array1 =[];
+		  var townshipName = chartRows[j].townshipName;
+		  array1.push(townshipName);
+
+		 for(var k in chartRows[j].partyElectionResultVOs)
+		  {
+			 
+			  var votesPercentage = parseFloat(chartRows[j].partyElectionResultVOs[k].votesPercentage);
+              array1.push(votesPercentage);
+			
+		  }
+		 
+		  data.addRow(array1);
+	  }
+   
+	 var ctitle = 'All Parties Performance In '+electionType+' '+electionYear+' In'+constituencyName+' Constituency By Revenue Villages In '+mandalName+'';
+	 var chartResultDiv = document.getElementById("lineChartDiv");
+
+      //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+		  new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle,colors:staticColors,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+	  else
+	  {
+          new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+}
+
+function getAllPartiesDetails()
+{
+ var jsObj = {
+			mandalId:mandalId,
+			electionId:electionId,
+			resultFor:"village",
+			task:"getAllPartiesDetailsAjax"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getAllPartiesDetailsAction.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+}
+
 	displayVillageElecResults("number");
 	if('${windowTask}' == "includeVotingTrendz" )
 	{
 		getRevenueVillagesInfo();
 	}
+	
 	buildVotesPolledDataTable();
+
 	getTownshipwisePartiesVotesShare('1');
+
+	displayVotesPollingGraph();
+	getAllPartiesDetails();
 </script>
 </body>
 </html>

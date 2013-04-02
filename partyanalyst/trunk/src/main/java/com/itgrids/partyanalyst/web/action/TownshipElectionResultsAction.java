@@ -261,6 +261,12 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        constituencyObj.setChartPath(chartName);
 		}
 		
+		
+		if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
+			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandal(tehsilId,electionId.toString(),townshipWiseElectionResults.get(0).getRevenueVillageElectionVO());
+		else
+			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionId.toString());		
+		
 		createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionId.toString());	
 		return SUCCESS;
 	}
@@ -342,6 +348,28 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		partyVillageLevelAnalysisVO = biElectionPageService.villageLevelPArtyAnalysis(new Long(mandalId), electionType, electionYear, Integer.parseInt(rank),isPanchayatWise);
 		
 		return Action.SUCCESS;
+	}
+	
+	public String getAllPartiesData()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Long mandalId = new Long(jObj.getLong("mandalId"));
+		Long electionId = new Long(jObj.getLong("electionId"));
+		
+		if(jObj.getString("resultFor").equalsIgnoreCase("panchayat"))
+			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(mandalId, electionId);
+		else
+			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
+		return Action.SUCCESS;	
 	}
 	
 	
