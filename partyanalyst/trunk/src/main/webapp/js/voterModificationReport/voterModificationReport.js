@@ -472,7 +472,7 @@ function showVoterInfo(results,jsObj)
 	$('#voterInfoDiv').html('');
 
 	var str = '';
-	str +='<div class="voterinfoHeading"><h2>Voters Basic Information In '+locationName+' '+locationType+'</h2></div>';
+	str +='<div class="voterinfoHeading"><h2>Voters Basic Information In '+locationName+' '+locationTypeVar+'</h2></div>';
 	
 	if(results != null)
 	{
