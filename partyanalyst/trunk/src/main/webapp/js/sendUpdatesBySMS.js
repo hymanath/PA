@@ -79,13 +79,14 @@
 		}
 
 		//For voterEditData
-		$('#msgDiv').html('&nbsp;');
+		$('#msgDiv').html('');
 		$("#voterDetailsDiv").html("");
 		$('#statusMsgDiv').html('');
 		$("#savediv1").css("display","none");
 		$("#savediv").css("display","none");
 		$("#startIndex").val('');
 		$("#endIndex").val('');
+		$("#successDiv").css("display","none");
 		var emList = document.getElementsByName("mandalList");		
 		if(emList.length > '0' || value == '0'){
 		var selectedElmt=document.getElementById("panchayatList");
@@ -256,7 +257,7 @@
 	}
 
 	function buildWardsList(results,jsObj)
-	{ 
+	{ 	alert(results.length);
 	if(results.length == 1)
 		$("#msgDiv").html('Data not available');
 		var selectElmt =jsObj.selectElmt;
@@ -441,6 +442,11 @@
 										$("#wardInfoAjaxImg").hide();
 										buildWardsList(myResults,jsObj);								
 								}
+								if(jsObj.task == "getWardsForVoter")
+								{     
+										$("#wardInfoAjaxImg").hide();
+										buildWardsList(myResults,jsObj);								
+								}
 								if(jsObj.task == "getBooths")
 								{  										
 										buildBoothsList(myResults,jsObj);								
@@ -452,6 +458,12 @@
 									$('#imageForMail').hide();
 									$('#successMsgDiv').html(myResults.resultState+'  Messages Sent Successfully');
 									}
+								}
+								if(jsObj.task == "getPublicationDate")
+								{
+								$('#publicationAjaxImage').css('display','none');
+
+									buildPublicationDateList(myResults);
 								}
 							}catch (e) { 
 							     $("#votersEditSaveAjaxImg").hide();
@@ -540,21 +552,94 @@
 	}
 	
 	//For Editing voter details for Admin
+		function getPanchayatListForVoter(checkedele,selectedEle)
+	{
+		$("#wardInfoAjaxImg").show().css("display","inline-block");
+		$('#tableRowB').remove();
+		$('#errorMsgDiv').html('&nbsp;');
+		$('#msgDiv').html('');
+		var scope = $('#listValue').val();	
+		var publicationDateId=$("#publicationDateList").val();
+		var mandalId=document.getElementById("mandalList");
+		var name=mandalId.options[mandalId.selectedIndex].name;
+		var value1=mandalId.options[mandalId.selectedIndex].value;	
+
+		if(scope=="Panchayat" || scope=="Booth"){
+		var selectedElmt=document.getElementById("panchayatList");
+		removeSelectElements(selectedElmt);
+		}	
+		//For voterEditData
+		var epList = document.getElementsByName("panchayatList");		
+		if(epList.length > '0' || value1 == '0'){
+		var selectedElmt=document.getElementById("panchayatList");
+		var selectedElmts=document.getElementById("boothList");
+		removeSelectElements(selectedElmt);
+		removeSelectElements(selectedElmts);
+		}
+		//end
+		addCssStyle();
+		if(value1 == 0)
+		{
+			$('#panchayatList').css("border","1px solid lightBlue");
+			$('#boothList').css("border","1px solid lightBlue");
+			$('#errorMsgDiv').html('Please Select Mandal or Municipality or Corporation');
+			//For voterEditData
+			$('#msgDiv').html('Please Select Mandal or Municipal Corporation');
+			$("#wardInfoAjaxImg").hide();
+			//End
+		return false;
+		}
+		if(value1.charAt(0) =="1")
+		{	
+			var jsObj ={ 	
+			id:value1,
+			publicationDateId:publicationDateId,
+			task:"getWardsForVoter"	
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getPanchayatByMandalForVoterAction.action?"+rparam;					
+			callAjax(jsObj,url);
+			return false;
+		}		
+		if(value1.charAt(0) =="2")
+		{ 
+			var value = value1.substring(1);
+			var jsObj=
+			{
+			selected:value,
+			checkedele:checkedele,
+			task:"getPanchayat"
+			}		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getPanchayatByMandalAction.action?"+rparam;	
+			callAjax(jsObj,url);
+			return false;	
+		}		
+	}
+	//For Editing voter details for Admin
 	function getBoothInfo(val){
 		 $("#boothInfoAjaxImg").show().css("display","inline-block");
 		boothValue="editdata";
 		var constituencyId=document.getElementById("userAccessConstituencyList").value;
 		var mandalId=document.getElementById("mandalList").value;
+		var publicationDateId=$("#publicationDateList").val();
+		if(publicationDateId == 0){
+		$('#msgDiv').html('Please Select Publication Date');
+		$('#boothInfoAjaxImg').hide();
+		return;
+		}
+		$('#msgDiv').html('');
 		var jsObj =
 		{
 		mandalId:mandalId,
 		constituencyId:constituencyId,
+		publicationDateId:publicationDateId,
 		id:val,
 		type:"booth",
-		task:"getBooths"
+		task:"getBoothsForVoter"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getPanchayatByMandalAction.action?"+rparam;
+		var url = "getPanchayatByMandalForVoterAction.action?"+rparam;
 		callAjaxForVoterEdit(jsObj,url);
 		}
 
@@ -570,21 +655,14 @@
 		 $("#boothInfoAjaxImg").hide();
 		buildBoothsInfo(myResults,jsObj);
 		}
-
+		if(jsObj.task == "getBoothsForVoter")
+		{
+		 $("#boothInfoAjaxImg").hide();
+		buildBoothsInfo(myResults,jsObj);
+		}
 		if(jsObj.task == "getVotersDetails")
 		{
 		buildVotersInfoByBoothIds(myResults,jsObj);
-		}
-		if(jsObj.task == "allVotersEditInfo")
-		{
-		if(myResults.numbers == null){
-		$("#statusMsgDiv").html('Updated Successfully');
-		return false;
-			}
-		if(myResults.numbers != null){
-		$("#statusMsgDiv").html('Please select Unique SerialNo Ranges').css("color","red");
-		return false;
-			}
 		}
 		}catch (e) {
 		}
@@ -624,6 +702,7 @@
  //This Method is used to build voterDetails
 function getVotersInfoByBoothId()
 	{
+		$("#successDiv").html('');
 		var id = $("#boothList").val();
 		var startvalue = $("#startIndex").val();
 		var endvalue = $("#endIndex").val();
@@ -660,15 +739,10 @@ function getVotersInfoByBoothId()
 			if(isNaN(endvalue)){
 			$("#msgDiv").html('Ending SerialNo must be number only');
 			return false;
-
 			}
 
 			 if(startvalue >= endvalue){
 				$("#msgDiv").html('Starting SerialNo must be lessthan Ending serialNo');
-				return false;
-			 }
-			 if(rangeDifference >= 20 || rangeDifference == 20){
-				$("#msgDiv").html('Range Differences Must be 20 only');
 				return false;
 			 }
 		}
@@ -693,7 +767,7 @@ function buildVotersInfoByBoothIds(myResults,jsObj)
 		 var result = myResults.voterDetails;
 
 	str +='<div>';
-	str+='<div id="VoterDetailsTitle" style="width:409px;"><h3 id="subHeading" >Voter Details </h3></div>';
+	str+='<div id="VoterDetailsTitle" style="text-align:center;width: 665px; margin-left: 137px;"><h3 id="subHeading" >Voter Details </h3></div>';
 	str+=' <table id="voterDetailsJqTable" cellpadding="0" cellspacing="0" border="0"  width="100%">';
 	str+='<thead>';
 		str+='<tr>';
@@ -714,13 +788,13 @@ for(var i in result){
 	
 		str+='<tr id=\"'+i+'\" class="textClass">';
 		str +='<td>'+result[i].sNo+'</td>';
-		str +='<td class="textClass"><input type="text" name="firstName" class="textClass nameClass" value="'+result[i].firstName+'"/></td>';
+		str +='<td class="textClass"><input type="text" style="width: 140px;" name="firstName" class="textClass nameClass" value="'+result[i].firstName+'"/></td>';
 		str +='<td class="textClass"><input type="text" name="voterIDCardNo" class="textClass VidCardClass" value="'+result[i].voterIDCardNo+'"/></td>';
-		str +='<td class="textClass"><input type="text" maxlength="1" name="gender" class="textClass1  genderClass" value="'+result[i].gender+'"/></td>';
-		str +='<td class="textClass"><input type="text" maxlength="3" name="age" class="textClass1 ageClass numericClass" value="'+result[i].age+'"/></td>';
-		str +='<td class="textClass"><input type="text" name="houseNo" class="textClass1 houseNoClass" value="'+result[i].houseNo+'"/></td>';
+		str +='<td class="textClass"><input type="text" style="width: 25px;" maxlength="1" name="gender" class="textClass1  genderClass" value="'+result[i].gender+'"/></td>';
+		str +='<td class="textClass"><input type="text" style="width: 30px;" maxlength="3" name="age" class="textClass1 ageClass numericClass" value="'+result[i].age+'"/></td>';
+		str +='<td class="textClass"><input type="text" style="width: 70px;" name="houseNo" class="textClass1 houseNoClass" value="'+result[i].houseNo+'"/></td>';
 		str +='<td class="textClass"><input type="text" name="relativeFirstName" class="textClass rNameClass" value="'+result[i].relativeFirstName+'"/></td>';
-		str +='<td class="textClass"><select name="relationshipType" class="textClass rTypeClass"  style="height:30px; margin-top: -10px;">';
+		str +='<td class="textClass"><select name="relationshipType" class="textClass rTypeClass"  style="height:30px; margin-top: -10px;width: 86px;">';
 		if(result[i].relationshipType == "Father"){
 		str+='<option value="0"> Select Relationship</option>';
 		str+='<option value="Father" selected="selected"> Father </option>';
@@ -857,7 +931,6 @@ for(var i in result){
 		str+='<option value="Other" selected="selected"> Other </option>';
 		str+='</select></td>';
 		}
-		//str +='<td class="textClass"><input type="text" name="relationshipType" class="textClass rTypeClass" value="'+result[i].relationshipType+'"/></td>';
 		str +='<td class="textClass"><input type="text" name="serialNo" id=serial'+i+' class="textClass1 serialNoClass numericClass" value="'+result[i].serialNo+'"/></td>';
 		str +='<td class="textClass"><input type="text" name="mobileNo" class="textClass mobileNoClass numericClass" value="'+result[i].mobileNo+'"/></td>';
 		str +='<td style="padding-left: 0px;"><input type="hidden" name="voterIds" class="voterIdsClass" value="'+result[i].voterIds+'"/></td>';
@@ -869,7 +942,7 @@ for(var i in result){
 	str+='</div>';
 	$("#voterDetailsDiv").html(str);
 	$("#savediv1").css("display","block");
-	$("#saveDiv").css("display","block");
+	$("#savediv").css("display","block");
 	}
 	else{
 	$("#voterDetailsDiv").html('<div style="font-weight:bold;">Data Not Available</div>');
@@ -877,6 +950,7 @@ for(var i in result){
 }
 
 function updateVoterDetails(){
+	$("#saveAjaxImg").show();
 	$('#statusMsgDiv').html('');
 	var votersEditInfo = new Array();
 	var flag = true;
@@ -893,7 +967,6 @@ function updateVoterDetails(){
 		var voterIds = $(this).closest("tr").find(".voterIdsClass").val();
 		
   var obj={
-					
 					 firstName:firstName,
 					 voterIDCardNo:voterIDCardNo,
 					 gender:gender,
@@ -950,8 +1023,66 @@ function updateVoterDetails(){
 			selectedVoters:votersEditInfo,
 			task:"allVotersEditInfo"
 		  }
-		  	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getVoterDetailsForEditAction.action?"+rparam;						
-			callAjaxForVoterEdit(jsObj,url);
+	$("#voterBasicDetailsFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+			var uploadHandler = {
+				   success : function( o ) {
+					     var myResults = YAHOO.lang.JSON.parse(o.responseText);
+					      if(myResults.numbers == null){
+							$("#statusMsgDiv").html('Updated Successfully');
+							$("#saveAjaxImg").hide();
+							$("#successDiv").html('Updated Successfully').css("display","block").css("color","blue");
+							return false;
+						}
+						if(myResults.numbers != null){
+						$("#statusMsgDiv").html('Please select Unique SerialNo Ranges').css("color","red");
+						return false;
+						}
+					}									
+			};
+
+		YAHOO.util.Connect.setForm('voterBasicDetailsForm',false);
+		YAHOO.util.Connect.asyncRequest('POST','getVoterDetailsForEditAction.action',uploadHandler);
+	}
+}
+
+function getPublicationDate()
+	{
+	var constituencyID = document.getElementById("userAccessConstituencyList");
+	var name=constituencyID.options[constituencyID.selectedIndex].name;
+	var value=constituencyID.options[constituencyID.selectedIndex].value;
+	var choice=false;
+	var locationAlertEl =  document.getElementById("locationAlertMsg");
+	
+	var jsObj=
+	{
+		selected:value,
+		task:"getPublicationDate"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "voterAnalysisAjaxAction.action?"+rparam;	
+
+	$('#publicationAjaxImage').css('display','block');
+	callAjax(jsObj,url);
+}
+
+function buildPublicationDateList(results)
+	{
+	publicationDatesList=results;
+	var selectedElmt=document.getElementById("publicationDateList");
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
 	}
 }
