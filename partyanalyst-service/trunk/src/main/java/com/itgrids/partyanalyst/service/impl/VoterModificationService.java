@@ -2069,4 +2069,15 @@ public class VoterModificationService implements IVoterModificationService{
 		   return voterDetails;		 
 	 }
 	 
+	 public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId)
+	 {
+		 try{
+			 return localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(localEleBodyId);
+		 }catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLocationTypeForLocalEleBody() method,Exception - "+e);
+			return "";
+		}
+	 }
+	 
 }
