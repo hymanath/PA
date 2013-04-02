@@ -4724,6 +4724,11 @@
 		<result type="json" name="success">
         <param name="root">townshipWiseElectionResults</param>
         </result>
+
+		<action name="getPanchayatByMandalForVoterAction" class="sendUpdatesBySMSAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">designationsList</param>				
+			</result>		
 		</action>
 		</package>
 </struts>      
