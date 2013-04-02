@@ -903,12 +903,12 @@ function getAllPartiesDetails()
 	  if(staticColors != null && staticColors.length > 0)
 	  {
 		  new google.visualization.LineChart(chartResultDiv).
-			  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle,colors:staticColors,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+			  draw(data, {width: 900, height: 400,title:ctitle,colors:staticColors,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
 	  }
 	  else
 	  {
           new google.visualization.LineChart(chartResultDiv).
-			  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+			  draw(data, {width: 900, height: 400,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
 	  }
 }
 
