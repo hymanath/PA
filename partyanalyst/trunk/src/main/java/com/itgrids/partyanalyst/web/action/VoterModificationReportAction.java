@@ -48,6 +48,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private String fromPublicationName;
 	private String toPublicationName;
 	private StaticDataService staticDataService;
+	private String locationTypeVariable;
 	
 	public StaticDataService getStaticDataService() {
 		return staticDataService;
@@ -189,6 +190,15 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	public void setLocalElectionBodyId(Long localElectionBodyId) {
 		this.localElectionBodyId = localElectionBodyId;
 	}
+	public String getLocationTypeVariable() {
+		if(locationTypeVariable != null)
+			locationTypeVariable = locationTypeVariable.toLowerCase();
+		return locationTypeVariable;
+	}
+	public void setLocationTypeVariable(String locationTypeVariable) {
+		this.locationTypeVariable = locationTypeVariable;
+	}
+	
 	public String execute()throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -198,7 +208,10 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
 		{
 			localElectionBodyId = voterModificationService.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(locationValue);
+			locationTypeVariable = voterModificationService.getLocationTypeForLocalEleBodyByLocalEleBodyId(locationValue);
 		}
+		else
+			locationTypeVariable = locationType;
 		
 		locationName = voterModificationService.getLocationNameByLocationValue(locationType, locationValue);
 		fromPublicationName = voterModificationService.getPublicationNameByPublicationDateId(fromPublicationDateId);
