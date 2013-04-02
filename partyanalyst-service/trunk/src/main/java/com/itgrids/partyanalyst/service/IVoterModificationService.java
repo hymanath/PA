@@ -43,5 +43,8 @@ public interface IVoterModificationService {
 				Long fromPublicationDateId, Long toPublicationDateId);
 	 
 	 public List<VoterVO> getSelectedVotersDetails(VoterModificationVO voterModificationVO);
+	 
+	 public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId);
+	 
     
 }

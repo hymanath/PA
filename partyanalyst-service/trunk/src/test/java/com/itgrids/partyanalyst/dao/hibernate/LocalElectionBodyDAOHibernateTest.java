@@ -68,7 +68,7 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 		List<LocalElectionBody> lebs = localElectionBodyDAO.findByLocalElectionBodyIds(localBodyOrWardIds);
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testFindLocalBodysByElectionType(){
 		
@@ -80,6 +80,11 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 			
 			System.out.println(" Total Local Bodys Count :" + localBodysCount);
 		}
+	}*/
+	
+	public void testGetLocationTypeForLocalEleBodyByLocalEleBodyId()
+	{
+		System.out.println(localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(83l));
 	}
 	
 }

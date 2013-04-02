@@ -96,5 +96,13 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		return query.list();
 		
 	}
+	
+	public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId)
+	{
+		Query queryObj = getSession().createQuery("select model.electionType.electionType from LocalElectionBody model where model.localElectionBodyId =:localEleBodyId ");
+		
+		queryObj.setParameter("localEleBodyId", localEleBodyId);
+		return (String) queryObj.uniqueResult();
+	}
 
 }

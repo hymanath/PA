@@ -31,4 +31,7 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public List<String> getLocalElectionBodyNameById(Long localElectionBodyId);
 	public List<Long> getMuncipalitiesAndCorporationsForConstituency(List<Long> tehsilIds);
+	
+	public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId);
+	
 }
