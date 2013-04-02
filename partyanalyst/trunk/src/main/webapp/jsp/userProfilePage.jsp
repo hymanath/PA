@@ -323,24 +323,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<li><a href="javascript:{}" id="announcements"><i class="icon-bullhorn"></i><i class="icon-chevron-right"></i> Announcements</a></li>
 					</c:if>
 					<c:if test="${hasSubUserEntitlement}">
-					<li><a href="subUserRegPageAction.action?registrationType=subUser" id="FavouriteLinks" target="_blank"><i class="icon-user"></i><i class="icon-chevron-right"></i> Add Sub User</a></li>
+					<li><a href="subUserRegPageAction.action?registrationType=subUser" id="FavouriteLinks" target="_blank" onclick="clearDivs()"><i class="icon-user"></i><i class="icon-chevron-right"></i> Add Sub User</a></li>
 					</c:if>
 					
 					<c:if test="${hasCallCenterEntitlment}">
-					<li><a href="callCenterAction.action" id="callCenter" target="_blank"><img src="images/icons/callCenter.png" style="width:20px;"><i class="icon-chevron-right"></i> Call Center</a></li>
+					<li><a href="callCenterAction.action" id="callCenter" target="_blank" onclick="clearDivs()"><img src="images/icons/callCenter.png" style="width:20px;"><i class="icon-chevron-right"></i> Call Center</a></li>
 					</c:if>
 					
 					<c:if test="${hasProfileManagement}">
-					<li><a href="profileManagePageAction.action" id="manageProfile" target="_blank"><img src="images/icons/profile.png" style="width:20px;"><i class="icon-chevron-right"></i> Manage Profiles</a></li>
+					<li><a href="profileManagePageAction.action" id="manageProfile" target="_blank" onclick="clearDivs()"><img src="images/icons/profile.png" style="width:20px;"><i class="icon-chevron-right"></i> Manage Profiles</a></li>
 					</c:if>
 					
 					<c:if test="${hasNewsMonitoring == true}">
-					<li><a href="newsDisplayAction.action" id="newsAnalysis" target="_blank"><img src="images/graph.png" style="width:20px;"></i><i class="icon-chevron-right"></i> News Analyse</a></li>
+					<li><a href="newsDisplayAction.action" id="newsAnalysis" target="_blank" onclick="clearDivs()"><img src="images/graph.png" style="width:20px;"></i><i class="icon-chevron-right"></i> News Analyse</a></li>
 					</c:if>
 					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
-					<li><a href="userGroupAction.action" id="userGroups" target="_blank"><img src="images/icons/indexPage/group_icon.png" style="width:20px;"><i class="icon-chevron-right"></i> User Groups</a></li>
+					<li><a href="userGroupAction.action" onclick="clearDivs()" id="userGroups" target="_blank"><img src="images/icons/indexPage/group_icon.png" style="width:20px;"><i class="icon-chevron-right"></i> User Groups</a></li>
 					
-					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>
+					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank" onclick="clearDivs()"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>
 					
 					<li ><a href="javascript:{}" id="cadreInfoLink" onClick="getCadresInfo();"><i class="icon-user"></i><i class="icon-chevron-right"></i> Cadre Info</a></li>
 					<li><a href="javascript:{}" class="ImportantEvents"><i class="icon-calendar"></i><i class="icon-chevron-right"></i> Important Events</a></li>
@@ -348,7 +348,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<c:if test="${hasNewsMonitoring == true}">
 					<!--<li><a href="newsDisplayAction.action" class="accessNewsArticles" target="_blank"><i class="icon-file"></i><i class="icon-chevron-right"></i> Access News Articles</a></li>-->
 					
-					<li><a href="generatePdfForGallaryAction.action" class="accessNewsArticles" target="_blank"><i class="icon-film"></i><i class="icon-chevron-right"></i> Generate Pdf For Gallery</a></li>
+					<li><a onclick="clearDivs()" href="generatePdfForGallaryAction.action" class="accessNewsArticles" target="_blank"><i class="icon-film"></i><i class="icon-chevron-right"></i> Generate Pdf For Gallery</a></li>
 					</c:if>
 					
 					</ul>

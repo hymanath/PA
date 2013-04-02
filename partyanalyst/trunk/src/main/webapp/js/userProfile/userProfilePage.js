@@ -3648,3 +3648,18 @@ function buildUserImpEvents(results)
 	str+='</div>';
 	$("#impEvents").html(str);
 }
+
+
+function clearDivs()
+{
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
+	$('#headerDiv').html('');
+	$("#impdatesDiv").hide();
+	$("#impEvents").hide();
+	$("#announcementsDiv").hide();
+	$('#placeholderCenterDivId').html('')
+	
+}
+
