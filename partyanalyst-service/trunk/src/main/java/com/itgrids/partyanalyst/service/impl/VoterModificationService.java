@@ -1188,11 +1188,11 @@ public class VoterModificationService implements IVoterModificationService{
 		 try{
 			 if(locationValue == null)
 				 return "";
-			 if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
+			 /*if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
 			 {
 				 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
 				 locationValue = (Long)list.get(0);
-			 }
+			 }*/
 			 List locationNames = boothPublicationVoterDAO.getLocationNameByLocationValue(locationType, locationValue);
 			 if(locationNames != null && locationNames.size() > 0)
 				 return locationNames.get(0).toString();
