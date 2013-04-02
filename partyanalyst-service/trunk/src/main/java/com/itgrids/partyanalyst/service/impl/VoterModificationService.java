@@ -674,11 +674,11 @@ public class VoterModificationService implements IVoterModificationService{
 			 if(publicationDateIds != null && publicationDateIds.size() > 0)
 			 {
 				 
-				if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)|| locationType.equalsIgnoreCase("localElectionBody"))
+				/*if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)|| locationType.equalsIgnoreCase("localElectionBody"))
 				{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
 					locationValue = (Long)list.get(0);
-				}
+				}*/
 			   List<Object[]> list = voterInfoDAO.getVoterInfoByPublicationDateIds(votersAnalysisService.getReportLevelId(locationType), locationValue, publicationDateIds);
 			   if(list != null && list.size() > 0)
 			   {
