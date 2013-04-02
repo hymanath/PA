@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +37,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 public class SendUpdatesBySMSAction  extends ActionSupport implements ServletRequestAware{
 	
 	private HttpServletRequest request;
-	private List<SelectOptionVO> userAccessConstituencyList;
+	private List<SelectOptionVO> constituencyList , userAccessConstituencyList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IStaticDataService staticDataService;
 	private HttpSession session;
@@ -62,6 +61,14 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 	private EntitlementsHelper entitlementsHelper;
 	
 	
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -238,10 +245,16 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE ))
 			return ERROR;
+		userAccessConstituencyList = user.getUserAccessVoterConstituencies();
+		if(userAccessConstituencyList == null || userAccessConstituencyList.isEmpty()){
 		Long userID = user.getRegistrationID();
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		userAccessConstituencyList = votersAnalysisService.getConstituencyList(constituencyList);
+		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		user.setUserAccessVoterConstituencies(userAccessConstituencyList);
+		}
 		return SUCCESS;
 	}
 	
@@ -291,12 +304,40 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 					designationsList.add(0,new SelectOptionVO(0l,"Select Ward"));
 				}
 			}
+	  else if(jObj.getString("task").equalsIgnoreCase("getWardsForVoter"))
+			{
+				Long locationId = jObj.getLong("id");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				if(locationId !=0){
+					designationsList = voterReportService.getWardsInMunicipality(new Long(locationId.toString().substring(1)),publicationDateId);
+					designationsList.add(0,new SelectOptionVO(0l,"Select Ward"));
+				}
+			}
 	  else if(jObj.getString("task").equalsIgnoreCase("getBooths"))
 		{
 			Long locationId = jObj.getLong("id");
 			Long constituencyId = jObj.getLong("constituencyId");
 			Long mandalId = jObj.getLong("mandalId");
 			Long publicationDateId = sendUpdatesService.getLatestPublicationDateId();
+			if(locationId !=0 && constituencyId != 0){
+				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){//if muncipality select
+					designationsList = sendUpdatesService.getBoothsForWardId(locationId,publicationDateId);
+					if(designationsList.size()>0)
+					designationsList.add(0,new SelectOptionVO(0l,"Select Booth"));
+				}
+				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){//if mandal select
+					designationsList = votersAnalysisService.getBoothsByPanchayatId(locationId,publicationDateId);
+					if(designationsList.size()>0)
+					designationsList.add(0,new SelectOptionVO(0l,"Select Booth"));
+				}
+			}
+		}
+	  else if(jObj.getString("task").equalsIgnoreCase("getBoothsForVoter"))
+		{
+			Long locationId = jObj.getLong("id");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long publicationDateId = jObj.getLong("publicationDateId");
+			Long mandalId = jObj.getLong("mandalId");
 			if(locationId !=0 && constituencyId != 0){
 				if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){//if muncipality select
 					designationsList = sendUpdatesService.getBoothsForWardId(locationId,publicationDateId);
@@ -430,7 +471,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 				   voterVO = voterReportService.saveVoterSearchDetailsList(votersList,userId);
 			   }
 		}catch (Exception e) {
-				Log.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
+				log.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
 			}
 			 return Action.SUCCESS;
 	}
