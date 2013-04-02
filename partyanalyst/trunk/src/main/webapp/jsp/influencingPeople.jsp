@@ -988,6 +988,14 @@ function refreshingParentWindow()
 
 </div>	
 <script type="text/javascript">
+function refreshWindow()
+{
+	
+	window.opener.location.reload(true);
+}
+<c:if test="${message == 'update'}">
+refreshWindow();
+</c:if>
 	setTimer();
 </script>	
 </body>
