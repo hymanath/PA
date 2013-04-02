@@ -31,7 +31,8 @@
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Panchayat Wise Election Results</title>
-
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <style type="text/css">
  
 		.mainHeading 
@@ -217,12 +218,24 @@ legend
 </style>
 
 <link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
-
 <script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+</script>
+<script type="text/javascript">
+var votingData = [];
+<c:forEach var="status" items="${townshipBoothDetailsVO[0].townshipVotingTrends}">
+			var obj =	{
+							townshipName:'${status.townshipName}',
+							percentage:${status.percentageOfValidVotes},
+							title:'${townshipBoothDetailsVO[0].chartTitle}'
+						};
+			votingData.push(obj);
+		</c:forEach>
 			var mandalId = "${tehsilId}" ;
 			var mandalName = "${mandalName}";
 			var electionType = "${electionType}";
-			
+			var electionId = "${electionId}";
+			var electionYear = "${electionYear}";
 			function getTownshipwisePartiesVotesShare(rank)
 			{
 				var jsObj=
@@ -253,7 +266,8 @@ legend
 					rvStr += '<table width="100%" border="0">';
 					rvStr += '<tr>';
 					rvStr += '<td style="vertical-align:top;" align="left">';
-					rvStr += '<img width="750" src="charts/${constiElec.chartPath}"/>';
+					//rvStr += '<img width="750" src="charts/${constiElec.chartPath}"/>';
+					rvStr+='<div id="lineChartDiv1"></div>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '<tr>';
@@ -297,7 +311,8 @@ legend
 				    rvStr += '<table>';	
 				    rvStr += '<tr>';		
 				    rvStr += '<td align="left">';	
-				    rvStr += '<img src="charts/${votesPollingInMandal.chartName}">';	
+				   // rvStr += '<img src="charts/${votesPollingInMandal.chartName}">';
+				   rvStr +='<div id="chartDiv"></div>';
 				    rvStr += '</td>';		
 				    rvStr += '</tr>';		
 				    rvStr += '</table>';								
@@ -475,6 +490,12 @@ legend
 										{
 											buildVillagewiseVotesShare(jsObj,resultVO);
 										}
+
+										else if(jsObj.task == "getAllPartiesDetailsAjax")
+									  {
+										showAllPartiesResultsChart(resultVO);
+									  }
+											
 															
 								}catch (e)  {   
 								   	//alert("Invalid JSON result" + e);   
@@ -811,11 +832,115 @@ legend
 
 
 <script type="text/javascript">
+
+
+function getAllPartiesDetails()
+{
+ var jsObj = {
+			mandalId:mandalId,
+			electionId:electionId,
+			resultFor:"panchayat",
+			task:"getAllPartiesDetailsAjax"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getAllPartiesDetailsAction.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+}
+//All Parties Performance In Different Elections Linechart
+	function showAllPartiesResultsChart(result)
+	{
+	
+	var chartResultDiv = document.getElementById("lineChartDiv");
+	var chartColumns = result[0].candidateNamePartyAndStatus;
+	var chartRows =result[0].revenueVillageElectionVO; 
+	var constituencyName = result[0].constituencyName;
+    var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'party');
+ 
+     var partiesArray = new Array();
+
+	
+     //for chart columns
+	 for(var i in chartColumns)
+	 {
+		if(chartColumns[i].party == "IND")
+	   var colData = chartColumns[i].party +"["+chartColumns[i].rank+"]" ;
+	  if(chartColumns[i].party != "IND")
+		var colData = chartColumns[i].party;
+	 
+	   data.addColumn('number', colData);
+		if(chartColumns[i].party == "IND")
+	   partiesArray.push(chartColumns[i].party +[chartColumns[i].rank]);
+		if(chartColumns[i].party != "IND")
+		partiesArray.push(chartColumns[i].party);
+	 }
+     //data.addRows(chartRows.length);
+      //for chart rows
+	  for(var j in chartRows)
+	  {
+		  
+		  var array1 =[];
+		  var townshipName = chartRows[j].townshipName;
+		  array1.push(townshipName);
+
+		 for(var k in chartRows[j].partyElectionResultVOs)
+		  {
+			 
+			  var votesPercentage = parseFloat(chartRows[j].partyElectionResultVOs[k].votesPercentage);
+              array1.push(votesPercentage);
+			
+		  }
+		 
+		  data.addRow(array1);
+	  }
+	 var ctitle = 'All Parties Performance In '+electionType+' '+electionYear+' In'+constituencyName+' Constituency By Panchayats In '+mandalName+'';
+	 var chartResultDiv = document.getElementById("lineChartDiv1");
+
+      //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+		  new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle,colors:staticColors,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+	  else
+	  {
+          new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+}
+
+function displayVotesPollingGraph()
+	{
+	var result = votingData;
+	var ctitle = result[0].title;
+	var data = new google.visualization.DataTable();
+		data.addColumn('string','townshipName');
+		data.addColumn('number','percentage');
+				
+		data.addRows(result.length);
+
+		for(var j=0; j<result.length; j++)
+				{
+					
+					data.setValue(j,0,result[j].townshipName);
+					data.setValue(j,1,result[j].percentage);
+					
+				}
+					var chart = new google.visualization.PieChart(document.getElementById('chartDiv'));
+			
+		chart.draw(data,{width: 400, height: 280,legend:'right', 
+		legendTextStyle:{fontSize:12},title:ctitle,titleTextStyle:{fontName:'verdana',fontSize:9}});
+}
 	displayVillageElecResults("number");
 	if('${windowTask}' == "includeVotingTrendz" )
 	{
 		getRevenueVillagesInfo();
 	}
+	getAllPartiesDetails();
+	displayVotesPollingGraph();
 	buildVotesPolledDataTable();
 	getTownshipwisePartiesVotesShare('1');
 </script>
