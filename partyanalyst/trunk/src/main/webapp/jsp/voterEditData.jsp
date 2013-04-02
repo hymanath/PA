@@ -12,12 +12,12 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> -->
 <script src="js/sendUpdatesBySMS.js"></script>
 <script src="js/jquery.mask.min.js"></script>
-	
+
 <style type="text/css">
 select {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
-    width: 250px;
+    width: 150px;
 	}
 	select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{
 		border-radius: 4px 4px 4px 4px;
@@ -88,8 +88,9 @@ select {
 		border: 1px lightBlue solid ;
 		width: 982px; 
 		height: auto;
-		margin-left: 151px;
 		margin-bottom: 15px;
+		margin-left:auto;
+		margin-right:auto;
 		background-color:white;
 		font-weight:bold;
 		border-radius: 5px 5px 5px 5px;
@@ -139,61 +140,73 @@ $(document).ready(function(){
 </script>
 </head>
 	
-<div id="mainDIV" align="center">
+<div id="mainDIV">
 
 <h4 align="center" style="height: 30px;margin-top: 10px;"> Voters Details Updation </h4>
 
-<div id="msgDiv" style="font-weight: bold; color: red; float: left; width: 815px;"></div>
+<div id="msgDiv" style="font-weight: bold; color: red; float: left; width: 815px;margin-left: 200px;"></div>
 
-<div id="constituencyDiv" style="height: 45px; padding-top: 36px;">
+<div id="constituencyDiv" style="height: 45px; padding-top: 36px;margin-left: 200px;">
 <span>Assembly Constituency :<font id="requiredValue" class="requiredFont">*</font></span>
 <span><s:select id="userAccessConstituencyList"  name="userAccessConstituencyList" theme="simple"
-list="userAccessConstituencyList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Constituency"  onchange="getMandalList(this.options[this.selectedIndex].value);" style="margin-left: 53px;"></s:select></span>
+list="userAccessConstituencyList" listKey="id" listValue="name"  onchange="getMandalList(this.options[this.selectedIndex].value);getPublicationDate();" style="margin-left: 40px;"></s:select></span>
 <div style="display:inline-block; margin-right: -18px;display:none;" id="mandalInfoAjaxImg"><img src="./images/icons/search.gif"></div>
+<span style="margin-left: 30px;">Publication Date:<font id="requiredValue" class="requiredFont">*</font></span>
+<span><select id="publicationDateList" style="margin-left: 20px;"  name="publicationDateList" class="dateClass" onchange=""></select></span>
 </div>
 
+<!--<div id="dateDiv" style="height: 45px;">
+<span>Publication Date:<font id="requiredValue" class="requiredFont">*</font></span>
+<span><select id="publicationDateList"  name="publicationDateList" class="dateClass" onchange="" style="margin-left: 96px;"></select></span>
+</div>-->
 
-<div id="mmcorpDiv" style="height: 45px;">
+<div id="mmcorpDiv" style="height: 45px;margin-left: 200px;">
 <span>Mandal / Muncipality / Corp:<font id="requiredValue" class="requiredFont">*</font></span>
-<span><select id="mandalList"  name="mandalList" class="mandalClass" onchange="getPanchayatList('panchayat','panchayatField');" style="margin-left: 26px;"></select></span>
+<span><select id="mandalList"  name="mandalList" class="mandalClass" onchange="getPanchayatListForVoter('panchayat','panchayatField');" style="margin-left: 15px;"></select></span>
 <div style="display:inline-block; margin-right: -18px;display:none;" id="wardInfoAjaxImg"><img src="./images/icons/search.gif"></div>
 </div>
 
-<div id="panWardDiv" style="height: 45px;">
+<div id="panWardDiv" style="height: 45px;margin-left: 200px;">
 <span>Panchayat / Ward:<font id="requiredValue" class="requiredFont">*</font></span>
-<span><select id="panchayatList"  name="panchayatList" class="pListClass"  onchange="getBoothInfo(this.options[this.selectedIndex].value);" style="margin-left: 88px;"></select>
+<span><select id="panchayatList"  name="panchayatList" class="pListClass"  onchange="getBoothInfo(this.options[this.selectedIndex].value);" style="margin-left: 78px;"></select>
 </span>
 <div style="display:inline-block; margin-right: -18px;display:none;" id="boothInfoAjaxImg"><img src="./images/icons/search.gif"></div>
 </div>
 
-<div id="boothDiv" style="height: 45px;">
+<div id="boothDiv" style="height: 45px;margin-left: 200px;">
 <span>Booth:<font id="requiredValue" class="requiredFont">*</font></span>
-<span><select id="boothList"  name="boothList" class = "boothClass" style="margin-left: 164px;"></select>
+<span><select id="boothList"  name="boothList" class = "boothClass" style="margin-left: 153px;"></select>
 
 </span>
 </div>
 
+<div id="rangeDiv" style="margin-left: 200px;">
+<span>Starting Serial No:<font id="requiredValue" class="requiredFont">*</font></span><input type="text" id="startIndex" name="startIndex" class="numericClass"
+style="margin-left: 5px; margin-right: 16px; width: 60px;"/>
+<span>Ending Serial No:<font id="requiredValue" class="requiredFont">*</font></span><input type="text" style="width: 60px;margin-left: 5px;" id="endIndex" name="endIndex" class="numericClass"/>
+</div>
+
+<div style="height: 45px;margin-left: 240px;">
+<input style="margin-left: 203px; margin-top: 20px;" type="button" id="search" class="btn-info btn-small" value = "Search" onclick = "getVotersInfoByBoothId()"/>
+</div>
+
+<div id="statusMsgDiv" style="text-align: center;font-weight: bold; color: blue; float: left; width: 450px;margin-left: 240px;"></div>
+
+<div id="savediv" style="display: none; float: right; width: 90px; margin-top: 40px;"> <input type="button" value="Save" id="save"  class="btn-info btn-small" onclick="updateVoterDetails()"/></div>
+
 <div>
-<span style="font-weight: bold; color: blue; float: left; width: 981px; padding-bottom: 6px;">Select serial No Ranges with Difference atmost 20</span>
-</div>
-
-<div id="rangeDiv">
-<span style="padding-left: 26px;">Starting Serial No:<font id="requiredValue" class="requiredFont">*</font></span><input type="text" id="startIndex" name="startIndex" class="numericClass"
-style="padding-left: 11px; margin-left: 4px; margin-right: 16px;"/>
-<span>Ending Serial No:<font id="requiredValue" class="requiredFont">*</font></span><input type="text" id="endIndex" name="endIndex" class="numericClass"/>
-</div>
-
-<div style="height: 45px;">
-<input type="button" id="search" class="btn-info btn-small" value = "Search" onclick = "getVotersInfoByBoothId()"/>
-</div>
-
-<div id="statusMsgDiv" style="font-weight: bold; color: blue; float: left; width: 983px;"></div>
-
-<div id="savediv" style="display:none;"> <input type="button" value="Save" id="save"  class="btn-info btn-small" onclick="updateVoterDetails()"/></div>
-
+<form id="voterBasicDetailsForm" method="post" action="getVoterDetailsForEditAction.action" name="voterBasicDetailsForm">
+		<input type="hidden" name="task" id="voterBasicDetailsFormValues" />
 <div id="voterDetailsDiv"></div>
+</form>
+</div>
 
-<div id="savediv1" style="display:none;"> <input type="button" value="Save" id="save"  class="btn-info btn-small" onclick="updateVoterDetails()"/></div>
+<div>
+<div id="savediv1"style="display: none;float: right; width: 88px; margin-top: 10px;"> <input type="button" value="Save" id="save"  class="btn-info btn-small" onclick="updateVoterDetails()"/></div>
+<div style="float: right; margin-right: -70px; margin-top: 12px;display:none;" id="saveAjaxImg"><img src="./images/icons/search.gif"></div>
+</div>
+
+<div id="successDiv" style="text-align: center;margin-top: 15px;margin-left: 240px;width:450px;"></div>
 
 </div>
 </html>
