@@ -827,7 +827,7 @@ var titleString = "";
 function getAllVotersModificationDetailsBetweenPublications1(status,loadingstatus)
 	{
 		
-		if(locationType == 'constituency' || locationType =='mandal')
+		if(locationType == 'constituency' || locationType =='mandal' || locationType =='localElectionBody')
 		{
 			$('#mainDiv').css('display','none');
 			return;
