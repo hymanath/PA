@@ -62,7 +62,7 @@ input[type="radio"], input[type="checkbox"] {
     margin-right: auto;
     padding: 3px;
     text-align: center;
-    width: 200px;
+    width: 275px;
 	margin-top: 30px; 
 }
 #censusReport_body_heading
@@ -774,7 +774,7 @@ select
 		str += '<tr>';		
 		str += '<th width="72px">'+jsObj.censusText+'<br> % Range</th>';
 		str += '<th width="40px">Total Seats</th>';
-		str += '<th width="60px">Polling %</th>';
+		str += '<th width="60px">AVG %</th>';
 		str += '</tr>';	
 		str += '</table>';
 		
@@ -788,7 +788,7 @@ select
 				str += '<tr>';				
 				str += '<th width="72px">'+jsObj.censusText+'<br> % Range</th>';
 				str += '<th width="40px">Total Seats</th>';
-				str += '<th width="60px">Polling %</th>';
+				str += '<th width="60px">AVG %</th>';
 				str += '</tr>';	
 				str += '</table>';
 			}
@@ -1469,7 +1469,7 @@ select
 </head>
 <body>
 	<div id="censusReport_main">
-	<div id="censusReportHeading"> Elections Vs Census</div>
+	<div id="censusReportHeading"> Elections Vs Demographics</div>
 		<div id="censusReport_body">
 		  <div style="background:#FFF; padding: 20px; border-radius:10px;">
 		   <div style="padding-bottom: 15px;border-bottom:1px solid #ADADAD;">
@@ -1546,6 +1546,7 @@ select
 					</table>
 				</div>
 				<div id="censusPopulationRange_footer1" style="margin-left:15px;"></div>
+				<div id="censusPopulationRange_note" style="margin-left:15px;"><B>AVG % - Average Percentage</B></div>
 				
 			</div>
 			
