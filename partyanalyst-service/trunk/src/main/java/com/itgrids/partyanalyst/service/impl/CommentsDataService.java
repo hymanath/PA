@@ -684,7 +684,7 @@ public class CommentsDataService implements ICommentsDataService {
 								if(recepientPeople[1] != null)
 								  recepentUserName = recepientPeople[1].toString();
 								if(recepientPeople[2] != null)	
-								 recepentUserName += " "+recepientPeople[1].toString();
+								 recepentUserName += " "+recepientPeople[2].toString();
 								
 							emailDetailsVO.setToAddress(recepientPeople[3].toString());
 							emailDetailsVO.setSenderName(recepentUserName);
