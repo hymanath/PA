@@ -217,7 +217,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			}
 		}
 		sendMailToAdmin(updatesFrom,userDetails,dailyUpdatesVO);
-		sendMailToMeForTesting(updatesFrom,userDetails,dailyUpdatesVO);
+		//sendMailToMeForTesting(updatesFrom,userDetails,dailyUpdatesVO);
 		log.info("sendAllMails() Execution completed");
 	}
 	
@@ -230,7 +230,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			MimeMessagePreparator preparator = new MimeMessagePreparator() {
 		         public void prepare(MimeMessage mimeMessage) throws Exception {
 		            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-		            message.setTo(IJobConstants.ADMIN_GROUP_MAILS);
+		            message.setTo(IJobConstants.ADMIN_GROUP_IDS);
 		            Map model = new HashMap();
 		   		    model.put("updatesFrom", updatesFrom);
 		   		    model.put("userDetails", userDetails);
@@ -300,7 +300,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		{
 			 
 			List<Object[]> subscriberDetailsList = new ArrayList<Object[]>();
-			for(int count = 0 ; count<5 ; count++){
+			for(int count = 0 ; count<10 ; count++){
 				jdbcExceptionOccured = false;
 			 try{
 				 //getting all candidate subscribed details
@@ -365,7 +365,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		    	  List<FileGallary> photosList = new ArrayList<FileGallary>();
 		    	  List<FileGallary> newsList = new ArrayList<FileGallary>();
 		    	  List<FileGallary> videosList = new ArrayList<FileGallary>();
-		      for(int count = 0 ; count<5 ; count++){
+		      for(int count = 0 ; count<10 ; count++){
 				   jdbcExceptionOccured = false;	
 			       try{
 			    	 //getting all photo gallery updates for all candidates 
@@ -390,7 +390,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 						 break;
 					 }
 		      }
-		      for(int count = 0 ; count<5 ; count++){
+		      for(int count = 0 ; count<10 ; count++){
 				   jdbcExceptionOccured = false;	  
 			       try{
 			    	 //getting all news gallery updates for all candidates
@@ -414,7 +414,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 						 break;
 					}
 		      }
-		      for(int count = 0 ; count<5 ; count++){
+		      for(int count = 0 ; count<10 ; count++){
 				   jdbcExceptionOccured = false; 
 			       try{
 			    	 //getting all video gallery updates for all candidates 
@@ -558,7 +558,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		   {
 			
 			List<Object[]> subscriberDetailsList = new ArrayList<Object[]>();
-			for(int count = 0 ; count<5 ; count++){
+			for(int count = 0 ; count<10 ; count++){
 				jdbcExceptionOccured = false;
 				try{
 					//getting all party page subscribed details
@@ -623,7 +623,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 				 List<Object[]> newsList = new ArrayList<Object[]>();
 				 List<Object[]> videosList = new ArrayList<Object[]>();
 				 
-				 for(int count = 0 ; count<5 ; count++){
+				 for(int count = 0 ; count<10 ; count++){
 					 jdbcExceptionOccured = false;
 					 try{
 					 //getting all photo gallery updates for all parties 
@@ -646,7 +646,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 					 }
 				 }
 				 
-				 for(int count = 0 ; count<5 ; count++){
+				 for(int count = 0 ; count<10 ; count++){
 					 jdbcExceptionOccured = false;
 					 try{
 						//getting all news gallery updates for all parties 
@@ -669,7 +669,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 					 }
 				 }
 				 
-				 for(int count = 0 ; count<5 ; count++){
+				 for(int count = 0 ; count<10 ; count++){
 					 jdbcExceptionOccured = false; 
 					 try{
 						//getting all video gallery updates for all parties
@@ -810,7 +810,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		try
 		   {
 			List<Object[]> subscriberDetailsList = new ArrayList<Object[]>();
-			for(int count = 0 ; count<5 ; count++){
+			for(int count = 0 ; count<10 ; count++){
 				jdbcExceptionOccured = false; 
 				try{
 				 //getting all special page subscribed details
@@ -875,7 +875,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 			  List<Object[]> newsList = new ArrayList<Object[]>();
 			  List<Object[]> videosList = new ArrayList<Object[]>();
 			  
-			  for(int count = 0 ; count<5 ; count++){
+			  for(int count = 0 ; count<10 ; count++){
 				 jdbcExceptionOccured = false;	 
 				 try{
 					 log.error(" getting  photosList for specialPage started");
@@ -897,7 +897,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 				 }
 			  }
 			  
-			  for(int count = 0 ; count<5 ; count++){
+			  for(int count = 0 ; count<10 ; count++){
 				 jdbcExceptionOccured = false;	  
 				 try{
 					 log.error(" getting  newsList for specialPage started");
@@ -919,7 +919,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 				 }
 			  }
 			  
-			  for(int count = 0 ; count<5 ; count++){
+			  for(int count = 0 ; count<10 ; count++){
 				 jdbcExceptionOccured = false;	
 				 try{
 					 log.error(" getting  videosList for specialPage started");
