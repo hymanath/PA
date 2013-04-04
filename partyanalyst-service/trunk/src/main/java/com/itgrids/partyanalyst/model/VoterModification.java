@@ -41,6 +41,7 @@ public class VoterModification extends BaseModel implements Serializable{
 	private Long voterId;
 	private Long publicationDateId;
 	private Long constituencyId;
+	private VoterStatus voterStatus;
 	
 	public VoterModification()
 	{}
@@ -138,6 +139,18 @@ public class VoterModification extends BaseModel implements Serializable{
 
 	public void setPartNo(Long partNo) {
 		this.partNo = partNo;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="voter_status_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterStatus getVoterStatus() {
+		return voterStatus;
+	}
+
+	public void setVoterStatus(VoterStatus voterStatus) {
+		this.voterStatus = voterStatus;
 	}
 
 	
