@@ -18,7 +18,9 @@
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 <title></title>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 
 <style>
 #fromDate,#toDate{
@@ -635,6 +637,15 @@ var callback = {
 			    newsSearch();
 				showUpdatedMessage(myResults.resultStatus);
 			 }
+			 else if(jsObj.type == "flagedNews" || jsObj.type == "notedNews" )
+			 {
+				buildFlagedAndNotedNews(myResults);
+			 }
+			 else if(jsObj.type == "flagedCount" || jsObj.type == "notedCount")
+			 {
+				buildFlagedAndNotedData(myResults,jsObj);
+			 }
+			 
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
 		}  
@@ -763,13 +774,18 @@ function showNewsCountDetails(result,jsObj)
   str+= '<table>';
   
  document.getElementById("showNewsCount").innerHTML = str;
+	 if(result != null && result.length > 0)
+	 {
+		getFlagedNewsAndNotes("flagedCount");
+		getFlagedNewsAndNotes("notedCount");
+	 }
  }
 }
 function showNewsDetails(jsObj,result){
 
 if(result.length == 0)
-	$('#flagCountDiv').html('');
-
+	//$('#flagCountDiv').html('');
+	
    var pageNumber = 0;
 	for(var i in result){
 		if(i==0){
@@ -779,10 +795,10 @@ if(result.length == 0)
 
 			//str+='<div><span><b>Flagged News Count:</b></span>'+result[i].totalFlaggedNews+'<span><b>News with notes Count:</b></span>'+result[i].totalNotesNews+'</div>';
 
-			str+='<div style="margin:12px 0px 0px 125px;"><span><b>Flagged News Count:</b></span><input style="width:16px;margin-right:80px;" type="text" readonly value='+result[i].totalFlaggedNews+' id="totalFlagNewsCount"></input><span><b>News with notes Count:</b></span><input readonly style="width:16px;" type="text" id="totalNotesNewsCount" value='+result[i].totalNotesNews+'></input></div>';
+			//str+='<div style="margin:12px 0px 0px 125px;"><span><b>Flagged News Count:</b></span><span class="btn btn-info" style="margin-left: 10px;" onClick="getFlagedNewsAndNotes(\'flagedNews\');"> '+result[i].totalFlaggedNews+'</span><span style="margin-left: 10px;"><b>News with notes Count:</b></span><span class="btn btn-info" style="margin-left: 10px;" onClick="getFlagedNewsAndNotes(\'notedNews\');">'+result[i].totalNotesNews+'</span></div>';
 
 			
-			$('#flagCountDiv').html(str);
+			//$('#flagCountDiv').html(str);
 		}
 
 
@@ -975,6 +991,7 @@ if(result.length == 0)
 		var newsResultDataSource = new YAHOO.widget.DataTable("showNews", newsResultColumnDefs,myDataSource, myConfigs);
 
 }
+
 
 function showNews(fileId)
 {	
@@ -1253,6 +1270,8 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 	
 // ENDING : validations updated by srishailam
    }
+    getFlagedNewsAndNotes("flagedCount");
+	getFlagedNewsAndNotes("notedCount");
   }
   function clearAll(){
   
@@ -1299,6 +1318,7 @@ function editNewsDetails(fileId){
 	$("#editNewsOuter").dialog();
 	var str= '';
 	
+	
 	for(var i in newsDetails){
 	  if(newsDetails[i].fileId == fileId)
 	  {
@@ -1306,7 +1326,6 @@ function editNewsDetails(fileId){
 		
 	  }
 	}
-
 
 	var str ='';
 
@@ -2332,7 +2351,10 @@ try{
   <div id="newsDeleteMessage"></div>
   </td></tr>
 
-    <tr><td><div id="flagCountDiv"></div></td></tr>
+    <tr><td><div id="flagCountDiv" style="display:none;">
+			<div id="flagCount" style="margin-left: 80px;"></div>
+			<div id="noteCount" style="margin-left: 195px;margin-top:-25px;"></div>
+	</div></td></tr>
 
  <tr> 
    <td>
@@ -2375,6 +2397,10 @@ try{
 
 <div id="editNewsOuter">
   <div id="editNewsInner"></div>
+</div>
+
+<div id="flaggedAndNewsPopupMainDiv">
+	<div id="flagAndNotedNewsPopupDiv"></div>
 </div>
 <script type="text/javascript">
 
@@ -2999,6 +3025,169 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	 else
 	   document.getElementById("buildVideoNewSources").innerHTML = str1;
 }
+/*
+	This Method Is Used For Making a Ajax Call to get All Flagged news as well as Noted News Also
+*/
+function getFlagedNewsAndNotes(type)
+{
+	var title = $('input[name=dates]:checked').val();
+	fromDate = document.getElementById("fromDate").value;
+	toDate =  document.getElementById("toDate").value;
+	var arrr = fromDate.split("-");
+			var fromDat=arrr[0];
+			var frommonth=arrr[1];
+			var fromyear=arrr[2];
+	   var arr = toDate.split("-");
+			var toDat=arr[0];
+			var tomonth=arr[1];
+			var toyear=arr[2];
+	startDate=fromyear+"-"+frommonth+"-"+fromDat;
+	endDate=toyear+"-"+tomonth+"-"+toDat;
+	var jsObj=
+	      {
+			type : type,
+			fileType:"All",
+			fromDate : startDate,
+			toDate : endDate,
+			task  : title
+	      }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "getFlagedOrNotesNewsAction.action?"+rparam;						
+      callAjax(jsObj,url);
+	  
+	  
+	
+}
+/*
+	This method Is used For Building a table For Flagged News as Well as Noted News Also 
+*/
+function buildFlagedAndNotedNews(result)
+{
+	var str = '';
+	if(result != null && result.length > 0)
+	{
+		
+		str+='<table id="flaggedOrNotedNewsTable" class="table table-bordered">';
+		str+='<thead><tr>';
+		str+='<th>NEWS CATEGORY</th>';
+		str+='<th>GALLERY</th>';
+		str+='<th>SOURCE</th>';
+		str+='<th>TITLE</th>';
+		str+='<th>DESCRIPTIONS</th>';
+		str+='<th>IMPACT AREA</th>';
+		str+='<th>AREA NAME</th>';
+		str+='<th>NEWS DATE</th>';
+		str+='<th><i class=" icon-eye-open"></i></th>';
+		str+='<th><a href="javaScript:{}"><i class="icon-flag"></i></a></th>';
+		str+='<th><a class="yui-dt-sortable" title="Click to sort ascending" href="yui-dt1-href-notesExist"></a></th>';
+		str+='<th></th>';
+		str+='</tr></thead><tbody>';
+		for(var i in result)
+		{
+		str+='<tr>';
+		if(result[i].categoryName == null)
+		{
+			str+='<td></td>';
+		}
+		else
+		{
+			str+='<td>'+result[i].categoryName+'</td>';
+		}
+		str+='<td>'+result[i].gallaryName+'</td>';
+		str+='<td>'+result[i].source+'</td>';
+		str+='<td><a onClick="getVideoDetails(\''+result[i].gallaryId+'\');">'+result[i].title+'</a></td>';
+		str+='<td>'+result[i].description+'</td>';
+		str+='<td>'+result[i].locationScopeValue+'</td>';
+		str+='<td>'+result[i].locationValue+'</td>';
+		str+='<td>'+result[i].fileDate+'</td>';
+		if(result[i].visibility == 'false')
+		{
+			str+='<td><div id="visibilityDiv'+result[i].gallaryId+'"><a href="javaScript:{updateVisibilityToPrivate('+result[i].gallaryId+')}" title="make this news as private"><i class="icon-bullhorn"></i></a><input type="hidden" name="visibility" id=visibility'+result[i].gallaryId+' value="public"></input></div>';
+
+			str+='<div id="nonVisibilityDiv'+result[i].gallaryId+'" style="display:none;"><a href="javaScript:{updateVisibilityToPublic('+result[i].gallaryId+')}" title="make this news as public"><i class="icon-lock"></i></a><input type="hidden" name="visibility" id=visibility'+result[i].gallaryId+' value="private"></input></div></td>';
+		}
+		else
+		{
+			str+='<td><div id="visibilityDiv'+result[i].gallaryId+'" style="display:none;"><a href="javaScript:{updateVisibilityToPrivate('+result[i].gallaryId+')}" title="make this news as private"><i class="icon-bullhorn"></i></a><input type="hidden" name="visibility" id=visibility'+result[i].gallaryId+'/ value="public"></input></div>';
+
+			str+='<div id="nonVisibilityDiv'+result[i].gallaryId+'"><a href="javaScript:{updateVisibilityToPublic('+result[i].gallaryId+')}" title="make this news as public"><i class="icon-lock"></i></a><input type="hidden" name="visibility" id=visibility'+result[i].gallaryId+' value="private"></input></div></td>';
+		}
+		str+='<td><div id="flagSetDiv'+result[i].gallaryId+'"><a title="unflag this news" href="javaScript:{removeFlagInTable('+result[i].gallaryId+')}"><i class="icon-flag"></i></a><input type="hidden" value="flagged" id="flag30202"></div><div style="display:none;" id="unFlagSetDiv'+result[i].gallaryId+'"><a class="unflagClass" title="flag this news" href="javaScript:{saveFlagInTable('+result[i].gallaryId+')}"><i class="icon-flag"></i></a><input type="hidden" value="flagged" id="flag30202"></div></td>';
+		
+		str+='<td><a href="javaScript:{}"><i class="icon-edit"></i></a></td>';
+		
+		str+='<td><a style="float:left;" title="edit this news" href="javascript:{}" onclick="editNewsDetails('+result[i].fileId+')"><i class="icon-pencil"></i></a>';
+		
+		str+='<a style="float:right;" title="delete this news"  href="javascript:{}" onclick="updateDeleteNews(\'Delete\','+result[i].fileId+');"><i class="icon-remove-sign"></i></a></td>';
+		
+		str+='</tr>';
+		}
+		str+='</tbody></table>';
+		$('#flagAndNotedNewsPopupDiv').html(str);
+	$('#flaggedOrNotedNewsTable').dataTable({
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});
+	$('#flaggedAndNewsPopupMainDiv').dialog({                   
+		    modal: true,
+            title: "<b>Flagged Or Noted News</b>",
+			width: 970,
+            height: 600
+     });
+	}
+	
+	 
+}
+
+/*
+	This Method is used for building total count of flagged and noted news
+*/
+function buildFlagedAndNotedData(myResults,jsObj)
+{
+	var str='';
+	if(myResults != null && myResults.length > 0 )
+	{
+		$('#flagCountDiv').show();
+		if(jsObj.type == 'flagedCount')
+		{
+			if(myResults[0].totalFlaggedNews > 0)
+			{
+			
+			str+='<span><b>Flagged News Count:</b></span><span class="btn btn-info" style="margin-left: 10px;" onClick="getFlagedNewsAndNotes(\'flagedNews\');"> '+myResults[0].totalFlaggedNews+'</span>';
+
+			$('#flagCount').html(str);	
+			}
+			else
+			{
+			str+='<span><b>Flagged News Count:</b></span><span class="btn btn-info" style="margin-left: 10px;" onClick="getFlagedNewsAndNotes(\'flagedNews\');">0</span>';
+
+			$('#flagCount').html(str);
+			}
+		}
+		if(jsObj.type == 'notedCount')
+		{
+			if(myResults[0].totalFlaggedNews > 0)
+			{
+				str+='<span style="margin-left: 78px;"><b>News with notes Count:</b></span><span class="btn btn-info" style="margin-left: 10px;" onClick="getFlagedNewsAndNotes(\'notedNews\');">'+myResults[0].totalFlaggedNews+'</span>';
+				$('#noteCount').html(str);
+			}
+			else
+			{
+					str+='<span style="margin-left: 78px;"><b>News with notes Count:</b></span><span class="btn btn-info" style="margin-left: 10px;" onClick="getFlagedNewsAndNotes(\'notedNews\');">0</span>';
+				$('#noteCount').html(str);
+			}
+		}
+		
+	}
+	else
+	{
+		$('#flagCountDiv').hide();
+	}
+	
+	
+}
+
 </script>
 
 <!--DISPLAY NEWS GALLARIES END-->
