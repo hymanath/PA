@@ -76,6 +76,7 @@
 	    <pattern>/panchayatWiseMandalElectionInfoAction.action*</pattern>
 	    <pattern>/assigningCandidatesToVoterAction.action*</pattern>
 	    <pattern>/localBodyElectionResultsAction.action*</pattern>
+	    <pattern>/ageWiseVoterDetailsAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

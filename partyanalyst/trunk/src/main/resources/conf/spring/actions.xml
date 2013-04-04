@@ -1104,6 +1104,9 @@
 	<bean id="boothWiseModifiedVoterInfoAction" class="com.itgrids.partyanalyst.web.action.BoothWiseModifiedVoterInfoAction" singleton="false">	
 	  <property name="voterModificationService" ref="voterModificationService" />	
 	</bean>
-	
+		
+	<bean id="ageWiseVoterDetailsAction" class="com.itgrids.partyanalyst.web.action.AgeWiseVoterDetailsAction" singleton="false">	
+		
+	</bean>
 </beans>	
 	
