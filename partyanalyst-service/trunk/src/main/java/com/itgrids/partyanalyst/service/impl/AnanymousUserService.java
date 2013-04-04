@@ -3046,4 +3046,94 @@ public ResultStatus deleteMessageFromInbox(Long userId,Long senderId,String type
 	return resultStatus;
 }
 
+public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex,String nameString){
+		ResultStatus resultStatus = new ResultStatus();
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
+		List<Object> result = new ArrayList<Object>();		
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(loginId);
+		List<Long> connectedAndPendingUserIdsList=new ArrayList<Long>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		List<Long> districtIds = new ArrayList<Long>();
+		String searchType = null;
+		Long count = 0l;
+		List<Object[]> users =null;
+		
+		try{			
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				List list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+				if(list!=null && list.size()!=0){
+					for(int i=0; i<list.size(); i++){					
+						locationIds.add((Long)list.get(i));
+					}
+				}
+			}
+			
+			if(status.equalsIgnoreCase(IConstants.ALL))
+			{
+				result = userDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.CONNECTED))
+			{
+				result = userConnectedtoDAO.getConnectedUsersInSelectedLocations(loginId, locationIds, locationType,retrivalCount,startIndex,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.PENDING))
+			{
+				result = customMessageDAO.getPendingUsersInSelectedLocations(loginId, locationIds, locationType,retrivalCount,startIndex,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.NOTCONNECTED))
+			{
+				List<Long> connectedIdsList = userConnectedtoDAO.getConnectedUserIdsInSelectedLocations(loginId, locationIds, locationType);
+				List<Long> pendingIdsList = customMessageDAO.getPendingUserIdsInSelectedLocations(loginId, locationIds, locationType);
+				
+				connectedAndPendingUserIdsList = new ArrayList<Long>();
+				if(connectedIdsList != null && connectedIdsList.size() > 0)
+					connectedAndPendingUserIdsList.addAll(connectedIdsList);
+				if(pendingIdsList != null && pendingIdsList.size() > 0)
+					connectedAndPendingUserIdsList.addAll(pendingIdsList);
+				
+				result = userDAO.getNotConnectedUsersInSelectedLocations(loginId, locationIds, locationType, connectedAndPendingUserIdsList, retrivalCount, startIndex, nameString);
+			}
+			
+			candidateDetails = setFriendsListForAUser(result,loginId,status,null);
+			dataTransferVO.setCandidateVO(candidateDetails);
+			
+			dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString, connectedAndPendingUserIdsList).toString());
+			List userLocations = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
+			if(userLocations !=null && userLocations.size()>0){
+				Object[] values = (Object[])userLocations.get(0);
+				Long districtId = (Long)values[2];
+				Long constiId = (Long)values[4];
+				districtIds.add(districtId);
+				constituencyIds.add(constiId);
+				}
+				searchType = "NOTSAME";
+			if(locationIds.size()==1){
+				if(locationIds.containsAll(constituencyIds) || locationIds.containsAll(districtIds))
+					searchType = "SAME";
+					users = userConnectedtoDAO.getCountOfAllConnectedPeopleForUserByDistrict(userIds,locationIds,locationType,searchType);				
+			}			
+			else{
+				if(constituencyIds != null && locationIds.containsAll(constituencyIds)){
+				users = userConnectedtoDAO.getCountOfAllConnectedPeopleForUserInSameLocation(userIds,locationIds,searchType);
+				}
+				else{
+					users = userConnectedtoDAO.getCountOfAllConnectedPeopleForUserByDistrict(userIds,locationIds,locationType,searchType);
+				}
+			}
+			count = (long) users.size();
+			dataTransferVO.setConnectedPeopleCount(count.toString());
+			
+			resultStatus.setResultPartial(false);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+	return dataTransferVO;
+	} 
 }
