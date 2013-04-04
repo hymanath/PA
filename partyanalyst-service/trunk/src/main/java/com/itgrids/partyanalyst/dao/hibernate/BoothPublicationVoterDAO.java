@@ -2337,6 +2337,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 	}
 	
+
 	public Long getTotalVotersCountByReportlevelIdsList(List<Long> reportlevelIdsList,Long publicationDateId,String type){
 		StringBuilder query = new StringBuilder();
 		query.append("select count(*) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
@@ -2399,5 +2400,21 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 	  return queryObj.list();
 	}
-	
+	public List<Object[]> getPublicationUserCount(Long userId,Long publicationDateId , Long Id)
+	{
+		Query query = getSession().createQuery(
+				"select  count(b.voter.voterId) ," +
+						" SUM( CASE when u.locality.localityId is not NULL THEN 1 else 0 END ) as result1 ,"+
+						" SUM( CASE when u.locality.localityId is NULL THEN 1 else 0 END) as result2 "+
+				"from BoothPublicationVoter b , UserVoterDetails u join b.booth bb where " +
+	            " b.voter.voterId=u.voter.voterId and  u.hamlet.hamletId = :hamletId and u.user.userId = :userId and bb.publicationDate.publicationDateId = :publicationDateId " 
+				);
+		
+		query.setParameter("hamletId", Id);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
 }
