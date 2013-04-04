@@ -78,7 +78,6 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		

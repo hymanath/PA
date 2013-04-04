@@ -850,12 +850,11 @@ public String getImportantFamaliesDetails(){
 		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
 	}
 	
-	
 	session = request.getSession();
 	
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	Long userId =  regVO.getRegistrationID();
-	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
+	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"),jObj.getString("requestFor"));
 	return Action.SUCCESS;
 }
 
@@ -889,13 +888,24 @@ public String getVotersFamilyDetails(){
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		Long userId =  regVO.getRegistrationID();
 		
-		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
+		
+		
+		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies")){
+			
+			String requestFor = "";
+			try
+			{   
+			 requestFor = jObj.getString("requestFor");				
+				
+			}catch(Exception e){
+			}
 		 
-			 votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"));
+			 votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"),requestFor);
+		}
 			 //votersFamilyInfo=new  ArrayList<VoterHouseInfoVO>();
 				else
 			//votersFamilyInfo = votersAnalysisService.getFamilyInfo(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"));
-			votersFamilyInfo = votersAnalysisService.getFamilyInformation(jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId);
+			votersFamilyInfo = votersAnalysisService.getFamilyInformation(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null);
 	}catch(Exception e){
 		log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
 	}
@@ -1425,6 +1435,5 @@ return Action.SUCCESS;
 		
 		return SUCCESS;
 	}
-
 	
 }
