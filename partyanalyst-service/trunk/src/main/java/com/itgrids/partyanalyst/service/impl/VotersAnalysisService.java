@@ -2271,7 +2271,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	 * 
 	 */
 
-	public List<VoterHouseInfoVO> getFamilyInformation(Long boothId, Long publicationDateId,String houseNo,Long userId)
+	public List<VoterHouseInfoVO> getFamilyInformation(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId ,String selectType)
 	{		
 		log.debug("Entered into the getFamilyInformation method");
 		
@@ -3720,7 +3720,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 	}*/
 	
 	//Retrieving important families information
-	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId , String type,Long id,Long publicationDateId,Long constituencyId){	
+	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId , String type,Long id,Long publicationDateId,Long constituencyId ,String requestFor){	
 		try{
 			if(type.equalsIgnoreCase("constituency")){
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamilyDetailsForConstituency(type, id, publicationDateId);
@@ -3742,6 +3742,100 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("hamlet")){
+				
+				
+				//FOR BOOTHS START
+				
+				
+				 if(requestFor.equalsIgnoreCase("booth")){
+					 
+				    ImportantFamiliesInfoVo importantFamiliesInfoVo  = new ImportantFamiliesInfoVo();
+				    importantFamiliesInfoVo.setType("Hamlet");
+				    importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
+						
+				    List<Long> booths = boothPublicationVoterDAO.getAllBoothsInHamletByUser(userId,id,publicationDateId,constituencyId);
+				    
+				    for(Long boothId:booths){
+						  List<Object[]> boothFamilyDetails =  boothPublicationVoterDAO.getFamiliesInBooth(userId ,id, boothId , publicationDateId,constituencyId);
+						  
+						  ImportantFamiliesInfoVo importantFamiliesInfoVo1 = new ImportantFamiliesInfoVo();
+						  
+						  long upTo3 = 0;
+						  long upTo3Count = 0;
+						  long between4And6 = 0;
+						  long between4And6Count = 0;
+						  long between7And10 = 0;
+						  long between7And10Count = 0;
+						  long above10 = 0;
+						  long above10Count = 0;						     
+
+						  
+						  for(Object[] details:boothFamilyDetails){
+							  
+							  long count =(Long)details[0];
+							  
+							  if(count <= 3 ){
+								  upTo3++;
+								  upTo3Count = upTo3Count + count;
+							  }
+							  else if(count > 3 && count <=6){
+							      between4And6++;
+							      between4And6Count = between4And6Count + count;
+							  }
+							  else if(count > 6 && count <10){
+								  between7And10++;
+								  between7And10Count =between7And10Count + count;
+							  }
+							  else{
+							    above10++;
+							    above10Count=above10Count + count;
+							  }
+							  
+						  }
+						  
+			     List<Object[]> votersCount =  boothPublicationVoterDAO.getVotersCountByGenderInBooth(userId , id , boothId , publicationDateId,constituencyId);
+			     
+			     
+						      for(Object[] obj1:votersCount){
+						    	  
+						    	  if(obj1[1].toString().equalsIgnoreCase("M"))
+						    		  importantFamiliesInfoVo1.setTotalMaleVoters(obj1[0].toString());
+						    	  else if(obj1[1].toString().equalsIgnoreCase("F"))
+						    		  importantFamiliesInfoVo1.setTotalFemaleVoters(obj1[0].toString());						    	  
+						    	  
+						      }
+
+						  
+						     importantFamiliesInfoVo1.setBelow3(upTo3);
+						     importantFamiliesInfoVo1.setBelow3Popul(upTo3Count);					     
+						     importantFamiliesInfoVo1.setBetwn4to6(between4And6);
+						     importantFamiliesInfoVo1.setBetwn4to6Popul(between4And6Count);
+						     importantFamiliesInfoVo1.setBetwn7to10(between7And10);
+						     importantFamiliesInfoVo1.setBetwn7to10Popul(between7And10Count);
+						     importantFamiliesInfoVo1.setAbove10(above10);
+						     importantFamiliesInfoVo1.setAbove10Popul(above10Count);
+						     
+						     importantFamiliesInfoVo1.setTotalVoters(upTo3Count + between4And6Count + between7And10Count + above10Count);
+						     
+						     importantFamiliesInfoVo1.setName("booth -"+boothDAO.getPartNoByBoothId(boothId));
+						     importantFamiliesInfoVo1.setType("booth");
+						     
+						     calculatePercentage(importantFamiliesInfoVo1);
+						     
+						     importantFamiliesInfoVo.getSubList().add(importantFamiliesInfoVo1);;
+						}
+				    
+				    
+				    return importantFamiliesInfoVo;
+						
+						
+				 }
+				    
+				    
+				 
+				 //FOR BOOTHS END
+				
+				
 				/*ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
 				if(!importantFamiliesInfoVo.isDataPresent())*/
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImportantFamiliesForhamlet(userId , type,id,publicationDateId,"main",constituencyId);
@@ -4175,7 +4269,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle , String buildType)
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle , String buildType,String requestFor)
 	{
 		List voters = null;
 		List<Long> voterIdsList = new ArrayList<Long>(0);
@@ -4203,6 +4297,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		}
 		if(checkedEle.equalsIgnoreCase("hamlet"))
 		{
+			if(requestFor.equalsIgnoreCase("booth"))
+				voters = boothPublicationVoterDAO.getVoterDetailsByHamletForUser(userId,id,publicationDateId);
+				
+			else
 		//	List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletForLocalities(userId , id);			
 			voters = boothPublicationVoterDAO.getVoterDetailsByHamletId(id,publicationDateId,userId);
 			
@@ -4261,10 +4359,13 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			voterVO.setGender(voter[6].toString());
 			voterVO.setAge(voter[7] != null ? (Long)voter[7]:18l);
 			voterVO.setBoothName(voter[8].toString());
-			if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
-				voterVO.setHamlet(voter[9].toString());
-			if( checkedEle.equalsIgnoreCase("hamlet") )
-				voterVO.setLocalArea(voter[9].toString());
+			if(!requestFor.equalsIgnoreCase("booth")){
+				if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
+					voterVO.setHamlet(voter[9].toString());
+				if( checkedEle.equalsIgnoreCase("hamlet") )
+					voterVO.setLocalArea(voter[9].toString());
+			}else
+				voterVO.setHamlet("HamletName");
 				voterVO.setCast(getCasteNameByVoterID(casteList,(Long)voter[5]));
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
@@ -10234,7 +10335,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		 
 		 try{
 			 for(VoterHouseInfoVO family : familiesList){
-				 votersInfo.addAll(getFamilyInformation(family.getBoothId(),family.getPublicationId(),family.getHouseNo(),userId));
+				 votersInfo.addAll(getFamilyInformation(null,family.getBoothId(),family.getPublicationId(),family.getHouseNo(),userId,null));
 			 }
 			 for(int i =0; i<votersInfo.size();i++){
 				 VoterHouseInfoVO voter = votersInfo.get(i);
@@ -10242,6 +10343,26 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 }
 		 }catch(Exception e){			 
 			 log.error("Exception raised in  getMultipleFamiliesInformation service method");
+			 e.printStackTrace();
+		 }
+		 return votersInfo;
+	 }
+	
+	public List<VoterHouseInfoVO> getMultipleFamiliesInformationForHamlet(
+			List<VoterHouseInfoVO> familiesList, Long userId , String selectType) {
+		log.debug("Entered into the getMultipleFamiliesInformationForHamlet service method");
+		 List<VoterHouseInfoVO> votersInfo = new ArrayList<VoterHouseInfoVO>();
+		 
+		 try{
+			 for(VoterHouseInfoVO family : familiesList){
+				 votersInfo.addAll(getFamilyInformation(family.getHamletId(),family.getBoothId(),family.getPublicationId(),family.getHouseNo(),userId,selectType));
+			 }
+			 for(int i =0; i<votersInfo.size();i++){
+				 VoterHouseInfoVO voter = votersInfo.get(i);
+				 voter.setsNo(new Long(i+1));
+			 }
+		 }catch(Exception e){			 
+			 log.error("Exception raised in  getMultipleFamiliesInformationForHamlet service method");
 			 e.printStackTrace();
 		 }
 		 return votersInfo;

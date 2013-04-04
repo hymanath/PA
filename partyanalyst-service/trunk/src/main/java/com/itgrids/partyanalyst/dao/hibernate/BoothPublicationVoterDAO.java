@@ -2417,4 +2417,127 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 		
 	}
+	
+	
+	
+	public List<Object[]> getFamiliesInBooth(Long userId, Long hamletId , Long boothId,Long publicationDateId , Long constituencyId)
+	{
+		
+		Query query = getSession().createQuery("select count( distinct model1.voter.voterId),model1.voter.houseNo " +
+				" from BoothPublicationVoter model ,UserVoterDetails model1 " +
+				"where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+				" and model.voter.voterId = model1.voter.voterId and " +
+				" model1.user.userId = :userId and " +
+				" model.booth.boothId = :boothId and " +
+				" model1.hamlet.hamletId = :hamletId " +
+				"and model.booth.constituency.constituencyId = :constituencyId group by model1.voter.houseNo ");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("boothId", boothId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("hamletId", hamletId);
+		
+		return query.list();
+		
+	}
+	
+	
+	public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId)
+	{
+		
+		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
+				" model.voter.cast,model.booth.boothId ,model.voter.voterId,model.voter.gender," +
+				" model.voter.age,model.booth.partNo from BoothPublicationVoter model , " +
+				" UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
+				" model1.user.userId = :userId and model1.hamlet.hamletId = :hamletId " +
+				" and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		
+		query.setParameter("userId", userId);
+		query.setParameter("hamletId", id);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+		
+	}
+	
+	public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hametId , Long  boothId ,Long  publicationDateId,Long constituencyId)
+	{
+		
+		Query query = getSession().createQuery("select count(model1.voter.voterId),model1.voter.gender " +
+				" from BoothPublicationVoter model ,UserVoterDetails model1 " +
+				"where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+				" and model.voter.voterId = model1.voter.voterId and" +
+				" model1.user.userId = :userId and " +
+				" model.booth.boothId = :boothId  and" +
+				" model1.hamlet.hamletId = :hamletId " +
+				"and model.booth.constituency.constituencyId = :constituencyId group by model1.voter.gender");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("boothId", boothId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("hamletId", hametId);
+		
+		return query.list();
+		
+		
+	}
+	
+	
+	public List<Long> getAllBoothsInHamletByUser(Long userId,Long hamletId,Long publicationDateId , Long constituencyId)
+	{
+		
+		Query query = getSession().createQuery("select " +
+				"distinct(model.booth.boothId)" +
+				" from BoothPublicationVoter model ,UserVoterDetails model1 " +
+				" where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+				" and model.voter.voterId = model1.voter.voterId and" +
+				" model1.user.userId = :userId and " +
+				"model1.hamlet.hamletId = :hamletId " +
+				"and model.booth.constituency.constituencyId = :constituencyId");
+		
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("constituencyId", constituencyId);
+		
+		
+		return query.list();
+		
+	}
+	
+   public List<Voter> findFamiliesInfoForHamlet(Long hamletId,Long boothId,Long publicationDateId,String houseNo) {
+		
+		Query query = getSession().createQuery("select model.voter  from BoothPublicationVoter model , UserVoterDetails model1 " +
+				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId" +
+				" and model.voter.houseNo =:houseNo and model1.hamlet.hamletId = :hamletId and model.booth.boothId = :boothId");
+		
+		query.setParameter("publicationDateId", publicationDateId);;
+		query.setParameter("houseNo", houseNo);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("boothId", boothId);
+		
+		return query.list();
+	
+     }
+
+   public List<Voter> findFamiliesInfoForLocalBody(Long hamletId,Long boothId,Long publicationDateId,String houseNo) {
+	
+	Query query = getSession().createQuery("select model.voter  from BoothPublicationVoter model , UserVoterDetails model1 " +
+			" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId" +
+			" and model.voter.houseNo =:houseNo and model1.locality.localityId = :localityId and model.booth.boothId = :boothId");
+	
+	query.setParameter("publicationDateId", publicationDateId);;
+	query.setParameter("houseNo", houseNo);
+	query.setParameter("localityId", hamletId);
+	query.setParameter("boothId", boothId);
+	
+	return query.list();
+
+ }
+
 }
