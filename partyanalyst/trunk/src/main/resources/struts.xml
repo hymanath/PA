@@ -4731,5 +4731,10 @@
 				<param name="root">designationsList</param>				
 			</result>		
 		</action>
+		<action name="voterFamilyInfoAction" class="voterFamilyInfoAction">
+		  <result name="success">/jsp/voterFamilyDetails.jsp</result>
+		</action>
+		
+		
 		</package>
 </struts>      

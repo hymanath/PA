@@ -1097,5 +1097,9 @@
 	<bean id="dailyUpdatesSendAction" class="com.itgrids.partyanalyst.web.action.DailyUpdatesSendAction" singleton="false">	
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService" />
 	</bean>
+	<bean id="voterFamilyInfoAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyInfoAction" singleton="false">	
+		
+	</bean>
+	
 </beans>	
 	

@@ -1394,8 +1394,9 @@ for  body3 start    result  -->
      	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
 	</br>
-	   <div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVotersToShow();" class="btn btn-info" style="float:right;"/>
-
+	  <!-- <div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVotersToShow();" class="btn btn-info" style="float:right;"/>-->
+	  
+	<div><input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVoters();" class="btn btn-info" style="float:right;"/>
 	  <!-- <input id="" type="button" value="Test" onclick="impFamilesAllInfoForHamletPopUp();" class="btn btn-info" style="float:right;"/> -->
 	   
 	   
@@ -1746,7 +1747,15 @@ function scrollToMandals(){
 
  $('html,body').animate({scrollTop: 250}, 2000);
 }
+function getImpFamiliesVoters()
+	{
+	var mainreqid = $("#constituencyList").val()
+var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+impFamltype+"&typename="+impFamltypename+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
 
+	var browser1 = window.open(urlstr,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+		browser1.focus();
+	}
+ 
 </script>
 </body>
 </html>
