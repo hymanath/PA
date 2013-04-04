@@ -1378,7 +1378,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>(0);
 		 try{
 			 StringBuilder queryStr = new StringBuilder();
-			 queryStr.append(" select count(model.voter.voterId),model.status,model.voter.gender ");
+			 queryStr.append(" select count(model.voter.voterId),model.voterStatus.voterStatusId,model.voter.gender ");
 			 
 			 if(locationType.equalsIgnoreCase("constituency"))
 				 queryStr.append(" ,model2.booth.constituency.constituencyId ");
@@ -1403,7 +1403,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 VoterModificationGenderInfoVO genderInfoVO = new VoterModificationGenderInfoVO();
 				 for(Object[] params : list)
 				 {
-					 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+					 if(params[1]!= null && ((Long)params[1]).equals(1l))
 					 {
 						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 							 genderInfoVO.setAddedMale((Long)params[0]);
@@ -1412,13 +1412,31 @@ public class VoterModificationService implements IVoterModificationService{
 						 
 						 genderInfoVO.setAddedTotal(genderInfoVO.getAddedMale() + genderInfoVO.getAddedFemale());
 					 }
-					 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+					 else if(params[1]!= null && ((Long)params[1]).equals(2l))
 					 {
 						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 							 genderInfoVO.setDeletedMale((Long)params[0]);
 						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 							 genderInfoVO.setDeletedFemale((Long)params[0]);
 						 genderInfoVO.setDeletedTotal(genderInfoVO.getDeletedMale() + genderInfoVO.getDeletedFemale());
+					 }
+					 
+					 else if(params[1] != null && ((Long)params[1]).equals(3l))
+					 {
+						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							 genderInfoVO.setMovedMale((Long)params[0]);
+						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 genderInfoVO.setMovedFemale((Long)params[0]);
+						 genderInfoVO.setMovedTotal(genderInfoVO.getMovedMale()+genderInfoVO.getMovedFemale());
+					 }
+					 
+					 else if(params[1] != null && ((Long)params[1]).equals(4l))
+					 {
+						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							 genderInfoVO.setRelocatedMale((Long)params[0]);
+						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+							 genderInfoVO.setRelocatedFemale((Long)params[0]);
+						 genderInfoVO.setRelocatedTotal(genderInfoVO.getRelocatedMale()+genderInfoVO.getRelocatedFemale());
 					 }
 					 
 					genderInfoVO.setReportLevelValue((Long)params[3]);
@@ -1471,6 +1489,24 @@ public class VoterModificationService implements IVoterModificationService{
 									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_DELETED)));
 									 voterModificationInfoDAO.save(voterModificationInfo);
 								 }
+								 
+								 if(genderInfoVO.getMovedTotal() != null)
+								 {
+									 voterModificationInfo.setTotalVoters(genderInfoVO.getMovedTotal());
+									 voterModificationInfo.setMaleVoters(genderInfoVO.getMovedMale());
+									 voterModificationInfo.setFemaleVoters(genderInfoVO.getMovedFemale());
+									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_MOVED)));
+									 voterModificationInfoDAO.save(voterModificationInfo);
+								 }
+								 
+								 if(genderInfoVO.getRelocatedTotal() != null)
+								 {
+									 voterModificationInfo.setTotalVoters(genderInfoVO.getRelocatedTotal());
+									 voterModificationInfo.setMaleVoters(genderInfoVO.getRelocatedMale());
+									 voterModificationInfo.setFemaleVoters(genderInfoVO.getRelocatedFemale());
+									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_RELOCATED)));
+									 voterModificationInfoDAO.save(voterModificationInfo);
+								 }
 								
 							 }
 							 
@@ -1511,7 +1547,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 ageTo = Long.valueOf(ages[1].trim());
 					 
 				 StringBuilder queryStr = new StringBuilder();
-				 queryStr.append(" select count(model.voter.voterId),model.status,model.voter.gender ");
+				 queryStr.append(" select count(model.voter.voterId),model.voterStatus.voterStatusId,model.voter.gender ");
 				 
 				 if(locationType.equalsIgnoreCase("constituency"))
 					 queryStr.append(" ,model2.booth.constituency.constituencyId ");
@@ -1532,25 +1568,41 @@ public class VoterModificationService implements IVoterModificationService{
 				 {
 					 for(Object[] params :list)
 					 {
-						 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						 if(params[1] != null && ((Long)params[1]).equals(1l))
 						 {
 							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 								 voterModificationAgeRangeVO.setAddedMale((Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setAddedFemale((Long)params[0]);
 						 }
-						 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+						 else if(params[1] != null && ((Long)params[1]).equals(2l))
 						 {
 							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 								 voterModificationAgeRangeVO.setDeletedMale((Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setDeletedFemale((Long)params[0]);
 						 }
+						 else if(params[1] != null && ((Long)params[1]).equals(3l))
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+								 voterModificationAgeRangeVO.setMovedMale((Long)params[0]);
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+								 voterModificationAgeRangeVO.setMovedFemale((Long)params[0]);
+						 }
+						 else if(params[1] != null && ((Long)params[1]).equals(4l))
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+								 voterModificationAgeRangeVO.setRelocatedMale((Long)params[0]);
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+								 voterModificationAgeRangeVO.setRelocatedFemale((Long)params[0]);
+						 }
 							
 							voterModificationAgeRangeVO.setReportLevelValue((Long)params[3]);
 					 }
 					voterModificationAgeRangeVO.setAddedCount(voterModificationAgeRangeVO.getAddedMale() + voterModificationAgeRangeVO.getAddedFemale());
 					voterModificationAgeRangeVO.setDeletedCount(voterModificationAgeRangeVO.getDeletedMale() + voterModificationAgeRangeVO.getDeletedFemale());
+					voterModificationAgeRangeVO.setMovedCount(voterModificationAgeRangeVO.getMovedMale() + voterModificationAgeRangeVO.getMovedFemale());
+					voterModificationAgeRangeVO.setRelocatedCount(voterModificationAgeRangeVO.getRelocatedMale() + voterModificationAgeRangeVO.getRelocatedFemale());
 				 }
 				 if(list == null || list.size() == 0)
 					 voterModificationAgeRangeVO.setReportLevelValue(locationValuesList.get(0).longValue());
@@ -1581,6 +1633,9 @@ public class VoterModificationService implements IVoterModificationService{
 								 
 								     Long addedVoterModificationId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_ADDED), constituencyId);
 								     Long deletedVoterModificationId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_DELETED), constituencyId);
+								     Long movedVoterModifiedId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_MOVED), constituencyId);
+								     Long relocatedVoterModifiedId = voterModificationInfoDAO.getVoterModificationInfoIdByReportLevelValue(votersAnalysisService.getReportLevelId(locationType), ageRangeVO.getReportLevelValue(), publicationDateId, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_RELOCATED), constituencyId);
+								     
 								     VoterModificationAgeInfo voterModificationAgeInfo = new VoterModificationAgeInfo();
 								     voterModificationAgeInfo.setVoterAgeRangeId(voterAgeRangeDAO.getVoterAgeRangeIdByType(ageRangeVO.getRange()));
 								     if(addedVoterModificationId != null && ageRangeVO.getAddedCount() != null)
@@ -1598,6 +1653,24 @@ public class VoterModificationService implements IVoterModificationService{
 								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getDeletedMale());
 								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getDeletedFemale());
 								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(deletedVoterModificationId));
+								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+								     }
+								     
+								     if(movedVoterModifiedId != null && ageRangeVO.getMovedCount() != null)
+								     {
+								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getMovedCount());
+								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getMovedMale());
+								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getMovedFemale());
+								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(movedVoterModifiedId));
+								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+								     }
+								     
+								     if(relocatedVoterModifiedId != null && ageRangeVO.getRelocatedCount() != null)
+								     {
+								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getRelocatedCount());
+								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getRelocatedMale());
+								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getRelocatedFemale());
+								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(relocatedVoterModifiedId));
 								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
 								     }
 							 }
@@ -1625,6 +1698,12 @@ public class VoterModificationService implements IVoterModificationService{
 			 genderInfoVO.setDeletedMale(0l);
 			 genderInfoVO.setDeletedFemale(0l);
 			 genderInfoVO.setDeletedTotal(0l);
+			 genderInfoVO.setMovedTotal(0l);
+			 genderInfoVO.setMovedMale(0l);
+			 genderInfoVO.setMovedFemale(0l);
+			 genderInfoVO.setRelocatedTotal(0l);
+			 genderInfoVO.setRelocatedMale(0l);
+			 genderInfoVO.setRelocatedFemale(0l);
 			 genderInfoVO.setReportLevelValue(locationVal);
 			 genderInfoVOs.add(genderInfoVO);
 			return genderInfoVOs;
@@ -1652,6 +1731,13 @@ public class VoterModificationService implements IVoterModificationService{
 		 LOG.debug("Entered into getSubLevelsVoterModificationDetailsByLocationValue() Method");
 		 try{
 			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<Long> pubIdsListForTotVoters = new ArrayList<Long>(0);
+			 
+			 if(fromPublicationDateId != null && fromPublicationDateId > 0 && !pubIdsListForTotVoters.equals(fromPublicationDateId))
+				 pubIdsListForTotVoters.add(fromPublicationDateId);
+			 if(toPublicationDateId != null && toPublicationDateId > 0 && !pubIdsListForTotVoters.equals(toPublicationDateId))
+				 pubIdsListForTotVoters.add(toPublicationDateId);
+			 
 			 List<SelectOptionVO> locationValuesList = new ArrayList<SelectOptionVO>(0);
 			 
 			 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -1706,7 +1792,7 @@ public class VoterModificationService implements IVoterModificationService{
 			 }
 			 
 			 if(locationValuesList != null && locationValuesList.size() > 0)
-				 voterModificationVO = getVoterModificationSubLevelsData(locationValuesList, constituencyId, publicationIdsList);
+				 voterModificationVO = getVoterModificationSubLevelsData(locationValuesList, constituencyId, publicationIdsList,pubIdsListForTotVoters);
 				  
 			
 			
@@ -1718,7 +1804,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 return voterModificationVO;
 	 }
 	
-	 public VoterModificationVO getVoterModificationSubLevelsData(List<SelectOptionVO> selectOptionVOList, Long constituencyId, List<Long> publicationIdsList)
+	 public VoterModificationVO getVoterModificationSubLevelsData(List<SelectOptionVO> selectOptionVOList, Long constituencyId, List<Long> publicationIdsList,List<Long> pubIdsListForTotVoters)
 	 {
 		 VoterModificationVO voterModificationVO = new VoterModificationVO();
 		 List<VoterModificationVO> voterModificationVOsList = new ArrayList<VoterModificationVO>(0);
@@ -1727,7 +1813,7 @@ public class VoterModificationService implements IVoterModificationService{
 			 if(selectOptionVOList != null && selectOptionVOList.size() > 0)
 			 {
 				 for(SelectOptionVO optionVO : selectOptionVOList)
-					 getVoterModificationDataByPublicationDateList(optionVO, constituencyId, publicationIdsList, voterModificationVOsList);
+					 getVoterModificationDataByPublicationDateList(optionVO, constituencyId, publicationIdsList, voterModificationVOsList,pubIdsListForTotVoters);
 					 
 			 }
 			 voterModificationVO.setModifiedVotersList(voterModificationVOsList);
@@ -1745,7 +1831,7 @@ public class VoterModificationService implements IVoterModificationService{
 	 {
 		 try{
 			 StringBuilder stringBuilder = new StringBuilder();
-			 stringBuilder.append(" select count(model.voter.voterId),model.status,model.voter.gender,"); 
+			 stringBuilder.append(" select count(model.voter.voterId),model.voterStatus.voterStatusId,model.voter.gender,"); 
 			 
 			 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 				 stringBuilder.append(" model2.booth.constituency.constituencyId, model2.booth.constituency.name ");
@@ -1774,7 +1860,7 @@ public class VoterModificationService implements IVoterModificationService{
 		}
 	 }
 	 
-	 public void getVoterModificationDataByPublicationDateList(SelectOptionVO optionVO, Long constituencyId,List<Long> publicationIdsList, List<VoterModificationVO> voterModificationVOsList)
+	 public void getVoterModificationDataByPublicationDateList(SelectOptionVO optionVO, Long constituencyId,List<Long> publicationIdsList, List<VoterModificationVO> voterModificationVOsList, List<Long> pubIdsListForTotVoters)
 	 {
 		 try{
 			 if(optionVO != null)
@@ -1782,12 +1868,12 @@ public class VoterModificationService implements IVoterModificationService{
 				 List<Object[]> list  = null;
 				  list = voterModificationInfoDAO.getVoterModificationGenderDetailsByLocationValuesList(optionVO.getLocationValuesList(), publicationIdsList, constituencyId, votersAnalysisService.getReportLevelId(optionVO.getType()));
 				 if(list != null && list.size() > 0)
-					 getVotermodificationDetailsFromVoterModifInfoTable(list, voterModificationVOsList,optionVO,publicationIdsList,constituencyId);
+					 getVotermodificationDetailsFromVoterModifInfoTable(list, voterModificationVOsList,optionVO,publicationIdsList,constituencyId,pubIdsListForTotVoters);
 				 else
 				 {
 					 String queryString = getVoterModificationSublevelQueryString(optionVO.getType());
 					 list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(constituencyId, publicationIdsList, optionVO.getLocationValuesList(), optionVO.getType(), queryString);
-					 getVotermodificationDetailsFromVoterModificationTable(list, voterModificationVOsList, optionVO);
+					 getVotermodificationDetailsFromVoterModificationTable(list, voterModificationVOsList, optionVO,pubIdsListForTotVoters,constituencyId);
 				 }
 					
 				 
@@ -1801,7 +1887,7 @@ public class VoterModificationService implements IVoterModificationService{
 	 }
 	 
 	 
-	 public void getVotermodificationDetailsFromVoterModifInfoTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOs, SelectOptionVO optionVO, List<Long> publicationIdsList, Long constituencyId)
+	 public void getVotermodificationDetailsFromVoterModifInfoTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOs, SelectOptionVO optionVO, List<Long> publicationIdsList, Long constituencyId, List<Long> pubIdsListForTotVoters)
 	 {
 		 try{
 			 
@@ -1816,19 +1902,30 @@ public class VoterModificationService implements IVoterModificationService{
 					 {
 						if(id.equals(params[4]))
 						{
-						 if(params[3].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						 if(params[3] != null && ((Long)params[3]).equals(1l))
 						 {
 							 modificationVO.setMaleVotersAdded((Long)params[1]);
 							 modificationVO.setFemaleVotersAdded((Long)params[2]);
 							 modificationVO.setAddedCount((Long)params[0]);
 						 }
-						 else if(params[3].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+						 else if(params[3] != null && ((Long)params[3]).equals(2l))
 						 {
 							 modificationVO.setMaleVotersDeleted((Long)params[1]);
 							 modificationVO.setFemaleVotersDeleted((Long)params[2]);
 							 modificationVO.setDeletedCount((Long)params[0]);
 						 }
-						 
+						 else if(params[3] != null && ((Long)params[3]).equals(3l))
+						 {
+							 modificationVO.setMaleVotersMoved((Long)params[1]);
+							 modificationVO.setFemaleVotersMoved((Long)params[2]);
+							 modificationVO.setMovedCount((Long)params[0]);
+						 }
+						 else if(params[3] != null && ((Long)params[3]).equals(4l))
+						 {
+							 modificationVO.setMaleVotersRelocated((Long)params[1]);
+							 modificationVO.setFemaleVotersRelocated((Long)params[2]);
+							 modificationVO.setRelocatedCount((Long)params[0]);
+						 }
 						 if(modificationVO.getId() == null)
 						 {
 							   modificationVO.setId((Long)params[4]);
@@ -1855,7 +1952,7 @@ public class VoterModificationService implements IVoterModificationService{
 								else if(optionVO.getType().equalsIgnoreCase("booth"))
 								{
 								  modificationVO.setLocationType("booth");
-								  modificationVO.setName("BOOTH - "+boothDAO.get((Long)params[4]).getPartNo());
+								  modificationVO.setName(boothDAO.get((Long)params[4]).getPartNo());
 								}
 								else if(optionVO.getType().equalsIgnoreCase("localElectionBody") || optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
 								{
@@ -1866,7 +1963,7 @@ public class VoterModificationService implements IVoterModificationService{
 							
 						 }
 						
-						 modificationVO.setSelectOptionVOsList(getTotalVotersByPublicationIdsList(publicationIdsList, votersAnalysisService.getReportLevelId(optionVO.getType()), (Long)params[4], constituencyId));
+						 modificationVO.setSelectOptionVOsList(getTotalVotersByPublicationIdsList(pubIdsListForTotVoters, votersAnalysisService.getReportLevelId(optionVO.getType()), (Long)params[4], constituencyId));
 						 
 					   }
 					 }
@@ -1882,7 +1979,7 @@ public class VoterModificationService implements IVoterModificationService{
 	 }
 	 
 	 
-	 public void getVotermodificationDetailsFromVoterModificationTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOsList, SelectOptionVO optionVO)
+	 public void getVotermodificationDetailsFromVoterModificationTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOsList, SelectOptionVO optionVO, List<Long> pubIdsListForTotVoters,Long constituencyId)
 	 {
 		 try{
 			 
@@ -1905,7 +2002,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 {
 						if(locationName.equalsIgnoreCase(params[4].toString()))
 						{
-							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+							 if(params[1] != null && ((Long)params[1]).equals(1l))
 							 {
 								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 									 modificationVO.setMaleVotersAdded((Long)params[0]);
@@ -1915,7 +2012,7 @@ public class VoterModificationService implements IVoterModificationService{
 								 modificationVO.setAddedCount(modificationVO.getMaleVotersAdded()+modificationVO.getFemaleVotersAdded());
 							 
 							 }
-							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+							 if(params[1] != null && ((Long)params[1]).equals(2l))
 							 {
 								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 									 modificationVO.setMaleVotersDeleted((Long)params[0]);
@@ -1924,15 +2021,39 @@ public class VoterModificationService implements IVoterModificationService{
 								 
 								 modificationVO.setDeletedCount(modificationVO.getMaleVotersDeleted()+modificationVO.getFemaleVotersDeleted());
 							 }
+							 
+							 if(params[1] != null && ((Long)params[1]).equals(3l))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 modificationVO.setMaleVotersMoved((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 modificationVO.setFemaleVotersMoved((Long)params[0]);
+								 
+								 modificationVO.setMovedCount(modificationVO.getMaleVotersMoved()+modificationVO.getFemaleVotersMoved());
+							 }
+							 
+							 if(params[1] != null && ((Long)params[1]).equals(4l))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 modificationVO.setMaleVotersRelocated((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 modificationVO.setFemaleVotersRelocated((Long)params[0]);
+								 
+								 modificationVO.setRelocatedCount(modificationVO.getMaleVotersRelocated()+modificationVO.getFemaleVotersRelocated());
+							 }
 						 
 							 if(optionVO.getType() != null && optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
-								modificationVO.setName("Booth No- "+params[4].toString());
+								modificationVO.setName(params[4].toString());
 							 else if(optionVO.getType() != null && (optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || optionVO.getType().equalsIgnoreCase("localElectionBody")))
 								 modificationVO.setName(params[4].toString()+" "+params[5].toString());
 							 else
 								 modificationVO.setName(params[4].toString());
 							 
+							  modificationVO.setLocationType(optionVO.getType());
+							 
 							 	modificationVO.setId((Long)params[3]);
+							 	
+							 modificationVO.setSelectOptionVOsList(getTotalVotersByPublicationIdsList(pubIdsListForTotVoters, votersAnalysisService.getReportLevelId(optionVO.getType()), (Long)params[3], constituencyId));
 						}
 					 }
 					
@@ -2080,4 +2201,56 @@ public class VoterModificationService implements IVoterModificationService{
 		}
 	 }
 	 
+	 
+	 public VoterModificationVO getBoothWiseVoterModificationDetails(String locationType,Long locationValue, Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+	 {
+		 VoterModificationVO voterModificationVO = new VoterModificationVO();
+		 try{
+			
+			 List<SelectOptionVO> locationValuesList = new ArrayList<SelectOptionVO>(0); 
+			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<Long> pubIdsListForTotVoters = new ArrayList<Long>(0);
+			 
+			 if(fromPublicationDateId != null && fromPublicationDateId > 0 && !pubIdsListForTotVoters.equals(fromPublicationDateId))
+				 pubIdsListForTotVoters.add(fromPublicationDateId);
+			 if(toPublicationDateId != null && toPublicationDateId > 0 && !pubIdsListForTotVoters.equals(toPublicationDateId))
+				 pubIdsListForTotVoters.add(toPublicationDateId);
+			 
+			List<Long> boothIds = boothDAO.getBoothIdsByLocalValuesList(locationType, locationValue, constituencyId, publicationIdsList);
+			 if(boothIds != null && boothIds.size() > 0)
+				 locationValuesList.add(new SelectOptionVO(boothIds,"booth"));
+			 
+			 /*if(locationValuesList != null && locationValuesList.size() > 0)
+				 voterModificationVO = getVoterModificationSubLevelsData(locationValuesList, constituencyId, publicationIdsList,pubIdsListForTotVoters);*/
+			
+			 voterModificationVO = getBoothWiseSubLevelData(locationValuesList, publicationIdsList, pubIdsListForTotVoters, constituencyId);
+			
+			 
+			 return voterModificationVO;
+		 }catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getBoothWiseVoterModificationDetails() Method, Exception - "+e);
+			return voterModificationVO;
+		}
+	 }
+	 
+
+	 public VoterModificationVO getBoothWiseSubLevelData(List<SelectOptionVO> locationValuesList,List<Long> publicationIdsList,List<Long> pubIdsListForTotVoters,Long constituencyId)
+	 {
+		 VoterModificationVO voterModificationVO = new VoterModificationVO();
+		 List<VoterModificationVO> voterModificationVOsList = new ArrayList<VoterModificationVO>(0);
+		 try{
+			    for(SelectOptionVO optionVO : locationValuesList)
+			    {
+				  String queryString = getVoterModificationSublevelQueryString(optionVO.getType());
+				  List<Object[]> list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(constituencyId, publicationIdsList, optionVO.getLocationValuesList(), optionVO.getType(), queryString);
+				  getVotermodificationDetailsFromVoterModificationTable(list, voterModificationVOsList, optionVO,pubIdsListForTotVoters,constituencyId);
+			   }
+			 voterModificationVO.setModifiedVotersList(voterModificationVOsList);
+			 return voterModificationVO;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getBoothWiseSubLevelData() Method, Exception - "+e);
+			 return voterModificationVO;
+		}
+	 }
 }

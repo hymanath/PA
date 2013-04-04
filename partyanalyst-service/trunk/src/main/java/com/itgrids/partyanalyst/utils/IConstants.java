@@ -531,7 +531,9 @@ public interface IConstants {
 	public static final String BOTH ="BOTH";
 	public static final String STATUS_ADDED = "Added";
 	public static final String STATUS_DELETED = "Deleted";
-	
+	public static final String STATUS_MOVED = "Moved";
+	public static final String STATUS_RELOCATED = "Relocated";
+			
 	public static final int MAX_PROBLES = 8;
 	
 	public static final String STARTING_WITH_NAME ="StartingWith";
@@ -598,6 +600,6 @@ public interface IConstants {
 	public static final String AGE45to60 = "46-60";
 	public static final String Above60  = "Above60";
 	
-	
-	
+	public final static String ASSEMBLY_CONSTITUENCY_TYPE = "Assembly";
+	public final static String PARLIAMENT_CONSTITUENCY_TYPE = "Parliament";
 }
