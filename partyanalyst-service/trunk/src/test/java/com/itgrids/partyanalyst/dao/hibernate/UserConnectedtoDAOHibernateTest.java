@@ -1,11 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -101,23 +97,24 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	}
 }
 	*/
-/*public void testGetConnectedMembersCountForAFreeUser()
+	/*public void testGetConnectedMembersCountForAFreeUser()
 	{
-		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(411l));
+		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(2444l));
 	}*/
 	
-	/*public void testGetConnectedUsersCountForAUserInAFilterView()
+/*	public void testGetConnectedUsersCountForAUserInAFilterView()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
-		locationIds.add(323l);
-		System.out.println(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(411l,locationIds,IConstants.CONSTITUENCY_LEVEL,"pr"));
+		locationIds.add(18l);
+		System.out.println(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(611l,locationIds,IConstants.DISTRICT_LEVEL,""));
 	}*/
-	
+
 	/*public void testGetConnectedUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
-		locationIds.add(3l);
-		List<Object> list = userConnectedtoDAO.getConnectedUsersInSelectedLocations(411l, locationIds, IConstants.DISTRICT_LEVEL, 10l, 0l, "");
+		locationIds.add(219l);
+	
+		List<Object> list = userConnectedtoDAO.getConnectedUsersInSelectedLocations(611l, locationIds, IConstants.CONSTITUENCY_LEVEL, 9l, 0l, "");
 		
 		for(Object obj : list)
 		{
@@ -126,20 +123,20 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 			for(Object param : params)
 				System.out.print("\t"+param.toString());
 		}
-	}
-	
+	}*/
+	/*
 	public void testGetConnectedUserIdsInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
-		locationIds.add(3l);
-		List<Long> list = userConnectedtoDAO.getConnectedUserIdsInSelectedLocations(411l, locationIds, IConstants.DISTRICT_LEVEL);
+		locationIds.add(8l);
+		List<Long> list = userConnectedtoDAO.getConnectedUserIdsInSelectedLocations(611l, locationIds, IConstants.DISTRICT_LEVEL);
 		
 		System.out.println(list.size());
 		
 		for(Long connId : list)
 			System.out.println(connId.toString());
-	}*/
-
+	}
+*/
 	/*public void testGetAllConnectedPeopleForPublicProfile()
 	{
 		List<Object[]> list = userConnectedtoDAO.getAllConnectedPeopleForPublicProfile(1l);
@@ -189,11 +186,78 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	}
 	*/
 	
-	
+	/*
 	public void testgetUserConnectStatus()
 	{
 		List<Long> list = userConnectedtoDAO.getUserConnectStatus(206l, 1l);
 		System.out.println(list.size());
+	}*/
+/*	
+	public void testgetUserConnectStatus()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(1480l);
+		List<Long> locationIDs = new ArrayList<Long>();
+		locationIDs.add(467l);
+		locationIDs.add(217l);
+		locationIDs.add(213l);
+		locationIDs.add(228l);
+		locationIDs.add(218l);
+		locationIDs.add(219l);
+		locationIDs.add(229l);
+		
+		String list = userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds,locationIDs,"notsame");
+		System.out.println(list);
+	}*/
+
+	public void testCountOfAllConnectedPeopleForUserByDistrict()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(611l);
+		List<Long> locationIDs = new ArrayList<Long>();
+		locationIDs.add(7l);
+		List<Object[]> userIdses= userConnectedtoDAO.getCountOfAllConnectedPeopleForUserByDistrict(userIds,locationIDs,"district","notsame");
+		
+		System.out.println(userIdses.size());
+		
+		for (Object[] objects : userIdses) {
+			System.out.println(objects[0]);
+		}
 	}
+	
+	/*public void testgetCountOfAllConnectedPeopleForUserInSameConstituency()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(611l);
+		List<Long> locationIDs = new ArrayList<Long>();
+		locationIDs.add(467l);
+		locationIDs.add(217l);
+		locationIDs.add(213l);
+		locationIDs.add(228l);
+		locationIDs.add(218l);
+		locationIDs.add(219l);
+		locationIDs.add(229l);
+		List<Object[]> userIdses= userConnectedtoDAO.getCountOfAllConnectedPeopleForUserInSameConstituency(userIds,locationIDs,"constituency");
+		
+		System.out.println(userIdses.size());
+	}*/
+	
+	/*
+	public void testgetCountOfAllConnectedPeopleForUsers()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(611l);
+		List<Long> locationIDs = new ArrayList<Long>();
+		locationIDs.add(467l);
+		locationIDs.add(217l);
+		locationIDs.add(213l);
+		locationIDs.add(228l);
+		locationIDs.add(218l);
+		locationIDs.add(219l);
+		locationIDs.add(229l);
+		String userIdses= userConnectedtoDAO.getCountOfAllConnectedPeopleForUsers(userIds,locationIDs,null);
+		
+		System.out.println(userIdses);
+	}*/
 	
 }

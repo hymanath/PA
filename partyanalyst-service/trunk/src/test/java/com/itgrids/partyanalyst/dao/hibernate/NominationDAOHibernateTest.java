@@ -1256,7 +1256,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	 }
 	}*/
 
-	public void testFindSeatsWonByAPartyInMuncipalityForAnElectionYear()
+	/*public void testFindSeatsWonByAPartyInMuncipalityForAnElectionYear()
 	{
 	 List<Object[]> list = nominationDAO.findSeatsWonByAPartyInMuncipalityForAnElectionYear("46","2007","MUNCIPALITY",1l) ;
 	 System.out.println(list.size());
@@ -1270,6 +1270,19 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(31805l);
 	 List<Object[]> list = nominationDAO.getLocalBodyWiseResultsOfAllPartiesInLocalElectionBodies(null,63l,ids) ;
+	 System.out.println(list.size());
+	 for(Object[] params : (List<Object[]>)list)
+	 {
+		System.out.println(params[1]+" "+params[2]); 
+	 }
+	}*/
+	
+	
+	public void testGetMuncipalityCandidateDetails()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(31805l);
+	 List<Object[]> list = nominationDAO.getMuncipalityCandidateDetails("Greater Municipal Corp",5l) ;
 	 System.out.println(list.size());
 	 for(Object[] params : (List<Object[]>)list)
 	 {

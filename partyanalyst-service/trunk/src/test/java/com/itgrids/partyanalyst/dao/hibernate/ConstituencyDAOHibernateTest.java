@@ -123,13 +123,13 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}*/
-	
+	/*
 
 	public void testConstituencyDetails(){
 		 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(40043l);
 		
 		// Assert.assertEquals(1, result.size());	
-		}
+		}*/
 	/*
 	public void testFindByLocalElectionBodyAndElectionScope(){
 		List<Constituency> list = constituencyDAO.findByLocalElectionBodyAndElectionScope(1l, "Ward-1");
@@ -344,13 +344,24 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	/*public void testfindByDistrictIdForUser(){
-		List<Constituency> list = constituencyDAO.findConstituenciesByDistrictId(23l);
+/*	public void testfindByDistrictIdForUser(){
+		List<Constituency> list = constituencyDAO.findConstituenciesByDistrictId(18l);
 		System.out.println(list.size());
 		for(Constituency consti:list){
-			System.out.println(consti.getName());
+			System.out.println(consti.getConstituencyId());
+			//System.out.println(consti.getName());
 		}
 	}*/
+	
+	
+	public void testfindConstituencyByDistrictElectionType(){
+		List<Object[]> list = constituencyDAO.findConstituencyByDistrictElectionType(18l,"Assembly");
+		System.out.println(list.size());
+		for (Object[] objects : list) {
+			System.out.println(objects[0]);
+		}
+	
+	}
 	/*public void testfindByStateIdForUserr(){
 		List<Constituency> list = constituencyDAO.findByStateIdForUser(1l);
 		System.out.println(list.size());

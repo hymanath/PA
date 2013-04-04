@@ -89,28 +89,9 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 				dataTransferVO.setResultStatus(resultStatus);	
 			}
 		return dataTransferVO;		
-	}	*/
+	}	*/	
 	
-	/*public void testGetPendingUsersCountForAUserInAFilterView()
-	{
-		List<Long> locationIds = new ArrayList<Long>(0);
-		locationIds.add(323l);
-		System.out.println(customMessageDAO.getPendingUsersCountForAUserInAFilterView(796l,locationIds,IConstants.CONSTITUENCY, "kamal"));
-	}*/
-	/*public void testGetPendingUsersInSelectedLocations(){
-		List<Long> locationIds=new ArrayList<Long>(0);
-		locationIds.add(3L);
-		List<Object> pendingUsers=customMessageDAO.getPendingUsersInSelectedLocations(411L, locationIds, IConstants.DISTRICT_LEVEL, 20L, 0L, "");
-		System.out.println(pendingUsers.size());
-		
-		for(Object params : pendingUsers)
-		{
-			Object[] obj = (Object[])params;
-			System.out.println();
-			for(Object o : obj)
-				System.out.print("\t"+o.toString());
-		}		
-	}*/
+	
 	
 	/*public void testGetPendingUserIdsInSelectedLocations()
 	{
@@ -148,7 +129,7 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void test()
+/*	public void test()
 	{
 		List<Long> senderId =new ArrayList<Long>();
 		senderId.add(611l);
@@ -156,6 +137,31 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		List<Object> list =customMessageDAO.getAllSentMessagesForUser(senderId,messageType);
 		System.out.println(list.size());
 	}
+	*/
+	
+	public void testGetPendingUsersCountForAUserInAFilterView()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(228l);
+		System.out.println(customMessageDAO.getPendingUsersCountForAUserInAFilterView(611l,locationIds,IConstants.CONSTITUENCY, ""));
+	}
+	
+	
+	/*public void testGetPendingUsersInSelectedLocations(){
+		
+		List<Long> locationIds=new ArrayList<Long>(0);
+		locationIds.add(228L);
+		List<Object> pendingUsers=customMessageDAO.getPendingUsersInSelectedLocations(611L, locationIds, IConstants.CONSTITUENCY_LEVEL, 20L, 0L, "");
+		System.out.println(pendingUsers.size());
+		
+		for(Object params : pendingUsers)
+		{
+			Object[] obj = (Object[])params;
+			System.out.println();
+			for(Object o : obj)
+				System.out.print("\t"+o.toString());
+		}		
+	}*/
 	
 	
 }
