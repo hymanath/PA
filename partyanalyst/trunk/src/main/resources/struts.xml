@@ -4150,6 +4150,16 @@
 			</result>
 			
 		</action>
+		
+		<action name="getMultipleFamilesInfoForHamletAction" class="votersEditAction" method="getMultipleFamilesInfoForHamlet">
+		    <result type="json" name="success">
+				 <param name="root">votersFamilyInfo</param>
+			</result>
+			<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+			
+		</action>
 		<action name="getMultipleFamilesInfoForEditAction" class="votersEditAction" method="getMultipleFamilesInfoForEdit">
 		    <result type="json" name="data">
 				 <param name="root">voterHouseInfoVO1</param>

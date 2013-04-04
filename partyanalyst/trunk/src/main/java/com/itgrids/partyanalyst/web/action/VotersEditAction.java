@@ -514,6 +514,44 @@ public String saveLocality()
 		return Action.SUCCESS;
 	}
 	
+	public String getMultipleFamilesInfoForHamlet(){
+		try{
+			    jObj = new JSONObject(getTask());
+			    HttpSession session = request.getSession();
+				RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+				Long userId = null;
+				if(user != null && user.getRegistrationID() != null)
+				    userId = user.getRegistrationID();
+				else 
+				  return "error";
+				org.json.JSONArray jSONArray = jObj.getJSONArray("selectedFamilies");
+				String selectType = jObj.getString("selectType");
+				
+				List<VoterHouseInfoVO> familiesList = new ArrayList<VoterHouseInfoVO>();
+				VoterHouseInfoVO voterHouseInfoVO = null;
+				for(int i = 0;i<jSONArray.length();i++){
+					JSONObject jSONObject= jSONArray.getJSONObject(i);
+					voterHouseInfoVO = new VoterHouseInfoVO();
+					voterHouseInfoVO.setHouseNo(jSONObject.getString("houseNo"));
+					voterHouseInfoVO.setPublicationId(jSONObject.getLong("publicationId"));
+					voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
+					voterHouseInfoVO.setHamletId(jSONObject.getLong("hamletId"));
+					
+					
+					familiesList.add(voterHouseInfoVO);
+				}
+				//votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInfo(familiesList);
+				
+			votersFamilyInfo = votersAnalysisService
+					.getMultipleFamiliesInformationForHamlet(familiesList,
+							userId,selectType);
+			
+		}catch (Exception e) {
+			Log.error("Exception Occured in getMultipleFamilesInfoForHamlet() Method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getMultipleFamilesInfoForEdit(){
 		try{
 			    jObj = new JSONObject(getTask());
@@ -538,6 +576,7 @@ public String saveLocality()
 					voterHouseInfoVO1 = votersAnalysisService.getVoterPersonalDetailsList(votersList,userId);
 					return "data";
 			  }else{
+				  String type = "";
 				    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 					VoterHouseInfoVO voterHouseInfoVO = null;
 					List<VoterHouseInfoVO> categoriesList = null;
@@ -550,6 +589,7 @@ public String saveLocality()
 						voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
 						voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileNo"));
 						voterHouseInfoVO.setUserId(userId);
+						
 						categoriesList = new ArrayList<VoterHouseInfoVO>();
 						VoterHouseInfoVO category = null;
 						if(totalCategCount > 0){
@@ -565,7 +605,9 @@ public String saveLocality()
 						voterHouseInfoVO.setCategoriesList(categoriesList);
 						votersList.add(voterHouseInfoVO);
 					}
-				  status = votersAnalysisService.updateMultipleVoterDetails(votersList,"all");
+					
+					
+				  status = votersAnalysisService.updateMultipleVoterDetails(votersList,"partyCast");
 				  return "update";
 			  }
 		}catch (Exception e) {
