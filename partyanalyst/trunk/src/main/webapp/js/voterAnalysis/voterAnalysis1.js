@@ -6400,19 +6400,20 @@ function getInfluencePeopleOfAnUser(voterId){
 
 function showInfluencePeopleDialog(voterId){
 	$('#searchResultsDiv').html('');
-
-
+	$('#influencePeopleInnerDiv').show();
+	$('#totalCountId').hide();
+	$('#searchResultsDiv').hide();
 	var str='';
     str+='<form class="form-horizontal">';
    str+='<div class="control-group">';
-	 str+='<label class="control-label" style="font-size: 15px;">Enter Name :</label><div class="controls"><input id="nameId" type="text" name="name"/></div><span id="nameErrMsg" class="locationErrorMsg"></span></div>';
-	 str+='<div class="control-group"><label class="control-label" style="font-size: 15px;">Father Name :</label><div class="controls"><input id="fatherNameId" type="text" name="name"/></div></div>';
+	 str+='<span><label class="control-label" style="font-size: 15px;margin-left: 5px;">Enter Name :</label></span><div class="controls"><input id="nameId" type="text" name="name" style="margin-left: 49px;width: 169px;"/></div><span id="nameErrMsg" class="locationErrorMsg" style="float: right;margin-right: 90px;margin-top: -24px;"></span></div>';
+	 str+='<div class="control-group"><span><label class="control-label" style="font-size: 15px;margin-left: 10px;">Father Name :</label></span><div class="controls"><input id="fatherNameId" type="text" name="name" style="margin-left: 49px;width: 169px;"/></div></div>';
     
 	// str+='<h5>Select Scope</h5>';
     str+='<div class="control-group">';
-	  str+='<label class="control-label" style="font-size: 15px;">Select Scope</label>';
+	  str+='<span><label class="control-label" style="font-size: 15px;margin-left: 2px;">Select Scope</label></span>';
 	  str+='<div class="controls">';
-	  str+='<select id="scopeId" onChange="showLocationsDiv();" style="font-size:14px;font-family:helvetica;width:185px;">';
+	  str+='<select id="scopeId" onChange="showLocationsDiv();" style="font-size:14px;font-family:helvetica;width:185px;margin-left: 50px;">';
 	        str+='<option value="0" >Select</option>';
 			str+='<option value="2">STATE</option>';
 			str+='<option value="3">DISTRICT</option>';
@@ -6426,24 +6427,24 @@ function showInfluencePeopleDialog(voterId){
 	  str+='</div>';
     str+='</div>';
 
-    str+='<div id="locationsDiv" style="display:none;padding:10px;margin:5px;border:1px solid #c3c3c3;width:525px;">';
-	  str+='<div  id="regionstitleDiv" style="display:none;"><h5>Select region</h5></div>';
+    str+='<div id="locationsDiv" style="display:none;padding:10px;margin:5px;width:525px;">';
+	  str+='<div  id="regionstitleDiv" style="display:none;margin-left: 60px;"><h5>Select region</h5></div>';
 
-	  str+='<div id="stateSelect" style="display:none;" class="locationDivClass "><div class="control-group"><label class="control-label" style="font-size: 12px;width: 59px;">STATE</label><div class="controls"><select id="stateSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="1">ANDHRA PRADESH</option></select></div></div></div>';
+	  str+='<div id="stateSelect" style="display:none;margin-left: 39px;margin-top: 14px" class="locationDivClass "><div class="control-group"><label class="control-label" style="font-size: 12px;width: 59px;">STATE</label><div class="controls"><select id="stateSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="1">ANDHRA PRADESH</option></select></div></div></div>';
 
-	  str+='<div id="districtSelect" style="display:none;" class="locationDivClass control-group"><label class="control-label" style="font-size: 12px;width: 78px;">DISTRICT</label><div class="controls"><select id="districtSelectId" onChange="getConstituenciesInDistrict();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="districtErrMsg" class="locationErrorMsg" ></span></div>';
+	  str+='<div id="districtSelect" style="display:none;margin-left: 39px;" class="locationDivClass control-group"><label class="control-label" style="font-size: 12px;width: 78px;">DISTRICT</label><div class="controls"><select id="districtSelectId" onChange="getConstituenciesInDistrict();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="districtErrMsg" style="float: right; margin-right: -32px; margin-top: -23px;" class="locationErrorMsg" ></span></div>';
 
-	  str+='<div id="constituencySelect" style="display:none;" class="locationDivClass control-group" ><label class="control-label" style="font-size: 12px; width: 114px;">CONSTITUENCY</label><div class="controls"><select id="constituencySelectId" onChange="getMandalsOrMuncipalities();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="constituencyErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="constituencySelect" style="display:none;margin-left: 39px" class="locationDivClass control-group" ><label class="control-label" style="font-size: 12px; width: 114px;">CONSTITUENCY</label><div class="controls"><select id="constituencySelectId" onChange="getMandalsOrMuncipalities();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="constituencyErrMsg" class="locationErrorMsg" style="float: right; margin-right: -73px; margin-top: -21px;"></span></div>';
 
-	  str+='<div id="mandalSelect"  class="locationDivClass control-group" style="display:none;"><label class="control-label" style="font-size: 12px; width: 141px;">TEHSIL/MUNCIPALITY</label><div class="controls"><select id="mandalSelectId" onChange="getHamletsOrWards();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="tehsilOrMuncipalityErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="mandalSelect"  class="locationDivClass control-group" style="display:none;margin-left: 39px"><label class="control-label" style="font-size: 12px; width: 141px;">TEHSIL/MUNCIPALITY</label><div class="controls"><select id="mandalSelectId" onChange="getHamletsOrWards();" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="tehsilOrMuncipalityErrMsg" class="locationErrorMsg" style="float: right; margin-right: -62px; margin-top: -23px;"></span></div>';
 
-	  str+='<div id="wardSelect"style="display:none;"  class="locationDivClass control-group" ><label class="control-label" style="font-size: 12px;">VILLAGE/WARD/DIVISION</label><div class="controls"><select id="wardSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="villageOrWardErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="wardSelect"style="display:none;margin-left: 39px"  class="locationDivClass control-group" ><label class="control-label" style="font-size: 12px;">VILLAGE/WARD/DIVISION</label><div class="controls"><select id="wardSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="villageOrWardErrMsg" class="locationErrorMsg" style="float: right; margin-right: -20px; margin-top: -21px;"></span></div>';
 
-	  str+='<div id="boothSelect" class="locationDivClass control-group" style="display:none;"><label class="control-label" style="font-size: 12px; width: 59px;">BOOTH</label><div class="controls"><select id="boothSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="boothErrMsg" class="locationErrorMsg"></span></div>';
+	  str+='<div id="boothSelect" class="locationDivClass control-group" style="display:none;margin-left: 39px"><label class="control-label" style="font-size: 12px; width: 59px;">BOOTH</label><div class="controls"><select id="boothSelectId" style="font-size:14px;font-family:helvetica;width:185px;"><option value="0">Select</option></select></div><span id="boothErrMsg" class="locationErrorMsg" style="float: right; margin-right: -28px; margin-top: -24px;"></span></div>';
 
 	str+='</div>';
 	  str+='</form >';
-	str+='<div><a class="btn btn-primary" style="float:right;" href="javaScript:{callAjaxToSearchInfluencingPeople('+voterId+');}">Search</a></div>';
+	str+='<div><a class="btn btn-primary" id="searchButtonId" style="float:left; margin-left: 264px;margin-top: -25px;display:none; color: white;" href="javaScript:{callAjaxToSearchInfluencingPeople('+voterId+');}">Search</a></div>';
 	str+='<div id="ajaxImageDiv1" style="display:none;"><img style="margin-left:244px;" src="images/icons/ajaxImg.gif"></div>';
 
 
@@ -6452,7 +6453,7 @@ function showInfluencePeopleDialog(voterId){
 	$('#influencePeopleOuterDiv').dialog({ 
 	                            title:'Search Influence People',
 	                            height: 'auto',
-								width: 700,
+								width: 730,
 								closeOnEscape: false,
 								show: "blind",
 								hide: "explode",
@@ -6470,7 +6471,7 @@ function showInfluencePeopleDialog(voterId){
 
 
 function showLocationsDiv(){
-
+		$('#searchButtonId').show();
 		if($('#scopeId').val() == "0")
 		{
 			$('#regionstitleDiv').css('display','none');
@@ -6557,6 +6558,8 @@ function getHamletsOrWards(){
 function callAjaxToSearchInfluencingPeople(voterId)
 {
 
+	$('#searchResultsDiv').show();
+	$('#totalCountId').show();
 	$('#districtErrMsg ,#constituencyErrMsg , #tehsilOrMuncipalityErrMsg ,#villageOrWardErrMsg , #boothErrMsg , #searchResultsDiv , #nameErrMsg').html('');
 	var isValid = true;
 
@@ -6792,7 +6795,9 @@ document.getElementById('ajaxImageDiv1').style.display = 'block';
 function buildInfluencePeopleSearchResults(results,voterId){
 	 
     $("#searchResultsDiv").html("");
-
+	$('#totalCountId').show();
+	var totalRecords = results.length;
+	$('#totalCountId').html('<span style="float: none;position: relative;top: 5px;"><b>Total Records: </b><b style="color: red;">'+totalRecords+'</b></span>');
 	 YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
 	{
 	    var str='';
@@ -6808,10 +6813,10 @@ function buildInfluencePeopleSearchResults(results,voterId){
 	
      var influencePeopleColumnDefs =
 		                [ 
-						 {key:"firstName",label:"First Name",sortable:true},
-						 {key:"lastName",label:"Last Name",sortable:true},
-   		                 {key:"contactNumber",label:"Mobile No",sortable:true},
-		                 {key:"Select",label:"Select", formatter:YAHOO.widget.DataTable.select}
+						 {key:"firstName",label:"First Name",sortable:true ,width:150},
+						 {key:"lastName",label:"Last Name",sortable:true,width:120},
+   		                 {key:"contactNumber",label:"Mobile No",sortable:true,width:120},
+		                 {key:"Select",label:"Select", formatter:YAHOO.widget.DataTable.select,width:200}
 						]; 
 
      var myConfigs =

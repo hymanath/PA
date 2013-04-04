@@ -896,7 +896,26 @@ margin-left:10px;
     border-collapse: separate;
 }
 .ui-widget {
-    font-family: verdana;
+font-family: verdana;
+}
+
+.btn-mini {
+    border-radius: 3px 3px 3px 3px;
+    font-size: 10.5px;
+    margin-left: 63px;
+    padding: 1px 6px;
+}
+.yui-skin-sam .yui-pg-container {
+    display: block;
+    margin: 6px 0;
+    margin-left: 183px;
+    margin-top: 48px;
+    white-space: nowrap;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    
 }
 </style>
 <style>
@@ -1004,9 +1023,10 @@ maxDate: new Date()
 </div>
 </div>
 
-<div id="influencePeopleOuterDiv">
-  <div id="influencePeopleInnerDiv"></div>
-  <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable"></div>
+<div id="influencePeopleOuterDiv" >
+  <div id="influencePeopleInnerDiv" style="border: 1px solid black;border-radius: 4px 4px 4px 4px;margin-top: 11px;padding: 10px;display:none;"></div>
+  <div id="totalCountId" style="display:none;"></div>
+  <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable" style="display:none;border: 1px solid black;border-radius: 4px 4px 4px 4px;margin-top: 11px;padding: 10px;"></div>
 </div>
 
 <!--DISPLAY NEWS GALLARIES START-->
@@ -1690,7 +1710,39 @@ function showBasicAgewiseDetails(){
 
 
 function showAllAgewiseDetails(){
-   callCorrespondingAjaxCall('all');
+   //callCorrespondingAjaxCall('all');
+   constituencyId = $("#constituencyList").val();
+   publicationYear = publicationYear;
+   if(maintype == "constituency")
+   {
+	   var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&name="+mainname+"&retrieveType='all'&type='constituency'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+   }
+   else if(maintype == "mandal")
+   {
+		var startNumber = mainreqid.substring(0,1);
+		mandalId = mainreqid.substring(1);
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&mandalId="+mandalId+"&name="+mainname+"&retrieveType='all'&&startNumber="+startNumber+"&type='mandal'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+   }
+   else if(maintype == "panchayat")
+   {
+		
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='panchayat'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+   }
+   else if(maintype == "ward")
+   {
+		
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='ward'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+   }
+   else if(maintype == "hamlet")
+   {
+		
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='ward'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+   }
 }
    function openwindowForPanchayatsToShow(){
 		var selElectionId = $("#revenueVillageWiseElecId").val();
@@ -1706,9 +1758,9 @@ function showBasicAgewiseDetails(){
 }
 
 
-function showAllAgewiseDetails(){
+/*function showAllAgewiseDetails(){
    callCorrespondingAjaxCall('all');
-}
+}*/
 	function getElectionYearsAjaxAction(){
 	    var jObj=
 	{
