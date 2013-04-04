@@ -90,6 +90,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private IVoterModificationService voterModificationService;
 	
     private EntitlementsHelper entitlementsHelper;
+    private String isLocalityExist;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -380,6 +381,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	public void setVoterModificationService(
 			IVoterModificationService voterModificationService) {
 		this.voterModificationService = voterModificationService;
+	}
+
+	public String getIsLocalityExist() {
+		return isLocalityExist;
+	}
+
+	public void setIsLocalityExist(String isLocalityExist) {
+		this.isLocalityExist = isLocalityExist;
 	}
 
 	public String execute() throws Exception
@@ -1434,6 +1443,23 @@ return Action.SUCCESS;
 		}
 		
 		return SUCCESS;
+	}
+	
+	public String checkLocalityDataExist()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			Long userId =  regVO.getRegistrationID();
+			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in checkLocalityDataExist() Method, Exception - "+e);
+		}
+		return Action.SUCCESS;
 	}
 	
 }
