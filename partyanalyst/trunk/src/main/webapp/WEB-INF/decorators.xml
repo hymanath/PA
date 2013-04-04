@@ -196,6 +196,7 @@
     	<pattern>/sendUpdatesBySMSAction*</pattern>
     	<pattern>/voterFamilyInfoAction*</pattern>
     	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
+    	<pattern>/voterFamilyEditAction*</pattern>
     	 </decorator>
 
 </decorators>
