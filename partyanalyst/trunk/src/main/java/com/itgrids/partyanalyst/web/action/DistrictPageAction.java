@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IUserService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -93,7 +94,15 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private NavigationVO messageTypes;
 	private EntitlementsHelper entitlementsHelper;
 	private List yearsList;
+	private IUserService userService;
 	
+	
+	public IUserService getUserService() {
+		return userService;
+	}
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
 	public List getYearsList() {
 		return yearsList;
 	}
@@ -461,21 +470,26 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userDistrictId =0L;
 		Long startIndex = 0L;
 		String nameString = "";
 		if(user==null){
 			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,null,0l,IConstants.ALL,startIndex,nameString);
 		}else{
-			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,null,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);		
+			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,null,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);
+			userDistrictId = userService.getUserDistrictByUserId(user.getRegistrationID());
 		}
 		//Free User
 		
 		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
+			
 			userDetails.setLoginStatus("true");
 			userDetails.setUserId(user.getRegistrationID());
+			userDetails.setDistrictId(userDistrictId);
 		}else if(user!=null && user.getUserStatus() != null){
 			userDetails.setLoginStatus("true");
 			userDetails.setUserId(user.getRegistrationID());
+			userDetails.setDistrictId(userDistrictId);
 		}else{
 			userDetails.setLoginStatus("false");
 		}
