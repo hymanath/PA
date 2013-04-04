@@ -35,7 +35,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ResultStatus resultStatus;
 	private FileVO savedDetails;
-	
+	private List<FileVO> fileVOs;
 	public FileVO getSavedDetails() {
 		return savedDetails;
 	}
@@ -87,6 +87,15 @@ public class NewsDisplayAction implements ServletRequestAware{
 		return Action.SUCCESS;
 	}
 	
+	
+	public List<FileVO> getFileVOs() {
+		return fileVOs;
+	}
+
+	public void setFileVOs(List<FileVO> fileVOs) {
+		this.fileVOs = fileVOs;
+	}
+
 	public String getNews(){
 	 try{
 		 jObj = new JSONObject(getTask());
@@ -386,5 +395,58 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 	   }
 	   return Action.SUCCESS;
+   }
+   
+   /**
+    * This Method Is Used For Handling Ajax Calls For Getting Flaged News And Noted News
+    * @return String
+    * @date 01-04-2013
+    */
+   public String getFlagOrNotesNews()
+   {
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getFlagOrNotesNews Method of NewsDisplayAction ");
+	  try
+	  {
+		  jObj = new JSONObject(getTask()); 
+		    
+		     session = request.getSession();
+			 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			 FileVO fileVO = new FileVO();
+				if(jObj.getString("task").trim().equalsIgnoreCase("today"))
+				{
+				   fileVO.setExistingFrom(dateUtilService.getCurrentDateAndTime());
+				   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+				}
+				else if(jObj.getString("task").trim().equalsIgnoreCase("thisweek"))
+				{
+				   fileVO.setExistingFrom(getStartDayOfWeek());
+				   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+				}
+				else if(jObj.getString("task").trim().equalsIgnoreCase("thismonth"))
+				{
+				   fileVO.setExistingFrom(getStartDayOfMonth());
+				   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+				}
+				else if(jObj.getString("task").trim().equalsIgnoreCase("betweendates"))
+				{
+				   if(jObj.getString("fromDate").trim().length() > 0)
+				     fileVO.setExistingFrom(getDate(jObj.getString("fromDate").trim()));
+				   if(jObj.getString("toDate").trim().length() > 0)
+				     fileVO.setIdentifiedOn(getDate(jObj.getString("toDate").trim()));
+				}
+				
+				if(regVO!=null)
+					fileVO.setCandidateId(regVO.getRegistrationID());
+				    fileVO.setFileType(jObj.getString("fileType"));
+				    fileVO.setTitle(jObj.getString("type"));
+				    fileVOs = newsMonitoringService.getNewsForFlagedAndNoted(fileVO);
+	  } 
+	  catch (Exception e)
+	  {
+		log.error("Exception raised in getFlagOrNotesNews in NewsDisplatAction", e);
+	  } 
+		    
+	   return Action.SUCCESS; 
    }
 }

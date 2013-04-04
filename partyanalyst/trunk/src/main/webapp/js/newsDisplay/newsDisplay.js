@@ -117,6 +117,7 @@ function callAjaxForNotes(jsObj,url){var myResults;
                  $('#totalFlagNewsCount').val(newCount);
 
 		   }else if(jsObj.task == "saveFlagInTable"){
+				getFlagedNewsAndNotes("flagedCount");
                 $('#unFlagSetDiv'+jsObj.contentId).css('display','none');
 				 $('#flagSetDiv'+jsObj.contentId).css('display','block');
 				  var flagCount = $('#totalFlagNewsCount').val();
@@ -124,6 +125,7 @@ function callAjaxForNotes(jsObj,url){var myResults;
                  $('#totalFlagNewsCount').val(newCount);
 				 
 		   }else if(jsObj.task == "removeFlagInTable"){
+				getFlagedNewsAndNotes("flagedCount");
 			   $('#unFlagSetDiv'+jsObj.contentId).css('display','block');
 				 $('#flagSetDiv'+jsObj.contentId).css('display','none');
 				  var flagCount = $('#totalFlagNewsCount').val();
@@ -132,7 +134,7 @@ function callAjaxForNotes(jsObj,url){var myResults;
 
 		   }else if(jsObj.task == "updateVisibility"){
 
-
+			
             if(jsObj.place == "table"){
 
 			   if(jsObj.visibility  == "false"){
