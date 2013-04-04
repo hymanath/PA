@@ -27,4 +27,12 @@ public class VoterReportLevelDAO extends GenericDaoHibernate<VoterReportLevel, L
 		return (VoterReportLevel)queryObj.uniqueResult();
 		
 	}
+	
+	public String getReportLevelTypeById(Long reportLevelId)
+	{
+		Query queryObj = getSession().createQuery("select model.reportLevel from VoterReportLevel model where model.voterReportLevelId = :voterReportLevelId");
+		queryObj.setParameter("voterReportLevelId", reportLevelId);
+		return (String) queryObj.uniqueResult();
+	}
+	
 }
