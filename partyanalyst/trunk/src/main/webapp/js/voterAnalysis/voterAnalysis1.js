@@ -1414,6 +1414,10 @@ function addToPolitician(voterId,name)
 								   if(jsObj.buildType != buildType )
 								   return;
 								 }
+								   if(jsObj.type=="hamlet")
+								 {
+								 hideAjaxImgDiv("ajaxImageDiv1");								 
+								 }
 								    if(myResults != null)
 									  buildVotersBasicInfo(myResults,jsObj);
 									else{
@@ -1638,9 +1642,6 @@ function addToPolitician(voterId,name)
 									}else{
 									   alert("Voter Added To Cadre Successfully.");
 									}
-								}else if(jsObj.task == "importantFamiliesinfo1")
-								{ //console.log("insideTask");
-								 buildFamilyMembersForAnil(myResults,jsObj.publicationDateId,jsObj.type);
 								}else if(jsObj.task == "insertCastAndPartyVotersData"){
 								    $("#permanentlyUpdateDiv").removeAttr("disabled");
 								    getVotersCastInfo(mainreqid,mainpublicationId,maintype);
@@ -2422,8 +2423,15 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		else if(type =="hamlet")
 		{
-		
+		if(jsObj.resultFor == "booth")
+				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\'Booth - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+
+		else
 		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}else if(type =="booth")
+		{
+		
+		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+jsObj.id+','+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\'Hamlet - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else
 		{
@@ -2679,7 +2687,9 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getVotersCountInfoAction.action?"+rparam;						
+			var url = "getVotersCountInfoAction.action?"+rparam;	
+    if(type=="hamlet")
+	 showAjaxImgDiv('ajaxImageDiv1');
 		callAjax(jsObj,url);
 	}
 	if(buttonType == "impFamilies"){
@@ -3437,6 +3447,10 @@ function buildPartyWisePiechart(myResults,jsObj)
 
 		}
   function  buildFamilyMembers(result,jsObj,type){
+  if($("impfamilydatatable_wrapper"))
+  {
+  $("impfamilydatatable_wrapper").remove();
+  }
 	var publicationDateId =   jsObj.publicationDateId;
  //debugger;
  //alert("ok");
@@ -3516,69 +3530,16 @@ function buildPartyWisePiechart(myResults,jsObj)
 		"aaSorting": [[ 1, "desc" ]],
 		"bDestroy": true,
 		"iDisplayLength": 15,
-		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null
+		 // "aoColumns": [null,null,null,null,null,null,null,null,null,null,null
      
 	  
-    ] 
+  //  ] 
 		});
+		
   }
-  function  buildFamilyMembersForAnil(impFamilesData,publicationDateId,type){
  
-	var impFamiList = new Array();
-  for(var i in impFamilesData){
-     var data={};
-	 
-	 data["name"] = impFamilesData[i].name;  
-	 data["below3"] = impFamilesData[i].below3;
-	 data["below3perc"] = impFamilesData[i].below3perc;
-	 data["betwn4to6"] = impFamilesData[i].betwn4to6;
-	 data["betwn4to6perc"] = impFamilesData[i].betwn4to6perc;
-	 data["betwn7to10"] = impFamilesData[i].betwn7to10;
-	 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
-	 data["above10"] = impFamilesData[i].above10;
-	 data["above10perc"] = impFamilesData[i].above10perc;
-	 data["totalVoters"] =  impFamilesData[i].totalVoters;
-	 data["totalFemaleVoters"] = impFamilesData[i].totalFemaleVoters;
-	 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
-	 impFamiList.push(data);
-  }
-  var reqtytle ="Name";
-  for(var t in impFamilesData){
-     if(impFamilesData[t].type != null)
-	   reqtytle = impFamilesData[t].type;
-  }
-  $("#impFamilesBasicSubDetailsTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
-  
-  var impFamilesColumnDefs = [
-    {key:"name", label: ""+reqtytle+"", sortable: true},
-	{key:"totalVoters", label:"Total",sortable: true},
-	{key:"totalMaleVoters", label:"Male Voters",sortable: true},
-	{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
-    {key:"below3", label: "<3", formatter:"number", sortable: true},
-    {key:"below3perc", label: "<3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"betwn4to6", label: "4 to 6", formatter:"number", sortable: true},
-    {key:"betwn4to6perc", label: "4 to 6%", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"betwn7to10", label: "7 to 10", formatter:"number", sortable: true},
-    {key:"betwn7to10perc", label: "7 to 10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"above10", label: ">10", formatter:"number",sortable:true},
-    {key:"above10perc", label: ">10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
-  ];
-var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
-impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-impFamilesDataSource.responseSchema = {
-fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
-};
-var myConfigs = {
-};
-var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetails", impFamilesColumnDefs,
-impFamilesDataSource, myConfigs);
-return {
-oDS: impFamilesDataSource,
-oDT: impFamilesDataTable
-};
-  } 
   
 function clearAllCheckBoxes()
 {
@@ -5072,6 +5033,9 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			strl += '<tbody><td style="text-align:center;">'+totalvoterlclbds+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersForLocalBodies+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersForLocalBodies+'</td></tbody>';
 			
 			strl += '</table>';
+				strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Voters In Publication</th><th style="text-align:center;">Assigned by User In publication </th><th style="text-align:center;">Voters Need To Be Assigned </th></thead>';
+    			strl += '<tbody><td style="text-align:center;">'+votersbasicinfo.publicationVoters+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersByUser+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersByUser+'</td></tbody>';
+				strl += '</table>';
 			$("#assAndUnass").html(strl);
 			
 		}
@@ -6196,6 +6160,7 @@ scrollToNewsDiv();
             astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
+			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
 			astr += "</div>";
 			astr += "</div>";
 			astr += "</div>";
@@ -7850,3 +7815,38 @@ function mymv(target, direction) {
                 else slip.style.width = slip.offsetWidth - Math.round(diff / 3) + "px";
             }
         }
+function getVotersInACasteForDidffrentLevels(mainId,id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
+{
+$("#localCastStatsVotersTitle").html("");
+$("#localCastStatsTabContent_subbody1").html("");
+var level = $("#reportLevel").val();
+if(level == 2)
+var typename = $('#mandalField :selected').text();
+if(level == 3)
+var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
+if(level == 4)
+var typename = $('#pollingStationField :selected').text();
+var publicationDateVal=$('#publicationDateList :selected').text();
+var year=publicationDateVal.substr(publicationDateVal.length - 4)
+var jsObj={ hamletId:id,
+			id:mainId,
+			publicationDateId:publicationDateId,
+			//caste:"32",
+			caste:casteStateId,
+			casteName:caste,
+			typename:typename,
+			type:type,
+			publicationDate:year,
+			Name:Name,
+            buildType:buildType,
+			constituencyId:$("#constituencyList").val(),
+			casteCategory:casteCategory,
+			task:"getVotersInACaste"
+
+		}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
+	callAjax(jsObj,url);
+
+}
