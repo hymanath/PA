@@ -62,9 +62,9 @@ connectDivId = divId;
 		bodyStr+='<tr>';
 		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="45" width="50" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"  onerror="setMemberImg(this)"/></a></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg"  onerror="setMemberImg(this)"/></a></span></td>';
 		else
-			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="45" width="50" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg" onerror="setDefaultImg(this)"/></a></span></td>';
+			bodyStr+='<td rowspan="2" width="25%"><span><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank"><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].id+'.jpeg" onerror="setDefaultImg(this)"/></a></span></td>';
 		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank" style="text-transform: capitalize;">'+connectedPeopleData[i].candidateName+'</a></span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
@@ -182,11 +182,11 @@ function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationTy
 		bodyStr+='<li>';
 	
 			if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-				bodyStr+='<img src="images/icons/connectPeople/member.png" />';
+				bodyStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 			else
-				bodyStr+='<img src="pictures/profiles/'+connectedPeopleData[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/>';
+				bodyStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'"><img src="pictures/profiles/'+connectedPeopleData[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/></a>';
 			
-			bodyStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeopleData[i].candidateName+'</span></h3>';
+			bodyStr+='<span class="membercard"><h3 id="connectDiv"><a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'">'+connectedPeopleData[i].candidateName+'</a></span></h3>';
 					
 			bodyStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeopleData[i].noOfFriends+'</b>)</a>';
 			bodyStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeopleData[i].noOfPosts+'</b>)</a>';
@@ -205,7 +205,7 @@ function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationTy
 					bodyStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 		}		
 		bodyStr+='</li>';
-		bodyStr+='<span style="clear: left; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeopleData[i].candidateName+'</span>';
+		bodyStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;"><a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'">'+connectedPeopleData[i].candidateName+'</a></span>';
 		bodyStr+='</div>';
 	}
 	if(connectedPeopleData.length>5)
@@ -269,7 +269,7 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 						memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 				}
 				memberStr+='</li>';
-				memberStr+='<span style="clear: left; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+				memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
 				memberStr+='</div>';
 			}
 			if(connectedPeople.length>5)
@@ -299,7 +299,7 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
 					memberStr+='</li>';
-					memberStr+='<span style="clear: left; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
 					memberStr+='</div>';
 				}
 				
@@ -334,7 +334,7 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 					memberStr+='</li>';
-					memberStr+='<span style="clear: left; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
 					memberStr+='</div>';
 				}
 			}
@@ -368,7 +368,7 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].id+'\',\''+connectedPeople[i].candidateName+'\',\''+connectedPeople[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
 					memberStr+='</li>';
-					memberStr+='<span style="clear: left; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
 					memberStr+='</div>';
 				}
 			}
@@ -430,14 +430,14 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 		$( "#connectPeoplePopup" ).dialog("open");
 	}
 	else{
-	ifNotLogin();
+	ifNotLogin(userName);
 	}
 }
 
-function ifNotLogin(){
+function ifNotLogin(userName){
 $('#Not_connectPeople_body_name').css("display","block");
 		$('#Not_connectPeople_body_name').dialog({
-				title:"Connect To People ",
+				title:"<span style='text-transform: capitalize;'>Connect To "+userName+"</span>",
 				show: "blind",
 				width: 500,
 				minHeight:200,
@@ -528,9 +528,10 @@ function closeConnectPopup()
 
 	elmt.innerHTML = str;
 }
-
+var connectedConstId;
 function showAllConnectPeopleWindow(locationId,locationName,userLoginId,locationType)
 {	
+	connectedConstId = locationId;
 	connetLocationType = locationType;	
 	var str = '';
 	str += '<div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div>';
@@ -586,8 +587,8 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 			title:"People Connected to "+locationName+" "+locationType,
 			autoOpen: false,
 			show: "blind",
-			width: 730,
-			minHeight:400,
+			width: 790,
+			minHeight:500,
 			modal: true,
 			hide: "explode"
 		});
@@ -653,11 +654,16 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 }
 
 function showAllConnectedUsersInPanel(jsObj, results){
+alert(consticType);
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
-	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount-1);
+	var notConnectedPeopleCount;	
+	if(loginconstiId != connectedConstId)
+		notConnectedPeopleCount = results.totalResultsCount - results.connectedPeopleCount;		
+	else 
+		notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount-1);
 
 	var users = results.candidateVO;
 
@@ -671,6 +677,7 @@ function showAllConnectedUsersInPanel(jsObj, results){
 	{
 		str	+= '<div> No People Connected In '+jsObj.locationName+' '+jsObj.locationType+'</div>';
 		elmt.innerHTML = str;
+		$( "#connectPeoplePopup" ).dialog("open");
 		return
 	}
 
@@ -704,8 +711,7 @@ function showAllConnectedUsersInPanel(jsObj, results){
 		for(var consti=0; consti<constituencies.length;consti++)
 			str += '<option value="'+constituencies[consti].id+'">'+constituencies[consti].name+'</option>';
 		str += '</select></th>';
-	}
-
+		
 	if(jsObj.userId != ""){
 		str += '<th>By Status:</th>';
 		str += '<th><select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\', \''+jsObj.userId+'\')">';
@@ -713,6 +719,18 @@ function showAllConnectedUsersInPanel(jsObj, results){
 		for(var status=0; status<connectStatus.length;status++)
 			str += '<option value="'+connectStatus[status].id+'">'+connectStatus[status].name+'</option>';
 		str += '</select></th>';
+	}
+	}
+	if(jsObj.locationType == "CONSTITUENCY"){
+	str += '<th>By Status:</th>';
+		str += '<th><select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\', \''+jsObj.userId+'\')">';
+		str += '<option value="0"> All </option>';
+		if(jsObj.userId != ""){
+			str += '<option value="1"> CONNECTED </option>';
+			str += '<option value="3"> PENDING </option>';
+			str += '<option value="9"> Not CONNECTED</option>';
+		}
+		str += '</select></th>';	
 	}
 	
 	str += '<th>By Name</th>'; 
@@ -785,7 +803,11 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
-	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount-1);
+	var notConnectedPeopleCount ='';
+		if (userDistrictId == districtId)
+			notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount)-1;
+		else
+			notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
 
 	var users = results.candidateVO;
 
@@ -1003,7 +1025,7 @@ function showConfirmDiv(name,id)
 			spanElmt.innerHTML = name; 
 	}
 	else{
-	ifNotLogin();
+	ifNotLogin(name);
 	}
 }
 
@@ -1052,6 +1074,9 @@ var str = '';
 			str += '<div>'+users[i].status+'</div>';
 			}
 		}
+		else if(users[i].status == "COMMENTS"){
+		str += '<div title="Request Pending"><i class="icon-adjust opacityFilter-50" style="margin-right:5px;"></i></div>';
+		}
 		else 
 		{
 			str += '<span class="connectPeople_body_status">';
@@ -1074,18 +1099,18 @@ var str = '';
 }
 
 function buildAllConnectUserStringOfDistrict(users)
-{
+{  
 	var str = '';
 	for(var i=0; i<users.length; i++){
 			var imageStr = "pictures/profiles/"+users[i].image;
-			str+='<span class="memberCardViewAll">';
-			str+='<h3 id="connectDiv"><div style="float:left;width:75px;height:75px;">';
+			str+='<span class="memberCardViewAll" style=" width:220px;">';
+			str+='<h3 id="connectDiv"><div style="float:left;width:60px;height:60px;">';
 			if(users[i].image == null)
-				str+='<img src="images/icons/connectPeople/member.png" />';
+				str+='<a target="_blank" href="userProfile.action?profileId='+users[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 			else
-				str+='<img  src="'+imageStr+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/>';		
+				str+='<a target="_blank" href="userProfile.action?profileId='+users[i].id+'"><img  src="'+imageStr+'" style="width:60px;height:60px;" onerror="setDefaultImg(this)"/></a>';		
 			
-			str+='</div><div style="float:right;width:100px;height:30px;margin-left:5px;"><span style="margin-bottom:5px;">'+users[i].candidateName+'</span>';		
+			str+='</div><div style="float:right;width:100px;height:30px;margin-left:5px;"><span style="text-transform:capitalize;width: 120px; font-size: 15px; margin-top: 0px;"><a target="_blank" href="userProfile.action?profileId='+users[i].id+'">'+users[i].candidateName+'</a></span>';		
 			
 			str+='</div></h3>';
 		if(users[i].status == "CONNECTED"){
@@ -1093,7 +1118,7 @@ function buildAllConnectUserStringOfDistrict(users)
 				str += '	<img title="Send Message" width="22" height="20" style="border:none;" src="images/icons/candidatePage/contact.png">';
 				str += '</a>';
 			 }
-			str+='<a href=# class="sociallinks">Constituency: <b>'+users[i].constituencyName.toLowerCase()+'</b></a><br/>';					
+			str+='<a href=# class="sociallinks">Constituency: <b style="text-transform:capitalize">'+users[i].constituencyName.toLowerCase()+'</b></a><br/>';					
 			str+='<a href=# class="sociallinks">Friends (<b>'+users[i].noOfFriends+'</b>)</a>';
 			str+='<a href=# class="sociallinks">Problems Posted(<b>'+users[i].noOfPosts+'</b>)</a>';
 		
@@ -1102,15 +1127,15 @@ function buildAllConnectUserStringOfDistrict(users)
 		}
 		else{		
 			if(users[i].status == "LOGGED_USER")
-				str+='<a href="#" class="ConnectNow">Logged User</a>';
+				str+='<a href="#" class="ConnectNow" style="color: green;font-weight:bold;width:110px;">Logged User</a>';
 			else if(users[i].status == "NOT CONNECTED"){
-				str+='<a href="javascript:{}" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label><span id="connectPeopleButtonDivId_'+users[i].id+'">Connect Now</span></a>';
+				str+='<a href="javascript:{}" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label><span id="connectPeopleButtonDivId_'+users[i].id+'" style="color: red;font-weight:bold;width:110px;">Connect Now</span></a>';
 				str+='<div id="connectPeopleButtonLeftDivId_'+users[i].id+'"></div><div id="connectPeopleButtonRightDivId_'+users[i].id+'"></div>';
 			}			
 			else if(users[i].status == "PENDING")
-					str+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
+					str+='<a href="#" class="ConnectNow" style="color: peru;font-weight:bold;width:110px;"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 			else if(users[i].status == "CONNECTED"){
-				str+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
+				str+='<a href="#" class="ConnectNow" style="color: blue;font-weight:bold;width:110px;"><label class="connectsymbol">&infin;</label>Connected</a>';
 				
 				str += '<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>';
 			}
