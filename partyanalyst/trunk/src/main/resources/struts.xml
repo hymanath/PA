@@ -4770,5 +4770,10 @@
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
+		<action name="voterFamilyEditAction" class="voterFamilyEditAction">
+		  <result name="success">/jsp/voterFamilyDetailsEdit.jsp</result>
+		</action>
+		
+		
 		</package>
 </struts>      

@@ -1109,5 +1109,9 @@
 	<bean id="ageWiseVoterDetailsAction" class="com.itgrids.partyanalyst.web.action.AgeWiseVoterDetailsAction" singleton="false">	
 		
 	</bean>
+	<bean id="voterFamilyEditAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyEditAction" singleton="false">	
+		
+	</bean>
+	
 </beans>	
 	
