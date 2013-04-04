@@ -103,6 +103,8 @@
     background: none repeat scroll 0 0 #4285F4;
     color: #FFFFFF;
 }
+#subLevelDiv{overflow-x: scroll;width:98%;}
+#subLevelVotersTable{margin-bottom: 20px;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport/voterModificationReport.js"></script>
@@ -152,6 +154,11 @@
 	<span><h5 style="font-size: 16px;padding:10px;"> Between <span style="border-bottom:1px solid;">  ${fromPublicationName}</span> To <span style="border-bottom:1px solid"> ${toPublicationName}</span></h5></span>
   </div></div>
 <div id="voterModReportMainDiv">
+
+	<!-- <div style="margin-bottom: 14px; float: right;">
+	   <input class="btn btn-info" type="button" value="View Booth Wise Voter Modification Details" href="javascript:{}" id="boothWiseVoterModificationInfo"/>
+	</div> -->
+
   <div id="voterModReportInnerDiv">
 		<div id="voterInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;">
 			<span id="voterInfoAjaxImg" style="display:none;float: right;clear:both;">
@@ -296,6 +303,18 @@ getGenderWiseVoterModificationsBetweenPublications();
 getGenderWiseVoterModificationsForEachPublication();
 getAllVotersModificationDetailsBetweenPublications('default',"onload");
 callAjaxForSubLevelInformation();
+
+$("document").ready(function(){
+	$("#boothWiseVoterModificationInfo").click(function(){
+
+		var urlStr = "boothWiseModifiedVoterInfoAction.action?constituencyId="+constituencyId+"&fromPublicationDateId="+fromPublicationDateId+"&toPublicationDateId="+toPublicationDateId+"&locationType="+locationType+"&locationValue="+locationValue+"";
+		window.open(urlStr,'_blank');
+	    window.focus();
+		
+	});
+	
+});
+
 </script>
 </body>
 </html>

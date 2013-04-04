@@ -1100,6 +1100,10 @@
 	<bean id="voterFamilyInfoAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyInfoAction" singleton="false">	
 		
 	</bean>
+		
+	<bean id="boothWiseModifiedVoterInfoAction" class="com.itgrids.partyanalyst.web.action.BoothWiseModifiedVoterInfoAction" singleton="false">	
+	  <property name="voterModificationService" ref="voterModificationService" />	
+	</bean>
 	
 </beans>	
 	
