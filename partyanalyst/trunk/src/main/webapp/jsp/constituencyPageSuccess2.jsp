@@ -78,6 +78,7 @@
 	google.load("elements", "1", {packages : ["newsshow"]});
 	var userStatusType= "${userDetails.userStatusType}";
 	var LoginUserID= "${userDetails.userId}";
+	var loginconstiId = '${userDetails.constituencyId}'; 
 	var userType = "${sessionScope.USER.userStatus}";
 	var stateName = '${constituencyDetails.stateName}';
 	var districtName = '${constituencyDetails.districtName}';
