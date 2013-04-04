@@ -96,4 +96,6 @@ public interface IAnanymousUserService {
 	
 	public ResultStatus deleteMessageFromInbox(Long userId,Long senderId,String type,Long customMessageId,String btnName);
 	
+	public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex,String nameString);
+	
 }	
