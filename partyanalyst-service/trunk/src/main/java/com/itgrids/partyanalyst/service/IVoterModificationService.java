@@ -46,5 +46,5 @@ public interface IVoterModificationService {
 	 
 	 public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId);
 	 
-    
+	 public VoterModificationVO getBoothWiseVoterModificationDetails(String locationType,Long locationValue, Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId);
 }
