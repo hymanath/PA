@@ -654,7 +654,6 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 }
 
 function showAllConnectedUsersInPanel(jsObj, results){
-alert(consticType);
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
 	var totalResultsCount = results.totalResultsCount;
