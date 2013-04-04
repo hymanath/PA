@@ -4774,6 +4774,10 @@
 		  <result name="success">/jsp/voterFamilyDetailsEdit.jsp</result>
 		</action>
 		
-		
+		<action name="checkLocalityDataExistAction" class="votersAnalysisAction" method="checkLocalityDataExist">
+		   <result type="json" name="success">
+				<param name="root">isLocalityExist</param>	
+		   </result>
+		</action>
 		</package>
 </struts>      
