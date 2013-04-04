@@ -1531,7 +1531,7 @@ function getElectionYearsInMandal(id,name){
 
 <table width="100%" border="0"> 
 <tr><td><%@ include file="navigator.jsp" %></td></tr></table>
-
+<c:if test='${mandalInfoVO != null}'>
 <div id="censusDetailsDiv" style="width:100%">
 <table width="100%" border="0">
 
@@ -1591,7 +1591,7 @@ function getElectionYearsInMandal(id,name){
 		
 	</div>
 	</div>
-	</div>
+	</div></c:if>
 	<br/><br/>
 	<div id="villageCensusDiv" style="display: none;">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
@@ -1629,21 +1629,8 @@ function getElectionYearsInMandal(id,name){
 </div>
 
 <script type="text/javascript">
-function hidecensusData()
-{
-	$("#censusDetailsDiv").css("display","none");
-}
-function showcensusData()
-{
-	$("#censusDetailsDiv").css("display","block");
-}
 
-	<c:if test='${mandalInfoVO == null}'>
-hidecensusData();
-</c:if>
-<c:if test='${not empty mandalInfoVO}'>
-showcensusData();
-	</c:if>
+
 	buildTabNavigator();
 	showMPTCZPTCResults();
 	showElectionResultsInPopup();
