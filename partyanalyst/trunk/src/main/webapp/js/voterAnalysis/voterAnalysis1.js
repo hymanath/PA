@@ -1072,8 +1072,16 @@ function addToPolitician(voterId,name)
 
 		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
 			getAssemblyLocalEleBodyId();
-		
-
+			
+		if(type == "hamlet")
+		 checkLocalityDataExist();
+		else
+		{
+		  $("#ageLink").show();
+		  $("#impFamiliesMoreInfoButn").show();
+		  $("#castPartyPopupShowBtn").show();
+		}
+	
 	}
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
 	$("#votersCountModifyAjaxDiv").css("display","block");
@@ -1710,6 +1718,9 @@ function addToPolitician(voterId,name)
 
 								else if(jsObj.task == "getAssemblyLocalEleBodyId")
 									assemblyLocalEleBodyId = myResults;
+								else if(jsObj.task == "checkLocalityData")
+								  hideAndShowLocalityDIvs(myResults,jsObj);
+																	
 									
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -8158,3 +8169,34 @@ function  buildFamilyMembers1(result,jsObj,type){
    // ] 
 		});
   }
+		function checkLocalityDataExist()
+		{
+			if(maintype == 'hamlet')
+			{
+			 var jsObj=
+			 {		
+				type:maintype,	
+				id:mainreqid,
+				task:"checkLocalityData"				
+			 };
+			 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			 var url = "checkLocalityDataExistAction.action?"+rparam;						
+			 callAjax(jsObj,url);
+			}
+		}
+
+		function hideAndShowLocalityDIvs(result,jsObj)
+		{  if(maintype == jsObj.type)
+            {
+				if(maintype == "hamlet" && result != null && result == "false"){
+					$("#ageLink").hide();
+					$("#impFamiliesMoreInfoButn").hide();
+					
+					$("#castPartyPopupShowBtn").css("display","none");
+				}else{
+				  $("#ageLink").show();
+				  $("#impFamiliesMoreInfoButn").show();
+				  $("#castPartyPopupShowBtn").css("display","block");
+				}
+			}
+		}
