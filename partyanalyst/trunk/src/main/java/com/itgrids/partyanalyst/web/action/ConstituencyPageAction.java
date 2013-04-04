@@ -907,9 +907,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 	   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true)){
 				userDetails.setLoginStatus("true");
 				userDetails.setUserId(user.getRegistrationID());
+				userDetails.setConstituencyId(user.getConstituencyId());
 			}else if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true)){
 				userDetails.setLoginStatus("true");
 				userDetails.setUserId(user.getRegistrationID());
+				userDetails.setConstituencyId(user.getConstituencyId());
 			}else{
 				userDetails.setLoginStatus("false");
 			}
