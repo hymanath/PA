@@ -646,5 +646,25 @@ IUserVoterDetailsDAO{
 				
 				return query.list();
 			}
+			public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId , long publicationId)
+			{
+				
+				Query query = getSession().createQuery("select model.voter from UserVoterDetails model, " +
+						"BoothPublicationVoter model1 join model1.booth"+	
+						" where model.voter.voterId = model1.voter.voterId " +
+						"and  model.user.userId = :userId " +
+						"and model.hamlet.hamletId =:hamletId " +
+						"and model.casteState.casteStateId = :casteStateId " +
+						"and model1.booth.boothId= :boothId " +
+						"");
+				
+				query.setParameter("boothId", boothId);
+				query.setParameter("userId", userId);
+				query.setParameter("hamletId", hamletId);
+				query.setParameter("casteStateId", casteStateId);
+				
+				return query.list();
+				
+			}
 	
 }
