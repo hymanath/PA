@@ -1465,5 +1465,9 @@
 		<property name="customMessageDAO" ref="customMessageDAO" />	
 	</bean>
 	
+	<bean name="userService" class="com.itgrids.partyanalyst.service.impl.UserService">
+	<property name="userDAO" ref="userDAO" />	
+    </bean>
+    
 </beans>		
 	
