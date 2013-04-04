@@ -42,10 +42,17 @@ public class VotersInfoForMandalVO {
 	private Long unassignedVotersByUser;
 	private Long assignedVotersForLocalBodies;
 	private Long unassignedVotersForLocalBodies;
+	private long publicationVoters;
 	
 	
 		
 	
+	public long getPublicationVoters() {
+		return publicationVoters;
+	}
+	public void setPublicationVoters(long publicationVoters) {
+		this.publicationVoters = publicationVoters;
+	}
 	public Long getAssignedVotersForLocalBodies() {
 		return assignedVotersForLocalBodies;
 	}
