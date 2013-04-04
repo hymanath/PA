@@ -19,6 +19,13 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	private boolean dataPresent;	
 	private Long reportLevelValue;
 	
+	private Long movedTotal = 0L;
+	private Long movedMale = 0L;
+	private Long movedFemale = 0L;
+	private Long relocatedTotal = 0L;
+	private Long relocatedMale = 0L;
+	private Long relocatedFemale = 0L;
+	
 	public String getPreviousPublicationName() {
 		return previousPublicationName;
 	}
@@ -92,6 +99,42 @@ public class VoterModificationGenderInfoVO implements Serializable{
 	}
 	public void setReportLevelValue(Long reportLevelValue) {
 		this.reportLevelValue = reportLevelValue;
+	}
+	public Long getMovedTotal() {
+		return movedTotal;
+	}
+	public void setMovedTotal(Long movedTotal) {
+		this.movedTotal = movedTotal;
+	}
+	public Long getMovedMale() {
+		return movedMale;
+	}
+	public void setMovedMale(Long movedMale) {
+		this.movedMale = movedMale;
+	}
+	public Long getMovedFemale() {
+		return movedFemale;
+	}
+	public void setMovedFemale(Long movedFemale) {
+		this.movedFemale = movedFemale;
+	}
+	public Long getRelocatedTotal() {
+		return relocatedTotal;
+	}
+	public void setRelocatedTotal(Long relocatedTotal) {
+		this.relocatedTotal = relocatedTotal;
+	}
+	public Long getRelocatedMale() {
+		return relocatedMale;
+	}
+	public void setRelocatedMale(Long relocatedMale) {
+		this.relocatedMale = relocatedMale;
+	}
+	public Long getRelocatedFemale() {
+		return relocatedFemale;
+	}
+	public void setRelocatedFemale(Long relocatedFemale) {
+		this.relocatedFemale = relocatedFemale;
 	}
 	
 }

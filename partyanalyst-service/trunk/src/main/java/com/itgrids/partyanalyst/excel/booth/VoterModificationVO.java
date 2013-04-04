@@ -31,6 +31,13 @@ public class VoterModificationVO implements Serializable{
 	private String gender;
 	private Long ageRangeId;
 	
+	private Long movedCount = 0L;
+	private Long relocatedCount = 0L;
+	private Long maleVotersMoved = 0L;
+	private Long femaleVotersMoved = 0L;
+	private Long maleVotersRelocated = 0L;
+	private Long femaleVotersRelocated = 0L;
+	
 
 	public Long getLocationId() {
 		return locationId;
@@ -200,6 +207,55 @@ public class VoterModificationVO implements Serializable{
 	public void setSelectOptionVOsList(List<SelectOptionVO> selectOptionVOsList) {
 		this.selectOptionVOsList = selectOptionVOsList;
 	}
+
+	public Long getMovedCount() {
+		return movedCount;
+	}
+
+	public void setMovedCount(Long movedCount) {
+		this.movedCount = movedCount;
+	}
+
+	public Long getRelocatedCount() {
+		return relocatedCount;
+	}
+
+	public void setRelocatedCount(Long relocatedCount) {
+		this.relocatedCount = relocatedCount;
+	}
+
+	public Long getMaleVotersMoved() {
+		return maleVotersMoved;
+	}
+
+	public void setMaleVotersMoved(Long maleVotersMoved) {
+		this.maleVotersMoved = maleVotersMoved;
+	}
+
+	public Long getFemaleVotersMoved() {
+		return femaleVotersMoved;
+	}
+
+	public void setFemaleVotersMoved(Long femaleVotersMoved) {
+		this.femaleVotersMoved = femaleVotersMoved;
+	}
+
+	public Long getMaleVotersRelocated() {
+		return maleVotersRelocated;
+	}
+
+	public void setMaleVotersRelocated(Long maleVotersRelocated) {
+		this.maleVotersRelocated = maleVotersRelocated;
+	}
+
+	public Long getFemaleVotersRelocated() {
+		return femaleVotersRelocated;
+	}
+
+	public void setFemaleVotersRelocated(Long femaleVotersRelocated) {
+		this.femaleVotersRelocated = femaleVotersRelocated;
+	}
+	
 	
 	
 }
