@@ -987,7 +987,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 								customMessage.setSender(userDAO.get(senderId.get(0)));
 								customMessage.setRecepient(userDAO.get(recipeintId.get(i)));
 								customMessage.setMessageType(messageTypeDAO.get(pendingId));
-								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
+								customMessage.setSentDate(dateUtilService.getCurrentDateAndTime());					
 								customMessageDAO.save(customMessage);
 							}
 						}
@@ -1006,7 +1006,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							List<CustomMessage> result = customMessageDAO.checkForRelationBetweenUsersBasedOnType(senderId,recipeintId,IConstants.PENDING);
 							for(CustomMessage users : result){
 								users.setMessageType(messageTypeDAO.get(messageTypeId));
-								users.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));
+								users.setSentDate(dateUtilService.getCurrentDateAndTime());
 								customMessageDAO.save(users);
 							}
 							for(Long recipeintUserId : recipeintId)
@@ -1035,7 +1035,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 								customMessage.setRecepient(userDAO.get(recipeintId.get(i)));
 								customMessage.setSender(userDAO.get(senderId.get(0)));
 								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
-								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));					
+								customMessage.setSentDate(dateUtilService.getCurrentDateAndTime());					
 								customMessage.setStatus(IConstants.MSG_UNREAD);
 								customMessageDAO.save(customMessage);
 							}	
@@ -2343,7 +2343,7 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 	Long unreadMsgCount= 0l;
 	String message,data;
 	try{
-		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SS");
+		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		List<Object> result = customMessageDAO.getAllMessagesForUser(userId,messageType);
 		if(result!=null && result.size()!=0){
 			totalMsgCount = new Long(result.size());
@@ -2417,6 +2417,7 @@ public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String m
 	Long unreadMsgCount= 0l;
 	String message,data;
 	try{
+		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		List<Object> result = customMessageDAO.getAllSentMessagesForUser(userId,messageType);
 		if(result!=null && result.size()!=0){
 			totalMsgCount = new Long(result.size());
@@ -2458,7 +2459,7 @@ public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String m
 					unreadMsgCount++;
 				
 				candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
-				candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversion(parms[9].toString()):"");
+				candidateResults.setPostedDate(parms[9]!=null?dateFormat.format((Date)parms[9]):"");
 				candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
 				String profileImg=(parms[11]!=null)?parms[11].toString():"";
 				candidateResults.setProfileImg(profileImg);
