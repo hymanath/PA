@@ -336,6 +336,24 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
    margin-left: 60px;
     margin-top: 19px;
 }
+#captionStyle {
+    background: none repeat scroll 0 0 #A3A3A3;
+    color: #FFFFFF;
+    font-family: Trebuchet MS;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+    height: 30px;
+    line-height: 1;
+    padding: 5px 17px 0.5em;
+    text-align: center;
+}
+#genderWiseResultsDataTable .yui-dt-liner{
+ padding: 4px;
+}
+#partyPerfResultsDataTable .yui-dt-liner{
+ padding: 4px;
+}
 </style>
 <SCRIPT type="text/javascript">
 $(document).ready(function(){
@@ -959,8 +977,8 @@ function buildConstituencyAreaTypeWiseOverviewTable(result)
 		document.getElementById("constituencyTypeWiseOverviewGraph").innerHTML = '';
 		return;
 	}
-
-	str += '<table cellspacing="0px" cellpadding="0px"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td>';
+ $("#constituencyTypeWiseOverviewGraph").css("margin-top","53px");
+	str += '<table cellspacing="0px" cellpadding="0px"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td id="captionStyle">';
 
 	if('${electionType}' == 'Assembly')
 		str += '${stateName}&nbsp;';
@@ -1019,7 +1037,7 @@ function buildConstituecyAreaTypeSelectOptionsDiv(selectOption)
 		divEle.innerHTML = '';
 		return;
 	}
-
+     $("#ubanDataHideShowDiv").show();
 	str += '<b>Select Options to View Party Performance In Rural/Urban Constituencies</b>';
 	if(selectOption == 'All')
 	{
@@ -1103,6 +1121,7 @@ function buildUbanPercentageWisePartyDetailsGraph()
 	if(results != null && results.length >0)
    {
     ruralUrbanChart =true;
+	$("#ubanDataHideShowDiv").show();
 	document.getElementById("partyperformance").style.display = "block";
 	
 	var ctitle = null;
@@ -1967,25 +1986,117 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 		var partyIds = oRecord.getData("partyId");
 		if(oData !='IND' && partyIds!=null){
 		elLiner.innerHTML =
-		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		"<a title='Click here to view "+Party+" party news, photos, videos and results' href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
 		}
 		else
 			elLiner.innerHTML ='<a href="javascript:{}">'+Party+"</a>";
 			
 	};
+	YAHOO.widget.DataTable.totalParticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var totalParticipated = oRecord.getData("totalParticipated");
+		if(totalParticipated == null || totalParticipated == "null")
+		 totalParticipated = 0;
+			elLiner.innerHTML ='<div title="'+Party+' party participated constituencies">'+totalParticipated+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.totalSeatsWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var totalSeatsWon = oRecord.getData("totalSeatsWon");
+		if(totalSeatsWon == null || totalSeatsWon == "null")
+		 totalSeatsWon = 0;
+			elLiner.innerHTML ='<div title="'+Party+' party won constituencies">'+totalSeatsWon+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.completeVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var completeVotesPercent = oRecord.getData("completeVotesPercent");
+		if(completeVotesPercent == null || completeVotesPercent == "null")
+		 completeVotesPercent = 0.00;
+			elLiner.innerHTML ='<div title="Complete votes percentage in all constituencies">'+completeVotesPercent+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.PVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var PVotesPercent = oRecord.getData("PVotesPercent");
+		var totalParticipated = oRecord.getData("totalParticipated");
+		if(PVotesPercent == null || PVotesPercent == "null")
+		 PVotesPercent = 0.00;
+			elLiner.innerHTML ='<div title="'+Party+' party votes percentage in participated constituencies('+totalParticipated+') ">'+PVotesPercent+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.malePerticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var malePerticipated = oRecord.getData("malePerticipated");
+		if(malePerticipated == null || malePerticipated == "null")
+		 malePerticipated = 0;
+			elLiner.innerHTML ='<div title="'+Party+' party male candidates participated constituencies">'+malePerticipated+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.maleWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var maleWon = oRecord.getData("maleWon");
+		if(maleWon == null || maleWon == "null")
+		 maleWon = 0;
+			elLiner.innerHTML ='<div title="'+Party+' party male candidates won seats">'+maleWon+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.MVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var MVotesPercent = oRecord.getData("MVotesPercent");
+		if(MVotesPercent == null || MVotesPercent == "null")
+		 MVotesPercent = 0.00;
+			elLiner.innerHTML ='<div title="'+Party+' party male candidates gained votes percentage in participated constituencies">'+MVotesPercent+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.femalePerticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var femalePerticipated = oRecord.getData("femalePerticipated");
+		if(femalePerticipated == null || femalePerticipated == "null")
+		 femalePerticipated = 0;
+			elLiner.innerHTML ='<div title="'+Party+' party female candidates participated constituencies">'+femalePerticipated+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.femaleWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var femaleWon = oRecord.getData("femaleWon");
+		if(femaleWon == null || femaleWon == "null")
+		 femaleWon = 0;
+			elLiner.innerHTML ='<div title="'+Party+' party female candidates won seats">'+femaleWon+"</div>";
+			
+	};
+	YAHOO.widget.DataTable.FVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var FVotesPercent = oRecord.getData("FVotesPercent");
+		if(FVotesPercent == null || FVotesPercent == "null")
+		 FVotesPercent = 0.00;
+			elLiner.innerHTML ='<div title="'+Party+' party female candidates gained votes percentage in participated constituencies">'+FVotesPercent+"</div>";
+			
+	};
+	
 	var partywiseResultsWithGenderColumnDefs = [
-								{key: "partyName", label: "Party", sortable:true,
+								{key: "partyName", label: "<span style='color:#383F38;'>Party</span>", sortable:true,
 								formatter:YAHOO.widget.DataTable.partyLink},		
-								{key: "totalParticipated", label: "<div style='background-color:#7DCBC6;'>TP*</div>", sortable:true},	
-		              	 	    {key: "totalSeatsWon", label: "<div style='background-color:#7DCBC6;'><%=seatsWon%></div>",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "<div style='background-color:#7DCBC6;'>CVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "<div style='background-color:#7DCBC6;'>CPVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "malePerticipated", label: "<div style='background-color:#C3B4F5;'>Male Participants</div>",formatter:"number", sortable:true},
-		              	 	 	{key: "maleWon", label: "<div style='background-color:#C3B4F5;'>Male Won</div>",formatter:"number", sortable:true}, 
-								{key: "MVotesPercent", label: "<div style='background-color:#C3B4F5;'>MCGVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
-		              	 	 	{key: "femalePerticipated", label:"<div style='background-color:#BAE1B8;'>Female Participants</div>", formatter:"number",sortable: true},
-		              	 	 	{key: "femaleWon", label:"<div style='background-color:#BAE1B8;'>Female Won</div>",formatter:"number", sortable: true},
-								{key: "FVotesPercent", label: "<div style='background-color:#BAE1B8;'>FCGVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
+								{key: "totalParticipated", label: "<span style='color:#3E9E97;'>TP*</span>", sortable:true,formatter:YAHOO.widget.DataTable.totalParticipated},	
+		              	 	    {key: "totalSeatsWon", label: "<span style='color:#3E9E97;'><%=seatsWon%></span>",formatter:YAHOO.widget.DataTable.totalSeatsWon, sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "<span style='color:#3E9E97;'>CVP* %</span>",formatter:YAHOO.widget.DataTable.completeVotesPercent, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "<span style='color:#3E9E97;'>CPVP* %</span>",formatter:YAHOO.widget.DataTable.PVotesPercent, sortable:true},
+		              	 	 	{key: "malePerticipated", label: "<span style='color:#8767EE;'>Male Participants</span>",formatter:YAHOO.widget.DataTable.malePerticipated, sortable:true},
+		              	 	 	{key: "maleWon", label: "<span style='color:#8767EE;'>Male Won</span>",formatter:YAHOO.widget.DataTable.maleWon, sortable:true}, 
+								{key: "MVotesPercent", label: "<span style='color:#8767EE;'>MCGVP* %</span>",formatter:YAHOO.widget.DataTable.MVotesPercent, sortable:true},   	
+		              	 	 	{key: "femalePerticipated", label:"<span style='color:#2C8927;'>Female Participants</span>", formatter:YAHOO.widget.DataTable.femalePerticipated,sortable: true},
+		              	 	 	{key: "femaleWon", label:"<span style='color:#2C8927;'>Female Won</span>",formatter:YAHOO.widget.DataTable.femaleWon, sortable: true},
+								{key: "FVotesPercent", label: "<span style='color:#2C8927;'>FCGVP* %</span>",formatter:YAHOO.widget.DataTable.FVotesPercent, sortable:true}  	
 		              	 	    ];                	 	    
 
 		var partywiseResultsWithGenderDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -2065,6 +2176,7 @@ function buildPartyPerfRulUrbanDataTable(option)
 
    if(dtSourceArray != null && dtSourceArray.length >0)
    {
+     $("#ubanDataHideShowDiv").show();
     ruralUrban =true;
 	document.getElementById("partyperformance").style.display = "block";
 	
@@ -2077,7 +2189,7 @@ function buildPartyPerfRulUrbanDataTable(option)
 		
 		if(oData !='IND' && partyIds!=null && !isAlliance)
 		elLiner.innerHTML =
-		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		"<a  title='Click here to view "+Party+" party news, photos, videos and results' href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
 		
 		else
 			elLiner.innerHTML = "<a href='javascript:{}'>"+Party+"</a>";
@@ -2088,30 +2200,128 @@ function buildPartyPerfRulUrbanDataTable(option)
 	{
 		
 		var isAlliance = oRecord.getData("isAlliance");
-		
+		var party = oRecord.getData("partyName");
 		if(isAlliance)
 			elLiner.innerHTML =	"";
 		
 		else
-			elLiner.innerHTML = ""+oData+"";
+			elLiner.innerHTML = "<div title='"+party+" participated constituencies'>"+oData+"</div>";
 			
 	};
+	
+	YAHOO.widget.DataTable.totalSeatsWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var totalSeatsWon = oRecord.getData("totalSeatsWon");
+		if(totalSeatsWon == null || totalSeatsWon == "null")
+		totalSeatsWon = 0;
+			elLiner.innerHTML = "<div title='"+party+" won constituencies'>"+totalSeatsWon+"</div>";
+	};
+	
+	YAHOO.widget.DataTable.completeVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var completeVotesPercent = oRecord.getData("completeVotesPercent");
+		if(completeVotesPercent == null || completeVotesPercent == "null")
+		completeVotesPercent = 0;
+			elLiner.innerHTML = "<div title='Complete votes percentage in all constituencies'>"+completeVotesPercent+"</div>";
+	};
+	YAHOO.widget.DataTable.PVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var totalParticipated = oRecord.getData("totalParticipated");
+		var PVotesPercent = oRecord.getData("PVotesPercent");
+		if(PVotesPercent == null || PVotesPercent == "null")
+		PVotesPercent = 0;
+			elLiner.innerHTML = "<div title='"+party+" votes percentage in participated constituencies("+totalParticipated+") '>"+PVotesPercent+"</div>";
+	};
+	YAHOO.widget.DataTable.ruralParticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var ruralParticipated = oRecord.getData("ruralParticipated");
+		if(ruralParticipated == null || ruralParticipated == "null")
+		ruralParticipated = 0;
+			elLiner.innerHTML = "<div title='"+party+" participated rural constituencies'>"+ruralParticipated+"</div>";
+	};
+	YAHOO.widget.DataTable.ruralWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var ruralWon = oRecord.getData("ruralWon");
+		if(ruralWon == null || ruralWon == "null")
+		ruralWon = 0;
+			elLiner.innerHTML = "<div title='"+party+" won rural constituencies'>"+ruralWon+"</div>";
+	};
+	YAHOO.widget.DataTable.ruralVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var ruralVotesPercent = oRecord.getData("ruralVotesPercent");
+		if(ruralVotesPercent == null || ruralVotesPercent == "null")
+		ruralVotesPercent = 0;
+			elLiner.innerHTML = "<div title='"+party+" votes percentage in rural participated constituencies'>"+ruralVotesPercent+"</div>";
+	};
+	YAHOO.widget.DataTable.urbanParticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var urbanParticipated = oRecord.getData("urbanParticipated");
+		if(urbanParticipated == null || urbanParticipated == "null")
+		urbanParticipated = 0;
+			elLiner.innerHTML = "<div title='"+party+" participated urban constituencies'>"+urbanParticipated+"</div>";
+	};
+	YAHOO.widget.DataTable.urbanWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var urbanWon = oRecord.getData("urbanWon");
+		if(urbanWon == null || urbanWon == "null")
+		urbanWon = 0;
+			elLiner.innerHTML = "<div title='"+party+" won urban constituencies'>"+urbanWon+"</div>";
+	};
+	YAHOO.widget.DataTable.urbanVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var urbanVotesPercent = oRecord.getData("urbanVotesPercent");
+		if(urbanVotesPercent == null || urbanVotesPercent == "null")
+		urbanVotesPercent = 0;
+			elLiner.innerHTML = "<div title='"+party+" votes percentage in urban participated constituencies'>"+urbanVotesPercent+"</div>";
+	};
+	YAHOO.widget.DataTable.ruralUrbanParticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var ruralUrbanParticipated = oRecord.getData("ruralUrbanParticipated");
+		if(ruralUrbanParticipated == null || ruralUrbanParticipated == "null")
+		ruralUrbanParticipated = 0;
+			elLiner.innerHTML = "<div title='"+party+" participated rural-urban constituencies'>"+ruralUrbanParticipated+"</div>";
+	};
+	YAHOO.widget.DataTable.ruralUrbanWon = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var ruralUrbanWon = oRecord.getData("ruralUrbanWon");
+		if(ruralUrbanWon == null || ruralUrbanWon == "null")
+		ruralUrbanWon = 0;
+			elLiner.innerHTML = "<div title='"+party+" won rural-urban constituencies'>"+ruralUrbanWon+"</div>";
+	};
+	YAHOO.widget.DataTable.ruralUrbanVotesPercent = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var ruralUrbanVotesPercent = oRecord.getData("ruralUrbanVotesPercent");
+		if(ruralUrbanVotesPercent == null || ruralUrbanVotesPercent == "null")
+		ruralUrbanVotesPercent = 0;
+			elLiner.innerHTML = "<div title='"+party+" votes percentage in rural-urban participated constituencies'>"+ruralUrbanVotesPercent+"</div>";
+	};
 	var partyPerfRurlUrbnColDefs = [
-								{key: "partyName", label: "Party", sortable:true,
+								{key: "partyName", label: "<span style='color:#383F38;padding:20px;'>Party</span>", sortable:true,
 								formatter:YAHOO.widget.DataTable.partyLink},		
-								{key: "totalParticipated", label: "<div style='background-color:#7DCBC6;'>TP*</div>", sortable:true,formatter:YAHOO.widget.DataTable.totalParticipated},	
-		              	 	    {key: "totalSeatsWon", label: "<div style='background-color:#7DCBC6;'><%=seatsWon%></div>",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "<div style='background-color:#7DCBC6;'>CV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "<div style='background-color:#7DCBC6;'>PCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "ruralParticipated", label: "<div style='background-color:#C3B4F5;'>RCP*</div>",formatter:"number", sortable:true},
-		              	 	 	{key: "ruralWon", label: "<div style='background-color:#C3B4F5;'>Won in RC*</div>",formatter:"number", sortable:true}, 
-								{key: "ruralVotesPercent", label: "<div style='background-color:#C3B4F5;'>RCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
-		              	 	 	{key: "urbanParticipated", label:"<div style='background-color:#BAE1B8;'>UCP*</div>", formatter:"number",sortable: true},
-		              	 	 	{key: "urbanWon", label:"<div style='background-color:#BAE1B8;'>Won in UC*</div>",formatter:"number", sortable: true},
-								{key: "urbanVotesPercent", label: "<div style='background-color:#BAE1B8;'>UCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-                                {key: "ruralUrbanParticipated", label:"<div style='background-color:#F9F4CE;'>RUCP*</div>", formatter:"number",sortable: true},
-		              	 	 	{key: "ruralUrbanWon", label:"<div style='background-color:#F9F4CE;'>Won in RUC*</div>",formatter:"number", sortable: true},
-								{key: "ruralUrbanVotesPercent", label: "<div style='background-color:#F9F4CE;'>RUCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true} 								
+								{key: "totalParticipated", label: "<span style='color:#2BA29A;'>TP*</span>", sortable:true,formatter:YAHOO.widget.DataTable.totalParticipated},	
+		              	 	    {key: "totalSeatsWon", label: "<span style='color:#2BA29A;'><%=seatsWon%></span>",formatter:YAHOO.widget.DataTable.totalSeatsWon, sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "<span style='color:#2BA29A;'>CV* %</span>",formatter:YAHOO.widget.DataTable.completeVotesPercent, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "<span style='color:#2BA29A;'>PCV* %</span>",formatter:YAHOO.widget.DataTable.PVotesPercent, sortable:true},
+		              	 	 	{key: "ruralParticipated", label: "<span style='color:#5030B7;'>RCP*</span>",formatter:YAHOO.widget.DataTable.ruralParticipated, sortable:true},
+		              	 	 	{key: "ruralWon", label: "<span style='color:#5030B7;'>Won in RC*</span>",formatter:YAHOO.widget.DataTable.ruralWon, sortable:true}, 
+								{key: "ruralVotesPercent", label: "<span style='color:#5030B7;'>RCV* %</span>",formatter:YAHOO.widget.DataTable.ruralVotesPercent, sortable:true},   	
+		              	 	 	{key: "urbanParticipated", label:"<span style='color:#42973E;'>UCP*</span>", formatter:YAHOO.widget.DataTable.urbanParticipated,sortable: true},
+		              	 	 	{key: "urbanWon", label:"<span style='color:#42973E;'>Won in UC*</span>",formatter:YAHOO.widget.DataTable.urbanWon, sortable: true},
+								{key: "urbanVotesPercent", label: "<span style='color:#42973E;'>UCV* %</span>",formatter:YAHOO.widget.DataTable.urbanVotesPercent, sortable:true},
+                                {key: "ruralUrbanParticipated", label:"<span style='color:#AB4176;'>RUCP*</span>", formatter:YAHOO.widget.DataTable.ruralUrbanParticipated,sortable: true},
+		              	 	 	{key: "ruralUrbanWon", label:"<span style='color:#AB4176;'>Won in RUC*</span>",formatter:YAHOO.widget.DataTable.ruralUrbanWon, sortable: true},
+								{key: "ruralUrbanVotesPercent", label: "<span style='color:#AB4176;'>RUCV* %</span>",formatter:YAHOO.widget.DataTable.ruralUrbanVotesPercent, sortable:true} 								
 		              	 	    ];                	 	    
 
 		var partyPerfRurlUrbnDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -4050,25 +4260,27 @@ function navigateToMinisterPage(){
 						<DIV id="constituencyTypeWiseOverviewTable"></DIV>
 					</TD>
 					<TD valign="top" align="center">
-						<DIV id="constituencyTypeWiseOverviewGraph" style="margin-top:23px;"></DIV>
+						<DIV id="constituencyTypeWiseOverviewGraph" ></DIV>
 					</TD>
 				</TR></Table>
 			</TD>
 		</TR>
 		
-		 <TR>
+					
+	</TABLE>
+	<div id="ubanDataHideShowDiv" style="padding:5px;margin:5px;border:1px solid #d3d3d3;display:none;">
+	<TABLE>
+	    <TR>
 			<TD valign="top" align="center">
 				<DIV id="ConstituecyAreaTypeSelectOptionsDiv" style="display:none;"></DIV>
 			</TD>
 		</TR>
-
         <TR>
 			<TD valign="top" align="center">
 				<DIV id="partyPerfResultsDataTable"></DIV>
 			</TD>
-		</TR>			
+		</TR>
 	</TABLE>
-	
 	<c:if test="${hasDeatiledAnalysis}">
 	
 	<div id="UbanPercentageWiseGraphSelectionDiv">
@@ -4083,6 +4295,7 @@ function navigateToMinisterPage(){
 
 	<div id="UbanPercentageWiseGraph"></div>
     </c:if>
+	</div>
 	<c:if test="${loginStatus !=null && sessionScope.USER != null}">
 	<table>
 	  <tr>
