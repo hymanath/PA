@@ -36,10 +36,10 @@ public interface IVotersAnalysisService {
 	
 	public List<VotersDetailsVO> getVotersDetailsByAgewise(Long constituencyId, Long tehsilId,Long panchayatId,Long boothId,
 			 Long publicationDateId , String type);
-	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
+	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId,String type,Long id,Long publicationDateId,Long constituencyId ,String resultFor);
 	
 	//public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long id, Long publicationDateId,String checkedEle);
-	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle,String buildType);
+	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle,String buildType,String requestFor);
 	
 	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo);
 	
@@ -158,7 +158,7 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getConstituenciesToBeMappedForVoterChanges();
 	
 	
-	public List<VoterHouseInfoVO> getFamilyInformation(Long boothId, Long publicationDateId,String houseNo,Long userId);
+	public List<VoterHouseInfoVO> getFamilyInformation(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId,String selectType);
 	
 	public List<VoterHouseInfoVO> getMultipleFamiliesInformation(List<VoterHouseInfoVO> familiesList,Long userId);
 	 
@@ -235,4 +235,7 @@ public interface IVotersAnalysisService {
 	 //public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId);
 	 
 	 public List<SelectOptionVO> getBoothForWard(Long wardId, Long publicationDateId);
+	 
+	 public List<VoterHouseInfoVO> getMultipleFamiliesInformationForHamlet(
+				List<VoterHouseInfoVO> familiesList, Long userId, String selectType);
 }

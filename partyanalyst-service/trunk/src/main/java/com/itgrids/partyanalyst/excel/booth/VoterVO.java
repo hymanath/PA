@@ -47,8 +47,26 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private List<Long> numbers;
 	private Long sNo;
 	private String villagesCovered;
+	private Long hamletId;
+	private Long localAreaId;
 	
 		
+	public Long getLocalAreaId() {
+		return localAreaId;
+	}
+
+	public void setLocalAreaId(Long localAreaId) {
+		this.localAreaId = localAreaId;
+	}
+
+	public Long getHamletId() {
+		return hamletId;
+	}
+
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
+
 	public String getVillagesCovered() {
 		return villagesCovered;
 	}

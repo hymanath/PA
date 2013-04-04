@@ -270,4 +270,19 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]> findAllImpFamilesForParliament(List<Long> assemblyIdsList, Long publicationDateId, String queryString);
 	 
 	 public List<Object[]> getPublicationUserCount(Long userId,Long publicationDateId , Long Id);
+	 
+		public List<Voter> findFamiliesInfoForHamlet(Long hamletId,Long boothId,Long publicationDateId,String houseNo);
+		
+	    public List<Voter> findFamiliesInfoForLocalBody(Long hamletId,Long boothId,Long publicationDateId,String houseNo);
+	    
+		public List<Long> getAllBoothsInHamletByUser(Long userId,Long hamletId,Long publicationDateId , Long constituencyId);
+
+		public List<Object[]> getFamiliesInBooth(Long userId,Long hamletId,Long boothId , Long publicationDateId , Long constituencyId);
+		
+		public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hamletId , Long  boothId ,Long  publicationDateId,Long constituencyId);
+		
+		public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId);
+
+
+		
 }
