@@ -47,6 +47,21 @@ input, button, select, textarea {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 #mainDiv {margin-left:auto;margin-right:auto;width:990px;}
+
+#headingDiv
+{
+	background-color: #06ABEA;
+    border-radius: 4px 4px 4px 4px;
+	color : #FFFFFF;
+    font-family: verdana;
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-left: -10px;
+    margin-top: 5px;
+    padding: 6px;
+    width: 807px;
+    border: 1px solid aliceblue;
+}
 </style>
 
  <script>
@@ -74,8 +89,9 @@ $(function(){
 </script>
 </head>
 <body>
+<div align="center"><div id="headingDiv">PDF GENERATION FOR NEWS</div></div>
 <div id="mainDiv">
-<div class="well span10" style="margin-left:79px;"> 
+<div class="well span10" style="margin-left:79px; border: 1px solid #CECDCD;  background-color: #FFFFFF;" > 
 <!--START-->
 	<div id="ErrDiv">&nbsp;</div>
 
