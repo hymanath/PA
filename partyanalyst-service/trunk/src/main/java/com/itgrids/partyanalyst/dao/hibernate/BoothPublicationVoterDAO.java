@@ -2336,4 +2336,68 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 		
 	}
+	
+	public Long getTotalVotersCountByReportlevelIdsList(List<Long> reportlevelIdsList,Long publicationDateId,String type){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		if(type.equalsIgnoreCase("constituency"))
+			query.append(" model.booth.constituency.constituencyId in (:id) ");
+		else if(type.equalsIgnoreCase("mandal"))
+			query.append(" model.booth.tehsil.tehsilId in (:id) and model.booth.localBody is null ");
+		else if(type.equalsIgnoreCase("booth"))
+			query.append(" model.booth.boothId in (:id) ");
+		else if(type.equalsIgnoreCase("ward"))
+			query.append(" model.booth.localBodyWard.constituencyId in (:id) ");
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("id", reportlevelIdsList);
+		return (Long)queryObj.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountByAssemblyIdsList(List<Long> assemblyIdsList,Long publicationDateId){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		query.append(" model.booth.constituency.constituencyId in (:assemblyIdsList) ");
+		
+		query.append(" group by model.voter.gender ");
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("assemblyIdsList", assemblyIdsList);
+		
+		return queryObj.list();
+	}
+	
+	
+	public Long getTotalVotersCountForParliament(List<Long> assemblyIdsList,Long publicationDateId){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			query.append(" model.booth.constituency.constituencyId in(:assemblyIdsList) ");
+		
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("assemblyIdsList", assemblyIdsList);
+		return (Long)queryObj.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAllImpFamilesForParliament(List<Long> assemblyIdsList, Long publicationDateId, String queryString)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.voter.voterId) ,model.voter.houseNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		query.append(" model.booth.constituency.constituencyId in(:id) ");
+		query.append(" group by model.booth.boothId,model.voter.houseNo");
+		if(queryString != null)
+			query.append(queryString);
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("id", assemblyIdsList);
+		
+	  return queryObj.list();
+	}
+	
 }

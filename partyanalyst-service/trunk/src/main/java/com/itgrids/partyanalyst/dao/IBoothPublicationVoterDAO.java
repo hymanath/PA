@@ -261,5 +261,12 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Object[]> getVoterDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId);	 
 	 public List<Object[]> getVoterPersonalDetailsByVoterIdAndPuclicationId(Long voterId,Long publicationDateId);
 	 
-
+	 public Long getTotalVotersCountByReportlevelIdsList(List<Long> reportlevelIdsList,Long publicationDateId,String type);
+	 
+	 public List<Object[]> getVotersCountByAssemblyIdsList(List<Long> assemblyIdsList,Long publicationDateId);
+	 
+	 public Long getTotalVotersCountForParliament(List<Long> assemblyIdsList,Long publicationDateId);
+	 
+	 public List<Object[]> findAllImpFamilesForParliament(List<Long> assemblyIdsList, Long publicationDateId, String queryString);
+	 
 }
