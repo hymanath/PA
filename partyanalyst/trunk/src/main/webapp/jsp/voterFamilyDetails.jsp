@@ -114,6 +114,22 @@
     padding: 10px;
     text-align: left;
 }
+
+.buttonsTop{
+	  margin-top:20px;
+	  width:880px;
+	  text-align: center;
+	}
+	.buttonLeft{
+	  margin-left:10px;
+	}
+	
+	#impFamPancBothDtls,#impFamDtls{
+ margin-top:12px;
+ margin-left: auto;
+    margin-right: auto;
+    width:100%;
+}
 </style>
 </head>
 
@@ -134,7 +150,7 @@
 <div id="descriptionDiv" ></div>
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		<div id="impFamPancBothDtls"></div>
-	   </div>
+	   
 		
 		<div id="NoteDiv" class="breadcrumb"></div>
 		
@@ -165,7 +181,7 @@
 			<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes notRequiredAttrClass" style="margin:0px 7px 4px 0px;" id="partyId">Party</input></label>
 
 			<!--<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes" id="moneyId">Money</input></label>-->
-<div id="impFamilySelectedDetails1"></div>
+			<div id="impFamilySelectedDetails1"></div>
 
 			<a class="btn" href="javaScript:{checkForAttributesToDisplay();}">Show Details</a>
 		  </div>
