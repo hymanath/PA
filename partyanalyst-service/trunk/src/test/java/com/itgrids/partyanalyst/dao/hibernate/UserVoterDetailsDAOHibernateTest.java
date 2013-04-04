@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 	
@@ -64,10 +65,10 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 				 if(length==0)break;
 				}*/
 			
-			 List<Long> list= userVoterDetailsDAO.getUserHamletsByBoothId(1l,123020l,8l);
-
-			 for (Long objects : list) {
-		        System.out.println(objects);
+			 List<Voter> list= userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(1l,29l,280l,123020,8);
+System.out.println(list.size());
+			 for (Voter object : list) {
+		        System.out.println(object.getName());
 				}
 		
 		}

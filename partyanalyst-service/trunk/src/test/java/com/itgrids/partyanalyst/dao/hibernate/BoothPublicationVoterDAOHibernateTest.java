@@ -26,12 +26,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		System.out.println(count.size());
 	}
 	*/
-/*	public void testGetVotersCountForPanchayatByPublicationId(){
-		List<Object[]> count = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationId(1l,2l);
-		System.out.println(count.size());
-		System.out.println(count.get(0)[0]+" "+count.get(0)[1]);
-		System.out.println(count.get(1)[0]+" "+count.get(1)[1]);
-	}*/
+	public void testGetVotersCountForPanchayatByPublicationId(){
+		 boothPublicationVoterDAO.getPublicationUserCount(1l,8l,29l);
+		//stem.out.println(count.size());
+		//System.out.println(count.get(0)+" ");
+		//System.out.println(count);
+	}
 	
 	
 	/*public void testGetVotersDetailsForPanchayatByPublicationId(){
@@ -63,21 +63,21 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 }*/
 	
-	public void testGetLocationNameByLocationValue()
-	{
+	//public void testGetLocationNameByLocationValue()
+	//{
 	/*	List name = boothPublicationVoterDAO.getLocalitiesForBooth(122094l, 1l);
 		
 		System.out.println(name.size());
 		if(name != null && name.size() > 0)
 		  System.out.println(name.get(0));*/
-		List l=new ArrayList<Long>();
-		l.add(42l);
+	//	List l=new ArrayList<Long>();
+	//	l.add(42l);
 		
-		List<Object[]> name = boothPublicationVoterDAO.getVoterDetailsByPanchayatIds(4l,8l,1l);
-	  System.out.println(name);
-	  for(Object[] obj:name){
-    	  System.out.println(obj[0].toString()+"-"+obj[1].toString());
-	}
+	//	List<Object[]> name = boothPublicationVoterDAO.getVoterDetailsByPanchayatIds(4l,8l,1l);
+	 // System.out.println(name);
+	//  for(Object[] obj:name){
+    //	  System.out.println(obj[0].toString()+"-"+obj[1].toString());
+	//}
 	
-	}
+	//}
 	}
