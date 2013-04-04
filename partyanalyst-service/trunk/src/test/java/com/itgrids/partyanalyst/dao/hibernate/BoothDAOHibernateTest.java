@@ -301,11 +301,11 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(ward[0]+"   "+ward[1].toString());
 	}*/
 	
-	public void testfindBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(){
+	/*public void testfindBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(){
 		List<Object[]> l =boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(1805l,347l,8l);
 		for(Object[] ward:l)
 			System.out.println(ward[0]+"   "+ward[1].toString());
-	}
+	}*/
 	
 	/*public void testgetBoothsForWard()
 	{
@@ -367,14 +367,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testString()
+	/*public void testString()
 	{
 		Booth booth = boothDAO.get(3489l);
 		String vill=booth.getVillagesCovered();
         String vill1=vill.replace("'"," ").replace("\"", " ").replace("\r", "");
 	System.out.println(vill1);
 		
-	}
+	}*/
 	/*public void testgetBoothsInAPanchayatByPublicationId()
 	{
 		List<Object[]> list = boothDAO.getBoothsInAPanchayatByPublicationId(1407l, 7l);
@@ -407,5 +407,17 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
+	
+	public void testGetBoothIdsByLocalValuesList()
+	{
+		List<Long> publicationDateIdsList = new ArrayList<Long>(0);
+		//publicationDateIdsList.add(7l);
+		publicationDateIdsList.add(8l);
+		List<Long> boothIdsList = boothDAO.getBoothIdsByLocalValuesList(IConstants.MANDAL, 844l, 232l, publicationDateIdsList);
+		System.out.println(boothIdsList.size());
+		for(Long boothId:boothIdsList)
+			System.out.println(boothId);
+		
+	}
 	
 }
