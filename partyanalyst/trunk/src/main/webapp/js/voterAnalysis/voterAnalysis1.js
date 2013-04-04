@@ -2424,7 +2424,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		else if(type =="hamlet")
 		{
 		if(jsObj.resultFor == "booth")
-				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\'Booth - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 
 		else
 		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
@@ -3383,6 +3383,9 @@ function buildPartyWisePiechart(myResults,jsObj)
 		   else if(type =='panchayat')
 		   {
 			   str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'panchayat\',\''+typeName+'\',\''+castArray[i].casteStateId+'\',\''+castArray[i].casteCategory+'\')">'+castArray[i].caste+'</a></td>';
+		   }else if(type =='hamlet')
+		   {	  
+		  str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+boothId+','+publicationDateId+',\''+castArray[i].caste+'\',\'Hamlet\',\''+typeName+'\',\''+castArray[i].casteStateId+'\',\''+castArray[i].casteCategory+'\')">'+castArray[i].caste+'</a></td>';
 		   }
 		   else
 		  str +='		<td>'+castArray[i].caste+'</td>';
