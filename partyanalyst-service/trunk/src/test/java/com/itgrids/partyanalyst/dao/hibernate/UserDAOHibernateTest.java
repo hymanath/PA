@@ -11,6 +11,7 @@ import org.junit.Assert;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -223,10 +224,41 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	/*public void testGetAnanymousUserLocationDetailsByIds()
 	{
 		List<Long> userIds = new ArrayList<Long>();
-		userIds.add(1l);
+		userIds.add(611l); 
 		List list = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
 		System.out.println(list.size());
+		if(list !=null && list.size()>0){
+			Object[] values = (Object[])list.get(0);
+			Long districtId = (Long)values[2];
+			Long constiId = (Long)values[4];
+			System.out.println("districtId : "+districtId+"constiId : "+constiId);
+			for(Object val:values)
+				System.out.println(val!=null?val.toString():"");
+			
+		}
+			
 	}*/
+	public void testGetAnanymousUserLocationDetailsByIds()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(611l); 
+		List list = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
+		System.out.println(list.size());
+		if(list !=null && list.size()>0){
+			Object[] values = (Object[])list.get(0);
+			
+			List locationIds = new ArrayList();
+			locationIds.add((Long)values[0]);
+			locationIds.add((Long)values[2]);
+			locationIds.add((Long)values[4]);
+			
+			System.out.println(locationIds.get(0));
+			System.out.println(locationIds.get(1));
+			System.out.println(locationIds.get(2));
+		}
+	
+			
+	}
 	
 	/*public void testGetUserEmailByUserId()
 	{
@@ -314,10 +346,27 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
-	public void testGetUserNameAndPWDByUserId()
+	/*public void testGetUserNameAndPWDByUserId()
 	{
 		List<Object[]> list = userDAO.getUserNameAndPwdByUserId(1l);
 		for(Object[] params : list)
 			System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	
+	public void testgetAllUsersCountInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		//locationIds.add(467l);467, , , , , , , 
+		locationIds.add(467l);
+		locationIds.add(217l);
+		locationIds.add(213l);
+		locationIds.add(209l);
+		locationIds.add(228l);
+		locationIds.add(218l);
+		locationIds.add(229l);
+		locationIds.add(219l);
+		Long count = userDAO.getAllUsersCountInSelectedLocations(locationIds,IConstants.CONSTITUENCY_LEVEL,"");
+		System.out.println(count);
 	}
 }
