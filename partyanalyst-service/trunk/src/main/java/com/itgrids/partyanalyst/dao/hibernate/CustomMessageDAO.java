@@ -148,6 +148,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		query.append("select count(model.sender.userId)");
 		query.append(" from CustomMessage model where model.sender.userId = :userId and ");
 		query.append("model.messageType.messageType = :messageType  ");
+		query.append(" and model.recepient.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append(" and model.recepient.state.stateId in (:locationIds) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
@@ -159,7 +160,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		{
 			query.append("and (model.recepient.firstName like '"+nameStr+"%' or model.recepient.lastName like '"+nameStr+"%')");
 		}
-		 query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
+		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setParameter("userId", userId);
