@@ -258,7 +258,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select count(model.userId)");
+		query.append("select count(distinct model.userId)");
 		query.append(" from User model where ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append("model.state.stateId in (:locationIds) ");

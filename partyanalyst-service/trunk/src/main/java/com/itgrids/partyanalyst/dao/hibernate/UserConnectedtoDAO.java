@@ -90,10 +90,9 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		return queryObject.list();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String getCountOfAllConnectedPeopleForUser(List<Long> senderId){
 		StringBuilder query = new StringBuilder();	
-		query.append(" select count(model.userSource.userId) from UserConnectedto model where ");
+		query.append(" select count(distinct model.userSource.userId) from UserConnectedto model where ");
 		query.append(" (model.userSource.userId in (:senderId) or  model.userTarget.userId in (:senderId)) ");
 		query.append(" and model.userSource.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
 		query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role )");
@@ -119,14 +118,14 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	public Long getConnectedUsersCountForAUserInAFilterView(Long userId,List<Long> locationIds,String locationType,String nameStr)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select count(model.userSource.userId)");
+		query.append("select count(distinct model.userSource.userId)");
 		query.append(" from UserConnectedto model where (model.userSource.userId = :userId or model.userTarget.userId = :userId) and ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-			query.append("(model.userSource.state.stateId in (:locationIds) or model.userTarget.state.stateId in (:locationIds)) ");
+			query.append("(model.userSource.state.stateId in (:locationIds) and model.userTarget.state.stateId in (:locationIds)) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-			query.append("(model.userSource.district.districtId in (:locationIds) or model.userTarget.district.districtId in (:locationIds)) ");
+			query.append("(model.userSource.district.districtId in (:locationIds) and model.userTarget.district.districtId in (:locationIds)) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-			query.append("(model.userSource.constituency.constituencyId in (:locationIds) or model.userTarget.constituency.constituencyId in (:locationIds)) ");
+			query.append("(model.userSource.constituency.constituencyId in (:locationIds) and model.userTarget.constituency.constituencyId in (:locationIds)) ");
 		}
 		
 		if(nameStr != null && !nameStr.trim().equalsIgnoreCase(""))
@@ -147,7 +146,7 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	@SuppressWarnings("unchecked")
 	public List<Object> getConnectedUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
-		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model, model.constituency.district.districtId,model.constituency.district.districtName,model.constituency.state.stateId,model.constituency.state.stateName  ");
+		query.append("select distinct model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model, model.constituency.district.districtId,model.constituency.district.districtName,model.constituency.state.stateId,model.constituency.state.stateName  ");
 		query.append("from User model, UserConnectedto model1 where (model1.userSource.userId = :userId or model1.userTarget.userId = :userId) and ");
 		query.append("(model.userId = model1.userTarget.userId or model.userId = model1.userSource.userId) and model.userId != :userId  ");
 		
@@ -244,6 +243,83 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		queryObject.setParameter(3, profileId);
 		return queryObject.list();
 	}
+
+	public String getCountOfAllConnectedPeopleForUsers(List<Long> senderId,List<Long> locationIds, String constituencyType) {
+		StringBuilder query = new StringBuilder();	
+		Query queryObject = null;
+		query.append(" select count(model.userSource.userId) from UserConnectedto model where ");
+		query.append(" (model.userSource.userId in (:senderId) or  model.userTarget.userId in (:senderId)) ");
+		query.append(" and model.userSource.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
+		query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role )");
+		query.append(" and (model.userSource.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId in (:locationIds))");
+		query.append(" and model.userTarget.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId in (:locationIds)))");
 	
-	
+		queryObject = getSession().createQuery(query.toString());		
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameterList("locationIds", locationIds);		
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		return queryObject.list().get(0).toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCountOfAllConnectedPeopleForUserByDistrict(List<Long> senderId, List<Long> locationIds, String locationType,String constituencyType) {
+		StringBuilder query = new StringBuilder();	
+		Query queryObject = null;
+		query.append(" select distinct model.userSource.userId,model.userTarget.userId from UserConnectedto model where ");
+		query.append(" (model.userSource.userId in (:senderId) or  model.userTarget.userId in (:senderId)) ");
+		query.append(" and model.userSource.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
+		query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role )");
+		if(locationType.equalsIgnoreCase("CONSTITUENCY")){
+			if(constituencyType.equalsIgnoreCase("SAME")){
+				query.append(" and model.userSource.constituency.constituencyId = model.userTarget.constituency.constituencyId");
+				queryObject = getSession().createQuery(query.toString());
+			}
+			if(constituencyType.equalsIgnoreCase("NOTSAME")){
+				query.append(" and (model.userSource.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId = :locationIds)");
+				query.append(" or model.userTarget.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId = :locationIds))");
+				queryObject = getSession().createQuery(query.toString());
+				queryObject.setParameterList("locationIds", locationIds);
+				queryObject.setParameterList("locationIds", locationIds);
+			}
+		}
+		if(locationType.equalsIgnoreCase("DISTRICT")){
+			if(constituencyType.equalsIgnoreCase("SAME")){
+			query.append(" and model.userSource.district.districtId = model.userTarget.district.districtId ");
+			queryObject = getSession().createQuery(query.toString());
+			}
+			if(constituencyType.equalsIgnoreCase("NOTSAME")){
+				query.append(" and model.userSource.userId in (select model2.userId from User model2 where  model2.district.districtId = :locationIds and (model.userSource.userId = :senderId or model.userTarget.userId = :senderId)) ");
+				query.append(" or model.userTarget.userId in (select model2.userId from User model2 where   model2.district.districtId = :locationIds and (model.userSource.userId = :senderId or model.userTarget.userId = :senderId))");
+				queryObject = getSession().createQuery(query.toString());
+				queryObject.setParameterList("locationIds", locationIds);
+				queryObject.setParameterList("locationIds", locationIds);
+			}
+		}
+		
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("senderId", senderId);		
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCountOfAllConnectedPeopleForUserInSameLocation(List<Long> senderId,List<Long> locationIds,String constituencyType){
+		StringBuilder query = new StringBuilder();	
+		Query queryObject = null;
+		query.append(" select distinct model.userSource.userId,model.userTarget.userId from UserConnectedto model where ");
+		query.append(" (model.userSource.userId in (:senderId) or  model.userTarget.userId in (:senderId)) ");
+		query.append(" and model.userSource.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
+		query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role )");
+		query.append(" and (model.userSource.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId in (:locationIds))");
+		query.append(" and model.userTarget.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId in (:locationIds)))");
+		queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameterList("locationIds", locationIds);		
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("senderId", senderId);		
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		return queryObject.list();
+	}
 }
