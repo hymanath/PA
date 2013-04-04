@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
+import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -3027,6 +3028,98 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			return null;
 		}
 		
+	}
+
+	/**
+	 * This Method is uesd for get the flged news and noted news 
+	 * @param FileVO inputs
+	 * @return List<FileVO>
+	 * @date 01-04-2013
+	 */
+	public List<FileVO> getNewsForFlagedAndNoted(FileVO inputs) {
+		List<FileVO> newsList = new ArrayList<FileVO>();
+		try {
+			log.debug("Entered into the getNewsForFlagedAndNOted service method in NewsMonitoringService");
+			List<Object[]> fileList = fileGallaryDAO.getNewsForRegisterUsers1(inputs);
+			List<Long> contentIds = new ArrayList<Long>();
+			FileVO fileVO = null;
+			List<FileGallary> newsFile = null; 
+			Long flaggedCount = null;
+			Long notedCount = null;
+	  	    for(Object[] obj:fileList)
+	  	    {
+	  		  contentIds.add((Long)obj[0]);
+	  		  
+	  	    }
+	  	    if(inputs.getTitle().equalsIgnoreCase("flagedNews"))
+	  	    {
+	  	    	if(contentIds.size() >0)
+	  	    	{
+	  	    		newsFile= newsFlagDAO.getFlagedMews(contentIds);
+	  	    	}
+	  	    }	
+	  	    else if(inputs.getTitle().equalsIgnoreCase("flagedCount"))
+	  	    {
+	  	    	if(contentIds.size() >0)
+	  	    	{
+	  	    		flaggedCount= newsFlagDAO.getFlaggedNewsCount(inputs,contentIds);
+	  	    		fileVO = new FileVO();
+	  	    		fileVO.setTotalFlaggedNews(flaggedCount.intValue());
+	  	    		newsList.add(fileVO);
+	  	    	}
+	  	    	
+	  	    }
+	  	    else if(inputs.getTitle().equalsIgnoreCase("notedCount"))
+	  	    {
+	  	    	if(contentIds.size() >0)
+	  	    	{
+	  	    		notedCount= contentNotesDAO.getNotedNewsCount(inputs,contentIds);
+	  	    		fileVO = new FileVO();
+	  	    		fileVO.setTotalFlaggedNews(notedCount.intValue());
+	  	    		newsList.add(fileVO);
+	  	    	}
+	  	    	
+	  	    }
+	  	    else 
+		    {
+		    	if(contentIds.size() >0)
+		    	{
+		    		newsFile = contentNotesDAO.getNotedNews(contentIds);
+		    	}
+		    }
+	  	    
+	  	    if(newsFile != null && newsFile.size() > 0 )
+	  	    {
+	  	    		for (FileGallary news : newsFile)
+	  	    		{
+	  	    			fileVO = new FileVO();
+	  	    			File file = news.getFile();
+	  	    			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+	  	    			fileVO.setTitle(file.getFileTitle());
+	  	    			fileVO.setFileId(file.getFileId());
+	  	    			fileVO.setVisibility(news.getIsPrivate());
+	  	    			fileVO.setDescription(file.getFileDescription());
+	  	    			fileVO.setFileDate(file.getFileDate().toString());
+	  	    			fileVO.setLocationScopeValue(file.getRegionScopes().getScope());
+	  	    			fileVO.setGallaryName(news.getGallary().getName());
+	  	    			if(file.getCategory() != null)
+	  	    			fileVO.setCategoryName(file.getCategory().getCategoryType());
+	  	    			fileVO.setGallaryId(news.getFileGallaryId());
+	  	    			for (FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet) {
+	  	    				fileVO.setSource(fileSourceLanguage.getSource().getSource());
+						}
+	  	    			fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
+	  	    			newsList.add(fileVO);
+					}
+	  	    }
+	  	    	
+			} 
+		    catch (Exception e) 
+		    {
+		    	log.error("Exception raised in the getNewsForFlagedAndNOted service method in NewsMonitoringService", e);
+			}
+		
+		return newsList;
 	}
 	
 }

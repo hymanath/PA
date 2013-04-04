@@ -1781,6 +1781,12 @@
 	     <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="newsFlagDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsFlagDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="contentNotesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentNotesDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>

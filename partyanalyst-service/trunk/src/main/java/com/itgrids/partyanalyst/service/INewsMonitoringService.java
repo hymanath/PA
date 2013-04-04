@@ -44,5 +44,7 @@ public interface INewsMonitoringService {
 	
 	public String checkForVisibilityStatus(Long contentId);
 	
+	public List<FileVO> getNewsForFlagedAndNoted(FileVO inputs);
+	
 		
 }

@@ -115,6 +115,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String isPrivate;
 	private Date fileGallaryDate;
 	private boolean isUpdatable = false;
+	private String task;
 	
 	public Date getFileGallaryDate() {
 		return fileGallaryDate;
@@ -979,6 +980,15 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setUpdatable(boolean isUpdatable) {
 		this.isUpdatable = isUpdatable;
 	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+	
 	
 
 }
