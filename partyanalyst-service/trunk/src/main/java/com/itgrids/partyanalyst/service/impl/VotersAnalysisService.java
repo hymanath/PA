@@ -13219,6 +13219,22 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		   }else return;
 	}
 	
+	public String checkLocalityDataExist(Long hamletId, Long userId)
+	{
+		try{
+			List<Object[]> list = localityDAO.getAllLocalitiesForHamlet(userId, hamletId);
+			if(list == null || list.size() == 0)
+				return "false";
+				return "true";
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in checkLocalityDataExist() Method, Exception - "+e);
+				return "false";
+			}
+	}
+
+
+	
 }
 
 
