@@ -357,23 +357,7 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
 </style>
 <SCRIPT type="text/javascript">
 $(document).ready(function(){
-	  $('#wonCandidatesTable').dataTable({
-		"aLengthMenu": [[15,50,100,200, -1], [15, 50,100,200,"All"]]
-	})
-		  .columnFilter({ 	sPlaceHolder: "head:before",
-		  	
-			aoColumns: [ { type: "text"},
-				         { type: "text"},
-				         { type: "text"},
-				         { type: "number"},
-				         { type: "number"},
-						 { type: "number"},
-						 { type: "number"},
-						 { type: "number"}
-						 
-				]
-
-		});
+	  
 	    <c:if test="${loginStatus ==null && sessionScope.USER == null}">
 		  $("#partyperformance").html("");
 		</c:if>
@@ -4398,6 +4382,25 @@ function navigateToMinisterPage(){
   </div>
   <DIV class="graphBottom"></DIV>
    </div>
+   <script type="text/javascript">
+     $('#wonCandidatesTable').dataTable({
+		"aLengthMenu": [[15,50,100,200, -1], [15, 50,100,200,"All"]]
+	})
+		  .columnFilter({ 	sPlaceHolder: "head:before",
+		  	
+			aoColumns: [ { type: "text"},
+				         { type: "text"},
+				         { type: "text"},
+				         { type: "number"},
+				         { type: "number"},
+						 { type: "number"},
+						 { type: "number"},
+						 { type: "number"}
+						 
+				]
+
+		});
+   </script>
  </s:if>
 </c:if>
 <div id="accessDiv" style="display:none"></div>
