@@ -2064,6 +2064,7 @@ public class ElectionReportService implements IElectionReportService {
 				PartyWiseResultVO partyWiseResultVO = null;
 				constituencyUrbanDetailsVOList = new ArrayList<ConstituencyUrbanDetailsVO>(0);
 				
+				resultMap.put("Rural", new ArrayList<PartyWiseResultVO>(0));
 				resultMap.put("0-10", new ArrayList<PartyWiseResultVO>(0));
 				resultMap.put("10-20", new ArrayList<PartyWiseResultVO>(0));
 				resultMap.put("20-30", new ArrayList<PartyWiseResultVO>(0));
@@ -2074,6 +2075,7 @@ public class ElectionReportService implements IElectionReportService {
 				resultMap.put("70-80", new ArrayList<PartyWiseResultVO>(0));
 				resultMap.put("80-90", new ArrayList<PartyWiseResultVO>(0));
 				resultMap.put("90-100", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("Urban", new ArrayList<PartyWiseResultVO>(0));
 				
 				for(Object[] params : list)
 				{
@@ -2086,7 +2088,13 @@ public class ElectionReportService implements IElectionReportService {
 					partyWiseResultVO.setVotesEarned(((Double)params[4]).longValue());
 					partyWiseResultVO.setValidVotes(((Double)params[5]).longValue());
 					
-					if(percentage >= 0 && percentage <= 10)
+					if(percentage == 0)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("Rural");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("Rural", partyWiseResultVOList);
+					}
+					else if(percentage > 0 && percentage <= 10)
 					{
 						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("0-10");
 						partyWiseResultVOList.add(partyWiseResultVO);
@@ -2140,11 +2148,17 @@ public class ElectionReportService implements IElectionReportService {
 						partyWiseResultVOList.add(partyWiseResultVO);
 						resultMap.put("80-90", partyWiseResultVOList);
 					}
-					else if(percentage > 90 && percentage <= 100)
+					else if(percentage > 90 && percentage < 100)
 					{
 						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("90-100");
 						partyWiseResultVOList.add(partyWiseResultVO);
 						resultMap.put("90-100", partyWiseResultVOList);
+					}
+					else if(percentage == 100)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("Urban");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("Urban", partyWiseResultVOList);
 					}
 					
 				}
