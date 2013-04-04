@@ -193,6 +193,7 @@
     	<pattern>/missingVotersSearchAction*</pattern>
     	<pattern>/districtPageAction*</pattern>
     	<pattern>/sendUpdatesBySMSAction*</pattern>
+    	<pattern>/voterFamilyInfoAction*</pattern>
     	 </decorator>
 
 </decorators>
