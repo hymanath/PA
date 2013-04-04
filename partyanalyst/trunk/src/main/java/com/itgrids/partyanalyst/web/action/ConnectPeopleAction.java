@@ -674,7 +674,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> listOfDistricts = new ArrayList<Long>();
 		listOfDistricts.add(locationId);
 		
-		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocationAndStatus(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex,nameString);
+		//userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocationAndStatus(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex,nameString);
+		userDetails = ananymousUserService.getAllConnectedUsersBasedonLocationType(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex,nameString);
 		
 		return Action.SUCCESS;
 	}
