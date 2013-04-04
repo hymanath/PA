@@ -1026,6 +1026,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 						   
 					   }
 				   }
+				List<Object[]> obj= boothPublicationVoterDAO.getPublicationUserCount(userId,publicationDateId,id);
+				
+				if(obj != null && obj.size() > 0)
+				   {
+							for(Object[] params1 : obj){
+						   votersInfoForMandalVO.setPublicationVoters((Long) params1[0]);
+						   votersInfoForMandalVO.setAssignedVotersByUser((Long) params1[1]);
+						   votersInfoForMandalVO.setUnassignedVotersByUser((Long) params1[2]);
+						   
+					   }
+				   }
+				
+			//	votersInfoForMandalVO.setPublicationVoters((Long));
+				//votersInfoForMandalVO.setAssignedVotersByUser(assignedVotersByUser)
 				}else
 					
 					if(resultFor.equalsIgnoreCase("booth")){
@@ -2417,6 +2431,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		List<Voter> list = null;
 		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
+		if(type.equalsIgnoreCase("boothHamlet"))
+		{
+		 list = userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(userId,hamletId,casteStateId,id.longValue(),publicationDateId.longValue());
+		}else
 		if(type.equalsIgnoreCase("booth"))
 		{
 		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
@@ -2427,7 +2445,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			
-		}
+		}else if(type.equalsIgnoreCase("hamlet"))
+		{
+			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
+
+		    list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			}
 		else
 		{
 			
@@ -3756,6 +3779,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 						   
 					   }
 				   }
+			//utilForPublicationVoterData(userId, publicationDateId, constituencyId, votersInfoForMandalVO)
 				//updated by sasi -- End			
 				
 				for(Long  hamletId:hamlets)			
@@ -4675,7 +4699,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 					   voterCategoryVal = categoryValuesIds.get(0);
 					   voterCategoryVal.setUser(user);
 						  voterCategoryVal.setVoter(voter);
-						  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValue);
+ 						  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValue);
 						  voterCategoryValueDAO.save(voterCategoryVal);
 				  }else if(userVoterCategoryValue != null){
 					  voterCategoryVal = new VoterCategoryValue();
@@ -13060,6 +13084,20 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			return boothInfo;
 			
 		}*/
+	public void utilForPublicationVoterData(Long userId,Long publicationDateId,Long id ,VotersInfoForMandalVO votersInfoForMandalVO ){
+		List<Object[]> obj= boothPublicationVoterDAO.getPublicationUserCount(userId,publicationDateId,id);
+		
+		if(obj != null && obj.size() > 0)
+		   {
+			   for(Object[] params1 : obj){
+				   votersInfoForMandalVO.setPublicationVoters((Long) params1[0]);
+				   votersInfoForMandalVO.setAssignedVotersByUser((Long) params1[1]);
+				   votersInfoForMandalVO.setUnassignedVotersByUser((Long) params1[2]);
+				   
+			   }
+		   }else return;
+	}
+	
 }
 
 
