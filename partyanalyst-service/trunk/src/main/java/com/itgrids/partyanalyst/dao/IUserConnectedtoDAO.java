@@ -36,4 +36,8 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	
 	public List<Long> getUserConnectStatus(Long senderId,Long recipeintId);
 
+	public List<Object[]> getCountOfAllConnectedPeopleForUserByDistrict(List<Long> senderId, List<Long> locationIds, String locationType,String constituencyType);
+	
+	public List<Object[]> getCountOfAllConnectedPeopleForUserInSameLocation(List<Long> senderId,List<Long> locationIds,String constituencyType);
+	
 }
