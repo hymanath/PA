@@ -2221,6 +2221,8 @@ var queryString='';
 
 <script language="javascript">
 
+var userDistrictId ='${userDetails.districtId}';
+var districtId = '${districtId}';
 
 
 var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
