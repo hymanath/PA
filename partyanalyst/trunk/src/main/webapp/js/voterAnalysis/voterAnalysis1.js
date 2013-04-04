@@ -966,7 +966,19 @@ function addToPolitician(voterId,name)
 		 if(type != "hamlet")
 		 {
 		 $("#castTab").html('');
+		  $("#previousEleVotingTrendsDiv").css('display','block');
 		 }
+
+		  if(type == "hamlet")
+		  {
+			  $("#previousEleVotingTrendsDiv1").css('display','none');
+			  $("#permanentlyUpdateDiv").css('display','none');
+		  }
+		  else
+		  {
+			  $("#previousEleVotingTrendsDiv1").css('display','block');
+			  $("#permanentlyUpdateDiv").css('display','block');
+		  } 
 		
 		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
