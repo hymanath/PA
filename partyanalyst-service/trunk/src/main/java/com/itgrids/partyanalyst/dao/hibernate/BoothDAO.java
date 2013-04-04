@@ -783,4 +783,32 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("select model.boothId from Booth model where model.partNo = ?",partNo);	
 		}
 		
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getBoothIdsByLocalValuesList(String locationType,Long locationValue,Long constituencyId,List<Long> publicationDateIdsList)
+		{
+		  StringBuilder stringBuilder = new StringBuilder();
+		  stringBuilder.append("select model.boothId from Booth model where model.publicationDate.publicationDateId in (:publicationDateIdsList) ");
+		  if(locationType.equalsIgnoreCase("Constituency"))
+			  stringBuilder.append(" and model.constituency.constituencyId =:locationValue ");
+		  else if(locationType.equalsIgnoreCase("Mandal"))
+			  stringBuilder.append(" and model.tehsil.tehsilId =:locationValue ");
+		  else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			  stringBuilder.append(" and model.localBody.localElectionBodyId =:locationValue ");
+		  else if(locationType.equalsIgnoreCase("panchayat"))
+			  stringBuilder.append(" and model.panchayat.panchayatId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("ward"))
+			  stringBuilder.append(" and model.localBodyWard.constituencyId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("booth"))
+			  stringBuilder.append(" and model.boothId = :locationValue ");
+			  
+		  stringBuilder.append(" and model.constituency.constituencyId = :constituencyId ");
+		  
+		  Query queryObj = getSession().createQuery(stringBuilder.toString());
+		  queryObj.setParameterList("publicationDateIdsList", publicationDateIdsList);
+		  queryObj.setParameter("locationValue", locationValue);
+		  queryObj.setParameter("constituencyId", constituencyId);
+		 return queryObj.list();
+		}
+		
 }
