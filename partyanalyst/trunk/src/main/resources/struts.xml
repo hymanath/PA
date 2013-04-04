@@ -4734,7 +4734,14 @@
 		<action name="voterFamilyInfoAction" class="voterFamilyInfoAction">
 		  <result name="success">/jsp/voterFamilyDetails.jsp</result>
 		</action>
-		
-		
+		<action name="boothWiseModifiedVoterInfoAction" class="boothWiseModifiedVoterInfoAction">
+		 	<result name="success">/jsp/boothWiseVoterModificationInfo.jsp</result>
+		 	<result name="error">/jsp/loginForm.jsp?src=votersAnalysisNewAction</result>
+		</action>
+		<action name="getBoothWiseVoterModificationDetailsAction" class="boothWiseModifiedVoterInfoAction" method="ajaxHandler">
+		    <result type="json" name="success">
+				<param name="root">voterModificationVO</param>				
+			</result>
+		</action>
 		</package>
 </struts>      

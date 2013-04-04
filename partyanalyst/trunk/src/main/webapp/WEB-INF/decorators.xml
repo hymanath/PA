@@ -194,6 +194,7 @@
     	<pattern>/districtPageAction*</pattern>
     	<pattern>/sendUpdatesBySMSAction*</pattern>
     	<pattern>/voterFamilyInfoAction*</pattern>
+    	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
     	 </decorator>
 
 </decorators>
