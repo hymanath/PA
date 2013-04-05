@@ -74,9 +74,9 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
+import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
@@ -118,6 +118,7 @@ import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterModification;
+import com.itgrids.partyanalyst.model.VoterStatus;
 import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -193,8 +194,17 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterPartyInfoDAO voterPartyInfoDAO;
     private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
     private IVoterReportService voterReportService;
+    private IVoterStatusDAO voterStatusDAO;
     
-    public IVoterCastBasicInfoDAO getVoterCastBasicInfoDAO() {
+    public IVoterStatusDAO getVoterStatusDAO() {
+		return voterStatusDAO;
+	}
+
+	public void setVoterStatusDAO(IVoterStatusDAO voterStatusDAO) {
+		this.voterStatusDAO = voterStatusDAO;
+	}
+
+	public IVoterCastBasicInfoDAO getVoterCastBasicInfoDAO() {
 		return voterCastBasicInfoDAO;
 	}
 
@@ -10218,6 +10228,8 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 					 VoterVO voterVO = null;
 					 List<String> voterIdCardNosList = new ArrayList<String>(0);
 					 List<VoterVO> votersList = new ArrayList<VoterVO>(0);
+					 Map<Long,VoterStatus> voterStatusMap = new HashMap<Long, VoterStatus>(0);
+					 
 					 for(Object[] params : result)
 					 {
 						 voterVO = new VoterVO();
@@ -10227,6 +10239,30 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						 votersList.add(voterVO);
 						 voterIdCardNosList.add(params[0].toString());
 					 }
+					 
+					 for(VoterVO voterVO2 : votersList)
+					 {
+						 Integer count = getExistanceCountOfVoterId(voterVO2.getVoterIDCardNo(),votersList);
+						 if(count == 1)
+						 {
+							 if(voterVO2.getStatus().equalsIgnoreCase(IConstants.STATUS_ADDED))
+								 voterVO2.setStatusId(1l);
+							 else if(voterVO2.getStatus().equalsIgnoreCase(IConstants.STATUS_DELETED))
+								 voterVO2.setStatusId(2l);
+						 }
+						 else if(count == 2)
+						 {
+							 if(voterVO2.getStatus().equalsIgnoreCase(IConstants.STATUS_ADDED))
+								 voterVO2.setStatusId(4l);
+							 else if(voterVO2.getStatus().equalsIgnoreCase(IConstants.STATUS_DELETED))
+								 voterVO2.setStatusId(3l);
+						 }
+					 }
+					 
+					 List<VoterStatus> voterStatusList = voterStatusDAO.getAll();
+					 
+					 for(VoterStatus voterStatus : voterStatusList)
+						 voterStatusMap.put(voterStatus.getVoterStatusId(),voterStatus);
 					 
 					 List<SelectOptionVO> voterIdsList = getVoterIdsByCardNosList(voterIdCardNosList);
 					 
@@ -10243,6 +10279,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 								 voterModification.setPartNo(voterVO2.getPartNo());
 								 voterModification.setStatus(voterVO2.getStatus());
 								 voterModification.setConstituencyId(constituencyId);
+								 voterModification.setVoterStatus(voterStatusMap.get(voterVO2.getStatusId()));
 								 voterModificationDAO.save(voterModification);
 							 }
 						 }
@@ -10261,6 +10298,21 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 }
 		 }
 		 
+		 public Integer getExistanceCountOfVoterId(String cardNo,List<VoterVO> votersList)
+		 {
+			 try{
+				 int count = 0;
+				 for(VoterVO voterVO : votersList)
+				 {
+					 if(voterVO.getVoterIDCardNo().equalsIgnoreCase(cardNo))
+						 count++; 
+				 }
+				 return count;
+			 }catch (Exception e) {
+				 log.error(e);
+				 return 1;
+			 }
+		 }
 		 /**
 		 * This method will return Voter Ids and their Voter Id Card Numbers, when we pass 
 		 * Voter Id Card Numbers List as Parameter
