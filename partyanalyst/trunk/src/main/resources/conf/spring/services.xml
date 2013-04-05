@@ -1417,6 +1417,7 @@
 		<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
 		<property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO"/>
 		<property name="voterReportService" ref="voterReportService"/>
+		<property name="voterStatusDAO" ref="voterStatusDAO"/>
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
