@@ -848,11 +848,14 @@ function addToPolitician(voterId,name)
 	function getAllTabs(id,publicationId,type){
 
        if(type == "hamlet")
-		$('#impFamiliesForVooths').show();
+		  $('#impFamiliesForBooths').show();
 	   else
-		   $('#impFamiliesForVooths').hide();
-
-		  //$("#votersbasicinfoForImpFam").hide();
+		   $('#impFamiliesForBooths').hide();
+	   if(type == "booth")
+		    $('#impFamiliesForHamletsByBooth').show();
+	   else
+		   	$('#impFamiliesForHamletsByBooth').hide();
+  //$("#votersbasicinfoForImpFam").hide();
 		  //$("#votersBasicInfoDivForImpFam").html("");
 		  //$("#votersBasicInfoSubChartDivForImpFam").html("");
 		  //$("#votersBasicInfoSubDivForImpFam").html("");
@@ -1519,9 +1522,15 @@ function addToPolitician(voterId,name)
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{   $("#votersDiv2").show();
 									buildCastInfoForSubLevels(myResults,jsObj);
-								}								
+								}
+								else if(jsObj.task == "importantFamiliesinfoForHamletsByBooth"){
+									buildImpFamilesChartForHamletsByBooth(myResults);
+								buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
+
+								}
 								else if(jsObj.task == "importantFamiliesinfo")
 								{ 
+									$('#ImpFamwiseAjaxDiv').hide();
 									$('#votersDiv1').hide();
 								  if(myResults != null && jsObj.type == maintype){
 								    $("#votersDiv1").show();
@@ -1547,6 +1556,11 @@ function addToPolitician(voterId,name)
 
 								   
 								   
+								}
+								else if(jsObj.taskType == "gettotalimpfamliesForHamletsByBooth")
+								{
+									$('#impFamPancBothDtlsAgxImgForHamletByBooth').hide();
+								    buildFamilyMembersForBooth(myResults,jsObj,jsObj.type);
 								}
 								else if(jsObj.task == "gettotalimpfamlies"  )
 								{   
@@ -2501,7 +2515,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 
 		else
-		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}else if(type =="booth")
 		{
 		
@@ -2553,11 +2567,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	}
 
 
-function getVotersInACasteForLocality(id , publicationDateId , casteStateId,casteCategory,caste,localityId,name)
+function getVotersInACasteForLocality(id , publicationDateId , hamletId , casteStateId,casteCategory)
 {
-var publicationDateVal=$('#publicationDateList :selected').text();
-var year=publicationDateVal.substr(publicationDateVal.length - 4)
-
 	var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
@@ -2565,11 +2576,6 @@ var year=publicationDateVal.substr(publicationDateVal.length - 4)
 			hamletId:mainreqid,
 			type:"locality",
             buildType:"",
-			casteCategory:casteCategory,
-			Name:name+"-"+localityId,
-			publicationDate:year,
-			casteName:caste,
-			//	caste:caste,
 			task:"getVotersInACaste"
 
 		}
@@ -2814,7 +2820,8 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
    }
 	}
 }
-function getImpFamiliesVotersForHamlet()
+
+/*function getImpFamiliesVotersForHamlet()
 {
 	var jsObj1=
 			{
@@ -2832,7 +2839,7 @@ function getImpFamiliesVotersForHamlet()
 		callAjax(jsObj1,url1);
 
 
-}
+}*/
 
 /*function getImpFamiliesVotersToShow(){
     $("#impFamilesAllInfoPopUp").dialog({
@@ -8210,4 +8217,225 @@ function  buildFamilyMembers1(result,jsObj,type){
 				}
 			}
 		}
+		}  
+		function getImpFamiliesVotersForHamletBooth()
+		{
+			$('#impFamPancBothDtlsAgxImgForHamletByBooth').show();
+			var jsObj1=
+					{
+							
+						type:"booth",
+						id:mainreqid,
+						publicationDateId:mainpublicationId,
+						typename:"",
+						constituencyId:$('#constituencyList').val(),
+						requestFor:"hamletBooth",
+						task:"importantFamiliesinfoForHamletsByBooth",
+			
+					}
+			var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+					var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;						
+				callAjax(jsObj1,url1);
+
+			var jsObj2=
+				{
+						
+					type:"pollingstation",
+					id:mainreqid,
+					publicationDateId:mainpublicationId,
+					typename:"",
+					buildType:buildType,
+		            constituencyId:$('#constituencyList').val(),
+					requestFor:"booth",
+		            requestFor:"hamletBooth",
+					task:"gettotalimpfamlies",
+					taskType:"gettotalimpfamliesForHamletsByBooth"
+
+				}
+		   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+				var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+			callAjax(jsObj2,url2);
+
+
+		}
+
+
+		function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
+		{
+		$('#impFamilesnfoForHamletByBooth').dialog({
+		            modal: true,
+		            title: "<b>Voters Details</b>",
+					width: 970,
+		            height: 600
+		           
+		        });
+		var impFamiList = new Array();
+		  for(var i in impFamilesData){
+		     var data={};
+			 
+			 data["name"] = impFamilesData[i].name;  
+			 data["below3"] = impFamilesData[i].below3;
+			 data["below3perc"] = impFamilesData[i].below3perc;
+			 data["betwn4to6"] = impFamilesData[i].betwn4to6;
+			 data["betwn4to6perc"] = impFamilesData[i].betwn4to6perc;
+			 data["betwn7to10"] = impFamilesData[i].betwn7to10;
+			 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
+			 data["above10"] = impFamilesData[i].above10;
+			 data["above10perc"] = impFamilesData[i].above10perc;
+			 data["totalVoters"] =  impFamilesData[i].totalVoters;
+			 data["totalFemaleVoters"] = impFamilesData[i].totalFemaleVoters;
+			 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
+			 impFamiList.push(data);
+		  }
+		  var reqtytle ="Name";
+		  for(var t in impFamilesData){
+		     if(impFamilesData[t].type != null)
+			   reqtytle = impFamilesData[t].type;
+		  }
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet wise voters family analysis of "+name+" in "+publicationYear+"</b>");
+		  var impFamilesColumnDefs = [
+		    {key:"name", label: ""+reqtytle+"", sortable: true},
+			{key:"totalVoters", label:"Total",sortable: true},
+			{key:"totalMaleVoters", label:"Male Voters",sortable: true},
+			{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
+		    {key:"below3", label: "<3", formatter:"number", sortable: true},
+		    {key:"below3perc", label: "<3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+		    {key:"betwn4to6", label: "4 to 6", formatter:"number", sortable: true},
+		    {key:"betwn4to6perc", label: "4 to 6%", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+		    {key:"betwn7to10", label: "7 to 10", formatter:"number", sortable: true},
+		    {key:"betwn7to10perc", label: "7 to 10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+		    {key:"above10", label: ">10", formatter:"number",sortable:true},
+		    {key:"above10perc", label: ">10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
+		  ];
+		var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
+		impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		impFamilesDataSource.responseSchema = {
+		fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
+		};
+		var myConfigs = {
+		};
+		var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetailsForHamletByBooth", impFamilesColumnDefs,
+		impFamilesDataSource, myConfigs);
+		return {
+		oDS: impFamilesDataSource,
+		oDT: impFamilesDataTable
+		};
+		if(type == "constituency" || type == "Mandal/Tehsil")
+			{
+			$("#NoteDiv").css("display","block"); 
+			$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+			}
+		}
+
+
+		function buildFamilyMembersForBooth(result,jsObj,type)
+		{
+			
+		 if($("impfamilydatatable_wrapper"))
+		  $("impfamilydatatable_wrapper").remove();
+
+			var publicationDateId =   jsObj.publicationDateId;
+			 impFamiliesEditArray = new Array();
+			//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+			//hideAjaxImgDiv('ajaxImageDiv');
+		    var name = "";
+		     if(type == "panchayat")
+			    name = $("#panchayatField option:selected").text();
+			 else
+			   name = $("#pollingStationField option:selected").text();
+			
+		      var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
+			      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
+				  str+=' <table id="impfamilydatatableForBooth" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
+		          str+='  <thead>';
+		          str+='   <tr>';
+				  str+='     <th>Select</th>';
+				  str+='     <th>Hamlet</th>';		  
+		          str+='     <th>House No</th>';
+		          str+='     <th>Members In Family</th>';
+				  str +='	 <th>Caste</th>';
+				  str+='	 <th class="widthStyle">Eldest Person</th>';
+				  str+='	 <th>Gender</th>';
+				  str+='	 <th>Age</th>';
+		          str+='     <th class="widthStyle">Youngest Person</th>';
+				  str+='	 <th>Gender</th>';
+				  str+='	 <th>Age</th>';
+		          str+='   </tr>';
+		          str+='  </thead>';
+		          str+='  <tbody>';
+
+			 for(var i in result){
+			   var sno = parseInt(i)+1;
+			      str +='<tr>';
+				  str +='<td><input class="impFamilMulSel" id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
+				  str+='<td>'+result[i].hamletName+'</td>';
+		          str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
+		          str +='		<td>'+result[i].numberOfPeople+'</td>';
+				  str +='       <td>'+result[i].cast+'</td>';
+		          str +='		<td class="widthStyle">'+result[i].elder+'</td>';
+				  str +='		<td>'+result[i].elderGender+'</td>';
+				  str +='		<td>'+result[i].elderAge+'</td>';
+		          str +='		<td class="widthStyle">'+result[i].younger+'</td>';
+				  str +='		<td>'+result[i].youngerGender+'</td>';
+				  str +='		<td>'+result[i].youngerAge+'</td>';
+		          str+='   </tr>';
+			 }
+		          str+='  </tbody>';
+		          str+=' </table>';
+				  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
+				 
+					  $('#importantFamiliesForBooth').html(str);
+					  //$('#impFamPancBothDtlsAgxImgForHamle').hide();
+			      
+			  
+			  	$('#impfamilydatatableForBooth').dataTable({
+				"aaSorting": [[ 1, "desc" ]],
+				"bDestroy": true,
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				
+				});
+		}
+
+		function buildImpFamilesChartForHamletsByBooth(chartInfo)
+		{
+			var totalCount = 0;
+			var below3 = 0;
+			var between4And6 = 0;
+			var between7And10 = 0;
+			var above10 = 0;
+		   for(var i in chartInfo.subList)
+			{
+			   below3 = below3+ chartInfo.subList[i].below3;
+			   between4And6 = between4And6 + chartInfo.subList[i].betwn4to6;
+			   between7And10 = between7And10 + chartInfo.subList[i].betwn4to6;
+			   above10 = above10 + chartInfo.subList[i].above10;
+		   }
+		   totalCount = below3 + between4And6 + between7And10 + above10;
+
+			var below3Perc = Math.round((below3/totalCount)*100);
+			var between4And6Perc = Math.round((between4And6/totalCount)*100);
+			var between7And10Perc = Math.round((between7And10/totalCount)*100);
+			var above10Perc = Math.ceil((above10/totalCount)*100);
+
+
+			hideAjaxImgDiv('ImpFamwiseAjaxDiv');
+			var data = google.visualization.arrayToDataTable([
+					  ['Task', 'Percentage'],
+					  ['Families Below 3 Voters',  below3Perc],
+					  ['Families Between 4-6 Voters', between4And6Perc],
+					  ['Families Between 7-10 Voters',  between7And10Perc],
+					  ['Families Above 10 Voters', above10Perc]
+					]);
+
+			// Set chart options
+			var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+			var options = {'title':title,
+			'width':800,
+			'height':280};
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDivForHamletsByBooths'));
+			chart.draw(data, options);
 		}
