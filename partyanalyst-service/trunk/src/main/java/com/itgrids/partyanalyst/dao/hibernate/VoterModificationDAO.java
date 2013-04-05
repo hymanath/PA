@@ -561,6 +561,24 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 			return query.list();
 			
 		}
+	@SuppressWarnings("unchecked")
+	public List<VoterModification> getVoterModificationsByConstituencyId(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select model from VoterModification model where model.constituency.constituencyId = ?",constituencyId);
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterModificationsByConstituencyId2(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select model.voterModificationId, model.voter.voterId, model.status from VoterModification model where model.constituency.constituencyId = ?",constituencyId);
+	}
+	
+	public Integer updateVoterStatus(Long statusId, List<Long> values)
+	{
+		Query query = getSession().createQuery("update VoterModification model set model.voterStatus.voterStatusId = :statusId where model.voterModificationId in (:values)");
+		query.setParameter("statusId",statusId);
+		query.setParameterList("values", values);
+		return query.executeUpdate();
+	}
 	
 }
