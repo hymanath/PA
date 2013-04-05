@@ -354,6 +354,19 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
 #partyPerfResultsDataTable .yui-dt-liner{
  padding: 4px;
 }
+
+#regionWiseDataTableDiv caption {
+    background: none repeat scroll 0 0 #A3A3A3;
+    color: #FFFFFF;
+    font-family: Trebuchet MS;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+    height: 30px;
+    line-height: 1;
+    padding: 5px 17px 0.5em;
+    text-align: center;
+}
 </style>
 <SCRIPT type="text/javascript">
 $(document).ready(function(){
@@ -423,6 +436,7 @@ function callAjax(param,jsObj,url){
 									if(jsObj.task == "getRegionWisePartyElectionResults")
 									{
 										buildRegionWiseElectionsResultsGraph(jsObj,myResults);
+										buildRegionWiseDataTable(myResults);
 										hideImg();
 									}
 									else if(jsObj.task == "elctionsBasicInfo")
@@ -468,7 +482,7 @@ function callAjax(param,jsObj,url){
 
                                         if(electionType != 'Parliament'){
 										if(myResults.hasRegions == true){
-
+                                                
 											var elmtDiv = document.getElementById("stateRegionsDiv");
 											var str = '';
 											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">							Overall          ';
@@ -511,7 +525,7 @@ function callAjax(param,jsObj,url){
 									{
 										UbanPercentageResult = myResults;	buildUbanPercentageWisePartyDetailsGraph();
 									}
-
+                                    
 								}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -1551,7 +1565,8 @@ function getElctionsBasicInfo(electionType){
 	callAjax(param,jsObj,url);
 }
 function getResultsForAnElection(stateID,electionType,year)
-{
+{ 
+     $("#regionWiseDataTableDiv").hide();
 	var jsObj= 
 	{
 		electionId : electionId,
@@ -3949,7 +3964,7 @@ function callAjax1(jsObj,url)
 									      buildData(myResults,"yearSelId");
 										  
 									}
-									
+																	
 								}
 							catch (e) {   
 							   //	alert("Invalid JSON result" + e);   
@@ -3963,6 +3978,111 @@ function callAjax1(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function buildRegionWiseDataTable(results)
+{
+   if(results != null && results.partyResultsInRegionVOLst!= null && results.partyResultsInRegionVOLst.length > 0)
+   {
+      var obj = new Array();
+	  var regions = new Array();
+	  for(var j in results.partyResultsInRegionVOLst){
+	    var objval = new Array();
+		objval["name"] = results.partyResultsInRegionVOLst[j].regionName;
+		regions.push(objval);
+	  }
+	  for(var i in  results.partyResultsInRegionVOLst[0].partyResultsInRegion)
+	  {
+	    var objval = new Array();
+	     objval["partyName"] = results.partyResultsInRegionVOLst[0].partyResultsInRegion[i].partyName;
+	     for(var j in results.partyResultsInRegionVOLst)
+		 {
+		   //var x = j+1;
+		   objval["seatsParticipated"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].seatsParticipated;
+		   objval["totalSeatsWon"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].totalSeatsWon;
+		   objval["percentage"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].percentage;
+		   objval["PConstavgPercentage"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].PConstavgPercentage;
+		 }
+		  obj.push(objval);
+	  }
+      buldDataTable(obj,regions);
+   }
+}
+
+function buldDataTable(obj,regions){
+  $("#regionWiseDataTableDiv").show();
+  var resultsDataSource = new YAHOO.util.DataSource(obj);
+	resultsDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSource.responseschema = {
+		fields : [
+		{
+			key : "partyName"
+		}
+		]
+	};
+    for(var i=0;i<regions.length;i++)
+    {
+	   var obj1 = {
+    	     key :"seatsParticipated"+i,parser:"number"
+    		};
+	   var obj2 = {
+    	     key :"totalSeatsWon"+i,parser:"number"
+    		};
+	   var obj3 = {
+    	     key :"percentage"+i,parser:"number"
+    		};
+	   var obj4 = {
+    	     key :"PConstavgPercentage"+i,parser:"number"
+    		};
+    		resultsDataSource.responseschema.fields.push(obj1);
+			resultsDataSource.responseschema.fields.push(obj2);
+			resultsDataSource.responseschema.fields.push(obj3);
+			resultsDataSource.responseschema.fields.push(obj4);
+	}
+	var resultsColumnDefs = [ 
+	{
+		 label: "Party",
+		 key  : "partyName",
+		sortable : true
+	}
+	];
+   for(var i in regions)
+    {
+	  var obj;
+	     obj = {
+    	label:""+regions[i].name,
+		children:[ 
+					{
+						label : "TP*",
+						key : "seatsParticipated"+i,
+						sortable : true
+					},
+					{
+						label : "Won",
+						key : "totalSeatsWon"+i,
+						sortable : true
+					},
+					{
+						label : "CVP* %",
+						key : "PConstavgPercentage"+i,
+						sortable : true
+					},
+					{
+						label : "CPVP* %",
+						key : "percentage"+i,
+						sortable : true
+					}				
+				]
+    		};
+    		resultsColumnDefs.push(obj);
+	}
+				
+	var myConfigs = { 
+			    caption:"	Region Wise Party Performance" 
+				};			
+				
+    myDataTable = new YAHOO.widget.DataTable("regionWiseDataTableDiv",resultsColumnDefs, resultsDataSource,myConfigs); 
+}
+
 
 function buildStatesData(myResults){
 
@@ -4092,8 +4212,9 @@ function navigateToMinisterPage(){
 
 
 <DIV id="graphImage" class="yui-skin-sam" style="width:970px;overflow:hidden;margin:auto;"></DIV>
-
-
+<div class="yui-skin-sam" style="margin:15px;">
+<div id="regionWiseDataTableDiv" style="overflow-x: scroll;"></div>
+</div>
 <div id="ministerDetailsDiv">
 <c:if test="${electionType != 'Parliament'}"> 
 <a class="btn btn-primary" style="float:right;" href="ministersPageAction.action?electionId=${electionId}"><b>View ${stateName} Minister Details of ${year} Assembly</b></a>
