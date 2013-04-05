@@ -2448,6 +2448,8 @@ function getVideoDetails(contentId)
 
 function getContentDetails(contentId)
 {
+	$('#showContentDivInnerDiv').html('<img style="margin:200px 0 38px 327px;" src="images/icons/goldAjaxLoad.gif" />');
+
 	//document.getElementById("contentAjaxCallImg").style.display="block";
 	var jsObj =
 		{   
@@ -2505,7 +2507,7 @@ function buildContentDetails()
 //console.log(result);
 	if(result == null)
 		return;
-
+		
 	var divEle = document.getElementById('showContentDivInnerDiv');
 	var str = '';
 	var titleStr = null;
@@ -2552,7 +2554,7 @@ function buildContentDetails()
 			
 
 			if(result.relatedGalleries[0].filesList[i].categoryType != null)
-				str+='<B>CategoryType</B>:<font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font>';
+				str+='<B>CategoryType</B>:<font color="#FF4500"><span id="sourceChangeSpan1">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font>';
 			 str+='</td>';
 
 			str+='<td>';
