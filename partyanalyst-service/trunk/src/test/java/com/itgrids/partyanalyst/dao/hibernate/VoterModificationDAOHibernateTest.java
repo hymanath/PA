@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
+import com.itgrids.partyanalyst.model.VoterModification;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
@@ -30,7 +31,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
 	}*/
 	
-	public void testGetAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
+	/*public void testGetAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation()
 	{
 		List<Long>  publicationIdsList = new ArrayList<Long>(0);
 		List<Object[]> list = null;
@@ -55,7 +56,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		System.out.println(list.get(0)[0]+"\t"+list.get(0)[1]);
 		System.out.println(list.get(1)[0]+"\t"+list.get(1)[1]);
-	}
+	}*/
 	
 	/*public void testGetGenderWiseVoterModificationsBetweenPublications()
 	{
@@ -92,7 +93,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetGenderWiseVoterModificationByPublicationId()
+	/*public void testGetGenderWiseVoterModificationByPublicationId()
 	{
 		List<Long> locationValuesList = new ArrayList<Long>(0);
 		locationValuesList.add(232l);
@@ -143,7 +144,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 				
 				
 		}
-	}
+	}*/
 	
 	/*public void testGetAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation()
 	{
@@ -178,4 +179,12 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		
 		System.out.println(list.size());
 	}*/
+	
+	public void testgetVoterModificationsByConstituencyId()
+	{
+		List<Long> ids = new ArrayList<Long>(0);
+		ids.add(6616l);
+		int list = voterModificationDAO.updateVoterStatus(1l,ids);
+		System.out.println(list);
+	}
 }
