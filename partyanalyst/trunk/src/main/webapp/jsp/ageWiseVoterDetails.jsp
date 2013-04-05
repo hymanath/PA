@@ -269,7 +269,7 @@ function callAjax(jsObj,url)
 				}
 			}
 		}
-		}catch (e) {console.log(e);}  
+		}catch (e) {}  
  		},
  		scope : this,
  		failure : function( o ) {
