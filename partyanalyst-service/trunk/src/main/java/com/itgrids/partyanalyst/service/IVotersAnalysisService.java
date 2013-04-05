@@ -243,4 +243,6 @@ public interface IVotersAnalysisService {
 	 
 	 public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByBoothId(Long boothId,Long publicationDateId,Long userId,String Type);
 	 
+	 public ResultStatus updateVoterStatusInVoterModification(Long constituencyId);
+	 
 }
