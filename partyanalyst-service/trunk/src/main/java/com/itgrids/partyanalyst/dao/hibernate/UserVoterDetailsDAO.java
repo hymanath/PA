@@ -565,7 +565,7 @@ IUserVoterDetailsDAO{
 					" where model.voter.voterId = model1.voter.voterId and " +
 					" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
 					" model1.booth.boothId = :boothId " +
-					"and model.user.userId = :userId " +
+					"and model.user.userId = :userId and model.hamlet.hamletId is not null " +
 					"group by model.hamlet.hamletName ");
 			
 			
@@ -647,7 +647,7 @@ IUserVoterDetailsDAO{
 				return query.list();
 			}
 			public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId , long publicationId)
-			{
+			{ 
 				
 				Query query = getSession().createQuery("select model.voter from UserVoterDetails model, " +
 						"BoothPublicationVoter model1 join model1.booth"+	
@@ -664,6 +664,77 @@ IUserVoterDetailsDAO{
 				query.setParameter("casteStateId", casteStateId);
 				
 				return query.list();
+				
+			}
+			public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId ,String type) {
+				  StringBuilder query = new StringBuilder();
+				  if(type.equalsIgnoreCase("boothHamlets"))
+					  query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ,");
+				  else if(type.equalsIgnoreCase("hamletBooths"))
+					  query.append("select distinct model1.booth.boothId,concat('Booth-',model1.booth.partNo),");
+				  
+					  query.append("count( distinct model.voter.voterId), " );
+						
+				  query.append(	" SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," );
+				  query.append	(" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount , " );
+				  query.append	(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F'  THEN 1 ELSE 0 END) as malecoun , " );
+						
+				  query.append(	" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(	" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(	" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " );
+						
+				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " );	
+				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun , ");
+						
+				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " );	
+				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun , " );
+						
+				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " );	
+				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as malecoun , " );
+						
+				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount , " );	
+				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age >60  THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun , " );
+						
+						
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " );		
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " );
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " );
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " );
+				  query.append(" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " );
+						
+				  query.append("from UserVoterDetails model , " );
+				  query.append("BoothPublicationVoter model1 " );
+				  if(type.equalsIgnoreCase("boothHamlets"))
+				  query.append(" join model.hamlet " );
+				  else if(type.equalsIgnoreCase("hamletBooths"))
+					  query.append(" join model1.booth " );
+						   query.append(" where model.voter.voterId = model1.voter.voterId and " );
+						   query.append(" model1.booth.publicationDate.publicationDateId = :publicationDateId and " );
+						  
+						   if(type.equalsIgnoreCase("boothHamlets"))
+						   query.append(" model1.booth.boothId = :boothId " );
+						   else if(type.equalsIgnoreCase("hamletBooths"))
+							   query.append(" model.hamlet.hamletId = :boothId " );
+
+						   query.append("and model.user.userId = :userId " );
+						   
+						   if(type.equalsIgnoreCase("boothHamlets")){
+							 query.append("and model.hamlet.hamletId is not null ");
+						   query.append("group by model.hamlet.hamletId order by model.hamlet.hamletName");
+						   
+						   }
+						   else if(type.equalsIgnoreCase("hamletBooths"))
+							   query.append("group by model1.booth.boothId order by model1.booth.partNo");
+
+						   Query queryObj = getSession().createQuery(query.toString()) ;
+						   queryObj.setParameter("publicationDateId", publicationDateId);
+				queryObj.setParameter("boothId", boothId);
+				queryObj.setParameter("userId", userId);
+				return queryObj.list();
 				
 			}
 	
