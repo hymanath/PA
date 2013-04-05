@@ -1720,8 +1720,9 @@ function addToPolitician(voterId,name)
 								else if(jsObj.task == "getAssemblyLocalEleBodyId")
 									assemblyLocalEleBodyId = myResults;
 								else if(jsObj.task == "checkLocalityData")
+								try{
 								  hideAndShowLocalityDIvs(myResults,jsObj);
-																	
+									}catch(e){$("#sse2").css("display","block");}								
 									
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -6242,7 +6243,7 @@ scrollToNewsDiv();
       $("#votersShareBtn1").html("");  
  		var astr="";
 			 astr += "<div id='tabsForLocal'  class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
-             astr += "<div id='sse2'>";
+             astr += "<div id='sse2' style='display:none' >";
              astr += "<div id='sses2'>";
              astr += "<ul>";
             astr += "<li class='btn btn-success btn-small highlight11' style=' margin-left:300px;' align='center' ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
@@ -8194,8 +8195,9 @@ function  buildFamilyMembers1(result,jsObj,type){
 					$("#impFamiliesMoreInfoButn").hide();
 					
 					$("#castPartyPopupShowBtn").css("display","none");
-	              
+	            $("#sse2").css("display","block");
 				}else{
+				$("#sse2").css("display","block");
 				  $("#ageLink").show();
 				  $("#impFamiliesMoreInfoButn").show();
 				  $("#castPartyPopupShowBtn").css("display","block");
