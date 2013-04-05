@@ -1864,7 +1864,7 @@ function getImpFamiliesVoters()
 	var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+impFamltype+"&typename="+impFamltypename+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
 
-	var browser1 = window.open(urlstr,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 	}
 
@@ -1875,7 +1875,7 @@ var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDa
 var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type='hamlet'&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
 
-	var browser1 = window.open(urlstr,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 	}
 
