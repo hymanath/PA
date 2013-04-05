@@ -1438,7 +1438,7 @@ for  body3 start    result  -->
 
 	<input id="impFamiliesForHamletsByBooth" type="button" value="View Hamlet Wise Family Details For Booth" onclick="getImpFamiliesVotersForHamletBooth();" class="btn btn-info" style="display:none;"/>
 	
-	<input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
+		 <input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
 	
 	
 	
@@ -1863,7 +1863,19 @@ var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDa
 	var browser1 = window.open(urlstr,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 	}
- 
+
+
+	function getImpFamiliesVotersForBooth()
+	{
+		var space = "";
+var mainreqid = $("#constituencyList").val()
+var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type='hamlet'&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
+
+	var browser1 = window.open(urlstr,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+		browser1.focus();
+	}
+
+	
 </script>
 </body>
 </html>
