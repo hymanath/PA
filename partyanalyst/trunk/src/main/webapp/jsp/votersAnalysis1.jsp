@@ -1419,7 +1419,7 @@ for  body3 start    result  -->
 	  
 	<div>
 	
-		   <input id="impFamiliesForVooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;margin-left:464px;" />
+		   <input id="impFamiliesForVooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
 	
 	
 	
