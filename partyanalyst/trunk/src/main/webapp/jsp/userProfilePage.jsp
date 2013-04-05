@@ -227,6 +227,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
     height: 60px;
     width: 357px;
 }
+
+.pagenationStyle{
+  background-color:#2E9AFE;color:#fff;padding:5px;border-radius:3px;
+}
+.paginatorElmtClass a{padding:5px;}
+.table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
 </style>
 </head>
 <body>
@@ -371,7 +377,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				        <div id="fLinks"></div>
 				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;padding: 14px;"></div>
 						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;width:450px;display:inline-block;">
-						
+						<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 						
 						</div>
 		
