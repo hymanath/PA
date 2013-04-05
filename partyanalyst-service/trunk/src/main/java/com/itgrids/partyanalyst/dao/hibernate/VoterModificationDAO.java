@@ -68,7 +68,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.localBodyWard.constituencyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		
-		str.append(" group by model.status,model.voter.gender ");
+		str.append(" group by model.voterStatus.voterStatusId,model.voter.gender ");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("publicationIdsList",publicationIdsList);
@@ -176,7 +176,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.localBodyWard.constituencyId = :locationValue and model2.booth.constituency.constituencyId = :constituencyId ");
 		
-		str.append(" group by model.status");
+		str.append(" group by model.voterStatus.voterStatusId");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("publicationIdsList",publicationIdsList);
@@ -355,7 +355,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.booth.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
 		
-		str.append(" group by model.status,model.voter.gender ");
+		str.append(" group by model.voterStatus.voterStatusId,model.voter.gender ");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("publicationDateId",publicationDateId);
@@ -394,7 +394,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.booth.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
 		
-		str.append(" group by model.status,model.voter.gender");
+		str.append(" group by model.voterStatus.voterStatusId,model.voter.gender");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("publicationDateId",publicationDateId);
@@ -502,7 +502,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		 else if(type.equalsIgnoreCase(IConstants.WARD))
 			 stringBuilder.append(" model2.booth.localBodyWard.constituencyId in(:locationValuesList) group by model2.booth.localBodyWard.constituencyId ");
 		
-		stringBuilder.append(" , model.publicationDate.publicationDateId,model.status,model.voter.gender ");
+		stringBuilder.append(" , model.publicationDate.publicationDateId, model.voterStatus.voterStatusId, model.voter.gender ");
 		
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
 		
