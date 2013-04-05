@@ -607,12 +607,16 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		String startIndex    = request.getParameter("startIndex");
+		String resultsCount  = request.getParameter("resultsCount");
+		
 		if(user==null){
 			return "error";
 		}
 		List<Long> userId = new ArrayList<Long>();
 		userId.add(user.getRegistrationID());
-		dataTransferVO = ananymousUserService.getAllMessagesForLoggedUser(userId,IConstants.COMMENTS);
+		dataTransferVO = ananymousUserService.getAllMessagesForLoggedUser(userId,IConstants.COMMENTS, Integer.parseInt(startIndex), Integer.parseInt(resultsCount));
 		return Action.SUCCESS;
 				
 	}
