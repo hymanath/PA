@@ -46,9 +46,9 @@
 		<pattern>/influencingPeopleAction*</pattern>
 		<pattern>/getInfluencingPersonInfoAction*</pattern>
 		<pattern>/influencingPeopleDataAction*</pattern>
-		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
+		<!--<pattern>/mandalRevenueVillagesElecInputAction*</pattern>-->
 		<pattern>/localGroupsPeopleDataAction*</pattern>
-		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
+		<!--<pattern>/mandalRevenueVillagesElecViewAction*</pattern>-->
 		<pattern>/createLocalGroupAction*</pattern>
 		<pattern>/getInfluencingPersonDetailsAction*</pattern>		
 		<pattern>/saveLocalGroupAction*</pattern>
@@ -197,6 +197,8 @@
     	<pattern>/voterFamilyInfoAction*</pattern>
     	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
     	<pattern>/voterFamilyEditAction*</pattern>
-    	 </decorator>
+		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
+		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
+    	</decorator>
 
 </decorators>
