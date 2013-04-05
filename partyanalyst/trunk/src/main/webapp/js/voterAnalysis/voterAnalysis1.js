@@ -952,7 +952,7 @@ function addToPolitician(voterId,name)
 	   
 	   }
 	   else if(type == "booth"){
-	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
+	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		  $("#votersBasicInfoBtnDiv").show();
 		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
@@ -1029,12 +1029,13 @@ function addToPolitician(voterId,name)
 		 }
 
 		  if(type == "hamlet")
-		  {
+		  {    $("#ageLinkForHamletBooths").css('display','block');
 			  $("#previousEleVotingTrendsDiv1").css('display','none');
 			  $("#permanentlyUpdateDiv").css('display','none');
 		  }
 		  else
 		  {
+		       $("#ageLinkForHamletBooths").css('display','none');
 			  $("#previousEleVotingTrendsDiv1").css('display','block');
 			  $("#permanentlyUpdateDiv").css('display','block');
 		  } 
