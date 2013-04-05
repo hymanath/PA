@@ -374,13 +374,13 @@ public class VoterModificationService implements IVoterModificationService{
 						 {
 							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
 							 	voterModificationAgeRangeVO.setAddedCount((Long)params[0]);
-							 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED));
+							 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
 							 	voterModificationAgeRangeVO.setDeletedCount((Long)params[0]);
 							 if(locationType.equalsIgnoreCase(IConstants.BOOTH))
 							 {
 								 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
 									 	voterModificationAgeRangeVO.setMovedCount((Long)params[0]);
-								else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED));
+								else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
 									voterModificationAgeRangeVO.setRelocatedCount((Long)params[0]);
 							 }
 							 	
