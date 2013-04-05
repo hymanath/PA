@@ -9,8 +9,12 @@ var startIndex;
 var jcrop_api;
 var flag=false;
 var flag1=false;
-$("document").ready(function(){
 
+$("document").ready(function(){
+	$('.custom_paginator_class a').live("click",function() {
+        $('.custom_paginator_class a').removeClass('pagenationStyle');
+		$(this).addClass('pagenationStyle');
+      });
 	$('#announcementsDiv').hide();
 $('#connectMessageText').live("keyup",function() {
 
@@ -26,9 +30,13 @@ $('#connectMessageText').live("keyup",function() {
 	{			
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
-
 });
 
+
+	var startIndex=0;
+	var maxIndex=5;
+	var resultsCount = 5;
+	var clickid = null;
 
 	setInterval("callForEveryFiveMins()", 10*60*60*5);
     $("#subscriptionsStreamingMore").live("click",function(){
@@ -163,7 +171,21 @@ $('#connectMessageText').live("keyup",function() {
 		$("#impdatesDiv").hide();
 		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
-		callAjax1(jsObj,url);
+		
+
+		custom_paginator1.paginator({
+		   startIndex:0,
+		   resultsCount:3,
+		   jsObj:jsObj,
+		   ajaxCallURL:url,
+		   paginatorElmt:"custom_paginator_class",
+		   callBackFunction:function(){
+		 
+	          buildProblemDetailsByStatus(jsObj,results);
+		   }
+	     });	
+	   
+	   custom_paginator1.initialize();	
 	});
 
 	$('.linkDiv').live("click",function(){
@@ -988,8 +1010,8 @@ function callAjax1(jsObj,url){
 						getFriendsListForUser(results);				
 
 
-					else if(jsObj.task == "getRequestMessagesForUser")
-						showRequestedMessagesForAUser(results);
+					/*else if(jsObj.task == "getRequestMessagesForUser")
+						showRequestedMessagesForAUser(results);*/
 						
 					else if(jsObj.task == "getSentBoxMessagesForUser")
 						showSentBoxMessagesForAUser(results);
@@ -1691,9 +1713,7 @@ function showMailPopup(id,name,type)
 
 }
 function limitText(limitField, limitCount, limitNum)
-{	
-	alert('jkdsf');
-	
+{		
 	var limitFieldElmt = document.getElementById(limitField);
 	var limitCountElmt = document.getElementById(limitCount);
 
@@ -3666,3 +3686,175 @@ function clearDivs()
 	
 }
 
+
+function buildProblemDetailsByStatus(jsObj,results)
+{
+
+	inboxCount=results.unreadMsgCount;
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
+	if(results.resultStatus.resultCode !="0")
+	{
+		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
+		return;
+	}
+	else if(results.candidateVO == null || results.candidateVO.length == 0)
+	{
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$(".placeholderCenterDiv").html("No messages has been sent to you.");
+		return;
+	}
+		
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+
+
+	var elmtBody = document.getElementById("placeholderCenterDivId");
+	elmtBody.innerHTML = '';
+	var newProblems = results.candidateVO;
+	 if(newProblems == null || newProblems.length == 0)
+		{
+		  elmtBody.innerHTML = '<div class="newProblemData_main" style="width:95%"><center><b>No Records Found<center></b> </div>';
+		  return;
+		}
+
+for(var i in results.candidateVO)
+		{
+		var template = $(".templateDivMsg");
+		var templateClone = template.clone();
+		templateClone.removeClass("templateDivMsg");
+		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
+		templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+		if(results.candidateVO[i].status == "UNREAD"){
+	      templateClone.addClass("unreadfont");
+		  templateClone.find(".readMsg").removeClass("popover-title");
+		}
+		templateClone.find(".msgid").val(results.candidateVO[i].costumMessageId);
+		
+		if(results.candidateVO[i].profileImg!=""){
+			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
+			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
+			}
+		else{
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="images/icons/indexPage/human.jpg"/>');
+			}
+			
+			
+			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
+			
+
+			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="Inbox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'Inbox\','+results.candidateVO[i].costumMessageId+')"><img class="deleteImg" id="deleteImg_1" src="images/icons/delete.png" alt="deleteImg" width="13" height="13"></a>');
+			templateClone.find(".reply").html('<a data-placement="top" rel="tooltip" href="#" data-original-title="Reply To This Message" class="btn" style="color:black;" onclick="showMailPopup('+results.candidateVO[i].id+',\''+results.candidateVO[i].candidateName+'\',\'Message\')"> Reply</a>');
+			
+			
+		templateClone.appendTo(".placeholderCenterDiv");
+		}
+
+		var viewMore = $('<div style="padding: 5px;" class="custom_paginator_class" id="custom_paginator_class"></div>');
+		viewMore.appendTo('.placeholderCenterDiv');
+
+}
+function copyId(id)
+{
+  clickid = id;
+}
+
+var custom_paginator1 = {
+	maxIndex:"",
+	startIndex:"",
+	ajaxCallURL:"",
+	initialParams:"",
+	resultsShown:"",
+	callBackFunction:"",
+	jObj:{},
+	results:{},
+	totalRecords:"",
+	paginatorElmt:"",		
+	paginator:function(obj){
+		this.startIndex = obj.startIndex;
+		this.ajaxCallURL = obj.ajaxCallURL;
+		this.jObj = obj.jObj;
+		this.callBackFunction = obj.callBackFunction;
+		this.paginatorElmt = obj.paginatorElmt;
+		this.maxIndex = obj.maxIndex;
+        this.resultsCount = obj.resultsCount;
+		
+	},	
+	doAjaxCall:function(start,eleIdClicked){
+		var url = this.ajaxCallURL+"&startIndex="+start+"&resultsCount="+this.resultsCount;
+		
+		var callback = {	
+		
+	    success : function( o ) {
+			try 
+			{				
+				results = YAHOO.lang.JSON.parse(o.responseText);
+				console.log(results);
+				if(results != null)
+				    this.totalRecords = results.totalMsgCount;	
+				else
+                     this.totalRecords = 0;
+					
+				this.callBackFunction();
+				 this.buildPaginator(eleIdClicked);
+			}
+			catch (e)
+			{   		
+				//alert("Invalid JSON result" + e);   
+			}  
+		},
+		scope : this,
+		failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				  }
+		};
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	},
+	initialize:function (){	
+		this.doAjaxCall(this.startIndex,0);
+	},
+	buildPaginator:function(eleIdClicked)
+	{
+		var paginatorElmt = document.createElement('Div');
+		paginatorElmt.setAttribute("class","paginatorElmtClass");
+		var iteration = Math.ceil(this.totalRecords/this.resultsCount);		
+		var countIndex = this.startIndex;
+		var str = '';
+		
+
+		if(iteration > 1)
+		{
+			for(var i=1; i<=iteration; i++)
+			{		
+				var eleid="a"+i;
+				str += '<a href="javascript:{}" id="a'+i+'"   onclick="copyId(this.id);getReqData('+countIndex+',\''+eleid+'\')" style="padding: 5px;">'+i+'</a>';
+				countIndex+=this.resultsCount;
+			}
+		}
+		
+		if(document.getElementById("custom_paginator_class")!=null)	
+		document.getElementById("custom_paginator_class").innerHTML = str;
+
+		if(eleIdClicked==0){
+		$("#custom_paginator_class a:first").addClass("pagenationStyle");
+		}
+		else {
+			$("#"+eleIdClicked).addClass("pagenationStyle");
+			}
+		
+		if(clickid != null)
+		{
+		 $("#"+clickid).addClass('pagenationStyle');
+		}
+		else
+		{
+		  $("#custom_paginator_class").addClass('pagenationStyle');
+		}
+	}
+};
+function getReqData(countIndex,eleid){
+custom_paginator1.doAjaxCall(countIndex,eleid);
+}
