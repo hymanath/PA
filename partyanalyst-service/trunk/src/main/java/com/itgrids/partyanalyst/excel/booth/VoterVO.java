@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-
 
 public class VoterVO implements Serializable , Comparable<VoterVO>{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String firstName;
 	private String voterMiddleName;
@@ -47,6 +47,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private List<Long> numbers;
 	private Long sNo;
 	private String villagesCovered;
+	private Long statusId;
 	private Long hamletId;
 	private Long localAreaId;
 	
@@ -65,6 +66,14 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 
 	public void setHamletId(Long hamletId) {
 		this.hamletId = hamletId;
+	}
+	
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
 
 	public String getVillagesCovered() {
