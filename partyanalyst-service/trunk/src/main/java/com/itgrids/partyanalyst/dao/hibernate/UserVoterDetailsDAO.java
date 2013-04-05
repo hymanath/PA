@@ -736,6 +736,25 @@ IUserVoterDetailsDAO{
 				queryObj.setParameter("userId", userId);
 				return queryObj.list();
 				
+}
+			
+			
+			public List<Long> getHamletsExistedInABoothForUser(Long userId,Long  id,Long  publicationDateId,Long  constituencyId)
+			{
+				
+				Query query = getSession().createQuery("select distinct(model1.hamlet.hamletId) from UserVoterDetails model1 , " +
+						"BoothPublicationVoter model2 where model1.voter.voterId = model2.voter.voterId and " +
+						"model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+						"model1.user.userId = :userId and model2.booth.boothId = :boothId and " +
+						"model2.booth.constituency.constituencyId = :constituencyId");
+				
+				
+				query.setParameter("publicationDateId", publicationDateId);
+				query.setParameter("userId", userId);
+				query.setParameter("boothId", id);
+				query.setParameter("constituencyId", constituencyId);
+				
+				return query.list();
+				
 			}
-	
 }

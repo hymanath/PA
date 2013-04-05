@@ -87,5 +87,7 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId);
 	 public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId,String type );
+	 public List<Long> getHamletsExistedInABoothForUser(Long userId,Long  id,Long  publicationDateId,Long  constituencyId);
+
 
 }
