@@ -13438,4 +13438,57 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 		return importantFamiliesInfoVo;
     }
+	
+	public ResultStatus updateVoterStatusInVoterModification(Long constituencyId)
+	{
+		ResultStatus resultstatus = new ResultStatus();
+		Map<Long,Long> map = new HashMap<Long, Long>();
+		try{
+		List<Object[]> result = voterModificationDAO.getVoterModificationsByConstituencyId2(constituencyId);
+		List<Long> add = new ArrayList<Long>(0);
+		List<Long> del = new ArrayList<Long>(0);
+		List<Long> mov = new ArrayList<Long>(0);
+		List<Long> rel = new ArrayList<Long>(0);
+		
+		if(result != null && result.size() > 0)
+		{
+			for(Object[] params : result)
+			{
+				if(map.get((Long)params[1]) == null)
+					map.put((Long)params[1],1L);
+				else
+					map.put((Long)params[1],2L);
+			}
+			
+			for(Object[] params : result)
+			{
+				if(map.get((Long)params[1]).equals(1L))
+				{
+					if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						add.add((Long)params[0]);
+					else if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+						del.add((Long)params[0]);
+				}
+				else
+				{
+					if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						rel.add((Long)params[0]);
+					else if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+						mov.add((Long)params[0]);
+				}
+			}
+			
+			voterModificationDAO.updateVoterStatus(1l,add);
+			voterModificationDAO.updateVoterStatus(2l,del);
+			voterModificationDAO.updateVoterStatus(3l,mov);
+			voterModificationDAO.updateVoterStatus(4l,rel);
+			
+		}
+		return resultstatus;
+		}catch (Exception e) {
+			return null;
+			
+			
+		}
+	}
 }
