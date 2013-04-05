@@ -1410,7 +1410,7 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubChartDivForImpFam"></div>
 	    <div id="votersBasicInfoSubDivForImpFam" class="yui-skin-sam yui-dt-sortable"></div>	
      </div>-->
-	 <span id="ImpFamwiseAjaxDiv" style="display: block; position:absolute;bottom:32px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
+	 <span id="ImpFamwiseAjaxDiv" style="display: none; position:absolute;bottom:32px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>	
 
      	<div id="ImportantFamiliesDiv">
 	<div id ="impFamilesBasicDetails"></div>
