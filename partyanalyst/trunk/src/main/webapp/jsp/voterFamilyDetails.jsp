@@ -160,7 +160,7 @@
 		<div id ="impFamilesBasicSubDetailsForHamlet" style="border:1px solid black"></div>
 		<div id="descriptionDiv1" ></div>
 		<div id="impFamPancBothDtlsAgxImgForHamlet" style="display:none;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-		<div id="impFamPancBothDtlsForHamlet"></div>
+		<div id="impFamPancBothDtlsForHamlet" style="font-size:12px;"></div>
 	   </div>
 
 	</div> 
@@ -855,10 +855,25 @@ function  buildFamilyMembers(result,jsObj,type){
               $('#impFamPancBothDtlsAgxImgForHamlet').show();
 		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet"))
 	       {
-			  $('#impFamPancBothDtlsAgxImgForHamlet').html(str);
+			  $('#impFamPancBothDtlsForHamlet').html(str);
+			  $('#hamletDiv').show();
 			  $('#impFamPancBothDtlsAgxImgForHamlet').hide();
+			  $('#impFamilesBasicSubDetailsDiv').hide();
+			  
+			  
+				  $('#impfamilydatatable').dataTable({
+			"aaSorting": [[ 1, "desc" ]],
+			"bDestroy": true,
+			"iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+			//"bFilter": false,"bInfo": false
+			  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null
+		 
+		  
+		] 
+			});
 	      }
-		  else
+		  else{
 	       $("#impFamPancBothDtls").html(str);
 	  
 	  	$('#impfamilydatatable').dataTable({
@@ -872,6 +887,7 @@ function  buildFamilyMembers(result,jsObj,type){
 	  
     ] 
 		});
+		}
   }
 
 
@@ -1148,7 +1164,10 @@ if(type == "mandal" || type=="constituency")
 	$("#hamletDiv").hide();
 else
 $("#hamletDiv").show();
-
+if(type == "panchayat" && buildType =="booth")
+$("#hamletDiv").hide();
+if(type == "panchayat" && buildType =="hamlet")
+$("#hamletDiv").hide();
 $("#NoteDiv").hide();
 if(type == "booth")
 $("#impFamilesBasicSubDetailsDiv").hide();
@@ -1242,8 +1261,21 @@ function getImpFamiliesVotersToShowForBooth(){
 		callAjax(jsObj2,url2);
 	
 	}
+function impFamilesVariableDescription1()
+{ 
+ $('#descriptionDiv1').html('');
+  var div = $('<div class="descriptionInnerDiv"></div>');
+  div.append('<span> <b>3 -</b> Families Below 3 Voters</span>');
+  div.append('<span> <b>3% -</b> Families Below 3% Voters</span>');
+  div.append('<span> <b>4 to 6 -</b> Families Between 4 to 6 Voters</span>');
+  div.append('<span> <b>4 to 6 % -</b> Families Between 4-6 % Voters</span>');
+  div.append('<span> <b>7 to 10 -</b> Families Between 7 to 10 Voters</span>');
+  div.append('<span> <b>7 to 10 % -</b> Families Between 7-10 % Voters</span>');
+  div.append('<span> <b>10 - </b> Families Above 10 Voters</span>');
+  div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
+  $("#descriptionDiv1").append(div).css("display","block");
 
-
+}
 if(maintype != "hamlet")
 {
 
