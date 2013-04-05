@@ -390,7 +390,7 @@ function getVotersInAFamily(id,publicationDateId,hNo){
 }
 
 editSelectedFamilies();
-if(hno != null)
+if(id != null && $.trim(id) !="" && hno != null && $.trim(hno) !="" && publicationDateId != null && $.trim(publicationDateId) !="")
 getVotersInAFamily(id,publicationDateId,hno);
 </script>
 </body>
