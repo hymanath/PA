@@ -128,13 +128,25 @@ public class StateRegionService implements IStateRegionService {
 			
 			// get regions in a state
 			List<SelectOptionVO> regionsInState = getRegionsInAState(stateId);
-			List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
+			List<Long> allPartyIds = new ArrayList<Long>();
+			List<SelectOptionVO> allParties = staticDataService.getStaticPartiesListForAState(stateId);
+			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<Long> partyIds = new ArrayList<Long>();
 			List<String> partyNames = new ArrayList<String>();
 			PartyResultsInRegionVO partyResultsInRegionVO = null;
 			List<PartyInfoVO> partyAndAVGSeatsWon = new ArrayList<PartyInfoVO>();
 			PartyInfoVO partySeatsInfoVO = null;
 			
+			for(SelectOptionVO party:allParties){
+				allPartyIds.add(party.getId());
+			}
+			allPartyIds = partyElectionDistrictResultDAO.getAllPartispatedPartiesInaAnElection(electionId, allPartyIds);
+			for(Long id : allPartyIds){
+				for(SelectOptionVO party:allParties){
+					if(party.getId().longValue() == id.longValue())
+						parties.add(party);
+				}
+			}
 			for(SelectOptionVO party:parties){
 				partyIds.add(party.getId());
 				partyNames.add(party.getName());
