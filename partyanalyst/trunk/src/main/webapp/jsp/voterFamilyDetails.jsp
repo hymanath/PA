@@ -143,24 +143,35 @@
 #impfamilydatatable table tr:nth-child(even){background:#EdF5FF;}
 #impfamilydatatable table tr:nth-child(odd){background:#ffffff;}
 
-
+#impFamPancBothDtlstitle{
+   font-size: 16px;
+    margin-left: 0px;
+    margin-top: 35px;
+}
+#impFamPancBothDtlstitle{
+		color:steelblue;
+		font-size:1.1em;
+		font-family:arial;
+		margin-bottom: 20px;
+		font-weight: bold;
+	}
 </style>
 </head>
 
 <body>
 
 <div id="mainDiv" style="width:960px;margin-top:50px;margin-left:auto;margin-right:auto;">
-<div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid black"></div>
+<div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid #d3d3d3;"></div>
 
 <br>
 
 
 <div id="hamletDiv" class="widget blue whitegloss" >
 <div id ="impFamilesBasicSubDetailsForHamletTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
-		<div id ="impFamilesBasicSubDetailsForHamlet" style="border:1px solid black"></div>
+		<div id ="impFamilesBasicSubDetailsForHamlet" ></div>
 		<div id="descriptionDiv1" ></div>
 		<div id="impFamPancBothDtlsAgxImgForHamlet" style="display:none;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-		<div id="impFamPancBothDtlsForHamlet" style="font-size:12px;"></div>
+		<div id="impFamPancBothDtlsForHamlet" style="font-size:12px;overflow-x:scroll;"></div>
 	   </div>
 
 	</div> 
@@ -468,7 +479,7 @@ function callAjax(jsObj,url)
 
 
 								else if(jsObj.task == "gettotalimpfamlies"  )
-								{   
+								{  
 								 $("#impFamPancBothDtlsAgxImg").hide();
 								    buildFamilyMembers(myResults,jsObj,jsObj.type);
 								}
@@ -802,7 +813,7 @@ function  buildFamilyMembers(result,jsObj,type){
 
 		
 
-		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
+		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #D3D3D3;font-size: 12px;">';
           str+='  <thead>';
           str+='   <tr>';
 		  str+='     <th>Select</th>';
@@ -852,7 +863,7 @@ function  buildFamilyMembers(result,jsObj,type){
           str+=' </table>';
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
-              $('#impFamPancBothDtlsAgxImgForHamlet').show();
+              $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet"))
 	       {
 			  $('#impFamPancBothDtlsForHamlet').html(str);
@@ -1169,8 +1180,10 @@ $("#hamletDiv").hide();
 if(type == "panchayat" && buildType =="hamlet")
 $("#hamletDiv").hide();
 $("#NoteDiv").hide();
-if(type == "booth")
+if(type == "booth"){
 $("#impFamilesBasicSubDetailsDiv").hide();
+$("#hamletDiv").hide();
+}
 else
 $("#impFamilesBasicSubDetailsDiv").show();
 
