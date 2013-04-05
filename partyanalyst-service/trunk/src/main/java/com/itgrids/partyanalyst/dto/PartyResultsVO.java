@@ -20,9 +20,9 @@ public class PartyResultsVO {
 	private int seatsParticipated;
 	private Long votesEarned;
 	private Long validVotes;
-	private String percentage;
+	private String percentage ="0.00";
 	private String avgPercentage;
-	private String pConstavgPercentage;
+	private String pConstavgPercentage ="0.00";
 	private BigDecimal votesPercent;
 	private Integer totalSeatsWon;
 	private Long totalPolledVotes;
