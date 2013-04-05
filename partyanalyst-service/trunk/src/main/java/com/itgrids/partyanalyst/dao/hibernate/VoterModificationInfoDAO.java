@@ -55,7 +55,7 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 	public List<Object[]> getGenderWiseVoterModificationsBetweenPublications(Long locationLvl,Long locationValue,Long constituencyId,List<Long> publicationIdsList){
 		Query query = getSession().createQuery("select  sum(model.maleVoters), sum(model.femaleVoters),model.voterStatus.status from VoterModificationInfo model where " +
 				" model.voterReportLevel.voterReportLevelId = :locationLvl and model.reportLevelValue = :locationValue and model.constituencyId = :constituencyId " +
-				" and model.publicationDate.publicationDateId in(:publicationIdsList) group by model.voterStatus.status");
+				" and model.publicationDate.publicationDateId in(:publicationIdsList) group by model.voterStatus.voterStatusId");
 		query.setParameter("locationLvl", locationLvl);
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("constituencyId", constituencyId);
@@ -66,7 +66,7 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 	public List<Object[]> getGenderWiseVoterModificationsForEachPublication(Long locationLvl,Long locationValue,Long constituencyId,List<Long> publicationIdsList){
 		Query query = getSession().createQuery("select  sum(model.maleVoters), sum(model.femaleVoters),model.voterStatus.status,model.publicationDate.publicationDateId,model.publicationDate.name from " +
 				" VoterModificationInfo model where model.voterReportLevel.voterReportLevelId = :locationLvl and model.reportLevelValue = :locationValue and model.constituencyId = :constituencyId " +
-				" and model.publicationDate.publicationDateId in(:publicationIdsList) group by model.publicationDate.publicationDateId,model.voterStatus.status");
+				" and model.publicationDate.publicationDateId in(:publicationIdsList) group by model.publicationDate.publicationDateId,model.voterStatus.voterStatusId");
 		query.setParameter("locationLvl", locationLvl);
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("constituencyId", constituencyId);
@@ -93,7 +93,7 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVoterModificationGenderDetailsByLocationValuesList(List<Long> locationValuesList, List<Long> publicationIdsList, Long constituencyId, Long reportLevelId)
 	{
-		Query queryObj = getSession().createQuery(" select model.totalVoters, model.maleVoters, model.femaleVoters, model.voterStatus.voterStatusId,model.reportLevelValue from " +
+		Query queryObj = getSession().createQuery(" select model.totalVoters, model.maleVoters, model.femaleVoters, model.voterStatus.status,model.reportLevelValue from " +
 				" VoterModificationInfo model where model.reportLevelValue in (:reportLevelValue) and model.voterReportLevel.voterReportLevelId = :voterReportLevelId " +
 				" and model.constituencyId =:constituencyId and model.publicationDate.publicationDateId in(:publicationDateId) " +
 				" ");
