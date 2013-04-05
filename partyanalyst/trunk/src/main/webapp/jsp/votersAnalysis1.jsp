@@ -977,6 +977,18 @@ table {
     position: relative;
     z-index: 2;
 }
+highlight11
+{
+    background: #003366 url("./styles/images/rak.gif") no-repeat center bottom ;
+    top:0px;
+    height:30px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    z-index: 1;
+    position: absolute;
+    overflow:hidden;
+}
 </style>
 
 </SCRIPT>
