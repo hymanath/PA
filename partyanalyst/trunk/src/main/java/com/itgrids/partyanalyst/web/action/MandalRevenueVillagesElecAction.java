@@ -190,7 +190,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		String cPath = request.getContextPath();
 		String chartLocation="";
 		if(parties != null){
-			List<PartyResultVO> partiesResults = null;
+			//List<PartyResultVO> partiesResults = null;
 			if("panchayat".equalsIgnoreCase(resultType)){
 			 partiesResults = constituencyPageService.
 					findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
