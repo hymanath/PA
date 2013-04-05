@@ -241,4 +241,6 @@ public interface IVotersAnalysisService {
 	 
 	 public String checkLocalityDataExist(Long hamletId, Long userId);
 	 
+	 public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByBoothId(Long boothId,Long publicationDateId,Long userId,String Type);
+	 
 }
