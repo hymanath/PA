@@ -65,11 +65,15 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 				 if(length==0)break;
 				}*/
 			
-			 List<Voter> list= userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(1l,29l,280l,123020,8);
+			 List<Object[]> list= userVoterDetailsDAO.getAgeDataForBoothByHamlets(1l,8l,123020l,"boothHamlets");
 System.out.println(list.size());
-			 for (Voter object : list) {
-		        System.out.println(object.getName());
-				}
+for (Object[] objects : list) {
+    int length=objects.length;
+	for(;;)
+	{	
+	 System.out.println(objects[--length]+"\t");
+	 if(length==0)break;
+	}
 		
 		}
 		/*public void testGetPartyAndCasteDetails()
@@ -83,6 +87,6 @@ System.out.println(list.size());
 				System.out.println(objects[3]);
 			}
 		}*/
-		    
+		}    
 		
 }
