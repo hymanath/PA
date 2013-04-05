@@ -1383,8 +1383,8 @@ public class VoterModificationService implements IVoterModificationService{
 			  if(panchayatIdsList != null && panchayatIdsList.size() > 0)
 				  saveGenderWiseVoterModifInfoInIntermediateTables("panchayat", panchayatIdsList, constituencyId, publicationDateId);
 			  
-			  if(boothIdsList != null && boothIdsList.size() > 0)
-				  saveGenderWiseVoterModifInfoInIntermediateTables("booth", boothIdsList, constituencyId, publicationDateId);
+			  /*if(boothIdsList != null && boothIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("booth", boothIdsList, constituencyId, publicationDateId);*/
 			  
 			  if(wardIdsList != null && wardIdsList.size() > 0)
 				  saveGenderWiseVoterModifInfoInIntermediateTables("ward", wardIdsList, constituencyId, publicationDateId);
