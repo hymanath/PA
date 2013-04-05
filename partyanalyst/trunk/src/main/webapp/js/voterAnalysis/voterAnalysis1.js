@@ -6244,8 +6244,8 @@ scrollToNewsDiv();
              astr += "<div id='sse2'>";
              astr += "<div id='sses2'>";
              astr += "<ul>";
-            astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
-            astr += "<li ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
+            astr += "<li class='btn btn-success btn-small highlight11' style=' margin-left:300px;' align='center' ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+            astr += "<li id='myli'style='display:none'><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
 			astr += "</div>";
@@ -6255,7 +6255,7 @@ scrollToNewsDiv();
 	  //$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>LocalArea Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know LocalArea Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
-		mybuildMenu();
+		//mybuildMenu();
 getAllTabs(boothid,mainpublicationId,maintype);
 
 }
@@ -8193,10 +8193,18 @@ function  buildFamilyMembers1(result,jsObj,type){
 					$("#impFamiliesMoreInfoButn").hide();
 					
 					$("#castPartyPopupShowBtn").css("display","none");
+	              
 				}else{
 				  $("#ageLink").show();
 				  $("#impFamiliesMoreInfoButn").show();
 				  $("#castPartyPopupShowBtn").css("display","block");
+				  try{
+				  $("#myli").css('display','block');
+					  $("#myli").siblings().removeAttr('style class align');
+						 mybuildMenu();
+				}catch(e){
+				//console.log(e);
 				}
 			}
+		}
 		}
