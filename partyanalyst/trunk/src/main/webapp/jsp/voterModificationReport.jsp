@@ -155,9 +155,6 @@
   </div></div>
 <div id="voterModReportMainDiv">
 
-	<!-- <div style="margin-bottom: 14px; float: right;">
-	   <input class="btn btn-info" type="button" value="View Booth Wise Voter Modification Details" href="javascript:{}" id="boothWiseVoterModificationInfo"/>
-	</div> -->
 
   <div id="voterModReportInnerDiv">
 		<div id="voterInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;">
@@ -305,7 +302,7 @@ getAllVotersModificationDetailsBetweenPublications('default',"onload");
 callAjaxForSubLevelInformation();
 
 $("document").ready(function(){
-	$("#boothWiseVoterModificationInfo").click(function(){
+	$("#boothWiseVoterModificationInfo").live("click",function(){
 
 		var urlStr = "boothWiseModifiedVoterInfoAction.action?constituencyId="+constituencyId+"&fromPublicationDateId="+fromPublicationDateId+"&toPublicationDateId="+toPublicationDateId+"&locationType="+locationType+"&locationValue="+locationValue+"";
 		window.open(urlStr,'_blank');
