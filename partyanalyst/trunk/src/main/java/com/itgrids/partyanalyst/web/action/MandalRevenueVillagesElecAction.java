@@ -1,8 +1,13 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
@@ -10,12 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.hsqldb.lib.HashSet;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
@@ -45,6 +52,35 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String resultType;
 	private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
 	private IConstituencyPageService constituencyPageService;
+	private List<PartyResultVO> partiesResults;
+	private Map<String,List<PartyResultVO>> partyResultMap;
+	private Map<String,List<String>> partyResultMapPrcnt;
+	
+	
+	
+	public Map<String, List<String>> getPartyResultMapPrcnt() {
+		return partyResultMapPrcnt;
+	}
+
+	public void setPartyResultMapPrcnt(Map<String, List<String>> partyResultMapPrcnt) {
+		this.partyResultMapPrcnt = partyResultMapPrcnt;
+	}
+
+	public Map<String, List<PartyResultVO>> getPartyResultMap() {
+		return partyResultMap;
+	}
+
+	public void setPartyResultMap(Map<String, List<PartyResultVO>> partyResultMap) {
+		this.partyResultMap = partyResultMap;
+	}
+
+	public List<PartyResultVO> getPartiesResults() {
+		return partiesResults;
+	}
+
+	public void setPartiesResults(List<PartyResultVO> partiesResults) {
+		this.partiesResults = partiesResults;
+	}
 
 	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
 		return townshipBoothDetailsVO;
@@ -172,6 +208,60 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	        //Set<String> partiesInChart = new LinkedHashSet<String>();
 	        if(partiesResults.size() > 0)
 	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,500,900, null,true );
+
+	       partyResultMap=new HashMap<String, List<PartyResultVO>>();
+	        
+	        for(PartyResultVO prtyrslts:partiesResults){
+	        	String partyName=prtyrslts.getPartyName();
+	        	List<PartyResultVO> volist=new ArrayList<PartyResultVO>();
+	        	
+	        	if(partyResultMap.containsKey(partyName)){
+	        		partyResultMap.get(partyName).add(prtyrslts);
+	        	}
+	        	else{
+	        		volist.add(prtyrslts);
+	        		partyResultMap.put(partyName, volist);	
+	        	}
+	        }
+	        
+	        partyResultMapPrcnt=new HashMap<String,List<String>>();
+	        
+	        for (Entry<String, List<PartyResultVO>> entry : partyResultMap.entrySet()) {
+	        	String key = entry.getKey();
+	        	List<String> percentage=new ArrayList<String>();
+	        	List<PartyResultVO> value = entry.getValue();
+	            for(PartyResultVO aString : value){
+	                String prcnt=aString.getVotesPercent();
+	                percentage.add(prcnt);
+	            }
+	            partyResultMapPrcnt.put(key, percentage);
+	        }
+	        
+	        
+	       /* Map<String,List<Map<String,String>>> constituencyMap=new HashMap<String, List<Map<String,String>>>();
+	                
+	        
+	        for(PartyResultVO prvo:partiesResults){
+	        	String cnstncyName=prvo.getConstituencyName();
+	        	String prtyName=prvo.getPartyName();
+	        	String vtngPercentage=prvo.getVotesPercent();
+	        	HashMap<String,String> prtyVoting=new HashMap<String, String>();
+	        	prtyVoting.put(prtyName, vtngPercentage);
+	        	
+	        	if(constituencyMap.containsKey(cnstncyName)){
+	        		List<Map<String,String>>  lst=constituencyMap.get(cnstncyName);
+	        		//prtyVoting.put(prtyName, vtngPercentage);
+	        		lst.add(prtyVoting);
+	        	
+	        	}
+	        	else{
+	        		List<Map<String,String>> prtyVotingNotExist=new ArrayList<Map<String,String>>();
+	        		prtyVotingNotExist.add(prtyVoting);
+	        		constituencyMap.put(cnstncyName, prtyVotingNotExist);
+	        	}
+	        }*/
+	        
+	        
 		}
 		
 		if(elections!=null){
