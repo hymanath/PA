@@ -48,15 +48,15 @@ function callAjax(jsObj,url)
 function buildBoothWiseVoterInfo(myResults,jsObj)
 {
   $('#subLevelAjaxImageDiv').css('display','none');
-
+	$('#subLevelDiv').html('');
 	if(myResults.modifiedVotersList == null || myResults.modifiedVotersList.length == 0)
 	{
-		$('#subLevelsMainDiv').css('display','none');
+		$('#subLevelsMainDiv').html('<div id="subLevelsErrorMsgDiv">No Data Found.</div>');
 		return;
 	}
 
 	  $('#subLevelsMainDiv').css('display','inline-block');
-	  $('#subLevelDiv').html('');
+	  
 	if(myResults.modifiedVotersList.length == 0 && myResults.modifiedLocalBodyVotersList.length == 0 && myResults.modifiedVotersList != null && myResults.modifiedLocalBodyVotersList != null)
 	 return false;
 
