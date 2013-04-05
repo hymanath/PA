@@ -974,7 +974,7 @@ function addToPolitician(voterId,name)
 		 $("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" Hamlet in "+publicationYear+" ");
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
-		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Cast Info of '+mainname+'" class="btn btn-info">');
+		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
@@ -7590,6 +7590,7 @@ function loadMyTabs()
 
 }
  function displayPage() {
+  $('.tabActiveHeader').css("font-weight","normal");
   var current = this.parentNode.getAttribute("data-current");
   //remove class of activetabheader and hide old contents
   document.getElementById("tabHeader_" + current).removeAttribute("class");
@@ -7600,6 +7601,7 @@ function loadMyTabs()
   this.setAttribute("class","tabActiveHeader");
   document.getElementById("tabpage_" + ident).style.display="block";
   this.parentNode.setAttribute("data-current",ident);
+  $('.tabActiveHeader').css("font-weight","bold");   
 }
 function getVoterDetailsForHamlet(retrieveType){
    $("#AgeWiseNoteDiv").css("display","none"); 
@@ -7636,6 +7638,7 @@ function showMyTabs()
 {
  $("#tabContainer").css({ display: "block" });
  $(".tabscontent").css({ display: "block" });
+ $('.tabActiveHeader').css("font-weight","bold");
 
 }
 function ageBlockValidation(type)
