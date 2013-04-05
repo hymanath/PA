@@ -13,8 +13,43 @@ public class VoterFamilyEditAction extends ActionSupport implements ServletReque
 	
 	private String editDetails;
 	
+	private Long id;
+	
+	private String hno;
+	
+	private Long publicationDateId;
 	
 	
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getHno() {
+		return hno;
+	}
+
+
+	public void setHno(String hno) {
+		this.hno = hno;
+	}
+
+
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
+
 	public String getEditDetails() {
 		return editDetails;
 	}

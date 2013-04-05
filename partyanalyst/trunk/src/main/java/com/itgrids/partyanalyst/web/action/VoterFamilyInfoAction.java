@@ -19,11 +19,18 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private String type;
 	private String typename;
 	
+	private String maintype;
+	
 	private Long constituencyId;
 	
 	private String publicationYear;
 	
-	
+	public String getMaintype() {
+		return maintype;
+	}
+	public void setMaintype(String maintype) {
+		this.maintype = maintype;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

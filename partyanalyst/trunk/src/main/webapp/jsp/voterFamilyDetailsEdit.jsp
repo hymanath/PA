@@ -7,7 +7,7 @@
 <html>
 <head>
 
-<%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
+ <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -68,7 +68,7 @@
 <style>
 
 #impFamDtls table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-
+#impFamDtls table a{color:#0088CC;text-decoration:none;}
 
 #impFamDtls table tr:nth-child(even){background:#EdF5FF;}
 
@@ -158,10 +158,16 @@
 <form id="getAllVoterFamiliesInfoForEditForm" method="post" action="getMultipleFamilesInfoForEditAction.action" name="getAllVoterFamiliesInfoForEditForm">
 	   <input type="hidden" name="task" id="getAllVoterFamiliesInfoForEditFormValues" />
 </form>
+
+
 <script type="text/javascript">
+
  google.load("visualization", "1", {packages:["corechart"]});
 var votersLimitExist = false;
 var impFamiliesEditArray = window.opener.impFamiliesEditArray;
+var id="${id}";
+var publicationDateId = "${publicationDateId}";
+var hno ="${hno}";
 function editSelectedFamilies(){
 
 
@@ -202,6 +208,11 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getUserCategories")
 								{
 									buildCategories(myResults);
+								}
+								else if(jsObj.task == "getVotersInAFamily")
+								{
+								    buildVotersInFamily(myResults,jsObj.hno);
+									pResults = myResults;
 								}
 
 							}catch (e) {
@@ -361,8 +372,25 @@ function getAllVoterFamiliesForEdit(){
 		callAjax(jsObj,url);*/
 	}
 }
+function getVotersInAFamily(id,publicationDateId,hNo){
 
+    var jsObj=
+			{
+					
+				hno:hNo,
+				id:id,
+				publicationDateId:publicationDateId,
+				task:"getVotersInAFamily"
+	
+			}
+	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "votersFamilyDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
 
 editSelectedFamilies();
+if(hno != null)
+getVotersInAFamily(id,publicationDateId,hno);
 </script>
 </body>

@@ -7,7 +7,7 @@
 <html>
 <head>
 
-<%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
+ <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -29,8 +29,8 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>
+	<!--<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>-->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -74,10 +74,10 @@
 
 
 
-#impFamilesBasicSubDetails table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top:5px;margin-bottom:5px;}
-#impFamilesBasicSubDetails table tr:nth-child(even){background:#EdF5FF;}
-#impFamilesBasicSubDetails table tr:nth-child(odd){background:#ffffff;}
-	#impFamilesBasicSubDetails table th {
+#impFamilesBasicSubDetails table,#impFamilesBasicSubDetailsForHamlet table,#impfamilydatatable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top:5px;margin-bottom:5px;}
+#impFamilesBasicSubDetails table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable tr:nth-child(even){background:#EdF5FF;}
+#impFamilesBasicSubDetails table tr:nth-child(odd),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(odd),#impfamilydatatable tr:nth-child(odd){background:#ffffff;}
+	#impfamilydatatable th,#impFamilesBasicSubDetails table th,#impFamilesBasicSubDetailsForHamlet table th {
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -85,8 +85,8 @@
     padding: 10px;
     text-align: left;
 }
-
-#impFamilesBasicSubDetails table td {
+#impFamilesBasicSubDetails table a,#impFamilesBasicSubDetailsForHamlet a,#impfamilydatatable.dataTable a{color:#0088CC;text-decoration:none;}
+#impFamilesBasicSubDetails table td,#impFamilesBasicSubDetailsForHamlet table td {
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -134,6 +134,16 @@
 .descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
 .descriptionInnerDiv span{margin-right: 5px;}
 
+#impfamilydatatable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+#impfamilydatatable th{
+  padding:5px;
+}
+
+#impfamilydatatable table tr:nth-child(even){background:#EdF5FF;}
+#impfamilydatatable table tr:nth-child(odd){background:#ffffff;}
+
+
 </style>
 </head>
 
@@ -144,11 +154,23 @@
 
 <br>
 
+
+<div id="hamletDiv" class="widget blue whitegloss" >
+<div id ="impFamilesBasicSubDetailsForHamletTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
+		<div id ="impFamilesBasicSubDetailsForHamlet" style="border:1px solid black"></div>
+		<div id="descriptionDiv1" ></div>
+		<div id="impFamPancBothDtlsAgxImgForHamlet" style="display:none;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+		<div id="impFamPancBothDtlsForHamlet"></div>
+	   </div>
+
+	</div> 
+
 <!--<div id ="impFamilesBasicSubDetailsTitle" ></div>-->
-<div id="impFamilesBasicSubDetailsDiv" class="widget blue whitegloss" >
+<div id="impFamilesBasicSubDetailsDiv" class="widget blue whitegloss" style="width:926px;margin-left:15px;">
 <h4 id="impFamilesBasicSubDetailsTitle"></h4>
 <div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;"></div>
 </div>
+
 
 
 <div id="descriptionDiv" ></div>
@@ -214,6 +236,7 @@
 	   <input type="hidden" name="task" id="getAllVoterFamiliesInfoForEditFormValues" />
 </form>
 <script type="text/javascript">
+
 google.load("visualization", "1", {packages:["corechart"]});
 var votersLimitExist = false;
 var publicationDateId = "${publicationDateId}";
@@ -248,51 +271,7 @@ function getImpFamiliesVotersForHamlet()
 
 var buttonType ="impFamilies";
 
-function getvotersBasicInfo(){
 
-$("#NoteDiv").hide();
-if(type == "booth")
-$("#impFamilesBasicSubDetailsDiv").hide();
-else
-$("#impFamilesBasicSubDetailsDiv").show();
-
-    if(type == "booth")
-	buildType="hamlet";
-	 impFamltype = type;
-     impFamlId = id;
-     impFamlpublicationDateId = publicationDateId;
-     impFamltypename = impFamltypename;
-	 if(type == "hamletBooth"){
-	 hresult="booth";
-	type="hamlet";
-	
-	}
-	if(type == "hamletLocal"){
-	type="hamlet";
-	hresult="localArea";
-	}
-   
-	   var jsObj1=
-			{
-					
-				type:type,
-				id:id,
-				publicationDateId:publicationDateId,
-				typename:impFamltypename,
-				constituencyId:constituencyId,
-				buildType:buildType,
-				requestFor:"",
-
-				task:"importantFamiliesinfo"
-	
-			}
-	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
-			
-		
-         var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
-									
-		callAjax(jsObj1,url1);
-}
 function getImpFamiliesVotersToShow(){
 
 	 $("#descriptionDiv").show();
@@ -303,7 +282,7 @@ function getImpFamiliesVotersToShow(){
 	    reqtype = 'pollingstation';
 	 }
 	 //showAjaxImgDiv('ajaxImageDiv');
-	 $("#impFamPancBothDtlsAgxImg").show();
+	// $("#impFamPancBothDtlsAgxImg").show();
 	    var jsObj2=
 			{
 					
@@ -349,6 +328,7 @@ function getImpFamiliesVotersToShow(){
 }
 function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 {
+ $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 //Updated by sasi for assigned and unassigned voters count
 	if(type=="Panchayat"){
 		if(buildType=="hamlet"){
@@ -426,6 +406,9 @@ impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 impFamilesDataSource.responseSchema = {
 fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
 };
+
+
+
 var myConfigs = {
 };
 var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetailsForHamlet", impFamilesColumnDefs,
@@ -454,21 +437,24 @@ function callAjax(jsObj,url)
 								{ 
 									 
 									buildImpFamilesChart(myResults);
+									buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 
-									 if(myResults.subList != null && myResults.subList.length > 0)
+									 if(jsObj.buildType == "booth" && myResults.subList != null && myResults.subList.length > 0)
 							  		  {
 
 										buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 										impFamilesVariableDescription();
 									  }
 									  
-									   /*if(myResults.subListForHamlets != null && myResults.subListForHamlets.length > 0)
+									   if(myResults.subListForHamlets != null && myResults.subListForHamlets.length > 0)
 									  {
-										  buildImpFamilesForHamletChart(myResults);
+										  // alert(787878);
+										 // buildImpFamilesForHamletChart(myResults);
                                         buildTableForImpFamilesForHamlets(myResults.subListForHamlets,myResults.name,myResults.type,myResults);
 										//buildTableForImpFamilesByHamlet(myResults.subList,myResults.name,myResults.type);
 										impFamilesVariableDescription1();
-									  }*/
+                                  //	jsObj.buildType
+									  }
 
 
 									
@@ -514,8 +500,8 @@ function callAjax(jsObj,url)
 									pResults = myResults;
 								}
 								}catch (e) {
-							     $("#votersEditSaveAjaxImg").hide();
-							     $("#votersEditSaveButtnImg").removeAttr("disabled");
+							    // $("#votersEditSaveAjaxImg").hide();
+							    // $("#votersEditSaveButtnImg").removeAttr("disabled");
 								}  
 
  		               },
@@ -789,7 +775,9 @@ oDT: impFamilesDataTable
 
 
 function  buildFamilyMembers(result,jsObj,type){
+	
 	var publicationDateId =   jsObj.publicationDateId;
+	var requestFor = jsObj.requestFor;
  //debugger;
  //alert("ok");
 	/* impFamiliesEditArray = new Array();
@@ -821,7 +809,7 @@ function  buildFamilyMembers(result,jsObj,type){
          // str+='     <th>SNo</th>';
 		 if(type == "panchayat" && jsObj.buildType =="hamlet" )
 		  str+='     <th>Hamlet</th>';
-		   if(type == "hamlet" )
+		   if(type == "hamlet" && requestFor !="booth")
 		  str+='     <th>LocalArea</th>';
 		  
 		  str+='     <th>Booth</th>';
@@ -844,7 +832,7 @@ function  buildFamilyMembers(result,jsObj,type){
          // str +='		<td>'+sno+'</td>';
 		  if(type == "panchayat" && jsObj.buildType =="hamlet" )
 		  str +='		<td>'+result[i].hamletName+'</td>';
-		    if(type == "hamlet" )
+		    if(type == "hamlet" && requestFor !="booth")
 		  str +='		<td>'+result[i].localAreaName+'</td>';
 		  
 		  str +='		<td>'+result[i].boothName+'</td>';
@@ -864,11 +852,11 @@ function  buildFamilyMembers(result,jsObj,type){
           str+=' </table>';
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
-
+              $('#impFamPancBothDtlsAgxImgForHamlet').show();
 		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet"))
 	       {
 			  $('#impFamPancBothDtlsAgxImgForHamlet').html(str);
-			  $('#impFamPancBothDtlsAgxImgForHamle').hide();
+			  $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 	      }
 		  else
 	       $("#impFamPancBothDtls").html(str);
@@ -908,8 +896,27 @@ function  buildFamilyMembers(result,jsObj,type){
 	callAjax(jsObj,url);
   }
 }*/
+function populate(id,boothId,publicationId,houseNo){
 
+     if($('#'+id).is(':checked')){
+	   var obj={
+	     boothId:boothId,
+		 publicationId:publicationId,
+		 houseNo:houseNo
+	   }
+	   impFamiliesEditArray.push(obj);
+	 }else{
+	     for(var i in impFamiliesEditArray){
+	       if(impFamiliesEditArray[i].boothId == boothId && impFamiliesEditArray[i].publicationId == publicationId && impFamiliesEditArray[i].houseNo == houseNo){
+		      impFamiliesEditArray.splice(i, 1);
+		   }
+	   }
+	 
+	 }
+
+}
 function editSelectedFamilies(){
+
 if(impFamiliesEditArray.length == 0)
 	{
 	 alert("Please select families to edit");
@@ -925,6 +932,17 @@ var urlstr = "voterFamilyEditAction.action"
 var browser2 = window.open(urlstr,"browser2","scrollbars=yes,height=600,width=800,left=200,top=200");	
 		browser2.focus();
 }
+
+
+function getVotersInAFamily(id,publicationDateId,hno)
+{
+
+var urlstr = "voterFamilyEditAction.action?id="+id+"&publicationDateId="+publicationDateId+"&hno="+hno+""
+var browser2 = window.open(urlstr,"browser2","scrollbars=yes,height=600,width=800,left=200,top=200");	
+		browser2.focus();
+}
+
+
 
   function clearAllCheckBoxes()
 {
@@ -1123,10 +1141,119 @@ function checkForAttributesToDisplay(){
 
 }
 
+function getvotersBasicInfo(){
+
+
+if(type == "mandal" || type=="constituency")
+	$("#hamletDiv").hide();
+else
+$("#hamletDiv").show();
+
+$("#NoteDiv").hide();
+if(type == "booth")
+$("#impFamilesBasicSubDetailsDiv").hide();
+else
+$("#impFamilesBasicSubDetailsDiv").show();
+
+    if(type == "booth")
+	buildType="hamlet";
+	 impFamltype = type;
+     impFamlId = id;
+     impFamlpublicationDateId = publicationDateId;
+     impFamltypename = impFamltypename;
+	 if(type == "hamletBooth"){
+	 hresult="booth";
+	type="hamlet";
+	
+	}
+	if(type == "hamletLocal"){
+	type="hamlet";
+	hresult="localArea";
+	}
+   
+	   var jsObj1=
+			{
+					
+				type:type,
+				id:id,
+				publicationDateId:publicationDateId,
+				typename:impFamltypename,
+				constituencyId:constituencyId,
+				buildType:buildType,
+				requestFor:"",
+
+				task:"importantFamiliesinfo"
+	
+			}
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			
+		
+         var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+									
+		callAjax(jsObj1,url1);
+}
+function getImpFamiliesVotersToShowForBooth(){
+
+	 var jsObj1=
+			{
+					
+				type:"hamlet",
+				id:id,
+				publicationDateId:publicationDateId,
+				typename:"",
+				constituencyId:constituencyId,
+				buildType:"",
+				requestFor:"booth",
+				task:"importantFamiliesinfo"
+	
+			}
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			
+	
+         var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+		callAjax(jsObj1,url1);
+	
+     $("#descriptionDiv").show();
+
+   /* $("#impFamilesAllInfoPopUp").dialog({
+            modal: true,
+            title: "<b>Voters Details</b>",
+			width: 970,
+            height: 600
+           
+        });	   */
+	
+	 //showAjaxImgDiv('ajaxImageDiv');
+	// $("#impFamPancBothDtlsAgxImg").show();
+	    var jsObj2=
+			{
+					
+				type:"hamlet",
+				id:id,
+				publicationDateId:publicationDateId,
+				typename:"",
+                buildType:buildType,
+				requestFor:"booth",
+				task:"gettotalimpfamlies"
+	
+			}
+	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+		callAjax(jsObj2,url2);
+	
+	}
+
+
+if(maintype != "hamlet")
+{
+
 
 getvotersBasicInfo();
 
 getImpFamiliesVotersToShow();
+}
+if(maintype == "hamlet")
+getImpFamiliesVotersToShowForBooth();
 </script>
 </body>
 
