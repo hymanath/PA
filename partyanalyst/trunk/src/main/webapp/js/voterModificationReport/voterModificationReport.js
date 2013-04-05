@@ -472,7 +472,8 @@ function showVoterInfo(results,jsObj)
 	$('#voterInfoDiv').html('');
 
 	var str = '';
-	str +='<div class="voterinfoHeading"><h2>Voters Basic Information In '+locationName+' '+locationTypeVar+'</h2></div>';
+	str +='<div class="voterinfoHeading"><h2 style="padding-bottom: 12px;">Voters Basic Information In '+locationName+' '+locationTypeVar+'';
+	str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="View Booth Wise Voter Modification Details" class="btn btn-info"></h2></div>';
 	
 	if(results != null)
 	{
@@ -581,6 +582,19 @@ function showAddedDeletedVoterInfoInALocation(results,jsObj)
 		}
 		str +='</tr>';
 		
+		if(jsObj.locationType == "booth")
+		{
+			str +='<tr><th>Moved</th>';
+			for(var i in results)
+			  str +='<td>'+results[i].movedCount+'</td>';
+			str +='</tr><tr><th>Relocated</th>';
+			for(var i in results)
+			  str +='<td>'+results[i].relocatedCount+'</td>';
+			str +='</tr>';
+
+		}
+
+
 		str +='</table>';
 		$('#voterAgeInfoDiv').html(str);
 		
@@ -630,6 +644,23 @@ function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
 		str +='<td>'+results.deletedMale+'</td>';
 		str +='<td>'+results.deletedFemale+'</td>';
 		str +='</tr>';
+		
+		if(jsObj.locationType == "booth")
+		{
+			str +='<tr>';
+			str +='<th>Moved</th>';
+			str +='<td>'+results.movedTotal+'</td>';
+			str +='<td>'+results.movedMale+'</td>';
+			str +='<td>'+results.movedFemale+'</td>';
+			str +='</tr>';
+			str +='<tr>';
+			str +='<th>Relocated</th>';
+			str +='<td>'+results.relocatedTotal+'</td>';
+			str +='<td>'+results.relocatedMale+'</td>';
+			str +='<td>'+results.relocatedFemale+'</td>';
+			str +='</tr>';
+		}
+
 		str +='</table>';
 		$('#voterGenderInfoDiv').html(str);
 	}
@@ -644,6 +675,7 @@ function showGenderWiseVoterModifiBetweenPublications(results,jsObj)
 
 function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 {
+	
 	$('#genderWiseVoterModifiDiv').html('');
 	$('#genderWiseVoterModifiAjaxImg').css('display','none');
 	var str = '';
@@ -658,6 +690,11 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 		str +='<th rowspan="2">Previous Publication Name</th>';
 		str +='<th COLSPAN="3">Added</th>';
 		str +='<th COLSPAN="3">Deleted</th>';
+		if(jsObj.locationType == "booth")
+		{
+		   str +='<th COLSPAN="3">Moved</th>';
+		   str +='<th COLSPAN="3">Relocated</th>';
+		}
 		str +='</tr>';
 		str +='<tr>';
 		str +='<th>Total</th>';
@@ -666,6 +703,16 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 		str +='<th>Total</th>';
 		str +='<th>Male</th>';
 		str +='<th>Female</th>';
+
+		if(jsObj.locationType == "booth")
+		{
+		   str +='<th>Total</th>';
+		   str +='<th>Male</th>';
+		   str +='<th>Female</th>';
+		   str +='<th>Total</th>';
+		   str +='<th>Male</th>';
+		   str +='<th>Female</th>';
+		}
 		str +='</tr>';
 		for(var i in results)
 		{
@@ -685,6 +732,15 @@ function showGenderWiseVoterModifiForEachPublic(results,jsObj)
 		 str +='<td>'+results[i].deletedTotal+'</td>';
 		 str +='<td>'+results[i].deletedMale+'</td>';
 		 str +='<td>'+results[i].deletedFemale+'</td>';
+		 if(jsObj.locationType == "booth")
+		{
+		  str +='<td>'+results[i].movedTotal+'</td>';
+		  str +='<td>'+results[i].movedMale+'</td>';
+		  str +='<td>'+results[i].movedFemale+'</td>';
+		  str +='<td>'+results[i].relocatedTotal+'</td>';
+		  str +='<td>'+results[i].relocatedMale+'</td>';
+		  str +='<td>'+results[i].relocatedFemale+'</td>';
+		}
 		 str +='</tr>';
 
 		}
@@ -974,14 +1030,14 @@ function showAllVoterInformationInALocation(results)
 function buildSubLevelInformation(jsObj,myResults)
 {
 var subLevelName = "";
-
+var colSpan = 2;
 if(jsObj.locationType == "constituency")
     subLevelName = "Mandal/Muncipality";
 else if(jsObj.locationType == "mandal")
     subLevelName = "Panchayat";
 else if(jsObj.locationType == "panchayat" || jsObj.locationType == "ward")
     subLevelName = "Booth";
-else if(jsObj.locationType == "localbody" ||jsObj.locationType == "Local Election Body")
+else if(jsObj.locationType == "localbody" ||jsObj.locationType == "Local Election Body" || jsObj.locationType == "localElectionBody")
     subLevelName = "Ward";
 
 if(myResults.modifiedVotersList == null || myResults.modifiedVotersList.length == 0)
@@ -995,6 +1051,10 @@ if(myResults.modifiedVotersList == null || myResults.modifiedVotersList.length =
 if(myResults.modifiedVotersList.length == 0 && myResults.modifiedLocalBodyVotersList.length == 0 && myResults.modifiedVotersList != null && myResults.modifiedLocalBodyVotersList != null)
 	return false;
 
+
+if(jsObj.locationType == "panchayat" || jsObj.locationType == "ward")
+	colSpan = 4;
+
 var str='';
 
 	str +='<h4>'+subLevelName+' Wise Newly added / deleted voters info</h4>';
@@ -1007,9 +1067,9 @@ var str='';
 	 else
 		str +='<th rowSpan="2">'+subLevelName+'</th>';
 		str +='<th colspan="'+myResults.modifiedVotersList[0].selectOptionVOsList.length+'">Voters</th>';
-		str +='<th colspan="4">Total Voters </th>';
-		str +='<th colspan="4">Male Voters </th>';
-		str +='<th colspan="4">Female Voters</th>';
+		str +='<th colspan="'+colSpan+'">Total Voters </th>';
+		str +='<th colspan="'+colSpan+'">Male Voters </th>';
+		str +='<th colspan="'+colSpan+'">Female Voters</th>';
 		/*str +='<th>Total Voters  Deleted</th>';
 		str +='<th>Male Voters  Deleted</th>';
 		str +='<th>Female Voters  Deleted</th>';*/		
@@ -1020,6 +1080,8 @@ var str='';
 			for(var j in publicationName)
 			  str +='<th>'+publicationName[j].name+'</th>';
 			
+		if(jsObj.locationType == "panchayat" || jsObj.locationType == "ward")
+	   {
 		str +='<th>Added</th>';
 		str +='<th>Deleted</th>';
 		str +='<th>Moved</th>';
@@ -1032,6 +1094,17 @@ var str='';
 		str +='<th>Deleted</th>';
 		str +='<th>Moved</th>';
 		str +='<th>Relocated</th>';
+	   }
+	   else
+	{
+		str +='<th>Added</th>';
+		str +='<th>Deleted</th>';
+		str +='<th>Added</th>';
+		str +='<th>Deleted</th>';
+		str +='<th>Added</th>';
+		str +='<th>Deleted</th>';
+		
+	}
 	str +='</tr>';
     str+='</thead>';
 	 str+='<tbody>';
@@ -1051,17 +1124,11 @@ var str='';
 		
 		    str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].deletedCount+'</td>';
-			str+='<td>'+myResults.modifiedVotersList[i].movedCount+'</td>';
-		    str+='<td>'+myResults.modifiedVotersList[i].relocatedCount+'</td>';
-		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+			str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
-			str+='<td>'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
-		    str+='<td>'+myResults.modifiedVotersList[i].maleVotersRelocated+'</td>';
-            str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
+			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
 		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
-			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
-		    str+='<td>'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
-		  str+='</tr>';
+			str+='</tr>';
 	 }
 	}
 	 
@@ -1091,16 +1158,19 @@ var str='';
 			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Deleted\')}">'+myResults.modifiedVotersList[i].deletedCount+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].deletedCount+'</td>';
-
-		/* if(myResults.modifiedVotersList[i].movedCount!=0)
+		
+		if(myResults.modifiedVotersList[i].locationType == 'booth')
+		 {
+			/* if(myResults.modifiedVotersList[i].movedCount!=0)
 			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Moved\')}">'+myResults.modifiedVotersList[i].movedCount+'</td>';
-		else */
-			str+='<td>'+myResults.modifiedVotersList[i].movedCount+'</td>';
+			else */
+				str+='<td>'+myResults.modifiedVotersList[i].movedCount+'</td>';
 
-		/* if(myResults.modifiedVotersList[i].relocatedCount!=0)
+			/* if(myResults.modifiedVotersList[i].relocatedCount!=0)
 			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'Relocated\')}">'+myResults.modifiedVotersList[i].relocatedCount+'</td>';
-		else */
+			else */
 			str+='<td>'+myResults.modifiedVotersList[i].relocatedCount+'</td>';
+		 }
 			 
 		if(myResults.modifiedVotersList[i].maleVotersAdded!=0)	 
 			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Added\')}">'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
@@ -1111,17 +1181,19 @@ var str='';
 		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Deleted\')}">'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
-			
-		/* if(myResults.modifiedVotersList[i].maleVotersMoved!=0)	 
+		
+		if(myResults.modifiedVotersList[i].locationType == 'booth')
+		 {
+			/* if(myResults.modifiedVotersList[i].maleVotersMoved!=0)	 
 			str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Moved\')}">'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
-		else */
-			str+='<td>'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
+			else */
+				str+='<td>'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
 			
-		/* if(myResults.modifiedVotersList[i].maleVotersRelocated!=0)	
+			/* if(myResults.modifiedVotersList[i].maleVotersRelocated!=0)	
 		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'Relocated\')}">'+myResults.modifiedVotersList[i].maleVotersRelocated+'</td>';
-		else */
+			else */
 			str+='<td>'+myResults.modifiedVotersList[i].maleVotersRelocated+'</td>';
-
+		 }
 		
 		if(myResults.modifiedVotersList[i].femaleVotersAdded!=0)
             str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Added\')}">'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
@@ -1133,17 +1205,19 @@ var str='';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
 
+		if(myResults.modifiedVotersList[i].locationType == 'booth')
+		 {
 
-		/* if(myResults.modifiedVotersList[i].femaleVotersMoved!=0)
+			/* if(myResults.modifiedVotersList[i].femaleVotersMoved!=0)
             str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Moved\')}">'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
-		else */
-			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
+			else */
+				str+='<td>'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
 		
-		/* if(myResults.modifiedVotersList[i].femaleVotersRelocated!=0)
-		    str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Relocated\')}">'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
-		else */
-			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
-			
+			/* if(myResults.modifiedVotersList[i].femaleVotersRelocated!=0)
+				str+='<td><a href="javaScript:{getVoterDetailsForGender(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'Relocated\')}">'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
+			else */
+				str+='<td>'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
+		 }
 		  str+='</tr>';
 	 }
 	 }
@@ -1191,7 +1265,7 @@ function callAjaxForSubLevelInformation()
 	/* if(locationType == 'localElectionBody')
 			locationVal = localElectionBodyId;*/
 
-	 if(locationType == 'constituency' || locationType =='mandal' || locationType =='localElectionBody' || locationType == "booth")
+	 if(locationType == "booth")
 	{
 		$("#subLevelsMainDiv").css('display','none')
 		return;

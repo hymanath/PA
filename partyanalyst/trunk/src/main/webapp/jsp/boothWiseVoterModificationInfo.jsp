@@ -46,6 +46,7 @@
 	}
 	#subLevelDiv{overflow-x: scroll;}
 	#subLevelVotersTable{margin-bottom: 20px;}
+	#subLevelsErrorMsgDiv{height: 50px; text-align: center; font-size: 18px; margin-top: 15px;}
   </style>
   <script type="text/javascript">
 
