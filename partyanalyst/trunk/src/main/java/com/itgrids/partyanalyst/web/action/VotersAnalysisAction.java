@@ -397,6 +397,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
+	
 		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
 			return INPUT;
@@ -1075,10 +1076,10 @@ return Action.SUCCESS;
 		List<VotersDetailsVO> votersDeatailsForConstituency =null;
 		
 		
-		if(type.equalsIgnoreCase("hamlet"))
+		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("hamletBooths")  )
 			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,"hamlet");	
 		else 
-			if(!type.equalsIgnoreCase("hamletLocalArea")){
+			if(!type.equalsIgnoreCase("hamletLocalArea") ){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
 		panchayatId , boothId, publicationDateId,type);
@@ -1121,6 +1122,13 @@ return Action.SUCCESS;
 		
 			constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 			}
+	     
+	      else if (type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("boothHamlets")  ){
+				
+				boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(panchayatId,publicationDateId,userId1,type);
+			
+				constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+				}
 		else if (type.equalsIgnoreCase("ward")){
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByWardId(panchayatId,publicationDateId,constituencyId);
 		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
