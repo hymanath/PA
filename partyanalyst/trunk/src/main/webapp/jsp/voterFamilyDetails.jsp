@@ -64,6 +64,9 @@
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+</script>
 <style>
 
 
@@ -248,7 +251,7 @@
 </form>
 <script type="text/javascript">
 
-google.load("visualization", "1", {packages:["corechart"]});
+
 var votersLimitExist = false;
 var publicationDateId = "${publicationDateId}";
 var buildType = "${buildType}";
@@ -511,6 +514,7 @@ function callAjax(jsObj,url)
 									pResults = myResults;
 								}
 								}catch (e) {
+								//console.log(e);
 							    // $("#votersEditSaveAjaxImg").hide();
 							    // $("#votersEditSaveButtnImg").removeAttr("disabled");
 								}  
@@ -994,20 +998,20 @@ $("#impFamPancBothDtls").html("");
 
 function impFamilesAllInfoForHamletPopUp(){
 	$('#impFamPancBothDtlsAgxImgForHamlet').show();
-    $("#impFamilesAllInfoForHamletPopUp").dialog({
+    /* $("#impFamilesAllInfoForHamletPopUp").dialog({
             modal: true,
             title: "<b>Voters Details</b>",
 			width: 970,
             height: 600
            
-        });
+        }); */
 		 
 		 var jsObj2=
 			{
 					
 				type:maintype,
-				id:mainreqid,
-				publicationDateId:mainpublicationId,
+				id:id,
+				publicationDateId:publicationDateId,
 				typename:impFamltypename,
 				buildType:"hamlet",
 				task:"gettotalimpfamlies"
@@ -1298,8 +1302,14 @@ getvotersBasicInfo();
 
 getImpFamiliesVotersToShow();
 }
-if(maintype == "hamlet")
-getImpFamiliesVotersToShowForBooth();
+if(maintype == "hamlet"){
+//getImpFamiliesVotersToShowForBooth();
+$('#impFamPancBothDtlsAgxImg').show();
+	  getvotersBasicInfo();
+
+  impFamilesAllInfoForHamletPopUp();
+
+	  }
 </script>
 </body>
 
