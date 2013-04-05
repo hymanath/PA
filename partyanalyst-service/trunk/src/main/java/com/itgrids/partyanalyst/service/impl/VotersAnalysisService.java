@@ -2533,6 +2533,32 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					return constituencyVotersList;
 				}
 			}
+			/*if(type.equalsIgnoreCase(IConstants.BOOTH))
+			{
+				boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(panchayatId, boothId);
+				if(boothsList == null || boothsList.size()==0)
+					   return new ArrayList<VotersDetailsVO>();
+				
+				List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,boothsList);
+				if(filter == null || filter.size()==0)
+					   return new ArrayList<VotersDetailsVO>();
+				
+				List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter);
+				
+				if(list == null || list.size()==0)	
+				{   
+					return constituencyVotersList;	
+				}else{
+					
+					myBusinessDelegator(list, constituencyVotersList);
+					return constituencyVotersList;
+				}
+			}*/
+			if(type.equalsIgnoreCase("boothHamlets"))
+			{
+				type="booth";
+				boothId=panchayatId;
+			}
 	        getDetailsOfVotersHasAgeBetween18And25(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList);		
 			getDetailsOfVotersHasAgeBetween26And35(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList);			
 			getDetailsOfVotersHasAgeBetween36And45(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList);		
@@ -7917,10 +7943,12 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 return getAgeWiseVoterDetails(type, mandalId, publicationDateId,constituencyId);
 				 else if(type.equalsIgnoreCase("panchayat"))
 					 return getAgeWiseVoterDetails(type, panchayatId, publicationDateId,constituencyId);
-				 else if(type.equalsIgnoreCase("booth"))
+				 else if(type.equalsIgnoreCase("booth") )
 					 return getAgeWiseVoterDetails(type, boothId, publicationDateId,constituencyId);
 				 else if(type.equalsIgnoreCase("ward"))
 					 return getAgeWiseVoterDetails(type, panchayatId, publicationDateId,constituencyId);
+				 else if(type.equalsIgnoreCase("boothHamlets") )
+					 return getAgeWiseVoterDetails("booth", panchayatId, publicationDateId,constituencyId);
 				 else
 				 return null;
 			 }catch (Exception e) {
@@ -13232,7 +13260,24 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return "false";
 			}
 	}
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByBoothId(Long boothId,Long publicationDateId,Long userId,String type){
+		List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+		
+		
+		
+		List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(userId,publicationDateId,boothId,type);
+	    if(list == null || list.size()==0)	
+		{   
+			return boothVotersList;	
+		}else
+		{
+			helperBusinessDelegator(list,boothVotersList);
+			//return boothVotersList;	
+		}
 
+		return boothVotersList;
+		
+	}
 
 	
 }
