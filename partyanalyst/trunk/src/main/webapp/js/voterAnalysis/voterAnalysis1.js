@@ -2401,6 +2401,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		var cast = myresults.castVosList;
 		var typeName=jsObj.typeName;
 		var res=jsObj.resultFor;
+		var restype=jsObj.buildType;
 		for(var i in cast)
 		{
 		if(cast[i].voterCastInfoVO != null)
@@ -2447,8 +2448,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
 		else if(type == "mandal")
 		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
-		else if(type =="panchayat")
+        else if(type =="panchayat"){
+		 if(restype== "booth")  
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
+		else 
+		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
+		}
 		else if(type =="ward")
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
 		else if(type =="hamlet"){
@@ -2465,8 +2470,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>Mandal</th>';
 		if(type == "mandal")
 		str +='<th>Panchayat</th>';
-		if(type =="panchayat")
+		if(type =="panchayat"){
+		if(restype== "booth")  
 		str +='<th>Booth</th>';
+		else 
+		str +='<th>Hamlet</th>';
+		}
 		if(type =="ward")
 		str +='<th>Booth</th>';
 		if(type =="hamlet")
