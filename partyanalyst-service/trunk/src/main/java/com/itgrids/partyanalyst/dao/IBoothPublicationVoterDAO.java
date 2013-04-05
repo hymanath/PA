@@ -282,6 +282,9 @@ public interface IBoothPublicationVoterDAO extends
 		public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hamletId , Long  boothId ,Long  publicationDateId,Long constituencyId);
 		
 		public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId);
+		
+  public List<Object[]> findFamiliesVotersInfoForBoothForUser(Long id,Long publicationDateId,Long userId);
+
 
 
 		

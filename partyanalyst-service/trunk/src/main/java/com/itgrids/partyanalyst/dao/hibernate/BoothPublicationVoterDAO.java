@@ -2539,5 +2539,23 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	return query.list();
 
  }
+   
+   public List<Object[]> findFamiliesVotersInfoForBoothForUser(Long id,Long publicationDateId,Long userId){
+		
+		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
+				" model.voter.cast,model.booth.boothId ,model.voter.voterId,model.voter.gender," +
+				" model.voter.age,model.booth.partNo,model1.hamlet.hamletName from BoothPublicationVoter model , " +
+				" UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
+				" model1.user.userId = :userId and model.booth.boothId = :boothId " +
+				" and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", id);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
 
 }

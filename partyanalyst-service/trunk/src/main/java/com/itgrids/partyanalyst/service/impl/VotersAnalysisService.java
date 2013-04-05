@@ -3762,6 +3762,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				return importantFamiliesInfoVo;
 			}
 			else if(type.equalsIgnoreCase("booth")){
+				
+				if(requestFor.equalsIgnoreCase("hamletBooth"))					
+					return 	getImportantFamiliesDetailsForHamletFromBooth(userId , id , publicationDateId ,  constituencyId);	
+					
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
 				if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForBooth(type,id,publicationDateId,"main",constituencyId);
@@ -4319,7 +4323,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		}
 		if(checkedEle.equalsIgnoreCase("pollingstation"))
 		{
-			voters = boothPublicationVoterDAO.findFamiliesVotersInfoForBooth(id,publicationDateId);
+			if(requestFor.equalsIgnoreCase("hamletBooth"))
+				voters = boothPublicationVoterDAO.findFamiliesVotersInfoForBoothForUser(id,publicationDateId,userId);
+			else
+			    voters = boothPublicationVoterDAO.findFamiliesVotersInfoForBooth(id,publicationDateId);
 		}
 		if(checkedEle.equalsIgnoreCase("hamlet"))
 		{
@@ -4390,8 +4397,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 					voterVO.setHamlet(voter[9].toString());
 				if( checkedEle.equalsIgnoreCase("hamlet") )
 					voterVO.setLocalArea(voter[9].toString());
-			}else
-				voterVO.setHamlet("HamletName");
+			}/*else
+				voterVO.setHamlet("HamletName");*/
+			if(requestFor.equalsIgnoreCase("hamletBooth"))
+				voterVO.setHamlet(voter[9].toString());
 				voterVO.setCast(getCasteNameByVoterID(casteList,(Long)voter[5]));
 			voterByHouseNoMap = boothMap.get((Long)voter[4]);
 			if( voterByHouseNoMap == null){
@@ -4431,6 +4440,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			if( checkedEle.equalsIgnoreCase("hamlet") )
 				voterHouseInfoVO.setLocalAreaName(voterVOs.get(voterVOs.size()-1).getLocalArea());
 			VoterVO younger = null;
+			if( requestFor.equalsIgnoreCase("hamletBooth") )
+				voterHouseInfoVO.setHamletName(voterVOs.get(voterVOs.size()-1).getHamlet());
+			
 			
 			younger = voterVOs.get(0);
 			
@@ -13278,8 +13290,100 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		return boothVotersList;
 		
 	}
-
 	
+	public ImportantFamiliesInfoVo getImportantFamiliesDetailsForHamletFromBooth(
+			Long userId, Long id, Long publicationDateId, Long constituencyId) {
+		
+		 ImportantFamiliesInfoVo importantFamiliesInfoVo  = new ImportantFamiliesInfoVo();
+		
+		log.debug("Entered into the getImportantFamiliesDetailsForHamletFromBooth service method");
+		
+		try{
+			
+			importantFamiliesInfoVo.setType("Booth");
+		    importantFamiliesInfoVo.setName("Booth -" +boothDAO.get(id).getPartNo());
+		    
+		    
+		   List<Long> hanletIds =  userVoterDetailsDAO.getHamletsExistedInABoothForUser(userId,id,publicationDateId,constituencyId);
+		   
+		   for(Long hamletId :hanletIds){
+
+				  List<Object[]> boothFamilyDetails =  boothPublicationVoterDAO.getFamiliesInBooth(userId ,hamletId, id , publicationDateId,constituencyId);
+				  
+				  ImportantFamiliesInfoVo importantFamiliesInfoVo1 = new ImportantFamiliesInfoVo();
+				  
+				  long upTo3 = 0;
+				  long upTo3Count = 0;
+				  long between4And6 = 0;
+				  long between4And6Count = 0;
+				  long between7And10 = 0;
+				  long between7And10Count = 0;
+				  long above10 = 0;
+				  long above10Count = 0;						     
+
+				  
+				  for(Object[] details:boothFamilyDetails){
+					  
+					  long count =(Long)details[0];
+					  
+					  if(count <= 3 ){
+						  upTo3++;
+						  upTo3Count = upTo3Count + count;
+					  }
+					  else if(count > 3 && count <=6){
+					      between4And6++;
+					      between4And6Count = between4And6Count + count;
+					  }
+					  else if(count > 6 && count <10){
+						  between7And10++;
+						  between7And10Count =between7And10Count + count;
+					  }
+					  else{
+					    above10++;
+					    above10Count=above10Count + count;
+					  }
+					  
+				  }
+				  
+	     List<Object[]> votersCount =  boothPublicationVoterDAO.getVotersCountByGenderInBooth(userId , hamletId , id , publicationDateId,constituencyId);
+	     
+	     
+				      for(Object[] obj1:votersCount){
+				    	  
+				    	  if(obj1[1].toString().equalsIgnoreCase("M"))
+				    		  importantFamiliesInfoVo1.setTotalMaleVoters(obj1[0].toString());
+				    	  else if(obj1[1].toString().equalsIgnoreCase("F"))
+				    		  importantFamiliesInfoVo1.setTotalFemaleVoters(obj1[0].toString());						    	  
+				    	  
+				      }
+
+				  
+				     importantFamiliesInfoVo1.setBelow3(upTo3);
+				     importantFamiliesInfoVo1.setBelow3Popul(upTo3Count);					     
+				     importantFamiliesInfoVo1.setBetwn4to6(between4And6);
+				     importantFamiliesInfoVo1.setBetwn4to6Popul(between4And6Count);
+				     importantFamiliesInfoVo1.setBetwn7to10(between7And10);
+				     importantFamiliesInfoVo1.setBetwn7to10Popul(between7And10Count);
+				     importantFamiliesInfoVo1.setAbove10(above10);
+				     importantFamiliesInfoVo1.setAbove10Popul(above10Count);
+				     
+				     importantFamiliesInfoVo1.setTotalVoters(upTo3Count + between4And6Count + between7And10Count + above10Count);
+				     
+				     importantFamiliesInfoVo1.setName(hamletDAO.get(hamletId).getHamletName());
+				     importantFamiliesInfoVo1.setType("hamlet");
+				     
+				     calculatePercentage(importantFamiliesInfoVo1);
+				     
+				     importantFamiliesInfoVo.getSubList().add(importantFamiliesInfoVo1);;
+				
+			   
+		   }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception raised in  getImportantFamiliesDetailsForHamletFromBooth service method");		
+		}
+		
+		return importantFamiliesInfoVo;
+    }
 }
-
-
