@@ -347,7 +347,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 try{
 			 List<String> ageRanges = voterAgeRangeDAO.getAllVoterAgeRanges();
 			 VoterModificationAgeRangeVO voterModificationAgeRangeVO = null;
-			 if("intermediate".equalsIgnoreCase(queryType)){
+			 if("intermediate".equalsIgnoreCase(queryType) && locationType != null && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
 				 //getting data from intermediate table
 			   result = getVotersAddedDeletedCountAgeWiseInBetwnPublicsFromIntermediateTable(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 			 }
@@ -376,6 +376,14 @@ public class VoterModificationService implements IVoterModificationService{
 							 	voterModificationAgeRangeVO.setAddedCount((Long)params[0]);
 							 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED));
 							 	voterModificationAgeRangeVO.setDeletedCount((Long)params[0]);
+							 if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+							 {
+								 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+									 	voterModificationAgeRangeVO.setMovedCount((Long)params[0]);
+								else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED));
+									voterModificationAgeRangeVO.setRelocatedCount((Long)params[0]);
+							 }
+							 	
 						 }
 					 }
 					 result.add(voterModificationAgeRangeVO);
@@ -450,7 +458,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 VoterModificationGenderInfoVO result = new VoterModificationGenderInfoVO();
 		 try{
 			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
-			 if("intermediate".equalsIgnoreCase(queryType)){
+			 if("intermediate".equalsIgnoreCase(queryType) && locationType!= null && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
 				  String location = locationType;
 				  if("localElectionBody".equalsIgnoreCase(locationType)){
 					  location = "Local Election Body";
@@ -480,9 +488,32 @@ public class VoterModificationService implements IVoterModificationService{
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 result.setDeletedFemale((Long)params[0]);
 						 }
+						 
+						 if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+						 {
+							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 result.setMovedMale((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 result.setMovedFemale((Long)params[0]);
+							 }
+							 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 result.setRelocatedMale((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 result.setRelocatedFemale((Long)params[0]);
+							 }
+						 }
 					 }
 					 result.setAddedTotal(result.getAddedMale() + result.getAddedFemale());
 					 result.setDeletedTotal(result.getDeletedMale() + result.getDeletedFemale());
+					 if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+					 {
+						 result.setMovedTotal(result.getMovedMale() + result.getMovedFemale());
+						 result.setRelocatedTotal(result.getRelocatedMale() + result.getRelocatedFemale());
+					 }
 				  }
 		    }
 			 return result;
@@ -499,10 +530,10 @@ public class VoterModificationService implements IVoterModificationService{
 		  if(addedDeletedList != null && !addedDeletedList.isEmpty()){
 			  result.setDataPresent(true);
 			  for(Object[] addedDeleted:addedDeletedList){
-				  if("added".equalsIgnoreCase(addedDeleted[2].toString())){
+				  if((IConstants.STATUS_ADDED).equalsIgnoreCase(addedDeleted[2].toString())){
 					  result.setAddedMale((Long)addedDeleted[0]);
 					  result.setAddedFemale((Long)addedDeleted[1]);
-				  }else if("deleted".equalsIgnoreCase(addedDeleted[2].toString())){
+				  }else if((IConstants.STATUS_DELETED).equalsIgnoreCase(addedDeleted[2].toString())){
 					  result.setDeletedMale((Long)addedDeleted[0]);
 					  result.setDeletedFemale((Long)addedDeleted[1]);
 				  }
@@ -536,7 +567,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>();
 		 try{
 			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
-			 if("intermediate".equalsIgnoreCase(queryType)){
+			 if("intermediate".equalsIgnoreCase(queryType) && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
 				 String location = locationType;
 				  if("localElectionBody".equalsIgnoreCase(locationType)){
 					  location = "Local Election Body";
@@ -576,6 +607,24 @@ public class VoterModificationService implements IVoterModificationService{
 							 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 infoVO.setDeletedFemale((Long)params[1]);
 						 }
+						 
+						 if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+							 {
+								 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+									 infoVO.setMovedMale((Long)params[1]);
+								 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 infoVO.setMovedFemale((Long)params[1]);
+							 }
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+							 {
+								 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+									 infoVO.setRelocatedMale((Long)params[1]);
+								 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 infoVO.setRelocatedFemale((Long)params[1]);
+							 }
+						 }
 						 if(flag)
 							 result.add(infoVO); 
 					 }
@@ -594,6 +643,12 @@ public class VoterModificationService implements IVoterModificationService{
 				 
 				 infoVO.setAddedTotal(infoVO.getAddedMale() + infoVO.getAddedFemale());
 				 infoVO.setDeletedTotal(infoVO.getDeletedMale() + infoVO.getDeletedFemale());
+				 
+				 if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+				 {
+					 infoVO.setMovedTotal(infoVO.getMovedMale() + infoVO.getMovedFemale());
+					 infoVO.setRelocatedTotal(infoVO.getRelocatedMale() + infoVO.getRelocatedFemale());
+				 }
 			 }
 			 return result;
 		 }catch (Exception e) {
@@ -619,10 +674,10 @@ public class VoterModificationService implements IVoterModificationService{
 					  result.setPublicationName(addedDeleted[4].toString());
 					  resultMap.put((Long)addedDeleted[3], result);
 				  }
-				  if("added".equalsIgnoreCase(addedDeleted[2].toString())){
+				  if((IConstants.STATUS_ADDED).equalsIgnoreCase(addedDeleted[2].toString())){
 					  result.setAddedMale((Long)addedDeleted[0]);
 					  result.setAddedFemale((Long)addedDeleted[1]);
-				  }else if("deleted".equalsIgnoreCase(addedDeleted[2].toString())){
+				  }else if((IConstants.STATUS_DELETED).equalsIgnoreCase(addedDeleted[2].toString())){
 					  result.setDeletedMale((Long)addedDeleted[0]);
 					  result.setDeletedFemale((Long)addedDeleted[1]);
 				  }
@@ -1354,7 +1409,7 @@ public class VoterModificationService implements IVoterModificationService{
 			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, value, constituencyId, publicationDateId);
 			 
 			 if(modificationGenderInfoVO == null || modificationGenderInfoVO.size() == 0)
-				 modificationGenderInfoVO =  setDefaultValuesForGenderwiseVoterModification(locationVal);
+				 modificationGenderInfoVO =  setDefaultValuesForGenderwiseVoterModification(locationVal,locationType);
 				 
 			 saveGenderWiseVoterModifInfoInVoterModificationInfoTable(modificationGenderInfoVO,constituencyId,publicationDateId,locationType);
 			 
@@ -1378,7 +1433,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>(0);
 		 try{
 			 StringBuilder queryStr = new StringBuilder();
-			 queryStr.append(" select count(model.voter.voterId),model.voterStatus.voterStatusId,model.voter.gender ");
+			 queryStr.append(" select count(model.voter.voterId),model.voterStatus.status,model.voter.gender ");
 			 
 			 if(locationType.equalsIgnoreCase("constituency"))
 				 queryStr.append(" ,model2.booth.constituency.constituencyId ");
@@ -1403,7 +1458,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 VoterModificationGenderInfoVO genderInfoVO = new VoterModificationGenderInfoVO();
 				 for(Object[] params : list)
 				 {
-					 if(params[1]!= null && ((Long)params[1]).equals(1l))
+					 if(params[1]!= null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
 					 {
 						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 							 genderInfoVO.setAddedMale((Long)params[0]);
@@ -1412,7 +1467,7 @@ public class VoterModificationService implements IVoterModificationService{
 						 
 						 genderInfoVO.setAddedTotal(genderInfoVO.getAddedMale() + genderInfoVO.getAddedFemale());
 					 }
-					 else if(params[1]!= null && ((Long)params[1]).equals(2l))
+					 else if(params[1]!= null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
 					 {
 						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 							 genderInfoVO.setDeletedMale((Long)params[0]);
@@ -1421,22 +1476,25 @@ public class VoterModificationService implements IVoterModificationService{
 						 genderInfoVO.setDeletedTotal(genderInfoVO.getDeletedMale() + genderInfoVO.getDeletedFemale());
 					 }
 					 
-					 else if(params[1] != null && ((Long)params[1]).equals(3l))
+					 if(locationType != null && locationType.equalsIgnoreCase("booth"))
 					 {
-						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-							 genderInfoVO.setMovedMale((Long)params[0]);
-						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-							 genderInfoVO.setMovedFemale((Long)params[0]);
-						 genderInfoVO.setMovedTotal(genderInfoVO.getMovedMale()+genderInfoVO.getMovedFemale());
-					 }
-					 
-					 else if(params[1] != null && ((Long)params[1]).equals(4l))
-					 {
-						 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-							 genderInfoVO.setRelocatedMale((Long)params[0]);
-						 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-							 genderInfoVO.setRelocatedFemale((Long)params[0]);
-						 genderInfoVO.setRelocatedTotal(genderInfoVO.getRelocatedMale()+genderInfoVO.getRelocatedFemale());
+						  if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+								 genderInfoVO.setMovedMale((Long)params[0]);
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+								 genderInfoVO.setMovedFemale((Long)params[0]);
+							 genderInfoVO.setMovedTotal(genderInfoVO.getMovedMale()+genderInfoVO.getMovedFemale());
+						 }
+						 
+						 else if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+						 {
+							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+								 genderInfoVO.setRelocatedMale((Long)params[0]);
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+								 genderInfoVO.setRelocatedFemale((Long)params[0]);
+							 genderInfoVO.setRelocatedTotal(genderInfoVO.getRelocatedMale()+genderInfoVO.getRelocatedFemale());
+						 }
 					 }
 					 
 					genderInfoVO.setReportLevelValue((Long)params[3]);
@@ -1490,22 +1548,25 @@ public class VoterModificationService implements IVoterModificationService{
 									 voterModificationInfoDAO.save(voterModificationInfo);
 								 }
 								 
-								 if(genderInfoVO.getMovedTotal() != null)
+								 if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
 								 {
-									 voterModificationInfo.setTotalVoters(genderInfoVO.getMovedTotal());
-									 voterModificationInfo.setMaleVoters(genderInfoVO.getMovedMale());
-									 voterModificationInfo.setFemaleVoters(genderInfoVO.getMovedFemale());
-									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_MOVED)));
-									 voterModificationInfoDAO.save(voterModificationInfo);
-								 }
-								 
-								 if(genderInfoVO.getRelocatedTotal() != null)
-								 {
-									 voterModificationInfo.setTotalVoters(genderInfoVO.getRelocatedTotal());
-									 voterModificationInfo.setMaleVoters(genderInfoVO.getRelocatedMale());
-									 voterModificationInfo.setFemaleVoters(genderInfoVO.getRelocatedFemale());
-									 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_RELOCATED)));
-									 voterModificationInfoDAO.save(voterModificationInfo);
+									 if(genderInfoVO.getMovedTotal() != null)
+									 {
+										 voterModificationInfo.setTotalVoters(genderInfoVO.getMovedTotal());
+										 voterModificationInfo.setMaleVoters(genderInfoVO.getMovedMale());
+										 voterModificationInfo.setFemaleVoters(genderInfoVO.getMovedFemale());
+										 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_MOVED)));
+										 voterModificationInfoDAO.save(voterModificationInfo);
+									 }
+									 
+									 if(genderInfoVO.getRelocatedTotal() != null)
+									 {
+										 voterModificationInfo.setTotalVoters(genderInfoVO.getRelocatedTotal());
+										 voterModificationInfo.setMaleVoters(genderInfoVO.getRelocatedMale());
+										 voterModificationInfo.setFemaleVoters(genderInfoVO.getRelocatedFemale());
+										 voterModificationInfo.setVoterStatus(voterStatusDAO.get(voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_RELOCATED)));
+										 voterModificationInfoDAO.save(voterModificationInfo);
+									 }
 								 }
 								
 							 }
@@ -1547,7 +1608,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 ageTo = Long.valueOf(ages[1].trim());
 					 
 				 StringBuilder queryStr = new StringBuilder();
-				 queryStr.append(" select count(model.voter.voterId),model.voterStatus.voterStatusId,model.voter.gender ");
+				 queryStr.append(" select count(model.voter.voterId),model.voterStatus.status,model.voter.gender ");
 				 
 				 if(locationType.equalsIgnoreCase("constituency"))
 					 queryStr.append(" ,model2.booth.constituency.constituencyId ");
@@ -1568,41 +1629,47 @@ public class VoterModificationService implements IVoterModificationService{
 				 {
 					 for(Object[] params :list)
 					 {
-						 if(params[1] != null && ((Long)params[1]).equals(1l))
+						 if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
 						 {
 							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 								 voterModificationAgeRangeVO.setAddedMale((Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setAddedFemale((Long)params[0]);
 						 }
-						 else if(params[1] != null && ((Long)params[1]).equals(2l))
+						 else if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
 						 {
 							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 								 voterModificationAgeRangeVO.setDeletedMale((Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
 								 voterModificationAgeRangeVO.setDeletedFemale((Long)params[0]);
 						 }
-						 else if(params[1] != null && ((Long)params[1]).equals(3l))
-						 {
-							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-								 voterModificationAgeRangeVO.setMovedMale((Long)params[0]);
-							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-								 voterModificationAgeRangeVO.setMovedFemale((Long)params[0]);
+						 if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+						 { 
+							 if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 voterModificationAgeRangeVO.setMovedMale((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 voterModificationAgeRangeVO.setMovedFemale((Long)params[0]);
+							 }
+							 else if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 voterModificationAgeRangeVO.setRelocatedMale((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 voterModificationAgeRangeVO.setRelocatedFemale((Long)params[0]);
+							 }
 						 }
-						 else if(params[1] != null && ((Long)params[1]).equals(4l))
-						 {
-							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-								 voterModificationAgeRangeVO.setRelocatedMale((Long)params[0]);
-							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-								 voterModificationAgeRangeVO.setRelocatedFemale((Long)params[0]);
-						 }
-							
 							voterModificationAgeRangeVO.setReportLevelValue((Long)params[3]);
 					 }
 					voterModificationAgeRangeVO.setAddedCount(voterModificationAgeRangeVO.getAddedMale() + voterModificationAgeRangeVO.getAddedFemale());
 					voterModificationAgeRangeVO.setDeletedCount(voterModificationAgeRangeVO.getDeletedMale() + voterModificationAgeRangeVO.getDeletedFemale());
-					voterModificationAgeRangeVO.setMovedCount(voterModificationAgeRangeVO.getMovedMale() + voterModificationAgeRangeVO.getMovedFemale());
-					voterModificationAgeRangeVO.setRelocatedCount(voterModificationAgeRangeVO.getRelocatedMale() + voterModificationAgeRangeVO.getRelocatedFemale());
+					
+					if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+					{
+						voterModificationAgeRangeVO.setMovedCount(voterModificationAgeRangeVO.getMovedMale() + voterModificationAgeRangeVO.getMovedFemale());
+						voterModificationAgeRangeVO.setRelocatedCount(voterModificationAgeRangeVO.getRelocatedMale() + voterModificationAgeRangeVO.getRelocatedFemale());
+					}
 				 }
 				 if(list == null || list.size() == 0)
 					 voterModificationAgeRangeVO.setReportLevelValue(locationValuesList.get(0).longValue());
@@ -1656,22 +1723,25 @@ public class VoterModificationService implements IVoterModificationService{
 								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
 								     }
 								     
-								     if(movedVoterModifiedId != null && ageRangeVO.getMovedCount() != null)
+								     if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
 								     {
-								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getMovedCount());
-								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getMovedMale());
-								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getMovedFemale());
-								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(movedVoterModifiedId));
-								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
-								     }
-								     
-								     if(relocatedVoterModifiedId != null && ageRangeVO.getRelocatedCount() != null)
-								     {
-								    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getRelocatedCount());
-								    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getRelocatedMale());
-								    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getRelocatedFemale());
-								    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(relocatedVoterModifiedId));
-								    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+									     if(movedVoterModifiedId != null && ageRangeVO.getMovedCount() != null)
+									     {
+									    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getMovedCount());
+									    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getMovedMale());
+									    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getMovedFemale());
+									    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(movedVoterModifiedId));
+									    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+									     }
+									     
+									     if(relocatedVoterModifiedId != null && ageRangeVO.getRelocatedCount() != null)
+									     {
+									    	 voterModificationAgeInfo.setTotalVoters(ageRangeVO.getRelocatedCount());
+									    	 voterModificationAgeInfo.setMaleVoters(ageRangeVO.getRelocatedMale());
+									    	 voterModificationAgeInfo.setFemaleVoters(ageRangeVO.getRelocatedFemale());
+									    	 voterModificationAgeInfo.setVoterModificationInfo(voterModificationInfoDAO.get(relocatedVoterModifiedId));
+									    	 voterModificationAgeInfoDAO.save(voterModificationAgeInfo);
+									     }
 								     }
 							 }
 						 }
@@ -1687,7 +1757,7 @@ public class VoterModificationService implements IVoterModificationService{
 			}
 	}
 	
-	public List<VoterModificationGenderInfoVO> setDefaultValuesForGenderwiseVoterModification(Long locationVal)
+	public List<VoterModificationGenderInfoVO> setDefaultValuesForGenderwiseVoterModification(Long locationVal,String locationType)
 	{
 		List<VoterModificationGenderInfoVO> genderInfoVOs = new ArrayList<VoterModificationGenderInfoVO>(0);
 		try{
@@ -1698,12 +1768,15 @@ public class VoterModificationService implements IVoterModificationService{
 			 genderInfoVO.setDeletedMale(0l);
 			 genderInfoVO.setDeletedFemale(0l);
 			 genderInfoVO.setDeletedTotal(0l);
-			 genderInfoVO.setMovedTotal(0l);
-			 genderInfoVO.setMovedMale(0l);
-			 genderInfoVO.setMovedFemale(0l);
-			 genderInfoVO.setRelocatedTotal(0l);
-			 genderInfoVO.setRelocatedMale(0l);
-			 genderInfoVO.setRelocatedFemale(0l);
+			 if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+			 {
+				 genderInfoVO.setMovedTotal(0l);
+				 genderInfoVO.setMovedMale(0l);
+				 genderInfoVO.setMovedFemale(0l);
+				 genderInfoVO.setRelocatedTotal(0l);
+				 genderInfoVO.setRelocatedMale(0l);
+				 genderInfoVO.setRelocatedFemale(0l);
+			 }
 			 genderInfoVO.setReportLevelValue(locationVal);
 			 genderInfoVOs.add(genderInfoVO);
 			return genderInfoVOs;
@@ -1831,7 +1904,7 @@ public class VoterModificationService implements IVoterModificationService{
 	 {
 		 try{
 			 StringBuilder stringBuilder = new StringBuilder();
-			 stringBuilder.append(" select count(model.voter.voterId),model.voterStatus.voterStatusId,model.voter.gender,"); 
+			 stringBuilder.append(" select count(model.voter.voterId),model.voterStatus.status,model.voter.gender,"); 
 			 
 			 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 				 stringBuilder.append(" model2.booth.constituency.constituencyId, model2.booth.constituency.name ");
@@ -1866,7 +1939,9 @@ public class VoterModificationService implements IVoterModificationService{
 			 if(optionVO != null)
 			 {
 				 List<Object[]> list  = null;
-				  list = voterModificationInfoDAO.getVoterModificationGenderDetailsByLocationValuesList(optionVO.getLocationValuesList(), publicationIdsList, constituencyId, votersAnalysisService.getReportLevelId(optionVO.getType()));
+				 
+				 if(optionVO.getType() != null && !optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
+				   list = voterModificationInfoDAO.getVoterModificationGenderDetailsByLocationValuesList(optionVO.getLocationValuesList(), publicationIdsList, constituencyId, votersAnalysisService.getReportLevelId(optionVO.getType()));
 				 if(list != null && list.size() > 0)
 					 getVotermodificationDetailsFromVoterModifInfoTable(list, voterModificationVOsList,optionVO,publicationIdsList,constituencyId,pubIdsListForTotVoters);
 				 else
@@ -1902,19 +1977,20 @@ public class VoterModificationService implements IVoterModificationService{
 					 {
 						if(id.equals(params[4]))
 						{
-						 if(params[3] != null && ((Long)params[3]).equals(1l))
+						 if(params[3] != null && params[3].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
 						 {
 							 modificationVO.setMaleVotersAdded((Long)params[1]);
 							 modificationVO.setFemaleVotersAdded((Long)params[2]);
 							 modificationVO.setAddedCount((Long)params[0]);
 						 }
-						 else if(params[3] != null && ((Long)params[3]).equals(2l))
+						 else if(params[3] != null && params[3].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
 						 {
 							 modificationVO.setMaleVotersDeleted((Long)params[1]);
 							 modificationVO.setFemaleVotersDeleted((Long)params[2]);
 							 modificationVO.setDeletedCount((Long)params[0]);
 						 }
-						 else if(params[3] != null && ((Long)params[3]).equals(3l))
+						 
+						 /* else if(params[3] != null && ((Long)params[3]).equals(3l))
 						 {
 							 modificationVO.setMaleVotersMoved((Long)params[1]);
 							 modificationVO.setFemaleVotersMoved((Long)params[2]);
@@ -1925,7 +2001,7 @@ public class VoterModificationService implements IVoterModificationService{
 							 modificationVO.setMaleVotersRelocated((Long)params[1]);
 							 modificationVO.setFemaleVotersRelocated((Long)params[2]);
 							 modificationVO.setRelocatedCount((Long)params[0]);
-						 }
+						 } */
 						 if(modificationVO.getId() == null)
 						 {
 							   modificationVO.setId((Long)params[4]);
@@ -2002,7 +2078,7 @@ public class VoterModificationService implements IVoterModificationService{
 					 {
 						if(locationName.equalsIgnoreCase(params[4].toString()))
 						{
-							 if(params[1] != null && ((Long)params[1]).equals(1l))
+							 if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
 							 {
 								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 									 modificationVO.setMaleVotersAdded((Long)params[0]);
@@ -2012,7 +2088,7 @@ public class VoterModificationService implements IVoterModificationService{
 								 modificationVO.setAddedCount(modificationVO.getMaleVotersAdded()+modificationVO.getFemaleVotersAdded());
 							 
 							 }
-							 if(params[1] != null && ((Long)params[1]).equals(2l))
+							 if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
 							 {
 								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
 									 modificationVO.setMaleVotersDeleted((Long)params[0]);
@@ -2021,25 +2097,27 @@ public class VoterModificationService implements IVoterModificationService{
 								 
 								 modificationVO.setDeletedCount(modificationVO.getMaleVotersDeleted()+modificationVO.getFemaleVotersDeleted());
 							 }
-							 
-							 if(params[1] != null && ((Long)params[1]).equals(3l))
+							 if(optionVO.getType() != null && optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
 							 {
-								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-									 modificationVO.setMaleVotersMoved((Long)params[0]);
-								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-									 modificationVO.setFemaleVotersMoved((Long)params[0]);
+								 if(params[1] != null&& params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+								 {
+									 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+										 modificationVO.setMaleVotersMoved((Long)params[0]);
+									 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+										 modificationVO.setFemaleVotersMoved((Long)params[0]);
 								 
-								 modificationVO.setMovedCount(modificationVO.getMaleVotersMoved()+modificationVO.getFemaleVotersMoved());
-							 }
+									 modificationVO.setMovedCount(modificationVO.getMaleVotersMoved()+modificationVO.getFemaleVotersMoved());
+								 }
 							 
-							 if(params[1] != null && ((Long)params[1]).equals(4l))
-							 {
-								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-									 modificationVO.setMaleVotersRelocated((Long)params[0]);
-								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-									 modificationVO.setFemaleVotersRelocated((Long)params[0]);
+								 if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+								 {
+									 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+										 modificationVO.setMaleVotersRelocated((Long)params[0]);
+									 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+										 modificationVO.setFemaleVotersRelocated((Long)params[0]);
 								 
-								 modificationVO.setRelocatedCount(modificationVO.getMaleVotersRelocated()+modificationVO.getFemaleVotersRelocated());
+									 modificationVO.setRelocatedCount(modificationVO.getMaleVotersRelocated()+modificationVO.getFemaleVotersRelocated());
+								 }
 							 }
 						 
 							 if(optionVO.getType() != null && optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
