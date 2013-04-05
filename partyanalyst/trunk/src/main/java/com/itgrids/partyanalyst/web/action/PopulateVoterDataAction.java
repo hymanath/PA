@@ -5,22 +5,23 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PopulateVoterDataAction extends ActionSupport implements ServletRequestAware{
 	
+	private static final Logger Log = Logger.getLogger(PopulateVoterDataAction.class);
 	private HttpServletRequest request;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private IVotersAnalysisService votersAnalysisService;
@@ -176,7 +177,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			if(regVO == null)
 				return null;
 			Long userId =  regVO.getRegistrationID();
-			resultStatus = voterReportService.insertVotersPartyDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			//resultStatus = voterReportService.insertVotersPartyDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			resultStatus = votersAnalysisService.updateVoterStatusInVoterModification(jObj.getLong("id"));
 			return Action.SUCCESS;
 			
 		}
