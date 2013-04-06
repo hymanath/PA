@@ -88,7 +88,7 @@ google.load("visualization", "1", {packages:["corechart"]});
     padding: 10px;
     text-align: left;
 }
-#impFamilesBasicSubDetails table a,#impFamilesBasicSubDetailsForHamlet a,#impfamilydatatable.dataTable a{color:#0088CC;text-decoration:none;}
+#impFamilesBasicSubDetails table a,#impFamilesBasicSubDetailsForHamlet a,#impfamilydatatable.dataTable a,#impFamilesBasicSubDetailsForHamletByBooth table a{color:#0088CC;text-decoration:none;}
 #impFamilesBasicSubDetails table td,#impFamilesBasicSubDetailsForHamlet table td ,#impFamilesBasicSubDetailsForHamletByBooth table td{
     color: #676A67;
     font: small-caption;
@@ -462,9 +462,11 @@ function callAjax(jsObj,url)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
 								if(jsObj.task == "importantFamiliesinfo")
 								{ 
-									 
+									
 									buildImpFamilesChart(myResults);
 									buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
+									 if(requestFor == "booth")
+									buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
 
 									 if(jsObj.buildType == "booth" && myResults.subList != null && myResults.subList.length > 0)
 							  		  {
@@ -1347,7 +1349,7 @@ else
 
 getImpFamiliesVotersToShow();
 }
-if(maintype == "hamlet"){
+if(maintype == "hamlet" && requestFor != "booth"){
 //getImpFamiliesVotersToShowForBooth();
 $('#impFamPancBothDtlsAgxImg').show();
 	  getvotersBasicInfo();
@@ -1425,6 +1427,9 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		     if(impFamilesData[t].type != null)
 			   reqtytle = impFamilesData[t].type;
 		  }
+		  if(requestFor=="booth")
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Booth wise voters family analysis of "+name+" in "+publicationYear+"</b>");
+		  else
 		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet wise voters family analysis of "+name+" in "+publicationYear+"</b>");
 		  var impFamilesColumnDefs = [
 		    {key:"name", label: ""+reqtytle+"", sortable: true},
@@ -1454,6 +1459,8 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		oDT: impFamilesDataTable
 		};
 }
+if(requestFor == "booth")
+getImpFamiliesVotersToShowForBooth();
 </script>
 </body>
 </html>

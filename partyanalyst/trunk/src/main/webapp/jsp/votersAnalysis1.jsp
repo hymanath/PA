@@ -1440,9 +1440,9 @@ for  body3 start    result  -->
 
 	<input id="impFamiliesForHamletsByBooth" type="button" value="View Hamlet Wise Family Details " onclick="getImpFamiliesVotersForHamletBooth1();" class="btn btn-info" style="display:none;"/>
 	
-		 <input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
+		<!-- <input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />-->
 	
-	
+	<input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersForBooth1();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
 	
 	<input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVoters();" class="btn btn-info" style="float:right;"/>
 	  <!-- <input id="" type="button" value="Test" onclick="impFamilesAllInfoForHamletPopUp();" class="btn btn-info" style="float:right;"/> -->
@@ -1871,7 +1871,17 @@ var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDa
 	{
 		var space = "";
 var mainreqid = $("#constituencyList").val()
-var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type='hamlet'&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
+var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type=hamlet&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+" "
+
+	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+		browser1.focus();
+	}
+
+	function getImpFamiliesVotersForBooth1()
+	{
+
+var mainreqid = $("#constituencyList").val()
+var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type=hamlet&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+"&requestFor=booth "
 
 	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
