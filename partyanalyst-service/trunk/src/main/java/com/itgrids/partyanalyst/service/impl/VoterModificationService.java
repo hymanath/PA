@@ -2197,7 +2197,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 Long locationValue = voterModificationVO.getLocationValue();
 		 String type = voterModificationVO.getLocationType();
 		 String isForGender = voterModificationVO.getIsForGender();
-		 String status = voterModificationVO.getStatus();
+		 Long voterStatusId = voterModificationVO.getVoterStatusId();
 		 
 		 StringBuffer queryStr = new StringBuffer();
 		 
@@ -2223,7 +2223,7 @@ public class VoterModificationService implements IVoterModificationService{
 				 queryStr.append("and model.voter.age > 60");
 			 
 		 }
-		 queryStr.append(" and model.status = '"+status+"'");
+		 queryStr.append(" and model.voterStatus.voterStatusId = '"+voterStatusId+"'");
 		 
 		 
 		List<Object[]> votersList =  voterModificationDAO.getAllSelectedVotersDetails(constituencyId, publicationIdsList,locationValue,type,queryStr.toString());
