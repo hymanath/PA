@@ -8236,12 +8236,12 @@ function  buildFamilyMembers1(result,jsObj,type){
 
 function getImpFamiliesVotersForHamletBooth1()
 {
-	
+		
 	var mainreqid = $("#constituencyList").val();
 	var constituencyId = $('#constituencyList').val();
 //var urlstr = "voterFamilyInfoAction.action?type=booth&id=123020&publicationDateId=8&typename=''&constituencyId=232&requestFor=hamletBooth&task=importantFamiliesinfoForHamletsByBooth ";
 
-var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicationDateId="+mainpublicationId+"&typename=''&constituencyId="+constituencyId+"&requestFor=hamletBooth&task=importantFamiliesinfoForHamletsByBooth ";
+var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicationDateId="+mainpublicationId+"&typename=''&constituencyId="+constituencyId+"&requestFor=hamletBooth&task=importantFamiliesinfoForHamletsByBooth&publicationYear="+publicationYear+" ";
 	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 }
