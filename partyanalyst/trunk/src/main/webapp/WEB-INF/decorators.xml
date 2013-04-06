@@ -77,7 +77,6 @@
 	    <pattern>/assigningCandidatesToVoterAction.action*</pattern>
 	    <pattern>/localBodyElectionResultsAction.action*</pattern>
 	    <pattern>/ageWiseVoterDetailsAction.action*</pattern>
-	    <pattern>/ageWiseVoterDetailsActionForCast*</pattern>
 	    <pattern>/voterFamilyInfoAction*</pattern>
 	    <pattern>/voterFamilyEditAction*</pattern>
 	</excludes>  
@@ -200,7 +199,6 @@
     	<pattern>/voterFamilyInfoAction*</pattern>
     	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
     	<pattern>/voterFamilyEditAction*</pattern>
-    	<pattern>/ageWiseVoterDetailsActionForCast*</pattern>
 		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
     	</decorator>
