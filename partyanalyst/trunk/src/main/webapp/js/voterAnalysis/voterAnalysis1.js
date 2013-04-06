@@ -2526,7 +2526,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 
 		else
-		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+			str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+
+		//str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}else if(type =="booth")
 		{
 		
@@ -2578,8 +2580,10 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	}
 
 
-function getVotersInACasteForLocality(id , publicationDateId , hamletId , casteStateId,casteCategory)
+function getVotersInACasteForLocality(id , publicationDateId , casteStateId,casteCategory,caste,localityId,name)
 {
+var publicationDateVal=$('#publicationDateList :selected').text();
+var year=publicationDateVal.substr(publicationDateVal.length - 4)
 	var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
@@ -2587,7 +2591,11 @@ function getVotersInACasteForLocality(id , publicationDateId , hamletId , casteS
 			hamletId:mainreqid,
 			type:"locality",
             buildType:"",
-			task:"getVotersInACaste"
+			task:"getVotersInACaste",
+			casteCategory:casteCategory,
+			Name:name+"-"+localityId,
+			publicationDate:year,
+			casteName:caste,
 
 		}
 
