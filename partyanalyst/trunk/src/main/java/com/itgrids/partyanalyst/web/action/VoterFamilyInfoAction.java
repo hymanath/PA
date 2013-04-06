@@ -24,6 +24,15 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private Long constituencyId;
 	
 	private String publicationYear;
+    private String requestFor;
+	
+	public String getRequestFor() {
+		return requestFor;
+	}
+
+	public void setRequestFor(String requestFor) {
+		this.requestFor = requestFor;
+	}
 	
 	public String getMaintype() {
 		return maintype;
@@ -95,6 +104,12 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 		
 		
 		return SUCCESS;
+		
+	}
+	
+	public String voterFamilyInfoForHamlets()
+	{
+		return Action.SUCCESS;
 		
 	}
 
