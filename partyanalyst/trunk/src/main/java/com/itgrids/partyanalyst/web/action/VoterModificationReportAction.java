@@ -402,7 +402,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
 		Long toPublicationDateId = jObj.getLong("toPublicationDateId");
 		String forGender = jObj.getString("forGender");
-		String status = jObj.getString("status");
+		Long voterStatusId = jObj.getLong("voterStatusId");
 		Long ageRangeId = jObj.getLong("ageRangeId");
 		String gender = jObj.getString("gender");
 		
@@ -416,7 +416,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		voterModificationVO.setPreviousPublicationId(fromPublicationDateId);
 		voterModificationVO.setPresentPublicationId(toPublicationDateId);
 		voterModificationVO.setIsForGender(forGender);
-		voterModificationVO.setStatus(status);
+		voterModificationVO.setVoterStatusId(voterStatusId);
 		voterModificationVO.setAgeRangeId(ageRangeId);
 		voterModificationVO.setGender(gender);
 		

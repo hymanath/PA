@@ -8,6 +8,9 @@
 
 <script type="text/javascript" src="js/boothWiseVoterModificationInfo/boothWiseVoterModificationInfo.js"></script>
 
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/blockui.js"></script>
+
   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
   <style type="text/css">
@@ -66,6 +69,7 @@
 		   <div id="subLevelAjaxImageDiv" style="display:none;margin-left:400px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
   </div>
 
+<div id="GenderOrAddedVotersPopup"><div id="GenderOrAddedVotersTable"><div></div>
 
 </div>
 
