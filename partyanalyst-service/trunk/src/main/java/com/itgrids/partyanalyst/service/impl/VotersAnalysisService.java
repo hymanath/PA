@@ -13478,10 +13478,35 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				}
 			}
 			
-			voterModificationDAO.updateVoterStatus(1l,add);
+			/*voterModificationDAO.updateVoterStatus(1l,add);
 			voterModificationDAO.updateVoterStatus(2l,del);
 			voterModificationDAO.updateVoterStatus(3l,mov);
-			voterModificationDAO.updateVoterStatus(4l,rel);
+			voterModificationDAO.updateVoterStatus(4l,rel);*/
+			
+			for(Long vid :add)
+			{
+				VoterModification modification = voterModificationDAO.get(vid);
+				modification.setVoterStatus(voterStatusDAO.get(1l));
+				voterModificationDAO.save(modification);
+			}
+			for(Long vid :del)
+			{
+				VoterModification modification = voterModificationDAO.get(vid);
+				modification.setVoterStatus(voterStatusDAO.get(2l));
+				voterModificationDAO.save(modification);
+			}
+			for(Long vid :mov)
+			{
+				VoterModification modification = voterModificationDAO.get(vid);
+				modification.setVoterStatus(voterStatusDAO.get(3l));
+				voterModificationDAO.save(modification);
+			}
+			for(Long vid :rel)
+			{
+				VoterModification modification = voterModificationDAO.get(vid);
+				modification.setVoterStatus(voterStatusDAO.get(4l));
+				voterModificationDAO.save(modification);
+			}
 			
 		}
 		return resultstatus;
