@@ -3790,6 +3790,11 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				 if(requestFor.equalsIgnoreCase("booth")){
 					 
 				    ImportantFamiliesInfoVo importantFamiliesInfoVo  = new ImportantFamiliesInfoVo();
+				    
+					// importantFamiliesInfoVo = getImportantFamiliesForhamlet(userId , type,id,publicationDateId,"main",constituencyId);
+				    
+				    getImpFamilesInfoDetailsForHamlet(userId,id,publicationDateId,importantFamiliesInfoVo);
+
 				    importantFamiliesInfoVo.setType("Hamlet");
 				    importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
 						
