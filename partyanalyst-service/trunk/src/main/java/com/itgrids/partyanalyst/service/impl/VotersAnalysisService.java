@@ -4772,7 +4772,7 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 			}
 			if(userVoterDetails.getCasteState() != null){
 				voterHouseInfoVO.setCasteStateId(userVoterDetails.getCasteState().getCasteStateId());
-			}else
+			}
 			
 			if(userVoterDetails.getHamlet() !=null)
 			{
