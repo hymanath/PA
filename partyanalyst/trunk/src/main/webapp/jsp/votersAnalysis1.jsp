@@ -1064,8 +1064,6 @@ maxDate: new Date()
 <div id="votersouterDiv" class="widget green">
 <!--<fieldset>-->
 
-
-
 <div id='MainHeading'><h3 style="font-size: 19.5px;font-family:verdana;">Get your Constituency's Complete Information up to Booth Level.</h3><h4 style="font-weight:normal;border:0px;text-transform:none;">Please select your Constituency and Publication Date to view Constituency Wise Analysis.</h4></div>
 
 <div id="categoeryCreationDiv" style="float:right;">
@@ -1440,7 +1438,7 @@ for  body3 start    result  -->
 	  
 	<div>
 
-	<input id="impFamiliesForHamletsByBooth" type="button" value="View Hamlet Wise Family Details For Booth" onclick="getImpFamiliesVotersForHamletBooth();" class="btn btn-info" style="display:none;"/>
+	<input id="impFamiliesForHamletsByBooth" type="button" value="View Hamlet Wise Family Details " onclick="getImpFamiliesVotersForHamletBooth1();" class="btn btn-info" style="display:none;"/>
 	
 		 <input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersToShowForBooth();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
 	

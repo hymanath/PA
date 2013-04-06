@@ -77,10 +77,10 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 
 
-#impFamilesBasicSubDetails table,#impFamilesBasicSubDetailsForHamlet table,#impfamilydatatable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top:5px;margin-bottom:5px;}
-#impFamilesBasicSubDetails table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable tr:nth-child(even){background:#EdF5FF;}
+#impFamilesBasicSubDetails table,#impFamilesBasicSubDetailsForHamlet table,#impfamilydatatable,#impFamilesBasicSubDetailsForHamletByBooth table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top:5px;margin-bottom:5px;}
+#impFamilesBasicSubDetails table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#impFamilesBasicSubDetailsForHamletByBooth tr:nth-child(even){background:#EdF5FF;}
 #impFamilesBasicSubDetails table tr:nth-child(odd),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(odd),#impfamilydatatable tr:nth-child(odd){background:#ffffff;}
-	#impfamilydatatable th,#impFamilesBasicSubDetails table th,#impFamilesBasicSubDetailsForHamlet table th {
+	#impfamilydatatable th,#impFamilesBasicSubDetails table th,#impFamilesBasicSubDetailsForHamlet table th ,#impFamilesBasicSubDetailsForHamletByBooth table th {
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -89,7 +89,7 @@ google.load("visualization", "1", {packages:["corechart"]});
     text-align: left;
 }
 #impFamilesBasicSubDetails table a,#impFamilesBasicSubDetailsForHamlet a,#impfamilydatatable.dataTable a{color:#0088CC;text-decoration:none;}
-#impFamilesBasicSubDetails table td,#impFamilesBasicSubDetailsForHamlet table td {
+#impFamilesBasicSubDetails table td,#impFamilesBasicSubDetailsForHamlet table td ,#impFamilesBasicSubDetailsForHamletByBooth table td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -167,6 +167,17 @@ google.load("visualization", "1", {packages:["corechart"]});
 <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid #d3d3d3;"></div>
 
 <br>
+
+<div id="impFamilesnfoForHamletByBooth">
+       <div id ="impFamilesBasicInfoSubChartDivForHamletsByBooths" style="border:1px solid black"></div>
+			<div id ="emprtyData"></div>
+		<!--<div id = "assigAndUnassig"></div>-->
+		<div id ="impFamilesBasicSubDetailsForHamletByBoothTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
+		<div id ="impFamilesBasicSubDetailsForHamletByBooth" style="border:1px solid black"></div>
+		<div id="descriptionDiv1" ></div>
+		<div id="impFamPancBothDtlsAgxImgForHamletByBooth" style="display:none;margin-top:15px;text-align:center;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+		<div id="importantFamiliesForBooth"></div>
+	   </div>
 
 
 <div id="hamletDiv" class="widget blue whitegloss" >
@@ -262,6 +273,8 @@ var maintype="${maintype}";
 var constituencyId ="${constituencyId}";
 var publicationYear = "${publicationYear}";
 var impFamiliesEditArray = new Array();
+var requestFor = '${requestFor}';
+
 
 function getImpFamiliesVotersForHamlet()
 {
@@ -506,6 +519,11 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getUserCategories")
 								{
 									buildCategories(myResults);
+								}
+								else if(jsObj.task == "importantFamiliesinfoForHamletsByBooth"){
+									buildImpFamilesChartForHamletsByBooth(myResults);
+								buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
+
 								}
 
 								else if(jsObj.task == "getVotersInAFamily")
@@ -1175,7 +1193,6 @@ function checkForAttributesToDisplay(){
 
 function getvotersBasicInfo(){
 
-
 if(type == "mandal" || type=="constituency")
 	$("#hamletDiv").hide();
 else
@@ -1217,9 +1234,33 @@ $("#impFamilesBasicSubDetailsDiv").show();
 				typename:impFamltypename,
 				constituencyId:constituencyId,
 				buildType:buildType,
-				requestFor:"",
+				requestFor:"hamletBooth",
 
 				task:"importantFamiliesinfo"
+	
+			}
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+			
+		
+         var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+									
+		callAjax(jsObj1,url1);
+}
+
+function getvotersBasicInfoForBooth(){
+
+   
+	   var jsObj1=
+			{
+					
+				type:type,
+				id:id,
+				publicationDateId:publicationDateId,
+				typename:impFamltypename,
+				constituencyId:constituencyId,
+				buildType:buildType,
+				requestFor:"hamletBooth",
+				task:"importantFamiliesinfoForHamletsByBooth"
 	
 			}
 	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -1297,8 +1338,11 @@ function impFamilesVariableDescription1()
 if(maintype != "hamlet")
 {
 
+if(requestFor == "hamletBooth")
+ getvotersBasicInfoForBooth();
+else
+	getvotersBasicInfo();
 
-getvotersBasicInfo();
 
 getImpFamiliesVotersToShow();
 }
@@ -1310,8 +1354,105 @@ $('#impFamPancBothDtlsAgxImg').show();
   impFamilesAllInfoForHamletPopUp();
 
 	  }
+
+	  function buildImpFamilesChartForHamletsByBooth(chartInfo)
+		{
+			
+			var totalCount = 0;
+			var below3 = 0;
+			var between4And6 = 0;
+			var between7And10 = 0;
+			var above10 = 0;
+		   for(var i in chartInfo.subList)
+			{
+			   below3 = below3+ chartInfo.subList[i].below3;
+			   between4And6 = between4And6 + chartInfo.subList[i].betwn4to6;
+			   between7And10 = between7And10 + chartInfo.subList[i].betwn4to6;
+			   above10 = above10 + chartInfo.subList[i].above10;
+		   }
+		   totalCount = below3 + between4And6 + between7And10 + above10;
+
+			var below3Perc = Math.round((below3/totalCount)*100);
+			var between4And6Perc = Math.round((between4And6/totalCount)*100);
+			var between7And10Perc = Math.round((between7And10/totalCount)*100);
+			var above10Perc = Math.ceil((above10/totalCount)*100);
+
+			//hideAjaxImgDiv('ImpFamwiseAjaxDiv');
+			var data = google.visualization.arrayToDataTable([
+					  ['Task', 'Percentage'],
+					  ['Families Below 3 Voters',  below3Perc],
+					  ['Families Between 4-6 Voters', between4And6Perc],
+					  ['Families Between 7-10 Voters',  between7And10Perc],
+					  ['Families Above 10 Voters', above10Perc]
+					]);
+
+			// Set chart options
+			var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+			var options = {'title':title,
+			'width':800,
+			'height':280};
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDivForHamletsByBooths'));
+			chart.draw(data, options);
+
+		}
+
+
+function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
+		{
+		
+		var impFamiList = new Array();
+		  for(var i in impFamilesData){
+		     var data={};
+			 
+			 data["name"] = impFamilesData[i].name;  
+			 data["below3"] = impFamilesData[i].below3;
+			 data["below3perc"] = impFamilesData[i].below3perc;
+			 data["betwn4to6"] = impFamilesData[i].betwn4to6;
+			 data["betwn4to6perc"] = impFamilesData[i].betwn4to6perc;
+			 data["betwn7to10"] = impFamilesData[i].betwn7to10;
+			 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
+			 data["above10"] = impFamilesData[i].above10;
+			 data["above10perc"] = impFamilesData[i].above10perc;
+			 data["totalVoters"] =  impFamilesData[i].totalVoters;
+			 data["totalFemaleVoters"] = impFamilesData[i].totalFemaleVoters;
+			 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
+			 impFamiList.push(data);
+		  }
+		  var reqtytle ="Name";
+		  for(var t in impFamilesData){
+		     if(impFamilesData[t].type != null)
+			   reqtytle = impFamilesData[t].type;
+		  }
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet wise voters family analysis of "+name+" in "+publicationYear+"</b>");
+		  var impFamilesColumnDefs = [
+		    {key:"name", label: ""+reqtytle+"", sortable: true},
+			{key:"totalVoters", label:"Total",sortable: true},
+			{key:"totalMaleVoters", label:"Male Voters",sortable: true},
+			{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
+		    {key:"below3", label: "<3", formatter:"number", sortable: true},
+		    {key:"below3perc", label: "<3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+		    {key:"betwn4to6", label: "4 to 6", formatter:"number", sortable: true},
+		    {key:"betwn4to6perc", label: "4 to 6%", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+		    {key:"betwn7to10", label: "7 to 10", formatter:"number", sortable: true},
+		    {key:"betwn7to10perc", label: "7 to 10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
+		    {key:"above10", label: ">10", formatter:"number",sortable:true},
+		    {key:"above10perc", label: ">10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
+		  ];
+		var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
+		impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		impFamilesDataSource.responseSchema = {
+		fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
+		};
+		var myConfigs = {
+		};
+		var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetailsForHamletByBooth", impFamilesColumnDefs,
+		impFamilesDataSource, myConfigs);
+		return {
+		oDS: impFamilesDataSource,
+		oDT: impFamilesDataTable
+		};
+}
 </script>
 </body>
-
-
 </html>
