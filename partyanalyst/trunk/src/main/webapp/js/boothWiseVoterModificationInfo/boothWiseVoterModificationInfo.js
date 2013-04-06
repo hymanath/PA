@@ -104,7 +104,7 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 		var locationType1 = myResults.modifiedVotersList[i].locationType;
 		var locationId1 =  myResults.modifiedVotersList[i].id;
 		  str+='<tr>';
-		  str+='<td style="text-align:left;">'+myResults.modifiedVotersList[i].name+'</td>';
+		  str+='<td style="text-align:left;"><a class="voterInfoLinksCLS" title="Click Here to View '+myResults.modifiedVotersList[i].name+' '+myResults.modifiedVotersList[i].locationType+' wise Added / Deleted Voters Info " href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].name+'</a></td>';
 
 			for(var k in publicationList)
 			  str +='<td>'+publicationList[k].id+'</td>';
@@ -322,3 +322,11 @@ $('#GenderOrAddedVotersPopup').dialog({
 $('#dt').dataTable();
 }
 //
+
+function openNewWindow(locationType, locationId)
+{
+  var urlStr ='voterModificationReportAction.action?constituencyId='+constituencyId+'&fromPublicationDateId='+fromPublicationDateId+'&toPublicationDateId='+toPublicationDateId+'&locationType='+locationType+'&locationValue='+locationId+'&';
+
+  var updateBrowser = window.open(urlStr,'',"scrollbars=yes,height=600,width=750,left=200,top=200", '_blank');	
+	updateBrowser.focus();
+}
