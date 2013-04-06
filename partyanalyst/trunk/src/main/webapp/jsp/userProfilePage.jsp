@@ -431,7 +431,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						<div id="viewAllAnnouncements" style="margin-left: 313px;"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
 						</div>
 						</c:if>
-						<div class="FavoriteLinksDiv breadcrumb whitegloss"  style=" margin-top: -26px; display: inline-block; width: 414px; margin-left: 11px;">
+						<div class="FavoriteLinksDiv breadcrumb whitegloss"  style=" margin-top: -26px; width: 414px; margin-left: 11px;">
 							
 							<div class="stateDivMain ">
 								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
