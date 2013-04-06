@@ -1249,7 +1249,8 @@ $("#impFamilesBasicSubDetailsDiv").show();
 
 function getvotersBasicInfoForBooth(){
 
-   
+   $('#hamletDiv , #impFamilesBasicSubDetailsDiv').hide();
+
 	   var jsObj1=
 			{
 					
