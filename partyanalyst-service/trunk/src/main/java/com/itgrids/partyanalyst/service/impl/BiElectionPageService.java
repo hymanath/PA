@@ -3055,17 +3055,28 @@ public class BiElectionPageService implements IBiElectionPageService {
 		AlliancePartyResultsVO allianceGroup = null;
 		List villagesWiseResults = null;
 		
-		for(String elecId:electionsArr)
+		for(String elecId:electionsArr){
+			Set<Long> completedPartyIds = new HashSet<Long>();
 			for(String partyId:partiesArr){
+				if(completedPartyIds.contains(Long.valueOf(partyId.trim())))
+					continue;
 				String commaSeperatedPartyIds;
 				allianceGroup = staticDataService.getAlliancePartiesByElectionAndParty(new Long(elecId.trim()), new Long(partyId.trim()));
-				if(allianceGroup == null)
+				if(allianceGroup == null){
+					completedPartyIds.add(Long.valueOf(partyId.trim()));
 					commaSeperatedPartyIds = partyId;
-				else{
+				}else{
+					boolean exist = false;
 					StringBuilder partyIds = new StringBuilder();
-					for(SelectOptionVO party:allianceGroup.getAllianceParties())
+					for(SelectOptionVO party:allianceGroup.getAllianceParties()){
 						partyIds.append(","+party.getId());
+						if(completedPartyIds.contains(party.getId()))
+							exist = true;
+						completedPartyIds.add(party.getId());
+					}
 					commaSeperatedPartyIds = partyIds.substring(1).toString();
+					if(exist)
+						continue;
 				}
 					
 				if("0".equals(commaSeperatedPartyIds.trim())){
@@ -3083,7 +3094,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery.toString(), tehsilId);
 				getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, false, allianceGroup);
 			}
-		
+		}
 		return partiesResultsVO;
 	}
 
