@@ -33,47 +33,6 @@ ServletRequestAware ,ServletContextAware{
 	private Long startNumber;
 	private Long publicationYear;
 	
-	/*For castWiseVoterDetails */
-	
-	private Long id;
-	private String typeName;
-	private String resultFor;
-	private String queryType;
-	
-	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getTypeName() {
-		return typeName;
-	}
-
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-
-	public String getResultFor() {
-		return resultFor;
-	}
-
-	public void setResultFor(String resultFor) {
-		this.resultFor = resultFor;
-	}
-
-	public String getQueryType() {
-		return queryType;
-	}
-
-	public void setQueryType(String queryType) {
-		this.queryType = queryType;
-	}
-
 	public void setServletContext(ServletContext context) {
 		 this.context =context;	
 	}
@@ -166,22 +125,6 @@ ServletRequestAware ,ServletContextAware{
 	}
 
 	public String execute()
-	{
-		HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-		{
-			return Action.ERROR;
-		}
-		else
-		{
-			return Action.SUCCESS;
-		}
-		
-		
-	}
-	
-	public String getWindowForCast()
 	{
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
