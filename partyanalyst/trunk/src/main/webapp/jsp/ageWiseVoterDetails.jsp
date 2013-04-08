@@ -373,9 +373,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	str+='</tbody>';
 	str+='</table>';
 	$('#tableDiv').html(str);
-	$('#ageWiseDetailsTable').dataTable({
-		"aaSorting": [[ 1, "desc" ]]
-		});
+	$('#ageWiseDetailsTable').dataTable();
 	if(retrieveType == "all"){
 		$('#tableDiv').css('display','block');
 		$('#voterDetailsNote').css('display','block');
