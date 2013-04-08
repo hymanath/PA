@@ -926,8 +926,8 @@ public class StaticDataService implements IStaticDataService {
 		if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType())|| IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.GREATER_ELECTION_TYPE.equals(electionTypeObj.getElectionType())) {
 			resultsList = electionDAO.findStatesByElectionType(electionType);
 		} else {
-			resultsList = constituencyElectionDAO
-					.getParticipatedStateDetailsForAnElectionType(electionType);
+			//resultsList = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(electionType);
+			resultsList = electionDAO.getStatesBasedOnElectionTypeId(electionType, IConstants.ASSEMBLY_ELECTION_TYPE);
 		}
 		if (resultsList != null && resultsList.size() > 0) {
 			Iterator listIt = resultsList.listIterator();
