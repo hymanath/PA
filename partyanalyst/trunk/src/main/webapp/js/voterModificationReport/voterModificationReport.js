@@ -1262,12 +1262,7 @@ var str='';
 	$('#subLevelDiv').html(str);
 
 	$('#subLevelVotersTable').dataTable({
-		"aaSorting": [[ 1, "desc" ]],
-		"iDisplayLength":50,
-		"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
-		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null
-		] 
+		"aaSorting": [[ 1, "desc" ]] 
 		});
 }
 
