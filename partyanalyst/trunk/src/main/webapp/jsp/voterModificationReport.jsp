@@ -152,7 +152,7 @@
    <div class="btn btn-info" style="text-align: center; margin-top: 30px;width:938px;" >
 	<span style="color:#3F3F3F;"><h3>Added / Deleted Voters Info Report For ${locationName}&nbsp;<span style="text-transform: capitalize;">${locationTypeVariable}</span></h3></span>
 	<span><h5 style="font-size: 16px;padding:10px;"> Between <span style="border-bottom:1px solid;">  ${fromPublicationName}</span> To <span style="border-bottom:1px solid"> ${toPublicationName}</span></h5></span>
-  </div></div>
+  </div></div> 
 <div id="voterModReportMainDiv">
 
 
@@ -291,6 +291,7 @@
  <div id="voterimpFamDtls" class="yui-skin-sam yui-dt-sortable"></div>
  </div>
  <div id="GenderOrAddedVotersPopup"><div id="GenderOrAddedVotersTable"><div></div>
+ <div id="help_window"></div>
 <script type="text/javascript">
 
 getPublicationDate();
