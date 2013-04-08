@@ -5986,7 +5986,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			    else if(searchInfo.getSortByColum().equalsIgnoreCase("gender"))
 				      query.append(" order by model.voter.gender "+searchInfo.getSortBy());
 			    else if(searchInfo.getSortByColum().equalsIgnoreCase("age"))
-				      query.append(" order by model.voter.age "+searchInfo.getSortBy());
+				      query.append(" order by cast(model.voter.age, int) "+searchInfo.getSortBy());
 			    else if(searchInfo.getSortByColum().equalsIgnoreCase("gaurdian"))
 				      query.append(" order by model.voter.relativeName "+searchInfo.getSortBy());
 			    else if(searchInfo.getSortByColum().equalsIgnoreCase("relationship"))
