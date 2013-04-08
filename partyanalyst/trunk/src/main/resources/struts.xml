@@ -4764,7 +4764,7 @@
 			<result type="json" name="success">
 				<param name="root">fileVOs</param>
 			</result>
-		</action>
+		</action>	
 		<action name="ageWiseVoterDetailsAction" class="ageWiseVoterDetailsAction" >
 			<result name="success">/jsp/ageWiseVoterDetails.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
@@ -4777,6 +4777,11 @@
 			<result name="success">/jsp/problemsDisplayWindow.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+		<action name="ageWiseVoterDetailsActionForCast" class="ageWiseVoterDetailsAction"  method="getWindowForCast">
+			<result name="success">/jsp/castWiseVoterDetails.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
 		<action name="voterFamilyEditAction" class="voterFamilyEditAction">
 		  <result name="success">/jsp/voterFamilyDetailsEdit.jsp</result>
 		</action>
