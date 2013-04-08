@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IStateRegionDAO;
 import com.itgrids.partyanalyst.dao.IStateRegionDistrictDAO;
+import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInRegionVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
@@ -135,6 +136,7 @@ public class StateRegionService implements IStateRegionService {
 			List<String> partyNames = new ArrayList<String>();
 			PartyResultsInRegionVO partyResultsInRegionVO = null;
 			List<PartyInfoVO> partyAndAVGSeatsWon = new ArrayList<PartyInfoVO>();
+			Map<String,AlliancePartyResultsVO> alliances = new HashMap<String,AlliancePartyResultsVO>();
 			PartyInfoVO partySeatsInfoVO = null;
 			
 			for(SelectOptionVO party:allParties){
@@ -143,8 +145,14 @@ public class StateRegionService implements IStateRegionService {
 			allPartyIds = partyElectionDistrictResultDAO.getAllPartispatedPartiesInaAnElection(electionId, allPartyIds);
 			for(Long id : allPartyIds){
 				for(SelectOptionVO party:allParties){
-					if(party.getId().longValue() == id.longValue())
+					if(party.getId().longValue() == id.longValue()){
 						parties.add(party);
+						AlliancePartyResultsVO allianceGroup = staticDataService.getAlliancePartiesByElectionAndParty(electionId, id);
+						if(allianceGroup != null){
+							alliances.put(allianceGroup.getAllianceGroupName(), allianceGroup);
+						}
+						
+					}
 				}
 			}
 			for(SelectOptionVO party:parties){
@@ -160,6 +168,7 @@ public class StateRegionService implements IStateRegionService {
 				partyResultsInRegionVO.setRegionId(stateRegions.getId());
 				partyResultsInRegionVO.setRegionName(stateRegions.getName());
 				Map<Long,Double> disrtictCountMap = new HashMap<Long,Double>();
+				Map<String,List<Object[]>> allianceResultsMap = new HashMap<String,List<Object[]>>(); 
 				Double totalRegionPolledVotes = 0d;
 				//get districts for a region
 				List<Long> districtsInRegion = getDistrictsInARegion(stateRegions.getId(),stateRegions.getName());
@@ -176,11 +185,30 @@ public class StateRegionService implements IStateRegionService {
 				  if(count != null)
 				     totalRegionPolledVotes = totalRegionPolledVotes+count;
 				}
-				partyResultsInRegionVO.setPartyResultsInRegion(setPartyResultsInaRegionToVO(partyResults, parties,totalRegionPolledVotes));
+				for(AlliancePartyResultsVO alliance:alliances.values()){
+					List<Long> alliancePartyIds = new ArrayList<Long>();
+					for(SelectOptionVO party:alliance.getAllianceParties()){
+						alliancePartyIds.add(party.getId());
+					}
+					List<Object[]> allianceResult = partyElectionDistrictResultDAO.findAlliancePartyResultsForARegionInState(districtsInRegion, electionId, alliancePartyIds);
+					if(allianceResult != null && allianceResult.size() >0)
+						allianceResultsMap.put(alliance.getAllianceGroupName(),allianceResult);
+				}
+				partyResultsInRegionVO.setPartyResultsInRegion(setPartyResultsInaRegionToVO(partyResults, parties,totalRegionPolledVotes,allianceResultsMap,alliances));
 				
 				partyResultsInRegionVOLst.add(partyResultsInRegionVO);
 			}
 			
+			for(String alliance : alliances.keySet()){
+				AlliancePartyResultsVO alliancePartyResultsVO = alliances.get(alliance);
+				SelectOptionVO party = new SelectOptionVO();
+				party.setId(0l);
+				party.setName(alliance);
+				party.setType("alliance");
+				parties.add(party);
+				partyNames.add(alliance);
+			}
+			Collections.sort(partyNames);
 			for(int i=0; i<parties.size(); i++){
 				int seatsWon = 0;
 				for(int j=0; j<partyResultsInRegionVOLst.size(); j++)
@@ -223,7 +251,7 @@ public class StateRegionService implements IStateRegionService {
 	 * @return List<PartyResultsVO>
 	 */
 	@SuppressWarnings("unchecked")
-	private List<PartyResultsVO> setPartyResultsInaRegionToVO(List resultsLst, List<SelectOptionVO> staticParties,Double totalRegionPolledVotes) throws Exception{
+	private List<PartyResultsVO> setPartyResultsInaRegionToVO(List resultsLst, List<SelectOptionVO> staticParties,Double totalRegionPolledVotes,Map<String,List<Object[]>> allianceResultsMap,Map<String,AlliancePartyResultsVO> alliances) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Setting Party results to VO ..");
@@ -236,7 +264,7 @@ public class StateRegionService implements IStateRegionService {
 			String pConstavgPercentage = "0.00";
 			String percentage = "0.00";
 			resultVO = new PartyResultsVO();
-			
+			resultVO.setType("party");
 			Object[] values = (Object[])lstItr.next();
 			
 			resultVO.setPartyId((Long)values[0]);
@@ -259,11 +287,49 @@ public class StateRegionService implements IStateRegionService {
 			resultVO.setPConstavgPercentage(pConstavgPercentage);
 			partyResults.add(resultVO);
 		}
-			
+		
+		for(String key : allianceResultsMap.keySet()){
+			List<Object[]> allianceResult = allianceResultsMap.get(key);
+			for(Object[] values : allianceResult){
+				String pConstavgPercentage = "0.00";
+				String percentage = "0.00";
+				resultVO = new PartyResultsVO();
+				resultVO.setType("alliance");
+				resultVO.setPartyId(0l);
+				resultVO.setPartyName(key);
+				partiesContesting.add(key);
+				
+				String totSeatsWon = (String)values[0];
+				resultVO.setTotalSeatsWon(Integer.parseInt(totSeatsWon));
+				if(values[2] != null && ((Double)values[2]).doubleValue() > 0){
+					if(values[3] != null && ((Double)values[3]).doubleValue() > 0){
+						percentage = (new BigDecimal(((Double)values[2])*(100.0)/((Double)values[3]))).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					}
+					if(totalRegionPolledVotes != null && totalRegionPolledVotes.doubleValue() > 0 ){
+						pConstavgPercentage = (new BigDecimal(((Double)values[2])*(100.0)/(totalRegionPolledVotes))).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					}
+				}
+				String totConstiParticipated = (String)values[1];
+				resultVO.setSeatsParticipated(Integer.parseInt(totConstiParticipated));
+				resultVO.setPercentage(null);
+				resultVO.setPConstavgPercentage(pConstavgPercentage);
+				partyResults.add(resultVO);
+			}
+		}
+		
 		for(SelectOptionVO staticParty:staticParties)
 			if(!partiesContesting.contains(staticParty.getName())){
 				resultVO = new PartyResultsVO();
+				resultVO.setType("party");
 				resultVO.setPartyName(staticParty.getName());
+				resultVO.setTotalSeatsWon(0);
+				partyResults.add(resultVO);
+			}
+		for(String alliance:alliances.keySet())
+			if(!partiesContesting.contains(alliances.get(alliance).getAllianceGroupName())){
+				resultVO = new PartyResultsVO();
+				resultVO.setType("alliance");
+				resultVO.setPartyName(alliances.get(alliance).getAllianceGroupName());
 				resultVO.setTotalSeatsWon(0);
 				partyResults.add(resultVO);
 			}
@@ -343,56 +409,4 @@ public class StateRegionService implements IStateRegionService {
 	 return districtsInRegion;
 	}
 	
-     /*public StateElectionsVO getRegionWisePartyPerformance(Long stateId,Long electionId) {
-		
-		if(log.isDebugEnabled())
-			log.debug("Enter into getRegionWisePartyPerformance");
-		
-		StateElectionsVO stateElectionsVO = new StateElectionsVO();
-		
-		List<PartyResultsInRegionVO> partyResultsInRegionVOLst = new ArrayList<PartyResultsInRegionVO>();
-		
-		try{
-			
-			// get regions in a state
-			List<SelectOptionVO> regionsInState = getRegionsInAState(stateId);
-			
-			List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
-			List<Long> partyIds = new ArrayList<Long>();
-			List<String> partyNames = new ArrayList<String>();
-			PartyResultsInRegionVO partyResultsInRegionVO = null;
-			List<PartyInfoVO> partyAndAVGSeatsWon = new ArrayList<PartyInfoVO>();
-			PartyInfoVO partySeatsInfoVO = null;
-			
-			for(SelectOptionVO party:parties){
-				partyIds.add(party.getId());
-				partyNames.add(party.getName());
-			}
-			
-			Collections.sort(partyNames);
-			
-			for(SelectOptionVO stateRegions:regionsInState){
-				
-				partyResultsInRegionVO = new PartyResultsInRegionVO();
-				partyResultsInRegionVO.setRegionId(stateRegions.getId());
-				partyResultsInRegionVO.setRegionName(stateRegions.getName());
-				
-				//get districts for a region
-				List<Long> districtsInRegion = getDistrictsInARegion(stateRegions.getId(),stateRegions.getName());
-				
-				
-				
-			}
-			
-			
-		}catch(Exception ex){
-			
-			log.error("Exception Raised in getRegionWisePartyPerformance " , ex);
-			
-			return stateElectionsVO;
-		}
-		
-		
-		return stateElectionsVO;
-	}*/
 }

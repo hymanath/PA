@@ -31,6 +31,7 @@ public class PartyResultsVO {
 	private String ballotVotesPercentage;
 	private Long ballotVotes;
 	private String diffPercent;
+	private String type;
 	
 	// getters and setters
 	
@@ -198,6 +199,14 @@ public class PartyResultsVO {
 
 	public void setPConstavgPercentage(String constavgPercentage) {
 		pConstavgPercentage = constavgPercentage;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

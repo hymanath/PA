@@ -124,11 +124,25 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		
 	}
 	
-public List<Long> getAllPartispatedPartiesInaAnElection(Long electionId, List<Long> partyIds){
+    public List<Long> getAllPartispatedPartiesInaAnElection(Long electionId, List<Long> partyIds){
 		
 		Query queryObject = getSession().createQuery("select distinct model.party.partyId from PartyElectionDistrictResult " +
 				" model where model.election.electionId = ?  and  model.party.partyId in (:partyIds)");
 		queryObject.setParameter(0,electionId);
+		queryObject.setParameterList("partyIds",partyIds);
+		return queryObject.list();
+		
+	}
+    
+    public List<Object[]> findAlliancePartyResultsForARegionInState(List<Long> districtIds,Long electionId, List<Long> partyIds){
+		
+		Query queryObject = getSession().createQuery("select sum(model.totalSeatsWon),sum(model.totalConstiParticipated)," +
+				"sum(model.totalVotesGained),sum(model.totalValidVotes) from PartyElectionDistrictResult " +
+				" model where model.election.electionId = ? and " +
+				"model.district.districtId in (:districtIds) and  model.party.partyId in (:partyIds) ");
+		
+		queryObject.setParameter(0,electionId);
+		queryObject.setParameterList("districtIds",districtIds);
 		queryObject.setParameterList("partyIds",partyIds);
 		return queryObject.list();
 		
