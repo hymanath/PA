@@ -220,6 +220,16 @@ var selectedVotersArr = new Array();
 var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName;var RvoterNameType;var RguardianName;var Rgender;var RstartAge;var RendAge;var Rreqfields;var RreqfieldsArr;
 var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
  $(document).ready(function(){
+
+$("#pageDownBtn").live("click",function(){
+  $('html,body').animate({scrollTop: $(document).height()-800},2000);
+	
+});
+
+$("#pageUpBtn").live("click",function(){
+	$("html, body").animate({scrollTop:600}, 1000);
+});
+
 	$('.genderClass').live("keyup",function() {
 		$("#statusMsgDiv").html('');
 		var tal = $(this).val();
@@ -320,6 +330,8 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
   });
   var isMuncipality;
   function getVotersInfo(){
+
+	  $("#scrollBtnDiv").css("display","block");
 	isMuncipality=false;
 	if($('#mandalField').val().slice(0,1)==1){
 		isMuncipality=true;
@@ -2571,6 +2583,16 @@ $('#voterDetailsJqTable tr').each(function() {
 </head>
 <body>
   <div style="width:960px;margin-left:auto;margin-right:auto;">
+  
+ <div id="scrollBtnDiv" style="display:none;">
+	<div style="position: fixed; left :0px; top: 190px;">
+	   <img src="images/up_Arrow .png" id="pageUpBtn" width="30" title="click here to scroll up page"/>
+	</div>
+	<div style="position: fixed; left :0px; top: 240px;">
+		<img src="images/down_Arrow.png" id="pageDownBtn" width="30" title="click here to scroll down page"/>
+	</div>
+ </div>
+
       <div class="titleHeading">VOTERS SEARCH</div>
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
