@@ -43,7 +43,10 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	
+	<link href="styles/assets/css/bootstrap.css" rel="stylesheet" />
+		
 
 	<!-- YUI Dependency files (End) -->
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
