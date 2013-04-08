@@ -942,7 +942,7 @@ function addToPolitician(voterId,name)
 	   if(type == "constituency"){
 		var area='';
 		  $("#votersBasicInfoBtnDiv").show();
-		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show values</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 		  $("#votersShareBtn1").css('display','none');
 		  checkForLocalBodyElection();
 	   }
@@ -952,7 +952,7 @@ function addToPolitician(voterId,name)
 			$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 			$("#votersBasicInfoBtnDiv").show();
 			
-		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	   
 	   
 	   }
@@ -960,7 +960,7 @@ function addToPolitician(voterId,name)
 	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		  $("#votersBasicInfoBtnDiv").show();
-		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	   }else if(type == "hamlet"){
 		   $("#votersBasicInfoBtnDiv").show();
 		// $("#cnstHeading").html();
@@ -984,7 +984,7 @@ function addToPolitician(voterId,name)
 	     if(buildType == "hamlet"){
 		 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View Hamlet Wise Family Details");
-		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 		} else{
 			  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 		
@@ -1003,7 +1003,7 @@ function addToPolitician(voterId,name)
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 
 		$("#votersBasicInfoBtnDiv").show();
-		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Panchayat Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Panchayat Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Panchayat Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Panchayat Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 
 	   $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
@@ -1024,7 +1024,7 @@ function addToPolitician(voterId,name)
 		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		 {
 			$("#votersBasicInfoBtnDiv").show();
-			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
 		 if(type != "hamlet")
@@ -2640,7 +2640,6 @@ var jsObj={
 
 }
 function getvotersBasicInfo(buttonType,id,publicationId,type){
-    //debugger;
 	if(buttonType == "voters"){
       $("#votersByLocationTabContentDiv_body").html("");
    	  $("#votersByPanchayatTabContentDiv_body").html("");
@@ -4994,7 +4993,7 @@ chart.draw(data, options);
 }
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
-{ 
+{ alert(123435);
       $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
 	  
@@ -5227,7 +5226,7 @@ function buildVotersChart(chartInfo,reqTitle)
 		  data.setValue(i,0,name);
 		  data.setValue(i,1,val);
 		}
-        
+       
         // Set chart options
 		var title = chartInfo[0].type+' wise Voters % Share in '+reqTitle; 
         var options = {'title':title,
@@ -5782,7 +5781,46 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			
 		});
 
-		
+		$('#votersShareBtnss').live("click",function(){
+		var hresult="";
+
+		if(maintype == "booth"){
+			buildType="hamlet";
+		}
+		 if(maintype == "hamletBooth"){
+			 hresult="booth";
+			type="hamlet";
+		}
+		if(maintype == "hamletLocal"){
+			type="hamlet";
+			hresult="localArea";
+		}
+
+		var urlStr="voterBasicInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&publicationYear="+publicationYear+"&typeName="+mainname+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&resultFor="+hresult+"&type="+maintype+" ";
+		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=850,left=200,top=200");	
+		updateBrowser.focus();	
+		});
+
+		function getvotersBasicInfo1(buttonType,mainreqid,mainpublicationId,maintype){
+		var hresult="";
+
+		if(maintype == "booth"){
+			buildType="hamlet";
+		}
+		 if(maintype == "hamletBooth"){
+			 hresult="booth";
+			type="hamlet";
+		}
+		if(maintype == "hamletLocal"){
+			type="hamlet";
+			hresult="localArea";
+		}
+		var urlStr="voterBasicInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&publicationYear="+publicationYear+"&typeName="+mainname+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&resultFor="+hresult+"&type="+maintype+" ";
+		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=850,left=200,top=200");	
+		updateBrowser.focus();	
+
+		}
+
 		 function getParliamentConstituencyId()
 		{
 			
@@ -6212,7 +6250,7 @@ buildType="hamlet";
 	 if( maintype == "panchayat" ){
 	 
 	  $("#impFamiliesMoreInfoButn").attr("value","View Hamlet Wise Family Details");
-       $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+       $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
 	 }
@@ -6225,7 +6263,7 @@ buildType="booth";
 	 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 
 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
-$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtn' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
  }
 });
@@ -6281,7 +6319,7 @@ scrollToNewsDiv();
              astr += "<div id='sse2' style='display:none' >";
              astr += "<div id='sses2'>";
              astr += "<ul>";
-            astr += "<li class='btn btn-success btn-small highlight11' style=' margin-left:300px;' align='center' ><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+			   astr += "<li class='btn btn-success btn-small highlight11' style=' margin-left:300px;' align='center' ><a href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li id='myli'style='display:none'><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
