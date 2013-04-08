@@ -472,9 +472,11 @@ function showVoterInfo(results,jsObj)
 	$('#voterInfoDiv').html('');
 
 	var str = '';
-	str +='<div class="voterinfoHeading"><h2 style="padding-bottom: 12px;">Voters Basic Information In '+locationName+' '+locationTypeVar+'';
-	str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="View Booth Wise Voter Modification Details" class="btn btn-info"></h2></div>';
-	
+	str +='<div class="voterinfoHeading"><h2 style="height: 35px;padding-bottom: 12px;">Voters Basic Information In '+locationName+' '+locationTypeVar+'';
+	str +='<button  id="helpbutt" value="Help" style="float: right;width: 40px;" onClick="PopUpForHelp()" title="Click To View Help"><img alt="" src="./images/help.jpeg"></button>';
+	str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="View Booth Wise Voter Modification Details" class="btn btn-info">';
+	str +='</h2>';
+	str +='</div>';	
 	if(results != null)
 	{
 		
@@ -1441,3 +1443,24 @@ $.blockUI({ message: '<h4><img src="./images/icons/search.gif"/> Request Process
 	callAjax(jObj,url);
 }
 
+function PopUpForHelp(){
+
+var str='';
+str+='<div>'; 
+str+='<div><span>ADDED:Newly Added Voters</span></div></br>';
+str+='<div><span>DELETED:Deleted voters</span></div>';
+str+='</div>';
+$("#help_window").html(str);
+
+$("#help_window").dialog({
+				resizable:false,
+				title:'Help',
+				height: 'auto',
+				width:'600',
+				top:250,
+				left:100,
+				modal: true
+				
+	});
+			
+}
