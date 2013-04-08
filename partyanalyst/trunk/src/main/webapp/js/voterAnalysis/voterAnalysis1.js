@@ -27,6 +27,7 @@ var boothsLoc = new Array();
 var buildType = "hamlet";
 var assemblyLocalEleBodyId;
 var selectedId;
+var isLocalityDataExist = "true";
 
 function populate(id,boothId,publicationId,houseNo){
 
@@ -3220,7 +3221,11 @@ function buildCastInfoData(myresults,jsObj)
 	}
 	$('#votersMainOuterDiv2').show();
 	if(result.maleVoters > 0){
-	    $("#castPartyPopupShowBtn").show();
+		
+       if(maintype == jsObj.type && maintype == "hamlet" && isLocalityDataExist != null && isLocalityDataExist == 'false')
+        $("#castPartyPopupShowBtn").hide();
+	   else
+		   $("#castPartyPopupShowBtn").show();
 		$("#partyBasicInfoStatsTabNewTitle").html("<div id='partyDiv'><h2 id='subHeading'>Party Wise Voters Details</h2><input type='button' value='Graphical Representation Of Party Wise Voters Details' class='btn btn-info pull-right' onClick='showPartyWiseDetailsInGraph()' id='partyGraphButtonId'/></div>");
 	    $("#LocalCastDiv").css('padding-bottom','20px');
 	}
@@ -3421,7 +3426,12 @@ function buildPartyWisePiechart(myResults,jsObj)
 	var partyWise_header=document.getElementById('partyWise_header');
 	var results = myResults.voterCastInfodetails;
 	if(results.partyWiseAssignedVoters > 0){
-	  $("#castPartyPopupShowBtn").show();
+
+	 if(maintype == jsObj.type && maintype == "hamlet" && isLocalityDataExist != null && isLocalityDataExist == 'false')
+        $("#castPartyPopupShowBtn").hide();
+	   else
+		   $("#castPartyPopupShowBtn").show();
+
 	   $("#LocalCastDiv").css('padding','20px');
 	}
 	var voters= '';
@@ -8216,7 +8226,9 @@ function  buildFamilyMembers1(result,jsObj,type){
 		}
 
 		function hideAndShowLocalityDIvs(result,jsObj)
-		{  if(maintype == jsObj.type)
+		{  
+			isLocalityDataExist = result;
+			if(maintype == jsObj.type)
             {
 				if(maintype == "hamlet" && result != null && result == "false"){
 					$("#ageLink").hide();

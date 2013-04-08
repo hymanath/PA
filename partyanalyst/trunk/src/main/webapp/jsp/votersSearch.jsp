@@ -222,7 +222,7 @@ var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
  $(document).ready(function(){
 
 $("#pageDownBtn").live("click",function(){
-  $('html,body').animate({scrollTop: $(document).height()-800},2000);
+  $('html,body').animate({scrollTop: $(document).height()-800},1000);
 	
 });
 
@@ -332,6 +332,8 @@ $("#pageUpBtn").live("click",function(){
   function getVotersInfo(){
 
 	  $("#scrollBtnDiv").css("display","block");
+	
+	showAlert();
 	isMuncipality=false;
 	if($('#mandalField').val().slice(0,1)==1){
 		isMuncipality=true;
@@ -906,7 +908,7 @@ function buildCategoriesListInit(result){
 		str+='   <td style="padding-left:20px;"><input type="checkbox" id="serialnumbrCol" />  Serial Number</td>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="locality,Locality"/>  Locality</td>';
+		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality</td>';
 		
 		var x = 4;
 		if(result != null && result.category != null && result.category.length > 0){
@@ -2579,6 +2581,20 @@ $('#voterDetailsJqTable tr').each(function() {
 			callAjaxForCandSearch(jsObj,url);
 	}
 }
+
+function showAlert()
+	{
+		var level = $("#reportLevel").val();
+		var ele = document.getElementById('localityCheckBox');
+		if(ele.checked && (level == 1 || level == 2 || level == 5 || level == 6))
+		{
+		  $('#noteDiv').html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To Update Locality Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+		}
+		else
+		  $('#noteDiv').html('');
+	}
+
+
 </script>
 </head>
 <body>
@@ -2742,7 +2758,9 @@ $('#voterDetailsJqTable tr').each(function() {
 	   
 	   </table>
 	  </div>
-	  <input style="margin-left:265px;margin-bottom:10px;" onclick="getVotersInfo();" class="btn btn-success" type="button" value="Search"/>
+	  <input style="margin-left:240px;margin-bottom:10px;" onclick="getVotersInfo();" class="btn btn-success" type="button" value="Search"/>
+
+	  <div id="noteDiv" style="float: right;"></div>
 	   </fieldset>
 	   
 	 <div id="voterDetailsPopUp">

@@ -604,8 +604,12 @@ function showImportantFamiliesDiv()
 		showNewsDetails();
 		var reportLevel = $("#reportLevel").val();
 		var mandalId=document.getElementById("mandalField");
-		var name=mandalId.options[mandalId.selectedIndex].name;
-		var value1=mandalId.options[mandalId.selectedIndex].value;
+		var value1 = '';
+		if(mandalId.selectedIndex != -1 && mandalId != 0)
+		{
+			var name=mandalId.options[mandalId.selectedIndex].name;
+			var value1=mandalId.options[mandalId.selectedIndex].value;
+		}
 		var type = "mandal";
 		if(value1.charAt(0) =="1"){
 		 type = "muncipality";
@@ -614,8 +618,11 @@ function showImportantFamiliesDiv()
 		var publicationValue = $('#publicationDateList').val();
 		var alertEl = document.getElementById("AlertMsg");
 		alertEl.innerHTML = '';
-		var selectname = mandalId.options[mandalId.selectedIndex].text;
-		var flag= selectname.search("MUNCIPALITY");
+		if(mandalId.selectedIndex != -1 && mandalId != 0)
+		{
+			var selectname = mandalId.options[mandalId.selectedIndex].text;
+			var flag= selectname.search("MUNCIPALITY");
+		}
 		 if(value1 == 0)
 		{
 			alertEl.innerHTML ='<P>Please Select Mandal</P>';
