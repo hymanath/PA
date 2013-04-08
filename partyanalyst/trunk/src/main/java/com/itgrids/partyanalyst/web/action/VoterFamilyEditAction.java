@@ -80,7 +80,7 @@ public class VoterFamilyEditAction extends ActionSupport implements ServletReque
 	}
 
 
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
