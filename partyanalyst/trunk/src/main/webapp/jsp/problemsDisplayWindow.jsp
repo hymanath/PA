@@ -32,13 +32,16 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>
 <style type="text/css">
-#mainDiv
-{
-	color: #005580;
+#mainDiv {
+    background-color: #49AFCD;
+    border-radius: 4px 4px 4px 4px;
+    color: #005580;
     font-family: arial;
     font-size: 17px;
     font-weight: bolder;
+    height: 16px;
     margin-bottom: 10px;
+    padding: 10px;
 }
 .leftmargin
 {
@@ -239,7 +242,7 @@ getProblemDtailsByStatus();
 </script>
 </head>
 <body  style="background: none repeat scroll 0% 0% rgb(238, 238, 238);">
-<div id="mainDiv">PROBLEM DETAILS</div>
+<div id="mainDiv" align="center">PROBLEM DETAILS</div>
 <div id="headingDiv">
 <span id="statusId" style="color:green;">STATUS : </span>
 <span id="countId" style="color:green">COUNT : </span>
