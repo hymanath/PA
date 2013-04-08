@@ -1580,7 +1580,9 @@ for  body3 start    result  -->
 	</div>
 	<div style="clear:both;">
 	  <span id="castPartyNewPopupShowBtn"><input type="button" class="btn btn-info" value="View Castes Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
-	  <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
+	  	 <!-- <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>-->
+	  
+	  <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
 	</div>
 	<div id="castPartyPopupDiv" style="display:none"> 
 	 <div id="getLatestCastsSubcategoryWise"  style="float:right;"><input type="button" onclick="getLatestCastsSubcategoryWise();" value="Get Updated Caste Info" class="btn btn-info" /></div>
@@ -1633,7 +1635,7 @@ for  body3 start    result  -->
 		window.open($(this).attr('url'));		
 	});
 
-function getCastInfoForsubLevel(id,publicationId,type,resultFor)
+	function getCastInfoForsubLevel(id,publicationId,type,resultFor)
 	{
 	document.getElementById('localCastStatsVotersTitle').innerHTML='';
 	document.getElementById('localCastStatsTabContent_subbody').innerHTML='';
