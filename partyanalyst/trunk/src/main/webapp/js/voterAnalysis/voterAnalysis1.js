@@ -1,7 +1,6 @@
 
 
 
-
 var constMgmtMainObj={
 							
 							castStatsArray:[],
@@ -3343,7 +3342,7 @@ function buildCastInfoData(myresults,jsObj)
 	}
 function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
 {
-	
+			
 		  var result = results.voterCastInfodetails;
 		  var Data = result.partyWisevoterCastInfoVOList;
 		  if(Data == null || Data.length == 0)
@@ -8475,3 +8474,11 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 			var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDivForHamletsByBooths'));
 			chart.draw(data, options);
 		}
+
+		function showCastPartyWindow(){
+		
+			publicationDateId = $("#publicationDateList").val();
+			constituencyId = $("#constituencyList").val();
+			var reqBrowser = window.open("ageWiseVoterDetailsActionForCast.action?&type="+maintype+"&id="+mainreqid+"&typeName="+mainname+"&publicationDateId="+publicationDateId+"&constituencyId="+constituencyId+"&buildType="+buildType+"&queryType='sub' ","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			reqBrowser.focus();
+	}
