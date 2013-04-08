@@ -4769,7 +4769,14 @@
 			<result name="success">/jsp/ageWiseVoterDetails.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
-		
+		<action name="newsDisplayWindowAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/newsDisplayWindow.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="problemsDisplayWindowAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/problemsDisplayWindow.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		<action name="voterFamilyEditAction" class="voterFamilyEditAction">
 		  <result name="success">/jsp/voterFamilyDetailsEdit.jsp</result>
 		</action>

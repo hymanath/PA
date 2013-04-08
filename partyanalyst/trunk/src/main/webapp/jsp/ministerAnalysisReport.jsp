@@ -120,7 +120,13 @@ function getElectionYears(electionType,stId,electionId)
 	      document.getElementById("showHideState").style.display ="none";
     }
  function getAllStates(stateId,electionId)
-   {    
+   {  
+	if(stateId == null)
+	{
+		stateId = $('#stateListId').val();
+		electionId = $("#yearSelId option:selected").val();
+	}
+	
     var jsObj =
 		{ 
             time : new Date().getTime(),
@@ -136,6 +142,11 @@ function getElectionYears(electionType,stId,electionId)
   }
   function getStatesForAssembly(stateId,electionId)
   {
+	if(stateId == null)
+	{
+		stateId = $('#stateListId').val();
+		electionId = $("#yearSelId option:selected").val();
+	}
     var jsObj =
 		{ 
             time : new Date().getTime(),
@@ -514,6 +525,7 @@ function getElectionYears(electionType,stId,electionId)
   }
  function buildData(results,id,stateId,electionId)
  {
+ 
    var elmt = document.getElementById(id);
    
        for(var i in results)
@@ -534,12 +546,35 @@ function getElectionYears(electionType,stId,electionId)
 	
 	  } 
 	  if(id == "yearSelId" && electionId != undefined && electionId != null && electionId != ""){
-	    $("#yearSelId").val(electionId);
-		getDeltailForMinisImpCand();
+	  var status = false;
+	    
+		$('#yearSelId option').each(function(){
+		var id = $(this).val();
+		if(id == electionId && $("#stateListId").val() > 0)
+		{
+			status = true;
+		}
+		});
+	    if(status)
+		{
+			$("#yearSelId").val(electionId);
+			getDeltailForMinisImpCand();
+		}
 	  }
 	  if(id == "stateListId" && stateId != undefined && stateId != null && stateId != ""){
+	  var status = false;
 	    $("#stateListId").val(stateId);
+		$('#stateListId option').each(function(){
+		var id = $(this).val();
+		if(id == stateId)
+		{
+			status = true;
+		}
+		});
+	    if(status)
+		{
 		  getYears("Assembly",stateId,electionId);
+		}
 	  }
  }
  function showOthers()

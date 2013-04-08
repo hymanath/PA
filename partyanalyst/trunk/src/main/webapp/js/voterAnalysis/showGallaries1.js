@@ -959,7 +959,7 @@ function callAjaxToShowNewsDetails(jObj,url){
 
 
 function  buildProblemsCount(results){
-
+	
 	if(results.length == 0)
        $('#newsCountDiv').hide();
 	else
@@ -998,7 +998,6 @@ if(results == null || results.length == 0){
 	for(var i=0;i<results.length;i++){
 
 		 var categoryId = results[i].categoryId;
-
 	   str+='<div class="span3 btn" style="margin:10px 17px;">';
 
 	   str+='<h5 class="widget-block" style="font-size:16px;padding:5px 5px;padding-right:0px;margin-top:0px;">';
@@ -1034,10 +1033,17 @@ str+='<img src="./images/icons/search.gif" alt="Processing Image" id="newsAjaxIm
 var displayStr;
 var categoryStr;
 function getNews1(importanceId , categoryId , count){
-var noNews = false;
+	startIndex = 0;
+	lastIndex = 10;
+	var noNews = false;
 	if(count== null){
 		alert("No news Exist");
 		noNews = true;
+	}
+	else
+	{
+	var reqBrowser = window.open("newsDisplayWindowAction.action?locationValue="+locationValue+"&locationId="+locationId+"&importanceId="+importanceId+"&categoryId="+categoryId+"&startIndex="+startIndex+"&lastIndex="+lastIndex+"&count="+count+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	 reqBrowser.focus();
 	}
 	 categoryStr='';
 	 categoryStr+=' Category :';
@@ -1074,11 +1080,10 @@ var noNews = false;
 
 	}
 
-		startIndex = 0;
-	    lastIndex = 10;
+		
 
 		if(noNews == false){
-			$('#newsAjaxImage').css('display','block');
+			//$('#newsAjaxImage').css('display','block');
 		getNews(importanceId , categoryId);
 		}
 
@@ -1087,9 +1092,8 @@ var noNews = false;
 var startIndex;
 var lastIndex;
 function getNews(importanceId , categoryId){
-$('#newsAjaxImage').css('display','block');
-
-	var jObj=
+	 
+	/*var jObj=
 	{
 		locationValue:locationValue,
 		locationId:locationId,
@@ -1105,7 +1109,7 @@ $('#newsAjaxImage').css('display','block');
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "getNewsByLocation.action?"+rparam;	
 
-	callAjaxToShowNewsDetails(jObj,url);
+	callAjaxToShowNewsDetails(jObj,url);*/
 
 }
 
@@ -1122,7 +1126,6 @@ function displayNewsByImportance(jObj,results){
 
   for(var i=0;i<results.length;i++){
 	  var description=results[i].description;
-
   str+='<div style="height:50px;margin-bottom:4px;"  class="alert alert-info">';
 
     str+='<div style="height: 50px; float: left; width: 480px;">';
@@ -1464,8 +1467,9 @@ function getProblemsByLocation(id,publicationId,type)
 
 function getProblemDtailsByStatus(locationId,locationValue,status,srcId,title)
 {
-
-var jObj=
+var reqBrowser = window.open("problemsDisplayWindowAction.action?locationValue="+locationValue+"&locationId="+locationId+"&status="+status+"&srcId="+srcId+"&title="+title+"","newBrowser","width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+reqBrowser.focus();
+/*var jObj=
 	{
 		locationValue:locationValue,
 		locationId:locationId,
@@ -1495,7 +1499,7 @@ var jObj=
 		   }
 	     });	
 	   
-	   custom_paginator.initialize();						
+	   custom_paginator.initialize();	*/					
    	 
    }
 

@@ -32,7 +32,19 @@ ServletRequestAware ,ServletContextAware{
 	private String type;
 	private Long startNumber;
 	private Long publicationYear;
-	
+	private Long categoryId;
+	private Long importanceId;
+	private Long lastIndex;
+	private Long locationId;
+	private Long locationValue;
+	private Long publicationId;
+	private Long startIndex;
+	private String categoryStr;
+	private String displayStr;
+	private Long count;
+	private String status;
+	private Long srcId;
+	private String title;
 	public void setServletContext(ServletContext context) {
 		 this.context =context;	
 	}
@@ -122,6 +134,114 @@ ServletRequestAware ,ServletContextAware{
 
 	public void setPublicationYear(Long publicationYear) {
 		this.publicationYear = publicationYear;
+	}
+
+	
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Long getImportanceId() {
+		return importanceId;
+	}
+
+	public void setImportanceId(Long importanceId) {
+		this.importanceId = importanceId;
+	}
+
+	public Long getLastIndex() {
+		return lastIndex;
+	}
+
+	public void setLastIndex(Long lastIndex) {
+		this.lastIndex = lastIndex;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	public Long getPublicationId() {
+		return publicationId;
+	}
+
+	public void setPublicationId(Long publicationId) {
+		this.publicationId = publicationId;
+	}
+
+	public Long getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(Long startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	
+	public String getCategoryStr() {
+		return categoryStr;
+	}
+
+	public void setCategoryStr(String categoryStr) {
+		this.categoryStr = categoryStr;
+	}
+
+	public String getDisplayStr() {
+		return displayStr;
+	}
+
+	public void setDisplayStr(String displayStr) {
+		this.displayStr = displayStr;
+	}
+
+	
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Long getSrcId() {
+		return srcId;
+	}
+
+	public void setSrcId(Long srcId) {
+		this.srcId = srcId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String execute()

@@ -79,6 +79,8 @@
 	    <pattern>/ageWiseVoterDetailsAction.action*</pattern>
 	    <pattern>/voterFamilyInfoAction*</pattern>
 	    <pattern>/voterFamilyEditAction*</pattern>
+	    <pattern>/newsDisplayWindowAction.action*</pattern>
+	    <pattern>/problemsDisplayWindowAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
