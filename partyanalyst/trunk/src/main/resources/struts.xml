@@ -4791,5 +4791,10 @@
 				<param name="root">isLocalityExist</param>	
 		   </result>
 		</action>
+
+		<action name="voterBasicInfoAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/voterBasicInfo.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		</package>
 </struts>      
