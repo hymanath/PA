@@ -3985,37 +3985,73 @@ function buildRegionWiseDataTable(results)
    {
       var obj = new Array();
 	  var regions = new Array();
+	  var regionColours = new Array();
+	  var colours = new Array();
+	  colours.push("#2BA29A");
+	  colours.push("#5030B7");
+	  colours.push("#42973E");
+	  colours.push("#AB4176");
+	  colours.push("#383F38");
+
 	  for(var j in results.partyResultsInRegionVOLst){
 	    var objval = new Array();
 		objval["name"] = results.partyResultsInRegionVOLst[j].regionName;
 		regions.push(objval);
+		  if(j < colours.length){
+		    regionColours.push(colours[j]);
+		  }else{
+		    regionColours.push(colours[Math.floor(Math.random() * colours.length)]);
+		  }
+		  
+		
 	  }
 	  for(var i in  results.partyResultsInRegionVOLst[0].partyResultsInRegion)
 	  {
 	    var objval = new Array();
 	     objval["partyName"] = results.partyResultsInRegionVOLst[0].partyResultsInRegion[i].partyName;
+		 objval["partyType"] = results.partyResultsInRegionVOLst[0].partyResultsInRegion[i].type;
+		 objval["partyId"] = results.partyResultsInRegionVOLst[0].partyResultsInRegion[i].partyId;
 	     for(var j in results.partyResultsInRegionVOLst)
 		 {
 		   //var x = j+1;
-		   objval["seatsParticipated"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].seatsParticipated;
+		   if(results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].type == "party")
+		    objval["seatsParticipated"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].seatsParticipated;
+		   else
+			objval["seatsParticipated"+j] = null;
 		   objval["totalSeatsWon"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].totalSeatsWon;
 		   objval["percentage"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].percentage;
 		   objval["PConstavgPercentage"+j] = results.partyResultsInRegionVOLst[j].partyResultsInRegion[i].PConstavgPercentage;
 		 }
 		  obj.push(objval);
 	  }
-      buldDataTable(obj,regions);
+      buldDataTable(obj,regions,regionColours);
    }
 }
 
-function buldDataTable(obj,regions){
+function buldDataTable(obj,regions,regionColours){
   $("#regionWiseDataTableDiv").show();
   var resultsDataSource = new YAHOO.util.DataSource(obj);
 	resultsDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY;
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var partyIds = oRecord.getData("partyId");
+		var partyType = oRecord.getData("partyType");
+		if(Party != 'IND' && partyType == "party"){
+			elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
+	};
 	resultsDataSource.responseschema = {
 		fields : [
 		{
 			key : "partyName"
+		},{
+			key : "partyType"
+		},{
+			key : "partyId"
 		}
 		]
 	};
@@ -4040,34 +4076,35 @@ function buldDataTable(obj,regions){
 	}
 	var resultsColumnDefs = [ 
 	{
-		 label: "Party",
-		 key  : "partyName",
-		sortable : true
+		 label    : "Party",
+		 key      : "partyName",
+		 formatter: YAHOO.widget.DataTable.partyLink,
+		sortable  : true
 	}
 	];
    for(var i in regions)
     {
 	  var obj;
 	     obj = {
-    	label:""+regions[i].name,
+    	label:"<span style='color:"+regionColours[i]+";font-size:14px;font-weight:bold;'>"+regions[i].name+"</span>",
 		children:[ 
 					{
-						label : "TP*",
+						label : "<span style='color:"+regionColours[i]+"'>TP*</span>",
 						key : "seatsParticipated"+i,
 						sortable : true
 					},
 					{
-						label : "Won",
+						label : "<span style='color:"+regionColours[i]+"'>Won</span>",
 						key : "totalSeatsWon"+i,
 						sortable : true
 					},
 					{
-						label : "CVP* %",
+						label : "<span style='color:"+regionColours[i]+"'>CVP* %</span>",
 						key : "PConstavgPercentage"+i,
 						sortable : true
 					},
 					{
-						label : "CPVP* %",
+						label : "<span style='color:"+regionColours[i]+"'>CPVP* %</span>",
 						key : "percentage"+i,
 						sortable : true
 					}				
