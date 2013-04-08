@@ -42,4 +42,6 @@ public interface IPartyElectionDistrictResultDAO extends GenericDao<PartyElectio
 	public List<Object[]> findDistrictWiseCompleteValidVotesInARegionInState(List<Long> districtIds,Long electionId);
 	
 	public List<Long> getAllPartispatedPartiesInaAnElection(Long electionId, List<Long> partyIds);
+	
+	public List<Object[]> findAlliancePartyResultsForARegionInState(List<Long> districtIds,Long electionId, List<Long> partyIds);
 }
