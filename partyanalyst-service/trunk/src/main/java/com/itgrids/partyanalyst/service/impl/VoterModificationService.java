@@ -2121,7 +2121,10 @@ public class VoterModificationService implements IVoterModificationService{
 							 }
 						 
 							 if(optionVO.getType() != null && optionVO.getType().equalsIgnoreCase(IConstants.BOOTH))
+							 {
+								modificationVO.setPartNo(new Long(params[4].toString())); 
 								modificationVO.setName(params[4].toString());
+							 }
 							 else if(optionVO.getType() != null && (optionVO.getType().equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || optionVO.getType().equalsIgnoreCase("localElectionBody")))
 								 modificationVO.setName(params[4].toString()+" "+params[5].toString());
 							 else
@@ -2147,7 +2150,6 @@ public class VoterModificationService implements IVoterModificationService{
 			 
 		}
 	 }
-	 
 	 
 	 public List<SelectOptionVO> getTotalVotersByPublicationIdsList(List<Long> publicationDateIdsList, Long reportLevelId, Long locationValue, Long constituencyId)
 	 {

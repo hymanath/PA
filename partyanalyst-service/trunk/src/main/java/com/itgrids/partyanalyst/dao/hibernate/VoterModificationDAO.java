@@ -502,7 +502,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		 else if(type.equalsIgnoreCase(IConstants.WARD))
 			 stringBuilder.append(" model2.booth.localBodyWard.constituencyId in(:locationValuesList) group by model2.booth.localBodyWard.constituencyId ");
 		
-		stringBuilder.append(" , model.publicationDate.publicationDateId, model.voterStatus.voterStatusId, model.voter.gender ");
+		stringBuilder.append(" , model.publicationDate.publicationDateId, model.voterStatus.voterStatusId, model.voter.gender order by cast(model2.booth.partNo,int)");
 		
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
 		

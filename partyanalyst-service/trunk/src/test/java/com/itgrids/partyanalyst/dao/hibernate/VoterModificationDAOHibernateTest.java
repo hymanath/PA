@@ -156,35 +156,31 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		{
 			for(Object[] params : list)
 				System.out.println(params[1]);
-		}
+		} 
 	}*/
 	
-	/*public void testgetSublevelVoterModificationDetailsByLocationValues()
+	public void testgetSublevelVoterModificationDetailsByLocationValues()
 	{
 		List<Long> publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
 		
-		String queryStr = "select count(model.voter.voterId),model.status,model.voter.gender, model2.booth.tehsil.tehsilId,model2.booth.tehsil.tehsilName";
+		String queryStr = "select count(model.voter.voterId),model.status,model.voter.gender,model2.booth.partNo ";
 		List<Long> locationValuesList = new ArrayList<Long>(0);
-		locationValuesList.add(1007l);
-		locationValuesList.add(999l);
-		locationValuesList.add(1024l);
-		locationValuesList.add(1012l);
-		locationValuesList.add(1025l);
-		locationValuesList.add(1008l);
+		locationValuesList.add(347l);
 		
+ 		List<Object[]> list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(347l, publicationIdsList, locationValuesList, "constituency", queryStr);
 		
-		
- 		List<Object[]> list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(299l, publicationIdsList, locationValuesList, "mandal", queryStr);
-		
-		System.out.println(list.size());
-	}*/
+ 		System.out.println(list.size());
+ 		
+ 		for(Object[] params : list)
+ 			System.out.println(params[3]);
+	}
 	
-	public void testgetVoterModificationsByConstituencyId()
+	/*public void testgetVoterModificationsByConstituencyId()
 	{
 		List<Long> ids = new ArrayList<Long>(0);
 		ids.add(6616l);
 		int list = voterModificationDAO.updateVoterStatus(1l,ids);
 		System.out.println(list);
-	}
+	}*/
 }
