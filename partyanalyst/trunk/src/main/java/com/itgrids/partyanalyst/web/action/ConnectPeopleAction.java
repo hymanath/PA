@@ -1176,4 +1176,76 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getAllConnectedUsersByFilterViews() throws Exception
+	{
+		HttpSession session = request.getSession();		
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+   		
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Long startIndex = Long.parseLong(request.getParameter("startIndex"));
+		Long results = Long.parseLong(request.getParameter("resultsCount"));		
+		
+		String statusText = jObj.getString("statusText");
+		String nameString  = jObj.getString("nameString");
+		JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");		
+		List<Long> listOfConstituencies = new ArrayList<Long>();
+		
+		for(int i=0; i<constituencyIds.length();i++)
+			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
+		
+		if(user == null)
+		{
+   			userDetails = ananymousUserService.getAllConnectedUsersBasedonLocationType(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,statusText,startIndex,nameString);	
+   		}else
+   		{
+   			userDetails = ananymousUserService.getAllConnectedUsersBasedonLocationType(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),statusText,startIndex,nameString);
+   		}
+   		
+		return Action.SUCCESS;
+	}
+	
+	public String getAllConnectedUsersByLocation() throws Exception
+	{
+		HttpSession session = request.getSession();		
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+   		
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Long startIndex = Long.parseLong(request.getParameter("startIndex"));
+		Long results = Long.parseLong(request.getParameter("resultsCount"));		
+		
+		String statusText = jObj.getString("statusText");
+		String nameString  = jObj.getString("nameString");
+		JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");		
+		List<Long> listOfConstituencies = new ArrayList<Long>();
+		
+		for(int i=0; i<constituencyIds.length();i++)
+			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
+		
+		if(user == null)
+		{
+   			userDetails = ananymousUserService.getAllConnectedUsersBasedonLocationType(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,statusText,startIndex,nameString);	
+   		}else
+   		{
+   			userDetails = ananymousUserService.getAllConnectedUsersBasedonLocationType(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),statusText,startIndex,nameString);
+   		}
+   		
+		return Action.SUCCESS;
+	}
 }
