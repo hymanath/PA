@@ -1,0 +1,848 @@
+#emprtyData
+{
+
+color:red;
+
+}
+
+
+.mybtn
+{
+color:#FFFFFF !important;
+}
+
+.wid
+{
+width: 194px !important;
+word-wrap: break-word;
+height: 34px;
+}
+.marg1
+{
+margin-top: 5px !important;
+font-size:12px;
+color:#0088CC;
+font-family:Arial;
+}
+
+.marg
+{
+margin-top: 3px !important;
+}
+.locationErrorMsg{
+	color:red;
+}
+
+.newssources{
+ background-color:#97DFEB;
+ padding:8px 8px 8px 8px;
+ margin-left:5px;
+ border-radius: 5px 5px 5px 5px;
+
+}
+
+#voterBasicInfoTable td{
+	text-align:center;
+
+}
+.radio {
+	height: 25px;
+	width: 19px;
+	clear:left;
+	float:left;
+	margin: 0 0 3px;
+	padding: 0 0 0 26px;
+	background: url("js/jtransform/radio.png");
+	background-repeat:no-repeat;
+	cursor: default;
+}
+.checkbox {
+	height: 25px;
+	width: 19px;
+	clear:left;
+	float:left;
+	margin: 0 0 3px;
+	/*padding: 0 0 0 26px;*/
+	background: url("js/jtransform/checkbox.png") no-repeat;
+	cursor: default;
+	text-align:left;
+}
+.checkbox input,.radio input {
+	display: none;
+}
+.checkbox input.show,.radio input.show {
+	display: inline;
+}
+.selected {
+	background-position: 0 -52px;
+}
+#MainDiv{
+margin-left:auto;
+margin-right:auto;
+width:980px;
+}
+table.gridtable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#000;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #DBEBFF;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
+
+table.gridtable1 {
+	font-family: Verdana,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable1 th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #DBEBFF;
+}
+table.gridtable1 td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
+
+#votersBasicInfoDivSub{
+    background-color: #EDF5FF;
+    font-size: 15px;
+    margin-top: 5px;
+    text-align: center;
+	height: 25px;
+}	
+
+#votersBasicInfoSubDiv{
+  margin-left: 0px;
+  padding:10px;
+  font-family : arial;
+}
+
+#votersBasicInfoSubChartDiv{
+  margin-left: 0px;
+}
+.pull-right{
+	 //margin-top: -15px;
+}
+
+.form-horizontal label{  display:block; font:12px Arial;
+    margin-bottom:5px;padding-top:5px;cursor:hand;cursor:pointer;}
+	.form-horizontal .radio
+	{
+	font-size: 13px;
+    font-weight: normal;
+    margin-top:-1px;
+	margin-right:8px;
+	}
+.buttonStyle {
+	-moz-border-radius:5px 5px 5px 5px;
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+	height:24px;
+	
+}
+#votersBasicInfoDivSub{font-family:verdana;}
+#impFamShowBasicInfo,#lclCastStsShowBasicInfo,
+#ageWiseDetlsShowBasicInfo
+{
+	margin-right:10px;
+}
+ #votersouterDiv{
+	 margin-left: auto;
+	margin-right: auto;
+  
+ }
+ .selectDiv{
+	 width:80%;
+	 padding-top:10px;
+	 padding-bottom:10px;
+	 font-size: 12px;
+	 font-weight:bold;
+	 color:#333333;
+
+ }
+   /*
+ fieldset,#votersMainOuterDiv1,#votersMainOuterDiv2,
+	 #votersMainOuterDiv3,#votersMainOuterDiv4{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+ border: 3px solid #CFD6DF;
+   
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px; 
+}
+#votersMainOutertopDiv3{
+-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border: 3px solid #CFD6DF;
+	margin-bottom: 10px;
+	height:100px;
+}*/
+p {
+    color: #333333;
+    font-size: 11px;
+    line-height: 18px;
+	font-family: verdana;
+}
+.divInfo
+{
+ background-color:#FFFFFF;
+  border-top: 1px solid #B3C1CE;
+ border-bottom: 1px solid #B3C1CE;
+ border-left: 1px solid #B3C1CE;
+ border-right: 1px solid #B3C1CE;
+ padding:5px;
+ padding-bottom:40px;
+
+}
+#partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#impFamilesBasicSubDetailsForHamlet table,#impFamilesnfoForHamletByBooth table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+#votersByLocationTabContentDiv_body table,#InfluencingPeopleDetailsDiv table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+#partyWiseJqTable tr:nth-child(even),#subLevelTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even),#InfluencingPeopleDetailsDiv table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable1 table
+tr:nth-child(even),#impFamilesnfoForHamletByBooth  table tr:nth-child(even){background:#EdF5FF;}
+
+#partyWiseJqTable td,#subLevelTable td,#impfamilydatatable td,#impfamilydatatable1 td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#impFamilesnfoForHamletByBooth td , #votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td,#InfluencingPeopleDetailsDiv table td,#impFamilesBasicSubDetailsForHamlet table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+
+#partyWiseJqTable th,#subLevelTable th,#impfamilydatatable th,#impfamilydatatable1 th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#impFamilesnfoForHamletByBooth table th , #votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th,#InfluencingPeopleDetailsDiv table th,#impFamilesBasicSubDetailsForHamlet table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+
+#votersBasicInfoSubDivForAgeWiseDetls table th a,#votersBasicInfoSubDivForLclCastSts table th a,#votersBasicInfoSubDivForImpFam table th a,#impFamDtls table th a,#impFamilesBasicSubDetails table th a,#impFamilesnfoForHamletByBooth table th a ,#votersBasicInfoSubDiv table th a,#localCastStatsTabContent_body table th a,#localCastStatsTabContent_subbody1 table th a,#votersByLocationTabContentDiv_body table th a,#votersByPanchayatTabContentDiv_body table th a,#InfluencingPeopleDetailsDiv table th a,{
+color:#333333;
+}
+
+#votersByPanchayatTabContentDiv_body,#votersByLocationTabContentDiv_body,#InfluencingPeopleDetailsDiv
+{
+	font-family : arial;
+	font-size: 13px;
+    margin-top: 20px;
+	padding: 10px 10px 10px 15px;
+}
+
+#impFamPancBothDtls,#impFamDtls{
+ margin-top:12px;
+ margin-left: auto;
+    margin-right: auto;
+    width:100%;
+}
+/*"te
+table.impTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
+table.impTableDiv th, table.impTableDiv td {text-align:center;border:1px solid black;padding:5px;}
+table.impTableDiv th {background-color:AntiqueWhite;}
+table.impTableDiv td:first-child {width:50%;} */
+
+table.votersPrevCountTableDiv {background-color:transparent;border-collapse:collapse;width:100%;}
+table.votersPrevCountTableDiv th, table.votersPrevCountTableDiv td {text-align:center;border:1px solid black;padding:5px;}
+table.votersPrevCountTableDiv th {background-color:#CDE6FC;}
+
+table.dataTable tr.odd {
+    background-color: #ffffff;
+}
+table.dataTable tr.even {
+    background-color:#EdF5FF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #ffffff;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EdF5FF;
+}
+
+
+#impFamilesBasicSubDetailsTitle{
+  font-weight:bold;
+}
+#impFamDtlsTitle,#impFamilesBasicSubDetailsTitle,#impFamPancBothDtlstitle{
+   font-size: 16px;
+    margin-left: 0px;
+    margin-top: 35px;
+}
+#impfamilydatatable_filter{
+	 margin-left: 0px;
+	 
+}
+#impfamilydatatable,#impfamilydatatable1{
+ font-size: 11px;
+}
+#impFamilesBasicSubDetails{
+  margin-left: 5px;
+}
+#impFamilesBasicInfoSubChartDiv{
+   margin-left:0px;
+}
+#impFamPancBothDtls{
+  margin-top:25px;
+}
+#localCastStatsTabContent_subbody caption,#localCastStatsTabContent_body caption,#subLevelTitle{
+    color: #000;
+    font-size: 13px;
+  
+    font-style: normal;
+	font-family: verdana,sans-serif;
+   }
+.votersWidgetHeader
+	{
+		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		height:30px;
+	}
+
+	.votersWidgetMainHeader
+	{
+		background-image:url("images/icons/districtPage/header_body.png");
+		height:36px;
+	}
+	.votersWidgetHeader_span
+	{
+		position:relative;
+		top:8px;
+		left:10px;
+		color:#4B74C6;
+		font-weight:bold;
+		font-size:14px;
+		font-family:verdana;
+	}
+	#constituencyList,#mandalField,
+	#panchayatField,#reportLevel,
+	#pollingStationField{width:160px;height:25px;}
+	#sublevelHeading,#impFamilesBasicSubDetailsTitle,#partyWiseLocalCastStatsTabTitle,#impFamPancBothDtlstitle,#impFamDtlsTitle{
+		color:steelblue;
+		font-size:1.1em;
+		font-family:arial;
+		margin-bottom: 20px;
+		font-weight: bold;
+	}
+#impFamShowBasicInfo,#lclCastStsShowBasicInfo,#ageWiseDetlsShowBasicInfo{
+   float:right;
+}
+#votersbasicinfoForImpFam,#votersbasicinfoForLclCastSts,#votersbasicinfoForAgeWiseDetls{
+  border:1px solid #3d3d3d;
+   margin-top: 32px;
+   padding:10px;
+   margin-bottom:5px;
+}
+.basicVotersInfoDiv{border: 1px solid #CCCCCC;
+border-radius: 5px 5px 5px 5px;
+float: none;
+margin: 13px auto 12px;
+padding: 7px;
+width: 860px;}
+#partyWiseJqTable_info,#partyWiseJqTable_paginate,#subLevelTable_info,#subLevelTable_paginate,#impfamilydatatable_info,#impfamilydatatable_paginate{
+	font-family: verdana;
+    font-size: 12px;
+    margin-top: 12px;
+	
+}
+.requiredFont{
+	color:red;
+	font-size:13px;
+}
+.noteDiv {
+    margin-bottom: 18px;
+    margin-top: 29px;
+}
+#impfamilydatatable th{
+  padding:5px;
+}
+.localCastDetailsHeadingDiv,#partyWiseTitle,#partyBasicInfoStatsTabNewTitle{ 
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-family: verdana;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 14px;
+    margin-top: 5px;
+    padding: 4px;width:400px;}
+    #localCastDetailsDiv{clear: both;
+    margin-bottom: -138px;
+    margin-top: 0;
+    padding-top: 0;
+    width: 400px;
+    }
+	#localCastChatDiv,#partyWiseChatDiv{clear: both;
+    float: right;
+     width: 500px;}
+	 .partyWiseDetailsMainDiv{ 
+    clear: both;
+    display: table;
+     margin-left: 10px;
+    
+    width: 926px;}
+	#localCastDetailsDiv p,#partyWiseDetailsDiv p{font-size:13px;font-weight:bold;}
+	#createNewGroupId:hover{background:#F61D50;color:#FFF;}
+	#openProblemEditFormId{cursor:pointer;}
+	.descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
+	.descriptionInnerDiv span{margin-right: 5px;}
+	.buttonsTop{
+	  margin-top:20px;
+	  width:880px;
+	  text-align: center;
+	}
+	.buttonLeft{
+	  margin-left:10px;
+	}
+	.ui-widget-header{
+	background: none repeat scroll 0 0 #4285F4;
+	color:#fff;
+	}
+	.ui-widget-overlay{
+	  opacity: 0.8;
+	}
+	#ImportantFamiliesDiv{
+	  margin-bottom: 20px;
+	}
+	.widthStyle{
+	  width:100px !important;
+	}
+	.votersEditTitle{
+	    margin-top:5px;
+	    color: steelblue;
+		font-family: verdana;
+		font-size: 13px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+
+	#votersByLocationTabContentDiv_body table th,#InfluencingPeopleDetailsDiv table th {padding:5px !important;}
+	#votersByLocationTabContentDiv_body,#InfluencingPeopleDetailsDiv{padding-left: 2px !important; }
+	#votersByLocationTabContentDiv_body table td ,#InfluencingPeopleDetailsDiv table td{padding-right:3px !important;}
+	.localCastStatsVotersTitle{border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF !important;
+    font-family: verdana;
+    font-size: 15px !important;
+    font-weight: bold;
+    padding: 5px;
+    width: 650px;}
+	#sublevelHeading{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 4px;
+    width: 550px;}
+	.localCastStatsVotersTitle{background:#06ABEA;}
+	.imageSize{
+	   height:11px;
+	   width:11px;
+	}
+	#partyWiseLocalCastStatsTab table th {
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+   }
+   #partyWiseLocalCastStatsTab table td {
+    color: #676A67;
+    font: small-caption;
+  }	
+/*	#previousEleVotingTrendsDiv p span {display: table-cell;}
+	#prevVotTrendHeadingSpan{background:#06ABEA;color:#FFF;
+	font-weight:bold;font-size:15px;
+	border-radius: 3px;
+    padding: 3px 10px;}
+	#previousEleVotingTrendsDiv {margin-top: 30px;margin-bottom:25px;width:96%;}
+	#previousEleVotingTrendsDiv p{height:25px;}
+	#previousEleVotingTrendsDiv table{border:1px solid #cdcdcd;}
+	#previousEleVotingTrendsDiv table th {
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+} 
+#previousEleVotingTrendsDiv table td {
+    color: #676A67;
+    padding: 8px 8px 8px 10px;
+}*/
+.selectedLink{
+	  background-color:#5e5e5e;
+	  color:#fff;
+	  padding:2px;
+
+  }
+.pr-cont-sec
+{
+	margin-left: 10px;
+}
+
+.pft-sec {
+    color: #777777;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 32px 0 16px 21px;
+    width: 244px;
+}
+.popupcontainer {		
+    	background-color: #FFFFFF;
+    	margin: 9px auto 10px;
+    	max-width: 780px;
+    	padding: 10px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
+.main-mbg {
+    -moz-border-radius: 6px 6px 6px 6px;
+	border-radius :6px;
+    background-color: #06ABEA;
+    clear: both;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    margin-bottom: 5px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 974px;
+}
+.profile-left-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    float: left;
+    margin-right: 2px;
+    padding-top: 5px;
+    width: 204px;
+}
+.profile-mid-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -211px top transparent;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    position: relative;
+    width: 441px;
+}
+.f2{margin-right:15px;}
+.badge-add{padding:10px;border-radius:50%;background:#ABCFF3;color:#222222;}
+
+body {
+    color: #000000;
+}
+#previousEleVotingTrendsDiv tabel tr th{color:#000;}
+#previousEleVotingTrendsDiv table tr:nth-child(2n-1) {
+    background: none repeat scroll 0 0 #EDF5FF;
+}
+h5{font-family : Arial;}
+.customMenu {display:none;width:102%;clear:both; margin: 5px -20px;
+    padding: 5px 11px;background:#3198B6;}
+.customMenu .leftNav, .customMenu .middleNav,.customMenu .rightNav{background:#fff;border-radius:2px;box-shadow:0px 1px 2px #aaa;}
+.customMenu .rightNav{width:490px;margin-left:10px;}
+.customMenu .leftNav{margin-left:0px;}
+.bs-docs-sidenav{margin:0px;}
+.customMenu .leftNav li{display:block;}
+.customMenu .middleNav li{display:block;}
+.middleNav-Wards{display:none;}
+.customMenu .rightNav li{margin:10px;display:inline-block;float:left;}
+.nav-stacked a.hoverclass{background:#5e5e5e;}
+.leftNav-Municipalities{margin-top:25px;}
+
+/*
+.customMenu .leftNav ul li{display:inline-block;clear:both;width:100%;}
+.customMenu .leftNav ul li a{display:inline-block;clear:both;width:100%;padding:5px;border:1px solid #ccc;}*/
+.bs-docs-sidenav > li > a { padding: 4px 14px;padding-left:2px;cursor:pointer;cursor:hand;}
+.ShowHideLevelMenu{position:absolute;top:38px;right:10px;}
+</style>
+<style>
+.background{background:#fff;}
+/*.bs-docs-sidenav li {position:relative;}
+.bs-docs-sidenav li .popover-cust{display:none;position:absolute;left:165px;top:-26px;}
+.bs-docs-sidenav li:hover .popover-cust{display:block;}*/
+
+  #localCastDetailsDiv{
+		font-family: verdana;
+		font-size: 13px;
+		font-weight: bold;
+		width:80%;
+  }
+  #votersDiv1,#votersDiv2{
+    display:none;
+  }
+  #partyWiseDetailsDiv{
+     margin-left:42px;
+  }
+  #showAjaxImgForNews{ 
+    margin-left: 340px;
+    margin-top: 110px;
+   }
+ #problemsShowDIV h6 {
+    color: #005580;
+    margin-bottom: 10px;
+}
+#problemsShowDIV p {
+    margin-left: 16px;
+}
+#problemsShowDIV .widget-block {
+    display: inline-block;
+    width: 100%;
+	background:#FAFAFA;
+}
+#problemsShowDIV .widget {
+    margin-bottom: 10px;
+	background: none repeat scroll 0 0 #FAFAFA;
+    border-top: 5px solid #000000;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 5px 0 20px;
+    padding: 0 20px 20px;
+    position: relative;
+}
+
+#cnstHeading,#votersTitle{
+	background:#E6E6E6;
+    border-radius: 6px 6px 6px 6px;
+    color: #000000;
+    font-size: 18px;
+    font-weight: bold;
+    height: 25px;
+    padding: 9px;
+    text-align: center;
+    width: 98%;
+}
+
+#problemsShowDIV h6{margin:0px;padding:0px;font-size:15px; text-decoration:none; font-weight:bold;text-transform:capitalize;}
+#problemsShowDIV a,#problemsShowDIV span{text-decoration:none;font-size:12px;}
+#problemsShowDIV .widget-block:nth-child(2n+1){background:#fff;}
+.leftmargin{margin-left:10px;padding:4px;}
+.pagenationStyle{
+  background-color:#2E9AFE;color:#fff;padding:5px;border-radius:3px;
+}
+.paginatorElmtClass a{padding:5px;}
+.table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
+#tableDiv1 th{text-align:center;width:14%;}
+#tableDiv1 td{text-align:center;}
+.whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
+.FamiliyList li{margin:5px;font-weight:bold;font-size:14px;padding:6px;width:100%;}
+#voterDetailsNote{
+  margin-bottom:5px;
+}
+#MainHeading span{font-family:verdana,font-weight:bold;clear:both;display: block;font-size: 14px;margin:1px;}
+.widget h4, h2{font-family:arial;}
+#localCastStatsTabContent_header span{padding:10px;clear:both;display:block;}
+/*#subHeading{ color: #4682B4;background:#EEEEEE;margin-left:-4px;border-radius:5px;}*/
+#subHeading{color: #4682B4;}
+.crossVotingTableCls{width:100%;margin-top:20px;margin-bottom:15px;}
+
+/* #crossVotingReportDiv table{border: 1px solid #D3D3D3;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 100%;}
+#crossVotingReportDiv table th{
+	background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+	}
+
+#crossVotingReportDiv table td{
+	 color: #676A67;
+    font: small-caption;
+    padding: 8px 8px 8px 10px;
+}
+
+#crossVotingReportDiv table tr:nth-child(2n-1) {
+    background: none repeat scroll 0 0 #EDF5FF;
+}
+*/
+.crossVotingHeadingCls{margin-top: 10px; margin-bottom: 20px;}
+.crossVotingHeadingCls span{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 3px 15px;}
+		
+	#votersInfoAjaxImg{right:2px;bottom:16px;position:absolute;}
+
+#voterAgeAngGenderwiseDetailsNoteInPercent .table th, .table td{padding:6px;}
+
+#voterAgeAngGenderwiseDetailsInPercent th{text-align:center;}
+#ageAndgenderWiseDetails th,#agewiseDetails th,#tableDiv th{text-align:center;}
+#crossVotingReportBtn{margin-left: 25px;}
+#electionYearsForCrossVoting{margin-right: 5px;}
+#previousEleVotingTrendsDiv{
+	width:100%;
+  overflow-x:scroll;
+}
+
+#voterCasteAjaxImg{clear: both; display: block; margin-left: auto; margin-right: auto; float: none;}
+.dd_menu {padding:0px; margin:0; list-style-type:none;}
+.dd_menu li {float:left;display:inline;}
+.dd_menu li a {padding:0px 20px; display:block; color:#fff; text-decoration:none; font:12px arial, verdana, sans-serif; font-weight: bold;}
+.dd_menu li:hover a {text-decoration:underline;}
+
+.dd_menu ul {position:absolute; left:-9999px; top:-9999px; list-style-type:none;}
+.dd_menu li:hover {position:relative; background:none;}
+.dd_menu li:hover ul {left:-160px; top:15px; padding:3px; border:1px solid grey; width:208px;}
+.dd_menu li:hover ul li {border:none;}
+.dd_menu li:hover ul li a {height:18px;color:#003366; padding:5px 0px; display:block; font-size:11px; width:208px; line-height:18px; text-indent:5px; color:#444; background:#d0e0ea; text-decoration:none; border:1px solid transparent;}
+.dd_menu li:hover ul li a:hover {height:18px; background:#c4d8e6; color:#003366; border:solid 1px #444;}
+
+#partyGraphButtonId
+{
+float: right;
+    margin-right: -494px;
+    margin-top: -24px;
+}
+.yui-skin-sam .yui-dt-liner {
+    margin: 0;
+    padding: 4px 10px;
+    width: 65px;
+}
+/* start anil*/
+ #tabContainer {
+	/*width:300px;
+	padding:15px;
+	background-color:#2e2e2e;*/
+	-moz-border-radius: 4px;
+	border-radius: 4px; 
+} 
+
+.tabs{
+	height:30px;
+}
+
+.tabs > ul{
+	font-size: 1em;
+	list-style:none;
+}
+
+.tabs > ul > li{
+	margin:0 2px 0 0;
+	padding:7px 10px;
+	display:block;
+	float:left;
+	color:#FFF;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	border-top-left-radius:4px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px; 
+	background: #C9C9C9; /* old browsers */
+	background: -moz-linear-gradient(top, #0C91EC 0%, #257AB6 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0C91EC), color-stop(100%,#257AB6)); /* webkit */
+}
+
+.tabs > ul > li:hover{
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); /* webkit */
+	cursor:pointer;
+	color: #333;
+}
+#tabHeader_1
+{
+margin-left:10px;
+}
+
+.tabs > ul > li.tabActiveHeader{
+	 background: #FFFFFF; /* old browsers */
+	/*background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); */ /* webkit */
+     	cursor:pointer;
+	color: #333;
+}
+/*
+.tabscontent {
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px; 
+	padding:10px 10px 25px;
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #FFFFFF 90%, #e4e9ed 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(90%,#FFFFFF), color-stop(100%,#e4e9ed)); /* webkit */
+	margin:0;
+	color:#333;
+}*/
+.dataTables_length
+{
+	margin-left:16px;
+}
+.table-bordered {
+    border-collapse: separate;
+}
+.ui-widget {
+font-family: verdana;
+}
+
+.btn-mini {
+    border-radius: 3px 3px 3px 3px;
+    font-size: 10.5px;
+    margin-left: 63px;
+    padding: 1px 6px;
+}
+.yui-skin-sam .yui-pg-container {
+    display: block;
+    margin: 6px 0;
+    margin-left: 183px;
+    margin-top: 48px;
+    white-space: nowrap;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    
+}
