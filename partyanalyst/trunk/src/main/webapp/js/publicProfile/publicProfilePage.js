@@ -238,7 +238,8 @@ function showMessageSentConfirmation(results)
 	{
 		$("#connectMessageText").val('');
 		$("#ErrorMsgDivId").html('<font color="green">Message Sent Successfully..</font>');
-		setTimeout('self.close();',2000);
+		//setTimeout('self.close();',2000);
+		setTimeout("$('#connectPeoplePopup').dialog('close')",800);
 		
 	}
 	else
