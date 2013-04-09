@@ -83,6 +83,7 @@
 	    <pattern>/newsDisplayWindowAction.action*</pattern>
 	    <pattern>/problemsDisplayWindowAction.action*</pattern>
 		<pattern>/voterBasicInfoAction.action*</pattern>
+		<pattern>/getVoterDetailsInitialRequest*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
